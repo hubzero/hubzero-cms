@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/users/supergroups
 source-id: 3365
@@ -19,6 +19,38 @@ ordinary group's pages.
 Super groups are for the hub's own project teams and partners, not for
 anything a visitor can create. Only an administrator can make one, and the
 code inside one runs with the hub's full privileges.
+
+## Does your hub need one
+
+Most do not, and a hub can run for years without one. The question to ask is
+whether the group needs *its own site*, or only its own space. An ordinary hub
+group already gives a team a forum, a wiki, a blog, a calendar, a file area and
+a member list at its own address, and that is what nearly every team wants.
+
+A super group earns its keep when a group has to look like something other than
+the hub — a centre or a partner institution with its own identity — or when it
+needs pages that compute something, its own database, or its own component.
+Those are developer requirements, not editorial ones. If nobody on the team can
+write and maintain a template, a super group gives them a harder version of
+what they already had.
+
+What it is not:
+
+- **Not a permission level.** Making a group super does not give its members
+  any more rights on the rest of the hub.
+- **Not a way to let a group post code.** If that is the whole requirement, the
+  per-group **Trusted content** page setting does it without the rest.
+- **Not something to try out and undo.** Creating one writes a directory and a
+  database on the server, and deleting the group from the interface leaves both
+  behind for someone to clean up by hand.
+
+> **Warning:** A super group's pages, modules and components execute PHP with
+> the hub's own privileges. Whoever can write content in one can, in practice,
+> do anything the hub's web user can do — read its configuration, reach its
+> database. Grant that to people you would trust with the server, and keep
+> **Page Approvers** filled in so that no submission containing code publishes
+> without a person reading it. See [Approval of pages and
+> modules](#approval-of-pages-and-modules).
 
 Writing the template itself is a developer task. See
 [Super Groups](../../developers/13-supergroups/README.md) in the developer
@@ -71,9 +103,19 @@ On save the hub does the rest, in
 - Connects the group's repository, if **Repo Management** is on. That step
   only runs when `application_env` is a production environment.
 
+If any of those steps fails, the group is still created. A missing database
+grant or a missing `/etc/supergroup.conf` gives you a group with no working
+database connection and a warning on screen, not a rolled-back creation — so
+read the messages after the save rather than assuming a clean result.
+
 > **Warning:** Deleting the group from the administrator interface removes
 > the group and its content but leaves its directory and its `sg_` database
 > on the server. Clean those up by hand.
+
+> **Warning:** The alias fixes more than the URL. It names the directory and
+> the database, it cannot be changed after the save, and there is no rename.
+> Getting it wrong means creating a second group and moving the content across.
+> Agree the alias with the group before you create anything.
 
 ## What a super group can do that an ordinary group cannot
 
@@ -125,6 +167,14 @@ managers.
 > with *Pages can only be approved by authorized approvers*. With the option
 > empty nobody can approve anything, and content containing code stays
 > invisible.
+
+This gate is the reason a super group is safe to hand to a team, so set the
+option before you create your first super group rather than after the group's
+developer files their first bug report. Put the usernames of the people who
+would review code on the hub in it — not the group's own managers, who are the
+ones submitting. Approval is per submission, so a page that was approved and is
+then edited to add code goes back through the gate; that is deliberate, and
+worth explaining to the group so they do not read it as the page breaking.
 
 ## Managing modules from the site
 

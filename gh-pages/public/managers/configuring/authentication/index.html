@@ -59,6 +59,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Authentication</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-is-not">What this is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
 <li class="toc__item toc__item--l2"><a href="#register-the-hub-with-the-provider-first">Register the hub with the provider first</a></li>
 <li class="toc__item toc__item--l2"><a href="#enable-the-plugin">Enable the plugin</a></li>
@@ -167,6 +168,25 @@ enabled, which checks a username and password against the hub's own member
 records. Enabling another plugin adds a second way in, so a visitor can sign
 in with an identity they already hold elsewhere instead of creating a
 password here.</p>
+<p>Most hubs get here for one reason. The hub is opening to a partner
+institution — a second lab, a collaborating department, a funder's project
+team — and nobody wants forty new people inventing forty new passwords, or
+the hub's manager fielding their reset requests for the next three years.
+Enabling the provider their institution already runs solves all of that at
+once, and it is the single change that makes a hub feel like it belongs to
+more than the group that built it.</p>
+<p>A hub whose members are all local, all known, and all already have accounts
+does not need any of this. <strong>Authentication - HUBzero</strong> on its own is a
+complete answer.</p>
+<h2 id="what-this-is-not">What this is not</h2>
+<p>Authentication decides <em>who someone is</em>. It has nothing to say about what
+they are then allowed to do — that is <a href="../../users/accessgroups/index.html">access
+groups</a> and the permission rules in <a href="../hub/index.html#permissions-and-text-filters">global
+configuration</a>. Signing in through a
+university's login does not give anyone a single extra privilege on the hub.</p>
+<p>Nor does it decide whether an account is created at all, or approved once it
+is; those are the Members component's registration settings, described in
+<a href="../registration/index.html">Registration</a>.</p>
 <h2 id="what-ships">What ships</h2>
 <table>
 <thead>
@@ -287,7 +307,14 @@ filter to <code>authentication</code>.</li>
 <li>Fill in the application ID and secret the provider gave you.</li>
 <li>Set <strong>Status</strong> to <strong>Enabled</strong>.</li>
 <li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Sign out in a private window and check that the provider's button appears
+on the login page and takes you all the way through.</li>
 </ol>
+<p>Adding a provider is safe: existing members keep signing in exactly as they
+did, and a provider that turns out to be misconfigured fails for the people
+who choose it rather than for everyone. Removing one is the change that hurts
+— members who linked their account to it and never set a hub password have no
+other way in.</p>
 <p>Almost every authentication plugin shares four parameters:</p>
 <table>
 <thead>
@@ -331,6 +358,16 @@ remembered in a cookie and offered first.</p>
 <p>If you disable <strong>Authentication - HUBzero</strong>, local accounts can no longer
 sign in anywhere, including the administrator interface. Leave <strong>Admin login</strong> on
 for at least one plugin you can actually use.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This is the one change in this section that can lock every
+administrator out of the hub at once, and it cannot be undone from the
+administrator interface, because reaching the administrator interface is
+what you have just prevented. Recovery means someone editing the plugin's
+row in the <code>#__extensions</code> table directly. Before you disable
+<strong>Authentication - HUBzero</strong> or turn off the last <strong>Admin login</strong>, sign in
+from a second browser and prove the replacement works there while your
+first session is still open.</p>
+</aside>
 <h2 id="members-who-already-have-an-account">Members who already have an account</h2>
 <p>An existing member links a provider from their own profile:</p>
 <ol>
@@ -369,7 +406,7 @@ the one shown.</p>
 <p><img src="../../media/authentication-210authentication3.png" alt="The login page offering a third-party provider" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plugins</a><a class="pager__next" href="../extauth/index.html" rel="next"><span>Next</span>External authenticators</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/06-authentication.md">Edit this page on GitHub</a>

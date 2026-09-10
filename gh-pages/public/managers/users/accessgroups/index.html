@@ -68,9 +68,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Access Groups</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#does-your-hub-need-this-screen-at-all">Does your hub need this screen at all</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-change-here-does-and-when">What a change here does, and when</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-groups-shipped-with-a-hub">The groups shipped with a hub</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-an-access-group">Creating an access group</a></li>
+<li class="toc__item toc__item--l3"><a href="#worked-example-an-access-group-for-the-workshop-cohort">Worked example: an access group for the workshop cohort</a></li>
 <li class="toc__item toc__item--l2"><a href="#assigning-an-account-to-a-group">Assigning an account to a group</a></li>
 <li class="toc__item toc__item--l2"><a href="#deleting-an-access-group">Deleting an access group</a></li>
 </ol></li>
@@ -168,6 +171,39 @@ child inherits everything its parent is allowed.</p>
 no address on the site, and users cannot join one. Hub groups are covered
 in <a href="../groups/index.html">Groups</a>.</p>
 </aside>
+<h2 id="does-your-hub-need-this-screen-at-all">Does your hub need this screen at all</h2>
+<p>Most hubs never touch it. The eight groups a hub ships with cover the ordinary
+shape of a site — visitors, members, people who write content, people who
+publish it, people who administer it — and the interesting work is done on the
+<strong>Permissions</strong> tab of the global configuration and of each component, which
+grants those groups their rights. That is where you go when the question is
+<em>what may this person do</em>.</p>
+<p>You need a new access group only when you have a set of accounts that must be
+treated differently from every existing set, and permanently enough to be
+worth naming. Two cases come up in practice: a group of people who need to
+reach something ordinary members cannot see, and a group of people who need to
+run one part of the administrator interface without being made administrators
+of the whole hub.</p>
+<p>If your question is instead &quot;how do I let these forty people see this
+material&quot;, you want a new access group <em>and</em> a viewing level built from it;
+the level is the half that content is tagged with. See
+<a href="../accesslevels/index.html">Access Levels</a>.</p>
+<h2 id="what-a-change-here-does-and-when">What a change here does, and when</h2>
+<p>Access group membership is read from the database on every request. Nothing is
+cached between requests and nobody is logged out, so:</p>
+<ul>
+<li>Putting an account into a group, or taking it out, takes effect on that
+person's next page load, whether or not they are logged in at the time.</li>
+<li>Changing a group's place in the tree changes what everyone in it, and
+everyone in the groups beneath it, is allowed to do — also on the next
+request.</li>
+<li>Nobody is told. There is no notification and no entry in any log the
+administrator interface shows you. A member who loses access finds out by
+meeting a page that is no longer there.</li>
+</ul>
+<p>This is why adding is safer than editing. A new group grants nothing until you
+write a permission rule or a viewing level that names it, so you can create it,
+look at it, and delete it again with no consequence at all.</p>
 <p>Access groups are administered by <code>com_members</code>, at <strong>Users</strong> → <strong>Access
 Groups</strong>, or directly at
 <code>/administrator/index.php?option=com_members&amp;controller=accessgroups</code>. The
@@ -235,7 +271,15 @@ which holds <code>core.admin</code> on the root asset and so is allowed everythi
 Group</strong> option of <code>com_members</code>, which is Registered by default. Visitors who
 are not logged in count as members of the <strong>Guest Access Group</strong>, Public by
 default. Both are on the component's <strong>Options</strong> screen and are listed in the
-<a href="../../../reference/configuration/components/members/index.html">Members configuration reference</a>.</p>
+<a href="../../../reference/configuration/components/members/index.html">Members configuration reference</a>.
+Accounts created by an administrator and accounts created by
+<a href="../memberimport/index.html">import</a> are placed in the same group; the importer falls
+back to Registered by name if the option is unset.</p>
+<p>Both defaults are sensible and there is rarely a reason to change either. In
+particular, do not point <strong>New User Registration Group</strong> at a group with more
+rights than Registered as a way of giving a batch of new people extra access —
+it applies to <em>every</em> subsequent registration, including the ones you did not
+expect. Put the batch in an extra group afterwards instead.</p>
 <h2 id="the-list">The list</h2>
 <p>Each row shows the group's <strong>ID</strong>, its <strong>Group Title</strong> indented by depth in
 the tree, and <strong>Users in group</strong>. Search by title with the filter bar.</p>
@@ -250,6 +294,10 @@ instead of the group you ticked. <strong>Delete</strong> is unaffected.</p>
 opens a screen listing every asset on the hub and what that group is
 permitted to do with it. That is the quickest way to answer &quot;why can this
 person do that&quot;.</p>
+<p><strong>Users in group</strong> counts accounts assigned to that group directly. It does
+not count the accounts that reach the group's rights by inheritance from a
+child group, so a group showing zero users can still be granting permissions
+to plenty of people.</p>
 <h2 id="creating-an-access-group">Creating an access group</h2>
 <ol>
 <li>Go to <strong>Users</strong> → <strong>Access Groups</strong>.</li>
@@ -261,6 +309,34 @@ person do that&quot;.</p>
 <p>The new group starts with no permissions of its own and inherits whatever its
 parent is allowed. Grant it something by editing the permission rules in the
 global configuration, or under <strong>Options</strong> on the component it should reach.</p>
+<p>Choose the parent carefully, because it is the whole of what the new group can
+already do. A group under <strong>Public</strong> starts with the rights of a passing
+visitor; a group under <strong>Registered</strong> starts with the rights of an ordinary
+member. For a set of accounts who are members and also something more,
+<strong>Registered</strong> is the parent you want. Never hang a new group under <strong>Super
+Users</strong> unless you mean everyone in it to be allowed everything on the hub.</p>
+<p>The parent can be changed later, and doing so takes effect immediately, so an
+access group is one of the few things in this section you can genuinely
+correct after the fact — provided you have not yet attached anything to it.</p>
+<h3 id="worked-example-an-access-group-for-the-workshop-cohort">Worked example: an access group for the workshop cohort</h3>
+<p>Continuing the scenario from the <a href="../index.html#a-worked-example">section introduction</a>,
+the forty visiting participants need to reach workshop material that ordinary
+members cannot see.</p>
+<ol>
+<li>Go to <strong>Users</strong> → <strong>Access Groups</strong> and select <strong>New</strong>.</li>
+<li>Enter a <strong>Group Title</strong> of <code>Workshop 2026</code>.</li>
+<li>Set <strong>Group Parent</strong> to <strong>Registered</strong>, so the cohort keeps every ordinary
+member right and gains the workshop's on top.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>At this point the group does nothing. Nobody is in it and nothing names it. The
+next step is a viewing level built from it — see
+<a href="../accesslevels/index.html#worked-example-a-viewing-level-for-the-workshop">Worked example: a viewing level for the workshop</a> —
+and then the accounts, which are put into the group either one at a time on the
+member record or in bulk by <a href="../memberimport/index.html">import</a>.</p>
+<p>When the workshop ends, empty the group rather than deleting it. Emptying it
+removes the access and leaves the level, the tagged content and the group
+itself intact, so the same arrangement works again next year.</p>
 <h2 id="assigning-an-account-to-a-group">Assigning an account to a group</h2>
 <p>Access group membership is set on the member record, not here.</p>
 <ol>
@@ -288,9 +364,26 @@ referenced by the default access levels and by the registration options, so
 deleting either breaks the site. Leave the eight shipped groups alone and
 add your own alongside them.</p>
 </aside>
+<p>Deleting a group of your own is not gentle either. The delete does more than
+remove the row, and none of it can be undone from the interface:</p>
+<ul>
+<li><strong>Every group beneath it goes too.</strong> The delete takes the whole subtree, not
+just the group you ticked, and the count in the confirmation does not say so.</li>
+<li><strong>Every account is removed from those groups</strong>, losing whatever they granted,
+on that person's next page load.</li>
+<li><strong>The group is stripped out of every viewing level that named it.</strong> A level
+built only on the group you deleted is left with an empty list, and content
+tagged with it becomes invisible to everyone.</li>
+</ul>
+<p>The permission rules on components and on the global configuration are <em>not</em>
+cleaned up; they go on naming an id that no longer exists, harmlessly, until
+somebody reuses that id.</p>
+<p>So if you only want to withdraw access, take the accounts out of the group and
+leave the group in place. Delete a group only when you are sure nothing is
+built on it, and check its viewing levels first.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../groups/index.html" rel="prev"><span>Previous</span>Groups</a><a class="pager__next" href="../accesslevels/index.html" rel="next"><span>Next</span>Access Levels</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/06-accessgroups.md">Edit this page on GitHub</a>

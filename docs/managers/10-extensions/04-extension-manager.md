@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/extensions/extmanger
 source-id: 3409
@@ -16,6 +16,25 @@ problems with the server's PHP configuration.
 
 Select **Extensions** → **Extension Manager**, or go to
 `/administrator/index.php?option=com_installer`.
+
+Most managers never need this screen. The extensions a hub runs on arrive
+with the code and are already switched on. Three things bring you here: a
+component your hub does not use is cluttering the administrator menu and you
+want it gone; someone has written a component or plugin for your hub and it
+lives in a git repository; or mail attachments and image handling have
+stopped working and you want to see what the server thinks of its own PHP
+configuration.
+
+## What this screen is not
+
+It is not an installer for extensions from elsewhere. There is no upload
+form, no install-from-URL, and nothing that will take a downloaded package.
+The only route for a hub's own code is a git repository, through **Custom
+Extensions**, and it puts that code under `app/`.
+
+It is not an update screen either. Updating the platform is a deployment
+task, done outside the administrator interface; what this screen offers is
+**Refresh Cache**, which re-reads manifests, and the migration runner.
 
 The screen has three tabs:
 
@@ -46,8 +65,8 @@ Filters: a search box and drop-downs for location, status
 (Enabled / Disabled / Protected), type and folder.
 
 > **Note:** The search matches the stored extension name, which for most core
-> extensions is an untranslated language key such as `COM_MODULES` or
-> `PLG_CONTENT_LOADMODULE`, not the label shown in the list. Search for a word
+> extensions is a language key such as `com_modules`, `mod_login` or
+> `plg_content_loadmodule`, not the label shown in the list. Search for a word
 > from the key, or use `id:` followed by an extension id. Filtering by
 > **Type** is usually quicker.
 
@@ -76,6 +95,20 @@ To enable or disable a core extension:
 > the administrator menu. Disabling a module type stops every instance of it
 > from rendering, whatever the [Module Manager](01-modules.md) says.
 
+> **Warning:** The only thing the component refuses to disable is a
+> template that is currently the default. Everything else can be switched
+> off, including the components the administrator interface itself is built
+> from. Disabling `com_installer` removes this screen, and this screen is the
+> only way to switch it back on; recovery is an edit to the `#__extensions`
+> table. Read the **Name** column before you tick anything — and note that
+> what it shows is a translated label, so check the row is the extension you
+> meant.
+
+Disabling is otherwise reversible and reasonably safe to try: nothing is
+deleted, no data is touched, and re-enabling puts everything back. What it
+does do is take a feature away from everybody using the hub at that moment,
+without warning them.
+
 ### Core Migrations
 
 A second navigation strip inside this tab leads to **Core Migrations**, which
@@ -92,6 +125,15 @@ A custom extension is code this hub adds to `app/`, installed and updated by
 cloning a git repository. The repository must lay its files out the way the
 platform expects for the chosen extension type; the `non-standard` type drops
 the repository's contents into `app/` as they are.
+
+This is how a hub gets something the platform does not ship: a component
+written for one research group, a plugin that talks to a local instrument, a
+template of the hub's own. It is also how that code is kept up to date
+afterwards, which is the part worth planning for. The update button merges
+new commits into the running hub's filesystem — there is no staging copy,
+no test run, and no undo on this screen. Whoever maintains the repository is
+in effect deploying to production every time you press it, so agree with them
+how a change gets tested before it is tagged.
 
 Columns: **Name**, **Status**, **Location**, **Type**, **Folder**,
 **Modified on**, **Modified by** and **ID**.
@@ -164,8 +206,14 @@ button.
 
 ## Warnings
 
-This tab runs a set of checks against the PHP configuration and lists
-anything it does not like, each as an expandable panel. It checks that:
+This tab is the first place to look when uploads fail, images do not appear,
+or a file that is obviously small is rejected as too large. It reports on the
+server rather than on the hub, so nothing here is something you fix from the
+administrator interface — each item is a change to PHP's configuration or to
+what is installed on the machine, for whoever has that access.
+
+It runs a set of checks against the PHP configuration and lists anything it
+does not like, each as an expandable panel. It checks that:
 
 - file uploads are enabled;
 - `upload_tmp_dir` is set and writable;

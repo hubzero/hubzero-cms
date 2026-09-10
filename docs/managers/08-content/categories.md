@@ -1,10 +1,26 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 9924bea2ec
+reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
 -->
 # Categories
+
+Most hubs need one or two article categories, and a good many need none. A
+category earns its place when a group of pages belongs together — an About
+section with an overview, a contact page and an acknowledgements page — or
+when you want the pages' addresses to share a prefix. A single About page
+reached through a menu item needs no category at all: leave it in
+**Uncategorised** and nothing is lost. Creating a category tree before there
+is content to put in it is the commonest way a manager makes a small hub feel
+complicated.
+
+There is one thing categories do that nothing else does, and it is worth the
+trouble on a bigger hub: a category's state and access level apply to
+everything filed in it. Unpublishing one category takes a whole branch of the
+site down in a single save, and republishing it brings every page back in
+whatever state it was already in. That is covered under [States and
+permissions](#states-and-permissions) below.
 
 The Category Manager is one screen that several components borrow. Articles,
 user notes, knowledge base articles and events all file their content in
@@ -188,6 +204,13 @@ category.
 > empty fieldset, so the component has no settings to configure.
 
 ### Batch processing
+
+Batch is for the day a section is reorganised: twenty pages that need moving
+under a new parent, or a set of pages that should all become **Registered**
+at once. It is not a small convenience — moving a category moves its children
+with it, and a copy duplicates a whole branch, so check what you have ticked
+before you run it. There is no undo; reversing a batch means running another
+one back the other way.
 
 Below the list, an administrator holding **Create**, **Edit** and **Edit
 State** on the extension gets a **Batch process the selected categories**

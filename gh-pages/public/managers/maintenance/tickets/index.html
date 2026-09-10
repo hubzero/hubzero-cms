@@ -164,6 +164,21 @@ those tickets in the <strong>Support</strong> component. This page is about hand
 queue day to day; for setting the component up — categories, canned messages,
 statuses, and who may see what — read
 <a href="../../components/support/index.html">Support</a>.</p>
+<p>Every hub that has users has a support queue, whether or not anybody watches
+it. The queue is where a hub finds out what is broken, and a manager who reads
+it once a week knows more about their hub than one who reads the logs. Half
+the tickets on a busy hub are the same three problems, which is what the
+knowledge base and the canned <strong>Messages</strong> are for.</p>
+<p>The one rule worth stating first: reply before you diagnose. An
+acknowledgement costs a minute and stops the user opening a second ticket, or
+mailing you directly, or deciding the hub is unmaintained.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Tickets are not the abuse queue. A ticket is a person asking for
+help. An abuse report is a person flagging content, and it lands on a
+different screen with different buttons — see <a href="#abuse-reports">Abuse
+reports</a> below. Both live in the same component, which is
+why they get confused.</p>
+</aside>
 <h2 id="the-screens">The screens</h2>
 <p><strong>Components → Support</strong> opens the ticket list. The submenu carries the rest:</p>
 <table>
@@ -275,6 +290,10 @@ itself has a <strong>Group</strong> field that restricts the whole ticket to one
 <p>Assign the ticket once you understand it. An unassigned ticket is nobody's
 work.</p>
 <h2 id="abuse-reports">Abuse reports</h2>
+<p>Carry on the scenario from <a href="../approvingcontent/index.html">Approving Content</a>: the
+hub has been named in a paper, traffic is up, and along with the genuine
+submissions come the first spam posts. Members flag them, and the flags land
+here.</p>
 <p>The <strong>Abuse</strong> screen collects reports raised from around the site — forum and
 blog comments, knowledge base articles, questions, wiki comments. The reporter
 supplies a reason; the report lands with a status of <strong>New</strong>.</p>
@@ -305,12 +324,28 @@ supplies a reason; the report lands with a status of <strong>New</strong>.</p>
 </tr>
 </tbody>
 </table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Remove as Spam</strong> and <strong>Delete item</strong> both destroy the
+reported content. The component fires an event telling the owning component
+to delete the item, and nothing keeps a copy. There is no trash to fish it
+back out of, so read the report and look at the content before you press
+either. <strong>Decide later</strong> costs nothing and leaves the report where you can
+find it again.</p>
+</aside>
+<p>Prefer <strong>Remove as Spam</strong> over <strong>Delete item</strong> for actual spam: it does the
+same removal and additionally hands the text to the antispam plugins as a
+training sample, so the next post like it is more likely to be caught before a
+member has to report it. Use <strong>Delete item</strong> for content that is simply
+unacceptable rather than spam — training the filter on it would teach it the
+wrong thing.</p>
 <p>The list filters by <strong>Outstanding</strong>, <strong>Released</strong>, and <strong>Deleted</strong>. The
 <strong>Spam Check</strong> screen under the same controller lets you paste sample content
-and see what the enabled antispam plugins make of it.</p>
+and see what the enabled antispam plugins make of it — useful when a member
+complains that a legitimate post was blocked, since it shows you which
+detector objected. <a href="../../spam/index.html">Spam</a> covers the plugins themselves.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="../notices/index.html" rel="next"><span>Next</span>Site Notices</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/03-tickets.md">Edit this page on GitHub</a>

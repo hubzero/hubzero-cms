@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 754ab96b09
+reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/content/articlemanager
@@ -15,6 +15,13 @@ one. Reach it at **Content → Article Manager**, or directly at
 `/administrator/index.php?option=com_content`. The screen is titled **Article
 Manager: Articles**, and carries a submenu with two entries, **Articles** and
 **Categories**.
+
+You come here to write or fix one of the hub's own pages, and for nothing
+else. Almost every change on this screen is reversible: unpublishing takes a
+page off the site and republishing brings it back unchanged, and **Delete**
+sets a state rather than removing anything. The one thing that cannot be
+undone from the interface is losing an unsaved edit, which is why the check
+in **Check In** exists. Work here with a free hand.
 
 ## What articles are for
 
@@ -303,6 +310,13 @@ default to. An article in **Uncategorised** is reachable at
 > items at the same article rather than duplicating it.
 
 ## Options
+
+Most hubs never open this screen. The shipped defaults produce an ordinary
+article page — title shown, author shown, hits shown — and the settings that
+matter for a specific page are better set on the article or the menu item,
+where they affect one page rather than all of them. Come here only when you
+want the same change on every article: the byline off across the whole hub,
+say, because a single office writes all of them.
 
 **Options** on either list opens the `com_content` configuration: the site
 defaults for article, category, blog, and list layouts, the integration

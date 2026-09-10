@@ -177,6 +177,17 @@
 <p>The tool pipeline is how a tool gets from a developer's registration form to a
 launchable resource page on the hub. This page walks the pipeline from the
 administrator's side.</p>
+<p>Skip it unless your hub hosts tools people run in the browser. Plenty of hubs
+are a website with datasets and documentation on it, and they never see any
+of these screens. If yours does host tools, this is the longest recurring job
+in the book: a tool moves through nine states, the developer and the
+administrator take turns, and each of your turns is a button press followed
+by reading what came back.</p>
+<p>The shape to hold on to is that the pipeline alternates. The developer
+registers; you create the repository. The developer uploads code; you install
+it. The developer writes the tool page and approves; you publish. Nothing
+advances on its own, so a tool sitting in the pipeline is always waiting for
+one named side, and the pipeline listing marks which.</p>
 <aside class="admonition admonition--important">
 <p><strong>Important:</strong> Only the CMS half of the pipeline lives in this repository.
 The pipeline calls out to host scripts — <code>addrepo.sh</code>, <code>installtool.sh</code>,
@@ -263,6 +274,8 @@ a tool reaches it only when a developer cancels the contribution, which is
 refused once the tool has been published.</p>
 </aside>
 <h2 id="preparation">Preparation</h2>
+<p>Do this before anything else, because the symptom of getting it wrong is that
+the pipeline appears to be empty and there is nothing on screen to say why.</p>
 <p>Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in
 <code>com_tools</code>' <strong>Admin Group</strong> option, which defaults to <code>apps</code>:</p>
@@ -699,7 +712,7 @@ Cancelling a published tool is refused, as is cancelling one already
 abandoned.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../approvingcontent/index.html" rel="prev"><span>Previous</span>Approving Content</a><a class="pager__next" href="../tickets/index.html" rel="next"><span>Next</span>Support Tickets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/02-tools.md">Edit this page on GitHub</a>

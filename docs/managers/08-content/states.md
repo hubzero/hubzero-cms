@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 9924bea2ec
+reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -14,9 +14,33 @@ happens when you delete something, and why a record sometimes refuses to
 open because it is "checked out". It is for anyone who administers a hub and
 has to decide whether a record is safe to remove.
 
+Read it before you press a delete button anywhere on this hub. It is not a
+chapter about articles; it describes behaviour shared by nearly every screen
+in the administrator interface, and it explains a set of defects a manager
+will otherwise spend an afternoon assuming are their own mistake.
+
 The short version: **the labels on screen do not map one-to-one onto the
 values in the database, and the same word means different numbers on
 different screens.** The rest of this chapter is the detail.
+
+## What this costs you in practice
+
+Four things follow from that, and every one of them has been mistaken for
+user error by somebody:
+
+- A record you trashed shows in the list as **Archived**, or the other way
+  round, because the editor and the list next to it disagree about which word
+  goes with which number.
+- A **Trashed** filter finds nothing, because on that screen it asks for a
+  number the component never writes.
+- A **Delete** button leaves the record in the database for ever, because it
+  only sets a state and no screen offers the second step.
+- A **Trash** button erases the record outright, with no undo, because the
+  component wired that button to a destroy method.
+
+The last one is the one to be careful about. **Trash** and **Delete** are not
+reliable words on this hub. Before pressing either on a screen you have not
+used before, read [Deleting](#deleting) below.
 
 ## The stored values
 
@@ -100,6 +124,24 @@ numbers it holds.
 > modules and languages both do. The values are the same; only the column
 > name differs.
 
+## State is not access, and it is not deletion
+
+Three separate things get confused here, and keeping them apart saves most of
+the trouble on this page.
+
+- **State** decides whether the record exists for the site at all. An
+  unpublished article answers 404, even to an administrator following a menu
+  item straight at it — unless they hold edit rights on the component.
+- **Access** decides who may read a record that does exist. See
+  [Access levels](../06-users/07-accesslevels.md).
+- **Check-out** decides who may edit it in the administrator interface. It
+  has no effect on the site at all.
+
+So taking a page off the site is a state change, restricting it to members is
+an access change, and neither of them removes anything. If you want a page
+gone from the site tonight and the decision reversible tomorrow, unpublish
+it. That is the safe move, on every screen, in every component.
+
 ## A worked example: member notes
 
 **Members → Notes** is the screen that shows what happens when the two
@@ -169,10 +211,18 @@ where it erases:
   never appear, and its **Trashed** filter can never match anything. The only
   removal that screen offers is the permanent one.
 
-> **Warning:** Before you press **Trash** on a screen you have not used
-> before, select one expendable record and check whether it reappears under
-> the **Trashed** filter. If it does not, that button is a permanent delete
+> **Warning:** On some screens the button labelled **Trash** permanently
+> destroys the record. There is no confirmation, no undo, and nothing on the
+> screen distinguishes it from the screens where **Trash** is reversible.
+> Before you press it on a screen you have not used before, select one
+> expendable record, press it, then set the state filter to **Trashed** and
+> look for the record. If it is not there, that button is a permanent delete
 > and your only undo is a database backup.
+
+The same caution applies in reverse to **Delete**. On the Article Manager and
+the Category Manager it is safe: it trashes, and you can bring the record
+back. On other screens the same word erases. The wording tells you nothing —
+only the test above does.
 
 A permanent delete is thorough. `destroy()` removes the record's access
 asset row first, fires a `system.onContentDestroy` event so that other
@@ -182,6 +232,13 @@ copy.
 ## Check-out
 
 Separate from state, and easily mistaken for it: a record can be locked.
+
+The situation is ordinary. A colleague opens the terms of use article on
+Friday afternoon to fix a sentence, gets called away, and closes the laptop.
+On Monday nobody can edit that article, and the list shows a padlock next to
+it with their name on the tooltip. Nothing is broken and nothing is lost —
+the article is still published and visitors still see it — but the lock will
+sit there until a person clears it.
 
 Several of the hub's tables carry `checked_out` and `checked_out_time`
 columns. Opening a record for editing writes your user ID and the current
@@ -194,8 +251,23 @@ there is no timeout and no scheduled job that sweeps locks up. A record left
 checked out stays checked out until a person releases it.
 
 That is what **Site → Maintenance → Global Check-in** is for, and it is
-described in [Check-in](../09-components/07-checkin.md). Releasing a lock
-does not save the abandoned edit; it only makes the record openable again.
+described in [Check-in](../09-components/07-checkin.md). To clear the
+Friday-afternoon lock above:
+
+1. Go to **Site → Maintenance → Global Check-in**.
+2. Find the row for the table the record is in — articles are `#__content`.
+   The count beside it is how many records that table has locked.
+3. Tick that row and select **Check-in**.
+
+Releasing a lock does not save the abandoned edit; whatever your colleague
+had typed and not saved is gone either way. It only makes the record openable
+again. Checking in a table somebody is genuinely working in right now costs
+them nothing worse than a second lock the next time they save, so this is a
+safe button.
+
+The Article Manager and most other list screens also carry a **Check In**
+button that does the same thing for the records you have selected, which is
+usually quicker when you know which record is stuck.
 
 > **Note:** A checked-out record is still published. Visitors see it exactly
 > as before. Check-out only affects who may edit in the administrator

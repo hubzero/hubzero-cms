@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/authentication
 -->
@@ -13,6 +13,30 @@ enabled, which checks a username and password against the hub's own member
 records. Enabling another plugin adds a second way in, so a visitor can sign
 in with an identity they already hold elsewhere instead of creating a
 password here.
+
+Most hubs get here for one reason. The hub is opening to a partner
+institution — a second lab, a collaborating department, a funder's project
+team — and nobody wants forty new people inventing forty new passwords, or
+the hub's manager fielding their reset requests for the next three years.
+Enabling the provider their institution already runs solves all of that at
+once, and it is the single change that makes a hub feel like it belongs to
+more than the group that built it.
+
+A hub whose members are all local, all known, and all already have accounts
+does not need any of this. **Authentication - HUBzero** on its own is a
+complete answer.
+
+## What this is not
+
+Authentication decides *who someone is*. It has nothing to say about what
+they are then allowed to do — that is [access
+groups](../06-users/06-accessgroups.md) and the permission rules in [global
+configuration](01-hub.md#permissions-and-text-filters). Signing in through a
+university's login does not give anyone a single extra privilege on the hub.
+
+Nor does it decide whether an account is created at all, or approved once it
+is; those are the Members component's registration settings, described in
+[Registration](02-registration.md).
 
 ## What ships
 
@@ -71,6 +95,14 @@ The hub builds these itself, so they are not a guess:
 4. Fill in the application ID and secret the provider gave you.
 5. Set **Status** to **Enabled**.
 6. Select **Save & Close**.
+7. Sign out in a private window and check that the provider's button appears
+   on the login page and takes you all the way through.
+
+Adding a provider is safe: existing members keep signing in exactly as they
+did, and a provider that turns out to be misconfigured fails for the people
+who choose it rather than for everyone. Removing one is the change that hurts
+— members who linked their account to it and never set a hub password have no
+other way in.
 
 Almost every authentication plugin shares four parameters:
 
@@ -99,6 +131,15 @@ remembered in a cookie and offered first.
 If you disable **Authentication - HUBzero**, local accounts can no longer
 sign in anywhere, including the administrator interface. Leave **Admin login** on
 for at least one plugin you can actually use.
+
+> **Warning:** This is the one change in this section that can lock every
+> administrator out of the hub at once, and it cannot be undone from the
+> administrator interface, because reaching the administrator interface is
+> what you have just prevented. Recovery means someone editing the plugin's
+> row in the `#__extensions` table directly. Before you disable
+> **Authentication - HUBzero** or turn off the last **Admin login**, sign in
+> from a second browser and prove the replacement works there while your
+> first session is still open.
 
 ## Members who already have an account
 

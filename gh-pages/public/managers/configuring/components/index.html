@@ -56,6 +56,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Components</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-options-are-not">What options are not</a></li>
 <li class="toc__item toc__item--l2"><a href="#opening-a-component-s-options">Opening a component&#x27;s options</a></li>
 <li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-options-are">What the options are</a></li>
@@ -162,6 +163,20 @@
 offers a visitor, what its defaults are, and — for components that talk to
 something outside the hub — the connection details it needs. Options belong
 to one component and affect nothing else.</p>
+<p>This is the screen a manager opens most often, because it is where a
+component's behaviour actually lives. When somebody says &quot;the hub is emailing
+the wrong person about new support tickets&quot;, the answer is not in the global
+configuration and not in the code: it is <strong>Notify when ticket created</strong>, in
+the Support component's options, which defaults to the site's From address
+and is usually still pointing at whoever installed the hub.</p>
+<h2 id="what-options-are-not">What options are not</h2>
+<p>They are not the switch that makes the component exist. A component that has
+been disabled in the <a href="../../extensions/extension-manager/index.html">Extension
+Manager</a> is gone from the
+administrator menu, options and all.</p>
+<p>They are not what puts the component on the site either. A visitor reaches a
+component through a <a href="../../menus/index.html">menu item</a>; the options only decide how
+it behaves once they are there.</p>
 <h2 id="opening-a-component-s-options">Opening a component's options</h2>
 <ol>
 <li>Sign in to the administrator interface.</li>
@@ -172,7 +187,20 @@ System are not listed there; they have their own places in the menu.</li>
 <li>Change what you need and select <strong>Save &amp; Close</strong>. <strong>Save</strong> keeps the
 pop-up open. <strong>Cancel</strong> discards the changes.</li>
 </ol>
-<p>Changes take effect immediately.</p>
+<p>Changes take effect immediately, for everyone using the hub, with no undo
+and no confirmation. In practice that is fine: almost every option is a
+display choice or a default, and setting it back restores what you had.</p>
+<p>Two kinds are not fine, and both look like all the others.</p>
+<ul>
+<li><strong>Connection details.</strong> The middleware settings in the Tools component and
+the directory settings behind <strong>Site &gt; LDAP</strong> are what those features run
+on. A wrong value stops the feature outright rather than changing it.</li>
+<li><strong>Anything that decides who may do something.</strong> The <strong>Permissions</strong> tab
+described below, and options such as who may create a group or submit a
+resource, change what other people can do the moment you save. Nobody is
+notified, and the people affected only find out when something they used to
+be able to do stops working.</li>
+</ul>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Not every component has options. If the manifest declares none,
 the pop-up says &quot;No options found.&quot;</p>
@@ -221,7 +249,7 @@ component. The pop-up they show is otherwise the same screen.</p>
 <p><img src="../../media/components-edit-registration-07.png" alt="The component options pop-up with the Save button" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../registration/index.html" rel="prev"><span>Previous</span>Registration</a><a class="pager__next" href="../modules/index.html" rel="next"><span>Next</span>Modules</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/03-components.md">Edit this page on GitHub</a>

@@ -69,9 +69,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Access Levels</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#does-your-hub-need-a-new-one">Does your hub need a new one</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-change-here-does-and-when">What a change here does, and when</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-levels-shipped-with-a-hub">The levels shipped with a hub</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-an-access-level">Creating an access level</a></li>
+<li class="toc__item toc__item--l3"><a href="#worked-example-a-viewing-level-for-the-workshop">Worked example: a viewing level for the workshop</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-an-access-level">Editing an access level</a></li>
 <li class="toc__item toc__item--l2"><a href="#deleting-an-access-level">Deleting an access level</a></li>
 </ol></li>
@@ -165,6 +168,45 @@ of these levels. A level is defined as a list of
 any group on that list.</p>
 <p>Levels answer &quot;who may see this&quot;. They say nothing about who may change it;
 that is the permission rules on access groups.</p>
+<h2 id="does-your-hub-need-a-new-one">Does your hub need a new one</h2>
+<p>Probably not. The three levels a hub ships with — Public, Registered and
+Special — cover the three audiences most hubs actually have: everyone, people
+who have logged in, and staff. A hub that only needs to keep something behind
+the login already has what it needs.</p>
+<p>You need a fourth when a set of content must be visible to <em>some</em> logged-in
+members and not to others: material for one partner institution, a policy page
+for site staff that ordinary managers should not see, a set of pages for a
+funded project. That is a level, built from an <a href="../accessgroups/index.html">access
+group</a> holding exactly those accounts.</p>
+<p>What it is not:</p>
+<ul>
+<li><strong>Not a permission.</strong> A level decides who sees an item, not who may edit,
+publish or delete it. Someone excluded from a level can still be allowed to
+administer the component that holds the content.</li>
+<li><strong>Not a per-item setting.</strong> You cannot name people on an item. You name a
+level on the item and put the people in a group the level lists.</li>
+<li><strong>Not security for a file.</strong> A level hides an item from the site's own
+listings and views. It is not a guard on a URL that some other part of the
+hub serves. Do not use one to protect anything you would mind being fetched
+directly.</li>
+</ul>
+<h2 id="what-a-change-here-does-and-when">What a change here does, and when</h2>
+<p>A level is resolved from the database on every request, so a change to it
+lands on the next page load for everybody, logged in or not. Nobody is warned
+and nothing is logged. Two consequences are worth having in front of you
+before you edit one:</p>
+<ul>
+<li><strong>Editing a level changes every item already tagged with it, at once.</strong> If
+forty articles carry <strong>Registered</strong> and you untick a group on that level,
+forty articles disappear for those people immediately. There is no preview
+and no list of what is affected. Take a note of the ticked groups before you
+change them; that note is the only undo you have.</li>
+<li><strong>Being a Super User does not help.</strong> A user sees a level only if they
+belong to one of the access groups it lists, or to one of that group's
+ancestors. Super Users are not exempt. Build a level that names only your new
+group and your own account will not see the content either, which is
+disconcerting the first time and easy to misread as a broken page.</li>
+</ul>
 <p>Administer them at <strong>Users</strong> → <strong>Access Levels</strong>, or directly at
 <code>/administrator/index.php?option=com_members&amp;controller=accesslevels</code>.</p>
 <aside class="admonition admonition--note">
@@ -199,12 +241,22 @@ both.</p>
 </tr>
 </tbody>
 </table>
+<p>These three are sensible defaults and are worth leaving alone. Nearly every
+content item on a new hub is tagged <strong>Public</strong>, so anything you do to that
+level reaches the whole site.</p>
 <p>A level names its access groups literally, but membership is resolved up the
 tree: an account is treated as belonging to its groups and to all of their
 ancestors. So the <strong>Registered</strong> level, which names the Registered group,
 also admits Authors, Editors and Publishers, since Registered is their
 ancestor. It does not work downwards — a new access group you add sees
 nothing extra until you tick it on the levels it should reach.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The level with ID 1 is a special case. Every visitor is authorised
+for it whatever its rules say, so editing the groups on the shipped
+<strong>Public</strong> level has no effect: untick everything and it is still public. To
+take something off the open web, retag the item with a different level; do
+not try to narrow level 1.</p>
+</aside>
 <h2 id="the-list">The list</h2>
 <p>Each row shows the level's <strong>ID</strong>, its <strong>Level Name</strong> and its <strong>Ordering</strong>.
 Sort by name or ordering, and search by name with the filter bar. The
@@ -232,8 +284,35 @@ that should see content assigned to this level.</li>
 <li>Select <strong>Save &amp; Close</strong>.</li>
 </ol>
 <p>The level is then offered in the <strong>Access</strong> menu of every content item.</p>
+<p>Creating a level is safe. Until an item is tagged with it, a new level changes
+nothing at all, so build it, look at the site through an ordinary account, and
+delete it again if it is wrong.</p>
 <p><strong>Save as Copy</strong> duplicates the level you are editing, which is the quick way
 to make a variant of an existing audience.</p>
+<h3 id="worked-example-a-viewing-level-for-the-workshop">Worked example: a viewing level for the workshop</h3>
+<p>Continuing the scenario from the <a href="../index.html#a-worked-example">section
+introduction</a>, the <code>Workshop 2026</code> access group
+already exists but grants nothing. This gives it something to grant.</p>
+<ol>
+<li>Go to <strong>Users</strong> → <strong>Access Levels</strong> and select <strong>New</strong>.</li>
+<li>Enter a <strong>Level Title</strong> of <code>Workshop 2026</code>.</li>
+<li>Under <strong>Access Groups Having Viewing Access</strong>, tick <code>Workshop 2026</code>. Tick
+<strong>Super Users</strong> as well, so that you and the other administrators can see
+the material you are about to hide — you are not admitted automatically.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Open each article, page or menu item that belongs to the workshop and set
+its <strong>Access</strong> to <code>Workshop 2026</code>. Each one becomes invisible to everyone
+else the moment it is saved.</li>
+<li>Check it. Log into the site with an ordinary member account, in another
+browser, and confirm the material is gone. Then put one test account into
+the <code>Workshop 2026</code> access group and confirm it comes back.</li>
+</ol>
+<p>Step 6 is the whole point of the exercise. A Super User cannot tell by looking
+whether the material is hidden, and a level that hides nothing looks exactly
+like one that works.</p>
+<p>When the workshop is over, take the accounts out of the access group. The
+content stays tagged, the level stays in place, and the material simply stops
+being reachable — which is reversible, unlike deleting either.</p>
 <h2 id="editing-an-access-level">Editing an access level</h2>
 <ol>
 <li>Go to <strong>Users</strong> → <strong>Access Levels</strong>.</li>
@@ -252,9 +331,19 @@ view access level '…' because it is being used by content</em>. The check scan
 every table in the database that has an <code>access</code> column and collects the
 values in use, so it catches components the screen knows nothing about. Move
 the content to another level first, then delete.</p>
+<p>That check is the safety rail on this screen, and it is a good one: it means a
+level you are still using cannot be deleted by accident. It also means the
+usual failure is the opposite one — you are told you cannot delete a level and
+cannot see what is holding it. Set the list filter on each content manager to
+that level in turn to find the items, or leave the level alone; an unused level
+costs nothing but a line on this list.</p>
+<p>If a level has simply outlived its purpose, renaming it is usually better than
+deleting it. Level titles are unique, so a rename also frees the name for reuse,
+and it leaves the number in place for anything outside the interface that
+refers to it.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../accessgroups/index.html" rel="prev"><span>Previous</span>Access Groups</a><a class="pager__next" href="../supergroups/index.html" rel="next"><span>Next</span>Super Groups</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/07-accesslevels.md">Edit this page on GitHub</a>

@@ -139,6 +139,7 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Security considerations</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-cms-gives-you">What the CMS gives you</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-start">Where to start</a></li>
 <li class="toc__item toc__item--l2"><a href="#reporting-a-vulnerability">Reporting a vulnerability</a></li>
 <li class="toc__item toc__item--l2"><a href="#security-questions">Security questions</a></li>
 <li class="toc__item toc__item--l3"><a href="#does-an-advisory-for-another-content-management-system-apply-here">Does an advisory for another content management system apply here?</a></li>
@@ -187,9 +188,10 @@
 two halves. The operating system, the web server, and the services around
 them are hardened by the system administrator with tools that are not part
 of this repository. The CMS has its own settings that decide how sessions
-and cookies behave, what HTML members may submit, how quickly a brute-force
-attempt is throttled, and how spam is caught. This section covers both, and
-says plainly which is which.</p>
+and cookies behave, how quickly a brute-force attempt is throttled, which
+response headers the hub sets, and how spam is caught. This section covers
+both, says plainly which is which, and is equally plain about the screens
+that look like security controls and are not.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="#operating-system-hardening">Operating system hardening</a> — what the people who run
@@ -225,7 +227,7 @@ and how the CMS hands an address to Fail2Ban.</li>
 </tr>
 <tr>
 <td>What HTML each access group may submit</td>
-<td><strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Text Filters</strong></td>
+<td><strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Text Filters</strong> — but see the warning under <a href="#text-filters">Text filters</a>: nothing reads it</td>
 </tr>
 <tr>
 <td>Failed login and password-reset thresholds</td>
@@ -241,7 +243,11 @@ and how the CMS hands an address to Fail2Ban.</li>
 </tr>
 <tr>
 <td>Content-Security-Policy header</td>
-<td><strong>Extensions</strong> &gt; <strong>Plug-in Manager</strong> &gt; <strong>System - Content Security Policy</strong></td>
+<td><strong>Extensions</strong> &gt; <strong>Plug-in Manager</strong> &gt; <strong>System - Content Security Policy</strong> (ships disabled)</td>
+</tr>
+<tr>
+<td>Referrer-Policy header</td>
+<td><strong>Extensions</strong> &gt; <strong>Plug-in Manager</strong> &gt; <strong>System - Referrer Policy</strong> (ships enabled)</td>
 </tr>
 <tr>
 <td>Spam detection</td>
@@ -255,6 +261,37 @@ and how the CMS hands an address to Fail2Ban.</li>
 </table>
 <p>Every parameter behind these screens is listed in the generated
 <a href="../../reference/configuration/index.html">configuration reference</a>.</p>
+<h2 id="where-to-start">Where to start</h2>
+<p>Nine tenths of what makes a hub hard to attack is the system administrator's
+work, and none of it is in the administrator interface. If you are the person
+who inherited the hub and not the person who runs the server, this is the
+list that is actually yours, cheapest first. Each links to the section that
+explains it.</p>
+<ol>
+<li><strong>Set <a href="#force-https">Force SSL</a> to Entire Site.</strong> On a site it is the only
+value that marks the session cookie secure, and the shipped value is
+<strong>None</strong>. Two minutes, reversible, and nothing else on this page matters
+as much.</li>
+<li><strong>Choose a <a href="#sessions-and-cookies">session handler</a>.</strong> The shipped value
+leaves sessions to PHP's own storage. <code>database</code> is the usual choice on a
+hub and is what makes sessions visible and purgeable.</li>
+<li><strong>Do not spend time on <a href="#text-filters">Text Filters</a>.</strong> The screen looks
+like the most important one on this list and nothing reads it. Knowing
+that saves you an afternoon and a false sense of a control you do not
+have.</li>
+<li><strong>Leave the <a href="#login-thresholds">login thresholds</a> alone</strong> unless you have
+a reason. The shipped values are sensible, and 0 does not mean &quot;no limit&quot;
+— see the warning there.</li>
+<li><strong>Check that <a href="#security-headers">System - Referrer Policy</a> is still on.</strong>
+It ships enabled with a sensible policy, which means the only thing to do
+is not turn it off. Confirm it, then leave it.</li>
+<li><strong>Then, if you have somewhere to test, work through
+<a href="#security-headers">System - Content Security Policy</a></strong> in report-only
+mode. That one ships disabled, and it is a project rather than a toggle.</li>
+</ol>
+<p>Everything else on the CMS side is a response to something: spam arriving,
+an account under attack, a member locked out. The
+<a href="#security-questions">security questions</a> below cover those.</p>
 <h2 id="reporting-a-vulnerability">Reporting a vulnerability</h2>
 <p>If you find a vulnerability in the Hubzero release itself, report it to the
 project rather than filing it in a public tracker.</p>
@@ -319,13 +356,18 @@ so a scanner that is missing or whose daemon is down fails closed and logs
 the reason.</p>
 <p>Installing and updating ClamAV itself is the system administrator's job.</p>
 <h3 id="does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</h3>
-<p>Only if you enable <strong>System - Content Security Policy</strong>. It ships disabled.
-The plugin can run in report-only mode, enforcing mode, or both at once, and
-it sets <code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
-<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
-<code>style-src</code> from its own parameters. Start in report-only mode; the shipped
-<code>script-src</code> default already includes <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
-which much of the interface still needs.</p>
+<p>Only if you enable <strong>System - Content Security Policy</strong>, which ships
+disabled. The plugin can run in report-only mode, enforcing mode, or both at
+once, and it sets <code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>,
+<code>default-src</code>, <code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>,
+<code>script-src</code> and <code>style-src</code> from its own parameters. Its <strong>Mode</strong> defaults
+to <strong>Report only</strong>, which is where to start: the shipped <code>script-src</code> already
+includes <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>, which much of the interface
+still needs, so an enforcing policy tightened from that default breaks
+screens.</p>
+<p>It does set <code>Referrer-Policy</code>, without your doing anything: <strong>System -
+Referrer Policy</strong> ships <em>enabled</em>, with a policy of <code>same-origin</code>. See
+<a href="#security-headers">Security headers</a>.</p>
 <p>The parameters are listed in the
 <a href="../../reference/configuration/plugins/system/index.html">system plugin reference</a>.</p>
 <h3 id="a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</h3>
@@ -482,10 +524,33 @@ checked in the source tree. The host underneath is covered separately in
 <a href="#operating-system-hardening">Operating system hardening</a>.</p>
 <h3 id="force-https">Force HTTPS</h3>
 <p><strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Server</strong> &gt; <strong>Force SSL</strong> takes three
-values: <strong>None</strong>, <strong>Administrator Only</strong>, and <strong>Entire Site</strong>. Set it to
-<strong>Entire Site</strong>.</p>
-<p>This is a redirect inside the application, so the request has already
-reached PHP by the time it fires. Redirect at the web server as well.</p>
+values: <strong>None</strong>, <strong>Administrator Only</strong>, and <strong>Entire Site</strong>. The installer
+writes <strong>None</strong>. Set it to <strong>Entire Site</strong>.</p>
+<p>It does two things, and the second is the one worth changing it for.</p>
+<ul>
+<li>It redirects a plain HTTP request to HTTPS. This is a redirect inside the
+application, so the request has already reached PHP by the time it fires,
+and the credentials in a form POST have already crossed the network in the
+clear. Redirect at the web server as well; that is where it belongs.</li>
+<li>It marks cookies <strong>secure</strong>, so a browser will not send them over plain
+HTTP at all. This is the part only the CMS can do. On the site, only
+<strong>Entire Site</strong> does it: <strong>Administrator Only</strong> marks the administrator
+interface's cookies and leaves the site's session cookie unmarked, along
+with the cookie the authentication plugins use to remember which sign-in
+method a member last used.</li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> One cookie ignores this setting. <strong>System - Remember Me</strong>, which
+is enabled on a fresh install, stores the member's credentials — encrypted,
+with a key derived from their browser's user agent string — for a year, and
+marks that cookie secure only when the request that created it arrived over
+HTTPS. Redirecting at the web server, so no sign-in ever happens over plain
+HTTP, is what covers this one.</p>
+</aside>
+<p>Changing it is reversible and takes effect on the next request. On a hub that
+is already served only over HTTPS nobody notices; on a hub with an HTTP
+listener still open, anything embedding a hub page over plain HTTP breaks,
+which is the point.</p>
 <h3 id="sessions-and-cookies">Sessions and cookies</h3>
 <p><strong>Session Settings</strong> are on the <strong>System</strong> tab of <strong>Global Configuration</strong>:</p>
 <table>
@@ -509,46 +574,71 @@ reached PHP by the time it fires. Redirect at the web server as well.</p>
 </tr>
 </tbody>
 </table>
+<p><code>none</code> is not &quot;no sessions&quot;. It hands storage to PHP's own session handling,
+which on a default install means files in PHP's temporary directory. That
+works, and on a single web server it is not insecure — but the CMS cannot see
+those sessions, so nothing can list who is signed in or expire a session
+early, and a second web server behind a load balancer will not share them.
+<code>database</code> puts them in the <code>#__session</code> table and fixes all three.</p>
+<p><strong>Session Lifetime</strong> is minutes of inactivity, not minutes since sign-in.
+Shortening it is safe and reversible; the cost is people losing a long form
+they were part-way through, which on a hub means a project description or a
+publication draft. Fifteen minutes is short for a research hub. Lengthening
+it widens the window in which a borrowed browser is still signed in.</p>
 <p><strong>Cookie Settings</strong> are on the <strong>Site</strong> tab, and hold <strong>Cookie Domain</strong> and
 <strong>Cookie Path</strong>. Leave both empty unless the hub genuinely shares a session
 with a sibling host — widening the cookie domain widens who receives the
 session cookie.</p>
 <h3 id="text-filters">Text filters</h3>
-<p><strong>Global Configuration</strong> &gt; <strong>Text Filters</strong> sets, per access group, what
-HTML a member may submit through an editor field. Each group gets one of:</p>
+<p><strong>Global Configuration</strong> &gt; <strong>Text Filters</strong> offers, per access group, a
+choice of how much HTML a member may submit through an editor field. Each
+group gets one of:</p>
 <table>
 <thead>
 <tr>
 <th>Option</th>
-<th>Effect</th>
+<th>Effect it describes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Default Black List</strong></td>
-<td>Strips the tags and attributes commonly used in attacks. This is the shipped behaviour.</td>
+<td>Strip the tags and attributes commonly used in attacks.</td>
 </tr>
 <tr>
 <td><strong>Custom Black List</strong></td>
-<td>Strips the tags and attributes you list, instead of the default set.</td>
+<td>Strip the tags and attributes you list, instead of the default set.</td>
 </tr>
 <tr>
 <td><strong>White List</strong></td>
-<td>Strips everything except the tags and attributes you list.</td>
+<td>Strip everything except the tags and attributes you list.</td>
 </tr>
 <tr>
 <td><strong>No HTML</strong></td>
-<td>Strips all HTML.</td>
+<td>Strip all HTML.</td>
 </tr>
 <tr>
 <td><strong>No Filtering</strong></td>
-<td>Submits the markup untouched.</td>
+<td>Submit the markup untouched.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>No Filtering</strong> should be reserved for groups whose members you would trust
-with shell access, because it is equivalent. The filter applies to editor
-fields; it is not a substitute for a component escaping its own output.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing reads these settings. Saving the screen writes the
+choices into the <code>com_config</code> component's own parameters, and the only code
+that reads them back is the same screen, redisplaying them. No component,
+plugin or library in this tree consults them when content is saved, so
+changing a group from <strong>Default Black List</strong> to <strong>No Filtering</strong> — or the
+other way — has no effect on what any member can submit. Recorded in
+the project record.</p>
+</aside>
+<p>Do not treat this screen as a control, and do not read a hub's row of
+settings here as a description of what the hub does. If you have been asked
+to tighten what members may submit, the levers that do work are elsewhere:
+which access levels may post at all, which editor plugin is offered (see
+<a href="../advancedsetup/index.html#the-rich-text-editor">Integrations</a>), and
+<strong>System - Content Security Policy</strong> for what the browser will execute once
+the markup is on the page.</p>
 <h3 id="login-thresholds">Login thresholds</h3>
 <p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Options</strong> &gt; <strong>Login Settings</strong> limits how often
 one account may fail to log in, how often one account may request a
@@ -575,7 +665,11 @@ new password — is exempt so the member is not trapped.</p>
 <p>The hashing mechanism itself is set under <strong>Options</strong> &gt; <strong>Password</strong> and
 defaults to <code>sha512</code>.</p>
 <h3 id="second-authentication-factors">Second authentication factors</h3>
-<p>Two plugins in the <code>authfactors</code> group ship with 2.4:</p>
+<p>A second factor is what stops a stolen password being enough. On a hub it is
+worth it for the handful of accounts that can reach the administrator
+interface, and rarely worth it for ordinary members, who mostly have nothing
+to steal and every reason to give up on a hub that asks them for a code.</p>
+<p>Two plugins ship in the <code>authfactors</code> group, both disabled:</p>
 <table>
 <thead>
 <tr>
@@ -600,22 +694,86 @@ pair of checkboxes for the site and the administrator interface; only the
 administrator interface is ticked by default. If <strong>System - Authfactors</strong> is
 disabled, no second factor is ever asked for however the <code>authfactors</code>
 plugins are set.</p>
+<p>This is the one area on this page where a change can lock you out of your own
+hub, so read the rest of this section before you enable anything.</p>
+<p><strong>How the demand is made.</strong> <strong>System - Authfactors</strong> runs after routing on
+every request from a signed-in member on a ticked client. If the session has
+not yet passed a factor check, the member is diverted to the factor screen —
+not offered it, diverted to it. There is no per-account opt-in and no grace
+period: enabling the plugins applies to everyone on that client at their next
+request. The only ways out of the screen are passing the check and logging
+out.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Authfactors - Certificate</strong> passes a request only when the
+web server has put a client certificate's subject in <code>SSL_CLIENT_S_DN</code>. It
+renders no screen and offers no alternative: on a session without a
+certificate it marks the check failed and redirects, and the system plugin
+then logs that member out. Because it redirects either way, no other
+<code>authfactors</code> plugin ordered after it ever gets to offer its own factor,
+whatever the comment in the source says. So enabling it on a client where
+the web server is not asking for client certificates locks out everyone
+with an account on that client, including you. Set it up on a staging hub,
+or with the web server configured first. Recorded in
+the project record.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Authfactors - Google</strong> cannot enrol anyone on a hub built
+from this repository alone. Its enrolment screen shells out to
+<code>/usr/share/adm/scripts/google-authenticator-setup.sh</code>, which is not in
+this repository, and then reads the secret that script is expected to have
+written to the <code>#__auth_factors</code> table. Nothing in this tree ever writes a
+row to that table, so without the external script the enrolment page errors
+and the member cannot get past it — and because the system plugin diverts
+them there on every request, they cannot get anywhere else either. Ask
+whoever built the host whether that script is installed before you enable
+this. Recorded in the project record.</p>
+</aside>
+<p>In practice, then, second-factor authentication on a hub built from this
+repository means client certificates, or an authentication provider that does
+the second factor for you. If the hub signs people in through an institution
+or a federated provider — see
+<a href="../configuring/extauth/index.html">External authenticators</a> — that provider's own
+second factor covers every account that uses it, and needs nothing here.</p>
+<p><strong>System - Authfactors</strong> and both factor plugins ship disabled, so nothing
+asks for a second factor until you turn on the system plugin <em>and</em> a factor
+plugin. Before you do, make sure you have a way back in that does not go
+through the administrator interface: shell access to the hub, and the ability
+to set the plugin's <code>enabled</code> column back to 0 in <code>#__extensions</code>. That is
+the only recovery there is.</p>
 <h3 id="security-headers">Security headers</h3>
-<p>Two system plugins add response headers. Both ship disabled.</p>
-<p><strong>System - Content Security Policy</strong> sets <code>Content-Security-Policy</code>,
-<code>Content-Security-Policy-Report-Only</code>, or both, depending on its <strong>Mode</strong>
-parameter. It writes eleven directives from its own parameters:
-<code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
-<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
-<code>style-src</code>. The token <code>{host}</code> in any value is replaced with the request's
-host name, and a <code>report-uri</code> is appended when one is set. Start in
-<strong>Report Only</strong> and read the reports before you enforce: the shipped
-<code>script-src</code> default still allows <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
-and tightening it will break screens until they are cleaned up.</p>
-<p><strong>System - Referrer Policy</strong> sets <code>Referrer-Policy</code>. Its default is
-<code>same-origin</code>.</p>
+<p>Response headers tell the browser what it may do with a page: which origins
+may load scripts into it, how much of its address to hand on when the reader
+follows a link away. They are cheap protection and cost nothing at runtime.
+Two system plugins set one each, and they are in opposite states on a fresh
+hub — which is the thing to know before you touch either.</p>
+<p><strong>System - Referrer Policy</strong> ships <strong>enabled</strong>, with <strong>Policy</strong> set to
+<code>same-origin</code>. It sets the <code>Referrer-Policy</code> header on every response, so the
+hub tells another site only that a hub page linked to it, not which page. The
+default is right for a hub and there is no reason to change it. The one thing
+worth knowing is that it is on: if somebody reports that an external service
+has stopped seeing which hub page referred a visitor, this is why. Setting
+<strong>Policy</strong> to the blank option turns the header off entirely.</p>
+<p><strong>System - Content Security Policy</strong> ships <strong>disabled</strong>, and should stay that
+way until you have somewhere to test. It sets <code>Content-Security-Policy</code>,
+<code>Content-Security-Policy-Report-Only</code>, or both, on a <strong>Mode</strong> parameter that
+defaults to <strong>Report Only</strong>. It writes eleven directives from its own
+parameters: <code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>,
+<code>default-src</code>, <code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>,
+<code>script-src</code> and <code>style-src</code>. The token <code>{host}</code> in any value is replaced
+with the request's host name, and a <code>report-uri</code> is appended when one is set.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A Content-Security-Policy is the one setting on this page that
+can make the hub look broken to everybody at once, with nothing in any log
+the hub keeps — a blocked script simply does not run, and the interface
+stops responding to clicks. Enable it in <strong>Report Only</strong>, leave it there
+for a fortnight, and read the reports before you go anywhere near
+<strong>Enforce policy</strong>. The shipped <code>script-src</code> still allows <code>'unsafe-inline'</code>
+and <code>'unsafe-eval'</code>, which is an accurate description of what the interface
+needs today; tightening that is a project, and it is the last thing to do,
+not the first.</p>
+</aside>
 <p>Other headers — HSTS, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code> — are not
-set by the CMS. Add them at the web server.</p>
+set by the CMS at all. Add them at the web server.</p>
 <h3 id="spam">Spam</h3>
 <p>The <code>antispam</code> plugin group and the <strong>Content - Antispam</strong> plugin that
 drives it have their own chapter: <a href="../spam/index.html">Spam</a>.</p>
@@ -866,7 +1024,7 @@ everyone behind that NAT. Stages one and two stay in effect and act per
 account, which is the behaviour you want in a crowd.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../spam/index.html" rel="prev"><span>Previous</span>Spam</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security.md">Edit this page on GitHub</a>

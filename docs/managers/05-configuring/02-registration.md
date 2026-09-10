@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/registration
 -->
@@ -12,6 +12,29 @@ an organisation and a phone number; another asks only for a username, a
 password, and an email address. The **Registration** screen in the Members
 component sets that, field by field, and separately for each of the four
 moments a member's details are collected.
+
+Most hubs open this screen twice: once when they decide the sign-up form is
+asking for too much, and once when they decide it is asking for too little.
+If you are happy with what the form asks for today, you can stop reading
+here — the shipped settings are reasonable, and everything on this screen is
+reversible.
+
+## What this screen is not
+
+It is not the switch that turns registration on and off. That is **Allow User
+Registration**, on the Members component's **Options**; see
+[Turning registration off](#turning-registration-off).
+
+It is not where the *profile* fields live either. The nine rows here are the
+fixed set the account itself needs — username, password, name, email, opt-in,
+CAPTCHA, terms of use. The organisation, department and interests further
+down a member's profile come from the profile builder, which is the
+**Profile** button in the Members account-list toolbar; see
+[Members](../06-users/01-members.md#building-the-profile-form).
+
+And it decides only whether a field is *asked for*, never who may join. Who
+may join is [access groups](../06-users/06-accessgroups.md) and the approval
+setting.
 
 ## Reaching the screen
 
@@ -66,6 +89,63 @@ values are listed in the
 
 <!--include: core/components/com_members/config/config.xml:329-340-->
 
+Those shipped defaults are sensible for a hub that anyone may join, and most
+hubs never change them. The **Create Account** column is the visible sign-up
+form; **Edit Profile** is what a member can change afterwards; **Proxy Create
+Account** is the form an administrator fills in for somebody else.
+
+### The column that catches people out
+
+**Update on Next Login** is not a form a member chooses to visit. It is a
+gate. Whenever a member's stored details do not satisfy this column, the hub
+holds them there until they do — they cannot reach the rest of the hub in
+between. That is exactly what you want when a field genuinely has to be
+collected from everybody, and exactly what you do not want by accident.
+
+Two kinds of member meet it:
+
+- Someone who signed in through an external provider and has no hub account
+  details yet is sent straight to the registration form to finish the
+  account.
+- An ordinary member whose record is missing something this column marks
+  **Required** is held on their own profile page until they fill it in.
+
+The shipped settings put only **TOU** — the terms of use — in that position,
+which is why a hub that has never touched this screen still asks every
+returning member to accept the terms once.
+
+> **Warning:** Setting any row's **Update on Next Login** to **Required**
+> interrupts every member on the hub at their next sign-in, all at once, with
+> no way to skip. On a hub with a few thousand members that is a support
+> queue. Change it only for something you would be willing to stop people at
+> the door for, and tell the hub it is coming first.
+
+## Adding the newsletter opt-in to the sign-up form
+
+Say the hub has started sending an occasional announcement mail and wants new
+members to be able to say yes at the moment they join, rather than having to
+find the setting in their profile afterwards. **OptIn** ships as **Hide** on
+the sign-up form and **Optional** on the profile, so today nobody is offered
+it until they go looking.
+
+1. Choose **Users > Members** from the administrator menu.
+2. Select **Registration** in the sub-navigation under the toolbar.
+3. Find the **OptIn** row.
+4. In the **Create Account** column, change **Hide** to **Optional**. Leave
+   the other three columns alone — in particular leave **Update on Next
+   Login** on **Hide**, or every existing member is stopped at their next
+   sign-in.
+5. Select **Save & Close**.
+
+The next visitor to open the sign-up form sees the opt-in, and may leave it
+unticked. To undo it, set the same cell back to **Hide**; nothing is stored
+against the members who answered in the meantime beyond their own preference.
+
+> **Note:** **Required** on this row does not mean "must agree". It means the
+> question must be answered one way or the other before the form will submit;
+> a plain No passes. **Optional** is still the kinder setting, because it
+> lets someone finish signing up without reading the question at all.
+
 ## Saving
 
 The toolbar has **Options**, **Save & Close**, and **Cancel**. **Save &
@@ -77,15 +157,26 @@ the site cache is cleared as part of the save.
 
 Registration as a whole is switched on the Members component's options, not
 on this screen. Select **Options** in the toolbar and set **Allow User
-Registration** to **No**. The same screen carries **New User Registration
-Group**, **New User Account Activation**, **Send Password**, and **Simple
-Registration**, which lets accounts created through an external
-authentication provider skip the username and account-linking steps.
+Registration** to **No**. This is the setting a hub reaches for when a spam
+wave starts producing junk accounts faster than anyone can delete them: it
+closes the door without touching the accounts that already exist, and turning
+it back on restores the form exactly as it was.
+
+The same screen carries **New User Registration Group**, **New User Account
+Activation**, **Send Password**, and **Simple Registration**, which submits
+the registration form on behalf of an account arriving from an external
+authentication provider instead of showing it, where the provider supplied
+enough to fill it in.
 
 > **Note:** The tabs in the Options pop-up are labelled from language
 > strings that the Members component does not define, so three of them
 > render as raw keys such as `COM_CONFIG_REGISTRATION_FIELDSET_LABEL`
 > instead of a name. The fields inside them are correct.
+
+> **Warning:** **Send Password** on that screen is inert. It is declared, it
+> has help text, it defaults to **Yes**, and nothing in the tree reads it.
+> Setting it either way changes nothing, so do not treat it as the hub's
+> answer to whether passwords are mailed out.
 
 ## Confirmation return URL
 

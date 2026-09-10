@@ -50,6 +50,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Scheduled Tasks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#nothing-here-runs-until-you-set-it-up">Nothing here runs until you set it up</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-ships-with-a-new-hub">What ships with a new hub</a></li>
+<li class="toc__item toc__item--l3"><a href="#worked-example-the-first-newsletter-goes-nowhere">Worked example: the first newsletter goes nowhere</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-it-works">How it works</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-job-list">The job list</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-and-editing-a-job">Creating and editing a job</a></li>
@@ -165,6 +168,152 @@
 cleanup, search indexing, DOI registration, and the rest. Go to
 <strong>Components → Cron</strong>.</p>
 <p><img src="../../media/cron-cron-manager-01.png" alt="The Cron job manager" /></p>
+<h2 id="nothing-here-runs-until-you-set-it-up">Nothing here runs until you set it up</h2>
+<p>This is the section of the book where a feature can be switched on, tested,
+documented and still do nothing, because the work it depends on happens on a
+schedule and no schedule exists. Two things have to be true before anything
+happens at all:</p>
+<ol>
+<li>Something has to tick the hub every minute. That is a Unix cron entry on
+the server, described under <a href="#how-it-works">How it works</a>. Without it, no
+job ever runs, however the administrator interface looks.</li>
+<li>A <strong>job</strong> has to exist for the thing you want done, and it has to be
+published. Jobs are rows you create on this screen. Enabling a plugin does
+not create one.</li>
+</ol>
+<p>A new hub has three jobs, and only one of them is published. Everything else
+in the table below is a feature that will sit there doing nothing until
+somebody comes to this screen and adds a job for it.</p>
+<table>
+<thead>
+<tr>
+<th>Waiting for a job</th>
+<th>What does not happen without it</th>
+<th>Event</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Newsletter mailings</td>
+<td>Queued newsletters are never sent</td>
+<td><code>processMailings</code></td>
+</tr>
+<tr>
+<td>Search index, on a hub using Solr</td>
+<td>New and changed content never reaches the index, so search does not find it</td>
+<td><code>processQueue</code>, <code>runFullIndex</code></td>
+</tr>
+<tr>
+<td>Group announcements</td>
+<td>Announcements posted in groups are never mailed</td>
+<td><code>sendGroupAnnouncements</code></td>
+</tr>
+<tr>
+<td>Group membership dates</td>
+<td>Memberships with an end date never expire, and nobody is warned they are about to</td>
+<td><code>expireGroupMemberships</code>, <code>notifyExpiringMemberships</code></td>
+</tr>
+<tr>
+<td>Support ticket housekeeping</td>
+<td>Pending tickets never close themselves, and no reminders or ticket lists go out</td>
+<td><code>onClosePending</code>, <code>sendTicketsReminder</code>, <code>sendTicketList</code></td>
+</tr>
+<tr>
+<td>Activity digests</td>
+<td>Members never get their digest email</td>
+<td><code>emailMemberDigest</code></td>
+</tr>
+<tr>
+<td>Cache expiry</td>
+<td>Expired cache data and old generated CSS are never cleared</td>
+<td><code>trashExpiredData</code>, <code>cleanSystemCss</code></td>
+</tr>
+<tr>
+<td>Publication and resource DOIs</td>
+<td>Master DOIs are never issued</td>
+<td><code>issueMasterDoi</code>, <code>issueResourceMasterDoi</code></td>
+</tr>
+</tbody>
+</table>
+<p>Search is the row to read carefully. A stock hub has <strong>Engine</strong>, on the Search
+component's <strong>Options</strong>, set to <strong>Basic (default)</strong>, which queries the
+database directly and needs no job at all. Only a hub switched to <strong>Apache
+Solr</strong> depends on these two events, and on such a hub search quietly stops
+reflecting reality without them.</p>
+<p>None of that is a defect. It is a design decision — the hub does not assume
+what your site wants on a schedule — but it catches every manager once,
+because there is nothing on the newsletter screen or the search screen to
+tell you a job is missing.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> If a feature on this hub &quot;does not work&quot; and it involves
+sending mail, expiring something, or indexing something, check this screen
+before anything else. Compare each job's <strong>Last Run</strong> against its
+recurrence. A job whose last run was three weeks ago on a five-minute
+schedule means the tick is not arriving at all, and every scheduled feature
+on the hub is dead, not just the one you noticed.</p>
+</aside>
+<h3 id="what-ships-with-a-new-hub">What ships with a new hub</h3>
+<p>The install seeds no jobs of its own; three come from migrations that run
+during installation.</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Event</th>
+<th>Recurrence</th>
+<th>State as shipped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group Announcements</strong></td>
+<td><code>sendGroupAnnouncements</code></td>
+<td>every 5 minutes</td>
+<td>Published</td>
+</tr>
+<tr>
+<td><strong>Process Newsletter Mailings</strong></td>
+<td><code>processMailings</code></td>
+<td>every 5 minutes</td>
+<td><strong>Unpublished</strong></td>
+</tr>
+<tr>
+<td><strong>Process Newsletter Opens &amp; Click IP Addresses</strong></td>
+<td><code>processIps</code></td>
+<td>every 5 minutes</td>
+<td><strong>Unpublished</strong></td>
+</tr>
+</tbody>
+</table>
+<p>So on a new hub exactly one scheduled job runs. The two newsletter jobs are
+created for you and left switched off, which is why a manager's first
+newsletter is composed, sent, and never arrives.</p>
+<h3 id="worked-example-the-first-newsletter-goes-nowhere">Worked example: the first newsletter goes nowhere</h3>
+<p>Say the hub has just published its first newsletter issue and no one received
+it, including you.</p>
+<ol>
+<li>Go to <strong>Components → Cron</strong>.</li>
+<li>Find <strong>Process Newsletter Mailings</strong> in the list. Its <strong>State</strong> is
+<strong>Unpublished</strong>, and <strong>Last Run</strong> is empty.</li>
+<li>Tick it and select <strong>Publish</strong>. The job is now due — its stored next run
+is the zero date, which is in the past — so it goes at the next tick.</li>
+<li>Wait five minutes and reload. <strong>Last Run</strong> should now carry a timestamp.
+If it does not, the tick is not reaching the hub — go to
+<a href="#how-it-works">How it works</a> and check the cron entry on the server.</li>
+<li>Do the same for <strong>Process Newsletter Opens &amp; Click IP Addresses</strong> if you
+want open and click tracking. It is not needed to send mail.</li>
+</ol>
+<p>Publishing a job is safe and reversible: unpublish it again and it stops. The
+button to be careful with on this screen is <strong>Run</strong>, which runs the selected
+jobs immediately — on a mailing job that means the queue goes out now, to
+real addresses, whatever you were expecting.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A job is not the same as a plugin. The plugin supplies the event;
+the job says when to fire it. Both have to be in place. Most cron plugins
+ship enabled, but <strong>Cron - Forum</strong> ships disabled, so <code>emailGroupForumDigest</code>
+is not on the <strong>Event</strong> menu until you enable it at <strong>Extensions → Plugin
+Manager</strong>.</p>
+</aside>
 <h2 id="how-it-works">How it works</h2>
 <p>Unix cron does not run each hub job. It ticks the CMS, once a minute, and the
 CMS runs whichever jobs are due. Everything about a job — what it does, how
@@ -216,12 +365,27 @@ only the commands under <code>core/libraries/Hubzero/Console/Command/</code>. Ru
 interface and a scheduled tick cannot execute the same job at once, and a job
 whose process died is reclaimed.</p>
 <h2 id="the-job-list">The job list</h2>
-<p>The list shows each job's ID, title, state, recurrence, start and end dates,
-whether it is active, and its last and next run times. The toolbar carries
-<strong>Run</strong> (run the selected jobs now), <strong>Publish</strong>, <strong>Unpublish</strong>,
-<strong>Deactivate</strong>, <strong>New</strong>, <strong>Delete</strong>, and <strong>Options</strong>.</p>
-<p><strong>Options</strong> holds one setting, the IP whitelist — see the
-<a href="../../../reference/configuration/components/cron/index.html">generated parameter list</a>.</p>
+<p>The columns are <strong>ID</strong>, <strong>Title</strong>, <strong>State</strong>, <strong>Starts</strong>, <strong>Ends</strong>,
+<strong>Active</strong>, <strong>Last Run</strong> and <strong>Next Run</strong>. The recurrence is not among them;
+to see how often a job runs, open it. The toolbar carries <strong>Run</strong> (run the
+selected jobs now), <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Deactivate</strong>, <strong>New</strong>,
+<strong>Delete</strong>, and <strong>Options</strong>.</p>
+<p><strong>Last Run</strong> and <strong>Next Run</strong> are the two that tell you whether the hub is
+healthy. Read them together: a <strong>Next Run</strong> in the past on a published job
+means the tick has stopped.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> here removes the job row for good. It asks for
+confirmation and then destroys the record; it is not the reversible trash
+you get on the Article Manager — see <a href="../../content/states/index.html">States, deleting and
+check-out</a>. If you only want a job to stop, use
+<strong>Unpublish</strong>, which keeps the row and its history.</p>
+</aside>
+<p><strong>Options</strong> holds one setting, the IP whitelist, which defaults to
+<code>127.0.0.1</code> — see the
+<a href="../../../reference/configuration/components/cron/index.html">generated parameter list</a>.
+Leave it at the default unless the tick comes from another machine. Widening
+it lets anything at that address run every due job on the hub without logging
+in.</p>
 <h2 id="creating-and-editing-a-job">Creating and editing a job</h2>
 <p>A job has four fieldsets: <strong>Details</strong>, the event's own <strong>Parameters</strong>,
 <strong>Recurrence</strong>, and <strong>Publishing</strong>, plus an <strong>Execution</strong> option.</p>
@@ -374,7 +538,7 @@ for archival and bundle-building jobs, not for anything that sends mail.</p>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../notices/index.html" rel="prev"><span>Previous</span>Site Notices</a><a class="pager__next" href="../../faq/index.html" rel="next"><span>Next</span>Frequently asked questions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/05-cron.md">Edit this page on GitHub</a>

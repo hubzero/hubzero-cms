@@ -77,9 +77,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../articlemanager/index.html">Article Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../categories/index.html">Categories</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">States, deleting and check-out</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-costs-you-in-practice">What this costs you in practice</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-stored-values">The stored values</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-filter-labels">The filter labels</a></li>
 <li class="toc__item toc__item--l2"><a href="#which-vocabulary-a-screen-uses">Which vocabulary a screen uses</a></li>
+<li class="toc__item toc__item--l2"><a href="#state-is-not-access-and-it-is-not-deletion">State is not access, and it is not deletion</a></li>
 <li class="toc__item toc__item--l2"><a href="#a-worked-example-member-notes">A worked example: member notes</a></li>
 <li class="toc__item toc__item--l2"><a href="#deleting">Deleting</a></li>
 <li class="toc__item toc__item--l2"><a href="#check-out">Check-out</a></li>
@@ -167,9 +169,30 @@ chapter says what those words mean, what number each one stores, what
 happens when you delete something, and why a record sometimes refuses to
 open because it is &quot;checked out&quot;. It is for anyone who administers a hub and
 has to decide whether a record is safe to remove.</p>
+<p>Read it before you press a delete button anywhere on this hub. It is not a
+chapter about articles; it describes behaviour shared by nearly every screen
+in the administrator interface, and it explains a set of defects a manager
+will otherwise spend an afternoon assuming are their own mistake.</p>
 <p>The short version: <strong>the labels on screen do not map one-to-one onto the
 values in the database, and the same word means different numbers on
 different screens.</strong> The rest of this chapter is the detail.</p>
+<h2 id="what-this-costs-you-in-practice">What this costs you in practice</h2>
+<p>Four things follow from that, and every one of them has been mistaken for
+user error by somebody:</p>
+<ul>
+<li>A record you trashed shows in the list as <strong>Archived</strong>, or the other way
+round, because the editor and the list next to it disagree about which word
+goes with which number.</li>
+<li>A <strong>Trashed</strong> filter finds nothing, because on that screen it asks for a
+number the component never writes.</li>
+<li>A <strong>Delete</strong> button leaves the record in the database for ever, because it
+only sets a state and no screen offers the second step.</li>
+<li>A <strong>Trash</strong> button erases the record outright, with no undo, because the
+component wired that button to a destroy method.</li>
+</ul>
+<p>The last one is the one to be careful about. <strong>Trash</strong> and <strong>Delete</strong> are not
+reliable words on this hub. Before pressing either on a screen you have not
+used before, read <a href="#deleting">Deleting</a> below.</p>
 <h2 id="the-stored-values">The stored values</h2>
 <p>The hub has two model base classes, and both define the same three numbers.</p>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a>, which
@@ -302,6 +325,22 @@ numbers it holds.</p>
 modules and languages both do. The values are the same; only the column
 name differs.</p>
 </aside>
+<h2 id="state-is-not-access-and-it-is-not-deletion">State is not access, and it is not deletion</h2>
+<p>Three separate things get confused here, and keeping them apart saves most of
+the trouble on this page.</p>
+<ul>
+<li><strong>State</strong> decides whether the record exists for the site at all. An
+unpublished article answers 404, even to an administrator following a menu
+item straight at it — unless they hold edit rights on the component.</li>
+<li><strong>Access</strong> decides who may read a record that does exist. See
+<a href="../../users/accesslevels/index.html">Access levels</a>.</li>
+<li><strong>Check-out</strong> decides who may edit it in the administrator interface. It
+has no effect on the site at all.</li>
+</ul>
+<p>So taking a page off the site is a state change, restricting it to members is
+an access change, and neither of them removes anything. If you want a page
+gone from the site tonight and the decision reversible tomorrow, unpublish
+it. That is the safe move, on every screen, in every component.</p>
 <h2 id="a-worked-example-member-notes">A worked example: member notes</h2>
 <p><strong>Members → Notes</strong> is the screen that shows what happens when the two
 vocabularies meet in one component, and it is worth walking through because
@@ -360,17 +399,30 @@ never appear, and its <strong>Trashed</strong> filter can never match anything. 
 removal that screen offers is the permanent one.</li>
 </ul>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Before you press <strong>Trash</strong> on a screen you have not used
-before, select one expendable record and check whether it reappears under
-the <strong>Trashed</strong> filter. If it does not, that button is a permanent delete
+<p><strong>Warning:</strong> On some screens the button labelled <strong>Trash</strong> permanently
+destroys the record. There is no confirmation, no undo, and nothing on the
+screen distinguishes it from the screens where <strong>Trash</strong> is reversible.
+Before you press it on a screen you have not used before, select one
+expendable record, press it, then set the state filter to <strong>Trashed</strong> and
+look for the record. If it is not there, that button is a permanent delete
 and your only undo is a database backup.</p>
 </aside>
+<p>The same caution applies in reverse to <strong>Delete</strong>. On the Article Manager and
+the Category Manager it is safe: it trashes, and you can bring the record
+back. On other screens the same word erases. The wording tells you nothing —
+only the test above does.</p>
 <p>A permanent delete is thorough. <code>destroy()</code> removes the record's access
 asset row first, fires a <code>system.onContentDestroy</code> event so that other
 extensions can clean up after it, and then removes the row. Nothing keeps a
 copy.</p>
 <h2 id="check-out">Check-out</h2>
 <p>Separate from state, and easily mistaken for it: a record can be locked.</p>
+<p>The situation is ordinary. A colleague opens the terms of use article on
+Friday afternoon to fix a sentence, gets called away, and closes the laptop.
+On Monday nobody can edit that article, and the list shows a padlock next to
+it with their name on the tooltip. Nothing is broken and nothing is lost —
+the article is still published and visitors still see it — but the lock will
+sit there until a person clears it.</p>
 <p>Several of the hub's tables carry <code>checked_out</code> and <code>checked_out_time</code>
 columns. Opening a record for editing writes your user ID and the current
 time into them, and the list screen then draws a padlock beside the row and
@@ -380,8 +432,22 @@ an error mid-request all leave the lock in place, and <strong>nothing expires it
 there is no timeout and no scheduled job that sweeps locks up. A record left
 checked out stays checked out until a person releases it.</p>
 <p>That is what <strong>Site → Maintenance → Global Check-in</strong> is for, and it is
-described in <a href="../../components/checkin/index.html">Check-in</a>. Releasing a lock
-does not save the abandoned edit; it only makes the record openable again.</p>
+described in <a href="../../components/checkin/index.html">Check-in</a>. To clear the
+Friday-afternoon lock above:</p>
+<ol>
+<li>Go to <strong>Site → Maintenance → Global Check-in</strong>.</li>
+<li>Find the row for the table the record is in — articles are <code>#__content</code>.
+The count beside it is how many records that table has locked.</li>
+<li>Tick that row and select <strong>Check-in</strong>.</li>
+</ol>
+<p>Releasing a lock does not save the abandoned edit; whatever your colleague
+had typed and not saved is gone either way. It only makes the record openable
+again. Checking in a table somebody is genuinely working in right now costs
+them nothing worse than a second lock the next time they save, so this is a
+safe button.</p>
+<p>The Article Manager and most other list screens also carry a <strong>Check In</strong>
+button that does the same thing for the records you have selected, which is
+usually quicker when you know which record is stuck.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A checked-out record is still published. Visitors see it exactly
 as before. Check-out only affects who may edit in the administrator
@@ -398,7 +464,7 @@ records.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 9924bea2ec</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../categories/index.html" rel="prev"><span>Previous</span>Categories</a><a class="pager__next" href="../urls/index.html" rel="next"><span>Next</span>URLs</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/states.md">Edit this page on GitHub</a>

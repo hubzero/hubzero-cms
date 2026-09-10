@@ -132,6 +132,7 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Module Manager</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Template Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-is-not">What this is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#templates-and-styles">Templates and styles</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-styles-tab">The Styles tab</a></li>
 <li class="toc__item toc__item--l3"><a href="#toolbar">Toolbar</a></li>
@@ -169,6 +170,27 @@ template's parameters, and edits template source files.</p>
 <p>Select <strong>Extensions</strong> → <strong>Template Manager</strong>, or go to
 <code>/administrator/index.php?option=com_templates</code>. The screen has two tabs,
 <strong>Styles</strong> and <strong>Templates</strong>. Styles opens first.</p>
+<p>Most hubs open this screen exactly twice: once just after installation, to
+move the site off the splash template it is installed with, and once to pick
+administrator colours that distinguish the live hub from the test one. After
+that it is left alone for years. If your hub already looks the way you expect
+and the administrator interface is a colour you can live with, you can stop
+here.</p>
+<h2 id="what-this-is-not">What this is not</h2>
+<p>It is not where the site's appearance is designed. Changing colours,
+typography or layout beyond the handful of parameters a template exposes
+means editing or writing a template, which belongs in <code>app/templates/</code> and is
+a developer's job; see <a href="../../../developers/templates/overrides/index.html">Output
+overrides</a>.</p>
+<p>It is not where module positions are chosen either. The template <em>offers</em>
+positions; the <a href="../modules/index.html">Module Manager</a> puts modules into them.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Making a different style the default changes the site for
+every visitor from that moment, and it is not only a change of appearance.
+Templates declare different positions, so a module sitting in a position
+the new template does not draw disappears without a word. Check the site
+immediately afterwards, and see <a href="../modules/index.html#positions">Positions</a>.</p>
+</aside>
 <h2 id="templates-and-styles">Templates and styles</h2>
 <p>A <strong>template</strong> is the code: a directory containing <code>index.php</code>,
 <code>templateDetails.xml</code>, stylesheets, and optionally layout overrides. A
@@ -188,19 +210,24 @@ same name.</p>
 </thead>
 <tbody>
 <tr>
+<td><strong>hubzero</strong></td>
+<td>Site</td>
+<td>The current site template, in <code>app/templates/</code>. Declares <code>breadcrumbs</code> and <code>endpage</code> as positions and drops <code>introblock</code>.</td>
+</tr>
+<tr>
 <td><strong>kimera</strong></td>
 <td>Site</td>
-<td>The standard site template. Parameters for header style, primary and secondary colour, background pattern or image.</td>
+<td>The older standard site template. Parameters for header style, primary and secondary colour, background pattern or image.</td>
 </tr>
 <tr>
 <td><strong>lucent</strong></td>
 <td>Site</td>
-<td>An older site template. Same positions as kimera, no parameters.</td>
+<td>An older site template again. Same declared positions as kimera, no parameters.</td>
 </tr>
 <tr>
 <td><strong>Welcome</strong></td>
 <td>Site</td>
-<td>A pre-launch splash template. Its <strong>Template</strong> parameter names the template to fall back to, <code>kimera</code> by default.</td>
+<td>A pre-launch splash template. It draws no modules at all. Its <strong>Template</strong> parameter names the template to switch to, <code>kimera</code> by default.</td>
 </tr>
 <tr>
 <td><strong>kameleon (admin)</strong></td>
@@ -212,6 +239,44 @@ same name.</p>
 <p><code>core/templates/system</code> is not a selectable template. It holds the shared
 error and module-chrome layouts every template falls back on.</p>
 <h2 id="the-styles-tab">The Styles tab</h2>
+<p>A style is what is actually assigned, so this tab is where the site's
+appearance is decided. Three styles ship in the install data:</p>
+<table>
+<thead>
+<tr>
+<th>Style</th>
+<th>Template</th>
+<th>Client</th>
+<th>Default on a fresh install</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Welcome Template</strong></td>
+<td>welcome</td>
+<td>Site</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>kameleon (admin)</strong></td>
+<td>kameleon</td>
+<td>Administrator</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>HUBzero Standard Site Template - 2015</strong></td>
+<td>kimera</td>
+<td>Site</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>The site default being <strong>Welcome Template</strong> is the single most surprising
+thing about a new hub. That template draws no modules at all, so the hub
+looks empty until the default is moved to the kimera style — which is what
+the <strong>Get started</strong> link on the splash page does, and what selecting the
+kimera style and pressing <strong>Default</strong> here does. See <a href="../modules/index.html#why-a-fresh-hub-looks-empty">Why a fresh hub looks
+empty</a>.</p>
 <p>The list shows every saved style. Its columns:</p>
 <table>
 <thead>
@@ -325,6 +390,14 @@ with no parameters shows <em>No options found for this template.</em></p>
 template name, the client, and the version, date and author read from
 <code>templateDetails.xml</code>. Its only toolbar buttons are <strong>Options</strong> and <strong>Help</strong>;
 templates are not created, enabled or deleted here.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The list comes from the extensions table, not from the
+filesystem, and the shipped install data registers four templates whose
+directories are not in the tree: <code>hubbasic</code>, <code>hubbasic2012</code>, <code>hubbasic2013</code>
+and <code>hubbasicadmin</code>. They appear here with no version, date or author,
+because there is no manifest to read them from. They are leftovers from
+older releases. Ignore them, and do not assign a style to one.</p>
+</aside>
 <p>Click a template name to open <strong>Template Manager: Customise Template</strong>. That
 screen lists the template's editable files in three groups, each entry a link
 to a plain-text source editor with <strong>Save</strong>, <strong>Save &amp; Close</strong> and <strong>Cancel</strong>:</p>
@@ -353,6 +426,9 @@ a template on the filesystem instead.</p>
 a module. kimera and lucent both declare:</p>
 <p><code>footer</code>, <code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>,
 <code>introblock</code>, <code>notices</code>, <code>search</code></p>
+<p>hubzero declares:</p>
+<p><code>footer</code>, <code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>,
+<code>notices</code>, <code>search</code>, <code>breadcrumbs</code>, <code>endpage</code></p>
 <p>kameleon declares:</p>
 <p><code>menu</code>, <code>submenu</code>, <code>toolbar</code>, <code>title</code>, <code>status</code>, <code>icon</code>, <code>cpanel</code>, <code>debug</code></p>
 <p>To see where they land, set <strong>Preview Module Positions</strong> to Enabled in
@@ -387,7 +463,7 @@ document root, in <strong>Background image</strong>.</li>
 See <a href="../../../reference/configuration/components/templates/index.html">the generated reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../modules/index.html" rel="prev"><span>Previous</span>Module Manager</a><a class="pager__next" href="../plugins/index.html" rel="next"><span>Next</span>Plug-in Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/02-templates.md">Edit this page on GitHub</a>

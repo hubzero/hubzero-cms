@@ -167,6 +167,12 @@ one. Reach it at <strong>Content → Article Manager</strong>, or directly at
 <code>/administrator/index.php?option=com_content</code>. The screen is titled <strong>Article
 Manager: Articles</strong>, and carries a submenu with two entries, <strong>Articles</strong> and
 <strong>Categories</strong>.</p>
+<p>You come here to write or fix one of the hub's own pages, and for nothing
+else. Almost every change on this screen is reversible: unpublishing takes a
+page off the site and republishing brings it back unchanged, and <strong>Delete</strong>
+sets a state rather than removing anything. The one thing that cannot be
+undone from the interface is losing an unsaved edit, which is why the check
+in <strong>Check In</strong> exists. Work here with a free hand.</p>
 <h2 id="what-articles-are-for">What articles are for</h2>
 <p>An article is a page of the hub's own prose, written by whoever runs the hub:
 the About page, the acceptable use policy, the instructions for citing the
@@ -564,6 +570,12 @@ file one under two. If a page needs to appear in two places, point two menu
 items at the same article rather than duplicating it.</p>
 </aside>
 <h2 id="options">Options</h2>
+<p>Most hubs never open this screen. The shipped defaults produce an ordinary
+article page — title shown, author shown, hits shown — and the settings that
+matter for a specific page are better set on the article or the menu item,
+where they affect one page rather than all of them. Come here only when you
+want the same change on every article: the byline off across the whole hub,
+say, because a single office writes all of them.</p>
 <p><strong>Options</strong> on either list opens the <code>com_content</code> configuration: the site
 defaults for article, category, blog, and list layouts, the integration
 settings, and the component-wide permissions. Every parameter is listed in
@@ -580,7 +592,7 @@ and the article's value is used only where the menu item's setting is
 <strong>Use Article</strong>; if the article has nothing set, the global is used.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 754ab96b09</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Content</a><a class="pager__next" href="../categories/index.html" rel="next"><span>Next</span>Categories</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/articlemanager.md">Edit this page on GitHub</a>

@@ -63,6 +63,7 @@
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Members</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-button-to-reach-for">Which button to reach for</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-sub-menu">The sub-menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-account-list">The account list</a></li>
 <li class="toc__item toc__item--l3"><a href="#filters">Filters</a></li>
@@ -186,6 +187,50 @@ menu.</p>
 in this release has no administrator screens at all; the Members manager is
 the only place accounts are edited.</p>
 </aside>
+<h2 id="which-button-to-reach-for">Which button to reach for</h2>
+<p>Almost everything a manager does here is one of four operations on somebody
+else's live account, and they differ enormously in how much they cost.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Reversible?</th>
+<th>What the account holder sees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Block</strong> / <strong>Unblock</strong></td>
+<td>Yes, completely.</td>
+<td>Cannot log in while blocked. Nothing is lost.</td>
+</tr>
+<tr>
+<td><strong>Confirm</strong> / <strong>Unconfirm</strong>, <strong>Approve</strong> / <strong>Unapprove</strong></td>
+<td>Yes.</td>
+<td>Held on a holding page, or released from one.</td>
+</tr>
+<tr>
+<td><strong>De-identify</strong></td>
+<td><strong>No.</strong></td>
+<td>The account still exists but is blocked and anonymous.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td><strong>No.</strong></td>
+<td>The account and everything hung off it are gone.</td>
+</tr>
+</tbody>
+</table>
+<p>The two reversible rows cover nearly every real situation. A spam wave after a
+paper is published wants <strong>Block</strong>, not <strong>Delete</strong>: blocking a hundred signups
+takes them out of service in one press and can be undone if you catch a real
+person among them, and it leaves you the evidence to look at later. Somebody
+who has left the institution and asks to be removed wants <strong>De-identify</strong> or
+<strong>Delete</strong>, and you need to know which they mean before you press either.</p>
+<p>Nothing on this screen sends the account holder a message except <strong>Approve</strong>
+(and only when <strong>Email On Account Activation</strong> is on) and <strong>Resend
+confirmation</strong>. Blocking somebody is silent; they find out when they try to log
+in.</p>
 <h2 id="the-sub-menu">The sub-menu</h2>
 <p>A row of links sits above every Members screen. Which links appear depends on
 your permissions and on one configuration setting; the menu is built in
@@ -496,6 +541,17 @@ add more.</p>
 </table>
 <p>Save with <strong>Save</strong> or <strong>Save &amp; Close</strong>; <strong>Save &amp; New</strong> saves and opens a blank
 record.</p>
+<p>Everything on the <strong>Account</strong> tab takes effect at once. Changing the ticked
+<a href="../accessgroups/index.html">access groups</a> changes what that person may do on their
+next page load; they are not logged out and not told.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An account you create here is created with a private profile. The
+<strong>Default Privacy</strong> option applies only to people who register themselves —
+see <a href="../registration/index.html#default-privacy">Default Privacy</a> — and neither this
+form nor the <a href="../memberimport/index.html">importer</a> runs that code. If a hub-created
+account should appear in the member directory, its owner sets that from their
+own profile page.</p>
+</aside>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> If your browser fills in passwords automatically, check the
 <strong>Password</strong> tab before saving. An autofilled <strong>New Password</strong> field silently
@@ -514,6 +570,12 @@ and it sets the <strong>TOU</strong> row's <strong>Update on Next Login</strong>
 <a href="../registration/index.html">Registration</a> screen to <strong>Required</strong>, which is what
 actually puts the prompt in front of the user.</p>
 <h2 id="de-identifying-members">De-identifying members</h2>
+<p>De-identification is for the case where somebody has to disappear from the hub
+but the hub's statistics and history must stay intact — a data-protection
+request, or a person who has withdrawn consent. It is the middle option between
+blocking, which keeps everything, and deleting, which removes the account row
+and the record that anyone was ever there. Reach for it when the requirement is
+&quot;remove their personal information&quot;, not &quot;remove their account&quot;.</p>
 <p>Available from release 2.2.26. De-identification strips personally
 identifiable information from the database. Some rows are deleted outright;
 elsewhere fields are emptied or replaced with generated values (<code>anonUsername_</code>
@@ -550,6 +612,12 @@ the extended profile; removing the directory itself is a job for whatever
 manages home directories on the hub.</p>
 </aside>
 <h2 id="what-deleting-a-member-removes">What deleting a member removes</h2>
+<p>Read this before you use <strong>Delete</strong>, because the button gives no indication of
+its reach and there is no undo. Deleting is rarely the right answer on a live
+hub: it takes an account's work with it, it leaves other people's pages
+referring to somebody who no longer exists, and it cannot be distinguished
+afterwards from data that was never there. Use it for accounts that never
+should have existed. For everything else, block or de-identify.</p>
 <p>Deleting an account with the toolbar's <strong>Delete</strong> button is not the same as
 de-identifying it. Delete removes the account row and cascades through
 everything hung off it. This section replaces the older
@@ -655,6 +723,13 @@ plugins runs twice per deleted account. The work is idempotent, so the
 outcome is correct, but a deletion does roughly twice the work it needs to.</p>
 </aside>
 <h2 id="building-the-profile-form">Building the profile form</h2>
+<p>The profile builder is where a hub decides what it wants to know about its
+members. Most hubs edit it once, early — adding an institution, a department, a
+funding source — and then leave it alone. It is worth knowing that it is a live
+schema: adding a required field changes what the registration form asks for
+next time somebody signs up, and a field you delete takes its stored answers
+with it. Add fields freely; remove them only when you are sure nobody's answers
+matter.</p>
 <p><strong>Profile</strong> in the account list toolbar opens the profile builder, which
 defines the fields that make up a member profile — the same fields the
 registration form and the account's <strong>Profile</strong> tab draw on. The form itself
@@ -770,7 +845,10 @@ Close</strong>.</p>
 <a href="../accesslevels/index.html">Access Levels</a>.</p>
 <h2 id="points">Points</h2>
 <p>Points are the hub's internal currency, awarded for taking part. The <strong>Points</strong>
-link appears only when <strong>Bank Accounts</strong> is on in the component's <strong>Options</strong>.</p>
+link appears only when <strong>Bank Accounts</strong> is on in the component's <strong>Options</strong>.
+Turn that option on only if your hub is actually going to use points for
+something — leaving it off keeps four screens and a column of numbers out of
+the way of everyone who is not.</p>
 <p>Four sub-links:</p>
 <ul>
 <li><strong>Summary</strong> — the top earners and how points were earned.</li>
@@ -844,6 +922,11 @@ somewhere to put obvious choices and words specific to your hub. To add one:</p>
 <li><strong>Save &amp; Close</strong>.</li>
 </ol>
 <h2 id="quotas">Quotas</h2>
+<p>Disk quotas exist for hubs whose members get real storage — home directories,
+tool sessions, uploads. If your hub does not hand out storage, leave <strong>Manage
+Quotas</strong> off and ignore these screens entirely. Where quotas do apply, the usual
+job is the one-off: a group has filled its allocation and needs more, which
+means changing that account's quota class or its individual limits.</p>
 <p>Three sub-links, and they only matter when <strong>Manage Quotas</strong> is on in
 <strong>Options</strong>.</p>
 <p><strong>Member disk quotas</strong> lists accounts and their quotas. To change one, find the
@@ -950,7 +1033,7 @@ identifiable information but keep the account row.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Users</a><a class="pager__next" href="../registration/index.html" rel="next"><span>Next</span>Registration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/01-members.md">Edit this page on GitHub</a>

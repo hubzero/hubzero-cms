@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/users/usernotes, https://help.hubzero.org/documentation/240/managers/users/usernotecateg
 imported: 2026-09-09
@@ -16,6 +16,35 @@ date.
 > **Note:** Users do not write these. There is no site-facing notes feature
 > in 2.4 — the model and its screens exist only in the administrator
 > interface, and a note is written *about* a member, not *by* one.
+
+## Whether to use this screen at all
+
+Decide that before you start, because the screen is only half-built and
+switching to something else later means retyping.
+
+It works for one thing: writing a note against an account and reading it back
+later. That is genuinely useful on a hub where more than one person answers
+support mail and the next person needs to know why an account was suspended in
+March. If that is your problem, the screen solves it.
+
+Almost everything else on it does not work. Seven of the toolbar's actions —
+**Publish**, **Unpublish**, **Archive**, **Check-in** and **Empty Trash** on
+the list, **Save & New** and **Save as Copy** on the form — submit tasks the
+notes controller does not implement, and pressing one simply redraws the
+screen. **Edit** and **Trash** reach real code but read the selected rows under
+a name the list never posts, so they behave as though you had ticked nothing.
+The column sort links fail. Deleting a note cannot be done from the interface
+at all.
+
+So: use it if you want an append-mostly log against an account and can live
+with notes accumulating. Do not use it if you need to retract, tidy or archive
+what you write, or if the notes have to be got rid of on request — a
+data-protection erasure request cannot be honoured from this screen.
+
+> **Caution:** A user note is personal information about a real person, kept
+> where they cannot see it and cannot correct it, and in this release cannot be
+> deleted without database access. Write what a support record needs and no
+> more.
 
 Notes live in `com_members`, at **Users** → **User Notes**, or under
 **Users** → **Members** → **Notes**. Categories are ordinary content
@@ -60,6 +89,11 @@ is set to Trashed, **Trash** is replaced by **Empty Trash**.
 
 ## Writing a note
 
+Notes are written one at a time and only from the **New** button. Everything
+else on the toolbar is either inert or misreads the selection, so this is the
+whole of what the screen does. Nothing here is sent to anyone and nothing is
+visible on the site.
+
 1. Go to **Users** → **User Notes**.
 2. Select **New**.
 3. Fill in the form:
@@ -90,7 +124,9 @@ list.
 ## Note categories
 
 Categories organise notes; a hub with a handful of notes does not need them,
-one that logs every support contact does.
+one that logs every support contact does. Decide early whether you want them,
+because the note list's category filter is the only way to narrow a long list —
+the sort links do not work and the search box matches subject and body only.
 
 Go to **Users** → **User Note Categories**. The screen is `com_categories`
 scoped to `com_members`, the same manager used for article categories, and it

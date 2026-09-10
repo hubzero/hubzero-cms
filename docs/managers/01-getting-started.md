@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/index
 source-id: 3336
@@ -83,6 +83,17 @@ hub that already has members, this is the wrong chapter — go to
 [Daily maintenance](03-maintenance/README.md) and
 [Users](06-users/README.md) instead.
 
+One example runs through the chapter, because the right answer to most of
+these questions depends on what the hub is for. Take a hub set up for a
+soil-carbon project shared by three universities: about forty named
+collaborators today, working on data they are not ready to show anyone, and a
+public data release in a year and a half. That hub wants accounts somebody
+approves rather than accounts anyone can create, mail that reaches people at
+three different institutions, and — well before the release — a decision
+about whether published material is reviewed before it appears. A hub meant
+as a public front door for a lab answers several of these the other way, and
+each step says which.
+
 Before anything else, read [The administrator interface](#the-administrator-interface).
 Everything below happens in the back end, and every step names a menu path
 through it.
@@ -100,9 +111,40 @@ through it.
 8. [Schedule the recurring jobs](#8-schedule-the-recurring-jobs).
 9. [Bring the site back online](#9-bring-the-site-back-online).
 
-Steps 3, 4 and 5 are the ones that are hard to undo. A hub that opens
-registration before its mail works collects accounts that can never confirm
-themselves.
+The order is not arbitrary. Each step either supplies something the next one
+needs, or closes a door the next one would leave open.
+
+- **Offline first** (step 1), because every step below changes the site under
+  anyone who is already looking at it.
+- **Identity before mail** (steps 2 and 3). The confirmation mail signs itself
+  `<Site Name> Administrator` and its subject begins with the site name, so
+  the name you set in step 2 is how the hub introduces itself to a stranger in
+  step 3.
+- **Mail before registration** (steps 3 and 4). This is the one that costs
+  people a weekend. **New User Account Activation** ships set to **Self**: the
+  hub mails the new member a link, and the account does nothing until they
+  click it. On a hub whose mail does not work the account is created anyway —
+  the row is written before the mail is attempted — and then sits unactivated
+  for ever. The member never gets the link, cannot sign in, and cannot tell
+  you, because the hub's contact routes are mail too. If the send fails
+  outright the form says so; if the machine accepts the mail and quietly drops
+  it, nothing says anything at all. Prove mail works before you let anybody
+  register.
+- **Registration before permissions** (steps 4 and 5), because deciding what
+  **New User Registration Group** should be is really a question about what
+  that group is allowed to do.
+- **Permissions before pruning** (steps 5 and 6), so that when you decide a
+  component stays, you already know who will be allowed to use it.
+- **Content after the pruning** (steps 7 and 8), because the front page and the
+  scheduled jobs depend on which components survived step 6. There is no point
+  building a menu item for a component you are about to disable, or scheduling
+  a job for one.
+- **Online last** (step 9), so the first thing a visitor sees is the finished
+  arrangement rather than a half-configured one.
+
+Steps 3, 4 and 5 are the ones that are hard to undo — not because the screens
+resist it, but because by the time the mistake shows, other people have
+accounts.
 
 ### 1. Take the site offline
 
@@ -127,6 +169,10 @@ that permission is granted to the **Manager** access group and inherited by
 everything. So you keep browsing while visitors get the notice. The
 administrator interface is not affected either way.
 
+The `503` is the right status to send, and worth knowing about: it tells a
+search engine that the page is temporarily away and to come back, rather than
+that it has gone. A maintenance window does not cost the hub its listings.
+
 This step is optional, and it is worth the two clicks only if the hub is
 already reachable from outside. Undo it in step 9.
 
@@ -143,8 +189,27 @@ this is a check rather than a first entry. Four fields matter now:
 - **FQDN** — the hub's fully qualified domain name.
 - **Server Time Zone**, on the **Server** tab. Cron recurrences and every
   displayed date are read against it.
-- **Application Environment**, which decides how much detail an error page
-  shows. Set it to **Production** before anyone outside sees the site.
+- **Application Environment**, on the **Site** tab. Set it to **Production**
+  on the hub people use, and to anything else on a copy of it.
+
+Two of those deserve more than a glance.
+
+**Site Name** is not only a heading. Registration mail is sent from
+`<Site Name> Administrator`, and its subject line begins with the same name,
+so this is what a stranger sees in their inbox before they see the hub. Use
+the name the project uses in public, not the internal one. Changing it later
+is one field and breaks nothing, but the mail already sent keeps the old name.
+
+**Application Environment** is not the error-detail switch, whatever the name
+suggests. That one is **Debug System**, on the **System** tab, and it ships
+**No**. What the environment setting does is gate the things that should only
+happen on the hub people use: the **Google Analytics** and **Google Gtag**
+modules render nothing unless the value starts with `production`, the
+**Application Environment** module shows a banner naming the environment when
+it does not, and super group repository provisioning runs only on production
+hubs. So the setting matters most on the *copies*. A staging clone left on
+**Production** reports its own traffic into the live hub's analytics, and a
+live hub left on **Development** records none of its own.
 
 Global Configuration writes plain PHP files under `app/config/`. If the save
 reports that it could not write, fix the directory's permissions rather than
@@ -180,7 +245,11 @@ alarmed by the change.
 **From email** does more than name the sender. It is also the address the hub
 notifies when an account is created — the new-account mail is addressed to the
 same address it is sent from. Point it at a mailbox somebody reads, not at a
-no-reply address.
+no-reply address. On the example hub that is a shared address the staff at all
+three institutions can open, not one person's inbox: members see it as
+`<Site Name> Administrator` and reply to it whether you meant them to or not,
+and a hub whose only administrative address belongs to someone who has moved
+on is a slow, expensive problem to unpick.
 
 > **Tip:** **DSN (overrides other mail settings)** on the same panel takes a
 > single connection string and ignores the fields above it. Use it when the
@@ -191,7 +260,8 @@ no-reply address.
 Two screens, both in the Members component. Read
 [Registration](05-configuring/02-registration.md) for both in full.
 
-**Users > Members**, then **Options** in the toolbar, holds the decisions:
+**Users > Members**, then **Options** in the toolbar, **Component** tab, holds
+the decisions:
 
 | Option | Default | What the default means |
 |---|---|---|
@@ -224,6 +294,30 @@ works, and set **Email On Account Activation** to **Yes** so the member is
 told when you approve them. If the hub is closed entirely, set **Allow User
 Registration** to **No** and create accounts yourself under **Users >
 Members**.
+
+The example hub takes **Admin**. Forty named collaborators is not a number
+that needs a self-service front door, and an approval step is the only thing
+between the hub and whoever finds the form. A hub that wants to be a public
+front door leaves it on **Self** and spends the effort on
+[Spam](11-spam.md) instead. Either way, decide it now: switching to **Admin**
+later leaves the accounts already created untouched, so the decision only ever
+applies going forward.
+
+One more decision sits on a different tab of the same **Options** screen. The
+**Defaults** tab holds **Default Privacy**, which sets the viewing level
+stored on every new profile: **Public**, meaning anyone who finds the address
+can read the member's profile page, or **Private**, meaning nobody but the
+member can. It applies at the moment an account is created, so it decides what
+your members' pages look like to the outside without their ever choosing it.
+
+> **Warning:** The manifest declares **Default Privacy** as **Private**, but
+> the shipped install data stores it as **Public**, and both places in
+> `com_members/site/controllers/register.php` that apply it fall back to
+> **Public** as well. So on a hub installed from that data, and on a hub whose
+> Members options have never been saved, every account is created public
+> whatever the manifest says. Recorded with the project.
+> Open the tab, read the value, and save it deliberately — see
+> [Check the default, do not trust it](#check-the-default-do-not-trust-it).
 
 **Users > Members > Registration** is the second screen: a grid of fields
 against the four moments a member's details are collected, each cell
@@ -308,6 +402,13 @@ most of them add something a visitor can reach. A hub that will never run
 courses, sell anything, or publish a newsletter is easier to administer, and
 easier to explain to its members, with those switched off.
 
+This step is housekeeping rather than configuration, and a hub survives
+skipping it. Do it anyway, because both halves get more expensive later. Every
+component left on is one whose options you are answerable for and whose
+screens your members can find and start using; and a component switched off
+after they have started takes their content out of reach with it. Decided now,
+while nothing has been created, it costs nothing.
+
 To see the real state, filter the list by **Type** = Component and sort or
 filter on **Status**; do not go by what a fresh database happens to contain,
 since installing with the optional sample content switches several extensions
@@ -326,6 +427,44 @@ pop-up and its **Permissions** tab, and every parameter of every component is
 listed in the generated
 [configuration reference](../reference/configuration/README.md). Some
 components do nothing useful until their options are filled in.
+
+#### Check the default, do not trust it
+
+A component's default comes from two places that do not always agree. The
+manifest — the component's own `config/config.xml` — declares a default for
+every field, and that is the value the generated
+[configuration reference](../reference/configuration/README.md) prints. The
+shipped install data, `core/bootstrap/Install/sql/mysql/data.sql`, separately
+seeds a row of stored parameters for each component. **The stored row wins**,
+both for what the hub does and for what the **Options** screen shows you: the
+form is bound to the stored parameters and falls back to the manifest only for
+keys the row does not mention.
+
+Two of those disagreements change what a hub does on its first day.
+
+> **Warning:** Publications ship auto-approving. **Components >
+> Publications**, **Options**, **Curation** tab, **Auto-approve** is declared
+> `default="0"` — No — in the manifest, and the reference prints No, but the
+> shipped row stores `autoapprove=1`. When it is 1 a submitted version goes
+> live the moment it is submitted, with no curator involved, unless the author
+> ticks the review box themselves — and where the type requires a DOI, that
+> DOI is registered as public rather than reserved. A hub that believes it is
+> curating its publications is not. See
+> [Publications](09-components/27-publications.md).
+
+That one has a second switch, which is easy to miss. Each publication type
+carries its own **Auto Approve?** under **Components > Publications > Master
+Types**, and either switch being on is enough to publish without review. If
+the example hub's data release is meant to pass a curator, both have to say
+no.
+
+The other disagreement is **Default Privacy**, in
+[step 4](#4-decide-how-people-register) above.
+
+The habit worth taking from this is small. When a setting matters, open the
+screen and read the value rather than reading a default anywhere — including
+in this book. A reference tells you what a field means and what its values
+are; only the screen tells you what your hub has.
 
 ### 7. Give the site a front page and a menu
 
@@ -648,8 +787,25 @@ There is a **Database Tables Prefix** field in Global Configuration, on the
 ### What you can break, and what you cannot
 
 Most of what a new manager is nervous about is reversible, and a few things
-that look harmless are not. Worth knowing which is which before you start
-clicking.
+that look harmless are not. Nothing in the administrator interface tells you
+which is which, so this is the list, and it is the most useful page in the
+book to have read before you start clicking.
+
+Nearly everything here follows from three questions. Ask them at any screen,
+including screens this book does not cover.
+
+1. **Does it change a value, or remove a row?** Changing a value — a state, a
+   position, an option, an access level — writes over one field and leaves the
+   record where it is. Removing a row takes the record and, often, the files
+   and child records hanging off it. The first kind is undone by doing it
+   again. The second is undone only from a backup.
+2. **Has anything left the building?** A change to the hub stays on the hub
+   until you undo it. Mail does not. Neither does anything a member has
+   already seen, downloaded or cited. There is no unsend.
+3. **Can the same screen put it back?** If the screen that made the change
+   offers the opposite of it, the change is cheap. If undoing it means editing
+   a file, restoring a table, or asking somebody to re-upload their work, slow
+   down and take the backup first.
 
 #### Hard to break
 
@@ -672,6 +828,18 @@ clicking.
 - **Categories.** Creating them costs nothing, and they are scoped per
   component, so a category made for articles cannot disturb the knowledge
   base. See [Categories](08-content/categories.md).
+- **Clearing the cache.** **Site → Maintenance → Clear Cache** removes stored
+  cache groups and **Purge Expired Cache** drops the expired ones. Both throw
+  away derived data the hub regenerates on demand. Neither touches content,
+  and the worst outcome is a slow first page.
+- **Global Configuration itself.** It writes plain PHP files under
+  `app/config/`, one per group of settings. Whatever you save there can be
+  read and corrected in a text editor, so a bad save is never a locked door —
+  you do not need the interface to get back into the interface.
+- **Deleting an access group you belong to.** The screen refuses, skips that
+  row and says so; it also refuses to let an account without `core.admin`
+  delete a group that holds it. You cannot remove your own way in with that
+  button.
 
 #### Easy to break
 
@@ -689,11 +857,36 @@ clicking.
 - **Real deletions.** Removing a member, a group or a file is not a state
   change. It is gone, and only the backup you took in the section above will
   bring it back.
+- **Deleting a hub group.** The worst of those, because the button is on an
+  ordinary list screen and gives no hint of its reach. Deleting a group fires
+  `groups.onGroupDelete` at every group plugin, so the forum, the wiki, the
+  blog, the collections, the resources and the wishlist each remove their own
+  material before the group row goes. What is left afterwards is a log entry
+  recording the members and the description. Unpublish the group instead if
+  what you want is for it to stop being visible. See
+  [Groups](06-users/05-groups.md).
+- **Saving a component's Options without changing anything.** The save writes
+  every field on the form, not only the ones you touched: values that were
+  merely defaults become stored values, and any stored parameter the form does
+  not declare is dropped. Usually harmless, occasionally not — Media's **Path
+  to Files Folder** and **Path to Images Folder** default to `images` in the
+  manifest while the code reads `site/media`, so opening that screen and
+  saving it untouched points the Media Manager at a directory that does not
+  exist. Recorded with the project.
+- **Mass Mail Users.** **Users > Mass Mail Users** sends to every account in
+  the access group you pick, and the hub reports how many it reached. Nothing
+  reverses that. Send to a group of one first.
 
 The honest summary: you can explore the administrator interface freely as
-long as you are toggling states and positions, and you should slow down the
-moment a screen offers to delete something or to change where the hub looks
-for its data.
+long as you are toggling states and positions, and you should slow down at
+three kinds of button — one that deletes something, one that sends something,
+and one that changes where the hub looks for its data. Everything else on
+these screens is a stored value that the same screen will change back.
+
+None of that is a reason to be timid with the rest. A manager who is afraid
+of the interface leaves the hub misconfigured, which is a slower and more
+certain kind of damage than any of the accidents above. Take the backup, then
+go and look.
 
 ### Where to go next
 

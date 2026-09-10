@@ -74,6 +74,7 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Menus</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#menus-menu-items-and-modules">Menus, menu items, and modules</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-many-menus-a-hub-needs">How many menus a hub needs</a></li>
 <li class="toc__item toc__item--l2"><a href="#menu-manager">Menu Manager</a></li>
 <li class="toc__item toc__item--l3"><a href="#creating-a-menu">Creating a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#menu-items">Menu items</a></li>
@@ -82,6 +83,7 @@
 <li class="toc__item toc__item--l3"><a href="#what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does besides appear in a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#example-navigation-for-a-new-hub">Example: navigation for a new hub</a></li>
 <li class="toc__item toc__item--l2"><a href="#example-linking-into-one-component-s-content">Example: linking into one component&#x27;s content</a></li>
+<li class="toc__item toc__item--l2"><a href="#taking-stock-of-navigation-you-inherited">Taking stock of navigation you inherited</a></li>
 <li class="toc__item toc__item--l2"><a href="#grouping-articles-under-a-menu">Grouping articles under a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#redirecting-a-url">Redirecting a URL</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -198,6 +200,33 @@ A module in a position the template does not render is also invisible. The
 module side is covered in <a href="../extensions/modules/index.html">Modules</a>.</p>
 <p>A plain hub ships one site menu — <strong>Main Menu</strong>, menu type <code>mainmenu</code> —
 holding a single item, <strong>Home</strong>.</p>
+<h2 id="how-many-menus-a-hub-needs">How many menus a hub needs</h2>
+<p>Most hubs need one menu. A second is worth having when a set of pages has to
+appear in a place of its own — a side menu that shows only on the pages of
+one section, a short row of links in the footer. Beyond that, each new menu
+costs you a module, a position, and a place to look when a link goes missing.</p>
+<p>The test is not &quot;are these links related&quot; but &quot;do these links appear
+together, in one place, on the same set of pages&quot;. Two menus rendered in the
+same position on the same pages should be one menu. A menu whose module is
+assigned to every page and whose items are all in one section should usually
+be items under a parent in the main menu instead.</p>
+<p>Signs a hub has too many:</p>
+<ul>
+<li>Menus with no module against them in the Menu Manager. Nobody can see
+those; they exist only as URLs.</li>
+<li>Two menus with the same <strong>Position</strong>. They stack, in module ordering, and
+visitors read them as one list with an unexplained gap.</li>
+<li>A menu holding one item. Fold it into the main menu as a child of whatever
+it belongs under.</li>
+</ul>
+<p>There is no limit and no performance cliff — this is about whether the next
+person can find the link they need to change.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A menu is not an access control. <strong>Access</strong> on a menu item
+decides who sees the <em>link</em>; it does not decide who can open the page. That
+distinction is worked through under
+<a href="#example-linking-into-one-component-s-content">Example: linking into one component's content</a>.</p>
+</aside>
 <h2 id="menu-manager">Menu Manager</h2>
 <p><strong>Menus → Menu Manager</strong> opens <strong>Menu Manager: Menus</strong>. Each row shows the
 menu's title, its menu type beneath, the number of published, unpublished and
@@ -528,6 +557,52 @@ decides who sees the <em>link</em> — the module leaves out items above the rea
 viewing level — and nothing in the routing turns it into a check on the page.
 What guards the page is the article's own access level and the component's
 permissions. See <a href="../users/accesslevels/index.html">Access levels</a>.</p>
+<h2 id="taking-stock-of-navigation-you-inherited">Taking stock of navigation you inherited</h2>
+<p>Hubs accrete menus. Someone adds a menu for a workshop, someone else adds one
+for a course that ended, a template changes and a position stops rendering,
+and three years later nobody knows which of the seven menus the site actually
+shows. Before you change anything, find out what is live.</p>
+<p>Do this in order. The first four steps change nothing.</p>
+<ol>
+<li><strong>Menus → Menu Manager.</strong> This one screen answers most of it. Each row
+gives the menu's title, its menu type, the count of published,
+unpublished and trashed items, and, under <strong>Modules Linked to the Menu</strong>,
+every menu module pointed at that menu, written as <em>title</em> (<em>access level</em>
+in <em>position</em>).</li>
+<li><strong>Find the menus nobody can see.</strong> Any row whose modules cell offers <strong>Add
+a module for this menu type</strong> has no module at all. Its items still give
+pages their URLs, and those pages still answer — but no menu on the site
+lists them.</li>
+<li><strong>Check the positions against the template.</strong> A module in a position the
+current template does not declare renders nowhere. <strong>Extensions →
+Template Manager</strong> shows which template style the site uses, and the
+positions each template declares are listed in
+<a href="../extensions/templates/index.html">Templates</a>. <code>position-7</code>, which a plain
+install uses for the shipped <strong>Main Menu</strong> module, is declared by no
+template in this tree.</li>
+<li><strong>Read the counts.</strong> Each of the three numbers is a link into the item
+list already filtered to that state. A menu with two published items and
+nineteen trashed ones has been abandoned; a menu with published items and
+no module is the case in step 2.</li>
+<li><strong>Unpublish before you delete.</strong> Set the module's <strong>Status</strong> to
+Unpublished, or trash the menu items, and leave the hub for a week. Both
+are reversible from the same screen. Deleting is not: <strong>Delete</strong> on the
+Menu Manager removes the menu, every item in it, <em>and</em> the modules
+attached to it, and <strong>Empty trash</strong> on a trashed item list is final.</li>
+<li><strong>Watch what the URLs do.</strong> Trashing or deleting a menu item takes away
+the address it defined. Component pages beneath it usually still answer,
+because the component's own router resolves them, but at whatever address
+the router produces rather than the one the item gave them. Anything
+printed, cited or bookmarked at the old address needs an entry in the
+<strong>Redirect Manager</strong> — <strong>Site → Maintenance → Routes</strong>. See
+<a href="../content/urls/index.html#redirects">URLs</a>.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>Modules Linked to the Menu</strong> column lists modules
+whether or not they are published. Seeing a module named there does not
+mean the menu appears anywhere. Follow the link and check <strong>Status</strong> and
+<strong>Position</strong> on the module itself.</p>
+</aside>
 <h2 id="grouping-articles-under-a-menu">Grouping articles under a menu</h2>
 <p>To give a set of articles a section of their own — an About section, say —
 build the menu first and then show it:</p>
@@ -569,7 +644,7 @@ They are listed in the
 <a href="../../reference/configuration/components/menus/index.html">Menus configuration reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 754ab96b09</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../users/user-notes/index.html" rel="prev"><span>Previous</span>User notes</a><a class="pager__next" href="../content/index.html" rel="next"><span>Next</span>Content</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/07-menus.md">Edit this page on GitHub</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Categories · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="The Category Manager is one screen that several components borrow. Articles, user notes, knowledge base articles and events all file their content in…">
+  <meta name="description" content="Most hubs need one or two article categories, and a good many need none. A category earns its place when a group of pages belongs together — an About section…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/categories/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -161,6 +161,20 @@
         </header>
         
         <div class="prose">
+<p>Most hubs need one or two article categories, and a good many need none. A
+category earns its place when a group of pages belongs together — an About
+section with an overview, a contact page and an acknowledgements page — or
+when you want the pages' addresses to share a prefix. A single About page
+reached through a menu item needs no category at all: leave it in
+<strong>Uncategorised</strong> and nothing is lost. Creating a category tree before there
+is content to put in it is the commonest way a manager makes a small hub feel
+complicated.</p>
+<p>There is one thing categories do that nothing else does, and it is worth the
+trouble on a bigger hub: a category's state and access level apply to
+everything filed in it. Unpublishing one category takes a whole branch of the
+site down in a single save, and republishing it brings every page back in
+whatever state it was already in. That is covered under <a href="#states-and-permissions">States and
+permissions</a> below.</p>
 <p>The Category Manager is one screen that several components borrow. Articles,
 user notes, knowledge base articles and events all file their content in
 categories, and all four open the same component, <code>com_categories</code>, to
@@ -394,6 +408,12 @@ on. <code>com_categories</code> has a <code>config.xml</code> of its own, but it
 empty fieldset, so the component has no settings to configure.</p>
 </aside>
 <h3 id="batch-processing">Batch processing</h3>
+<p>Batch is for the day a section is reorganised: twenty pages that need moving
+under a new parent, or a set of pages that should all become <strong>Registered</strong>
+at once. It is not a small convenience — moving a category moves its children
+with it, and a copy duplicates a whole branch, so check what you have ticked
+before you run it. There is no undo; reversing a batch means running another
+one back the other way.</p>
 <p>Below the list, an administrator holding <strong>Create</strong>, <strong>Edit</strong> and <strong>Edit
 State</strong> on the extension gets a <strong>Batch process the selected categories</strong>
 panel. It sets the access level and the language of the checked categories,
@@ -575,7 +595,7 @@ category in the Permissions block; see <a href="../../users/accessgroups/index.h
 groups</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 9924bea2ec</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../articlemanager/index.html" rel="prev"><span>Previous</span>Article Manager</a><a class="pager__next" href="../states/index.html" rel="next"><span>Next</span>States, deleting and check-out</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/categories.md">Edit this page on GitHub</a>

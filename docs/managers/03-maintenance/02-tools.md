@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/maintenance/tools
 source-id: 3341
@@ -12,6 +12,19 @@ imported: 2026-09-09
 The tool pipeline is how a tool gets from a developer's registration form to a
 launchable resource page on the hub. This page walks the pipeline from the
 administrator's side.
+
+Skip it unless your hub hosts tools people run in the browser. Plenty of hubs
+are a website with datasets and documentation on it, and they never see any
+of these screens. If yours does host tools, this is the longest recurring job
+in the book: a tool moves through nine states, the developer and the
+administrator take turns, and each of your turns is a button press followed
+by reading what came back.
+
+The shape to hold on to is that the pipeline alternates. The developer
+registers; you create the repository. The developer uploads code; you install
+it. The developer writes the tool page and approves; you publish. Nothing
+advances on its own, so a tool sitting in the pipeline is always waiting for
+one named side, and the pipeline listing marks which.
 
 > **Important:** Only the CMS half of the pipeline lives in this repository.
 > The pipeline calls out to host scripts — `addrepo.sh`, `installtool.sh`,
@@ -47,6 +60,9 @@ developer's tasks *user tasks* and the administrator's *admin tasks*.
 > refused once the tool has been published.
 
 ## Preparation
+
+Do this before anything else, because the symptom of getting it wrong is that
+the pipeline appears to be empty and there is nothing on screen to say why.
 
 Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in

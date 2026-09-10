@@ -136,6 +136,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Spam</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-a-wave-arrives">When a wave arrives</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-spam-looks-like">What spam looks like</a></li>
 <li class="toc__item toc__item--l2"><a href="#turning-the-filters-on">Turning the filters on</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-the-check-runs">How the check runs</a></li>
@@ -145,6 +146,7 @@
 <li class="toc__item toc__item--l2"><a href="#spam-jail">Spam jail</a></li>
 <li class="toc__item toc__item--l3"><a href="#releasing-a-member">Releasing a member</a></li>
 <li class="toc__item toc__item--l2"><a href="#dealing-with-a-spam-account">Dealing with a spam account</a></li>
+<li class="toc__item toc__item--l2"><a href="#two-filters-this-page-is-not-about">Two filters this page is not about</a></li>
 <li class="toc__item toc__item--l2"><a href="#honeypots">Honeypots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../security/index.html">Security considerations</a></li>
@@ -168,6 +170,59 @@ Antispam</strong>, hooks the save and hands the text to every enabled plugin in 
 <code>antispam</code> group; each of those decides for itself whether the text looks
 like spam. A separate plugin, <strong>System - Spamjail</strong>, stops a member who
 trips the check too often. Neither is enabled on a fresh install.</p>
+<p>A hub behind a single-sign-on where every account belongs to a named person
+at a known institution rarely needs any of this. A hub that lets anyone on
+the internet register and post — which is most public hubs — will need it
+sooner or later, usually the week after a paper cites the hub and the address
+starts appearing in scraped lists. Turning the filters on before that happens
+costs nothing; turning them on during it means learning the screens while the
+queue grows.</p>
+<p>Nothing here is hard to undo. Every plugin on this page is a <strong>Status</strong>
+toggle in the Plug-in Manager, and turning one off stops it immediately. The
+irreversible actions are the ones at the end — deleting content and deleting
+accounts.</p>
+<h2 id="when-a-wave-arrives">When a wave arrives</h2>
+<p>Read this part first if something is happening now. It assumes a public hub
+that has just started collecting a few dozen junk forum posts and profile
+pages an hour.</p>
+<p>Work in this order. The first three steps stop the bleeding; the rest is
+clean-up.</p>
+<ol>
+<li><strong>Turn the filters on.</strong> <strong>Extensions → Plug-in Manager</strong>. Enable
+<strong>Content - Antispam</strong> first — without it nothing is checked, however many
+detectors you enable. Then enable <strong>Antispam - Black List</strong> and
+<strong>Antispam - Link Rife</strong>: they are the two that work immediately, with no
+account anywhere and no training. See
+<a href="#the-detectors-that-ship">The detectors that ship</a>.</li>
+<li><strong>Turn on the jail.</strong> Enable <strong>System - Spamjail</strong>. Refusing a post does
+not stop a script retrying; the jail does. A member is jailed on the sixth
+refusal in one session or the eleventh over the account's life, and lands
+on a &quot;spam detected&quot; page whatever they ask for.</li>
+<li><strong>Check that it fires on the actual text.</strong> <strong>Components → Support →
+Abuse → Spam Check</strong>. Paste one of the junk posts into <strong>Sample Content</strong>
+and select <strong>Check</strong>. The right-hand panel names every detector that ran
+and what it decided. If they all say ham, the shipped word list does not
+match this spammer — add words from the sample to <strong>Bad words</strong> on
+<strong>Antispam - Black List</strong> and check again.</li>
+<li><strong>Deal with the accounts.</strong> <strong>Users → Members</strong>, tick the offending rows,
+and select <strong>Block</strong>. <strong>Block</strong> works on a whole selection at once, which
+is why it comes before deleting anything. The full per-account procedure,
+which matters when the profile <em>is</em> the spam, is under
+<a href="#dealing-with-a-spam-account">Dealing with a spam account</a>.</li>
+<li><strong>Clear the reported content.</strong> <strong>Components → Support → Abuse</strong> lists
+what members have reported. Open each one and choose <strong>Remove as Spam</strong>
+rather than <strong>Delete item</strong>, so the trainable detectors learn from it.</li>
+<li><strong>Then think about the account-level filters.</strong> If accounts are being
+created faster than you can block them, the problem is registration, not
+content: a CAPTCHA on the registration form is the lever, and it is in
+<a href="../advancedsetup/index.html#recaptcha">Integrations</a> and
+<a href="../configuring/registration/index.html">Registration</a>.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Step 5 emails the content's author every time you release or
+remove an item. Block the account first, or the spammer receives a message
+per deletion.</p>
+</aside>
 <h2 id="what-spam-looks-like">What spam looks like</h2>
 <p>Signs a member account exists only to post spam:</p>
 <ul>
@@ -259,6 +314,17 @@ text itself is not written to the log.</p>
 <h2 id="the-detectors-that-ship">The detectors that ship</h2>
 <p>Six plugins in the <code>antispam</code> group. Their parameters are listed in the
 <a href="../../reference/configuration/plugins/antispam/index.html">antispam plugin reference</a>.</p>
+<p>Three of them work the moment you enable them: <strong>Black List</strong>, <strong>Link Rife</strong>
+and <strong>Baba Ji Spam Detector</strong>. Two need something outside the hub before they
+do anything — <strong>Akismet</strong> needs an API key from Akismet, and <strong>SpamAssassin</strong>
+needs a SpamAssassin your web server can reach, either a local <code>spamd</code> or a
+remote filter service. <strong>Bayesian Filter</strong> needs neither, but it decides
+nothing useful until it has been trained on content the hub has taken down.</p>
+<p>The two that need an account fail quietly rather than loudly. Enable
+<strong>Akismet</strong> without a key and it registers no detector at all: the Plug-in
+Manager shows it enabled, the <strong>Spam Check</strong> report does not list it, and
+nothing tells you why. If a detector you enabled does not appear on that
+report, it is inert.</p>
 <table>
 <thead>
 <tr>
@@ -390,6 +456,23 @@ item</strong>, <strong>Remove as Spam</strong>, and <strong>Delete item</strong>
 the item <em>and</em> feeds its text back to the trainable detectors as known
 spam; <strong>Delete item</strong> only deletes it. Use the first one on real spam so
 the Bayesian filter and the remote services learn from it.</p>
+<h2 id="two-filters-this-page-is-not-about">Two filters this page is not about</h2>
+<p>Managers hunting for a spam setting find these and change them expecting the
+antispam plugins to react. Neither has anything to do with the <code>antispam</code>
+group.</p>
+<p><strong>Support's own ticket filter.</strong> The Support component's <strong>Options</strong> carry an
+<strong>Antispam</strong> tab — the name is the trap — holding an <strong>IP Blacklist</strong> and a
+<strong>Bad words</strong> list of its own, with a much longer shipped word list than the
+Black List plugin's. They are read by the support ticket form and nowhere
+else, and only for a submitter who is not signed in: a ticket from a member
+goes straight through. The same check
+refuses a ticket containing five or more occurrences of <code>http://</code> — which
+misses <code>https://</code> entirely, so it catches almost nothing on the modern web.
+Recorded in the project record.</p>
+<p><strong>The registration CAPTCHA.</strong> A CAPTCHA stops a script creating accounts. It
+does nothing about a human who registers and then posts advertising, and
+nothing about an account created before you turned it on. It is in
+<a href="../advancedsetup/index.html#recaptcha">Integrations</a>.</p>
 <h2 id="honeypots">Honeypots</h2>
 <p>A few forms — new questions in Answers, project setup, event submission —
 carry a hidden honeypot field and an encrypted timestamp. A submission is
@@ -398,7 +481,7 @@ submitted faster than a human could have typed it. This runs whether or not
 any antispam plugin is enabled, and has nothing to configure.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/extension-manager/index.html" rel="prev"><span>Previous</span>Extension Manager</a><a class="pager__next" href="../security/index.html" rel="next"><span>Next</span>Security considerations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/11-spam.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/maintenance/tickets
 source-id: 3342
@@ -16,6 +16,22 @@ those tickets in the **Support** component. This page is about handling the
 queue day to day; for setting the component up — categories, canned messages,
 statuses, and who may see what — read
 [Support](../09-components/34-support.md).
+
+Every hub that has users has a support queue, whether or not anybody watches
+it. The queue is where a hub finds out what is broken, and a manager who reads
+it once a week knows more about their hub than one who reads the logs. Half
+the tickets on a busy hub are the same three problems, which is what the
+knowledge base and the canned **Messages** are for.
+
+The one rule worth stating first: reply before you diagnose. An
+acknowledgement costs a minute and stops the user opening a second ticket, or
+mailing you directly, or deciding the hub is unmaintained.
+
+> **Note:** Tickets are not the abuse queue. A ticket is a person asking for
+> help. An abuse report is a person flagging content, and it lands on a
+> different screen with different buttons — see [Abuse
+> reports](#abuse-reports) below. Both live in the same component, which is
+> why they get confused.
 
 ## The screens
 
@@ -85,6 +101,11 @@ work.
 
 ## Abuse reports
 
+Carry on the scenario from [Approving Content](01-approvingcontent.md): the
+hub has been named in a paper, traffic is up, and along with the genuine
+submissions come the first spam posts. Members flag them, and the flags land
+here.
+
 The **Abuse** screen collects reports raised from around the site — forum and
 blog comments, knowledge base articles, questions, wiki comments. The reporter
 supplies a reason; the report lands with a status of **New**.
@@ -98,6 +119,22 @@ Open a report to see the reported item in place, then take one action:
 | **Delete item** | The content is deleted |
 | **Decide later** | Nothing changes; the report stays outstanding |
 
+> **Warning:** **Remove as Spam** and **Delete item** both destroy the
+> reported content. The component fires an event telling the owning component
+> to delete the item, and nothing keeps a copy. There is no trash to fish it
+> back out of, so read the report and look at the content before you press
+> either. **Decide later** costs nothing and leaves the report where you can
+> find it again.
+
+Prefer **Remove as Spam** over **Delete item** for actual spam: it does the
+same removal and additionally hands the text to the antispam plugins as a
+training sample, so the next post like it is more likely to be caught before a
+member has to report it. Use **Delete item** for content that is simply
+unacceptable rather than spam — training the filter on it would teach it the
+wrong thing.
+
 The list filters by **Outstanding**, **Released**, and **Deleted**. The
 **Spam Check** screen under the same controller lets you paste sample content
-and see what the enabled antispam plugins make of it.
+and see what the enabled antispam plugins make of it — useful when a member
+complains that a legitimate post was blocked, since it shows you which
+detector objected. [Spam](../11-spam.md) covers the plugins themselves.

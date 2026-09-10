@@ -64,8 +64,10 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Registration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-of-these-settings-you-are-likely-to-need">Which of these settings you are likely to need</a></li>
 <li class="toc__item toc__item--l2"><a href="#turning-registration-off">Turning registration off</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-new-account-has-to-pass">What a new account has to pass</a></li>
+<li class="toc__item toc__item--l2"><a href="#default-privacy">Default Privacy</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-registration-fields-table">The registration fields table</a></li>
 <li class="toc__item toc__item--l2"><a href="#incremental-registration">Incremental Registration</a></li>
 <li class="toc__item toc__item--l2"><a href="#premis-data-import">PREMIS Data Import</a></li>
@@ -171,11 +173,44 @@ Members &gt; Registration</strong>, which holds the field-by-field table.</p>
 <a href="../../configuring/registration/index.html">Configuring Registration</a> covers the
 same field table from the configuration side.</p>
 </aside>
+<h2 id="which-of-these-settings-you-are-likely-to-need">Which of these settings you are likely to need</h2>
+<p>A hub installed today lets anyone register and emails them a confirmation
+link. For a public hub that is the right arrangement and you can leave the
+whole screen alone.</p>
+<p>You come here for one of three reasons.</p>
+<ul>
+<li><strong>The hub is not meant to be open.</strong> An internal hub, or one hosting
+restricted data, wants registration switched off and accounts made by hand
+or by <a href="../memberimport/index.html">import</a>.</li>
+<li><strong>Something has gone wrong.</strong> A paper is published, the hub gets attention,
+and the account list fills with signups nobody made. The fix is the
+activation gate, not the registration switch.</li>
+<li><strong>You need something the form does not ask for.</strong> An institution, a
+department, a signed data agreement. That is the field table further down,
+and the profile builder behind it.</li>
+</ul>
+<p>Everything on this page affects <em>future</em> registrations only. Accounts that
+already exist are not revisited, with one exception — the <strong>Update on Next
+Login</strong> column, which is the one setting here that reaches people already
+using the hub. Treat that column differently from the rest.</p>
 <h2 id="turning-registration-off">Turning registration off</h2>
 <p>To stop visitors creating their own accounts, open <strong>Users &gt; Members</strong>, press
 <strong>Options</strong> in the toolbar, and set <strong>Allow User Registration</strong> — the first
 setting on the <strong>Component</strong> tab — to <strong>No</strong>. Administrators can still create
 accounts from the Members list.</p>
+<p>The change is immediate and reversible: turn it back on and registration
+resumes. Existing accounts are untouched. What actually happens is that the
+<strong>Register</strong> links vanish from the login form and the site header, and the
+registration address itself returns <em>not found</em> to anyone who has kept the
+URL.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This switch also governs the authentication plugins. With
+registration off, a login through Google, Shibboleth, CILogon, ORCID or any
+other provider can only match an account that already exists; it can no
+longer create one. On a hub where most people arrive through their
+institution's login, turning registration off shuts out every newcomer, not
+just the ones who would have filled in the form.</p>
+</aside>
 <h2 id="what-a-new-account-has-to-pass">What a new account has to pass</h2>
 <p><strong>New User Account Activation</strong>, also on the <strong>Component</strong> tab, sets the gate.</p>
 <table>
@@ -205,11 +240,45 @@ user when an administrator approves their account, and only applies under
 <strong>Admin</strong>. <strong>Notification Mail to Administrators</strong> emails the site's
 administrators when an account is created, and only applies under <strong>None</strong> or
 <strong>Self</strong>.</p>
+<p><strong>Self</strong> is the shipped default and is the right choice for most hubs: it
+costs an administrator nothing and stops the account list filling with
+addresses that do not exist. Move to <strong>Admin</strong> when you need to know who is
+joining — a hub with restricted material, or a hub in the middle of a spam
+wave, where every new signup should wait for a person to look at it. Be
+honest about the cost: <strong>Admin</strong> means somebody checks the list, and an
+unapproved account is a person who cannot use the hub until they do.</p>
+<p>Changing this setting applies only to registrations made after the change.
+Accounts already sitting unconfirmed or unapproved stay where they are, so
+switching from <strong>Admin</strong> back to <strong>Self</strong> does not release the backlog —
+approve those by hand from the account list.</p>
 <p>Accounts waiting at either gate are held on a holding page by the <strong>System -
 Unconfirmed</strong> and <strong>System - Unapproved</strong> plugins. Find them by filtering the
 Members list on <strong>- Email confirmed -</strong> or <strong>- Approved -</strong>; see
 <a href="../members/index.html#account-states">Account states</a> for how to clear each
 gate.</p>
+<h2 id="default-privacy">Default Privacy</h2>
+<p><strong>Default Privacy</strong>, on the <strong>Defaults</strong> tab of the same <strong>Options</strong> screen,
+decides whether a profile created by self-registration is visible to the rest
+of the hub or only to its owner. It matters more than it looks: a public
+profile is listed in the member directory and readable by anyone, and a hub
+whose members are, say, patients or schoolchildren does not want that.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The manifest and the shipped data disagree about this setting,
+and the code sides with the data. The component manifest declares the option's
+default as <strong>Private</strong>; the data a hub is installed with stores <strong>Public</strong>;
+and both places in the code that apply it fall back to <strong>Public</strong> when nothing
+is stored at all. So a self-registered profile is created public unless
+somebody has explicitly saved this screen with <strong>Private</strong> selected — and on a
+hub whose stored options have lost the key, the screen shows you <strong>Private</strong>
+while new profiles are still being created public. Do not trust the displayed
+value. Set the option, save it, then register a test account and look at what
+you get.</p>
+</aside>
+<p>The setting applies at registration only, and only to self-registration.
+Accounts an administrator creates from the Members list, and accounts created
+by <a href="../memberimport/index.html">import</a>, never run that code and so are private. A
+member can change their own profile's privacy from their profile page at any
+time, and changing the option later does not revisit anyone.</p>
 <h2 id="the-registration-fields-table">The registration fields table</h2>
 <ol>
 <li>Open <strong>Users &gt; Members</strong>.</li>
@@ -279,13 +348,29 @@ ask for it.</p>
 asks for comes from the profile builder, where each field carries its own
 required flag and access level; see
 <a href="../members/index.html#building-the-profile-form">Building the profile form</a>.</p>
-<p><strong>Update on Next Login</strong> is what makes an existing account fill in a gap. On
+<p>Setting a field to <strong>Required</strong> in the <strong>Create Account</strong> column changes what
+new registrations must supply and touches nobody who already has an account.
+That is the safe column. <strong>Edit Profile</strong> governs what a member must supply
+when they edit their own profile — and, less obviously, what the
+<a href="../memberimport/index.html">member importer</a> validates against, so a change here can
+start failing import records.</p>
+<p><strong>Update on Next Login</strong> is the one that reaches everybody. On
 every login the session is flagged as incomplete, the <strong>Members - Profile</strong>
 plugin re-checks the profile against this column, and the flag clears the
 moment the check passes. So setting a field to <strong>Required</strong> here puts it in
 front of every logged-in user until they answer it. Setting <strong>TOU</strong> to <strong>Required</strong> in this
 column is exactly what the Members list's <strong>Reset terms of use agreements for
 all users</strong> button does.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Marking a field <strong>Required</strong> in <strong>Update on Next Login</strong> puts a
+form in front of every member of the hub, at once, the next time each of them
+logs in. There is no way to try it on a few people first and no way to
+exclude anyone. Set one field at a time, log in with an ordinary account
+immediately afterwards and check what the prompt looks like, and set the
+column back to <strong>Optional</strong> once enough people have answered — leaving it
+<strong>Required</strong> means the prompt greets every member who has not logged in for a
+year, forever.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Nothing in this release passes the <strong>Proxy Create Account</strong> column
 to the registration check — no screen creates an account &quot;by proxy&quot;. The
@@ -479,7 +564,7 @@ before this is usable.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../members/index.html" rel="prev"><span>Previous</span>Members</a><a class="pager__next" href="../memberimport/index.html" rel="next"><span>Next</span>Member import</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/02-registration.md">Edit this page on GitHub</a>

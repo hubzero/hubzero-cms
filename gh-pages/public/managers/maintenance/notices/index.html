@@ -49,10 +49,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Site Notices</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#one-notice-at-a-time">One notice at a time</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-the-module">Finding the module</a></li>
 <li class="toc__item toc__item--l2"><a href="#details">Details</a></li>
 <li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#substitutions-in-the-message">Substitutions in the message</a></li>
 <li class="toc__item toc__item--l2"><a href="#menu-assignment">Menu assignment</a></li>
+<li class="toc__item toc__item--l2"><a href="#taking-it-down">Taking it down</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
@@ -160,6 +163,29 @@
 <p>A site notice is the banner that warns visitors the hub is going down for
 maintenance, or that something is broken. It is not a component — it is the
 <code>mod_notices</code> module, and you post a notice by editing that module.</p>
+<p>You need one perhaps four times a year: a scheduled outage, a storage
+migration, a tool that has stopped working while you find out why, a change
+of address. The value of a notice is that it stops the support queue filling
+up with fifteen tickets about the same outage, so post it before the work
+starts rather than after somebody notices.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A notice is visible to everybody the moment you save it, on
+whichever pages the <strong>Menu Assignment</strong> tab allows. There is no preview and
+no draft. Write the text first, then set <strong>Status</strong> to <strong>Published</strong>.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A notice is not a message to members and not an announcement. It
+emails nobody, it is not stored anywhere a member can go back to, and a
+visitor who arrives after you take it down never knows it existed. For
+something people need to keep, write an article and link to it from the
+notice.</p>
+</aside>
+<h2 id="one-notice-at-a-time">One notice at a time</h2>
+<p>There is nothing stopping you publishing several notices in the <code>notices</code>
+position at once, and nothing sorting out what happens when you do — they
+stack, all of them, on every page. In practice keep one module and edit it,
+rather than creating a new one for each event. Give it a title you will
+recognise later, like <code>Site notice</code>, and change its message.</p>
 <h2 id="finding-the-module">Finding the module</h2>
 <ol>
 <li>Log in to <code>/administrator</code>.</li>
@@ -216,7 +242,7 @@ dates.</p>
 <td><code>moduleid</code></td>
 <td><strong>Module ID</strong></td>
 <td>empty</td>
-<td>A CSS id put on the module's container, for per-notice styling</td>
+<td>A CSS id put on the module's container, for per-notice styling. It is also the name of the dismissal cookie — see below</td>
 </tr>
 <tr>
 <td><code>allowClose</code></td>
@@ -234,10 +260,72 @@ dates.</p>
 </table>
 <p><strong>Alert level</strong> becomes a class name on the wrapper — <code>modnotices low</code>,
 <code>modnotices medium</code>, <code>modnotices high</code> — and the template decides what each
-one looks like. High is the loud one.</p>
-<p><strong>Allow closing</strong> stores the dismissal per visitor. If a <strong>Finish Publishing</strong>
-date is set, the close link carries the number of days left so the dismissal
-expires with the notice.</p>
+one looks like. High is the loud one. Use it for an outage happening now and
+<code>low</code> for one announced a week ahead; a hub whose every notice is <code>high</code>
+trains people to ignore the banner.</p>
+<p><strong>Allow closing</strong> stores the dismissal in a cookie named after <strong>Module ID</strong>,
+falling back to <code>sitenotice</code>. Two consequences worth knowing. Changing
+<strong>Module ID</strong> on an existing notice gives it a new cookie name, so everyone
+who dismissed it sees it again. And two notices sharing a <strong>Module ID</strong>
+share a dismissal.</p>
+<p>The dismissal has a lifetime. With a <strong>Finish Publishing</strong> date set, it lasts
+until that date, so the notice cannot come back after it has expired anyway.
+With no end date, it lasts seven days and then the notice returns.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A notice with an empty <strong>Message</strong> renders nothing at all, even
+when published and in its window. Emptying the message is therefore another
+way to take a notice down, though <strong>Status</strong> is the clearer one.</p>
+</aside>
+<h2 id="substitutions-in-the-message">Substitutions in the message</h2>
+<p>The message text is scanned for five tags, which are replaced with the
+module's own publishing dates. They save you retyping the window into the
+prose, and they stay right if you move the outage.</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Becomes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;notice:start&gt;</code></td>
+<td>The <strong>Start Publishing</strong> date and time, as <code>9:00 AM, Mar 3rd, 2026</code></td>
+</tr>
+<tr>
+<td><code>&lt;notice:end&gt;</code></td>
+<td>The <strong>Finish Publishing</strong> date and time, in the same form</td>
+</tr>
+<tr>
+<td><code>&lt;notice:countdowntostart&gt;</code></td>
+<td>Time remaining until the start — <code>in 2 days, 3 hours, 15 minutes</code>, or <code>starting immediately</code></td>
+</tr>
+<tr>
+<td><code>&lt;notice:countdowntoreturn&gt;</code></td>
+<td>The same, counted to the finish date</td>
+</tr>
+<tr>
+<td><code>&lt;notice:timezone&gt;</code></td>
+<td>Nothing. See the warning below</td>
+</tr>
+</tbody>
+</table>
+<p>So a maintenance notice can read: <em>The hub is unavailable for scheduled
+maintenance <code>&lt;notice:countdowntostart&gt;</code>, returning at <code>&lt;notice:end&gt;</code>.</em></p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>&lt;notice:timezone&gt;</code> always resolves to an empty string. It
+reads a <code>timezone</code> parameter, and the module declares no such field, so
+there is nothing on the edit form that could ever set it. The times the
+other four tags print are the server's, with no zone named. If the audience
+is spread across time zones, write the zone into the message text yourself.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The module's code carries fallbacks that differ from the form's
+declared defaults — an absent <code>alertlevel</code> is treated as <code>medium</code> and an
+absent <strong>Allow closing</strong> as <strong>Yes</strong>. Saving the form writes explicit values,
+so on any notice you have edited the table above is what applies. The
+fallbacks only show on a module row whose parameters were never saved.</p>
+</aside>
 <h2 id="menu-assignment">Menu assignment</h2>
 <p>The <strong>Menu Assignment</strong> tab decides which pages show the notice:</p>
 <table>
@@ -272,9 +360,24 @@ is published and inside its publishing window. It is the most common reason
 a notice does not appear.</p>
 </aside>
 <p>Save with <strong>Save</strong> or <strong>Save &amp; Close</strong>.</p>
+<h2 id="taking-it-down">Taking it down</h2>
+<p>Nothing takes a notice down for you unless you set <strong>Finish Publishing</strong> when
+you posted it. If you did not, come back and set <strong>Status</strong> to
+<strong>Unpublished</strong>. A stale maintenance notice about work that finished last
+month does more harm than no notice at all — visitors stop reading the banner,
+and the next real one goes unread.</p>
+<p>For a planned outage, set both dates when you write the notice: <strong>Start
+Publishing</strong> a day or two ahead so people see it coming, and <strong>Finish
+Publishing</strong> at the end of the window. Then it appears and disappears without
+you.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Setting <strong>Finish Publishing</strong> also bounds the dismissal cookie, so
+a visitor who closed this notice sees the next one. Without an end date the
+dismissal lasts seven days regardless.</p>
+</aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tickets/index.html" rel="prev"><span>Previous</span>Support Tickets</a><a class="pager__next" href="../cron/index.html" rel="next"><span>Next</span>Scheduled Tasks</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/04-notices.md">Edit this page on GitHub</a>

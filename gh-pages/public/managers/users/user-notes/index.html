@@ -71,6 +71,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../accesslevels/index.html">Access Levels</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/index.html">Super Groups</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">User notes</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-to-use-this-screen-at-all">Whether to use this screen at all</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-note-list">The note list</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-a-note">Writing a note</a></li>
 <li class="toc__item toc__item--l2"><a href="#note-categories">Note categories</a></li>
@@ -165,6 +166,31 @@ date.</p>
 in 2.4 — the model and its screens exist only in the administrator
 interface, and a note is written <em>about</em> a member, not <em>by</em> one.</p>
 </aside>
+<h2 id="whether-to-use-this-screen-at-all">Whether to use this screen at all</h2>
+<p>Decide that before you start, because the screen is only half-built and
+switching to something else later means retyping.</p>
+<p>It works for one thing: writing a note against an account and reading it back
+later. That is genuinely useful on a hub where more than one person answers
+support mail and the next person needs to know why an account was suspended in
+March. If that is your problem, the screen solves it.</p>
+<p>Almost everything else on it does not work. Seven of the toolbar's actions —
+<strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Archive</strong>, <strong>Check-in</strong> and <strong>Empty Trash</strong> on
+the list, <strong>Save &amp; New</strong> and <strong>Save as Copy</strong> on the form — submit tasks the
+notes controller does not implement, and pressing one simply redraws the
+screen. <strong>Edit</strong> and <strong>Trash</strong> reach real code but read the selected rows under
+a name the list never posts, so they behave as though you had ticked nothing.
+The column sort links fail. Deleting a note cannot be done from the interface
+at all.</p>
+<p>So: use it if you want an append-mostly log against an account and can live
+with notes accumulating. Do not use it if you need to retract, tidy or archive
+what you write, or if the notes have to be got rid of on request — a
+data-protection erasure request cannot be honoured from this screen.</p>
+<aside class="admonition admonition--caution">
+<p><strong>Caution:</strong> A user note is personal information about a real person, kept
+where they cannot see it and cannot correct it, and in this release cannot be
+deleted without database access. Write what a support record needs and no
+more.</p>
+</aside>
 <p>Notes live in <code>com_members</code>, at <strong>Users</strong> → <strong>User Notes</strong>, or under
 <strong>Users</strong> → <strong>Members</strong> → <strong>Notes</strong>. Categories are ordinary content
 categories belonging to <code>com_members</code>, at <strong>Users</strong> → <strong>User Note
@@ -204,6 +230,10 @@ database rejects. Leave the list on its default order, newest review date
 first.</p>
 </aside>
 <h2 id="writing-a-note">Writing a note</h2>
+<p>Notes are written one at a time and only from the <strong>New</strong> button. Everything
+else on the toolbar is either inert or misreads the selection, so this is the
+whole of what the screen does. Nothing here is sent to anyone and nothing is
+visible on the site.</p>
 <ol>
 <li>Go to <strong>Users</strong> → <strong>User Notes</strong>.</li>
 <li>Select <strong>New</strong>.</li>
@@ -261,7 +291,9 @@ list. Use <strong>Save</strong>, then <strong>New</strong>.</p>
 </aside>
 <h2 id="note-categories">Note categories</h2>
 <p>Categories organise notes; a hub with a handful of notes does not need them,
-one that logs every support contact does.</p>
+one that logs every support contact does. Decide early whether you want them,
+because the note list's category filter is the only way to narrow a long list —
+the sort links do not work and the search box matches subject and body only.</p>
 <p>Go to <strong>Users</strong> → <strong>User Note Categories</strong>. The screen is <code>com_categories</code>
 scoped to <code>com_members</code>, the same manager used for article categories, and it
 behaves the same way: create, edit, publish, reorder, nest, batch-process and
@@ -271,7 +303,7 @@ anywhere else on the hub.</p>
 is the only thing categories change.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups/index.html" rel="prev"><span>Previous</span>Super Groups</a><a class="pager__next" href="../../menus/index.html" rel="next"><span>Next</span>Menus</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/user-notes.md">Edit this page on GitHub</a>

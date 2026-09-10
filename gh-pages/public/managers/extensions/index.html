@@ -130,6 +130,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/wishlist/index.html">Wish lists</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Extensions</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#this-section-and-the-one-it-is-confused-with">This section, and the one it is confused with</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-extension-types">The extension types</a></li>
 <li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
 <li class="toc__item toc__item--l3"><a href="#modules">Modules</a></li>
@@ -193,6 +194,27 @@ four administrator screens that manage extensions, all reached from the
 <p>A fifth entry, <strong>Language Manager</strong>, opens <code>com_languages</code>. It has its own
 chapter, <a href="../components/languages/index.html">Language Manager</a>, among the
 <a href="../components/index.html">component chapters</a>.</p>
+<h2 id="this-section-and-the-one-it-is-confused-with">This section, and the one it is confused with</h2>
+<p>This section is about <strong>which extensions exist and where they sit</strong>. Creating
+a module and putting it in a template position. Turning a plugin on. Choosing
+the template the site renders in. Adding a hub's own code from a git
+repository.</p>
+<p><a href="../configuring/index.html">Configuring</a> is about <strong>values</strong>: the settings
+inside an extension once it exists and is switched on.</p>
+<p>Two screens carry both jobs, and that is where the confusion starts. The
+Module Manager creates a module <em>and</em> holds its parameters; the Plug-in
+Manager enables a plugin <em>and</em> holds its parameters. In this book the
+parameters are described in the Configuring chapters —
+<a href="../configuring/modules/index.html">Modules</a> and
+<a href="../configuring/plugins/index.html">Plugins</a> — and everything else here.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> If a hub looks empty — no menu down the side, no login box,
+nothing but the component in the middle of the page — the cause is almost
+always in this section, not in the content. A module renders only if its
+position is one the live template actually draws, and a fresh install ships
+neither a default style that draws any nor a main menu in a position that
+exists. <a href="modules/index.html#positions">Positions</a> explains it.</p>
+</aside>
 <h2 id="the-extension-types">The extension types</h2>
 <h3 id="components">Components</h3>
 <p>A component is an application. It has its own controllers, models, views,
@@ -282,7 +304,7 @@ behaviour, put a replacement of the same name under <code>app/</code>; it wins. 
 <strong>Custom Extensions</strong> and installs them from a git repository.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/wishlist/index.html" rel="prev"><span>Previous</span>Wish lists</a><a class="pager__next" href="modules/index.html" rel="next"><span>Next</span>Module Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/README.md">Edit this page on GitHub</a>

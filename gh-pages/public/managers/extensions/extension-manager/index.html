@@ -134,6 +134,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Extension Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-screen-is-not">What this screen is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#hubzero-core">Hubzero Core</a></li>
 <li class="toc__item toc__item--l3"><a href="#toolbar">Toolbar</a></li>
 <li class="toc__item toc__item--l3"><a href="#core-migrations">Core Migrations</a></li>
@@ -169,6 +170,21 @@ also installs a hub's own extensions from a git repository, and reports
 problems with the server's PHP configuration.</p>
 <p>Select <strong>Extensions</strong> → <strong>Extension Manager</strong>, or go to
 <code>/administrator/index.php?option=com_installer</code>.</p>
+<p>Most managers never need this screen. The extensions a hub runs on arrive
+with the code and are already switched on. Three things bring you here: a
+component your hub does not use is cluttering the administrator menu and you
+want it gone; someone has written a component or plugin for your hub and it
+lives in a git repository; or mail attachments and image handling have
+stopped working and you want to see what the server thinks of its own PHP
+configuration.</p>
+<h2 id="what-this-screen-is-not">What this screen is not</h2>
+<p>It is not an installer for extensions from elsewhere. There is no upload
+form, no install-from-URL, and nothing that will take a downloaded package.
+The only route for a hub's own code is a git repository, through <strong>Custom
+Extensions</strong>, and it puts that code under <code>app/</code>.</p>
+<p>It is not an update screen either. Updating the platform is a deployment
+task, done outside the administrator interface; what this screen offers is
+<strong>Refresh Cache</strong>, which re-reads manifests, and the migration runner.</p>
 <p>The screen has three tabs:</p>
 <table>
 <thead>
@@ -215,8 +231,8 @@ Name, Location, Status, Type, Folder and ID columns sort.</p>
 (Enabled / Disabled / Protected), type and folder.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The search matches the stored extension name, which for most core
-extensions is an untranslated language key such as <code>COM_MODULES</code> or
-<code>PLG_CONTENT_LOADMODULE</code>, not the label shown in the list. Search for a word
+extensions is a language key such as <code>com_modules</code>, <code>mod_login</code> or
+<code>plg_content_loadmodule</code>, not the label shown in the list. Search for a word
 from the key, or use <code>id:</code> followed by an extension id. Filtering by
 <strong>Type</strong> is usually quicker.</p>
 </aside>
@@ -263,6 +279,20 @@ component refuses to disable is the default template.</p>
 the administrator menu. Disabling a module type stops every instance of it
 from rendering, whatever the <a href="../modules/index.html">Module Manager</a> says.</p>
 </aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The only thing the component refuses to disable is a
+template that is currently the default. Everything else can be switched
+off, including the components the administrator interface itself is built
+from. Disabling <code>com_installer</code> removes this screen, and this screen is the
+only way to switch it back on; recovery is an edit to the <code>#__extensions</code>
+table. Read the <strong>Name</strong> column before you tick anything — and note that
+what it shows is a translated label, so check the row is the extension you
+meant.</p>
+</aside>
+<p>Disabling is otherwise reversible and reasonably safe to try: nothing is
+deleted, no data is touched, and re-enabling puts everything back. What it
+does do is take a feature away from everybody using the hub at that moment,
+without warning them.</p>
 <h3 id="core-migrations">Core Migrations</h3>
 <p>A second navigation strip inside this tab leads to <strong>Core Migrations</strong>, which
 lists the platform's database migration files and their status. Its toolbar
@@ -277,6 +307,14 @@ live database. Take a backup first.</p>
 cloning a git repository. The repository must lay its files out the way the
 platform expects for the chosen extension type; the <code>non-standard</code> type drops
 the repository's contents into <code>app/</code> as they are.</p>
+<p>This is how a hub gets something the platform does not ship: a component
+written for one research group, a plugin that talks to a local instrument, a
+template of the hub's own. It is also how that code is kept up to date
+afterwards, which is the part worth planning for. The update button merges
+new commits into the running hub's filesystem — there is no staging copy,
+no test run, and no undo on this screen. Whoever maintains the repository is
+in effect deploying to production every time you press it, so agree with them
+how a change gets tested before it is tagged.</p>
 <p>Columns: <strong>Name</strong>, <strong>Status</strong>, <strong>Location</strong>, <strong>Type</strong>, <strong>Folder</strong>,
 <strong>Modified on</strong>, <strong>Modified by</strong> and <strong>ID</strong>.</p>
 <h3 id="toolbar-2">Toolbar</h3>
@@ -402,8 +440,13 @@ them.</p>
 </li>
 </ol>
 <h2 id="warnings">Warnings</h2>
-<p>This tab runs a set of checks against the PHP configuration and lists
-anything it does not like, each as an expandable panel. It checks that:</p>
+<p>This tab is the first place to look when uploads fail, images do not appear,
+or a file that is obviously small is rejected as too large. It reports on the
+server rather than on the hub, so nothing here is something you fix from the
+administrator interface — each item is a change to PHP's configuration or to
+what is installed on the machine, for whoever has that access.</p>
+<p>It runs a set of checks against the PHP configuration and lists anything it
+does not like, each as an expandable panel. It checks that:</p>
 <ul>
 <li>file uploads are enabled;</li>
 <li><code>upload_tmp_dir</code> is set and writable;</li>
@@ -428,7 +471,7 @@ missing, so they render raw keys such as <code>COM_INSTALLER_TITLE_PACKAGES</cod
 instead of labels. Treat them as unfinished.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plug-in Manager</a><a class="pager__next" href="../../spam/index.html" rel="next"><span>Next</span>Spam</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/04-extension-manager.md">Edit this page on GitHub</a>

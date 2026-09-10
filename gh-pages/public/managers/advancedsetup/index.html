@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Integrations · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Connecting a hub to the outside services it commonly uses — analytics, Google Drive, the rich text editor, and CAPTCHA — and where the sign-in providers are covered instead.">
+  <meta name="description" content="Connecting a hub to the outside services it commonly uses — analytics, external file storage for projects, the rich text editor, and CAPTCHA — and where the sign-in providers are covered instead.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/advancedsetup/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +47,10 @@
 <li class="toc__item toc__item--l2"><a href="#sign-in-providers">Sign-in providers</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-hub-s-own-pages">The hub&#x27;s own pages</a></li>
 <li class="toc__item toc__item--l2"><a href="#google-analytics">Google Analytics</a></li>
-<li class="toc__item toc__item--l2"><a href="#google-drive-in-projects">Google Drive in projects</a></li>
+<li class="toc__item toc__item--l2"><a href="#external-file-storage-in-projects">External file storage in projects</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-ships">What ships</a></li>
+<li class="toc__item toc__item--l3"><a href="#turning-one-on">Turning one on</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-older-project-wide-google-connection">The older project-wide Google connection</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-rich-text-editor">The rich text editor</a></li>
 <li class="toc__item toc__item--l2"><a href="#recaptcha">reCAPTCHA</a></li>
 </ol></li>
@@ -162,6 +165,17 @@
 <p>Everything a hub connects to that is not part of the hub. Each of these is a
 plugin or a module you enable and hand a pair of credentials to, after
 registering the hub with the service.</p>
+<p>None of it is required. A hub runs perfectly well with no analytics, no
+external storage, the editor it was installed with, and no CAPTCHA. Come here
+when something has made one of them necessary — a funder asking for usage
+figures, a project with more data than the hub should hold, a wave of
+registrations by script. Each section below opens by saying which hubs that
+is, so you can stop reading after a paragraph.</p>
+<p>Every integration on this page has a cost the first paragraph will not tell
+you: it is an account at somebody else's service, held by a person who will
+eventually leave. Write down which account, in whose name, before you set one
+up. A dead API key is the commonest way an integration stops working, and it
+is the hardest to diagnose because nothing on the hub says so.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> This page was imported as &quot;Getting Started: Advanced Setup&quot; and
 was mostly a set of step-by-step instructions for registering the hub with
@@ -188,6 +202,12 @@ Article Manager</strong>, as described in
 <a href="../content/articlemanager/index.html">Article Manager</a>. Rewrite them before the hub
 opens to the public — the sample text describes a hub in general, not yours.</p>
 <h2 id="google-analytics">Google Analytics</h2>
+<p>For hubs that have to report usage to somebody — a funder, a department, a
+steering committee. This is usually the only way a hub gets page-level
+figures. The Usage component publishes a <code>/usage</code> page, but it computes
+nothing: it draws every figure from tables filled in by metrics tooling that
+is not part of this repository, so on a hub installed from this repository
+alone it has nothing to show. See <a href="../components/usage/index.html">Usage</a>.</p>
 <p>Two modules can carry a Google tag. Both are site modules with a single
 parameter, and both need a position that appears on every page — <code>footer</code> in
 the templates that ship.</p>
@@ -227,12 +247,98 @@ the templates that ship.</p>
 no consent gate. If your hub is subject to a cookie consent regime, deal
 with that before you publish the module.</p>
 </aside>
-<h2 id="google-drive-in-projects">Google Drive in projects</h2>
-<p>Projects can mount a Google Drive folder alongside the project's own file
-repository. There are two paths through the code, and which one a hub uses
-depends on how its projects were set up.</p>
-<p>The <strong>Projects - Files</strong> plugin (<strong>Extensions → Plug-in Manager</strong>, search for
-<code>projects</code>) carries the older, project-wide connection:</p>
+<h2 id="external-file-storage-in-projects">External file storage in projects</h2>
+<p>For hubs whose projects hold more data than the hub should, or data that
+already lives somewhere else and should not be copied. A project's own file
+repository is the default and is the right answer for most projects: it is
+versioned, it is backed up with the hub, and it needs no account anywhere. A
+connection is for the case where that is not true — a group with a terabyte
+in an S3 bucket, a modelling team whose code is a GitHub repository, a lab
+that has standardised on Drive.</p>
+<p>It is not a backup, and it is not a migration. A connection mounts the remote
+store <em>alongside</em> the project's own files; it does not copy anything into the
+hub, and it does not make the hub responsible for the data. If the account
+behind a connection is closed, the files are gone from the project.</p>
+<h3 id="what-ships">What ships</h3>
+<p>Five plugins in the <code>filesystem</code> group. <strong>Filesystem - Local</strong> is the
+project's own repository and needs nothing. The other four appear in a
+project's <strong>Files</strong> tab as connection types:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Parameters you set hub-wide</th>
+<th>What the project supplies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Filesystem - Google Drive</strong></td>
+<td><strong>Client ID</strong>, <strong>Client Secret</strong></td>
+<td>Nothing but a name; a project manager authorizes with their own Google account.</td>
+</tr>
+<tr>
+<td><strong>Filesystem - Dropbox</strong></td>
+<td><strong>App key</strong>, <strong>App secret</strong></td>
+<td>Nothing but a name; a project manager authorizes with their own Dropbox account.</td>
+</tr>
+<tr>
+<td><strong>Filesystem - Github</strong></td>
+<td><strong>Client ID</strong>, <strong>Client Secret</strong></td>
+<td><strong>Repository</strong>. A public repository is read anonymously and needs no authorization at all.</td>
+</tr>
+<tr>
+<td><strong>Filesystem - AWS S3</strong></td>
+<td>None it reads</td>
+<td>Everything: <strong>Access Key ID</strong>, <strong>Secret Access Key</strong>, <strong>Endpoint Region</strong>, <strong>Bucket Name</strong>, and <strong>Directory to connect</strong>, per connection.</td>
+</tr>
+</tbody>
+</table>
+<p>The split matters. Google Drive and Dropbox are one registration you make
+once, on behalf of the whole hub, and then every project authorizes against
+it with its own account. AWS S3 is the opposite — the credentials are part of
+the connection, so each project brings its own bucket and its own key, and
+you as manager only have to enable the plugin. GitHub sits between the two:
+the hub's registration is only needed for private repositories.</p>
+<h3 id="turning-one-on">Turning one on</h3>
+<p>Using Google Drive as the example.</p>
+<ol>
+<li>Register the hub as a web application with the provider. For Google that
+is a Google Cloud project with the Drive API enabled; the authorized
+redirect URI is
+<code>https://&lt;yourhub&gt;/developer/callback/googledriveAuthorize</code>.</li>
+<li><strong>Extensions → Plug-in Manager</strong>, open <strong>Filesystem - Google Drive</strong>, set
+<strong>Status</strong> to <strong>Enabled</strong>, and paste the credentials into <strong>Client ID</strong> and
+<strong>Client Secret</strong>.</li>
+<li><strong>Save &amp; Close</strong>.</li>
+<li>Tell the project managers. Nothing appears to members until somebody in a
+project creates a connection.</li>
+</ol>
+<p>In the project, a manager opens the <strong>Files</strong> tab, picks the provider from
+the <strong>New Connection</strong> drop-down, gives the connection a <strong>Name</strong>, decides
+whether to tick <strong>Share connection with everyone in the project?</strong>, saves,
+and then authorizes it against their own account. The connection then sits
+beside the project's own repository, with <strong>Edit</strong>, <strong>Delete</strong>, <strong>Refresh
+Connection Credentials</strong> and <strong>Refresh Connection Path</strong> against it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Only a project manager can authorize a connection, and the
+authorization binds <em>their</em> account to it. When that person leaves the
+project, or revokes the hub's access at the provider, the connection stops
+working for everyone in the project until another manager re-authorizes it.
+That is the failure managers are asked about, and <strong>Refresh Connection
+Credentials</strong> is the fix.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>New Connection</strong> drop-down lists every provider
+registered on the hub, whether or not its plugin is enabled and whether or
+not you have given it credentials. A project can therefore create a
+connection to a service that cannot work. Disabling a plugin you are not
+using does not take it out of that list.</p>
+</aside>
+<h3 id="the-older-project-wide-google-connection">The older project-wide Google connection</h3>
+<p>A second, earlier path exists and some hubs still run on it. The
+<strong>Projects - Files</strong> plugin (<strong>Extensions → Plug-in Manager</strong>, search for
+<code>projects</code>) carries a project-wide Google connection of its own:</p>
 <table>
 <thead>
 <tr>
@@ -259,61 +365,80 @@ depends on how its projects were set up.</p>
 </tr>
 </tbody>
 </table>
-<p>Register the hub as a web application in the Google Cloud console, with
-<code>https://&lt;yourhub&gt;/projects/auth</code> as the authorized redirect URI, and
-<code>https://&lt;yourhub&gt;</code> as the authorized JavaScript origin.</p>
-<p>The newer path is the <strong>Filesystem - Google Drive</strong> plugin, which takes an
-<strong>App ID</strong> and an <strong>App Secret</strong> and appears in a project's <strong>Files</strong> tab
-under <strong>New Connection</strong>. Its redirect URI is
-<code>https://&lt;yourhub&gt;/developer/callback/googledriveAuthorize</code>.</p>
-<p>Whichever you use, the person who creates a connection authorizes it with
-their own Google account, and the project's other members work through that
-connection.</p>
+<p>Its redirect URI is different: register <code>https://&lt;yourhub&gt;/projects/auth</code> as
+the authorized redirect URI and <code>https://&lt;yourhub&gt;</code> as the authorized
+JavaScript origin. It surfaces as a <strong>Connect</strong> link on the project's <strong>Files</strong>
+tab rather than as an entry in <strong>New Connection</strong>, and only the project's
+creator sees that link on a project with no connection yet.</p>
+<p>The two are independent, and a hub can have both on at once, which is
+confusing for everyone. On a new hub use the <strong>Filesystem - Google Drive</strong>
+plugin and leave <strong>Google Connection Enabled</strong> off.</p>
 <h2 id="the-rich-text-editor">The rich text editor</h2>
-<p>The editor used across the administrator interface and the site is set in
-<strong>Site → Global Configuration</strong>, on the <strong>Site</strong> tab, under <strong>Site
-Settings</strong>, in <strong>Default Editor</strong>. The choices are the enabled editor
-plugins:</p>
+<p>Every hub already has one, and most managers never touch this. The reason to
+come here is a complaint: the editor mangles pasted markup, or it will not
+let somebody insert the tag they need, or a member who writes in Markdown
+wants a plain box instead. Changing it is a global change — the setting
+applies to every editor field on the hub, for everyone.</p>
+<p>The editor is set in <strong>Site → Global Configuration</strong>, on the <strong>Site</strong> tab,
+under <strong>Site Settings</strong>, in <strong>Default Editor</strong>. The list offers exactly the
+editor plugins that are enabled in <strong>Extensions → Plug-in Manager</strong>, so
+enable the one you want first, then choose it.</p>
 <table>
 <thead>
 <tr>
 <th>Plugin</th>
+<th>Enabled on a fresh install</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Editor - TinyMCE</strong></td>
-<td>The manifest's fallback, but not what a hub runs: the installer writes <code>ckeditor</code>.</td>
-</tr>
-<tr>
 <td><strong>Editor - CKEditor</strong></td>
-<td>CKEditor 4.</td>
+<td>Yes</td>
+<td>CKEditor 4. This is what a hub runs — the installer writes <code>ckeditor</code> into the configuration.</td>
 </tr>
 <tr>
 <td><strong>Editor - CKEditor 5</strong></td>
-<td>CKEditor 5.</td>
+<td>Yes</td>
+<td>CKEditor 5. Enabled, so it is offered in the list, but not what the installer selects.</td>
 </tr>
 <tr>
 <td><strong>Editor - CodeMirror</strong></td>
+<td>Yes</td>
 <td>A source editor with syntax highlighting.</td>
 </tr>
 <tr>
 <td><strong>Editor - PageDown</strong></td>
+<td>Yes</td>
 <td>Markdown.</td>
 </tr>
 <tr>
+<td><strong>Editor - TinyMCE</strong></td>
+<td>Yes</td>
+<td>The form's declared fallback, but not the installed value.</td>
+</tr>
+<tr>
 <td><strong>Editor - Wikiwyg</strong>, <strong>Editor - Wikitoolbar</strong></td>
+<td>Yes</td>
 <td>For the hub's wiki markup.</td>
 </tr>
 <tr>
 <td><strong>Editor - None</strong></td>
+<td>Yes</td>
 <td>A plain textarea.</td>
 </tr>
 </tbody>
 </table>
-<p>Enable the plugin in <strong>Extensions → Plug-in Manager</strong> first; the <strong>Default
-Editor</strong> list only offers plugins that are enabled.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The manifest's declared default is <code>tinymce</code> and the installer
+writes <code>ckeditor</code>. Where a manifest default and the shipped install data
+disagree, the stored value is what the hub runs — so a fresh hub is on
+CKEditor 4, whatever the form's declaration says.</p>
+</aside>
+<p>Changing the setting takes effect on the next page load and is reversible,
+but content already saved keeps whatever markup the previous editor produced.
+Switching a hub with years of articles from a WYSIWYG editor to a Markdown
+one does not convert anything.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Older documentation told you to enable <strong>Content - HTML Format
 Handler</strong> as well when switching to CKEditor. That is not needed. Both of
@@ -322,8 +447,21 @@ context, so it does nothing at all to articles; it handles HTML in the
 components that also accept wiki markup.</p>
 </aside>
 <h2 id="recaptcha">reCAPTCHA</h2>
-<p>The <strong>Captcha - ReCaptcha</strong> plugin puts Google reCAPTCHA v2 on the
-registration form and anywhere else that asks for a CAPTCHA.</p>
+<p>For hubs with open registration that are getting accounts created by script.
+The symptom is unmistakable: a run of registrations minutes apart, plausible
+names, addresses at throwaway domains, and profiles that fill up with
+advertising a day later. A CAPTCHA is the cheapest thing that stops it.</p>
+<p>It is not a spam filter. It stops a script <em>creating an account</em>; it does
+nothing about a person who registers by hand and then posts advertising, and
+nothing about the accounts already created. Those are <a href="../spam/index.html">Spam</a>.</p>
+<p>Hubzero ships three CAPTCHA plugins. Check what is already on before you
+register anything with Google — the installer leaves <strong>Captcha - Image</strong>
+enabled, <strong>Captcha - Math</strong> disabled, and <strong>Captcha - ReCaptcha</strong> disabled.
+So a fresh hub already has a CAPTCHA, and if accounts are still being created
+by script it is because that one is being solved. <strong>Captcha - Image</strong> and
+<strong>Captcha - Math</strong> need no account anywhere; <strong>Captcha - ReCaptcha</strong> puts
+Google reCAPTCHA v2 on the registration form and anywhere else that asks for
+a CAPTCHA, and needs a Google account and a registered domain.</p>
 <ol>
 <li>Register the hub's domain at
 <a href="https://www.google.com/recaptcha/admin">https://www.google.com/recaptcha/admin</a> and copy the site key and the
@@ -341,12 +479,18 @@ form, so disable <strong>Captcha - Image</strong> and <strong>Captcha - Math</st
 only reCAPTCHA. <strong>Global Configuration → Site → Default Captcha</strong> looks
 like it chooses between them, but no code reads that setting.</p>
 </aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Enabling <strong>Captcha - ReCaptcha</strong> with either key blank renders
+nothing and reports nothing. If you turn it on, disable the others, and the
+registration form comes up with no CAPTCHA at all, that is the reason —
+check the keys rather than the form.</p>
+</aside>
 <p>The form only asks for a CAPTCHA if the <strong>CAPTCHA</strong> field in the Members
 component's registration options is not set to hidden. See
 <a href="../configuring/registration/index.html">Registration</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../getting-started/index.html" rel="prev"><span>Previous</span>Getting started</a><a class="pager__next" href="../maintenance/index.html" rel="next"><span>Next</span>Daily Maintenance</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/02-advancedsetup.md">Edit this page on GitHub</a>

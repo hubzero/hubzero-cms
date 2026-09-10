@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Daily Maintenance · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="The work a hub needs every day: approving what users submit, moving tools through the publishing pipeline, answering support tickets, posting site notices, and…">
+  <meta name="description" content="The work a hub needs to keep running: approving what users submit, moving tools through the publishing pipeline, answering support tickets, posting site…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/maintenance/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +45,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/index.html">Getting started</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Daily Maintenance</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-rhythm">The rhythm</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-dashboard">The dashboard</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
@@ -155,9 +156,68 @@
         </header>
         
         <div class="prose">
-<p>The work a hub needs every day: approving what users submit, moving tools
-through the publishing pipeline, answering support tickets, posting site
+<p>The work a hub needs to keep running: approving what users submit, moving
+tools through the publishing pipeline, answering support tickets, posting site
 notices, and keeping the scheduled jobs running.</p>
+<p>Nobody does all of this every day. On a working hub it settles into a rhythm,
+and knowing the rhythm is most of the job — a manager who checks the same
+handful of screens on a Monday morning almost never has to firefight on a
+Friday.</p>
+<h2 id="the-rhythm">The rhythm</h2>
+<p><strong>Every day, if the hub takes submissions.</strong> Open the control panel and read
+the counts. If anything is waiting — pending resources, pending publications,
+new support tickets, tools needing an administrator — clear it or assign it.
+A submission left in a queue looks to the submitter like the hub ignoring
+them, and they will not ask twice.</p>
+<p><strong>Once a week.</strong> Work through the rest:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Support queue, oldest first</td>
+<td><strong>Components → Support</strong>, filter <code>status:open</code></td>
+<td>Old tickets are the ones that turn into complaints</td>
+</tr>
+<tr>
+<td>Unassigned tickets</td>
+<td><strong>Components → Support</strong>, filter <code>owner:none</code></td>
+<td>An unassigned ticket is nobody's work</td>
+</tr>
+<tr>
+<td>Abuse reports</td>
+<td><strong>Components → Support → Abuse</strong>, <strong>Outstanding</strong></td>
+<td>These are usually spam, and spam breeds</td>
+</tr>
+<tr>
+<td>Cron jobs actually running</td>
+<td><strong>Components → Cron</strong></td>
+<td>A <strong>Last Run</strong> far older than the job's schedule means nothing scheduled is happening at all. See <a href="cron/index.html">Scheduled Tasks</a></td>
+</tr>
+<tr>
+<td>Stuck records</td>
+<td><strong>Site → Maintenance → Global Check-in</strong></td>
+<td>Locks never expire on their own</td>
+</tr>
+</tbody>
+</table>
+<p><strong>After an incident</strong> — a spam wave, a broken deployment, an outage:</p>
+<ol>
+<li>Post a notice, if visitors can see the problem. <a href="notices/index.html">Site Notices</a>.</li>
+<li>Fix the cause.</li>
+<li>Clear whatever the incident left behind: trashed content, abuse reports,
+accounts, stuck check-outs.</li>
+<li>Take the notice down. It has to come down by hand, or by a <strong>Finish
+Publishing</strong> date you set when you posted it.</li>
+</ol>
+<p><strong>Never on a Friday afternoon.</strong> Anything that cannot be tested first: URL
+rewriting, a template change, a permissions change on a live component. Those
+belong on a morning when you can watch what happens.</p>
 <h2 id="the-dashboard">The dashboard</h2>
 <p>The first screen after you log in to <code>/administrator</code> is the <strong>Control Panel</strong>,
 served by <code>com_cpanel</code>. It has no content of its own. It renders every
@@ -246,6 +306,11 @@ and <strong>Recently Added Articles</strong>. The panels a working hub usually a
 </table>
 <p>Each count links to the matching list in the component, so the dashboard is a
 set of jump-off points rather than a report.</p>
+<p>That is the useful way to think about it: the dashboard is a to-do list, and
+a hub with the right panels on it is one where the daily check is a
+ten-second glance. A hub with only the two shipped panels shows you popular
+articles and nothing you actually need to act on, which is why the first
+thing most managers do is add the panels below.</p>
 <p>To add or remove a panel, go to <strong>Extensions → Module Manager</strong>, set the
 <strong>Client</strong> filter to <strong>Administrator</strong>, then edit the module and set its
 <strong>Position</strong> to <code>cpanel</code>. The position and type filters only list what the
@@ -260,15 +325,22 @@ the project record, which is not published to this site.</p>
 </aside>
 <h2 id="in-this-section">In this section</h2>
 <ul>
-<li><a href="approvingcontent/index.html">Approving Content</a></li>
-<li><a href="tools/index.html">Tools</a></li>
-<li><a href="tickets/index.html">Support Tickets</a></li>
-<li><a href="notices/index.html">Site Notices</a></li>
-<li><a href="cron/index.html">Scheduled Tasks</a></li>
+<li><a href="approvingcontent/index.html">Approving Content</a> — the pending queues for
+resources and publications, and how to stop them existing at all.</li>
+<li><a href="tools/index.html">Tools</a> — the tool contribution pipeline, from a developer's
+registration form to a launchable tool. Only for hubs that host tools.</li>
+<li><a href="tickets/index.html">Support Tickets</a> — working the ticket queue and the abuse
+reports.</li>
+<li><a href="notices/index.html">Site Notices</a> — the maintenance banner, and why it is a
+module rather than a component.</li>
+<li><a href="cron/index.html">Scheduled Tasks</a> — the jobs behind digests, mailings, search
+indexing and expiries. Read this one early: several features on a hub do
+nothing at all until a job is created for them, and only three jobs exist
+on a new hub.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../advancedsetup/index.html" rel="prev"><span>Previous</span>Integrations</a><a class="pager__next" href="approvingcontent/index.html" rel="next"><span>Next</span>Approving Content</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/README.md">Edit this page on GitHub</a>

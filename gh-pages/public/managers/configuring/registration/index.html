@@ -55,8 +55,11 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Registration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-screen-is-not">What this screen is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#reaching-the-screen">Reaching the screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-field-table">The field table</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-column-that-catches-people-out">The column that catches people out</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-the-newsletter-opt-in-to-the-sign-up-form">Adding the newsletter opt-in to the sign-up form</a></li>
 <li class="toc__item toc__item--l2"><a href="#saving">Saving</a></li>
 <li class="toc__item toc__item--l2"><a href="#turning-registration-off">Turning registration off</a></li>
 <li class="toc__item toc__item--l2"><a href="#confirmation-return-url">Confirmation return URL</a></li>
@@ -165,6 +168,24 @@ an organisation and a phone number; another asks only for a username, a
 password, and an email address. The <strong>Registration</strong> screen in the Members
 component sets that, field by field, and separately for each of the four
 moments a member's details are collected.</p>
+<p>Most hubs open this screen twice: once when they decide the sign-up form is
+asking for too much, and once when they decide it is asking for too little.
+If you are happy with what the form asks for today, you can stop reading
+here — the shipped settings are reasonable, and everything on this screen is
+reversible.</p>
+<h2 id="what-this-screen-is-not">What this screen is not</h2>
+<p>It is not the switch that turns registration on and off. That is <strong>Allow User
+Registration</strong>, on the Members component's <strong>Options</strong>; see
+<a href="#turning-registration-off">Turning registration off</a>.</p>
+<p>It is not where the <em>profile</em> fields live either. The nine rows here are the
+fixed set the account itself needs — username, password, name, email, opt-in,
+CAPTCHA, terms of use. The organisation, department and interests further
+down a member's profile come from the profile builder, which is the
+<strong>Profile</strong> button in the Members account-list toolbar; see
+<a href="../../users/members/index.html#building-the-profile-form">Members</a>.</p>
+<p>And it decides only whether a field is <em>asked for</em>, never who may join. Who
+may join is <a href="../../users/accessgroups/index.html">access groups</a> and the approval
+setting.</p>
 <h2 id="reaching-the-screen">Reaching the screen</h2>
 <ol>
 <li>Sign in to the administrator interface.</li>
@@ -294,6 +315,59 @@ values are listed in the
 		&lt;field name=&quot;registrationTOU&quot;              type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHRH&quot; label=&quot;TOU&quot; description=&quot;Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
 	&lt;/fieldset&gt;
 </code></pre>
+<p>Those shipped defaults are sensible for a hub that anyone may join, and most
+hubs never change them. The <strong>Create Account</strong> column is the visible sign-up
+form; <strong>Edit Profile</strong> is what a member can change afterwards; <strong>Proxy Create
+Account</strong> is the form an administrator fills in for somebody else.</p>
+<h3 id="the-column-that-catches-people-out">The column that catches people out</h3>
+<p><strong>Update on Next Login</strong> is not a form a member chooses to visit. It is a
+gate. Whenever a member's stored details do not satisfy this column, the hub
+holds them there until they do — they cannot reach the rest of the hub in
+between. That is exactly what you want when a field genuinely has to be
+collected from everybody, and exactly what you do not want by accident.</p>
+<p>Two kinds of member meet it:</p>
+<ul>
+<li>Someone who signed in through an external provider and has no hub account
+details yet is sent straight to the registration form to finish the
+account.</li>
+<li>An ordinary member whose record is missing something this column marks
+<strong>Required</strong> is held on their own profile page until they fill it in.</li>
+</ul>
+<p>The shipped settings put only <strong>TOU</strong> — the terms of use — in that position,
+which is why a hub that has never touched this screen still asks every
+returning member to accept the terms once.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Setting any row's <strong>Update on Next Login</strong> to <strong>Required</strong>
+interrupts every member on the hub at their next sign-in, all at once, with
+no way to skip. On a hub with a few thousand members that is a support
+queue. Change it only for something you would be willing to stop people at
+the door for, and tell the hub it is coming first.</p>
+</aside>
+<h2 id="adding-the-newsletter-opt-in-to-the-sign-up-form">Adding the newsletter opt-in to the sign-up form</h2>
+<p>Say the hub has started sending an occasional announcement mail and wants new
+members to be able to say yes at the moment they join, rather than having to
+find the setting in their profile afterwards. <strong>OptIn</strong> ships as <strong>Hide</strong> on
+the sign-up form and <strong>Optional</strong> on the profile, so today nobody is offered
+it until they go looking.</p>
+<ol>
+<li>Choose <strong>Users &gt; Members</strong> from the administrator menu.</li>
+<li>Select <strong>Registration</strong> in the sub-navigation under the toolbar.</li>
+<li>Find the <strong>OptIn</strong> row.</li>
+<li>In the <strong>Create Account</strong> column, change <strong>Hide</strong> to <strong>Optional</strong>. Leave
+the other three columns alone — in particular leave <strong>Update on Next
+Login</strong> on <strong>Hide</strong>, or every existing member is stopped at their next
+sign-in.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>The next visitor to open the sign-up form sees the opt-in, and may leave it
+unticked. To undo it, set the same cell back to <strong>Hide</strong>; nothing is stored
+against the members who answered in the meantime beyond their own preference.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Required</strong> on this row does not mean &quot;must agree&quot;. It means the
+question must be answered one way or the other before the form will submit;
+a plain No passes. <strong>Optional</strong> is still the kinder setting, because it
+lets someone finish signing up without reading the question at all.</p>
+</aside>
 <h2 id="saving">Saving</h2>
 <p>The toolbar has <strong>Options</strong>, <strong>Save &amp; Close</strong>, and <strong>Cancel</strong>. <strong>Save &amp;
 Close</strong> writes the settings and returns you to the members list; there is no
@@ -302,15 +376,26 @@ the site cache is cleared as part of the save.</p>
 <h2 id="turning-registration-off">Turning registration off</h2>
 <p>Registration as a whole is switched on the Members component's options, not
 on this screen. Select <strong>Options</strong> in the toolbar and set <strong>Allow User
-Registration</strong> to <strong>No</strong>. The same screen carries <strong>New User Registration
-Group</strong>, <strong>New User Account Activation</strong>, <strong>Send Password</strong>, and <strong>Simple
-Registration</strong>, which lets accounts created through an external
-authentication provider skip the username and account-linking steps.</p>
+Registration</strong> to <strong>No</strong>. This is the setting a hub reaches for when a spam
+wave starts producing junk accounts faster than anyone can delete them: it
+closes the door without touching the accounts that already exist, and turning
+it back on restores the form exactly as it was.</p>
+<p>The same screen carries <strong>New User Registration Group</strong>, <strong>New User Account
+Activation</strong>, <strong>Send Password</strong>, and <strong>Simple Registration</strong>, which submits
+the registration form on behalf of an account arriving from an external
+authentication provider instead of showing it, where the provider supplied
+enough to fill it in.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The tabs in the Options pop-up are labelled from language
 strings that the Members component does not define, so three of them
 render as raw keys such as <code>COM_CONFIG_REGISTRATION_FIELDSET_LABEL</code>
 instead of a name. The fields inside them are correct.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Send Password</strong> on that screen is inert. It is declared, it
+has help text, it defaults to <strong>Yes</strong>, and nothing in the tree reads it.
+Setting it either way changes nothing, so do not treat it as the hub's
+answer to whether passwords are mailed out.</p>
 </aside>
 <h2 id="confirmation-return-url">Confirmation return URL</h2>
 <p>By default a member who confirms their email address lands on a thank-you
@@ -394,7 +479,7 @@ component's <strong>Options</strong> screen.</p>
 <p><img src="../../media/registration-edit-registration-07.png" alt="The retired Register parameters pop-up with the Confirmation Return URL filled in" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../hub/index.html" rel="prev"><span>Previous</span>Global configuration</a><a class="pager__next" href="../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/02-registration.md">Edit this page on GitHub</a>
