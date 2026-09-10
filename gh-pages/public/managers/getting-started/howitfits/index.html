@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How a hub fits together · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The mental model the rest of this book assumes. Every other chapter tells you which screen to open and which field to set; none of them tells you what the hub…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/getting-started/howitfits/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">How a hub fits together</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-two-halves">The two halves</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-a-page-gets-built">How a page gets built</a></li>
+<li class="toc__item toc__item--l3"><a href="#a-worked-page">A worked page</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-things-live">Where things live</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-four-kinds-of-extension">The four kinds of extension</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-table-prefix">The table prefix</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-you-can-break-and-what-you-cannot">What you can break, and what you cannot</a></li>
+<li class="toc__item toc__item--l3"><a href="#hard-to-break">Hard to break</a></li>
+<li class="toc__item toc__item--l3"><a href="#easy-to-break">Easy to break</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-go-next">Where to go next</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/categories/index.html">Categories</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/states/index.html">States, deleting and check-out</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">How a hub fits together</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>How a hub fits together</h1>
+        </header>
+        
+        <div class="prose">
+<p>The mental model the rest of this book assumes. Every other chapter tells you
+which screen to open and which field to set; none of them tells you what the
+hub is doing underneath, so the first time a change you made in one screen
+appears — or fails to appear — somewhere else entirely, there is nothing to
+reason from. This chapter supplies that. It is short, and it is worth reading
+once before the screen-by-screen chapters rather than after.</p>
+<p>It is for the person who has just been given a hub to run and has no
+background in the software. If you write code for a hub, read
+<a href="../../../developers/foundation/structure/index.html">Application structure</a>
+instead; it covers the same ground with the detail a developer needs.</p>
+<h2 id="the-two-halves">The two halves</h2>
+<p>A hub is one application with two faces.</p>
+<p>The <strong>front end</strong> is the site people visit: the home page, the groups, the
+resources, the search box. The <strong>administrator interface</strong>, or back end, is
+at <code>/administrator</code> and is where you configure all of that.</p>
+<p>They are not two programs. They are the same installation, running the same
+components against the same database, with one difference: the first path
+segment of the URL. <code>/administrator/…</code> selects the administrator <em>client</em>,
+<code>/api/…</code> selects the REST API, and anything else is the site. The choice is
+made by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClientDetector.php"><code>ClientDetector</code></a>
+on every request, and it decides which set of controllers, views, template
+and configuration the request runs against — <code>admin/</code> instead of <code>site/</code>
+inside each component.</p>
+<p>That is why a component you disable vanishes from both the <strong>Components</strong>
+menu and the public site at once, and why there is no separate back-end
+address, host or port to remember.</p>
+<p><a href="../administrator/index.html">The administrator interface</a> covers reaching it, who is
+allowed in, and what each of its menus holds. Read that chapter for the back
+end itself; this one is about what the back end is editing.</p>
+<h2 id="how-a-page-gets-built">How a page gets built</h2>
+<p>This is the single most useful thing to understand, because almost every
+&quot;why did that happen?&quot; question on a hub is answered by it.</p>
+<p>A page is assembled in four stages:</p>
+<ol>
+<li><strong>The request arrives.</strong> One file, <code>index.php</code>, handles every URL on the
+hub. Nothing else is ever reached directly.</li>
+<li><strong>The router picks a component.</strong> It looks at the URL and decides which
+component owns it, and it sets two things: <code>option</code>, the component's name,
+and <code>Itemid</code>, the id of the menu item that matched. Remember <code>Itemid</code>; it
+matters in a moment.</li>
+<li><strong>The component produces the main content.</strong> Exactly one component runs
+per page. It reads the database, applies its own permissions, and returns
+the block of HTML that is the actual subject of the page — the article,
+the group's forum, the list of resources.</li>
+<li><strong>The template wraps it, and the modules fill in around it.</strong> The
+template is a page skeleton with named holes in it. One hole takes the
+component's output. The rest are <strong>positions</strong>, and each position renders
+whichever modules are published there.</li>
+</ol>
+<p>Here is the middle of the shipped site template, which is the whole idea in
+one screenful — an optional column of modules, the component, another
+optional column of modules:</p>
+<pre><code class="language-php">					&lt;?php if ($this-&gt;countModules('left')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;div class=&quot;subject&quot;&gt;
+					&lt;?php endif; ?&gt;
+
+								&lt;!-- start component output --&gt;
+								&lt;jdoc:include type=&quot;component&quot; /&gt;
+								&lt;!-- end component output --&gt;
+
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;/div&gt;&lt;!-- / .subject --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('right')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
+</code></pre>
+<p>Two consequences follow from that order, and between them they explain most
+of the surprises.</p>
+<p><strong>The component does not know about the modules, and the modules do not know
+about the component.</strong> They are chosen independently: the component by the
+router, the modules by their position and their page assignment. A page can
+therefore have perfect content and no navigation, which is exactly the
+failure described in step 7 of
+<a href="../newhub/index.html">The first week with a new hub</a> — a menu that exists, in a
+position no template renders, on a site whose pages are otherwise fine.</p>
+<p><strong>Modules are assigned to pages by menu item id.</strong> A module is shown if it is
+published, if its position is in the template, if the viewer's access level
+allows it, and if its page assignment includes the current <code>Itemid</code>. Modules
+set to appear on all pages carry no id at all and always render. So:</p>
+<ul>
+<li>A page reached without a menu item — a component URL a visitor typed, a
+deep link into a group — has no <code>Itemid</code>, and shows only the all-pages
+modules.</li>
+<li>Deleting a menu item and creating a replacement gives you a <em>new</em> id.
+Modules assigned to the old one are now assigned to a page that does not
+exist, and quietly stop appearing. If a sidebar disappears after a menu
+tidy-up, this is why. Edit menu items rather than replacing them.</li>
+</ul>
+<p><a href="../../menus/index.html">Menus</a> covers the menu side and
+<a href="../../extensions/modules/index.html">Modules</a> the module side; the point here is
+only that they are two halves of one decision.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Of everything the template asks for, the modules are rendered
+first — before even the page's <code>&lt;head&gt;</code> is written. That is deliberate: it
+lets a module add a stylesheet or a script and still have it appear in the
+head of the finished page. The component's output was produced a step
+earlier still, before the template was opened at all.</p>
+</aside>
+<h3 id="a-worked-page">A worked page</h3>
+<p>Take the front page a new hub gets in step 7 of
+<a href="../newhub/index.html">The first week with a new hub</a>: an article, shown by a menu
+item of type <strong>Articles &gt; Single Article</strong>, marked <strong>Home</strong>.</p>
+<p>A visitor asks for <code>https://example.com/</code>. The path is empty, so the router
+takes the menu item marked <strong>Home</strong>, and from it sets <code>option=com_content</code>
+and the article's id, plus that item's <code>Itemid</code>. The Content component loads
+the article, checks its state and its access level, and renders it. The
+template then puts that HTML in the component hole, renders the <strong>Main Menu</strong>
+module into <code>user3</code>, the breadcrumb module into <code>breadcrumbs</code>, and whatever
+else is published into <code>footer</code> and the rest, and sends the finished page.</p>
+<p>Change the article's text and only stage 3 changes. Change which menu item is
+<strong>Home</strong> and stage 2 changes, which changes the <code>Itemid</code>, which changes which
+modules stage 4 renders. That is the whole mechanism.</p>
+<h2 id="where-things-live">Where things live</h2>
+<p>Two trees on disk, and one database.</p>
+<table>
+<thead>
+<tr>
+<th>Tree</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core/</code></td>
+<td>The platform: the framework, and every component, module, plugin and template the release ships. An upgrade replaces this tree wholesale.</td>
+</tr>
+<tr>
+<td><code>app/</code></td>
+<td>This one hub: its configuration, its uploads, its cache and logs, and any extension it adds or replaces.</td>
+</tr>
+</tbody>
+</table>
+<p><code>app/</code> wins. When the hub looks for a component, a module, a plugin or a
+template, it checks <code>app/</code> first and uses <code>core/</code> only if it finds nothing —
+so a hub customises itself by adding files under <code>app/</code>, never by editing
+<code>core/</code>. A change made in <code>core/</code> works until the next upgrade and then
+disappears.</p>
+<p>The database holds everything the administrator interface edits as records:
+articles, menu items, modules and their positions, members, access groups and
+levels, categories, component options, cron jobs, forum posts, group
+memberships. Almost every screen in this book writes there.</p>
+<p>Files on disk hold everything else: uploaded and generated content under
+<code>app/site/</code> — group files, media, member files, publications — plus the
+configuration in <code>app/config/</code>, and the cache and logs. The Media Manager
+writes into <code>app/site/media</code>. Global Configuration writes plain PHP files
+into <code>app/config/</code>.</p>
+<p>Which of the two your actions touch is not academic, because it decides what
+a backup has to include:</p>
+<ul>
+<li><strong>The database alone is not a backup.</strong> Restore it without <code>app/site/</code> and
+every record survives pointing at a file that is gone.</li>
+<li><strong><code>app/</code> alone is not a backup either.</strong> It has the uploads and the
+configuration but none of the content.</li>
+<li><strong><code>core/</code> need not be backed up at all.</strong> It is the release, and you can
+fetch it again. It should also not have been modified; if it has, that is
+the thing to find out about before an upgrade, not after.</li>
+</ul>
+<p>So: back up the database and <code>app/</code>, together, at the same moment.
+<a href="../../maintenance/index.html">Daily maintenance</a> covers the rest of the
+running-hub routine.</p>
+<h2 id="the-four-kinds-of-extension">The four kinds of extension</h2>
+<p>Everything the hub puts on a page comes from an extension, and there are four
+kinds. <a href="../../extensions/index.html">Extensions</a> explains each one properly,
+including where they live and which screen manages them; one line each here
+so the words mean something in the meantime:</p>
+<ul>
+<li>A <strong>component</strong> is an application. It owns the main body of the page, and
+exactly one runs per request.</li>
+<li>A <strong>module</strong> is a small block placed around the component, in a named
+position the template offers.</li>
+<li>A <strong>plugin</strong> answers events — a login, a save, a page about to render — and
+also supplies the tabbed sections of groups, member profiles and projects.</li>
+<li>A <strong>template</strong> is the page skeleton: the layout, the stylesheets, and the
+list of positions modules can go in.</li>
+</ul>
+<h2 id="the-table-prefix">The table prefix</h2>
+<p>Sooner or later something technical — a migration, a support answer, a
+configuration field, this documentation — shows you a table name written
+like this:</p>
+<pre><code class="language-text">#__resources
+</code></pre>
+<p><code>#__</code> is not part of the name. It is a placeholder that the database layer
+rewrites into the hub's real table prefix on the way to the server, every
+time a query runs. On this tree the default prefix is <code>jos_</code>, so <code>#__users</code>
+becomes <code>jos_users</code>.</p>
+<p>The prefix exists so that several hubs can share one database server, or one
+database, without their tables colliding. Because it is chosen per
+installation, no code may assume it. Extensions that need a table name build
+it from the configured value rather than typing it — the <strong>My Points</strong> module
+does exactly that, joining <code>Config::get('dbprefix')</code> to <code>users_points</code>. Code
+that hardcodes a literal prefix works on the hub it was written for and
+breaks on every hub that chose a different one, which is why you will see
+<code>#__</code> and never a real prefix in anything shipped.</p>
+<p>There is a <strong>Database Tables Prefix</strong> field in Global Configuration, on the
+<strong>Server</strong> tab. It is not a rename tool.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Changing <strong>Database Tables Prefix</strong> does not rename anything.
+It only changes which tables the hub looks for, so the next request finds
+none of them and the hub stops working. The field exists for the case where
+the database itself has been moved or restored under different table names.
+Leave it alone otherwise. See
+<a href="../../configuring/hub/index.html">Global configuration</a>.</p>
+</aside>
+<h2 id="what-you-can-break-and-what-you-cannot">What you can break, and what you cannot</h2>
+<p>Most of what a new manager is nervous about is reversible, and a few things
+that look harmless are not. Worth knowing which is which before you start
+clicking.</p>
+<h3 id="hard-to-break">Hard to break</h3>
+<ul>
+<li><strong>Disabling and unpublishing.</strong> Disabling a component or unpublishing a
+module deletes nothing. <strong>Enable</strong> and <strong>Publish</strong> put it back exactly as
+it was, options and all.</li>
+<li><strong>Uninstalling a shipped extension.</strong> You cannot. There is no <strong>Uninstall</strong>
+button in the Extension Manager — it is commented out of the view. See
+<a href="../../extensions/extension-manager/index.html">Extension Manager</a>.</li>
+<li><strong>Changing an item's state.</strong> Publishing, unpublishing and the rest write a
+number into a column; the row stays where it is. Read
+<a href="../../content/states/index.html">States, deleting and check-out</a> before assuming
+which number a given label means, because the labels and the stored values
+do not line up as neatly as the screens suggest.</li>
+<li><strong>A record that will not open because it is &quot;checked out&quot;.</strong> Nothing is
+wrong with it. <strong>Site → Maintenance → Global Check-in</strong> releases every
+locked record on the hub.</li>
+<li><strong>Moving modules between positions.</strong> Free, and the fastest way to learn
+what a template's positions actually are: put a module somewhere and look.</li>
+<li><strong>Categories.</strong> Creating them costs nothing, and they are scoped per
+component, so a category made for articles cannot disturb the knowledge
+base. See <a href="../../content/categories/index.html">Categories</a>.</li>
+</ul>
+<h3 id="easy-to-break">Easy to break</h3>
+<ul>
+<li><strong>Editing anything under <code>core/</code>.</strong> It works until the next upgrade, then
+vanishes without warning. Put the change under <code>app/</code> instead.</li>
+<li><strong>Changing the table prefix</strong>, as above.</li>
+<li><strong>Deleting the shipped access groups.</strong> <strong>Public</strong> and <strong>Registered</strong> are
+referenced by the default viewing levels and the registration options.
+Delete your own groups freely; leave the eight shipped ones in place. See
+<a href="../../users/accessgroups/index.html">Access groups</a>.</li>
+<li><strong>Deleting menu items.</strong> Cheap to do, and it silently strips the module
+assignments that pointed at them, as above.</li>
+<li><strong>Leaving the hub with no item marked Home.</strong> There must be exactly one,
+because it is what the router falls back to for the bare address.</li>
+<li><strong>Real deletions.</strong> Removing a member, a group or a file is not a state
+change. It is gone, and only the backup you took in the section above will
+bring it back.</li>
+</ul>
+<p>The honest summary: you can explore the administrator interface freely as
+long as you are toggling states and positions, and you should slow down the
+moment a screen offers to delete something or to change where the hub looks
+for its data.</p>
+<h2 id="where-to-go-next">Where to go next</h2>
+<ul>
+<li><a href="../administrator/index.html">The administrator interface</a> — the back end itself, menu
+by menu.</li>
+<li><a href="../newhub/index.html">The first week with a new hub</a> — the ordered path through the
+decisions a new hub needs.</li>
+<li><a href="../../extensions/index.html">Extensions</a> — the four kinds, in full.</li>
+<li><a href="../../../developers/foundation/structure/index.html">Application structure</a> —
+the same picture with the code paths, for readers who want the detail.</li>
+</ul>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 754ab96b09</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newhub/index.html" rel="prev"><span>Previous</span>The first week with a new hub</a><a class="pager__next" href="../administrator/index.html" rel="next"><span>Next</span>The administrator interface</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/01-getting-started/03-howitfits.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

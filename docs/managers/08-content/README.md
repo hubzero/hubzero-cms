@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 754ab96b09
+reviewed: 2026-09-10
 screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/content
 source-id: 3367
@@ -56,8 +56,9 @@ Both are explained in [URLs](urls.md), along with redirects.
 
 ## In this section
 
-- [Article Manager](articlemanager.md) — the article list, the editor,
-  categories, and the publishing workflow.
+- [Article Manager](articlemanager.md) — what articles are for, a worked
+  example that publishes an About page end to end, the article list, the
+  editor, categories, and the publishing workflow.
 - [Categories](categories.md) — the shared category manager, which serves
   articles, user notes, the knowledge base, and events.
 - [URLs](urls.md) — how an article's address is built, and how to redirect

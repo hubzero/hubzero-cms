@@ -44,6 +44,13 @@ needs — the site name, mail, registration, access, which components to keep,
 the front page and menu, and the scheduled jobs — into the order that works,
 and links to the chapter covering each one.
 
+[How a hub fits together](03-howitfits.md) is the short chapter that explains
+what the hub is doing underneath those screens: the two halves of the
+application, how a page is assembled out of a component, a template and its
+modules, where the platform ends and your hub's own material begins, and what
+you can and cannot break. Every other chapter in this book assumes it. Read it
+whenever a change made in one screen turns up somewhere you did not expect.
+
 ## Then
 
 - If the hub is new, go on to [Advanced setup](../02-advancedsetup.md) and

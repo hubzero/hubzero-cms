@@ -21,6 +21,13 @@ access, the front page, and the scheduled jobs — with a link to the chapter
 covering each. [Configuring](05-configuring/README.md) has the settings
 screens in full.
 
+If the screens make sense one at a time but not together, read
+[How a hub fits together](01-getting-started/03-howitfits.md). It is the
+mental model the rest of this book takes for granted — the two halves of the
+application, how a page is built from a component, a template and its
+modules, what lives in the database and what lives on disk, and what a
+manager can and cannot break.
+
 If you are taking over a running hub, start with
 [Daily maintenance](03-maintenance/README.md) and
 [Users](06-users/README.md).
