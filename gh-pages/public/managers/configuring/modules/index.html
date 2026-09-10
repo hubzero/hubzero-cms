@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Modules · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Most modules will have a set of parameters that can be configured. These parameters can determine what functionality is presented to the user, be a…">
+  <meta name="description" content="Most modules carry parameters: what they show, how many items, which feed to read. Parameters belong to one module instance , so the same module type can…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/modules/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,23 +54,26 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Modules</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#opening-a-module-s-parameters">Opening a module&#x27;s parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-list-screen">The list screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-edit-screen">The edit screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +123,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -146,27 +149,72 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Modules</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/modules">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Most modules will have a set of parameters that can be configured. These parameters can determine what functionality is presented to the user, be a default set of user options, or settings needed for the module to function properly (setting the URL to a feed for a feed reader module, for instance). Accessing and adjusting these parameters is quick and easy.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Not all modules will have configurable parameters. For those that do, the configurations apply <strong>only</strong> to that module instance. You may have multiple instances of a module with different parameter configurations.</p>
-</aside>
+<p>Most modules carry parameters: what they show, how many items, which feed to
+read. Parameters belong to one module <em>instance</em>, so the same module type
+can appear twice on a hub with different settings.</p>
+<h2 id="opening-a-module-s-parameters">Opening a module's parameters</h2>
 <ol>
-<li>First login to the administrative back-end.</li>
-<li>Once logged in, go to the &quot;Module Manager.&quot; The Module Manager can be found by selecting &quot;Extensions&quot; &gt; &quot;Module Manager&quot; from the drop-down menu on the back-end of your HUB installation.
-<img src="../../media/modules-modules-manager-01.png" alt="" /></li>
-<li>Choose the module you wish to configure from the available list.
-<img src="../../media/modules-modules-manager-02.png" alt="" /></li>
-<li>Once the page has loaded, find the “Parameters” grouping, found on the right-hand portion of the screen.
-<img src="../../media/modules-modules-manager-09.png" alt="" /></li>
-<li>Adjust the available parameters as needed and then click &quot;Save&quot; (the icon that looks like a star) in the upper right portion of the page. Changes take affect immediately.
-<img src="../../media/modules-modules-manager-10.png" alt="" /></li>
+<li>Sign in to the administrator interface.</li>
+<li>Choose <strong>Extensions &gt; Module Manager</strong>.</li>
+<li>Select the module's title in the list.</li>
+<li>Find the collapsible panels on the right of the edit screen: <strong>Basic
+Options</strong>, and <strong>Advanced Options</strong> if the module declares any. A module
+that declares no parameters has no panels.</li>
+<li>Change what you need and select <strong>Save</strong> or <strong>Save &amp; Close</strong> in the
+toolbar. Changes take effect immediately.</li>
 </ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not every module has parameters. Those that do affect only that
+one instance.</p>
+</aside>
+<h2 id="the-list-screen">The list screen</h2>
+<p>The list is filtered by a search box and five drop-downs: <strong>Client</strong> (Site
+or Administrator), <strong>- Select Status -</strong>, <strong>- Select Position -</strong>,
+<strong>- Select Type -</strong>, <strong>- Select Access -</strong>, and <strong>- Select Language -</strong>.</p>
+<p>Its columns are <strong>Title</strong>, <strong>Status</strong>, <strong>Position</strong>, <strong>Ordering</strong>, <strong>Type</strong>,
+<strong>Pages</strong>, <strong>Access</strong>, <strong>Language</strong>, and <strong>ID</strong>. Select a column heading to
+sort by it.</p>
+<p>The toolbar offers <strong>New</strong>, <strong>Edit</strong>, <strong>Duplicate</strong>, <strong>Publish</strong>,
+<strong>Unpublish</strong>, <strong>Check In</strong>, <strong>Trash</strong>, <strong>Options</strong>, and <strong>Help</strong>. Each
+button appears only if your account holds the matching permission.
+<strong>New</strong> opens a pop-up listing the module types you can add. Filtering the
+list to the trash replaces <strong>Trash</strong> with <strong>Empty trash</strong>.</p>
+<h2 id="the-edit-screen">The edit screen</h2>
+<p>The left column holds the module's <strong>Details</strong>: <strong>Title</strong>, <strong>Show Title</strong>,
+<strong>Position</strong>, <strong>Ordering</strong>, <strong>Status</strong>, <strong>Access</strong>, <strong>Start Publishing</strong>,
+<strong>Finish Publishing</strong>, <strong>Language</strong>, and <strong>Note</strong>. Custom HTML modules also
+get a <strong>Custom output</strong> panel with a <strong>Text</strong> editor.</p>
+<p>Site modules get a <strong>Menu Assignment</strong> section below that. <strong>Module
+Assignment</strong> chooses between all pages, no pages, only the pages selected,
+or all except the pages selected; the tree below it is where you pick them.
+Administrator modules have no assignment section.</p>
+<p>The right column holds the parameter panels and a table of facts about the
+module — its type, whether it belongs to the site or the administrator, and
+its ID.</p>
+<p>The toolbar has <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Save &amp; New</strong>, <strong>Save as
+Copy</strong>, <strong>Cancel</strong>, and <strong>Help</strong>. <strong>Save</strong> keeps you on the screen; <strong>Save
+&amp; Close</strong> returns to the list.</p>
+<p>Every module's parameters are listed in the generated
+<a href="../../../reference/configuration/index.html">configuration reference</a>.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> The Module Manager also adds and removes modules, not just
+configures them. See <a href="../../extensions/modules/index.html">Modules manager</a>.</p>
+</aside>
+<h2 id="older-screenshots">Older screenshots</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The screenshots below came from the imported version of this
+page. The screens are the same but the administrator template has been
+restyled since, and the Save button is not a star.</p>
+</aside>
+<p><img src="../../media/modules-modules-manager-01.png" alt="The Module Manager list" /></p>
+<p><img src="../../media/modules-modules-manager-02.png" alt="Choosing a module from the list" /></p>
+<p><img src="../../media/modules-modules-manager-09.png" alt="The parameter panels on the right of the module edit screen" /></p>
+<p><img src="../../media/modules-modules-manager-10.png" alt="Saving the module" /></p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="../plugins/index.html" rel="next"><span>Next</span>Plugins</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/04-modules.md">Edit this page on GitHub</a>

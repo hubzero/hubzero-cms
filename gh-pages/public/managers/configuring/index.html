@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Configuring · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview One of the many advantages to HUBzero is the level of configuration that can be applied. Not only can you configure some global site settings, but…">
+  <meta name="description" content="Almost everything about a hub is set from the administrator interface. This section covers the four places settings live: the global configuration that applies…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,23 +54,24 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Configuring</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-settings-live">Where settings live</a></li>
+<li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +121,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
@@ -146,21 +147,70 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Configuring</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>One of the many advantages to HUBzero is the level of configuration that can be applied. Not only can you configure some global site settings, but individual components, modules, and plugins as well.</p>
-<p>HUBzero also adds many other configuration options for extended registration information and more.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="hub/index.html">HUB Settings</a></li>
+<p>Almost everything about a hub is set from the administrator interface. This
+section covers the four places settings live: the global configuration that
+applies to the whole site, the options attached to each component, the
+parameters on each module instance, and the parameters on each plugin.</p>
+<h2 id="where-settings-live">Where settings live</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Where you edit it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site-wide settings — site name, mail, sessions, caching, SEO, permissions</td>
+<td><strong>Site &gt; Global Configuration</strong>. See <a href="hub/index.html">Global configuration</a>.</td>
+</tr>
+<tr>
+<td>One component's options</td>
+<td>The <strong>Options</strong> button in that component's toolbar. See <a href="components/index.html">Components</a>.</td>
+</tr>
+<tr>
+<td>One module instance's parameters</td>
+<td><strong>Extensions &gt; Module Manager</strong>, then the module. See <a href="modules/index.html">Modules</a>.</td>
+</tr>
+<tr>
+<td>One plugin's parameters</td>
+<td><strong>Extensions &gt; Plug-in Manager</strong>, then the plugin. See <a href="plugins/index.html">Plugins</a>.</td>
+</tr>
+<tr>
+<td>Which fields a new member must fill in</td>
+<td><strong>Users &gt; Members &gt; Registration</strong>. See <a href="registration/index.html">Registration</a>.</td>
+</tr>
+<tr>
+<td>How people sign in</td>
+<td><strong>Extensions &gt; Plug-in Manager</strong>, filtered to the <code>authentication</code> type. See <a href="authentication/index.html">Authentication</a> and <a href="extauth/index.html">External authenticators</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="in-this-section">In this section</h2>
+<ul>
+<li><a href="hub/index.html">Global configuration</a></li>
 <li><a href="registration/index.html">Registration</a></li>
 <li><a href="components/index.html">Components</a></li>
 <li><a href="modules/index.html">Modules</a></li>
 <li><a href="plugins/index.html">Plugins</a></li>
 <li><a href="authentication/index.html">Authentication</a></li>
-<li><a href="extauth/index.html">External Authenticators</a></li></ul></section>
+<li><a href="extauth/index.html">External authenticators</a></li>
+</ul>
+<p>Every parameter that any component or plugin manifest declares is listed in
+the generated <a href="../../reference/configuration/index.html">configuration reference</a>.
+These chapters explain the screens; the reference is the exhaustive list.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="hub/index.html">Global configuration</a></li>
+<li><a href="registration/index.html">Registration</a></li>
+<li><a href="components/index.html">Components</a></li>
+<li><a href="modules/index.html">Modules</a></li>
+<li><a href="plugins/index.html">Plugins</a></li>
+<li><a href="authentication/index.html">Authentication</a></li>
+<li><a href="extauth/index.html">External authenticators</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../faq/index.html" rel="prev"><span>Previous</span>Frequently Asked Questions</a><a class="pager__next" href="hub/index.html" rel="next"><span>Next</span>HUB Settings</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../faq/index.html" rel="prev"><span>Previous</span>Frequently Asked Questions</a><a class="pager__next" href="hub/index.html" rel="next"><span>Next</span>Global configuration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

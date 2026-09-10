@@ -1,61 +1,162 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions/templates
 source-id: 3407
 modified: 2009-10-01
 imported: 2026-09-09
 -->
-# Templates Manager
+# Template Manager
 
-## Overview
+A template controls how a page looks: the skeleton HTML, the stylesheets, the
+scripts, and the module positions the page offers. The Template Manager sets
+which template the site and the administrator interface use, tunes each
+template's parameters, and edits template source files.
 
-The Template Manager is where you assign a default Template to your web site. You can also edit and preview Templates here.
+Select **Extensions** → **Template Manager**, or go to
+`/administrator/index.php?option=com_templates`. The screen has two tabs,
+**Styles** and **Templates**. Styles opens first.
 
-The visual layout of both the Front-end and Back-end of your site is controlled by the Template. Templates are extensions that contain layout and style information that tells the CMS exactly how to draw each page of your site.
+## Templates and styles
 
-When you first install a hub, one Back-end Template and one or more Front-end templates are included. Other Templates can be installed from third-party developers as Extensions.
+A **template** is the code: a directory containing `index.php`,
+`templateDetails.xml`, stylesheets, and optionally layout overrides. A
+**style** is a saved set of one template's parameters. You assign styles, not
+templates, and one template can have as many styles as you want — a blue one
+and a green one, say — with different menu items using each.
 
-If you want to use the same Template for all of the pages on your site, you just assign one Template as the Default Template. You can also assign different Templates to different pages.
+Templates ship in [`core/templates/`](../../../core/templates); a hub's own
+go in `app/templates/`, which takes precedence over a core template of the
+same name.
 
-Select **Extensions** → **Template Manager** from the drop-down menu in the back-end of your installation.
+| Template | Client | Notes |
+|---|---|---|
+| **kimera** | Site | The standard site template. Parameters for header style, primary and secondary colour, background pattern or image. |
+| **lucent** | Site | An older site template. Same positions as kimera, no parameters. |
+| **Welcome** | Site | A pre-launch splash template. Its **Template** parameter names the template to fall back to, `kimera` by default. |
+| **kameleon (admin)** | Administrator | The administrator template. Parameters for header style and colour theme. |
 
-## Column Headers
+`core/templates/system` is not a selectable template. It holds the shared
+error and module-chrome layouts every template falls back on.
 
-- **#:** An indexing number automatically assigned by Joomla! for ease of reference.
-- **Template Name:** The name given to each Template by the Template author. Click the Name to open the Template for editing. If you hover the mouse over the Template Name, a small preview for the Template displays in a pop-up window. The Template Name normally corresponds to the sub-directory name that contains the Template in the `<path-to-app>/templates/` directory. For example, the files for the **kimera** Template are in the directory `<path-to-app>/templates/kimera`
-- **Default:** Indicator of Default Template.
-- **Assigned:** Shows whether this Template has been assigned to any specific menu items. To assign a template to menu items, open the Template for editing.
-- **Version:** The version number of the Extension.
-- **Date:** The date this extension was released.
-- **Author:** The author of this extension.
-- **Display #:** The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (*where applicable*).
-- **Location**
+## The Styles tab
 
-## Toolbars
+The list shows every saved style. Its columns:
 
-- **Default:** Select the Template that you want to be the default Template. Then click this button. The default star symbol will show in the Default column, indicating that this is now the default Template.
-- **Edit:** Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name. See the section below called **Changing Text and Color** for information on the edit screen.
-- **Help:** Opens this Help Screen.
-- **Duplicate**
-- **Delete**
+| Column | Meaning |
+|---|---|
+| Preview | For a site style, a link that opens the style in a new tab. Administrator styles cannot be previewed. |
+| **Style** | The style name. Click it to edit. |
+| **Client** | Site or Administrator. |
+| **Template** | The template the style belongs to. |
+| **Default** | Whether this is the default style for its client. |
+| **Assigned** | Whether any menu items point at this style. |
+| **ID** | The row's primary key. |
 
-## Changing Text and Color
+A search box matches the style name; two drop-downs filter by
+**- Select Template -** and by client.
 
-(**Note:** You have to be logged into your hub in order to complete the following tasks)
+The Preview links only appear when **Preview Module Positions** is enabled in
+**Options**.
 
-1. Click the **Extensions** tab and then select the **Template Manager** button located in the drop-down
-2. On the **Template Manager: Styles** page, check the box of the **kameleon (admin)** template and then click the **Edit** button
-3. Change the Header to **Light** or **Dark** from the drop-down
-4. Change the **Theme** or main color of the backend by either choosing a color from the drop-down or by selecting **Custom (color specified below)** and fill in a color code in the **Custom color box**
-5. Save the changes by clicking **Save & Close** and a pop-up will appear saying **Style successfully saved**
+### Toolbar
 
-## Kimera: Adding a Background Image
+| Button | Effect |
+|---|---|
+| **Default** | Makes the selected style the default for its client. |
+| **Edit** | Opens the selected style. |
+| **Duplicate** | Copies the selected styles. |
+| **Delete** | Deletes the selected styles. The default style cannot be deleted. |
+| **Options** | Component settings and permissions. |
+| **Help** | Opens the built-in help screen. |
 
-1. Navigate to the **/administrator** interface and login
-2. Hover over **Content** and select **Media Manager** from the drop-down
-3. Upload an image to the **Media Manger**
-4. Navigate over to **Extensions** and select **Template Manager** from the drop-down
-5. Select **Kimera(site)**
-6. Select **Advanced options** and add in the path to the image
-7. Click **Save & Close**
-8. The new image will appear on the frontend of the Hub
+There is no **New** button. New styles are made by duplicating an existing
+one.
+
+### Editing a style
+
+| Field | Notes |
+|---|---|
+| **Style Name** | Required. |
+| **Default** | For a site style, **No** or **All**. For an administrator style, a Yes/No radio. |
+| **Menus assignment** | Site styles only, and only if you can edit menus and change state. Ticks the menu items that should use this style. |
+
+The right-hand column shows the style's ID, the template's description from
+`templateDetails.xml`, the template name and the client, none of them
+editable. Below them the template's own parameters appear in collapsible
+panels — **Basic Options** and **Advanced Options** for kimera. A template
+with no parameters shows *No options found for this template.*
+
+## The Templates tab
+
+This tab lists the installed templates themselves, with a thumbnail, the
+template name, the client, and the version, date and author read from
+`templateDetails.xml`. Its only toolbar buttons are **Options** and **Help**;
+templates are not created, enabled or deleted here.
+
+Click a template name to open **Template Manager: Customise Template**. That
+screen lists the template's editable files in three groups, each entry a link
+to a plain-text source editor with **Save**, **Save & Close** and **Cancel**:
+
+- **Template Master Files** — the page skeletons the platform looks for by
+  name: `index.php`, `error.php`, `print.php`, `component.php`, `offline.php`,
+  `group.php`, `email.php`.
+- **Assets** — every other `.css`, `.less`, `.scss`, `.js` or `.php` file in
+  the template.
+- **Overrides** — everything under the template's `html/` directory, which is
+  where a template replaces a component's or module's own layout.
+
+> **Warning:** Files under `core/` belong to the platform and are replaced on
+> upgrade. Edit a template only after copying it into `app/templates/`.
+
+> **Note:** The **Copy Template** form on this screen does not work. It posts
+> a `copy` task that the templates controller does not implement, so the
+> submission silently returns you to the list without creating anything. Copy
+> a template on the filesystem instead.
+
+## Module positions
+
+Each template declares the positions it offers in `templateDetails.xml`. The
+[Module Manager](01-modules.md) reads that list when you pick a position for
+a module. kimera and lucent both declare:
+
+`footer`, `banner`, `welcome`, `left`, `right`, `helppane`, `user3`,
+`introblock`, `notices`, `search`
+
+kameleon declares:
+
+`menu`, `submenu`, `toolbar`, `title`, `status`, `icon`, `cpanel`, `debug`
+
+To see where they land, set **Preview Module Positions** to Enabled in
+**Options** and append `?tp=1` to a site URL. Every position is then drawn as
+a labelled outline, including empty ones.
+
+## Changing the administrator colours
+
+1. Go to **Extensions** → **Template Manager**.
+2. On the **Styles** tab, select **kameleon (admin)** and choose **Edit**.
+3. Set **Header** to **Light** or **Dark**. Light gives a light toolbar and a
+   coloured menu; Dark gives the reverse.
+4. Set **Theme** to one of the named colours, or to
+   **- Custom (color specified below) -** and put a hex value in **Custom
+   color**. The value must start with `#`.
+5. Select **Save & Close**.
+
+## Giving kimera a background image
+
+1. Upload the image through **Content** → **Media Manager**.
+2. Go to **Extensions** → **Template Manager** and edit the **kimera** style.
+3. Open **Advanced Options** and put the image's path, relative to the
+   document root, in **Background image**.
+4. Select **Save & Close**.
+
+> **Note:** A value in **Background image** overrides whatever
+> **Background pattern** is set to under **Basic Options**.
+
+## Options
+
+**Options** has one setting, `template_positions_display`
+(**Preview Module Positions**, disabled by default), plus a permissions tab.
+See [the generated reference](../../reference/configuration/components/templates.md).

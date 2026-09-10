@@ -1,0 +1,12 @@
+<!--
+status: imported
+source: core/components/com_answers/site/help/en-GB/points.phtml
+imported: 2026-09-09
+-->
+# Earning points in the Questions & Answers forum
+
+Each question in the forum has its own "market" value, which reflects the level of community interest the question has generated. This is calculated by summing up the weighted number of answers, recommendations and answer votes, e.g. each additional answer rises the value of the question by 10 points, each recommendation by 2 points, etc. When the person who asked the question selects an answer as most helpful, the question gets 20 bonus points and is considered to be closed. At that moment the accumulated point value of the question is distributed between participating parties. One third of the value goes to the asker; another third goes to the user whose answer was accepted as the best; the remaining third is split between all users who answered the question, provided that their response received at least 3 community votes and more than half of those are positive (users found them helpful). In the case of only one answer, or if the community vote requirement is not satisfied, the user whose answer was accepted as best gets the remainder of accumulated points for the question.
+
+Additionally, users will get monthly "royalty" payments for their questions and answers based on the total of received question recommendations and answer votes. The royalty payment is distributed the same way as the points at question closure. The more community interest the question generates and the more positive votes your answer receives, the more points you earn as a result.
+
+You can boost the value of your question by assigning a point reward for best answer. This can be done when you first submit your question, provided that you have funds available on your account. The amount you set aside for the reward is not deducted from your account until you select the winner, but is meanwhile kept on hold. If you are not satisfied with a single answer and do not wish to name a winner, you have an option to withdraw your question.

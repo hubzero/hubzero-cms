@@ -1,47 +1,103 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/maintenance/tickets
 source-id: 3342
 imported: 2026-09-09
 -->
 # Support Tickets
 
-## Tickets: Best Practices
+Users open a ticket when something on the hub goes wrong and neither
+[Questions and Answers](../09-components/01-answers.md) nor the
+[Knowledge Base](../09-components/13-kb.md) answers it. Administrators work
+those tickets in the **Support** component. This page is about handling the
+queue day to day; for setting the component up — categories, canned messages,
+statuses, and who may see what — read
+[Support](../09-components/20-support.md).
 
-Users can create tickets when they experience a problem on the Hub that is not answered in [**Questions and Answers**](../09-components/01-answers.md) or [**Knowledge Base**](../09-components/13-kb.md). Tickets are ways to report bugs or issues that they experienced with the Hub. Administrators are then able to access the **Support** component to help solve these issues.
+## The screens
 
-In order to understand how tickets are submitted by users, read our [**Hub User Support Documentation**](https://help.hubzero.org/documentation/240/users/helpsupport). It is important to learn about giving Hub Managers/Administrators the proper permissions to access the Hub's tickets and setting up custom ticket messages and categories. Learn about how you can complete these tasks by reading our [**Hub Manager Support Documentation**](../09-components/20-support.md).
+**Components → Support** opens the ticket list. The submenu carries the rest:
 
-When a new ticket is submitted by a user, it is best if a Hub Manager/Administrator tries to respond with an initial message which notifies the customer that their ticket has been received by the Hub team and will be worked on shortly.
+| Entry | What it is |
+|---|---|
+| **Tickets** | The queue |
+| **Categories** | Ticket categories |
+| **Queries** | Saved, sortable ticket searches built with the query builder |
+| **Messages** | Canned replies |
+| **Statuses** | The status vocabulary this hub uses |
+| **Abuse** | Reports of abusive content from around the site |
+| **Stats** | Ticket volume and resolution reporting |
+| **ACL** | Per-role access to the component |
 
-The Hub Manager/Administrator would then review the ticket and see if the user provided enough information to understand either the **Issue**, **Request** or **Question**.
+## What a ticket carries
 
-- **Issue**: A problem ("bug") the user experienced on the Hub or "bug"; a matter or situation regarded as unwelcome by the user.
-- **Request**: An act of asking for a change in feature design or permission to access an area of the Hub currently restricted.
-- **Question**: An inquiry about a feature or item related to the Hub or Hub's community.
+A ticket is not typed as an issue, a request, or a question — the component
+has no such field. What it does have:
 
-Best practices indicate that these three questions should be answered either by the user of can be filled in by the Hub Manager/Administrator after reviewing the ticket:
+| Field | Values |
+|---|---|
+| **Severity** | `critical`, `major`, `normal`, `minor` |
+| **Status** | Whatever the **Statuses** screen defines, plus the built-in open and closed |
+| **Owner** | The administrator the ticket is assigned to |
+| **Category** | From the **Categories** screen |
+| **Target date** | Optional due date |
+| **Tags** | Free tagging |
+
+Status is configurable rather than fixed. Each entry on the **Statuses**
+screen has a title, an alias, and a flag saying whether it counts as open or
+closed, so a hub can run `new → in progress → waiting on user → resolved`
+while the component still knows which of those mean the ticket is live.
+
+The list's own filters accept `status:open`, `status:closed`, `status:new`,
+`status:waiting`, and `status:all`, alongside `owner:`, `reportedby:`,
+`severity:`, and a bare search term. `owner:me` and `owner:none` resolve to
+the current administrator and to unassigned.
+
+## Working a ticket
+
+![An example support ticket reporting a 500 error when searching the forum](../media/tickets-example-ticket.png)
+
+Reply first, then diagnose. A short acknowledgement tells the user the ticket
+landed somewhere, and it costs nothing.
+
+Three questions decide whether a ticket is workable. If the user did not
+answer them, ask; if you can infer the answers, write them into a comment so
+the next person does not have to:
 
 1. What was the user trying to do?
 2. What did they expect to happen?
 3. What actually happened?
 
-For example, John Doe submitted this ticket:
+For the ticket above: the user searched the forum for "test"; expected a
+results page; got a 500 error, with a screenshot attached.
 
-![Screenshot of an example support ticket submitted by John Doe reporting a 500 error when searching for the word test in the Forums](../media/tickets-example-ticket.png)
+Each comment you add carries its own controls — the status, severity, and
+target date to set alongside it, whether to change the owner, and who gets
+emailed (submitter, owner, and any CC addresses). Tick **Private** to keep a
+comment internal. Attachments go on the comment, not the ticket. The ticket
+itself has a **Group** field that restricts the whole ticket to one group.
 
-The Hub Manager/Administrator understands that from John Doe's description, he has reported an **Issue** and can answer the following questions:
+Assign the ticket once you understand it. An unassigned ticket is nobody's
+work.
 
-1. What was the user trying to do?
+## Abuse reports
 
-Trying to search for the word 'test' in the Forums feature.
+The **Abuse** screen collects reports raised from around the site — forum and
+blog comments, knowledge base articles, questions, wiki comments. The reporter
+supplies a reason; the report lands with a status of **New**.
 
-2. What did they expect to happen?
+Open a report to see the reported item in place, then take one action:
 
-The user expected to page to load with search results related to 'test'
+| Action | Effect |
+|---|---|
+| **Release item** | The report is dismissed and the content stays |
+| **Remove as Spam** | The content is deleted and fed to the antispam plugins as a training sample |
+| **Delete item** | The content is deleted |
+| **Decide later** | Nothing changes; the report stays outstanding |
 
-3. What actually happened?
-
-The user received a 500 error (see screenshot provided by user)
-
-Once the ticket has been appropriately addressed and understood by a Hub Manager/Administrator, it can then be assigned to the appropriate individual or group (i.e. software developers, Hubzero Development Team, etc.). By following these best practices, both users and Hub management teams can experience an efficient and professional service relationship.
+The list filters by **Outstanding**, **Released**, and **Deleted**. The
+**Spam Check** screen under the same controller lets you paste sample content
+and see what the enabled antispam plugins make of it.

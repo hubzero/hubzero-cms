@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Authentication · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Why it matters? By default, your hub comes configured to allow local account creation and authentication. In addition to this default option, HUBzero gives you…">
+  <meta name="description" content="Every way of signing in to a hub is an authentication plugin, including the hub&#x27;s own accounts. A fresh install has Authentication - HUBzero enabled, which…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/authentication/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,27 +54,30 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Authentication</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#why-it-matters">Why it matters?</a></li>
-<li class="toc__item toc__item--l2"><a href="#setup">Setup</a></li>
-<li class="toc__item toc__item--l2"><a href="#more-details">More details</a></li>
-<li class="toc__item toc__item--l3"><a href="#what-happens-if-someone-already-has-a-local-hub-account-but-wants-to-start-using-a-new-third-party-provider">What happens if someone already has a local hub account, but wants to start using a new third party provider?</a></li>
-<li class="toc__item toc__item--l3"><a href="#purdue-hubs">Purdue Hubs</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
+<li class="toc__item toc__item--l2"><a href="#register-the-hub-with-the-provider-first">Register the hub with the provider first</a></li>
+<li class="toc__item toc__item--l2"><a href="#enable-the-plugin">Enable the plugin</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-login-page-shows">What the login page shows</a></li>
+<li class="toc__item toc__item--l2"><a href="#members-who-already-have-an-account">Members who already have an account</a></li>
+<li class="toc__item toc__item--l2"><a href="#second-factors">Second factors</a></li>
+<li class="toc__item toc__item--l2"><a href="#password-rules">Password rules</a></li>
+<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -124,9 +127,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -150,54 +153,218 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Authentication</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/authentication">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2012.</aside>
+        
         <div class="prose">
-<h2 id="why-it-matters">Why it matters?</h2>
-<p>By default, your hub comes configured to allow local account creation and authentication. In addition to this default option, HUBzero gives you the ability to extend the authentication process by adding support for third party services, like Facebook, Google, and LinkedIn. Using one or more of these providers, users are given a <strong>single sign-on</strong> experience, while easing the barriers to entry caused by the account creation process. Plus, as more social networking features are developed for the hubs - like posting new resources to your Facebook wall - users will already have that link setup between their hub and Facebook identities.</p>
-<p>In brief, that's the principle behind offering multiple authentication options to users. Keep reading to find out how to set it up on your hub!</p>
-<h2 id="setup">Setup</h2>
-<p>Prior to starting this process, you will have to register an <strong>app</strong> for your hub on a given provider's website. A few examples include:</p>
-<ul>
-<li><a href="https://developers.facebook.com/apps">https://developers.facebook.com/apps</a></li>
-<li><a href="https://developer.linkedin.com/">https://developer.linkedin.com/</a> (go to <strong>API Keys</strong>)</li>
-<li><a href="https://developers.google.com/">https://developers.google.com/</a> (go to the API console)</li>
-</ul>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> the information above is accurate as of Aug 2012. It will undoubtedly change. Exact steps and terminology differs between providers.</p>
+<p>Every way of signing in to a hub is an authentication plugin, including the
+hub's own accounts. A fresh install has <strong>Authentication - HUBzero</strong>
+enabled, which checks a username and password against the hub's own member
+records. Enabling another plugin adds a second way in, so a visitor can sign
+in with an identity they already hold elsewhere instead of creating a
+password here.</p>
+<h2 id="what-ships">What ships</h2>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>What it authenticates against</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authentication - HUBzero</strong></td>
+<td>The hub's own accounts. Enabled by default for both the site and the administrator interface.</td>
+</tr>
+<tr>
+<td><strong>Authentication - CILogon</strong></td>
+<td>CILogon, which federates campus identity providers.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Shibboleth</strong></td>
+<td>Shibboleth and InCommon.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Globus</strong></td>
+<td>Globus Auth.</td>
+</tr>
+<tr>
+<td><strong>Authentication - ORCID</strong></td>
+<td>ORCID.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Purdue University CAS</strong></td>
+<td>Purdue's Central Authentication Service.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Google</strong></td>
+<td>Google.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Facebook</strong></td>
+<td>Facebook.</td>
+</tr>
+<tr>
+<td><strong>Authentication - LinkedIn</strong></td>
+<td>LinkedIn.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Twitter</strong></td>
+<td>Twitter.</td>
+</tr>
+<tr>
+<td><strong>Authentication - SciStarter</strong></td>
+<td>SciStarter.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Certificate</strong></td>
+<td>A client-side SSL certificate.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Email Token</strong></td>
+<td>A one-time token mailed to the member.</td>
+</tr>
+</tbody>
+</table>
+<p>The ones that federate an institution's own login are covered separately in
+<a href="../extauth/index.html">External authenticators</a>.</p>
+<h2 id="register-the-hub-with-the-provider-first">Register the hub with the provider first</h2>
+<p>Every provider that uses OAuth needs the hub registered as an application
+before it will talk to it. The provider hands back an application ID (or
+client ID, or consumer key) and a secret. Exactly where you do that, and
+what the two values are called, differs by provider and changes often;
+start from the provider's own developer documentation.</p>
+<p>Registration also asks for the redirect URIs the provider will send people
+back to. A Hubzero hub uses three, where <code>&lt;name&gt;</code> is the plugin's directory
+name — <code>google</code>, <code>facebook</code>, <code>cilogon</code>, and so on:</p>
+<pre><code>https://&lt;yourhub&gt;/index.php?option=com_users&amp;task=user.login&amp;authenticator=&lt;name&gt;
+https://&lt;yourhub&gt;/index.php?option=com_users&amp;task=user.link&amp;authenticator=&lt;name&gt;
+https://&lt;yourhub&gt;/administrator/index.php?option=com_login&amp;task=login&amp;authenticator=&lt;name&gt;
+</code></pre>
+<p>The first is used when a visitor signs in, the second when a member links
+the provider to an account they already have, and the third only if you
+enable the plugin for the administrator interface. Some providers want only
+the domain; others, Google among them, want every URI listed exactly.</p>
+<p>The hub builds these itself, so they are not a guess:</p>
+<pre><code class="language-php">	protected static function getRedirectUri($name)
+	{
+		// Get the hub url
+		$service = trim(\Request::base(), '/');
+
+		$task = 'login';
+		$option = 'login';
+
+		if (\App::isSite())
+		{
+			// Legacy support
+			if (\App::has('component') &amp;&amp; \App::get('component')-&gt;isEnabled('com_users'))
+			{
+				// If someone is logged in already, then we're linking an account
+				$task   = (\User::isGuest()) ? 'user.login' : 'user.link';
+				$option = 'users';
+			}
+			else
+			{
+				$task   = (\User::isGuest()) ? 'login' : 'link';
+			}
+		}
+
+		$scope = '/index.php?option=com_' . $option . '&amp;task=' . $task . '&amp;authenticator=' . $name;
+
+		return $service . $scope;
+	}
+</code></pre>
+<h2 id="enable-the-plugin">Enable the plugin</h2>
+<ol>
+<li>Sign in to the administrator interface.</li>
+<li>Go to <strong>Extensions &gt; Plug-in Manager</strong> and set the <strong>- Select Type -</strong>
+filter to <code>authentication</code>.</li>
+<li>Select the plugin you want.</li>
+<li>Fill in the application ID and secret the provider gave you.</li>
+<li>Set <strong>Status</strong> to <strong>Enabled</strong>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>Almost every authentication plugin shares four parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Display name</strong></td>
+<td>The name shown on the login page. Each plugin defaults to the provider's name.</td>
+</tr>
+<tr>
+<td><strong>Site login</strong></td>
+<td>Offer this provider on the site's login page. Defaults to <strong>Yes</strong>.</td>
+</tr>
+<tr>
+<td><strong>Admin login</strong></td>
+<td>Offer it on the administrator login page. Defaults to <strong>No</strong> everywhere except the <strong>Authentication - HUBzero</strong> and <strong>Authentication - Email Token</strong> plugins.</td>
+</tr>
+<tr>
+<td><strong>Auto approve new users</strong></td>
+<td>Approve accounts created through this provider without an administrator looking at them. Defaults to <strong>No</strong>, and overrides the Members component's approval setting when it is <strong>Yes</strong>. Not every plugin has it.</td>
+</tr>
+</tbody>
+</table>
+<p>Each plugin's full parameter list, with defaults, is in the
+<a href="../../../reference/configuration/plugins/authentication/index.html">authentication plugin reference</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Auto approve new users</strong> bypasses account approval for
+anyone the provider will vouch for. Turn it on only for a provider whose
+membership you trust, such as your own institution's login.</p>
 </aside>
-<p>Whichever provider you're interested in, you'll need to register a new app to obtain an app ID/key and secret (terminology may be slightly different between providers). Once you've completed the registration process and obtained the API key and secret, you can jump over to the hub.</p>
+<h2 id="what-the-login-page-shows">What the login page shows</h2>
+<p>The login page lists every enabled plugin whose <strong>Site login</strong> is <strong>Yes</strong>,
+each as a &quot;Sign in with …&quot; button using its <strong>Display name</strong>. If
+<strong>Authentication - HUBzero</strong> is also enabled, a separate link offers the
+hub's own username and password below them. A returning visitor's last choice is
+remembered in a cookie and offered first.</p>
+<p>If you disable <strong>Authentication - HUBzero</strong>, local accounts can no longer
+sign in anywhere, including the administrator interface. Leave <strong>Admin login</strong> on
+for at least one plugin you can actually use.</p>
+<h2 id="members-who-already-have-an-account">Members who already have an account</h2>
+<p>An existing member links a provider from their own profile:</p>
+<ol>
+<li>Open the member profile and choose the <strong>Account</strong> tab.</li>
+<li>Under <strong>Linked accounts</strong>, <strong>Your account is linked to</strong> lists what is
+already connected and <strong>Other options (click to link)</strong> lists the rest.</li>
+<li>Select a provider to link it. The <code>x</code> beside a linked account removes
+the link.</li>
+</ol>
+<p>When someone signs in with a provider the hub has not seen before, the hub
+first tries to match them to an existing member — usually by email address —
+and offers to link the two accounts before it offers to create a new one.</p>
+<p>The same tab carries <strong>Set local password</strong>, which a member who only ever
+signs in through a provider uses to set the password the hub's shell and
+file services need.</p>
+<h2 id="second-factors">Second factors</h2>
+<p>The <code>authfactors</code> plugin group adds a second step after the first one
+succeeds. Two ship: <strong>Authfactors - Certificate</strong>, which asks for a client
+SSL certificate, and <strong>Authfactors - Google</strong>, which asks for a Google
+Authenticator code. Neither has parameters; enable them from the Plug-in
+Manager the same way.</p>
+<h2 id="password-rules">Password rules</h2>
+<p>Rules for the hub's own passwords are not part of these plugins. They live
+under <strong>Users &gt; Members &gt; Passwords</strong>, which has two screens: the character
+and length rules, and a blacklist of passwords that are refused outright.</p>
+<h2 id="older-screenshots">Older screenshots</h2>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> the Oauth protocol requires the specification of a redirect URI. Most of the providers mentioned above require you to specify the redirect domain (usually just your hub URL). The Google API requires you to specifically list any redirect URI's that will be used. These should be as follows:
-(HUBzero 1.1 - see image below)
-https://<code>yourhub.org</code>/index.php?option=com_user&amp;task=login&amp;authenticator=google
-https://<code>yourhub.org</code>/index.php?option=com_user&amp;task=link&amp;authenticator=google
-(HUBzero 1.2)
-https://<code>yourhub.org</code>/index.php?option=com_users&amp;task=user.login&amp;authenticator=google
-https://<code>yourhub.org</code>/index.php?option=com_users&amp;task=user.link&amp;authenticator=google</p>
+<p><strong>Note:</strong> The screenshots below came from the imported version of this
+page and were taken around 2012. The Plug-in Manager and the plugin edit
+screen have been restyled since, and the login page no longer looks like
+the one shown.</p>
 </aside>
-<p><img src="../../media/authentication-auth-04.png" alt="plugins" /></p>
-<p>Setup begins in the administrative interface for your hub.</p>
-<p>\1. First, navigate to <strong>Extensions -&gt; Plugin Manager</strong>, and filter the results to the <strong>authentication</strong> type</p>
-<p><img src="../../media/authentication-210authentication.png" alt="210authentication" /></p>
-<p>\2. Next, select the plugin you desire to enable (we'll use Facebook in this example)</p>
-<ul>
-<li>In the plugin edit screen, fill in the appropriate values for App ID and Consumer Secret as obtained above. Also be sure to enable the plugin.</li>
-</ul>
-<p><img src="../../media/authentication-210authentication2.png" alt="210authentication2" /></p>
-<p>That's about it! Now, when you go to your hub's login page, you'll see a new option for Facebook login.</p>
-<p><img src="../../media/authentication-210authentication3.png" alt="210authentication3" /></p>
-<h2 id="more-details">More details</h2>
-<h3 id="what-happens-if-someone-already-has-a-local-hub-account-but-wants-to-start-using-a-new-third-party-provider">What happens if someone already has a local hub account, but wants to start using a new third party provider?</h3>
-<p>Users that already have hub accounts can go to the accounts tab of their members page. From there, they can link their existing account with external providers. Additionally, if a user tries to log in with an external account that doesn't match one used on the hub before, we check to see if we can match them with an already existing hub account prior to talking them through the new account creation process.</p>
-<h3 id="purdue-hubs">Purdue Hubs</h3>
-<p>In addition to the authentication options mentioned above, HUBzero has also developed an authentication plugin for the Purdue Central Authentication Service (CAS). If you're interested in taking advantage of this service, follow the instruction here: <a href="https://www.purdue.edu/apps/account/docs/CAS/CAS_information.jsp">https://www.purdue.edu/apps/account/docs/CAS/CAS_information.jsp</a> to register your hub with the Identity and Access Management Office at Purdue. Once this is done, simply turn the plugin on and you'll be all set.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Other institutions or universities may find the Purdue CAS plugin a good template for developing their own CAS authentication plugin. If you're developing a plugin that uses Oauth, consider using the Facebook plugin as a starting point.</p>
-</aside>
+<p><img src="../../media/authentication-auth-04.png" alt="The authentication plugins listed in the Plug-in Manager" /></p>
+<p><img src="../../media/authentication-210authentication.png" alt="Filtering the Plug-in Manager to the authentication type" /></p>
+<p><img src="../../media/authentication-210authentication2.png" alt="Filling in an authentication plugin's key and secret" /></p>
+<p><img src="../../media/authentication-210authentication3.png" alt="The login page offering a third-party provider" /></p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plugins</a><a class="pager__next" href="../extauth/index.html" rel="next"><span>Next</span>External Authenticators</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plugins</a><a class="pager__next" href="../extauth/index.html" rel="next"><span>Next</span>External authenticators</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/06-authentication.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

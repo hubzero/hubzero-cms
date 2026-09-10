@@ -1,0 +1,21 @@
+<!--
+status: imported
+source: core/components/com_resources/site/help/en-GB/video.phtml
+imported: 2026-09-09
+-->
+# How to View/Download Video Content?
+
+While almost any video format can be uploaded to a hub, the most common (and recommended) format is MP4 (MPEG-4), also known as M4V (MPEG-4 Video). Most modern operating systems come equipped for viewing this format directly on your computer. If you do not already have the necessary software to view the videos, there are a variety of players available across most operating systems easily discoverable from a quick query in your favorite search engine.
+
+## Downloading Video and Audio Content
+
+Most of the hub's video and audio content is downloadable. Procedures vary depending on the browser you are using:
+
+- **chrome** Right click (hold click for Mac) on the resource link, select "Download linked file", a dialog box will appear allowing you to save document as a file.
+- **Firefox** Right click (hold click for Mac) on the resource link, select "Save Link As...", a dialog box will appear allowing you to save document as a file.
+- **Internet Explorer** Right click on the resource link, then select "Save Target As...", a dialog box will appear allowing you to save document as a file. Mac users should drag the link to their desktop or folder and the document will be downloaded.
+- **Safari** Control-click on the resource link, then select "Download Linked File", the document will download to your download's folder. The download folder is specified using the Preferences menu and selecting the General tab.
+
+## Continued Problems
+
+**If the problem persists, please send us a trouble report.**

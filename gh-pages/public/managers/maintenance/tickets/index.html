@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Support Tickets · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Tickets: Best Practices Users can create tickets when they experience a problem on the Hub that is not answered in Questions and Answers or Knowledge Base .…">
+  <meta name="description" content="Users open a ticket when something on the hub goes wrong and neither Questions and Answers nor the Knowledge Base answers it. Administrators work those tickets…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/maintenance/tickets/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,28 +49,31 @@
 <li class="tree__leaf"><a class="tree__link" href="../approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Support Tickets</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#tickets-best-practices">Tickets: Best Practices</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-ticket-carries">What a ticket carries</a></li>
+<li class="toc__item toc__item--l2"><a href="#working-a-ticket">Working a ticket</a></li>
+<li class="toc__item toc__item--l2"><a href="#abuse-reports">Abuse reports</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +123,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -146,43 +149,162 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Support Tickets</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/maintenance/tickets">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="tickets-best-practices">Tickets: Best Practices</h2>
-<p>Users can create tickets when they experience a problem on the Hub that is not answered in <a href="../../components/answers/index.html"><strong>Questions and Answers</strong></a> or <a href="../../components/kb/index.html"><strong>Knowledge Base</strong></a>. Tickets are ways to report bugs or issues that they experienced with the Hub. Administrators are then able to access the <strong>Support</strong> component to help solve these issues.</p>
-<p>In order to understand how tickets are submitted by users, read our <a href="https://help.hubzero.org/documentation/240/users/helpsupport"><strong>Hub User Support Documentation</strong></a>. It is important to learn about giving Hub Managers/Administrators the proper permissions to access the Hub's tickets and setting up custom ticket messages and categories. Learn about how you can complete these tasks by reading our <a href="../../components/support/index.html"><strong>Hub Manager Support Documentation</strong></a>.</p>
-<p>When a new ticket is submitted by a user, it is best if a Hub Manager/Administrator tries to respond with an initial message which notifies the customer that their ticket has been received by the Hub team and will be worked on shortly.</p>
-<p>The Hub Manager/Administrator would then review the ticket and see if the user provided enough information to understand either the <strong>Issue</strong>, <strong>Request</strong> or <strong>Question</strong>.</p>
-<ul>
-<li><strong>Issue</strong>: A problem (&quot;bug&quot;) the user experienced on the Hub or &quot;bug&quot;; a matter or situation regarded as unwelcome by the user.</li>
-<li><strong>Request</strong>: An act of asking for a change in feature design or permission to access an area of the Hub currently restricted.</li>
-<li><strong>Question</strong>: An inquiry about a feature or item related to the Hub or Hub's community.</li>
-</ul>
-<p>Best practices indicate that these three questions should be answered either by the user of can be filled in by the Hub Manager/Administrator after reviewing the ticket:</p>
+<p>Users open a ticket when something on the hub goes wrong and neither
+<a href="../../components/answers/index.html">Questions and Answers</a> nor the
+<a href="../../components/kb/index.html">Knowledge Base</a> answers it. Administrators work
+those tickets in the <strong>Support</strong> component. This page is about handling the
+queue day to day; for setting the component up — categories, canned messages,
+statuses, and who may see what — read
+<a href="../../components/support/index.html">Support</a>.</p>
+<h2 id="the-screens">The screens</h2>
+<p><strong>Components → Support</strong> opens the ticket list. The submenu carries the rest:</p>
+<table>
+<thead>
+<tr>
+<th>Entry</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tickets</strong></td>
+<td>The queue</td>
+</tr>
+<tr>
+<td><strong>Categories</strong></td>
+<td>Ticket categories</td>
+</tr>
+<tr>
+<td><strong>Queries</strong></td>
+<td>Saved, sortable ticket searches built with the query builder</td>
+</tr>
+<tr>
+<td><strong>Messages</strong></td>
+<td>Canned replies</td>
+</tr>
+<tr>
+<td><strong>Statuses</strong></td>
+<td>The status vocabulary this hub uses</td>
+</tr>
+<tr>
+<td><strong>Abuse</strong></td>
+<td>Reports of abusive content from around the site</td>
+</tr>
+<tr>
+<td><strong>Stats</strong></td>
+<td>Ticket volume and resolution reporting</td>
+</tr>
+<tr>
+<td><strong>ACL</strong></td>
+<td>Per-role access to the component</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-a-ticket-carries">What a ticket carries</h2>
+<p>A ticket is not typed as an issue, a request, or a question — the component
+has no such field. What it does have:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Severity</strong></td>
+<td><code>critical</code>, <code>major</code>, <code>normal</code>, <code>minor</code></td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Whatever the <strong>Statuses</strong> screen defines, plus the built-in open and closed</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>The administrator the ticket is assigned to</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>From the <strong>Categories</strong> screen</td>
+</tr>
+<tr>
+<td><strong>Target date</strong></td>
+<td>Optional due date</td>
+</tr>
+<tr>
+<td><strong>Tags</strong></td>
+<td>Free tagging</td>
+</tr>
+</tbody>
+</table>
+<p>Status is configurable rather than fixed. Each entry on the <strong>Statuses</strong>
+screen has a title, an alias, and a flag saying whether it counts as open or
+closed, so a hub can run <code>new → in progress → waiting on user → resolved</code>
+while the component still knows which of those mean the ticket is live.</p>
+<p>The list's own filters accept <code>status:open</code>, <code>status:closed</code>, <code>status:new</code>,
+<code>status:waiting</code>, and <code>status:all</code>, alongside <code>owner:</code>, <code>reportedby:</code>,
+<code>severity:</code>, and a bare search term. <code>owner:me</code> and <code>owner:none</code> resolve to
+the current administrator and to unassigned.</p>
+<h2 id="working-a-ticket">Working a ticket</h2>
+<p><img src="../../media/tickets-example-ticket.png" alt="An example support ticket reporting a 500 error when searching the forum" /></p>
+<p>Reply first, then diagnose. A short acknowledgement tells the user the ticket
+landed somewhere, and it costs nothing.</p>
+<p>Three questions decide whether a ticket is workable. If the user did not
+answer them, ask; if you can infer the answers, write them into a comment so
+the next person does not have to:</p>
 <ol>
 <li>What was the user trying to do?</li>
 <li>What did they expect to happen?</li>
 <li>What actually happened?</li>
 </ol>
-<p>For example, John Doe submitted this ticket:</p>
-<p><img src="../../media/tickets-example-ticket.png" alt="Screenshot of an example support ticket submitted by John Doe reporting a 500 error when searching for the word test in the Forums" /></p>
-<p>The Hub Manager/Administrator understands that from John Doe's description, he has reported an <strong>Issue</strong> and can answer the following questions:</p>
-<ol>
-<li>What was the user trying to do?</li>
-</ol>
-<p>Trying to search for the word 'test' in the Forums feature.</p>
-<ol start="2">
-<li>What did they expect to happen?</li>
-</ol>
-<p>The user expected to page to load with search results related to 'test'</p>
-<ol start="3">
-<li>What actually happened?</li>
-</ol>
-<p>The user received a 500 error (see screenshot provided by user)</p>
-<p>Once the ticket has been appropriately addressed and understood by a Hub Manager/Administrator, it can then be assigned to the appropriate individual or group (i.e. software developers, Hubzero Development Team, etc.). By following these best practices, both users and Hub management teams can experience an efficient and professional service relationship.</p>
+<p>For the ticket above: the user searched the forum for &quot;test&quot;; expected a
+results page; got a 500 error, with a screenshot attached.</p>
+<p>Each comment you add carries its own controls — the status, severity, and
+target date to set alongside it, whether to change the owner, and who gets
+emailed (submitter, owner, and any CC addresses). Tick <strong>Private</strong> to keep a
+comment internal. Attachments go on the comment, not the ticket. The ticket
+itself has a <strong>Group</strong> field that restricts the whole ticket to one group.</p>
+<p>Assign the ticket once you understand it. An unassigned ticket is nobody's
+work.</p>
+<h2 id="abuse-reports">Abuse reports</h2>
+<p>The <strong>Abuse</strong> screen collects reports raised from around the site — forum and
+blog comments, knowledge base articles, questions, wiki comments. The reporter
+supplies a reason; the report lands with a status of <strong>New</strong>.</p>
+<p>Open a report to see the reported item in place, then take one action:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Release item</strong></td>
+<td>The report is dismissed and the content stays</td>
+</tr>
+<tr>
+<td><strong>Remove as Spam</strong></td>
+<td>The content is deleted and fed to the antispam plugins as a training sample</td>
+</tr>
+<tr>
+<td><strong>Delete item</strong></td>
+<td>The content is deleted</td>
+</tr>
+<tr>
+<td><strong>Decide later</strong></td>
+<td>Nothing changes; the report stays outstanding</td>
+</tr>
+</tbody>
+</table>
+<p>The list filters by <strong>Outstanding</strong>, <strong>Released</strong>, and <strong>Deleted</strong>. The
+<strong>Spam Check</strong> screen under the same controller lets you paste sample content
+and see what the enabled antispam plugins make of it.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="../notices/index.html" rel="next"><span>Next</span>Site Notices</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/03-tickets.md">Edit this page on GitHub</a>

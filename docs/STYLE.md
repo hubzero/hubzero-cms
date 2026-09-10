@@ -55,6 +55,7 @@ modified: 2016-03-01
 | `source` | Where an imported page came from |
 | `source-id`, `modified`, `imported` | Bookkeeping from the import |
 | `merged-from` | The documentation version merged into an imported page |
+| `screenshots` | Whether the page's images still match the software: `ok`, `stale` (some or all show screens that have changed), or `none` (the page has no images). Recorded during review; the recapture is a separate pass |
 | `summary` | Overrides the first paragraph as the page description |
 | `order` | Overrides the filename prefix for ordering |
 | `title` | Overrides the level-one heading as the page title |

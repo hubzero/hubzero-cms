@@ -24,8 +24,8 @@
    "title": "Hub managers",
    "pages": 78,
    "counts": {
-    "rewritten": 18,
-    "imported": 55,
+    "rewritten": 48,
+    "imported": 25,
     "merged": 5
    }
   },
@@ -87,8 +87,8 @@
  ],
  "totals": {
   "draft": 5,
-  "imported": 182,
-  "rewritten": 97,
+  "imported": 152,
+  "rewritten": 127,
   "merged": 15,
   "generated": 183
  }

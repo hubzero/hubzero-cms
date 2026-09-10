@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Scheduled Tasks · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A cron component is available for managing and running scheduled tasks for your Hub. The Cron Job Manager can be found by logging into the…">
+  <meta name="description" content="The Cron component manages the hub&#x27;s scheduled jobs — digest emails, cache cleanup, search indexing, DOI registration, and the rest. Go to Components → Cron .…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/maintenance/cron/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,31 +51,33 @@
 <li class="tree__leaf"><a class="tree__link" href="../tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Scheduled Tasks</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l3"><a href="#what-is-cron">What is cron?</a></li>
-<li class="toc__item toc__item--l2"><a href="#create-edit-jobs">Create/Edit Jobs</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-it-works">How it works</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-job-list">The job list</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-and-editing-a-job">Creating and editing a job</a></li>
 <li class="toc__item toc__item--l3"><a href="#details">Details</a></li>
-<li class="toc__item toc__item--l3"><a href="#recurrence">Recurrence</a></li>
 <li class="toc__item toc__item--l3"><a href="#parameters">Parameters</a></li>
+<li class="toc__item toc__item--l3"><a href="#recurrence">Recurrence</a></li>
+<li class="toc__item toc__item--l3"><a href="#publishing">Publishing</a></li>
+<li class="toc__item toc__item--l3"><a href="#execution">Execution</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -125,9 +127,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -151,38 +153,222 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Scheduled Tasks</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/maintenance/cron">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2013.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A cron component is available for managing and running scheduled tasks for your Hub.</p>
-<p>The Cron Job Manager can be found by logging into the <strong>/administrator</strong> interface. Once logged in, hover over <strong>Components</strong> and clicking on <strong>Cron</strong> from the drop-down.</p>
-<p><img src="../../media/cron-cron-manager-01.png" alt="" /></p>
-<h3 id="what-is-cron">What is cron?</h3>
-<p>Cron is the name of program that enables unix users to execute commands or scripts (groups of commands) automatically at a specified time/date. It is normally used for sys admin commands.</p>
-<p>A hub has a specific cron job that calls to the CMS. From there the code executes a list of jobs that can be created, published/unpublished, modified, and deleted via the administrator interface.</p>
-<h2 id="create-edit-jobs">Create/Edit Jobs</h2>
-<p>When you create a new job, you will select the event to trigger. Each event calls to a specific plugin and performs its own set of tasks.</p>
-<p>All jobs have two sections that are the same: Details and Recurrence. The Parameters are different for each event.</p>
+<p>The <strong>Cron</strong> component manages the hub's scheduled jobs — digest emails, cache
+cleanup, search indexing, DOI registration, and the rest. Go to
+<strong>Components → Cron</strong>.</p>
+<p><img src="../../media/cron-cron-manager-01.png" alt="The Cron job manager" /></p>
+<h2 id="how-it-works">How it works</h2>
+<p>Unix cron does not run each hub job. It ticks the CMS, once a minute, and the
+CMS runs whichever jobs are due. Everything about a job — what it does, how
+often, and whether it runs at all — is configured in the administrator
+interface.</p>
+<p>There are two ways to deliver the tick.</p>
+<p><strong>Over HTTP.</strong> A request to <code>index.php?option=com_cron&amp;task=tick&amp;no_html=1</code>
+runs the pending jobs. The request must come from an allowed address: the
+caller either has <code>core.manage</code> on <code>com_cron</code>, or its IP is in the
+component's <strong>whitelist</strong> option (default <code>127.0.0.1</code>), or it resolves to the
+server's own hostname or to <code>localhost</code>. Anything else gets a 404.</p>
+<p><strong>From the command line.</strong> <code>muse cron:jobs tick</code> makes that HTTP request for
+you, taking the URL from the CMS <code>live_site</code> setting and holding a lock so
+ticks cannot pile up:</p>
+<pre><code>* * * * * apache /var/www/yourhub/core/bin/muse cron:jobs tick &gt;&gt; /var/log/hub-cron.log
+</code></pre>
+<p>The <code>cron:jobs</code> command has four other tasks:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>run</code></td>
+<td>Run pending jobs in this process. <code>--job=5</code> runs only that job</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td>List jobs that are due. <code>-a</code> lists every published job</td>
+</tr>
+<tr>
+<td><code>deactivate</code></td>
+<td>Mark a job inactive</td>
+</tr>
+<tr>
+<td><code>unpublish</code></td>
+<td>Unpublish a job</td>
+</tr>
+</tbody>
+</table>
+<p><code>cron:jobs</code> is a component command, so it does not appear in <code>muse help</code> or in
+the <a href="../../../reference/muse/index.html">generated muse reference</a>, which covers
+only the commands under <code>core/libraries/Hubzero/Console/Command/</code>. Run
+<code>muse cron:jobs help</code> for its own documentation.</p>
+<p>Jobs claim themselves before running, so a manual run from the administrator
+interface and a scheduled tick cannot execute the same job at once, and a job
+whose process died is reclaimed.</p>
+<h2 id="the-job-list">The job list</h2>
+<p>The list shows each job's ID, title, state, recurrence, start and end dates,
+whether it is active, and its last and next run times. The toolbar carries
+<strong>Run</strong> (run the selected jobs now), <strong>Publish</strong>, <strong>Unpublish</strong>,
+<strong>Deactivate</strong>, <strong>New</strong>, <strong>Delete</strong>, and <strong>Options</strong>.</p>
+<p><strong>Options</strong> holds one setting, the IP whitelist — see the
+<a href="../../../reference/configuration/components/cron/index.html">generated parameter list</a>.</p>
+<h2 id="creating-and-editing-a-job">Creating and editing a job</h2>
+<p>A job has four fieldsets: <strong>Details</strong>, the event's own <strong>Parameters</strong>,
+<strong>Recurrence</strong>, and <strong>Publishing</strong>, plus an <strong>Execution</strong> option.</p>
 <h3 id="details"><a id="editfields-details"></a>Details</h3>
-<p><img src="../../media/cron-cron-manager-03.png" alt="" /></p>
+<p><img src="../../media/cron-cron-manager-03.png" alt="The Details fieldset of a cron job" /></p>
 <ul>
-<li><strong>Event</strong><br />
-This displays the system name of the module. No entry is allowed.</li>
-<li><strong>Title</strong><br />
-The Title of the Module.</li>
-<li><strong>State</strong><br />
-Whether or not the job is enabled. If &quot;No&quot;, the job will not be run.</li>
-<li><strong>Recurrence</strong><br />
-This is how often a job should be run. Several common values are provided--such as &quot;run once a day, midnight&quot;--with the option to specify your own by selecting &quot;custom&quot; front he drop-down list.</li>
+<li><strong>Title</strong> (required)
+What the job is called in the list.</li>
+<li><strong>Event</strong> (required)
+The plugin event this job triggers, chosen from a drop-down grouped by
+plugin. This is the job — everything else is scheduling. The event cannot be
+changed to something no installed cron plugin offers.</li>
 </ul>
-<h3 id="recurrence"><a id="editfields-recurrence"></a>Recurrence</h3>
-<p><img src="../../media/cron-cron-manager-04.png" alt="" /></p>
+<p>The events on offer come from the enabled plugins in <code>core/plugins/cron/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Events</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>activity</code></td>
+<td><code>emailMemberDigest</code></td>
+</tr>
+<tr>
+<td><code>cache</code></td>
+<td><code>cleanSystemCss</code>, <code>trashExpiredData</code></td>
+</tr>
+<tr>
+<td><code>courses</code></td>
+<td><code>syncPassportBadgeStatus</code>, <code>emailInstructorDigest</code></td>
+</tr>
+<tr>
+<td><code>forum</code></td>
+<td><code>emailGroupForumDigest</code></td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td><code>cleanGroupFolders</code>, <code>sendGroupAnnouncements</code>, <code>expireGroupMemberships</code>, <code>notifyExpiringMemberships</code></td>
+</tr>
+<tr>
+<td><code>members</code></td>
+<td><code>onPointRoyalties</code></td>
+</tr>
+<tr>
+<td><code>newsletter</code></td>
+<td><code>processMailings</code>, <code>processIps</code></td>
+</tr>
+<tr>
+<td><code>projects</code></td>
+<td><code>computeStats</code>, <code>googleSync</code>, <code>gitGc</code></td>
+</tr>
+<tr>
+<td><code>publications</code></td>
+<td><code>sendAuthorStats</code>, <code>rollUserStats</code>, <code>runMkAip</code>, <code>issueMasterDoi</code>, <code>updateFtpLinks</code>, <code>buildPublicationBundles</code></td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td><code>issueResourceMasterDoi</code>, <code>auditResourceData</code>, <code>emailMemberResources</code>, <code>updateResourceRanking</code></td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td><code>processQueue</code>, <code>runFullIndex</code></td>
+</tr>
+<tr>
+<td><code>storefront</code></td>
+<td><code>emailPublishDownNotifications</code></td>
+</tr>
+<tr>
+<td><code>support</code></td>
+<td><code>onClosePending</code>, <code>sendTicketsReminder</code>, <code>sendTicketList</code>, <code>cleanTempUploads</code></td>
+</tr>
+<tr>
+<td><code>users</code></td>
+<td><code>cleanAuthTempAccounts</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="../../../reference/events/cron/index.html">cron events reference</a> lists each event
+with its listeners.</p>
 <h3 id="parameters"><a id="editfields-parameters"></a>Parameters</h3>
-<p><img src="../../media/cron-cron-manager-05.png" alt="" /></p>
-<p>This will vary between events.</p>
+<p><img src="../../media/cron-cron-manager-05.png" alt="The Parameters fieldset" /></p>
+<p>Every event brings its own parameters, and the form swaps them in when you
+pick the event. An event with none shows &quot;No parameters found&quot;.</p>
+<h3 id="recurrence"><a id="editfields-recurrence"></a>Recurrence</h3>
+<p><img src="../../media/cron-cron-manager-04.png" alt="The Recurrence fieldset" /></p>
+<p><strong>Frequency</strong> offers the common schedules:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Cron expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run once a year, midnight, Jan. 1st</td>
+<td><code>0 0 1 1 *</code></td>
+</tr>
+<tr>
+<td>Run once a month, midnight, first of month</td>
+<td><code>0 0 1 * *</code></td>
+</tr>
+<tr>
+<td>Run once a week, midnight on Sunday</td>
+<td><code>0 0 * * 0</code></td>
+</tr>
+<tr>
+<td>Run once a day, midnight</td>
+<td><code>0 0 * * *</code></td>
+</tr>
+<tr>
+<td>Run once an hour, beginning of hour</td>
+<td><code>0 * * * *</code></td>
+</tr>
+<tr>
+<td><strong>[ Custom ]</strong></td>
+<td>Set the five fields below by hand</td>
+</tr>
+</tbody>
+</table>
+<p>Choosing <strong>[ Custom ]</strong> opens <strong>Minute</strong>, <strong>Hour</strong>, <strong>Day of month</strong>,
+<strong>Month</strong>, and <strong>Day of week</strong>. Each has a drop-down of common values —
+<code>Every</code>, <code>Every 5</code>, <code>Every 10</code>, weekday and month names — and a text box for
+anything else.</p>
+<h3 id="publishing">Publishing</h3>
+<ul>
+<li><strong>State</strong> — Published, Unpublished, or Trashed. Only published jobs run.</li>
+<li><strong>Start running</strong> / <strong>Stop running</strong> — an optional window. A job outside its
+window is skipped even while published.</li>
+</ul>
+<p>The list also shows an <strong>Active</strong> flag. That is not a setting: it means the
+job is running right now, or was claimed by a process that has not released
+it. <strong>Deactivate</strong> clears a stuck claim.</p>
+<h3 id="execution">Execution</h3>
+<ul>
+<li>
+<p><strong>Run in a detached process</strong> — run the job in its own background process
+instead of inside the web tick, so a long batch job does not tie up a web
+worker. A detached job runs without a web request, so it cannot build
+correct absolute URLs unless <code>live_site</code> is set. The form warns when it is
+empty. Never enable it for a job that emails links.</p>
+<aside class="admonition admonition--caution">
+<p><strong>Caution:</strong> Detached execution is marked a prototype in the code. Use it
+for archival and bundle-building jobs, not for anything that sends mail.</p>
+</aside>
+</li>
+</ul>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../notices/index.html" rel="prev"><span>Previous</span>Site Notices</a><a class="pager__next" href="../../faq/index.html" rel="next"><span>Next</span>Frequently Asked Questions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/05-cron.md">Edit this page on GitHub</a>

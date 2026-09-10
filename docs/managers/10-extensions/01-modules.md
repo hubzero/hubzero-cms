@@ -1,140 +1,209 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions/modules
 source-id: 3406
 modified: 2009-10-01
 imported: 2026-09-09
 -->
-# Modules Manager
+# Module Manager
 
-## Overview
+Modules are the small blocks of output that sit around the component: a login
+box, a breadcrumb trail, a search field, a site-wide notice. The Module
+Manager creates them, places them in a template position, decides which pages
+they appear on, and orders them within a position.
 
-The Module Manager is where you add and edit Modules. In HUBzero, Modules are used to display content and/or media around the main content.
+Select **Extensions** → **Module Manager** in the administrator interface, or
+go to `/administrator/index.php?option=com_modules`.
 
-The Module Manager can be found by selecting **Extensions** > **Module Manager** from the drop-down menu on the back-end of your HUB installation.
+## Modules and module instances
 
-### Module Facts:
+The code for a module lives in [`core/modules/`](../../../core/modules), one
+directory per module, named `mod_something`. A hub's own modules go in
+`app/modules/` and take precedence over a core module of the same name. One
+hundred modules ship with the platform: 78 for the site and 22 for the
+administrator interface.
 
-1. All hubs require at least 1 Menu Module
-2. All Other Module Types are Optional. (Examples: News, Banner, Latest News, Polls)
-3. Every Menu is accompanied by a menu module. (Example mod_mainmenu)
-4. Multiple occurrences of similar module types.
-5. Some Modules are linked to components. For example, each Menu Module is related to one Menu component. To define a Menu, you need to create the Menu and Menu Items using the Menus screens and then create the Module for the Menu using this screen. Other Modules, such as Custom HTML and Breadcrumbs, do not depend on any other content.
+Each directory holds `mod_name.php`, a `mod_name.xml` manifest that declares
+the module's parameters, and a `tmpl/` directory of layouts. All but one also
+carry a `helper.php` holding the class that does the work, which
+`mod_name.php` requires and runs:
 
-An installation is accompanied with over 20 default module types.
+<!--include: core/modules/mod_login/mod_login.php-->
 
-## Column Headers
+The Module Manager does not list those directories. It lists *instances*.
+Creating a module makes a row in `#__modules` that points at one of the
+installed module types and carries its own title, position, access level,
+parameters and page assignment. Ten instances of `mod_custom` are ten
+different blocks of HTML sharing one piece of code.
 
-Click on the column heading to sort the list by that column's value.
+> **Note:** A module type must be enabled in the
+> [Extension Manager](04-extension-manager.md) before any of its instances
+> render. The site query joins `#__extensions` and skips modules whose
+> extension row is disabled, whatever the instance's own status says.
 
-- **Number (#):** An indexing number automatically assigned by Joomla! for ease of reference.
-- **Checkbox:** Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.
-- **Module Name:** The name of the Module. You can click on the name to open the Module for editing.
-- **Enabled:** A green tick or a red X showing whether the use of the component is enabled/disabled. Click the icon to toggle the item between enabled and disabled.
-- **Order:** The order to display modules within a Position. If the list is sorted by this column, you can change the display order of modules within a Position by selecting a Position in the **Select Position** filter and then clicking the arrows or by entering the sequential order and clicking **Save Order**.
-- **Access Level:** Who has access to this item. You can change an item's Access Level by clicking on the icon in the column. Current options are:
-  - Special: Only users with author status or higher have access
-  - Registered: Only registered users have access
-  - Public: Everyone has access
-- **Position:** The position on the page where this module is displayed. Positions are locations on the page where modules can be placed (for example, **left** or **right**). Positions are defined in the Template in use for the page. Positions can also be used to insert a Module inside an Article using the syntax **{loadposition xxx}**, where **xxx** is a unique position for the module.
-- **Pages:** The Menu Items where this Module will be displayed. Options are **All** for all Menu Items, **None** for no Menu Items, and **Varies** for selected Menu Items. A Module will only display on Menu Items where it is selected.
-- **Type:** The system name of the Module. Joomla! installs 20 standard Modules. Many Joomla! Extensions contribute additional Modules.
-- **ID:** The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.
-- **Display Number:** The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (*where applicable*).
+## The list
 
-## Toolbars
+The list shows the modules for one client at a time — **Site** or
+**Administrator** — chosen from the **Client** filter. Columns:
 
-### **Primary Toolbar**
+| Column | Meaning |
+|---|---|
+| Checkbox | Selects rows for the toolbar buttons. The header checkbox selects all. A module whose files are missing has no checkbox and cannot be selected. |
+| **Title** | The instance title. Click it to edit. A module note, if set, appears beneath. |
+| **Status** | Published, unpublished or trashed. Click the icon to toggle. |
+| **Position** | The template position the module renders in, or `:: None ::`. |
+| **Ordering** | Order within the position. Editable only while the list is sorted by this column. |
+| **Module** | The module type, for example `mod_login`. |
+| **Pages** | Page assignment: **All**, **None**, **Selected only** or **All except selected**. |
+| **Access** | The [access level](../06-users/07-accesslevels.md) required to see the module. |
+| **Language** | The content language the module is limited to, or **All**. |
+| **ID** | The row's primary key. Not editable. |
 
-- **Enable:** To enable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the **Enabled** column.
-- **Disable:** To disable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the **Enabled** column.
-- **Copy:** To copy one or more Modules, select them using the Checkbox and press this button. A new Module will be created for each selected Module. The new Module will have the name **Copy of** plus the original Module name. Note that the new copies are initially disabled.
-- **Delete:** To delete one or more items, select them and click this button. The selected items will be deleted. **Note**: *only empty items can be deleted.*
-- **Edit:** Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name.
-- **New:** To create a new instance of a Module, press this button. You will be taken to a screen that lists all of the available Modules. See [Create/Edit Modules](#section-7034) for information about adding Modules.
-- **Help:** Opens this Help Screen.
-- ### **Site and Administrator Links:** At the top left, above the Filter.
-- **Site:** Opens the Site tab. This is the default tab and allows you to manage the Modules for the front end of the web site.
-- **Administrator:** This tab allows you to manage the Modules for the back end administration of the web site. If you do not need to change the Joomla! administrator menus, no modifications are required here.
+If a module's files have been removed from disk, the row loses its checkbox
+and its title link, carries the message *Module file(s) not found!*, and is
+shown as unpublished.
 
-## List Filters
+## Filters
 
-### **Filter by Template, Position, Type, and Published State**
+Above the list, a search box matches the title, and six drop-downs narrow the
+list further. They combine.
 
-You can filter the list of items by typing part of the title or the ID number. Or, you can select a combination of Category and Published State.
+| Filter | Values |
+|---|---|
+| **Client** | Site, Administrator |
+| **Status** | Published, Unpublished, Trashed |
+| **Position** | Every position currently in use by a module of this client |
+| **Module** | Every installed module type for this client |
+| **Access** | Any defined access level |
+| **Language** | Any installed content language |
 
-- **Filter:** In the upper left corner just above the column headings is a Filter field and two buttons, as shown below:
-  - If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either part of the title or an ID number and press **Go** to display the matching items. You can enter in whole words or part of a word. For example, **ero** will match all titles with the word **Hubzero** in them.
+## Toolbar
 
-### **Filter by Template, Position, Type and Published State**
+| Button | Effect |
+|---|---|
+| **New** | Opens the module-type chooser in a pop-up. Pick a type to create an instance of it. |
+| **Edit** | Opens the selected module. |
+| **Duplicate** | Copies the selected modules. The copies are created unpublished. |
+| **Publish** / **Unpublish** | Changes the state of the selected modules. |
+| **Check In** | Releases modules left checked out by an interrupted edit. |
+| **Trash** | Moves the selected modules to the trash. |
+| **Empty trash** | Replaces **Trash** when the Status filter is set to Trashed. Deletes permanently. |
+| **Options** | Component permissions; there are no other settings. |
+| **Help** | Opens the built-in help screen. |
 
-In the upper right area, above the column headings, are following drop-down list boxes as shown below. The selections may be combined. Only items matching both selections will display in the list.
+A batch panel below the list applies an access level, a language or a position
+to every selected module at once. It is hidden unless you hold create, edit
+and edit-state permission on `com_modules`.
 
-- **Site**
-- **Select Status**
-- **Select Template:** Select the Template from the drop-down list box of available Templates. Only Templates that are enabled for this site will display.
-- **Select Position:**Select a Position from the drop-down list box of available Positions.
-- **Select Type:** Select the Module Type from the drop-down list box of available Module Types. HUBzero installs with 20 available Module types. Additional ones may be available if you have installed any Extensions.
-- **Select State:** Use the drop-down list box to select the published state: Enabled or Disabled.
-- **Select Access**
-- **Select Language**
+## Creating and editing a module
 
-<a id="section-7034"></a>
+**New** opens a pop-up listing every *enabled* module type for the current
+client, by translated name and by directory name, with the manifest
+description as a tooltip. A module type disabled in the Extension Manager does
+not appear here. Choosing a type opens the edit form; the type is fixed once
+the instance exists.
 
-## Create/Edit Modules
+The left column holds the details every module shares:
 
-When you create a new Module, you will select the Module Type. This will determine what type of content this Module can display. If you edit an existing Module, the Module Type will already be determined.
+| Field | Notes |
+|---|---|
+| **Title** | Required, up to 100 characters. |
+| **Show Title** | Show or Hide. Whether the template prints the title above the module. |
+| **Position** | The template position. Type one, or use **Select position** for a picker listing every position declared by an installed template plus every position already in use. |
+| **Ordering** | Position within the chosen position. |
+| **Status** | Published, Unpublished or Trashed. |
+| **Access** | The access level required to see the module. |
+| **Start Publishing** / **Finish Publishing** | Optional dates that bracket when the module renders. |
+| **Language** | Limits the module to one content language, or **All**. |
+| **Note** | A private label shown under the title in the list. |
+| **ID** | Read-only. |
 
-- **Note:** You cannot change the Module Type of an existing Module.
+The right column shows the module type, the client, and the description from
+the module's XML manifest, none of which can be edited. Below them, the
+module's own parameters appear in collapsible panels named by the manifest.
+For a module with no parameters the panel is empty.
 
-All Modules have two sections that are the same: Details and Menu Assignment. The Parameters are different for each Module Type.
+An instance of `mod_custom` — or a module with no XML manifest — also gets a
+**Custom output** editor for arbitrary HTML.
 
-- ### **Module Type:** This displays the system name of the module. No entry is allowed.
-- **Title:** The Title of the Module.
-- **Show Title:** Whether or not to show the Title of the Module.
-- **Enabled:** Whether or not the Module is enabled. If **No**, the Module will not be shown on the page.
-- **Position:** The Position on the page to show the Module. There are two types of Positions you can use.
-  - You can select a Position from the drop-down list box. The Positions in the list box are those provided by your Template. You can see the available Positions on the page by adding the letters **?tp=1** to the end of any front-end URL. For example, if your home page is **www.mysite.com**, you can type the URL **www.mysite.com?tp=1**. The page will display with labeled rectangles indicating each pre-defined Position for the current Template.
-  - You can type in a Position that is different from the pre-defined positions (for example, **myposition1**). This type of Position can be used to insert a Module into an Article. If you enter the code **{loadposition xxx}** inside the text of an Article, where **xxx** matches the Position of a Module, and if the Module is assigned to the the Menu Selection where the Article is displayed (see **Menu Assignment** below), then the Module will be displayed at that point in the Article.
-- **Order:** The Order that this Module will be displayed within the Position. If more than one Module is displayed at the same position, this will determine the order of display. The drop-down list box shows all Modules displaying at the current Position. Select the Module that you want the current Module to *follow*.
-  - You can also change the order of display in the Module Manager. The Module Order is only important when two or more Modules are displaying at the *same Position* and on the s*ame Menu Selections*.
-- **Access Level:** Who has access to this item. Enter the desired level using the drop-down list box. Current options are:
-  - Public: Everyone has access
-  - Registered: Only registered users have access
-  - Special: Only users with author status or higher have access
-- **ID:** The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.
-- **Description:** A description of what the Module does. No entry is allowed.
+### Menu assignment
 
-### Menu Assignment
+Site modules get a **Menu Assignment** section. **Module Assignment** offers
+four choices:
 
-This is where you tell the CMS which pages to show this Module on. This Module will show on the page when this Menu Item is selected. If the Menu Item allows the user to navigate to sub-pages, then this Module will also show on these sub-pages. For example, if the Menu item is a Blog Layout, the Module will also show when the user clicks on a **Read more...** link, an Article Link, or a Page Navigation link from that Blog Layout.
+- **On all pages**
+- **No pages**
+- **Only on the pages selected**
+- **On all pages except those selected**
 
-- **Menus:** **All** means show the current Module on all Menu Items. **None** means don't show the Module on any Menu Items. **Select Menu Item(s) from the List** allows you to select which Menu Items to show the Module on.
-- **Menu Selection:** If **Select Menu Items(s) from the List** above is selected, select individual Menu Items that will display the Module.
-  - Use Ctrl+Click to select multiple Menu Items.
-  - Use Shift+Click to select a range of Menu Items.
-  - If you want to select most of the Menu Items, first click **All** above under Menus and then click **Select Menu Items(s) from the List**. All of the Menu Items will be selected. Then use Ctrl+Click to deselect the Menu Items you don't want to include.
-- **Parameters:** This will vary between modules.
+The last two reveal a tabbed tree of every menu item, one tab per menu, with
+**All**, **None** and **Invert** buttons. Administrator modules have no menu
+assignment.
 
-## Turning on Site Notices
+## Positions
 
-Use this module to announce Hub wide events or scheduled upgrade dates.
+A position is just a name. The template decides where on the page a position
+appears, and which positions exist at all; a position no template renders
+produces nothing. The positions a template offers are declared in its
+`templateDetails.xml`.
 
-1. Navigate to the **/administrator** interface
-2. Hover over **Extensions** and from the drop-down select **Module Manager**
-3. Click New and look for "mod_notices"
-4. Click on the title of "mod_notices" to open up this new module
-   1. Only complete steps 3 - 4 if you have not created this module previously
-5. Fill in the needed information:
-   1. Title: Add the title for this module, Example - "Upgrade Notices"
-   2. Position: Set the position to "notices"
-   3. Ordering: Set the ordering to "Site Notices"
-   4. Status: Set the status to "Publish"
-   5. Access: Set to the user access level this announcement pertains to
-   6. Start Publishing: Select the date to start publishing this announcement
-   7. Finish Publishing: Select the date to finish publishing this announcement
-   8. Languages: Set lanugages to "All"
-   9. Alert Level: Determine the alert level (Low, Medium, High)
-   10. Message: Add the message you want to announce to your users
-6. Scroll to the bottom of the form to check what pages you want this message appearing on through out the site
-7. Click **Save & Close** once you are done
+**kimera**, the site template, declares:
+
+`footer`, `banner`, `welcome`, `left`, `right`, `helppane`, `user3`,
+`introblock`, `notices`, `search`
+
+Its `index.php` also renders `breadcrumbs` and `endpage`, which are not in
+the declared list, and does not render `banner` or `introblock`, which are.
+So the picker is a guide, not a guarantee — check the template you are
+actually using.
+
+**kameleon**, the administrator template, declares:
+
+`menu`, `submenu`, `toolbar`, `title`, `status`, `icon`, `cpanel`, `debug`
+
+To see the positions of the live template laid out on the page, set
+**Preview Module Positions** to Enabled in the Template Manager's **Options**,
+then append `?tp=1` to any site URL. Each position is drawn as a labelled
+outline.
+
+You can also type a position no template defines and pull the module into
+article text with the Content - Load Module plugin, which expands
+`{loadposition myposition}` and `{loadmodule mod_login}` wherever they appear
+in content. The plugin must be enabled for either to work.
+
+## Putting a notice on every page
+
+`mod_notices` renders a coloured banner across the site, for maintenance
+windows and hub-wide announcements.
+
+1. Go to **Extensions** → **Module Manager**.
+2. Select **New** and choose **Site Notices** (`mod_notices`).
+3. Fill in the details:
+   - **Title** — for example, *Upgrade notice*. Set **Show Title** to Hide
+     unless you want it printed above the message.
+   - **Position** — `notices`.
+   - **Status** — Published.
+   - **Access** — the level that should see the announcement.
+   - **Start Publishing** and **Finish Publishing** — the window the notice
+     should appear in. A notice with a finish date takes itself down.
+4. Set the module's own parameters:
+   - **Alert level** — Low, Medium or High. This picks the colour.
+   - **Message** — the text of the notice.
+   - **Module ID** — an optional CSS id for styling this notice alone.
+   - **Allow closing** — lets the reader dismiss the notice.
+   - **Autolink message** — turns URLs and email addresses in the message into
+     links. On by default.
+5. Under **Menu Assignment**, choose **On all pages**.
+6. Select **Save & Close**.
+
+> **Note:** The `notices` position exists in **kimera** and **lucent**. A
+> template that does not declare it will not render the notice.
+
+## Permissions
+
+`com_modules` has no configuration options of its own. Its **Options** button
+opens a single **Permissions** tab, which sets who may configure, access,
+create, delete, edit and change the state of modules.

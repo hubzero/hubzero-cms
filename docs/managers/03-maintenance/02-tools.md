@@ -1,171 +1,317 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/maintenance/tools
 source-id: 3341
 imported: 2026-09-09
 -->
 # Tools
 
-## Tool Pipeline (a.k.a. Contribtool)
+The tool pipeline is how a tool gets from a developer's registration form to a
+launchable resource page on the hub. This page walks the pipeline from the
+administrator's side.
 
-The tool pipeline is the process that manages the publishing process for tool resources on the hub. There are nine states of a tool within the tool pipeline:
+> **Important:** Only the CMS half of the pipeline lives in this repository.
+> The pipeline calls out to host scripts — `addrepo.sh`, `installtool.sh`,
+> `git2git.sh`, `git2svn.sh`, `invoke_app` — and to the middleware that starts
+> tool sessions. Those belong to the tool platform, are installed on the hub's
+> hosts, and could not be verified here. Sections below that describe what
+> happens on the execution host are marked.
+
+## The pipeline
 
 ![The tool pipeline](../media/tools-contribtool-managers-guide-06.png)
 
-Each state is associated with a set of tasks that either the tool developer or the hub administrator must perform. We will refer to tasks the tool developer must perform as "user tasks", and tasks the hub administrator must perform as "admin tasks".
+A tool has nine states. The number is the `state` column on `#__tool`:
+
+| # | State | Set by | Meaning |
+|---|---|---|---|
+| 1 | Registered | Developer | The contribution form is submitted |
+| 2 | Created | Administrator | The project area and repository exist |
+| 3 | Uploaded | Developer | Code is committed and ready to install |
+| 4 | Installed | Administrator | Code is built and installed on the hub |
+| 5 | Updated | Developer | New code committed; reinstall needed |
+| 6 | Approved | Developer | Tool page and license done; ready to publish |
+| 7 | Published | Administrator | Live on the hub |
+| 8 | Retired | Administrator | Page remains, tool can no longer be run |
+| 9 | Abandoned | Developer | The contribution was cancelled |
+
+Each state carries tasks for one side or the other. This page calls the
+developer's tasks *user tasks* and the administrator's *admin tasks*.
+
+> **Note:** The old version of this page listed eight states and left out
+> **Abandoned**. Abandoned is not on the administrator's status drop-down —
+> a tool reaches it only when a developer cancels the contribution, which is
+> refused once the tool has been published.
 
 ## Preparation
 
-To accomplish many of the admin tasks, the user acting as the admin must be a part of the "apps" group. To be added to the "apps" group:
+Administrator controls on the pipeline are not granted by the ordinary
+component ACL. They are granted by membership of the hub group named in
+`com_tools`' **Admin Group** option, which defaults to `apps`:
 
-1. Login to the hub's administrative back end and find the "Groups" component.
-2. Type "apps" into the search box.
-3. Click on the number under the column "Total Members"
-4. Type the admin's username into the Add input box, choose "Members" from the drop down menu, and push the "Add users" button.
+<!--include: core/components/com_tools/site/controllers/admin.php:1063-1084-->
 
-## Registering a Project
+While that option has a value, membership of the group is the *only* way to
+get those controls; a Super User outside the group sees none of them. Clear
+the option and the component falls back to the normal permission checks.
 
-![](../media/tools-contribtool-managers-guide-06.png)
+To add someone to the group:
 
-The first step in the tool pipeline is for the tool developer to register the tool by filling out the tool contribution form. This is a user task. Go to the web page https://yourhub.org/contribute (substituting "yourhub.org" with the name of your hub). Use the "Getting Started" button in the upper right side of the web page to start the contribution process. On the left side of the web page, a list of contribution types will be shown. Choose the TOOLS contribution type.
+1. In `/administrator`, go to **Components → Groups**.
+2. Search for `apps` (or whatever the **Admin Group** option names).
+3. Open the group's membership.
+4. Add the administrator's username as a **Member**.
 
-The tool registration form will be presented. The form asks for some basic information regarding the name of the tool, a short description of the tool, and who can access the source code repository. There are also fields available to add restrictions on who can run the tool once it has been published, and who can access the Trac project area. All of the information on this page can be changed at a later date, except for the tool name. Once the tool name has been registered, it cannot be changed, so pick a good one. When the registration form has been completed, push the "Register Tool" button at the bottom of the page, and the state of the tool will be changed to "Registered"
+## Registering a tool
+
+![Registering a tool](../media/tools-contribtool-managers-guide-06.png)
+
+Registration is a user task. The developer starts the contribution flow on the
+hub and chooses the tool contribution type, which lands on the registration
+form (`/tools/create`). The pipeline listing at `/tools/pipeline` also has a
+**New Tool** button that goes straight there.
+
+The form asks for:
+
+**About your tool**
+
+| Field | Notes |
+|---|---|
+| **Tool Alias** | 3–15 alphanumeric characters, no spaces. Becomes the tool's directory name. **Cannot be changed once registered** |
+| **Title** | The full display name |
+| **Version** | Optional, e.g. `1.0`. No spaces |
+| **Description** | One line |
+| **Development team** | Usernames allowed to modify the code |
+| **Application Screen Size** | Width and height in pixels; defaults from the **Default VNC Size** option |
+| **Required hosts** | Comma-separated session host types; defaults from **Default Required Host Types** |
+
+**Access**
+
+| Field | Options |
+|---|---|
+| **Tool Access** | Anyone can run tool; restricted to US users (export control); restricted to users on Purdue campus; or restricted to named groups |
+| **Source Code Access** | Open to public, or closed (restricted to development team) |
+| **Project Area Access** | Open to public, or closed |
+
+**Repository Host** — this is new since the guide was first written, and it
+decides which of the upload instructions below apply:
+
+| Option | Label on screen |
+|---|---|
+| `gitExternal` | Host Git repository on GitHub, GitLab, etc. |
+| `gitLocal` | Host Git repository here |
+| `svnLocal` | Host subversion repository here |
+
+`gitExternal` is the default when the component's **External GitHub Repo**
+option is on, and it adds a field for the external repository URL. The
+Subversion instructions later on this page apply only to `svnLocal`.
+
+**Publishing Option**
+
+| Option | Label on screen |
+|---|---|
+| `standard` | Rappture or Linux-GUI based tool |
+| `jupyter` | Web application (Jupyter, Rstudio, ...) |
+| `simtool` | Sim2L |
+
+The Jupyter and Sim2L choices appear only when the matching component options
+are on; Sim2L additionally requires the platform's `invoke.simtool` template
+to be present on the host.
+
+Everything except the tool alias can be changed later. **Register Tool**
+submits the form and puts the tool in the **Registered** state.
+
+For the full option list see the
+[generated `com_tools` parameter reference](../../reference/configuration/components/tools.md).
 
 ## Registered to Created
 
-![Site settings groups](../media/tools-contribtool-managers-guide-10.png)
+![The tool pipeline listing](../media/tools-contribtool-managers-guide-10.png)
 
-Once the tool has been registered by the tool developer, it is up to the administrator to create the project. Creating the project is an admin task. Start by going to the web page https://yourhub.org/tools/pipeline. This page lists out all tool contributions on the hub. Tools that require administrator attention are highlighted. If a tool has been registered by a tool developer, but there are no tool contributions listed on the tool pipeline web page, there may be a privileges related error. Make sure the administrator account being used is a member of the "apps" group. Instructions on how to do this are in the section labeled "Preparation".
+This is an admin task. Go to `/tools/pipeline`. The page lists every tool
+contribution on the hub, with **Filter by** (All tools, My submissions,
+Published tools, Tools under development) and **Sort by** (Status, Registration
+date, Tool alias). Tools needing attention are highlighted.
 
-The newly registered project should be highlighted on the tool pipeline web page. Choose this project by clicking on the tool name, which is a link to it's tool status page. The tool status page contains the tool information that the developer provided on the registration form and a set of Developer Tools on the left side of the web page. On the right side of the web page, the "What's next?" status is provided, which gives information regarding the steps that need to be completed before the tool can be published on the hub. Any tasks that have been checked off have been completed. Tasks that have an arrow next to them are tasks that can be completed now.
+If a registered tool does not appear, the account is probably not in the admin
+group — see **Preparation**.
 
-Special for the administrator, there is a section of "Administrator Controls" on the left side of the page, under the Developer Tools. To create the tool project, the admin must press the link labeled "Add Repo". This starts a process that creates a Subversion source code repository, Trac project wiki pages, and sets up access for the tool for the users listed on the development team. When the process has completed, the results are displayed for the administrator to see. A green box generally means nothing catastrophic has happened and the tool project are has been successfully created. In the case something fails, a red box will be displayed listing the errors encountered. Running the process multiple times by repeated presses of the "Add Repo" link generally has no harmful effects, in that if the pieces of the project area already exist, they will not be overwritten, and if they do not exist, they will be created.
+Click the tool alias to open its status page. The status page has three parts:
+the tool's registration details, **Developer Tools** on the left (Wiki, Source
+code, Timeline, Message, and Cancel while the tool is still under
+development), and **What's next?** on the right, which lists the remaining
+steps and marks off the ones already done.
 
-The last step to creating the tool project area is to flip the status of the project from Registered to Created and pressing the "Apply change" button at the bottom of the Administrator controls.
+Below the developer tools, administrators get an **Administrator Controls**
+panel with four buttons — **Add Repo**, **Install**, **Publish**, **Retire** —
+and a form carrying **Flip Status**, **Priority**, an optional message to the
+development team, and an **Apply change** button.
+
+Press **Add Repo**. That runs the host's `addrepo` script, which creates the
+source code repository and project wiki and sets up access for the development
+team. The results come back in the page: a green box means it worked, a red
+box lists the errors. Running it again is safe — existing pieces are not
+overwritten.
+
+> **Note:** `addrepo` and everything it creates belong to the tool platform,
+> not the CMS. The CMS only builds the command line and reports what came
+> back, so nothing about the repository or wiki layout could be verified here.
+
+Then set **Flip Status** to **Created** and press **Apply change**.
 
 ## Created to Uploaded
 
-![Site settings groups](../media/tools-contribtool-managers-guide-14.png)
+![The tool status page in the Created state](../media/tools-contribtool-managers-guide-14.png)
 
-After the tool project has been created, the tool developer needs to upload their tool source code into the source code repository. This is a user task. Instruction listing out the commands involved with upload source code to the project's source code repository are easily accessible from the tool status page in the tool pipeline. Start by accessing the tool pipeline web page https://yourhub.org/tools/pipeline. Find the tool project on the tool pipeline web page, and click on the tool project's name. This is a link which leads to the tool status page. While in the Created state, the "What's next?" section on the right side of the web page contains a link to the instructions. We will review the requirements for installing a tool in the HUB environment and the process of doing so.
+Uploading the source is a user task. In the **Created** state the **What's
+next?** panel links to the project's Getting Started wiki page and, under
+**We are waiting for You**, offers the flip link *"My code is committed,
+working, and ready to be installed"*.
 
-![](../media/tools-contribtool-managers-guide-17.png)
+The rest of this section is the platform's tool-packaging convention, quoted
+from the original guide. It describes what the developer does inside a
+workspace on the execution host, and none of it is verifiable from the CMS
+repository.
 
-There are four requirement for installing a tool in the HUB environment:
+![Requirements for installing a tool](../media/tools-contribtool-managers-guide-17.png)
+
+There are four requirements for installing a tool in the hub environment:
 
 1. Source code
-2. Graphical User Interface
+2. Graphical user interface
 3. Makefile
 4. Invoke script
 
-![](../media/tools-contribtool-managers-guide-18a.png)
+![Source code](../media/tools-contribtool-managers-guide-18a.png)
 
-Source code includes all files related to running the application with the tool.xml and possibly a wrapper script as the exceptions. Source code is needed as a part of the installation process. No binaries from the source code of the application should be stored in source code repository. It is alright to store binary data files, like images, in the source code repository, but in most other cases, storing binaries from the application instead of the actual source code leads to future compatibility problems, even when the binaries claim to be platform independent.
+Source code includes all files related to running the application, with
+`tool.xml` and possibly a wrapper script as the exceptions. No binaries built
+from the source should be stored in the repository. Binary data files such as
+images are fine; committed build products are not, because they cause
+compatibility problems later even when they claim to be platform independent.
 
-![](../media/tools-contribtool-managers-guide-18b.png)
+![Graphical user interface](../media/tools-contribtool-managers-guide-18b.png)
 
-All tools need a graphical user interface. There are several toolkits available including Qt, GTK, wxWidgets, and Tcl/Tk. If your tool does not already have a graphical user interface, we suggest using Rappture (http://rappture.org). With Rappture, you can quickly develop a graphical user interface that can guide users through the process of running the tool and viewing results, all in one application. Rappture also include many hooks into the HUB infrastructure, which makes it a great choice for tool developers.
+All tools need a graphical user interface. Qt, GTK, wxWidgets, and Tcl/Tk all
+work. If the tool has none, [Rappture](http://rappture.org) will build one
+that guides users through running the tool and viewing results, and it has
+hooks into the hub infrastructure.
 
-![](../media/tools-contribtool-managers-guide-18c.png)
+![Makefile](../media/tools-contribtool-managers-guide-18c.png)
 
-All tools need a Makefile. The Makefile holds the instructions for compiling and installing binary files. Even tools that do not have source code that needs to be compiled still need a Makefile.
+All tools need a Makefile, which holds the instructions for compiling and
+installing binaries. Tools with nothing to compile still need one.
 
-![](../media/tools-contribtool-managers-guide-18d.png)
+![Invoke script](../media/tools-contribtool-managers-guide-18d.png)
 
-All tools need an invoke script. Invoke scripts hold details about how to launch to the tool in the HUB environment. Generally, invoke scripts are very simple, one line calls to the HUB invoke script with a few options.
+All tools need an invoke script, which says how to launch the tool in the hub
+environment. It is usually a one-line call to the hub's own invoke script.
 
-While generating the source code and graphical user interface are outside of the scope of this tutorial, details will be given later regarding creation of a typical Makefile and invoke script.
+There are eight steps to getting source code into the repository:
 
-There are eight steps related to uploading source code to the source code repository.
-
-1. Checkout a copy of the tool's source code repository.
-2. Add source code to the src directory of the tool's repository.
-3. Add a Makefile in the src directory of the tool's repository.
-4. Add tool.xml to the Rappture directory of the tool's repository.
-5. Check the middleware/invoke script.
+1. Check out a copy of the tool's source code repository.
+2. Add source code to the `src` directory.
+3. Add a Makefile to the `src` directory.
+4. Add `tool.xml` to the `rappture` directory.
+5. Check the `middleware/invoke` script.
 6. Test the code in the workspace.
 7. Clean the directories before committing.
-8. Commit the changes from the local copy of the repository.
+8. Commit the changes.
 
-All of these steps can be performed from within the workspace.
+All of them can be done from within a workspace.
 
-The first step of uploading source code to the source code repository is to checkout a copy of the tool's source code repository. This can be done by using the svn checkout command.
+> **Note:** Steps 1, 7, and 8 below use Subversion commands. They apply only
+> when the tool's **Repository Host** is *Host subversion repository here*.
+> For either Git option the developer uses `git clone`, `git add`, and
+> `git commit`/`git push` against the repository the project area names; the
+> intervening steps are the same.
 
-![](../media/tools-contribtool-managers-guide-31.png)
+### 1. Check out the repository
+
+![Checking out the repository](../media/tools-contribtool-managers-guide-31.png)
 
 ```
 svn checkout https://yourhub.org/tools/toolname/svn/trunk toolname
 ```
 
-In the example, replace "yourhub.org" with the name of the hub hosting the tool's source code repository. Also, substitute the term "toolname" with the shortname of the tool. Executing this command will download a copy of the tool's source code repository from the repository server, hosted on "yourhub.org", and place the copy on the machine where the command was executed. If the command was executed inside of a workspace, the copy of the tool's repository server will be made inside of the workspace. This copy will be referred to as the local copy of the tool's source code repository. The local copy of the repository will be stored in a directory, with the name substituted for "toolname".
+Replace `yourhub.org` with the hub's hostname and `toolname` with the tool
+alias. Run inside a workspace, this puts a local copy of the repository in a
+directory named for the tool.
 
-The second step of uploading source code to the source code repository is to add source code to the src directory of the tool's repository. This can be done with the svn add command. This step involves (1) changing directories into the local copy of the repository, here referred to as toolname, (2) copying source code files into the src directory, and (3) lastly using the svn add command to notify the local repository that files need to be added to the source code repository.
+### 2. Add source code
 
-![](../media/tools-contribtool-managers-guide-32.png)
+![Adding source code](../media/tools-contribtool-managers-guide-32.png)
 
 ```
-Line    Example:
-  1       cd toolname
-  2       cp /apps/rappture/examples/zoo/curve/curve.tcl src/curve.tcl
-  3       svn add src/curve.tcl
+cd toolname
+cp /apps/rappture/examples/zoo/curve/curve.tcl src/curve.tcl
+svn add src/curve.tcl
 ```
 
-All files will need to be added to the source code repository. They can be done one by one, as shown above, or by directory.
+Every file has to be added, one by one or by directory.
 
-The third step of uploading source code to the source code repository is to add a Makefile to the src directory. The svn add command will be used to complete this task. If a Makefile does not exists, one can easily be created using a text editor. In the workspace, the gedit program is a convenient text editor. From within the toolname directory, issue the command:
+### 3. Add a Makefile
 
-![](../media/tools-contribtool-managers-guide-33a.png)
+![Editing the Makefile](../media/tools-contribtool-managers-guide-33a.png)
 
 ```
 gedit src/Makefile
 ```
 
-If no Makefile exists, add the following text to the file.
+![A minimal Makefile](../media/tools-contribtool-managers-guide-33b.png)
 
-![](../media/tools-contribtool-managers-guide-33b.png)
+```make
+all: curve.tcl
 
-```
-Line    Example:
-  1       all: curve.tcl
-  2
-  3       install: curve.tcl
-  4           install --mode 0644 -D curve.tcl ../bin/
-  5
-  6       clean:
-  7
-  8       distclean: clean
-  9           rm -f ../bin/curve.tcl
+install: curve.tcl
+	install --mode 0644 -D curve.tcl ../bin/
+
+clean:
+
+distclean: clean
+	rm -f ../bin/curve.tcl
 ```
 
-In this example, the source code is a single tcl script named curve.tcl. Since the source code does not need to be compiled in this case, the "all" target is empty. If there was source code to be compiled, line 2 would be tabbed in once and include a compile line like "gcc -o curve curve.c". The install target, starting on line 3, is responsible for installing the executables and related scripts into the ../bin directory. Executables should be placed in the bin directory. Line 4 is the action of the install target. It uses the shell program named "install" to move the files from the src directory to the bin directory, and appropriately set the permissions of the file. The clean target, on line 6, is responsible for removing files temporary files, usually left over from compilation. The distclean target, on like 8, calls the clean target from line 6, and then removes the tcl script that was placed in the bin directory by the install target. The distclean target is responsible for removing any files that were generated be install target. After running the distclean target, the local repository should be in the same state as when it was first checked out.
+Here the source is a single Tcl script, so `all` is empty. Code that needs
+compiling would put its compile line — `gcc -o curve curve.c` — under `all`.
+`install` puts executables and scripts into `../bin` with the right
+permissions. `clean` removes build leftovers. `distclean` calls `clean` and
+then removes whatever `install` produced, so that running it returns the
+working copy to the state it was checked out in.
 
-Once the Makefile has been created, save the file and exit the gedit program. Lastly run the svn add command on the file src/Makefile to add it to the local copy of the source code repository.
+Save the file and `svn add src/Makefile`.
 
-The fourth step of uploading source code to the source code repository is to add the tool.xml file to the Rappture directory. To add the tool.xml file to the local copy of the source code repository, first copy the file into the Rappture directory, then use the svn add command to notify the local copy of the repository that a file needs to be added.
+### 4. Add `tool.xml`
 
-![](../media/tools-contribtool-managers-guide-34a.png)
-
-```
-Line    Example:
-  1       cp /apps/rappture/examples/zoo/curve/tool.xml
-            rappture/tool.xml
-  2       svn add rappture/tool.xml
-```
-
-The fifth step of uploading source code to the source code repository is to check the middleware/invoke script. Inside of the middleware directory, there should exist a file named invoke. If the file does not exist, use gedit to create it, then add it to the repository using the svn add command, just as was done for the Makefile in step 3. The invoke script is responsible for setting up the tool environment and launching the tool when a user clicks the Launch button from the tool resource page. The default invoke script looks like this:
-
-![](../media/tools-contribtool-managers-guide-35a.png)
+![Adding tool.xml](../media/tools-contribtool-managers-guide-34a.png)
 
 ```
-Line    Example:
-  1       #!/bin/sh
-  2
-  3       /apps/rappture/invoke_app "$@" -t toolname
+cp /apps/rappture/examples/zoo/curve/tool.xml rappture/tool.xml
+svn add rappture/tool.xml
 ```
 
-In the example above, the invoke script calls the HUB invoke script located at /apps/rappture/invoke_app. On older hub setups, /apps/rappture/invoke_app is a file that only supports launching rappture applications. On newer hub setups, /apps/rappture/invoke_app is a link to /apps/invoke/current/invoke_app, which is capable of launching all rappture applications and a majority of non-rappture applications.
+### 5. Check the invoke script
 
-The invoke_app script accepts a number of flagged options. Some of the more popular ones include:
+![The invoke script](../media/tools-contribtool-managers-guide-35a.png)
+
+The `middleware` directory must contain a file named `invoke`. If it is
+missing, create it and add it to the repository the same way as the Makefile.
+The invoke script sets up the environment and launches the tool when a user
+presses **Launch tool**. The default is:
+
+```sh
+#!/bin/sh
+
+/apps/rappture/invoke_app "$@" -t toolname
+```
+
+`/apps/rappture/invoke_app` is the hub's own invoke script. On older hubs it
+only launches Rappture applications; on newer ones it is a link to
+`/apps/invoke/current/invoke_app`, which launches Rappture applications and
+most non-Rappture ones. Its common flags:
 
 ```
 -r  Rappture version (current, dev)
@@ -178,137 +324,188 @@ The invoke_app script accepts a number of flagged options. Some of the more popu
 -c  commands to start in the background before launching the tool, like filexfer
 ```
 
-The example above takes advantage of the -t flag to tell invoke_app that the name of the tool is "toolname". The invoke_app script contains more details about the available flags and how to use them.
-
-The last task of this step is to ensure the middleware invoke script has execute permissions. This is accomplished by using the shell's chmod command:
+The script itself documents the rest. Finally, make it executable:
 
 ```
 chmod 755 middleware/invoke
 ```
 
-The sixth step of uploading source code to the source code repository is to test the tool in a workspace. If the tool runs properly in a workspace when started from an invoke script, it is very likely that it will run properly when installed in the hub environment. Testing the code in the workspace also exercises the Makefile and invoke script, ensuring they are also functioning properly. Here are the commands:
+### 6. Test in a workspace
 
-![](../media/tools-contribtool-managers-guide-36.png)
-
-```
-Line    Example:
-  1       cd src
-  2       make all install
-  3       cd ../
-  4       ./middleware/invoke -T $PWD
-```
-
-In the above example, the code is compiled and installed by (1) changing directories into the src directory, and (2) issuing the command "make all install". The shell command "make" looks for a file named Makefile, and runs the targets specified as its arguments. In this case, it runs the all and install targets. Next (3) change directories back to the tool's root directory and run the middleware/invoke script, providing the option "-T $PWD". Recall from earlier, the -T option specifies the tool root directory. The $PWD environment variable hold the present working directory, which in this case also happens to be the tool's root directory. When the Rappture GUI appears, press the simulate button to make sure the tool runs correctly.
-
-It is important that this step is successfully completed by the tool developer. This is the same sequence of events that the administrator will do when installing the tool in the HUB environment. Any failures encountered while running this step will most likely be encountered again when installing the tool in the HUB environment, so they should be resolved prior to changing the tool status to Uploaded in the tool pipeline.
-
-The seventh step of uploading source code to the source code repository is to clean up the local copy of the repository before committing. This will again utilize the Makefile located in the src directory. Here are the commands:
-
-![](../media/tools-contribtool-managers-guide-37.png)
+![Testing in a workspace](../media/tools-contribtool-managers-guide-36.png)
 
 ```
-Line    Example:
-  1       cd src
-  2       make distclean
-  3       cd ../
+cd src
+make all install
+cd ../
+./middleware/invoke -T $PWD
 ```
 
-Earlier the Makefile was setup with a distclean target to clean up all files generated from the installation of the tool's source file. In this example, the distclean target of Makefile is called to do the cleanup of the previous install. It is important to clean up the repository before committing to avoid placing unnecessary binary and other temporary files into the source code repository stored on the repository server.
+`-T` names the tool root directory, and `$PWD` is it. When the GUI appears,
+run a simulation and check the result.
 
-The eighth and last step of uploading source code to the source code repository is to commit the changes from the local copy of the repository to the repository server. This is accomplished by using the command svn commit. The svn commit command accepts the --message flag along with a message. With every commit to the repository, a message should be included detailing what is being committed. This will help later when searching for specific versions of the tool in the source code repository. Commits can be made from any directory in the local copy of the repository, but will only include files and directories underneath the present working directory. For this reason it is usually convenient to commit from the local copy of the repository's root (top) directory. Here is an example commit command with a message:
+This step matters: it is the same sequence the administrator runs when
+installing the tool on the hub. Anything that fails here fails there too, so
+it should be fixed before the status moves to **Uploaded**.
 
-![](../media/tools-contribtool-managers-guide-38.png)
+### 7. Clean up
+
+![Cleaning the working copy](../media/tools-contribtool-managers-guide-37.png)
+
+```
+cd src
+make distclean
+cd ../
+```
+
+This removes what the install produced, so no binaries or temporary files end
+up in the repository.
+
+### 8. Commit
+
+![Committing](../media/tools-contribtool-managers-guide-38.png)
 
 ```
 svn commit --message "initial upload of code"
 ```
 
-After issuing the svn commit command, a prompt may appear requesting a username and password. Enter the username and password credentials for the HUB hosting the tool's source code repository.
+Commit from the top of the working copy, since a commit only covers the
+current directory and below. Enter the hub credentials if prompted.
 
-Once the tool's source code has been uploaded to the repository server, the tool's status can be changed to Uploaded. Go to the tool's status web page in the tool pipeline, it can be found through the tool pipeline web page:
+### Flip the status
 
-![](../media/tools-contribtool-managers-guide-39.png)
+![The tool pipeline listing](../media/tools-contribtool-managers-guide-39.png)
 
-```
-https://yourhub.org/tools/pipeline.
-```
-
-To make sure the source code was successfully committed, use the Timeline link under the Developer Tools section on the left side of the web page. The Timeline link will open a web page with the tool's project area. Note that the tool's project area may have restricted access that requires the user to login. The timeline lists out the most recent changes to the source code repository. The most recent changes for uploaded code should be listed at the top. Make sure the uploaded code is listed in the Timeline.
-
-Back on the tool's status web page in the tool pipeline, there should be a "We are waiting for You" section under the "What's next?" section on the right side. When ready to change the status of the tool from Created to Uploaded, click the link labeled "My code is committed, working and ready to be installed". Clicking the link will change the status.
+Back on the tool's status page at `/tools/pipeline`, use the **Timeline** link
+under **Developer Tools** to confirm the commit arrived — the project area may
+require a login. Then, under **We are waiting for You**, click *"My code is
+committed, working, and ready to be installed"*. The status becomes
+**Uploaded**.
 
 ## Uploaded to Installed
 
-![](../media/tools-contribtool-managers-guide-41.png)
+![The tool status page in the Uploaded state](../media/tools-contribtool-managers-guide-41.png)
 
-Once the tool has been uploaded by the tool developer, it can be installed in the HUB environment. This is an admin task. Navigate to the tool's status web page in the tool pipeline. Under the Administrator Controls section, on the left side of the web page, will be a link labeled Install. Clicking the Install link will start the installation background process which performs an svn checkout of the tool's source code repository into the /apps directory. The next step requires that the administrator login to the system, become the "apps" user, and compile the code. This can all be accomplished within a workspace.
+This is an admin task. On the tool's status page, press **Install** in
+**Administrator Controls**. The CMS builds a command line and runs it as the
+`apps` user:
 
-![](../media/tools-contribtool-managers-guide-42.png)
+- For an external Git repository it first mirrors the code with `git2git.sh`
+  (or `git2svn.sh` on hubs that only have that).
+- Then it runs `installtool.sh` — falling back to the older `installtool` —
+  passing the repository host, the project alias, and the hub directory.
 
-Inside of a workspace issue the following commands in an xterm:
+Both scripts are part of the tool platform, so what they do on disk could not
+be verified here. The CMS shows their output: green for success, red with the
+errors for failure.
 
-![](../media/tools-contribtool-managers-guide-43.png)
+![The install output](../media/tools-contribtool-managers-guide-42.png)
+
+The next step is on the execution host. Open a workspace and, in an xterm:
+
+![Building the tool](../media/tools-contribtool-managers-guide-43.png)
 
 ```
-Line    Example:
-  1       sudo su - apps
-  2       cd /apps/toolname/dev/src
-  3       make all
-  4       make install
+sudo su - apps
+cd /apps/toolname/dev/src
+make all
+make install
 ```
 
-Become the apps user by using the shell's sudo command. If there are errors while becoming the apps user, go back to the beginning of this tutorial and ensure the login account being used is a member of the "apps" group. Change directories to the tool's installed dev directory, /apps/toolname/dev. Inside of the src directory, run the "make all" and "make install" commands to compile and install the code.
+If `sudo su - apps` fails, the account is not in the `apps` group — see
+**Preparation**.
 
-When the source code has been compiled and installed, go back to the tool's status page in the tool pipeline, flip the status from Uploaded to Installed, and press the Apply change button. Pressing the Apply change button will update the tool status web page.
+![The status page after installation](../media/tools-contribtool-managers-guide-46.png)
 
-![](../media/tools-contribtool-managers-guide-46.png)
+Back on the status page, set **Flip Status** to **Installed** and press
+**Apply change**. The **What's next?** panel then offers a **Launch tool**
+button. Use it and confirm the tool runs.
 
-On the updated page, a Launch tool link will be made available, on the right side of the page, in the "What's next?" section. Click the Launch tool link and verify that the tool properly launches and runs.
-
-![](../media/tools-contribtool-managers-guide-45.png)
+![Launching the tool](../media/tools-contribtool-managers-guide-45.png)
 
 ## Installed to Updated
 
-![](../media/tools-contribtool-managers-guide-47.png)
+![The tool status page in the Installed state](../media/tools-contribtool-managers-guide-47.png)
 
-It is the tool developer's responsibility to test the operation of the tool and validate that it generates acceptable results. The tool developer may find an error or otherwise needs to update the code in the source code repository and have the tool reinstalled. Updating the tool is a user task. Any new changes to the tool should be committed to the source code repository. Next, the tool's status in the tool pipeline should be changed to the Updated state. Changing the status will notify the administrator that the tool is ready to be installed again.
+Testing the tool is the developer's job. When they find something to fix, they
+commit the change and use the **What's next?** link *"I've committed new code.
+Please install the latest version for testing and approval."* That sets the
+status to **Updated**, which is the pipeline's way of telling the
+administrator to install again.
 
 ## Installed to Approved
 
-![](../media/tools-contribtool-managers-guide-47.png)
+![The tool status page in the Installed state](../media/tools-contribtool-managers-guide-47.png)
 
-When the tool developer feels the tool is working properly, the approval process can be started. Tool approval is a user task. To approve a tool, the tool information page must be created. The tool information page is the web page listing the authors of the tool, credits, publications, and screen shots. To create the tool information page. Click the "Create this page" link in the "What's next?" section on the tool status page in the tool pipeline.
+Approval is a user task. Before a tool can be approved it needs a tool
+information page — the resource page listing authors, credits, publications,
+and screenshots. The **What's next?** panel links to it, as **Create this
+page** or **Edit this page** depending on whether one exists.
 
-![](../media/tools-contribtool-managers-guide-50.png)
+![Creating the tool information page](../media/tools-contribtool-managers-guide-50.png)
 
-During the process of creating the tool information page, the necessary information will be collected and formatted. At the end of the process a preview page will be provided. The tool developer will need to confirm the layout and information on the preview tool page.
+The wizard collects and formats the information and ends on a preview the
+developer confirms.
 
-![](../media/tools-contribtool-managers-guide-52.png)
+![Previewing the tool page](../media/tools-contribtool-managers-guide-52.png)
 
-The tool developer will also need to choose a license under which the project will be published. Be sure to replace the template text in the license with the appropriate information.
+The developer also picks a license, replacing the template text with their
+own. Closed source requires a reason.
 
-![](../media/tools-contribtool-managers-guide-53.png)
+![Choosing a license](../media/tools-contribtool-managers-guide-53.png)
 
-Finally, approve the tool by pushing the button labeled "Approve this tool". The status on the tool's status page in the tool pipeline will automatically be updated.
+Finally, **Approve this tool**. The status changes to **Approved**.
 
-![](../media/tools-contribtool-managers-guide-54.png)
+![The tool status page in the Approved state](../media/tools-contribtool-managers-guide-54.png)
+
+> **Note:** Moving to **Approved** goes through a version check first. If the
+> version number on the tool is not a valid new version, the pipeline sends
+> the developer to the versions form to confirm or set one before the flip
+> takes effect.
 
 ## Approved to Published
 
-![](../media/tools-contribtool-managers-guide-55.png)
+![The tool status page in the Approved state](../media/tools-contribtool-managers-guide-55.png)
 
-To publish a tool in the Approved state, the administrator must click the Publish link in the Administrator Controls on the tool's status page in the tool pipeline. This is an admin task. Clicking the Publish link updates the database, exposing the tool information page on the HUB. From the tool information page, the tool can be launched using the Launch tool link. The Publish link will run the publishing process and return the results to the administrator. Similar to the Installed state, successful completion will result in a green box with results. Failure will result in a red box with errors. After the results have been presented, flip the status from Approved to Published. and press the Apply change button.
+This is an admin task. Press **Publish** in **Administrator Controls**. The
+publish process exposes the tool information page on the hub and its output
+comes back the same way as **Install** — green for success, red for failure.
+Then set **Flip Status** to **Published** and press **Apply change**, which
+also sets the tool's published flag.
 
-![](../media/tools-contribtool-managers-guide-56.png)
+![The published tool](../media/tools-contribtool-managers-guide-56.png)
+
+From the tool information page the tool can now be launched with **Launch
+tool**.
 
 ## Published to Updated
 
-![](../media/tools-contribtool-managers-guide-57.png)
+![The tool status page in the Published state](../media/tools-contribtool-managers-guide-57.png)
 
-When the tool developer is ready to start testing a new release of the tool, they will commit all changes to the source code repository, and change the status on the tool's status page in the tool pipeline, from Published to Updated. Changing the status from Published to Updated does not unpublish of otherwise change the state of the already published tool. Changing the status will notify the administrator that the tool needs to be reinstalled. From here, the Install-Approve-Publish cycle continues.
+When the developer is ready to test a new release, they commit the changes and
+use the **What's next?** link to move the status from **Published** to
+**Updated**. This does not unpublish anything — the published version keeps
+serving users. It signals that the development version needs reinstalling, and
+the install–approve–publish cycle runs again.
 
-## Published to Retire
+## Published to Retired
 
-![](../media/tools-contribtool-managers-guide-57.png)
+![The tool status page in the Published state](../media/tools-contribtool-managers-guide-57.png)
 
-The tool developer has the option of retiring a tool. Generally, published tools are not retired, and live in perpetuity. Changing the status from Published to Retired places the tool in a state where nobody can run it from the tool information page. The tool information page will still exist, as a placeholder for the previously published resource.
+Published tools usually stay published. Retiring one leaves the tool
+information page in place as a record but stops anyone running it.
+
+**Retired** is on the administrator's **Flip Status** drop-down only for tools
+whose published flag is set, and there is a **Retire** button in
+**Administrator Controls** alongside it. A retired tool's **What's next?**
+panel offers the developer a link asking for it to be republished, which moves
+it back to **Updated**.
+
+## Cancelling a contribution
+
+A developer can abandon a tool that has not been published. The **Cancel**
+link under **Developer Tools** asks for confirmation, then unpublishes the
+draft resource page, sets the tool's state to **Abandoned**, drops its
+priority to lowest, and notes the cancellation on the tool's support ticket.
+Cancelling a published tool is refused, as is cancelling one already
+abandoned.

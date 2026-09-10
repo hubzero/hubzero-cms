@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Registration · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview HUBs allow for considerable customization of the registration form for new members. While one HUB may present fields for filling in phone, website,…">
+  <meta name="description" content="A hub decides for itself what a new member has to supply. One hub asks for an organisation and a phone number; another asks only for a username, a password,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/registration/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,28 +54,29 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Registration</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#making-changes">Making Changes</a></li>
-<li class="toc__item toc__item--l2"><a href="#customizing-confirmation-email">Customizing Confirmation Email</a></li>
-<li class="toc__item toc__item--l3"><a href="#quick-overview-of-output-overrides">Quick Overview of Output Overrides</a></li>
-<li class="toc__item toc__item--l3"><a href="#customizing-the-confirmation-email">Customizing The Confirmation Email</a></li>
-<li class="toc__item toc__item--l2"><a href="#confirmation-return-url">Confirmation Return URL</a></li>
+<li class="toc__item toc__item--l2"><a href="#reaching-the-screen">Reaching the screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-field-table">The field table</a></li>
+<li class="toc__item toc__item--l2"><a href="#saving">Saving</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-registration-off">Turning registration off</a></li>
+<li class="toc__item toc__item--l2"><a href="#confirmation-return-url">Confirmation return URL</a></li>
+<li class="toc__item toc__item--l2"><a href="#customising-the-registration-emails">Customising the registration emails</a></li>
+<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -125,9 +126,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -151,87 +152,244 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Registration</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/registration">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>HUBs allow for considerable customization of the registration form for new members. While one HUB may present fields for filling in phone, website, and organization, another may take a more minimal approach and require only a username, password, and email address. This is all configurable.</p>
-<h2 id="making-changes">Making Changes</h2>
+<p>A hub decides for itself what a new member has to supply. One hub asks for
+an organisation and a phone number; another asks only for a username, a
+password, and an email address. The <strong>Registration</strong> screen in the Members
+component sets that, field by field, and separately for each of the four
+moments a member's details are collected.</p>
+<h2 id="reaching-the-screen">Reaching the screen</h2>
 <ol>
-<li>First login to the administrative back-end.</li>
-<li>Once logged in, find “Users” in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing a list of User related items.</li>
-<li>Choose “Members” from the available options. On the resulting page, there should be a sub-menu (tabs).</li>
-<li>Choose “Register” from the available options.</li>
-<li>You should now be presented with a table of available user fields and their status for a particular action. This controls what fields the user will see, must fill in (required) or can fill in (optional) depending upon which action or state they are currently in. That is, you can make the username field required for the registration page (“create” column) but may not wish for your users to be able to edit this after creation (“read only” for the “update” and “edit” columns).
-<ul>
-<li><strong>Create column</strong><br />
-What the user sees on the registration page</li>
-<li><strong>Proxy column</strong><br />
-What columns an administrator sees or must fill in when creating an account by proxy (i.e., for someone else)</li>
-<li><strong>Update column</strong><br />
-What fields the user will see and/or must fill in if something has changed with what information is required at registration. An example of this would be if the “citizenship” field was, at one point, optional for registration but is now required. Setting this field to “Required” for the “Update” column will now require logged-in users to fill this information out.</li>
-<li><strong>Edit column</strong><br />
-What fields the user will see and can edit for their user profile</li>
-<li><strong>Field Option Definitions:</strong><br />
-Required = Must fill in</li>
-<li>Optional = Can fill in</li>
-<li>Hide = Not visible</li>
-<li>Read only = Can view but cannot change
-<img src="../../media/registration-edit-registration-03.png" alt="Screenshot of the member field configuration table showing Create, Proxy, Update, and Edit columns with per-field Required, Optional, Hide, and Read only settings" /></li>
-</ul>
-</li>
-<li>Once you feel ready to save your changes, scroll back to the top of the page and click “Save” (the icon that looks like a floppy disk) in the upper right portion of the page.
-<img src="../../media/registration-edit-registration-04.png" alt="Screenshot showing the Save toolbar button in the upper right of the administrative page" />
-Changes take affect immediately.</li>
+<li>Sign in to the administrator interface.</li>
+<li>Choose <strong>Users &gt; Members</strong> from the menu.</li>
+<li>Select <strong>Registration</strong> in the sub-navigation under the toolbar.</li>
 </ol>
-<h2 id="customizing-confirmation-email">Customizing Confirmation Email</h2>
-<p>All component layouts can be customized through overrides. Except for files that are provided in the &quot;Joomla!&quot; distribution itself, this method for customization eliminate the need for designers and developers to &quot;hack&quot; core files that could change when the site is updated to a new version. Because they are contained within the template, they can be deployed to the Web site without having to worry about changes being accidentally overwritten when your System Administrator upgrades the site. Some emails sent by the system, such as registration confirmations, are component layouts for just this reason of customization.</p>
-<h3 id="quick-overview-of-output-overrides">Quick Overview of Output Overrides</h3>
-<p>Layout overrides only work within the active template and are located under the <code>/html/</code> directory in the template. For example, the overrides for &quot;corenil&quot; are located under <code>/templates/corenil/html/</code>.</p>
-<p>It is important to understand that if you create overrides in one template, they will not be available in other templates. For example, &quot;rhuk_milkyway&quot; has no component layout overrides at all. When you use this template you are seeing the raw output from all components. When you use the &quot;Beez&quot; template, almost every piece of component output is being controlled by the layout overrides in the template. &quot;corenil&quot; is in between having overrides for some components and only some views of those components.</p>
-<p>The layout overrides must be placed in particular way. Using &quot;Beez&quot; as an example you will see the following structure:</p>
-<pre><code>/templates
-  /hubbasic
-    /html
-      /com_register  (this directory matches the component directory name)
-        /emails        (this directory matches the view directory name)
-          confirm.php (this file matches the layout file name)
+<p>The Registration screen has its own tabs: <strong>Config</strong> (this screen),
+<strong>Incremental Registration</strong>, and <strong>PREMIS Data Import</strong>.</p>
+<h2 id="the-field-table">The field table</h2>
+<p>The table has one row per field and four columns, one per action.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Create Account</strong></td>
+<td>What a visitor sees on the registration form.</td>
+</tr>
+<tr>
+<td><strong>Proxy Create Account</strong></td>
+<td>What an administrator sees when creating an account on someone else's behalf.</td>
+</tr>
+<tr>
+<td><strong>Update on Next Login</strong></td>
+<td>What an existing member is asked for the next time they sign in. Use it when a field that used to be optional becomes required: set it to <strong>Required</strong> here and members are asked for it once.</td>
+</tr>
+<tr>
+<td><strong>Edit Profile</strong></td>
+<td>What a member sees and can change on their own profile.</td>
+</tr>
+</tbody>
+</table>
+<p>Each cell is a drop-down with four choices:</p>
+<table>
+<thead>
+<tr>
+<th>Choice</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Required</strong></td>
+<td>The field is shown and must be filled in.</td>
+</tr>
+<tr>
+<td><strong>Optional</strong></td>
+<td>The field is shown and may be left blank.</td>
+</tr>
+<tr>
+<td><strong>Hide</strong></td>
+<td>The field is not shown.</td>
+</tr>
+<tr>
+<td><strong>Read only</strong></td>
+<td>The field is shown but cannot be changed.</td>
+</tr>
+</tbody>
+</table>
+<p>A cell that reads <strong>n/a</strong> means the field does not apply to that action; the
+setting is fixed and there is no drop-down.</p>
+<p>The rows are the nine fields the Members component declares:</p>
+<table>
+<thead>
+<tr>
+<th>Row</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Username</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>Password</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>Password Confirmation</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>Full Name</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>Email Confirmation</strong></td>
+<td>Required, Required, Read only, Read only</td>
+</tr>
+<tr>
+<td><strong>OptIn</strong></td>
+<td>Hide, Hide, Hide, Optional</td>
+</tr>
+<tr>
+<td><strong>CAPTCHA</strong></td>
+<td>Required, Hide, Hide, Hide</td>
+</tr>
+<tr>
+<td><strong>TOU</strong></td>
+<td>Required, Hide, Required, Hide</td>
+</tr>
+</tbody>
+</table>
+<p>The four letters are stored as one string per field, in the column order
+above: <code>R</code> required, <code>O</code> optional, <code>H</code> hidden, <code>U</code> read only. The stored
+values are listed in the
+<a href="../../../reference/configuration/components/members/index.html#registration">Members component reference</a>.</p>
+<pre><code class="language-xml">	&lt;fieldset name=&quot;registration&quot;&gt;
+		&lt;field name=&quot;ConfirmationReturn&quot; type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;&quot; label=&quot;Confirmation Return URL&quot; description=&quot;Redirect here after confirming email...&quot; /&gt;
+		&lt;field name=&quot;registrationUsername&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Username&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationPassword&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationConfirmPassword&quot;  type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationFullname&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Full Name&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationEmail&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationConfirmEmail&quot;     type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationOptIn&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;HHHO&quot; label=&quot;OptIn&quot; description=&quot;Receieve Emails. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationCAPTCHA&quot;          type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHHH&quot; label=&quot;CAPTCHA&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationTOU&quot;              type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHRH&quot; label=&quot;TOU&quot; description=&quot;Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+	&lt;/fieldset&gt;
 </code></pre>
-<p>The structure for component overrides is quite simple: <code>/html/com_{ComponentName}/{ViewName}/{LayoutName}.php</code>.</p>
-<h3 id="customizing-the-confirmation-email">Customizing The Confirmation Email</h3>
-<p>To override the component layout for the registration confirmation email, copy:</p>
-<pre><code>/components/com_register/views/emails/tmpl/confirm.php  (the email sent if the user resends a confirmation)
-/components/com_register/views/emails/tmpl/create.php  (the email sent upon registration)
-</code></pre>
-<p>to:</p>
-<pre><code>/templates/{YourTemplate}/html/com_register/emails/confirm.php
-/templates/{YourTemplate}/html/com_register/emails/create.php
-</code></pre>
-<p>If the destination directories do not exist, create them. And then edit the contents of the file(s) you just copied.</p>
-<aside class="admonition admonition--tip">
-<p><strong>Tip:</strong> See <a href="../../../developers/templates/overrides/index.html">Template Overrides</a> for more information on customizing layouts and CSS.</p>
-</aside>
-<h2 id="confirmation-return-url">Confirmation Return URL</h2>
-<p>By default, members who have just completed the confirmation process will be directed to a &quot;Thank you&quot; page. It is possible, in HUBzero, to change the redirection URL to something else.</p>
+<h2 id="saving">Saving</h2>
+<p>The toolbar has <strong>Options</strong>, <strong>Save &amp; Close</strong>, and <strong>Cancel</strong>. <strong>Save &amp;
+Close</strong> writes the settings and returns you to the members list; there is no
+apply-and-stay button on this screen. Changes take effect immediately, and
+the site cache is cleared as part of the save.</p>
+<h2 id="turning-registration-off">Turning registration off</h2>
+<p>Registration as a whole is switched on the Members component's options, not
+on this screen. Select <strong>Options</strong> in the toolbar and set <strong>Allow User
+Registration</strong> to <strong>No</strong>. The same screen carries <strong>New User Registration
+Group</strong>, <strong>New User Account Activation</strong>, <strong>Send Password</strong>, and <strong>Simple
+Registration</strong>, which lets accounts created through an external
+authentication provider skip the username and account-linking steps.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> This only applies to the initial page the user sees upon confirmation of their email. To customize the return URL members are redirected to upon login see <a href="../hub/index.html">Hub Configuration</a>.</p>
+<p><strong>Note:</strong> The tabs in the Options pop-up are labelled from language
+strings that the Members component does not define, so three of them
+render as raw keys such as <code>COM_CONFIG_REGISTRATION_FIELDSET_LABEL</code>
+instead of a name. The fields inside them are correct.</p>
 </aside>
-<ol>
-<li>First login to the administrative back-end.</li>
-<li>Once logged in, find “Components” in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing a list of your installed components.</li>
-<li>Choose “Register” from the available options.
-<img src="../../media/registration-edit-registration-01.png" alt="Screenshot of the administrative Components menu with the Register option selected" /></li>
-<li>Once the page has loaded, select the “Parameters” button in the toolbar, found in the upper right-hand portion of the screen. Click it.
-<img src="../../media/registration-edit-registration-05.png" alt="Screenshot showing the Parameters button in the upper right toolbar" /></li>
-<li>You should now be presented with a pop-up panel for various settings and configurations of your site.
-Look for the option titled &quot;Confirmation Return URL&quot;. This will most likely be the second item in the list.
-<img src="../../media/registration-edit-registration-06.png" alt="Screenshot of the Register component parameters pop-up showing the Confirmation Return URL option" /></li>
-<li>Enter in the textbox the URL you wish members to be redirected to and then click &quot;Save&quot;.
-<img src="../../media/registration-edit-registration-07.png" alt="Screenshot showing the Confirmation Return URL field filled in with the Save button highlighted" /></li>
-</ol>
+<h2 id="confirmation-return-url">Confirmation return URL</h2>
+<p>By default a member who confirms their email address lands on a thank-you
+page. To send them somewhere else, select <strong>Options</strong> on any Members screen
+and set <strong>Confirmation Return URL</strong>. It sits in the same group as the
+registration fields.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is only the page shown after email confirmation. Where a
+member lands after signing in is set on the login menu item; see
+<a href="../hub/index.html#where-members-land-after-signing-in">Global configuration</a>.</p>
+</aside>
+<h2 id="customising-the-registration-emails">Customising the registration emails</h2>
+<p>The mails the hub sends during registration are ordinary view layouts, so a
+template can override them without anyone editing core files. They live in
+<code>core/components/com_members/site/views/emails/tmpl/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Layout</th>
+<th>Sent when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create.php</code>, <code>create_html.php</code></td>
+<td>An account is created. This is the confirmation mail, sent as a plain-text and an HTML part.</td>
+</tr>
+<tr>
+<td><code>confirm.php</code>, <code>confirm_html.php</code></td>
+<td>A member asks for the confirmation mail again.</td>
+</tr>
+<tr>
+<td><code>update.php</code>, <code>updateproxy.php</code></td>
+<td>A member changes their email address.</td>
+</tr>
+<tr>
+<td><code>adminupdate.php</code>, <code>adminupdateproxy.php</code></td>
+<td>Administrators are told about a profile change.</td>
+</tr>
+<tr>
+<td><code>approved_html.php</code>, <code>approved_plain.php</code></td>
+<td>An account is approved.</td>
+</tr>
+<tr>
+<td><code>remind_html.php</code>, <code>remind_plain.php</code></td>
+<td>A member asks for a username reminder.</td>
+</tr>
+<tr>
+<td><code>reset_html.php</code>, <code>reset_plain.php</code></td>
+<td>A member asks for a password reset.</td>
+</tr>
+</tbody>
+</table>
+<p>To override one, copy it to the site's home template under
+<code>html/com_members/emails/</code> and edit the copy:</p>
+<pre><code>app/templates/{YourTemplate}/html/com_members/emails/create.php
+app/templates/{YourTemplate}/html/com_members/emails/create_html.php
+</code></pre>
+<p>Create the directories if they do not exist. An override in one template is
+not visible from another. Mail overrides are resolved from the site's home
+template rather than the active one, so they also apply to mail sent from
+cron.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> See <a href="../../../developers/templates/overrides/index.html">Output overrides</a>
+for the general rules on overriding layouts and CSS.</p>
+</aside>
+<h2 id="older-screenshots">Older screenshots</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The screenshots below came from the imported version of this
+page. The field table and the Save button are still where they show them,
+but the administrator template has been restyled since. The last four
+images show the retired <strong>Register</strong> component and its parameters pop-up,
+which no longer exist; the settings they show are now on the Members
+component's <strong>Options</strong> screen.</p>
+</aside>
+<p><img src="../../media/registration-edit-registration-03.png" alt="The member field configuration table with its Create, Proxy, Update, and Edit columns" /></p>
+<p><img src="../../media/registration-edit-registration-04.png" alt="The Save button in the upper right of the Registration screen" /></p>
+<p><img src="../../media/registration-edit-registration-01.png" alt="The retired Components menu with the Register component selected" /></p>
+<p><img src="../../media/registration-edit-registration-05.png" alt="The Parameters button in the retired Register component's toolbar" /></p>
+<p><img src="../../media/registration-edit-registration-06.png" alt="The retired Register parameters pop-up showing the Confirmation Return URL option" /></p>
+<p><img src="../../media/registration-edit-registration-07.png" alt="The retired Register parameters pop-up with the Confirmation Return URL filled in" /></p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../hub/index.html" rel="prev"><span>Previous</span>HUB Settings</a><a class="pager__next" href="../components/index.html" rel="next"><span>Next</span>Components</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../hub/index.html" rel="prev"><span>Previous</span>Global configuration</a><a class="pager__next" href="../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/02-registration.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

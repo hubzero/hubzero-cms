@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HUB Settings · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Note: Most, if not all, of these settings can be set once and then left alone. Most HUBzero installs will have these configurations set for optimal…">
+  <title>Global configuration · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Site-wide settings live on one screen, Site Global Configuration . It covers the site&#x27;s name and defaults, the mail transport, sessions, caching, search engine…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/hub/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,30 +54,34 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">HUB Settings</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Global configuration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-screen">The screen</a></li>
 <li class="toc__item toc__item--l3"><a href="#toolbar">Toolbar</a></li>
-<li class="toc__item toc__item--l2"><a href="#site-settings-group">Site Settings Group</a></li>
-<li class="toc__item toc__item--l3"><a href="#site-settings">Site Settings</a></li>
-<li class="toc__item toc__item--l3"><a href="#forge-settings">Forge Settings</a></li>
-<li class="toc__item toc__item--l3"><a href="#ldap-settings">LDAP Settings</a></li>
-<li class="toc__item toc__item--l2"><a href="#registration-setting-groups">Registration Setting Groups</a></li>
-<li class="toc__item toc__item--l2"><a href="#login-return-url">Login Return URL</a></li>
+<li class="toc__item toc__item--l3"><a href="#tabs">Tabs</a></li>
+<li class="toc__item toc__item--l2"><a href="#site">Site</a></li>
+<li class="toc__item toc__item--l2"><a href="#system">System</a></li>
+<li class="toc__item toc__item--l2"><a href="#server">Server</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions-and-text-filters">Permissions and Text Filters</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-moved-where">What moved where</a></li>
+<li class="toc__item toc__item--l2"><a href="#ldap">LDAP</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-members-land-after-signing-in">Where members land after signing in</a></li>
+<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -127,9 +131,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -147,97 +151,279 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Configuring</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">HUB Settings</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Configuring</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Global configuration</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>HUB Settings</h1>
+          <h1>Global configuration</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/hub">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was never published there, so read it as a draft.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Most, if not all, of these settings can be set once and then left alone. Most HUBzero installs will have these configurations set for optimal performance. It is not advisable to make changes to any settings not in the &quot;Registration&quot; area.</p>
+<p>Site-wide settings live on one screen, <strong>Site &gt; Global Configuration</strong>. It
+covers the site's name and defaults, the mail transport, sessions, caching,
+search engine friendly URLs, the API rate limits, the permission rules that
+sit above every component, and the text filters applied to user input.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> There is no longer a <strong>Hub</strong> component. The separate Hub
+settings screen described by older documentation was removed; its settings
+either moved into Global Configuration or disappeared with the features
+that used them. <a href="#what-moved-where">What moved where</a> maps the old fields
+onto the current ones.</p>
 </aside>
+<p>Most of these settings are chosen once, during installation, and then left
+alone. Changing the database, session, or cache settings on a running hub
+can take the site offline.</p>
+<h2 id="the-screen">The screen</h2>
+<p>Open <strong>Site &gt; Global Configuration</strong> from the administrator menu.</p>
 <h3 id="toolbar">Toolbar</h3>
-<p>At the top right you will see the toolbar. The functions are:</p>
 <ul>
-<li><strong>Save</strong><br />
-Save the modifications you made to the Global Configuration. You will be redirected to the Control Panel</li>
-<li><strong>Close</strong><br />
-Return to the previous screen without saving your work. If you press Close while adding a new item, this new item will not be created. If you were modifying an existing item, the modifications will not be saved.</li>
+<li><strong>Save</strong> — write the changes and stay on the screen.</li>
+<li><strong>Save &amp; Close</strong> — write the changes and return to the control panel.</li>
+<li><strong>Cancel</strong> — discard the changes and return to the control panel.</li>
+<li><strong>Help</strong> — open the screen's help text.</li>
 </ul>
-<h2 id="site-settings-group">Site Settings Group</h2>
-<h3 id="site-settings"><a id="hub-site-settings"></a>Site Settings</h3>
-<ul>
-<li><strong>Short Name</strong><br />
-<strong>Deprecated</strong> A short name for the site to be used in various component texts.</li>
-<li><strong>Short URL</strong><br />
-<strong>Deprecated</strong> The URL of the site minus the &quot;http://&quot;.</li>
-<li><strong>Long URL</strong><br />
-<strong>Deprecated</strong> The full URL of the site.</li>
-<li><strong>Support Email</strong><br />
-Primary email address for administrative data to be sent to.</li>
-<li><strong>Monitor Email</strong><br />
-Email address for account registration data to be sent to.</li>
-<li><strong>Home Dir</strong><br />
-The home directory for user accounts.</li>
-</ul>
-<h3 id="forge-settings"><a id="hub-forge-settings"></a>Forge Settings</h3>
-<ul>
-<li><strong>Name</strong><br />
-The name for the Tool Forge area of the site.</li>
-<li><strong>URL</strong><br />
-The URL for the Tool Forge.</li>
-<li><strong>RepoURL</strong><br />
-The URL for the Tool Forge used by Repo.</li>
-</ul>
-<h3 id="ldap-settings"><a id="hub-ldap-settings"></a>LDAP Settings</h3>
-<ul>
-<li><strong>MasterHost</strong><br />
-.</li>
-<li><strong>SlaveHosts</strong><br />
-.</li>
-<li><strong>BaseDN</strong><br />
-.</li>
-<li><strong>NegotiateTLS</strong><br />
-.</li>
-<li><strong>SearchUserDN</strong><br />
-.</li>
-<li><strong>SearchUserPW</strong><br />
-.</li>
-<li><strong>AcctMgrDN</strong><br />
-.</li>
-<li><strong>AcctMgrPW</strong><br />
-.</li>
-</ul>
-<h2 id="registration-setting-groups">Registration Setting Groups</h2>
-<aside class="admonition admonition--tip">
-<p><strong>Tip:</strong> See <a href="../registration/index.html">Configuring Registration</a> for more details.</p>
+<p>Settings are written to plain PHP files under <code>app/config/</code>, one file per
+group: <code>app.php</code>, <code>mail.php</code>, <code>session.php</code>, <code>cache.php</code>, <code>seo.php</code>,
+<code>meta.php</code>, <code>offline.php</code>, <code>database.php</code>, <code>ftp.php</code>, and <code>rate_limit.php</code>.
+The administrator account needs write access to that directory or the save
+fails with a &quot;could not write&quot; error.</p>
+<h3 id="tabs">Tabs</h3>
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>Panels</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site</strong></td>
+<td>Site Settings, Offline Settings, Metadata Settings, SEO Settings, Cookie Settings</td>
+</tr>
+<tr>
+<td><strong>System</strong></td>
+<td>System Settings, Hub Secret, Debug Settings, Cache Settings, Session Settings</td>
+</tr>
+<tr>
+<td><strong>Server</strong></td>
+<td>Server Settings, Location Settings, Message Queue Settings, Database Settings, Mail Settings</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>Ratelimit: Short, Ratelimit: Long</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Permission Settings</td>
+</tr>
+<tr>
+<td><strong>Text Filters</strong></td>
+<td>Text Filter Settings</td>
+</tr>
+</tbody>
+</table>
+<p>A hub can add its own configuration groups by dropping a file into
+<code>app/config/</code>. Any group the form does not already know about gets its own
+tab at the end of the list, named after the file, with a plain text box for
+every key it contains.</p>
+<h2 id="site">Site</h2>
+<p><strong>Site Settings</strong> holds the settings a visitor notices first.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application Environment</strong></td>
+<td>Production, Production - Cloud, Staging, Testing, or Development. Controls how much detail errors show.</td>
+</tr>
+<tr>
+<td><strong>Site Name</strong></td>
+<td>The hub's name. It appears in page titles, in mail subjects, and wherever a component asks for the site name.</td>
+</tr>
+<tr>
+<td><strong>Site Code</strong></td>
+<td>Short code identifying the installation.</td>
+</tr>
+<tr>
+<td><strong>FQDN</strong></td>
+<td>The hub's fully qualified domain name.</td>
+</tr>
+<tr>
+<td><strong>Default Editor</strong></td>
+<td>The editor plugin used for rich text. Defaults to <code>tinymce</code>.</td>
+</tr>
+<tr>
+<td><strong>Default Captcha</strong></td>
+<td>The captcha plugin used where a component does not name its own.</td>
+</tr>
+<tr>
+<td><strong>Default Access Level</strong></td>
+<td>The viewing level given to new content.</td>
+</tr>
+<tr>
+<td><strong>Default List Limit</strong></td>
+<td>Rows per page in administrator lists. Defaults to 20.</td>
+</tr>
+<tr>
+<td><strong>Default Feed Limit</strong></td>
+<td>Items in a syndication feed. Defaults to 10.</td>
+</tr>
+<tr>
+<td><strong>Feed email</strong></td>
+<td>Which address a feed publishes, the author's or the site's.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Offline Settings</strong> takes the site offline with a message and an optional
+image. <strong>Metadata Settings</strong> sets the site-wide description, keywords,
+<code>robots</code> directive, and whether the generator and version are advertised.
+<strong>SEO Settings</strong> turns search engine friendly URLs on, adds the rewrite and
+suffix behaviour, and controls whether group URLs are rewritten too.
+<strong>Cookie Settings</strong> sets the cookie domain and path, and the JWT RSA public
+key used to validate tokens.</p>
+<h2 id="system">System</h2>
+<p><strong>System Settings</strong> sets the log folder, the help server, and whether the
+Hubzero API web services are enabled.</p>
+<p><strong>Hub Secret</strong> has one control, <strong>Reset Hub Secret?</strong>. The hub secret signs
+tokens the hub issues.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Resetting the hub secret invalidates everything signed with
+the old one. Sessions and issued tokens stop being accepted.</p>
 </aside>
-<h2 id="login-return-url">Login Return URL</h2>
-<p>By default, members who have just logged in will be directed to the &quot;/myhub&quot; page. It is possible, in HUBzero, to change the redirection URL to something else.</p>
+<p><strong>Debug Settings</strong> turns on the system profiler, the language debugger, and
+POST data logging. <strong>Cache Settings</strong> chooses off, conservative, or
+progressive caching, the cache handler, and the cache lifetime; a memcache
+handler adds host, port, persistence, and compression fields.
+<strong>Session Settings</strong> sets the session lifetime in minutes and the session
+handler.</p>
+<h2 id="server">Server</h2>
+<p><strong>Server Settings</strong> covers the temp folder, gzip page compression, error
+reporting, and <strong>Force SSL</strong> — off, administrator only, or the entire site.
+<strong>Location Settings</strong> has one field, <strong>Server Time Zone</strong>.</p>
+<p><strong>Database Settings</strong> and <strong>Mail Settings</strong> show the connection the site is
+already using. <strong>From email</strong> and <strong>From Name</strong> are the identity every mail
+the hub sends goes out under; several components default their own
+notification addresses to this value.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Database Tables Prefix</strong> identifies the tables this
+installation owns. Changing it on a running hub points the site at tables
+that do not exist.</p>
+</aside>
+<p><strong>Message Queue Settings</strong> points at the queue host, port, user, and
+password used by the background workers.</p>
+<h2 id="api">API</h2>
+<p>Two panels, <strong>Ratelimit: Short</strong> and <strong>Ratelimit: Long</strong>, each a period in
+minutes and a request limit. The defaults are 120 requests per minute and
+10,000 requests per day.</p>
+<h2 id="permissions-and-text-filters">Permissions and Text Filters</h2>
+<p><strong>Permissions</strong> is the site-wide rules grid: for each user group, the
+default answer to each core action. Components inherit these rules and can
+override them in their own <strong>Options</strong> screen. <strong>Text Filters</strong> decides,
+per group, which HTML survives when a member submits content.</p>
+<h2 id="what-moved-where">What moved where</h2>
+<table>
+<thead>
+<tr>
+<th>Old Hub setting</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Short Name</td>
+<td><strong>Site Name</strong>, on the Site tab. <code>{xhub:getcfg hubShortName}</code> returns it.</td>
+</tr>
+<tr>
+<td>Short URL, Long URL</td>
+<td>Gone. The hub derives its URL from the request; <code>{xhub:getcfg hubShortURL}</code> returns the live base URL.</td>
+</tr>
+<tr>
+<td>Support Email</td>
+<td>Each component that sends mail now carries its own address list, defaulting to the global <strong>From email</strong>. For tickets, see the Support component's options.</td>
+</tr>
+<tr>
+<td>Monitor Email</td>
+<td>Gone.</td>
+</tr>
+<tr>
+<td>Home Dir</td>
+<td><strong>Home directory path</strong>, in the Members component's options.</td>
+</tr>
+<tr>
+<td>Forge Settings (Name, URL, RepoURL)</td>
+<td>Gone. The Tool Forge is no longer configured from the CMS.</td>
+</tr>
+<tr>
+<td>LDAP Settings (MasterHost, SlaveHosts, BaseDN, NegotiateTLS, SearchUserDN, SearchUserPW, AcctMgrDN, AcctMgrPW)</td>
+<td><strong>Site &gt; LDAP</strong>, then the <strong>Options</strong> button. See <a href="#ldap">LDAP</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ldap">LDAP</h2>
+<p>LDAP is configured from <strong>Site &gt; LDAP</strong>, which is the System component's
+LDAP screen. The screen itself exports members and groups to the directory
+and deletes them from it; the connection settings are behind the <strong>Options</strong>
+button in its toolbar.</p>
+<p>The fields are <strong>LDAP Primary Host URI</strong> (default <code>ldap://localhost</code>),
+<strong>LDAP Secondary Host URI</strong>, <strong>LDAP Base DN</strong>, <strong>LDAP Search DN</strong>, <strong>LDAP
+Search Password</strong>, <strong>LDAP Manager DN</strong>, <strong>LDAP Manager Password</strong>, and <strong>Use
+LDAP TLS</strong>. They are listed with their defaults in the
+<a href="../../../reference/configuration/components/system/index.html">System component reference</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The export and delete buttons on the LDAP screen act on the
+whole directory and cannot be undone. The screen says so before you use
+them.</p>
+</aside>
+<h2 id="where-members-land-after-signing-in">Where members land after signing in</h2>
+<p>There is no Login Return URL setting. A member who signs in without a
+<code>return</code> parameter goes to their account page, <code>/members/myaccount</code>.</p>
+<p>To send them somewhere else, edit the menu item that points at the login
+view:</p>
 <ol>
-<li>First login to the administrative back-end.</li>
-<li>Once logged in, find “Components” in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing a list of your installed components.</li>
-<li>Choose “Hub” from the available options.
-<img src="../../media/hub-edit-registration-01.png" alt="edit_registration_01.png" /></li>
-<li>You should now be presented with a control panel for various settings and configurations of your site.
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> This is a different set of configurations than what is found under “Site” &gt; “Global Configuration” and control HUB specific items.
-Once the page has loaded, select the “Parameters” button in the toolbar, found in the upper right-hand portion of the screen. Click it.
-<img src="../../media/hub-edit-hubconfig-00.png" alt="edit_hubconfig_00.png" /></p>
-</aside>
-</li>
-<li>You should now be presented with a pop-up panel for various settings and configurations of your site.
-Look for the option titled &quot;Login Return URL&quot;. This will most likely be the first item in the list.
-<img src="../../media/hub-edit-hubconfig-02.png" alt="edit_hubconfig_02.png" /></li>
-<li>Enter in the textbox the URL you wish members to be redirected to and then click &quot;Save&quot;.
-<img src="../../media/hub-edit-hubconfig-03.png" alt="edit_hubconfig_03.png" /></li>
+<li>Go to <strong>Menus</strong> and open the menu item whose type is the login view.</li>
+<li>In the <strong>Basic</strong> options, set <strong>Login Redirect</strong>.</li>
+<li>Set <strong>Logout Redirect</strong> in the same place if you want a different
+destination after signing out.</li>
 </ol>
+<p>A path that starts with <code>/</code> is treated as internal and the hub prefixes the
+site root. The same menu item also carries the login and logout
+descriptions and images.</p>
+<pre><code class="language-php">		// Get the default return value
+		$defaultReturn = Route::url('index.php?option=com_members&amp;task=myaccount');
+		$description   = '';
+		if ($menu &amp;&amp; isset($menu-&gt;params) &amp;&amp; is_object($menu-&gt;params))
+		{
+			$defaultReturn = $menu-&gt;params-&gt;get('login_redirect_url', $defaultReturn);
+			// Assume redirect URLs that start with a slash are internal
+			// As such, we want to make sure the path has the appropriate root
+			$root = Request::root(true);
+			if (substr($defaultReturn, 0, 1) == '/'
+			 &amp;&amp; substr($defaultReturn, 0, strlen($root)) != $root)
+			{
+				$defaultReturn = rtrim($root, '/') . $defaultReturn;
+			}
+			$description   = $menu-&gt;params-&gt;get('login_description');
+		}
+		$defaultReturn = base64_encode($defaultReturn);
+</code></pre>
+<h2 id="older-screenshots">Older screenshots</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The four images below came from the imported version of this
+page. They show the retired <strong>Hub</strong> component and its parameters pop-up,
+which no longer exist in Hubzero 2.4. They are kept only until the
+screenshot pass replaces them; do not follow the steps they show.</p>
+</aside>
+<p><img src="../../media/hub-edit-registration-01.png" alt="The Components menu with the retired Hub component selected" /></p>
+<p><img src="../../media/hub-edit-hubconfig-00.png" alt="The Parameters button in the retired Hub component's toolbar" /></p>
+<p><img src="../../media/hub-edit-hubconfig-02.png" alt="The retired Hub parameters pop-up showing a Login Return URL field" /></p>
+<p><img src="../../media/hub-edit-hubconfig-03.png" alt="The retired Hub parameters pop-up with the Save button" /></p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Configuring</a><a class="pager__next" href="../registration/index.html" rel="next"><span>Next</span>Registration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/01-hub.md">Edit this page on GitHub</a>

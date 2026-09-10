@@ -1,321 +1,454 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/users/members
 source-id: 3355
 modified: 2014-11-06
-imported: 2026-09-09
 -->
 # Members
 
-## Members Breakdown
+The Members manager is where every account on the hub is created, edited,
+confirmed, approved, blocked, exported and deleted. Open it under **Users >
+Members**. It is `com_members`, and it owns most of what sits on the **Users**
+menu.
 
-A breakdown of all the tabs on the /administrator interface inside of User: Members.
+> **Note:** There is no separate User Manager to keep in step with. `com_users`
+> in this release has no administrator screens at all; the Members manager is
+> the only place accounts are edited.
 
-- Members: Manage all member accounts
-- Notes: Manage user notes and note categories
-- Access: Manage access levels
-- Points: Manage user points
-- Passwords: Set and manage password rules
-- Quotas: Manage user quotas for tool usage
-- Registration: Manage registration process
-- Import: Import a CSV file of new users
-- Export: Download CSV of all users
-- Plugins: Manage all member related plugins
+## The sub-menu
 
-New features added to the sub toolbar on the /administrator interface inside of User: Members.
+A row of links sits above every Members screen. Which links appear depends on
+your permissions and on one configuration setting; the menu is built in
+[`core/components/com_members/admin/helpers/members.php`](../../../../core/components/com_members/admin/helpers/members.php).
 
-- De-identification of Members
+| Link | Opens | Shown when |
+|---|---|---|
+| **Members** | The account list. | Always. |
+| **Notes** | Administrator notes about accounts, and their categories. | Always. |
+| **Access** | Access groups and viewing levels. | Always. |
+| **Points** | The points system. | Only when **Bank Accounts** is on in **Options**. |
+| **Passwords** | Password rules and the password blacklist. | Only for a Super User (`core.admin`). |
+| **Quotas** | Disk quotas, quota classes and quota import. | Always. |
+| **Registration** | Which fields registration asks for. | Always. |
+| **Import** | Bulk member import and import hooks. | Only for a Super User (`core.admin`). |
+| **Plugins** | The hub's `members` plugins. | Always. |
 
-## Members: Editing an Account
+There is **no Export link**. Export is a toolbar button on the account list;
+see [Exporting accounts](#exporting-accounts).
 
-> **Note:** Editing of users is done through the HUBzero Members Manager component, **not** the User manager. Any changes made via the Members Manager will also be reflected in the User tables. Making changes with the User Manager can lead to data becoming out of sync.
+## The account list
 
-1. First login to /administrator
-2. Once logged in, hover over **Users** and select **Members** from the drop-down
-3. You should now be presented with a list of all the members on your site
-   1. There are a variety of methods to find the specific person you wish to edit: Searching or Manually scrolling through the list to find the use
-4. Once found, click the person's name to open up their profile
-   1. Account: General details about the users account and assigned access groups
-   2. Profile: Profile details
-   3. Password: Where an administrator can manually reset a user's password and check on how many days are left before current password expires
-      1. > **Warning:** If you have an automatic password filler turned on in your browser, check this section if you are editing a user's account before saving for you might reset their password with one of your saved passwords
-   4. Groups: List of groups that the user is involved in either as a member or manager
-   5. Hosts: List of hosts that the user has access
-   6. Messaging: The user's messaging settings
-5. Once you feel ready to save your changes, scroll back to the top of the page and click **Save** (the icon that looks like a floppy disk) in the upper right portion of the page
+The list opens on every account on the hub, newest registration first.
 
-## Members: Manually Confirming a User
+### Filters
 
-Users by default have the option to confirm their accounts unless an administrator changes this to administrator approval only. An administrator will need to follow these steps to confirm any new users:
+| Filter | Notes |
+|---|---|
+| Search | A number matches the account id exactly; anything else matches anywhere inside the name, username or email. **Go** submits, and **Reset** clears the filter bar. |
+| **- Email confirmed -** | **Confirmed** or **Unconfirmed**. |
+| **Access** | An access level. |
+| **- State -** | **Enabled** or **Disabled**, that is, not blocked or blocked. |
+| **- Approved -** | **Unapproved**, **Manually approved** or **Automatically approved**. |
+| **- Group -** | An access group. |
+| **- Registration Date -** | Today, the past week, month, three months, six months or year, or older than a year. |
 
-1. Navigate to **/administrator** and hover over the **Users** tab
-2. Click **Members** from the drop-down
-3. Search for the user you wish to confirm
-4. Check the box beside their account and click the **Confirm** button
-5. The user's account will be confirmed
+### Columns
 
-## Members: Clearing Existing Terms of Use Agreements
+| Column | Notes |
+|---|---|
+| ID | The account's numeric id. Sortable. |
+| Name | Shown as *surname, given name middle name*, rebuilt from the full name when the parts are empty. Click it to edit the account. Sortable. |
+| Username | Sortable. |
+| E-Mail | Sortable. |
+| Access Groups | Every access group the account belongs to. |
+| Status | The account's state, with a drop-down of the actions available from it. See [Account states](#account-states). |
+| Registered | Sortable. |
+| Last Visit | *Never* if the account has never logged in. Sortable. |
 
-When terms of use are changed on the hub, it may be necessary to require users to re-accept the new terms. To reset all existing agreements, and force re-acceptance, follow these steps:
+### Toolbar
 
-1. Go to /administrator interface
-2. Navigate to the Users tab and select Members from the drop-down
-3. Click the **Reset terms of use agreements for all users** button
-4. Navigate to the frontend of the Hub and login to double check that the Terms & Conditions acceptance pop-up appears
+| Button | What it does |
+|---|---|
+| **Options** | The component's configuration. See the generated [Members configuration reference](../../../reference/configuration/components/members.md). Super User only. |
+| **Profile** | Opens the profile builder. See [Building the profile form](#building-the-profile-form). Super User only. |
+| **Export** | Downloads the accounts matching the current filters as CSV. Super User only. |
+| **Reset terms of use agreements for all users** | See [Resetting the terms of use](#resetting-the-terms-of-use). |
+| **Confirm** / **Unconfirm** | Marks the checked accounts' email addresses confirmed or unconfirmed. |
+| **Block** / **Unblock** | See [Blocking an account](#blocking-an-account). |
+| **New**, **Edit**, **Delete** | Create, edit or delete accounts. Delete asks for confirmation first. |
+| **De-identify Members** | See [De-identifying members](#de-identifying-members). Needs the **Deidentify** permission. |
+| **Help** | The built-in help screen. |
 
-## Members: Blocking a User's Account
+**Confirm**, **Unconfirm**, **Block**, **Unblock**, **Reset terms of use
+agreements** and the status drop-downs all require `core.edit.state`.
 
-Sometimes spammers can attack your Hub and create multiple accounts. In order to prevent the spammers from access these accounts again, you can block their accounts. This also is a way to
-"unpublish" accounts of users who don't wish to have accounts on the Hub anymore versus deleting their account. This way, if they ever need access again, you only have to unblock them. Follow these steps to block a user's account:
+## Account states
 
-1. Navigate to **/administrator** and hover over the **Users** tab
-2. Click **Members** from the drop-down
-3. Search for the user you wish to confirm
-4. Check the box beside their account and click the **Block** button
-5. The user's account will be blocked
+An account carries three separate flags, and the **Status** column shows the
+first one that applies.
 
-## User Manager: Customize Profile
+| Status | Meaning | Actions offered |
+|---|---|---|
+| **Blocked** | `block` is set. The account cannot log in. | **Unblock** |
+| **Incomplete (*authenticator*)** | The account was started through a third-party authenticator and never finished. Its email address ends in `@invalid`. | None |
+| **Unconfirmed** | The email address has not been confirmed. | **Confirm email**, **Resend confirmation**, **Block** |
+| **Not Approved** | Email confirmed, but the account still needs an administrator's approval. | **Approve**, **Block** |
+| **Approved** | Email confirmed and account approved. This is a working account. | **Unapprove**, **Block** |
 
-Allows an administrator to define profile/registration fields. To edit the profile schema, navigate to the Members Manager (**Users → Members**). Then click the button in the toolbar labeled **Profile**. In this screen, you have the ability to define user profile fields, if said fields are required or optional, what values are allowable, and what fields are dependent upon a value from another field being chosen.
+Confirmation and approval are two different gates. Which of them a new
+registration has to pass is set by **New User Account Activation** on the
+**Options** screen: **None** confirms the account outright, **Self** emails the
+user a confirmation link, and **Admin** emails the link *and* leaves the
+account unapproved until someone approves it. The **System - Unconfirmed** and
+**System - Unapproved** plugins are what hold such a user on a holding page
+until the gate is passed.
 
-- **Text**  
-  A single-line textbox.
-- **Paragraph**  
-  A multi-line textbox (a.k.a. textarea).
-- **Checkboxes**  
-  A list of options where the user may select one or more.
-- **Multiple Choice**  
-  A list of options where the user can only choose one of the available options.
-- **Date/Time**  
-  A textbox specifically for entering timestamps.
-- **Dropdown**  
-  A dropdown (select box) of options where the user can only choose one of the available options.
-- **Country**  
-  A dropdown (select box) of countries. *The list of countries is automatically populated.*
-- **Website**  
-  A textbox specifically for entering URLs.
-- **Hidden**  
-  A hidden input.
-- **ORCID**  
-  A textbox for entering entering ORCIDs.
-- 
+> **Note:** There is no administrator dashboard module listing accounts awaiting
+> approval. Filter the account list by **- Approved -** → **Unapproved**
+> instead.
 
-**Toolbar Breakdown:**
+### Confirming an account by hand
 
-- **Save**. Saves the user and stays in the current screen.
-- **Save & Close**. Saves the user and closes the current screen.
-- **Save & New**. Saves the user and keeps the editing screen open and ready to create another user.
-- **Cancel/Close**. Closes the current screen and returns to the previous screen without saving any modifications you may have made.
-- **Help**. Opens this help screen
+1. Open **Users > Members**.
+2. Find the account.
+3. Either open its **Status** drop-down and choose **Confirm email**, or check
+   the box beside it and press **Confirm** in the toolbar.
 
-**How to Build with the Profile Manager:**
+**Resend confirmation** on the same drop-down issues a fresh confirmation code
+and emails it again.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Click the **Profile** button
-3. Manage the current Profile breakdown with the following actions:
-   1. **Add a new field**:
-      1. **Select the field type** then fill in the label information while under the **Edit field** section
-      2. Determine the Access level and the information will automatically save
-   2. **Duplicate a field**:
-      1. Hover over the field you want to duplicate and then click the **Duplicate field** button
-   3. **Remove a field**:
-      1. Hover over the field you want to remove and then click the **Remove field** button
-   4. **Move fields**:
-      1. Select the field you want to move and drag it up or down depending on your preference
-4. Click **Save & Close** to save your changes
+### Approving an account
+
+Open the account's **Status** drop-down and choose **Approve**. If **Email On
+Account Activation** is on in **Options**, approving also emails the user to
+say the account is ready.
+
+### Blocking an account
+
+Blocking is the way to take an account out of service without deleting it —
+for a spam signup, or for someone who no longer wants an account. A blocked
+account can be unblocked later with nothing lost.
+
+1. Open **Users > Members**.
+2. Find the account.
+3. Either open its **Status** drop-down and choose **Block**, or check the box
+   beside it and press **Block** in the toolbar.
+
+You cannot block your own account.
+
+## Editing an account
+
+Click a name in the list, or check it and press **Edit**. The record opens on
+six tabs; the last three appear only once the account exists, and plugins may
+add more.
+
+| Tab | Contents |
+|---|---|
+| **Account** | Name, username, email, access groups, and the account's state flags. |
+| **Profile** | The profile fields defined in the profile builder. |
+| **Password** | The current password hash, a **New Password** field, the password rules, and the shadow values: **Last changed on**, **Valid for (days)**, **Warning at (days)** and **Expires on**. Shown only with `core.admin` or `core.edit`. |
+| **Groups** | The hub groups the account belongs to, as member or manager. |
+| **Hosts** | The hosts the account may reach. |
+| **Messaging** | The account's message delivery settings. |
+
+Save with **Save** or **Save & Close**; **Save & New** saves and opens a blank
+record.
+
+> **Warning:** If your browser fills in passwords automatically, check the
+> **Password** tab before saving. An autofilled **New Password** field silently
+> replaces the user's password with one of your own saved passwords.
+
+## Resetting the terms of use
+
+When the hub's terms of use change, every existing acceptance can be cleared so
+that users have to accept the new text.
+
+1. Open **Users > Members**.
+2. Press **Reset terms of use agreements for all users** in the toolbar.
+3. Log in to the site to confirm the acceptance prompt appears.
+
+The button does two things: it clears the recorded agreement on every account,
+and it sets the **TOU** row's **Update on Next Login** column on the
+[Registration](../02-registration.md) screen to **Required**, which is what
+actually puts the prompt in front of the user.
+
+## De-identifying members
+
+Available from release 2.2.26. De-identification strips personally
+identifiable information from the database. Some rows are deleted outright;
+elsewhere fields are emptied or replaced with generated values (`anonUsername_`
+plus the account id) that cannot be mapped back. The account row itself
+survives, blocked and anonymous, so that statistics stay intact.
+
+1. Open **Users > Members** and press **Options**. On the **Permissions** tab,
+   set **Deidentify** to *Allowed* for the group that should hold it. Save and
+   close.
+2. Check the accounts to de-identify in the list.
+3. Press **De-identify Members** in the toolbar — the eye icon next to the
+   delete button.
+4. The list redraws with the anonymised values, and a success message names the
+   accounts that were processed.
+
+The work is done by the `user.onUserDeidentify` event. Three plugins listen for
+it. **User - HUBzero** does most of it, clearing or deleting rows in the user
+profile, support ticket, session and session geo, profile completion award,
+newsletter mailing, message, media tracking, jobs, feedback, event
+registration, blog entry and comment, cart, authentication link, group
+membership, extended profile, wishlist and wiki attachment, quota log,
+authentication log, password and password history, and points subscription
+tables. **User - Middleware** anonymises the tool session, job, file
+permission, view permission and view log tables in the middleware database.
+**User - Ldap** re-syncs the directory entry.
+
+> **Warning:** De-identification cannot be undone, and no record of the original
+> values is kept.
+
+> **Note:** De-identification does not delete the account's home directory. It
+> clears `homeDirectory` on the account row and sets it to `/home/anonymous` on
+> the extended profile; removing the directory itself is a job for whatever
+> manages home directories on the hub.
+
+## What deleting a member removes
+
+Deleting an account with the toolbar's **Delete** button is not the same as
+de-identifying it. Delete removes the account row and cascades through
+everything hung off it. This section replaces the older
+[Members removal tech notes](removemembertnotes.md) page.
+
+Deleting needs `core.delete` on `com_members`, and refuses to remove a Super
+User unless you are one yourself. For each checked account it calls `destroy()`
+on the member model:
+
+<!--include: core/components/com_members/models/member.php:474-522-->
+
+So the account's own profile field values, notes, hosts and tags go with it,
+and the `user.onUserAfterDelete` event carries the deletion outward. Seven
+plugins listen for it.
+
+| Plugin | What it removes |
+|---|---|
+| **User - Xusers** | Hub group memberships, the extended profile, every authentication link, and the account's disk quota. Then fires `members.onMemberAfterDelete` for anything listening further out. |
+| **User - HUBzero** | The account's sessions. |
+| **User - Middleware** | Rows in `#__users_quotas` and `#__users_tool_preferences`. |
+| **User - Ldap** | Re-syncs the directory, which removes the entry. |
+| **User - Geo** | Removes the account from the hub group named in the plugin's **group** parameter, if one is set. |
+| **User - US** | Removes the account from the `location_us` hub group. |
+| **User - D1** | Removes the account from the `d1_nation` hub group. |
+
+> **Note:** `user.onUserAfterDelete` is fired twice — once by `destroy()` and
+> again by the controller immediately afterwards — so every one of those
+> plugins runs twice per deleted account. The work is idempotent, so the
+> outcome is correct, but a deletion does roughly twice the work it needs to.
+
+## Building the profile form
+
+**Profile** in the account list toolbar opens the profile builder, which
+defines the fields that make up a member profile — the same fields the
+registration form and the account's **Profile** tab draw on. The form itself
+fills the page; a panel beside it carries two tabs, **Add new field** and
+**Edit field**.
+
+**Add new field** lists the field types you can drag or click onto the form.
+
+| Type | Renders as |
+|---|---|
+| **Text** | A single-line text box. |
+| **Paragraph** | A multi-line text box. |
+| **Checkboxes** | A list of options, any number selectable. |
+| **Multiple Choice** | A list of options, one selectable. |
+| **Dropdown** | A select box, one selectable. |
+| **Country** | A select box of countries, filled in automatically. |
+| **Date** / **Time** / **Date/Time** | A date, a time, or a full timestamp. |
+| **Number** / **Price** / **Range** | Numeric inputs. |
+| **Email** / **Website** | Text boxes for an address or a URL. |
+| **ORCID** | A text box for an ORCID identifier. |
+| **Address** | Street, city, region, postal code and country. |
+| **Tags** | Keywords separated by commas or semicolons. |
+| **Hidden** | A hidden input. |
+| **Section Break** | A heading with no input, for grouping the form. |
+
+**Edit field** configures the selected field: its **Label**, a longer
+description, its **Viewing level**, and the **Required**, **Read only** and
+**Disabled** checkboxes. Fields with options — Checkboxes, Multiple Choice,
+Dropdown — get a row per option with a label, an optional separate value, and a
+**Dependent fields** box naming the fields that should appear when that option
+is chosen.
+
+Working in the builder:
+
+- **Add a field.** Click or drag its type from **Add new field**, then fill in
+  the label and options on **Edit field**.
+- **Duplicate a field.** Hover the field and press the **Duplicate Field**
+  icon.
+- **Remove a field.** Hover the field and press the **Remove Field** icon.
+- **Reorder fields.** Drag a field up or down.
+
+The builder's toolbar has **Save**, **Save & Close** and **Cancel** only —
+there is no **Save & New**. Nothing is written until you save.
 
 ## Notes
 
-Notes are a function where users can create and store notes on the Hub. On the /administrator interface, an administrator can manage the notes created by users.
+**Notes** manages the notes administrators keep *about* accounts — they are not
+something users write. A note has a subject, a body, a category, a review date
+and a state, and it hangs off one account.
 
-- User Notes: Where an administrator can view notes make by other users and edit, approve, publish, unpublish, along with other actions to curate the notes
-- Note Categories: Where an administrator can create new note categories and batch process selected categories
+Two links sit under the tab: **User Notes**, the list itself, and **Note
+Categories**, which opens `com_categories` scoped to `com_members`.
+
+> **Warning:** Most of the User Notes toolbar does nothing in this release, and
+> the column sort links fail outright. [User notes](../user-notes.md) sets out
+> what works and what does not; read it before you rely on this screen.
 
 ## Access
 
-An area where access groups can be managed. Access groups are the various permission levels assigned to different groups of users based on their roles in the Hub. Generic default levels are: Public, Manager, Administrator, Registered, Author, Editor, and Publisher. These levels are broken up by the levels of responsibility and what the access the group has to different areas of the Hub. An administrator can see the number of users in the group in the **Users in Group** column.
+**Access** covers the two halves of the permission system.
 
-An administrator can add new access groups by clicking the New button and following these steps:
+**Access Groups** are the buckets permissions are granted to: Public, Manager,
+Administrator, Registered, Author, Editor, Publisher and Super Users by
+default, arranged as a tree. The **Users in group** column counts the accounts
+in each. To add one, press **New**, give it a **Group Title**, pick a **Group
+Parent**, and **Save & Close**.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Access** tab and click the **New** button
-3. Add a **Group Title** and then select the **Group Parent**
-4. Click **Save & Close**
+**Viewing Levels** are the named levels content is tagged with. To add one,
+open the **Viewing Levels** link, press **New**, give it a **Level Title**,
+check the groups under **Access Groups Having Viewing Access**, and **Save &
+Close**.
 
-An administrator can also can manage the viewing levels available on the Hub by following these steps:
-
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Viewing Level** tab and click the **New** button
-3. Add a **Level Title** and select the **Access Groups** that have this viewing access
-4. Click **Save & Close**
+See [Access Groups](../06-accessgroups.md) and
+[Access Levels](../07-accesslevels.md).
 
 ## Points
 
-Points are the Hub’s currency system. Hub administrators can provide royalties to active and helpful users who interact with a Hub’s community.
+Points are the hub's internal currency, awarded for taking part. The **Points**
+link appears only when **Bank Accounts** is on in the component's **Options**.
 
-- Summary: Check out top users and statistics of how points are earned
-- Look up User Balance: Look up a users Point total by searching with their user I.D.
-- Configuration: Configure the amount of points you want to reward users when completing specific tasks which are assigned in the Alias. **NOTE:** There are only seven point alias' you can use, see Point Configuration listed below.
-  - **Description**: Add a short description describing why these points were being rewarded
-  - **Alias**: The alias of the rule affliated to the awarded points
-  - **Points**: Define the amount of points
-- Batch Transaction: Deposit or Withdraw points from user accounts through batch transactions
+Four sub-links:
 
----
+- **Summary** — the top earners and how points were earned.
+- **Look up User Balance** — a single account's balance.
+- **Configuration** — the award table.
+- **Batch Transaction** — deposit to or withdraw from many accounts at once.
 
-**Configure Points**
+The configuration screen is a table of fifty numbered rows, each with
+**Points**, **Alias** and **Description**. The alias is the key a component
+passes when it awards points, so the rows you fill in are the ones your hub's
+components actually use. A hub running the Answers component typically fills in
+these seven:
 
-1. To set up Points on your Hub, follow these steps:
-2. Log into the **/administrator** interface
-3. Hover over the **Users** tab and select **Members**
-4. Select the **Points** tab and then the **Configuration** tab
-5. Fill out the form to add points in seven specific areas of the Hub:
-   1. Question posted: Award points when a user posts a question
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *ask*
-      3. Description: Question posted
-   2. Answer posted: Award points when a user posts an answer
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *answer*
-      3. Description: Answer posted
-   3. Question rating posted: Award points when a user posts a rating to a question
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *questionvote*
-      3. Description: Question rating posted
-   4. Answer rating posted: Award points when a user posts a rating to an answer
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *answervote*
-      3. Description: Answer rating posted
-   5. Answer accepted as best: Award points when a user who asked a question in Answers accepts another user’s best answer (the user who submitted the answer earns the points)
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *accepted*
-      3. Description: Answer accepted as best
-   6. Abuse report granted: Award points when a user reports abuse and an administrator grants the abuse report
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *abusereport*
-      3. Description: Abuse report granted
-   7. Review rating posted: Award points when a user rates a post
-      1. Points: Determine the amount of points you want to award a user when they complete this task
-      2. Alias: *reviewvote*
-      3. Description: Review rating posted
-6. After filling out the form, click **Save & Close** to save the new point configuration
+| Alias | Awarded for |
+|---|---|
+| `ask` | Posting a question. |
+| `answer` | Posting an answer. |
+| `questionvote` | Rating a question. |
+| `answervote` | Rating an answer. |
+| `accepted` | Having your answer accepted as the best one. |
+| `abusereport` | An abuse report that an administrator upholds. |
+| `reviewvote` | Rating a review. |
 
-![points_config](../../media/members-points-config.png)
+Fill in **Points**, **Alias** and **Description** on a row and press **Save
+Configuration**.
+
+![The points configuration screen, a numbered table of Points, Alias and Description rows](../../media/members-points-config.png)
+
+> **Note:** That screenshot is from an older release. Its sub-menu shows an
+> **Export** tab, which no longer exists — export is a toolbar button on the
+> account list.
 
 ## Passwords
 
-Password Rules and Password Blacklist are two sections that are already set up at default. The Password Rules comply with our latest security scan and are suggested to be turned enabled at all times so that all users meet the same rules when creating their accounts. As an administrator, you can blacklist passwords if you do not want users creating simple or Hub related passwords.
+Two sub-links.
 
-Blacklisting a Password:
+**Password Rules** lists the rules a password must satisfy, with columns
+**Id**, **Rule**, **Description**, **Ordering** and **Enabled**. Opening a rule
+adds its **Value**, **Failure message**, **Class** and **Group**. The shipped
+set matches current security guidance and is meant to stay enabled.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Passwords** tab, then select **Password Blacklist**
-3. Click the **New** button
-4. Add the password in the **Word** text box
-5. Click **Save & Close**
+**Password Blacklist** is a list of words that may not be used as passwords —
+somewhere to put obvious choices and words specific to your hub. To add one:
+
+1. Open **Users > Members > Passwords**, then **Password Blacklist**.
+2. Press **New**.
+3. Type the word in the **Word** box.
+4. **Save & Close**.
 
 ## Quotas
 
-Managing user quotas is simplified on the backend into three main areas. As an administrator, you can increase or decrease a user's quota, create quota classes, and import quotas, by following these steps:
+Three sub-links, and they only matter when **Manage Quotas** is on in
+**Options**.
 
-Increasing/Decreasing a User's Quota:
+**Member disk quotas** lists accounts and their quotas. To change one, find the
+account, open it, change its quota class or its individual limits, and **Save &
+Close**.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Quotas** tab and select the **Member disk quotas** tab
-3. Search for the user and then click on their name
-4. Increase or decrease the user's quota by changing their quota class or by changing their limits
-5. Click **Save & Close**
+**Quota classes** are reusable sets of limits. Press **New** and fill in:
 
-Creating a Quota Class:
+| Field | Notes |
+|---|---|
+| **Alias** | The class's short name. |
+| **Soft blocks limit** | Soft limit on disk blocks. |
+| **Hard blocks limit** | Hard limit on disk blocks. |
+| **Soft files limit** | Soft limit on file count. |
+| **Hard files limit** | Hard limit on file count. |
+| **User Access Groups** | Access groups whose members get this class automatically. |
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Quotas** tab and select the **Quota classes** tab
-3. Click the **New** button
-4. Fill in the **Class Options** form
-   1. Alias: Class alias
-   2. Soft blocks limit: Soft limit for quota blocks
-   3. Hard blocks limit: Hard limit for quota blocks
-   4. Soft files limit: Soft limit for quota files
-   5. Hard files limit: Hard limit for quota files
-   6. User Access Groups: Select what access groups are automatically associated with this quota class
-5. Click **Save & Close**
-
-Importing Quotas:
-
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Quotas** tab and select the **Import Quotas** tab
-3. Import existing filesystem quotas by copy and pasting a **quota.conf** file in the text box
-4. Check the box next to **Overwrite matching existing entries**
-5. Click **Import**
+**Import quotas** seeds the tables from the filesystem. Paste the contents of a
+`quota.conf` file into the **Conf file** box, tick **Overwrite matching
+existing entries?** if you want existing rows replaced, and press **Import**.
+Accounts named in the file that have no quota row yet are listed underneath so
+you can import them in a second pass.
 
 ## Registration
 
-An administrator can configure a user's registration fields from the /administrator interface on the Hub. Read more about this on [Member Registration article](../02-registration.md).
+**Registration** controls which fields the hub asks for, and when. It has three
+sub-links: **Config**, **Incremental Registration** and **PREMIS Data Import**.
+See [Registration](../02-registration.md).
 
 ## Import
 
-An administrator can manually import users if they are wanting to complete this process for a large research group needing access to the Hub immediately or for a classroom of students where the instructor already knows the students' information. To import users and set up import hooks, follow these steps on the [Member Import Article](../03-memberimport.md).
+**Import** bulk-creates and bulk-updates accounts from a data file, and manages
+the hooks that can transform records on the way in. Super User only. See
+[Member import](../03-memberimport.md).
 
-## Export
+## Exporting accounts
 
-Exporting the current list of Hub users can be done by visiting the **Export** tab inside of **Members**. From that tab there will be a button that states **Download CSV of all users**. By clicking this button, you can download a list of all members and archive the file for your own use as an administrator or for safe keeping.
+**Export** in the account list toolbar downloads a CSV of accounts. Two things
+about it are worth knowing:
+
+- It exports **the accounts matching the filters currently applied to the
+  list**, not always every account. Clear the filters first if you want the
+  whole hub.
+- The columns are generated from the accounts table plus every field in the
+  profile builder, so the file's shape follows your hub's profile schema.
+  Passwords are never included.
+
+The download is served as `members.csv`.
 
 ## Plugins
 
-Plugins are used to turn on various parts of the Members interface which includes their profile and dashboard. An administrator can manage these plugins by unpublishing and publishing various plugins to limit or expand a users Member area on the frontend of the Hub. Specifically in the Member Dashboard Configuration plugin, an administrator can manually change rearrange the member dashboard modules to fit the message of the Hub.
+**Plugins** lists the hub's `members` plugins. It is a screen of its own, not
+the Plugin Manager, though it works the same way. These plugins are what put
+the tabs on a member's public profile and the panels on the member dashboard,
+so publishing and unpublishing them is how you decide what the member area
+contains.
 
-Publishing/Unpublishing Plugins:
+To publish or unpublish: check the plugin, press **Publish** or **Unpublish**,
+and the **Status** column changes. Reordering needs `core.edit.state` on
+`com_plugins`.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Plugins**
-3. Check the box next to the plugin and click the **Publish** or **Unpublish** button
-4. The plugin will change stats under the **Published** column
+The **Members - Dashboard** plugin has a **Manage** link in its own column,
+which opens the default dashboard layout:
 
-Managing Member Dashboard Configuration:
+1. Drag modules to move them; drag the lower-right corner to resize.
+2. **Add Modules** adds one to the layout.
+3. **Push Module to Users** puts one module onto existing members'
+   dashboards. Fill in the module, column, position, width and height, then
+   press **Push Module**.
 
-1. Navigate to **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Inside of **Members**, select the **Plugins** tab
-3. Locate the **Members-Dashboard** plugin and click **Manage** under the Manage column
-4. Manage the modules inside of the **Members-Dashboard** plugin
-   1. Drag and drop to move modules
-   2. Drag the lower-right corner to expand or contract the size of the module
-   3. Add more modules by clicking the **Add Modules** button and selecting a module
-   4. **Push Modules to Users** by clicking this button and filling out the form, then clicking **Push Module**
-5. All changes will be automatically saved for every new user
-   1. Users who have already adjusted their Dashboards will not be affected by these changes
+Changes are saved as they are made and apply to members who have not yet
+rearranged their own dashboard.
 
-## Toolbar Features
-
-## De-identification of Members
-
-Release: 2.2.26
-
-Purpose: Mechanism to remove Personally Identifiable Information (PII) from the CMS databases. Some database rows are simply deleted, and in other cases fields are deleted or replaced with anonymized values that are unrelated to the original PII (e.g., username), in which case no record or mapping is kept of the original value. Accounts will not be entirely deleted, but some data will be kept for statistics.
-
-1. Navigate to the top toolbar in **/administrator** and hover over the **Users** tab and click on **Members** from the drop-down
-2. Make sure under the **Options** modal window, under the **Permissions** tab, the "De-identify" option is set to 'allowed'. Save and Close the Options window.
-3. Inside of **Members**, on the **Members** table, in the 1st column, select different members to de-identify
-4. Navigate to the sub toolbar on the top right and click the 'eye-closed' icon button (next to the trash icon button), which will de-identify those specific members
-5. Changes in the database will be reflected in the displayed **Members** information
-6. The previously selected members will have had their information deleted from the following tables:
-   - User Profiles
-   - Support Tickets
-   - Session and Session Geo
-   - Profile Completion Awards
-   - All related to Newsletter Mailing
-   - Messages
-   - All related to Media Tracking
-   - All related to Jobs
-   - Feedback
-   - Event Registration
-   - Blog Entries and Comments
-   - All related to Cart
-   - All related to Authentication
-   - All related to Groups and Profiles
-   - Users Quotas Log
-   - All related to Attachments
-   - Users Password and Password History
-   - Points Subscription
-7. Also, the previously selected members will have had their home directory deleted from our servers
-8. Lastly, the previously selected members have had account information updated with generic info.
-9. A "success" alert message should be displayed for the previously selected members.
+> **Warning:** Pushing a module writes to every member's dashboard. The screen
+> says so itself: it is resource-intensive and should not be done often.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Site Notices · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Login to the Hub&#x27;s /administrator . Hover over Extensions and then click Module Manager from the drop-down. You should now be presented with a list of…">
+  <meta name="description" content="A site notice is the banner that warns visitors the hub is going down for maintenance, or that something is broken. It is not a component — it is the module,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/maintenance/notices/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,27 +50,30 @@
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Site Notices</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#finding-the-module">Finding the module</a></li>
+<li class="toc__item toc__item--l2"><a href="#details">Details</a></li>
+<li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#menu-assignment">Menu assignment</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +123,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -146,44 +149,126 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Site Notices</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/maintenance/notices">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
+<p>A site notice is the banner that warns visitors the hub is going down for
+maintenance, or that something is broken. It is not a component — it is the
+<code>mod_notices</code> module, and you post a notice by editing that module.</p>
+<h2 id="finding-the-module">Finding the module</h2>
 <ol>
-<li>Login to the Hub's <strong>/administrator</strong>.</li>
-<li>Hover over <strong>Extensions</strong> and then click <strong>Module Manager</strong> from the drop-down.</li>
+<li>Log in to <code>/administrator</code>.</li>
+<li>Go to <strong>Extensions → Module Manager</strong>.</li>
 </ol>
-<p><img src="../../media/notices-site-notices.png" alt="edit_module_01.png" /></p>
+<p><img src="../../media/notices-site-notices.png" alt="The Module Manager" /></p>
 <ol start="3">
-<li>You should now be presented with a list of all the modules installed on your site. There are a variety of methods to find the specific module you wish to edit: you can filter by selecting position, type, or even state (enabled, disabled). The site notice module would be in position <strong>notices</strong> and of type <strong>mod_notices</strong>. You may also search for <strong>notices</strong> in the filter search box or scroll to the bottom of the page and navigate your way through the entire list. Once found, click the module name to edit it.
-<img src="../../media/notices-site-notices1.png" alt="edit_notice_01.png" /></li>
-<li>Once in edit mode you will be presented with some options such as the title, position, etc. Typically, you will not need to edit anything found in the <strong>Details</strong> section. The items that will most often be changed are under <strong>Parameters</strong>. Here you can set the following:
-<ul>
-<li><strong>Start Publishing</strong><br />
-This determines when you wish the site notice to <em>start’ showing on the site.</em></li>
-<li><strong>Finish Publishing</strong><br />
-This determines when you wish the site notice to <em>stop</em> showing on the site.</li>
-<li><strong>Alert Level</strong><br />
-3 levels available: low, medium, and high. This determines the appearance of the site notice (such as eye-catching red for “high”).</li>
-<li><strong>Module ID</strong><br />
-A CSS ID to be applied to the module. Typically, you will not need to change this.</li>
-<li><strong>Message</strong><br />
-The notice you wish to display.</li>
-</ul>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The “Position” must be set to <strong>Notices</strong>, otherwise the banner will not show up, or it will not show up where you intended it to.</p>
-</aside>
-</li>
-<li>Once your parameters are set, move down to the <strong>Menu Assignment</strong> portion. This section determines what pages of your site you wish the notice to appear on. This will typically be set to <strong>All</strong>.
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> If the menu assignment is set to <strong>none</strong>, your notice will NOT appear on any page of the site, even if it is published and the timeframe is within the publishing window set in the <strong>Parameters</strong> section.</p>
-</aside>
-</li>
-<li>Return to the top of the page and click <strong>Save</strong> in the upper right portion of the page.</li>
+<li>Find the notices module. Filter by position, type, or state, or type
+<code>notices</code> into the search box. The module's type is <code>mod_notices</code> and it
+belongs in the <strong>notices</strong> position.</li>
+<li>Click the module's title to edit it.</li>
 </ol>
+<p><img src="../../media/notices-site-notices1.png" alt="The site notice module open for editing" /></p>
+<p>If no such module exists yet, select <strong>New</strong>, pick <strong>Site Notices</strong> from the
+module type list, and set its position to <code>notices</code>.</p>
+<h2 id="details">Details</h2>
+<p>Most of the <strong>Details</strong> fieldset can be left alone. Two fields matter:</p>
+<ul>
+<li><strong>Position</strong> — must be <code>notices</code>. Every stock template
+(<code>hubzero</code>, <code>kimera</code>, <code>lucent</code>) declares that position; nothing renders the
+module anywhere else.</li>
+<li><strong>Start Publishing</strong> and <strong>Finish Publishing</strong> — the window during which the
+notice appears. Leave either empty for no bound. These are the module's own
+publishing dates, in the <strong>Details</strong> fieldset, not module parameters.</li>
+</ul>
+<p>Also in <strong>Details</strong>: <strong>Status</strong> (published or unpublished), <strong>Access</strong>, and
+<strong>Ordering</strong>. A notice that is unpublished never shows, regardless of its
+dates.</p>
+<h2 id="parameters">Parameters</h2>
+<p>The notice's content and appearance live in the module's <strong>Basic</strong> options:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message</code></td>
+<td><strong>Message</strong></td>
+<td>empty</td>
+<td>The notice text. HTML is allowed</td>
+</tr>
+<tr>
+<td><code>alertlevel</code></td>
+<td><strong>Alert level</strong></td>
+<td><code>low</code></td>
+<td><code>low</code>, <code>medium</code>, or <code>high</code>. Sets the banner's colour class</td>
+</tr>
+<tr>
+<td><code>moduleid</code></td>
+<td><strong>Module ID</strong></td>
+<td>empty</td>
+<td>A CSS id put on the module's container, for per-notice styling</td>
+</tr>
+<tr>
+<td><code>allowClose</code></td>
+<td><strong>Allow closing</strong></td>
+<td>No</td>
+<td>Gives the notice a <strong>close</strong> link</td>
+</tr>
+<tr>
+<td><code>autolink</code></td>
+<td><strong>Autolink message</strong></td>
+<td>Yes</td>
+<td>Turns bare URLs and email addresses in the message into links</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alert level</strong> becomes a class name on the wrapper — <code>modnotices low</code>,
+<code>modnotices medium</code>, <code>modnotices high</code> — and the template decides what each
+one looks like. High is the loud one.</p>
+<p><strong>Allow closing</strong> stores the dismissal per visitor. If a <strong>Finish Publishing</strong>
+date is set, the close link carries the number of days left so the dismissal
+expires with the notice.</p>
+<h2 id="menu-assignment">Menu assignment</h2>
+<p>The <strong>Menu Assignment</strong> tab decides which pages show the notice:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>On all pages</strong></td>
+<td>Everywhere. This is what a maintenance notice wants</td>
+</tr>
+<tr>
+<td><strong>No pages</strong></td>
+<td>Nowhere — the notice is effectively off</td>
+</tr>
+<tr>
+<td><strong>Only on the pages selected</strong></td>
+<td>Just the ticked menu items</td>
+</tr>
+<tr>
+<td><strong>On all pages except those selected</strong></td>
+<td>Everywhere but the ticked menu items</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>No pages</strong> hides the notice completely, even when the module
+is published and inside its publishing window. It is the most common reason
+a notice does not appear.</p>
+</aside>
+<p>Save with <strong>Save</strong> or <strong>Save &amp; Close</strong>.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tickets/index.html" rel="prev"><span>Previous</span>Support Tickets</a><a class="pager__next" href="../cron/index.html" rel="next"><span>Next</span>Scheduled Tasks</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/04-notices.md">Edit this page on GitHub</a>

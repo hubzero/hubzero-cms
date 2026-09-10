@@ -1,82 +1,207 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/users/registration
 source-id: 3357
 modified: 2014-11-20
-imported: 2026-09-09
 -->
 # Registration
 
-## Disabling Registration
+Registration decides who may create an account on the hub, what the form asks
+them for, and what has to happen before the account works. Two screens are
+involved: the component's **Options**, which holds the switches, and **Users >
+Members > Registration**, which holds the field-by-field table.
 
-In some circumstances, it may be desirable to disable user registration entirely. To do so, navigate to the members manager (Administrator > Users > Members) and click the "Options" button in the toolbar. The first available configuration option if "Allow User Registration". Set this to "No" to disable registration entirely.
+> **Tip:** Every parameter on the **Options** screen is listed in the generated
+> [Members configuration reference](../../reference/configuration/components/members.md).
+> [Configuring Registration](../05-configuring/02-registration.md) covers the
+> same field table from the configuration side.
 
-## Registration Fields
+## Turning registration off
 
-1. First log in to the administrative backend
-2. Once logged in, find **Users** in the main menu bar located toward the top of the page.
-3. Choose **Members** from the drop down menu
-4. Click on the **Registration** tab
-5. You should now be presented with a table of available user fields and their status for a particular action. This controls what fields the user will see, must fill in (required) or can fill in (optional) depending upon which action or state they are currently in. That is, you can make the username field required for the registration page (**create** column) but may not wish for your users to be able to edit this after creation (**read only** for the **update** and **edit** columns).
-   - **Create column:** What the user sees on the registration page
-   - **Proxy column:** What columns an administrator sees or must fill in when creating an account by proxy (i.e., for someone else)
-   - **Update column:** What fields the user will see and/or must fill in if something has changed with what information is required at registration. An example of this would be if the **citizenship** field was, at one point, optional for registration but is now required. Setting this field to **Required** for the **Update** column will now require logged-in users to fill this information out.
-   - **Edit column:** What fields the user will see and can edit for their user profile
-   - **Field Option Definitions:**
-     - **​​**Required = Must fill in
-     - Optional = Can fill in, but are not required
-     - Hide = Not visible
-     - Read only = Can view but cannot change
-6. Once you feel ready to save your changes, scroll back to the top of the page and click **Save** in the upper right portion of the page. Changes take affect immediately.
+To stop visitors creating their own accounts, open **Users > Members**, press
+**Options** in the toolbar, and set **Allow User Registration** — the first
+setting on the **Component** tab — to **No**. Administrators can still create
+accounts from the Members list.
 
-## Customizing Confirmation Email
+## What a new account has to pass
 
-All component layouts can be customized through overrides. Except for files that are provided in the Joomla! distribution itself, this method for customization eliminate the need for designers and developers to **hack** core files that could change when the site is updated to a new version. Because they are contained within the template, they can be deployed to the Web site without having to worry about changes being accidentally
+**New User Account Activation**, also on the **Component** tab, sets the gate.
 
-## User Authentication Plugins
+| Setting | What happens on registration |
+|---|---|
+| **None** | The account is confirmed straight away and can log in. |
+| **Self** (the default) | The user is emailed a confirmation link. Until it is followed the account shows as **Unconfirmed**. |
+| **Admin** | The user is emailed a confirmation link *and* the account is left unapproved. An administrator has to approve it as well. |
 
-A Hub can offer multiple ways for users to login through other services like LinkedIn, Facebook, ORCID, etc.
+Two related settings sit beside it. **Email On Account Activation** emails the
+user when an administrator approves their account, and only applies under
+**Admin**. **Notification Mail to Administrators** emails the site's
+administrators when an account is created, and only applies under **None** or
+**Self**.
 
-- Authentication-Certificate: Handles user authentication against client side SSL certificates
-- Authentication-Facebook: Handles user authentication against Facebook
-- Authentication-Google: Handles user authentication against Google
-- Authentication-Hubzero: Default user authentication
-- Authentication-LinkedIn: Handles user authentication against LinkedIn
-- Authentication-ORCID: Handles user authentication against ORCID
-- Authentication-Picas: Handles user authentication against Purdue's CAS
-- Authentication-Twitter: Handles user authentication against Twitter
+Accounts waiting at either gate are held on a holding page by the **System -
+Unconfirmed** and **System - Unapproved** plugins. Find them by filtering the
+Members list on **- Email confirmed -** or **- Approved -**; see
+[Account states](01-members/README.md#account-states) for how to clear each
+gate.
 
-To activate these authentication plugins acquire a customer secret and customer key from the other service by registering your App on the service and selecting the Web format. Once you have the keys you can enable the plugins from the backend of the Hub.
+## The registration fields table
 
-1. Navigate to the backend of the Hub and locate the **Extensions Tab** and click on **Plug-in Manager**
-2. Inside of the **Plug-in Manager**, search for the authentication plugin
-3. Click on the title of the plugin and inside the plugin insert the **customer secret** and **customer key**
-4. Change the *Status* of the plugin to **Enabled** and then click **Save & Close**
+1. Open **Users > Members**.
+2. Click **Registration** in the sub-menu. It opens on **Config**.
+3. Set each field's state in each of the four columns.
+4. Press **Save**. Changes take effect immediately.
 
-## TLS Certificate Authentication
+Each row is one field, and each column is one situation in which the hub might
+ask for it.
 
-Certificate Authentication Plugin:
+| Column | When it applies |
+|---|---|
+| **Create Account** | The public registration form. |
+| **Proxy Create Account** | Creating an account on someone else's behalf. |
+| **Update on Next Login** | The prompt an existing user gets at their next login when something now required was not asked for when they registered. |
+| **Edit Profile** | The user editing their own profile. |
 
-This plugin is in charge of actually checking the certificate, and creating new accounts or linking existing ones to the identity presented in the certificate. With this plugin on, users can login using their certificate credentials. If a link between those credentials exists, the process is complete and the user is logged in. If a link does not exist, the user is allowed to create a new account, thus linking their current certificate to the newly created hub account. A user can also elect to link their current certificate to an existing account, assuming they are able to provide the password for that existing account (in the event that someone already has an account on the system). This plugin is called: Authentication - Certificate.
+Each cell takes one of four values.
 
-Enable the Authentication - Certificate Plugin:
+| Value | Meaning |
+|---|---|
+| **Required** | Must be filled in. |
+| **Optional** | May be filled in. |
+| **Hide** | Not shown. |
+| **Read only** | Shown but not editable. |
 
-1. Navigate to the backend of the Hub and locate the **Extensions** tab
-2. Click on the **Extensions** tab and from the drop-down click on the **Plug-in Manager**
-3. Locate from the plugin list or through search the **Authentication - Certificate** plugin
-4. Click on the title of the plugin then locate the *Status* section inside the plugin
-5. From the *Status* drop-down, select **Enabled** then click **Save & Close**
+A cell showing **n/a** instead of a menu is one the field does not support.
 
-Certificate routing plugin:
+The rows are the nine account-level fields: **Username**, **Password**,
+**Password Confirmation**, **Full Name**, **Email**, **Email Confirmation**,
+**OptIn**, **CAPTCHA** and **TOU** (the terms of use). Everything else the form
+asks for comes from the profile builder, where each field carries its own
+required flag and access level; see
+[Building the profile form](01-members/README.md#building-the-profile-form).
 
-This plugin handles the requirement for a certificate to be present while browsing the site. While the authentication plugin is what checks and links the user to the cert, other authentication could still be allowed. With this plugin enabled, a certificate must be present and authentication options are limited to just certificate based authentication. This plugin is called: System - Certificate.
+**Update on Next Login** is what makes an existing account fill in a gap. On
+every login the session is flagged as incomplete, the **Members - Profile**
+plugin re-checks the profile against this column, and the flag clears the
+moment the check passes. So setting a field to **Required** here puts it in
+front of every logged-in user until they answer it. Setting **TOU** to **Required** in this
+column is exactly what the Members list's **Reset terms of use agreements for
+all users** button does.
 
-Enable the System - Certificate plugin by following the same steps listed out above.
+> **Note:** Nothing in this release passes the **Proxy Create Account** column
+> to the registration check — no screen creates an account "by proxy". The
+> column is stored and displayed, but it currently has no effect.
 
-New account approval:
+## Incremental Registration
 
-This allows admins to require approval of new accounts prior to their being able to access the site. When this is enabled, accounts pending approval can be found in the users manager on the backend. You can also elect to turn on an administrative dashboard module that lists accounts pending approval. And in the users manager parameters, you can enable administrator notifications to receive an email when new accounts are created. This allows the certificate->user link to be user initiated (rather than admin initiated), but still gated and admin approved.
+The second link under **Registration** configures incremental registration:
+rather than asking for everything at once, the hub prompts for a package of
+profile fields some time after the user registers.
 
-In terms of apache configuration, **SSLVerifyClient optional** should be set. This will allow the certificate to be included, but also allow the CMS to handle the requirement for the certificate through the use of the certificate routing plugin mentioned above. **SSLOptions +StdEnvVars** should also be set, as I’m sure it already is for you all. Lastly, make sure the site is forced to SSL via the Joomla global configuration on the backend.
+| Setting | Notes |
+|---|---|
+| **Pop-over text** | The text shown in the prompt. |
+| **Award per field completed** | Points awarded for each field the user fills in. |
+| **Test group (name or id number)** | Restricts the prompting to one hub group while you try it out. |
+| **Field groups** | Each group says *beginning N hours / days / weeks after registration, prompt for* a list of profile fields. |
+| **Recurrence** | How long to wait before asking again after each press of *ask me later*. |
 
-> **Note:** In order for this feature to be useful, all users need to gain a TLS Certificate and have it implemented in their browser prior to utilizing this authentication process.
+## PREMIS Data Import
+
+The third link takes a PREMIS registration dump file and imports it. Choose the
+file and press **Import**; the next screen reports how many records were
+processed and lists any errors.
+
+> **Note:** This screen's toolbar carries **New**, **Edit** and **Delete**
+> buttons that have no matching task. Pressing one just reloads the screen.
+
+## Customising the confirmation email
+
+The registration emails are ordinary component layouts, so they are overridden
+the same way as any other view: copy the file into your template's `html`
+directory and edit the copy. That keeps your wording out of the core tree,
+where an upgrade would overwrite it.
+
+The originals live in
+[`core/components/com_members/site/views/emails/tmpl/`](../../../core/components/com_members/site/views/emails/tmpl/).
+The ones that matter for registration are:
+
+| Layout | Sent when |
+|---|---|
+| `confirm.php`, `confirm_html.php` | A new account needs its email address confirmed. |
+| `create.php`, `create_html.php` | An account is created on the site. |
+| `admincreate_plain.php`, `admincreate_html.php` | An administrator creates an account. |
+| `approved_plain.php`, `approved_html.php` | An administrator approves an account. |
+| `update.php`, `updateproxy.php`, `adminupdate.php`, `adminupdateproxy.php` | An account's details change. |
+
+Each email has a plain-text and an HTML layout, and both are sent. Override
+them at
+`app/templates/<your template>/html/com_members/emails/<layout>.php`.
+
+> **Note:** The confirmation email carries the account's username and the
+> confirmation link. It does **not** carry a password.
+
+## Logging in through another service
+
+A hub can accept logins from other identity providers as well as its own.
+Each provider is an authentication plugin.
+
+| Plugin | Authenticates against |
+|---|---|
+| **Authentication - HUBzero** | The hub's own accounts. This is the default and should stay enabled. |
+| **Authentication - Certificate** | A client-side TLS certificate. |
+| **Authentication - CILogon** | CILogon. |
+| **Authentication - Email Token** | A one-time token emailed to the user. |
+| **Authentication - Facebook** | Facebook. |
+| **Authentication - Globus** | Globus. |
+| **Authentication - Google** | Google. |
+| **Authentication - LinkedIn** | LinkedIn. |
+| **Authentication - ORCID** | ORCID. |
+| **Authentication - Purdue University CAS** | Purdue's CAS. |
+| **Authentication - SciStarter** | SciStarter. |
+| **Authentication - Shibboleth** | A Shibboleth federation. |
+| **Authentication - Twitter** | Twitter. |
+
+Most of them need credentials from the provider, which you get by registering
+your hub as an application on their side and choosing the web application type.
+Then:
+
+1. Open **Extensions > Plug-in Manager**.
+2. Search for the plugin.
+3. Click its name and enter the client key and secret it asks for.
+4. Set **Status** to **Enabled** and **Save & Close**.
+
+A user arriving through one of these providers gets a partially built account —
+it shows in the Members list as **Incomplete**, with an email address ending in
+`@invalid` — and the **System - Incomplete** plugin holds them on the
+registration form until they finish it.
+
+## TLS certificate authentication
+
+Certificate login uses two plugins.
+
+**Authentication - Certificate** checks the certificate and ties it to an
+account. If the certificate is already linked, the user is logged straight in.
+If not, they may create an account, which links the certificate to it, or link
+it to an account they already have by supplying that account's password.
+
+**System - Certificate** makes a certificate compulsory. With it enabled a
+certificate must be present to browse the site at all, and certificate login
+becomes the only option. Enable it the same way as the authentication plugin.
+
+Two things have to be right outside the CMS. Apache needs
+`SSLVerifyClient optional`, so that a certificate is accepted but its absence
+is handled by the routing plugin rather than by Apache, and `SSLOptions
++StdEnvVars`, so the certificate's fields reach PHP. The site must also be
+forced to SSL in the global configuration.
+
+Pairing certificate login with **New User Account Activation** set to **Admin**
+gives you a user-initiated but administrator-gated flow: the user links their
+own certificate to a new account, and an administrator approves it before it
+works.
+
+> **Note:** Every user needs a TLS certificate installed in their browser
+> before this is usable.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plugins Manager · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview The Plugin Manager allows you to enable and disablePlugins and to edit a Plugin&#x27;s Details and Parameters. The Plugin Manager can be accessed by…">
+  <title>Plug-in Manager · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="A plugin is a piece of code that answers an event. The Plug-in Manager cannot install or delete plugins; it enables and disables them, sets their access level,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/extensions/plugins/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,21 +54,21 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -118,18 +118,16 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Plugins Manager</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#column-headers">Column Headers</a></li>
-<li class="toc__item toc__item--l2"><a href="#toolbars">Toolbars</a></li>
-<li class="toc__item toc__item--l2"><a href="#list-filters">List Filters</a></li>
-<li class="toc__item toc__item--l2"><a href="#edit-plugins">Edit Plugins</a></li>
-<li class="toc__item toc__item--l2"><a href="#reordering">Reordering</a></li>
-<li class="toc__item toc__item--l2"><a href="#enabling-a-plug-in">Enabling a Plug-in</a></li>
-<li class="toc__item toc__item--l2"><a href="#editing-a-plug-in">Editing a Plug-in</a></li>
-<li class="toc__item toc__item--l2"><a href="#disabling-a-plug-in">Disabling a Plug-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Plug-in Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#how-plugins-work">How plugins work</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-plugin-groups">The plugin groups</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
+<li class="toc__item toc__item--l2"><a href="#toolbar">Toolbar</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-plugin">Editing a plugin</a></li>
+<li class="toc__item toc__item--l2"><a href="#enabling-or-disabling-a-plugin">Enabling or disabling a plugin</a></li>
+<li class="toc__item toc__item--l2"><a href="#changing-the-order-plugins-run-in">Changing the order plugins run in</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
@@ -148,148 +146,375 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Plugins Manager</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Plug-in Manager</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Plugins Manager</h1>
+          <h1>Plug-in Manager</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/extensions/plugins">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2009.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>The Plugin Manager allows you to enable and disablePlugins and to edit a Plugin's Details and Parameters.</p>
-<p>The Plugin Manager can be accessed by selecting <strong>Extensions</strong> &gt; <strong>Plugin Manager</strong> from the drop-down menu on the Back-end of your HUBzero installation.</p>
+<p>A plugin is a piece of code that answers an event. The Plug-in Manager cannot
+install or delete plugins; it enables and disables them, sets their access
+level, changes the order they run in, and edits their parameters.</p>
+<p>Select <strong>Extensions</strong> → <strong>Plug-in Manager</strong>, or go to
+<code>/administrator/index.php?option=com_plugins</code>.</p>
+<h2 id="how-plugins-work">How plugins work</h2>
+<p>Plugins live in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins"><code>core/plugins/</code></a>, and a hub's own in
+<code>app/plugins/</code>, which takes precedence. Each plugin is a directory two levels
+down — <code>plugins/&lt;folder&gt;/&lt;name&gt;/</code> — containing <code>&lt;name&gt;.php</code> and
+<code>&lt;name&gt;.xml</code>. The folder is the plugin's group, and it decides which events
+the plugin can answer.</p>
+<p>When the platform reaches a point where extensions may contribute, it imports
+every enabled plugin in the relevant folder, in ordering order, and calls the
+matching method on each. A plugin in the <code>authentication</code> folder is asked to
+authenticate; one in <code>content</code> is given content to filter; one in <code>cron</code> is
+asked for scheduled jobs.</p>
+<p>Several folders work differently: instead of filtering something, the plugin
+<em>is</em> a whole section of a page. Every tab on a group, a member profile, a
+project, a resource or a publication is a plugin in the <code>groups</code>, <code>members</code>,
+<code>projects</code>, <code>resources</code> or <code>publications</code> folder. Disabling one removes that
+tab.</p>
+<h2 id="the-plugin-groups">The plugin groups</h2>
+<p>Thirty-seven folders ship with the platform, holding 332 plugins.</p>
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Plugins</th>
+<th>What they do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>answers</code></td>
+<td>2</td>
+<td>Extras on question pages</td>
+</tr>
+<tr>
+<td><code>antispam</code></td>
+<td>6</td>
+<td>Spam detectors used when content is posted</td>
+</tr>
+<tr>
+<td><code>authentication</code></td>
+<td>13</td>
+<td>Log-in methods, local and third-party</td>
+</tr>
+<tr>
+<td><code>authfactors</code></td>
+<td>2</td>
+<td>Second factors for two-factor authentication</td>
+</tr>
+<tr>
+<td><code>blog</code></td>
+<td>2</td>
+<td>Blog entry extras</td>
+</tr>
+<tr>
+<td><code>captcha</code></td>
+<td>3</td>
+<td>Challenge widgets for forms</td>
+</tr>
+<tr>
+<td><code>cart</code></td>
+<td>3</td>
+<td>Store checkout steps</td>
+</tr>
+<tr>
+<td><code>citation</code></td>
+<td>4</td>
+<td>Citation formats and importers</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>13</td>
+<td>Filters applied to content as it is rendered</td>
+</tr>
+<tr>
+<td><code>courses</code></td>
+<td>14</td>
+<td>Course tabs and asset handlers</td>
+</tr>
+<tr>
+<td><code>cron</code></td>
+<td>14</td>
+<td>Scheduled jobs offered to the cron manager</td>
+</tr>
+<tr>
+<td><code>editors</code></td>
+<td>8</td>
+<td>WYSIWYG and plain editors</td>
+</tr>
+<tr>
+<td><code>editors-xtd</code></td>
+<td>4</td>
+<td>Buttons added below an editor</td>
+</tr>
+<tr>
+<td><code>extension</code></td>
+<td>1</td>
+<td>Installer support for legacy extension packages</td>
+</tr>
+<tr>
+<td><code>filesystem</code></td>
+<td>5</td>
+<td>Storage back ends for project files</td>
+</tr>
+<tr>
+<td><code>geocode</code></td>
+<td>15</td>
+<td>Address and coordinate lookup services</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>18</td>
+<td>Tabs and features on group pages</td>
+</tr>
+<tr>
+<td><code>handlers</code></td>
+<td>8</td>
+<td>Viewers for published content: video, audio, PDF, LaTeX, notebooks</td>
+</tr>
+<tr>
+<td><code>hubzero</code></td>
+<td>5</td>
+<td>Shared services: comments, autocompleter, system templates and tickets</td>
+</tr>
+<tr>
+<td><code>members</code></td>
+<td>20</td>
+<td>Tabs and features on member profiles</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>1</td>
+<td>Metadata attached to content records</td>
+</tr>
+<tr>
+<td><code>newsletter</code></td>
+<td>3</td>
+<td>Newsletter composition and sending</td>
+</tr>
+<tr>
+<td><code>oaipmh</code></td>
+<td>2</td>
+<td>Records exposed over OAI-PMH</td>
+</tr>
+<tr>
+<td><code>projects</code></td>
+<td>11</td>
+<td>Tabs and features on projects</td>
+</tr>
+<tr>
+<td><code>publications</code></td>
+<td>17</td>
+<td>Publication tabs and curation steps</td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td>22</td>
+<td>Resource tabs and features</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>26</td>
+<td>Indexers, one per searchable content type</td>
+</tr>
+<tr>
+<td><code>support</code></td>
+<td>13</td>
+<td>Ticket handling and support extras</td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>29</td>
+<td>Code that runs on every request</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>14</td>
+<td>Behaviour attached to tags</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>1</td>
+<td>Tool session viewers</td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td>2</td>
+<td>Housekeeping run after an update</td>
+</tr>
+<tr>
+<td><code>usage</code></td>
+<td>7</td>
+<td>Usage statistics collectors</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td>11</td>
+<td>Reactions to account creation, change and deletion</td>
+</tr>
+<tr>
+<td><code>whatsnew</code></td>
+<td>6</td>
+<td>Content types listed on the What's New page</td>
+</tr>
+<tr>
+<td><code>wiki</code></td>
+<td>4</td>
+<td>Wiki macros and parsers</td>
+</tr>
+<tr>
+<td><code>xmessage</code></td>
+<td>3</td>
+<td>Delivery channels for internal messages</td>
+</tr>
+</tbody>
+</table>
+<p>For the parameters each plugin exposes, see
+<a href="../../../reference/configuration/plugins/index.html">the generated plugin reference</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A plugin also has to be enabled as an <em>extension</em> before its row
+matters. The Extension Manager and the Plug-in Manager both write the same
+<code>enabled</code> flag on the same <code>#__extensions</code> row, so either screen will do.</p>
+</aside>
+<h2 id="the-list">The list</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkbox</td>
+<td>Selects rows for the toolbar. A plugin whose files are missing has no checkbox.</td>
+</tr>
+<tr>
+<td><strong>Plug-in Name</strong></td>
+<td>The plugin's translated name, usually <em>Group - Name</em>, for example <em>Authentication - Facebook</em>. Click it to edit.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Enabled or Disabled. Click the icon to toggle.</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>The order plugins in the same folder run in.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>The plugin's folder — its group.</td>
+</tr>
+<tr>
+<td><strong>Element</strong></td>
+<td>The plugin's directory and file name.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The access level required.</td>
+</tr>
+<tr>
+<td><strong>ID</strong></td>
+<td>The row's primary key.</td>
+</tr>
+</tbody>
+</table>
+<p>A plugin whose files are gone is shown with a marked row and forced to
+disabled.</p>
+<p>Three filters sit above the list, plus a search box that matches the name:</p>
 <ul>
-<li>
-<p><strong>Plug-in Name:</strong> The name of the plug-in. The name explains where the plug-in is located and what the plug-in is for.</p>
-<ul>
-<li>For example: <strong>Dashboard-Collections</strong> means that the plug-in is on the user’s Dashboard with a module for Collections.</li>
+<li><strong>- Select Status -</strong>: Enabled, Disabled.</li>
+<li><strong>- Select Type -</strong>: any folder that has plugins installed.</li>
+<li><strong>- Select Access -</strong>: any defined access level.</li>
 </ul>
-</li>
-<li>
-<p><strong>Status:</strong> If the plug-in is viewable on the Hub or not.</p>
-<ul>
-<li>Enabled: The plug-in is available on the frontend and on the backend of the Hub.</li>
-<li>Disabled: The plug-in has been removed from the frontend of the Hub but is still accessible on the backend.</li>
-</ul>
-</li>
-<li>
-<p><strong>Ordering:</strong> Where the plug-in is on the master list of plug-ins. This list can be seen when plug-ins are being enabled the ordering determines how the plug-in is displayed in the drop-down.</p>
-</li>
-<li>
-<p><strong>Type:</strong> The location of the plug-in.</p>
-<ul>
-<li>This is the first part of the plug-in’s title.</li>
-</ul>
-</li>
-<li>
-<p><strong>Element:</strong> What the plug-in is implementing.</p>
-<ul>
-<li>This is the second part of the plug-in’s title.</li>
-</ul>
-</li>
-<li>
-<p><strong>Access:</strong> Who is able to view or use the plug-in.</p>
-<ul>
-<li>Public: All visitors or users on the Hub are able to view and use the plug-in.</li>
-<li>Registered: Only registered users are able to view and use the plug-in.</li>
-<li>Special: Only users given special permissions can access and use the plug-in.</li>
-</ul>
-</li>
-<li>
-<p><strong>ID:</strong> The identification number given to the plugin after it was created on the Hub. This allows for easier search results.</p>
-</li>
-</ul>
-<h2 id="column-headers">Column Headers</h2>
-<ul>
-<li><strong>#:</strong> An indexing number automatically assigned by Joomla! for ease of reference.</li>
-<li><strong>Checkbox:</strong> Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
-<li><strong>Plugin Name:</strong> The Name of the Plugin. Click on the Name to open the Plugin for editing.</li>
-<li><strong>Enabled:</strong> A green tick or a red X showing whether the use of the component is enabled/disabled. Click the icon to toggle the item between enabled and disabled.</li>
-<li><strong>Order:</strong> The order to display items. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking <strong>Save Order</strong>. Note that the display order on a page is set in the Parameters - Advanced section for each Menu Item. If that order is set to use something other than <strong>Order</strong>(for example, <strong>Title - Alphabetical</strong>), then the order value in this screen will be ignored. If the Menu Item Order parameter is set to use <strong>Order</strong>, then the items will display on the page based on the order in this screen.</li>
-<li><strong>Access Level:</strong> Who has access to this item. You can change an item's Access Level by clicking on the icon in the column. Current options are:
-<ul>
-<li>Public: Everyone has access</li>
-<li>Registered: Only registered users have access</li>
-<li>Special: Only users with author status or higher have access</li>
-</ul>
-</li>
-<li><strong>Type:</strong> The Type of the Plugin. Possible types are: authentication, content, editors, editors-xtd, search, system, user, and xmlrpc. These are also the names of the subfolders where the Plugin files are located. For example, Plugins with a Type of <strong>authentication</strong> are located in the folder <strong>plugins/authentication</strong>.</li>
-<li><strong>File:</strong> The name of the Plugin files. Each Plugin has two files, a <strong>.php</strong> file and a <strong>.xml</strong> file. So, for example, the Authentication - Facebook plugin has two files: <strong>facebook.php</strong> and <strong>facebook.xml</strong>.</li>
-<li><strong>ID:</strong> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
-<li><strong>Display #:</strong> The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (<em>where applicable</em>).</li>
-</ul>
-<h2 id="toolbars">Toolbars</h2>
-<ul>
-<li><strong>Enable:</strong> To enable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
-<li><strong>Disable:</strong> To disable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
-<li><strong>Edit:</strong> Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name.</li>
-<li><strong>Help:</strong> Opens this Help Screen.</li>
-<li><strong>Check-in</strong></li>
-<li><strong>Options</strong></li>
-</ul>
-<h2 id="list-filters">List Filters</h2>
-<p>You can filter the list of items by typing in part of the Title or the ID number. Or you can select a combination of Category and Published State.</p>
-<ul>
-<li><strong>Filter:</strong> If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either part of the title or an ID number and press <strong>Go</strong> to display the matching items. You can enter in whole words or part of a word. For example, <strong>ooml</strong> will match all titles with the word <strong>Joomla!</strong> in them.</li>
-<li><strong>Filter by Type and State:</strong> The selections may be combined. Only items matching both selections will display in the list.</li>
-<li><strong>Select Type:</strong> Select a Type from the drop-down list box to select only Plugins of this Type.</li>
-<li><strong>Select State:</strong> Select a state (Enabled or Disabled) from the drop-down list box to select only Plugins with this state.</li>
-<li><strong>Select Access</strong></li>
-</ul>
-<h2 id="edit-plugins">Edit Plugins</h2>
-<p>You can edit details and parameters for Plugins. Some Plugins have several parameters, while others don't have any.</p>
-<ul>
-<li><strong>Details:</strong> The Details section is the same for all Plugins, as follows:</li>
-<li><strong>Name:</strong> The Name of the Plugin.</li>
-<li><strong>Enabled:</strong> Whether or not this Plugin is enabled.</li>
-<li><strong>Type:</strong> The Type of the Plugin. This value cannot be changed.</li>
-<li><strong>Plugin File:</strong> The name of the Plugin file. Each Plugin has two files with this name. One has the file extension <strong>.php</strong> and the other has the file extension <strong>.xml</strong>.</li>
-<li><strong>Access Level:</strong> Who has access to this item. Enter the desired level using the drop-down list box. Current options are:
-<ul>
-<li>Public: Everyone has access</li>
-<li>Registered: Only registered users have access</li>
-<li>Special: Only users with author status or higher have access</li>
-</ul>
-</li>
-<li><strong>Order:</strong> The order this item will display in the Manager screen. Use the drop-down list box to change the Order. You can select <strong>First</strong> or <strong>Last</strong> to make this the first or last item. Or you can select an item from the list. In this case, the current item will be listed just <em>after</em> the item you select. Note that the Order can also be changed in the Manager screen.</li>
-<li><strong>Description:</strong> The description of what this Plugin does. This cannot be changed.</li>
-<li><strong>Parameters:</strong> This will vary between plugins.</li>
-</ul>
-<h2 id="reordering">Reordering</h2>
+<h2 id="toolbar">Toolbar</h2>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the selected plugin.</td>
+</tr>
+<tr>
+<td><strong>Enable</strong> / <strong>Disable</strong></td>
+<td>Changes the state of the selected plugins.</td>
+</tr>
+<tr>
+<td><strong>Check In</strong></td>
+<td>Releases plugins left checked out by an interrupted edit.</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>Permissions for <code>com_plugins</code>. There are no other settings.</td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td>Opens the built-in help screen.</td>
+</tr>
+</tbody>
+</table>
+<p>There is no <strong>New</strong> and no <strong>Delete</strong>. Plugins arrive and leave with the code.</p>
+<h2 id="editing-a-plugin">Editing a plugin</h2>
+<p>The edit screen has three editable fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Status</strong></td>
+<td>Enabled or Disabled.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The access level required for the plugin to run for a given visitor.</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Where the plugin sits among the others in its folder.</td>
+</tr>
+</tbody>
+</table>
+<p>Beside them, read-only, are the plugin's name, ID, <strong>Type</strong> (its folder) and
+<strong>Element</strong>, and its description from the XML manifest. Below, the plugin's
+own parameters appear in collapsible panels. Many plugins have none.</p>
+<p>The toolbar is <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Close</strong> and <strong>Help</strong>.</p>
+<h2 id="enabling-or-disabling-a-plugin">Enabling or disabling a plugin</h2>
 <ol>
-<li>Log in to the backend of the Hub and access the <strong>Extensions</strong> tab</li>
-<li>Click on the <strong>Plugin-in Manager</strong> navigate to the <strong>Plug-in Manager: Plug-ins</strong> page</li>
-<li>Locate the column labeled <strong>Ordering</strong> and then click on the title of the column</li>
-<li>Arrows will appear on the left side of the numbering</li>
-<li>To begin reordering click the arrows up or down to reorder the plug-ins</li>
-<li>Save the changes by clicking the <strong>Save</strong> icon</li>
+<li>Go to <strong>Extensions</strong> → <strong>Plug-in Manager</strong>.</li>
+<li>Narrow the list with the <strong>- Select Type -</strong> filter or the search box.</li>
+<li>Tick the plugin, then select <strong>Enable</strong> or <strong>Disable</strong>. Clicking the icon
+in the <strong>Status</strong> column does the same thing for a single plugin.</li>
 </ol>
-<h2 id="enabling-a-plug-in">Enabling a Plug-in</h2>
+<p>Disabling a plugin stops it running everywhere, front end and back end alike.
+If the plugin supplies a tab, that tab disappears.</p>
+<h2 id="changing-the-order-plugins-run-in">Changing the order plugins run in</h2>
+<p>Order matters inside a folder. Content plugins transform the same text one
+after another; authentication plugins are offered a log-in attempt in turn.</p>
 <ol>
-<li>Log in to the backend of the Hub and access the <strong>Extensions</strong> tab and then click on <strong>Plug-in Manager</strong></li>
-<li>Locate the plug-in that needs enabling and select the box beside the plug-in’s name</li>
-<li>Click <strong>Enable</strong> to enable the plug-in</li>
-<li>The plug-in will now be useable on the frontend of the Hub</li>
-</ol>
-<h2 id="editing-a-plug-in">Editing a Plug-in</h2>
-<ol>
-<li>Log in to the backend of the Hub and access the <strong>Extensions</strong> tab and then click on <strong>Plug-in Manager</strong></li>
-<li>Locate the plug-in that needs editing and select the box beside the plug-in’s name</li>
-<li>Click <strong>Edit</strong> to begin editing the plug-in</li>
-<li>Click <strong>Save &amp; Close</strong> to save the newly edited content</li>
-</ol>
-<h2 id="disabling-a-plug-in">Disabling a Plug-in</h2>
-<ol>
-<li>Log in to the backend of the Hub and access the <strong>Extensions</strong> tab and then click on <strong>Plug-in Manager</strong></li>
-<li>Locate the plug-in that needs disabling and select the box beside the plug-in’s name</li>
-<li>Click <strong>Disable</strong> to disable the plug-in</li>
-<li>The plug-in will now be removed from the frontend of the Hub, but still accessible from the backend</li>
+<li>Go to <strong>Extensions</strong> → <strong>Plug-in Manager</strong>.</li>
+<li>Filter by <strong>- Select Type -</strong> so you are looking at one group.</li>
+<li>Select the <strong>Ordering</strong> column heading to sort by it. The up and down
+arrows and the order boxes only work while the list is sorted this way.</li>
+<li>Move rows with the arrows, or type numbers into the boxes and select the
+save icon in the column heading.</li>
 </ol>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templates/index.html" rel="prev"><span>Previous</span>Templates Manager</a><a class="pager__next" href="../extension-manager/index.html" rel="next"><span>Next</span>Extension Manager</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templates/index.html" rel="prev"><span>Previous</span>Template Manager</a><a class="pager__next" href="../extension-manager/index.html" rel="next"><span>Next</span>Extension Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/03-plugins.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
