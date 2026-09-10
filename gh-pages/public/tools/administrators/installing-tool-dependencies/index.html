@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Installing Tool Dependencies · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Occasionally additional software needs to be installed in a tool environment to support tool execution. Please follow these instructions in the given order.…">
+  <title>Installing tool dependencies · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Tools often need software that is not in the base image. This page describes the two places it can go: the container image the tool session runs in, and the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/administrators/installing-tool-dependencies/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +41,14 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installing Tool Dependencies</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#install-a-operating-system-package-in-the-tool-execution-container">Install a operating system package in the tool execution container</a></li>
-<li class="toc__item toc__item--l2"><a href="#manually-install-software-in-the-use-infrastructure">Manually install software in the &#x27;use&#x27; infrastructure</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installing tool dependencies</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#installing-an-operating-system-package-in-the-container">Installing an operating system package in the container</a></li>
+<li class="toc__item toc__item--l2"><a href="#installing-software-in-the-use-infrastructure">Installing software in the use infrastructure</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-use-command">The use command</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../developers/index.html">Tool Developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
@@ -102,110 +103,181 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Installing Tool Dependencies</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Installing tool dependencies</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Installing Tool Dependencies</h1>
+          <h1>Installing tool dependencies</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tool-administrators/installing-tool-dependencies">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2018.</aside>
+        
         <div class="prose">
-<p>Occasionally additional software needs to be installed in a tool environment to support tool execution. Please follow these instructions in the given order. Keep in mind that an environment maybe shared by multiple tools.</p>
-<h2 id="install-a-operating-system-package-in-the-tool-execution-container">Install a operating system package in the tool execution container</h2>
-<p>Tool execution containers are based on Docker images. At minimum Debian 7 (wheezy) and Debian 10 (buster) Docker images are provided. Operating system choice is not limited to Debian. We have used CentOS and Ubuntu images as the basis for images to meet tool requirements. Regardless of operating system choice there is a minimum set of scripts and configuration files that must be included to enable the middleware to manage container related processes.</p>
-<p>The pairing of Docker image and tool is made according to the following convention:</p>
+<p>Tools often need software that is not in the base image. This page describes
+the two places it can go: the container image the tool session runs in, and
+the shared <code>/apps</code> filesystem managed with the <code>use</code> command.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Everything on this page happens on the tool execution
+platform — the container images, the execution hosts, the <code>apps</code> account,
+and the <code>/apps</code> filesystem. That platform is separate software and is <strong>not
+in this repository</strong>, so none of these procedures could be checked against
+code. They are kept as the written record of how hubs have done this. The
+CMS side of tool administration is the
+<a href="../whitelistdirectories/index.html">directory parameter whitelist</a> and the pipeline
+described in <a href="../../../managers/maintenance/tools/index.html">Tools</a>.</p>
+</aside>
+<p>An environment is usually shared by several tools. Anything installed here
+affects all of them, so work through the options in the order below and
+prefer the one with the smallest blast radius.</p>
+<h2 id="installing-an-operating-system-package-in-the-container">Installing an operating system package in the container</h2>
+<p>Tool execution containers are built from Docker images. A hub ships one or
+more base images; the operating system is not fixed, and Debian, CentOS, and
+Ubuntu images have all been used to meet tool requirements. Whichever is
+chosen, the image has to carry the minimum set of scripts and configuration
+files the middleware needs to manage container processes. Ask the hub's
+platform administrators which base images that hub currently provides.</p>
+<p>The image used for a tool is chosen by this order:</p>
 <ol>
-<li>Find an image tag matching tool name and revision.</li>
-<li>Find an image tag matching the tool name.</li>
-<li>A default image specified in the middleware.</li>
+<li>An image tag matching the tool name and revision.</li>
+<li>An image tag matching the tool name.</li>
+<li>The default image named in the middleware.</li>
 </ol>
-<p>Multiple Docker tags may be applied to the same image thus reducing the storage requirement for multiple images. Docker images may be modified or created using standard practices based on Dockerfiles. If all Docker images are not made available on all execution hosts, host requirements may be used to aid in execution host selection.</p>
-<h2 id="manually-install-software-in-the-use-infrastructure">Manually install software in the 'use' infrastructure</h2>
-<p>Typically we create and run Hapi (HUBzero Apps Program Installers) scripts to download, configure, compile, and install software in the tool execution environment. This is especially important when multiple versions of the same software must be available to server different tools. For example, Tool A may require R version 3.6.3 while Tool B may require R version 4.2.1. These requirements are the result of an ever evolving software landscape. &quot;Use&quot; is very helpful in this case, among others, providing a way to load specific software versions as requirements demand.</p>
-<p><strong>All operations for manually installing dependent software for tools must be done by the apps user from a workspace terminal.</strong></p>
-<p>As the apps user clone the Hapi repo into the apps home directory:</p>
-<pre><code>git clone https://github.com/hubzero/hapi.git
+<p>Several tags can point at one image, so covering many tools does not mean
+storing many images. Images are built and modified with ordinary Dockerfiles.
+If an image is not present on every execution host, the tool's <strong>Required
+hosts</strong> setting can be used to steer sessions to the hosts that have it.</p>
+<p>Building images needs a login on an execution host and membership of that
+host's <code>docker</code> group.</p>
+<h2 id="installing-software-in-the-use-infrastructure">Installing software in the <code>use</code> infrastructure</h2>
+<p>The alternative is to install into <code>/apps</code> and expose it through the <code>use</code>
+command. This is what to do when several versions of the same software have
+to coexist — one tool needing R 3.6.3 while another needs R 4.2.1, for
+example. <code>use</code> loads a named environment into the shell, so each tool's
+invoke script can select the versions it wants.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Install dependencies as the <code>apps</code> user, from a workspace
+terminal. Not as yourself, and not from outside a workspace.</p>
+</aside>
+<p>Hapi — Hubzero Apps Program Installers — is a collection of shell scripts
+that download, configure, compile, and install this software, and write the
+<code>use</code> <code>environ.d</code> file that goes with it. Clone it into the <code>apps</code> home
+directory:</p>
+<pre><code class="language-bash">git clone https://github.com/hubzero/hapi.git
 </code></pre>
-<p>In the hapi/scripts directory you will find a collection of shell scripts and csv files for software typically installed for use in tool environments. If a script exists for software that you need, just run it! Feel free to add new Hapi scripts of your creation to the GitHub repo by submitting pull requests. We occasionally add scripts as well.</p>
-<p>If, after doing a git update on your repository, a script doesn't exist for the software you need, copy an existing Hapi script and modify it. Hapi scripts make your life much easier by downloading, configuring, compiling, installing and even adding the required 'use' environ.d file to the appropriate location.</p>
-<p>All tool dependencies are installed by the apps user in an operating system specific directory such as /apps/share64/debian7 and should be owned by the apps user and group. All files must be readable by everyone and all directories must be searchable by everyone. No files or directories should be writable by everyone ( seriously don't do this )</p>
-<p>* For a full manual run &quot;man use&quot; from a tool session terminal.</p>
-<blockquote>
-<p>USE(1) User Commands USE(1)</p>
-<p>NAME
-use, unuse - adjust the shell environment</p>
-<p>SYNOPSIS
-use [options]... [ENVIRONMENT]
-unuse [options]... [ENVIRONMENT]</p>
-<p>DESCRIPTION
-The use command incorporates the specified ENVIRONMENT to the current
-shell. The unuse command removes it. It optionally records the selec-
-tion persistently so that subsequent shells will use the ENVIRONMENT.
-These commands are independent of the shell being run.</p>
-<p>An ENVIRONMENT is specified by a configuration file of the same name as
-found in one of the configuration directories. The ENVIRON_CONFIG_DIRS
-environment variable specifies a list of directories in which to search
-for configurations. Each configured ENVIRONMENT specifies a environ-
-ment variables to set or prepend, shell variables to set, and shell
-aliases to set.</p>
-<p>Some environments are configured to conflict with others. The use com-
-mand will ask if conflicting ENVIRONMENT should be replaced.</p>
-<p>With no arguments, the use and unuse commands will print a synopsys of
-options and lists all available environments.</p>
-<p>-h print available help for a named ENVIRONMENT.</p>
-<p>-e environment only. Do not ask about preserving the selection.</p>
-<p>-p modify the environment and preserve selection. Do not ask about
-preserving the selection.</p>
-<p>-k keep any conflicting environment. Do not ask about replacing
-it.</p>
-<p>-r replace any conflicting environment without asking.</p>
-<p>-x quietly ignore the command if the named ENVIRONMENT cannot be
-found.</p>
-<p>MAKING IT WORK
-The following command will describe an environment named xyz:</p>
-<p>use -h xyz</p>
-<p>The following command will incorporate the xyz environment preserving
-the environment for future shell invocations. It will also not over-
-ride any conflicting environments:</p>
-<p>use -p -k xyz</p>
-<p>The following command will remove the xyz environment but retain its
-use for future sessions:</p>
-<p>unuse -e xyz</p>
-<p>INTERNAL OPERATION
-use and unuse are actually implemented as shell functions (or as
-aliases in the case of csh derivatives). The functions pass their
-arguments to the /etc/environ script which determines the commands that
-the shell should execute to satisfy the new environment configuration.
-The script prints these commands, the shell function receives them and
-evals them.</p>
-<p>ENVIRONMENT CONFIGURATION FILES
-Configuration files are interpreted shell scripts. Several predefined
-functions are available to make the the process automatic.</p>
-<p>alias NAME &quot;Replacement&quot;
-Set a command alias in the shell.</p>
-<p>conflict VARNAME
-Define an environment variable to indicate that a type of an
-ENVIRONMENT is in use. All conflicting ENVIRONMENT configura-
-tions should specify the same conflict. An ENVIRONMENT configu-
-ration may specify multiple conflicts.</p>
-<p>desc &quot;A short description...&quot;
-A short description of the ENVIRONMENT.</p>
-<p>help &quot;A lengthy description...&quot;
-A long description of the ENVIRONMENT and how to use it. This
-description will be formatted when printed.</p>
-<p>prepend VARNAME ADDITION
-Prepend ADDITION to the environment variable VARNAME separated
-with a colon.</p>
-<p>setenv VARNAME REPLACEMENT
-Set or replace the environment variable VARNAME with REPLACE-
-MENT.</p>
-<p>shellset VARNAME REPLACEMENT
-Set or replace the shell variable VARNAME with REPLACEMENT.</p>
-</blockquote>
+<p><code>hapi/scripts</code> holds the scripts and their CSV files. If one exists for the
+software you need, run it. If not, copy the closest existing script and
+change it; new scripts are welcome as pull requests to the repository, and
+scripts are added there from time to time, so pull before deciding one is
+missing.</p>
+<p>Dependencies are installed under an operating-system-specific directory such
+as <code>/apps/share64/&lt;os&gt;</code>. The rules for what ends up there:</p>
+<ul>
+<li>Owned by the <code>apps</code> user and group.</li>
+<li>Readable by everyone; directories searchable by everyone.</li>
+<li><strong>Never writable by everyone.</strong></li>
+</ul>
+<h2 id="the-use-command">The <code>use</code> command</h2>
+<p>Run <code>man use</code> in a tool session terminal for the authoritative version. The
+manual page reads:</p>
+<pre><code class="language-text">USE(1)                        User Commands                       USE(1)
+
+NAME
+     use, unuse - adjust the shell environment
+
+SYNOPSIS
+     use [options]... [ENVIRONMENT]
+     unuse [options]... [ENVIRONMENT]
+
+DESCRIPTION
+     The use command incorporates the specified ENVIRONMENT to the current
+     shell. The unuse command removes it. It optionally records the selec-
+     tion persistently so that subsequent shells will use the ENVIRONMENT.
+     These commands are independent of the shell being run.
+
+     An ENVIRONMENT is specified by a configuration file of the same name as
+     found in one of the configuration directories. The ENVIRON_CONFIG_DIRS
+     environment variable specifies a list of directories in which to search
+     for configurations. Each configured ENVIRONMENT specifies a environ-
+     ment variables to set or prepend, shell variables to set, and shell
+     aliases to set.
+
+     Some environments are configured to conflict with others. The use com-
+     mand will ask if conflicting ENVIRONMENT should be replaced.
+
+     With no arguments, the use and unuse commands will print a synopsys of
+     options and lists all available environments.
+
+     -h   print available help for a named ENVIRONMENT.
+
+     -e   environment only. Do not ask about preserving the selection.
+
+     -p   modify the environment and preserve selection. Do not ask about
+          preserving the selection.
+
+     -k   keep any conflicting environment. Do not ask about replacing it.
+
+     -r   replace any conflicting environment without asking.
+
+     -x   quietly ignore the command if the named ENVIRONMENT cannot be
+          found.
+
+MAKING IT WORK
+     The following command will describe an environment named xyz:
+
+          use -h xyz
+
+     The following command will incorporate the xyz environment preserving
+     the environment for future shell invocations. It will also not over-
+     ride any conflicting environments:
+
+          use -p -k xyz
+
+     The following command will remove the xyz environment but retain its
+     use for future sessions:
+
+          unuse -e xyz
+
+INTERNAL OPERATION
+     use and unuse are actually implemented as shell functions (or as
+     aliases in the case of csh derivatives). The functions pass their
+     arguments to the /etc/environ script which determines the commands that
+     the shell should execute to satisfy the new environment configuration.
+     The script prints these commands, the shell function receives them and
+     evals them.
+
+ENVIRONMENT CONFIGURATION FILES
+     Configuration files are interpreted shell scripts. Several predefined
+     functions are available to make the process automatic.
+
+     alias NAME &quot;Replacement&quot;
+          Set a command alias in the shell.
+
+     conflict VARNAME
+          Define an environment variable to indicate that a type of an
+          ENVIRONMENT is in use. All conflicting ENVIRONMENT configura-
+          tions should specify the same conflict. An ENVIRONMENT configu-
+          ration may specify multiple conflicts.
+
+     desc &quot;A short description...&quot;
+          A short description of the ENVIRONMENT.
+
+     help &quot;A lengthy description...&quot;
+          A long description of the ENVIRONMENT and how to use it. This
+          description will be formatted when printed.
+
+     prepend VARNAME ADDITION
+          Prepend ADDITION to the environment variable VARNAME separated
+          with a colon.
+
+     setenv VARNAME REPLACEMENT
+          Set or replace the environment variable VARNAME with REPLACE-
+          MENT.
+
+     shellset VARNAME REPLACEMENT
+          Set or replace the shell variable VARNAME with REPLACEMENT.
+</code></pre>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tool Administrators</a><a class="pager__next" href="../jupyter-notebooks/index.html" rel="next"><span>Next</span>Jupyter Notebooks</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tool administrators</a><a class="pager__next" href="../jupyter-notebooks/index.html" rel="next"><span>Next</span>Jupyter notebooks</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/administrators/installing-tool-dependencies.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

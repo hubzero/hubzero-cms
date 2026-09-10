@@ -15,7 +15,7 @@ Delay
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
-| `delay_enabled` | Delay is enabled | list | `COM_REDIRECT_DELAY_ENABLED` | Delay is enabled. Options: `ENABLED`, `DISABLED`. |
-| `delay_seconds` | Groups Alias | text | `10` | Groups Alias |
-| `delay_whitelist` | COM_REDIRECT_DELAY_WHITELIST | text | — | COM_REDIRECT_DELAY_WHITELIST |
-| `delay_blacklist` | COM_REDIRECT_DELAY_BLACKLKIST | text | — | COM_REDIRECT_DELAY_BLACKLKIST |
+| `delay_enabled` | Delay is enabled | list | `DISABLED` | Delay is enabled. Options: `ENABLED`, `DISABLED`. |
+| `delay_seconds` | Delay in seconds | text | `10` | Delay in seconds |
+| `delay_whitelist` | Whitelisted hosts | text | — | Whitelisted hosts |
+| `delay_blacklist` | Blacklisted hosts | text | — | Blacklisted hosts |

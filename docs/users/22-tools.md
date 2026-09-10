@@ -86,11 +86,14 @@ practical:
   graphics are rendered in software, so anything depending on a GPU will be
   slow; and outbound network connections are blocked by default, so a tool
   that fetches data from elsewhere has to be approved and allowed through.
-- **A command-line program** needs an interface built for it. The
-  [Rappture toolkit](http://rappture.org) is the usual answer and binds to
-  C/C++, Fortran, Java, MATLAB, R, Python, Perl, Ruby, and Tcl/Tk. Work that
-  needs a cluster is dispatched with the
-  [submit](../tools/developers/grid/submitcmd.md) command.
+- **A command-line program** needs an interface built for it. The Rappture
+  toolkit was the usual answer for years and binds to C/C++, Fortran, Java,
+  MATLAB, R, Python, Perl, Ruby, and Tcl/Tk, but it is deprecated: its own
+  site now redirects to a page that says so, and that page is not public.
+  Ask the hub what it recommends before starting a new interface. A Jupyter
+  notebook is the current path on most hubs. Work that needs a cluster is
+  dispatched with the [submit](../tools/developers/grid/submitcmd.md)
+  command.
 - **Windows and macOS programs** cannot be hosted. Some Windows programs run
   under [Wine](http://www.winehq.org/), which is worth trying, but everything
   deployed here runs under Linux.

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What&#x27;s New · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="What&#x27;s New answers one question — what has been added to this hub lately? — by asking each of its plugins for the items in their component created inside a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/whatsnew/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">What&#x27;s New</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-aggregates">What it aggregates</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-page">The page</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-period">The period</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-manager-configures">What a manager configures</a></li>
+<li class="toc__item toc__item--l2"><a href="#feeds">Feeds</a></li>
+<li class="toc__item toc__item--l2"><a href="#api">API</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">What&#x27;s New</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>What&#x27;s New</h1>
+        </header>
+        
+        <div class="prose">
+<p>What's New answers one question — <em>what has been added to this hub lately?</em> —
+by asking each of its plugins for the items in their component created inside
+a time period, then listing them by category at <code>/whatsnew</code>. It also publishes
+each of those categories as an RSS feed, which is where the <strong>Feed</strong> buttons a
+visitor sees actually lead. The visitor's side is described in
+<a href="../../../users/search/index.html#what-is-this-feed-button">Search</a>.</p>
+<p>There is no administrator screen. The component ships no admin controllers and
+no admin views, and its install migration deliberately removes it from the
+<strong>Components</strong> menu. Everything a manager decides about it is decided
+somewhere else — in the Plugin Manager, in a menu item, or in a module — and
+those three places are what this chapter covers.</p>
+<h2 id="what-it-aggregates">What it aggregates</h2>
+<p>Six plugins, in the <code>whatsnew</code> folder of <strong>Extensions &gt; Plugins</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Category on the page</th>
+<th>What it lists</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Whatsnew - Content</td>
+<td>Articles</td>
+<td>Published articles from the Content component.</td>
+</tr>
+<tr>
+<td>Whatsnew - Events</td>
+<td>Events</td>
+<td>Events from the hub calendar.</td>
+</tr>
+<tr>
+<td>Whatsnew - Knowledge Base</td>
+<td>Knowledge Base</td>
+<td>Published knowledge base articles.</td>
+</tr>
+<tr>
+<td>Whatsnew - Publications</td>
+<td>Publications</td>
+<td>Published publication versions.</td>
+</tr>
+<tr>
+<td>Whatsnew - Resources</td>
+<td>Resources</td>
+<td>Published resources, split into one sub-category per major resource type — tools, datasets, presentations and so on, exactly as the resource type list defines them.</td>
+</tr>
+<tr>
+<td>Whatsnew - Wiki</td>
+<td>Topic pages</td>
+<td>Wiki pages.</td>
+</tr>
+</tbody>
+</table>
+<p>None of them has any parameters. The only decision is whether each is enabled;
+disable one and its category disappears from the page, its counts from the
+sidebar, and its feed with it. Enabling all six and enabling none are the two
+ends of the range, and there is nothing in between to tune.</p>
+<p>Nothing else is aggregated. Blogs, forum posts, questions and answers, groups,
+projects, collections, citations and wishlist items have no What's New plugin
+and never appear, however new they are.</p>
+<p>Each plugin applies its own component's access rules, so two visitors can see
+different counts on the same page.</p>
+<h2 id="the-page">The page</h2>
+<p><code>/whatsnew</code> shows a <strong>Category</strong> list down the left with a count beside each
+one, and the matching items on the right. Selecting a category restricts the
+page to it; the <strong>Resources</strong> category expands into its sub-categories. A
+<strong>Time period</strong> select and a <strong>Go</strong> button sit above.</p>
+<p>With no category chosen, the page shows the top five items in each category
+and a <strong>See more results ›</strong> link. Choose a category and it pages properly,
+using the hub's list length.</p>
+<p>The URL carries the period as its first segment — <code>/whatsnew/month</code> — and a
+category is expressed as a prefix on it: <code>/whatsnew/resources:month</code>,
+<code>/whatsnew/tools:month</code>. That prefixed form is the string a menu item and the
+module both take.</p>
+<h2 id="the-period">The period</h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>week</code></td>
+<td>The past week, ending now.</td>
+</tr>
+<tr>
+<td><code>month</code></td>
+<td>The past month, ending now. Used when nothing else is given.</td>
+</tr>
+<tr>
+<td><code>quarter</code></td>
+<td>The past three months.</td>
+</tr>
+<tr>
+<td><code>year</code></td>
+<td>The past year.</td>
+</tr>
+<tr>
+<td><code>2024</code></td>
+<td>Fiscal year 2024: 1 September 2023 to 31 August 2024.</td>
+</tr>
+<tr>
+<td><code>c_2024</code></td>
+<td>Calendar year 2024.</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Time period</strong> select offers the four rolling windows, then a fiscal year
+and a calendar year entry for each year back to 2002. A fiscal year appears in
+the list only once 1 October of that year has passed, so the current fiscal
+year is offered from October onwards.</p>
+<p>The fiscal year runs September to August, which is fixed in the code and
+cannot be changed. So is the 2002 floor on the year lists.</p>
+<p>The period a visitor arrives on comes, in order, from the URL, then from the
+active menu item's setting, then from the built-in default of <code>month</code>.</p>
+<h2 id="what-a-manager-configures">What a manager configures</h2>
+<p>Three things, none of them in this component's own screens.</p>
+<p><strong>Which plugins run.</strong> <strong>Extensions &gt; Plugins</strong>, filtered to the <code>whatsnew</code>
+folder. See <a href="../../extensions/plugins/index.html">Plugins</a>.</p>
+<p><strong>A menu item.</strong> Create one of type <strong>What's New &gt; Display results</strong>; see
+<a href="../../menus/index.html">Menus</a>. Its <strong>Cat/Period</strong> field takes exactly the string
+described above — <code>month</code>, <code>year</code>, <code>c_2023</code>, or a category prefix such as
+<code>resources:quarter</code> — and becomes the page's starting period. Leave it blank
+for the past month across all categories.</p>
+<p><strong>The What's New module.</strong> <code>mod_whatsnew</code> puts a short list of recent items in
+a template position. Its parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSS ID</td>
+<td>An id for the module's wrapper, for styling.</td>
+</tr>
+<tr>
+<td>Number of items</td>
+<td>How many items to list. Five by default.</td>
+</tr>
+<tr>
+<td>Feed link</td>
+<td>Show or hide the RSS link in the module.</td>
+</tr>
+<tr>
+<td>Category and period</td>
+<td>The same prefixed string as the menu item. <code>resources:month</code> by default.</td>
+</tr>
+<tr>
+<td>Tags</td>
+<td>Show or hide each item's tags.</td>
+</tr>
+<tr>
+<td>Cache, Cache time</td>
+<td>Off by default; cache time is in minutes.</td>
+</tr>
+</tbody>
+</table>
+<p>Place it under <strong>Extensions &gt; Modules</strong>; see
+<a href="../../extensions/modules/index.html">Modules</a>.</p>
+<h2 id="feeds">Feeds</h2>
+<p>Every category heading on the page carries a <strong>feed</strong> link, and that link is
+the component's RSS output for that category over the current period:
+<code>/whatsnew/resources:month/feed.rss</code>. The feed carries each item's title,
+link, date, category and author, with the description truncated to 300
+characters, and it is limited the same way the page is — five items per
+category when no category is named, the hub's list length when one is.</p>
+<p>These are the feeds a visitor is offered from the search results page. They
+are ordinary RSS and need no configuration; if a category's plugin is
+disabled, its feed stops existing along with its heading.</p>
+<h2 id="api">API</h2>
+<p>The component also answers <code>/api/whatsnew</code>, taking the same period and
+category strings. See the <a href="../../../reference/api/whatsnew/index.html">API reference</a>.</p>
+<h2 id="options">Options</h2>
+<p>There are none. The component has no <code>config.xml</code>, no <code>access.xml</code> and no
+Options screen. Access to <code>/whatsnew</code> is whatever access its menu item has,
+and what appears on it is decided entirely by the plugins and by each item's
+own access rules.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../usage/index.html" rel="prev"><span>Previous</span>Usage</a><a class="pager__next" href="../wiki/index.html" rel="next"><span>Next</span>Wiki</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/38-whatsnew.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

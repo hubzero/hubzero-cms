@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Developer component is the hub&#x27;s OAuth 2.0 server and its register of API applications. Every request to the hub&#x27;s REST API carries a bearer token, and…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/developer/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Developer</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-administrator-screen">The administrator screen</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-application-form">The application form</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-hub-account-record">The Hub Account record</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-developer-portal">The developer portal</a></li>
+<li class="toc__item toc__item--l3"><a href="#developer-api">/developer/api</a></li>
+<li class="toc__item toc__item--l3"><a href="#developer-api-docs">/developer/api/docs</a></li>
+<li class="toc__item toc__item--l3"><a href="#developer-api-applications">/developer/api/applications</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-authorisation-screen">The authorisation screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-oauth-callback-path">The OAuth callback path</a></li>
+<li class="toc__item toc__item--l2"><a href="#command-line">Command line</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-does-not-work">What does not work</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Developer</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Developer</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Developer component is the hub's OAuth 2.0 server and its register of API
+applications. Every request to the hub's REST API carries a bearer token, and
+every token was issued to an application registered here. It also serves the
+hub's developer portal at <code>/developer</code>, where members register their own
+applications and read the API documentation, and it answers the OAuth
+callbacks that project file connectors come back to.</p>
+<p>A manager touches it rarely, and for three reasons: to look over the
+applications members have registered, to revoke an application's tokens or
+reset its secret when something goes wrong, and to keep the one automatic
+record it creates for itself from being deleted. It creates no content and
+has no front-page presence.</p>
+<h2 id="the-administrator-screen">The administrator screen</h2>
+<p><strong>Components → Developer</strong> has a single screen, <strong>Developer: Applications</strong>.
+It lists every registered application with <strong>ID</strong>, <strong>Name</strong>, <strong>State</strong>,
+<strong>Created</strong>, <strong>Created By</strong> and <strong>Hub Account</strong>. All but <strong>State</strong> and <strong>Hub
+Account</strong> sort; there are no filters and no search box.</p>
+<p>The toolbar offers:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong>, <strong>Edit</strong></td>
+<td>Open the application form</td>
+</tr>
+<tr>
+<td><strong>Publish</strong>, <strong>Unpublish</strong></td>
+<td>Set an application's state. An unpublished application still exists but cannot complete an OAuth handshake</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Remove the selected applications and everything issued to them</td>
+</tr>
+<tr>
+<td><strong>Reset Client Secret</strong></td>
+<td>Generate a new client ID and secret for the selected applications</td>
+</tr>
+<tr>
+<td><strong>Revoke Application Tokens</strong></td>
+<td>Delete every access token, refresh token and authorization code the selected applications hold</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>Component configuration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reset Client Secret</strong> and <strong>Revoke Application Tokens</strong> confirm first, and
+both say what they cost:</p>
+<blockquote>
+<p>Are you sure you want to reset the client secret for the selected
+applications? This action is irreversible and could cause the application to
+not function.</p>
+</blockquote>
+<blockquote>
+<p>Are you sure you want to revoke all tokens for the selected applications? It
+will force all users of the application to login again.</p>
+</blockquote>
+<p>That is exactly right. Resetting a secret breaks the application until whoever
+wrote it copies the new one out; revoking tokens signs every user of it out.
+Neither can be undone.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> asks nothing. It removes the selected applications
+and every token, refresh token, authorization code and team row attached to
+them, on one click. Unpublish first if you are not certain.</p>
+</aside>
+<p>Reaching the screen needs <code>core.manage</code> on <code>com_developer</code>. Editing, deleting
+and changing state check <code>core.edit</code>, <code>core.delete</code> and <code>core.edit.state</code>
+respectively.</p>
+<h3 id="the-application-form">The application form</h3>
+<p><strong>New</strong> and <strong>Edit</strong> open the same form.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Required. What the member sees on the authorisation screen</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Required. Shown beside the name in the member's application list</td>
+</tr>
+<tr>
+<td><strong>Redirect URI(s)</strong></td>
+<td>Required. Where the hub sends the browser after authorisation. One per line; each must be a valid URL</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td><strong>Unpublished</strong>, <strong>Published</strong> or <strong>Trashed</strong></td>
+</tr>
+<tr>
+<td><strong>Add Team Members</strong></td>
+<td>Names, usernames or email addresses of registered members, separated by commas</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Client Id</strong> and <strong>Client Secret</strong> are shown, not edited; they are generated
+on the first save and changed only by <strong>Reset Client Secret</strong>. The team is the
+set of members who may manage the application from the front end — the
+creator is always on it, whether you type them in or not.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The redirect URI is checked exactly, not by prefix. An
+application whose registered URI is <code>https://example.org/cb</code> cannot come
+back to <code>https://example.org/cb/</code> or <code>https://example.org/cb?x=1</code>.</p>
+</aside>
+<h3 id="the-hub-account-record">The Hub Account record</h3>
+<p>One application in the list carries a marker in the <strong>Hub Account</strong> column and
+is described as <em>Hub account for internal requests. DO NOT DELETE.</em> The hub
+creates it the first time a part of the CMS needs to call its own API, and
+uses its credentials for the <code>client_credentials</code>, <code>session</code> and <code>tool</code> grant
+types — including the token that in-page JavaScript trades its session cookie
+for. It is protected: <strong>Delete</strong> refuses it with <em>Unable to delete the hub
+account</em>.</p>
+<p>Nothing protects it from <strong>Unpublish</strong>, though: the OAuth server refuses any
+client that is not published, so unpublishing this one stops the hub's own
+in-page API calls until it is published again. <strong>Reset Client Secret</strong> and
+<strong>Revoke Application Tokens</strong> are harmless on it — nothing outside the hub
+holds its secret, and a session token is minted fresh on each page — but there
+is no reason to use either. Leave the record alone.</p>
+<h2 id="options">Options</h2>
+<p>Select <strong>Options</strong>. There is one setting, plus the usual <strong>Permissions</strong> tab.
+The full list is in the
+<a href="../../../reference/configuration/components/developer/index.html">generated reference</a>.</p>
+<p><strong>Documentation Cache Expiration</strong> is how long, in seconds, the generated API
+documentation is cached before it is rebuilt. The default is 14400 — four
+hours. The documentation is assembled by reading the docblocks of every
+component's API controllers, which is not cheap, so the cache matters on a
+busy hub. The cache file is <code>app/cache/api/documentation.json</code>; deleting it
+forces a rebuild on the next request, and so does turning the site's <strong>Debug</strong>
+setting on, which disables the cache entirely.</p>
+<h2 id="the-developer-portal">The developer portal</h2>
+<p><code>/developer</code> is a member-facing page, reachable whether or not a menu item
+points at it. It shows two panels:</p>
+<ul>
+<li><strong>API Development</strong>, linking to <code>/developer/api</code>.</li>
+<li><strong>Tool Development</strong>, linking to the <a href="../tools/index.html">Tools</a> component.</li>
+</ul>
+<p>A third panel, <strong>Web Development</strong>, is commented out of the template. Its
+controller and view still exist at <code>/developer/web</code>, and render the literal
+text <em>TODO: Web Development</em>.</p>
+<h3 id="developer-api"><code>/developer/api</code></h3>
+<p>The API home offers <strong>Read the API Docs</strong> and three panels: <strong>My
+Applications</strong>, <strong>Authorized Applications</strong> and <strong>New Application</strong>.</p>
+<h3 id="developer-api-docs"><code>/developer/api/docs</code></h3>
+<p>The documentation screen, and the most useful thing the component serves. It
+is generated from the source tree, not written by hand, so it always describes
+the endpoints the hub actually has. The left-hand contents list has three
+parts:</p>
+<ul>
+<li><strong>Using the API</strong> — schema, error messages, HTTP verbs, versioning, rate
+limiting, JSON-P and expanding objects.</li>
+<li><strong>Authentication (OAuth2)</strong> — one section per grant type the hub supports:
+web application (authorization code), user credentials, refresh token,
+session token and tool session token, then how to use the token.</li>
+<li><strong>API Endpoints</strong> — one entry per component with an API, each expanding to
+its methods. Selecting one opens <code>/developer/api/endpoint/&lt;component&gt;</code>,
+which lists each method's URI, HTTP verb and parameters with their types,
+defaults and accepted values.</li>
+</ul>
+<p>A logged-in reader's own active tokens are listed on those pages, so the
+examples can be tried as they are read. See
+<a href="../../../developers/api/index.html">REST API</a> in the developers book for how the
+documentation is produced and how to add to it, and the
+<a href="../../../reference/api/index.html">API reference</a> for the same endpoint list in
+these pages.</p>
+<h3 id="developer-api-applications"><code>/developer/api/applications</code></h3>
+<p>Where a member manages their own applications. <strong>My Applications</strong> lists the
+ones they created or are on the team of; <strong>Authorized Applications</strong> lists
+other people's applications that hold a token for their account, each with
+<strong>Revoke Access</strong>.</p>
+<p>Opening one of their own gives a <strong>Details</strong> tab and a <strong>Tokens</strong> tab, plus
+<strong>Application Settings</strong> for the same form the administrator screen uses. The
+Tokens tab lists every access token issued against the application, by member,
+with the date it was authorised and the date it expires, and offers <strong>Revoke
+Token</strong>, <strong>Revoke all Tokens</strong> and <strong>Create Personal Access Token</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A personal access token is a bearer token for the member's own
+account with a hundred-year lifetime. The confirmation says so — <em>A personal
+access token can be used to access your account as your username and
+password could</em> — and the token is displayed once and never again. Members
+who paste one into a script have created a credential that outlives every
+password change. Tell them, and use <strong>Revoke all Tokens</strong> on the
+application when one leaks.</p>
+</aside>
+<p>A third tab, <strong>Stats</strong>, is commented out of the tab list; its template renders
+<em>TODO: Application Stats</em>.</p>
+<h3 id="the-authorisation-screen">The authorisation screen</h3>
+<p>When an application sends a member to <code>/developer/oauth/authorize</code>, the hub
+checks the request, makes them log in if they are not, and shows one question
+— <em>Would you like to authorize <strong>X</strong> to access your data?</em> — with <strong>Authorize</strong>
+and <strong>No Thanks</strong>. There is no scope list, because the hub's OAuth server
+issues no scopes: a token is all-or-nothing against the authorising member's
+account.</p>
+<h2 id="the-oauth-callback-path">The OAuth callback path</h2>
+<p>Plugins are not directly routable, so this component answers the OAuth
+callbacks on their behalf, at <code>/developer/callback/&lt;name&gt;</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Belongs to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/developer/callback/googledriveAuthorize</code></td>
+<td>Filesystem - Google Drive</td>
+</tr>
+<tr>
+<td><code>/developer/callback/dropboxAuthorize</code></td>
+<td>Filesystem - Dropbox</td>
+</tr>
+<tr>
+<td><code>/developer/callback/githubAuthorize</code></td>
+<td>Filesystem - GitHub</td>
+</tr>
+<tr>
+<td><code>/developer/callback/globusAuthorize</code></td>
+<td>Authentication - Globus</td>
+</tr>
+</tbody>
+</table>
+<p>The first three are the redirect URIs you register with the providers when you
+set up <a href="../projects/projectfileconnect/index.html#the-oauth-callback">project file connectors</a>;
+that chapter has the registration steps. These paths are fixed — they are not
+configurable and they do not depend on a menu item.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The Dropbox callback redirects the member to a malformed address
+after a successful authorisation. The connection is saved and works; only
+the page they land on is wrong. It is recorded, with the two plugin-side
+halves of the same fault, in the project record.</p>
+</aside>
+<h2 id="command-line">Command line</h2>
+<p>The component ships five <code>muse</code> commands — three that empty the access token,
+refresh token and authorization code tables hub-wide, one that runs all three,
+and one that rebuilds the API documentation cache and reports any controller
+it could not parse.</p>
+<p>None of them can be run. <code>muse</code> looks for a component's commands in
+<code>components/com_&lt;name&gt;/commands</code>, and these are in
+<code>core/components/com_developer/cli/commands</code> with a matching <code>Cli</code> in their
+namespace, so every one of them is <em>Unknown command</em>. Use the <strong>Revoke
+Application Tokens</strong> button on the administrator screen instead, which is
+per-application rather than hub-wide, and delete
+<code>app/cache/api/documentation.json</code> to force the documentation to regenerate.
+Recorded in the project record.</p>
+<h2 id="what-does-not-work">What does not work</h2>
+<ul>
+<li><code>/developer/web</code> and <code>/developer/tools</code> render <em>TODO: Web Development</em> and
+<em>TODO: Tool Development</em>. Nothing links to either: the Web Development panel
+is commented out, and the Tool Development panel points at <code>com_tools</code>
+instead.</li>
+<li><code>/developer/api/console</code> and <code>/developer/api/status</code> render <em>TODO: API
+Console</em> and <em>TODO: API Status</em>. Both are commented out of the API home, so
+nothing links to them.</li>
+<li>The <strong>Stats</strong> tab on an application renders <em>TODO: Application Stats</em> and is
+commented out of the tab list.</li>
+</ul>
+<p>None of these are configuration mistakes; they are unfinished screens. Do not
+promise anyone an API console or a status page.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../dataviewer/index.html" rel="prev"><span>Previous</span>DataViewer</a><a class="pager__next" href="../events/index.html" rel="next"><span>Next</span>Events</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/14-developer.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

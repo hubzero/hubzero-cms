@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DataViewer · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The DataViewer turns a MySQL table into a searchable, sortable spreadsheet on a hub page. It has no content of its own and no list of things to manage: it is a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/dataviewer/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">DataViewer</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-a-manager-has-to-configure">What a manager has to configure</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-dataviewer-appears">Where the DataViewer appears</a></li>
+<li class="toc__item toc__item--l2"><a href="#who-can-see-a-data-view">Who can see a data view</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-visitor-sees">What a visitor sees</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-administrator-screen">The administrator screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-does-not-work">What does not work</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-component-s-own-database-access">The component&#x27;s own database access</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">DataViewer</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>DataViewer</h1>
+        </header>
+        
+        <div class="prose">
+<p>The DataViewer turns a MySQL table into a searchable, sortable spreadsheet on
+a hub page. It has no content of its own and no list of things to manage: it
+is a renderer that other components link into, and every table it draws
+belongs to something else. On a hub built from this repository the only thing
+that links into it is the <strong>Projects - Databases</strong> plugin, whose <em>DataStore
+Lite</em> databases open in the DataViewer, and the publications that attach one.</p>
+<p>There is an administrator screen at <strong>Components → DataViewer</strong>, but it edits
+configuration files belonging to a separate <code>com_databases</code> component that is
+not part of Hubzero 2.4. On a stock hub that screen lists nothing and there is
+nothing on it to do. What the DataViewer actually needs from you is set
+elsewhere: the read-only MySQL account on the <strong>Projects - Databases</strong>
+plugin. Without it the DataViewer cannot read anything, and the Databases tab
+does not appear in projects at all.</p>
+<h2 id="what-a-manager-has-to-configure">What a manager has to configure</h2>
+<p>Everything that makes the DataViewer work is on the Projects - Databases
+plugin, not on this component:</p>
+<ol>
+<li>Go to <strong>Extensions → Plug-in Manager</strong> and open <strong>Projects - Databases</strong>.</li>
+<li>Set <strong>Database Host</strong>, the read/write account (<strong>Database User [rw]</strong>,
+<strong>Database Password [rw]</strong>) that creates the tables, and the read-only
+account (<strong>Database User [ro]</strong>, <strong>Database Password [ro]</strong>) that the
+DataViewer reads them with. The read-only user defaults to <code>dataviewer</code>.</li>
+<li>Set <strong>Status</strong> to <strong>Enabled</strong> and select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>See <a href="../projects/index.html#enabling-a-project-feature">Projects</a> for the rest
+of that plugin, and <a href="../../../users/projects/databases/index.html">Databases</a> in
+the users book for what a project team does with the result.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If a project's databases list loads but opening a database's
+title gives an error instead of a table, the read/write account works and
+the read-only one does not. That is the usual symptom of a wrong password or
+of a read-only user that has not been granted <code>SELECT</code> on the databases the
+read/write user creates.</p>
+</aside>
+<h2 id="where-the-dataviewer-appears">Where the DataViewer appears</h2>
+<p>Nothing on the hub links to <code>/dataviewer</code> on its own. Two things link into it:</p>
+<table>
+<thead>
+<tr>
+<th>Link comes from</th>
+<th>URL it builds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A project's <strong>Databases</strong> tab</td>
+<td><code>/dataviewer/view/&lt;project alias&gt;:dsl/&lt;database name&gt;/</code></td>
+</tr>
+<tr>
+<td>A data attachment on a <a href="../publications/index.html">publication</a></td>
+<td><code>/dataviewer/view/publication:dsl/&lt;database name&gt;/?v=&lt;version&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The segment after the colon is the mode. Three modes exist in the code:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Reads from</th>
+<th>State in Hubzero 2.4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dsl</code></td>
+<td><code>#__project_databases</code>, using the Projects - Databases plugin's read-only account</td>
+<td>Works. This is the one the hub uses.</td>
+</tr>
+<tr>
+<td><code>db</code></td>
+<td>JSON configuration files under a <code>com_databases</code> base directory</td>
+<td>Inert — <code>com_databases</code> does not ship with the CMS</td>
+</tr>
+<tr>
+<td><code>ds</code></td>
+<td>A <code>com_datastores</code> component's <code>ds_*</code> databases</td>
+<td>Inert — <code>com_datastores</code> does not ship with the CMS</td>
+</tr>
+</tbody>
+</table>
+<p>A hub that has none of the extra components installed only ever sees <code>dsl</code>.</p>
+<h2 id="who-can-see-a-data-view">Who can see a data view</h2>
+<p>Access is decided per data view, not per hub. In <code>dsl</code> mode:</p>
+<ul>
+<li>An <strong>unpublished</strong> project database is visible to the project's owners.</li>
+<li>A database attached to a <strong>published</strong> publication version is public.</li>
+<li>A database attached to an unpublished version is visible to the project's
+owners and to the publication's curator and curator groups.</li>
+<li>A visitor who is not logged in and is not entitled to see the data is sent
+to the login form.</li>
+</ul>
+<p>The component's own <strong>ACL Users</strong> and <strong>ACL Groups</strong> options are a second,
+blunter layer. <strong>ACL Users</strong> never takes effect on a project database,
+because the data view supplies its own user list and that list wins.
+<strong>ACL Groups</strong> does take effect, because a project database supplies no group
+list.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Any group named in <strong>ACL Groups</strong> can read <em>every</em> project
+database on the hub, including databases in projects its members are not on.
+Leave the field empty unless you mean exactly that.</p>
+</aside>
+<h2 id="what-a-visitor-sees">What a visitor sees</h2>
+<p>The data view opens as a table with a global search box, per-column filters,
+and a page-size selector. Above it is a toolbar; which buttons appear depends
+on what the data definition declares:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+<th>When it appears</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Download</strong></td>
+<td>Downloads the current result set as CSV</td>
+<td>Unless the data definition turns it off</td>
+</tr>
+<tr>
+<td><strong>Fullscreen</strong></td>
+<td>Expands the table to the whole window</td>
+<td>Unless the data definition turns it off</td>
+</tr>
+<tr>
+<td><strong>Filter Dialog</strong></td>
+<td>Opens the data definition's own filter form</td>
+<td>When the data definition declares filters</td>
+</tr>
+<tr>
+<td><strong>Clear Filters</strong></td>
+<td>Clears the column filters and the global search</td>
+<td>Always</td>
+</tr>
+<tr>
+<td><strong>No-Wrap</strong></td>
+<td>Stops cell text wrapping</td>
+<td>Unless the data definition turns it off</td>
+</tr>
+<tr>
+<td><strong>Charts</strong></td>
+<td>Opens a chart panel, with <strong>Download Chart</strong></td>
+<td>When the data definition declares charts</td>
+</tr>
+<tr>
+<td><strong>Maps</strong></td>
+<td>Opens a map panel, with <strong>KML</strong>, <strong>KMZ</strong> and <strong>SHP</strong> exports</td>
+<td>When the data definition declares <code>show_maps</code></td>
+</tr>
+<tr>
+<td><strong>Customize DataView</strong></td>
+<td>Lets the reader pick a subset of columns</td>
+<td>When the data definition declares a customizer</td>
+</tr>
+</tbody>
+</table>
+<p>Large tables switch from browser-side to server-side processing on their own
+when <strong>Dynamic Processing mode</strong> is on; see the options below.</p>
+<h2 id="the-administrator-screen">The administrator screen</h2>
+<p><strong>Components → DataViewer</strong> opens a screen headed <strong>Database List</strong>. It scans
+a base directory on disk — taken from <code>com_databases</code>, or <code>/db/databases</code>
+when that component is absent — for <code>*/database.json</code> files, and lists one row
+per database it finds, with links to <strong>Edit Config</strong> and <strong>Dataviews</strong>. Those
+lead to a pair of JSON editors: one for a per-database DataViewer
+configuration file, one for individual data definitions.</p>
+<p>On a hub installed from this repository the directory does not exist, so the
+list is empty and there is nothing to open. The only working control on the
+screen is <strong>Options</strong>.</p>
+<p>Project databases do not appear here. Their data definitions live in the
+<code>#__project_databases</code> table and are built by the project team through the
+Databases tab, not by editing files.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Unlike every other component, this one performs no permission
+check of its own. Anyone who can log in to the administrator interface at
+all can open it, whatever the <strong>Permissions</strong> tab says. The component
+declares the usual seven actions and exposes a permissions fieldset, and
+nothing reads either. On a stock hub there is nothing on the screen to
+misuse; on a hub that has the <code>com_databases</code> component, there is. It is
+recorded in the project record.</p>
+</aside>
+<h2 id="options">Options</h2>
+<p>Select <strong>Options</strong> on the DataViewer screen. The full parameter list is in the
+<a href="../../../reference/configuration/components/dataviewer/index.html">generated reference</a>.</p>
+<ul>
+<li><strong>Record Display Limit</strong> — rows per page in a new data view: 5, 10, 25, 50
+or 100.</li>
+<li><strong>Dynamic Processing mode</strong> and <strong>Client-side threshold</strong> — when the mode is
+on, a data view whose row count times its visible column count exceeds the
+threshold is paged and sorted by the database instead of in the browser.
+Raising the threshold makes small tables feel faster and large ones slower;
+lowering it does the reverse. The threshold is counted in cells, not rows.</li>
+<li><strong>DB Mode enabled</strong> — only meaningful with the separate <code>com_databases</code>
+component installed. Leave it off.</li>
+<li><strong>ACL Users</strong> and <strong>ACL Groups</strong> — see the warning above.</li>
+</ul>
+<p>The <strong>Permissions</strong> tab has no effect at all: nothing in the component reads
+the actions it sets. Access to a data view is decided per data view, and
+access to the administrator screen is not decided at all.</p>
+<h2 id="what-does-not-work">What does not work</h2>
+<ul>
+<li><strong>The <code>db</code> and <code>ds</code> modes.</strong> Both need components that are not part of
+Hubzero 2.4. A URL that names either mode fails.</li>
+<li><strong>File and image columns.</strong> A data definition that declares a <code>file</code> or
+<code>gallery</code> column renders links to <code>/dataviewer/file/…</code> and
+<code>/dataviewer/gallery/…</code>. The component implements only two front-end tasks,
+<code>view</code> and <code>data</code>, so both links return <em>Invalid or Missing Dataview</em>. The
+view templates that would serve them are present but unreachable. Only the
+DataStores mode produced such columns, so a project database is unaffected.</li>
+<li><strong>The Maps panel.</strong> It loads the Google Maps JavaScript API with no API key
+and with the long-removed <code>sensor</code> parameter. Google refuses unkeyed
+requests, so the map does not draw. The <strong>KML</strong>, <strong>KMZ</strong> and <strong>SHP</strong> export
+buttons in the same panel are generated server-side and do work — but they
+are inside the panel the map failed to fill.</li>
+</ul>
+<h2 id="the-component-s-own-database-access">The component's own database access</h2>
+<p>The DataViewer connects to the data with <code>mysqli</code> directly, using the
+credentials it is handed for the mode, and not through the CMS's database
+layer. That is why the read-only account on the Projects - Databases plugin
+matters and why a mistake in it produces a raw connection error on the page
+rather than a Hubzero error message.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cron/index.html" rel="prev"><span>Previous</span>Cron</a><a class="pager__next" href="../developer/index.html" rel="next"><span>Next</span>Developer</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/13-dataviewer.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

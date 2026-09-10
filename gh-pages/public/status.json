@@ -22,9 +22,9 @@
   {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 78,
+   "pages": 95,
    "counts": {
-    "rewritten": 78
+    "rewritten": 95
    }
   },
   {
@@ -41,9 +41,10 @@
    "pages": 43,
    "counts": {
     "draft": 1,
-    "imported": 29,
-    "merged": 8,
-    "rewritten": 5
+    "rewritten": 7,
+    "reviewed": 2,
+    "imported": 25,
+    "merged": 8
    }
   },
   {
@@ -83,10 +84,10 @@
  ],
  "totals": {
   "draft": 5,
-  "reviewed": 1,
-  "rewritten": 235,
+  "reviewed": 3,
+  "rewritten": 254,
   "merged": 10,
-  "imported": 48,
+  "imported": 44,
   "generated": 183
  }
 }

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Services component exists to serve one other component. It holds the paid subscriptions that let an employer use the hub&#x27;s job board: what an employer…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/services/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Services</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
+<li class="toc__item toc__item--l3"><a href="#services-2">Services</a></li>
+<li class="toc__item toc__item--l3"><a href="#subscriptions">Subscriptions</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Services</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Services</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Services component exists to serve one other component. It holds the
+paid subscriptions that let an employer use the hub's job board: what an
+employer service costs, how long it runs for, and where each employer's
+subscription stands. Nothing else on the hub reads it.</p>
+<p>It has no site pages of its own. Employers buy and renew a subscription from
+the job board's own screens; this component is where an administrator sees
+the result, takes a payment that arrived some other way, and switches a
+subscription on.</p>
+<p>It is unrelated to <a href="../storefront/index.html">Storefront</a> and <a href="../cart/index.html">Cart</a>,
+which are the hub's actual shop. Services predates them and shares no code,
+no tables, and no checkout. If a hub does not run a job board, this component
+has nothing in it.</p>
+<h2 id="the-screens">The screens</h2>
+<p><strong>Components → Services</strong>, gated on <code>core.manage</code> for <code>com_services</code>. Two
+sub-navigation entries.</p>
+<h3 id="services-2">Services</h3>
+<p>The catalogue of things an employer can subscribe to. The list shows the ID,
+<strong>Title</strong>, <strong>Category</strong>, and <strong>Status</strong> — <strong>Active</strong> or <strong>Inactive</strong>.
+Toolbar: <strong>Options</strong>, <strong>New</strong>, <strong>Edit</strong>, <strong>Delete</strong>.</p>
+<p>The edit form:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Category</strong></td>
+<td>Required. The job board asks for services in the <code>jobs</code> category, so anything else is invisible to it.</td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Required. Shown to the employer.</td>
+</tr>
+<tr>
+<td><strong>Alias</strong></td>
+<td>Letters, numbers, dashes and underscores. Must be unique. The job board looks services up by alias.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Shown to the employer.</td>
+</tr>
+<tr>
+<td><strong>Currency</strong></td>
+<td>A symbol, printed in front of prices.</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td>The price of one unit.</td>
+</tr>
+<tr>
+<td><strong>Points</strong></td>
+<td>The price of one unit in hub points, if the hub lets employers pay that way.</td>
+</tr>
+<tr>
+<td><strong>Minimum # of units</strong> and <strong>Maximum # of units</strong></td>
+<td>How many units an employer may buy at once.</td>
+</tr>
+<tr>
+<td><strong>Size</strong> and <strong>Measure</strong></td>
+<td>What a unit is — <code>1</code> and <code>month</code> in the services the job board creates.</td>
+</tr>
+<tr>
+<td><strong>Parameters</strong></td>
+<td>Newline-separated <code>key=value</code> pairs. The job board reads <code>maxads</code> (how many adverts the subscription allows), <code>promo</code> (promotional text), and <code>promomaxunits</code> (how many units the promotion covers).</td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td>Marks the service as reserved for members of the job board's <strong>Special services group</strong>. See the warning below.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Published</strong>, <strong>Unpublished</strong>, or <strong>Trashed</strong>. Only a published service is offered.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Restricted</strong> does not work as its description promises. A
+restricted service is hidden from everyone unless the job board's <strong>Special
+services group</strong> is set, and when it is set the service is offered to
+members who are <em>not</em> in that group rather than to members who are.
+Recorded in the project record. Leave <strong>Restricted</strong> clear.</p>
+</aside>
+<p>The first time an employer reaches the job board's subscription screen and
+finds no <code>jobs</code> services at all, the job board creates two for you:
+<em>Employer Service, Basic</em> (free, one advert, first three months promotional)
+and <em>Employer Service, Premium</em> (unpublished, $500 a month, three adverts).
+Edit those rather than starting from nothing.</p>
+<h3 id="subscriptions">Subscriptions</h3>
+<p>One row per employer subscription. <strong>Filter by</strong> offers <strong>Pending</strong>,
+<strong>Active</strong>, <strong>Cancelled</strong>, and <strong>All</strong>. The list shows the ID and code, the
+status, the service, the pending payment and units, the member, and the
+added, updated and expiry dates.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Active</strong> filter does not filter. The controller understands
+<strong>Pending</strong> and <strong>Cancelled</strong>; anything else, <strong>Active</strong> included, falls
+through to showing everything. This is recorded in
+the project record.</p>
+</aside>
+<p>Opening a subscription shows the service and its price, the member's profile
+and employer details, the amounts paid and pending, and an <strong>Administrator
+Notes</strong> box. Below that, <strong>Manage Subscription</strong> offers one action at a time:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No action / send message to user</strong></td>
+<td>Records the note and mails the member. Shown as <strong>Subscription on hold</strong> for a subscription that is not cancelled.</td>
+</tr>
+<tr>
+<td><strong>Activate / Extend this subscription</strong></td>
+<td>Takes a <strong>New payment received</strong> amount and a number of units, adds the payment to the total paid, extends the expiry date by units × unit size months, and sets the status to active.</td>
+</tr>
+<tr>
+<td><strong>Cancel this subscription</strong></td>
+<td>Sets the status to cancelled and clears the pending amounts. See the warning below.</td>
+</tr>
+<tr>
+<td><strong>Process refund / remove pending items</strong></td>
+<td>Only offered on a cancelled subscription that still shows a pending payment. Records the refund as posted and clears the pending amounts.</td>
+</tr>
+</tbody>
+</table>
+<p>Anything typed into <strong>Send user a message</strong>, and the status change itself,
+are appended to the notes with a timestamp and mailed to the member.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Cancel this subscription</strong> never computes a refund. The
+calculation uses two variables that are never assigned, so the result is
+always zero: the subscription is cancelled showing nothing owed, and
+because the pending payment is zeroed at the same time, <strong>Process refund</strong>
+never appears afterwards. The job board's own cancel screen has the same
+fault. Work refunds out by hand. Recorded in
+the project record.</p>
+</aside>
+<h2 id="options">Options</h2>
+<p>One setting, plus the usual <strong>Permissions</strong> tab. Both are listed in the
+<a href="../../../reference/configuration/components/services/index.html">generated reference</a>.</p>
+<p><strong>Auto-approve employer subscriptions</strong> decides what happens when an employer
+subscribes to a service that costs nothing — a free tier, or a paid one
+inside its promotional period. With it on, the subscription activates
+immediately. With it off, it is created as pending and waits for someone to
+open it here and press <strong>Activate / Extend</strong>.</p>
+<p>The setting is read by the job board, not by this component.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../search/blacklist/index.html" rel="prev"><span>Previous</span>Blacklist</a><a class="pager__next" href="../storefront/index.html" rel="next"><span>Next</span>Storefront</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/32-services.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

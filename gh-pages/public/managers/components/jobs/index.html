@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jobs · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Jobs component is a job board. Employers post openings, members apply to them with a résumé held on their hub profile, and an administrator approves,…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/jobs/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Jobs</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-administrator-screens">The administrator screens</a></li>
+<li class="toc__item toc__item--l3"><a href="#jobs-2">Jobs</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-posting-form">The posting form</a></li>
+<li class="toc__item toc__item--l3"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l3"><a href="#types">Types</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-front-end">The front end</a></li>
+<li class="toc__item toc__item--l3"><a href="#for-a-visitor">For a visitor</a></li>
+<li class="toc__item toc__item--l3"><a href="#for-a-member">For a member</a></li>
+<li class="toc__item toc__item--l3"><a href="#for-an-employer">For an employer</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-api">The API</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-does-not-work">What does not work</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Jobs</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Jobs</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Jobs component is a job board. Employers post openings, members apply to
+them with a résumé held on their hub profile, and an administrator approves,
+unpublishes and deletes the postings. It is installed and enabled on every
+hub, but nothing links to it: there is no menu item, no module and no button
+anywhere on the front end that reaches <code>/jobs</code>. A hub that has never been told
+to run a job board is running one that nobody can find.</p>
+<p>So the first decision is whether you want it at all. If you do, add a menu
+item; if you do not, leave it alone — it costs nothing and creates nothing on
+its own. The one setting that has an effect either way is <strong>Enable this
+component?</strong>, which controls whether members see a <strong>Résumé</strong> tab on their
+profile.</p>
+<h2 id="the-administrator-screens">The administrator screens</h2>
+<p><strong>Components → Jobs</strong> opens the job board manager. Every screen is headed
+<strong>Jobs Manager</strong>, and three tabs run along the top: <strong>Jobs</strong>, <strong>Categories</strong>
+and <strong>Types</strong>. Reaching any of them needs <code>core.manage</code> on <code>com_jobs</code>.</p>
+<h3 id="jobs-2">Jobs</h3>
+<p>The list of postings. Its only control is a <strong>Search</strong> box with a <strong>Go</strong>
+button, matching words in the title and the description. The columns are
+<strong>Code</strong>, <strong>Title</strong>, <strong>Company &amp; Location</strong>, <strong>Status</strong>, <strong>Owner</strong>,
+<strong>Added</strong>, <strong>Expires</strong> and <strong>Applications</strong>; all but Code, Expires and
+Applications sort. Hovering a title shows the created date, the creator, the
+category and the type.</p>
+<p><strong>Code</strong> is the eight-digit identifier the posting is addressed by on the
+front end, at <code>/jobs/job/&lt;code&gt;</code>. It is generated on the first save and never
+changes. <strong>Owner</strong> shows <code>(admin)</code> for a posting the hub itself made rather
+than an employer.</p>
+<p><strong>Status</strong> is one of six:</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Draft</strong></td>
+<td>Saved but never submitted. New administrator postings start here</td>
+</tr>
+<tr>
+<td><strong>Pending approval</strong></td>
+<td>Submitted by an employer, waiting for you</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Published and visible</td>
+</tr>
+<tr>
+<td><strong>Expired/Invalid Subscription</strong></td>
+<td>Published, but past its expiry date or its employer's subscription has lapsed</td>
+</tr>
+<tr>
+<td><strong>Inactive</strong></td>
+<td>Unpublished</td>
+</tr>
+<tr>
+<td><strong>Deleted</strong></td>
+<td>Withdrawn. The row stays in the database</td>
+</tr>
+</tbody>
+</table>
+<p>The toolbar has <strong>New</strong>, <strong>Edit</strong>, <strong>Delete</strong> and <strong>Options</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> asks nothing and deletes the rows from the database.
+It is not the same as the <strong>Delete Ad</strong> action on the posting form, which
+sets the status to <strong>Deleted</strong> and keeps the record and its applications.
+Use the form unless you mean to erase the posting.</p>
+</aside>
+<h3 id="the-posting-form">The posting form</h3>
+<p><strong>New</strong> and <strong>Edit</strong> open the same three-part form.</p>
+<p><strong>Company</strong> — <strong>Name</strong> and <strong>Location</strong> are required; <strong>URL</strong> is not.
+<strong>Location</strong> wants &quot;City, State&quot;.</p>
+<p><strong>Job</strong> — <strong>Category</strong> and <strong>Type</strong> come from the two other screens.
+<strong>Country</strong> is a fixed <em>United States</em> when <strong>US jobs only?</strong> is on, and a
+country list when it is off. <strong>Title</strong> is required. <strong>Description</strong> opens in
+the hub's configured editor and is marked <em>Wiki formatting is enabled</em>.
+<strong>Position Start Date</strong>, <strong>Applications Due</strong> and <strong>Posting
+Expires</strong> are dates. <strong>External URL for a job application</strong> sends applicants
+off-site; <strong>Allow internal application</strong> lets them apply through the hub
+instead. Set one, the other, or both.</p>
+<p><strong>Contact Information</strong> — name, email and telephone, all optional.</p>
+<p>The right-hand column shows the record's history and, for a saved posting, a
+<strong>Manage this Job</strong> panel:</p>
+<ul>
+<li><strong>Change Status / Take Action</strong> — one of <strong>No action / Send message to
+author</strong>, <strong>Publish Ad</strong> or <strong>Unpublish Ad</strong>, and <strong>Delete Ad</strong>.</li>
+<li><strong>Message to author</strong> — free text, sent to the member who created the
+posting.</li>
+</ul>
+<p>Choosing any action, or typing a message with <strong>No action</strong> selected, sends
+the author a hub message with the status change and a link to the posting.
+Selecting nothing and saving changes the posting silently.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A new posting created here has no action panel. It is saved as a
+<strong>Draft</strong> first — the form says <em>This is a new job ad. Please save it as
+draft before admin option become available</em> — and you publish it on the
+second visit.</p>
+</aside>
+<p>Publishing checks the employer's quota and refuses if they are over it, with
+<em>Failed to publish this ad because user is over the limit according to the
+terms of his/her subscription</em>. Postings the hub itself owns are allowed one
+active advertisement.</p>
+<h3 id="categories">Categories</h3>
+<p>The category list, with <strong>ID</strong>, <strong>Order</strong> and <strong>Title</strong>. Each row's <strong>Order</strong>
+is an editable box; <strong>Save Order</strong> writes them all. The form has <strong>Title</strong>
+and <strong>Description</strong>. Nothing seeds this list, so it is empty on a new hub and
+every posting is filed under <em>No specific category</em> until you add some.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The form says it plainly — <em>changing the category title will
+affect all currently available job postings in this category</em>. Postings
+store the category by ID, so a rename retitles every posting already in it.</p>
+</aside>
+<h3 id="types">Types</h3>
+<p>The same screen with one field. A type is a title and nothing else — the
+list shows <strong>ID</strong> and <strong>Title</strong> only. This is where &quot;Full-time&quot;,
+&quot;Part-time&quot;, &quot;Contract&quot;, &quot;Internship&quot; and &quot;Temporary&quot; would go; nothing
+creates them for you.</p>
+<p>There is no screen for <strong>employers</strong>. An employer record is created on the
+front end when a member subscribes, and the hub itself is employer number 1,
+created automatically the first time an administrator opens the dashboard.</p>
+<h2 id="options">Options</h2>
+<p>Select <strong>Options</strong> on any of the three screens. The full parameter list is in
+the <a href="../../../reference/configuration/components/jobs/index.html">generated reference</a>.</p>
+<ul>
+<li><strong>Enable this component?</strong> — despite the description, this does not turn the
+job board off. <code>/jobs</code> and the administrator screens stay exactly as they
+are. What it controls is the <strong>Résumé</strong> tab on member profiles: with the
+setting off, the Members - Resume plugin replaces the tab's contents with a
+notice. Treat it as <em>offer résumés or not</em>.</li>
+<li><strong>Industry name</strong> — appended to every page title and breadcrumb. Setting it
+to <code>Nanotechnology</code> makes the pages read <em>Jobs in Nanotechnology</em>.</li>
+<li><strong>Admin group</strong> — members of this hub group get the same rights over
+postings and résumés as a site administrator. It is the way to give the
+board a moderator who is not an administrator.</li>
+<li><strong>Special services group</strong> — members of this group are offered subscription
+services that are otherwise restricted.</li>
+<li><strong>Auto approve job postings</strong> — with this on, a posting from an employer
+with a valid subscription goes straight to <strong>Active</strong>. With it off it lands
+in <strong>Pending approval</strong> and waits for you. Postings an administrator
+publishes are never held.</li>
+<li><strong>Limit jobs per page</strong> — the default page size on the front end.</li>
+<li><strong>Allow user subscriptions?</strong> — see below. This changes the shape of the
+whole front end.</li>
+<li><strong>US jobs only?</strong> — replaces the country list on the posting form with a
+fixed <em>United States</em>.</li>
+<li><strong>Posting Expiration Date</strong> — <strong>On - 180 day expiration</strong> puts a date 180
+days out in <strong>Posting Expires</strong> on a new posting, which the poster can
+change. <strong>Disabled</strong> removes the field, and postings never expire. Either
+way the form refuses an expiry more than a year away.</li>
+</ul>
+<p>Three more settings have language strings but no field on the Options screen,
+so they cannot be set from the interface: <strong>Promo for employers</strong>, <strong>URL to
+about page</strong> and <strong>URL to premium services page</strong>. The per-subscription
+advertisement limit, <code>maxads</code>, is likewise not on this screen — it is a
+parameter on the service record in <a href="../services/index.html">Services</a>, and falls back
+to 3.</p>
+<h2 id="the-front-end">The front end</h2>
+<p><code>/jobs</code> is reachable as soon as the component is enabled, with or without a
+menu item. <strong>Allow user subscriptions?</strong> decides what it is.</p>
+<p><strong>With subscriptions on</strong> (the default), <code>/jobs</code> is a landing page split
+between <strong>Employers</strong> — browse résumés, post a job — and <strong>Seekers</strong> — browse
+jobs, post a résumé — followed by the latest postings. The job list proper is
+at <code>/jobs/browse</code>.</p>
+<p><strong>With subscriptions off</strong>, <code>/jobs</code> is the job list itself. No member can
+become an employer, so the subscription flow, the employer dashboard and the
+résumé browser are all closed to them, and the board becomes a noticeboard
+that only administrators and the admin group post to. Those two still reach
+the dashboard and the résumé browser.</p>
+<h3 id="for-a-visitor">For a visitor</h3>
+<p>The job list has a keyword search and paging. Selecting a posting opens
+<code>/jobs/job/&lt;code&gt;</code> with the full description, the company, the dates and, if
+the poster allowed it, an <strong>Apply</strong> button. Applying needs an account.
+An application is a covering note plus the résumé already on the member's
+profile; a member can edit or withdraw it afterwards. Guests can read active
+postings but see nothing else.</p>
+<h3 id="for-a-member">For a member</h3>
+<p>A member's résumé is not part of this component's front end. It lives on the
+<strong>Résumé</strong> tab of their profile, served by the Members - Resume plugin;
+<code>/jobs/addresume</code> is only a redirect there. That tab is where they upload the
+file, and it is what employers see and download.</p>
+<h3 id="for-an-employer">For an employer</h3>
+<p>Posting a job means becoming an employer, and becoming an employer means
+taking out a subscription. The first visit to <code>/jobs/subscribe</code> creates two
+subscription services if none exist — <em>Employer Service, Basic</em>, free, one
+advertisement, and <em>Employer Service, Premium</em>, priced, three advertisements
+and unpublished. You then edit those, activate the subscriptions and record
+the payments, in <a href="../services/index.html">Services</a>. Subscriptions can be paid with
+the hub's points, so a member's balance is shown on the form.</p>
+<p>Once subscribed, <code>/jobs/dashboard</code> gives an employer their postings, their
+quota, their subscription, and the applications they have received.
+<code>/jobs/resumes</code> lets them browse and shortlist members who have posted a
+résumé, filtered by category and type, and download résumés singly or in a
+batch. Administrators and the admin group reach both without a subscription.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Résumé browsing hands an employer the files members uploaded to
+their profiles, and the batch download hands them a zip of many at once.
+Turning <strong>Allow user subscriptions?</strong> on is what opens that door. Decide
+deliberately who should be able to walk through it, and use <strong>Admin group</strong>
+rather than site administrator accounts for the people who moderate.</p>
+</aside>
+<h2 id="the-api">The API</h2>
+<p><code>GET /api/jobs/list</code> returns the job list with <code>limit</code>, <code>start</code>, <code>search</code>,
+<code>sort</code> and <code>sort_Dir</code>. See the <a href="../../../reference/api/jobs/index.html">API reference</a>.</p>
+<h2 id="what-does-not-work">What does not work</h2>
+<ul>
+<li><strong>The front-end search box disappears when the list is empty.</strong> It is inside
+the block that renders only when there is at least one posting, so a search
+that matches nothing leaves no way to search again. Editing the URL or
+going back is the only route out.</li>
+<li><strong>There are no category or type filters on the job list.</strong> The template
+builds the option lists for a sort menu and a status filter and then never
+renders either. The saved search preferences behind them work; only the
+controls are missing.</li>
+<li><strong><code>/jobs/editresume/&lt;id&gt;</code> goes nowhere.</strong> The router recognises the path but
+the controller has no such task, so it falls through to the job list.</li>
+<li><strong>The Creator and Modifier fields show a number.</strong> The administrator list's
+tooltip and the posting form both print the raw user ID rather than a name.</li>
+<li>One view template, <code>introemp</code>, is a three-step explanation of how to become
+an employer. Nothing renders it.</li>
+</ul>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../forum/index.html" rel="prev"><span>Previous</span>Forum</a><a class="pager__next" href="../kb/index.html" rel="next"><span>Next</span>Knowledge base</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-jobs.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

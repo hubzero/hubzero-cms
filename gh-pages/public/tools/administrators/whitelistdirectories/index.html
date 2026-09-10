@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>White list of directories through the CMS · Tools · Hubzero Documentation</title>
-  <meta name="description" content="The parameter passing tool execution feature provides a mechanism for passing file names to a tool through the URL used to launch the tool session. As a…">
+  <title>Directory parameter whitelist · Tools · Hubzero Documentation</title>
+  <meta name="description" content="A tool session can be started with file and directory names supplied in the launch URL. The Directory Parameter Whitelist decides which directories those names…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/administrators/whitelistdirectories/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,16 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">White list of directories through the CMS</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Directory parameter whitelist</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-parameter-passing-does">What parameter passing does</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-whitelist-does">What the whitelist does</a></li>
+<li class="toc__item toc__item--l2"><a href="#setting-the-whitelist">Setting the whitelist</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-validation-fails">When validation fails</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-not-checked-here">What is not checked here</a></li>
+</ol></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../developers/index.html">Tool Developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
@@ -99,27 +105,99 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">White list of directories through the CMS</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Directory parameter whitelist</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>White list of directories through the CMS</h1>
+          <h1>Directory parameter whitelist</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tool-administrators/whitelistdirectories">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2018.</aside>
+        
         <div class="prose">
-<p>The parameter passing tool execution feature provides a mechanism for passing file names to a tool through the URL used to launch the tool session. As a security measure the passed parameters must conform to a simple schema and only files in white listed directories may be referenced. The passed parameters are validated by the middleware. The files passed as parameters are restricted to the directories listed in the <strong>Directory Parameter Whitelist.</strong> If specified files lie outside of the white listed locations the the tool launch will fail.</p>
-<p>Any super-user can whitelist a directory via the /administrator interface. Follow these steps to complete this request:</p>
+<p>A tool session can be started with file and directory names supplied in the
+launch URL. The <strong>Directory Parameter Whitelist</strong> decides which directories
+those names may point at. This page is CMS-side and was checked against
+<code>com_tools</code> in this repository.</p>
+<h2 id="what-parameter-passing-does">What parameter passing does</h2>
+<p>A tool is launched at <code>/tools/&lt;alias&gt;/invoke</code>. A <code>params</code> query argument on
+that URL carries a list of values to hand to the tool, one per line:</p>
+<pre><code class="language-text">directory:/home/hubname/username/mycase
+file(input):/home/hubname/username/mycase/run.xml
+int(runs):20
+</code></pre>
+<p>Each line is <code>type:value</code> or <code>type(name):value</code>. The three types are
+<code>directory</code>, <code>file</code>, and <code>int</code>. A name in parentheses is optional; without
+one, the tool receives an unnamed parameter of that type.</p>
+<p><code>com_tools</code> validates every line before it starts a session. Validation is
+all or nothing: one bad line rejects the whole launch. If every line passes,
+the component forwards the <code>params</code> text exactly as it arrived — the middleware
+gets the original values, not the expanded and normalised ones the check
+worked on.</p>
+<h2 id="what-the-whitelist-does">What the whitelist does</h2>
+<p>For <code>directory</code> and <code>file</code> parameters the component:</p>
 <ol>
-<li>Navigate to the <strong>/administrator</strong> interface and login</li>
-<li>Hover over <strong>Components</strong> then click on <strong>Tools</strong></li>
-<li>Click the <strong>Options</strong> button and under <strong>Directory Parameter Whitelist</strong>, modify the comma separated list of directories. At minimum the list should include /home.</li>
-<li>Click <strong>Save &amp; Close</strong></li>
-<li>Make sure that you complete this task on all the requested systems (i.e. production, stage, dev, qa, etc.)</li>
+<li>Expands a leading <code>~/</code> to the member's home directory. If the account has
+no absolute home directory, the launch fails.</li>
+<li>Rejects any value that is not an absolute path.</li>
+<li>Normalises the path, resolving <code>.</code> and <code>..</code> and collapsing repeated
+separators. A <code>file</code> value may not end in a separator, <code>.</code>, or <code>..</code>.</li>
+<li>Rejects any value containing a control character or invalid UTF-8.</li>
+<li>Rejects everything if the whitelist is empty.</li>
+<li>Requires the normalised value to begin with one of the whitelisted
+directories.</li>
 </ol>
+<p>Step 6 compares whole path elements: each entry is trimmed and given a
+trailing <code>/</code> before the comparison, so <code>/home</code> matches <code>/home/hubname/...</code>
+but not <code>/homework</code>. Because the check runs after normalisation, <code>..</code> cannot
+be used to climb out of a whitelisted directory.</p>
+<p><code>int</code> parameters are not affected by the whitelist. They are checked for
+control characters and then against <code>^[-+]?[0-9]+$</code>.</p>
+<h2 id="setting-the-whitelist">Setting the whitelist</h2>
+<p>Any account with <code>core.manage</code> on <code>com_tools</code> can change it.</p>
+<ol>
+<li>Sign in to <code>/administrator</code>.</li>
+<li>Go to <strong>Components → Tools</strong>. The pipeline list opens.</li>
+<li>Select <strong>Options</strong> in the toolbar.</li>
+<li>On the <strong>Defaults</strong> tab, edit <strong>Directory Parameter Whitelist</strong>. It is a
+comma-separated list of absolute directories. The shipped default is
+<code>/home</code>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Repeat on every hub that needs it — production, stage, development, and so
+on. The setting is per hub, not shared.</li>
+</ol>
+<p>The option is <code>params_whitelist</code>; see the
+<a href="../../../reference/configuration/components/tools/index.html">generated <code>com_tools</code> parameter reference</a>
+for the rest of the component's settings.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Clearing the field does not disable the check, it fails every
+<code>file</code> and <code>directory</code> parameter. Leaving parameter passing usable means
+keeping at least one directory in the list.</p>
+</aside>
+<h2 id="when-validation-fails">When validation fails</h2>
+<p>A launch with an unusable parameter does not start a session. The member gets
+the <strong>Bad Parameters</strong> page, which shows the rejected <code>params</code> text and a link
+to open a support ticket. Nothing is written to the session tables.</p>
+<h2 id="what-is-not-checked-here">What is not checked here</h2>
+<p>The CMS checks the shape of the parameters and the whitelist prefix. It does
+not check that the paths exist, that the member can read them, or that the
+tool can do anything with them. Those are the tool platform's business, and
+the platform validates the parameters again on the execution host. The
+platform is separate software and is not in this repository, so its side of
+the check could not be verified.</p>
+<p>Two consequences of forwarding the original text are worth knowing:</p>
+<ul>
+<li>The middleware receives <code>~/</code> and <code>..</code> unresolved, and has to expand and
+normalise them itself. The whitelist decision was already made on the
+resolved form, so the two must agree.</li>
+<li>Resuming an existing session re-sends the parameters stored with it, and
+they are not checked again. Tightening the whitelist does not retract
+sessions started under the old one.</li>
+</ul>
+<p>For the pipeline that gets a tool to the point of being launchable, see
+<a href="../../../managers/maintenance/tools/index.html">Tools</a> in the hub managers book.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jupyter-notebooks/index.html" rel="prev"><span>Previous</span>Jupyter Notebooks</a><a class="pager__next" href="../../developers/index.html" rel="next"><span>Next</span>Tool Developers</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jupyter-notebooks/index.html" rel="prev"><span>Previous</span>Jupyter notebooks</a><a class="pager__next" href="../../developers/index.html" rel="next"><span>Next</span>Tool Developers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/administrators/whitelistdirectories.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

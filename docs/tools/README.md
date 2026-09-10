@@ -16,5 +16,9 @@ This book covers the three sides of that platform.
   mean, and the simulation usage definitions.
 
 > **Note:** The tool execution platform is separate software from the
-> Hubzero CMS in this repository. These pages were imported from
-> help.hubzero.org and have not yet been reviewed by the platform team.
+> Hubzero CMS in this repository, so most of what these pages describe
+> cannot be checked against the code here. Each page says at the top which
+> of its material was verified against the CMS and which is platform
+> material carried over from help.hubzero.org unchecked. The administrator
+> pages have been through that pass; the developer and user pages carry
+> their import banner until they have.

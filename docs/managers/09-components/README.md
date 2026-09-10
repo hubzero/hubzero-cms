@@ -18,10 +18,9 @@ use it; the generated
 [configuration reference](../../reference/configuration/README.md) lists
 every option of every component in one place.
 
-Components that only support the interface itself, such as the cache,
-categories, media, menus, modules, plugins, and template managers, are
-covered in [Extensions](../extensions/README.md) and
-[Content](../content/README.md) rather than here.
+The extension managers themselves — modules, plugins and templates — are
+covered in [Extensions](../extensions/README.md), and the article, category
+and media managers in [Content](../content/README.md), rather than here.
 
 ## Content and discussion
 
@@ -34,6 +33,8 @@ covered in [Extensions](../extensions/README.md) and
 | [Wiki](wiki.md) | Collaboratively edited pages with revision history. |
 | [Newsletters](newsletters.md) | Email newsletters, their templates, and mailing lists. |
 | [Billboards](billboards.md) | The rotating banners on the hub's front page. |
+| [Feedback](feedback.md) | Success stories members submit and the notable quotes drawn from them. |
+| [Poll](poll.md) | A single site-wide poll. Reachable, but a poll cannot be selected. |
 
 ## Research content
 
@@ -56,6 +57,10 @@ covered in [Extensions](../extensions/README.md) and
 | [Wishlist](wishlist.md) | Feature requests members file and vote on. |
 | [Storefront](storefront.md) and [Cart](cart.md) | Products the hub sells and the checkout that sells them. |
 | [Tags](tags.md) | The hub's tag vocabulary and the pages that browse it. |
+| [Jobs](jobs.md) | The job board, its listings, and employer subscriptions. |
+| [Services](services.md) | The subscriptions employers buy to post on the job board. |
+| [Messages](messages.md) | An administrator-only inbox, separate from member messaging. Not reachable. |
+| [Mailto](mailto.md) | The send-to-a-friend link on articles. No administrator side. |
 
 ## Search, metrics, and maintenance
 
@@ -64,6 +69,22 @@ covered in [Extensions](../extensions/README.md) and
 | [Search](search/README.md) | The Solr search index: installing it, filling it, and tuning what it returns. |
 | [Usage](usage.md) | Traffic and tool-session reports. |
 | [Cron](cron.md) | Scheduled jobs and the plugins that run them. |
+| [Activity](activity.md) | The hub-wide activity log and the one chart that reports on it. |
+| [What's new](whatsnew.md) | Aggregates recent content across six plugins and serves the hub's feeds. |
+| [Cache](cache.md) | Clearing cached pages, module output, and component fragments. |
+| [Check-in](checkin.md) | Releasing records left locked by an editor who never saved. |
+| [Redirect](redirect.md) | Managed redirects, the 404 log, and the external-link interstitial. |
+| [Control panel](cpanel.md) | The dashboard itself and the panels published to it. |
+| [Languages](languages.md) | Installed languages, the default, and the string override editor. |
+
+## Integrations and developer tools
+
+| Component | What it does |
+|---|---|
+| [Developer](developer.md) | OAuth applications, API tokens, and the generated API documentation. |
+| [SAML](saml.md) | The hub acting as an identity provider for external services. |
+| [OAI-PMH](oaipmh.md) | The metadata endpoint external harvesters index the hub through. |
+| [DataViewer](dataviewer.md) | Renders a database table as a searchable spreadsheet. |
 
 Members and access groups have their own chapters under
 [Users](../users/README.md), and the hub's global settings are in

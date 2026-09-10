@@ -61,23 +61,38 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/articlemanager/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/urls/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/activity/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/answers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/billboards/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/blogs/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/cache/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/cart/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/checkin/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/citations/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/collections/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/courses/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/cpanel/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/cron/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/dataviewer/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/developer/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/events/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/feedback/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/forum/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/jobs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/kb/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/languages/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/mailto/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/messages/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/newsletters/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/oaipmh/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/poll/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/projects/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/projects/projectfileconnect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/publications/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/publications/datacite/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/redirect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/resources/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/saml/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/install/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/admin/</loc></url>
@@ -86,13 +101,15 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/index/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/plugins/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/search/blacklist/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/services/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/storefront/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/support/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/tags/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/tools/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/usage/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/whatsnew/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/wiki/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/wishlist/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/tools/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/extensions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/extensions/modules/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/extensions/templates/</loc></url>

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redirect · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Redirect component does two unrelated jobs. It keeps the hub&#x27;s list of managed redirects — the addresses that used to work and where they go now — and it…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/redirect/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Redirect</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#where-it-lives">Where it lives</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-two-lists">The two lists</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-404s-are-collected">How 404s are collected</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-link">Editing a link</a></li>
+<li class="toc__item toc__item--l2"><a href="#working-through-the-404-list">Working through the 404 list</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-external-link-interstitial">The external-link interstitial</a></li>
+<li class="toc__item toc__item--l2"><a href="#see-also">See also</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Redirect</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Redirect</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Redirect component does two unrelated jobs. It keeps the hub's list of
+managed redirects — the addresses that used to work and where they go now —
+and it collects the 404s the site serves so you can see which broken
+addresses people are actually asking for. Separately, it provides the
+interstitial page that warns a member before an external link takes them off
+the hub.</p>
+<p>The redirect list is the part a manager works in. <a href="../../content/urls/index.html">URLs</a>
+covers it in the context of how the hub addresses a page; this chapter is the
+component's own reference and goes further into the screens, the collection
+mechanism, and the options.</p>
+<h2 id="where-it-lives">Where it lives</h2>
+<p><strong>Site → Maintenance → Routes</strong>. It is deliberately not in the
+<strong>Components</strong> menu — the admin menu excludes it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Maintenance</strong> submenu that holds <strong>Routes</strong> is only drawn
+for an administrator who has <code>core.admin</code> on <code>com_checkin</code> or <code>core.manage</code>
+on <code>com_cache</code>. Someone granted <code>core.manage</code> on <code>com_redirect</code> alone can
+reach the screen at <code>index.php?option=com_redirect</code> but will not find a
+menu entry for it.</p>
+</aside>
+<p>Opening the component needs <code>core.manage</code> on <code>com_redirect</code>.</p>
+<h2 id="the-two-lists">The two lists</h2>
+<p>The screen has two sub-navigation entries over the same table:</p>
+<ul>
+<li><strong>Redirects</strong> — links that have a destination.</li>
+<li><strong>404s</strong> — links that do not. These are the recorded misses.</li>
+</ul>
+<p><strong>Search</strong> matches the source URL, the destination, the comment, and the
+referring page. The status filter offers <strong>All</strong>, <strong>Enabled</strong>,
+<strong>Disabled</strong>, <strong>Archived</strong>, and <strong>Trashed</strong>. Every column heading sorts.</p>
+<p>The list shows the <strong>Expired URL</strong>, then either the <strong>New URL</strong> (on
+<strong>Redirects</strong>) or the <strong>Referring Page</strong> (on <strong>404s</strong>), followed by the
+<strong>Created Date</strong>, the status, the <strong>404 Hits</strong> count, and the ID. Source and
+destination are shown relative to the hub root, with a <code>(site)</code> prefix
+standing in for it.</p>
+<p>At the foot of the table the component reports whether the plugin it depends
+on is running: <em>The Redirect Plug-in is enabled.</em> or <em>The Redirect Plug-in
+is disabled. Enable it in the Plug-in Manager.</em></p>
+<h2 id="how-404s-are-collected">How 404s are collected</h2>
+<p>They are collected by the <strong>System - Redirect</strong> plugin, not by the component.
+The plugin installs itself as the site's exception handler; when the hub
+raises a 404 it:</p>
+<ol>
+<li>Looks for an enabled link whose <strong>Source URL</strong> matches the full request
+URL. Failing that, it tries the server-relative path, with and without a
+leading slash.</li>
+<li>If it finds one, it sends the redirect and stops.</li>
+<li>Otherwise it records the address — creating a link with an empty
+destination, the referring page, and one hit, or incrementing the hit
+count on the one that already exists.</li>
+</ol>
+<p>So the <strong>404s</strong> list fills itself, and nothing at all is recorded while the
+plugin is disabled. Two kinds of request are skipped on purpose: URLs
+containing <code>mosConfig_</code> or <code>=http://</code>, which are probe traffic.</p>
+<p>Enable the plugin under <strong>Extensions → Plugins</strong>, filtering on <code>system</code>. See
+<a href="../../extensions/plugins/index.html">Plugins</a>.</p>
+<h2 id="editing-a-link">Editing a link</h2>
+<p><strong>New</strong>, or select one and <strong>Edit</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Source URL</strong></td>
+<td>The address to catch. Required, and must be unique across the whole list. A value that does not start with <code>http</code> is stored as a root-relative path.</td>
+</tr>
+<tr>
+<td><strong>Destination URL</strong></td>
+<td>Where to send the visitor. Also normalised to a root-relative path unless it starts with <code>http</code>.</td>
+</tr>
+<tr>
+<td><strong>Response Code</strong></td>
+<td><strong>404 Not Found</strong>, <strong>301 Moved Permanently</strong>, or <strong>302 Found</strong>.</td>
+</tr>
+<tr>
+<td><strong>Comment</strong></td>
+<td>A free-text note. Worth using: it is the only place to record why a redirect exists.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Enabled</strong>, <strong>Disabled</strong>, <strong>Archived</strong>, or <strong>Trashed</strong>. Only an enabled link redirects.</td>
+</tr>
+</tbody>
+</table>
+<p>The right-hand panel shows the ID, created and last-updated dates, and the
+hit count; none of them are editable.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The response code is corrected on save. Give a link a destination
+and pick <strong>404 Not Found</strong>, and it is stored as <strong>301 Moved Permanently</strong> —
+a redirect must be a 301 or a 302. The edit form preselects <strong>302 Found</strong>
+for a new link that has a destination, so a link created through the form
+is a 302 unless you say otherwise.</p>
+</aside>
+<h2 id="working-through-the-404-list">Working through the 404 list</h2>
+<p>Below the list, once it has rows, is <strong>Update selected links to the following
+new URL</strong>. Tick several recorded 404s, type one <strong>Destination URL</strong> and
+optionally a <strong>Comment</strong>, and press <strong>Update Links</strong>: all of them get that
+destination, the same comment, and are enabled in one go. This is the fast
+way to retire a whole directory of moved pages.</p>
+<p>Links updated this way are stored as <strong>301 Moved Permanently</strong>, because the
+batch sets no response code and the correction above supplies one.</p>
+<p>The rest of the toolbar is <strong>Enable</strong>, <strong>Disable</strong>, <strong>Archive</strong>, and
+<strong>Trash</strong>. Permanent deletion appears as <strong>Empty trash</strong> only when the status
+filter is set to <strong>Trashed</strong>. <strong>Options</strong> appears for <code>core.admin</code>.</p>
+<p>Archiving is the way to retire a recorded 404 you have decided not to
+redirect, without losing the record that it was asked for.</p>
+<h2 id="the-external-link-interstitial">The external-link interstitial</h2>
+<p>The second half of the component is unrelated to the redirect list. It
+rewrites links that point off the hub so that they go through
+<code>/redirect/{base64 of the target}</code> instead, and that address optionally shows
+a countdown page — <em>Redirecting Soon…</em> — before forwarding.</p>
+<p>Four places pass member-supplied text through the rewriter: the body of an
+<a href="../answers/index.html">Answers</a> question and of its comments, the <strong>About</strong> text on
+a project's public page and in the project info panel, and the handoff when a
+<a href="../tools/index.html">tool</a> session opens at an external proxy URL.</p>
+<p>The rewrite happens whether or not the delay is switched on; what the options
+control is what the <code>/redirect/</code> address then does. In every case the
+rewritten link also gains <code>rel=&quot;noreferrer nofollow noopener&quot;</code>, so the
+external site is not told where the visitor came from.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Delay is enabled</strong></td>
+<td><code>DISABLED</code> — the default — forwards immediately. <code>ENABLED</code> shows the countdown page for external destinations.</td>
+</tr>
+<tr>
+<td><strong>Delay in seconds</strong></td>
+<td>How long the countdown runs. Default 10.</td>
+</tr>
+<tr>
+<td><strong>Whitelisted hosts</strong></td>
+<td>Comma-separated hostnames that are never delayed and never rewritten.</td>
+</tr>
+<tr>
+<td><strong>Blacklisted hosts</strong></td>
+<td>Comma-separated hostnames that are not followed at all: the link is rewritten to the hub's front page.</td>
+</tr>
+</tbody>
+</table>
+<p>Links to the hub's own host are left alone, as are anchors and
+<code>javascript:</code> URLs. Hostnames containing <code>proxy</code> are always treated as
+external.</p>
+<p>The parameters are in the
+<a href="../../../reference/configuration/components/redirect/index.html">generated reference</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The host lists are matched exactly, against the hostname
+only. <code>example.org</code> does not cover <code>www.example.org</code>; list both.</p>
+</aside>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../../content/urls/index.html">URLs</a> — how the hub decides an address in the first
+place, and why a redirect is a better answer than a menu item.</li>
+</ul>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../publications/datacite/index.html" rel="prev"><span>Previous</span>DOI registration</a><a class="pager__next" href="../resources/index.html" rel="next"><span>Next</span>Resources</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/28-redirect.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>
