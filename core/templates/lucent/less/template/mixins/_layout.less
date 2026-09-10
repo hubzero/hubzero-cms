@@ -5,7 +5,9 @@
 	position: absolute;
 }
 
-.stretch(@position) when (@position < 0px) {
+// A default so that a call with no argument can still bind it; the guard
+// then keeps this body out of the way and the no-argument one applies.
+.stretch(@position: 0px) when (@position < 0px) {
 	.ab();
 
 	top: @position;
