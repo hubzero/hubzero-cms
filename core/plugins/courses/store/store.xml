@@ -14,7 +14,7 @@
 		<filename plugin="store">store.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_courses_blog.ini</language>
+		<language tag="en-GB">en-GB.plg_courses_store.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
