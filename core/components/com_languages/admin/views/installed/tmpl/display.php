@@ -89,7 +89,7 @@ $pagination = $this->rows->pagination;
 			$cls = $i % 2;
 			if (isset($row->missing))
 			{
-				echo ' archived';
+				$cls .= ' archived';
 			}
 		?>
 			<tr class="row<?php echo $cls; ?>">
