@@ -423,7 +423,7 @@ class Migration
             // Generate the scope
             // This will be the path to the migration, minus the document root
             // ex: "core/migrations" or "app/components/com_example/migrations"
-            $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+            $scope = $this->scopeFromPath(dirname($fullpath));
 
             // Check to see if this file has already been run
             try {
@@ -1421,6 +1421,45 @@ class Migration
     }
 
     /**
+     * Split a path at the point the core or app tree starts
+     *
+     * A hub can be served by a core that lives outside its document root, so
+     * where the tree starts is found by looking for it rather than by taking
+     * the root off the front of the path.
+     *
+     * @param   string  $path  An absolute path inside the core or app tree
+     * @return  array|null  The path from the core/app segment on, or null
+     */
+    private function splitTreePath($path)
+    {
+        $parts = explode(DS, str_replace(PATH_ROOT . DS, '', $path));
+        $start = null;
+
+        foreach ($parts as $i => $part) {
+            if ($part === 'core' || $part === 'app') {
+                $start = $i;
+            }
+        }
+
+        return ($start === null) ? null : array_slice($parts, $start);
+    }
+
+    /**
+     * The place a migration lives, as the migration log records it
+     *
+     * @param   string  $path  Directory holding the migration
+     * @return  string
+     */
+    private function scopeFromPath($path)
+    {
+        $parts = $this->splitTreePath($path);
+
+        return ($parts === null)
+            ? str_replace(PATH_ROOT . DS, '', $path)
+            : implode(DS, $parts);
+    }
+
+    /**
      * Derive the expected namespace from a migration file path
      *
      * @param   string  $path  Full path to migration file
@@ -1428,15 +1467,14 @@ class Migration
      */
     private function deriveNamespaceFromPath($path)
     {
-        // Get the path relative to PATH_ROOT
-        $relativePath = str_replace(PATH_ROOT . DS, '', $path);
-        $parts = explode(DS, $relativePath);
+        $parts = $this->splitTreePath($path);
 
-        // Skip core/app prefix
-        $prefix = array_shift($parts);
-        if (!in_array($prefix, ['core', 'app'])) {
+        if ($parts === null) {
             return null;
         }
+
+        // Drop the core/app segment; it says nothing about the namespace
+        array_shift($parts);
 
         if (empty($parts)) {
             return null;
