@@ -684,32 +684,23 @@ MARK_PATH = (
 def build_book_cards(books: list[Book], config: dict) -> str:
     """The books as a shelf: one cover apiece, coloured by book."""
     series = f"Hubzero {config.get('version', '')}".strip()
-    groups: dict[str, list[Book]] = {}
+    covers = []
     for book in books:
-        groups.setdefault(book.audience, []).append(book)
-    blocks = []
-    for audience, group in groups.items():
-        covers = []
-        for book in group:
-            count = len(book.root.walk()) if book.root else 0
-            covers.append(
-                f'<article class="cover cover--{escape(book.slug)}">'
-                '<span class="cover__spine" aria-hidden="true"></span>'
-                '<span class="cover__face">'
-                '<svg class="cover__mark" viewBox="0 0 64 48" aria-hidden="true" focusable="false">'
-                f'<path fill="currentColor" d="{MARK_PATH}"/></svg>'
-                f'<span class="cover__series">{escape(series)}</span>'
-                f'<h3 class="cover__title"><a href="{escape(book.href)}">{escape(book.title)}</a></h3>'
-                '<span class="cover__rule" aria-hidden="true"></span>'
-                f'<span class="cover__blurb">{escape(book.summary)}</span>'
-                f'<span class="cover__meta">{count} page{"s" if count != 1 else ""}</span>'
-                "</span></article>"
-            )
-        blocks.append(
-            f'<section class="shelf"><h2 class="shelf__title">{escape(audience)}</h2>'
-            f'<div class="shelf__books">{"".join(covers)}</div></section>'
+        count = len(book.root.walk()) if book.root else 0
+        covers.append(
+            f'<article class="cover cover--{escape(book.slug)}">'
+            '<span class="cover__spine" aria-hidden="true"></span>'
+            '<span class="cover__face">'
+            '<svg class="cover__mark" viewBox="0 0 64 48" aria-hidden="true" focusable="false">'
+            f'<path fill="currentColor" d="{MARK_PATH}"/></svg>'
+            f'<span class="cover__series">{escape(series)}</span>'
+            f'<h3 class="cover__title"><a href="{escape(book.href)}">{escape(book.title)}</a></h3>'
+            '<span class="cover__rule" aria-hidden="true"></span>'
+            f'<span class="cover__blurb">{escape(book.summary)}</span>'
+            f'<span class="cover__meta">{count} page{"s" if count != 1 else ""}</span>'
+            "</span></article>"
         )
-    return "\n".join(blocks)
+    return '<div class="shelf">' + "".join(covers) + "</div>"
 
 
 # --------------------------------------------------------------------------- status report
