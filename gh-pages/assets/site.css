@@ -653,7 +653,7 @@ img { max-width: 100%; height: auto; }
 .start a strong { display: block; color: var(--accent-ink); }
 .start a span { font-size: .88rem; color: var(--ink-2); }
 
-.books { max-width: calc(68rem + 2 * clamp(1rem, 4vw, 3rem)); margin: 0 auto; padding: .5rem clamp(1rem, 4vw, 3rem) 0; }
+.books { max-width: calc(74rem + 2 * clamp(1rem, 4vw, 3rem)); margin: 0 auto; padding: .5rem clamp(1rem, 4vw, 3rem) 0; }
 
 /* ----------------------------------------------------------------- shelf */
 
@@ -661,12 +661,16 @@ img { max-width: 100%; height: auto; }
    mark, the same series line, the same proportions, and a colour of its own
    so a reader learns to recognise it. */
 
-/* One shelf, every volume the same height in its row, so the set reads as a
-   set rather than as five things that happen to be near each other. */
+/* One shelf, every volume the same size. A cover is a fixed width and keeps
+   a book's proportions, so slack in the row becomes space between the books
+   rather than stretching them out of shape. */
 .shelf {
+  --cover-w: 13rem;
+  --cover-ratio: 1.4;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
-  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, var(--cover-w));
+  justify-content: center;
+  gap: 1.25rem clamp(1.1rem, 2.5vw, 2rem);
   padding: 1.5rem 0 2rem;
 }
 
@@ -675,7 +679,8 @@ img { max-width: 100%; height: auto; }
   --cover-wash: rgba(11, 110, 140, .07);
   position: relative;
   display: flex;
-  min-height: 15.5rem;
+  width: var(--cover-w);
+  min-height: calc(var(--cover-w) * var(--cover-ratio));
   height: 100%;
   border-radius: 3px 7px 7px 3px;
   background: var(--paper);
@@ -848,8 +853,7 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 640px) {
   /* One volume across, and a larger one: a cover stretched the full width of
      a phone stops looking like a book, so it is capped and centred. */
-  .shelf { grid-template-columns: minmax(0, 1fr); gap: 1rem; justify-items: center; }
-  .cover { width: 100%; max-width: 16rem; min-height: 22.5rem; }
+  .shelf { --cover-w: 16rem; gap: 1rem; }
   .cover__title { font-size: 1.45rem; }
   .cover__mark { width: 1.9rem; }
 }
