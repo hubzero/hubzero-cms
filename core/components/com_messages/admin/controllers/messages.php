@@ -213,7 +213,7 @@ class Messages extends AdminController
 
 		$this->mail($row);
 
-		Notify::success(Lang::txt('COM_BLOG_ENTRY_SAVED'));
+		Notify::success(Lang::txt('JLIB_APPLICATION_SAVE_SUCCESS'));
 
 		if ($this->_task == 'apply')
 		{
@@ -262,7 +262,7 @@ class Messages extends AdminController
 			// Store new content
 			if (!$message->save())
 			{
-				Notify::error($row->getError());
+				Notify::error($message->getError());
 				continue;
 			}
 
@@ -274,10 +274,10 @@ class Messages extends AdminController
 			switch ($this->_task)
 			{
 				case 'publish':
-					$message = Lang::txt('COM_BLOG_ITEMS_PUBLISHED', $success);
+					$message = Lang::txt('COM_MESSAGES_N_ITEMS_PUBLISHED', $success);
 				break;
 				case 'unpublish':
-					$message = Lang::txt('COM_BLOG_ITEMS_UNPUBLISHED', $success);
+					$message = Lang::txt('COM_MESSAGES_N_ITEMS_UNPUBLISHED', $success);
 				break;
 			}
 
@@ -306,10 +306,10 @@ class Messages extends AdminController
 		// Incoming
 		$ids = Request::getArray('id', array());
 
+		$removed = 0;
+
 		if (count($ids) > 0)
 		{
-			$removed = 0;
-
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
@@ -334,7 +334,7 @@ class Messages extends AdminController
 
 		if ($removed)
 		{
-			Notify::success(Lang::txt('COM_BLOG_ENTRIES_DELETED'));
+			Notify::success(Lang::txt('COM_MESSAGES_N_ITEMS_DELETED', $removed));
 		}
 
 		// Set the redirect
@@ -381,7 +381,7 @@ class Messages extends AdminController
 			$lang->load('com_messages', PATH_APP) ||
 			$lang->load('com_messages', PATH_CORE . '/components/com_messages/admin');*/
 
-			$siteURL  = Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $table->message_id;
+			$siteURL  = Request::root() . 'administrator/index.php?option=com_messages&view=message&message_id=' . $message->get('message_id');
 			$sitename = \Config::get('sitename');
 
 			$subject = Lang::txt('COM_MESSAGES_NEW_MESSAGE_ARRIVED', $sitename);

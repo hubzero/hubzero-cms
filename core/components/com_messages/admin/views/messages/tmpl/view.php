@@ -14,9 +14,9 @@ Toolbar::title(Lang::txt('COM_MESSAGES_VIEW_PRIVATE_MESSAGE'), 'inbox.png');
 $sender = User::getInstance($this->item->user_id_from);
 if ($sender->authorise('core.admin') || $sender->authorise('core.manage', 'com_messages') && $sender->authorise('core.login.admin'))
 {
-	Toolbar::custom('message.reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
+	Toolbar::custom('reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
 }
-Toolbar::cancel('message.cancel');
+Toolbar::cancel('cancel');
 Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');
 
 ?>
@@ -24,7 +24,7 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');
 	<fieldset>
 		<ul class="adminformlist">
 			<li><?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_FROM_LABEL'); ?>
-			<?php echo $this->item->get('from_user_name');?></li>
+			<?php echo $this->escape($this->item->from->get('name'));?></li>
 
 			<li><?php echo Lang::txt('COM_MESSAGES_FIELD_DATE_TIME_LABEL'); ?>
 			<?php echo Date::of($this->item->date_time)->toSql();?></li>
