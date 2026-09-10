@@ -105,14 +105,14 @@ class Install extends Base implements CommandInterface
         echo "This is optional and can be skipped for production installations.\n";
         echo "\n";
 
-        $loadSample = $unattended
-            ? Install\Answers::wantsSampleData()
-            : $this->promptYesNo("Load sample data?", false);
+        $set = $unattended
+            ? Install\Answers::dataSet()
+            : ($this->promptYesNo("Load sample data?", false) ? Install\Schema::DEFAULT_DATA_SET : null);
 
-        if ($loadSample) {
-            if (!Install\Schema::loadSampleData($ansi, PATH_APP, PATH_CORE)) {
-                $this->output->error('Sample data loading failed.');
-                // Continue anyway - sample data is optional
+        if ($set) {
+            if (!Install\Schema::loadDataSet($set, $ansi, PATH_APP, PATH_CORE)) {
+                $this->output->error('Loading the ' . $set . ' data failed.');
+                // Continue anyway - the starting content is optional
             }
         } else {
             echo "\n";
@@ -318,9 +318,12 @@ class Install extends Base implements CommandInterface
     }
 
     /**
-     * Load sample data (optional)
+     * Load a set of starting content
      *
-     * @museDescription  Load sample/demo data into database
+     * @museDescription  Load a set of starting content into the database
+     *
+     * Pass --set=<name> to choose one; without it the answer file decides,
+     * and failing that the starter set is loaded.
      *
      * @return  void
      **/
@@ -341,10 +344,10 @@ class Install extends Base implements CommandInterface
         }
 
         echo "\n";
-        echo "\033[33mSample Data\033[39m\n";
-        echo "-----------\n";
+        echo "\033[33mStarting Content\033[39m\n";
+        echo "----------------\n";
         echo "\n";
-        echo "Sample data includes demo content to help you get started.\n";
+        echo "A set of starting content gives a new hub something to show.\n";
         echo "This is optional and can be skipped for production installations.\n";
         echo "\n";
 
@@ -355,8 +358,21 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        if (!Install\Schema::loadSampleData($ansi, PATH_APP, PATH_CORE)) {
-            $this->output->error('Sample data loading failed.');
+        $set = Install\Answers::isUnattended()
+            ? Install\Answers::dataSet()
+            : Install\Schema::DEFAULT_DATA_SET;
+
+        $set = $this->arguments->getOpt('set') ?: $set;
+
+        if (!$set) {
+            echo "\n";
+            echo "The answers ask for no starting content.\n";
+            echo "\n";
+            return;
+        }
+
+        if (!Install\Schema::loadDataSet($set, $ansi, PATH_APP, PATH_CORE)) {
+            $this->output->error('Loading the ' . $set . ' data failed.');
         }
     }
 
