@@ -28,7 +28,7 @@ $this->css('admin.subscriptions.css');
 		<label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
 		<select name="filter_status" id="filter-status" class="filter filter-submit">
 			<option value="pending"<?php if ($this->filters['status'] == 'pending') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_PENDING'); ?></option>
-			<option value="active"<?php if ($this->filters['status'] == 'processed') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE'); ?></option>
+			<option value="active"<?php if ($this->filters['status'] == 'active') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE'); ?></option>
 			<option value="cancelled"<?php if ($this->filters['status'] == 'cancelled') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED'); ?></option>
 			<option value="all"<?php if ($this->filters['status'] == 'all') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ALL'); ?></option>
 		</select>
@@ -63,6 +63,8 @@ $this->css('admin.subscriptions.css');
 		$k = 0;
 		foreach ($this->rows as $row)
 		{
+			$service = $row->service;
+
 			$name  = Lang::txt('COM_SERVICES_UNKNOWN');
 			$login = Lang::txt('COM_SERVICES_UNKNOWN');
 			$ruser = User::getInstance($row->uid);
@@ -73,7 +75,7 @@ $this->css('admin.subscriptions.css');
 			}
 
 			$status = '';
-			$pending = Lang::txt('COM_SERVICES_FOR_UNITS', $row->currency . ' ' . $row->pendingpayment, $row->pendingunits);
+			$pending = Lang::txt('COM_SERVICES_FOR_UNITS', $service->get('currency') . ' ' . $row->pendingpayment, $row->pendingunits);
 
 			$expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
@@ -102,7 +104,7 @@ $this->css('admin.subscriptions.css');
 				</td>
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
-						<span><?php echo $this->escape($row->category) . ' -- ' . $this->escape($row->title); ?></span>
+						<span><?php echo $this->escape($service->get('category')) . ' -- ' . $this->escape($service->get('title')); ?></span>
 					</a>
 				</td>
 				<td>
