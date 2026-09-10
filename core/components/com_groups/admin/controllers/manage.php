@@ -665,7 +665,7 @@ class Manage extends AdminController
 		}
 		elseif (count($gitLabGroup) > 1)
 		{  // If search returns more than one match, return with error.
-			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE' . $groupName));
+			Notify::error(Lang::txt('COM_GROUPS_GITLAB_GET_GROUPS_MORE_THAN_ONE') . $groupName);
 			return;
 		}
 		elseif (count($gitLabGroup) == 1)
@@ -875,7 +875,7 @@ class Manage extends AdminController
 				}
 
 				// url
-				$url_bits = parse_url($gitLabProject['http_url_to_repo']);
+				$url_bits = parse_url($gitlabProject['http_url_to_repo']);
 				$gitLabUrl = $url_bits["scheme"] . '://oauth2:' . $gitlabKey . '@' . $url_bits["host"] . $url_bits["path"];
 
 				// setup stage environment
