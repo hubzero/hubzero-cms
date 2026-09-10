@@ -17,7 +17,7 @@ $p_url = Route::url($route . '&active=team');
 ?>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_INVITE_BY_EMAIL_TO_JOIN'); ?></h3>
-<form id="hubForm-ajax" method="post" action="<?php echo $p->url; ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo $p_url; ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="sendinvite" />
