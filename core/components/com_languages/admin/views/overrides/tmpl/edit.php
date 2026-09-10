@@ -62,7 +62,7 @@ $this->css('overrider.css')
 					<textarea name="fields[override]" id="field-override" rows="5" cols="50"><?php echo $this->escape($this->item->override); ?></textarea>
 				</div>
 
-				<?php if ($this->get('client') == 'administrator'): ?>
+				<?php if ($this->item->client == 'administrator'): ?>
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_DESC'); ?>">
 						<input type="checkbox" name="fields[both]" id="field-both" value="true" />
 						<label for="field-override"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_LABEL'); ?>:</label>

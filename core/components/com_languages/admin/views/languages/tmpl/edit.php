@@ -125,8 +125,8 @@ $this->js();
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_META_DESCRIPTION_DESC'); ?>">
-						<label for="field-metakey"><?php echo Lang::txt('JFIELD_META_DESCRIPTION_LABEL'); ?>:</label>
-						<textarea name="fields[metakey]" id="field-metakey" rows="3" cols="30"><?php echo $this->escape($this->item->metakey); ?></textarea>
+						<label for="field-metadesc"><?php echo Lang::txt('JFIELD_META_DESCRIPTION_LABEL'); ?>:</label>
+						<textarea name="fields[metadesc]" id="field-metadesc" rows="3" cols="30"><?php echo $this->escape($this->item->metadesc); ?></textarea>
 					</div>
 				</fieldset>
 
