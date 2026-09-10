@@ -171,7 +171,7 @@ class Menus extends AdminController
 		Event::trigger('onMenuAfterSave', array(&$row, $isNew));
 
 		// Notify of success
-		Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
+		Notify::success(Lang::txt('COM_MENUS_MENU_SAVE_SUCCESS'));
 
 		// Redirect to main listing or go back to edit form
 		if ($this->getTask() == 'apply')
