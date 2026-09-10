@@ -257,14 +257,31 @@ def main() -> int:
     lines.append("")
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
+    how_to_read = (
+        "\n## How to read these tables\n\n"
+        "- **Default** is the value written in the manifest, which is what a hub "
+        "runs on until someone saves the screen. It is not always what the code "
+        "falls back to when the setting is absent, and where the two disagree the "
+        "narrative chapter for that extension says so.\n"
+        "- **Type** is the form field the administrator interface renders. An "
+        "unrecognised type falls back to a plain text box.\n"
+        "- **Description** is the manifest's description string resolved through "
+        "the extension's language files. A missing string leaves the raw key.\n"
+        "- A parameter listed here is not proof that anything reads it. Several "
+        "shipped settings are stored and never used again; those are recorded in "
+        "the chapter for the extension.\n"
+    )
     (OUT / "components" / "README.md").write_text(
         HEADER.format(source="core/components/*/config/config.xml") + "# Component options\n\n"
-        "One page per component with a `config/config.xml`, listing every parameter with its label, type, default, and description.\n",
+        "One page per component with a `config/config.xml`, listing every parameter with its label, "
+        "type, default, and description. These are the settings behind each component's **Options** "
+        "button in the administrator interface.\n" + how_to_read,
         encoding="utf-8",
     )
     (OUT / "plugins" / "README.md").write_text(
         HEADER.format(source="core/plugins/*/*/*.xml") + "# Plugin parameters\n\n"
-        "One page per plugin group, listing every plugin in the group and its parameters.\n",
+        "One page per plugin group, listing every plugin in the group and its parameters. These are "
+        "the settings behind each plugin's row under **Extensions** > **Plug-in Manager**.\n" + how_to_read,
         encoding="utf-8",
     )
     print(f"{len(components)} component pages ({sum(c for _, _, c in components)} parameters), "
