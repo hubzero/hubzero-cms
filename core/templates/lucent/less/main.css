@@ -1,14 +1,3 @@
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-/* WCAG: #ffd2c3 on #ba4a3b = 3.44:1; #fff = 4.67:1 */
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .hide-text {
   font: 0/0 a;
   color: transparent;
@@ -39,8 +28,8 @@
 }
 #grid .col {
   float: left;
-  margin-right: 3.22580645%;
-  *margin-right: 3.17204301%;
+  margin-right: 3.2258064516129%;
+  *margin-right: 3.1720430107527%;
 }
 .basicColumn {
   float: none !important;
@@ -51,11 +40,6 @@
 .basicColumn:nth-last-child(1) {
   margin-bottom: 0;
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 @font-face {
   font-family: 'Fontcons';
   font-display: block;
@@ -64,11 +48,6 @@
   font-weight: normal;
   font-style: normal;
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 *[class^="icon-"]:before,
 *[class*=" icon-"]:before {
   font-family: "Fontcons";
@@ -957,11 +936,6 @@
 .icon-extract:before {
   content: "\f069";
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .grid {
   max-width: 100%;
   *zoom: 1;
@@ -992,52 +966,51 @@
 .six.sixth {
   margin-right: 0;
 }
-/* COLUMN WIDTH ON DISPLAYS +768px */
 .columns,
 .grid [class*="span"] {
   float: left;
-  margin-right: 3.22580645%;
-  *margin-right: 3.17204301%;
+  margin-right: 3.2258064516129%;
+  *margin-right: 3.1720430107527%;
 }
 .five.columns {
-  width: 17.41935484%;
+  width: 17.41935483870968%;
 }
 .five.columns.first.second,
 .five.columns.second.third,
 .five.columns.third.fourth,
 .five.columns.fourth.fifth {
-  width: 38.46153846%;
+  width: 38.46153846153846%;
 }
 .five.columns.first.second.third,
 .five.columns.second.third.fourth,
 .five.columns.third.fourth.fifth {
-  width: 58.97435897%;
+  width: 58.97435897435897%;
 }
 .five.columns.first.second.third.fourth,
 .five.columns.second.third.fourth.fifth {
-  width: 79.48717949%;
+  width: 79.48717948717948%;
 }
 .grid .span-whole,
 .grid .span12 {
   width: 100%;
-  *width: 99.94623656%;
+  *width: 99.94623655914%;
 }
 .grid .span11 {
-  width: 91.39784946%;
-  *width: 91.34408602%;
+  width: 91.397849462366%;
+  *width: 91.344086021505%;
 }
 .six.columns.first.second.third.fourth.fifth,
 .six.columns.second.third.fourth.fifth.sixth,
 .grid .span10 {
-  width: 82.79569892%;
-  *width: 82.74193548%;
+  width: 82.795698924731%;
+  *width: 82.741935483871%;
 }
 .four.columns.first.second.third,
 .four.columns.second.third.fourth,
 .grid .span-three-quarters,
 .grid .span9 {
-  width: 74.19354839%;
-  *width: 74.13978495%;
+  width: 74.193548387097%;
+  *width: 74.139784946237%;
 }
 .six.columns.first.second.third.fourth,
 .six.columns.second.third.fourth.fifth,
@@ -1046,12 +1019,12 @@
 .three.columns.second.third,
 .grid .span-two-thirds,
 .grid .span8 {
-  width: 65.59139785%;
-  *width: 65.53763441%;
+  width: 65.591397849462%;
+  *width: 65.537634408602%;
 }
 .grid .span7 {
-  width: 56.98924731%;
-  *width: 56.93548387%;
+  width: 56.989247311828%;
+  *width: 56.935483870968%;
 }
 .six.columns.first.second.third,
 .six.columns.second.third.fourth,
@@ -1063,12 +1036,12 @@
 .two.columns,
 .grid .span-half,
 .grid .span6 {
-  width: 48.38709677%;
-  *width: 48.33333333%;
+  width: 48.387096774194%;
+  *width: 48.333333333333%;
 }
 .grid .span5 {
-  width: 39.78494624%;
-  *width: 39.7311828%;
+  width: 39.784946236559%;
+  *width: 39.731182795699%;
 }
 .six.columns.first.second,
 .six.columns.second.third,
@@ -1078,84 +1051,84 @@
 .three.columns,
 .grid .span-third,
 .grid .span4 {
-  width: 31.1827957%;
-  *width: 31.12903226%;
+  width: 31.182795698925%;
+  *width: 31.129032258065%;
 }
 .four.columns,
 .grid .span-quarter,
 .grid .span3 {
-  width: 22.58064516%;
-  *width: 22.52688172%;
+  width: 22.58064516129%;
+  *width: 22.52688172043%;
 }
 .six.columns,
 .grid .span2 {
-  width: 13.97849462%;
-  *width: 13.92473118%;
+  width: 13.978494623656%;
+  *width: 13.924731182796%;
 }
 .grid .span1 {
-  width: 5.37634409%;
-  *width: 5.32258065%;
+  width: 5.3763440860215%;
+  *width: 5.3225806451613%;
 }
 .grid .offset-whole,
 .grid .offset12 {
-  margin-left: 103.22580645%;
-  *margin-left: 103.11827957%;
+  margin-left: 103.22580645161%;
+  *margin-left: 103.11827956989%;
 }
 .grid .offset11 {
-  margin-left: 94.62365591%;
-  *margin-left: 94.51612903%;
+  margin-left: 94.623655913978%;
+  *margin-left: 94.516129032258%;
 }
 .grid .offset10 {
-  margin-left: 86.02150538%;
-  *margin-left: 85.91397849%;
+  margin-left: 86.021505376344%;
+  *margin-left: 85.913978494624%;
 }
 .grid .offset-three-quarters,
 .grid .offset9 {
-  margin-left: 77.41935484%;
-  *margin-left: 77.31182796%;
+  margin-left: 77.41935483871%;
+  *margin-left: 77.311827956989%;
 }
 .grid .offset-two-thirds,
 .grid .offset8 {
-  margin-left: 68.8172043%;
-  *margin-left: 68.70967742%;
+  margin-left: 68.817204301075%;
+  *margin-left: 68.709677419355%;
 }
 .grid .offset7 {
-  margin-left: 60.21505376%;
-  *margin-left: 60.10752688%;
+  margin-left: 60.215053763441%;
+  *margin-left: 60.10752688172%;
 }
 .grid .offset-half,
 .grid .offset6 {
-  margin-left: 51.61290323%;
-  *margin-left: 51.50537634%;
+  margin-left: 51.612903225806%;
+  *margin-left: 51.505376344086%;
 }
 .grid .offset5 {
-  margin-left: 43.01075269%;
-  *margin-left: 42.90322581%;
+  margin-left: 43.010752688172%;
+  *margin-left: 42.903225806452%;
 }
 .grid .offset-third,
 .grid .offset4 {
-  margin-left: 34.40860215%;
-  *margin-left: 34.30107527%;
+  margin-left: 34.408602150538%;
+  *margin-left: 34.301075268817%;
 }
 .grid .offset-quarter,
 .grid .offset3 {
-  margin-left: 25.80645161%;
-  *margin-left: 25.69892473%;
+  margin-left: 25.806451612903%;
+  *margin-left: 25.698924731183%;
 }
 .grid .offset2 {
-  margin-left: 17.20430108%;
-  *margin-left: 17.09677419%;
+  margin-left: 17.204301075269%;
+  *margin-left: 17.096774193548%;
 }
 .grid .offset1 {
-  margin-left: 8.60215054%;
-  *margin-left: 8.49462366%;
+  margin-left: 8.6021505376344%;
+  *margin-left: 8.494623655914%;
 }
 @media only screen and (max-width: 1023px) and (min-width: 901px) {
   .grid:not(.nobreak) .col:first-child:nth-last-child(6),
   .grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col {
     float: left;
-    width: 31.1827957%;
-    *width: 31.12903226%;
+    width: 31.182795698925%;
+    *width: 31.129032258065%;
   }
   .grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(3n) {
     margin-right: 0;
@@ -1181,8 +1154,8 @@
   .grid:not(.nobreak) .col:first-child:nth-last-child(4),
   .grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col {
     float: left;
-    width: 48.38709677%;
-    *width: 48.33333333%;
+    width: 48.387096774194%;
+    *width: 48.333333333333%;
   }
   .grid:not(.nobreak) .col:first-child:nth-last-child(4) ~ .col:nth-child(2) {
     margin-right: 0;
@@ -1230,8 +1203,8 @@
   .grid:not(.nobreak) .col:first-child:nth-last-child(6),
   .grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col {
     float: left;
-    width: 48.38709677%;
-    *width: 48.33333333%;
+    width: 48.387096774194%;
+    *width: 48.333333333333%;
   }
   .grid:not(.nobreak) .col:first-child:nth-last-child(6) ~ .col:nth-child(2n) {
     margin-right: 0;
@@ -1269,43 +1242,6 @@
     margin-bottom: 0;
   }
 }
-/*
-@media (max-width: 800px) {
-	.grid .span-quarter,
-	.grid .span3 {
-		#grid > .span(6);
-		&:nth-child(2) {
-			margin-right: 0;
-		}
-	}
-	.grid .span2 {
-		#grid > .span(4);
-		&:nth-child(3) {
-			margin-right: 0;
-		}
-	}
-	.grid .span1 {
-		#grid > .span(2);
-		&:nth-child(6) {
-			margin-right: 0;
-		}
-	}
-}
-@media (max-width: 460px) {
-	.columns,
-	.grid [class*="span"] {
-		float: none;
-		width: auto;
-		margin-left: 0;
-		margin-right: 0;
-	}
-}
-*/
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .fancybox-wrap,
 .fancybox-skin,
 .fancybox-outer,
@@ -1331,7 +1267,7 @@
 .fancybox-skin {
   position: relative;
   background: #000;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.2);
   color: #444;
   text-shadow: none;
   -webkit-border-radius: 4px;
@@ -1419,8 +1355,7 @@ a.fancybox-close:hover,
   cursor: pointer;
   text-decoration: none;
   background: transparent url('/core/assets/images/overlay/fancybox_blank.gif');
-  /* helps IE */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
   z-index: 8040;
 }
 a.fancybox-prev,
@@ -1460,7 +1395,6 @@ a.fancybox-next,
   left: -9999px;
   visibility: hidden;
 }
-/* Overlay helper */
 .fancybox-lock {
   overflow: hidden;
 }
@@ -1482,16 +1416,12 @@ a.fancybox-next,
   overflow: auto;
   overflow-y: scroll;
 }
-/* Title helper */
 .fancybox-title {
   visibility: hidden;
   font: normal 13px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
   text-shadow: none;
   z-index: 8050;
-}
-.fancybox-opened .fancybox-title {
-  /*visibility: visible;*/
 }
 .fancybox-title-float-wrap {
   position: absolute;
@@ -1506,7 +1436,7 @@ a.fancybox-next,
   margin-right: -100%;
   padding: 2px 20px;
   background: transparent;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0,0,0,0.8);
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -1531,13 +1461,8 @@ a.fancybox-next,
   color: #fff;
   padding: 10px;
   background: #000;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0,0,0,0.8);
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .tooltip {
   min-width: 50px;
   max-width: 200px;
@@ -1616,11 +1541,6 @@ a.fancybox-next,
 .show-hover-target:hover .show-hover-child {
   opacity: 1;
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .tags {
   margin-left: 0;
   font-size: 0.85em !important;
@@ -1649,8 +1569,8 @@ a.fancybox-next,
   border-radius: 0 3px 3px 0 !important;
 }
 .tags li a small.tag-before,
-.tag small.tag-before,
 .tags li a:before,
+.tag small.tag-before,
 .tag:before {
   content: "";
   border-color: transparent #fadea3 transparent transparent !important;
@@ -1667,8 +1587,8 @@ a.fancybox-next,
   padding: 0 !important;
 }
 .tags li a small.tag-after,
-.tag small.tag-after,
 .tags li a:after,
+.tag small.tag-after,
 .tag:after {
   content: "";
   height: 0.375em;
@@ -1685,7 +1605,7 @@ a.fancybox-next,
 .tags li a span,
 .tag span {
   background-color: #fdefd3;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255,255,255,0.2);
   display: inline-block;
   *display: inline;
   *zoom: 1;
@@ -1704,11 +1624,11 @@ a.fancybox-next,
 .tags li a:hover span,
 .tag:hover span {
   background-color: #f6c052;
-  background-color: hsla(0, 0%, 100%, 0.2);
+  background-color: rgba(255,255,255,0.2);
 }
 .tags li a:hover small.tag-before,
-.tag:hover small.tag-before,
 .tags li a:hover:before,
+.tag:hover small.tag-before,
 .tag:hover:before {
   border-color: transparent #f3ae22 transparent transparent !important;
 }
@@ -1748,11 +1668,6 @@ a.fancybox-next,
 .tag.core:hover:before {
   border-color: transparent #426A7F transparent transparent !important;
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .voting {
   white-space: nowrap;
 }
@@ -1852,11 +1767,6 @@ a.fancybox-next,
     top: 0;
   }
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 ol.comments {
   list-style-type: none !important;
   margin: 1em 0 0 0;
@@ -1928,9 +1838,9 @@ ol.comments .comment-content {
   background-color: #fff;
   border: 1px solid #d9d9d9;
   padding: 0.61803399em 1.61803399em;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
 }
 ol.comments .comment-content:hover .comment-options {
   visibility: visible;
@@ -2060,14 +1970,14 @@ ol.comments .addcomment .reply-anonymous-label {
   padding: 1em 1em 1em 4em;
   display: block;
   position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0,0,0,0.1);
   -webkit-border-radius: 0.25em;
   -moz-border-radius: 0.25em;
   border-radius: 0.25em;
   color: #666;
 }
 .comment-attachments .attachment:hover {
-  border-color: rgba(0, 0, 0, 0.4);
+  border-color: rgba(0,0,0,0.4);
 }
 .comment-attachments .attachment p {
   margin: 0;
@@ -2088,7 +1998,7 @@ ol.comments .addcomment .reply-anonymous-label {
   line-height: 1;
   content: '\f0f5';
   font-family: 'Fontcons';
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(0,0,0,0.4);
 }
 .comment-attachments .attachment.pdf:before,
 .comment-attachments .attachment.rtf:before,
@@ -2172,13 +2082,9 @@ ol.comments .date,
 ol.comments .time {
   margin-left: 0.7em;
 }
-/* Comment form */
 #commentform {
   margin: 0;
   padding: 0;
-  /*p.comment-member-photo + fieldset {
-			margin-left: 70px;
-		}*/
 }
 #commentform fieldset {
   margin: 0;
@@ -2188,9 +2094,9 @@ ol.comments .time {
   background-color: #fff;
   border: 1px solid #0fa1ca;
   padding: 0.61803399em 1.61803399em 0 1.61803399em;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
 }
 #commentform fieldset fieldset {
   border: 1px solid #ddd;
@@ -2216,7 +2122,6 @@ ol.comments .time {
   color: #aaa;
   margin: 0.61803399em -1.61803399em 0 -1.61803399em;
   background: #f2f2f2;
-  /*#fafafa;*/
 }
 #commentform .required,
 #commentform .optional {
@@ -2270,7 +2175,6 @@ ol.comments .time {
 #commentform #comment-anonymous-label {
   width: 50%;
 }
-/* Wiki Reference */
 table.wiki-reference {
   border: none;
   font-size: 11px;
@@ -2369,11 +2273,6 @@ table.wiki-reference tbody td {
     border-color: transparent #fff transparent transparent;
   }
 }
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
 .article_separator {
   display: none;
 }
@@ -2485,7 +2384,7 @@ img.align-left {
   left: 0;
   position: absolute;
   opacity: 0;
-  filter: alpha(opacity=0);
+  filter: Alpha(Opacity=0);
 }
 .icn {
   display: inline-flex;
@@ -2525,64 +2424,64 @@ a.btn {
   border: none;
   color: #fff;
   background-color: #003F68;
-  -moz-transition: all ease-in 0.3s;
-  -o-transition: all ease-in 0.3s;
-  -webkit-transition: all ease-in 0.3s;
-  transition: all ease-in 0.3s;
+  -moz-transition: all ease-in .3s;
+  -o-transition: all ease-in .3s;
+  -webkit-transition: all ease-in .3s;
+  transition: all ease-in .3s;
 }
 input[type="button"]:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover,
-.btn:hover,
-a.btn:hover,
 input[type="button"]:focus,
-input[type="submit"]:focus,
-input[type="reset"]:focus,
-.btn:focus,
-a.btn:focus,
 input[type="button"]:visited:hover,
+input[type="submit"]:hover,
+input[type="submit"]:focus,
 input[type="submit"]:visited:hover,
+input[type="reset"]:hover,
+input[type="reset"]:focus,
 input[type="reset"]:visited:hover,
+.btn:hover,
+.btn:focus,
 .btn:visited:hover,
+a.btn:hover,
+a.btn:focus,
 a.btn:visited:hover {
   background-color: #00548A;
 }
 input[type="button"].disabled,
-input[type="submit"].disabled,
-input[type="reset"].disabled,
-.btn.disabled,
-a.btn.disabled,
 input[type="button"][disabled],
+input[type="submit"].disabled,
 input[type="submit"][disabled],
+input[type="reset"].disabled,
 input[type="reset"][disabled],
+.btn.disabled,
 .btn[disabled],
+a.btn.disabled,
 a.btn[disabled] {
   cursor: not-allowed;
   pointer-events: none;
   background-image: none;
 }
 input[type="button"][class^="icon-"],
-input[type="submit"][class^="icon-"],
-input[type="reset"][class^="icon-"],
-.btn[class^="icon-"],
-a.btn[class^="icon-"],
 input[type="button"][class*=" icon-"],
+input[type="submit"][class^="icon-"],
 input[type="submit"][class*=" icon-"],
+input[type="reset"][class^="icon-"],
 input[type="reset"][class*=" icon-"],
+.btn[class^="icon-"],
 .btn[class*=" icon-"],
+a.btn[class^="icon-"],
 a.btn[class*=" icon-"] {
   display: inline-flex;
   align-items: center;
 }
 input[type="button"][class^="icon-"]:before,
-input[type="submit"][class^="icon-"]:before,
-input[type="reset"][class^="icon-"]:before,
-.btn[class^="icon-"]:before,
-a.btn[class^="icon-"]:before,
 input[type="button"][class*=" icon-"]:before,
+input[type="submit"][class^="icon-"]:before,
 input[type="submit"][class*=" icon-"]:before,
+input[type="reset"][class^="icon-"]:before,
 input[type="reset"][class*=" icon-"]:before,
+.btn[class^="icon-"]:before,
 .btn[class*=" icon-"]:before,
+a.btn[class^="icon-"]:before,
 a.btn[class*=" icon-"]:before {
   margin-right: 0.2em;
   font-family: "Fontcons";
@@ -2592,14 +2491,14 @@ a.btn[class*=" icon-"]:before {
   font-weight: normal;
 }
 input[type="button"].opposite[class^="icon-"]:before,
-input[type="submit"].opposite[class^="icon-"]:before,
-input[type="reset"].opposite[class^="icon-"]:before,
-.btn.opposite[class^="icon-"]:before,
-a.btn.opposite[class^="icon-"]:before,
 input[type="button"].opposite[class*=" icon-"]:before,
+input[type="submit"].opposite[class^="icon-"]:before,
 input[type="submit"].opposite[class*=" icon-"]:before,
+input[type="reset"].opposite[class^="icon-"]:before,
 input[type="reset"].opposite[class*=" icon-"]:before,
+.btn.opposite[class^="icon-"]:before,
 .btn.opposite[class*=" icon-"]:before,
+a.btn.opposite[class^="icon-"]:before,
 a.btn.opposite[class*=" icon-"]:before {
   left: auto;
   right: 0;
@@ -2723,7 +2622,7 @@ input[type="file"],
 input[type="email"],
 textarea {
   max-width: 100%;
-  padding: 0.4045085em;
+  padding: 0.4045084975em;
   border: 1px solid #666;
   background: #F0F0F0;
 }
@@ -2734,7 +2633,6 @@ input[type="password"]:focus,
 input[type="file"]:focus {
   background-color: #fff;
 }
-/* HUB Forms */
 #hubForm {
   position: relative;
 }
@@ -2808,7 +2706,6 @@ input[type="file"]:focus {
 #hubForm table select {
   width: auto;
 }
-/* Entries search */
 form.search fieldset {
   padding: 0;
 }
@@ -2835,7 +2732,6 @@ form.search fieldset p input[type="submit"] {
 .placeholder-support {
   color: #c53432;
 }
-/* HUB Forms */
 #hubForm {
   position: relative;
 }
@@ -3055,7 +2951,6 @@ form.search fieldset p input[type="submit"] {
 .subject #hubForm .submit {
   margin-right: 0;
 }
-/* Entries search */
 .data-entry {
   display: flex;
   margin-bottom: 3rem;
@@ -3078,13 +2973,13 @@ form.search fieldset p input[type="submit"] {
   margin: 0;
   font-size: 1em;
   line-height: 1.61803399em;
-  padding: 7px 5px 8px 5px\9;
+  padding: 7px 5px 8px 5px \9;
 }
 .data-entry .applied-tags {
   margin-top: 0px;
   padding: 0.5em 1em;
   background-color: #888;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255,255,255,0.2);
 }
 table {
   clear: left;
@@ -3096,14 +2991,14 @@ table {
 }
 table caption {
   line-height: 1.6em;
-  padding: 0.4045085em 0.61803399em;
+  padding: 0.4045084975em 0.61803399em;
   text-align: left;
 }
 table th,
 table td {
   vertical-align: top;
   line-height: 1.6em;
-  padding: 0.4045085em 0.61803399em;
+  padding: 0.4045084975em 0.61803399em;
   border-bottom: 1px solid #dadada;
 }
 table th {
@@ -3637,7 +3532,6 @@ ul.sub-menu li.active a:hover {
   margin-right: 0.2em;
   color: #555;
 }
-/* Entries */
 table.entries {
   border-collapse: collapse;
 }
@@ -3722,7 +3616,7 @@ table.entries {
   overflow: hidden;
   width: 1.2em;
   height: 1.2em;
-  margin: 0.5em 0 0 0;
+  margin: .5em 0 0 0;
   *zoom: expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class=entry-id-before>&#xf0a1;&nbsp;</small>' + this.innerHTML);
 }
 .entries small.entry-id-before,
@@ -3828,18 +3722,18 @@ table.entries {
   -webkit-border-radius: 0.25em;
   -moz-border-radius: 0.25em;
   border-radius: 0.25em;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
 }
 .entry .entry-content {
   margin: 0 0 1em 70px;
   position: relative;
   border: 1px solid #999;
-  padding: 0.61803399em 1.61803399em;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
-  -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.17);
+  padding: .61803399em 1.61803399em;
+  -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.17);
+  -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.17);
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.17);
 }
 .entry .entry-content:before,
 .entry .entry-content:after {
@@ -3948,14 +3842,14 @@ table.entries {
   margin: 1em 0;
 }
 .help h3:first-child,
-.info h3:first-child,
-.warning h3:first-child,
-.error h3:first-child,
-.passed h3:first-child,
 .help h4:first-child,
+.info h3:first-child,
 .info h4:first-child,
+.warning h3:first-child,
 .warning h4:first-child,
+.error h3:first-child,
 .error h4:first-child,
+.passed h3:first-child,
 .passed h4:first-child {
   margin-top: 0;
 }
@@ -4208,7 +4102,6 @@ section .inner {
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
-/* Asides (right side) */
 .aside fieldset {
   padding: 0;
 }
@@ -4307,8 +4200,8 @@ section .inner {
   border-top: none;
 }
 .aside .container ol ol,
-.aside .container ul ol,
 .aside .container ol ul,
+.aside .container ul ol,
 .aside .container ul ul {
   padding: 0;
   margin-left: 2em;
@@ -4402,8 +4295,8 @@ section .inner {
   border-bottom: none;
 }
 .aside .container ol ol ul,
-.aside .container ul ul ul,
 .aside .container ol ol ol,
+.aside .container ul ul ul,
 .aside .container ul ul ol {
   border-top: 0;
 }
@@ -4454,7 +4347,6 @@ section .inner {
     width: 250px;
   }
 }
-/* Metadata */
 .metadata p {
   font-size: 90%;
   margin: 0.2em 0;
@@ -4474,13 +4366,11 @@ section .inner {
   border: none !important;
   padding-bottom: 6px;
 }
-/* [!] Target Opera */
 html.opera .entry-search ul.token-input-list-act li input[type="text"],
 html.opera .entry-search ul.token-input-list-act li input,
 html.opera .entry-search ul.textboxlist-holder li input {
   padding-bottom: 8px;
 }
-/* [!] Target Firefox */
 @-moz-document url-prefix() {
   .entry-search ul.token-input-list-act li input[type="text"],
   .entry-search ul.token-input-list-act li input,
@@ -4506,8 +4396,8 @@ body .content form.search {
   padding-left: 4rem;
 }
 #page_main #members-account-section ul#passrules li.passed,
-#page_main .com_members ul#passrules li.passed,
 #page_main #members-account-section ul#passrules li.error,
+#page_main .com_members ul#passrules li.passed,
 #page_main .com_members ul#passrules li.error {
   padding: 1rem;
   padding-left: 4rem;
@@ -4540,114 +4430,50 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit;
 }
-/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
-/* Document
-   ========================================================================== */
-/**
- * 1. Correct the line height in all browsers.
- * 2. Prevent adjustments of font size after orientation changes in iOS.
- */
 html {
   line-height: 1.15;
-  /* 1 */
   -webkit-text-size-adjust: 100%;
-  /* 2 */
 }
-/* Sections
-   ========================================================================== */
-/**
- * Remove the margin in all browsers.
- */
 body {
   margin: 0;
 }
-/**
- * Render the `main` element consistently in IE.
- */
 main {
   display: block;
 }
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
-/* Grouping content
-   ========================================================================== */
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
 hr {
   box-sizing: content-box;
-  /* 1 */
   height: 0;
-  /* 1 */
   overflow: visible;
-  /* 2 */
 }
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
 pre {
   font-family: monospace, monospace;
-  /* 1 */
   font-size: 1em;
-  /* 2 */
 }
-/* Text-level semantics
-   ========================================================================== */
-/**
- * Remove the gray background on active links in IE 10.
- */
 a {
   background-color: transparent;
 }
-/**
- * 1. Remove the bottom border in Chrome 57-
- * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
- */
 abbr[title] {
   border-bottom: none;
-  /* 1 */
   text-decoration: underline;
-  /* 2 */
   text-decoration: underline dotted;
-  /* 2 */
 }
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
 b,
 strong {
   font-weight: bolder;
 }
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
 code,
 kbd,
 samp {
   font-family: monospace, monospace;
-  /* 1 */
   font-size: 1em;
-  /* 2 */
 }
-/**
- * Add the correct font size in all browsers.
- */
 small {
   font-size: 80%;
 }
-/**
- * Prevent `sub` and `sup` elements from affecting the line height in
- * all browsers.
- */
 sub,
 sup {
   font-size: 75%;
@@ -4661,64 +4487,33 @@ sub {
 sup {
   top: -0.5em;
 }
-/* Embedded content
-   ========================================================================== */
-/**
- * Remove the border on images inside links in IE 10.
- */
 img {
   border-style: none;
 }
-/* Forms
-   ========================================================================== */
-/**
- * 1. Change the font styles in all browsers.
- * 2. Remove the margin in Firefox and Safari.
- */
 button,
 input,
 optgroup,
 select,
 textarea {
   font-family: inherit;
-  /* 1 */
   font-size: 100%;
-  /* 1 */
   line-height: 1.15;
-  /* 1 */
   margin: 0;
-  /* 2 */
 }
-/**
- * Show the overflow in IE.
- * 1. Show the overflow in Edge.
- */
 button,
 input {
-  /* 1 */
   overflow: visible;
 }
-/**
- * Remove the inheritance of text transform in Edge, Firefox, and IE.
- * 1. Remove the inheritance of text transform in Firefox.
- */
 button,
 select {
-  /* 1 */
   text-transform: none;
 }
-/**
- * Correct the inability to style clickable types in iOS and Safari.
- */
 button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
 }
-/**
- * Remove the inner border and padding in Firefox.
- */
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
@@ -4726,127 +4521,63 @@ button::-moz-focus-inner,
   border-style: none;
   padding: 0;
 }
-/**
- * Restore the focus styles unset by the previous rule.
- */
 button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 [type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
-/**
- * Correct the padding in Firefox.
- */
 fieldset {
   padding: 0.35em 0.75em 0.625em;
 }
-/**
- * 1. Correct the text wrapping in Edge and IE.
- * 2. Correct the color inheritance from `fieldset` elements in IE.
- * 3. Remove the padding so developers are not caught out when they zero out
- *    `fieldset` elements in all browsers.
- */
 legend {
   box-sizing: border-box;
-  /* 1 */
   color: inherit;
-  /* 2 */
   display: table;
-  /* 1 */
   max-width: 100%;
-  /* 1 */
   padding: 0;
-  /* 3 */
   white-space: normal;
-  /* 1 */
 }
-/**
- * Add the correct vertical alignment in Chrome, Firefox, and Opera.
- */
 progress {
   vertical-align: baseline;
 }
-/**
- * Remove the default vertical scrollbar in IE 10+.
- */
 textarea {
   overflow: auto;
 }
-/**
- * 1. Add the correct box sizing in IE 10.
- * 2. Remove the padding in IE 10.
- */
 [type="checkbox"],
 [type="radio"] {
   box-sizing: border-box;
-  /* 1 */
   padding: 0;
-  /* 2 */
 }
-/**
- * Correct the cursor style of increment and decrement buttons in Chrome.
- */
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
-/**
- * 1. Correct the odd appearance in Chrome and Safari.
- * 2. Correct the outline style in Safari.
- */
 [type="search"] {
   -webkit-appearance: textfield;
-  /* 1 */
   outline-offset: -2px;
-  /* 2 */
 }
-/**
- * Remove the inner padding in Chrome and Safari on macOS.
- */
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
-/**
- * 1. Correct the inability to style clickable types in iOS and Safari.
- * 2. Change font properties to `inherit` in Safari.
- */
 ::-webkit-file-upload-button {
   -webkit-appearance: button;
-  /* 1 */
   font: inherit;
-  /* 2 */
 }
-/* Interactive
-   ========================================================================== */
-/*
- * Add the correct display in Edge, IE 10+, and Firefox.
- */
 details {
   display: block;
 }
-/*
- * Add the correct display in all browsers.
- */
 summary {
   display: list-item;
 }
-/* Misc
-   ========================================================================== */
-/**
- * Add the correct display in IE 10+.
- */
 template {
   display: none;
 }
-/**
- * Add the correct display in IE 10.
- */
 [hidden] {
   display: none;
 }
 .vh {
-  clip: rect(1px, 1px, 1px, 1px);
+  clip: rect(1px,1px,1px,1px);
   clip-path: inset(50%);
   height: 1px;
   width: 1px;
@@ -5437,12 +5168,9 @@ template {
   margin-left: auto;
   margin-right: auto;
 }
-.accordion {
-  /* For Edge bug https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/4806035/ */
-}
 .accordion header {
   display: flex;
-  border-top: 1px solid hsl(0, 0%, 52%);
+  border-top: 1px solid #000000;
 }
 .accordion header a {
   flex-grow: 1;
@@ -5544,8 +5272,8 @@ template {
   font-size: 1rem;
 }
 .page-head .main-nav-bar button:hover,
-.page-head .main-nav-bar .main-link:hover,
 .page-head .main-nav-bar button:focus,
+.page-head .main-nav-bar .main-link:hover,
 .page-head .main-nav-bar .main-link:focus {
   color: #00548A;
 }
@@ -5573,7 +5301,7 @@ template {
   height: 0.5em;
   margin-left: 0.75em;
   width: 0.5em;
-  transform: rotate(45deg) translate(-25%, -25%);
+  transform: rotate(45deg) translate(-25%,-25%);
 }
 .page-head .main-nav-bar .main-link + button::after {
   margin-left: 0;
@@ -5612,7 +5340,7 @@ template {
 .page-head .user-account .account-details {
   background: #fff;
   margin-bottom: 0;
-  box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px -1px 3px rgba(0,0,0,0.1);
   padding: 1.5rem;
   max-width: 300px;
   text-align: right;
@@ -5661,11 +5389,11 @@ template {
   right: 0;
   bottom: 0;
   z-index: 300;
-  transform: translate(-100%, 0);
-  -moz-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  -webkit-transition: all ease 0.2s;
-  transition: all ease 0.2s;
+  transform: translate(-100%,0);
+  -webkit-transition: all ease .2s;
+  -moz-transition: all ease .2s;
+  -o-transition: all ease .2s;
+  transition: all ease .2s;
   transition-delay: 0.3s;
   max-width: 650px;
   background: #f7f7f7;
@@ -5798,16 +5526,16 @@ template {
 .mobile-nav button.close:after {
   position: absolute;
   display: block;
-  top: 2rem / 2;
+  top: 1rem;
   left: 0;
   width: 100%;
   height: 2px;
   background-color: #000;
   content: "";
-  -moz-transition: all linear 0.1s;
-  -o-transition: all linear 0.1s;
-  -webkit-transition: all linear 0.1s;
-  transition: all linear 0.1s;
+  -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
+  -o-transition: all linear .1s;
+  transition: all linear .1s;
 }
 .mobile-nav button.close:before {
   -webkit-transform: rotate(45deg);
@@ -5836,11 +5564,11 @@ template {
   -ms-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  opacity: 0 / 100;
+  opacity: 0;
   filter: alpha(opacity=0);
 }
 .mobile-nav.show {
-  transform: translate(0, 0);
+  transform: translate(0,0);
   transition-delay: 0s;
 }
 .page-head nav.nav {
@@ -5872,11 +5600,11 @@ template {
   position: absolute;
   top: 50%;
   right: 0;
-  transform: translate(0, -50%);
-  -webkit-transform: translate(0, -50%);
-  -moz-transform: translate(0, -50%);
-  -ms-transform: translate(0, -50%);
-  -o-transform: translate(0, -50%);
+  -webkit-transform: translate(0,-50%);
+  -moz-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  -o-transform: translate(0,-50%);
+  transform: translate(0,-50%);
   display: block;
   overflow: hidden;
   margin: 0;
@@ -5902,8 +5630,8 @@ template {
   left: 0;
   right: 0;
   width: 100%;
-  top: 2rem / 2;
-  transform: translate(0, -2px / 2);
+  top: 1rem;
+  transform: translate(0,-1px);
   height: 2px;
   background: #000;
 }
@@ -5919,20 +5647,20 @@ template {
 }
 .page-head nav.mobile-menu button span:before {
   top: -10px;
-  transform: translate(0, 2px / 2);
+  transform: translate(0,1px);
 }
 .page-head nav.mobile-menu button span:after {
   bottom: -10px;
-  transform: translate(0, -2px / 2);
+  transform: translate(0,-1px);
 }
 .page-head.mobile nav.nav {
   height: 0;
   visibility: hidden;
 }
 .page-head.mobile nav.nav > ul > li > a {
+  -webkit-transition: none;
   -moz-transition: none;
   -o-transition: none;
-  -webkit-transition: none;
   transition: none;
 }
 @media (min-width: 100px) {
@@ -6368,28 +6096,28 @@ template {
   position: relative;
 }
 .page > .inner > .content-header #content-header-extra .btn-group > .btn:first-child,
-.page > .inner > #content-header #content-header-extra .btn-group > .btn:first-child,
-.contentpane > .content-header #content-header-extra .btn-group > .btn:first-child,
-.contentpane > #content-header #content-header-extra .btn-group > .btn:first-child,
-.page > .inner > .content-header .content-header-extra .btn-group > .btn:first-child,
-.page > .inner > #content-header .content-header-extra .btn-group > .btn:first-child,
-.contentpane > .content-header .content-header-extra .btn-group > .btn:first-child,
-.contentpane > #content-header .content-header-extra .btn-group > .btn:first-child,
 .page > .inner > .content-header #content-header-extra .btn-group > .btn:last-child,
-.page > .inner > #content-header #content-header-extra .btn-group > .btn:last-child,
-.contentpane > .content-header #content-header-extra .btn-group > .btn:last-child,
-.contentpane > #content-header #content-header-extra .btn-group > .btn:last-child,
-.page > .inner > .content-header .content-header-extra .btn-group > .btn:last-child,
-.page > .inner > #content-header .content-header-extra .btn-group > .btn:last-child,
-.contentpane > .content-header .content-header-extra .btn-group > .btn:last-child,
-.contentpane > #content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > .content-header #content-header-extra .btn-group > .dropdown-toggle,
-.page > .inner > #content-header #content-header-extra .btn-group > .dropdown-toggle,
-.contentpane > .content-header #content-header-extra .btn-group > .dropdown-toggle,
-.contentpane > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > .content-header .content-header-extra .btn-group > .btn:first-child,
+.page > .inner > .content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > .content-header .content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > #content-header #content-header-extra .btn-group > .btn:first-child,
+.page > .inner > #content-header #content-header-extra .btn-group > .btn:last-child,
+.page > .inner > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > #content-header .content-header-extra .btn-group > .btn:first-child,
+.page > .inner > #content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > #content-header .content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > .content-header #content-header-extra .btn-group > .btn:first-child,
+.contentpane > .content-header #content-header-extra .btn-group > .btn:last-child,
+.contentpane > .content-header #content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > .content-header .content-header-extra .btn-group > .btn:first-child,
+.contentpane > .content-header .content-header-extra .btn-group > .btn:last-child,
 .contentpane > .content-header .content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > #content-header #content-header-extra .btn-group > .btn:first-child,
+.contentpane > #content-header #content-header-extra .btn-group > .btn:last-child,
+.contentpane > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > #content-header .content-header-extra .btn-group > .btn:first-child,
+.contentpane > #content-header .content-header-extra .btn-group > .btn:last-child,
 .contentpane > #content-header .content-header-extra .btn-group > .dropdown-toggle {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -6399,62 +6127,62 @@ template {
   border-radius: 0;
 }
 .page > .inner > .content-header #content-header-extra .btn-group > .btn:first-child,
-.page > .inner > #content-header #content-header-extra .btn-group > .btn:first-child,
-.contentpane > .content-header #content-header-extra .btn-group > .btn:first-child,
-.contentpane > #content-header #content-header-extra .btn-group > .btn:first-child,
 .page > .inner > .content-header .content-header-extra .btn-group > .btn:first-child,
+.page > .inner > #content-header #content-header-extra .btn-group > .btn:first-child,
 .page > .inner > #content-header .content-header-extra .btn-group > .btn:first-child,
+.contentpane > .content-header #content-header-extra .btn-group > .btn:first-child,
 .contentpane > .content-header .content-header-extra .btn-group > .btn:first-child,
+.contentpane > #content-header #content-header-extra .btn-group > .btn:first-child,
 .contentpane > #content-header .content-header-extra .btn-group > .btn:first-child {
   border-right: none;
 }
 .page > .inner > .content-header #content-header-extra .btn-group > .btn:last-child,
-.page > .inner > #content-header #content-header-extra .btn-group > .btn:last-child,
-.contentpane > .content-header #content-header-extra .btn-group > .btn:last-child,
-.contentpane > #content-header #content-header-extra .btn-group > .btn:last-child,
-.page > .inner > .content-header .content-header-extra .btn-group > .btn:last-child,
-.page > .inner > #content-header .content-header-extra .btn-group > .btn:last-child,
-.contentpane > .content-header .content-header-extra .btn-group > .btn:last-child,
-.contentpane > #content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > .content-header #content-header-extra .btn-group > .dropdown-toggle,
-.page > .inner > #content-header #content-header-extra .btn-group > .dropdown-toggle,
-.contentpane > .content-header #content-header-extra .btn-group > .dropdown-toggle,
-.contentpane > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > .content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > .content-header .content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > #content-header #content-header-extra .btn-group > .btn:last-child,
+.page > .inner > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.page > .inner > #content-header .content-header-extra .btn-group > .btn:last-child,
 .page > .inner > #content-header .content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > .content-header #content-header-extra .btn-group > .btn:last-child,
+.contentpane > .content-header #content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > .content-header .content-header-extra .btn-group > .btn:last-child,
 .contentpane > .content-header .content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > #content-header #content-header-extra .btn-group > .btn:last-child,
+.contentpane > #content-header #content-header-extra .btn-group > .dropdown-toggle,
+.contentpane > #content-header .content-header-extra .btn-group > .btn:last-child,
 .contentpane > #content-header .content-header-extra .btn-group > .dropdown-toggle {
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255,255,255,0.2);
   height: 2.7em;
   height: 2.75em \9;
 }
 .page > .inner > .content-header #content-header-extra .btn-group span.dropdown-toggle:before,
-.page > .inner > #content-header #content-header-extra .btn-group span.dropdown-toggle:before,
-.contentpane > .content-header #content-header-extra .btn-group span.dropdown-toggle:before,
-.contentpane > #content-header #content-header-extra .btn-group span.dropdown-toggle:before,
-.page > .inner > .content-header .content-header-extra .btn-group span.dropdown-toggle:before,
-.page > .inner > #content-header .content-header-extra .btn-group span.dropdown-toggle:before,
-.contentpane > .content-header .content-header-extra .btn-group span.dropdown-toggle:before,
-.contentpane > #content-header .content-header-extra .btn-group span.dropdown-toggle:before,
 .page > .inner > .content-header #content-header-extra .btn .caret,
-.page > .inner > #content-header #content-header-extra .btn .caret,
-.contentpane > .content-header #content-header-extra .btn .caret,
-.contentpane > #content-header #content-header-extra .btn .caret,
+.page > .inner > .content-header .content-header-extra .btn-group span.dropdown-toggle:before,
 .page > .inner > .content-header .content-header-extra .btn .caret,
+.page > .inner > #content-header #content-header-extra .btn-group span.dropdown-toggle:before,
+.page > .inner > #content-header #content-header-extra .btn .caret,
+.page > .inner > #content-header .content-header-extra .btn-group span.dropdown-toggle:before,
 .page > .inner > #content-header .content-header-extra .btn .caret,
+.contentpane > .content-header #content-header-extra .btn-group span.dropdown-toggle:before,
+.contentpane > .content-header #content-header-extra .btn .caret,
+.contentpane > .content-header .content-header-extra .btn-group span.dropdown-toggle:before,
 .contentpane > .content-header .content-header-extra .btn .caret,
+.contentpane > #content-header #content-header-extra .btn-group span.dropdown-toggle:before,
+.contentpane > #content-header #content-header-extra .btn .caret,
+.contentpane > #content-header .content-header-extra .btn-group span.dropdown-toggle:before,
 .contentpane > #content-header .content-header-extra .btn .caret {
   border-top: 4px solid #fff;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
 }
 .page > .inner > .content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
-.page > .inner > #content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
-.contentpane > .content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
-.contentpane > #content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
 .page > .inner > .content-header .content-header-extra .btn-group.dropup span.dropdown-toggle:before,
+.page > .inner > #content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
 .page > .inner > #content-header .content-header-extra .btn-group.dropup span.dropdown-toggle:before,
+.contentpane > .content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
 .contentpane > .content-header .content-header-extra .btn-group.dropup span.dropdown-toggle:before,
+.contentpane > #content-header #content-header-extra .btn-group.dropup span.dropdown-toggle:before,
 .contentpane > #content-header .content-header-extra .btn-group.dropup span.dropdown-toggle:before {
   border-bottom: 4px solid #fff;
   border-right: 4px solid transparent;
@@ -6495,11 +6223,11 @@ template {
   left: 50%;
   width: 100%;
   max-width: 1000px;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
 }
 @media (min-width: 600px) {
   #big-search .inner {
@@ -6676,16 +6404,16 @@ template {
 #big-search button:after {
   position: absolute;
   display: block;
-  top: 40px / 2;
+  top: 20px;
   left: 0;
   width: 100%;
   height: 2px;
   background-color: #fff;
   content: "";
-  -moz-transition: all linear 0.1s;
-  -o-transition: all linear 0.1s;
-  -webkit-transition: all linear 0.1s;
-  transition: all linear 0.1s;
+  -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
+  -o-transition: all linear .1s;
+  transition: all linear .1s;
 }
 #big-search button:before {
   -webkit-transform: rotate(45deg);
@@ -6714,7 +6442,7 @@ template {
   -ms-transform: rotate(0deg);
   -o-transform: rotate(0deg);
   transform: rotate(0deg);
-  opacity: 0 / 100;
+  opacity: 0;
   filter: alpha(opacity=0);
 }
 @media (min-width: 600px) {
@@ -6759,11 +6487,11 @@ template {
 #big-search.open .inner,
 #big-search.default_dialog .inner {
   top: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  -o-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
 }
 .page-footer {
   margin-top: auto;
@@ -7267,7 +6995,7 @@ template {
   position: relative;
   padding-bottom: 6rem;
   background-color: #fbfbfb;
-  background-image: linear-gradient(160deg, rgba(0, 84, 138, 0.12), rgba(0, 84, 138, 0) 70%);
+  background-image: linear-gradient(160deg,rgba(0,84,138,0.12),rgba(0,84,138,0) 70%);
   background-position: top right;
   background-size: cover;
   background-repeat: no-repeat;
@@ -7485,8 +7213,8 @@ template {
   color: #fff;
 }
 .home-head .hero .btn:hover,
-.home-head .hero .primary-button:hover,
 .home-head .hero .btn:focus,
+.home-head .hero .primary-button:hover,
 .home-head .hero .primary-button:focus {
   background: #00548A;
   border-color: #00548A;
@@ -7678,7 +7406,7 @@ template {
   width: 2rem;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%,0);
   background: #00548A;
 }
 body {
@@ -7703,7 +7431,7 @@ body .page-overlay {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0,0,0,0.75);
   z-index: 299;
   opacity: 0;
   visibility: hidden;
@@ -7721,10 +7449,10 @@ body > .wrap > main {
 }
 @media (max-width: 899px) {
   body .hub-overlay {
-    -webkit-transform: translate(0, 0);
-    -moz-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
-    -o-transform: translate(0, 0);
+    -webkit-transform: translate(0,0);
+    -moz-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
   }
 }
 .page {
@@ -7972,7 +7700,6 @@ body #page_content .main {
 body #page_header {
   padding-bottom: 25px;
 }
-/* Prevents sub and sup affecting line-height in all browsers */
 sub,
 sup {
   position: relative;
@@ -7986,7 +7713,6 @@ sup {
 sub {
   bottom: -0.25em;
 }
-/* Lists */
 ul {
   list-style: disc;
   margin-left: 2rem;
@@ -8028,7 +7754,6 @@ blockquote {
   position: relative;
   background-color: #fff;
 }
-/* Pre, Code, TrueType. */
 pre {
   font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
   color: #555;
@@ -8061,7 +7786,6 @@ tt {
   display: flex;
   align-items: center;
 }
-/* Content header */
 .content-header h2,
 #content-header h2 {
   font-size: 2.25rem;
@@ -8078,7 +7802,7 @@ tt {
 .contentpane > #content-header,
 .page > .upperpane,
 .page > section.section.upperpane {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 .page > .inner > .content-header,
 .page > .inner > #content-header,
@@ -8335,58 +8059,58 @@ tt {
   padding-top: 0;
 }
 .page > .inner > .content-header #content-header-extra,
-.page > .inner > #content-header #content-header-extra,
-.contentpane > .content-header #content-header-extra,
-.contentpane > #content-header #content-header-extra,
 .page > .inner > .content-header .content-header-extra,
+.page > .inner > #content-header #content-header-extra,
 .page > .inner > #content-header .content-header-extra,
+.contentpane > .content-header #content-header-extra,
 .contentpane > .content-header .content-header-extra,
+.contentpane > #content-header #content-header-extra,
 .contentpane > #content-header .content-header-extra {
   padding-bottom: 2rem;
 }
 .page > .inner > .content-header #content-header-extra a,
-.page > .inner > #content-header #content-header-extra a,
-.contentpane > .content-header #content-header-extra a,
-.contentpane > #content-header #content-header-extra a,
 .page > .inner > .content-header .content-header-extra a,
+.page > .inner > #content-header #content-header-extra a,
 .page > .inner > #content-header .content-header-extra a,
+.contentpane > .content-header #content-header-extra a,
 .contentpane > .content-header .content-header-extra a,
+.contentpane > #content-header #content-header-extra a,
 .contentpane > #content-header .content-header-extra a {
   margin-right: 0.25rem;
 }
 .page > .inner > .content-header #content-header-extra a:last-of-type,
-.page > .inner > #content-header #content-header-extra a:last-of-type,
-.contentpane > .content-header #content-header-extra a:last-of-type,
-.contentpane > #content-header #content-header-extra a:last-of-type,
 .page > .inner > .content-header .content-header-extra a:last-of-type,
+.page > .inner > #content-header #content-header-extra a:last-of-type,
 .page > .inner > #content-header .content-header-extra a:last-of-type,
+.contentpane > .content-header #content-header-extra a:last-of-type,
 .contentpane > .content-header .content-header-extra a:last-of-type,
+.contentpane > #content-header #content-header-extra a:last-of-type,
 .contentpane > #content-header .content-header-extra a:last-of-type {
   margin-right: 0;
 }
 .page > .inner > .content-header #content-header-extra ul,
-.page > .inner > #content-header #content-header-extra ul,
-.contentpane > .content-header #content-header-extra ul,
-.contentpane > #content-header #content-header-extra ul,
-.page > .inner > .content-header .content-header-extra ul,
-.page > .inner > #content-header .content-header-extra ul,
-.contentpane > .content-header .content-header-extra ul,
-.contentpane > #content-header .content-header-extra ul,
 .page > .inner > .content-header #content-header-extra li,
-.page > .inner > #content-header #content-header-extra li,
-.contentpane > .content-header #content-header-extra li,
-.contentpane > #content-header #content-header-extra li,
-.page > .inner > .content-header .content-header-extra li,
-.page > .inner > #content-header .content-header-extra li,
-.contentpane > .content-header .content-header-extra li,
-.contentpane > #content-header .content-header-extra li,
 .page > .inner > .content-header #content-header-extra p,
-.page > .inner > #content-header #content-header-extra p,
-.contentpane > .content-header #content-header-extra p,
-.contentpane > #content-header #content-header-extra p,
+.page > .inner > .content-header .content-header-extra ul,
+.page > .inner > .content-header .content-header-extra li,
 .page > .inner > .content-header .content-header-extra p,
+.page > .inner > #content-header #content-header-extra ul,
+.page > .inner > #content-header #content-header-extra li,
+.page > .inner > #content-header #content-header-extra p,
+.page > .inner > #content-header .content-header-extra ul,
+.page > .inner > #content-header .content-header-extra li,
 .page > .inner > #content-header .content-header-extra p,
+.contentpane > .content-header #content-header-extra ul,
+.contentpane > .content-header #content-header-extra li,
+.contentpane > .content-header #content-header-extra p,
+.contentpane > .content-header .content-header-extra ul,
+.contentpane > .content-header .content-header-extra li,
 .contentpane > .content-header .content-header-extra p,
+.contentpane > #content-header #content-header-extra ul,
+.contentpane > #content-header #content-header-extra li,
+.contentpane > #content-header #content-header-extra p,
+.contentpane > #content-header .content-header-extra ul,
+.contentpane > #content-header .content-header-extra li,
 .contentpane > #content-header .content-header-extra p {
   margin: 0;
   padding: 0;
@@ -8427,10 +8151,10 @@ section.section .aside + .subject .content-header h2:before {
   padding: 0;
 }
 #big-search {
-  -moz-transition: all ease-in 0.3s;
-  -o-transition: all ease-in 0.3s;
-  -webkit-transition: all ease-in 0.3s;
-  transition: all ease-in 0.3s;
+  -moz-transition: all ease-in .3s;
+  -o-transition: all ease-in .3s;
+  -webkit-transition: all ease-in .3s;
+  transition: all ease-in .3s;
   -webkit-transition-delay: 0.1s;
   -moz-transition-delay: 0.1s;
   -o-transition-delay: 0.1s;
@@ -8443,10 +8167,10 @@ section.section .aside + .subject .content-header h2:before {
   background: #0e0e0e;
 }
 #big-search .inner {
-  -moz-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  -webkit-transition: all ease 0.2s;
-  transition: all ease 0.2s;
+  -webkit-transition: all ease .2s;
+  -moz-transition: all ease .2s;
+  -o-transition: all ease .2s;
+  transition: all ease .2s;
   -webkit-transition-delay: 0.3s;
   -moz-transition-delay: 0.3s;
   -o-transition-delay: 0.3s;
@@ -8486,10 +8210,10 @@ input[type="submit"],
 input[type="reset"],
 .btn,
 a.btn {
-  -moz-transition: all ease-in 0.3s;
-  -o-transition: all ease-in 0.3s;
-  -webkit-transition: all ease-in 0.3s;
-  transition: all ease-in 0.3s;
+  -moz-transition: all ease-in .3s;
+  -o-transition: all ease-in .3s;
+  -webkit-transition: all ease-in .3s;
+  transition: all ease-in .3s;
 }
 html {
   font-family: sans-serif;
