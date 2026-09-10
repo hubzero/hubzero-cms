@@ -201,6 +201,10 @@ class Database
             $existing = self::loadExistingConfig($appPath);
         }
 
+        if (Answers::isUnattended()) {
+            return self::configureUnattended($ansi, $appPath, $existing);
+        }
+
         self::output("\n", $ansi);
         self::output("\e[33mConfigure Database\e[39m\n", $ansi);
         self::output("------------------\n", $ansi);
@@ -291,6 +295,87 @@ class Database
 
         self::output("\n", $ansi);
         self::output("\e[32mDatabase configuration complete!\e[39m\n", $ansi);
+        self::output("\n", $ansi);
+        self::output("  Database: \e[32m{$dbConfig['db']}\e[39m\n", $ansi);
+        self::output("  User:     \e[32m{$dbConfig['user']}\e[39m\n", $ansi);
+        self::output("  Host:     \e[32m{$dbConfig['host']}\e[39m\n", $ansi);
+        self::output("  Config:   \e[32m{$appPath}/config/database.php\e[39m\n", $ansi);
+
+        return true;
+    }
+
+    /**
+     * Take the database connection from the answers given up front
+     *
+     * The interactive path can offer to create the database and its user.
+     * This one cannot: it connects as told, and says so plainly when that
+     * does not work, leaving the database itself to whoever wrote the answers.
+     *
+     * @param   bool    $ansi      Whether to use ANSI color output
+     * @param   string  $appPath   Path to the app directory
+     * @param   array   $existing  Existing configuration to fall back on
+     * @return  bool
+     */
+    private static function configureUnattended($ansi, $appPath, array $existing)
+    {
+        $answers = Answers::section('database');
+
+        $connection = [
+            'host'     => $answers['host'] ?? $existing['host'] ?? 'localhost',
+            'username' => $answers['username'] ?? $existing['username'] ?? '',
+            'password' => $answers['password'] ?? $existing['password'] ?? '',
+            'database' => $answers['database'] ?? $existing['database'] ?? '',
+            'socket'   => $answers['socket'] ?? $existing['socket'] ?? '',
+            'port'     => $answers['port'] ?? $existing['port'] ?? 3306,
+        ];
+
+        self::output("\n", $ansi);
+        self::output("\e[33mConfigure Database\e[39m\n", $ansi);
+        self::output("------------------\n", $ansi);
+        self::output("\n", $ansi);
+
+        if ($connection['database'] === '' || $connection['username'] === '') {
+            $msg = "\e[31mThe database section needs both a database and a username.\e[39m\n";
+            self::output($msg, $ansi, true);
+            return false;
+        }
+
+        self::output("Testing the database connection... ", $ansi);
+
+        if (!self::testExistingConfig($connection, $ansi)) {
+            self::output("\e[31mFailed.\e[39m\n", $ansi, true);
+            self::output("\n", $ansi, true);
+            self::output("Could not connect to \e[33m{$connection['database']}\e[39m", $ansi, true);
+            self::output(" as \e[33m{$connection['username']}\e[39m.\n", $ansi, true);
+            self::output("Create the database and grant the user access, then try again.\n", $ansi, true);
+            return false;
+        }
+
+        self::output("\e[32mConnected!\e[39m\n", $ansi);
+
+        $dbConfig = [
+            'dbtype'   => 'mysql',
+            'host'     => $connection['host'],
+            'user'     => $connection['username'],
+            'password' => $connection['password'],
+            'db'       => $connection['database'],
+            'dbprefix' => $answers['prefix'] ?? 'jos_',
+        ];
+
+        if (!empty($connection['socket'])) {
+            $dbConfig['socket'] = $connection['socket'];
+        }
+
+        if (!empty($connection['port']) && $connection['port'] != 3306) {
+            $dbConfig['port'] = $connection['port'];
+        }
+
+        self::output("\n", $ansi);
+
+        if (!AppDirectory::writeDatabaseConfig($ansi, $appPath, $dbConfig)) {
+            return false;
+        }
+
         self::output("\n", $ansi);
         self::output("  Database: \e[32m{$dbConfig['db']}\e[39m\n", $ansi);
         self::output("  User:     \e[32m{$dbConfig['user']}\e[39m\n", $ansi);

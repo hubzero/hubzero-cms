@@ -21,11 +21,22 @@ class Install extends Base implements CommandInterface
      *
      * @museDescription  Run the full HUBzero installation process
      *
+     * Pass --config=<file> to install without being asked anything. The file
+     * is JSON, with a "site", "database" and "admin" object holding the same
+     * values the prompts collect, and an optional "sample" key saying whether
+     * to load sample data.
+     *
      * @return  void
      **/
     public function execute()
     {
         $ansi = $this->output->isColored();
+
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
+        $unattended = Install\Answers::isUnattended();
 
         // Run preflight checks
         if (!Install\Preflight::check($ansi, PATH_ROOT)) {
@@ -66,7 +77,7 @@ class Install extends Base implements CommandInterface
         echo "This step is required for HUBzero to function.\n";
         echo "\n";
 
-        if (!$this->promptContinue("Continue with schema loading?")) {
+        if (!$unattended && !$this->promptContinue("Continue with schema loading?")) {
             echo "\n";
             echo "Installation cancelled.\n";
             echo "\n";
@@ -94,7 +105,11 @@ class Install extends Base implements CommandInterface
         echo "This is optional and can be skipped for production installations.\n";
         echo "\n";
 
-        if ($this->promptYesNo("Load sample data?", false)) {
+        $loadSample = $unattended
+            ? Install\Answers::wantsSampleData()
+            : $this->promptYesNo("Load sample data?", false);
+
+        if ($loadSample) {
             if (!Install\Schema::loadSampleData($ansi, PATH_APP, PATH_CORE)) {
                 $this->output->error('Sample data loading failed.');
                 // Continue anyway - sample data is optional
@@ -143,6 +158,10 @@ class Install extends Base implements CommandInterface
      **/
     public function vendor()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         if (!Install\Vendor::install($ansi, false, PATH_CORE)) {
@@ -159,6 +178,10 @@ class Install extends Base implements CommandInterface
      **/
     public function check()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         $passed = Install\Preflight::check($ansi, PATH_ROOT);
@@ -179,6 +202,10 @@ class Install extends Base implements CommandInterface
      **/
     public function appdir()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         if (!Install\AppDirectory::create($ansi, PATH_APP)) {
@@ -195,6 +222,10 @@ class Install extends Base implements CommandInterface
      **/
     public function database()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         $result = Install\Database::configure($ansi, PATH_APP);
@@ -213,6 +244,10 @@ class Install extends Base implements CommandInterface
      **/
     public function schema()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         // Check if database config exists
@@ -232,7 +267,7 @@ class Install extends Base implements CommandInterface
         echo "This step is required for HUBzero to function.\n";
         echo "\n";
 
-        if (!$this->promptContinue("Continue with schema loading?")) {
+        if (!Install\Answers::isUnattended() && !$this->promptContinue("Continue with schema loading?")) {
             echo "\n";
             echo "Schema loading cancelled.\n";
             echo "\n";
@@ -269,6 +304,10 @@ class Install extends Base implements CommandInterface
      **/
     public function settings()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         $result = Install\SiteSettings::configure($ansi, PATH_APP);
@@ -287,6 +326,10 @@ class Install extends Base implements CommandInterface
      **/
     public function sample()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         // Check if database config exists
@@ -305,7 +348,7 @@ class Install extends Base implements CommandInterface
         echo "This is optional and can be skipped for production installations.\n";
         echo "\n";
 
-        if (!$this->promptContinue("Load sample data?")) {
+        if (!Install\Answers::isUnattended() && !$this->promptContinue("Load sample data?")) {
             echo "\n";
             echo "Sample data loading cancelled.\n";
             echo "\n";
@@ -326,6 +369,10 @@ class Install extends Base implements CommandInterface
      **/
     public function migrations()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         // Check if database config exists
@@ -371,7 +418,7 @@ class Install extends Base implements CommandInterface
         echo "Migrations apply incremental changes to bring the database up to date.\n";
         echo "\n";
 
-        if (!$this->promptContinue("Run database migrations?")) {
+        if (!Install\Answers::isUnattended() && !$this->promptContinue("Run database migrations?")) {
             echo "\n";
             echo "Migration cancelled.\n";
             echo "\n";
@@ -392,6 +439,10 @@ class Install extends Base implements CommandInterface
      **/
     public function admin()
     {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
         $ansi = $this->output->isColored();
 
         // Check if database config exists
@@ -428,6 +479,34 @@ class Install extends Base implements CommandInterface
              ->addOverview('HUBzero Fresh Installation')
              ->addTasks($this)
              ->render();
+    }
+
+    /**
+     * Read the answer file, if one was named
+     *
+     * Every task takes --config, so that a step can be repeated on its own
+     * without being asked anything, the same way the whole install can.
+     *
+     * @return  bool  False if a file was named and could not be read
+     **/
+    private function loadAnswers()
+    {
+        $answerFile = $this->arguments->getOpt('config');
+
+        if (!$answerFile) {
+            return true;
+        }
+
+        $error = null;
+
+        if (!Install\Answers::load($answerFile, $error)) {
+            $this->output->error($error);
+            return false;
+        }
+
+        $this->output->addLine('Reading the answers in ' . $answerFile);
+
+        return true;
     }
 
     /**
