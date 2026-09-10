@@ -9,9 +9,9 @@ modified: 2015-07-06
 -->
 # Upgrade guide
 
-Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the
-Joomla names with its own. An extension written against `JFactory`,
-`JText` and `JRequest` still needs converting. This page is that
+Before 2.0 the platform used an older set of class names, and 2.0 replaced
+most of them. An extension written against `JFactory`, `JText` and
+`JRequest` still needs converting. This page is that
 translation table, plus what to do about the database when you upgrade a
 hub.
 
@@ -39,7 +39,7 @@ served from the same front controller.
 
 ## Constants
 
-| Joomla | Hubzero |
+| Legacy name | Hubzero |
 |---|---|
 | `JPATH_ROOT`, `JPATH_BASE`, `JPATH_SITE` | `PATH_ROOT` |
 | `JPATH_ADMINISTRATOR` | Nothing. The directory does not exist. |
@@ -79,7 +79,7 @@ one it uses — `use Route;` — or the call fatals at runtime. See
 
 ### JRoute
 
-| Joomla | Hubzero |
+| Legacy name | Hubzero |
 |---|---|
 | `JRoute::_($url)` | `Route::url($url)` |
 
@@ -103,7 +103,7 @@ echo Lang::txt('COM_EXAMPLE_HELLO');
 echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'Hubzero');
 ```
 
-| Joomla | Hubzero |
+| Legacy name | Hubzero |
 |---|---|
 | `JText::_()` | `Lang::txt()` |
 | `JText::sprintf()` | `Lang::txt()` |
@@ -123,7 +123,7 @@ $foo = App::get('request')->getVar('foo');
 $foo = Request::getVar('foo');
 ```
 
-| Joomla | Hubzero |
+| Legacy name | Hubzero |
 |---|---|
 | `JRequest::*` | `Request::*` |
 
@@ -132,7 +132,7 @@ $foo = Request::getVar('foo');
 Class name only; the methods and their arguments are unchanged.
 
 ```php
-// Joomla
+// Legacy
 JToolbarHelper::publishList();
 
 // Hubzero
@@ -152,13 +152,13 @@ Submenu::addEntry(
 
 ### JHtml
 
-This one is not a rename. Joomla passed everything through `JHtml::_()`
+This one is not a rename. The legacy API passed everything through `JHtml::_()`
 with a dotted first argument naming the sub-library and the function.
 Hubzero makes the sub-library the method and the function the first
 argument:
 
 ```php
-// Joomla
+// Legacy
 echo JHtml::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
 echo JHtml::_('behavior.framework');
 
@@ -177,10 +177,10 @@ no `date` sub-library; for a relative date use `Date::of($d)->relative()`.
 
 Objects that came from `JFactory` come from the service container, and most
 have a facade in front of them. `method()` below stands for whatever you
-used to call on the Joomla object:
+used to call on the legacy object:
 
 ```php
-// Joomla
+// Legacy
 $user = JFactory::getUser();
 echo $user->get('name');
 
@@ -188,7 +188,7 @@ echo $user->get('name');
 echo User::get('name');
 ```
 
-| Joomla | Container | Facade |
+| Legacy name | Container | Facade |
 |---|---|---|
 | `JFactory::getDbo()` | `App::get('db')` | n/a |
 | `JFactory::getUser()`, `JUser::getInstance()` | `App::get('user')` | `User::method()` |
@@ -237,7 +237,7 @@ Any method called statically on `User`, other than `getInstance()`, acts on
 the current user — the equivalent of `JFactory::getUser()->method()`.
 
 ```php
-// Joomla
+// Legacy
 echo JFactory::getUser()->get('name');
 
 // Hubzero

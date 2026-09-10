@@ -58,10 +58,10 @@ Every view template and every file outside a class carries it. A file that
 only declares a namespaced class does not need it, because reaching it
 directly produces no output.
 
-## Joomla path aliases
+## Legacy path aliases
 
-The platform grew out of Joomla and keeps its path constants so that
-inherited code still resolves. New code should use the `PATH_` constants
+The platform keeps an older set of path constants so that inherited code
+still resolves. New code should use the `PATH_` constants
 above; these are listed for reading old extensions.
 
 | Alias | Same as |

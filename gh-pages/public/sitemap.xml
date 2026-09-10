@@ -28,6 +28,7 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/installation/el8/optional-services/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/newhub/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/administrator/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/advancedsetup/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/</loc></url>
@@ -59,6 +60,8 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/menus/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/articlemanager/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/categories/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/states/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/content/urls/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/activity/</loc></url>
@@ -289,6 +292,7 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/socicons/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/fontcons/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/elements/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/accessibility/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/muse/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/muse/commands/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/</loc></url>

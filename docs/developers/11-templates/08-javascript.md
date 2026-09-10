@@ -60,8 +60,9 @@ script layer, and it is the thing to reach for before writing your own:
 | `Hubzero.saveOrder(rows, task)` | Check every row and submit the reorder task |
 | `Hubzero.hasClass` / `addClass` / `removeClass` | Class helpers with an `IE` fallback |
 
-Every one of them is also aliased onto a `Joomla` global, so inherited
-third-party code keeps working. Write against `Hubzero`.
+Every one of them is also aliased onto a second, legacy global that older
+third-party code expects, so that code keeps working. Write against
+`Hubzero`.
 
 `core/assets/js/hubzero.js` is a separate, smaller file with `Hubzero.root()`
 and `Hubzero.initApi()`; `Html::behavior('core')` is what adds it.

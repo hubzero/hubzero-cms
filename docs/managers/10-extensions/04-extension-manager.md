@@ -25,9 +25,9 @@ The screen has three tabs:
 | **Custom Extensions** | `customexts` | Extensions this hub installed from git |
 | **Warnings** | `warnings` | Checks on the server's PHP settings |
 
-> **Note:** Hubzero's Extension Manager is not the Joomla one it descends
-> from. There are no **Install**, **Update**, **Discover** or **Database**
-> screens: those controllers were removed, and only some orphaned language
+> **Note:** Do not go by documentation written for other content management
+> systems, or by Hubzero documentation older than 2.4. There are no
+> **Install**, **Update**, **Discover** or **Database** screens: those controllers were removed, and only some orphaned language
 > strings remain. Core extensions come with the code; a hub's own come from
 > git through **Custom Extensions**.
 

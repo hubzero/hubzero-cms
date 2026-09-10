@@ -125,8 +125,8 @@ so `TPL_KIMERA_FIELD_HEADER_LABEL` resolves there.
 readable name; without it the administrator sees the raw position name.
 
 Both of those lookups prefer a `.sys.ini` file — `en-GB.tpl_kimera.sys.ini` —
-and fall back to the main file. `.sys.ini` is the Joomla convention for the
-subset of strings the administrator needs before the extension runs. No shipped
+and fall back to the main file. A `.sys.ini` holds the subset of strings the
+administrator interface needs before the extension itself runs. No shipped
 Hubzero template has one, and nothing breaks without it.
 
 > **Tip:** The [Languages](../07-extensions/03-languages.md) chapter covers the

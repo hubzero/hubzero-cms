@@ -42,6 +42,7 @@
         <nav aria-label="Hub managers contents">
 <ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
@@ -78,6 +79,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/categories/index.html">Categories</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/states/index.html">States, deleting and check-out</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
@@ -143,7 +146,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Security considerations</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Security questions</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#is-a-joomla-vulnerability-a-hubzero-vulnerability">Is a Joomla vulnerability a Hubzero vulnerability?</a></li>
+<li class="toc__item toc__item--l2"><a href="#does-an-advisory-for-another-content-management-system-apply-here">Does an advisory for another content management system apply here?</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</a></li>
 <li class="toc__item toc__item--l2"><a href="#does-the-cms-scan-uploads-for-viruses">Does the CMS scan uploads for viruses?</a></li>
 <li class="toc__item toc__item--l2"><a href="#does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</a></li>
@@ -173,21 +176,22 @@
 <p>Answers to the questions hub managers ask most often about the CMS side of
 security. Questions about the host underneath the hub belong in
 <a href="../hardeningguide/index.html">Operating system hardening</a>.</p>
-<h2 id="is-a-joomla-vulnerability-a-hubzero-vulnerability">Is a Joomla vulnerability a Hubzero vulnerability?</h2>
-<p>Usually not, but check each one.</p>
-<p>Hubzero began as a Joomla 1.5 distribution and the source tree still carries
-the inheritance in its naming: language keys beginning <code>J</code>, the <code>#__</code>
-table-prefix placeholder, <code>com_</code> component directories, and a handful of
-class names. The running code is Hubzero's own. The application object, the
-request and response objects, the session handler, the user object, the
-registration flow, the router, the database layer, and the plugin and module
-systems are all in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero"><code>core/libraries/Hubzero</code></a>,
-and the components under <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components"><code>core/components</code></a> were
-rewritten against them.</p>
-<p>That means a Joomla advisory rarely names code a hub actually runs. It also
-means you cannot dismiss one on the strength of the version number: read
-what the advisory describes and look for the same pattern here. Hubzero
-does not track Joomla releases and does not receive Joomla security patches.</p>
+<h2 id="does-an-advisory-for-another-content-management-system-apply-here">Does an advisory for another content management system apply here?</h2>
+<p>Usually not, but check each one rather than assuming.</p>
+<p>Some naming in this tree is shared with other PHP content management
+systems: language keys beginning <code>J</code>, the <code>#__</code> table-prefix placeholder,
+and <code>com_</code> component directories. The running code is Hubzero's own. The
+application object, the request and response objects, the session handler,
+the user object, the registration flow, the router, the database layer, and
+the plugin and module systems are all in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero"><code>core/libraries/Hubzero</code></a>, and the
+components under <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components"><code>core/components</code></a> are written
+against them.</p>
+<p>So an advisory for another project rarely names code a hub actually runs.
+It also means you cannot dismiss one on the strength of a version number:
+read what the advisory describes and look for the same pattern here.
+Hubzero tracks no other project's releases and receives no other project's
+security patches, so nothing arrives automatically.</p>
 <h2 id="where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</h2>
 <p>Two places, and they hold different things.</p>
 <p><code>/var/log/hubzero/cmsauth.log</code> is a text log. Every line is a timestamp in

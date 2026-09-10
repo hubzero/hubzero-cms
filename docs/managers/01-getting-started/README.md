@@ -11,8 +11,8 @@ imported: 2026-09-09
 
 This book is for the person who runs a hub. It covers the administrator
 interface — the back end at `/administrator` — and the settings, screens and
-extensions you reach from it. It does not cover installing the software; that
-is the [installation guide](../../installation/README.md).
+extensions you reach from it. It starts from a hub that is already installed
+and answering; it does not cover installing the software.
 
 ## What a hub manager does
 
@@ -37,6 +37,12 @@ back end. The recurring jobs are:
 end, who is allowed in, and what each of its menus contains. Read it before
 anything else in this book; every other chapter assumes you can find your way
 around those screens.
+
+Then, if the hub was installed this week, work through
+[The first week with a new hub](02-newhub.md). It puts the decisions a new hub
+needs — the site name, mail, registration, access, which components to keep,
+the front page and menu, and the scheduled jobs — into the order that works,
+and links to the chapter covering each one.
 
 ## Then
 
