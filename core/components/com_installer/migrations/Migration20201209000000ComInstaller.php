@@ -31,7 +31,7 @@ class Migration20201209000000ComInstaller extends Base
 				$this->db->setQuery($query);
 				$this->db->query();
 
-				$query = "INSERT INTO `jos_extension_types` (`id`, `type`)
+				$query = "INSERT INTO `#__extension_types` (`id`, `type`)
 				VALUES
 					(1,'component'),
 					(2,'language'),

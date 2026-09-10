@@ -8,7 +8,6 @@
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Hubzero\Utility\Number;
 use Config;
 use Lang;
 
@@ -93,7 +92,7 @@ class Warnings extends AdminController
 			}
 		}
 
-		$memory_limit = Number::formatBytes(ini_get('memory_limit'));
+		$memory_limit = self::toBytes(ini_get('memory_limit'));
 		if ($memory_limit < (8 * 1024 * 1024) && $memory_limit != -1)
 		{ // 8MB
 			$messages[] = array(
@@ -110,8 +109,8 @@ class Warnings extends AdminController
 		}
 
 
-		$post_max_size = Number::formatBytes(ini_get('post_max_size'));
-		$upload_max_filesize = Number::formatBytes(ini_get('upload_max_filesize'));
+		$post_max_size = self::toBytes(ini_get('post_max_size'));
+		$upload_max_filesize = self::toBytes(ini_get('upload_max_filesize'));
 
 		if ($post_max_size < $upload_max_filesize)
 		{
@@ -151,5 +150,44 @@ class Warnings extends AdminController
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * Convert a PHP ini shorthand size (e.g. "128M") to a number of bytes.
+	 *
+	 * Returns -1 for an unlimited setting and 0 for an unset one.
+	 *
+	 * @param   string   $value  The raw ini value
+	 * @return  integer  Size in bytes
+	 */
+	protected static function toBytes($value)
+	{
+		$value = trim((string) $value);
+
+		if ($value === '')
+		{
+			return 0;
+		}
+
+		if ((int) $value == -1)
+		{
+			return -1;
+		}
+
+		$bytes = (int) $value;
+
+		switch (strtolower(substr($value, -1)))
+		{
+			case 'g':
+				$bytes *= 1024;
+				// no break
+			case 'm':
+				$bytes *= 1024;
+				// no break
+			case 'k':
+				$bytes *= 1024;
+		}
+
+		return $bytes;
 	}
 }

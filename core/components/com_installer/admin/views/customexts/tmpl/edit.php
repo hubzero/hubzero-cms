@@ -122,7 +122,7 @@ $this->js();
 						<td>
 							<?php
 							$modifier = User::getInstance($this->row->created_by);
-							echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->created_by . ')');
+							echo $this->escape($modifier->get('name', Lang::txt('JUNKNOWN')) . ' (' . $this->row->created_by . ')');
 							?>
 						</td>
 					</tr>
@@ -147,7 +147,7 @@ $this->js();
 						<td>
 							<?php
 							$modifier = User::getInstance($this->row->modified_by);
-							echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->row->modified_by . ')');
+							echo $this->escape($modifier->get('name', Lang::txt('JUNKNOWN')) . ' (' . $this->row->modified_by . ')');
 							?>
 						</td>
 					</tr>
