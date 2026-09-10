@@ -361,7 +361,7 @@ class Sessions extends SiteController
 						}
 
 						// Fail if $value doesn't start with '/'
-						if ($value[0] != '/')
+						if (!isset($value[0]) || $value[0] != '/')
 						{
 							break;
 						}
@@ -386,7 +386,11 @@ class Sessions extends SiteController
 							break;
 						}
 
-						// Fail if $value isn't prefixed with a whitelisted directory
+						// Fail if $value isn't prefixed with a whitelisted directory.
+						// $match must be cleared for every parameter: left over from
+						// an earlier line it would pass an unwhitelisted path.
+						unset($match);
+
 						foreach ($params_whitelist as $wl)
 						{
 							if (empty($wl))
