@@ -65,14 +65,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Member import</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-five-things-to-know-before-you-run-one">The five things to know before you run one</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-screen-holds">What the screen holds</a></li>
 <li class="toc__item toc__item--l2"><a href="#file-formats">File formats</a></li>
-<li class="toc__item toc__item--l2"><a href="#which-fields-are-required">Which fields are required</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-importer-actually-checks">What the importer actually checks</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-fields-the-file-may-carry">Which fields the file may carry</a></li>
+<li class="toc__item toc__item--l2"><a href="#an-import-from-start-to-finish">An import from start to finish</a></li>
 <li class="toc__item toc__item--l2"><a href="#preparing-the-file">Preparing the file</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-the-job-and-attaching-the-file">Creating the job and attaching the file</a></li>
 <li class="toc__item toc__item--l2"><a href="#hooks">Hooks</a></li>
 <li class="toc__item toc__item--l2"><a href="#testing-an-import">Testing an import</a></li>
 <li class="toc__item toc__item--l2"><a href="#running-the-import">Running the import</a></li>
+<li class="toc__item toc__item--l2"><a href="#afterwards">Afterwards</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-an-import-can-overwrite">What an import can overwrite</a></li>
 <li class="toc__item toc__item--l2"><a href="#delivering-passwords-safely">Delivering passwords safely</a></li>
 </ol></li>
@@ -176,6 +180,35 @@ one for real.</p>
 access at once, or a class whose instructor already holds everyone's details.
 For anything smaller, having people register themselves is quicker and produces
 better data.</p>
+<h2 id="the-five-things-to-know-before-you-run-one">The five things to know before you run one</h2>
+<p>The importer is a good tool with sharp edges, and all five of these bite on
+live accounts rather than on the file.</p>
+<ol>
+<li><strong>It updates as readily as it creates.</strong> A record with an <code>id</code>, or with a
+<code>username</code> that already exists, is a change to somebody's live account. A
+file you meant as forty new people can quietly rewrite forty existing ones
+if the usernames collide.</li>
+<li><strong>The <code>groups</code> column replaces hub group memberships outright.</strong> Not adds
+to — replaces. Every group not named in the cell is left, and the
+manager, invitee and applicant roles go with it. See <a href="#what-an-import-can-overwrite">What an import can
+overwrite</a>.</li>
+<li><strong>A missing password becomes the username.</strong> If the <code>password</code> column is
+absent or empty on a new account, the account is created with its own
+username as its password. Nothing warns you and the password rules are not
+applied. Always supply the column.</li>
+<li><strong>Every imported password is expired.</strong> That is the good news: whatever you
+set, the owner has to change it at first login. It is also why the password
+in your file only has to survive one login.</li>
+<li><strong>Validation reads the wrong column.</strong> Records are checked against the
+<strong>Edit Profile</strong> column of the registration field table, not <strong>Create
+Account</strong> — so tightening your registration form does not tighten the
+importer, and the checks that do run are fewer than you would expect. See
+<a href="#what-the-importer-actually-checks">What the importer actually checks</a>.</li>
+</ol>
+<p>None of it is undone by anything on this screen. There is no &quot;roll back this
+run&quot; and the <a href="../memberimportarchive/index.html">import archive</a> keeps a record of the
+job, not of the data as it was before. The dry run is the safety net, and it
+is a good one — use it every time, including on a job you have run before.</p>
 <h2 id="what-the-screen-holds">What the screen holds</h2>
 <p>Two links sit under the tab: <strong>Imports</strong>, the list of import jobs, and
 <strong>Hooks</strong>, the scripts that can transform records on the way in.</p>
@@ -271,11 +304,44 @@ limited to CSV. Four readers ship:</p>
 </tbody>
 </table>
 <p>CSV remains the easiest to prepare and to check, and the sample file is a CSV.</p>
-<h2 id="which-fields-are-required">Which fields are required</h2>
-<p>The importer validates every record against the <strong>Edit Profile</strong> column of the
-<a href="../registration/index.html">Registration</a> field table, not the <strong>Create Account</strong>
-column. If a profile field is <strong>Required</strong> there, every record has to carry it
-or the record fails. Fields that are hidden for editing are skipped.</p>
+<h2 id="what-the-importer-actually-checks">What the importer actually checks</h2>
+<p>This section exists because the answer surprises people, and because a manager
+who assumes the importer enforces the registration form's rules will import
+data the registration form would have rejected.</p>
+<p>Every record is validated as though the account's owner were editing their own
+profile: the check runs in <em>edit</em> mode, and so reads the <strong>Edit Profile</strong>
+column of the <a href="../registration/index.html">Registration</a> field table. Requiring a field
+in the <strong>Create Account</strong> column — the one that governs the public
+registration form — has no effect on the importer at all.</p>
+<p>In edit mode the check also switches three fields off itself. Username is
+treated as read only and both password fields as hidden, so <strong>the importer
+never validates a password</strong>: the password rules, the blacklist and the
+minimum length are not consulted, which is how the username-as-password
+fallback in point 3 above gets through unnoticed.</p>
+<p>What is left is the handful of account-level fields whose <strong>Edit Profile</strong>
+cell says <strong>Required</strong>: full name, email address, the opt-in flag and the terms
+of use. Profile-builder fields are not checked on import in this release — the
+code that would check them is commented out — so a field you made required in
+the profile builder will not stop a record that omits it.</p>
+<p>With the settings a hub ships with, the <strong>Edit Profile</strong> cells for those fields
+are not <strong>Required</strong>, which means the practical answer is that almost nothing
+is validated. Beyond a name, an email address and a username all being present
+and non-empty, a record is accepted. In particular:</p>
+<ul>
+<li>An email address is not checked for being a valid address.</li>
+<li>An email address already in use by another account is not rejected, so two
+accounts can end up sharing one.</li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Mode changes this too. In <strong>Modify only non-empty fields</strong> mode a
+missing required field is skipped rather than reported, so records that would
+fail in <strong>Overwrite all fields</strong> mode pass. Do your dry run in the mode you
+intend to run in.</p>
+</aside>
+<p>If you want the importer to enforce something, set that field to <strong>Required</strong>
+in the <strong>Edit Profile</strong> column before you run — and remember you have then also
+made it required for every member editing their own profile.</p>
+<h2 id="which-fields-the-file-may-carry">Which fields the file may carry</h2>
 <p>The sample file is not a fixed list. It is generated when you press <strong>Sample
 import file</strong>, from the accounts table plus every field currently in your
 hub's profile builder plus the columns the record handlers understand
@@ -336,6 +402,35 @@ memberships. Any group not named in the column is removed, including manager,
 invitee and applicant roles. Leave the column out entirely if you do not mean
 to rewrite memberships.</p>
 </aside>
+<p>The precise rule is worth having, because the difference between the safe and
+the destructive case is one empty cell. A row whose <code>groups</code> cell is empty is
+left alone — memberships are not touched. A row whose <code>groups</code> cell has
+anything in it ends up in exactly those groups and no others. Where the account
+was already a member of a group the cell names, its existing role is kept, so
+a manager stays a manager; where it was a member of a group the cell does not
+name, it is removed as member, manager, invitee and applicant alike.</p>
+<p>That makes the column genuinely useful for the case it was built for —
+enrolling a cohort into one group in a single pass — and dangerous for updating
+anything else. If your file is an update of names or email addresses, delete
+the <code>groups</code> column before you upload it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> These accounts are placed in an <em>access</em> group as well, and not by
+this column. Every account the importer creates goes into the <strong>New User
+Registration Group</strong> from the component's <strong>Options</strong>, Registered by default.
+If a batch needs extra permissions, put them in the extra
+<a href="../accessgroups/index.html">access group</a> afterwards, from the member records.</p>
+</aside>
+<h2 id="an-import-from-start-to-finish">An import from start to finish</h2>
+<p>The rest of this page follows one job through. It is the scenario from the
+<a href="../index.html#a-worked-example">section introduction</a>: forty participants from a
+partner institution need accounts before a workshop opens, and their institution
+has sent a spreadsheet of names and email addresses.</p>
+<p>Two decisions are already made before you touch the screen. These are new
+people, not existing members, so the file carries no <code>id</code> column and every row
+should create an account. And they all belong in one hub group for the duration
+of the workshop, so the file carries a <code>groups</code> column naming that one group —
+which is safe here precisely because none of these accounts exists yet and none
+has memberships to lose.</p>
 <h2 id="preparing-the-file">Preparing the file</h2>
 <ol>
 <li>Open <strong>Users &gt; Members &gt; Import</strong>.</li>
@@ -346,6 +441,15 @@ account, and delete the columns you are not setting.</li>
 <li>Save it as CSV, not as a spreadsheet, unless you mean to upload a
 spreadsheet.</li>
 </ol>
+<p>Before you go on, look for the two columns that decide how much damage a
+mistake does. If the file has a <code>username</code> column, check that none of those
+usernames already belongs to somebody: a collision turns a create into an
+update. If it has a <code>groups</code> column, check that every row names the workshop
+group and nothing else.</p>
+<p>Add a <code>password</code> column and fill it, even though the importer does not insist
+on one. Leaving it out gives forty people an account whose password is their
+own username. Generate the values however your hub normally does; they only
+have to last one login, because the importer expires them all.</p>
 <h2 id="creating-the-job-and-attaching-the-file">Creating the job and attaching the file</h2>
 <ol>
 <li>Press <strong>New</strong>.</li>
@@ -430,7 +534,8 @@ multi-select boxes, one per type, with <strong>up</strong> and <strong>down</str
 order they run in. Ctrl- or Command-click selects more than one.</p>
 <h2 id="testing-an-import">Testing an import</h2>
 <p>Always dry-run first. Nothing is written and the results show exactly what a
-real run would do.</p>
+real run would do. This is the only point in the process where a mistake costs
+nothing, so spend time here rather than after.</p>
 <ol>
 <li>Check the job's row in the imports list.</li>
 <li>Press <strong>Test Run</strong>.</li>
@@ -447,11 +552,41 @@ would set, and any data it could not use.</li>
 <p>Read a sample of the records, not just the error count. A dry run reports what
 would be written, so this is your only chance to catch a mapping that is
 technically valid and factually wrong.</p>
+<p>For the workshop file, three things are worth opening a record to confirm.</p>
+<ul>
+<li>The record says it will <strong>create</strong> an account rather than update one. If it
+names an existing account, a username in your file is already taken.</li>
+<li>The group memberships it lists are the workshop group and nothing else.</li>
+<li>The name and email have landed in the fields you meant. A column mapped to
+the wrong field is valid data in the wrong place, and the importer will not
+notice.</li>
+</ul>
 <h2 id="running-the-import">Running the import</h2>
 <p>From the dry-run screen, press <strong>Run For Real</strong> under the countdown. From the
 imports list, check the job and press <strong>Run</strong>.</p>
 <p>The run screen is the same, without the dry-run notice. <strong>Rerun Import</strong> starts
 the job again from the top.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Rerun Import</strong> does exactly what it says and is matched by
+nothing that undoes a run. Re-running a job whose file carries usernames will
+match the accounts the first run created and update them; re-running one
+without usernames will create a second set of accounts with generated
+usernames. Neither is what you want after a run that went wrong. Fix the
+file, then decide deliberately which it is.</p>
+</aside>
+<h2 id="afterwards">Afterwards</h2>
+<p>The forty accounts now exist, are in the workshop hub group, and are in the
+Registered access group. Two things are still outstanding.</p>
+<ul>
+<li>They cannot see the restricted workshop material yet. That needs the
+<code>Workshop 2026</code> <a href="../accessgroups/index.html">access group</a>, which the importer does
+not set — add the accounts to it from the member records, or from the
+account list.</li>
+<li>Nobody has a password they can use. See <a href="#delivering-passwords-safely">Delivering passwords
+safely</a>.</li>
+</ul>
+<p>Check the result before you tell anyone the accounts are ready: filter the
+Members list by <strong>- Registration Date -</strong> → <strong>Today</strong> and count the rows.</p>
 <h2 id="what-an-import-can-overwrite">What an import can overwrite</h2>
 <ul>
 <li>A record is matched to an existing account by <code>id</code> (or <code>uidNumber</code>) first,
@@ -490,7 +625,7 @@ with one of your own.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../registration/index.html" rel="prev"><span>Previous</span>Registration</a><a class="pager__next" href="../memberimportarchive/index.html" rel="next"><span>Next</span>Member import (archive)</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/03-memberimport.md">Edit this page on GitHub</a>

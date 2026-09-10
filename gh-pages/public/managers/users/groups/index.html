@@ -67,9 +67,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../memberimport/index.html">Member import</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Groups</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-you-actually-do-on-this-screen">What you actually do on this screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-change-here-does-and-who-notices">What a change here does, and who notices</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-group-list">The group list</a></li>
 <li class="toc__item toc__item--l3"><a href="#group-types">Group types</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-a-group">Creating a group</a></li>
+<li class="toc__item toc__item--l3"><a href="#worked-example-a-group-for-the-workshop-cohort">Worked example: a group for the workshop cohort</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-group">Editing a group</a></li>
 <li class="toc__item toc__item--l2"><a href="#publishing-unpublishing-and-archiving">Publishing, unpublishing and archiving</a></li>
 <li class="toc__item toc__item--l2"><a href="#approving-a-group">Approving a group</a></li>
@@ -173,8 +176,41 @@ exist.</p>
 <p><strong>Note:</strong> A hub group is not an access group. Access groups are the
 permission buckets described in <a href="../accessgroups/index.html">Access Groups</a>, and
 the two systems are unrelated. See the
-<a href="../index.html#two-different-things-are-called-a-group">section introduction</a>.</p>
+<a href="../index.html#two-different-things-are-called-a-group">section introduction</a>.
+Putting somebody in a hub group grants them nothing on the rest of the hub.
+It gives them the group's own pages, forum, wiki and files, and stops there.</p>
 </aside>
+<h2 id="what-you-actually-do-on-this-screen">What you actually do on this screen</h2>
+<p>Groups largely run themselves. Users create them, users manage their own
+membership, and a hub can go months with nobody opening this screen. You come
+here for four things, in rough order of how often:</p>
+<ul>
+<li><strong>Approving a group</strong> somebody created, when automatic approval is off.</li>
+<li><strong>Rescuing a group</strong> whose only manager has left the hub, by promoting
+somebody else on its membership screen.</li>
+<li><strong>Deleting a group</strong> that should not exist — a duplicate, an abandoned test,
+something a spammer created.</li>
+<li><strong>Creating a group that users cannot create for themselves</strong>: a super group,
+a group on somebody's behalf, or a group that has to exist before its members
+do.</li>
+</ul>
+<p>Everything else on the screen — the type, the join policy, the discoverability
+— is a group's own setting that its managers control from the site. Changing
+one from here is an intervention in somebody else's group, and it takes effect
+without telling them.</p>
+<h2 id="what-a-change-here-does-and-who-notices">What a change here does, and who notices</h2>
+<ul>
+<li><strong>Membership changes take effect immediately.</strong> Someone removed from a group
+loses the group's pages, forum and files on their next page load. They are
+not told, and they will read it as the hub being broken.</li>
+<li><strong>Unpublishing is the reversible way to take a group out of circulation.</strong> The
+group and everything in it survive; publish it again and it comes back. Use
+this while you work out whether a group should really go.</li>
+<li><strong>Deleting is not reversible and takes the content with it.</strong> See <a href="#deleting-a-group">Deleting a
+group</a> before you use it, and prefer unpublishing.</li>
+<li><strong>Approving and unapproving are both reversible</strong> and change only whether the
+group is listed and usable.</li>
+</ul>
 <p>Reach the screen at <strong>Users</strong> → <strong>Groups</strong>, or directly at
 <code>/administrator/index.php?option=com_groups</code>. Within the component the
 sub-navigation offers:</p>
@@ -332,6 +368,36 @@ use the Approved column in the list afterwards. Automatic approval, the
 <code>auto_approve</code> option, governs groups created by users on the site, not
 groups created here.</p>
 </aside>
+<p>Creating a group is safe. Until it has members and content it is an empty
+shell, and unpublishing it puts it out of sight without losing anything.</p>
+<h3 id="worked-example-a-group-for-the-workshop-cohort">Worked example: a group for the workshop cohort</h3>
+<p>Continuing the scenario from the <a href="../index.html#a-worked-example">section
+introduction</a>, the forty visiting participants need
+somewhere to work together for the two weeks of the workshop.</p>
+<ol>
+<li>Go to <strong>Users</strong> → <strong>Groups</strong> and select <strong>New</strong>.</li>
+<li>Set <strong>Type</strong> to <strong>Hub</strong>. A super group is only needed if the workshop wants
+its own web space and code; see <a href="../supergroups/index.html">Super Groups</a>.</li>
+<li>Enter an <strong>Alias</strong> of <code>workshop2026</code> and a matching <strong>Title</strong>. Get the alias
+right the first time — it becomes the group's address and cannot be changed
+afterwards.</li>
+<li>Under <strong>Membership</strong>, set <strong>Join Policy</strong> to <strong>Invite Only</strong>, so that nobody
+outside the cohort can add themselves.</li>
+<li>Under <strong>Access</strong>, set <strong>Discoverability</strong> to <strong>Hidden</strong>, so the group does
+not appear in the site's group listings.</li>
+<li>Set <strong>Approve</strong> to <em>Approved</em> and <strong>Published</strong> to <em>Published</em>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>The group now exists and is empty. The cohort's accounts are put into it by the
+<code>groups</code> column of the <a href="../memberimport/index.html">member import</a>, which is the one
+place that column is genuinely the right tool — the accounts do not exist yet,
+so there are no memberships for it to overwrite.</p>
+<p>Note what this group does <em>not</em> do. It gives the cohort a shared space; it does
+not give them access to restricted material elsewhere on the hub. That is a
+<a href="../accesslevels/index.html">viewing level</a> built on an
+<a href="../accessgroups/index.html">access group</a>, and it is set up separately.</p>
+<p>When the workshop ends, unpublish the group. Its discussions and files stay
+readable to you and recoverable; deleting it destroys them.</p>
 <h2 id="editing-a-group">Editing a group</h2>
 <ol>
 <li>Go to <strong>Users</strong> → <strong>Groups</strong>.</li>
@@ -349,10 +415,23 @@ groups created here.</p>
 An archived group stays readable but its toolbar drops the management
 actions.</p>
 <h2 id="approving-a-group">Approving a group</h2>
+<p>Automatic approval is on by default, in the manifest and in the data a hub is
+installed with, so out of the box a user's new group works the moment they
+create it and nothing reaches you. That is the right default for a hub whose
+groups are its own community, and the wrong one for a hub that gets
+unsolicited signups: turn it off under <strong>Options</strong> → <strong>General</strong> and a group
+waits for you instead. Turning it off does not affect groups already approved.</p>
 <p>When automatic approval is off, a group a user creates on the site is saved
 unapproved and an email goes to the site administrator plus everyone listed
 in the <strong>Group reviewers</strong> option. To approve it, select the icon in the
 group's <strong>Approved</strong> column. Selecting it again unapproves the group.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Turning automatic approval off with nothing in <strong>Group
+reviewers</strong> means the notification goes only to the site administrator
+address. If nobody reads that mailbox, every group a user creates sits
+unapproved and unnoticed, and the users who created them have no way to
+chase it.</p>
+</aside>
 <h2 id="deleting-a-group">Deleting a group</h2>
 <ol>
 <li>Go to <strong>Users</strong> → <strong>Groups</strong>.</li>
@@ -366,6 +445,14 @@ announcements, collections, wish list and the rest along with it. There is
 no undo. The group's upload directory on disk is left behind, so for a
 super group you must clean up the files yourself.</p>
 </aside>
+<p>This is the most destructive button in this section, and there is nothing to
+distinguish it from any other delete button in the interface. What goes is not
+the group but years of somebody's discussion. If a group is dormant, unpublish
+it; if it is a duplicate, check which of the pair holds the content first; if
+somebody has asked you to delete their group, ask them whether they want the
+forum archived somewhere first, because you cannot get it back for them
+afterwards. Reserve <strong>Delete</strong> for groups that were never used — spam, tests,
+mistakes made minutes ago.</p>
 <h2 id="membership">Membership</h2>
 <p>Select a group's member count in the list to open its membership screen. The
 list can be filtered by status — Manager, Applicant, Invitee — and, when
@@ -383,6 +470,17 @@ members.</p>
 prints a banner naming the last run, and an error banner if the job has not
 run in the last 24 hours; until it runs, an expired membership keeps its
 access.</p>
+<p>Two of these actions are worth pausing over.</p>
+<p><strong>Delete</strong> here removes somebody from the group, not from the hub. The account
+itself is untouched — this is the screen to use when a member has left a
+project but stays on the hub.</p>
+<p>The two ways of removing a manager do not behave alike. <strong>Demote</strong> refuses to
+act on the last remaining manager: it answers <em>Cannot remove all managers. A
+group must have at least one manager.</em> and does nothing. <strong>Delete</strong> carries no
+such check, so ticking the last manager and pressing <strong>Delete</strong> succeeds and
+leaves the group with nobody able to run it. The site gives a group's members
+no way out of that; promoting somebody from this screen is then the only route
+back. Check the <strong>Managers</strong> filter before you delete anybody from it.</p>
 <h2 id="roles">Roles</h2>
 <p>A role is a named set of extra permissions inside one group. A role carries
 a name and any of three permissions:</p>
@@ -452,7 +550,7 @@ queue, so a second run resends the same digest.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../memberimportarchive/index.html" rel="prev"><span>Previous</span>Member import (archive)</a><a class="pager__next" href="../accessgroups/index.html" rel="next"><span>Next</span>Access Groups</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/05-groups.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/components
 -->
@@ -11,6 +11,24 @@ Most components carry a set of options. They decide what the component
 offers a visitor, what its defaults are, and — for components that talk to
 something outside the hub — the connection details it needs. Options belong
 to one component and affect nothing else.
+
+This is the screen a manager opens most often, because it is where a
+component's behaviour actually lives. When somebody says "the hub is emailing
+the wrong person about new support tickets", the answer is not in the global
+configuration and not in the code: it is **Notify when ticket created**, in
+the Support component's options, which defaults to the site's From address
+and is usually still pointing at whoever installed the hub.
+
+## What options are not
+
+They are not the switch that makes the component exist. A component that has
+been disabled in the [Extension
+Manager](../10-extensions/04-extension-manager.md) is gone from the
+administrator menu, options and all.
+
+They are not what puts the component on the site either. A visitor reaches a
+component through a [menu item](../07-menus.md); the options only decide how
+it behaves once they are there.
 
 ## Opening a component's options
 
@@ -22,7 +40,20 @@ to one component and affect nothing else.
 5. Change what you need and select **Save & Close**. **Save** keeps the
    pop-up open. **Cancel** discards the changes.
 
-Changes take effect immediately.
+Changes take effect immediately, for everyone using the hub, with no undo
+and no confirmation. In practice that is fine: almost every option is a
+display choice or a default, and setting it back restores what you had.
+
+Two kinds are not fine, and both look like all the others.
+
+- **Connection details.** The middleware settings in the Tools component and
+  the directory settings behind **Site > LDAP** are what those features run
+  on. A wrong value stops the feature outright rather than changing it.
+- **Anything that decides who may do something.** The **Permissions** tab
+  described below, and options such as who may create a group or submit a
+  resource, change what other people can do the moment you save. Nobody is
+  notified, and the people affected only find out when something they used to
+  be able to do stops working.
 
 > **Note:** Not every component has options. If the manifest declares none,
 > the pop-up says "No options found."

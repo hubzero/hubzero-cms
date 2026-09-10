@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/users/groups
 source-id: 3360
@@ -20,6 +20,41 @@ exist.
 > permission buckets described in [Access Groups](06-accessgroups.md), and
 > the two systems are unrelated. See the
 > [section introduction](README.md#two-different-things-are-called-a-group).
+> Putting somebody in a hub group grants them nothing on the rest of the hub.
+> It gives them the group's own pages, forum, wiki and files, and stops there.
+
+## What you actually do on this screen
+
+Groups largely run themselves. Users create them, users manage their own
+membership, and a hub can go months with nobody opening this screen. You come
+here for four things, in rough order of how often:
+
+- **Approving a group** somebody created, when automatic approval is off.
+- **Rescuing a group** whose only manager has left the hub, by promoting
+  somebody else on its membership screen.
+- **Deleting a group** that should not exist — a duplicate, an abandoned test,
+  something a spammer created.
+- **Creating a group that users cannot create for themselves**: a super group,
+  a group on somebody's behalf, or a group that has to exist before its members
+  do.
+
+Everything else on the screen — the type, the join policy, the discoverability
+— is a group's own setting that its managers control from the site. Changing
+one from here is an intervention in somebody else's group, and it takes effect
+without telling them.
+
+## What a change here does, and who notices
+
+- **Membership changes take effect immediately.** Someone removed from a group
+  loses the group's pages, forum and files on their next page load. They are
+  not told, and they will read it as the hub being broken.
+- **Unpublishing is the reversible way to take a group out of circulation.** The
+  group and everything in it survive; publish it again and it comes back. Use
+  this while you work out whether a group should really go.
+- **Deleting is not reversible and takes the content with it.** See [Deleting a
+  group](#deleting-a-group) before you use it, and prefer unpublishing.
+- **Approving and unapproving are both reversible** and change only whether the
+  group is listed and usable.
 
 Reach the screen at **Users** → **Groups**, or directly at
 `/administrator/index.php?option=com_groups`. Within the component the
@@ -111,6 +146,41 @@ searchable — or **Hidden**, in which case only members find it.
 > `auto_approve` option, governs groups created by users on the site, not
 > groups created here.
 
+Creating a group is safe. Until it has members and content it is an empty
+shell, and unpublishing it puts it out of sight without losing anything.
+
+### Worked example: a group for the workshop cohort
+
+Continuing the scenario from the [section
+introduction](README.md#a-worked-example), the forty visiting participants need
+somewhere to work together for the two weeks of the workshop.
+
+1. Go to **Users** → **Groups** and select **New**.
+2. Set **Type** to **Hub**. A super group is only needed if the workshop wants
+   its own web space and code; see [Super Groups](08-supergroups.md).
+3. Enter an **Alias** of `workshop2026` and a matching **Title**. Get the alias
+   right the first time — it becomes the group's address and cannot be changed
+   afterwards.
+4. Under **Membership**, set **Join Policy** to **Invite Only**, so that nobody
+   outside the cohort can add themselves.
+5. Under **Access**, set **Discoverability** to **Hidden**, so the group does
+   not appear in the site's group listings.
+6. Set **Approve** to *Approved* and **Published** to *Published*.
+7. Select **Save & Close**.
+
+The group now exists and is empty. The cohort's accounts are put into it by the
+`groups` column of the [member import](03-memberimport.md), which is the one
+place that column is genuinely the right tool — the accounts do not exist yet,
+so there are no memberships for it to overwrite.
+
+Note what this group does *not* do. It gives the cohort a shared space; it does
+not give them access to restricted material elsewhere on the hub. That is a
+[viewing level](07-accesslevels.md) built on an
+[access group](06-accessgroups.md), and it is set up separately.
+
+When the workshop ends, unpublish the group. Its discussions and files stay
+readable to you and recoverable; deleting it destroys them.
+
 ## Editing a group
 
 1. Go to **Users** → **Groups**.
@@ -131,10 +201,23 @@ actions.
 
 ## Approving a group
 
+Automatic approval is on by default, in the manifest and in the data a hub is
+installed with, so out of the box a user's new group works the moment they
+create it and nothing reaches you. That is the right default for a hub whose
+groups are its own community, and the wrong one for a hub that gets
+unsolicited signups: turn it off under **Options** → **General** and a group
+waits for you instead. Turning it off does not affect groups already approved.
+
 When automatic approval is off, a group a user creates on the site is saved
 unapproved and an email goes to the site administrator plus everyone listed
 in the **Group reviewers** option. To approve it, select the icon in the
 group's **Approved** column. Selecting it again unapproves the group.
+
+> **Warning:** Turning automatic approval off with nothing in **Group
+> reviewers** means the notification goes only to the site administrator
+> address. If nobody reads that mailbox, every group a user creates sits
+> unapproved and unnoticed, and the users who created them have no way to
+> chase it.
 
 ## Deleting a group
 
@@ -147,6 +230,15 @@ group's **Approved** column. Selecting it again unapproves the group.
 > announcements, collections, wish list and the rest along with it. There is
 > no undo. The group's upload directory on disk is left behind, so for a
 > super group you must clean up the files yourself.
+
+This is the most destructive button in this section, and there is nothing to
+distinguish it from any other delete button in the interface. What goes is not
+the group but years of somebody's discussion. If a group is dormant, unpublish
+it; if it is a duplicate, check which of the pair holds the content first; if
+somebody has asked you to delete their group, ask them whether they want the
+forum archived somewhere first, because you cannot get it back for them
+afterwards. Reserve **Delete** for groups that were never used — spam, tests,
+mistakes made minutes ago.
 
 ## Membership
 
@@ -168,6 +260,20 @@ Membership end dates are enforced by a cron job, not by the page. The screen
 prints a banner naming the last run, and an error banner if the job has not
 run in the last 24 hours; until it runs, an expired membership keeps its
 access.
+
+Two of these actions are worth pausing over.
+
+**Delete** here removes somebody from the group, not from the hub. The account
+itself is untouched — this is the screen to use when a member has left a
+project but stays on the hub.
+
+The two ways of removing a manager do not behave alike. **Demote** refuses to
+act on the last remaining manager: it answers *Cannot remove all managers. A
+group must have at least one manager.* and does nothing. **Delete** carries no
+such check, so ticking the last manager and pressing **Delete** succeeds and
+leaves the group with nobody able to run it. The site gives a group's members
+no way out of that; promoting somebody from this screen is then the only route
+back. Check the **Managers** filter before you delete anybody from it.
 
 ## Roles
 

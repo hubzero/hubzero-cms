@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions
 source-id: 3405
@@ -24,6 +24,30 @@ four administrator screens that manage extensions, all reached from the
 A fifth entry, **Language Manager**, opens `com_languages`. It has its own
 chapter, [Language Manager](../09-components/20-languages.md), among the
 [component chapters](../09-components/README.md).
+
+## This section, and the one it is confused with
+
+This section is about **which extensions exist and where they sit**. Creating
+a module and putting it in a template position. Turning a plugin on. Choosing
+the template the site renders in. Adding a hub's own code from a git
+repository.
+
+[Configuring](../05-configuring/README.md) is about **values**: the settings
+inside an extension once it exists and is switched on.
+
+Two screens carry both jobs, and that is where the confusion starts. The
+Module Manager creates a module *and* holds its parameters; the Plug-in
+Manager enables a plugin *and* holds its parameters. In this book the
+parameters are described in the Configuring chapters —
+[Modules](../05-configuring/04-modules.md) and
+[Plugins](../05-configuring/05-plugins.md) — and everything else here.
+
+> **Important:** If a hub looks empty — no menu down the side, no login box,
+> nothing but the component in the middle of the page — the cause is almost
+> always in this section, not in the content. A module renders only if its
+> position is one the live template actually draws, and a fresh install ships
+> neither a default style that draws any nor a main menu in a position that
+> exists. [Positions](01-modules.md#positions) explains it.
 
 ## The extension types
 

@@ -60,6 +60,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">External authenticators</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-costs-before-it-works">What this costs before it works</a></li>
 <li class="toc__item toc__item--l2"><a href="#cilogon">CILogon</a></li>
 <li class="toc__item toc__item--l2"><a href="#shibboleth">Shibboleth</a></li>
 <li class="toc__item toc__item--l2"><a href="#globus">Globus</a></li>
@@ -161,6 +162,37 @@
 already manages — a campus login, a federation, a research identity service.
 The hub never sees or stores their password, they have one fewer to
 remember, and your help desk fields fewer password resets.</p>
+<p>This is the chapter for a hub that has to admit people it does not employ:
+collaborators at another university, a funder's review panel, students on a
+course run somewhere else. If everyone who uses your hub is already on your
+own staff list, the social providers in
+<a href="../authentication/index.html">Authentication</a> are easier and this chapter is not for
+you.</p>
+<h2 id="what-this-costs-before-it-works">What this costs before it works</h2>
+<p>None of these is a fifteen-minute job, and the reason is never the hub. Every
+one of them needs the hub registered with somebody else's identity service
+first, and that step is out of your hands:</p>
+<ul>
+<li>CILogon reviews each registration by hand.</li>
+<li>Shibboleth needs <code>mod_shib</code> installed and configured on the web server, and
+the hub added to a federation's metadata.</li>
+<li>Purdue CAS needs the hub registered with Purdue's identity office.</li>
+<li>Globus needs an application registered in Globus Auth.</li>
+</ul>
+<p>Start the registration before you plan the rest of the work, and expect the
+plugin itself to take minutes once the credentials arrive. When they do,
+enable the plugin the same way as any other — see
+<a href="../authentication/index.html">Authentication</a>.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Test with a real account from the institution, borrowed for ten
+minutes from someone who has one. Every one of these plugins works by
+handing a visitor to a service you cannot log into yourself, and the
+failures — a scope that was not approved, an attribute that does not
+arrive, a callback URL that does not match — all look identical from your
+side of it. The Shibboleth plugin's <strong>Testing mode key</strong>, described below,
+exists so that you can do this without showing a half-finished provider to
+the whole hub.</p>
+</aside>
 <p>Four of the authentication plugins federate an external identity provider
 rather than talking to a single social network:</p>
 <table>
@@ -297,7 +329,7 @@ CILogon plugin is the better template.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../authentication/index.html" rel="prev"><span>Previous</span>Authentication</a><a class="pager__next" href="../../users/index.html" rel="next"><span>Next</span>Users</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/07-extauth.md">Edit this page on GitHub</a>

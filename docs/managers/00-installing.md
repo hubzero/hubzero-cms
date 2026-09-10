@@ -1,5 +1,6 @@
 <!--
 status: draft
+reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
 summary: Installation documentation is being rewritten for the new web installer.
@@ -7,6 +8,12 @@ summary: Installation documentation is being rewritten for the new web installer
 # Installing a hub
 
 **Coming soon.**
+
+If the hub you are asking about is already installed and answering, this is
+the wrong page and nothing below applies to you. Go to
+[The first week with a new hub](01-getting-started.md#the-first-week-with-a-new-hub),
+which starts from a hub that runs and walks the decisions that come next in
+order.
 
 Hubzero is gaining a web installer that sets a hub up from the browser,
 without the package repositories and hand-run configuration steps the old
@@ -22,9 +29,11 @@ Everything after a hub is running is covered and current:
 
 - [Hub managers](README.md) — the administrator's guide,
   screen by screen. Start with
-  [The first week with a new hub](01-getting-started.md), which
-  assumes a hub that is installed and answering, and walks the decisions
-  that come next in order.
+  [The administrator interface](01-getting-started.md#the-administrator-interface)
+  for the back end itself, then
+  [The first week with a new hub](01-getting-started.md#the-first-week-with-a-new-hub),
+  which assumes a hub that is installed and answering, and walks the
+  decisions that come next in order.
 - [Search](09-components/31-search/README.md) — connecting a hub
   to Apache Solr, which is a separate service a hub adds and not part of
   installing the CMS.

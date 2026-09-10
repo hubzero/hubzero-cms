@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>URLs · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="How the hub turns an address into an article, and how to point an old address at a new one. The SEO settings Search engine friendly URLs are configured in Site…">
+  <meta name="description" content="How the hub turns an address into an article, and how to point an old address at a new one. An address matters more on a hub than on an ordinary site, because…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/urls/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -161,6 +161,22 @@
         <div class="prose">
 <p>How the hub turns an address into an article, and how to point an old address
 at a new one.</p>
+<p>An address matters more on a hub than on an ordinary site, because hub
+addresses end up in places you cannot edit later: a methods section, a grant
+report, a data availability statement, a link in somebody else's paper. Once
+<code>/about/citing</code> is in print it has to keep working. This chapter is about
+knowing which address a page really has before you publish it, and about
+keeping an old one alive after you move things.</p>
+<p>Most managers need two things from it. The first is the rule that an
+article's URL comes from the menu item pointing at it, not from anything you
+typed on the article. The second is the Redirect Manager, for the day
+somebody reorganises the site.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is about articles. Resources, publications, groups, wiki
+pages and the rest build their addresses in their own components, and
+nothing here changes them. The Redirect Manager works on any address on the
+hub, though.</p>
+</aside>
 <h2 id="the-seo-settings">The SEO settings</h2>
 <p>Search engine friendly URLs are configured in <strong>Site → Global
 Configuration</strong>, on the <strong>Site</strong> tab, under <strong>SEO Settings</strong>.</p>
@@ -185,7 +201,7 @@ Configuration</strong>, on the <strong>Site</strong> tab, under <strong>SEO Sett
 </tr>
 <tr>
 <td><strong>Use URL rewriting</strong></td>
-<td>No</td>
+<td>Yes</td>
 <td>Drops <code>index.php</code> from the path. Needs the web server's rewrite rules in place first.</td>
 </tr>
 <tr>
@@ -202,6 +218,21 @@ Configuration</strong>, on the <strong>Site</strong> tab, under <strong>SEO Sett
 </table>
 <p>These are also listed in the
 <a href="../../../reference/configuration/index.html">global configuration reference</a>.</p>
+<p>Leave these alone. The shipped values are the ones a hub wants: friendly URLs
+on, rewriting on, everything else off.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Use URL rewriting</strong> is one of the few settings where the form's
+own default and the value a hub is installed with disagree. The field
+declares a default of <strong>No</strong>; the configuration the installer writes sets
+it to <strong>Yes</strong>. The stored value is what your hub is running, so a stock hub
+has rewriting on and serves addresses without <code>index.php</code> in them. Only a
+hub whose configuration was written some other way will see <strong>No</strong>.</p>
+</aside>
+<p>Rewriting is the one setting here that can take the site down. It works only
+while the web server has the matching rewrite rules; turn it on where they
+are missing and every page on the hub 404s. That is not an afternoon change
+on a live site. If you must change it, change it, load one page, and be ready
+to change it straight back.</p>
 <h2 id="how-an-article-s-address-is-decided">How an article's address is decided</h2>
 <p>Two things can give an article a URL, and the first one wins.</p>
 <h3 id="a-menu-item">A menu item</h3>
@@ -267,16 +298,34 @@ build anything new on it.</li>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Older Hubzero documentation described URLs as built from a
 <strong>section</strong>, a category, and an article, with segments collapsing when they
-shared an alias. Hubzero 2.4 has no sections. Categories nest instead, to any depth, and the path above is
-what the router matches.</p>
+shared an alias. Hubzero 2.4 has no sections. Categories nest instead, to
+any depth, and the path above is what the router matches.</p>
 </aside>
 <p>If nothing matches, the hub falls back to the component router, which
 addresses an article as <code>/content/article/{category-path}/{article-alias}</code>
 and a category as <code>/content/category/{path}</code>. Those addresses work, but they
 are ugly and no one should be given them.</p>
 <h2 id="redirects">Redirects</h2>
+<p>Suppose the hub has grown and the About material is being split up: the page
+that has answered at <code>/about</code> for three years becomes <code>/about/overview</code>, and
+a citation page moves in alongside it. The old address is in a funder report.
+A redirect is how you keep it working.</p>
 <p>The <strong>Redirect Manager</strong> is the supported way to send one address to another.
 Open it at <strong>Site → Maintenance → Routes</strong>.</p>
+<p>To catch that address:</p>
+<ol>
+<li>Go to <strong>Site → Maintenance → Routes</strong> and select <strong>New</strong>.</li>
+<li>Put the old address in <strong>Source URL</strong> — <code>/about</code>.</li>
+<li>Put the new one in <strong>Destination URL</strong> — <code>/about/overview</code>.</li>
+<li>Set <strong>Response Code</strong> to <strong>301 Moved Permanently</strong>, because the move is
+permanent and you want search engines and citation checkers to learn the
+new address.</li>
+<li>Save, and make sure the link is enabled. A link with no destination, or a
+disabled one, does nothing.</li>
+<li>Open <code>/about</code> in a browser. It should land on <code>/about/overview</code>.</li>
+</ol>
+<p>Redirects are entirely reversible: disable the link and the old address goes
+back to a 404. Nothing about a redirect touches the article itself.</p>
 <p>The manager depends on the <strong>System - Redirect</strong> plugin, and says at the top
 of the screen whether that plugin is enabled. With it on, every 404 the site
 serves is recorded as a link with no destination, so the manager doubles as a
@@ -310,7 +359,10 @@ list of the broken addresses people are actually asking for.</p>
 </table>
 <p>Enable a link and the redirect takes effect; disable it and the address goes
 back to a 404. The toolbar also archives, trashes, and — once you filter to
-<strong>Trashed</strong> — permanently deletes links. Checking several recorded 404s and
+<strong>Trashed</strong> — permanently deletes links. This screen is one of the well
+behaved ones: trashing is reversible and the permanent delete is a separate
+button you can only reach after filtering to <strong>Trashed</strong>. See
+<a href="../states/index.html">States, deleting and check-out</a> for why that is worth noticing. Checking several recorded 404s and
 using <strong>Update selected links to the following new URL</strong> sets the same
 destination on all of them at once.</p>
 <p>Its parameters are in the
@@ -341,7 +393,7 @@ not put an entry into a menu that someone may later publish by accident.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../states/index.html" rel="prev"><span>Previous</span>States, deleting and check-out</a><a class="pager__next" href="../../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/urls.md">Edit this page on GitHub</a>

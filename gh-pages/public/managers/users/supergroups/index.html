@@ -70,6 +70,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesslevels/index.html">Access Levels</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Super Groups</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#does-your-hub-need-one">Does your hub need one</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-a-super-group">Creating a super group</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-super-group-can-do-that-an-ordinary-group-cannot">What a super group can do that an ordinary group cannot</a></li>
 <li class="toc__item toc__item--l2"><a href="#approval-of-pages-and-modules">Approval of pages and modules</a></li>
@@ -171,6 +172,36 @@ ordinary group's pages.</p>
 <p>Super groups are for the hub's own project teams and partners, not for
 anything a visitor can create. Only an administrator can make one, and the
 code inside one runs with the hub's full privileges.</p>
+<h2 id="does-your-hub-need-one">Does your hub need one</h2>
+<p>Most do not, and a hub can run for years without one. The question to ask is
+whether the group needs <em>its own site</em>, or only its own space. An ordinary hub
+group already gives a team a forum, a wiki, a blog, a calendar, a file area and
+a member list at its own address, and that is what nearly every team wants.</p>
+<p>A super group earns its keep when a group has to look like something other than
+the hub — a centre or a partner institution with its own identity — or when it
+needs pages that compute something, its own database, or its own component.
+Those are developer requirements, not editorial ones. If nobody on the team can
+write and maintain a template, a super group gives them a harder version of
+what they already had.</p>
+<p>What it is not:</p>
+<ul>
+<li><strong>Not a permission level.</strong> Making a group super does not give its members
+any more rights on the rest of the hub.</li>
+<li><strong>Not a way to let a group post code.</strong> If that is the whole requirement, the
+per-group <strong>Trusted content</strong> page setting does it without the rest.</li>
+<li><strong>Not something to try out and undo.</strong> Creating one writes a directory and a
+database on the server, and deleting the group from the interface leaves both
+behind for someone to clean up by hand.</li>
+</ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A super group's pages, modules and components execute PHP with
+the hub's own privileges. Whoever can write content in one can, in practice,
+do anything the hub's web user can do — read its configuration, reach its
+database. Grant that to people you would trust with the server, and keep
+<strong>Page Approvers</strong> filled in so that no submission containing code publishes
+without a person reading it. See <a href="#approval-of-pages-and-modules">Approval of pages and
+modules</a>.</p>
+</aside>
 <p>Writing the template itself is a developer task. See
 <a href="../../../developers/supergroups/index.html">Super Groups</a> in the developer
 book for the templating system, page templates, macros, PHP pages, databases,
@@ -220,10 +251,20 @@ has no working database connection.</li>
 <li>Connects the group's repository, if <strong>Repo Management</strong> is on. That step
 only runs when <code>application_env</code> is a production environment.</li>
 </ul>
+<p>If any of those steps fails, the group is still created. A missing database
+grant or a missing <code>/etc/supergroup.conf</code> gives you a group with no working
+database connection and a warning on screen, not a rolled-back creation — so
+read the messages after the save rather than assuming a clean result.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Deleting the group from the administrator interface removes
 the group and its content but leaves its directory and its <code>sg_</code> database
 on the server. Clean those up by hand.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The alias fixes more than the URL. It names the directory and
+the database, it cannot be changed after the save, and there is no rename.
+Getting it wrong means creating a second group and moving the content across.
+Agree the alias with the group before you create anything.</p>
 </aside>
 <h2 id="what-a-super-group-can-do-that-an-ordinary-group-cannot">What a super group can do that an ordinary group cannot</h2>
 <table>
@@ -302,6 +343,13 @@ with <em>Pages can only be approved by authorized approvers</em>. With the optio
 empty nobody can approve anything, and content containing code stays
 invisible.</p>
 </aside>
+<p>This gate is the reason a super group is safe to hand to a team, so set the
+option before you create your first super group rather than after the group's
+developer files their first bug report. Put the usernames of the people who
+would review code on the hub in it — not the group's own managers, who are the
+ones submitting. Approval is per submission, so a page that was approved and is
+then edited to add code goes back through the gate; that is deliberate, and
+worth explaining to the group so they do not read it as the page breaking.</p>
 <h2 id="managing-modules-from-the-site">Managing modules from the site</h2>
 <p>Modules are managed by the group's own managers, on the site.</p>
 <ol>
@@ -356,7 +404,7 @@ error pages, not its own.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../accesslevels/index.html" rel="prev"><span>Previous</span>Access Levels</a><a class="pager__next" href="../user-notes/index.html" rel="next"><span>Next</span>User notes</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/08-supergroups.md">Edit this page on GitHub</a>

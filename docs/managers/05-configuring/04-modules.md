@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/modules
 -->
@@ -10,6 +10,24 @@ source: https://help.hubzero.org/documentation/240/managers/configuring/modules
 Most modules carry parameters: what they show, how many items, which feed to
 read. Parameters belong to one module *instance*, so the same module type
 can appear twice on a hub with different settings.
+
+That last point is the useful one. A hub can put the same list of newest
+resources in the sidebar of the front page showing three items, and in the
+footer showing ten, without touching any code — they are two instances of one
+module, each with its own parameters. If a block on the site is showing the
+wrong number of things, or the wrong kind of things, this is where you fix
+it.
+
+This chapter covers the parameters. Creating a module, choosing its position,
+deciding which pages it appears on and putting it in order are covered in
+[Module Manager](../10-extensions/01-modules.md) — the same screen, the other
+half of the job.
+
+> **Important:** If a module is not appearing at all, its parameters are
+> almost never the reason. Check its position first: a module in a position
+> the live template does not draw renders nothing, silently, however
+> correctly it is configured. See
+> [Positions](../10-extensions/01-modules.md#positions).
 
 ## Opening a module's parameters
 
@@ -24,6 +42,12 @@ can appear twice on a hub with different settings.
 
 > **Note:** Not every module has parameters. Those that do affect only that
 > one instance.
+
+Editing parameters is about as safe as this book gets. The change lands on
+one block of one page, it is visible the moment you save, and setting the
+value back undoes it. The one field in the **Details** column worth being
+careful with is **Position**, because moving a module to a position no
+template draws makes it vanish without an error.
 
 ## The list screen
 

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions/plugins
 source-id: 3408
@@ -16,6 +16,27 @@ level, changes the order they run in, and edits their parameters.
 
 Select **Extensions** → **Plug-in Manager**, or go to
 `/administrator/index.php?option=com_plugins`.
+
+Three hundred and thirty-two plugins ship with the platform, and a manager
+touches perhaps five of them in a year. You come here to switch on a way of
+signing in, to turn off a tab on group pages that your hub does not use, to
+enable a spam detector after a wave of junk postings, or to work out which
+plugin is responsible for something appearing on a page. Nothing here needs
+routine attention.
+
+This chapter covers state, access and order. A plugin's own parameters are
+covered in [Plugins](../05-configuring/05-plugins.md).
+
+## What this is not
+
+It is not an installer. There is no **New** and no **Delete**, and there
+never will be on this screen: plugins arrive and leave with the code.
+
+Disabling a plugin is also not a way to hide content. Turning off the plugin
+that supplies a tab removes the tab, not what is behind it; the records stay
+in the database and come back the moment the plugin is enabled again. That
+cuts both ways — it makes disabling safe to try, and it means disabling is
+not a way to make anything private.
 
 ## How plugins work
 
@@ -104,7 +125,9 @@ For the parameters each plugin exposes, see
 A plugin whose files are gone is shown with a marked row and forced to
 disabled.
 
-Three filters sit above the list, plus a search box that matches the name:
+Three filters sit above the list, plus a search box. The search matches the
+stored name and the element, not the label in the **Plug-in Name** column;
+see the tip below.
 
 - **- Select Status -**: Enabled, Disabled.
 - **- Select Type -**: any folder that has plugins installed.
@@ -147,6 +170,27 @@ The toolbar is **Save**, **Save & Close**, **Close** and **Help**.
 
 Disabling a plugin stops it running everywhere, front end and back end alike.
 If the plugin supplies a tab, that tab disappears.
+
+The change takes effect on the next request, for everyone, and it is
+reversible by enabling the plugin again — which makes this one of the safer
+screens in the book. Two groups are the exception:
+
+- **`authentication`.** Disabling the wrong one of these locks people out of
+  the hub, and disabling **Authentication - HUBzero** locks *everybody* out,
+  including you. See
+  [Authentication](../05-configuring/06-authentication.md) before you touch
+  the group.
+- **`system`.** These run on every request, and several of them are what make
+  ordinary things work rather than adding a feature. Disable one only when
+  you know what it does.
+
+> **Tip:** Note the plugin's **Element** before you disable it. The search
+> box does not match the translated name shown in the list. It matches the
+> stored name — which for a core plugin is a language key such as
+> `plg_content_loadmodule` — and the element. So `loadmodule` finds the
+> Content - Load Module plugin and typing its displayed name does not. `id:`
+> followed by an extension id works too, and filtering by
+> **- Select Type -** is usually quicker than either.
 
 ## Changing the order plugins run in
 

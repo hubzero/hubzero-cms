@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/plugins
 -->
@@ -9,6 +9,24 @@ source: https://help.hubzero.org/documentation/240/managers/configuring/plugins
 
 Some plugins carry parameters: an API key, a display name, a limit, a
 switch. Parameters belong to that one plugin and affect nothing else.
+
+Most of the time you are here because something outside the hub needs
+telling apart from the hub: the client ID and secret an identity provider
+issued, the key a spam service gave you, the name a sign-in button should
+show. A hub whose plugins are all doing what they should never needs this
+screen.
+
+This chapter covers the parameters. Turning a plugin on and off, setting its
+access level, and changing the order plugins run in are covered in
+[Plug-in Manager](../10-extensions/03-plugins.md) — the same screen, the
+other half of the job.
+
+## What this is not
+
+It is not where plugins are installed or removed; they arrive and leave with
+the code. And a plugin's parameters are not a substitute for its **Status**:
+a plugin with a perfectly filled-in API key does nothing at all while it is
+disabled.
 
 ## Opening a plugin's parameters
 
@@ -24,6 +42,13 @@ switch. Parameters belong to that one plugin and affect nothing else.
 
 > **Note:** Not every plugin has parameters. When one has none, the right
 > column says "No options found."
+
+Parameters take effect on the next request, everywhere, for everyone. That is
+harmless for a display name or a limit and worth pausing over for anything
+that gates access — an authentication plugin's **Auto approve new users**,
+say, or a limit that decides how many failed sign-ins block an account. If
+you are changing a plugin that stands between a member and the hub, keep a
+second signed-in administrator session open while you do it.
 
 ## The list screen
 

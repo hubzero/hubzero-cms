@@ -133,6 +133,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Module Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Plug-in Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-is-not">What this is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-plugins-work">How plugins work</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-plugin-groups">The plugin groups</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
@@ -165,6 +166,22 @@ install or delete plugins; it enables and disables them, sets their access
 level, changes the order they run in, and edits their parameters.</p>
 <p>Select <strong>Extensions</strong> → <strong>Plug-in Manager</strong>, or go to
 <code>/administrator/index.php?option=com_plugins</code>.</p>
+<p>Three hundred and thirty-two plugins ship with the platform, and a manager
+touches perhaps five of them in a year. You come here to switch on a way of
+signing in, to turn off a tab on group pages that your hub does not use, to
+enable a spam detector after a wave of junk postings, or to work out which
+plugin is responsible for something appearing on a page. Nothing here needs
+routine attention.</p>
+<p>This chapter covers state, access and order. A plugin's own parameters are
+covered in <a href="../../configuring/plugins/index.html">Plugins</a>.</p>
+<h2 id="what-this-is-not">What this is not</h2>
+<p>It is not an installer. There is no <strong>New</strong> and no <strong>Delete</strong>, and there
+never will be on this screen: plugins arrive and leave with the code.</p>
+<p>Disabling a plugin is also not a way to hide content. Turning off the plugin
+that supplies a tab removes the tab, not what is behind it; the records stay
+in the database and come back the moment the plugin is enabled again. That
+cuts both ways — it makes disabling safe to try, and it means disabling is
+not a way to make anything private.</p>
 <h2 id="how-plugins-work">How plugins work</h2>
 <p>Plugins live in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins"><code>core/plugins/</code></a>, and a hub's own in
 <code>app/plugins/</code>, which takes precedence. Each plugin is a directory two levels
@@ -431,7 +448,9 @@ matters. The Extension Manager and the Plug-in Manager both write the same
 </table>
 <p>A plugin whose files are gone is shown with a marked row and forced to
 disabled.</p>
-<p>Three filters sit above the list, plus a search box that matches the name:</p>
+<p>Three filters sit above the list, plus a search box. The search matches the
+stored name and the element, not the label in the <strong>Plug-in Name</strong> column;
+see the tip below.</p>
 <ul>
 <li><strong>- Select Status -</strong>: Enabled, Disabled.</li>
 <li><strong>- Select Type -</strong>: any folder that has plugins installed.</li>
@@ -506,6 +525,28 @@ in the <strong>Status</strong> column does the same thing for a single plugin.</
 </ol>
 <p>Disabling a plugin stops it running everywhere, front end and back end alike.
 If the plugin supplies a tab, that tab disappears.</p>
+<p>The change takes effect on the next request, for everyone, and it is
+reversible by enabling the plugin again — which makes this one of the safer
+screens in the book. Two groups are the exception:</p>
+<ul>
+<li><strong><code>authentication</code>.</strong> Disabling the wrong one of these locks people out of
+the hub, and disabling <strong>Authentication - HUBzero</strong> locks <em>everybody</em> out,
+including you. See
+<a href="../../configuring/authentication/index.html">Authentication</a> before you touch
+the group.</li>
+<li><strong><code>system</code>.</strong> These run on every request, and several of them are what make
+ordinary things work rather than adding a feature. Disable one only when
+you know what it does.</li>
+</ul>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Note the plugin's <strong>Element</strong> before you disable it. The search
+box does not match the translated name shown in the list. It matches the
+stored name — which for a core plugin is a language key such as
+<code>plg_content_loadmodule</code> — and the element. So <code>loadmodule</code> finds the
+Content - Load Module plugin and typing its displayed name does not. <code>id:</code>
+followed by an extension id works too, and filtering by
+<strong>- Select Type -</strong> is usually quicker than either.</p>
+</aside>
 <h2 id="changing-the-order-plugins-run-in">Changing the order plugins run in</h2>
 <p>Order matters inside a folder. Content plugins transform the same text one
 after another; authentication plugins are offered a log-in attempt in turn.</p>
@@ -519,7 +560,7 @@ save icon in the column heading.</li>
 </ol>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templates/index.html" rel="prev"><span>Previous</span>Template Manager</a><a class="pager__next" href="../extension-manager/index.html" rel="next"><span>Next</span>Extension Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/03-plugins.md">Edit this page on GitHub</a>

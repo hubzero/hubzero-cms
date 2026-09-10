@@ -53,7 +53,9 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Configuring</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#this-section-and-the-one-it-is-confused-with">This section, and the one it is confused with</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-settings-live">Where settings live</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-of-these-you-will-actually-open">Which of these you will actually open</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="hub/index.html">Global configuration</a></li>
@@ -159,6 +161,19 @@
 section covers the four places settings live: the global configuration that
 applies to the whole site, the options attached to each component, the
 parameters on each module instance, and the parameters on each plugin.</p>
+<h2 id="this-section-and-the-one-it-is-confused-with">This section, and the one it is confused with</h2>
+<p>This section is about <strong>values</strong>. What is the hub called, which address does
+its mail come from, how long does a session last, what does the registration
+form ask for, how many items does a module list.</p>
+<p><a href="../extensions/index.html">Extensions</a> is about <strong>which extensions exist
+and where they sit</strong>: creating a module and putting it in a template position,
+enabling and disabling a plugin, choosing the site's template, adding a hub's
+own code from a git repository.</p>
+<p>The two meet on the same screens. The Module Manager both creates a module and
+holds its parameters; the Plug-in Manager both enables a plugin and holds its
+parameters. Where that happens, the chapter here covers the parameters and the
+chapter there covers everything else, and each links to the other rather than
+repeating it.</p>
 <h2 id="where-settings-live">Where settings live</h2>
 <table>
 <thead>
@@ -194,6 +209,22 @@ parameters on each module instance, and the parameters on each plugin.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="which-of-these-you-will-actually-open">Which of these you will actually open</h2>
+<p>Most hubs settle the global configuration once, during installation, and come
+back to it perhaps twice a year — to take the site down for maintenance, to
+change the address mail goes out under, or to hand a new group of staff
+administrator access.</p>
+<p>Component options are the ones you open regularly, because that is where a
+component's behaviour lives. Registration and the authentication plugins
+matter to any hub that opens itself to people outside the group that built
+it. Module and plugin parameters you open when something on a page shows the
+wrong thing.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Global configuration is the only screen in this section that
+can take the hub off the air. <a href="hub/index.html#what-is-safe-to-change-and-what-is-not">Global
+configuration</a> says which
+settings do that before it describes any of them.</p>
+</aside>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="hub/index.html">Global configuration</a></li>
@@ -209,7 +240,7 @@ the generated <a href="../../reference/configuration/index.html">configuration r
 These chapters explain the screens; the reference is the exhaustive list.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../faq/index.html" rel="prev"><span>Previous</span>Frequently asked questions</a><a class="pager__next" href="hub/index.html" rel="next"><span>Next</span>Global configuration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/README.md">Edit this page on GitHub</a>

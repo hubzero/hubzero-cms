@@ -54,12 +54,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Global configuration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-is-safe-to-change-and-what-is-not">What is safe to change and what is not</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-this-screen-is-not">What this screen is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-screen">The screen</a></li>
 <li class="toc__item toc__item--l3"><a href="#toolbar">Toolbar</a></li>
 <li class="toc__item toc__item--l3"><a href="#tabs">Tabs</a></li>
 <li class="toc__item toc__item--l2"><a href="#site">Site</a></li>
+<li class="toc__item toc__item--l3"><a href="#taking-the-hub-offline">Taking the hub offline</a></li>
 <li class="toc__item toc__item--l2"><a href="#system">System</a></li>
+<li class="toc__item toc__item--l3"><a href="#session-settings">Session Settings</a></li>
 <li class="toc__item toc__item--l2"><a href="#server">Server</a></li>
+<li class="toc__item toc__item--l3"><a href="#database-settings">Database Settings</a></li>
+<li class="toc__item toc__item--l3"><a href="#mail-settings">Mail Settings</a></li>
 <li class="toc__item toc__item--l2"><a href="#api">API</a></li>
 <li class="toc__item toc__item--l2"><a href="#permissions-and-text-filters">Permissions and Text Filters</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-moved-where">What moved where</a></li>
@@ -177,8 +183,84 @@ that used them. <a href="#what-moved-where">What moved where</a> maps the old fi
 onto the current ones.</p>
 </aside>
 <p>Most of these settings are chosen once, during installation, and then left
-alone. Changing the database, session, or cache settings on a running hub
-can take the site offline.</p>
+alone. You come back for a handful of reasons: the hub is going down for an
+hour and you want visitors told; mail has started bouncing and the From
+address is wrong; a new member of staff needs administrator access. Those are
+safe errands. The rest of the screen is not, and the fields sit side by side
+with no visual difference between them.</p>
+<h2 id="what-is-safe-to-change-and-what-is-not">What is safe to change and what is not</h2>
+<p>Every field on this screen is written to a file the moment you select <strong>Save</strong>.
+There is no preview, no staging, and no undo button. Whoever is using the hub
+at that moment gets the new setting on their next page.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>If you get it wrong</th>
+<th>Can you fix it from the administrator interface?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site Offline</strong></td>
+<td>Every visitor without <strong>Offline Access</strong> sees the offline page and a <code>503</code> response</td>
+<td>Yes. The administrator interface is never taken offline</td>
+</tr>
+<tr>
+<td><strong>Session Handler</strong>, <strong>Session Lifetime</strong></td>
+<td>Everyone signed in is signed out; a handler whose server is not running means nobody can sign in at all</td>
+<td>No, if nobody can sign in. Edit <code>app/config/session.php</code> on the server</td>
+</tr>
+<tr>
+<td><strong>Cookie Domain</strong>, <strong>Cookie Path</strong></td>
+<td>Sessions stop sticking: sign-in appears to succeed and the next page is signed out again, on the site <em>and</em> in the administrator interface</td>
+<td>No. Edit <code>app/config/session.php</code> on the server</td>
+</tr>
+<tr>
+<td><strong>Mailer</strong></td>
+<td>Every mail the hub sends fails. Nothing on screen says so — registrations, password resets and ticket notifications simply never arrive</td>
+<td>Yes, once you notice</td>
+</tr>
+<tr>
+<td><strong>Database Tables Prefix</strong>, <strong>Database Host</strong>, <strong>Database Name</strong>, <strong>Username</strong></td>
+<td>The site points at tables that do not exist. Every page, including the administrator interface, stops</td>
+<td>No. Edit <code>app/config/database.php</code> on the server</td>
+</tr>
+<tr>
+<td><strong>Reset Hub Secret?</strong></td>
+<td>Everything signed with the old secret stops being accepted</td>
+<td>The reset cannot be undone</td>
+</tr>
+<tr>
+<td><strong>Cache Settings</strong></td>
+<td>Stale pages, or an error on every request if the handler's server is not there</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Force SSL</strong></td>
+<td>Every request redirects to HTTPS. If the certificate is not working, nothing answers, the administrator interface included</td>
+<td>No, if it locks you out. Edit <code>app/config/app.php</code> on the server</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else — the site name, the metadata, the SEO switches, the debug
+switches, the API rate limits, the permission grid — is reversible from the
+same screen, and worth trying rather than agonising over.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Before you change anything in that table, open a second browser
+and sign in to the administrator interface there. A second live session is
+the difference between a bad setting and a call to whoever has shell
+access.</p>
+</aside>
+<h2 id="what-this-screen-is-not">What this screen is not</h2>
+<p>It is not where a component's behaviour is set. Whether groups may be created
+by anyone, how large a project may grow, which address support tickets come
+from — none of that is here. Each component keeps its own settings behind an
+<strong>Options</strong> button in its own toolbar; see <a href="../components/index.html">Components</a>.</p>
+<p>It is not where individual people are given permissions either. The
+<strong>Permissions</strong> tab grants actions to <em>user groups</em>, not to members. Putting
+someone in a group is done from
+<a href="../../users/accessgroups/index.html">Access groups</a>.</p>
 <h2 id="the-screen">The screen</h2>
 <p>Open <strong>Site &gt; Global Configuration</strong> from the administrator menu.</p>
 <h3 id="toolbar">Toolbar</h3>
@@ -284,13 +366,88 @@ every key it contains.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Offline Settings</strong> takes the site offline with a message and an optional
-image. <strong>Metadata Settings</strong> sets the site-wide description, keywords,
-<code>robots</code> directive, and whether the generator and version are advertised.
+<p><strong>Metadata Settings</strong> sets the site-wide description, keywords, <code>robots</code>
+directive, and whether the generator and version are advertised.
 <strong>SEO Settings</strong> turns search engine friendly URLs on, adds the rewrite and
-suffix behaviour, and controls whether group URLs are rewritten too.
-<strong>Cookie Settings</strong> sets the cookie domain and path, and the JWT RSA public
-key used to validate tokens.</p>
+suffix behaviour, and controls whether group URLs are rewritten too.</p>
+<p><strong>Cookie Settings</strong> sets the cookie domain and path, and the JWT RSA public
+key used to validate tokens. Despite the panel's place on the <strong>Site</strong> tab,
+these three are stored in <code>app/config/session.php</code>, and the domain and path
+are used for the session cookie of <em>both</em> the site and the administrator
+interface. Leave both blank unless the hub is deliberately sharing a session
+across sub-domains; a wrong value signs everybody out of everything, and the
+only place left to fix it is the file itself.</p>
+<h3 id="taking-the-hub-offline">Taking the hub offline</h3>
+<p><strong>Offline Settings</strong> is the panel a manager comes to this screen for. It puts
+a maintenance page in front of the site instead of the hub.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site Offline</strong></td>
+<td>Yes or No. Defaults to No</td>
+</tr>
+<tr>
+<td><strong>Offline Message</strong></td>
+<td>Hide, <strong>Use Custom Message</strong>, or <strong>Use Site Language Default Message</strong></td>
+</tr>
+<tr>
+<td><strong>Custom Message</strong></td>
+<td>The text shown when <strong>Use Custom Message</strong> is chosen</td>
+</tr>
+<tr>
+<td><strong>Offline Image</strong></td>
+<td>An image shown above the message</td>
+</tr>
+</tbody>
+</table>
+<p>Say the hub is moving to a new database server on Saturday morning and will
+be unreachable for two hours. The sequence is:</p>
+<ol>
+<li>A day or two ahead, put a warning banner on the site with the
+<code>mod_notices</code> module, so the outage is not a surprise. See
+<a href="../../maintenance/notices/index.html">Site Notices</a>.</li>
+<li>On the day, open <strong>Site &gt; Global Configuration</strong> and stay on the <strong>Site</strong>
+tab.</li>
+<li>Set <strong>Site Offline</strong> to <strong>Yes</strong>.</li>
+<li>Set <strong>Offline Message</strong> to <strong>Use Custom Message</strong> and write a <strong>Custom
+Message</strong> that says what is happening and when the hub comes back. A
+sentence is enough, and it is the only thing most visitors will read.</li>
+<li>Select <strong>Save</strong>. The site is offline from that moment.</li>
+<li>Do the work. Check the hub yourself — you will still see the site, not the
+offline page, because of the permission below.</li>
+<li>Set <strong>Site Offline</strong> back to <strong>No</strong> and select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>Three things about being offline are worth knowing before you do this on a
+live hub.</p>
+<ul>
+<li><strong>The administrator interface is never taken offline.</strong> The check runs only
+on the site. You can always get back in and turn it off again.</li>
+<li><strong>Some people still see the site.</strong> The check exempts anyone holding the
+<strong>Offline Access</strong> permission — <code>core.login.offline</code> on the <strong>Permissions</strong>
+tab. The shipped rules grant it to <strong>Manager</strong>, which <strong>Administrator</strong>
+inherits, and Super Users bypass every permission check anyway. So the
+people testing the work in progress are usually the people who cannot see
+the offline page. Sign out, or use a private window, to see what a visitor
+sees.</li>
+<li><strong>The offline page returns HTTP <code>503</code>.</strong> That is the correct answer for a
+temporary outage and stops search engines recording the maintenance page as
+the hub's content. It also means uptime monitors will alert. Warn whoever
+watches them.</li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> How much of the panel is honoured depends on the template the
+site is running. The <strong>kimera</strong> template's own <code>offline.php</code> prints
+<strong>Custom Message</strong> and nothing else — the <strong>Hide</strong> and <strong>Use Site Language
+Default Message</strong> choices and <strong>Offline Image</strong> are ignored. Templates that
+ship no <code>offline.php</code> of their own, including <strong>lucent</strong> and <strong>Welcome</strong>,
+fall back to <code>core/templates/system/offline.php</code>, which honours all three.</p>
+</aside>
 <h2 id="system">System</h2>
 <p><strong>System Settings</strong> sets the log folder, the help server, and whether the
 Hubzero API web services are enabled.</p>
@@ -301,35 +458,192 @@ tokens the hub issues.</p>
 the old one. Sessions and issued tokens stop being accepted.</p>
 </aside>
 <p><strong>Debug Settings</strong> turns on the system profiler, the language debugger, and
-POST data logging. <strong>Cache Settings</strong> chooses off, conservative, or
-progressive caching, the cache handler, and the cache lifetime; a memcache
-handler adds host, port, persistence, and compression fields.
-<strong>Session Settings</strong> sets the session lifetime in minutes and the session
-handler.</p>
+POST data logging. All three are safe to switch on, and all three are visible
+to visitors, so switch them off again when you are done.</p>
+<p><strong>Cache Settings</strong> chooses off, conservative, or progressive caching, the
+cache handler, and the cache lifetime; a memcache handler adds host, port,
+persistence, and compression fields. Turning caching off, or changing the
+handler, empties the cache as part of the save, so the first few page loads
+afterwards are slow. Choosing a handler whose server is not running gives an
+error on every request.</p>
+<h3 id="session-settings">Session Settings</h3>
+<p>Two fields, and they are the ones most likely to lock you out.</p>
+<p><strong>Session Lifetime</strong> is how many minutes of inactivity end a session.
+<strong>Session Handler</strong> is where session data is kept. The drop-down offers only
+the handlers whose PHP extension is present on this server, so a handler
+being listed means the extension is loaded — not that the server behind it is
+running or reachable. Point the hub at a Redis or memcache server that is not
+there and nobody, including you, can sign in.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Changing <strong>Session Handler</strong> signs out everyone who is signed
+in, immediately, on the site and in the administrator interface. Anyone
+part-way through a form loses it. Switching <em>to</em> the database handler also
+empties <code>#__sessions</code> first, so every other session goes at the same
+moment. Do it out of hours, and only with a second signed-in session or
+shell access in reserve.</p>
+</aside>
+<p>The manifest and the shipped install disagree about both defaults, and the
+installed values win. The form declares <code>none</code> and 15 minutes; the installer
+writes <code>database</code> and 45 minutes into <code>app/config/session.php</code>, and those are
+what a stock hub runs. Take <strong>database</strong> and <strong>45</strong> as the real defaults —
+they are sensible, and there is no reason to change either. <strong>None</strong> hands
+sessions back to PHP's own storage, which on a hub behind more than one web
+server means a member's session is only there when they land on the same
+one.</p>
 <h2 id="server">Server</h2>
 <p><strong>Server Settings</strong> covers the temp folder, gzip page compression, error
 reporting, and <strong>Force SSL</strong> — off, administrator only, or the entire site.
-<strong>Location Settings</strong> has one field, <strong>Server Time Zone</strong>.</p>
-<p><strong>Database Settings</strong> and <strong>Mail Settings</strong> show the connection the site is
-already using. <strong>From email</strong> and <strong>From Name</strong> are the identity every mail
-the hub sends goes out under; several components default their own
-notification addresses to this value.</p>
+<strong>Location Settings</strong> has one field, <strong>Server Time Zone</strong>.
+<strong>Message Queue Settings</strong> points at the queue host, port, user, and password
+used by the background workers.</p>
+<p><strong>Force SSL</strong> does two things, and its three settings do not do them evenly.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Redirects a plain HTTP request to HTTPS</th>
+<th>Marks session cookies <code>secure</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>None</strong></td>
+<td>Neither half</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Administrator Only</strong></td>
+<td>The administrator interface only</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Entire Site</strong></td>
+<td>Both the administrator interface and the site</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>The redirects are in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/RouterServiceProvider.php"><code>Administrator/Providers/RouterServiceProvider.php</code></a>
+and
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/RouterServiceProvider.php"><code>Site/Providers/RouterServiceProvider.php</code></a>,
+and the cookie flag is set in the two session providers beside them. Note the
+asymmetry: the cookie flag arrives only at <strong>Entire Site</strong>, so a hub set to
+<strong>Administrator Only</strong> redirects the back end but still sends its session
+cookie over plain HTTP on the public side.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This setting cannot make a hub serve HTTPS. It only redirects
+to it. Turn it on before the web server has a working certificate and every
+request bounces to an address that does not answer, including the
+administrator interface you would use to turn it back off. Fix that by
+editing <code>force_ssl</code> in <code>app/config/app.php</code> on the server.</p>
+</aside>
+<h3 id="database-settings">Database Settings</h3>
+<p>This panel shows the connection the site is already using. There is no
+password field: the stored password is deliberately carried through the save
+untouched.</p>
+<p>Nothing here is a setting in the ordinary sense. These four values describe
+where the hub's data is, and the hub is running because they are right. Change
+one on a live hub and the next request has nowhere to read from — including
+the request that would let you change it back. Recovery is editing
+<code>app/config/database.php</code> on the server.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> <strong>Database Tables Prefix</strong> identifies the tables this
 installation owns. Changing it on a running hub points the site at tables
 that do not exist.</p>
 </aside>
-<p><strong>Message Queue Settings</strong> points at the queue host, port, user, and
-password used by the background workers.</p>
+<p>The shipped prefix is <code>jos_</code>, and every stock hub is running on it. It looks
+like a leftover and it is not; the tables really are called that. Tidying it
+up here renames nothing — it only stops the hub finding its own data.</p>
+<h3 id="mail-settings">Mail Settings</h3>
+<p><strong>From email</strong> and <strong>From Name</strong> are the identity every mail the hub sends
+goes out under, and several components default their own notification
+addresses to this value. Getting them right is worth doing early: an address
+that does not exist, or one that a receiving mail server will not accept as a
+sender, is the usual reason a hub's registration confirmations quietly stop
+arriving.</p>
+<p><strong>Mailer</strong> chooses how mail leaves the hub. It offers three values, and only
+two of them work.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sendmail</strong></td>
+<td>Mail is handed to the local sendmail. This is what a stock hub uses, and it is the setting to keep unless someone has given you a mail relay</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td>Mail goes to <strong>SMTP Host</strong> and <strong>SMTP Port</strong>, with <strong>SMTP Username</strong> and <strong>SMTP Password</strong> if either is filled in</td>
+</tr>
+<tr>
+<td><strong>Mandrill (SMTP)</strong></td>
+<td>Nothing goes anywhere. See the warning below</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The drop-down stores
+<code>mandrill</code>, and the code that turns the setting into a connection string
+recognises <code>smtp</code>, <code>sendmail</code>, <code>mail</code>, <code>native</code> and <code>mandrill+smtp</code> — but
+not <code>mandrill</code>. The result is an empty connection string, which throws
+rather than returning an error, on <em>every</em> mail the hub tries to send:
+registration confirmations, password resets, ticket notifications, group
+invitations. Nothing on this screen warns you, and the failure shows up
+later as members saying they never got the mail.</p>
+</aside>
+<p>Three fields on this panel are stored and then never read. <strong>Sendmail Path</strong>,
+<strong>SMTP Authentication</strong> and <strong>SMTP Security</strong> play no part in building the
+connection — only <strong>Mailer</strong>, <strong>SMTP Host</strong>, <strong>SMTP Port</strong>, <strong>SMTP Username</strong>
+and <strong>SMTP Password</strong> do. Setting <strong>SMTP Security</strong> to TLS does not turn TLS
+on, and blanking <strong>SMTP Authentication</strong> does not turn authentication off;
+filling in a username or password is what turns it on.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>SMTP Username</strong> and <strong>SMTP Password</strong> are lower-cased when
+the connection is built. A relay whose credentials contain a capital letter
+will refuse them, and the symptom is authentication failures with a
+password that is demonstrably correct. Where that bites, put a complete
+connection string in a <code>mailer_dsn</code> key in <code>app/config/mail.php</code> instead —
+if that key has a value, the whole drop-down is bypassed and the string is
+used as it stands. It is also the way to reach Mandrill.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A hub installed by the web installer starts with a <strong>Mailer</strong>
+value of <code>mail</code>, which is not one of the three choices offered. The first
+save of this screen rewrites it to <code>sendmail</code>, which behaves the same way
+and preserves Bcc recipients. You do not need to do anything about it.</p>
+</aside>
 <h2 id="api">API</h2>
 <p>Two panels, <strong>Ratelimit: Short</strong> and <strong>Ratelimit: Long</strong>, each a period in
 minutes and a request limit. The defaults are 120 requests per minute and
-10,000 requests per day.</p>
+10,000 requests per day. They matter only to a hub whose members drive it
+from scripts; if nobody is using the API, leave them alone. Both are
+reversible, so a hub whose own tooling is being throttled can raise them and
+watch what happens.</p>
 <h2 id="permissions-and-text-filters">Permissions and Text Filters</h2>
-<p><strong>Permissions</strong> is the site-wide rules grid: for each user group, the
-default answer to each core action. Components inherit these rules and can
-override them in their own <strong>Options</strong> screen. <strong>Text Filters</strong> decides,
-per group, which HTML survives when a member submits content.</p>
+<p><strong>Permissions</strong> is the site-wide rules grid: for each user group, the default
+answer to each core action — including <strong>Offline Access</strong>, the one that
+decides who still sees the site while it is offline. Components inherit these
+rules and can override them in their own <strong>Options</strong> screen, so a Deny here is
+the strongest answer there is: nothing below can grant it back.</p>
+<p>The screen protects you from exactly one mistake. If the rules you are saving
+would leave your own account without <strong>Super User</strong> access, the save is
+refused with an error. Every other way of locking a group out of something
+saves quietly.</p>
+<p><strong>Text Filters</strong> offers, per group, a choice of how much HTML a member may
+submit.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing reads it. Saving the tab stores the map in the
+<code>com_config</code> extension's own parameters, and no component, plugin or
+library in the tree consults it when content is saved, so <strong>No Filtering</strong>
+and <strong>Default Black List</strong> are indistinguishable in effect. The screen
+looks like the most important one here and it is not a control at all. See
+<a href="../../security/index.html#text-filters">Security</a>.</p>
+</aside>
 <h2 id="what-moved-where">What moved where</h2>
 <table>
 <thead>
@@ -429,7 +743,7 @@ screenshot pass replaces them; do not follow the steps they show.</p>
 <p><img src="../../media/hub-edit-hubconfig-03.png" alt="The retired Hub parameters pop-up with the Save button" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Configuring</a><a class="pager__next" href="../registration/index.html" rel="next"><span>Next</span>Registration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/01-hub.md">Edit this page on GitHub</a>

@@ -160,6 +160,23 @@
 <p>Most modules carry parameters: what they show, how many items, which feed to
 read. Parameters belong to one module <em>instance</em>, so the same module type
 can appear twice on a hub with different settings.</p>
+<p>That last point is the useful one. A hub can put the same list of newest
+resources in the sidebar of the front page showing three items, and in the
+footer showing ten, without touching any code — they are two instances of one
+module, each with its own parameters. If a block on the site is showing the
+wrong number of things, or the wrong kind of things, this is where you fix
+it.</p>
+<p>This chapter covers the parameters. Creating a module, choosing its position,
+deciding which pages it appears on and putting it in order are covered in
+<a href="../../extensions/modules/index.html">Module Manager</a> — the same screen, the other
+half of the job.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> If a module is not appearing at all, its parameters are
+almost never the reason. Check its position first: a module in a position
+the live template does not draw renders nothing, silently, however
+correctly it is configured. See
+<a href="../../extensions/modules/index.html#positions">Positions</a>.</p>
+</aside>
 <h2 id="opening-a-module-s-parameters">Opening a module's parameters</h2>
 <ol>
 <li>Sign in to the administrator interface.</li>
@@ -175,6 +192,11 @@ toolbar. Changes take effect immediately.</li>
 <p><strong>Note:</strong> Not every module has parameters. Those that do affect only that
 one instance.</p>
 </aside>
+<p>Editing parameters is about as safe as this book gets. The change lands on
+one block of one page, it is visible the moment you save, and setting the
+value back undoes it. The one field in the <strong>Details</strong> column worth being
+careful with is <strong>Position</strong>, because moving a module to a position no
+template draws makes it vanish without an error.</p>
 <h2 id="the-list-screen">The list screen</h2>
 <p>The list is filtered by a search box and five drop-downs: <strong>Client</strong> (Site
 or Administrator), <strong>- Select Status -</strong>, <strong>- Select Position -</strong>,
@@ -220,7 +242,7 @@ restyled since, and the Save button is not a star.</p>
 <p><img src="../../media/modules-modules-manager-10.png" alt="Saving the module" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="../plugins/index.html" rel="next"><span>Next</span>Plugins</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/04-modules.md">Edit this page on GitHub</a>

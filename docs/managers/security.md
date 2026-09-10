@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/22/security_considerations
 source-id: 2825
@@ -16,9 +16,10 @@ A hub is a public web application on a public server, so its security has
 two halves. The operating system, the web server, and the services around
 them are hardened by the system administrator with tools that are not part
 of this repository. The CMS has its own settings that decide how sessions
-and cookies behave, what HTML members may submit, how quickly a brute-force
-attempt is throttled, and how spam is caught. This section covers both, and
-says plainly which is which.
+and cookies behave, how quickly a brute-force attempt is throttled, which
+response headers the hub sets, and how spam is caught. This section covers
+both, says plainly which is which, and is equally plain about the screens
+that look like security controls and are not.
 
 ## In this section
 
@@ -40,21 +41,56 @@ Spam has its own chapter: [Spam](11-spam.md).
 | Force HTTPS | **Site** > **Global Configuration** > **Server** > **Force SSL** |
 | Session lifetime and handler | **Site** > **Global Configuration** > **System** > **Session Settings** |
 | Cookie domain and path | **Site** > **Global Configuration** > **Site** > **Cookie Settings** |
-| What HTML each access group may submit | **Site** > **Global Configuration** > **Text Filters** |
+| What HTML each access group may submit | **Site** > **Global Configuration** > **Text Filters** — but see the warning under [Text filters](#text-filters): nothing reads it |
 | Failed login and password-reset thresholds | **Users** > **Members** > **Options** > **Login Settings** |
 | Password rules and password blacklist | **Users** > **Members** > **Passwords** |
 | Second authentication factors | **Extensions** > **Plug-in Manager**, the `authfactors` group |
-| Content-Security-Policy header | **Extensions** > **Plug-in Manager** > **System - Content Security Policy** |
+| Content-Security-Policy header | **Extensions** > **Plug-in Manager** > **System - Content Security Policy** (ships disabled) |
+| Referrer-Policy header | **Extensions** > **Plug-in Manager** > **System - Referrer Policy** (ships enabled) |
 | Spam detection | **Extensions** > **Plug-in Manager**, the `antispam` group |
 | Upload virus scanning | The `virus_scanner` key in `configuration.php` |
 
 Every parameter behind these screens is listed in the generated
 [configuration reference](../reference/configuration/README.md).
 
+## Where to start
+
+Nine tenths of what makes a hub hard to attack is the system administrator's
+work, and none of it is in the administrator interface. If you are the person
+who inherited the hub and not the person who runs the server, this is the
+list that is actually yours, cheapest first. Each links to the section that
+explains it.
+
+1. **Set [Force SSL](#force-https) to Entire Site.** On a site it is the only
+   value that marks the session cookie secure, and the shipped value is
+   **None**. Two minutes, reversible, and nothing else on this page matters
+   as much.
+2. **Choose a [session handler](#sessions-and-cookies).** The shipped value
+   leaves sessions to PHP's own storage. `database` is the usual choice on a
+   hub and is what makes sessions visible and purgeable.
+3. **Do not spend time on [Text Filters](#text-filters).** The screen looks
+   like the most important one on this list and nothing reads it. Knowing
+   that saves you an afternoon and a false sense of a control you do not
+   have.
+4. **Leave the [login thresholds](#login-thresholds) alone** unless you have
+   a reason. The shipped values are sensible, and 0 does not mean "no limit"
+   — see the warning there.
+5. **Check that [System - Referrer Policy](#security-headers) is still on.**
+   It ships enabled with a sensible policy, which means the only thing to do
+   is not turn it off. Confirm it, then leave it.
+6. **Then, if you have somewhere to test, work through
+   [System - Content Security Policy](#security-headers)** in report-only
+   mode. That one ships disabled, and it is a project rather than a toggle.
+
+Everything else on the CMS side is a response to something: spam arriving,
+an account under attack, a member locked out. The
+[security questions](#security-questions) below cover those.
+
 ## Reporting a vulnerability
 
 If you find a vulnerability in the Hubzero release itself, report it to the
 project rather than filing it in a public tracker.
+
 ## Security questions
 
 Answers to the questions hub managers ask most often about the CMS side of
@@ -138,13 +174,19 @@ Installing and updating ClamAV itself is the system administrator's job.
 
 ### Does the CMS set a Content-Security-Policy header?
 
-Only if you enable **System - Content Security Policy**. It ships disabled.
-The plugin can run in report-only mode, enforcing mode, or both at once, and
-it sets `base-uri`, `object-src`, `child-src`, `connect-src`, `default-src`,
-`font-src`, `form-action`, `frame-src`, `img-src`, `script-src` and
-`style-src` from its own parameters. Start in report-only mode; the shipped
-`script-src` default already includes `'unsafe-inline'` and `'unsafe-eval'`,
-which much of the interface still needs.
+Only if you enable **System - Content Security Policy**, which ships
+disabled. The plugin can run in report-only mode, enforcing mode, or both at
+once, and it sets `base-uri`, `object-src`, `child-src`, `connect-src`,
+`default-src`, `font-src`, `form-action`, `frame-src`, `img-src`,
+`script-src` and `style-src` from its own parameters. Its **Mode** defaults
+to **Report only**, which is where to start: the shipped `script-src` already
+includes `'unsafe-inline'` and `'unsafe-eval'`, which much of the interface
+still needs, so an enforcing policy tightened from that default breaks
+screens.
+
+It does set `Referrer-Policy`, without your doing anything: **System -
+Referrer Policy** ships *enabled*, with a policy of `same-origin`. See
+[Security headers](#security-headers).
 
 The parameters are listed in the
 [system plugin reference](../reference/configuration/plugins/system.md).
@@ -163,6 +205,7 @@ address to a Fail2Ban jail after too many accounts have been blocked from
 it, and even that only happens when you turn it on. Blocking, rate limiting
 at the network edge, and reputation-based blocklists are all the system
 administrator's tools.
+
 ## Operating system hardening
 
 Everything on this page is **external to the CMS**. None of it is configured
@@ -329,11 +372,33 @@ checked in the source tree. The host underneath is covered separately in
 ### Force HTTPS
 
 **Site** > **Global Configuration** > **Server** > **Force SSL** takes three
-values: **None**, **Administrator Only**, and **Entire Site**. Set it to
-**Entire Site**.
+values: **None**, **Administrator Only**, and **Entire Site**. The installer
+writes **None**. Set it to **Entire Site**.
 
-This is a redirect inside the application, so the request has already
-reached PHP by the time it fires. Redirect at the web server as well.
+It does two things, and the second is the one worth changing it for.
+
+- It redirects a plain HTTP request to HTTPS. This is a redirect inside the
+  application, so the request has already reached PHP by the time it fires,
+  and the credentials in a form POST have already crossed the network in the
+  clear. Redirect at the web server as well; that is where it belongs.
+- It marks cookies **secure**, so a browser will not send them over plain
+  HTTP at all. This is the part only the CMS can do. On the site, only
+  **Entire Site** does it: **Administrator Only** marks the administrator
+  interface's cookies and leaves the site's session cookie unmarked, along
+  with the cookie the authentication plugins use to remember which sign-in
+  method a member last used.
+
+> **Note:** One cookie ignores this setting. **System - Remember Me**, which
+> is enabled on a fresh install, stores the member's credentials — encrypted,
+> with a key derived from their browser's user agent string — for a year, and
+> marks that cookie secure only when the request that created it arrived over
+> HTTPS. Redirecting at the web server, so no sign-in ever happens over plain
+> HTTP, is what covers this one.
+
+Changing it is reversible and takes effect on the next request. On a hub that
+is already served only over HTTPS nobody notices; on a hub with an HTTP
+listener still open, anything embedding a hub page over plain HTTP breaks,
+which is the point.
 
 ### Sessions and cookies
 
@@ -344,6 +409,19 @@ reached PHP by the time it fires. Redirect at the web server as well.
 | **Session Lifetime** | 15 | Minutes of inactivity before a session expires. Shorter is safer; too short annoys people mid-form. |
 | **Session Handler** | `none` | Where sessions are stored. The list offers whatever backends the server supports — `database`, `file`, `memcached`, `redis`, `apc` and so on. `database` is the usual choice. |
 
+`none` is not "no sessions". It hands storage to PHP's own session handling,
+which on a default install means files in PHP's temporary directory. That
+works, and on a single web server it is not insecure — but the CMS cannot see
+those sessions, so nothing can list who is signed in or expire a session
+early, and a second web server behind a load balancer will not share them.
+`database` puts them in the `#__session` table and fixes all three.
+
+**Session Lifetime** is minutes of inactivity, not minutes since sign-in.
+Shortening it is safe and reversible; the cost is people losing a long form
+they were part-way through, which on a hub means a project description or a
+publication draft. Fifteen minutes is short for a research hub. Lengthening
+it widens the window in which a borrowed browser is still signed in.
+
 **Cookie Settings** are on the **Site** tab, and hold **Cookie Domain** and
 **Cookie Path**. Leave both empty unless the hub genuinely shares a session
 with a sibling host — widening the cookie domain widens who receives the
@@ -351,20 +429,32 @@ session cookie.
 
 ### Text filters
 
-**Global Configuration** > **Text Filters** sets, per access group, what
-HTML a member may submit through an editor field. Each group gets one of:
+**Global Configuration** > **Text Filters** offers, per access group, a
+choice of how much HTML a member may submit through an editor field. Each
+group gets one of:
 
-| Option | Effect |
+| Option | Effect it describes |
 |---|---|
-| **Default Black List** | Strips the tags and attributes commonly used in attacks. This is the shipped behaviour. |
-| **Custom Black List** | Strips the tags and attributes you list, instead of the default set. |
-| **White List** | Strips everything except the tags and attributes you list. |
-| **No HTML** | Strips all HTML. |
-| **No Filtering** | Submits the markup untouched. |
+| **Default Black List** | Strip the tags and attributes commonly used in attacks. |
+| **Custom Black List** | Strip the tags and attributes you list, instead of the default set. |
+| **White List** | Strip everything except the tags and attributes you list. |
+| **No HTML** | Strip all HTML. |
+| **No Filtering** | Submit the markup untouched. |
 
-**No Filtering** should be reserved for groups whose members you would trust
-with shell access, because it is equivalent. The filter applies to editor
-fields; it is not a substitute for a component escaping its own output.
+> **Warning:** Nothing reads these settings. Saving the screen writes the
+> choices into the `com_config` component's own parameters, and the only code
+> that reads them back is the same screen, redisplaying them. No component,
+> plugin or library in this tree consults them when content is saved, so
+> changing a group from **Default Black List** to **No Filtering** — or the
+> other way — has no effect on what any member can submit. Recorded in
+> It is recorded with the project.
+Do not treat this screen as a control, and do not read a hub's row of
+settings here as a description of what the hub does. If you have been asked
+to tighten what members may submit, the levers that do work are elsewhere:
+which access levels may post at all, which editor plugin is offered (see
+[Integrations](02-advancedsetup.md#the-rich-text-editor)), and
+**System - Content Security Policy** for what the browser will execute once
+the markup is on the page.
 
 ### Login thresholds
 
@@ -402,7 +492,12 @@ defaults to `sha512`.
 
 ### Second authentication factors
 
-Two plugins in the `authfactors` group ship with 2.4:
+A second factor is what stops a stolen password being enough. On a hub it is
+worth it for the handful of accounts that can reach the administrator
+interface, and rarely worth it for ordinary members, who mostly have nothing
+to steal and every reason to give up on a hub that asks them for a code.
+
+Two plugins ship in the `authfactors` group, both disabled:
 
 | Plugin | Second factor |
 |---|---|
@@ -416,26 +511,90 @@ administrator interface is ticked by default. If **System - Authfactors** is
 disabled, no second factor is ever asked for however the `authfactors`
 plugins are set.
 
+This is the one area on this page where a change can lock you out of your own
+hub, so read the rest of this section before you enable anything.
+
+**How the demand is made.** **System - Authfactors** runs after routing on
+every request from a signed-in member on a ticked client. If the session has
+not yet passed a factor check, the member is diverted to the factor screen —
+not offered it, diverted to it. There is no per-account opt-in and no grace
+period: enabling the plugins applies to everyone on that client at their next
+request. The only ways out of the screen are passing the check and logging
+out.
+
+> **Warning:** **Authfactors - Certificate** passes a request only when the
+> web server has put a client certificate's subject in `SSL_CLIENT_S_DN`. It
+> renders no screen and offers no alternative: on a session without a
+> certificate it marks the check failed and redirects, and the system plugin
+> then logs that member out. Because it redirects either way, no other
+> `authfactors` plugin ordered after it ever gets to offer its own factor,
+> whatever the comment in the source says. So enabling it on a client where
+> the web server is not asking for client certificates locks out everyone
+> with an account on that client, including you. Set it up on a staging hub,
+> or with the web server configured first. Recorded in
+> It is recorded with the project.
+> **Warning:** **Authfactors - Google** cannot enrol anyone on a hub built
+> from this repository alone. Its enrolment screen shells out to
+> `/usr/share/adm/scripts/google-authenticator-setup.sh`, which is not in
+> this repository, and then reads the secret that script is expected to have
+> written to the `#__auth_factors` table. Nothing in this tree ever writes a
+> row to that table, so without the external script the enrolment page errors
+> and the member cannot get past it — and because the system plugin diverts
+> them there on every request, they cannot get anywhere else either. Ask
+> whoever built the host whether that script is installed before you enable
+> this. Recorded with the project.
+
+In practice, then, second-factor authentication on a hub built from this
+repository means client certificates, or an authentication provider that does
+the second factor for you. If the hub signs people in through an institution
+or a federated provider — see
+[External authenticators](05-configuring/07-extauth.md) — that provider's own
+second factor covers every account that uses it, and needs nothing here.
+
+**System - Authfactors** and both factor plugins ship disabled, so nothing
+asks for a second factor until you turn on the system plugin *and* a factor
+plugin. Before you do, make sure you have a way back in that does not go
+through the administrator interface: shell access to the hub, and the ability
+to set the plugin's `enabled` column back to 0 in `#__extensions`. That is
+the only recovery there is.
+
 ### Security headers
 
-Two system plugins add response headers. Both ship disabled.
+Response headers tell the browser what it may do with a page: which origins
+may load scripts into it, how much of its address to hand on when the reader
+follows a link away. They are cheap protection and cost nothing at runtime.
+Two system plugins set one each, and they are in opposite states on a fresh
+hub — which is the thing to know before you touch either.
 
-**System - Content Security Policy** sets `Content-Security-Policy`,
-`Content-Security-Policy-Report-Only`, or both, depending on its **Mode**
-parameter. It writes eleven directives from its own parameters:
-`base-uri`, `object-src`, `child-src`, `connect-src`, `default-src`,
-`font-src`, `form-action`, `frame-src`, `img-src`, `script-src` and
-`style-src`. The token `{host}` in any value is replaced with the request's
-host name, and a `report-uri` is appended when one is set. Start in
-**Report Only** and read the reports before you enforce: the shipped
-`script-src` default still allows `'unsafe-inline'` and `'unsafe-eval'`,
-and tightening it will break screens until they are cleaned up.
+**System - Referrer Policy** ships **enabled**, with **Policy** set to
+`same-origin`. It sets the `Referrer-Policy` header on every response, so the
+hub tells another site only that a hub page linked to it, not which page. The
+default is right for a hub and there is no reason to change it. The one thing
+worth knowing is that it is on: if somebody reports that an external service
+has stopped seeing which hub page referred a visitor, this is why. Setting
+**Policy** to the blank option turns the header off entirely.
 
-**System - Referrer Policy** sets `Referrer-Policy`. Its default is
-`same-origin`.
+**System - Content Security Policy** ships **disabled**, and should stay that
+way until you have somewhere to test. It sets `Content-Security-Policy`,
+`Content-Security-Policy-Report-Only`, or both, on a **Mode** parameter that
+defaults to **Report Only**. It writes eleven directives from its own
+parameters: `base-uri`, `object-src`, `child-src`, `connect-src`,
+`default-src`, `font-src`, `form-action`, `frame-src`, `img-src`,
+`script-src` and `style-src`. The token `{host}` in any value is replaced
+with the request's host name, and a `report-uri` is appended when one is set.
+
+> **Warning:** A Content-Security-Policy is the one setting on this page that
+> can make the hub look broken to everybody at once, with nothing in any log
+> the hub keeps — a blocked script simply does not run, and the interface
+> stops responding to clicks. Enable it in **Report Only**, leave it there
+> for a fortnight, and read the reports before you go anywhere near
+> **Enforce policy**. The shipped `script-src` still allows `'unsafe-inline'`
+> and `'unsafe-eval'`, which is an accurate description of what the interface
+> needs today; tightening that is a project, and it is the last thing to do,
+> not the first.
 
 Other headers — HSTS, `X-Content-Type-Options`, `X-Frame-Options` — are not
-set by the CMS. Add them at the web server.
+set by the CMS at all. Add them at the web server.
 
 ### Spam
 
@@ -461,6 +620,7 @@ adequate for this; Purdue uses AppScan.
 
 If you find a vulnerability in the Hubzero release itself, report it to the
 project rather than filing it publicly.
+
 ### CMS-controlled Fail2Ban jail
 
 Hubzero throttles brute-force attempts in three stages, all configured on

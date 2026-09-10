@@ -157,6 +157,16 @@ members and their access, curates its content, installs and configures
 extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at <code>/administrator</code>, which this book walks through
 screen by screen.</p>
+<p>It is written for whoever ended up running the hub, which is usually not a
+full-time administrator: a researcher, a lab manager, somebody who inherited
+the site along with three other jobs. So each chapter says what a screen is
+for before it says what fields it has, and it says where a change is hard to
+undo, reaches people who are already using the hub, or cannot be tried out
+first. Where something does not work — an inert button, a dead filter, a
+setting nothing reads — it says that too, rather than describing the intention.</p>
+<p>This book is not a field-by-field reference; that is the generated
+<a href="../reference/configuration/index.html">configuration reference</a>. It is not
+about writing code for a hub, which is <a href="../developers/index.html">Developers</a>.</p>
 <p>The exception is the first step. <a href="installing/index.html">Installing a hub</a> is
 being rewritten for the new web installer; everything after a hub is
 running is covered here and current.</p>
@@ -178,6 +188,11 @@ manager can and cannot break.</p>
 <p>If you are taking over a running hub, start with
 <a href="maintenance/index.html">Daily maintenance</a> and
 <a href="users/index.html">Users</a>.</p>
+<p>If you are here because something has gone wrong, try
+<a href="faq/index.html">Frequently asked questions</a> first, then the chapter for the
+screen in question. A hub that has just become public and is suddenly full of
+junk accounts and junk posts wants <a href="spam/index.html">Spam</a>, which is worth reading
+before that happens rather than during.</p>
 <h2 id="in-this-book">In this book</h2>
 <ul>
 <li><a href="getting-started/index.html">Getting started</a> — the administrator
@@ -203,9 +218,18 @@ CMS.</li>
 </ul>
 <p>Every parameter you can set is also listed in the generated
 <a href="../reference/configuration/index.html">configuration reference</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Where this book gives a default, it is the value a hub installed
+from the shipped data actually has, which is not always the default a
+component's manifest declares — and the generated reference is built from
+those manifests. Where the two disagree, the stored value wins and this book
+says so. Check the setting on your own hub before relying on either.
+The two clearest cases are in
+<a href="getting-started/index.html#check-the-default-do-not-trust-it">Check the default, do not trust it</a>.</p>
+</aside>
 
         </div>
-        <p class="stamp">Rewritten and checked on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><span></span><a class="pager__next" href="installing/index.html" rel="next"><span>Next</span>Installing a hub</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/README.md">Edit this page on GitHub</a>

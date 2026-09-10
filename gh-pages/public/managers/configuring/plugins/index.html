@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Plugins · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Some plugins carry parameters: an API key, a display name, a limit, a switch. Parameters belong to that one plugin and affect nothing else. Opening a plugin&#x27;s…">
+  <meta name="description" content="Some plugins carry parameters: an API key, a display name, a limit, a switch. Parameters belong to that one plugin and affect nothing else. Most of the time…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/plugins/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,6 +58,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Plugins</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-is-not">What this is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#opening-a-plugin-s-parameters">Opening a plugin&#x27;s parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list-screen">The list screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-edit-screen">The edit screen</a></li>
@@ -159,6 +160,20 @@
         <div class="prose">
 <p>Some plugins carry parameters: an API key, a display name, a limit, a
 switch. Parameters belong to that one plugin and affect nothing else.</p>
+<p>Most of the time you are here because something outside the hub needs
+telling apart from the hub: the client ID and secret an identity provider
+issued, the key a spam service gave you, the name a sign-in button should
+show. A hub whose plugins are all doing what they should never needs this
+screen.</p>
+<p>This chapter covers the parameters. Turning a plugin on and off, setting its
+access level, and changing the order plugins run in are covered in
+<a href="../../extensions/plugins/index.html">Plug-in Manager</a> — the same screen, the
+other half of the job.</p>
+<h2 id="what-this-is-not">What this is not</h2>
+<p>It is not where plugins are installed or removed; they arrive and leave with
+the code. And a plugin's parameters are not a substitute for its <strong>Status</strong>:
+a plugin with a perfectly filled-in API key does nothing at all while it is
+disabled.</p>
 <h2 id="opening-a-plugin-s-parameters">Opening a plugin's parameters</h2>
 <ol>
 <li>Sign in to the administrator interface.</li>
@@ -175,6 +190,12 @@ take effect immediately.</li>
 <p><strong>Note:</strong> Not every plugin has parameters. When one has none, the right
 column says &quot;No options found.&quot;</p>
 </aside>
+<p>Parameters take effect on the next request, everywhere, for everyone. That is
+harmless for a display name or a limit and worth pausing over for anything
+that gates access — an authentication plugin's <strong>Auto approve new users</strong>,
+say, or a limit that decides how many failed sign-ins block an account. If
+you are changing a plugin that stands between a member and the hub, keep a
+second signed-in administrator session open while you do it.</p>
 <h2 id="the-list-screen">The list screen</h2>
 <p>Filters: a search box, <strong>- Select Status -</strong>, <strong>- Select Type -</strong>, and
 <strong>- Select Access -</strong>. Columns: <strong>Plug-in Name</strong>, <strong>Status</strong>, <strong>Ordering</strong>,
@@ -207,7 +228,7 @@ restyled since.</p>
 <p><img src="../../media/plugins-plugin-manager-08.png" alt="Saving the plugin" /></p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../modules/index.html" rel="prev"><span>Previous</span>Modules</a><a class="pager__next" href="../authentication/index.html" rel="next"><span>Next</span>Authentication</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/05-plugins.md">Edit this page on GitHub</a>

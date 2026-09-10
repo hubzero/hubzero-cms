@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 754ab96b09
+reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/menus
@@ -48,6 +48,36 @@ module side is covered in [Modules](10-extensions/01-modules.md).
 
 A plain hub ships one site menu — **Main Menu**, menu type `mainmenu` —
 holding a single item, **Home**.
+
+## How many menus a hub needs
+
+Most hubs need one menu. A second is worth having when a set of pages has to
+appear in a place of its own — a side menu that shows only on the pages of
+one section, a short row of links in the footer. Beyond that, each new menu
+costs you a module, a position, and a place to look when a link goes missing.
+
+The test is not "are these links related" but "do these links appear
+together, in one place, on the same set of pages". Two menus rendered in the
+same position on the same pages should be one menu. A menu whose module is
+assigned to every page and whose items are all in one section should usually
+be items under a parent in the main menu instead.
+
+Signs a hub has too many:
+
+- Menus with no module against them in the Menu Manager. Nobody can see
+  those; they exist only as URLs.
+- Two menus with the same **Position**. They stack, in module ordering, and
+  visitors read them as one list with an unexplained gap.
+- A menu holding one item. Fold it into the main menu as a child of whatever
+  it belongs under.
+
+There is no limit and no performance cliff — this is about whether the next
+person can find the link they need to change.
+
+> **Note:** A menu is not an access control. **Access** on a menu item
+> decides who sees the *link*; it does not decide who can open the page. That
+> distinction is worked through under
+> [Example: linking into one component's content](#example-linking-into-one-component-s-content).
 
 ## Menu Manager
 
@@ -332,6 +362,53 @@ decides who sees the *link* — the module leaves out items above the reader's
 viewing level — and nothing in the routing turns it into a check on the page.
 What guards the page is the article's own access level and the component's
 permissions. See [Access levels](06-users/07-accesslevels.md).
+
+## Taking stock of navigation you inherited
+
+Hubs accrete menus. Someone adds a menu for a workshop, someone else adds one
+for a course that ended, a template changes and a position stops rendering,
+and three years later nobody knows which of the seven menus the site actually
+shows. Before you change anything, find out what is live.
+
+Do this in order. The first four steps change nothing.
+
+1. **Menus → Menu Manager.** This one screen answers most of it. Each row
+   gives the menu's title, its menu type, the count of published,
+   unpublished and trashed items, and, under **Modules Linked to the Menu**,
+   every menu module pointed at that menu, written as *title* (*access level*
+   in *position*).
+2. **Find the menus nobody can see.** Any row whose modules cell offers **Add
+   a module for this menu type** has no module at all. Its items still give
+   pages their URLs, and those pages still answer — but no menu on the site
+   lists them.
+3. **Check the positions against the template.** A module in a position the
+   current template does not declare renders nowhere. **Extensions →
+   Template Manager** shows which template style the site uses, and the
+   positions each template declares are listed in
+   [Templates](10-extensions/02-templates.md). `position-7`, which a plain
+   install uses for the shipped **Main Menu** module, is declared by no
+   template in this tree.
+4. **Read the counts.** Each of the three numbers is a link into the item
+   list already filtered to that state. A menu with two published items and
+   nineteen trashed ones has been abandoned; a menu with published items and
+   no module is the case in step 2.
+5. **Unpublish before you delete.** Set the module's **Status** to
+   Unpublished, or trash the menu items, and leave the hub for a week. Both
+   are reversible from the same screen. Deleting is not: **Delete** on the
+   Menu Manager removes the menu, every item in it, *and* the modules
+   attached to it, and **Empty trash** on a trashed item list is final.
+6. **Watch what the URLs do.** Trashing or deleting a menu item takes away
+   the address it defined. Component pages beneath it usually still answer,
+   because the component's own router resolves them, but at whatever address
+   the router produces rather than the one the item gave them. Anything
+   printed, cited or bookmarked at the old address needs an entry in the
+   **Redirect Manager** — **Site → Maintenance → Routes**. See
+   [URLs](08-content/urls.md#redirects).
+
+> **Warning:** The **Modules Linked to the Menu** column lists modules
+> whether or not they are published. Seeing a module named there does not
+> mean the menu appears anywhere. Follow the link and check **Status** and
+> **Position** on the module itself.
 
 ## Grouping articles under a menu
 

@@ -131,6 +131,7 @@
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Module Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-the-module-manager-is-not">What the Module Manager is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#modules-and-module-instances">Modules and module instances</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
 <li class="toc__item toc__item--l2"><a href="#filters">Filters</a></li>
@@ -138,7 +139,9 @@
 <li class="toc__item toc__item--l2"><a href="#creating-and-editing-a-module">Creating and editing a module</a></li>
 <li class="toc__item toc__item--l3"><a href="#menu-assignment">Menu assignment</a></li>
 <li class="toc__item toc__item--l2"><a href="#positions">Positions</a></li>
-<li class="toc__item toc__item--l2"><a href="#putting-a-notice-on-every-page">Putting a notice on every page</a></li>
+<li class="toc__item toc__item--l3"><a href="#why-a-fresh-hub-looks-empty">Why a fresh hub looks empty</a></li>
+<li class="toc__item toc__item--l2"><a href="#making-the-main-menu-visible">Making the main menu visible</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-a-site-notice">Adding a site notice</a></li>
 <li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
@@ -168,6 +171,23 @@ Manager creates them, places them in a template position, decides which pages
 they appear on, and orders them within a position.</p>
 <p>Select <strong>Extensions</strong> → <strong>Module Manager</strong> in the administrator interface, or
 go to <code>/administrator/index.php?option=com_modules</code>.</p>
+<p>Every hub uses this screen, whether or not anyone has opened it, because the
+menu down the side of the site and the login box in the corner are modules.
+You come here to add a block, to move one, to stop one appearing on a
+particular page, or — most often — to find out why one is not appearing at
+all. That last case is nearly always
+<a href="#positions">a position problem</a>.</p>
+<p>This chapter covers creating modules, positions and page assignment. The
+parameters inside a module — how many items it lists, which feed it reads —
+are covered in <a href="../../configuring/modules/index.html">Modules</a>.</p>
+<h2 id="what-the-module-manager-is-not">What the Module Manager is not</h2>
+<p>It is not where modules are installed. The hundred module types that ship
+with the platform arrive with the code; a hub's own arrive through the
+<a href="../extension-manager/index.html">Extension Manager</a>. This screen only creates
+<em>instances</em> of types that already exist.</p>
+<p>It is not the menu editor either. <code>mod_menu</code> renders a menu, but the menu's
+items are built in <a href="../../menus/index.html">Menus</a>; the module only decides where the
+result appears and on which pages.</p>
 <h2 id="modules-and-module-instances">Modules and module instances</h2>
 <p>The code for a module lives in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/modules"><code>core/modules/</code></a>, one
 directory per module, named <code>mod_something</code>. A hub's own modules go in
@@ -421,60 +441,113 @@ four choices:</p>
 <strong>All</strong>, <strong>None</strong> and <strong>Invert</strong> buttons. Administrator modules have no menu
 assignment.</p>
 <h2 id="positions">Positions</h2>
+<p>Positions are what managers get wrong, and the reason is that getting them
+wrong produces no error of any kind. A module in a position the live template
+does not draw is published, correct, present in the list — and invisible.
+Nothing on the Module Manager screen tells you which positions those are.</p>
 <p>A position is just a name. The template decides where on the page a position
 appears, and which positions exist at all; a position no template renders
 produces nothing. The positions a template offers are declared in its
 <code>templateDetails.xml</code>.</p>
-<p><strong>kimera</strong>, the site template, declares:</p>
+<p><strong>kimera</strong> and <strong>lucent</strong>, the older site templates, both declare:</p>
 <p><code>footer</code>, <code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>,
 <code>introblock</code>, <code>notices</code>, <code>search</code></p>
-<p>Its <code>index.php</code> also renders <code>breadcrumbs</code> and <code>endpage</code>, which are not in
-the declared list, and does not render <code>banner</code> or <code>introblock</code>, which are.
-So the picker is a guide, not a guarantee — check the template you are
+<p>kimera's <code>index.php</code> also renders <code>breadcrumbs</code> and <code>endpage</code>, which are not
+in the declared list, and does not render <code>banner</code> or <code>introblock</code>, which
+are. So the picker is a guide, not a guarantee — check the template you are
 actually using.</p>
+<p><strong>hubzero</strong>, the site template in <code>app/templates/</code>, declares:</p>
+<p><code>footer</code>, <code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>,
+<code>notices</code>, <code>search</code>, <code>breadcrumbs</code>, <code>endpage</code></p>
+<p>It has dropped <code>introblock</code> and declares the two kimera only rendered. A
+module in <code>introblock</code> therefore renders under one of these site templates
+and not the other, which is worth knowing before you change the site's
+template style.</p>
 <p><strong>kameleon</strong>, the administrator template, declares:</p>
 <p><code>menu</code>, <code>submenu</code>, <code>toolbar</code>, <code>title</code>, <code>status</code>, <code>icon</code>, <code>cpanel</code>, <code>debug</code></p>
+<p>The <strong>Select position</strong> picker lists two things together: every position
+declared by an installed template, and every position some module is already
+sitting in. Its second column names the templates that declare each one. A
+position with an empty second column is in use by a module and declared by
+nothing — which is the picker's way of showing you a module that cannot
+render, if you know to read it that way.</p>
 <p>To see the positions of the live template laid out on the page, set
 <strong>Preview Module Positions</strong> to Enabled in the Template Manager's <strong>Options</strong>,
 then append <code>?tp=1</code> to any site URL. Each position is drawn as a labelled
-outline.</p>
+outline, including the empty ones. This is the only reliable way to find out
+what the template you are running actually draws, and it is worth doing once
+before you place anything.</p>
 <p>You can also type a position no template defines and pull the module into
 article text with the Content - Load Module plugin, which expands
 <code>{loadposition myposition}</code> and <code>{loadmodule mod_login}</code> wherever they appear
 in content. The plugin must be enabled for either to work.</p>
-<h2 id="putting-a-notice-on-every-page">Putting a notice on every page</h2>
-<p><code>mod_notices</code> renders a coloured banner across the site, for maintenance
-windows and hub-wide announcements.</p>
+<h3 id="why-a-fresh-hub-looks-empty">Why a fresh hub looks empty</h3>
+<p>A newly installed hub shows no menu, no login box and no sidebar, and a
+manager's first instinct is to go looking for the content. The content is
+fine. Two separate things in the shipped install data are responsible, and
+both live in this section of the book.</p>
+<p><strong>The default site style draws no modules at all.</strong> The install data ships
+three template styles and makes <strong>Welcome Template</strong> the default for the
+site. That template declares no positions and its <code>index.php</code> contains no
+module include of any kind, so nothing you do in the Module Manager appears
+on the front end while it is the default. It is a splash page for a hub that
+has just been installed, not a template to run a hub on. The <strong>Get started</strong>
+link on that splash page — the same as visiting <code>/?getstarted=1</code> — switches
+the default site style to <strong>kimera</strong> and sends you to the getting started
+page. Doing it from the <a href="../templates/index.html">Template Manager</a> has the same
+effect.</p>
+<p><strong>The main menu ships in a position no site template declares.</strong> The install
+data creates one site module, <em>Main Menu</em>, published, assigned to all pages,
+and placed in a position called <code>position-7</code>. No site template in the tree
+declares <code>position-7</code> — not kimera, not lucent, not hubzero; nothing draws
+it. Only the optional sample data moves
+it — it runs an update that sets the position to <code>user3</code> and hides the
+title — so a hub installed without the sample data has a main menu that is
+switched on and cannot be seen. The shipped <em>Login Form</em> module is in
+<code>position-7</code> as well.</p>
+<p>So the sequence on a new hub is: change the site's default style away from
+Welcome, then move the Main Menu module into a position the new template
+draws. Neither is obvious, and neither reports anything if you skip it.</p>
+<h2 id="making-the-main-menu-visible">Making the main menu visible</h2>
+<p>This is the task above, done once, on a hub that has just been installed and
+whose default style is already <strong>kimera</strong>.</p>
 <ol>
 <li>Go to <strong>Extensions</strong> → <strong>Module Manager</strong>.</li>
-<li>Select <strong>New</strong> and choose <strong>Site Notices</strong> (<code>mod_notices</code>).</li>
-<li>Fill in the details:
-<ul>
-<li><strong>Title</strong> — for example, <em>Upgrade notice</em>. Set <strong>Show Title</strong> to Hide
-unless you want it printed above the message.</li>
-<li><strong>Position</strong> — <code>notices</code>.</li>
-<li><strong>Status</strong> — Published.</li>
-<li><strong>Access</strong> — the level that should see the announcement.</li>
-<li><strong>Start Publishing</strong> and <strong>Finish Publishing</strong> — the window the notice
-should appear in. A notice with a finish date takes itself down.</li>
-</ul>
-</li>
-<li>Set the module's own parameters:
-<ul>
-<li><strong>Alert level</strong> — Low, Medium or High. This picks the colour.</li>
-<li><strong>Message</strong> — the text of the notice.</li>
-<li><strong>Module ID</strong> — an optional CSS id for styling this notice alone.</li>
-<li><strong>Allow closing</strong> — lets the reader dismiss the notice.</li>
-<li><strong>Autolink message</strong> — turns URLs and email addresses in the message into
-links. On by default.</li>
-</ul>
-</li>
-<li>Under <strong>Menu Assignment</strong>, choose <strong>On all pages</strong>.</li>
+<li>Leave the <strong>Client</strong> filter on <strong>Site</strong>.</li>
+<li>Select <strong>Main Menu</strong> in the list. Its <strong>Position</strong> column reads
+<code>position-7</code>.</li>
+<li>In the edit screen, select <strong>Select position</strong> beside <strong>Position</strong>.</li>
+<li>Search the picker for <code>user3</code> and select it. The picker's second column
+shows which templates declare it — confirmation that something will draw
+it, which <code>position-7</code> does not have.</li>
+<li>Check that <strong>Status</strong> is <strong>Published</strong> and that <strong>Menu Assignment</strong> is
+<strong>On all pages</strong>.</li>
 <li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Open the site in another tab. The menu is there.</li>
 </ol>
+<p>If it is not, the position is drawn by a different template from the one the
+site is running. Turn on <strong>Preview Module Positions</strong> and load the site with
+<code>?tp=1</code> to see what the live template really offers.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The <code>notices</code> position exists in <strong>kimera</strong> and <strong>lucent</strong>. A
-template that does not declare it will not render the notice.</p>
+<p><strong>Note:</strong> This changes what every visitor sees, immediately. It is entirely
+reversible — set the position back — but there is no draft state and no
+preview of the change itself.</p>
+</aside>
+<h2 id="adding-a-site-notice">Adding a site notice</h2>
+<p>The other module a manager creates by hand is <code>mod_notices</code>, the coloured
+banner used for maintenance windows and hub-wide announcements. It follows
+the same shape as the task above, with <strong>New</strong> in place of picking an
+existing row: choose <strong>Site Notices</strong> from the type pop-up, fill in the
+<strong>Details</strong>, set the position, choose <strong>On all pages</strong> under <strong>Menu
+Assignment</strong>, then <strong>Save &amp; Close</strong>.</p>
+<p>Its position is <code>notices</code>, which kimera, lucent and hubzero all declare, and
+it is worth setting <strong>Finish Publishing</strong> so the notice takes itself down.
+Its own parameters — <strong>Alert level</strong>, <strong>Message</strong>, <strong>Module ID</strong>, <strong>Allow
+closing</strong>, <strong>Autolink message</strong> — and the rest of the detail are in
+<a href="../../maintenance/notices/index.html">Site Notices</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A template that does not declare <code>notices</code> will not render the
+notice, with the same silence as any other unrendered position.</p>
 </aside>
 <h2 id="permissions">Permissions</h2>
 <p><code>com_modules</code> has no configuration options of its own. Its <strong>Options</strong> button
@@ -482,7 +555,7 @@ opens a single <strong>Permissions</strong> tab, which sets who may configure, a
 create, delete, edit and change the state of modules.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../templates/index.html" rel="next"><span>Next</span>Template Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/01-modules.md">Edit this page on GitHub</a>

@@ -1,6 +1,7 @@
 <!--
 status: rewritten
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 -->
 # Hub managers
 
@@ -9,6 +10,18 @@ members and their access, curates its content, installs and configures
 extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at `/administrator`, which this book walks through
 screen by screen.
+
+It is written for whoever ended up running the hub, which is usually not a
+full-time administrator: a researcher, a lab manager, somebody who inherited
+the site along with three other jobs. So each chapter says what a screen is
+for before it says what fields it has, and it says where a change is hard to
+undo, reaches people who are already using the hub, or cannot be tried out
+first. Where something does not work — an inert button, a dead filter, a
+setting nothing reads — it says that too, rather than describing the intention.
+
+This book is not a field-by-field reference; that is the generated
+[configuration reference](../reference/configuration/README.md). It is not
+about writing code for a hub, which is [Developers](../developers/README.md).
 
 The exception is the first step. [Installing a hub](00-installing.md) is
 being rewritten for the new web installer; everything after a hub is
@@ -36,6 +49,12 @@ If you are taking over a running hub, start with
 [Daily maintenance](03-maintenance/README.md) and
 [Users](06-users/README.md).
 
+If you are here because something has gone wrong, try
+[Frequently asked questions](04-faq.md) first, then the chapter for the
+screen in question. A hub that has just become public and is suddenly full of
+junk accounts and junk posts wants [Spam](11-spam.md), which is worth reading
+before that happens rather than during.
+
 ## In this book
 
 - [Getting started](01-getting-started.md) — the administrator
@@ -61,3 +80,11 @@ If you are taking over a running hub, start with
 
 Every parameter you can set is also listed in the generated
 [configuration reference](../reference/configuration/README.md).
+
+> **Note:** Where this book gives a default, it is the value a hub installed
+> from the shipped data actually has, which is not always the default a
+> component's manifest declares — and the generated reference is built from
+> those manifests. Where the two disagree, the stored value wins and this book
+> says so. Check the setting on your own hub before relying on either.
+> The two clearest cases are in
+> [Check the default, do not trust it](01-getting-started.md#check-the-default-do-not-trust-it).

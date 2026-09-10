@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/users/memberimportarchive
 source-id: 3359
@@ -14,6 +14,12 @@ This page carried an older walkthrough of the member importer, built around a
 fixed table of CSV columns. It is kept because it is linked from elsewhere.
 Everything you need is now in [Member import](03-memberimport.md), checked
 against the code in this release.
+
+Read the list below if you have an old import file, an old set of notes, or a
+procedure someone wrote down before this release. Each item is somewhere the
+old instructions would lead you into an import that does not do what you
+expect. If you are starting fresh, go straight to
+[Member import](03-memberimport.md) instead.
 
 ## What changed
 

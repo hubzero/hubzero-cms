@@ -161,7 +161,39 @@
 <p>When auto-approval is off, a resource or publication a user submits sits in a
 pending state until an administrator publishes it. This page covers finding
 that queue and clearing it.</p>
+<p>Two components on the hub queue what users submit: <strong>Resources</strong> and
+<strong>Publications</strong>. If your hub does not take submissions from members — a hub
+that is a website with a tool or two on it, run by one office — the queues
+stay empty and there is nothing here for you. If it does, this is the job
+that has to be done promptly rather than well. A submitter who waits a week
+to hear whether their dataset was accepted assumes the hub is abandoned.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is not moderation of comments, forum posts or reviews.
+Those are not queued; they appear at once and are dealt with afterwards
+through the abuse reports on the <a href="../tickets/index.html">Support</a> screen. Approval
+here is a gate in front of publishing, and it applies only to resources and
+publications.</p>
+</aside>
+<p>A worked scenario runs through the page: the hub has just been named in a
+published paper, a dozen groups have registered, and eight datasets and two
+tools are sitting in the queues on Monday morning.</p>
 <h2 id="turning-auto-approval-on-or-off">Turning auto-approval on or off</h2>
+<p>This is the decision that determines how much of the rest of the page you
+ever do. <strong>Auto-approve</strong> is <strong>No</strong> on a stock hub, so everything a member
+submits waits for you. That is the right default for a hub whose reputation
+rests on what it publishes, and the wrong one for a hub whose members are all
+known colleagues, where it just adds a day's delay to everything.</p>
+<p>If your hub is somewhere between the two — trusted people plus the public —
+leave <strong>Auto-approve</strong> at <strong>No</strong> and list the trusted accounts in
+<strong>Auto-approved Users</strong> instead. Their submissions skip the queue; everyone
+else's waits.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Turning <strong>Auto-approve</strong> on publishes submissions the moment
+they are made, with no review, to whoever the access level allows. On a hub
+that has just been written about in a paper, that is also the moment it
+becomes worth somebody's while to submit something you would not want
+published. Turn it on for a closed hub, not an open one.</p>
+</aside>
 <p>Both components that queue submissions carry the setting in their <strong>Options</strong>
 (the <strong>Options</strong> button in the component's toolbar).</p>
 <p><strong>Resources</strong> — see the <a href="../../../reference/configuration/components/resources/index.html">generated parameter
@@ -253,13 +285,22 @@ filter offers every one of them:</p>
 <p>Only state 3 is the approval queue. The other unpublished states are drafts
 the author has not submitted, or items an administrator has taken down.</p>
 <h2 id="clearing-the-queue">Clearing the queue</h2>
+<p>Monday morning, eight datasets waiting. This is the round trip:</p>
 <p><img src="../../media/approvingcontent-pending-resources1.png" alt="The resources list filtered to pending submissions" /></p>
 <ol>
 <li>Go to <strong>Components → Resources</strong>.</li>
 <li>Set the <strong>Status</strong> filter to <strong>Pending</strong>.</li>
+<li>Open each one by its title and read it. Approval is a publishing decision
+— the licence, the access level and whether the description says what the
+thing actually is are all yours to check, and nobody else will.</li>
 <li>Tick the resources to approve and select <strong>Publish</strong> in the toolbar, or
-open one by its title and set its status on the edit form.</li>
+set the status on the edit form of the one you have open.</li>
+<li>For anything you are not publishing, leave it pending and tell the
+submitter why. Unpublishing it instead takes it out of the <strong>Pending</strong>
+filter, and it is then in a state nobody is looking at.</li>
 </ol>
+<p>Publishing is reversible: set a resource back to Unpublished and it leaves the
+site, with nothing lost. Nothing on this screen deletes a submission.</p>
 <p><img src="../../media/approvingcontent-pending-resources2.png" alt="A pending resource open for editing, with its status field" /></p>
 <p>Publishing stamps the publish-up date and, if <strong>Email When Published</strong> is on,
 notifies the submitter. The resource then appears in browse and search for
@@ -315,8 +356,9 @@ flag, and the admin list's <strong>Status</strong> filter names each stage:</p>
 </tr>
 </tbody>
 </table>
-<p>Go to <strong>Components → Publications</strong>, filter to <strong>pending approval</strong>, and open
-a publication to review it. The curation panel walks the manifest block by
+<p>Publications take longer per item, so do them second. Go to <strong>Components →
+Publications</strong>, filter to <strong>pending approval</strong>, and open a publication to
+review it. The curation panel walks the manifest block by
 block; each block is either approved or sent back, and a publication with any
 block outstanding moves to <strong>changes required</strong> rather than <strong>published</strong>.</p>
 <p>The <code>mod_mycuration</code> module gives curators a site-side list of the items
@@ -340,7 +382,7 @@ assigned to them, split into <strong>Review</strong> and <strong>Pending changes
 </code></pre>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Daily Maintenance</a><a class="pager__next" href="../tools/index.html" rel="next"><span>Next</span>Tools</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/01-approvingcontent.md">Edit this page on GitHub</a>

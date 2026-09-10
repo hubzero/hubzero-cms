@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/users/members
 source-id: 3355
@@ -17,6 +17,30 @@ menu.
 > **Note:** There is no separate User Manager to keep in step with. `com_users`
 > in this release has no administrator screens at all; the Members manager is
 > the only place accounts are edited.
+
+## Which button to reach for
+
+Almost everything a manager does here is one of four operations on somebody
+else's live account, and they differ enormously in how much they cost.
+
+| Operation | Reversible? | What the account holder sees |
+|---|---|---|
+| **Block** / **Unblock** | Yes, completely. | Cannot log in while blocked. Nothing is lost. |
+| **Confirm** / **Unconfirm**, **Approve** / **Unapprove** | Yes. | Held on a holding page, or released from one. |
+| **De-identify** | **No.** | The account still exists but is blocked and anonymous. |
+| **Delete** | **No.** | The account and everything hung off it are gone. |
+
+The two reversible rows cover nearly every real situation. A spam wave after a
+paper is published wants **Block**, not **Delete**: blocking a hundred signups
+takes them out of service in one press and can be undone if you catch a real
+person among them, and it leaves you the evidence to look at later. Somebody
+who has left the institution and asks to be removed wants **De-identify** or
+**Delete**, and you need to know which they mean before you press either.
+
+Nothing on this screen sends the account holder a message except **Approve**
+(and only when **Email On Account Activation** is on) and **Resend
+confirmation**. Blocking somebody is silent; they find out when they try to log
+in.
 
 ## The sub-menu
 
@@ -157,6 +181,17 @@ add more.
 Save with **Save** or **Save & Close**; **Save & New** saves and opens a blank
 record.
 
+Everything on the **Account** tab takes effect at once. Changing the ticked
+[access groups](06-accessgroups.md) changes what that person may do on their
+next page load; they are not logged out and not told.
+
+> **Note:** An account you create here is created with a private profile. The
+> **Default Privacy** option applies only to people who register themselves —
+> see [Default Privacy](02-registration.md#default-privacy) — and neither this
+> form nor the [importer](03-memberimport.md) runs that code. If a hub-created
+> account should appear in the member directory, its owner sets that from their
+> own profile page.
+
 > **Warning:** If your browser fills in passwords automatically, check the
 > **Password** tab before saving. An autofilled **New Password** field silently
 > replaces the user's password with one of your own saved passwords.
@@ -176,6 +211,13 @@ and it sets the **TOU** row's **Update on Next Login** column on the
 actually puts the prompt in front of the user.
 
 ## De-identifying members
+
+De-identification is for the case where somebody has to disappear from the hub
+but the hub's statistics and history must stay intact — a data-protection
+request, or a person who has withdrawn consent. It is the middle option between
+blocking, which keeps everything, and deleting, which removes the account row
+and the record that anyone was ever there. Reach for it when the requirement is
+"remove their personal information", not "remove their account".
 
 Available from release 2.2.26. De-identification strips personally
 identifiable information from the database. Some rows are deleted outright;
@@ -213,6 +255,13 @@ permission, view permission and view log tables in the middleware database.
 
 ## What deleting a member removes
 
+Read this before you use **Delete**, because the button gives no indication of
+its reach and there is no undo. Deleting is rarely the right answer on a live
+hub: it takes an account's work with it, it leaves other people's pages
+referring to somebody who no longer exists, and it cannot be distinguished
+afterwards from data that was never there. Use it for accounts that never
+should have existed. For everything else, block or de-identify.
+
 Deleting an account with the toolbar's **Delete** button is not the same as
 de-identifying it. Delete removes the account row and cascades through
 everything hung off it. This section replaces the older
@@ -244,6 +293,14 @@ plugins listen for it.
 > outcome is correct, but a deletion does roughly twice the work it needs to.
 
 ## Building the profile form
+
+The profile builder is where a hub decides what it wants to know about its
+members. Most hubs edit it once, early — adding an institution, a department, a
+funding source — and then leave it alone. It is worth knowing that it is a live
+schema: adding a required field changes what the registration form asks for
+next time somebody signs up, and a field you delete takes its stored answers
+with it. Add fields freely; remove them only when you are sure nobody's answers
+matter.
 
 **Profile** in the account list toolbar opens the profile builder, which
 defines the fields that make up a member profile — the same fields the
@@ -324,6 +381,9 @@ See [Access Groups](06-accessgroups.md) and
 
 Points are the hub's internal currency, awarded for taking part. The **Points**
 link appears only when **Bank Accounts** is on in the component's **Options**.
+Turn that option on only if your hub is actually going to use points for
+something — leaving it off keeps four screens and a column of numbers out of
+the way of everyone who is not.
 
 Four sub-links:
 
@@ -375,6 +435,12 @@ somewhere to put obvious choices and words specific to your hub. To add one:
 4. **Save & Close**.
 
 ## Quotas
+
+Disk quotas exist for hubs whose members get real storage — home directories,
+tool sessions, uploads. If your hub does not hand out storage, leave **Manage
+Quotas** off and ignore these screens entirely. Where quotas do apply, the usual
+job is the one-off: a group has filled its allocation and needs more, which
+means changing that account's quota class or its individual limits.
 
 Three sub-links, and they only matter when **Manage Quotas** is on in
 **Options**.
@@ -452,6 +518,7 @@ rearranged their own dashboard.
 
 > **Warning:** Pushing a module writes to every member's dashboard. The screen
 > says so itself: it is resource-intensive and should not be done often.
+
 ## Members removal tech notes
 
 This page used to hold pasted excerpts of the code that runs when a member is

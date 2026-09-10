@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 123ea53b14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 35f103b1b3
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/configuring/extauth
 -->
@@ -11,6 +11,39 @@ Single sign-on lets a member reach the hub with an identity someone else
 already manages — a campus login, a federation, a research identity service.
 The hub never sees or stores their password, they have one fewer to
 remember, and your help desk fields fewer password resets.
+
+This is the chapter for a hub that has to admit people it does not employ:
+collaborators at another university, a funder's review panel, students on a
+course run somewhere else. If everyone who uses your hub is already on your
+own staff list, the social providers in
+[Authentication](06-authentication.md) are easier and this chapter is not for
+you.
+
+## What this costs before it works
+
+None of these is a fifteen-minute job, and the reason is never the hub. Every
+one of them needs the hub registered with somebody else's identity service
+first, and that step is out of your hands:
+
+- CILogon reviews each registration by hand.
+- Shibboleth needs `mod_shib` installed and configured on the web server, and
+  the hub added to a federation's metadata.
+- Purdue CAS needs the hub registered with Purdue's identity office.
+- Globus needs an application registered in Globus Auth.
+
+Start the registration before you plan the rest of the work, and expect the
+plugin itself to take minutes once the credentials arrive. When they do,
+enable the plugin the same way as any other — see
+[Authentication](06-authentication.md).
+
+> **Tip:** Test with a real account from the institution, borrowed for ten
+> minutes from someone who has one. Every one of these plugins works by
+> handing a visitor to a service you cannot log into yourself, and the
+> failures — a scope that was not approved, an attribute that does not
+> arrive, a callback URL that does not match — all look identical from your
+> side of it. The Shibboleth plugin's **Testing mode key**, described below,
+> exists so that you can do this without showing a half-finished provider to
+> the whole hub.
 
 Four of the authentication plugins federate an external identity provider
 rather than talking to a single social network:

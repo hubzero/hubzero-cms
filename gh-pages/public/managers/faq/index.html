@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Frequently asked questions · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Short answers to things hub managers ask, each checked against Hubzero 2.4. Every answer points at the chapter that covers the screen properly. Articles How do…">
+  <meta name="description" content="Short answers to things hub managers ask, each checked against Hubzero 2.4, and ordered roughly by how often the question comes up rather than by component.…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/faq/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,22 +52,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Frequently asked questions</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#articles">Articles</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-i-set-an-option-for-one-article-rather-than-the-whole-site">How do I set an option for one article rather than the whole site?</a></li>
-<li class="toc__item toc__item--l3"><a href="#can-one-article-be-in-two-categories">Can one article be in two categories?</a></li>
-<li class="toc__item toc__item--l3"><a href="#why-does-the-featured-switch-do-nothing">Why does the **Featured** switch do nothing?</a></li>
-<li class="toc__item toc__item--l2"><a href="#urls-and-menus">URLs and menus</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-i-point-one-url-at-another">How do I point one URL at another?</a></li>
-<li class="toc__item toc__item--l2"><a href="#groups">Groups</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-we-email-everybody-in-a-group">How do we email everybody in a group?</a></li>
-<li class="toc__item toc__item--l2"><a href="#projects">Projects</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-does-a-project-connect-to-google-drive">How does a project connect to Google Drive?</a></li>
-<li class="toc__item toc__item--l2"><a href="#support">Support</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-i-allow-another-attachment-type-on-support-tickets">How do I allow another attachment type on support tickets?</a></li>
-<li class="toc__item toc__item--l2"><a href="#wishlist">Wishlist</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-i-change-the-status-of-a-wish">How do I change the status of a wish?</a></li>
-<li class="toc__item toc__item--l2"><a href="#courses">Courses</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-do-i-see-the-outline-a-student-sees">How do I see the outline a student sees?</a></li>
+<li class="toc__item toc__item--l2"><a href="#i-made-a-menu-and-it-does-not-appear-on-the-site-why">I made a menu and it does not appear on the site. Why?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-we-email-everybody-in-a-group">How do we email everybody in a group?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-i-point-one-url-at-another">How do I point one URL at another?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-i-set-an-option-for-one-article-rather-than-the-whole-site">How do I set an option for one article rather than the whole site?</a></li>
+<li class="toc__item toc__item--l2"><a href="#why-does-the-featured-switch-do-nothing">Why does the **Featured** switch do nothing?</a></li>
+<li class="toc__item toc__item--l2"><a href="#can-one-article-be-in-two-categories">Can one article be in two categories?</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-member-says-their-account-is-temporarily-disabled-what-do-i-do">A member says their account is &quot;temporarily disabled&quot;. What do I do?</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-i-allow-another-attachment-type-on-support-tickets">How do I allow another attachment type on support tickets?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-does-a-project-connect-to-google-drive">How does a project connect to Google Drive?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-i-change-the-status-of-a-wish">How do I change the status of a wish?</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-do-i-see-the-outline-a-student-sees">How do I see the outline a student sees?</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-was-removed-from-this-page">What was removed from this page</a></li>
 </ol></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -170,41 +166,27 @@
         </header>
         
         <div class="prose">
-<p>Short answers to things hub managers ask, each checked against Hubzero 2.4.
-Every answer points at the chapter that covers the screen properly.</p>
-<h2 id="articles">Articles</h2>
-<h3 id="how-do-i-set-an-option-for-one-article-rather-than-the-whole-site">How do I set an option for one article rather than the whole site?</h3>
-<p>Open the article at <strong>Content → Article Manager</strong> and use the <strong>Article
-Options</strong> panel down the right-hand side. It repeats every option from the
-component's <strong>Articles</strong> settings — <strong>Show Title</strong>, <strong>Show Author</strong>, <strong>Show
-Hits</strong>, and the rest — and every one of them defaults to <strong>Use Global</strong>.</p>
-<p><strong>Use Global</strong> means &quot;look one level up&quot;. On a single-article page the order
-is article, then menu item, then the component's global setting. Blog and
-featured layouts reverse the first two: the menu item wins, and the article's
-value is used only where the menu item's setting is <strong>Use Article</strong>.</p>
-<p>See <a href="../content/articlemanager/index.html#the-editor">Article Manager</a>.</p>
-<h3 id="can-one-article-be-in-two-categories">Can one article be in two categories?</h3>
-<p>No. An article belongs to exactly one category. If a page has to appear in
-two places, point two menu items at the same article rather than making a
-second copy of it. See
-<a href="../content/articlemanager/index.html#categories">Categories</a>.</p>
-<h3 id="why-does-the-featured-switch-do-nothing">Why does the <strong>Featured</strong> switch do nothing?</h3>
-<p>Because it writes to a column the site does not read. The site's <strong>Featured
-Articles</strong> page reads a separate table that nothing in the administrator
-interface writes to, and the administrator's own Featured Articles screen is
-unreachable. This is a defect, recorded in the project record.</p>
-<h2 id="urls-and-menus">URLs and menus</h2>
-<h3 id="how-do-i-point-one-url-at-another">How do I point one URL at another?</h3>
-<p>Use the <strong>Redirect Manager</strong> at <strong>Site → Maintenance → Routes</strong>: a <strong>Source
-URL</strong>, a <strong>Destination URL</strong>, and a response code. It also records every 404
-the site serves, so it doubles as a list of the addresses people are asking
-for and not finding.</p>
-<p>A menu item of type <strong>External URL</strong> does the same job for a path that
-belongs to a component rather than to an article — redirecting
-<code>/groups/mainclass</code> to <code>/groups/spring2016class</code>, say. Both are covered in
-<a href="../content/urls/index.html#redirects">URLs</a>.</p>
-<h2 id="groups">Groups</h2>
-<h3 id="how-do-we-email-everybody-in-a-group">How do we email everybody in a group?</h3>
+<p>Short answers to things hub managers ask, each checked against Hubzero 2.4,
+and ordered roughly by how often the question comes up rather than by
+component. Every answer points at the chapter that covers the screen
+properly.</p>
+<h2 id="i-made-a-menu-and-it-does-not-appear-on-the-site-why">I made a menu and it does not appear on the site. Why?</h2>
+<p>Because a menu and the thing that displays it are two separate objects, and
+creating one does not create the other. A menu is a list of links with no
+position and no presence on any page; a <strong>Menu</strong> module is what puts it
+somewhere.</p>
+<p>Go to <strong>Menus → Menu Manager</strong> and look at your menu's row. If the <strong>Modules
+Linked to the Menu</strong> cell offers <strong>Add a module for this menu type</strong>, there is
+no module — follow that link and make one. If a module is named there, open
+it and check two things: its <strong>Status</strong> is Published, and its <strong>Position</strong> is
+one the current template actually declares. The <strong>Modules Linked to the Menu</strong>
+column lists modules whether or not they are published, so seeing one there
+proves nothing on its own.</p>
+<p>A plain install is the common case of the second problem: the shipped <strong>Main
+Menu</strong> module sits in <code>position-7</code>, which neither site template in this tree
+declares, so it renders nowhere. See <a href="../menus/index.html">Menus</a> and
+<a href="../extensions/modules/index.html">Modules</a>.</p>
+<h2 id="how-do-we-email-everybody-in-a-group">How do we email everybody in a group?</h2>
 <p>Through the group's <strong>Messages</strong> tab, which is the <strong>Groups - Messages</strong>
 plugin. Only a group manager or a site administrator can compose one.</p>
 <ol>
@@ -217,22 +199,59 @@ roles, or one named member.</li>
 <p>The group's <strong>Members</strong> tab has a <strong>Message</strong> link beside each member and
 each role that opens the same form with the recipient already chosen. Sent
 messages stay on the <strong>Messages</strong> tab.</p>
-<h2 id="projects">Projects</h2>
-<h3 id="how-does-a-project-connect-to-google-drive">How does a project connect to Google Drive?</h3>
-<p>The person who created the project has to connect their own Google account
-before anyone else can connect theirs.</p>
-<ol>
-<li>Open the project and select the <strong>Files</strong> tab.</li>
-<li>Select <strong>Connect</strong> against Google, then <strong>Connect</strong> again.</li>
-<li>Sign in to Google and accept the permissions the hub asks for.</li>
-<li>Google returns you to the project, which now shows the connection and how
-many of the team have connected.</li>
-</ol>
-<p>The same tab disconnects and re-authorizes a connection. The service does not
-appear at all until an administrator has turned it on and supplied
-credentials — see <a href="../advancedsetup/index.html#google-drive-in-projects">Integrations</a>.</p>
-<h2 id="support">Support</h2>
-<h3 id="how-do-i-allow-another-attachment-type-on-support-tickets">How do I allow another attachment type on support tickets?</h3>
+<h2 id="how-do-i-point-one-url-at-another">How do I point one URL at another?</h2>
+<p>Use the <strong>Redirect Manager</strong> at <strong>Site → Maintenance → Routes</strong>: a <strong>Source
+URL</strong>, a <strong>Destination URL</strong>, and a response code. It also records every 404
+the site serves, so it doubles as a list of the addresses people are asking
+for and not finding — which is usually where you find out a link is broken in
+the first place.</p>
+<p>A menu item of type <strong>External URL</strong> does the same job for a path that
+belongs to a component rather than to an article — redirecting
+<code>/groups/mainclass</code> to <code>/groups/spring2016class</code>, say. Both are covered in
+<a href="../content/urls/index.html#redirects">URLs</a>.</p>
+<h2 id="how-do-i-set-an-option-for-one-article-rather-than-the-whole-site">How do I set an option for one article rather than the whole site?</h2>
+<p>Open the article at <strong>Content → Article Manager</strong> and use the <strong>Article
+Options</strong> panel down the right-hand side. It repeats every option from the
+component's <strong>Articles</strong> settings — <strong>Show Title</strong>, <strong>Show Author</strong>, <strong>Show
+Hits</strong>, and the rest — and every one of them defaults to <strong>Use Global</strong>.</p>
+<p><strong>Use Global</strong> means &quot;look one level up&quot;. On a single-article page the order
+is article, then menu item, then the component's global setting. Blog and
+featured layouts reverse the first two: the menu item wins, and the article's
+value is used only where the menu item's setting is <strong>Use Article</strong>.</p>
+<p>See <a href="../content/articlemanager/index.html#the-editor">Article Manager</a>.</p>
+<h2 id="why-does-the-featured-switch-do-nothing">Why does the <strong>Featured</strong> switch do nothing?</h2>
+<p>Because it writes to a column the site does not read. The site's <strong>Featured
+Articles</strong> page reads a separate table that nothing in the administrator
+interface writes to, and the administrator's own Featured Articles screen is
+unreachable. This is a defect, recorded in the project record.</p>
+<p>It matters more than it sounds, because the home page a plain install ships
+is a Featured Articles item. A hub left on it has an empty front page and no
+way to fill it from any screen. Point the home item at a <strong>Single Article</strong>
+instead — <a href="../menus/index.html#example-navigation-for-a-new-hub">Menus</a> walks through
+it.</p>
+<h2 id="can-one-article-be-in-two-categories">Can one article be in two categories?</h2>
+<p>No. An article belongs to exactly one category. If a page has to appear in
+two places, point two menu items at the same article rather than making a
+second copy of it. See
+<a href="../content/categories/index.html">Categories</a>.</p>
+<h2 id="a-member-says-their-account-is-temporarily-disabled-what-do-i-do">A member says their account is &quot;temporarily disabled&quot;. What do I do?</h2>
+<p>Nothing, usually. That message means the account has failed to log in too
+many times inside the window set at <strong>Users → Members → Options → Login
+Settings</strong> — ten attempts in an hour on the shipped settings. The block is
+not stored on the account: it is a count of recent rows in the authentication
+log, so it lifts itself as the window slides forward. Tell the member to wait
+and try again, and to use <strong>Forgot your password</strong> rather than guessing.</p>
+<p>If it is happening to many accounts at once, or repeatedly to one, read
+<a href="../security/index.html#cms-controlled-fail2ban-jail">Security considerations</a>, which
+explains what is being counted and what the three thresholds do.</p>
+<h2 id="a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</h2>
+<p>Their lifetime spam counter is over the limit. Go to <strong>Users → Members</strong>,
+open the member, and on the <strong>Account</strong> tab select <strong>Reset</strong> beside
+<strong>Lifetime Spam Incidents</strong>. That field only appears when <strong>System -
+Spamjail</strong> is enabled, which is also the only reason the page exists. The
+whole procedure, including the per-session counter that clears itself, is in
+<a href="../spam/index.html#releasing-a-member">Spam</a>.</p>
+<h2 id="how-do-i-allow-another-attachment-type-on-support-tickets">How do I allow another attachment type on support tickets?</h2>
 <ol>
 <li>Go to <strong>Components → Support</strong>.</li>
 <li>On <strong>Support: Tickets</strong>, select <strong>Options</strong>.</li>
@@ -240,8 +259,33 @@ credentials — see <a href="../advancedsetup/index.html#google-drive-in-project
 <li>Add the extension to <strong>Extensions</strong>.</li>
 <li><strong>Save &amp; Close</strong>.</li>
 </ol>
-<h2 id="wishlist">Wishlist</h2>
-<h3 id="how-do-i-change-the-status-of-a-wish">How do I change the status of a wish?</h3>
+<p>Think about what you are allowing. Every attachment is scanned by the
+command in the <code>virus_scanner</code> configuration key before it is accepted, but a
+scanner is not a substitute for keeping executables and archives off the
+list. See <a href="../security/index.html#does-the-cms-scan-uploads-for-viruses">Security considerations</a>.</p>
+<h2 id="how-does-a-project-connect-to-google-drive">How does a project connect to Google Drive?</h2>
+<p>A project manager creates the connection and authorizes it with their own
+Google account; everyone else in the project works through it.</p>
+<ol>
+<li>Open the project and select the <strong>Files</strong> tab.</li>
+<li>Choose <strong>Google Drive</strong> from the <strong>New Connection</strong> drop-down, give the
+connection a <strong>Name</strong>, and save.</li>
+<li>Authorize it. Sign in to Google and accept the permissions the hub asks
+for.</li>
+<li>Google returns you to the project, which now shows the connection beside
+the project's own file repository.</li>
+</ol>
+<p>The same tab carries <strong>Edit</strong>, <strong>Delete</strong>, <strong>Refresh Connection Credentials</strong>
+and <strong>Refresh Connection Path</strong>. If a connection stops working for the whole
+project, <strong>Refresh Connection Credentials</strong> is usually the fix: the
+authorization belongs to one person's account, and it fails when that person
+revokes it or leaves.</p>
+<p>The provider does not work until an administrator has enabled the plugin and
+supplied credentials — see
+<a href="../advancedsetup/index.html#external-file-storage-in-projects">Integrations</a>. Some
+hubs still run the older project-wide Google connection instead, which puts a
+<strong>Connect</strong> link on the same tab; that one is covered there too.</p>
+<h2 id="how-do-i-change-the-status-of-a-wish">How do I change the status of a wish?</h2>
 <p>Open the wish on the site and select <strong>Change status</strong> beneath it. The
 statuses are radio buttons, not a drop-down:</p>
 <table>
@@ -273,8 +317,7 @@ statuses are radio buttons, not a drop-down:</p>
 <p>Choose one and select <strong>change status</strong>. The member who made the wish is
 told. A wish on a resource wish list can only be marked <strong>Granted</strong> by the
 person it is assigned to.</p>
-<h2 id="courses">Courses</h2>
-<h3 id="how-do-i-see-the-outline-a-student-sees">How do I see the outline a student sees?</h3>
+<h2 id="how-do-i-see-the-outline-a-student-sees">How do I see the outline a student sees?</h2>
 <p>Enrol in your own course as a student, from a test account. An instructor or
 course manager sees the whole outline, published and unpublished, and sees it
 regardless of prerequisites. A student sees only what the prerequisites and
@@ -284,14 +327,14 @@ a preview of the student's.</p>
 <p>The imported version of this page had one further answer, a second
 step-by-step for redirecting <code>/groups/mainclass</code> to another group, duplicating
 the one above it. Both have been replaced by the single entry under
-<a href="#urls-and-menus">URLs and menus</a>. Nothing else was dropped; the remaining
-answers were corrected rather than removed — most visibly the group message
-answer, which described an email icon on the <strong>Members</strong> tab as the only way
-in, and the wishlist answer, which described a drop-down where the interface
-has radio buttons.</p>
+<a href="#how-do-i-point-one-url-at-another">How do I point one URL at another?</a>.
+Nothing else was dropped; the remaining answers were corrected rather than
+removed — most visibly the group message answer, which described an email
+icon on the <strong>Members</strong> tab as the only way in, and the wishlist answer, which
+described a drop-down where the interface has radio buttons.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../maintenance/cron/index.html" rel="prev"><span>Previous</span>Scheduled Tasks</a><a class="pager__next" href="../configuring/index.html" rel="next"><span>Next</span>Configuring</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/04-faq.md">Edit this page on GitHub</a>
