@@ -91,6 +91,11 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
 
 <div class="wrap">
+    <?php // On the front page the header and the hero share one ground ?>
+    <?php if ($isFrontPage && $this->countModules('hero')) : ?>
+    <div class="home-head">
+    <?php endif; ?>
+
     <div class="page-head">
         <div class="inner">
             <header>
@@ -243,6 +248,15 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             </header>
         </div>
     </div>
+
+    <?php if ($isFrontPage && $this->countModules('hero')) : ?>
+        <div class="hero" role="region" aria-label="<?php echo Lang::txt('TPL_HERO'); ?>">
+            <div class="inner">
+                <jdoc:include type="modules" name="hero" />
+            </div>
+        </div>
+    </div><!-- / .home-head -->
+    <?php endif; ?>
 
     <?php if ($this->countModules('banner')) : ?>
         <div class="page-banner">
