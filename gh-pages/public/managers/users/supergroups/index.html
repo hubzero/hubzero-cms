@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Super Groups · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Super Groups are advanced Hub Groups, that have their own webspace within the Hub to showcase their Group. Super Groups have a lot of extra…">
+  <meta name="description" content="A super group is a hub group with a web space of its own. It keeps everything an ordinary group has — members, forum, wiki, blog, files — and adds a directory…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/users/supergroups/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,35 +54,34 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesslevels/index.html">Access Levels</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Super Groups</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-a-super-group">Creating a Super Group</a></li>
-<li class="toc__item toc__item--l2"><a href="#frontend-module-management-in-super-groups">Frontend Module Management in Super Groups</a></li>
-<li class="toc__item toc__item--l2"><a href="#accessing-the-module-manager">Accessing the Module Manager:</a></li>
-<li class="toc__item toc__item--l2"><a href="#adding-a-module">Adding a Module:</a></li>
-<li class="toc__item toc__item--l2"><a href="#publishing-a-module">Publishing a Module:</a></li>
-<li class="toc__item toc__item--l2"><a href="#unpublishing-a-module">Unpublishing a Module:</a></li>
-<li class="toc__item toc__item--l2"><a href="#editing-a-module">Editing a Module:</a></li>
-<li class="toc__item toc__item--l2"><a href="#reordering-a-module">**Reordering a Module:**</a></li>
-<li class="toc__item toc__item--l2"><a href="#super-groups-resource-template-inheritance">Super Groups: Resource Template Inheritance</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-super-group">Creating a super group</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-super-group-can-do-that-an-ordinary-group-cannot">What a super group can do that an ordinary group cannot</a></li>
+<li class="toc__item toc__item--l2"><a href="#approval-of-pages-and-modules">Approval of pages and modules</a></li>
+<li class="toc__item toc__item--l2"><a href="#managing-modules-from-the-site">Managing modules from the site</a></li>
+<li class="toc__item toc__item--l3"><a href="#adding-a-module">Adding a module</a></li>
+<li class="toc__item toc__item--l3"><a href="#publishing-unpublishing-and-deleting">Publishing, unpublishing and deleting</a></li>
+<li class="toc__item toc__item--l3"><a href="#reordering">Reordering</a></li>
+<li class="toc__item toc__item--l2"><a href="#resources-shown-in-the-super-group-s-template">Resources shown in the super group&#x27;s template</a></li>
+<li class="toc__item toc__item--l2"><a href="#known-gaps">Known gaps</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../user-notes/index.html">User notes</a></li>
 </ul></details></li>
@@ -129,9 +128,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -155,92 +154,203 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Super Groups</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/users/supergroups">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Super Groups are advanced Hub Groups, that have their own webspace within the Hub to showcase their Group. Super Groups have a lot of extra functionality built in to allow them to customize their group.</p>
-<p>Super Groups have the ability to include PHP and javascript code into Group pages and modules. Pages or modules that contain PHP or Javascript code will then need to be approved by a Group page approver. Notifications are sent to approvers when a page needs to be approved. Another notification will be sent to the Group managers when the page has been approved.</p>
-<p>Super Group templates must follow HUBzero's <a href="../../../developers/supergroups/index.html">Super Group Template rules</a>.</p>
-<h2 id="creating-a-super-group">Creating a Super Group</h2>
+<p>A super group is a hub group with a web space of its own. It keeps
+everything an ordinary group has — members, forum, wiki, blog, files — and
+adds a directory on the server holding its own template, its own pages, its
+own modules, optionally its own components, and its own database. Content in
+a super group may contain PHP and JavaScript, which is stripped out of an
+ordinary group's pages.</p>
+<p>Super groups are for the hub's own project teams and partners, not for
+anything a visitor can create. Only an administrator can make one, and the
+code inside one runs with the hub's full privileges.</p>
+<p>Writing the template itself is a developer task. See
+<a href="../../../developers/supergroups/index.html">Super Groups</a> in the developer
+book for the templating system, page templates, macros, PHP pages, databases,
+migrations and components, and
+<a href="../../../developers/supergroups-gitlab/index.html">Super Groups with GitLab</a>
+for the repository workflow.</p>
+<h2 id="creating-a-super-group">Creating a super group</h2>
+<p>A group's type can only be set from the administrator interface. Groups
+created by users on the site are always ordinary hub groups.</p>
 <ol>
-<li>Log in to the backend of the Hub and hover over the <strong>Users</strong> tab and select <strong>Groups</strong></li>
-<li>Click <strong>New</strong> to create a group</li>
-<li>Select the group type from the drop-down to be <strong>Super</strong></li>
-<li>Fill in the CN or group alias, the title and logo of the group, along with the public and private group descriptions</li>
-<li>In <strong>Membership Control</strong>, check the box if the membership is to be controlled. The membership <strong>Join Policy</strong> determines access level for the group
+<li>Go to <strong>Users</strong> → <strong>Groups</strong>.</li>
+<li>Select <strong>New</strong>.</li>
+<li>Set <strong>Type</strong> to <strong>Super</strong>.</li>
+<li>Fill in the <strong>Alias</strong> and <strong>Title</strong>, and a <strong>Group Logo</strong> if you have one.
+The alias becomes both the group's URL segment and the name of its
+directory and database, and cannot be changed later.</li>
+<li>Under <strong>Membership</strong>, choose a <strong>Join Policy</strong>, and give the
+<strong>Credentials</strong> text if the policy is Restricted. Clear <strong>Membership
+Control</strong> if this group's membership is managed elsewhere.</li>
+<li>Under <strong>Access</strong>, choose a <strong>Discoverability</strong>: <strong>Visible</strong> lists the
+group in searches, <strong>Hidden</strong> keeps it out of them.</li>
+<li>Set <strong>Approve</strong> to <strong>Approved</strong> and <strong>Published</strong> to <strong>Published</strong>. Groups
+created here are not approved automatically.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>On save the hub does the rest, in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>_handleSuperGroup()</code></a>:</p>
+<ul>
+<li>Creates the group's directory under the <strong>Upload</strong> path from the component
+options, <code>/site/groups</code> by default, named after the group's numeric ID.</li>
+<li>Copies the active site template's <code>super/</code> directory into the group's
+<code>template/</code> directory, if that template ships one.</li>
+<li>Copies the default skeleton from
+<code>core/components/com_groups/super/default</code> over the top, without
+overwriting anything already there. That gives the group its <code>template/</code>,
+<code>components/</code>, <code>config/</code>, <code>macros/</code>, <code>migrations/</code>, <code>uploads/</code> and
+<code>language/</code> directories, and a base template with its own error and login
+pages.</li>
+<li>Sets the directory to mode 2770 and changes its group ownership to the
+<strong>Super Group Group Owner</strong> option, <code>access-content</code> by default.</li>
+<li>Creates a database named <code>sg_&lt;alias&gt;</code>, if the hub's database account holds
+a grant on <code>sg\_%</code>. If it does not, the screen warns <em>Hub is missing super
+group database creation permission</em> and carries on without one.</li>
+<li>Writes the group's <code>config/db.php</code> from <code>/etc/supergroup.conf</code>. If that
+file is missing you get <em>Unable to load super group config</em> and the group
+has no working database connection.</li>
+<li>Connects the group's repository, if <strong>Repo Management</strong> is on. That step
+only runs when <code>application_env</code> is a production environment.</li>
+</ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Deleting the group from the administrator interface removes
+the group and its content but leaves its directory and its <code>sg_</code> database
+on the server. Clean those up by hand.</p>
+</aside>
+<h2 id="what-a-super-group-can-do-that-an-ordinary-group-cannot">What a super group can do that an ordinary group cannot</h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHP and <code>&lt;script&gt;</code> in group pages and modules</td>
+<td>The page or module content itself</td>
+</tr>
+<tr>
+<td>Standalone PHP pages</td>
+<td><code>pages/&lt;name&gt;.php</code> in the group directory, served at <code>/groups/&lt;alias&gt;/&lt;name&gt;</code></td>
+</tr>
+<tr>
+<td>Its own components</td>
+<td><code>components/com_&lt;name&gt;/&lt;name&gt;.php</code>, with an optional <code>router.php</code>. Requires the <strong>Super Group Components</strong> option</td>
+</tr>
+<tr>
+<td>Its own template</td>
+<td><code>template/</code> in the group directory</td>
+</tr>
+<tr>
+<td>Its own database</td>
+<td><code>sg_&lt;alias&gt;</code>, configured by <code>config/db.php</code></td>
+</tr>
+<tr>
+<td>Its own language strings</td>
+<td>The group directory is searched first when a group plugin loads its language file, so a super group can rename or reword anything a group plugin says</td>
+</tr>
+<tr>
+<td>Modules on group pages</td>
+<td>The <strong>Manage Modules</strong> tab, which ordinary groups only get if the <strong>Pages</strong> option <strong>Modules</strong> is on</td>
+</tr>
+<tr>
+<td>Resources shown in the group's own template</td>
+<td>Automatic; see below</td>
+</tr>
+</tbody>
+</table>
+<p>An ordinary group has PHP and <code>&lt;script&gt;</code> removed from its page content
+before rendering. The one exception is the per-group <strong>Trusted content</strong>
+page setting on the group's admin form, which suppresses the stripping for
+that group without making it a super group.</p>
+<h2 id="approval-of-pages-and-modules">Approval of pages and modules</h2>
+<p>Because a super group's content executes, it is not published on the author's
+say-so.</p>
+<p>When a page version or a module is saved and its content contains <code>&lt;?</code>,
+<code>&lt;?php</code> or <code>&lt;script</code>, the hub marks it unapproved and emails everyone listed
+in the <strong>Page Approvers</strong> option of the <code>com_groups</code> configuration. Until it
+is approved, visitors get the &quot;not approved&quot; placeholder instead of the page,
+and the module shows as <strong>Pending approval</strong> in the module list.</p>
+<p>To approve one:</p>
 <ol>
-<li><strong>Public:</strong> Any user on the Hub can join the group.</li>
-<li><strong>Restricted:</strong> Qualifications are given that predetermines who can join. These restrictions have to be added into the credentials.</li>
-<li><strong>Invite Only:</strong> A group manager has to send an invite any new group members to the group.</li>
-<li><strong>Closed:</strong> No one can join the group unless they are added from the back-end of the Hub.</li>
+<li>Go to <strong>Users</strong> → <strong>Groups</strong>.</li>
+<li>Select the group's page count. The <strong>Pages Needing Approval</strong> table sits
+at the top of the screen; the <strong>Modules</strong> entry in the sub-navigation
+carries the same table for modules.</li>
+<li>Read the submission. <strong>View Raw</strong> shows the source as written, <strong>Edit</strong>
+opens it, and <strong>Render Preview</strong> shows it as a visitor would see it.</li>
+<li>Run the two checks: <strong>Check for Errors</strong> and <strong>Scan Content</strong>.</li>
+<li>Select <strong>Approve</strong>.</li>
 </ol>
-</li>
-<li>Determine the access level of the group from hidden or visible. A hidden group is not listed on the front-end of the Hub, and any content is unavailable to any user that is not a member of the group. A visible group can be found on the Hub through regular searches</li>
-<li>Once all the group’s content has been filled in, then save the new group by clicking <strong>Save &amp; Close</strong>. The group will be automatically approved and visible on the Hub</li>
-<li>The following will be automatically created when making the super group:
+<p><strong>Render Preview</strong> and <strong>Approve</strong> stay closed until both checks have been
+run — the screen says <em>You must check for errors and scan before you can
+approve</em>. Approving sends a second notification, this time to the group's
+managers.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Page Approvers</strong> is a comma-separated list of <em>usernames</em>, not
+email addresses. Only a listed user can approve; anyone else is turned away
+with <em>Pages can only be approved by authorized approvers</em>. With the option
+empty nobody can approve anything, and content containing code stays
+invisible.</p>
+</aside>
+<h2 id="managing-modules-from-the-site">Managing modules from the site</h2>
+<p>Modules are managed by the group's own managers, on the site.</p>
 <ol>
-<li>Base template with custom error handling &amp; login</li>
-<li>Separate database for super group related components, data, etc</li>
-<li>If Gitlab integration is enabled, all needed connections will be made and super group folder will be controlled via Git.</li>
+<li>Open the super group's home page.</li>
+<li>In the group toolbar, open <strong>More options</strong> and select <strong>Manage Group
+Pages</strong>.</li>
+<li>Select the <strong>Manage Modules</strong> tab.</li>
 </ol>
-</li>
-</ol>
-<h2 id="frontend-module-management-in-super-groups">Frontend Module Management in Super Groups</h2>
-<h2 id="accessing-the-module-manager">Accessing the Module Manager:</h2>
+<p>The tab is present for every super group. For an ordinary group it appears
+only when the <strong>Pages</strong> option <strong>Modules</strong> is on.</p>
+<p>Filter the list by module position with the menu in the toolbar, or type in
+the search box beside it.</p>
+<h3 id="adding-a-module">Adding a module</h3>
 <ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Search for modules by using the search drop-down that searches for a module based on location and title</li>
+<li>Open <strong>Manage Modules</strong> and select <strong>New Module</strong>.</li>
+<li>Give the module a <strong>Title</strong> and its <strong>Content</strong>. Both are required. In a
+super group the editor accepts PHP and script tags, and opens in source
+mode when the content already contains either.</li>
+<li>Under <strong>Menu Assignment</strong>, choose <strong>On all pages</strong> or pick the pages the
+module belongs on.</li>
+<li>Under <strong>Publishing</strong>, set the <strong>Status</strong>.</li>
+<li>Under <strong>Module Settings</strong>, set the <strong>Position</strong> and the <strong>Ordering</strong>
+within that position.</li>
+<li>Select <strong>Save Module</strong>.</li>
 </ol>
-<h2 id="adding-a-module">Adding a Module:</h2>
+<h3 id="publishing-unpublishing-and-deleting">Publishing, unpublishing and deleting</h3>
+<p>In the module list, select the unpublished icon to publish a module, or the
+published icon to unpublish it. <strong>Manage Module</strong> opens the module for
+editing, and its drop-down also offers <strong>Publish</strong>, <strong>Unpublish</strong> and
+<strong>Delete</strong>.</p>
+<h3 id="reordering">Reordering</h3>
+<p>Ordering is a property of the module, not a drag on the list.</p>
 <ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Click the <strong>New Module</strong> button in the toolbar</li>
-<li>Fill in all required fields and click <strong>Save Page</strong></li>
+<li>Open <strong>Manage Modules</strong> and select <strong>Manage Module</strong> on the module you
+want to move.</li>
+<li>Change <strong>Ordering</strong> under <strong>Module Settings</strong>.</li>
+<li>Select <strong>Save Module</strong>.</li>
 </ol>
-<h2 id="publishing-a-module">Publishing a Module:</h2>
-<ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Publish the module by clicking on the <strong>Unpublished</strong> icon. The icon will become a <strong>Published</strong> icon</li>
-<li>The module will now be available on the front interface of the Hub</li>
-</ol>
-<h2 id="unpublishing-a-module">Unpublishing a Module:</h2>
-<ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Unpublish the module by clicking on the <strong>Published</strong> icon. The icon will become an <strong>Unpublished</strong> icon</li>
-<li>The module will now be removed from the front interface of the Hub</li>
-</ol>
-<h2 id="editing-a-module">Editing a Module:</h2>
-<ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Click on either the <strong>Manage Module</strong> button or hover over the arrow next to the button to see more options, including <strong>Edit Module</strong></li>
-<li>One of the new features with the module manager is the page content WYSIWYG editor. It now uses CKEditor and HTML to manage your page content</li>
-<li>Modify the module with new changes, and then click the <strong>Save Page</strong></li>
-</ol>
-<h2 id="reordering-a-module"><strong>Reordering a Module:</strong></h2>
-<ol>
-<li>Log in to the Hub and access the <strong>Super Group</strong> home page</li>
-<li>Click on the <strong>Manage Group Pages</strong> link in the group manager toolbar, to get to the page manager</li>
-<li>Select the <strong>Manage Modules</strong> tab to view the module manager</li>
-<li>Click on either the <strong>Manage Module</strong> button or hover over the arrow next to the button to see more options, including <strong>Edit Module</strong></li>
-<li>One of the new features with the module manager is the page content WYSIWYG editor. It now uses CKEditor and HTML to manage your page content</li>
-<li>Modify the ordering of the module by using the drop-down, and then click the <strong>Save Page</strong></li>
-</ol>
-<h2 id="super-groups-resource-template-inheritance">Super Groups: Resource Template Inheritance</h2>
-<p>Originally when viewing a Resource from a Super Group, the Resource is seen with the master site template rather than the Super Group's custom template. Resource Template Inheritance allows users, when viewing a Resource from a Super Group, the Resource to inherit the Super Group's template to maintain consistent look and feel of the Super Group. '</p>
-<p><img src="../../media/supergroups-resource-supergroups.png" alt="resource_supergroups" /></p>
+<h2 id="resources-shown-in-the-super-group-s-template">Resources shown in the super group's template</h2>
+<p>When a resource is opened through a super group's <strong>Resources</strong> tab, the
+group plugin runs the <code>com_resources</code> controller itself and renders its view
+inside the group's page, so the resource keeps the super group's navigation
+and styling instead of switching to the site template. The behaviour is
+tested on the group's type and applies to super groups only.</p>
+<p><img src="../../media/supergroups-resource-supergroups.png" alt="A resource rendered inside a super group's own page, keeping the group banner and tab bar" /></p>
+<h2 id="known-gaps">Known gaps</h2>
+<ul>
+<li>The super group's <code>error.php</code> template is copied into the group directory
+and the hub still checks for it, but the code that installs the custom
+error handler is commented out. A super group therefore gets the site's
+error pages, not its own.</li>
+</ul>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../accesslevels/index.html" rel="prev"><span>Previous</span>Access Levels</a><a class="pager__next" href="../user-notes/index.html" rel="next"><span>Next</span>User notes</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/08-supergroups.md">Edit this page on GitHub</a>

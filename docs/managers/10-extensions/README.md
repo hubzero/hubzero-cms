@@ -1,37 +1,106 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions
 source-id: 3405
 imported: 2026-09-09
 -->
 # Extensions
 
-## Overview
+Everything Hubzero puts on a page comes from an extension. The platform ships
+with a large set of them, and a hub can add its own. This section covers the
+four administrator screens that manage extensions, all reached from the
+**Extensions** menu in the administrator interface.
 
-HUBzero is already a rich featured content management system but if you're building a website and you need extra features which aren't available by default, you can easily extend it with extensions. There are five types of extensions: Components, Modules, Plugins, Templates, and Languages. Each of these extensions handle specific functionality.
+| Screen | What it manages |
+|---|---|
+| [Extension Manager](04-extension-manager.md) | Enabling, disabling and updating every installed extension |
+| [Module Manager](01-modules.md) | Module instances, their positions and their page assignments |
+| [Plug-in Manager](03-plugins.md) | Plugin state, access level and run order |
+| [Template Manager](02-templates.md) | Template styles, the default template, and template source files |
 
-## Components
+A fifth entry, **Language Manager**, opens `com_languages`. It is not covered
+in this book.
 
-The largest and most complex of the extension types, a component is in fact a separate application. You can think of a component as something that has its own functionality, its own database tables and its own presentation. So if you install a component, you add an application to your website. Examples of components are a forum, a blog, a community system, a photo gallery, etc. You could think of all of these as being a separate application. Everyone of these would make perfectly sense as a stand-alone system. A component will be shown in the main part of your website and only one component will be shown. A menu is then in fact nothing more then a switch between different components.
+## The extension types
 
-## Modules
+### Components
 
-Modules are extensions which present certain pieces of information on your site. It's a way of presenting information that is already present. This can add a new function to an application which was already part of your website. Think about latest article modules, login module, a menu, etc. Typically you'll have a number of modules on each web page. The difference between a module and a component is not always very clear for everybody. A module doesn't make sense as a standalone application, it will just present information or add a function to an existing application. Take a newsletter for instance. A newsletter is a module. You can have a website which is used as a newsletter only. That makes perfectly sense. Although a newsletter module probably will have a subscription page integrated, you might want to add a subscription module on a sidebar on every page of your website. You can put this subscribe module anywhere on your site.
+A component is an application. It has its own controllers, models, views,
+database tables, administrator screens and access rules, and it renders the
+main body of the page. Exactly one component runs per request; a menu item is
+essentially a switch that decides which one. Components live in
+[`core/components/`](../../../core/components), and a hub's own components in
+`app/components/`. Their names begin with `com_`: `com_resources`,
+`com_groups`, `com_publications`.
 
-Another commonly used module would be a search box you wish to be present throughout your site. This is a small piece of re-usable HTML that can be placed anywhere you like and in different locations on a template-by-template basis. This allows one site to have the module in the top left of their template, for instance, and another site to have it in the right side-bar.
+Components are not created or removed from the Extensions screens. They are
+enabled and disabled from the [Extension Manager](04-extension-manager.md),
+configured from their own **Options** button, and given menu items from the
+[menu manager](../07-menus.md).
 
-## Plugins
+### Modules
 
-Plugins serve a variety of purposes. As modules enhance the presentation of the final output of the Web site, plugins enhance the data and can also provide additional, installable functionality. Plugins enable you to execute code in response to certain events, either core events or custom events that are triggered from your own code. This is a powerful way of extending the basic functionality.
+A module is a small block of output placed around the component, in a named
+position defined by the template: a login box, a breadcrumb trail, a site
+notice, a list of the newest resources. Modules live in
+[`core/modules/`](../../../core/modules) and are named `mod_login`,
+`mod_breadcrumbs`, and so on. One hundred ship with the core, 78 for the site
+and 22 for the administrator interface.
 
-## Templates
+Unlike a component, a module is instantiated. The same `mod_custom` code can
+back a dozen separate blocks, each with its own title, position, access level
+and set of pages. That is what the [Module Manager](01-modules.md) edits.
 
-A template is a series of files within the CMS that control the presentation of the content. The template is not a website; it's also not considered a complete website design. The template is the basic foundation design for viewing your website. To produce the effect of a **complete** website, the template works hand-in-hand with the content stored in the database.
+### Plugins
 
-## Languages
+A plugin answers events. Something in the platform triggers an event —
+a user logs in, a resource is saved, a page of content is about to be
+rendered — and every enabled plugin that implements a handler for it runs, in
+order. Plugins live in [`core/plugins/`](../../../core/plugins), grouped into
+folders by the kind of event they answer: `authentication`, `content`,
+`members`, `groups`, `cron`, `system`, and about thirty more.
 
-Probably the most basic extensions are languages. Languages can be packaged in two ways, either as a core package or as an extension package. In essence, these files consist key/value pairs, these pairs provide the translation of static text strings which are assigned within the source code. These language packs will affect both the front and administrator side. Note: these language packs also include an XML meta file which describes the language and font information to use for PDF content generation.
+Plugins also supply whole tabbed sections of some components. The tabs on a
+group page, on a member profile and on a project are each a plugin in the
+`groups`, `members` and `projects` folders.
 
-## Conclusion
+### Templates
 
-If the difference between the three types of extensions is still not completely clear, then it is advisable to go to the admin pages of your installation and check the components menu, the module manager and the plugin manager. HUBzero comes with a number of core components, modules and plugins. By checking what they are doing, the difference between the three types of building blocks should become clear.
+A template controls presentation. It supplies `index.php` (the page
+skeleton), stylesheets, scripts, the list of module positions it offers, and
+optional overrides of any component or module layout. Templates live in
+[`core/templates/`](../../../core/templates), and a hub's own in
+`app/templates/`.
+
+A template is not the same thing as a *style*. One template can have several
+styles, each a saved set of that template's parameters, and styles are what
+you assign to the site or to individual menu items. See
+[Templates](02-templates.md).
+
+### Languages
+
+A language pack is a set of `.ini` files of key/value pairs, one file per
+extension, plus an XML manifest describing the language. Every string the
+interface renders comes from one of these keys, which is why this
+documentation quotes labels as the language files spell them. Language packs
+cover both the site and the administrator interface.
+
+## Where extensions live
+
+Hubzero looks for an extension in the hub's own directory first and falls back
+to the core:
+
+| Type | Hub | Core |
+|---|---|---|
+| Components | `app/components/com_name/` | `core/components/com_name/` |
+| Modules | `app/modules/mod_name/` | `core/modules/mod_name/` |
+| Plugins | `app/plugins/folder/name/` | `core/plugins/folder/name/` |
+| Templates | `app/templates/name/` | `core/templates/name/` |
+
+Nothing in `core/` should be edited on a running hub. To change core
+behaviour, put a replacement of the same name under `app/`; it wins. The
+[Extension Manager](04-extension-manager.md) calls those hub-side additions
+**Custom Extensions** and installs them from a git repository.

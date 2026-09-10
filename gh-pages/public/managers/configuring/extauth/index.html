@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>External Authenticators · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Single sign-on (SSO) is a element of access control of multiple related, yet independent, software systems. A user logs in with a single ID and password to…">
+  <title>External authenticators · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Single sign-on lets a member reach the hub with an identity someone else already manages — a campus login, a federation, a research identity service. The hub…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/extauth/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,23 +54,26 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">External Authenticators</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#cilogon">CILOGON</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">External authenticators</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#cilogon">CILogon</a></li>
+<li class="toc__item toc__item--l2"><a href="#shibboleth">Shibboleth</a></li>
+<li class="toc__item toc__item--l2"><a href="#globus">Globus</a></li>
+<li class="toc__item toc__item--l2"><a href="#purdue-cas">Purdue CAS</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +123,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -140,40 +143,155 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Configuring</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">External Authenticators</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Configuring</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">External authenticators</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>External Authenticators</h1>
+          <h1>External authenticators</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/extauth">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2018.</aside>
+        
         <div class="prose">
-<p>Single sign-on (SSO) is a element of access control of multiple related, yet independent, software systems. A user logs in with a single ID and password to gain access to a system without using different usernames or passwords, or in some configurations seamlessly sign on at each system.</p>
-<p>Benefits of using single sign-on include:</p>
-<p>Mitigate risk for access to 3rd-party sites (user passwords not stored or managed externally)
-Reduce password fatigue from different user name and password combinations
-Reduce time spent re-entering passwords for the same identity
-Reduce IT costs due to lower number of IT help desk calls about passwords</p>
-<p>SSO shares centralized authentication servers that all other applications and systems use for authentication purposes and combines this with techniques to ensure that users do not have to actively enter their credentials more than once.</p>
-<h2 id="cilogon">CILOGON</h2>
-<p>A hub administrator must register at http://cilogon.org/oauth2/register</p>
-<p>Enter a Client Name.
-Enter a Contact Email Address.
-Enter a home URL (the URL of your hub - hubzero.org, for example).
-Callback URLS should be:</p>
-<pre><code>**&lt;hostname&gt; should be replaced with the HUB URL.  If you have more than one hub instance, include a redirect URL set for each host that you will wish to use CiLogon.
-
+<p>Single sign-on lets a member reach the hub with an identity someone else
+already manages — a campus login, a federation, a research identity service.
+The hub never sees or stores their password, they have one fewer to
+remember, and your help desk fields fewer password resets.</p>
+<p>Four of the authentication plugins federate an external identity provider
+rather than talking to a single social network:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Federates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authentication - CILogon</strong></td>
+<td>CILogon, which fronts hundreds of campus and laboratory identity providers.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Shibboleth</strong></td>
+<td>Shibboleth and InCommon, with the hub choosing which identity providers to offer.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Globus</strong></td>
+<td>Globus Auth, which fronts campus logins and Globus identities.</td>
+</tr>
+<tr>
+<td><strong>Authentication - Purdue University CAS</strong></td>
+<td>Purdue's Central Authentication Service.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Authentication - ORCID</strong> is close to these: it authenticates against a
+research identity rather than an institution.</p>
+<p>All of them are enabled the same way as any other authentication plugin —
+see <a href="../authentication/index.html">Authentication</a> — and their parameters are listed
+in the
+<a href="../../../reference/configuration/plugins/authentication/index.html">authentication plugin reference</a>.</p>
+<h2 id="cilogon">CILogon</h2>
+<p>Register the hub at <a href="https://cilogon.org/oauth2/register">https://cilogon.org/oauth2/register</a>:</p>
+<ol>
+<li>
+<p>Enter a <strong>Client Name</strong>, a <strong>Contact Email Address</strong>, and a home URL —
+the hub's own URL.</p>
+</li>
+<li>
+<p>Give the callback URLs, replacing <code>&lt;hostname&gt;</code> with the hub's host. Add
+a set for every hub instance that will use CILogon.</p>
+<pre><code>https://&lt;hostname&gt;/index.php?option=com_users&amp;task=user.login&amp;authenticator=cilogon
 https://&lt;hostname&gt;/index.php?option=com_users&amp;task=user.link&amp;authenticator=cilogon
-https://&lt;hostname&gt;/index.php?option=com_users&amp;task=user.login&amp;authenticator=cilogon
 https://&lt;hostname&gt;/administrator/index.php?option=com_login&amp;task=login&amp;authenticator=cilogon
 </code></pre>
-<p>Select all SCOPES (email, edu.., openid, profile, org.cilogon...).
-Leave blank - Refresh Token Lifetime.
-Leave blank - Issuer.</p>
-<p>CiLogon will process the registration and if approved a client id and client secret will be provided and must be added to the &quot;Authenticator - CILogon&quot; plugin in the Adminstrator Interface (/administrator) to enable to plugin. Once enabled, users may log into your hub via credentials provided by CiLogon.</p>
+</li>
+<li>
+<p>Select every scope offered: <code>email</code>, <code>openid</code>, <code>profile</code>,
+<code>org.cilogon.userinfo</code>, and the <code>edu.</code> scopes.</p>
+</li>
+<li>
+<p>Leave <strong>Refresh Token Lifetime</strong> and <strong>Issuer</strong> blank.</p>
+</li>
+</ol>
+<p>CILogon reviews the registration by hand. When it is approved you are sent
+a client ID and a client secret. Put them into <strong>Client ID</strong> and <strong>Client
+Secret</strong> on the <strong>Authentication - CILogon</strong> plugin, enable the plugin, and
+CILogon appears on the hub's login page.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The hub requests the <code>openid</code>, <code>email</code>, <code>profile</code>, and
+<code>org.cilogon.userinfo</code> scopes when it sends someone to CILogon. A
+registration that was approved for fewer scopes fails at sign-in.</p>
+</aside>
+<h2 id="shibboleth">Shibboleth</h2>
+<p>The Shibboleth plugin needs <code>mod_shib</code> in front of it; the hub does not
+speak SAML itself. Protect a path and hand the result back to the hub:</p>
+<pre><code class="language-apache">&lt;Location /login/shibboleth&gt;
+    AuthType shibboleth
+    ShibRequestSetting requireSession 1
+    Require valid-user
+    RewriteRule (.*) /index.php?option=com_users&amp;authenticator=shibboleth&amp;task=user.login [L]
+&lt;/Location&gt;
+</code></pre>
+<p>The plugin's parameters are in four groups:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic</strong></td>
+<td><strong>Site login</strong>, <strong>Admin login</strong>, <strong>DNS Address</strong> (default <code>8.8.8.8</code>, used to resolve visitors' hostnames so they can be matched to a participating institution), and <strong>Auto approve new users</strong>.</td>
+</tr>
+<tr>
+<td><strong>Debug</strong></td>
+<td><strong>Enable debugging</strong>, <strong>Debug Log</strong> (default <code>/var/log/apache2/php/shibboleth.log</code>), and <strong>Testing mode key</strong>.</td>
+</tr>
+<tr>
+<td><strong>Links</strong></td>
+<td>Extra links shown alongside the institution picker.</td>
+</tr>
+<tr>
+<td><strong>Institutions</strong></td>
+<td>The federation metadata file — <code>/etc/shibboleth/metadata/federation-metadata.xml</code> by default — and which of its identity providers the hub offers.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Set <strong>Testing mode key</strong> while you are setting Shibboleth up.
+The provider is then hidden from the login page unless the key appears in
+the URL, as in <code>https://yourhub.org/login?yourkey</code>. Clear the field to
+show it to everyone.</p>
+</aside>
+<h2 id="globus">Globus</h2>
+<p>Register the hub as a Globus Auth application, then put the values into
+<strong>Client ID</strong> and <strong>Client Secret</strong> on the <strong>Authentication - Globus</strong>
+plugin. The callback URLs are the same three as CILogon's, with
+<code>authenticator=globus</code>.</p>
+<h2 id="purdue-cas">Purdue CAS</h2>
+<p>The Purdue plugin needs the hub registered with Purdue's Identity and
+Access Management office; see
+<a href="https://www.purdue.edu/apps/account/docs/CAS/CAS_information.jsp">https://www.purdue.edu/apps/account/docs/CAS/CAS_information.jsp</a>. Once the
+hub is registered, enable the plugin — there is no key or secret to enter.</p>
+<p>Its parameters include <strong>Domain</strong> and <strong>Display name</strong>, which set what the
+login page calls it, <strong>End CAS Session Automatically?</strong>, which decides
+whether signing out of the hub also ends the Purdue session or asks first,
+and <strong>Passive SSO detection (CAS gateway)</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Leave <strong>Passive SSO detection (CAS gateway)</strong> off unless the
+identity provider is known to handle gateway and <code>IsPassive</code> requests
+correctly. Purdue's Entra ID returns a &quot;Stale Request&quot; error page instead
+of responding silently, which breaks login outright.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Other institutions running CAS can use the Purdue plugin as a
+starting point for their own. For a new OAuth provider, the Google or
+CILogon plugin is the better template.</p>
+</aside>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../authentication/index.html" rel="prev"><span>Previous</span>Authentication</a><a class="pager__next" href="../../users/index.html" rel="next"><span>Next</span>Users</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/07-extauth.md">Edit this page on GitHub</a>

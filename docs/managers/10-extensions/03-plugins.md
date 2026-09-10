@@ -1,113 +1,161 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/extensions/plugins
 source-id: 3408
 modified: 2009-10-01
 imported: 2026-09-09
 -->
-# Plugins Manager
+# Plug-in Manager
 
-## Overview
+A plugin is a piece of code that answers an event. The Plug-in Manager cannot
+install or delete plugins; it enables and disables them, sets their access
+level, changes the order they run in, and edits their parameters.
 
-The Plugin Manager allows you to enable and disablePlugins and to edit a Plugin's Details and Parameters.
+Select **Extensions** → **Plug-in Manager**, or go to
+`/administrator/index.php?option=com_plugins`.
 
-The Plugin Manager can be accessed by selecting **Extensions** > **Plugin Manager** from the drop-down menu on the Back-end of your HUBzero installation.
+## How plugins work
 
-- **Plug-in Name:** The name of the plug-in. The name explains where the plug-in is located and what the plug-in is for.
-  - For example: **Dashboard-Collections** means that the plug-in is on the user’s Dashboard with a module for Collections.
+Plugins live in [`core/plugins/`](../../../core/plugins), and a hub's own in
+`app/plugins/`, which takes precedence. Each plugin is a directory two levels
+down — `plugins/<folder>/<name>/` — containing `<name>.php` and
+`<name>.xml`. The folder is the plugin's group, and it decides which events
+the plugin can answer.
 
-- **Status:** If the plug-in is viewable on the Hub or not.
-  - Enabled: The plug-in is available on the frontend and on the backend of the Hub.
-  - Disabled: The plug-in has been removed from the frontend of the Hub but is still accessible on the backend.
-- **Ordering:** Where the plug-in is on the master list of plug-ins. This list can be seen when plug-ins are being enabled the ordering determines how the plug-in is displayed in the drop-down.
-- **Type:** The location of the plug-in.
-  - This is the first part of the plug-in’s title.
-- **Element:** What the plug-in is implementing.
-  - This is the second part of the plug-in’s title.
-- **Access:** Who is able to view or use the plug-in.
-  - Public: All visitors or users on the Hub are able to view and use the plug-in.
-  - Registered: Only registered users are able to view and use the plug-in.
-  - Special: Only users given special permissions can access and use the plug-in.
-- **ID:** The identification number given to the plugin after it was created on the Hub. This allows for easier search results.
+When the platform reaches a point where extensions may contribute, it imports
+every enabled plugin in the relevant folder, in ordering order, and calls the
+matching method on each. A plugin in the `authentication` folder is asked to
+authenticate; one in `content` is given content to filter; one in `cron` is
+asked for scheduled jobs.
 
-## Column Headers
+Several folders work differently: instead of filtering something, the plugin
+*is* a whole section of a page. Every tab on a group, a member profile, a
+project, a resource or a publication is a plugin in the `groups`, `members`,
+`projects`, `resources` or `publications` folder. Disabling one removes that
+tab.
 
-- **#:** An indexing number automatically assigned by Joomla! for ease of reference.
-- **Checkbox:** Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.
-- **Plugin Name:** The Name of the Plugin. Click on the Name to open the Plugin for editing.
-- **Enabled:** A green tick or a red X showing whether the use of the component is enabled/disabled. Click the icon to toggle the item between enabled and disabled.
-- **Order:** The order to display items. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking **Save Order**. Note that the display order on a page is set in the Parameters - Advanced section for each Menu Item. If that order is set to use something other than **Order**(for example, **Title - Alphabetical**), then the order value in this screen will be ignored. If the Menu Item Order parameter is set to use **Order**, then the items will display on the page based on the order in this screen.
-- **Access Level:** Who has access to this item. You can change an item's Access Level by clicking on the icon in the column. Current options are:
-  - Public: Everyone has access
-  - Registered: Only registered users have access
-  - Special: Only users with author status or higher have access
-- **Type:** The Type of the Plugin. Possible types are: authentication, content, editors, editors-xtd, search, system, user, and xmlrpc. These are also the names of the subfolders where the Plugin files are located. For example, Plugins with a Type of **authentication** are located in the folder **plugins/authentication**.
-- **File:** The name of the Plugin files. Each Plugin has two files, a **.php** file and a **.xml** file. So, for example, the Authentication - Facebook plugin has two files: **facebook.php** and **facebook.xml**.
-- **ID:** The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.
-- **Display #:** The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (*where applicable*).
+## The plugin groups
 
-## Toolbars
+Thirty-seven folders ship with the platform, holding 332 plugins.
 
-- **Enable:** To enable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the **Enabled** column.
-- **Disable:** To disable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the **Enabled** column.
-- **Edit:** Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name.
-- **Help:** Opens this Help Screen.
-- **Check-in**
-- **Options**
+| Folder | Plugins | What they do |
+|---|---|---|
+| `answers` | 2 | Extras on question pages |
+| `antispam` | 6 | Spam detectors used when content is posted |
+| `authentication` | 13 | Log-in methods, local and third-party |
+| `authfactors` | 2 | Second factors for two-factor authentication |
+| `blog` | 2 | Blog entry extras |
+| `captcha` | 3 | Challenge widgets for forms |
+| `cart` | 3 | Store checkout steps |
+| `citation` | 4 | Citation formats and importers |
+| `content` | 13 | Filters applied to content as it is rendered |
+| `courses` | 14 | Course tabs and asset handlers |
+| `cron` | 14 | Scheduled jobs offered to the cron manager |
+| `editors` | 8 | WYSIWYG and plain editors |
+| `editors-xtd` | 4 | Buttons added below an editor |
+| `extension` | 1 | Installer support for legacy extension packages |
+| `filesystem` | 5 | Storage back ends for project files |
+| `geocode` | 15 | Address and coordinate lookup services |
+| `groups` | 18 | Tabs and features on group pages |
+| `handlers` | 8 | Viewers for published content: video, audio, PDF, LaTeX, notebooks |
+| `hubzero` | 5 | Shared services: comments, autocompleter, system templates and tickets |
+| `members` | 20 | Tabs and features on member profiles |
+| `metadata` | 1 | Metadata attached to content records |
+| `newsletter` | 3 | Newsletter composition and sending |
+| `oaipmh` | 2 | Records exposed over OAI-PMH |
+| `projects` | 11 | Tabs and features on projects |
+| `publications` | 17 | Publication tabs and curation steps |
+| `resources` | 22 | Resource tabs and features |
+| `search` | 26 | Indexers, one per searchable content type |
+| `support` | 13 | Ticket handling and support extras |
+| `system` | 29 | Code that runs on every request |
+| `tags` | 14 | Behaviour attached to tags |
+| `tools` | 1 | Tool session viewers |
+| `update` | 2 | Housekeeping run after an update |
+| `usage` | 7 | Usage statistics collectors |
+| `user` | 11 | Reactions to account creation, change and deletion |
+| `whatsnew` | 6 | Content types listed on the What's New page |
+| `wiki` | 4 | Wiki macros and parsers |
+| `xmessage` | 3 | Delivery channels for internal messages |
 
-## List Filters
+For the parameters each plugin exposes, see
+[the generated plugin reference](../../reference/configuration/plugins/README.md).
 
-You can filter the list of items by typing in part of the Title or the ID number. Or you can select a combination of Category and Published State.
+> **Note:** A plugin also has to be enabled as an *extension* before its row
+> matters. The Extension Manager and the Plug-in Manager both write the same
+> `enabled` flag on the same `#__extensions` row, so either screen will do.
 
-- **Filter:** If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either part of the title or an ID number and press **Go** to display the matching items. You can enter in whole words or part of a word. For example, **ooml** will match all titles with the word **Joomla!** in them.
-- **Filter by Type and State:** The selections may be combined. Only items matching both selections will display in the list.
-- **Select Type:** Select a Type from the drop-down list box to select only Plugins of this Type.
-- **Select State:** Select a state (Enabled or Disabled) from the drop-down list box to select only Plugins with this state.
-- **Select Access**
+## The list
 
-## Edit Plugins
+| Column | Meaning |
+|---|---|
+| Checkbox | Selects rows for the toolbar. A plugin whose files are missing has no checkbox. |
+| **Plug-in Name** | The plugin's translated name, usually *Group - Name*, for example *Authentication - Facebook*. Click it to edit. |
+| **Status** | Enabled or Disabled. Click the icon to toggle. |
+| **Ordering** | The order plugins in the same folder run in. |
+| **Type** | The plugin's folder — its group. |
+| **Element** | The plugin's directory and file name. |
+| **Access** | The access level required. |
+| **ID** | The row's primary key. |
 
-You can edit details and parameters for Plugins. Some Plugins have several parameters, while others don't have any.
+A plugin whose files are gone is shown with a marked row and forced to
+disabled.
 
-- **Details:** The Details section is the same for all Plugins, as follows:
-- **Name:** The Name of the Plugin.
-- **Enabled:** Whether or not this Plugin is enabled.
-- **Type:** The Type of the Plugin. This value cannot be changed.
-- **Plugin File:** The name of the Plugin file. Each Plugin has two files with this name. One has the file extension **.php** and the other has the file extension **.xml**.
-- **Access Level:** Who has access to this item. Enter the desired level using the drop-down list box. Current options are:
-  - Public: Everyone has access
-  - Registered: Only registered users have access
-  - Special: Only users with author status or higher have access
-- **Order:** The order this item will display in the Manager screen. Use the drop-down list box to change the Order. You can select **First** or **Last** to make this the first or last item. Or you can select an item from the list. In this case, the current item will be listed just *after* the item you select. Note that the Order can also be changed in the Manager screen.
-- **Description:** The description of what this Plugin does. This cannot be changed.
-- **Parameters:** This will vary between plugins.
+Three filters sit above the list, plus a search box that matches the name:
 
-## Reordering
+- **- Select Status -**: Enabled, Disabled.
+- **- Select Type -**: any folder that has plugins installed.
+- **- Select Access -**: any defined access level.
 
-1. Log in to the backend of the Hub and access the **Extensions** tab
-2. Click on the **Plugin-in Manager** navigate to the **Plug-in Manager: Plug-ins** page
-3. Locate the column labeled **Ordering** and then click on the title of the column
-4. Arrows will appear on the left side of the numbering
-5. To begin reordering click the arrows up or down to reorder the plug-ins
-6. Save the changes by clicking the **Save** icon
+## Toolbar
 
-## Enabling a Plug-in
+| Button | Effect |
+|---|---|
+| **Edit** | Opens the selected plugin. |
+| **Enable** / **Disable** | Changes the state of the selected plugins. |
+| **Check In** | Releases plugins left checked out by an interrupted edit. |
+| **Options** | Permissions for `com_plugins`. There are no other settings. |
+| **Help** | Opens the built-in help screen. |
 
-1. Log in to the backend of the Hub and access the **Extensions** tab and then click on **Plug-in Manager**
-2. Locate the plug-in that needs enabling and select the box beside the plug-in’s name
-3. Click **Enable** to enable the plug-in
-4. The plug-in will now be useable on the frontend of the Hub
+There is no **New** and no **Delete**. Plugins arrive and leave with the code.
 
-## Editing a Plug-in
+## Editing a plugin
 
-1. Log in to the backend of the Hub and access the **Extensions** tab and then click on **Plug-in Manager**
-2. Locate the plug-in that needs editing and select the box beside the plug-in’s name
-3. Click **Edit** to begin editing the plug-in
-4. Click **Save & Close** to save the newly edited content
+The edit screen has three editable fields:
 
-## Disabling a Plug-in
+| Field | Notes |
+|---|---|
+| **Status** | Enabled or Disabled. |
+| **Access** | The access level required for the plugin to run for a given visitor. |
+| **Ordering** | Where the plugin sits among the others in its folder. |
 
-1. Log in to the backend of the Hub and access the **Extensions** tab and then click on **Plug-in Manager**
-2. Locate the plug-in that needs disabling and select the box beside the plug-in’s name
-3. Click **Disable** to disable the plug-in
-4. The plug-in will now be removed from the frontend of the Hub, but still accessible from the backend
+Beside them, read-only, are the plugin's name, ID, **Type** (its folder) and
+**Element**, and its description from the XML manifest. Below, the plugin's
+own parameters appear in collapsible panels. Many plugins have none.
+
+The toolbar is **Save**, **Save & Close**, **Close** and **Help**.
+
+## Enabling or disabling a plugin
+
+1. Go to **Extensions** → **Plug-in Manager**.
+2. Narrow the list with the **- Select Type -** filter or the search box.
+3. Tick the plugin, then select **Enable** or **Disable**. Clicking the icon
+   in the **Status** column does the same thing for a single plugin.
+
+Disabling a plugin stops it running everywhere, front end and back end alike.
+If the plugin supplies a tab, that tab disappears.
+
+## Changing the order plugins run in
+
+Order matters inside a folder. Content plugins transform the same text one
+after another; authentication plugins are offered a log-in attempt in turn.
+
+1. Go to **Extensions** → **Plug-in Manager**.
+2. Filter by **- Select Type -** so you are looking at one group.
+3. Select the **Ordering** column heading to sort by it. The up and down
+   arrows and the order boxes only work while the list is sorted this way.
+4. Move rows with the arrows, or type numbers into the boxes and select the
+   save icon in the column heading.

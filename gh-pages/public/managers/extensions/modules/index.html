@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Modules Manager · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview The Module Manager is where you add and edit Modules. In HUBzero, Modules are used to display content and/or media around the main content. The Module…">
+  <title>Module Manager · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Modules are the small blocks of output that sit around the component: a login box, a breadcrumb trail, a search field, a site-wide notice. The Module Manager…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/extensions/modules/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,21 +54,21 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -118,23 +118,19 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Modules Manager</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l3"><a href="#module-facts">Module Facts:</a></li>
-<li class="toc__item toc__item--l2"><a href="#column-headers">Column Headers</a></li>
-<li class="toc__item toc__item--l2"><a href="#toolbars">Toolbars</a></li>
-<li class="toc__item toc__item--l3"><a href="#primary-toolbar">**Primary Toolbar**</a></li>
-<li class="toc__item toc__item--l3"><a href="#site-and-administrator-links-at-the-top-left-above-the-filter">**Site and Administrator Links:** At the top left, above the Filter.</a></li>
-<li class="toc__item toc__item--l2"><a href="#list-filters">List Filters</a></li>
-<li class="toc__item toc__item--l3"><a href="#filter-by-template-position-type-and-published-state">**Filter by Template, Position, Type, and Published State**</a></li>
-<li class="toc__item toc__item--l3"><a href="#filter-by-template-position-type-and-published-state-2">**Filter by Template, Position, Type and Published State**</a></li>
-<li class="toc__item toc__item--l2"><a href="#create-edit-modules">Create/Edit Modules</a></li>
-<li class="toc__item toc__item--l3"><a href="#module-type-this-displays-the-system-name-of-the-module-no-entry-is-allowed">**Module Type:** This displays the system name of the module. No entry is allowed.</a></li>
-<li class="toc__item toc__item--l3"><a href="#menu-assignment">Menu Assignment</a></li>
-<li class="toc__item toc__item--l2"><a href="#turning-on-site-notices">Turning on Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Module Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#modules-and-module-instances">Modules and module instances</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
+<li class="toc__item toc__item--l2"><a href="#filters">Filters</a></li>
+<li class="toc__item toc__item--l2"><a href="#toolbar">Toolbar</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-and-editing-a-module">Creating and editing a module</a></li>
+<li class="toc__item toc__item--l3"><a href="#menu-assignment">Menu assignment</a></li>
+<li class="toc__item toc__item--l2"><a href="#positions">Positions</a></li>
+<li class="toc__item toc__item--l2"><a href="#putting-a-notice-on-every-page">Putting a notice on every page</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -152,165 +148,336 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Modules Manager</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Module Manager</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Modules Manager</h1>
+          <h1>Module Manager</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/extensions/modules">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2009.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>The Module Manager is where you add and edit Modules. In HUBzero, Modules are used to display content and/or media around the main content.</p>
-<p>The Module Manager can be found by selecting <strong>Extensions</strong> &gt; <strong>Module Manager</strong> from the drop-down menu on the back-end of your HUB installation.</p>
-<h3 id="module-facts">Module Facts:</h3>
+<p>Modules are the small blocks of output that sit around the component: a login
+box, a breadcrumb trail, a search field, a site-wide notice. The Module
+Manager creates them, places them in a template position, decides which pages
+they appear on, and orders them within a position.</p>
+<p>Select <strong>Extensions</strong> → <strong>Module Manager</strong> in the administrator interface, or
+go to <code>/administrator/index.php?option=com_modules</code>.</p>
+<h2 id="modules-and-module-instances">Modules and module instances</h2>
+<p>The code for a module lives in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/modules"><code>core/modules/</code></a>, one
+directory per module, named <code>mod_something</code>. A hub's own modules go in
+<code>app/modules/</code> and take precedence over a core module of the same name. One
+hundred modules ship with the platform: 78 for the site and 22 for the
+administrator interface.</p>
+<p>Each directory holds <code>mod_name.php</code>, a <code>mod_name.xml</code> manifest that declares
+the module's parameters, and a <code>tmpl/</code> directory of layouts. All but one also
+carry a <code>helper.php</code> holding the class that does the work, which
+<code>mod_name.php</code> requires and runs:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Modules\Login;
+
+require_once __DIR__ . DS . 'helper.php';
+
+with(new Helper($params, $module))-&gt;display();
+</code></pre>
+<p>The Module Manager does not list those directories. It lists <em>instances</em>.
+Creating a module makes a row in <code>#__modules</code> that points at one of the
+installed module types and carries its own title, position, access level,
+parameters and page assignment. Ten instances of <code>mod_custom</code> are ten
+different blocks of HTML sharing one piece of code.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A module type must be enabled in the
+<a href="../extension-manager/index.html">Extension Manager</a> before any of its instances
+render. The site query joins <code>#__extensions</code> and skips modules whose
+extension row is disabled, whatever the instance's own status says.</p>
+</aside>
+<h2 id="the-list">The list</h2>
+<p>The list shows the modules for one client at a time — <strong>Site</strong> or
+<strong>Administrator</strong> — chosen from the <strong>Client</strong> filter. Columns:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checkbox</td>
+<td>Selects rows for the toolbar buttons. The header checkbox selects all. A module whose files are missing has no checkbox and cannot be selected.</td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>The instance title. Click it to edit. A module note, if set, appears beneath.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, unpublished or trashed. Click the icon to toggle.</td>
+</tr>
+<tr>
+<td><strong>Position</strong></td>
+<td>The template position the module renders in, or <code>:: None ::</code>.</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Order within the position. Editable only while the list is sorted by this column.</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>The module type, for example <code>mod_login</code>.</td>
+</tr>
+<tr>
+<td><strong>Pages</strong></td>
+<td>Page assignment: <strong>All</strong>, <strong>None</strong>, <strong>Selected only</strong> or <strong>All except selected</strong>.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The <a href="../../users/accesslevels/index.html">access level</a> required to see the module.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>The content language the module is limited to, or <strong>All</strong>.</td>
+</tr>
+<tr>
+<td><strong>ID</strong></td>
+<td>The row's primary key. Not editable.</td>
+</tr>
+</tbody>
+</table>
+<p>If a module's files have been removed from disk, the row loses its checkbox
+and its title link, carries the message <em>Module file(s) not found!</em>, and is
+shown as unpublished.</p>
+<h2 id="filters">Filters</h2>
+<p>Above the list, a search box matches the title, and six drop-downs narrow the
+list further. They combine.</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Client</strong></td>
+<td>Site, Administrator</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, Unpublished, Trashed</td>
+</tr>
+<tr>
+<td><strong>Position</strong></td>
+<td>Every position currently in use by a module of this client</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>Every installed module type for this client</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>Any defined access level</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Any installed content language</td>
+</tr>
+</tbody>
+</table>
+<h2 id="toolbar">Toolbar</h2>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong></td>
+<td>Opens the module-type chooser in a pop-up. Pick a type to create an instance of it.</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the selected module.</td>
+</tr>
+<tr>
+<td><strong>Duplicate</strong></td>
+<td>Copies the selected modules. The copies are created unpublished.</td>
+</tr>
+<tr>
+<td><strong>Publish</strong> / <strong>Unpublish</strong></td>
+<td>Changes the state of the selected modules.</td>
+</tr>
+<tr>
+<td><strong>Check In</strong></td>
+<td>Releases modules left checked out by an interrupted edit.</td>
+</tr>
+<tr>
+<td><strong>Trash</strong></td>
+<td>Moves the selected modules to the trash.</td>
+</tr>
+<tr>
+<td><strong>Empty trash</strong></td>
+<td>Replaces <strong>Trash</strong> when the Status filter is set to Trashed. Deletes permanently.</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>Component permissions; there are no other settings.</td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td>Opens the built-in help screen.</td>
+</tr>
+</tbody>
+</table>
+<p>A batch panel below the list applies an access level, a language or a position
+to every selected module at once. It is hidden unless you hold create, edit
+and edit-state permission on <code>com_modules</code>.</p>
+<h2 id="creating-and-editing-a-module">Creating and editing a module</h2>
+<p><strong>New</strong> opens a pop-up listing every <em>enabled</em> module type for the current
+client, by translated name and by directory name, with the manifest
+description as a tooltip. A module type disabled in the Extension Manager does
+not appear here. Choosing a type opens the edit form; the type is fixed once
+the instance exists.</p>
+<p>The left column holds the details every module shares:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Required, up to 100 characters.</td>
+</tr>
+<tr>
+<td><strong>Show Title</strong></td>
+<td>Show or Hide. Whether the template prints the title above the module.</td>
+</tr>
+<tr>
+<td><strong>Position</strong></td>
+<td>The template position. Type one, or use <strong>Select position</strong> for a picker listing every position declared by an installed template plus every position already in use.</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Position within the chosen position.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, Unpublished or Trashed.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The access level required to see the module.</td>
+</tr>
+<tr>
+<td><strong>Start Publishing</strong> / <strong>Finish Publishing</strong></td>
+<td>Optional dates that bracket when the module renders.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>Limits the module to one content language, or <strong>All</strong>.</td>
+</tr>
+<tr>
+<td><strong>Note</strong></td>
+<td>A private label shown under the title in the list.</td>
+</tr>
+<tr>
+<td><strong>ID</strong></td>
+<td>Read-only.</td>
+</tr>
+</tbody>
+</table>
+<p>The right column shows the module type, the client, and the description from
+the module's XML manifest, none of which can be edited. Below them, the
+module's own parameters appear in collapsible panels named by the manifest.
+For a module with no parameters the panel is empty.</p>
+<p>An instance of <code>mod_custom</code> — or a module with no XML manifest — also gets a
+<strong>Custom output</strong> editor for arbitrary HTML.</p>
+<h3 id="menu-assignment">Menu assignment</h3>
+<p>Site modules get a <strong>Menu Assignment</strong> section. <strong>Module Assignment</strong> offers
+four choices:</p>
+<ul>
+<li><strong>On all pages</strong></li>
+<li><strong>No pages</strong></li>
+<li><strong>Only on the pages selected</strong></li>
+<li><strong>On all pages except those selected</strong></li>
+</ul>
+<p>The last two reveal a tabbed tree of every menu item, one tab per menu, with
+<strong>All</strong>, <strong>None</strong> and <strong>Invert</strong> buttons. Administrator modules have no menu
+assignment.</p>
+<h2 id="positions">Positions</h2>
+<p>A position is just a name. The template decides where on the page a position
+appears, and which positions exist at all; a position no template renders
+produces nothing. The positions a template offers are declared in its
+<code>templateDetails.xml</code>.</p>
+<p><strong>kimera</strong>, the site template, declares:</p>
+<p><code>footer</code>, <code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>,
+<code>introblock</code>, <code>notices</code>, <code>search</code></p>
+<p>Its <code>index.php</code> also renders <code>breadcrumbs</code> and <code>endpage</code>, which are not in
+the declared list, and does not render <code>banner</code> or <code>introblock</code>, which are.
+So the picker is a guide, not a guarantee — check the template you are
+actually using.</p>
+<p><strong>kameleon</strong>, the administrator template, declares:</p>
+<p><code>menu</code>, <code>submenu</code>, <code>toolbar</code>, <code>title</code>, <code>status</code>, <code>icon</code>, <code>cpanel</code>, <code>debug</code></p>
+<p>To see the positions of the live template laid out on the page, set
+<strong>Preview Module Positions</strong> to Enabled in the Template Manager's <strong>Options</strong>,
+then append <code>?tp=1</code> to any site URL. Each position is drawn as a labelled
+outline.</p>
+<p>You can also type a position no template defines and pull the module into
+article text with the Content - Load Module plugin, which expands
+<code>{loadposition myposition}</code> and <code>{loadmodule mod_login}</code> wherever they appear
+in content. The plugin must be enabled for either to work.</p>
+<h2 id="putting-a-notice-on-every-page">Putting a notice on every page</h2>
+<p><code>mod_notices</code> renders a coloured banner across the site, for maintenance
+windows and hub-wide announcements.</p>
 <ol>
-<li>All hubs require at least 1 Menu Module</li>
-<li>All Other Module Types are Optional. (Examples: News, Banner, Latest News, Polls)</li>
-<li>Every Menu is accompanied by a menu module. (Example mod_mainmenu)</li>
-<li>Multiple occurrences of similar module types.</li>
-<li>Some Modules are linked to components. For example, each Menu Module is related to one Menu component. To define a Menu, you need to create the Menu and Menu Items using the Menus screens and then create the Module for the Menu using this screen. Other Modules, such as Custom HTML and Breadcrumbs, do not depend on any other content.</li>
+<li>Go to <strong>Extensions</strong> → <strong>Module Manager</strong>.</li>
+<li>Select <strong>New</strong> and choose <strong>Site Notices</strong> (<code>mod_notices</code>).</li>
+<li>Fill in the details:
+<ul>
+<li><strong>Title</strong> — for example, <em>Upgrade notice</em>. Set <strong>Show Title</strong> to Hide
+unless you want it printed above the message.</li>
+<li><strong>Position</strong> — <code>notices</code>.</li>
+<li><strong>Status</strong> — Published.</li>
+<li><strong>Access</strong> — the level that should see the announcement.</li>
+<li><strong>Start Publishing</strong> and <strong>Finish Publishing</strong> — the window the notice
+should appear in. A notice with a finish date takes itself down.</li>
+</ul>
+</li>
+<li>Set the module's own parameters:
+<ul>
+<li><strong>Alert level</strong> — Low, Medium or High. This picks the colour.</li>
+<li><strong>Message</strong> — the text of the notice.</li>
+<li><strong>Module ID</strong> — an optional CSS id for styling this notice alone.</li>
+<li><strong>Allow closing</strong> — lets the reader dismiss the notice.</li>
+<li><strong>Autolink message</strong> — turns URLs and email addresses in the message into
+links. On by default.</li>
+</ul>
+</li>
+<li>Under <strong>Menu Assignment</strong>, choose <strong>On all pages</strong>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
 </ol>
-<p>An installation is accompanied with over 20 default module types.</p>
-<h2 id="column-headers">Column Headers</h2>
-<p>Click on the column heading to sort the list by that column's value.</p>
-<ul>
-<li><strong>Number (#):</strong> An indexing number automatically assigned by Joomla! for ease of reference.</li>
-<li><strong>Checkbox:</strong> Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
-<li><strong>Module Name:</strong> The name of the Module. You can click on the name to open the Module for editing.</li>
-<li><strong>Enabled:</strong> A green tick or a red X showing whether the use of the component is enabled/disabled. Click the icon to toggle the item between enabled and disabled.</li>
-<li><strong>Order:</strong> The order to display modules within a Position. If the list is sorted by this column, you can change the display order of modules within a Position by selecting a Position in the <strong>Select Position</strong> filter and then clicking the arrows or by entering the sequential order and clicking <strong>Save Order</strong>.</li>
-<li><strong>Access Level:</strong> Who has access to this item. You can change an item's Access Level by clicking on the icon in the column. Current options are:
-<ul>
-<li>Special: Only users with author status or higher have access</li>
-<li>Registered: Only registered users have access</li>
-<li>Public: Everyone has access</li>
-</ul>
-</li>
-<li><strong>Position:</strong> The position on the page where this module is displayed. Positions are locations on the page where modules can be placed (for example, <strong>left</strong> or <strong>right</strong>). Positions are defined in the Template in use for the page. Positions can also be used to insert a Module inside an Article using the syntax <strong>{loadposition xxx}</strong>, where <strong>xxx</strong> is a unique position for the module.</li>
-<li><strong>Pages:</strong> The Menu Items where this Module will be displayed. Options are <strong>All</strong> for all Menu Items, <strong>None</strong> for no Menu Items, and <strong>Varies</strong> for selected Menu Items. A Module will only display on Menu Items where it is selected.</li>
-<li><strong>Type:</strong> The system name of the Module. Joomla! installs 20 standard Modules. Many Joomla! Extensions contribute additional Modules.</li>
-<li><strong>ID:</strong> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
-<li><strong>Display Number:</strong> The number of items to display on one page. If there are more items than this number, you can use the page navigation buttons (Start, Prev, Next, End, and page numbers) to navigate between pages. Note that if you have a large number of items, it may be helpful to use the Filter options, located above the column headings, to limit which items display (<em>where applicable</em>).</li>
-</ul>
-<h2 id="toolbars">Toolbars</h2>
-<h3 id="primary-toolbar"><strong>Primary Toolbar</strong></h3>
-<ul>
-<li><strong>Enable:</strong> To enable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
-<li><strong>Disable:</strong> To disable one or more items, select them using the Checkbox and press this button. You may also toggle between Enabled and Disabled by clicking on the icon in the <strong>Enabled</strong> column.</li>
-<li><strong>Copy:</strong> To copy one or more Modules, select them using the Checkbox and press this button. A new Module will be created for each selected Module. The new Module will have the name <strong>Copy of</strong> plus the original Module name. Note that the new copies are initially disabled.</li>
-<li><strong>Delete:</strong> To delete one or more items, select them and click this button. The selected items will be deleted. <strong>Note</strong>: <em>only empty items can be deleted.</em></li>
-<li><strong>Edit:</strong> Select one item and click on this button to open it in edit mode. If you have more than one item selected (where applicable), the first item will be opened. You can also open an item for editing by clicking on its Title or Name.</li>
-<li><strong>New:</strong> To create a new instance of a Module, press this button. You will be taken to a screen that lists all of the available Modules. See <a href="#section-7034">Create/Edit Modules</a> for information about adding Modules.</li>
-<li><strong>Help:</strong> Opens this Help Screen.</li>
-<li>
-<h3 id="site-and-administrator-links-at-the-top-left-above-the-filter"><strong>Site and Administrator Links:</strong> At the top left, above the Filter.</h3>
-</li>
-<li><strong>Site:</strong> Opens the Site tab. This is the default tab and allows you to manage the Modules for the front end of the web site.</li>
-<li><strong>Administrator:</strong> This tab allows you to manage the Modules for the back end administration of the web site. If you do not need to change the Joomla! administrator menus, no modifications are required here.</li>
-</ul>
-<h2 id="list-filters">List Filters</h2>
-<h3 id="filter-by-template-position-type-and-published-state"><strong>Filter by Template, Position, Type, and Published State</strong></h3>
-<p>You can filter the list of items by typing part of the title or the ID number. Or, you can select a combination of Category and Published State.</p>
-<ul>
-<li><strong>Filter:</strong> In the upper left corner just above the column headings is a Filter field and two buttons, as shown below:
-<ul>
-<li>If you have a large number of items on the list, you can use this filter to find the desired item(s) quickly. Enter either part of the title or an ID number and press <strong>Go</strong> to display the matching items. You can enter in whole words or part of a word. For example, <strong>ero</strong> will match all titles with the word <strong>Hubzero</strong> in them.</li>
-</ul>
-</li>
-</ul>
-<h3 id="filter-by-template-position-type-and-published-state-2"><strong>Filter by Template, Position, Type and Published State</strong></h3>
-<p>In the upper right area, above the column headings, are following drop-down list boxes as shown below. The selections may be combined. Only items matching both selections will display in the list.</p>
-<ul>
-<li><strong>Site</strong></li>
-<li><strong>Select Status</strong></li>
-<li><strong>Select Template:</strong> Select the Template from the drop-down list box of available Templates. Only Templates that are enabled for this site will display.</li>
-<li>**Select Position:**Select a Position from the drop-down list box of available Positions.</li>
-<li><strong>Select Type:</strong> Select the Module Type from the drop-down list box of available Module Types. HUBzero installs with 20 available Module types. Additional ones may be available if you have installed any Extensions.</li>
-<li><strong>Select State:</strong> Use the drop-down list box to select the published state: Enabled or Disabled.</li>
-<li><strong>Select Access</strong></li>
-<li><strong>Select Language</strong></li>
-</ul>
-<p><a id="section-7034"></a></p>
-<h2 id="create-edit-modules">Create/Edit Modules</h2>
-<p>When you create a new Module, you will select the Module Type. This will determine what type of content this Module can display. If you edit an existing Module, the Module Type will already be determined.</p>
-<ul>
-<li><strong>Note:</strong> You cannot change the Module Type of an existing Module.</li>
-</ul>
-<p>All Modules have two sections that are the same: Details and Menu Assignment. The Parameters are different for each Module Type.</p>
-<ul>
-<li>
-<h3 id="module-type-this-displays-the-system-name-of-the-module-no-entry-is-allowed"><strong>Module Type:</strong> This displays the system name of the module. No entry is allowed.</h3>
-</li>
-<li><strong>Title:</strong> The Title of the Module.</li>
-<li><strong>Show Title:</strong> Whether or not to show the Title of the Module.</li>
-<li><strong>Enabled:</strong> Whether or not the Module is enabled. If <strong>No</strong>, the Module will not be shown on the page.</li>
-<li><strong>Position:</strong> The Position on the page to show the Module. There are two types of Positions you can use.
-<ul>
-<li>You can select a Position from the drop-down list box. The Positions in the list box are those provided by your Template. You can see the available Positions on the page by adding the letters <strong>?tp=1</strong> to the end of any front-end URL. For example, if your home page is <strong>www.mysite.com</strong>, you can type the URL <strong>www.mysite.com?tp=1</strong>. The page will display with labeled rectangles indicating each pre-defined Position for the current Template.</li>
-<li>You can type in a Position that is different from the pre-defined positions (for example, <strong>myposition1</strong>). This type of Position can be used to insert a Module into an Article. If you enter the code <strong>{loadposition xxx}</strong> inside the text of an Article, where <strong>xxx</strong> matches the Position of a Module, and if the Module is assigned to the the Menu Selection where the Article is displayed (see <strong>Menu Assignment</strong> below), then the Module will be displayed at that point in the Article.</li>
-</ul>
-</li>
-<li><strong>Order:</strong> The Order that this Module will be displayed within the Position. If more than one Module is displayed at the same position, this will determine the order of display. The drop-down list box shows all Modules displaying at the current Position. Select the Module that you want the current Module to <em>follow</em>.
-<ul>
-<li>You can also change the order of display in the Module Manager. The Module Order is only important when two or more Modules are displaying at the <em>same Position</em> and on the s<em>ame Menu Selections</em>.</li>
-</ul>
-</li>
-<li><strong>Access Level:</strong> Who has access to this item. Enter the desired level using the drop-down list box. Current options are:
-<ul>
-<li>Public: Everyone has access</li>
-<li>Registered: Only registered users have access</li>
-<li>Special: Only users with author status or higher have access</li>
-</ul>
-</li>
-<li><strong>ID:</strong> The ID number. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, for example in internal links. You can not change this number.</li>
-<li><strong>Description:</strong> A description of what the Module does. No entry is allowed.</li>
-</ul>
-<h3 id="menu-assignment">Menu Assignment</h3>
-<p>This is where you tell the CMS which pages to show this Module on. This Module will show on the page when this Menu Item is selected. If the Menu Item allows the user to navigate to sub-pages, then this Module will also show on these sub-pages. For example, if the Menu item is a Blog Layout, the Module will also show when the user clicks on a <strong>Read more...</strong> link, an Article Link, or a Page Navigation link from that Blog Layout.</p>
-<ul>
-<li><strong>Menus:</strong> <strong>All</strong> means show the current Module on all Menu Items. <strong>None</strong> means don't show the Module on any Menu Items. <strong>Select Menu Item(s) from the List</strong> allows you to select which Menu Items to show the Module on.</li>
-<li><strong>Menu Selection:</strong> If <strong>Select Menu Items(s) from the List</strong> above is selected, select individual Menu Items that will display the Module.
-<ul>
-<li>Use Ctrl+Click to select multiple Menu Items.</li>
-<li>Use Shift+Click to select a range of Menu Items.</li>
-<li>If you want to select most of the Menu Items, first click <strong>All</strong> above under Menus and then click <strong>Select Menu Items(s) from the List</strong>. All of the Menu Items will be selected. Then use Ctrl+Click to deselect the Menu Items you don't want to include.</li>
-</ul>
-</li>
-<li><strong>Parameters:</strong> This will vary between modules.</li>
-</ul>
-<h2 id="turning-on-site-notices">Turning on Site Notices</h2>
-<p>Use this module to announce Hub wide events or scheduled upgrade dates.</p>
-<ol>
-<li>Navigate to the <strong>/administrator</strong> interface</li>
-<li>Hover over <strong>Extensions</strong> and from the drop-down select <strong>Module Manager</strong></li>
-<li>Click New and look for &quot;mod_notices&quot;</li>
-<li>Click on the title of &quot;mod_notices&quot; to open up this new module
-<ol>
-<li>Only complete steps 3 - 4 if you have not created this module previously</li>
-</ol>
-</li>
-<li>Fill in the needed information:
-<ol>
-<li>Title: Add the title for this module, Example - &quot;Upgrade Notices&quot;</li>
-<li>Position: Set the position to &quot;notices&quot;</li>
-<li>Ordering: Set the ordering to &quot;Site Notices&quot;</li>
-<li>Status: Set the status to &quot;Publish&quot;</li>
-<li>Access: Set to the user access level this announcement pertains to</li>
-<li>Start Publishing: Select the date to start publishing this announcement</li>
-<li>Finish Publishing: Select the date to finish publishing this announcement</li>
-<li>Languages: Set lanugages to &quot;All&quot;</li>
-<li>Alert Level: Determine the alert level (Low, Medium, High)</li>
-<li>Message: Add the message you want to announce to your users</li>
-</ol>
-</li>
-<li>Scroll to the bottom of the form to check what pages you want this message appearing on through out the site</li>
-<li>Click <strong>Save &amp; Close</strong> once you are done</li>
-</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>notices</code> position exists in <strong>kimera</strong> and <strong>lucent</strong>. A
+template that does not declare it will not render the notice.</p>
+</aside>
+<h2 id="permissions">Permissions</h2>
+<p><code>com_modules</code> has no configuration options of its own. Its <strong>Options</strong> button
+opens a single <strong>Permissions</strong> tab, which sets who may configure, access,
+create, delete, edit and change the state of modules.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../templates/index.html" rel="next"><span>Next</span>Templates Manager</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../templates/index.html" rel="next"><span>Next</span>Template Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/01-modules.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

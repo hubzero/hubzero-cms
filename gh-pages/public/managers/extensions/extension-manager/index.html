@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Extension Manager · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A Hub administrator can manage extensions (i.e.: plugins, components, modules, templates, etc.), from the /administrator interface. Extensions are…">
+  <meta name="description" content="The Extension Manager lists every installed extension — components, modules, plugins, templates, languages and libraries — and enables or disables them. It…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/extensions/extension-manager/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,21 +54,21 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -118,18 +118,20 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Extension Manager</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#enabling-hubzero-core-extensions">Enabling Hubzero Core Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#disabling-hubzero-core-extensions">Disabling Hubzero Core Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#adding-custom-extensions">Adding Custom Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#editing-custom-extensions">Editing Custom Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#enabling-custom-extensions">Enabling Custom Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#disabling-custom-core-extensions">Disabling Custom Core Extensions</a></li>
-<li class="toc__item toc__item--l2"><a href="#installing-and-updating-a-custom-extension">Installing and Updating a Custom Extension</a></li>
+<li class="toc__item toc__item--l2"><a href="#hubzero-core">Hubzero Core</a></li>
+<li class="toc__item toc__item--l3"><a href="#toolbar">Toolbar</a></li>
+<li class="toc__item toc__item--l3"><a href="#core-migrations">Core Migrations</a></li>
+<li class="toc__item toc__item--l2"><a href="#custom-extensions">Custom Extensions</a></li>
+<li class="toc__item toc__item--l3"><a href="#toolbar-2">Toolbar</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-form">The form</a></li>
+<li class="toc__item toc__item--l3"><a href="#installing-and-updating-the-code">Installing and updating the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#warnings">Warnings</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#composer-packages">Composer packages</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -153,79 +155,275 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Extension Manager</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/extensions/extmanger">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A Hub administrator can manage extensions (i.e.: plugins, components, modules, templates, etc.), from the /administrator interface. Extensions are categorized into two sections - &quot;Hubzero Core&quot; and &quot;Custom Extensions&quot;. Hubzero Core extensions are the core codeset of Hubzero and may be disabled or enabled but never completely removed. Hubzero Core extensions, however, can be overridden by a Custom Extension of the same name. See the Web Developer documentation section for instructions on how to create your own.</p>
-<h2 id="enabling-hubzero-core-extensions">Enabling Hubzero Core Extensions</h2>
+<p>The Extension Manager lists every installed extension — components, modules,
+plugins, templates, languages and libraries — and enables or disables them. It
+also installs a hub's own extensions from a git repository, and reports
+problems with the server's PHP configuration.</p>
+<p>Select <strong>Extensions</strong> → <strong>Extension Manager</strong>, or go to
+<code>/administrator/index.php?option=com_installer</code>.</p>
+<p>The screen has three tabs:</p>
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>Controller</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hubzero Core</strong></td>
+<td><code>manage</code></td>
+<td>Every extension shipped with the platform</td>
+</tr>
+<tr>
+<td><strong>Custom Extensions</strong></td>
+<td><code>customexts</code></td>
+<td>Extensions this hub installed from git</td>
+</tr>
+<tr>
+<td><strong>Warnings</strong></td>
+<td><code>warnings</code></td>
+<td>Checks on the server's PHP settings</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Hubzero's Extension Manager is not the Joomla one it descends
+from. There are no <strong>Install</strong>, <strong>Update</strong>, <strong>Discover</strong> or <strong>Database</strong>
+screens: those controllers were removed, and only some orphaned language
+strings remain. Core extensions come with the code; a hub's own come from
+git through <strong>Custom Extensions</strong>.</p>
+</aside>
+<h2 id="hubzero-core">Hubzero Core</h2>
+<p>This tab lists the platform's own extensions. They can be disabled and
+re-enabled, but never installed or removed from here — they come and go with
+the codebase. A core extension can be overridden by putting a replacement of
+the same name under <code>app/</code>.</p>
+<p>Columns: <strong>Name</strong>, <strong>Location</strong> (Site or Administrator), <strong>Status</strong>, <strong>Type</strong>,
+<strong>Version</strong>, <strong>Date</strong>, <strong>Author</strong>, <strong>Folder</strong> (plugins only) and <strong>ID</strong>. The
+Name, Location, Status, Type, Folder and ID columns sort.</p>
+<p>Filters: a search box and drop-downs for location, status
+(Enabled / Disabled / Protected), type and folder.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The search matches the stored extension name, which for most core
+extensions is an untranslated language key such as <code>COM_MODULES</code> or
+<code>PLG_CONTENT_LOADMODULE</code>, not the label shown in the list. Search for a word
+from the key, or use <code>id:</code> followed by an extension id. Filtering by
+<strong>Type</strong> is usually quicker.</p>
+</aside>
+<h3 id="toolbar">Toolbar</h3>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enable</strong> / <strong>Disable</strong></td>
+<td>Changes the state of the selected extensions.</td>
+</tr>
+<tr>
+<td><strong>Refresh Cache</strong></td>
+<td>Re-reads the selected extensions' XML manifests. Useful after editing one.</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>Component settings and permissions.</td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td>Opens the built-in help screen.</td>
+</tr>
+</tbody>
+</table>
+<p>There is no <strong>Uninstall</strong> button; it is commented out in the view. Names in
+this list are not links — there is nothing to edit. Extensions marked
+protected are highlighted but can still be disabled; the only thing the
+component refuses to disable is the default template.</p>
+<p>To enable or disable a core extension:</p>
 <ol>
-<li>Navigate to <strong>/administrator</strong>.</li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Hubzero Core</strong> to view the list of extensions.</li>
-<li><strong>Check the box</strong> beside the extension that you would like to enable.</li>
-<li>Click the <strong>Enable</strong> button in the upper right corner.</li>
+<li>Go to <strong>Extensions</strong> → <strong>Extension Manager</strong>.</li>
+<li>Stay on <strong>Hubzero Core</strong>, and find the extension with the search box or the
+<strong>Type</strong> filter.</li>
+<li>Tick it and select <strong>Enable</strong> or <strong>Disable</strong>.</li>
 </ol>
-<h2 id="disabling-hubzero-core-extensions">Disabling Hubzero Core Extensions</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Disabling a component here removes it everywhere, including from
+the administrator menu. Disabling a module type stops every instance of it
+from rendering, whatever the <a href="../modules/index.html">Module Manager</a> says.</p>
+</aside>
+<h3 id="core-migrations">Core Migrations</h3>
+<p>A second navigation strip inside this tab leads to <strong>Core Migrations</strong>, which
+lists the platform's database migration files and their status. Its toolbar
+offers <strong>Run pending migrations</strong>, and, per selected file, <strong>Force run UP on
+selected migrations</strong> and <strong>Force run DOWN on selected migrations</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Forcing a migration up or down runs schema changes against the
+live database. Take a backup first.</p>
+</aside>
+<h2 id="custom-extensions">Custom Extensions</h2>
+<p>A custom extension is code this hub adds to <code>app/</code>, installed and updated by
+cloning a git repository. The repository must lay its files out the way the
+platform expects for the chosen extension type; the <code>non-standard</code> type drops
+the repository's contents into <code>app/</code> as they are.</p>
+<p>Columns: <strong>Name</strong>, <strong>Status</strong>, <strong>Location</strong>, <strong>Type</strong>, <strong>Folder</strong>,
+<strong>Modified on</strong>, <strong>Modified by</strong> and <strong>ID</strong>.</p>
+<h3 id="toolbar-2">Toolbar</h3>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong></td>
+<td>Opens an empty extension record.</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the selected record.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Removes the record, after a confirmation.</td>
+</tr>
+<tr>
+<td><strong>Enable</strong> / <strong>Disable</strong></td>
+<td>Changes the state of the selected extensions.</td>
+</tr>
+<tr>
+<td><strong>Update Selected Custom Extensions</strong></td>
+<td>Fetches from git and offers to merge.</td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td>Opens the built-in help screen.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-form">The form</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GIT HTTPS URL</strong></td>
+<td>Required. The full HTTPS clone URL, ending in <code>.git</code>.</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>Required. A title for the extension.</td>
+</tr>
+<tr>
+<td><strong>Alias</strong></td>
+<td>Required. The directory name to create, including any <code>com_</code> or <code>mod_</code> prefix.</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>Required. One of <code>component</code>, <code>language</code>, <code>library</code>, <code>module</code>, <code>plugin</code>, <code>template</code>, <code>non-standard</code>.</td>
+</tr>
+<tr>
+<td><strong>Folder (Plugins Only)</strong></td>
+<td>The plugin group to install into, for <code>plugin</code> extensions.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Free text.</td>
+</tr>
+<tr>
+<td><strong>GIT Personal Access Token</strong></td>
+<td>Needed only for a private repository.</td>
+</tr>
+<tr>
+<td><strong>GIT Branch</strong></td>
+<td>The branch to install, in the form <code>origin/main</code>. Blank uses the repository's default branch.</td>
+</tr>
+<tr>
+<td><strong>Location (Legacy)</strong></td>
+<td>Site or Administrator. Only relevant to very old extensions.</td>
+</tr>
+</tbody>
+</table>
+<p>To add one:</p>
 <ol>
-<li>Navigate to <strong>/administrator.</strong></li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Hubzero Core</strong> to view the list of extensions.</li>
-<li><strong>Check the box</strong> beside the extension that you would like to disable.</li>
-<li>Click the <strong>Disable</strong> button in the upper right corner.</li>
+<li>Go to <strong>Extensions</strong> → <strong>Extension Manager</strong> → <strong>Custom Extensions</strong>.</li>
+<li>Select <strong>New</strong>.</li>
+<li>Fill in the form.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
 </ol>
-<hr />
-<h2 id="adding-custom-extensions">Adding Custom Extensions</h2>
+<p>Editing works the same way: tick the row, select <strong>Edit</strong>, change the form,
+<strong>Save &amp; Close</strong>. Enabling and disabling work as they do on the Hubzero Core
+tab.</p>
+<p><img src="../../media/extension-manager-extman1.png" alt="The custom extension form, with each field annotated" /></p>
+<p><img src="../../media/extension-manager-extman3.png" alt="The Type drop-down open, listing the extension types" /></p>
+<p><img src="../../media/extension-manager-extman2.png" alt="The Folder drop-down open, listing the plugin groups" /></p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> These three images are out of date. The form now also has a
+<strong>GIT Branch</strong> field, and what they label <em>GIT API Key</em> is now
+<strong>GIT Personal Access Token</strong>.</p>
+</aside>
+<h3 id="installing-and-updating-the-code">Installing and updating the code</h3>
+<p>Saving a record does not fetch anything. The code is pulled by the update
+button.</p>
 <ol>
-<li>Navigate to <strong>/administrator</strong>.</li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Custom Extensions</strong> to view the list of extensions if available.</li>
-<li>Click the <strong>New</strong> button in the upper right corner.</li>
-<li>Complete the form.</li>
-<li>Click the <strong>Save &amp; Close</strong> button in the upper right corner.</li>
+<li>
+<p>Tick the extension on the <strong>Custom Extensions</strong> tab.</p>
+</li>
+<li>
+<p>Select <strong>Update Selected Custom Extensions</strong>.</p>
+<p><img src="../../media/extension-manager-extman4.png" alt="The update button in the Custom Extensions toolbar" /></p>
+</li>
+<li>
+<p>Hubzero clones the repository if it has not been cloned, or fetches it if
+it has, and lists the incoming commits. Select <strong>Merge Code</strong> to apply
+them.</p>
+<p><img src="../../media/extension-manager-extman5.png" alt="The list of incoming commits with the Merge Code button" /></p>
+</li>
+<li>
+<p>A confirmation screen reports what was merged.</p>
+<p><img src="../../media/extension-manager-extman6.png" alt="The confirmation that the code was updated" /></p>
+</li>
 </ol>
-<h2 id="editing-custom-extensions">Editing Custom Extensions</h2>
-<ol>
-<li>Navigate to <strong>/administrator.</strong></li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Custom Extensions</strong> to view the list of extensions.</li>
-<li><strong>Check the box</strong> beside the extension that you would like to disable.</li>
-<li>Click the <strong>Edit</strong> button in the upper right corner.</li>
-<li>Complete the form.</li>
-<li>Click the <strong>Save &amp; Close</strong> button in the upper right corner.</li>
-</ol>
-<h2 id="enabling-custom-extensions">Enabling Custom Extensions</h2>
-<ol>
-<li>Navigate to <strong>/administrator</strong>.</li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Custom Extensions</strong> to view the list of extensions.</li>
-<li><strong>Check the box</strong> beside the extension that you would like to enable.</li>
-<li>Click the <strong>Enable</strong> button in the upper right corner.</li>
-</ol>
-<h2 id="disabling-custom-core-extensions">Disabling Custom Core Extensions</h2>
-<ol>
-<li>Navigate to <strong>/administrator.</strong></li>
-<li>Hover over <strong>Extensions</strong> and select <strong>Extension Manager.</strong></li>
-<li>Click <strong>Custom Extensions</strong> to view the list of extensions.</li>
-<li><strong>Check the box</strong> beside the extension that you would like to disable.</li>
-<li>Click the <strong>Disable</strong> button in the upper right corner.</li>
-</ol>
-<hr />
-<p>Additional Info:</p>
-<hr />
-<p><img src="../../media/extension-manager-extman1.png" alt="" /></p>
-<p><img src="../../media/extension-manager-extman2.png" alt="" /></p>
-<p><img src="../../media/extension-manager-extman3.png" alt="" /></p>
-<h2 id="installing-and-updating-a-custom-extension">Installing and Updating a Custom Extension</h2>
-<p>From the Custom Extension tab in the Extension manager, select a Custom Extension from the list and the click the &quot;Update&quot; button at the top right of the page.</p>
-<p><img src="../../media/extension-manager-extman4.png" alt="" /></p>
-<p>Incoming commits will be displayed, if you wish to process, click the Merge button at the top right.</p>
-<p><img src="../../media/extension-manager-extman5.png" alt="" /></p>
-<p>You should now see a see a confirmation page that the code has been succesfully updated.</p>
-<p><img src="../../media/extension-manager-extman6.png" alt="" /></p>
+<h2 id="warnings">Warnings</h2>
+<p>This tab runs a set of checks against the PHP configuration and lists
+anything it does not like, each as an expandable panel. It checks that:</p>
+<ul>
+<li>file uploads are enabled;</li>
+<li><code>upload_tmp_dir</code> is set and writable;</li>
+<li>the hub's temporary path is set and writable;</li>
+<li><code>memory_limit</code> is at least 16 MB;</li>
+<li><code>post_max_size</code> is not smaller than <code>upload_max_filesize</code>;</li>
+<li><code>post_max_size</code> and <code>upload_max_filesize</code> are each at least 4 MB;</li>
+<li>the Imagick extension is loaded;</li>
+<li><code>/usr/bin/unzip</code> exists.</li>
+</ul>
+<p>If nothing is wrong the tab says so.</p>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> holds a cache timeout for the extension list and the name of the
+system user that runs git operations, plus a permissions tab. See
+<a href="../../../reference/configuration/components/installer/index.html">the generated reference</a>.</p>
+<h2 id="composer-packages">Composer packages</h2>
+<p>The component also carries two screens for installing PHP packages with
+Composer — a package list and a repository list. Neither is linked from the
+Extension Manager's navigation, and both need an <code>app/composer.json</code> before
+they will do anything. They are also incomplete: their language strings are
+missing, so they render raw keys such as <code>COM_INSTALLER_TITLE_PACKAGES</code>
+instead of labels. Treat them as unfinished.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plugins Manager</a><a class="pager__next" href="../../spam/index.html" rel="next"><span>Next</span>Spam</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/index.html" rel="prev"><span>Previous</span>Plug-in Manager</a><a class="pager__next" href="../../spam/index.html" rel="next"><span>Next</span>Spam</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/04-extension-manager.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Extensions · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview HUBzero is already a rich featured content management system but if you&#x27;re building a website and you need extra features which aren&#x27;t available by…">
+  <meta name="description" content="Everything Hubzero puts on a page comes from an extension. The platform ships with a large set of them, and a hub can add its own. This section covers the four…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/extensions/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,21 +54,21 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/accesslevels/index.html">Access Levels</a></li>
@@ -118,17 +118,17 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Extensions</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#components">Components</a></li>
-<li class="toc__item toc__item--l2"><a href="#modules">Modules</a></li>
-<li class="toc__item toc__item--l2"><a href="#plugins">Plugins</a></li>
-<li class="toc__item toc__item--l2"><a href="#templates">Templates</a></li>
-<li class="toc__item toc__item--l2"><a href="#languages">Languages</a></li>
-<li class="toc__item toc__item--l2"><a href="#conclusion">Conclusion</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-extension-types">The extension types</a></li>
+<li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
+<li class="toc__item toc__item--l3"><a href="#modules">Modules</a></li>
+<li class="toc__item toc__item--l3"><a href="#plugins">Plugins</a></li>
+<li class="toc__item toc__item--l3"><a href="#templates">Templates</a></li>
+<li class="toc__item toc__item--l3"><a href="#languages">Languages</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-extensions-live">Where extensions live</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
@@ -152,30 +152,134 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Extensions</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/extensions">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>HUBzero is already a rich featured content management system but if you're building a website and you need extra features which aren't available by default, you can easily extend it with extensions. There are five types of extensions: Components, Modules, Plugins, Templates, and Languages. Each of these extensions handle specific functionality.</p>
-<h2 id="components">Components</h2>
-<p>The largest and most complex of the extension types, a component is in fact a separate application. You can think of a component as something that has its own functionality, its own database tables and its own presentation. So if you install a component, you add an application to your website. Examples of components are a forum, a blog, a community system, a photo gallery, etc. You could think of all of these as being a separate application. Everyone of these would make perfectly sense as a stand-alone system. A component will be shown in the main part of your website and only one component will be shown. A menu is then in fact nothing more then a switch between different components.</p>
-<h2 id="modules">Modules</h2>
-<p>Modules are extensions which present certain pieces of information on your site. It's a way of presenting information that is already present. This can add a new function to an application which was already part of your website. Think about latest article modules, login module, a menu, etc. Typically you'll have a number of modules on each web page. The difference between a module and a component is not always very clear for everybody. A module doesn't make sense as a standalone application, it will just present information or add a function to an existing application. Take a newsletter for instance. A newsletter is a module. You can have a website which is used as a newsletter only. That makes perfectly sense. Although a newsletter module probably will have a subscription page integrated, you might want to add a subscription module on a sidebar on every page of your website. You can put this subscribe module anywhere on your site.</p>
-<p>Another commonly used module would be a search box you wish to be present throughout your site. This is a small piece of re-usable HTML that can be placed anywhere you like and in different locations on a template-by-template basis. This allows one site to have the module in the top left of their template, for instance, and another site to have it in the right side-bar.</p>
-<h2 id="plugins">Plugins</h2>
-<p>Plugins serve a variety of purposes. As modules enhance the presentation of the final output of the Web site, plugins enhance the data and can also provide additional, installable functionality. Plugins enable you to execute code in response to certain events, either core events or custom events that are triggered from your own code. This is a powerful way of extending the basic functionality.</p>
-<h2 id="templates">Templates</h2>
-<p>A template is a series of files within the CMS that control the presentation of the content. The template is not a website; it's also not considered a complete website design. The template is the basic foundation design for viewing your website. To produce the effect of a <strong>complete</strong> website, the template works hand-in-hand with the content stored in the database.</p>
-<h2 id="languages">Languages</h2>
-<p>Probably the most basic extensions are languages. Languages can be packaged in two ways, either as a core package or as an extension package. In essence, these files consist key/value pairs, these pairs provide the translation of static text strings which are assigned within the source code. These language packs will affect both the front and administrator side. Note: these language packs also include an XML meta file which describes the language and font information to use for PDF content generation.</p>
-<h2 id="conclusion">Conclusion</h2>
-<p>If the difference between the three types of extensions is still not completely clear, then it is advisable to go to the admin pages of your installation and check the components menu, the module manager and the plugin manager. HUBzero comes with a number of core components, modules and plugins. By checking what they are doing, the difference between the three types of building blocks should become clear.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="modules/index.html">Modules Manager</a></li>
-<li><a href="templates/index.html">Templates Manager</a></li>
-<li><a href="plugins/index.html">Plugins Manager</a></li>
+<p>Everything Hubzero puts on a page comes from an extension. The platform ships
+with a large set of them, and a hub can add its own. This section covers the
+four administrator screens that manage extensions, all reached from the
+<strong>Extensions</strong> menu in the administrator interface.</p>
+<table>
+<thead>
+<tr>
+<th>Screen</th>
+<th>What it manages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="extension-manager/index.html">Extension Manager</a></td>
+<td>Enabling, disabling and updating every installed extension</td>
+</tr>
+<tr>
+<td><a href="modules/index.html">Module Manager</a></td>
+<td>Module instances, their positions and their page assignments</td>
+</tr>
+<tr>
+<td><a href="plugins/index.html">Plug-in Manager</a></td>
+<td>Plugin state, access level and run order</td>
+</tr>
+<tr>
+<td><a href="templates/index.html">Template Manager</a></td>
+<td>Template styles, the default template, and template source files</td>
+</tr>
+</tbody>
+</table>
+<p>A fifth entry, <strong>Language Manager</strong>, opens <code>com_languages</code>. It is not covered
+in this book.</p>
+<h2 id="the-extension-types">The extension types</h2>
+<h3 id="components">Components</h3>
+<p>A component is an application. It has its own controllers, models, views,
+database tables, administrator screens and access rules, and it renders the
+main body of the page. Exactly one component runs per request; a menu item is
+essentially a switch that decides which one. Components live in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components"><code>core/components/</code></a>, and a hub's own components in
+<code>app/components/</code>. Their names begin with <code>com_</code>: <code>com_resources</code>,
+<code>com_groups</code>, <code>com_publications</code>.</p>
+<p>Components are not created or removed from the Extensions screens. They are
+enabled and disabled from the <a href="extension-manager/index.html">Extension Manager</a>,
+configured from their own <strong>Options</strong> button, and given menu items from the
+<a href="../menus/index.html">menu manager</a>.</p>
+<h3 id="modules">Modules</h3>
+<p>A module is a small block of output placed around the component, in a named
+position defined by the template: a login box, a breadcrumb trail, a site
+notice, a list of the newest resources. Modules live in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/modules"><code>core/modules/</code></a> and are named <code>mod_login</code>,
+<code>mod_breadcrumbs</code>, and so on. One hundred ship with the core, 78 for the site
+and 22 for the administrator interface.</p>
+<p>Unlike a component, a module is instantiated. The same <code>mod_custom</code> code can
+back a dozen separate blocks, each with its own title, position, access level
+and set of pages. That is what the <a href="modules/index.html">Module Manager</a> edits.</p>
+<h3 id="plugins">Plugins</h3>
+<p>A plugin answers events. Something in the platform triggers an event —
+a user logs in, a resource is saved, a page of content is about to be
+rendered — and every enabled plugin that implements a handler for it runs, in
+order. Plugins live in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/plugins"><code>core/plugins/</code></a>, grouped into
+folders by the kind of event they answer: <code>authentication</code>, <code>content</code>,
+<code>members</code>, <code>groups</code>, <code>cron</code>, <code>system</code>, and about thirty more.</p>
+<p>Plugins also supply whole tabbed sections of some components. The tabs on a
+group page, on a member profile and on a project are each a plugin in the
+<code>groups</code>, <code>members</code> and <code>projects</code> folders.</p>
+<h3 id="templates">Templates</h3>
+<p>A template controls presentation. It supplies <code>index.php</code> (the page
+skeleton), stylesheets, scripts, the list of module positions it offers, and
+optional overrides of any component or module layout. Templates live in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/templates"><code>core/templates/</code></a>, and a hub's own in
+<code>app/templates/</code>.</p>
+<p>A template is not the same thing as a <em>style</em>. One template can have several
+styles, each a saved set of that template's parameters, and styles are what
+you assign to the site or to individual menu items. See
+<a href="templates/index.html">Templates</a>.</p>
+<h3 id="languages">Languages</h3>
+<p>A language pack is a set of <code>.ini</code> files of key/value pairs, one file per
+extension, plus an XML manifest describing the language. Every string the
+interface renders comes from one of these keys, which is why this
+documentation quotes labels as the language files spell them. Language packs
+cover both the site and the administrator interface.</p>
+<h2 id="where-extensions-live">Where extensions live</h2>
+<p>Hubzero looks for an extension in the hub's own directory first and falls back
+to the core:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Hub</th>
+<th>Core</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Components</td>
+<td><code>app/components/com_name/</code></td>
+<td><code>core/components/com_name/</code></td>
+</tr>
+<tr>
+<td>Modules</td>
+<td><code>app/modules/mod_name/</code></td>
+<td><code>core/modules/mod_name/</code></td>
+</tr>
+<tr>
+<td>Plugins</td>
+<td><code>app/plugins/folder/name/</code></td>
+<td><code>core/plugins/folder/name/</code></td>
+</tr>
+<tr>
+<td>Templates</td>
+<td><code>app/templates/name/</code></td>
+<td><code>core/templates/name/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Nothing in <code>core/</code> should be edited on a running hub. To change core
+behaviour, put a replacement of the same name under <code>app/</code>; it wins. The
+<a href="extension-manager/index.html">Extension Manager</a> calls those hub-side additions
+<strong>Custom Extensions</strong> and installs them from a git repository.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="modules/index.html">Module Manager</a></li>
+<li><a href="templates/index.html">Template Manager</a></li>
+<li><a href="plugins/index.html">Plug-in Manager</a></li>
 <li><a href="extension-manager/index.html">Extension Manager</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="modules/index.html" rel="next"><span>Next</span>Modules Manager</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="modules/index.html" rel="next"><span>Next</span>Module Manager</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/10-extensions/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

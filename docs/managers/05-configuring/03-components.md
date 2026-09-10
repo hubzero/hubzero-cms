@@ -1,26 +1,80 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 123ea53b14
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/configuring/components
-source-id: 3349
-imported: 2026-09-09
 -->
 # Components
 
-## Overview
+Most components carry a set of options. They decide what the component
+offers a visitor, what its defaults are, and — for components that talk to
+something outside the hub — the connection details it needs. Options belong
+to one component and affect nothing else.
 
-Many components will have a set of parameters that can be configured. These parameters can determine what functionality is presented to the user, be a default set of user options (what profile fields are visible to site visitors by default, for instance), or settings needed for the component to function properly. Accessing and adjusting these parameters is quick and easy.
+## Opening a component's options
 
-> **Note:** Not all components will have configurable parameters. For those that do, the configurations apply **only** to that component and should not affect any other components, site settings, or module settings.
+1. Sign in to the administrator interface.
+2. Choose the component from the **Components** menu. Members, Groups, and
+   System are not listed there; they have their own places in the menu.
+3. Select **Options** in the toolbar, at the top right of the screen.
+4. A pop-up opens with one tab per group of settings.
+5. Change what you need and select **Save & Close**. **Save** keeps the
+   pop-up open. **Cancel** discards the changes.
 
-1. First login to the administrative back-end.
-2. Once logged in, find “Components” in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing a list of your installed components.
-3. Choose the component you wish configure from the available options. Here we've chosen the "Hub" component.
-   ![Screenshot of the administrative Components menu with the Hub component selected](../media/components-edit-registration-01.png)
-4. Once the page has loaded, select the “Parameters” button in the toolbar, found in the upper right-hand portion of the screen. Click it.
-   ![Screenshot showing the Parameters button in the upper right toolbar](../media/components-edit-registration-05.png)
-5. You should now be presented with a pop-up panel for various settings and configurations of your site.
-   ![Screenshot of the component parameters pop-up panel with configurable settings](../media/components-edit-registration-06.png)
-6. Adjust the available parameters as needed and then click "Save". Changes take affect immediately.
-   ![Screenshot showing component parameters with the Save button highlighted](../media/components-edit-registration-07.png)
+Changes take effect immediately.
 
-> **Note:** Very often a component will not function properly until component parameters have been first inputted and saved. For instance, HUBzero tools will not work properly unless the middleware configuration has first been defined in the tools component entry.
+> **Note:** Not every component has options. If the manifest declares none,
+> the pop-up says "No options found."
+
+The **Options** button appears wherever the component's toolbar calls for
+it, which for most components is the main list screen. It always opens the
+same pop-up, built from the component's `config.xml`.
+
+## Permissions
+
+Components that declare an `access.xml` get a **Permissions** tab in the
+same pop-up. It sets, per user group, who may administer the component,
+access its administrator screens, and create, edit, or delete its content.
+These rules inherit from the site-wide grid on the **Permissions** tab of
+[Global configuration](01-hub.md#permissions-and-text-filters), and
+override it for this component only.
+
+## What the options are
+
+Every parameter of every component is listed, with its type and default, in
+the generated
+[configuration reference](../../reference/configuration/README.md#components).
+That list is produced from the same `config.xml` files the pop-up reads, so
+it always matches the screen.
+
+> **Important:** Some components do nothing useful until their options are
+> filled in. Tools will not run until the middleware settings in the Tools
+> component are set; the geolocation and LDAP screens in the System
+> component need their connection details before either screen works.
+
+## Known problem: unnamed tabs
+
+The pop-up names each tab from a language string built out of the fieldset
+name, `COM_CONFIG_<NAME>_FIELDSET_LABEL`. Only `basic` and `component` are
+defined, so a component whose `config.xml` uses any other unlabelled
+fieldset name shows the raw key as the tab title. The Members component,
+for instance, shows `COM_CONFIG_LOGIN_FIELDSET_LABEL`,
+`COM_CONFIG_PASSWORD_FIELDSET_LABEL`, and
+`COM_CONFIG_REGISTRATION_FIELDSET_LABEL` where names should be. The fields
+under those tabs work normally.
+
+## Older screenshots
+
+> **Note:** The screenshots below came from the imported version of this
+> page. They show the retired **Hub** component and call the toolbar button
+> **Parameters**; the button is now called **Options**, and there is no Hub
+> component. The pop-up they show is otherwise the same screen.
+
+![The Components menu with a component selected](../media/components-edit-registration-01.png)
+
+![The toolbar button that opens the options pop-up](../media/components-edit-registration-05.png)
+
+![The component options pop-up](../media/components-edit-registration-06.png)
+
+![The component options pop-up with the Save button](../media/components-edit-registration-07.png)

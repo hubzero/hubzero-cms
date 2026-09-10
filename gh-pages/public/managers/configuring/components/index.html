@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Components · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Many components will have a set of parameters that can be configured. These parameters can determine what functionality is presented to the user, be a…">
+  <meta name="description" content="Most components carry a set of options. They decide what the component offers a visitor, what its defaults are, and — for components that talk to something…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/configuring/components/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,23 +54,27 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">HUB Settings</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Components</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#opening-a-component-s-options">Opening a component&#x27;s options</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-options-are">What the options are</a></li>
+<li class="toc__item toc__item--l2"><a href="#known-problem-unnamed-tabs">Known problem: unnamed tabs</a></li>
+<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External Authenticators</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members Removal Tech Notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member Import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member Import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -120,9 +124,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Modules Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Templates Manager</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plugins Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
@@ -146,31 +150,72 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Components</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/configuring/components">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Many components will have a set of parameters that can be configured. These parameters can determine what functionality is presented to the user, be a default set of user options (what profile fields are visible to site visitors by default, for instance), or settings needed for the component to function properly. Accessing and adjusting these parameters is quick and easy.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Not all components will have configurable parameters. For those that do, the configurations apply <strong>only</strong> to that component and should not affect any other components, site settings, or module settings.</p>
-</aside>
+<p>Most components carry a set of options. They decide what the component
+offers a visitor, what its defaults are, and — for components that talk to
+something outside the hub — the connection details it needs. Options belong
+to one component and affect nothing else.</p>
+<h2 id="opening-a-component-s-options">Opening a component's options</h2>
 <ol>
-<li>First login to the administrative back-end.</li>
-<li>Once logged in, find “Components” in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing a list of your installed components.</li>
-<li>Choose the component you wish configure from the available options. Here we've chosen the &quot;Hub&quot; component.
-<img src="../../media/components-edit-registration-01.png" alt="Screenshot of the administrative Components menu with the Hub component selected" /></li>
-<li>Once the page has loaded, select the “Parameters” button in the toolbar, found in the upper right-hand portion of the screen. Click it.
-<img src="../../media/components-edit-registration-05.png" alt="Screenshot showing the Parameters button in the upper right toolbar" /></li>
-<li>You should now be presented with a pop-up panel for various settings and configurations of your site.
-<img src="../../media/components-edit-registration-06.png" alt="Screenshot of the component parameters pop-up panel with configurable settings" /></li>
-<li>Adjust the available parameters as needed and then click &quot;Save&quot;. Changes take affect immediately.
-<img src="../../media/components-edit-registration-07.png" alt="Screenshot showing component parameters with the Save button highlighted" /></li>
+<li>Sign in to the administrator interface.</li>
+<li>Choose the component from the <strong>Components</strong> menu. Members, Groups, and
+System are not listed there; they have their own places in the menu.</li>
+<li>Select <strong>Options</strong> in the toolbar, at the top right of the screen.</li>
+<li>A pop-up opens with one tab per group of settings.</li>
+<li>Change what you need and select <strong>Save &amp; Close</strong>. <strong>Save</strong> keeps the
+pop-up open. <strong>Cancel</strong> discards the changes.</li>
 </ol>
+<p>Changes take effect immediately.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Very often a component will not function properly until component parameters have been first inputted and saved. For instance, HUBzero tools will not work properly unless the middleware configuration has first been defined in the tools component entry.</p>
+<p><strong>Note:</strong> Not every component has options. If the manifest declares none,
+the pop-up says &quot;No options found.&quot;</p>
 </aside>
+<p>The <strong>Options</strong> button appears wherever the component's toolbar calls for
+it, which for most components is the main list screen. It always opens the
+same pop-up, built from the component's <code>config.xml</code>.</p>
+<h2 id="permissions">Permissions</h2>
+<p>Components that declare an <code>access.xml</code> get a <strong>Permissions</strong> tab in the
+same pop-up. It sets, per user group, who may administer the component,
+access its administrator screens, and create, edit, or delete its content.
+These rules inherit from the site-wide grid on the <strong>Permissions</strong> tab of
+<a href="../hub/index.html#permissions-and-text-filters">Global configuration</a>, and
+override it for this component only.</p>
+<h2 id="what-the-options-are">What the options are</h2>
+<p>Every parameter of every component is listed, with its type and default, in
+the generated
+<a href="../../../reference/configuration/index.html#components">configuration reference</a>.
+That list is produced from the same <code>config.xml</code> files the pop-up reads, so
+it always matches the screen.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Some components do nothing useful until their options are
+filled in. Tools will not run until the middleware settings in the Tools
+component are set; the geolocation and LDAP screens in the System
+component need their connection details before either screen works.</p>
+</aside>
+<h2 id="known-problem-unnamed-tabs">Known problem: unnamed tabs</h2>
+<p>The pop-up names each tab from a language string built out of the fieldset
+name, <code>COM_CONFIG_&lt;NAME&gt;_FIELDSET_LABEL</code>. Only <code>basic</code> and <code>component</code> are
+defined, so a component whose <code>config.xml</code> uses any other unlabelled
+fieldset name shows the raw key as the tab title. The Members component,
+for instance, shows <code>COM_CONFIG_LOGIN_FIELDSET_LABEL</code>,
+<code>COM_CONFIG_PASSWORD_FIELDSET_LABEL</code>, and
+<code>COM_CONFIG_REGISTRATION_FIELDSET_LABEL</code> where names should be. The fields
+under those tabs work normally.</p>
+<h2 id="older-screenshots">Older screenshots</h2>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The screenshots below came from the imported version of this
+page. They show the retired <strong>Hub</strong> component and call the toolbar button
+<strong>Parameters</strong>; the button is now called <strong>Options</strong>, and there is no Hub
+component. The pop-up they show is otherwise the same screen.</p>
+</aside>
+<p><img src="../../media/components-edit-registration-01.png" alt="The Components menu with a component selected" /></p>
+<p><img src="../../media/components-edit-registration-05.png" alt="The toolbar button that opens the options pop-up" /></p>
+<p><img src="../../media/components-edit-registration-06.png" alt="The component options pop-up" /></p>
+<p><img src="../../media/components-edit-registration-07.png" alt="The component options pop-up with the Save button" /></p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../registration/index.html" rel="prev"><span>Previous</span>Registration</a><a class="pager__next" href="../modules/index.html" rel="next"><span>Next</span>Modules</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/05-configuring/03-components.md">Edit this page on GitHub</a>
