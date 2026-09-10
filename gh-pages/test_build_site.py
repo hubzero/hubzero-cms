@@ -256,3 +256,20 @@ def test_a_page_that_writes_its_own_contents_list_suppresses_the_automatic_one()
     page.children = [object()]
     own = '<h2 id="in-this-section">In this section</h2>'
     assert build_site.build_children_list(page, Path("x"), Path("y"), own) == ""
+
+
+def test_a_landing_page_linking_every_child_suppresses_the_automatic_list():
+    """The curated list wins, whatever heading it sits under."""
+    import build_site
+
+    class Child:
+        def __init__(self, out, title):
+            self.output, self.title, self.summary = out, title, ""
+
+    page = build_site.Page.__new__(build_site.Page)
+    page.children = [Child("book/one/index.html", "One"), Child("book/two/index.html", "Two")]
+    out_dir, out_path = Path("o"), Path("o/book/index.html")
+    both = '<a href="one/index.html">x</a><a href="two/index.html">y</a>'
+    assert build_site.build_children_list(page, out_path, out_dir, both) == ""
+    one_only = '<a href="one/index.html">x</a>'
+    assert "In this section" in build_site.build_children_list(page, out_path, out_dir, one_only)

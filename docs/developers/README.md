@@ -41,7 +41,12 @@ extension.
 - [Muse](12-muse.md) — the command-line tool.
 - [Super groups](13-supergroups/README.md) and
   [Super groups with GitLab](14-supergroups-gitlab.md).
-- [Testing](15-testing.md) and [Video tutorials](02-tutorials.md).
+- [Testing](15-testing.md) — the test suite, the linters, and what CI runs.
+- [The REST API](16-api.md) — the API client, versioned controllers, and
+  the docblock tags the endpoint reference is generated from.
+- [Running on AWS](17-aws.md) — what in this repository is specific to it,
+  which is very little.
+- [Video tutorials](02-tutorials.md).
 
 ## Reference
 

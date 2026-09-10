@@ -30,6 +30,7 @@ and every entry is served by `com_members` except **Groups**, which is
 | **User Notes** | `com_members` | [User notes](user-notes.md) |
 | **User Note Categories** | `com_categories` | [User notes](user-notes.md) |
 | **Mass Mail Users** | `com_members` | — |
+| **Import** | `com_members` | [Importing members](03-memberimport.md), [Import archive](04-memberimportarchive.md) |
 
 **Access Groups** and **Access Levels** appear only for a Super User; the
 menu gates them on `core.admin` for `com_members`. **Groups** appears only if
@@ -81,3 +82,11 @@ switched off entirely.
 > for the registration settings, and the generated
 > [Members configuration reference](../../reference/configuration/components/members.md)
 > for every parameter on the component's **Options** screen.
+
+[Registration](02-registration.md) covers the screen itself: the table of
+account states, what each column controls, and the confirmation mail.
+
+Accounts can also arrive in bulk rather than one at a time. See
+[Importing members](03-memberimport.md) for the file formats and the run,
+and [Import archive](04-memberimportarchive.md) for what the archive screen
+keeps afterwards.

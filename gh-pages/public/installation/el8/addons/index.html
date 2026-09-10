@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Add-ons · Installation · Hubzero Documentation</title>
-  <meta name="description" content="Introduction Add-ons for HUBzero are available here. Currently these consist of a couple projects that have not yet been fully integrated into the the HUBzero…">
+  <meta name="description" content="Introduction Add-ons are pieces a hub adds after the base install, because they are not part of the packaging. Each has its own chapter: Solr — the search…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/installation/el8/addons/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+  <link rel="stylesheet" href="../../../assets/site.css?v=a438325d">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -82,10 +82,22 @@
         <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/installation/el8/addons">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014. It was never published there, so read it as a draft.</aside>
         <div class="prose">
 <h2 id="introduction">Introduction</h2>
-<p>Add-ons for HUBzero are available here. Currently these consist of a couple projects that have not yet been fully integrated into the the HUBzero packaging and installation process.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="solr/index.html">Solr-powered Search</a></li>
-<li><a href="shibboleth/index.html">Shibboleth authentication</a></li>
-<li><a href="incommon/index.html">InCommon</a></li></ul></section>
+<p>Add-ons are pieces a hub adds after the base install, because they are not
+part of the packaging. Each has its own chapter:</p>
+<ul>
+<li><a href="solr/index.html">Solr</a> — the search index the hub queries.</li>
+<li><a href="shibboleth/index.html">Shibboleth</a> — federated sign-in through a campus
+identity provider.</li>
+<li><a href="incommon/index.html">InCommon</a> — joining the InCommon federation so other
+institutions' accounts can sign in.</li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This book documents installing from packages onto Enterprise
+Linux 8 and is being replaced by a self-hosting web installer. The Solr
+and federated sign-in material below outlives that change; the packaging
+steps around it do not.</p>
+</aside>
+
         </div>
         
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../updates/index.html" rel="prev"><span>Previous</span>Updates</a><a class="pager__next" href="solr/index.html" rel="next"><span>Next</span>Solr-powered Search</a></nav>
@@ -101,6 +113,6 @@
     <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../../assets/search.js?v=f51137af" defer></script>
+  <script src="../../../assets/search.js?v=a438325d" defer></script>
 </body>
 </html>

@@ -72,3 +72,11 @@ Once you have registered a tool, the detail lives elsewhere in this book:
 
 Hub staff running the pipeline should read
 [Tools](../../managers/03-maintenance/02-tools.md) in the hub managers book.
+
+## Pages that moved
+
+Five chapters that used to sit here duplicated the users book and now point
+at it, so there is one reviewed version rather than two that disagree:
+[Introduction](01-introduction.md), [Tools](02-tools.md),
+[Simulation usage definitions](03-simusagedefinitions.md),
+[Usage](04-usage.md), and [Getting started](05-gettingstarted.md).

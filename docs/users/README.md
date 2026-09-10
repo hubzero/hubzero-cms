@@ -15,6 +15,8 @@ interface.
 
 ## Getting started
 
+- [Introduction](04-introduction.md) — what an account gives you and how the
+  member area is laid out.
 - [Getting started](30-gettingstarted.md) — registering, your profile, and
   the dashboard.
 - [Member dashboard](14-dashboard.md) and [Member profile](15-profile.md).
@@ -43,6 +45,8 @@ interface.
 - [Search](24-search.md), [Tags](27-tags.md), [Wishlist](29-wishlist.md),
   [Storefront](26-storefront.md), [Support](12-support.md), and the
   [frequently asked questions](03-faq.md).
+- [Your usage figures](28-usage.md) and the
+  [simulation usage definitions](25-simusagedefinitions.md) behind them.
 
 The [Tools](../tools/README.md) book covers running simulation tools in
 more depth.
