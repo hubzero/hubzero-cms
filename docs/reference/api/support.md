@@ -16,13 +16,13 @@ Endpoints under `/api/support`, from the `com_support` API controllers. Authenti
 | `GET` | [`/support/categories/{id}`](#get-support-categories-id) | Displays details for a support category |
 | `PUT` | [`/support/categories/{id}`](#put-support-categories-id) | Update a support category |
 | `GET` | [`/support/comments`](#get-support-comments) | Display comments for a ticket |
-| `POST` | [`/support/comments`](#post-support-comments) | Create a new comment |
-| `POST` | [`/support/comments`](#post-support-comments) | Create a new comment |
+| `POST` | [`/support/comments` (v2.0)](#post-support-comments-v2-0) | Create a new comment |
+| `POST` | [`/support/comments` (v2.1)](#post-support-comments-v2-1) | Create a new comment |
 | `GET` | [`/support/comments/list`](#get-support-comments-list) | Display ticket comments |
-| `GET` | [`/support/comments/{id}`](#get-support-comments-id) | Displays details for a ticket comment |
-| `GET` | [`/support/comments/{id}`](#get-support-comments-id) | Displays details for a ticket comment |
-| `PUT` | [`/support/comments/{id}`](#put-support-comments-id) | Update a ticket comment |
-| `PUT` | [`/support/comments/{id}`](#put-support-comments-id) | Update a ticket comment |
+| `GET` | [`/support/comments/{id}` (v2.0)](#get-support-comments-id-v2-0) | Displays details for a ticket comment |
+| `GET` | [`/support/comments/{id}` (v2.1)](#get-support-comments-id-v2-1) | Displays details for a ticket comment |
+| `PUT` | [`/support/comments/{id}` (v2.0)](#put-support-comments-id-v2-0) | Update a ticket comment |
+| `PUT` | [`/support/comments/{id}` (v2.1)](#put-support-comments-id-v2-1) | Update a ticket comment |
 | `GET` | [`/support/list`](#get-support-list) | Display a list of tickets |
 | `POST` | [`/support/messages`](#post-support-messages) | Create a new support message |
 | `GET` | [`/support/messages/list`](#get-support-messages-list) | Display ticket messages |
@@ -37,23 +37,23 @@ Endpoints under `/api/support`, from the `com_support` API controllers. Authenti
 | `GET` | [`/support/statuses/{id}`](#get-support-statuses-id) | Displays details for a support status |
 | `PUT` | [`/support/statuses/{id}`](#put-support-statuses-id) | Update a support status |
 | `GET` | [`/support/tickets`](#get-support-tickets) | Display a list of tickets |
-| `POST` | [`/support/tickets`](#post-support-tickets) | Create a new ticket |
-| `POST` | [`/support/tickets`](#post-support-tickets) | Create a new ticket |
+| `POST` | [`/support/tickets` (v2.0)](#post-support-tickets-v2-0) | Create a new ticket |
+| `POST` | [`/support/tickets` (v2.1)](#post-support-tickets-v2-1) | Create a new ticket |
 | `GET` | [`/support/tickets/list`](#get-support-tickets-list) | Display a list of tickets |
-| `DELETE` | [`/support/tickets/{ticket}`](#delete-support-tickets-ticket) | Delete a ticket |
-| `DELETE` | [`/support/tickets/{ticket}`](#delete-support-tickets-ticket) | Delete a ticket |
-| `GET` | [`/support/tickets/{ticket}`](#get-support-tickets-ticket) | Displays details for a ticket |
-| `GET` | [`/support/tickets/{ticket}`](#get-support-tickets-ticket) | Displays details for a ticket |
-| `PUT` | [`/support/tickets/{ticket}`](#put-support-tickets-ticket) | Update a ticket |
-| `PUT` | [`/support/tickets/{ticket}`](#put-support-tickets-ticket) | Update a ticket |
+| `DELETE` | [`/support/tickets/{ticket}` (v2.0)](#delete-support-tickets-ticket-v2-0) | Delete a ticket |
+| `DELETE` | [`/support/tickets/{ticket}` (v2.1)](#delete-support-tickets-ticket-v2-1) | Delete a ticket |
+| `GET` | [`/support/tickets/{ticket}` (v2.0)](#get-support-tickets-ticket-v2-0) | Displays details for a ticket |
+| `GET` | [`/support/tickets/{ticket}` (v2.1)](#get-support-tickets-ticket-v2-1) | Displays details for a ticket |
+| `PUT` | [`/support/tickets/{ticket}` (v2.0)](#put-support-tickets-ticket-v2-0) | Update a ticket |
+| `PUT` | [`/support/tickets/{ticket}` (v2.1)](#put-support-tickets-ticket-v2-1) | Update a ticket |
 | `DELETE` | [`/support/{ticket}`](#delete-support-ticket) | Delete a ticket |
 | `GET` | [`/support/{ticket}`](#get-support-ticket) | Displays details for a ticket |
 | `PUT` | [`/support/{ticket}`](#put-support-ticket) | Update a ticket |
 | `POST` | [`/support/{ticket}/comments`](#post-support-ticket-comments) | Create a new comment |
 | `GET` | [`/support/{ticket}/comments/list`](#get-support-ticket-comments-list) | Display comments for a ticket |
-| `DELETE` | [`/support/{ticket}/comments/{comment}`](#delete-support-ticket-comments-comment) | Delete a ticket comment |
-| `DELETE` | [`/support/{ticket}/comments/{comment}`](#delete-support-ticket-comments-comment) | Delete a ticket comment |
-| `DELETE` | [`/support/{ticket}/comments/{comment}`](#delete-support-ticket-comments-comment) | Delete a ticket comment |
+| `DELETE` | [`/support/{ticket}/comments/{comment}` (v1.0)](#delete-support-ticket-comments-comment-v1-0) | Delete a ticket comment |
+| `DELETE` | [`/support/{ticket}/comments/{comment}` (v2.0)](#delete-support-ticket-comments-comment-v2-0) | Delete a ticket comment |
+| `DELETE` | [`/support/{ticket}/comments/{comment}` (v2.1)](#delete-support-ticket-comments-comment-v2-1) | Delete a ticket comment |
 | `GET` | [`/support/{ticket}/comments/{comment}`](#get-support-ticket-comments-comment) | Displays details for a ticket comment |
 | `PUT` | [`/support/{ticket}/comments/{comment}`](#put-support-ticket-comments-comment) | Update a ticket comment |
 
@@ -146,7 +146,7 @@ API version 2.0, task `list` in [`commentsv2_0.php`](../../../core/components/co
 | `ticket` | integer | no | — | List comments from a specific ticket (by id) |
 | `created_by` | integer | no | — | List comments from a specific user (by id) |
 
-## POST /support/comments
+## POST /support/comments (v2.0)
 
 Create a new comment
 
@@ -166,7 +166,7 @@ API version 2.0, task `create` in [`commentsv2_0.php`](../../../core/components/
 | `email_submitter` | boolean | no | no | Should the submitter be emailed about this comment |
 | `email_owner` | boolean | no | no | Should the ticket owner be emailed about this comment |
 
-## POST /support/comments
+## POST /support/comments (v2.1)
 
 Create a new comment
 
@@ -204,7 +204,7 @@ API version 2.1, task `list` in [`commentsv2_1.php`](../../../core/components/co
 | `sort` | string | no | created | Field to sort results by. |
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 
-## GET /support/comments/{id}
+## GET /support/comments/{id} (v2.0)
 
 Displays details for a ticket comment
 
@@ -214,7 +214,7 @@ API version 2.0, task `read` in [`commentsv2_0.php`](../../../core/components/co
 |---|---|---|---|---|
 | `id` | integer | yes | 0 | Comment identifier |
 
-## GET /support/comments/{id}
+## GET /support/comments/{id} (v2.1)
 
 Displays details for a ticket comment
 
@@ -224,7 +224,7 @@ API version 2.1, task `read` in [`commentsv2_1.php`](../../../core/components/co
 |---|---|---|---|---|
 | `id` | integer | yes | 0 | Comment identifier |
 
-## PUT /support/comments/{id}
+## PUT /support/comments/{id} (v2.0)
 
 Update a ticket comment
 
@@ -234,7 +234,7 @@ API version 2.0, task `update` in [`commentsv2_0.php`](../../../core/components/
 |---|---|---|---|---|
 | `comment` | integer | yes | 0 | Comment identifier |
 
-## PUT /support/comments/{id}
+## PUT /support/comments/{id} (v2.1)
 
 Update a ticket comment
 
@@ -408,7 +408,7 @@ API version 2.0, task `list` in [`ticketsv2_0.php`](../../../core/components/com
 | `severity` | string | no | — | List tickets with a specific severity |
 | `group` | string | no | — | List tickets with a specific group (by alias) |
 
-## POST /support/tickets
+## POST /support/tickets (v2.0)
 
 Create a new ticket
 
@@ -428,7 +428,7 @@ API version 2.0, task `create` in [`ticketsv2_0.php`](../../../core/components/c
 | `group` | string | no | — | Alias of the group to assign the ticket to |
 | `files` | binary | no | — | ***STUB*** NOT WORKING |
 
-## POST /support/tickets
+## POST /support/tickets (v2.1)
 
 Create a new ticket
 
@@ -471,7 +471,7 @@ API version 2.1, task `list` in [`ticketsv2_1.php`](../../../core/components/com
 | `created` | string\|integer | no | — | A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31 |
 | `closed` | string\|integer | no | — | A timestamp (YYYY-MM-DD HH:mm:ss) for items closed on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31 |
 
-## DELETE /support/tickets/{ticket}
+## DELETE /support/tickets/{ticket} (v2.0)
 
 Delete a ticket
 
@@ -481,7 +481,7 @@ API version 2.0, task `delete` in [`ticketsv2_0.php`](../../../core/components/c
 |---|---|---|---|---|
 | `ticket` | integer | yes | 0 | Ticket identifier |
 
-## DELETE /support/tickets/{ticket}
+## DELETE /support/tickets/{ticket} (v2.1)
 
 Delete a ticket
 
@@ -491,7 +491,7 @@ API version 2.1, task `delete` in [`ticketsv2_1.php`](../../../core/components/c
 |---|---|---|---|---|
 | `ticket` | integer | yes | 0 | Ticket identifier |
 
-## GET /support/tickets/{ticket}
+## GET /support/tickets/{ticket} (v2.0)
 
 Displays details for a ticket
 
@@ -501,7 +501,7 @@ API version 2.0, task `read` in [`ticketsv2_0.php`](../../../core/components/com
 |---|---|---|---|---|
 | `ticket` | integer | yes | 0 | Ticket identifier |
 
-## GET /support/tickets/{ticket}
+## GET /support/tickets/{ticket} (v2.1)
 
 Displays details for a ticket
 
@@ -511,7 +511,7 @@ API version 2.1, task `read` in [`ticketsv2_1.php`](../../../core/components/com
 |---|---|---|---|---|
 | `ticket` | integer | yes | 0 | Ticket identifier |
 
-## PUT /support/tickets/{ticket}
+## PUT /support/tickets/{ticket} (v2.0)
 
 Update a ticket
 
@@ -525,7 +525,7 @@ API version 2.0, task `update` in [`ticketsv2_0.php`](../../../core/components/c
 | `severity` | string | no | — | Ticket severity |
 | `group` | string | no | — | Alias of group ticket should be assigned to |
 
-## PUT /support/tickets/{ticket}
+## PUT /support/tickets/{ticket} (v2.1)
 
 Update a ticket
 
@@ -596,7 +596,7 @@ API version 1.0, task `list` in [`commentsv1_0.php`](../../../core/components/co
 | `sort` | string | no | created | Field to sort results by. |
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 
-## DELETE /support/{ticket}/comments/{comment}
+## DELETE /support/{ticket}/comments/{comment} (v1.0)
 
 Delete a ticket comment
 
@@ -607,7 +607,7 @@ API version 1.0, task `delete` in [`commentsv1_0.php`](../../../core/components/
 | `ticket` | integer | yes | 0 | Ticket identifier |
 | `comment` | integer | yes | 0 | Comment identifier |
 
-## DELETE /support/{ticket}/comments/{comment}
+## DELETE /support/{ticket}/comments/{comment} (v2.0)
 
 Delete a ticket comment
 
@@ -618,7 +618,7 @@ API version 2.0, task `delete` in [`commentsv2_0.php`](../../../core/components/
 | `ticket` | integer | yes | 0 | Ticket identifier |
 | `comment` | integer | yes | 0 | Comment identifier |
 
-## DELETE /support/{ticket}/comments/{comment}
+## DELETE /support/{ticket}/comments/{comment} (v2.1)
 
 Delete a ticket comment
 

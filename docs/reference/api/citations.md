@@ -9,10 +9,10 @@ Endpoints under `/api/citations`, from the `com_citations` API controllers. Auth
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | [`/citations/list`](#get-citations-list) | Display a list of citations |
-| `GET` | [`/citations/list`](#get-citations-list) | Display a list of citations |
+| `GET` | [`/citations/list` (v1.0)](#get-citations-list-v1-0) | Display a list of citations |
+| `GET` | [`/citations/list` (v1.1)](#get-citations-list-v1-1) | Display a list of citations |
 
-## GET /citations/list
+## GET /citations/list (v1.0)
 
 Display a list of citations
 
@@ -26,7 +26,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 | `sort` | string | no | created | Field to sort results by. |
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 
-## GET /citations/list
+## GET /citations/list (v1.1)
 
 Display a list of citations
 
