@@ -301,6 +301,9 @@ class MysqlDriver extends BaseSqlDriver
             $default = $modifiers['default'];
             if ($default === null) {
                 $parts[] = 'DEFAULT NULL';
+            } elseif ($default instanceof \Hubzero\Database\Expression) {
+                // An expression is SQL in its own right, not a literal
+                $parts[] = 'DEFAULT ' . $this->buildExpression($default);
             } elseif (is_bool($default)) {
                 $parts[] = 'DEFAULT ' . ($default ? '1' : '0');
             } elseif (is_numeric($default)) {
