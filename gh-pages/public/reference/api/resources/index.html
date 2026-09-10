@@ -66,12 +66,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications API</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Resources API</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#get-resources-autocomplete">GET /resources/autocomplete</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-list">GET /resources/list</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-list-2">GET /resources/list</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-renderlatex">GET /resources/renderlatex</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-renderlatex-2">GET /resources/renderlatex</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-whatsnew">GET /resources/whatsnew</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-resources-whatsnew-2">GET /resources/whatsnew</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-list-v1-0">GET /resources/list (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-list-v1-1">GET /resources/list (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-renderlatex-v1-0">GET /resources/renderlatex (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-renderlatex-v1-1">GET /resources/renderlatex (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-whatsnew-v1-0">GET /resources/whatsnew (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-resources-whatsnew-v1-1">GET /resources/whatsnew (v1.1)</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/index.html">Search API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support API</a></li>
@@ -239,32 +239,32 @@
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-list"><code>/resources/list</code></a></td>
+<td><a href="#get-resources-list-v1-0"><code>/resources/list</code> (v1.0)</a></td>
 <td>Get a list of resources</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-list"><code>/resources/list</code></a></td>
+<td><a href="#get-resources-list-v1-1"><code>/resources/list</code> (v1.1)</a></td>
 <td>Get a list of resources</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-renderlatex"><code>/resources/renderlatex</code></a></td>
+<td><a href="#get-resources-renderlatex-v1-0"><code>/resources/renderlatex</code> (v1.0)</a></td>
 <td>Render LaTeX expression</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-renderlatex"><code>/resources/renderlatex</code></a></td>
+<td><a href="#get-resources-renderlatex-v1-1"><code>/resources/renderlatex</code> (v1.1)</a></td>
 <td>Render LaTeX expression</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-whatsnew"><code>/resources/whatsnew</code></a></td>
+<td><a href="#get-resources-whatsnew-v1-0"><code>/resources/whatsnew</code> (v1.0)</a></td>
 <td>Get a list of new content for a given time period</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-resources-whatsnew"><code>/resources/whatsnew</code></a></td>
+<td><a href="#get-resources-whatsnew-v1-1"><code>/resources/whatsnew</code> (v1.1)</a></td>
 <td>Get a list of new content for a given time period</td>
 </tr>
 </tbody>
@@ -306,7 +306,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-list">GET /resources/list</h2>
+<h2 id="get-resources-list-v1-0">GET /resources/list (v1.0)</h2>
 <p>Get a list of resources</p>
 <p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_0.php#L28"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -357,7 +357,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-list-2">GET /resources/list</h2>
+<h2 id="get-resources-list-v1-1">GET /resources/list (v1.1)</h2>
 <p>Get a list of resources</p>
 <p>API version 1.1, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_1.php#L30"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -408,7 +408,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-renderlatex">GET /resources/renderlatex</h2>
+<h2 id="get-resources-renderlatex-v1-0">GET /resources/renderlatex (v1.0)</h2>
 <p>Render LaTeX expression</p>
 <p>API version 1.0, task <code>renderlatex</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_0.php#L275"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -431,7 +431,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-renderlatex-2">GET /resources/renderlatex</h2>
+<h2 id="get-resources-renderlatex-v1-1">GET /resources/renderlatex (v1.1)</h2>
 <p>Render LaTeX expression</p>
 <p>API version 1.1, task <code>renderlatex</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_1.php#L455"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -454,7 +454,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-whatsnew">GET /resources/whatsnew</h2>
+<h2 id="get-resources-whatsnew-v1-0">GET /resources/whatsnew (v1.0)</h2>
 <p>Get a list of new content for a given time period</p>
 <p>API version 1.0, task <code>whatsnew</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_0.php#L223"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -498,7 +498,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-resources-whatsnew-2">GET /resources/whatsnew</h2>
+<h2 id="get-resources-whatsnew-v1-1">GET /resources/whatsnew (v1.1)</h2>
 <p>Get a list of new content for a given time period</p>
 <p>API version 1.1, task <code>whatsnew</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/api/controllers/entriesv1_1.php#L340"><code>entriesv1_1.php</code></a>.</p>
 <table>

@@ -9,10 +9,10 @@ Endpoints under `/api/publications`, from the `com_publications` API controllers
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | [`/publications/list`](#get-publications-list) | Display publications user authors |
-| `GET` | [`/publications/list`](#get-publications-list) | Display publications user is listed as author |
+| `GET` | [`/publications/list` (v1.0)](#get-publications-list-v1-0) | Display publications user authors |
+| `GET` | [`/publications/list` (v1.1)](#get-publications-list-v1-1) | Display publications user is listed as author |
 
-## GET /publications/list
+## GET /publications/list (v1.0)
 
 Display publications user authors
 
@@ -25,7 +25,7 @@ API version 1.0, task `list` in [`publicationsv1_0.php`](../../../core/component
 | `sort` | string | no | title | Field to sort results by. |
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 
-## GET /publications/list
+## GET /publications/list (v1.1)
 
 Display publications user is listed as author
 

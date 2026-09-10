@@ -9,18 +9,18 @@ Endpoints under `/api/activity`, from the `com_activity` API controllers. Authen
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `POST` | [`/activity`](#post-activity) | Create an entry |
-| `POST` | [`/activity`](#post-activity) | Create an entry |
-| `GET` | [`/activity/list`](#get-activity-list) | Display a list of entries |
-| `GET` | [`/activity/list`](#get-activity-list) | Display a list of entries |
-| `DELETE` | [`/activity/{id}`](#delete-activity-id) | Delete an entry |
-| `DELETE` | [`/activity/{id}`](#delete-activity-id) | Delete an entry |
-| `GET` | [`/activity/{id}`](#get-activity-id) | Retrieve an entry |
-| `GET` | [`/activity/{id}`](#get-activity-id) | Retrieve an entry |
-| `PUT` | [`/activity/{id}`](#put-activity-id) | Update an entry |
-| `PUT` | [`/activity/{id}`](#put-activity-id) | Update an entry |
+| `POST` | [`/activity` (v1.0)](#post-activity-v1-0) | Create an entry |
+| `POST` | [`/activity` (v1.1)](#post-activity-v1-1) | Create an entry |
+| `GET` | [`/activity/list` (v1.0)](#get-activity-list-v1-0) | Display a list of entries |
+| `GET` | [`/activity/list` (v1.1)](#get-activity-list-v1-1) | Display a list of entries |
+| `DELETE` | [`/activity/{id}` (v1.0)](#delete-activity-id-v1-0) | Delete an entry |
+| `DELETE` | [`/activity/{id}` (v1.1)](#delete-activity-id-v1-1) | Delete an entry |
+| `GET` | [`/activity/{id}` (v1.0)](#get-activity-id-v1-0) | Retrieve an entry |
+| `GET` | [`/activity/{id}` (v1.1)](#get-activity-id-v1-1) | Retrieve an entry |
+| `PUT` | [`/activity/{id}` (v1.0)](#put-activity-id-v1-0) | Update an entry |
+| `PUT` | [`/activity/{id}` (v1.1)](#put-activity-id-v1-1) | Update an entry |
 
-## POST /activity
+## POST /activity (v1.0)
 
 Create an entry
 
@@ -39,7 +39,7 @@ API version 1.0, task `create` in [`entriesv1_0.php`](../../../core/components/c
 | `parent` | integer | no | 0 | ID of parent activity |
 | `recipients` | string | no | 1 | Comma-separated list of scope:scope_id pairs (ex: user:1001,group:1000) |
 
-## POST /activity
+## POST /activity (v1.1)
 
 Create an entry
 
@@ -58,7 +58,7 @@ API version 1.1, task `create` in [`entriesv1_1.php`](../../../core/components/c
 | `parent` | integer | no | 0 | ID of parent activity |
 | `recipients` | string | no | 1 | Comma-separated list of scope:scope_id pairs (ex: user:1001,group:1000) |
 
-## GET /activity/list
+## GET /activity/list (v1.0)
 
 Display a list of entries
 
@@ -74,7 +74,7 @@ API version 1.0, task `list` in [`entriesv1_0.php`](../../../core/components/com
 | `sort` | string | no | created | Field to sort results by. |
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 
-## GET /activity/list
+## GET /activity/list (v1.1)
 
 Display a list of entries
 
@@ -97,7 +97,7 @@ API version 1.1, task `list` in [`entriesv1_1.php`](../../../core/components/com
 | `limit` | integer | no | 25 | Number of result to return. |
 | `start` | integer | no | 0 | Number of where to start returning results. |
 
-## DELETE /activity/{id}
+## DELETE /activity/{id} (v1.0)
 
 Delete an entry
 
@@ -107,7 +107,7 @@ API version 1.0, task `delete` in [`entriesv1_0.php`](../../../core/components/c
 |---|---|---|---|---|
 | `id` | integer | yes | — | Activity entry identifier |
 
-## DELETE /activity/{id}
+## DELETE /activity/{id} (v1.1)
 
 Delete an entry
 
@@ -117,7 +117,7 @@ API version 1.1, task `delete` in [`entriesv1_1.php`](../../../core/components/c
 |---|---|---|---|---|
 | `id` | integer | yes | — | Activity entry identifier |
 
-## GET /activity/{id}
+## GET /activity/{id} (v1.0)
 
 Retrieve an entry
 
@@ -127,7 +127,7 @@ API version 1.0, task `read` in [`entriesv1_0.php`](../../../core/components/com
 |---|---|---|---|---|
 | `id` | integer | yes | — | Activity entry identifier |
 
-## GET /activity/{id}
+## GET /activity/{id} (v1.1)
 
 Retrieve an entry
 
@@ -137,7 +137,7 @@ API version 1.1, task `read` in [`entriesv1_1.php`](../../../core/components/com
 |---|---|---|---|---|
 | `id` | integer | yes | — | Activity entry identifier |
 
-## PUT /activity/{id}
+## PUT /activity/{id} (v1.0)
 
 Update an entry
 
@@ -157,7 +157,7 @@ API version 1.0, task `update` in [`entriesv1_0.php`](../../../core/components/c
 | `parent` | integer | no | 0 | ID of parent activity |
 | `recipients` | integer | no | 1 | List of recpient channels |
 
-## PUT /activity/{id}
+## PUT /activity/{id} (v1.1)
 
 Update an entry
 

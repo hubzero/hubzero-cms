@@ -112,7 +112,7 @@ def main() -> int:
         if not endpoints:
             continue
         short = component_dir.name[4:]
-        endpoints.sort(key=lambda e: (e["uri"], e["method"]))
+        endpoints.sort(key=lambda e: (e["uri"], e["method"], e["version"]))
         lines = [
             HEADER.format(source=f"core/components/{component_dir.name}/api/controllers/"),
             f"# {short.capitalize()} API",
@@ -123,12 +123,34 @@ def main() -> int:
             "| Method | Endpoint | Purpose |",
             "|---|---|---|",
         ]
+        # A component may expose the same endpoint at more than one API version.
+        # Those would otherwise share a heading, and so an anchor, and every
+        # link to the later version would land on the earlier one.
+        from collections import Counter
+        repeated = Counter((e["method"], e["uri"]) for e in endpoints)
+
+        # Version alone is not always enough: several controllers in one
+        # component can declare the same URI at the same version.
+        with_version = Counter(
+            (e["method"], e["uri"], e["version"]) for e in endpoints
+        )
+
+        def title_of(e):
+            base = f"{e['method']} {e['uri']}"
+            if repeated[(e["method"], e["uri"])] == 1:
+                return base
+            if with_version[(e["method"], e["uri"], e["version"])] == 1:
+                return f"{base} (v{e['version']})"
+            return f"{base} (v{e['version']}, {Path(e['file']).stem})"
+
         for e in endpoints:
-            anchor = re.sub(r"[^a-z0-9]+", "-", f"{e['method']} {e['uri']}".lower()).strip("-")
-            lines.append(f"| `{e['method']}` | [`{e['uri']}`](#{anchor}) | {cell(e['summary'])} |")
+            anchor = re.sub(r"[^a-z0-9]+", "-", title_of(e).lower()).strip("-")
+            extra = title_of(e)[len(f"{e['method']} {e['uri']}"):]
+            label = f"`{e['uri']}`{extra}"
+            lines.append(f"| `{e['method']}` | [{label}](#{anchor}) | {cell(e['summary'])} |")
         lines.append("")
         for e in endpoints:
-            lines.append(f"## {e['method']} {e['uri']}")
+            lines.append(f"## {title_of(e)}")
             lines.append("")
             if e["summary"]:
                 lines += [e["summary"], ""]

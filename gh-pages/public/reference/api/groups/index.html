@@ -56,21 +56,21 @@
 <li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum API</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Groups API</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#post-groups">POST /groups</a></li>
-<li class="toc__item toc__item--l2"><a href="#post-groups-2">POST /groups</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-groups-list">GET /groups/list</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-groups-list-2">GET /groups/list</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-groups-v1-0">POST /groups (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-groups-v1-1">POST /groups (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-groups-list-v1-0">GET /groups/list (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-groups-list-v1-1">GET /groups/list (v1.1)</a></li>
 <li class="toc__item toc__item--l2"><a href="#post-groups-group-plugin">POST /groups/{group}/{plugin}</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-groups-group-plugin-list">GET /groups/{group}/{plugin}/list</a></li>
 <li class="toc__item toc__item--l2"><a href="#delete-groups-group-plugin-id">DELETE /groups/{group}/{plugin}/{id}</a></li>
 <li class="toc__item toc__item--l2"><a href="#put-groups-group-plugin-id">PUT /groups/{group}/{plugin}/{id}</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-groups-group-plugin-record-id">GET /groups/{group}/{plugin}/{record_id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#delete-groups-id">DELETE /groups/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#delete-groups-id-2">DELETE /groups/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-groups-id">GET /groups/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-groups-id-2">GET /groups/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#put-groups-id">PUT /groups/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#put-groups-id-2">PUT /groups/{id}</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-groups-id-v1-0">DELETE /groups/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-groups-id-v1-1">DELETE /groups/{id} (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-groups-id-v1-0">GET /groups/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-groups-id-v1-1">GET /groups/{id} (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#put-groups-id-v1-0">PUT /groups/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#put-groups-id-v1-1">PUT /groups/{id} (v1.1)</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-groups-id-members-list">GET /groups/{id}/members/list</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs API</a></li>
@@ -243,22 +243,22 @@
 <tbody>
 <tr>
 <td><code>POST</code></td>
-<td><a href="#post-groups"><code>/groups</code></a></td>
+<td><a href="#post-groups-v1-0"><code>/groups</code> (v1.0)</a></td>
 <td>Create a group</td>
 </tr>
 <tr>
 <td><code>POST</code></td>
-<td><a href="#post-groups"><code>/groups</code></a></td>
+<td><a href="#post-groups-v1-1"><code>/groups</code> (v1.1)</a></td>
 <td>Create a group</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-groups-list"><code>/groups/list</code></a></td>
+<td><a href="#get-groups-list-v1-0"><code>/groups/list</code> (v1.0)</a></td>
 <td>Display a list of groups</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-groups-list"><code>/groups/list</code></a></td>
+<td><a href="#get-groups-list-v1-1"><code>/groups/list</code> (v1.1)</a></td>
 <td>Display a list of groups</td>
 </tr>
 <tr>
@@ -288,32 +288,32 @@
 </tr>
 <tr>
 <td><code>DELETE</code></td>
-<td><a href="#delete-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#delete-groups-id-v1-0"><code>/groups/{id}</code> (v1.0)</a></td>
 <td>Delete a group</td>
 </tr>
 <tr>
 <td><code>DELETE</code></td>
-<td><a href="#delete-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#delete-groups-id-v1-1"><code>/groups/{id}</code> (v1.1)</a></td>
 <td>Delete a group</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#get-groups-id-v1-0"><code>/groups/{id}</code> (v1.0)</a></td>
 <td>Retrieve a group record</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#get-groups-id-v1-1"><code>/groups/{id}</code> (v1.1)</a></td>
 <td>Retrieve a group record</td>
 </tr>
 <tr>
 <td><code>PUT</code></td>
-<td><a href="#put-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#put-groups-id-v1-0"><code>/groups/{id}</code> (v1.0)</a></td>
 <td>Update a group</td>
 </tr>
 <tr>
 <td><code>PUT</code></td>
-<td><a href="#put-groups-id"><code>/groups/{id}</code></a></td>
+<td><a href="#put-groups-id-v1-1"><code>/groups/{id}</code> (v1.1)</a></td>
 <td>Update a group</td>
 </tr>
 <tr>
@@ -323,7 +323,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="post-groups">POST /groups</h2>
+<h2 id="post-groups-v1-0">POST /groups (v1.0)</h2>
 <p>Create a group</p>
 <p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_0.php#L109"><code>groupsv1_0.php</code></a>.</p>
 <table>
@@ -388,7 +388,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="post-groups-2">POST /groups</h2>
+<h2 id="post-groups-v1-1">POST /groups (v1.1)</h2>
 <p>Create a group</p>
 <p>API version 1.1, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_1.php#L109"><code>groupsv1_1.php</code></a>.</p>
 <table>
@@ -453,7 +453,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-groups-list">GET /groups/list</h2>
+<h2 id="get-groups-list-v1-0">GET /groups/list (v1.0)</h2>
 <p>Display a list of groups</p>
 <p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_0.php#L25"><code>groupsv1_0.php</code></a>.</p>
 <table>
@@ -511,7 +511,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-groups-list-2">GET /groups/list</h2>
+<h2 id="get-groups-list-v1-1">GET /groups/list (v1.1)</h2>
 <p>Display a list of groups</p>
 <p>API version 1.1, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_1.php#L25"><code>groupsv1_1.php</code></a>.</p>
 <table>
@@ -754,7 +754,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="delete-groups-id">DELETE /groups/{id}</h2>
+<h2 id="delete-groups-id-v1-0">DELETE /groups/{id} (v1.0)</h2>
 <p>Delete a group</p>
 <p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_0.php#L562"><code>groupsv1_0.php</code></a>.</p>
 <table>
@@ -777,7 +777,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="delete-groups-id-2">DELETE /groups/{id}</h2>
+<h2 id="delete-groups-id-v1-1">DELETE /groups/{id} (v1.1)</h2>
 <p>Delete a group</p>
 <p>API version 1.1, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_1.php#L588"><code>groupsv1_1.php</code></a>.</p>
 <table>
@@ -800,7 +800,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-groups-id">GET /groups/{id}</h2>
+<h2 id="get-groups-id-v1-0">GET /groups/{id} (v1.0)</h2>
 <p>Retrieve a group record</p>
 <p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_0.php#L286"><code>groupsv1_0.php</code></a>.</p>
 <table>
@@ -830,7 +830,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-groups-id-2">GET /groups/{id}</h2>
+<h2 id="get-groups-id-v1-1">GET /groups/{id} (v1.1)</h2>
 <p>Retrieve a group record</p>
 <p>API version 1.1, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_1.php#L286"><code>groupsv1_1.php</code></a>.</p>
 <table>
@@ -860,7 +860,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="put-groups-id">PUT /groups/{id}</h2>
+<h2 id="put-groups-id-v1-0">PUT /groups/{id} (v1.0)</h2>
 <p>Update a group</p>
 <p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_0.php#L400"><code>groupsv1_0.php</code></a>.</p>
 <table>
@@ -925,7 +925,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="put-groups-id-2">PUT /groups/{id}</h2>
+<h2 id="put-groups-id-v1-1">PUT /groups/{id} (v1.1)</h2>
 <p>Update a group</p>
 <p>API version 1.1, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/api/controllers/groupsv1_1.php#L426"><code>groupsv1_1.php</code></a>.</p>
 <table>

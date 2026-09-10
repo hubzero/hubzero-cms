@@ -10,37 +10,37 @@ Endpoints under `/api/projects`, from the `com_projects` API controllers. Authen
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `POST` | [`/projects`](#post-projects) | Create a project |
-| `GET` | [`/projects/list`](#get-projects-list) | Display projects user belongs to |
-| `GET` | [`/projects/list`](#get-projects-list) | Display projects user belongs to |
-| `GET` | [`/projects/list`](#get-projects-list) | List projects |
+| `GET` | [`/projects/list` (v1.0)](#get-projects-list-v1-0) | Display projects user belongs to |
+| `GET` | [`/projects/list` (v1.1)](#get-projects-list-v1-1) | Display projects user belongs to |
+| `GET` | [`/projects/list` (v2.0)](#get-projects-list-v2-0) | List projects |
 | `DELETE` | [`/projects/{id}`](#delete-projects-id) | Delete a project |
-| `GET` | [`/projects/{id}`](#get-projects-id) | Get project info (if user is in project) |
-| `GET` | [`/projects/{id}`](#get-projects-id) | Get project info (if user is in project) |
-| `GET` | [`/projects/{id}`](#get-projects-id) | Get project info (if user is in project) |
+| `GET` | [`/projects/{id}` (v1.0)](#get-projects-id-v1-0) | Get project info (if user is in project) |
+| `GET` | [`/projects/{id}` (v1.1)](#get-projects-id-v1-1) | Get project info (if user is in project) |
+| `GET` | [`/projects/{id}` (v2.0)](#get-projects-id-v2-0) | Get project info (if user is in project) |
 | `PUT` | [`/projects/{id}`](#put-projects-id) | Update a project |
-| `GET` | [`/projects/{id}/files`](#get-projects-id-files) | Get a list of project files |
-| `GET` | [`/projects/{id}/files`](#get-projects-id-files) | Get a list of project files |
-| `GET` | [`/projects/{id}/files`](#get-projects-id-files) | Get a list of project files |
+| `GET` | [`/projects/{id}/files` (v1.0, filefsv1_0)](#get-projects-id-files-v1-0-filefsv1-0) | Get a list of project files |
+| `GET` | [`/projects/{id}/files` (v1.0, filesv1_0)](#get-projects-id-files-v1-0-filesv1-0) | Get a list of project files |
+| `GET` | [`/projects/{id}/files` (v1.0, publicationsv1_0)](#get-projects-id-files-v1-0-publicationsv1-0) | Get a list of project files |
 | `GET` | [`/projects/{id}/files/connections`](#get-projects-id-files-connections) | Get a list of project files connections |
 | `GET,POST` | [`/projects/{id}/files/connections/{cid}/chunkedUpload`](#get-post-projects-id-files-connections-cid-chunkedupload) | Uploads file chunk(s) and combines them before adding the final file to repository |
 | `GET` | [`/projects/{id}/files/connections/{cid}/download`](#get-projects-id-files-connections-cid-download) | Download file or folder from project (non-default connection providers only) |
 | `GET` | [`/projects/{id}/files/connections/{cid}/getmetadata`](#get-projects-id-files-connections-cid-getmetadata) | Get file annotation |
 | `GET` | [`/projects/{id}/files/connections/{cid}/setmetadata`](#get-projects-id-files-connections-cid-setmetadata) | Set file annotation |
 | `POST` | [`/projects/{id}/files/connections/{cid}/upload`](#post-projects-id-files-connections-cid-upload) | upload/replace a project file (only for non-default connection providers) |
-| `GET` | [`/projects/{id}/files/delete`](#get-projects-id-files-delete) | Delete file or folder from project |
-| `GET` | [`/projects/{id}/files/delete`](#get-projects-id-files-delete) | Delete file or folder from project |
+| `GET` | [`/projects/{id}/files/delete` (v1.0, filefsv1_0)](#get-projects-id-files-delete-v1-0-filefsv1-0) | Delete file or folder from project |
+| `GET` | [`/projects/{id}/files/delete` (v1.0, filesv1_0)](#get-projects-id-files-delete-v1-0-filesv1-0) | Delete file or folder from project |
 | `GET` | [`/projects/{id}/files/download`](#get-projects-id-files-download) | Download file or folder from project (non-default connection providers only) |
-| `GET` | [`/projects/{id}/files/get`](#get-projects-id-files-get) | Get file(s) metadata |
-| `GET` | [`/projects/{id}/files/get`](#get-projects-id-files-get) | Get file(s) metadata |
+| `GET` | [`/projects/{id}/files/get` (v1.0, filefsv1_0)](#get-projects-id-files-get-v1-0-filefsv1-0) | Get file(s) metadata |
+| `GET` | [`/projects/{id}/files/get` (v1.0, filesv1_0)](#get-projects-id-files-get-v1-0-filesv1-0) | Get file(s) metadata |
 | `GET` | [`/projects/{id}/files/getmetadata`](#get-projects-id-files-getmetadata) | Get file annotation |
-| `GET` | [`/projects/{id}/files/insert`](#get-projects-id-files-insert) | Insert/update a project file |
-| `GET` | [`/projects/{id}/files/insert`](#get-projects-id-files-insert) | Insert/update a project file |
-| `GET` | [`/projects/{id}/files/makedirectory`](#get-projects-id-files-makedirectory) | Create a folder in project local repo |
-| `GET` | [`/projects/{id}/files/makedirectory`](#get-projects-id-files-makedirectory) | Create a folder in project local repo |
-| `GET` | [`/projects/{id}/files/move`](#get-projects-id-files-move) | Move file or folder in project |
-| `GET` | [`/projects/{id}/files/move`](#get-projects-id-files-move) | Move file or folder in project |
-| `GET` | [`/projects/{id}/files/rename`](#get-projects-id-files-rename) | Move file or folder in project |
-| `GET` | [`/projects/{id}/files/rename`](#get-projects-id-files-rename) | Move file or folder in project |
+| `GET` | [`/projects/{id}/files/insert` (v1.0, filefsv1_0)](#get-projects-id-files-insert-v1-0-filefsv1-0) | Insert/update a project file |
+| `GET` | [`/projects/{id}/files/insert` (v1.0, filesv1_0)](#get-projects-id-files-insert-v1-0-filesv1-0) | Insert/update a project file |
+| `GET` | [`/projects/{id}/files/makedirectory` (v1.0, filefsv1_0)](#get-projects-id-files-makedirectory-v1-0-filefsv1-0) | Create a folder in project local repo |
+| `GET` | [`/projects/{id}/files/makedirectory` (v1.0, filesv1_0)](#get-projects-id-files-makedirectory-v1-0-filesv1-0) | Create a folder in project local repo |
+| `GET` | [`/projects/{id}/files/move` (v1.0, filefsv1_0)](#get-projects-id-files-move-v1-0-filefsv1-0) | Move file or folder in project |
+| `GET` | [`/projects/{id}/files/move` (v1.0, filesv1_0)](#get-projects-id-files-move-v1-0-filesv1-0) | Move file or folder in project |
+| `GET` | [`/projects/{id}/files/rename` (v1.0, filefsv1_0)](#get-projects-id-files-rename-v1-0-filefsv1-0) | Move file or folder in project |
+| `GET` | [`/projects/{id}/files/rename` (v1.0, filesv1_0)](#get-projects-id-files-rename-v1-0-filesv1-0) | Move file or folder in project |
 | `GET` | [`/projects/{id}/files/setmetadata`](#get-projects-id-files-setmetadata) | Set file annotation |
 | `POST` | [`/projects/{id}/files/upload`](#post-projects-id-files-upload) | upload/replace a project file (only for non-default connection providers) |
 | `GET` | [`/projects/{id}/team`](#get-projects-id-team) | Get a list of project team members |
@@ -74,7 +74,7 @@ API version 2.0, task `create` in [`projectsv2_0.php`](../../../core/components/
 | `grant_PI` | string | no | — | Grant PI |
 | `grant_budget` | string | no | — | Grant budget |
 
-## GET /projects/list
+## GET /projects/list (v1.0)
 
 Display projects user belongs to
 
@@ -88,7 +88,7 @@ API version 1.0, task `list` in [`projectsv1_0.php`](../../../core/components/co
 | `sort_Dir` | string | no | asc | Direction to sort results by. |
 | `verbose` | integer | no | 0 | Receive verbose output for project status, team member role and privacy. |
 
-## GET /projects/list
+## GET /projects/list (v1.1)
 
 Display projects user belongs to
 
@@ -102,7 +102,7 @@ API version 1.1, task `list` in [`projectsv1_1.php`](../../../core/components/co
 | `sort_Dir` | string | no | asc | Direction to sort results by. |
 | `verbose` | integer | no | 0 | Receive verbose output for project status, team member role and privacy. |
 
-## GET /projects/list
+## GET /projects/list (v2.0)
 
 List projects
 
@@ -126,7 +126,7 @@ API version 2.0, task `delete` in [`projectsv2_0.php`](../../../core/components/
 |---|---|---|---|---|
 | `id` | integer\|string | yes | — | Project identifier (numeric ID or alias) |
 
-## GET /projects/{id}
+## GET /projects/{id} (v1.0)
 
 Get project info (if user is in project)
 
@@ -136,7 +136,7 @@ API version 1.0, task `get` in [`projectsv1_0.php`](../../../core/components/com
 |---|---|---|---|---|
 | `id` | string | yes | — | Project identifier (numeric ID or alias) |
 
-## GET /projects/{id}
+## GET /projects/{id} (v1.1)
 
 Get project info (if user is in project)
 
@@ -146,7 +146,7 @@ API version 1.1, task `get` in [`projectsv1_1.php`](../../../core/components/com
 |---|---|---|---|---|
 | `id` | string | yes | — | Project identifier (numeric ID or alias) |
 
-## GET /projects/{id}
+## GET /projects/{id} (v2.0)
 
 Get project info (if user is in project)
 
@@ -185,7 +185,7 @@ API version 2.0, task `update` in [`projectsv2_0.php`](../../../core/components/
 | `grant_PI` | string | no | — | Grant PI |
 | `grant_budget` | string | no | — | Grant budget |
 
-## GET /projects/{id}/files
+## GET /projects/{id}/files (v1.0, filefsv1_0)
 
 Get a list of project files
 
@@ -199,7 +199,7 @@ API version 1.0, task `list` in [`filefsv1_0.php`](../../../core/components/com_
 | `filter` | string | no | — | A word or phrase to search for. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files
+## GET /projects/{id}/files (v1.0, filesv1_0)
 
 Get a list of project files
 
@@ -213,7 +213,7 @@ API version 1.0, task `list` in [`filesv1_0.php`](../../../core/components/com_p
 | `filter` | string | no | — | A word or phrase to search for. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files
+## GET /projects/{id}/files (v1.0, publicationsv1_0)
 
 Get a list of project files
 
@@ -312,7 +312,7 @@ API version 1.0, task `upload` in [`filesv1_0.php`](../../../core/components/com
 | `subdir` | string | no | — | Directory path within project filespace |
 | `file` | binary | yes | — | File contents to upload |
 
-## GET /projects/{id}/files/delete
+## GET /projects/{id}/files/delete (v1.0, filefsv1_0)
 
 Delete file or folder from project
 
@@ -325,7 +325,7 @@ API version 1.0, task `delete` in [`filefsv1_0.php`](../../../core/components/co
 | `folder` | array | no | — | Array of folder paths. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/delete
+## GET /projects/{id}/files/delete (v1.0, filesv1_0)
 
 Delete file or folder from project
 
@@ -351,7 +351,7 @@ API version 1.0, task `download` in [`filefsv1_0.php`](../../../core/components/
 | `folder` | array | no | — | Array of folder paths. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/get
+## GET /projects/{id}/files/get (v1.0, filefsv1_0)
 
 Get file(s) metadata
 
@@ -363,7 +363,7 @@ API version 1.0, task `get` in [`filefsv1_0.php`](../../../core/components/com_p
 | `asset` | array | yes | — | Array of file/folder paths to get metadata for. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/get
+## GET /projects/{id}/files/get (v1.0, filesv1_0)
 
 Get file(s) metadata
 
@@ -388,7 +388,7 @@ API version 1.0, task `getmetadata` in [`filefsv1_0.php`](../../../core/componen
 | `fields` | array | no | — | Fields to get metadata for (if empty, return all fields). |
 | `subdir` | string | no | — | Directory path within project repo. |
 
-## GET /projects/{id}/files/insert
+## GET /projects/{id}/files/insert (v1.0, filefsv1_0)
 
 Insert/update a project file
 
@@ -400,7 +400,7 @@ API version 1.0, task `save` in [`filefsv1_0.php`](../../../core/components/com_
 | `data_path` | string | yes | 25 | Path to local or remote file. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/insert
+## GET /projects/{id}/files/insert (v1.0, filesv1_0)
 
 Insert/update a project file
 
@@ -412,7 +412,7 @@ API version 1.0, task `save` in [`filesv1_0.php`](../../../core/components/com_p
 | `data_path` | string | yes | 25 | Path to local or remote file. |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/makedirectory
+## GET /projects/{id}/files/makedirectory (v1.0, filefsv1_0)
 
 Create a folder in project local repo
 
@@ -424,7 +424,7 @@ API version 1.0, task `makedirectory` in [`filefsv1_0.php`](../../../core/compon
 | `directory` | string | yes | — | Directory path |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/makedirectory
+## GET /projects/{id}/files/makedirectory (v1.0, filesv1_0)
 
 Create a folder in project local repo
 
@@ -436,7 +436,7 @@ API version 1.0, task `makedirectory` in [`filesv1_0.php`](../../../core/compone
 | `directory` | string | yes | — | Directory path |
 | `subdir` | string | no | — | Directory path within project repo, if not already included in the asset file path. |
 
-## GET /projects/{id}/files/move
+## GET /projects/{id}/files/move (v1.0, filefsv1_0)
 
 Move file or folder in project
 
@@ -449,7 +449,7 @@ API version 1.0, task `move` in [`filefsv1_0.php`](../../../core/components/com_
 | `asset` | array | yes | — | Array of file paths to move. |
 | `folder` | array | no | — | Array of folder paths to move. |
 
-## GET /projects/{id}/files/move
+## GET /projects/{id}/files/move (v1.0, filesv1_0)
 
 Move file or folder in project
 
@@ -462,7 +462,7 @@ API version 1.0, task `move` in [`filesv1_0.php`](../../../core/components/com_p
 | `asset` | array | yes | — | Array of file paths to move. |
 | `folder` | array | no | — | Array of folder paths to move. |
 
-## GET /projects/{id}/files/rename
+## GET /projects/{id}/files/rename (v1.0, filefsv1_0)
 
 Move file or folder in project
 
@@ -476,7 +476,7 @@ API version 1.0, task `rename` in [`filefsv1_0.php`](../../../core/components/co
 | `to` | string | yes | — | New name for file/folder (do not include local path - use subdir param). |
 | `subdir` | string | no | — | Directory path within project repo. |
 
-## GET /projects/{id}/files/rename
+## GET /projects/{id}/files/rename (v1.0, filesv1_0)
 
 Move file or folder in project
 

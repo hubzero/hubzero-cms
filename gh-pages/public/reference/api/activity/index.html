@@ -43,16 +43,16 @@
 <ul class="tree">
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">REST API reference</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Activity API</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#post-activity">POST /activity</a></li>
-<li class="toc__item toc__item--l2"><a href="#post-activity-2">POST /activity</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-activity-list">GET /activity/list</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-activity-list-2">GET /activity/list</a></li>
-<li class="toc__item toc__item--l2"><a href="#delete-activity-id">DELETE /activity/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#delete-activity-id-2">DELETE /activity/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-activity-id">GET /activity/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#get-activity-id-2">GET /activity/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#put-activity-id">PUT /activity/{id}</a></li>
-<li class="toc__item toc__item--l2"><a href="#put-activity-id-2">PUT /activity/{id}</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-activity-v1-0">POST /activity (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-activity-v1-1">POST /activity (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-activity-list-v1-0">GET /activity/list (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-activity-list-v1-1">GET /activity/list (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-activity-id-v1-0">DELETE /activity/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-activity-id-v1-1">DELETE /activity/{id} (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-activity-id-v1-0">GET /activity/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-activity-id-v1-1">GET /activity/{id} (v1.1)</a></li>
+<li class="toc__item toc__item--l2"><a href="#put-activity-id-v1-0">PUT /activity/{id} (v1.0)</a></li>
+<li class="toc__item toc__item--l2"><a href="#put-activity-id-v1-1">PUT /activity/{id} (v1.1)</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards API</a></li>
@@ -237,57 +237,57 @@
 <tbody>
 <tr>
 <td><code>POST</code></td>
-<td><a href="#post-activity"><code>/activity</code></a></td>
+<td><a href="#post-activity-v1-0"><code>/activity</code> (v1.0)</a></td>
 <td>Create an entry</td>
 </tr>
 <tr>
 <td><code>POST</code></td>
-<td><a href="#post-activity"><code>/activity</code></a></td>
+<td><a href="#post-activity-v1-1"><code>/activity</code> (v1.1)</a></td>
 <td>Create an entry</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-activity-list"><code>/activity/list</code></a></td>
+<td><a href="#get-activity-list-v1-0"><code>/activity/list</code> (v1.0)</a></td>
 <td>Display a list of entries</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-activity-list"><code>/activity/list</code></a></td>
+<td><a href="#get-activity-list-v1-1"><code>/activity/list</code> (v1.1)</a></td>
 <td>Display a list of entries</td>
 </tr>
 <tr>
 <td><code>DELETE</code></td>
-<td><a href="#delete-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#delete-activity-id-v1-0"><code>/activity/{id}</code> (v1.0)</a></td>
 <td>Delete an entry</td>
 </tr>
 <tr>
 <td><code>DELETE</code></td>
-<td><a href="#delete-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#delete-activity-id-v1-1"><code>/activity/{id}</code> (v1.1)</a></td>
 <td>Delete an entry</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#get-activity-id-v1-0"><code>/activity/{id}</code> (v1.0)</a></td>
 <td>Retrieve an entry</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
-<td><a href="#get-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#get-activity-id-v1-1"><code>/activity/{id}</code> (v1.1)</a></td>
 <td>Retrieve an entry</td>
 </tr>
 <tr>
 <td><code>PUT</code></td>
-<td><a href="#put-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#put-activity-id-v1-0"><code>/activity/{id}</code> (v1.0)</a></td>
 <td>Update an entry</td>
 </tr>
 <tr>
 <td><code>PUT</code></td>
-<td><a href="#put-activity-id"><code>/activity/{id}</code></a></td>
+<td><a href="#put-activity-id-v1-1"><code>/activity/{id}</code> (v1.1)</a></td>
 <td>Update an entry</td>
 </tr>
 </tbody>
 </table>
-<h2 id="post-activity">POST /activity</h2>
+<h2 id="post-activity-v1-0">POST /activity (v1.0)</h2>
 <p>Create an entry</p>
 <p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_0.php#L141"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -373,7 +373,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="post-activity-2">POST /activity</h2>
+<h2 id="post-activity-v1-1">POST /activity (v1.1)</h2>
 <p>Create an entry</p>
 <p>API version 1.1, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_1.php#L354"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -459,7 +459,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-activity-list">GET /activity/list</h2>
+<h2 id="get-activity-list-v1-0">GET /activity/list (v1.0)</h2>
 <p>Display a list of entries</p>
 <p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_0.php#L27"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -524,7 +524,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-activity-list-2">GET /activity/list</h2>
+<h2 id="get-activity-list-v1-1">GET /activity/list (v1.1)</h2>
 <p>Display a list of entries</p>
 <p>API version 1.1, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_1.php#L27"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -638,7 +638,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="delete-activity-id">DELETE /activity/{id}</h2>
+<h2 id="delete-activity-id-v1-0">DELETE /activity/{id} (v1.0)</h2>
 <p>Delete an entry</p>
 <p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_0.php#L595"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -661,7 +661,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="delete-activity-id-2">DELETE /activity/{id}</h2>
+<h2 id="delete-activity-id-v1-1">DELETE /activity/{id} (v1.1)</h2>
 <p>Delete an entry</p>
 <p>API version 1.1, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_1.php#L837"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -684,7 +684,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-activity-id">GET /activity/{id}</h2>
+<h2 id="get-activity-id-v1-0">GET /activity/{id} (v1.0)</h2>
 <p>Retrieve an entry</p>
 <p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_0.php#L350"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -707,7 +707,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="get-activity-id-2">GET /activity/{id}</h2>
+<h2 id="get-activity-id-v1-1">GET /activity/{id} (v1.1)</h2>
 <p>Retrieve an entry</p>
 <p>API version 1.1, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_1.php#L572"><code>entriesv1_1.php</code></a>.</p>
 <table>
@@ -730,7 +730,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="put-activity-id">PUT /activity/{id}</h2>
+<h2 id="put-activity-id-v1-0">PUT /activity/{id} (v1.0)</h2>
 <p>Update an entry</p>
 <p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_0.php#L384"><code>entriesv1_0.php</code></a>.</p>
 <table>
@@ -823,7 +823,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="put-activity-id-2">PUT /activity/{id}</h2>
+<h2 id="put-activity-id-v1-1">PUT /activity/{id} (v1.1)</h2>
 <p>Update an entry</p>
 <p>API version 1.1, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_activity/api/controllers/entriesv1_1.php#L615"><code>entriesv1_1.php</code></a>.</p>
 <table>

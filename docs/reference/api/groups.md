@@ -9,24 +9,24 @@ Endpoints under `/api/groups`, from the `com_groups` API controllers. Authentica
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `POST` | [`/groups`](#post-groups) | Create a group |
-| `POST` | [`/groups`](#post-groups) | Create a group |
-| `GET` | [`/groups/list`](#get-groups-list) | Display a list of groups |
-| `GET` | [`/groups/list`](#get-groups-list) | Display a list of groups |
+| `POST` | [`/groups` (v1.0)](#post-groups-v1-0) | Create a group |
+| `POST` | [`/groups` (v1.1)](#post-groups-v1-1) | Create a group |
+| `GET` | [`/groups/list` (v1.0)](#get-groups-list-v1-0) | Display a list of groups |
+| `GET` | [`/groups/list` (v1.1)](#get-groups-list-v1-1) | Display a list of groups |
 | `POST` | [`/groups/{group}/{plugin}`](#post-groups-group-plugin) | Create a record for a plugin type |
 | `GET` | [`/groups/{group}/{plugin}/list`](#get-groups-group-plugin-list) | Display a list of records for a plugin type |
 | `DELETE` | [`/groups/{group}/{plugin}/{id}`](#delete-groups-group-plugin-id) | Delete a record for a plugin type. |
 | `PUT` | [`/groups/{group}/{plugin}/{id}`](#put-groups-group-plugin-id) | Update a record for a plugin type. |
 | `GET` | [`/groups/{group}/{plugin}/{record_id}`](#get-groups-group-plugin-record-id) | Retrieve a record for a plugin type. |
-| `DELETE` | [`/groups/{id}`](#delete-groups-id) | Delete a group |
-| `DELETE` | [`/groups/{id}`](#delete-groups-id) | Delete a group |
-| `GET` | [`/groups/{id}`](#get-groups-id) | Retrieve a group record |
-| `GET` | [`/groups/{id}`](#get-groups-id) | Retrieve a group record |
-| `PUT` | [`/groups/{id}`](#put-groups-id) | Update a group |
-| `PUT` | [`/groups/{id}`](#put-groups-id) | Update a group |
+| `DELETE` | [`/groups/{id}` (v1.0)](#delete-groups-id-v1-0) | Delete a group |
+| `DELETE` | [`/groups/{id}` (v1.1)](#delete-groups-id-v1-1) | Delete a group |
+| `GET` | [`/groups/{id}` (v1.0)](#get-groups-id-v1-0) | Retrieve a group record |
+| `GET` | [`/groups/{id}` (v1.1)](#get-groups-id-v1-1) | Retrieve a group record |
+| `PUT` | [`/groups/{id}` (v1.0)](#put-groups-id-v1-0) | Update a group |
+| `PUT` | [`/groups/{id}` (v1.1)](#put-groups-id-v1-1) | Update a group |
 | `GET` | [`/groups/{id}/members/list`](#get-groups-id-members-list) | Display members of a group |
 
-## POST /groups
+## POST /groups (v1.0)
 
 Create a group
 
@@ -42,7 +42,7 @@ API version 1.0, task `create` in [`groupsv1_0.php`](../../../core/components/co
 | `join_policy` | string | yes | open | Membership join policy |
 | `discoverability` | string | yes | visible | Is the group shown in hub searches/listings. |
 
-## POST /groups
+## POST /groups (v1.1)
 
 Create a group
 
@@ -58,7 +58,7 @@ API version 1.1, task `create` in [`groupsv1_1.php`](../../../core/components/co
 | `join_policy` | string | yes | open | Membership join policy |
 | `discoverability` | string | yes | visible | Is the group shown in hub searches/listings. |
 
-## GET /groups/list
+## GET /groups/list (v1.0)
 
 Display a list of groups
 
@@ -73,7 +73,7 @@ API version 1.0, task `list` in [`groupsv1_0.php`](../../../core/components/com_
 | `sort_Dir` | string | no | desc | Direction to sort results by. |
 | `fields` | string | no | gidNumber,cn,description,created,created_by | Comma-separated list of fields to return |
 
-## GET /groups/list
+## GET /groups/list (v1.1)
 
 Display a list of groups
 
@@ -148,7 +148,7 @@ API version 1.0, task `read` in [`pluginsv1_0.php`](../../../core/components/com
 | `active` | string | yes | — | Data type. This is the 'active' plugin such as blog, forum, etc. |
 | `record_id` | integer | yes | — | Unique identifier |
 
-## DELETE /groups/{id}
+## DELETE /groups/{id} (v1.0)
 
 Delete a group
 
@@ -158,7 +158,7 @@ API version 1.0, task `delete` in [`groupsv1_0.php`](../../../core/components/co
 |---|---|---|---|---|
 | `id` | integer | yes | — | Group identifier |
 
-## DELETE /groups/{id}
+## DELETE /groups/{id} (v1.1)
 
 Delete a group
 
@@ -168,7 +168,7 @@ API version 1.1, task `delete` in [`groupsv1_1.php`](../../../core/components/co
 |---|---|---|---|---|
 | `id` | integer | yes | — | Group identifier |
 
-## GET /groups/{id}
+## GET /groups/{id} (v1.0)
 
 Retrieve a group record
 
@@ -179,7 +179,7 @@ API version 1.0, task `read` in [`groupsv1_0.php`](../../../core/components/com_
 | `id` | integer | yes | — | Group unique identifier |
 | `fields` | string | no | gidNumber,cn,description,created,created_by | Comma-separated list of fields to return |
 
-## GET /groups/{id}
+## GET /groups/{id} (v1.1)
 
 Retrieve a group record
 
@@ -190,7 +190,7 @@ API version 1.1, task `read` in [`groupsv1_1.php`](../../../core/components/com_
 | `id` | integer | yes | — | Group unique identifier |
 | `fields` | string | no | gidNumber,cn,description,created,created_by | Comma-separated list of fields to return |
 
-## PUT /groups/{id}
+## PUT /groups/{id} (v1.0)
 
 Update a group
 
@@ -206,7 +206,7 @@ API version 1.0, task `update` in [`groupsv1_0.php`](../../../core/components/co
 | `join_policy` | string | yes | open | Membership join policy |
 | `discoverability` | string | yes | visible | Is the group shown in hub searches/listings. |
 
-## PUT /groups/{id}
+## PUT /groups/{id} (v1.1)
 
 Update a group
 
