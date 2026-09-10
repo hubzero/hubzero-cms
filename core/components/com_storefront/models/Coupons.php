@@ -19,7 +19,7 @@ use Hubzero\Facades\Lang;
 class Coupons
 {
     // Database instance
-    var $_db = null;
+    public $_db = null;
 
     /**
      * Contructor

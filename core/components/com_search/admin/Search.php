@@ -48,6 +48,9 @@ class Search extends AbstractComponent
             } else {
                 $controllerName = $controller;
             }
+        } else {
+            // An explicit request for the basic engine's screens
+            $controllerName = 'basic';
         }
 
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {

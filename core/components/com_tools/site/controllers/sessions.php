@@ -350,7 +350,7 @@ class Sessions extends SiteController
                         // Fail if $value isn't prefixed with a whitelisted directory.
                         // $match must be cleared for every parameter: left over from
                         // an earlier line it would pass an unwhitelisted path.
-                        unset($match);
+                        $match = null;
 
                         foreach ($params_whitelist as $wl) {
                             if (empty($wl)) {

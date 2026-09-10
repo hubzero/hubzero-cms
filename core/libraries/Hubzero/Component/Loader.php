@@ -65,8 +65,8 @@ class Loader
      * @return  boolean
      */
     public function isEnabled($option, $strict = false)
-    // Consider changing the default to true to prevent using component names that haven't been registered in the db and are therefore invalid
     {
+        // Consider changing the default to true to prevent using component names that haven't been registered in the db and are therefore invalid
         $result = $this->load($option, $strict);
 
         return ($result->enabled == 1);// | $this->app->isAdmin());

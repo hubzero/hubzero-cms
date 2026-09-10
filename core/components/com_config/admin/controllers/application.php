@@ -239,6 +239,8 @@ class Application extends AdminController
      */
     public function refreshHelp()
     {
+        $redirect = Route::url('index.php?option=com_config', false);
+
         if (($data = file_get_contents('http://help.hubzero.org/helpsites.xml')) === false) {
             App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_FETCH'), 'error');
         } elseif (!Filesystem::write(PATH_APP . '/help/helpsites.xml', $data)) {

@@ -142,7 +142,7 @@ class Dashboard extends Plugin
             if (in_array($doAction, $this->_actionMap)) {
                 $arr['html'] = $this->$doAction();
             } else {
-                throw new \Exception('Members dashboard action does not exist: [$doAction].', 404);
+                throw new \Exception(Lang::txt('Members dashboard action does not exist: [%s].', $doAction), 404);
             }
         }
 
@@ -672,13 +672,11 @@ class Dashboard extends Plugin
             if (is_string($preferences)) {
                 $preferences = json_decode($preferences);
             }
-        }
-        // handle user setting dashboard to empty
-        else if ($preferences === '') {
+        } else if ($preferences === '') {
+            // handle user setting dashboard to empty
             $preferences = array();
-        }
-        // use users settings
-        else {
+        } else {
+            // use users settings
             $preferences = json_decode($preferences);
         }
 

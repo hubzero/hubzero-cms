@@ -24,7 +24,6 @@ use Hubzero\Browser\Detector;
 use Hubzero\Content\Server;
 use Hubzero\Utility\Number;
 use Hubzero\Utility\Validate;
-use Hubzero\Utility\Number;
 use Exception;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
@@ -294,9 +293,8 @@ class Tickets extends AdminController
                 if ($watch == 'stop') {
                     $ticket->stopWatching(User::get('id'));
                 }
-            }
-            // Not already watching
-            else {
+            } else {
+                // Not already watching
                 // Start watching?
                 if ($watch == 'start') {
                     if (!$ticket->watch(User::get('id'))) {
