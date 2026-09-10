@@ -30,7 +30,7 @@ class Migration20260220000000ComContent extends Base
             return;
         }
 
-        // Must contain the sample.sql search field
+        // Must contain the starter set's search field
         if (strpos($row->introtext, 'label for="rsearchword"') === false) {
             return;
         }

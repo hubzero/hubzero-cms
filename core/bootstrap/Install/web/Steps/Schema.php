@@ -365,7 +365,7 @@ class Schema implements StepInterface
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
-        $samplePath = INSTALL_ROOT . '/sql/mysql/sample.sql';
+        $samplePath = INSTALL_ROOT . '/sql/mysql/starter.sql';
 
         if (!file_exists($samplePath)) {
             return true; // No sample file is OK

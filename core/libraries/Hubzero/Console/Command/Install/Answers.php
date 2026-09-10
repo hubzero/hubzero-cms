@@ -132,21 +132,28 @@ class Answers
     }
 
     /**
-     * Whether the install should load sample data
+     * The set of starting content the install should load
      *
-     * Written as either a switch or the name of a data set, so that naming
-     * one reads as a request for it.
+     * Written as either the name of a set or a switch, so that naming one
+     * reads as a request for it and turning it off reads as a refusal.
      *
-     * @return  bool
+     * @param   string  $default  The set a bare yes asks for
+     * @return  string|null  The set to load, or null for none
      **/
-    public static function wantsSampleData()
+    public static function dataSet($default = 'starter')
     {
         $sample = self::option('sample', false);
 
         if (is_string($sample)) {
-            return !in_array(strtolower($sample), ['', 'no', 'none', 'false', 'off'], true);
+            $sample = strtolower(trim($sample));
+
+            if (in_array($sample, ['', 'no', 'none', 'false', 'off', 'minimal'], true)) {
+                return null;
+            }
+
+            return in_array($sample, ['yes', 'true', 'on'], true) ? $default : $sample;
         }
 
-        return (bool) $sample;
+        return $sample ? $default : null;
     }
 }
