@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
  */
 class Sku
 {
-    var $data;
+    public $data;
 
     /**
      * Contructor
@@ -377,9 +377,8 @@ class Sku
         $sId = $this->getId();
         if (!$sId) {
             $sql = "INSERT INTO `#__storefront_skus` SET ";
-        }
-        // If sId is set -- update the existing SKU
-        else {
+        } else {
+            // If sId is set -- update the existing SKU
             $sql = "UPDATE `#__storefront_skus` SET ";
         }
 

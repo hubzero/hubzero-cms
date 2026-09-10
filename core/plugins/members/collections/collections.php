@@ -1680,10 +1680,10 @@ class Collections extends Plugin
 
         $recipients = array(
             ['collection', $post->get('collection_id')],
-            ['user', $row->get('created_by')]
+            ['user', $comment->get('created_by')]
         );
-        if ($row->get('parent')) {
-            $recipients[] = ['user', $row->parent()->get('created_by')];
+        if ($comment->get('parent')) {
+            $recipients[] = ['user', $comment->parent()->get('created_by')];
         }
 
         $title = $post->item()->get('title');
@@ -1693,7 +1693,7 @@ class Collections extends Plugin
 
         Event::trigger('system.logActivity', [
             'activity' => [
-                'action'      => (!empty($comment['id']) ? 'updated' : 'created'),
+                'action'      => (!empty($data['id']) ? 'updated' : 'created'),
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . (!empty($comment['id']) ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . $url . '#c' . $row->get('id') . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),

@@ -30,7 +30,7 @@ class Request extends BaseRequest
      *
      * @var  array
      */
-    static $filters = array(
+    public static $filters = array(
         'int'   => '/-?[0-9]+/',
         'float' => '/-?[0-9]+(\.[0-9]+)?/',
         'cmd'   => '/[^A-Z0-9_\.-]/i',
