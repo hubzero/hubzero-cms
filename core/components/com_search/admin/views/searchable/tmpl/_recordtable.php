@@ -36,7 +36,7 @@ $this->css('
 				<td><?php echo $document['access_level']; ?></td>
 				<td>
 					<?php 
-						if (isset($document['owner']) && $document['owner'] == '')
+						if (isset($document['owner']) && $document['owner'] != '')
 						{
 							if ($document['owner_type'] == 'user')
 							{

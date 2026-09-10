@@ -413,7 +413,7 @@ class Searchable extends AdminController
 		$this->view->pagination = $pagination;
 
 		// Pass the filters and documents to the display
-		$this->view->filter = ($filter == '') || $filter = '*:*' ? '' : $filter;
+		$this->view->filter = ($filter == '' || $filter == '*:*') ? '' : $filter;
 		$this->view->facet = !isset($facet) ? '' : $facet;
 		$this->view->documents = isset($results) ? $results : array();
 		$this->view->blacklist = $blacklist;
