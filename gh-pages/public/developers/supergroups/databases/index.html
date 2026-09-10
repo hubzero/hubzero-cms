@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Databases · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Each super group comes with its own database. This database can be used to store data for that group. The credentials for accessing that database can…">
+  <meta name="description" content="A super group can have a database of its own, separate from the hub&#x27;s. It is named after the group&#x27;s alias, its credentials live in the group directory, and…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/databases/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,39 +127,39 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Databases</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#config-path">Config Path</a></li>
-<li class="toc__item toc__item--l2"><a href="#config-file-contents">Config File Contents</a></li>
-<li class="toc__item toc__item--l2"><a href="#using-the-database">Using the Database</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-the-group-gets-one">How the group gets one</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-config-file">The config file</a></li>
+<li class="toc__item toc__item--l2"><a href="#opening-it">Opening it</a></li>
+<li class="toc__item toc__item--l2"><a href="#using-it">Using it</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -174,35 +174,104 @@
           <p class="eyebrow">Developers</p>
           <h1>Databases</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups/databases">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Each super group comes with its own database. This database can be used to store data for that group. The credentials for accessing that database can be found in the super groups database config file.</p>
-<h2 id="config-path">Config Path</h2>
-<p><code>/{web_root}/site/groups/{group_id}/config/db.php</code></p>
-<h2 id="config-file-contents">Config File Contents</h2>
+<p>A super group can have a database of its own, separate from the hub's. It is
+named after the group's alias, its credentials live in the group directory,
+and any code the group runs can open it.</p>
+<h2 id="how-the-group-gets-one">How the group gets one</h2>
+<p>Both halves are done when an administrator saves the group as a super group,
+in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>_handleSuperGroup()</code></a>:</p>
+<ul>
+<li>A database named <code>sg_&lt;alias&gt;</code> is created, but <strong>only if</strong> the hub's own
+database account holds a grant matching <code>sg\_%</code>. If it does not, the save
+warns and carries on without a database.</li>
+<li><code>config/db.php</code> is written from <code>/etc/supergroup.conf</code>, which holds the
+username and password of the account the hub gives every super group. If
+that file is missing, the save warns and no <code>config/db.php</code> is written.</li>
+</ul>
+<p>Neither step overwrites an existing file, so re-saving the group is safe.</p>
+<p>Both of those are administrator territory; see
+<a href="../../../managers/users/supergroups/index.html#creating-a-super-group">Super Groups</a>
+in the managers book.</p>
+<h2 id="the-config-file">The config file</h2>
+<pre><code>app/site/groups/&lt;gidNumber&gt;/config/db.php
+</code></pre>
+<p>It returns an array, and the hub writes it in this shape:</p>
 <pre><code class="language-php">&lt;?php
-return array(
-	'host' =&gt; 'localhost',
-	'port' =&gt; '',
-	'user' =&gt; 'sgmanager',
-	'password' =&gt; 'xxxxx',
-	'database' =&gt; 'sg_{group_cn}',
-	'prefix'   =&gt; ''
-);
+	return array(
+		'host'     =&gt; 'localhost',
+		'port'     =&gt; '',
+		'user'     =&gt; 'sgmanager',
+		'password' =&gt; 'xxxxx',
+		'database' =&gt; 'sg_mygroup',
+		'prefix'   =&gt; ''
+	);
 </code></pre>
-<h2 id="using-the-database">Using the Database</h2>
-<p>You can use the database anywhere you want in your template, a PHP page, a group component, etc. Anywhere you can run PHP code basically.</p>
-<p>Getting a reference to the group database object is very easy:</p>
-<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDBO();
-</code></pre>
+<p>The array is handed straight to
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Driver.php"><code>Hubzero\Database\Driver::getInstance()</code></a>,
+so any key that driver understands works here — <code>driver</code> to pick something
+other than MySQL, <code>ssl_ca</code> for a TLS connection, <code>dsn</code> to write the connection
+string yourself.</p>
+<p><code>config/db.php</code> is excluded from the group's git repository by
+<code>gitlab_setup.sh</code>, along with <code>uploads/*</code>. Do not add it back.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> You can access the group database and the HUB database at the same time. Use the above call to get access to the group database and JFactory::getDBO(); to get access to the HUB database. All you have to do is store them in two different variables.</p>
+<p><strong>Note:</strong> <code>prefix</code> is empty, so there is no <code>sg_mygroup</code> table prefix to
+think about. <code>#__</code> in a query is replaced with the empty string: write
+<code>#__mytable</code> or <code>mytable</code>, whichever you find clearer, and expect the table
+to be called <code>mytable</code>.</p>
 </aside>
+<aside class="admonition admonition--caution">
+<p><strong>Caution:</strong> The MySQL driver appends <code>port</code> to the connection string
+whenever the key is <em>set</em>, not whenever it has a value, so the empty
+<code>'port' =&gt; ''</code> the hub writes ends up in the DSN. If the connection fails
+with a port error, delete the line.</p>
+</aside>
+<h2 id="opening-it">Opening it</h2>
+<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo();
+</code></pre>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/User/Group/Helper.php"><code>getDbo()</code></a> takes the
+group from the <code>cn</code> request variable, checks that it is a super group, reads
+<code>config/db.php</code> and returns the driver. Instances are cached by their options,
+so calling it repeatedly costs nothing.</p>
+<p>Outside a group request — in a command line script, say — pass the alias as
+the second argument, or the configuration array as the first:</p>
+<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo(array(), 'mygroup');
+</code></pre>
+<p>The hub's own database is a separate object and stays available:</p>
+<pre><code class="language-php">$hub   = \App::get('db');
+$group = \Hubzero\User\Group\Helper::getDbo();
+</code></pre>
+<p>Keep them in two variables and use whichever you mean. <code>JFactory::getDBO()</code>,
+which older documentation used for the hub connection, no longer exists.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>getDbo()</code> never fails loudly. If the group is not a super
+group, or <code>config/db.php</code> is missing, or the <code>cn</code> variable is not set on
+the request, it returns <strong>the hub's database</strong> instead. Code written against
+it will then create its tables in the hub schema without complaining. Check
+the connection before you trust it — for example by comparing
+<code>$database-&gt;getPrefix()</code> with <code>\App::get('db')-&gt;getPrefix()</code>, or by asking
+for a table you know belongs to the group.</p>
+</aside>
+<h2 id="using-it">Using it</h2>
+<p>The driver is the same one the rest of the CMS uses, so everything in
+<a href="../../database/index.html">Database</a> applies:</p>
+<pre><code class="language-php">$database = \Hubzero\User\Group\Helper::getDbo();
+
+$database-&gt;setQuery(&quot;SELECT * FROM `#__widgets` WHERE `state` = 1&quot;);
+$rows = $database-&gt;loadObjectList();
+</code></pre>
+<p>Inside a <a href="../components/index.html">super group component</a> you usually do not need to
+ask. A model extending <code>Hubzero\Base\Model</code> whose file lives under the
+component directory gets the group connection automatically —
+<code>initDbo()</code> checks whether the class file sits below <code>JPATH_GROUPCOMPONENT</code>
+and returns the group database if it does.</p>
+<p>Create the tables with a <a href="../migrations/index.html">migration</a> rather than by hand, so
+the schema travels with the code.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../php-pages/index.html" rel="prev"><span>Previous</span>PHP Pages</a><a class="pager__next" href="../migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../php-pages/index.html" rel="prev"><span>Previous</span>PHP pages</a><a class="pager__next" href="../migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/05-databases.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

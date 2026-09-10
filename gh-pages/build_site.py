@@ -80,6 +80,7 @@ INCLUDE_LANGS = {
     ".md": "markdown",
     ".js": "javascript",
     ".css": "css",
+    ".less": "less",
     ".html": "html",
     ".sql": "sql",
     ".conf": "apache",

@@ -1,359 +1,297 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/css
 source-id: 3510
 modified: 2012-09-21
-imported: 2026-09-09
 -->
-# Cascading Style Sheets
+# Cascading style sheets
 
-## Overview
+A page's styling comes from three places: the template's own stylesheets, the
+shared stylesheets under `core/assets`, and whatever the components, modules
+and plugins on the page push into the document. This chapter covers where each
+of those lives, how a file is found, and what a template can do about it.
 
-CSS stands for Cascading Style Sheet. HTML tags specify the graphical flow of the elements, be it text, images or flash animations, on a webpage. CSS allows us to define the appearances of those HTML tags with their content, somewhere, so that other pages, if want be, may adhere to. This brings along consistency throughout a website. The cascading effect stipulates that the style of a tag (parent) may be inherited by other tags (children) inside it.
+## The template's own stylesheets
 
-Professional websites separate styling from content. There are many reasons for this, the most obvious (to a developer) being the ability to control the appearance of many pages by changing one file. Styling information includes: fonts, backgrounds, images (that recur on every page), position and dimensions of elements on the page. Your HTML file will now be left with: header information; a series of elements; the text of your website. Because you are creating a Joomla! template, you will actually have: some header information, PHP code to request the rest of the header information, a series of elements, PHP code to request each module position, and PHP code to request the main content.
+Convention puts a template's CSS in a `css` directory at the top of the
+template directory. Nothing enforces the convention and **nothing is loaded
+automatically**: every stylesheet a template uses is linked by a layout, by
+name. There is no `main.css` that the CMS picks up on its own.
 
-Style information is coded in CSS and usually stored in files with the suffix `.css`. A webpage contains a link to the associated `.css` file so a browser can find the appropriate style information to apply to the page. CSS can also be placed inside a HTML file between `<style type="text/css"></style>` tags. This is, however, discouraged as it is mixing style and content elements which can make future changes more difficult.
+A layout links a stylesheet one of two ways.
 
-## Implementation
-
-### Definitions for this section:
-
-- **External CSS files**  
-  using &amp;lt;link> in the &amp;lt;head>
-  
-  Document head CSS
-  
-  using &amp;lt;style> in the &amp;lt;head>
-  
-  Inline CSS
-  
-  using the style attribute on a tag, i.e. &amp;lt;div style="color:red;">
-
-### Guidelines
-
-1. External CSS files should be used in preference to document head CSS and document head CSS should be used in preference to inline CSS.
-2. CSS files MUST have the file extension `.css` and should be stored in the relevant includes directory in the site structure, usually /style/.
-3. The file size of CSS files should be kept as low as possible, especially on high demand pages.
-4. External CSS must be linked to using the &amp;lt;link> element which must be placed in the head section of the document. This is the preferred method of using CSS. It offers the best experience for the user as it helps prevent FOUC (flash of unstyled content), promotes code reuse across a site and is cacheable.
-5. External style sheets should not be imported (i.e. using `@import`) as it impairs caching. In IE `@import` behaves the same as using &amp;lt;link> at the bottom of the page (preventing progressive rendering), so it's best not to use it. Mixing &amp;lt;link> and `@import` has a negative effect on browsers' ability to asynchronously download the files.
-6. Document head CSS may be used where a style rule is only required for a specific page.
-7. Inline styles should not be used.
-8. Query string data (e.g. "style.css?v=0.1") should not be used on an external CSS file. Use of query strings on CSS files prevents them from caching in some browsers. Whilst this may be desirable for testing, and of course may be used for that, it is very undesirable for production sites.
-
-### Directory & Files
-
-Convention places CSS files within a directory named `css` inside the template directory. While developers are not restricted to this convention, we do recommend it as it helps keep the layout and structure of HUBzero templates consistent. A developer from one project will instantly know where to find certain files and be familiar with the directory structure when working on a project originally developed by someone else.
-
-There are a handful of common CSS files found among most HUBzero. While none of these are required, it is encouraged to follow the convention of including them as it promotes consistency among HUBzero templates and comes with the advantage that certain files, such as `main.css` are auto-loaded, thus reducing some work on the developer's part.
-
-Here's the standard directory and files for CSS found in a HUBzero template:
-
-```
-/hubzero
-  /templates
-    /{TemplateName}
-      /css
-        error.css
-        browser/ie7.css
-        browser/ie8.css
-        browser/ie9.css
-        main.css
-        print.css
-        component.css
-```
-
-File details:
-
-- **`error.css`**  
-  This is the primary stylesheet loaded by `error.php`.
-- **`ie8.css`**  
-  Style fixes for Internet Explorer 8.
-- **`ie7.css`**  
-  Style fixes for Internet Explorer 7.
-- **`ie9.css`**  
-  Style fixes for Internet Explorer 9.
-- **`main.css`**  
-  This is the primary stylesheet loaded by `index.php`. The majority of your styles will be in here.
-- **`print.css`**  
-  Styles used when printing a page.
-- **`component.css`**  
-  This file is meant to be included **before** any other CSS file. Its purpose is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on.
-
-## Bootstrap
-
-Several bootstrap styles are available in the core, broken into individual stylesheets to make it easier for you to decide what styles you do and do not want to incorporate into your template.
-
-The bootstrap stylesheets can be found in the `/core/assets/css` directory and can be linked to or imported like any other stylesheet. However, for sake of site performance, we recommend using the `Hubzero\Document\Assets::getSystemStylesheet()` method. This method accepts wither a comma-separated string or array of core stylesheets to include and then compiles them into a single file with comments and white-space stripped out. The resulting file is saved in the cache with a timestamp. Should any of the core files change, the resulting compiled stylesheet will automatically be updated. This has two immediate advantages of 1) fewer http requests (improves page load time) and 2) ensures browsers re-cache the CSS whenever it has changed.
-
-Example usage:
+Directly in the markup, before `<jdoc:include type="head" />`, so that it
+loads ahead of anything an extension queues:
 
 ```php
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo Hubzero\Document\Assets::getSystemStylesheet(array(
-	'reset',
-	'fontcons',
-	'columns',
-	'notifications',
-	'pagination',
-	'tabs',
-	'tags',
-	'comments',
-	'voting',
-	'layout'
-)); ?>" />
+<link rel="stylesheet" type="text/css" media="all"
+      href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css?v=<?php echo filemtime(__DIR__ . '/css/index.css'); ?>" />
 ```
 
-- **`reset.css`**  
-  This file is meant to be included **before** any other CSS file. Its purpose is to reduce browser inconsistencies in things like default line heights, margins and font sizes of headings, and so on.
-  
-  The reset styles given here are intentionally very generic. There isn't any default color or background set for the `<body>` element, for example. Colors and any other styling should be addressed in the template's primary stylesheet after loading `reset.css`.
-- **`fontcons.css`**  
-  This is a custom created icon (dingbat) font used for many of the icons found throughout a hub.
-- **`columns.css`**  
-  This sets up basic structure for generating layouts that use columns. It supports up to twelve columns and any combination there in. See [usage](13-elements.md).
-- **`notifications.css`**  
-  Default styles for warning, error, help, and info messages.
-- **`pagination.css`**  
-  Basic styling for pagination.
-- **`tabs.css`**  
-  Default styles for a menu (list) displayed as tabs.
-- **`tags.css`**  
-  Tag styles. Tags are used frequently throughout a hub and this stylesheet helps ensure the look consistent.
-- **`comments.css`**  
-  Comments appear on many items such as KB articles, Questions and Answers, Support tickets, Forums, Blog posts, and more. This is a stylesheet for handling basic layout and styles of a list of (nested) comments and the form for submitting comments.
-- **`voting.css`**  
-  Basic styles for thumbs-up and thumbs-down voting buttons.
-- **`layout.css`**  
-  Default styles for containers, result lists, and other basic structural items used frequently in a hub.
+Or through the document, in which case it lands *inside* the head block, after
+the component's stylesheets:
 
-## Typical `main.css` Structure
+<!--include: core/templates/kameleon/index.php:13-22-->
 
-`main.css` controls base styling for your HUB, which is usually further extended by individual component CSS.
+Kimera and Lucent use the first form; Kameleon uses the second, which is why
+its own rules need enough specificity to win against a component's.
 
-We took every effort to organize the `main.css` in a manner allowing you to easily find a section and a class name to modify. E.g. if you want to change the way headers are displayed, look for "headers" section as indicated by CSS comments. Although you can modify all existing classes, depending on your objectives, it is recommended to avoid modifications to certain sections, as indicated below. While you can add new classes as needed, we caution strongly about removing or renaming any of the existing IDs and classes. Many HUBzero components take advantage of these code styles and any alterations made risk breaking the template display.
+Two details of the link are load-bearing:
 
-Some sections that you are likely to modify:
+- `$this->baseurl` is the URL prefix for the templates directory — `/app` when
+  the template lives in `app/templates`, `/core` when it ships. Never hardcode
+  either.
+- `?v=<?php echo filemtime(...); ?>` is the cache-busting convention used by
+  every shipped template and by
+  [`Hubzero\Document\Asset\File::link()`](../../../core/libraries/Hubzero/Document/Asset/File.php).
+  Use it. A stylesheet linked without it is cached by version-less URL and
+  will not refresh for returning visitors after a deployment.
 
-```
-Body - may want to change site background or font family.
-Links - pick colors for hyperlinks
-Headers - pick colors and font size of headings
-Lists - may want to change general list style
-Header - you will definitely want to change this
-Toolbar - display of username, login/logout links etc.
-Navigation - display of main menu
-Breadcrumbs - navigation under menu on secondary pages
-Extra nav - links that appear on the right-hand side in multiple components
-Footer
-```
+### What each shipped template links
 
-Sections where you would want to avoid serious modifications:
+| Template | Layout | Stylesheets it links |
+|---|---|---|
+| `kimera` | `index.php` | `css/index.css`, plus `css/browser/ie9.css` and `css/browser/ie8.css` in conditional comments, plus a style declaration built by `css/theme.php` |
+| | `component.php` | `css/component.css`, same browser files |
+| | `error.php` | `css/error.css` |
+| | `offline.php` | `css/offline.css` |
+| `lucent` | `index.php`, `error.php` | `less/main.css` — the compiled CSS sits beside its LESS sources, not in `css/` |
+| | `component.php` | `css/component.css` |
+| `welcome` | `index.php` | `css/normalize.min.css`, `css/main.css` |
+| `kameleon` | `index.php` | `css/index.css`, `css/browser/ie9.css`, the custom theme declaration |
+| | `cpanel.php` | `css/index.css`, `css/cpanel.css` |
+| | `component.php` | `css/component.css` |
+| | `login.php` | `css/login.css` |
+| | `error.php` | `css/error.css` |
+| `system` | `error.php` | `css/error.css` |
+| | `offline.php` | `css/general.css`, `css/offline.css` |
+| | `login.php` | `css/system.css` |
+| | `help.php` | `getSystemStylesheet()`, `css/help.css` |
+| | `group.php` | `getSystemStylesheet()`, and the **active** template's `css/main.css` and `css/group.css` |
 
-```
-Core classes
-Site notices, warnings, errors
-Primary Content Columns
-Flexible Content Columns
-Sub menu - display of tabs in multiple components
-```
+`system/group.php` is the super group layout, and it is the one place a
+stylesheet is looked for in a template other than the one that owns the
+layout. It asks the active template for `css/main.css` and `css/group.css`.
+Kimera ships `css/group.css` but no `css/main.css`, so a super group page
+under Kimera requests one stylesheet that does not exist. If you write a site
+template that will be used with super groups, ship both files.
 
-## `print.css`
+> **Note:** Kimera also carries `css/print.css`, `css/download.css`,
+> `css/upload.css` and `css/pages/*.css`. No layout links any of them and
+> nothing pushes them. They are listed in `templateDetails.xml` and installed,
+> but they are dead. Do not copy them forward when you base a template on
+> Kimera.
 
-This is a style sheet that is used only for printing. It removes unnecessary elements such as menus and search boxes, adjusts any background and font colors as needed to improve readability, and can expose link URLs through generated content (advanced browsers only, e.g. Safari, Firefox).
+### Theme files
 
-## `error.css`
+`css/theme.php` in Kimera and `css/themes/custom.php` in Kameleon are PHP
+files that **return** a CSS string built from the template's parameters. The
+layout includes the file and passes the result to `addStyleDeclaration()`. See
+[Page layouts](06-layouts.md#parameters) for how the parameters reach them.
 
-This is a style sheet that is used only by the `error.php` layout. It allows for a more custom styling to error pages such as "404 - Page Not Found".
+## LESS
 
-## Internet Explorer
+LESS is the preprocessor in use. There are two sets of sources.
 
-We strongly encourage developers to test their templates in as many browsers and on as many operating systems as possible. Most modern browsers will have little differences in rendering, however, Internet Explorer deserves special mention here.
+`core/assets/less/` holds the shared ones. `site.less` is the build file and
+names everything in it:
 
-The most widely used browser, Internet Explorer, is also one of the most lacking in terms of CSS support. Internet Explorer has also, traditionally, handled rendering of block elements, element positioning, and other common tasks a bit differently than many other browsers. As can be expected, this has led to much controversy and discussion on how best to handle such differences. We strongly recommend designing for and testing your templates in alternate browsers such as Safari, Firefox, Chrome, or Opera and then applying fixes to Internet Explorer afterwards. We recommend the use of conditional comments to apply special Internet Explorer only stylesheets.
+<!--include: core/assets/less/site.less:7-49-->
 
-### Conditional Comments
+`core/assets/less/variables.less` holds the colours, font stacks and sizes
+those files use; a template that imports the shared sources redefines the
+variables it wants before the import.
 
-Conditional comments only work in Internet Explorer on Windows, and are thus excellently suited to give special instructions meant only for Internet Explorer on Windows. They are supported from Internet Explorer 5 onwards, and it is even possible to distinguish between versions of the browser.
+Each template that uses LESS keeps its own sources in a `less` directory and
+imports across into `core/assets/less` by relative path. Kimera's
+`less/index.less` opens this way:
 
-Conditional comments work as follows:
+<!--include: core/templates/kimera/less/index.less:7-12-->
 
-```
-<!--[if IE 6]>
-	Special instructions for IE 6 here
-<![endif]-->
-```
+The compiled result is what ships and what the layout links:
+`less/index.less` → `css/index.css` for Kimera and Kameleon,
+`less/main.less` → `less/main.css` for Lucent.
 
-Their basic structure is the same as an HTML comment (`<!-- -->`). Therefore all other browsers will see them as normal comments and will ignore them entirely. Internet Explorer, however, recognizes the special syntax and parses the content of the conditional comment as if it were normal page content. As such, they can contain any web content you wish to display only to Internet Explorer. While we're using this feature to load CSS files, it can also be used to load JavaScript or display Internet Explorer specific HTML.
+> **Warning:** The compiled CSS is committed to the repository and **no build
+> script ships with it**. There is no gulpfile, no Grunt config and no npm
+> package in any template. If you edit a `.less` file you must recompile it
+> yourself, with any LESS compiler, and commit the `.css` alongside. Editing
+> only the LESS changes nothing that a browser sees.
 
-> **Note:** Since conditional comments use the HTML comment structure, they can only be included in HTML, and not in CSS files.
+## The shared stylesheets
 
-Conditional comments support some variation in syntax. For example, it is possible to target a specific browser version as demonstrated above or target multiple versions such as "all versions of Internet Explorer lower than 7". This can be done with a couple handy operators:
+`core/assets/css/` holds the stylesheets shared by every extension: `reset`,
+`layout`, `columns`, `fontcons`, `icons`, `buttons`, `notifications`,
+`pagination`, `tabs`, `tags`, `comments`, `voting`, `tooltip`, `introduction`
+and the third-party jQuery ones. Most are the compiled output of the matching
+file in `core/assets/less/`.
 
-- `gt` = greater than
-- `gte` = greater than or equal to
-- `lt` = less than
-- `lte` = less than or equal to
+Anything on the page can pull one in by naming `system` as the extension:
 
-```
-<!--[if IE]>
-	According to the conditional comment this is Internet Explorer
-<![endif]-->
-<!--[if IE 5]>
-	According to the conditional comment this is Internet Explorer 5
-<![endif]-->
-<!--[if IE 5.0]>
-	According to the conditional comment this is Internet Explorer 5.0
-<![endif]-->
-<!--[if IE 5.5]>
-	According to the conditional comment this is Internet Explorer 5.5
-<![endif]-->
-<!--[if IE 6]>
-	According to the conditional comment this is Internet Explorer 6
-<![endif]-->
-<!--[if IE 7]>
-	According to the conditional comment this is Internet Explorer 7
-<![endif]-->
-<!--[if IE 8]>
-	According to the conditional comment this is Internet Explorer 8
-<![endif]-->
-<!--[if gte IE 5]>
-	According to the conditional comment this is Internet Explorer 5 and up
-<![endif]-->
-<!--[if lt IE 6]>
-	According to the conditional comment this is Internet Explorer lower than 6
-<![endif]-->
-<!--[if lte IE 5.5]>
-	According to the conditional comment this is Internet Explorer lower or equal to 5.5
-<![endif]-->
-<!--[if gt IE 6]>
-	According to the conditional comment this is Internet Explorer greater than 6
-<![endif]-->
+```php
+$this->css('introduction.css', 'system');
 ```
 
-So, to load stylesheets to specific versions of Internet Explorer in our template we do something like the following:
+That resolves to `core/assets/css/introduction.css`, and it is overridable —
+see [Output overrides](09-overrides.md#system-assets).
 
-```html
-<html>
-  <head>
-    ... other CSS files ...
-    <!--[if IE 7]>
-      <link rel="stylesheet" type="text/css" media="screen" href="{TemplatePath}/{TemplateName}/css/ie7.css" />
-    <![endif]-->
-    <!--[if lte IE 6]>
-      <link rel="stylesheet" type="text/css" media="screen" href="{TemplatePath}/{TemplateName}/css/ie6.css" />
-    <![endif]-->
-  </head>
-  ...
-</html>
+### getSystemStylesheet
+
+`Hubzero\Document\Assets::getSystemStylesheet()` returns the URL of the
+compiled shared stylesheet. It compiles `core/assets/less/site.less` with
+[`Hubzero\Document\Lessc`](../../../core/libraries/Hubzero/Document/Lessc.php)
+and writes the result to `app/cache/{client}/site.css`, minified unless
+`application_env` is `development`. In production it serves the cached file
+directly; otherwise it recompiles when any imported file has changed.
+
+> **Warning:** In production the cached file is served as it stands, even
+> after the LESS sources change. Delete `app/cache/{client}/site.css` and
+> `app/cache/{client}/site.less.cache` to force a rebuild. `muse cache css
+> clear` looks for those two files one directory too high and clears
+> nothing; that is recorded with the project.
+
+A template can take the build over. If the active template has a
+`less/site.less`, that file is used as the build root instead of the core one,
+and the template's `less` directory is put ahead of `core/assets/less` on the
+import path, so `@import "variables.less"` inside it resolves to the
+template's copy if there is one.
+
+Call it with no arguments:
+
+```php
+<link rel="stylesheet" type="text/css" media="screen"
+      href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 ```
 
-> **Note:** Conditional comments used CSS for should be placed inside the `<head>` tag of a template *after* all other CSS have been linked for their affects to properly take place.
+> **Note:** Older documentation shows this method being passed a list of file
+> names — `getSystemStylesheet(array('reset', 'fontcons', …))`. That list is
+> now only a fallback: it is used if, and only if, the LESS compile throws.
+> Passing it does not select which stylesheets go into the page. Pass nothing.
 
-## Loading From An Extension
+## Pushing CSS from an extension
 
-### Components
+Components, modules and plugins do not link stylesheets themselves; they queue
+them on the document. There are two `css()` methods, and they differ in their
+third argument.
 
-Often a component will have a style sheet of its own. Pushing CSS to the template from a component is quite easy and involves only two lines of code.
+### From a view
+
+Views get `css()` and `js()` from
+[`Hubzero\View\Helper\Css`](../../../core/libraries/Hubzero/View/Helper/Css.php).
+Both return the view, so calls chain:
+
+```php
+$this->css()               // the extension's own stylesheet
+     ->css('another')      // the .css extension is optional
+     ->css('tags', 'com_tags');   // from another component
+```
+
+With no arguments, the file taken is the extension's default name: for a
+component the name minus `com_` (`com_tags` → `tags.css`), for a module the
+full directory name (`mod_notices` → `mod_notices.css`), for a plugin the
+plugin's own name (`plg_groups_forum` → `forum.css`).
+
+The arguments are `(name, extension, element)`. `element` is for plugins, and
+turns the first two into a plugin name:
+
+```php
+$this->css('forum', 'groups', 'forum');   // plg_groups_forum
+```
+
+A string containing `{` or `@` is treated as a declaration rather than a file
+name and goes to `addStyleDeclaration()`:
+
+```php
+$this->css('.foo { color: #000; }');
+```
+
+### From a controller, module or plugin
+
+`Hubzero\Component\SiteController` (and so `AdminController`),
+`Hubzero\Module\Module` and `Hubzero\Plugin\Plugin` get `css()`, `js()` and
+`img()` from
+[`Hubzero\Base\Traits\AssetAware`](../../../core/libraries/Hubzero/Base/Traits/AssetAware.php):
+
+<!--include: core/libraries/Hubzero/Base/Traits/AssetAware.php:31-58-->
+
+> **Warning:** The third argument here is an **attributes array**, not a
+> plugin element. `$this->css('x.css', 'system', array('media' => 'print'))`
+> is correct in a controller, module or plugin, and wrong in a view — a view
+> reads that array as a plugin name and looks for `plg_system_Array`. The two
+> `css()` methods look identical and are not.
+
+### Where the file is looked for
+
+[`Hubzero\Document\Asset\File::sourcePath()`](../../../core/libraries/Hubzero/Document/Asset/File.php)
+builds the search list. For `css('groups', 'com_groups')` on the site it tries,
+in order, under `app/` and then under `core/`:
+
+```
+components/com_groups/site/assets/css/groups.css
+components/com_groups/site/css/groups.css
+components/groups/site/assets/css/groups.css
+components/groups/site/css/groups.css
+```
+
+`site` there is the client name, so an admin view of the same component looks
+under `admin/` instead. Modules drop the client segment
+(`modules/mod_notices/assets/css/mod_notices.css`) and plugins use the folder
+and element (`plugins/groups/forum/assets/css/forum.css`). `assets/css` is the
+directory to use for new work; the flatter variants are only there for old
+extensions.
+
+Prefixing the name changes the meaning: `./name.css` looks for the file at the
+root of the extension directory, and `/name.css` is an absolute path from the
+web root. A name beginning `http`, `//` or `://` is passed through as an
+external URL.
+
+Every one of these lookups checks the active template for an override first.
+That is the subject of the [next chapter](09-overrides.md).
+
+### The static helpers
+
+`Hubzero\Document\Assets` also carries the older static methods —
+`addComponentStylesheet()`, `addModuleStyleSheet()`, `addPluginStyleSheet()`
+and their `Script` counterparts. They wrap the same asset objects and honour
+the same overrides:
 
 ```php
 Hubzero\Document\Assets::addComponentStylesheet('com_example');
+Hubzero\Document\Assets::addModuleStyleSheet('mod_example');
+Hubzero\Document\Assets::addPluginStyleSheet('groups', 'forum');
 ```
 
-First, we load the `Hubzero\Document\Assets` class. Next we call the static method `addComponentStylesheet`, passing it the name of the component as the first (and only) argument. This will first check for the presence of the style sheet in the active template's [overrides](09-overrides.md). If found, the path to the overridden style sheet will be added to the array of style sheets the template needs to include in the `<head>`. If no override is found, the code then checks for the existence of the CSS in the component's directory. Once again, if found, it gets pushed to the template.
+Prefer `$this->css()`. The statics remain for code that has no view,
+controller, module or plugin object to hand.
 
-### Modules
+## Browsers
 
-Loading CSS from a module works virtually the same as loading from a component save one minor difference in code. Instead of calling the `addComponentStylesheet` method, we call the `addModuleStylesheet` method and pass it the name of the module.
+Every shipped site layout puts browser classes on the `<html>` element, from
+[`Hubzero\Browser\Detector`](../../../core/libraries/Hubzero/Browser/Detector.php),
+alongside the text direction and the template's own state:
 
 ```php
-Hubzero\Document\Assets::addModuleStylesheet('mod_example');
+$browser = new \Hubzero\Browser\Detector();
+$cls = array('no-js', $browser->name(), $browser->name() . $browser->major(), $this->direction);
 ```
 
-### Plugins
+That gives selectors such as `html.chrome`, `html.firefox52` and `html.rtl` to
+hang a fix on, and it is the mechanism to reach for.
 
-Loading CSS from a plugin works similarly to loading from a component or module but instead we call the `addPluginStylesheet` method and pass it the name of the plugin group **and** the name of the plugin.
+Kimera, Kameleon and Lucent also carry conditional comments loading
+`css/browser/ie8.css` and `css/browser/ie9.css`. Conditional comments were
+removed from Internet Explorer at version 10 and Internet Explorer itself is
+out of support; the files are kept so existing installs do not change, and
+there is no reason to add them to a new template.
 
-```php
-Hubzero\Document\Assets::addPluginStylesheet('examples', 'test');
-```
+## Further reading
 
-Plugin CSS must be named the same as the plugin and located within a directory of the same name as the plugin inside the plugin group directory.
-
-```
-/plugins
-  /examples
-    /test
-      test.css
-    test.php
-    test.xml
-```
-
-### View Helpers (all extensions)
-
-Modules, Component, and plugin views now have helpers for pushing Cascading StyleSheets and JavaScript assets to the document. Each method automatically looks for overrides within the current, active template, taking out the busy work of checking yourself each time assets are added. The method names are short, accept a range of options, and allow for method chaining, all tailored for brevity and ease of use.
-
-The css() method provides a quick and convenient way to attach stylesheets. For components, it accepts two arguments:
-
-1. The name of the stylesheet to be pushed to the document (file extension is optional). If no name is provided, the name of the component or plugin will be used. For instance, if called within a view of the component "com_tags", the system will look for a stylesheet named "tags.css".
-2. The name of the extension to look for the stylesheet. For components, this will be the component name (e.g., com_tags). For plugins, this is the name of the plugin folder and requires the third argument of plugin group (type) be passed to the method.
-3. \*Plugin views only.\* The name of the plugin.
-
-Example:
-
-```php
-<?php
-// Push a stylesheet to the document
-$this->css()
-      ->css('another')  // Extension (.css) is optional
-      ->css('tags.css', 'com_tags');  // Load CSS from another component
-?>
-... view HTML ...
-```
-
-Along with file names, the method also accepts style declarations:
-
-```php
-<?php
-// Push a stylesheet to the document
-$this->css('.foo {
-	color: #000;
-}');
-?>
-... view HTML ...
-```
-
-Similarly, a js() method is available for pushing javascript assets to the document. The arguments accepted are the same as the css() method described above.
-
-```php
-<?php
-// Push some javascript to the document
-$this->js()
-      ->js('another');
-?>
-... view HTML ...
-```
-
-And, just as the css() method accepts style declarations, the js() method accepts script declarations:
-
-```php
-<?php
-// Push some javascript to the document
-$this->js('
-	jQuery(document).ready(function($){
-		$("a").on("click", function(e){
-			console.log($(this).attr("href"));
-		});
-	});
-');
-?>
-... view HTML ...
-```
-
-## Further Help
-
-Resources for learning and sharpening CSS skills:
-
-- [CSS Zen Garden](http://www.csszengarden.com/)
-- [CSS From The Ground Up](http://www.wpdfd.com/issues/70/css_from_the_ground_up/)
-- [Guide to Cascading StyleSheets](http://www.htmlhelp.com/reference/css/)
-- [CSS School](http://www.w3schools.com/css/)
+- [JavaScript](08-javascript.md) — the matching `js()` calls and the script
+  behaviours.
+- [Output overrides](09-overrides.md) — replacing an extension's stylesheet
+  from the template.
+- [Elements and typography](13-elements.md) — the markup the shared
+  stylesheets expect.

@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions/languages
 source-id: 3469
 imported: 2026-09-09
@@ -7,130 +10,161 @@ source-state: unpublished
 -->
 # Languages
 
-## Overview
+Every string an extension shows comes out of an INI file, looked up by key.
+This page covers what an extension has to ship: which files, where, named
+what, with keys named how. [Languages](../basics/languages.md) covers the
+`Lang` API — `txt()`, `txts()`, plurals, overrides — and is the page to read
+before writing view code.
 
-To create your own language file it is necessary that you use the exact contents of the default language file and translate the contents of the define statements. Language files are INI files which are readable by standard text editors and are set up as key/value pairs.
+## The files
 
-## Working With INI Files
+One directory per language tag, one file per extension inside it. The tag
+appears twice: as the directory name and as the start of the filename.
 
-INI files have several restrictions. If a value in the `ini` file contains any non-alphanumeric characters it needs to be enclosed in double-quotes (`"`). There are also reserved words which must not be used as keys for `ini` files. These include: `NULL`, `yes`, `no`, `TRUE`, and `FALSE`. Values `NULL`, `no` and `FALSE` results in `""`, `yes` and `TRUE` results in `1`. Characters `{}|&~![()"` must not be used anywhere in the key and have a special meaning in the value. Do not use them as it will produce unexpected behavior.
-
-Files are named after their internationally defined standard abbreviation and may include a locale suffix, written as language_REGION. Both the language and region parts are abbreviated to alphabetic, ASCII characters. A user from the USA would expect the language `English` and the region `USA`, yielding the locale identifier "`en_US`". However, a user from the UK may expect a region of `UK`, yielding "`en_UK`".
-
-## Setup
-
-As previously mentioned, language files are setup as key/value pairs. A key is used within the widget's view and the translator retrieves the associated string for the given language. The following code is an extract from a typical widget language file.
-
-```ini
-; Module - Example (en_US)
-MOD_EXAMPLE_HERE_IS_LINE_ONE = "Here is line one"
-MOD_EXAMPLE_HERE_IS_LINE_TWO = "Here is line two"
-MOD_EXAMPLE_MYLINE = "My Line"
+```
+core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini
+core/components/com_blog/admin/language/en-GB/en-GB.com_blog.ini
+core/components/com_blog/admin/language/en-GB/en-GB.com_blog.sys.ini
+core/components/com_blog/api/language/en-GB/en-GB.com_blog.ini
+core/modules/mod_login/language/en-GB/en-GB.mod_login.ini
+core/plugins/system/debug/language/en-GB/en-GB.plg_system_debug.ini
+core/templates/kimera/language/en-GB/en-GB.tpl_kimera.ini
 ```
 
-Translation keys can be upper or lowercase or a mix of the two and may contain underscores but no spaces. HUBzero convention is to have keys all uppercase with words separated by underscores, following a pattern of `{ExtensionPrefix}_{WidgetName}_{TextName}` for naming.
+A component has one file per face, because the administrator interface and
+the site need different strings and there is no reason to load both. A
+module, plugin or template has one.
 
-| Extension Type | Key Prefix |
-|---|---|
-| Component | COM\_ |
-| Module | MOD\_ |
-| Plugin | PLG\_ |
-| Template | TPL\_ |
+The tag is a language and a region joined by a **hyphen**, following
+[BCP 47](https://www.rfc-editor.org/info/bcp47): `en-GB`, `en-US`, `fr-FR`,
+`pt-BR`. Not an underscore. `Hubzero\Language\Translator` builds the path
+from the tag literally, so `en_US` produces a file nothing will ever look
+for.
 
-Adhering to this naming convention is not required but is strongly recommended as it can help avoid potential translation collisions. Since a component can potentially have modules loaded into it, the possibility of a widget and a module having the same translation key arises. To illustrate this, we have the following example of a component named `mycomponent` that loads a module named `mymodule`.
+> **Note:** Hubzero ships `en-GB` and nothing else. The spelling in the
+> strings is US English despite the tag; that is inherited and not worth
+> fighting.
 
-The language files for both:
+### The `.sys.ini` file
+
+The administrator interface has to name an extension in a list before that
+extension has run — in the Extension Manager, the Plugin Manager, the module
+type picker. The strings for that live in a second file with `.sys` before
+the extension:
+
+```
+en-GB.com_blog.sys.ini
+en-GB.mod_login.sys.ini
+en-GB.plg_system_debug.sys.ini
+```
+
+Put the extension's `<name>` and `<description>` keys — the ones its XML
+manifest refers to — in there, and everything else in the ordinary file.
+Ship a `.sys.ini` for any extension an administrator will see listed.
+
+### Declaring them in the manifest
+
+The manifest lists the files, per face:
+
+```xml
+<languages folder="site">
+	<language tag="en-GB">en-GB.com_blog.ini</language>
+</languages>
+<administration>
+	<languages folder="admin">
+		<language tag="en-GB">en-GB.com_blog.ini</language>
+		<language tag="en-GB">en-GB.com_blog.sys.ini</language>
+	</languages>
+</administration>
+```
+
+## Writing the file
+
+Key/value pairs. Always quote the value:
 
 ```ini
-; mymodule en_US.ini
+; @package  hubzero-cms
+; Note : All ini files need to be saved as UTF-8 - No BOM
+
+COM_EXAMPLE_ENTRIES = "Entries"
+COM_EXAMPLE_ENTRY_SAVED = "Entry saved"
+COM_EXAMPLE_POSTED_BY = "Posted by %s on %s"
+```
+
+It is parsed by PHP, so PHP's rules apply:
+
+- `NULL`, `yes`, `no`, `TRUE` and `FALSE` are reserved and cannot be keys.
+- `{}|&~![()"` have meaning in an unquoted value. Quoting every value makes
+  the question moot.
+- Comments start with `;`.
+- UTF-8, no byte order mark.
+
+## Naming keys
+
+Uppercase, words separated by underscores, prefixed with the extension type
+and the extension name:
+
+| Extension | Prefix | Example |
+|---|---|---|
+| Component | `COM_` | `COM_BLOG_ENTRY_SAVED` |
+| Module | `MOD_` | `MOD_LOGIN_REMEMBER_ME` |
+| Plugin | `PLG_` | `PLG_CRON_SUPPORT_CLOSE_PENDING` |
+| Template | `TPL_` | `TPL_KIMERA_FIELD_HEADER_LABEL` |
+
+The prefix is not a tidiness rule; it is the only thing preventing a whole
+class of bug. Every loaded string goes into **one flat array**, and a file
+loaded later overwrites keys already in it. So:
+
+```ini
+; mymodule
 MYLINE = "Your Line"
 ```
 
 ```ini
-; mycomponent en_US.ini
+; mycomponent
 MYLINE = "My Line"
 ```
 
-The layout files for both:
-
 ```php
-<!-- mymodule layout -->
-<strong><php echo Lang::txt('MYLINE'); ?></strong>
+// A component view that renders a module
+echo Module::byPosition('mymodule');   // loads the module's file here
+echo Lang::txt('MYLINE');              // "Your Line"
 ```
 
-```php
-<!-- mycomponent layout -->
-<div>
-	<!-- Load the module -->
-	<php echo Module::byPosition('mymodule'); ?>
-	<!-- Translate some component text -->
-	<php echo Lang::txt('MYLINE'); ?>
-</div>
+The component's own string is gone, replaced by the module's, and the fault
+appears only on pages where that module happens to be published. Prefixed
+keys — `MOD_MYMODULE_MYLINE` and `COM_MYCOMPONENT_MYLINE` — cannot collide,
+whatever loads in what order.
+
+Beyond the prefix, name for what the string *is*, not what it says. A key
+called `COM_EXAMPLE_SAVE_FAILED` survives a rewording; `COM_EXAMPLE_SORRY`
+does not.
+
+## When the file is loaded
+
+You rarely load one yourself:
+
+- A controller extending `Hubzero\Component\SiteController` or
+  `AdminController` loads its component's file in its constructor;
+  `Hubzero\Component\Loader` has already loaded it by then in the usual
+  case.
+- `Hubzero\Module\Loader` loads a module's file before the module renders.
+- A **plugin's file is not loaded automatically.** Set
+  `protected $_autoloadLanguage = true;` on the plugin class, or call
+  `$this->loadLanguage()` before you translate anything.
+
+## Checking your work
+
+A key with no definition is not an error: `Lang::txt()` returns the key
+unchanged, so the page renders `COM_EXAMPLE_SAVE_FAILED` in place of a
+sentence. That fails quietly, and it fails hardest on the paths nobody
+exercises.
+
+```bash
+php tools/lint/undefined-language-keys.php core/components/com_example
 ```
 
-Outputs:
-
-```php
-<div>
-	<!-- Load the module -->
-	<strong>Your Line</strong>
-	<!-- Translate some component text -->
-	Your Line
-</div>
-```
-
-Since the module is loaded in the component view, i.e. *after* the component's translation files have been loaded, the module's instance of `MYLINE` overwrites the existing `MYLINE` from the component. Thus, the view outputs "Your Line" for the component translation instead of the expected "My Line". Using the HUBzero naming convention of adding component and module name prefixes helps avoid such errors:
-
-The language files for both:
-
-```ini
-; mymodule en-US.ini
-MOD_MYMODULE_MYLINE = "Your Line"
-```
-
-```ini
-; mycomponent en-US.ini
-COM_MYCOMPONENT_MYLINE = "My Line"
-```
-
-The view files for both:
-
-```php
-<!-- mymodule view -->
-<strong><php echo Lang::txt('MOD_MYMODULE_MYLINE'); ?></strong>
-```
-
-```php
-<!-- mycomponent view -->
-<div>
-	<!-- Load the module -->
-	<php echo $this->Widgets()->renderWidget('mywidget'); ?>
-	<!-- Translate some module text -->
-	<php echo Lang::txt('COM_MYCOMPONENT_MYLINE'); ?>
-</div>
-```
-
-Outputs:
-
-```php
-<div>
-	<!-- Load the widget -->
-	<strong>Your Line</strong>
-	<!-- Translate some module text -->
-	My Line
-</div>
-```
-
-To Further avoid potential collisions as it is possible to have a component and module with the same name, module translation keys are prefixed with `MOD_` and component translation keys with `COM_`.
-
-## Translating Text
-
-A translate helper (`Lang`) is available in all views and the appropriate language file for an extension is preloaded when the extension is instantiated. This is all done automatically and requires no extra work on the developer's part to load and parse translations.
-
-Below is an example of accessing the translate helper:
-
-```php
-<p><?php echo Lang::txt("MOD_EXAMPLE_MY_LINE"); ?></p>
-```
-
-Strings or keys not found in the current translation file will output as is.
+That reports every literal key the code asks for that no `en-GB` file
+anywhere defines. It cannot check keys assembled at runtime
+(`'COM_EXAMPLE_' . strtoupper($type)`), so a clean run is necessary and not
+sufficient.

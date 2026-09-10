@@ -1,423 +1,236 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/elements
 source-id: 3516
 modified: 2013-08-02
-imported: 2026-09-09
 -->
-# Elements & Typography
+# Elements and typography
 
-## Grid (Columns)
+The classes shared between the templates and the components. Component views
+emit this markup and expect your template to style it, so these are the ones
+you cannot rename.
 
-For laying out content on a page, the core hub framework includes styles for a 12-column grid.
+The sources are in [`core/assets/less`](../../../core/assets/less), with compiled
+equivalents in [`core/assets/css`](../../../core/assets/css) for anything not
+written in LESS:
 
-...
+| Element | LESS | Compiled CSS |
+|---|---|---|
+| Grid | `grid.less` | `columns.css` |
+| Buttons | `buttons.less` | `buttons.css` |
+| Notifications | `notifications.less` | `notifications.css` |
+| Pagination | `pagination.less` | `pagination.css` |
+| Tabs | `tabs.less` | `tabs.css` |
+| Layout | `layout.less` | `layout.css` |
 
-...
+`core/assets/less/site.less` imports the whole set in the right order and is
+the shortest way to pick them all up.
 
-...
+## The grid
 
-...
-
-...
-
-...
-
-...
-
-...
-
-...
-
-...
-
-...
-
-...
-
-The grid supports up to 12 columns with `span#` and `offset#` classes.
-
-> **Note:** Each column **must** have a `.col` class. The last column in a set must have the `.omega` class added for IE 7 to work properly. No clearing div is required.
-
-For example, a four column grid would look like:
+Twelve fluid columns. A `.grid` wrapper, `.col` on each child, and a `.span{n}`
+saying how wide it is:
 
 ```html
 <div class="grid">
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3 omega">
-		...
-	</div>
+	<div class="col span3">…</div>
+	<div class="col span3">…</div>
+	<div class="col span3">…</div>
+	<div class="col span3 omega">…</div>
 </div>
 ```
 
-Output:
+- Every column needs `.col`. That is what floats it and gives it the gutter.
+- The last column in a row needs `.omega`, which removes the trailing gutter.
+  Without it the row overflows.
+- Columns are percentages of the container, so a grid nests inside a column of
+  another grid with no extra work.
+- No clearing element is needed; `.grid` clears itself.
 
-...
-
-...
-
-...
-
-...
-
-### Spanning Columns
-
-Columns can be spanned to easier portion content on the page. In the following example, we span the first 6 columns in a container, then follow with two, smaller 3 column containers for a 3-column layout where the first column takes up 50% of the space.
+`.span1` through `.span12` exist, and `.offset1` through `.offset12` push a
+column to the right by that many columns:
 
 ```html
 <div class="grid">
-	<div class="col span6">
-		...
-	</div>
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3 omega">
-		...
-	</div>
+	<div class="col span3 offset3">…</div>
+	<div class="col span3">…</div>
+	<div class="col span3 omega">…</div>
 </div>
 ```
 
-Output:
+### Fraction classes
 
-...
+Aliases for the common widths, easier to read than counting:
 
-...
+| Class | Equivalent | Offset alias |
+|---|---|---|
+| `.span-whole` | `.span12` | `.offset-whole` |
+| `.span-three-quarters` | `.span9` | `.offset-three-quarters` |
+| `.span-two-thirds` | `.span8` | `.offset-two-thirds` |
+| `.span-half` | `.span6` | `.offset-half` |
+| `.span-third` | `.span4` | `.offset-third` |
+| `.span-quarter` | `.span3` | `.offset-quarter` |
 
-...
+### Collapsing
 
-### Offsets
+`grid.less` rearranges rows as the viewport narrows. The rules count the
+columns in the row with `:nth-last-child`, so what happens depends on how many
+children the `.grid` has, not on their `.span` classes:
 
-Columns may also be offset or 'pushed' over.
+| Breakpoint | A row of six | A row of four | A row of three |
+|---|---|---|---|
+| `@break6` — 1023px | Three across, two rows | — | — |
+| `@break4` — 1000px | — | Two across, two rows | — |
+| `@break3` — 900px | Two across, three rows | Two across | Full width |
+| `@break2` — 500px | Full width | Full width | Full width |
 
-```html
-<div class="grid">
-	<div class="col span3 offset3">
-		...
-	</div>
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3 omega">
-		...
-	</div>
-</div>
-```
+Two escape hatches, both on the `.grid`:
 
-Output:
+- `.nobreak` — never rearrange. Every rule above is written
+  `.grid:not(.nobreak)`.
+- `.break6`, `.break4`, `.break3` — go straight to full-width columns at that
+  breakpoint instead of rearranging.
 
-...
+The breakpoints are variables in
+[`core/assets/less/variables.less`](../../../core/assets/less/variables.less), so
+a LESS template can move them.
 
-...
+## Sections and asides
 
-...
-
-### Helper Classes
-
-- **`.span-quarter`**  
-  Span 3 columns. This is equivalent to `.span3`
-- **`.span-third`**  
-  Span 4 columns. This is equivalent to `.span4`
-- **`.span-half`**  
-  Span 6 columns. This is equivalent to `.span6`
-- **`.span-two-thirds`**  
-  Span 8 columns. This is equivalent to `.span8`
-- **`.span-three-quarters`**  
-  Span 9 columns. This is equivalent to `.span9`
-
-A four column grid with the helper classes:
-
-```html
-<div class="grid">
-	<div class="col span-quarter">
-		...
-	</div>
-	<div class="col span-quarter">
-		...
-	</div>
-	<div class="col span-quarter">
-		...
-	</div>
-	<div class="col span-quarter omega">
-		...
-	</div>
-</div>
-```
-
-There are equivalent `.offset-` classes as well:
-
-- **`.offset-quarter`**  
-  Offset 3 columns. This is equivalent to `.offset3`
-- **`.offset-third`**  
-  Offset 4 columns. This is equivalent to `.offset4`
-- **`.offset-half`**  
-  Offset 6 columns. This is equivalent to `.offset6`
-- **`.offset-two-thirds`**  
-  Offset 8 columns. This is equivalent to `.offset8`
-- **`.offset-three-quarters`**  
-  Offset 9 columns. This is equivalent to `.offset9`
-
-Markup for a four column grid with the offset helper class:
-
-```html
-<div class="grid">
-	<div class="col span-quarter">
-		...
-	</div>
-	<div class="col offset-quarter span-quarter">
-		...
-	</div>
-	<div class="col span-quarter omega">
-		...
-	</div>
-</div>
-```
-
-Output:
-
-...
-
-...
-
-...
-
-### Nesting Grids
-
-The following is an example of a 3 column grid nested inside the first column of *another* 3 column grid.
-
-```html
-<div class="grid">
-	<div class="col span6">
-		<div class="grid">
-			<div class="col span4">
-				...
-			</div>
-			<div class="col span4">
-				...
-			</div>
-			<div class="col span4 omega">
-				...
-			</div>
-		</div>
-	</div>
-	<div class="col span3">
-		...
-	</div>
-	<div class="col span3 omega">
-		...
-	</div>
-</div>
-```
-
-Output:
-
-...
-
-...
-
-...
-
-...
-
-...
-
-## Notifications
-
-The core framework provides some base styles for alter and notifications.
-
-```html
-<p class="passed">Success message</p>
-```
-
-Success message
-
-```html
-<p class="info">Info message</p>
-```
-
-> **Note:** Info message
-
-```html
-<p class="help">Help message</p>
-```
-
-> **Tip:** Help message
-
-```html
-<p class="warning">Warning message</p>
-```
-
-> **Warning:** Warning message
-
-```html
-<p class="error">Error message</p>
-```
-
-> **Important:** Error message
-
-## Sections & Asides
-
-The majority of hub components have content laid out in a primary content column with secondary navigation or metadata in a smaller side column to the right. This is done by first wrapping the entire content in a `div` with a class of `.section`. The content intended for the side column is wrapped in a `<div class="aside">` tag. The primary content is wrapped in a `<div class="subject">` tag and immediately follows the `.aside` column.
-
-> **Note:** The `.aside` column must come first in order for the content to be positioned properly. If, unfortunately, this poses a semantic problem, we recommend using the grid system as a potential alternative.
-
-Using aside & subject differs from the grid system in that the `.aside` column has a fixed width with the `.subject` column taking up the available left-over space. In the grid system, **every** column is flexible (uses a percentage of the screen) and cannot have a specified, fixed width.
-
-Example usage:
+Most component pages are a main column with a narrower one beside it. The
+markup is:
 
 ```html
 <section class="section">
 	<div class="section-inner">
 		<div class="aside">
-			Side column content ...
+			Secondary navigation, metadata, related items …
 		</div>
 		<div class="subject">
-			Primary content ...
+			The main content …
 		</div>
 	</div>
 </section>
 ```
 
+`.aside` must come **before** `.subject` in the source. The rules that size
+them are written `.aside + .subject`, so reversing the order leaves the layout
+broken. If that is a semantic problem for your page, use the grid instead.
+
+Unlike the grid, `.aside` has a fixed width and `.subject` takes what is left.
+
+> **Important:** `.section`, `.section-inner`, `.aside` and `.subject` are
+> **not** in `core/assets/less`. They are styled by each template —
+> `kimera/less/_sections.less` is the reference — and `core/assets/less/layout.less`
+> only carries a few responsive rules for them. A new template must supply
+> these itself or every component page loses its sidebar. Copy
+> `_sections.less` when you copy the template.
+
+## Notifications
+
+Five classes, all styled the same way and differing only in colour and the
+icon in the `:before`:
+
+| Class | Meaning |
+|---|---|
+| `.passed` | Success |
+| `.info` | Information |
+| `.help` | Help |
+| `.warning` | Warning |
+| `.error` | Error |
+
+```html
+<p class="passed">Your changes have been saved.</p>
+<p class="error">That file is too large.</p>
+```
+
+The messages the application queues render through
+`<jdoc:include type="message" />` as a definition list inside
+`#system-message`, and its `dd` elements pick up the same styling. Its `dt`
+elements are hidden by the stylesheet; they carry the message type for
+assistive technology, so do not remove them from the layout.
+
+`Hubzero.renderMessages()` in `core.js` writes the same structure from
+JavaScript. See [JavaScript](08-javascript.md).
+
 ## Buttons
 
-{xhub:include type="stylesheet" filename="/media/system/css/buttons.css"}
+`.btn` on a link, a `<button>` or an `<input type="submit">`:
+
+```html
+<a class="btn" href="#">Link</a>
+<button class="btn">Button</button>
+<input type="submit" class="btn" value="Submit" />
+```
 
 ### States
 
-[default](#) [disabled](#) [active](#)
+| Class | Effect |
+|---|---|
+| `.active` | Pressed. `:active` gets the same styling |
+| `.disabled` | 65% opacity, `cursor: not-allowed`, `pointer-events: none`. The `disabled` attribute does the same |
 
-```html
-<a class="btn" href="#">default</a>
+### Variants
 
-<a class="btn disabled" href="#">disabled</a>
-
-<a class="btn active" href="#">active</a>
-```
-
-### Size
-
-[primary](#) [secondary](#)
-
-```html
-<a class="btn btn-primary" href="#">primary</a>
-
-<a class="btn btn-secondary" href="#">secondary</a>
-```
-
-### Type
-
-[link](#) button
-
-```html
-<a class="btn" href="#">link</a>
-
-<button class="btn" href="#">button</button>
-
-<input type="submit" class="btn" value="input" />
-```
-
-### Color
-
-[danger](#) [warning](#) [info](#) [success](#)
-
-```html
-<a class="btn btn-danger" href="#">danger</a>
-
-<a class="btn btn-warning" href="#">warning</a>
-
-<a class="btn btn-info" href="#">info</a>
-
-<a class="btn btn-success" href="#">success</a>
-```
+| Class | Effect |
+|---|---|
+| `.btn-primary` | The emphasised action. One per form |
+| `.btn-secondary` | **Smaller**, not a colour change — this is the size modifier |
+| `.btn-success` | Green |
+| `.btn-info` | Blue |
+| `.btn-warning` | Orange |
+| `.btn-danger` / `.btn-error` | Red. The two are identical |
 
 ### Icons
 
-[danger](#)
-
-[warning](#)
-
-[info](#)
-
-[success](#)
-
-[edit](#)
-
-[delete](#)
-
-[delete](#)
-
-[secondary](#)
+Add any `.icon-*` class from [Fontcons](12-fontcons.md) and the glyph is
+rendered in a tinted block at the left edge of the button, with the padding
+adjusted for it:
 
 ```html
-<a class="btn btn-danger icon-danger" href="#">danger</a>
+<a class="btn btn-danger icon-danger" href="#">Delete</a>
+<a class="btn icon-prev" href="#">Previous</a>
+```
 
-<a class="btn btn-warning icon-warning" href="#">warning</a>
+Add `.opposite` to move the glyph to the right edge instead — what you want for
+a "next" control:
 
-...
+```html
+<a class="btn icon-next opposite" href="#">Next</a>
 ```
 
 ### Groups
 
-[Dropdown](#)
-
-- [Action](#)
-- [Another action](#)
-- [Something else here](#)
-- 
-- [Separated link](#)
-
-```html
-<div class="btn-group dropdown">
-          <a class="btn" href="#">Dropdown</a>
-          <span class="btn dropdown-toggle"></span>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-</div>
-```
-
-- [Action](#)
-- [Another action](#)
-- [Something else here](#)
-- 
-- [Separated link](#)
-
-```html
-<div class="btn-group dropup">
-          ...
-</div>
-```
-
-- [Action](#)
-- [Another action](#)
-- [Something else here](#)
-- 
-- [Separated link](#)
-
-```html
-<div class="btn-group btn-secondary dropdown">
-          ...
-</div>
-```
-
-[prev](#) [all](#) [next](#)
+`.btn-group` joins buttons into one control, squaring off the inner corners:
 
 ```html
 <div class="btn-group">
-          <a class="btn icon-prev" href="#">prev</a>
-          <a class="btn" href="#">all</a>
-          <a class="btn icon-next opposite" href="#">next</a>
+	<a class="btn icon-prev" href="#">Previous</a>
+	<a class="btn" href="#">All</a>
+	<a class="btn icon-next opposite" href="#">Next</a>
 </div>
 ```
+
+Add `.dropdown` and a toggle for a menu:
+
+```html
+<div class="btn-group dropdown">
+	<a class="btn" href="#">Actions</a>
+	<span class="btn dropdown-toggle"></span>
+	<ul class="dropdown-menu">
+		<li><a href="#">Edit</a></li>
+		<li><a href="#">Duplicate</a></li>
+		<li class="divider"></li>
+		<li><a href="#">Delete</a></li>
+	</ul>
+</div>
+```
+
+- `.dropup` instead of `.dropdown` opens the menu upwards.
+- `.btn-group.btn-secondary` makes the whole group the smaller size.
+- `.divider` on an empty `<li>` draws a rule between groups of items.
+- The menu opens on hover as well as on click — `.btn-group:hover .dropdown-menu`
+  — so it needs no script.

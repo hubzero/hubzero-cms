@@ -1,147 +1,180 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/browsersupport
 source-id: 3427
 modified: 2012-04-09
-imported: 2026-09-09
-source-state: unpublished
 -->
-# Browser Support
+# Browser support
 
-## Overview
+Nothing in this repository enforces a browser support policy. There is no
+browserslist, no Babel, no PostCSS, and — with one exception — no build step
+that targets a language level. What the CMS runs in is decided by the
+libraries it ships and by the CSS and JavaScript its templates were written
+in. This page says what those actually require.
 
-The Browser Test Baseline provides a baseline set of browsers that should be tested. It is designed to maximize coverage with limited testing resources by testing the smallest possible subset of browser combinations and leveraging implicit coverage from shared core browser engines. At the very least, all listed browsers should be tested in one operating system, in order to provide "baseline" coverage. Testing on multiple operating systems should be accommodated after all browsers have been verified with baseline coverage and should start with features that have known platform-specific issues. The test platforms should be chosen based on usage statistics and market trends.
+The page this replaces carried a table of supported versions written in
+2012: Internet Explorer 7 through 9, Firefox 3 to 5, Safari 5, Android 2
+WebKit, Opera 10. None of it is meaningful now. The code in this tree cannot
+run in any of those browsers, and no part of the repository checks.
 
-The Browser Test Baseline defines the current set of browers that should receive a verified, usable experience. However, trying to deliver the same "A-grade" experience across all tested browsers is neither cost-effective nor common. We support a tiered approach to user experience design, development, and testing, and encourage each project to define their own tiers that serve their users and their testing resources best.
+## What the repository does not contain
 
-## Browser Test Baseline
+Each of these was looked for and is not present anywhere outside
+`core/vendor/` and vendored third-party libraries:
 
-<table>
-<tbody>
-<tr>
-<th scope="row">Internet Explorer</th>
-<td>7.0</td>
-<td>8.0</td>
-<td>9.0</td>
-</tr>
-<tr>
-<th scope="row">Firefox</th>
-<td>3.†</td>
-<td>4.†</td>
-<td>5.†</td>
-</tr>
-<tr>
-<th scope="row">Chrome †</th>
-<td colspan="3">Latest stable</td>
-</tr>
-<tr>
-<th scope="row">Safari</th>
-<td>5.†</td>
-<td>iOS 3.†</td>
-<td>iOS 4.†</td>
-</tr>
-<tr>
-<th scope="row">Webkit</th>
-<td colspan="3">Android 2.†</td>
-</tr>
-<tr>
-<th scope="row">Opera</th>
-<td colspan="3">10.†</td>
-</tr>
-</tbody>
-</table>
+| Looked for | Result |
+|---|---|
+| `.browserslistrc` or a `browserslist` key | None |
+| Babel configuration | None |
+| PostCSS or Autoprefixer configuration | None |
+| A JavaScript bundler for the CMS | None. The only root `package.json` dependency is `blade-formatter` |
+| A build target | One, and only for the CKEditor 5 editor plugin — see below |
+| A polyfill loaded on every page | None |
 
-*Notes:*
+CSS is compiled from LESS by `core/bin/lessc` and by `muse cache:css`, and
+LESS does no prefixing and no transformation for older engines. The CMS's own
+JavaScript is shipped as written; nothing transpiles it.
 
-- The dagger symbol (as in "Firefox 4.†") indicates that the most-current non-beta version at that branch level receives support.
-- No guidance is given on iOS or Android OS device usage. The recommendation is that you choose the devices that are most representative of your user base for each OS.
+The exception is
+[`core/plugins/editors/ckeditor5/build/`](../../../core/plugins/editors/ckeditor5/build),
+which bundles CKEditor 5 with esbuild. Its `build.mjs` sets
+`target: ['es2020']`, and that is the only browser-facing language level
+declared anywhere in the repository. The bundle it produces,
+`core/plugins/editors/ckeditor5/assets/js/ckeditor.js`, is committed; the
+build is not run as part of any workflow.
 
-The Browser Test Baseline provides a baseline set of browsers that should be tested. It is designed to maximize coverage with limited testing resources by testing the smallest possible subset of browser combinations and leveraging implicit coverage from shared core browser engines. At the very least, all listed browsers should be tested in one operating system, in order to provide "baseline" coverage. Testing on multiple operating systems should be accommodated after all browsers have been verified with baseline coverage and should start with features that have known platform-specific issues. The test platforms should be chosen based on usage statistics and market trends.
+The CI workflows in `.github/workflows/` run PHP syntax and facade-import
+lint and build the documentation. None of them starts a browser. The root
+`README.md` says the project is tested with BrowserStack; that sentence is
+the only mention of BrowserStack in the tree, and no configuration, device
+list, or browser test suite goes with it.
 
-The Browser Test Baseline defines the current set of browers that should receive a verified, usable experience. However, trying to deliver the same "A-grade" experience across all tested browsers is neither cost-effective nor common. We support a tiered approach to user experience design, development, and testing, and encourage each project to define their own tiers that serve their users and their testing resources best.
+## What the shipped code actually requires
 
-## Graded Browser Support: What and Why
+The floor is set by what the framework loads, not by a policy:
 
-In the first 10 years of professional web development, back in the early '90s, browser support was binary: Do you — or don't you — support a given browser? When the answer was "No", user access to the site was often actively prevented. In the years following IE5's release in 1998, professional web designers and developers have become accustomed to asking at the outset of any new undertaking, "Do I have to support Netscape 4.x browsers for this project?"
+| What ships | Where | What it needs |
+|---|---|---|
+| jQuery 3.3.1 | `core/assets/js/jquery.js` | jQuery 3 dropped Internet Explorer 6-8 |
+| Bootstrap 5.3.3 | `core/assets/css/bootstrap/5.3.3/`, `core/assets/js/bootstrap/5.3.3/` | Bootstrap 5 dropped Internet Explorer entirely and is built on CSS custom properties, flexbox, and grid |
+| htmx 2.0.4 | `core/assets/js/htmx/` | htmx 2 dropped Internet Explorer |
+| Alpine.js 3.14.8 | `core/assets/js/alpine/` | Alpine 3 is built on the ES6 `Proxy`, which cannot be polyfilled |
+| CKEditor 5 | `core/plugins/editors/ckeditor5/assets/js/ckeditor.js` | Built to ES2020 |
 
-By contrast, in modern web development we must support *all* browsers. Choosing to exclude a segment of users is inappropriate, and, with a "GradedBrowser Support" strategy, unnecessary.
+Bootstrap, htmx, and Alpine are opt-in: an extension asks for them through
+[`Behavior`](../../../core/libraries/Hubzero/Html/Builder/Behavior.php) —
+`Behavior::bootstrap()`, `Behavior::htmx()`, `Behavior::alpinejs()`,
+`Behavior::htmxalpine()`. jQuery comes in with `Behavior::framework()` and is
+on nearly every page.
 
-Graded Browser Support offers two fundamental ideas:
+The framework's own JavaScript is ES6 in places. `core/assets/js/htmx/hubzero-bootstrap.js`
+uses `const` and `"use strict"` at the top level. The stylesheets use flexbox
+in dozens of files across `core/templates/` and `core/components/`, and CSS
+custom properties in a handful.
 
-- A broader and more reasonable definition of "support."
-- The notion of "grades" of support.
+Taken together the practical floor is a current evergreen browser: Chrome,
+Firefox, Safari, or Edge in a version from roughly the last few years. The
+one explicit number in the tree, the editor bundle's ES2020, puts that floor
+at about 2020 for any page with an editor on it. None of this is a policy
+anyone wrote down; it is what the dependencies impose.
 
-### What Does "Support" Mean?
+## The Internet Explorer leftovers
 
-Support does not mean that everybody gets the same thing. Expecting two users using different browser software to have an identical experience fails to embrace or acknowledge the heterogeneous essence of the Web. In fact, requiring the same experience for all users creates an artificial barrier to participation. Availability and accessibility of content should be our key priority.
+Three shipped templates still carry conditional comments that no browser has
+honoured since Internet Explorer 10 dropped support for them:
 
-Consider television. At the core: TV distributes information. A hand-cranked emergency radio is capable of receiving television audio transmissions. It would be counter-productive to prevent access to this content, even though it's a fringe experience.
+- `core/templates/kimera/index.php` loads `js/html5.js` and
+  `css/browser/ie8.css` for `lt IE 9`, and `css/browser/ie9.css` for `IE 9`.
+- `core/templates/kameleon/index.php` loads `js/html5.js` for `lt IE 9` and
+  `css/browser/ie9.css` for `IE 9`. It ships no `ie8.css`.
+- `core/templates/lucent/component.php` loads `js/html5.js` for `lt IE 9`, and
+  that file does not exist in the lucent template. The reference is dead, but
+  it is inside a conditional comment, so nothing ever requests it.
 
-Some viewers still have black-and-white televisions. Broadcasting only in black-and-white — the "lowest common denominator" approach — ensures a shared experience but benefits no one. Excluding the black-and-white television owners — the "you must be this tall to ride" approach — provides no benefit either.
+`core/templates/system/email.php` has an `IEMobile 7` block that is commented
+out in PHP as well.
 
-An appropriate support strategy allows every user to consume as much visual and interactive richness as their environment can support. This approach—commonly referred to as *progressive enhancement* — builds a rich experience on top of an accessible core, without compromising that core.
+Two other legacy shims are still in the tree and are not loaded by anything on
+a normal page: `core/assets/js/excanvas/` (the `<canvas>` shim for old
+Internet Explorer) and `core/components/com_dataviewer/site/html/modernizr.js`.
 
-### Progressive Enhancement vs. Graceful Degradation
+None of this does any harm. None of it does any good either. Treat it as dead
+weight, not as evidence of a support target.
 
-The concepts of *graceful degradation* and *progressive enhancement* are often applied to describe browser support strategies. Indeed, they are closely related approaches to the engineering of "fault tolerance".
+## Browser detection, and what it is used for
 
-These two concepts influence decision-making about browser support. Because they reflect different priorities, they frame the support discussion differently. Graceful degradation prioritizes *presentation*, and permits less widely-used browsers to receive less (and give less to the user). Progressive enhancement puts *content* at the center, and allows most browsers to receive more (and show more to the user). While close in meaning, progressive enhancement is a healthier and more forward-looking approach. Progressive enhancement is a core concept of Graded Browser Support.
+The framework has a user-agent parser,
+[`Hubzero\Browser\Detector`](../../../core/libraries/Hubzero/Browser/Detector.php).
+It recognises about forty browser names, including several — Palm, Avantgo,
+Xiino, imode, HotJava — that have not existed for a long time.
 
-## Grades of Support
+In the templates it is cosmetic. `kimera`, `kameleon`, and `lucent` each build
+a class list for the `<html>` element from `$browser->name()` and
+`$browser->name() . $browser->major()`, alongside the text direction and, in
+the first two, a no-script flag:
 
-### What are Grades of Support?
+<!--include: core/templates/kimera/index.php:32-42-->
 
-While an inclusive definition of browser support is necessary, the support continuum does present design, development, and testing challenges. If anything goes, how do I know when the experience is broken? To address this question and return a sense of order to the system, we define *grades* of support. There are three grades: A-grade, C-grade, and X-grade support.
+Nothing keys off those classes to withhold a feature. The no-script flag is
+the one piece of progressive enhancement the templates actually implement,
+and each spells it differently: kimera sets `no-js` and removes it in
+`js/hub.js`, kameleon sets `nojs` and removes it in `js/index.js`, and
+lucent sets neither.
 
-Before examining each grade, here are some characteristics useful for defining levels of support.
+> **Note:** The `Edge` pattern in `Detector` matches `Edge/`, the legacy
+> EdgeHTML user agent. Current Edge sends `Edg/` and falls through to the
+> `Chrome/` pattern, so it is reported as Chrome. The `<html>` class on an
+> Edge page therefore reads `chrome`.
 
-Identified vs. Unknown There are over 10,000 browser brands, versions, and configurations and that number is growing. It is possible to group known browsers together.
+## The one real gate
 
-Capable vs. Incapable No two browsers have an identical implementation. However, it is possible to group browsers according to their support for most web standards.
+`core/plugins/tools/novnc/novnc.php` is the only place in the tree that
+refuses to render for a browser. Its `canRender()` method reads a **Minimum
+OS/Browsers** parameter — one `OS, BROWSER MAJOR.MINOR` line each — and a
+list of user-agent regular expressions to reject. Its shipped default is from
+around 2014:
 
-Modern vs. Antiquated As newer browser versions are released, the relevancy of earlier versions decreases.
+```text
+*, safari 5.1
+*, chrome 27.0
+*, iceweasel 38.0
+*, firefox 30.0
+*, opera 23.0
+*, mozilla 5.0
+iOS, safari 1.0
+Windows, msie 10.0
+Windows, ie 10.0
+```
 
-Common vs. Rare There are thousands of browsers in use, but only a few dozen are widely used.
+These are minimums, so any current version of the browsers named passes. But
+a browser whose name does not appear in the list at all fails the check, and
+the plugin does not render. Vivaldi and Yandex are recognised by `Detector`
+under their own names and are not in the default list. See
+It is recorded with the project.
+## Writing front-end code
 
-### <a id="the-three-grades"></a>Three Grades of Support
+Since nothing enforces a target, the burden is on what you write:
 
-- **<a id="c-grade"></a>C-grade**  
-  C-grade is the base level of support, providing core content and functionality. It is sometimes called core support. Delivered via nothing more than semantic HTML, the content and experience is highly accessible, unenhanced by decoration or advanced functionality, and forward and backward compatible. Layers of style and behavior are omitted.
-  
-  C-grade browsers should be identified on a blacklist.
-  
-  **Summary:** C-grade browsers are identified, incapable, antiquated and rare. QA tests a sampling of C-grade browsers, and bugs are addressed with high priority.
-- **<a id="a-grade"></a>A-grade**  
-  A-grade support is the highest support level. By taking full advantage of the powerful capabilities of modern web standards, the A-grade experience provides advanced functionality and visual fidelity.
-  
-  A-grade browsers should be identified on a whitelist. Approximately 96% of our audience enjoys an A-grade experience.
-  
-  **Summary:** A-grade browsers are identified, capable, modern and common. QA tests all A-grade browsers, and bugs are addressed with high priority.
-- **<a id="x-grade"></a>X-grade**  
-  X-grade provides support for unknown, fringe or rare browsers as well as browsers on which development has ceased. Browsers receiving X-grade support are assumed to be capable. (If a browser is shown to be incapable — if it chokes on modern methodologies and its user would be better served without decoration or functionality — then it should considered a C-grade browser.)
-  
-  X-grade browsers are all browsers not designated as any other grade.
-  
-  **Summary:** X-grade browsers are assumed to be capable and modern. QA does not test, and bugs are not opened against X-grade browsers.
+- Assume an evergreen browser. Everything the CMS already loads does.
+- Build on working HTML. kimera and kameleon put a no-script class on
+  `<html>` and remove it once script runs; use it if a feature needs
+  JavaScript to be usable, and check which name your template uses.
+- Do not add conditional comments, `excanvas`, `html5shiv`, or Modernizr. The
+  copies already in the tree are historic.
+- If you need a version floor for a specific feature, feature-detect it in
+  JavaScript or use an `@supports` rule in CSS. Do not use `Detector`; it
+  parses a string the browser is free to lie about, and it is not maintained
+  against current user agents.
+- Progressive enhancement — a usable page first, richness layered on — is
+  still the right approach, and is the one idea worth keeping from the
+  "graded browser support" material this page used to reproduce. That
+  material was Yahoo!'s, written in the mid-2000s, and described a testing
+  programme Hubzero does not run.
 
-#### <a id="a-grade-vs-x-grade"></a>The Relationship Between A-grade and X-grade Support
+## Next
 
-A bit more on the relationship between A-grade and X-grade browsers: One unexpected instance of X-grade is a newly released version of an A-grade browser. Since thorough QA testing is an A-grade requirement, a brand-new (and therefore untested) browser does not qualify as an A-grade browser. This example highlights a strength of the Graded Browser Support approach. The only practical difference between A-grade and X-grade browsers is that QA actively tests against A-grade browsers.
-
-Unlike the C-grade, which receives only HTML, the X-grade receives everything that A-grade does. Though a brand-new browser might be characterized initially as a X-grade browser, we give its users every chance to have the same experience as A-grade browsers.
-
-### <a id="beyond-three-grades"></a>Beyond the Three Grades
-
-In recent years, we have seen a proliferation in tiers of support above and beyond the three grades identified above, where certain subsets of features are implemented only on certain subsets of browsers. Defining and implementing tiers of user experience should be done by each individual project. Overall, we promote the simplest Progressive Enhancement approach possible and discourage projects from creating new tiers without accounting for the additional costs in development, testing, and maintenance resources.
-
-### <a id="testing"></a>Quality Assurance (QA) Testing
-
-Grading the browser ecosystem enables meaningful, targeted, and cost-effective QA testing. As noted, representative C-grade testing and systematic A-grade testing ensures a usable and verified experience for the vast majority of our audience. A-grade testing must be thorough and complete, while C-grade testing can be accomplished with one or two representative browsers (e.g., Netscape 4.x and [Lynx](http://lynx.browser.org/)), or by using a modern browser with CSS and JavaScript disabled.
-
-It's worth reiterating that testing resources do *not* examine X-grade browsers.
-
-Representative testing of the core experience is critical. If you choose to adopt a Graded Browser Support approach for your own projects, be sure your site's core content and functionality are accessible without images, CSS, and JS. Ensure that the keyboard is adequate for task completion and that when your site is accessed by a C-grade browser all advanced functionality prompts are hidden.
-
-## Conclusion
-
-Graded Browser Support provides an inclusive definition of support and a framework for taming the ever-expanding world of browsers and frontend technologies.
+[Development environment](devenvironment.md) covers getting a hub to develop
+against.

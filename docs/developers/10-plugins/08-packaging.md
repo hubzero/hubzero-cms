@@ -104,10 +104,16 @@ does, gets the same string out of the `.sys.ini` and makes it translatable.
 
 ## Installing
 
-An administrator installs the package through **Extensions → Install**, or a
-developer copies the directory into `app/plugins/{group}/` by hand. Either
-way the plugin does nothing until its migration has run and written the
-`#__extensions` row — see [Migrations](01-migrations.md) — because
+There is no package installer. The **Install**, **Update**, **Discover** and
+**Database** tabs the older documentation names do not exist in this release;
+only orphan language strings remain. See the
+[extension manager](../../managers/10-extensions/04-extension-manager.md) for
+what the screen actually offers.
+
+A plugin therefore arrives one of two ways: through the git-backed
+**Custom Extensions** flow, or by copying the directory into
+`app/plugins/{group}/` by hand. Either way the plugin does nothing until its
+migration has run and written the `#__extensions` row — see [Migrations](01-migrations.md) — because
 `Hubzero\Plugin\Loader` builds its list from that table and never scans the
 filesystem.
 

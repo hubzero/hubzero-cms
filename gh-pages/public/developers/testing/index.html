@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Testing · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview There&#x27;s a lot of information and articles out there about why and how you should be writing your tests. But, in short, it ensures your code does what…">
+  <meta name="description" content="Hubzero has a working PHPUnit suite across the framework libraries, eight components and two plugins, plus two custom linters that catch faults nothing else…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/testing/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -127,42 +127,47 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Testing</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#location">Location</a></li>
-<li class="toc__item toc__item--l2"><a href="#test-types">Test Types</a></li>
-<li class="toc__item toc__item--l3"><a href="#basic-tests">Basic Tests</a></li>
-<li class="toc__item toc__item--l3"><a href="#database-tests">Database Tests</a></li>
-<li class="toc__item toc__item--l2"><a href="#scaffolding-and-running-tests">Scaffolding and Running Tests</a></li>
-<li class="toc__item toc__item--l3"><a href="#running-tests">Running Tests</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-exists">What exists</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-them">Running them</a></li>
+<li class="toc__item toc__item--l3"><a href="#through-muse">Through muse</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-a-test">Writing a test</a></li>
+<li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
+<li class="toc__item toc__item--l3"><a href="#database">Database</a></li>
+<li class="toc__item toc__item--l3"><a href="#scaffolding">Scaffolding</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-linters">The linters</a></li>
+<li class="toc__item toc__item--l3"><a href="#missing-facade-imports">Missing facade imports</a></li>
+<li class="toc__item toc__item--l3"><a href="#undefined-language-keys">Undefined language keys</a></li>
+<li class="toc__item toc__item--l2"><a href="#continuous-integration">Continuous integration</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-old-page-claimed-that-is-not-true">What the old page claimed that is not true</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -177,94 +182,228 @@
           <p class="eyebrow">Developers</p>
           <h1>Testing</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/testing">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>There's a lot of information and articles out there about why and how you should be writing your tests. But, in short, it ensures your code does what you want it to and makes sure it continues to even after you or others make modifications.</p>
-<p>Not everything is easy to test. But, at the very least, libraries and other shared pieces of code would ideally be covered by unit tests. It takes time, but it's definitely easier to do it as you write code than it is to go back and add all your tests at the end of the project.</p>
-<p>In an effort to make testing a little more accessible, HUBzero offers some basic guidance and structure for your testing. We'll step through what's available below.</p>
-<h2 id="location">Location</h2>
-<p>Your tests will live in a <code>tests</code> folder within the applicable extension directory. For example, tests for the blog component can be found at:</p>
-<pre><code>core/components/com_blog/tests/...
+<p>Hubzero has a working PHPUnit suite across the framework libraries, eight
+components and two plugins, plus two custom linters that catch faults nothing
+else does. This page says what is there, how to run it, and how to add to it.</p>
+<p>A full run on 2.4-main passes:</p>
+<pre><code>Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 </code></pre>
+<p>The deprecations come from PHPUnit 11 warning about older test syntax, not
+from failures. Six tests skip themselves when what they need is absent.</p>
+<h2 id="what-exists">What exists</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Where</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHPUnit 11.5</td>
+<td><code>core/vendor/bin/phpunit</code></td>
+<td>The test runner</td>
+</tr>
+<tr>
+<td><code>core/phpunit.xml.dist</code></td>
+<td></td>
+<td>The shipped configuration: three suites</td>
+</tr>
+<tr>
+<td><code>muse test</code></td>
+<td><code>core/bin/muse</code></td>
+<td>Lists and runs one extension's tests</td>
+</tr>
+<tr>
+<td><code>tools/lint/missing-facade-imports.php</code></td>
+<td></td>
+<td>Finds unqualified facade calls in namespaced files</td>
+</tr>
+<tr>
+<td><code>tools/lint/undefined-language-keys.php</code></td>
+<td></td>
+<td>Finds language keys nothing defines</td>
+</tr>
+<tr>
+<td><code>core/bin/php_tests.sh</code></td>
+<td></td>
+<td>PSR-12 style plus a syntax check, over a list of files</td>
+</tr>
+<tr>
+<td><code>.github/workflows/php-lint.yml</code></td>
+<td></td>
+<td>CI: <code>php -l</code> over <code>core</code> and <code>app</code>, then the facade linter</td>
+</tr>
+</tbody>
+</table>
+<p>Tests are named <code>*Test.php</code> and live in a <code>Tests</code> or <code>tests</code> directory
+inside the thing they test:</p>
+<pre><code>core/libraries/Hubzero/Database/Tests/QueryTest.php
+core/libraries/Hubzero/Config/Tests/RegistryTest.php
+core/components/com_blog/tests/EntryTest.php
+core/components/com_resources/helpers/tests/
+core/plugins/user/hubzero/tests/
+</code></pre>
+<h2 id="running-them">Running them</h2>
+<p>Everything, through the shipped configuration:</p>
+<pre><code class="language-bash">cd core
+vendor/bin/phpunit -c phpunit.xml.dist
+</code></pre>
+<p>Or one suite at a time — <code>libraries</code>, <code>components</code>, <code>plugins</code>:</p>
+<pre><code class="language-bash">vendor/bin/phpunit -c phpunit.xml.dist --testsuite libraries
+</code></pre>
+<p>The <code>libraries</code> suite covers <code>libraries/Hubzero</code> and excludes three
+production classes that happen to be named <code>Test.php</code>. <code>components</code> globs
+<code>components/*/tests</code> and <code>components/*/helpers/tests</code>; <code>plugins</code> globs
+<code>plugins/*/*/tests</code>.</p>
+<h3 id="through-muse">Through muse</h3>
+<p><a href="../muse/index.html">Muse</a> wraps the runner for one extension at a time.
+<code>muse test show</code> lists what can be run:</p>
+<pre><code>$ php core/bin/muse test show
+lib_base
+lib_cache
+lib_config
+lib_database
+…
+core:com_blog
+core:com_courses
+core:com_groups
+core:plg_authentication_orcid
+core:plg_user_hubzero
+</code></pre>
+<p>Names are the extension with its prefix — <code>com_</code>, <code>mod_</code>, <code>plg_{group}_</code>,
+<code>tpl_</code>, or <code>lib_</code> for a framework subsystem — with <code>core:</code> or <code>app:</code> in front
+of everything but a library, because the same extension can exist in both
+trees.</p>
+<pre><code class="language-bash">php core/bin/muse test run lib_config
+</code></pre>
+<p><code>run</code> requires an extension; there is no way to run everything through muse.
+Use PHPUnit directly for that.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Tests are only supported in individual extensions with 2.1.10+. Older versions only support running tests from the HUBzero framework.</p>
+<p><strong>Note:</strong> <code>muse test run</code> invokes PHPUnit with
+<code>--bootstrap core/bootstrap/phpunit-bootstrap.php</code> and no configuration
+file of its own, so PHPUnit picks up whatever <code>phpunit.xml</code> it finds in the
+working directory. Run it from the installation root.</p>
 </aside>
-<p>Test naming convention and structure should follow the definitions found in the <a href="https://phpunit.de/manual/current/en/index.html">PHPUnit documentation.</a></p>
-<h2 id="test-types">Test Types</h2>
-<p>There are two primary types of tests, basic and database. Basic tests involve no external resources, whereas database tests require the ability to simulate/mock database calls.</p>
-<h3 id="basic-tests">Basic Tests</h3>
-<p>Basic tests in HUBzero offer no additional functionality or abstraction over the PHPUnit_Framework_TestCase. Therefore there's really nothing that needs to be covered here that isn't already in the PHPUnit documentation.</p>
-<h3 id="database-tests">Database Tests</h3>
-<p>To help with writing tests that require a database object, we've worked to provide some shortcuts and best practices. Database tests are tough because they can be slow, and you don't want them to depend a certain database state or mess up another developers database. So, to get around this, we either completely mock the database, or use a reloadable sqlite database.</p>
-<p>Let's look at an example of this.</p>
-<pre><code class="language-php">/**
- * Test to make sure we can run a basic select statement
- *
- * @return void
- **/
-public function testBasicFetch()
+<h2 id="writing-a-test">Writing a test</h2>
+<p>Two base classes, both real PHPUnit 11 test cases.</p>
+<h3 id="basic">Basic</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Test/Basic.php"><code>Hubzero\Test\Basic</code></a> extends
+<code>PHPUnit\Framework\TestCase</code> and adds nothing. If your test needs no
+database, extend it — or extend <code>TestCase</code> directly — and follow the
+<a href="https://docs.phpunit.de/en/11.5/">PHPUnit documentation</a>.</p>
+<h3 id="database">Database</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Test/Database.php"><code>Hubzero\Test\Database</code></a> is
+for tests that need a driver. It gives you a real, throwaway SQLite database
+rather than a connection to anyone's development server:</p>
+<pre><code class="language-php">public function testBasicFetch()
 {
     $dbo   = $this-&gt;getMockDriver();
     $query = new Query($dbo);
 
-    // Try to actually fetch some rows
     $rows = $query-&gt;select('*')
                   -&gt;from('users')
                   -&gt;whereEquals('id', '1')
                   -&gt;fetch();
 
-    // Basically, as long as we don't get false here, we're good
     $this-&gt;assertCount(1, $rows, 'Query should have returned one result');
 }
 </code></pre>
-<p>You'll see above the call to a function named <code>getMockDriver()</code>. This method is going to give you back a database object, loading up a sqlite database named test.sqlite3, by default. This is a fully functioning database driver.</p>
-<p>To make the database driver useful, you'll need at least two files included in your tests directory. They are:</p>
-<pre><code>Tests/Fixtures/seed.xml
-Tests/Fixtures/test.sqlite3
+<p><code>getMockDriver()</code> returns a fully functioning driver over a SQLite file. Two
+fixtures back it, in a <code>Fixtures</code> directory beside the test:</p>
+<pre><code>Tests/Fixtures/test.sqlite3
+Tests/Fixtures/seed.xml
 </code></pre>
-<p>The seed.xml file will contain all your sample data. This will be automatically loaded in the test framework for each test class (i.e. file). The structure and destination of all database operations will come from the test.sqlite3 file.</p>
-<p>The names of those files can also be changed by overwriting the <code>$fixture</code> and/or <code>$seed</code> properties on your test class.</p>
-<h2 id="scaffolding-and-running-tests">Scaffolding and Running Tests</h2>
-<p>To get starting writing new tests, you can use the muse scaffolding command to create a test stub. This will look something like this:</p>
-<pre><code>me@me.org:~# muse scaffolding create test lib_database --type=database
-Creating /var/www/example/core/libraries/Hubzero/database/Tests/ExampleDatabaseTest.php
+<p><code>test.sqlite3</code> supplies the schema; <code>seed.xml</code> supplies the rows, reloaded
+for each test class. Override <code>$fixture</code> and <code>$seed</code> on the test class to
+use different filenames, or override <code>getDataSet()</code> for anything more
+involved.</p>
+<p><code>Hubzero\Test\Database</code> also bootstraps the facades — it adopts the
+container the bootstrap installed rather than replacing it, and registers an
+event dispatcher — so a model that calls <code>Event::trigger()</code> at file scope
+does not fatal.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This class is Hubzero's own, not PHPUnit's. It replaces
+<code>PHPUnit\DbUnit\TestCase</code>, which was abandoned years ago. The supporting
+classes are in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Test/Database"><code>Hubzero\Test\Database</code></a> —
+<code>Connection</code>, <code>DataSet</code>, <code>XmlDataSet</code>, <code>Table</code>.</p>
+</aside>
+<h3 id="scaffolding">Scaffolding</h3>
+<pre><code class="language-bash">php core/bin/muse scaffolding create test lib_database --type=database
 </code></pre>
-<p>The test scaffolding expects the first argument after test to be the extension into which the test should be placed. A <code>--type</code> argument can also be given to specify whether or not you're creating a basic or a database test. In this example, given that we're testing the database object, the database test type obviously makes sense.</p>
-<h3 id="running-tests">Running Tests</h3>
-<p>Once you've created your tests, you'll need to run them. To get started, you can use the muse <code>test</code> command.</p>
-<p>First, you'll probably want to list all available tests that can be run. From the console, run <code>muse test show</code>. This will list all the available tests.</p>
-<pre><code>me@me.org:~# muse test show
-lib_base
-lib_browser
-lib_cache
-lib_config
-lib_console
-lib_database
-lib_debug
-lib_notification
-lib_pathway
-lib_spam
-lib_template
-lib_utility
-core:com_blog
+<p>The first argument after <code>test</code> is the extension; <code>--type</code> is <code>basic</code> or
+<code>database</code>.</p>
+<h2 id="the-linters">The linters</h2>
+<p>Two faults are invisible to PHP's own syntax check and to any test that does
+not happen to execute the affected line. Both have a linter.</p>
+<h3 id="missing-facade-imports">Missing facade imports</h3>
+<p>The CMS registers <code>Route</code>, <code>Lang</code>, <code>User</code>, <code>Config</code> and the rest as
+<strong>root-namespace</strong> aliases. Inside a namespaced file, an unqualified
+<code>Route::url()</code> resolves to <code>Current\Namespace\Route</code> and fatals when the line
+runs. The file parses; nothing complains until that branch executes, which
+on a rarely used error path can be years.</p>
+<pre><code class="language-bash">php tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
+php tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
 </code></pre>
-<p>Available tests are grouped by their respective extension or library. Components (com_), modules (mod_), plugins (plg_), and templates (tpl_) will also be prefixed with an indicator as to if the extension is in the /core or /app directory. This is because it is possible to have an extension with the same name in both /app and /core and allows for specifying to muse the exact suite of tests to be run.</p>
-<p>Next, you can run tests with the <code>run</code> command:</p>
-<pre><code>me@me.org:~# muse test run lib_database
-PHPUnit 4.6.2 by Sebastian Bergmann and contributors.
-
-...................................................
-
-Time: 2.51 seconds, Memory: 17.5Mb
-
-OK (51 tests, 73 assertions)
+<p>It reads the file with PHP's tokenizer, so a name in a comment, a string or
+a heredoc is not counted. It exits non-zero on a finding, and the PHP lint
+workflow runs it on every push. The tree is currently clean; 730 of these
+were fixed at once, and this is what keeps them from coming back.</p>
+<h3 id="undefined-language-keys">Undefined language keys</h3>
+<p><code>Lang::txt()</code> returns its argument unchanged when the key is not found, so a
+missing string is not an error — the raw key is printed into the page.</p>
+<pre><code class="language-bash">php tools/lint/undefined-language-keys.php
+php tools/lint/undefined-language-keys.php core/components/com_blog
 </code></pre>
-<p>More details on the muse functionality can be found in the <a href="../muse/index.html">Muse documentation</a>.</p>
+<p>A key counts as defined if any <code>en-GB</code> file anywhere under <code>core/</code> or <code>app/</code>
+defines it, which is deliberately generous: only a handful of files load per
+request, so a key defined in some other extension may still fail at runtime.
+Keys built at runtime (<code>'COM_X_' . strtoupper($type)</code>) cannot be checked and
+are skipped, so a clean run does not prove every string resolves.</p>
+<p><strong>This one is not in CI.</strong> Run it yourself before sending a change.</p>
+<h2 id="continuous-integration">Continuous integration</h2>
+<p>Two workflows run on GitHub:</p>
+<ul>
+<li><strong><code>php-lint.yml</code></strong> — on every push to <code>2.4-main</code> and on pull requests
+touching any <code>.php</code> file. It runs <code>php -l</code> over every PHP file in <code>core</code>
+and <code>app</code> outside <code>vendor</code>, then the facade linter.</li>
+<li><strong><code>pages.yml</code></strong> — builds this documentation, runs the builder's own Python
+tests, regenerates the references and fails if the committed copy is
+stale, and checks every internal link.</li>
+</ul>
+<p>A third, <code>dev-push.yml</code>, deploys to a Purdue development host and is
+disabled (<code>if: false</code>).</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>No CI job runs PHPUnit.</strong> The suite passes today, and
+nothing enforces that it keeps passing. Run it before you send a change.</p>
+</aside>
+<h2 id="what-the-old-page-claimed-that-is-not-true">What the old page claimed that is not true</h2>
+<p>This page was imported from help.hubzero.org and described the 2015 state.
+For the record:</p>
+<ul>
+<li>Tests extend <code>PHPUnit\Framework\TestCase</code>, not <code>PHPUnit_Framework_TestCase</code>.
+PHPUnit here is 11.5, not 4.6.</li>
+<li>The &quot;tests are only supported in individual extensions with 2.1.10+&quot; note
+is long spent. Extension tests work and several ship.</li>
+<li><code>muse test show</code> output has changed; the list above is the real one.</li>
+</ul>
+<p>Two loose ends worth knowing about:</p>
+<ul>
+<li><code>tests/Unit</code> and <code>tests/Feature</code> in the installation root are <strong>empty</strong>,
+and no configuration file refers to them. They are a stub of a layout that
+was never adopted. Do not put tests there.</li>
+<li>A <code>phpunit.xml</code> in the root, if you have one, is yours: the filename is in
+<code>.gitignore</code>. <code>core/phpunit.xml.dist</code> is the shipped configuration, and it
+is the one to change if the change should reach other people.</li>
+</ul>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups-gitlab/developing/index.html" rel="prev"><span>Previous</span>Developing</a><a class="pager__next" href="../api/index.html" rel="next"><span>Next</span>API</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups-gitlab/developing/index.html" rel="prev"><span>Previous</span>Developing</a><a class="pager__next" href="../api/index.html" rel="next"><span>Next</span>REST API</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/15-testing.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

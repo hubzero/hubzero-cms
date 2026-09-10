@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Development Environment · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Setting up your Development Environment The HUBzero Platform is comprised of many software packages woven together into an a single system. The minimum…">
+  <title>Development environment · Developers · Hubzero Documentation</title>
+  <meta name="description" content="The CMS does not run standalone. You develop against a working hub — a web server, PHP, a database, and a configured directory — with this repository checked…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/devenvironment/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,22 +41,26 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Development Environment</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#setting-up-your-development-environment">Setting up your Development Environment</a></li>
-<li class="toc__item toc__item--l2"><a href="#setup-development-environment-via-vmware-image">Setup Development Environment via VMware Image</a></li>
-<li class="toc__item toc__item--l2"><a href="#setup-development-environment-via-packages">Setup Development Environment via Packages</a></li>
-<li class="toc__item toc__item--l2"><a href="#getting-the-latest-code">Getting the Latest Code</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Development environment</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-this-repository-provides">What this repository provides</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-this-repository-does-not-provide">What this repository does not provide</a></li>
+<li class="toc__item toc__item--l2"><a href="#requirements">Requirements</a></li>
+<li class="toc__item toc__item--l2"><a href="#getting-a-hub-to-develop-against">Getting a hub to develop against</a></li>
+<li class="toc__item toc__item--l2"><a href="#replacing-a-hub-s-cms-with-a-checkout">Replacing a hub&#x27;s CMS with a checkout</a></li>
+<li class="toc__item toc__item--l2"><a href="#continuous-integration">Continuous integration</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-the-tests">Running the tests</a></li>
+<li class="toc__item toc__item--l2"><a href="#next">Next</a></li>
 </ol></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -86,11 +90,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -132,34 +136,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -168,119 +172,250 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Development Environment</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Development environment</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Development Environment</h1>
+          <h1>Development environment</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/index/devenvironment">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2017.</aside>
+        
         <div class="prose">
-<h2 id="setting-up-your-development-environment">Setting up your Development Environment</h2>
-<p>The HUBzero Platform is comprised of many software packages woven together into an a single system. The minimum requirements for developing HUBzero web code can be a simple Linux Apache MySQL PHP (LAMP) server matching the currently supported Linux distribution. At the time of writing, Centos 7. Although the a simple LAMP server should suffice, it should not The HUBzero maintainers try to ensure that system administrators do not have to deviate too much from the stock distribution in order to install HUBzero.</p>
-<h2 id="setup-development-environment-via-vmware-image">Setup Development Environment via VMware Image</h2>
-<p>The Hubzero maintainers package a VMware Image available for evaluation and development purposes available for download at <a href="https://hubzero.org/download">https://hubzero.org/download.</a></p>
-<h2 id="setup-development-environment-via-packages">Setup Development Environment via Packages</h2>
-<p>If you are confident in your Linux system administration skills, the Hub can be built via Debian and RedHat packages. Instructions can be found<a href="../../../installation/index.html">in our documentation under System Administrators.</a> Once the hub is operational, you will want to clone the hubzero-cms repository for development.</p>
-<p>See the Getting the Latest Code section for instructions on how to use git to grab the latest code.</p>
-<h2 id="getting-the-latest-code">Getting the Latest Code</h2>
-<p>In the pre-packaged development environments listed above, the hubzero-cms code is a snapshot of when the package was created. To obtain the latest code, we will use git to clone the hubzero-cms repository.</p>
-<p>In order to get the latest code you will need:</p>
+<p>The CMS does not run standalone. You develop against a working hub — a web
+server, PHP, a database, and a configured <code>app/</code> directory — with this
+repository checked out in place of its CMS. This page separates what the
+repository gives you from what you have to get elsewhere.</p>
+<h2 id="what-this-repository-provides">What this repository provides</h2>
+<p>Everything here is in the tree and you can read it:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bin/muse"><code>core/bin/muse</code></a></td>
+<td>The console. <code>muse install</code> bootstraps a hub from a checkout; <code>muse migration</code> applies schema changes. See the <a href="../../../reference/muse/index.html">Muse reference</a>.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bin/composer"><code>core/bin/composer</code></a></td>
+<td>A bundled Composer. Run it as <code>php core/bin/composer install</code> from <code>core/</code>.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/composer.json"><code>core/composer.json</code></a></td>
+<td>The PHP dependencies. The platform is pinned to PHP <code>8.2.30</code>; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, <code>parallel-lint</code>, and Mockery.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bin/php_tests.sh"><code>core/bin/php_tests.sh</code></a></td>
+<td>Runs <code>phpcs --standard=PSR12</code> and <code>parallel-lint</code> over the files you name.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/tools/lint"><code>tools/lint/</code></a></td>
+<td><code>missing-facade-imports.php</code> and <code>undefined-language-keys.php</code>.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/tools/docs"><code>tools/docs/</code></a> and <code>gh-pages/</code></td>
+<td>The documentation builder and the reference generators.</td>
+</tr>
+<tr>
+<td><code>.github/workflows/</code></td>
+<td>The CI. See below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-this-repository-does-not-provide">What this repository does not provide</h2>
+<p>There is <strong>no</strong> Dockerfile, no <code>docker-compose.yml</code>, no Vagrantfile, no
+provisioning script, and no <code>make</code>-style setup target anywhere in the tree.
+Nothing here builds you a machine. Nothing here installs Apache, PHP, or
+MySQL.</p>
+<p>The <code>.travis.yml</code> at the root is left over from Travis CI. It declares PHP 8.2
+and 8.3 and calls <code>core/bin/php_tests.sh</code> on the changed files. Nothing runs
+it now.</p>
+<h2 id="requirements">Requirements</h2>
+<p><code>muse install</code> runs a pre-flight check before it does anything, and that
+check is the authoritative statement of what the CMS needs. From
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Install/Preflight.php"><code>Install/Preflight.php</code></a>:</p>
 <ul>
-<li>SSH access to the machine</li>
-<li>sudo privileges</li>
-<li>git</li>
+<li>PHP <strong>8.2.0</strong> or later.</li>
+<li>These extensions: <code>pdo</code>, <code>pdo_mysql</code>, <code>json</code>, <code>mbstring</code>, <code>openssl</code>,
+<code>curl</code>, <code>gd</code>, <code>fileinfo</code>, <code>zip</code>.</li>
 </ul>
-<p>A couple conventions for this section, in particular:</p>
-<ul>
-<li><code>this text</code> indicates an incantation to be typed in the terminal.</li>
-<li>&amp;lt;something&gt; indicates something that should be replaced with value you have set.</li>
-<li>[!] indicates something that should be interpreted, or have your judgment applied.</li>
-</ul>
-<ol>
-<li><code>ssh &lt;username&gt;@&lt;hostname&gt;</code>
-<ol>
-<li>Log into your development server</li>
-</ol>
-</li>
-<li><code>cd /var/www</code> [!]
-<ol>
-<li>Change into the webroot directory.</li>
-<li>[!]: This may be /www in some configurations.</li>
-</ol>
-</li>
-<li><code>mv &lt;hubname&gt; &lt;hubname&gt;.bak</code>[!]
-<ol>
-<li>Backup the existing hubzero-cms installation.</li>
-<li>[!]: The name of the directory may change depending on <a href="https://help.hubzero.org/documentation/240/installation/installdeb.cms#configure">what &amp;lt;hubname&gt; is used for <em>hzcms install</em></a>. In the documentation, 'example' is used. Therefore the directory will be /var/www/example.</li>
-</ol>
-</li>
-<li><code>git clone https://github.com/hubzero/hubzero.git &lt;hubname&gt;</code>
-<ol>
-<li>This will clone the latest release into your webroot. The 'dev' branch is the default. You may switch to another available at this step if desired.</li>
-<li>This will create the shell of the application, we will need to (re)-populate it with configuration values and pull in external dependencies later on.</li>
-</ol>
-</li>
-<li><code>cp &lt;hubname&gt;.bak/app &lt;hubname&gt;/.</code>
-<ol>
-<li>This moves the configuration files back into the application. If prompted, overwrite the new app/ directory.</li>
-</ol>
-</li>
-<li><code>cd &lt;hubname&gt;/core</code>
-<ol>
-<li>Navigate to the core directory.</li>
-</ol>
-</li>
-<li><code>php ./bin/composer install</code>
-<ol>
-<li>Pull in external dependencies using composer.</li>
-</ol>
-</li>
-<li><code>cd ../</code>
-<ol>
-<li>Navigate back to the /var/www/&amp;lt;hubname&gt; directory.</li>
-</ol>
-</li>
-<li><code>php muse migration -i -f</code>
-<ol>
-<li>Run database migrations. This helps maintain the database's schema between versions. Note: Reversing database schema changes can be extremely difficult if needed.</li>
-</ol>
-</li>
-<li><code>cd /var/www</code>
-<ol>
-<li>Navigate back to the directory containing the hub installation.</li>
-</ol>
-</li>
-<li><code>chown apache:apache &lt;hubname&gt; -R</code>[!]
-<ol>
-<li>Change the owner and the group of the hub installation directory.</li>
-<li>[!] The user may be <em>apache</em> OR <em>www-data</em>, depending on the distribution.</li>
-</ol>
-</li>
-<li><code>chmod 775 &lt;hubname&gt; -R</code>
-<ol>
-<li>Change the file permissions to allow the group to read and write permissions.</li>
-</ol>
-</li>
-<li><code>sudo usermod -aG apache &lt;username&gt;</code>
-<ol>
-<li>Add your user to the apache group.</li>
-</ol>
-</li>
-<li><code>git pull --rebase</code>
-<ol>
-<li>Pull the latest code. This should be done periodically.</li>
-<li>Use the rebase flag if you already have some commits that you haven't pushed yet. This puts your work on top of the changes that come downstream.</li>
-</ol>
-</li>
-</ol>
+<p><code>pdo_mysql</code> is the only database driver required, and the installer connects
+with a <code>mysql:</code> DSN, so in practice the database is MySQL or MariaDB. The PHP
+lint workflow runs on 8.3, and Composer's platform is pinned to 8.2.30, so
+8.2 and 8.3 are the versions the project actually exercises.</p>
+<p>Run <code>php core/bin/muse install check</code> on a candidate machine to see the
+pre-flight result without installing anything.</p>
+<h2 id="getting-a-hub-to-develop-against">Getting a hub to develop against</h2>
+<p>Three routes, none of them in this repository:</p>
+<p><strong>Install from packages.</strong> The supported path. Enterprise Linux 8 or a
+compatible rebuild, the Hubzero packages, and the <code>hzcms</code> command. See the
+<a href="../../../installation/index.html">Installation</a> book. This is what a production
+hub is, so a development hub built this way behaves the same.</p>
+<p><strong>Autohub.</strong> A script that provisions a hub in a virtual machine using
+VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a
+<strong>separate repository</strong>, <a href="https://github.com/hubzero/autohub">hubzero/autohub</a>,
+not here; nothing in this tree calls it or knows about it. See
+<a href="../../../installation/autohub/index.html">Autohub</a>.</p>
+<p><strong><code>muse install</code> on your own LAMP stack.</strong> If you already have PHP 8.2+, a
+web server, and MySQL or MariaDB, the console can take a checkout of this
+repository the rest of the way. From the checkout root:</p>
+<pre><code class="language-bash">php core/bin/composer install --working-dir=core
+php core/bin/muse install
+</code></pre>
+<p><code>muse install</code> runs interactively and can also be driven a step at a time:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>muse install check</code></td>
+<td>Pre-flight checks only, no changes</td>
+</tr>
+<tr>
+<td><code>muse install vendor</code></td>
+<td>Composer dependencies only</td>
+</tr>
+<tr>
+<td><code>muse install appdir</code></td>
+<td>Create the <code>app/</code> directory structure</td>
+</tr>
+<tr>
+<td><code>muse install database</code></td>
+<td>Configure the database connection</td>
+</tr>
+<tr>
+<td><code>muse install settings</code></td>
+<td>Write the site settings and configuration files</td>
+</tr>
+<tr>
+<td><code>muse install schema</code></td>
+<td>Load the schema and essential data</td>
+</tr>
+<tr>
+<td><code>muse install migrations</code></td>
+<td>Run migrations to bring the schema up to date</td>
+</tr>
+<tr>
+<td><code>muse install sample</code></td>
+<td>Load sample data</td>
+</tr>
+<tr>
+<td><code>muse install admin</code></td>
+<td>Create the first administrator account</td>
+</tr>
+</tbody>
+</table>
+<p>This gets you the CMS. It does not get you the parts of a hub that are not
+the CMS: the tool session middleware, Workspaces, the mail gateway, LDAP, or
+Solr. For those you need the packages or Autohub.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> [!] The permissions scheme used here is NOT production safe. It's used for development purposes. File permissions and your security scheme depend on your needs.</p>
+<p><strong>Note:</strong> The old version of this page pointed at a VMware image on
+<code>hubzero.org/download</code>. Nothing in this repository builds or references
+such an image; check whether it still exists before relying on it.</p>
 </aside>
+<h2 id="replacing-a-hub-s-cms-with-a-checkout">Replacing a hub's CMS with a checkout</h2>
+<p>On a hub installed from packages, the CMS directory is a snapshot from when
+the package was built. To develop against current code, replace it with a
+clone. The hub's own state lives in <code>app/</code>, which is not in the repository —
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.gitignore"><code>.gitignore</code></a> excludes <code>app/**</code> — so <code>app/</code> is what you
+carry across.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Do this on a development hub only. Take a database dump first;
+<code>muse migration</code> changes the schema and reversing a migration is difficult.</p>
+</aside>
+<ol>
+<li>
+<p>Change into the web root and move the existing installation aside. The
+directory is named for the hub name given to <code>hzcms install</code>:</p>
+<pre><code class="language-bash">cd /var/www
+sudo mv example example.bak
+</code></pre>
+</li>
+<li>
+<p>Clone the repository into its place. The repository is
+<strong><code>hubzero/hubzero-cms</code></strong>; the older <code>hubzero/hubzero</code> name in the previous
+version of this page is wrong.</p>
+<pre><code class="language-bash">sudo git clone https://github.com/hubzero/hubzero-cms.git example
+</code></pre>
+</li>
+<li>
+<p>Copy the hub's own state back in. This is the configuration, the uploaded
+files, and the site's templates and extensions.</p>
+<pre><code class="language-bash">sudo cp -a example.bak/app example/
+</code></pre>
+</li>
+<li>
+<p>Install the PHP dependencies. <code>core/vendor/</code> is not in the repository
+either.</p>
+<pre><code class="language-bash">cd /var/www/example/core
+sudo php ./bin/composer install
+</code></pre>
+</li>
+<li>
+<p>Bring the database schema up to the code. Run this from the hub root, not
+from <code>core/</code>:</p>
+<pre><code class="language-bash">cd /var/www/example
+sudo php core/bin/muse migration -f
+</code></pre>
+<p><code>muse migration</code> with no options is a dry run that lists what it would do;
+<code>-f</code> performs the run. The <code>-i</code> flag the old page used is deprecated and
+now behaves as <code>-a</code> (list all), so <code>-f</code> alone is what you want.</p>
+</li>
+<li>
+<p>Give the web server ownership and let your account write:</p>
+<pre><code class="language-bash">cd /var/www
+sudo chown -R apache:apache example
+sudo chmod -R 775 example
+sudo usermod -aG apache $USER
+</code></pre>
+<p>The user is <code>apache</code> on Enterprise Linux and <code>www-data</code> on Debian and
+Ubuntu.</p>
+</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Group-writable files owned by the web server user are for a
+development machine only. Do not carry this permission scheme to a hub
+anyone else uses.</p>
+</aside>
+<p>Afterwards, <code>git pull --rebase</code> from the hub root brings in new code. Rebase
+keeps your own unpushed commits on top of it. Re-run steps 4 and 5 when the
+dependencies or the migrations change.</p>
+<h2 id="continuous-integration">Continuous integration</h2>
+<p>Three workflows, in <code>.github/workflows/</code>:</p>
+<ul>
+<li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.3. Two checks: <code>php -l</code> over every PHP
+file under <code>core/</code> and <code>app/</code> outside <code>vendor/</code>, and
+<code>tools/lint/missing-facade-imports.php</code>. The second exists because the CMS
+registers its facades as root-namespace aliases, so a namespaced file that
+writes <code>Route::url()</code> without importing <code>Route</code> parses cleanly and fatals
+only when that line runs.</li>
+<li><strong><code>pages.yml</code></strong> — builds this documentation, regenerates the references,
+checks every internal link, and fails if the committed <code>gh-pages/public/</code>
+is stale.</li>
+<li><strong><code>dev-push.yml</code></strong> — a deployment hook to a Purdue-operated development
+host. It is disabled at the top with <code>if: false</code>.</li>
+</ul>
+<p>None of the three runs the PHP test suite, and none starts a browser.</p>
+<h2 id="running-the-tests">Running the tests</h2>
+<p>PHPUnit is a dev dependency and the tests live beside the code they cover, as
+<code>*Test.php</code> under <code>core/libraries/Hubzero/</code> and in each extension's <code>tests/</code>
+directory. Run them with <code>core/vendor/bin/phpunit</code>. The database library's
+tests need their backend available and are run as a separate suite. See
+<a href="../../testing/index.html">Testing</a>.</p>
+<p>For style, <code>core/bin/php_tests.sh &lt;files&gt;</code> gives you the PSR-12 check and the
+syntax check in one call, the same pair the old Travis configuration ran.</p>
+<h2 id="next">Next</h2>
+<p><a href="../../foundation/index.html">Foundation</a> covers how a request is served.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../browsersupport/index.html" rel="prev"><span>Previous</span>Browser Support</a><a class="pager__next" href="../../tutorials/index.html" rel="next"><span>Next</span>Video Tutorials</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../browsersupport/index.html" rel="prev"><span>Previous</span>Browser support</a><a class="pager__next" href="../../tutorials/index.html" rel="next"><span>Next</span>Video tutorials</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/06-devenvironment.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -1,32 +1,117 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/structure
 source-id: 3506
 modified: 2015-08-24
-imported: 2026-09-09
 -->
 # Structure
 
-## Overview
+A template is a directory. This chapter says what goes in it, what is
+required, and what the CMS does with each part.
 
-All templates should include a manifest in the form of an XML document named `templateDetails.xml`. The file holds key "metadata" about the template and is essential. Without it, your template won't be seen by the system.
+## Where it lives
 
-## Directory & Files
+Your templates go in `app/templates/{name}`. The templates that ship with the
+CMS are in `core/templates/{name}` and are replaced on upgrade, so do not edit
+them in place — copy one into `app/templates` instead, as the
+[overview](README.md) describes.
 
-Templates are found in the `/templates` directory of a hub's `/app`. Specific template files are contained within a directory of the same name as the template. While a template may contain any number of files and sub-directories, it must contain at least two files: the primary layout (`index.php`) and a XML manifest named `templateDetails.xml`.
+[`Hubzero\Template\Loader`](../../../core/libraries/Hubzero/Template/Loader.php)
+resolves a style to a directory, checking `app/` before `core/`. A template in
+`app/templates/kimera` therefore shadows the shipped `kimera` entirely.
+
+## The tree
+
+This is `kimera`, the fullest of the shipped site templates:
 
 ```
-/app
-.. /templates
-.. .. /{TemplateName}
-.. .. .. /css
-.. .. .. /html
-.. .. .. /img
-.. .. ..  /js
-.. .. .. error.php
-.. .. .. component.php
-.. .. .. index.php
-.. .. .. templateDetails.xml
-.. .. .. template_thumbnail.png
-.. .. .. favicon.ico
+core/templates/kimera/
+    css/               Compiled stylesheets
+        browser/       Per-browser fixes: ie8.css, ie9.css
+        pages/         Per-page stylesheets: home.css, community.css, …
+        theme.php      Parameter-driven colours, served as CSS
+    html/              Output overrides for other extensions
+    img/               Images the template's own CSS refers to
+    js/                Scripts: hub.js, html5.js
+    language/
+        en-GB/
+            en-GB.tpl_kimera.ini
+    less/              LESS sources for everything under css/
+    migrations/
+        Migration20170831000000TplKimera.php
+    component.php      Layout for tmpl=component requests
+    composer.json      Package metadata
+    error.php          Layout for error pages
+    favicon.ico
+    index.php          The main layout
+    offline.php        Layout shown when the site is offline
+    templateDetails.xml
+    template_thumbnail.png
 ```
+
+Nothing here is magic except the names. `css/`, `js/`, `img/` and `less/` are
+conventions your own stylesheets and `index.php` refer to; you can call them
+what you like. The rest the CMS looks for by name.
+
+## What is actually required
+
+Only two things:
+
+- **`index.php`.** If it is missing, `Hubzero\Document\Type\Html` silently
+  falls back to `core/templates/system` and renders that instead.
+- **A row in `#__extensions`, and a style in `#__template_styles`.** The
+  administrator's template list is a query against `#__extensions`, not a scan
+  of the filesystem, so a directory nobody has registered is invisible. Write
+  a [migration](01-migrations.md) to register it.
+
+`templateDetails.xml` is *not* required for the template to render. It is
+required for the administrator to configure it: without it the template has no
+parameters to edit and contributes no module positions. See
+[Packaging](10-packaging.md).
+
+## The parts
+
+| Path | What reads it |
+|---|---|
+| `index.php` | The document, for every normal page. See [Page layout](06-layouts.md). |
+| `{tmpl}.php` | The document, when the request carries `tmpl={name}`. `tmpl=component` gives modal windows and popups their bare frame; `com_help` sets `tmpl=help`, `com_cpanel` sets `tmpl=cpanel`, `com_login` sets `tmpl=login`, and `com_groups` sets `tmpl=group` for super group pages. |
+| `error.php` | The error document. |
+| `offline.php` | Rendered when the site is switched offline and the visitor lacks `core.login.offline`. |
+| `email.php` | [`Hubzero\Mail\Template`](../../../core/libraries/Hubzero/Mail/Template.php), for HTML mail. |
+| `templateDetails.xml` | `com_templates` for parameters and metadata, `com_modules` for the position list. |
+| `language/{tag}/{tag}.tpl_{name}.ini` | Loaded automatically. See [Languages](02-languages.md). |
+| `migrations/` | `muse migration`. See [Migrations](01-migrations.md). |
+| `html/` | Every extension's asset and layout lookup. See [Output overrides](09-overrides.md). |
+| `html/icons/{symbol}.svg` | `Html::asset('icon', …)`, overriding `core/assets/icons`. |
+| `template_thumbnail.png` | The template list in the administrator. 206 pixels wide; `kimera`'s is 206×150. An optional `template_preview.png` beside it makes the thumbnail a link to the full-size image. |
+| `favicon.ico` | Only if your `index.php` links to it. Nothing links it for you. |
+| `composer.json` | Composer, when the template is installed as a package. |
+
+## What the shipped templates leave out
+
+Not one of them has the full tree, which is a useful measure of what you can
+skip:
+
+| | `kimera` | `lucent` | `welcome` | `kameleon` | `system` |
+|---|---|---|---|---|---|
+| `index.php` | yes | yes | yes | yes | yes |
+| `component.php` | yes | yes | — | yes | yes |
+| `error.php` | yes | yes | — | yes | yes |
+| `templateDetails.xml` | yes | yes | yes | yes | — |
+| `composer.json` | yes | — | yes | yes | yes |
+| `migrations/` | yes | yes | yes | yes | — |
+| `html/` overrides | 32 files | — | — | 4 files | — |
+| `template_thumbnail.png` | yes | — | — | yes | — |
+
+`system` is the fallback and is never registered as a style, which is why it
+has neither a manifest nor a migration. It also holds the shared `email.php`,
+`group.php`, `help.php`, `login.php` and `offline.php` layouts that other
+templates inherit when they do not define their own.
+
+> **Note:** `lucent` ships a `templateDetails.xml` whose root element is
+> `<install>` rather than `<extension>`, with an empty `<files>` list and a
+> stale GPLv2 `<license>`. Both root tags are accepted, but copy `kimera`'s
+> manifest rather than `lucent`'s.

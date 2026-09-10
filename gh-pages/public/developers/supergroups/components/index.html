@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Components · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Super groups have the ability to have their own components. The structure of a super group component is largely the same as a full CMS component with…">
+  <meta name="description" content="A super group can carry components of its own: MVC extensions that live in the group&#x27;s directory, answer at a URL under the group, and never appear in the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/components/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -127,40 +127,42 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Components</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#components-directory">Components Directory</a></li>
-<li class="toc__item toc__item--l2"><a href="#component-language-files">Component Language Files</a></li>
-<li class="toc__item toc__item--l2"><a href="#component-paths">Component Paths</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-a-component">Creating a Component</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-them-on">Turning them on</a></li>
+<li class="toc__item toc__item--l2"><a href="#structure">Structure</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-it-is-reached">How it is reached</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-entry-file-gets">What the entry file gets</a></li>
+<li class="toc__item toc__item--l2"><a href="#routing">Routing</a></li>
+<li class="toc__item toc__item--l3"><a href="#query-strings">Query strings</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-one">Creating one</a></li>
 </ol></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -175,92 +177,212 @@
           <p class="eyebrow">Developers</p>
           <h1>Components</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups/components">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Super groups have the ability to have their own components. The structure of a super group component is largely the same as a full CMS component with a few small differences. The primary difference related to the different application environments or types a full CMS component can support. While a full component may have controllers, views, and logic for <code>site</code>, <code>admin</code>, <code>api</code>, a super group component <strong>only</strong> has code for the equivalent of <code>site</code>.</p>
-<p>Here's an example of CMS components vs super group components structure:</p>
-<pre><code>// CMS Component
-/components
-.. /com_example
-.. .. /admin
-.. .. .. /controllers
-.. .. .. .. records.php
-.. .. .. /language
-.. .. .. .. /en-GB
-.. .. .. .. .. en-GB.com_example.ini
-.. .. .. /views
-.. .. .. .. /records
-.. .. .. .. .. /tmpl
-.. .. .. .. .. .. display.php
-.. .. .. example.php
-.. .. /config
-.. .. .. config.xml
-.. .. /helpers
-.. .. .. html.php
-.. .. /models
-.. .. .. record.php
-.. .. /site
-.. .. .. /controllers
-.. .. .. .. one.php
-.. .. .. /language
-.. .. .. .. /en-GB
-.. .. .. .. .. en-GB.com_example.ini
-.. .. .. /views
-.. .. .. .. /one
-.. .. .. .. .. /tmpl
-.. .. .. .. .. .. display.php'
-.. .. .. example.php
-.. .. .. router.php
-.. .. example.xml
-
-// Super Group Component
-/components
-.. /com_example
-.. .. /controllers
-.. .. .. one.php
-.. .. /helpers
-.. .. .. html.php
-.. .. /models
-.. .. .. record.php
-.. .. /language
-.. .. .. /en-GB
-.. .. .. .. en-GB.com_example.ini
-.. .. /views
-.. .. .. /one
-.. .. .. .. /tmpl
-.. .. .. .. .. display.php
-.. .. example.php
-.. .. example.xml
-.. .. router.php
+<p>A super group can carry components of its own: MVC extensions that live in the
+group's directory, answer at a URL under the group, and never appear in the
+hub's extension manager. They are the right tool when a
+<a href="../php-pages/index.html">PHP page</a> has outgrown itself and you want controllers,
+views, models and a router.</p>
+<h2 id="turning-them-on">Turning them on</h2>
+<p>Super group components are off by default. An administrator switches them on
+once for the whole hub:</p>
+<ol>
+<li>Go to <strong>Users</strong> → <strong>Groups</strong> and select <strong>Options</strong>.</li>
+<li>On the <strong>Super Groups</strong> tab, set <strong>Super Group Components</strong> to yes.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>With the option off, the group's <code>components/</code> directory is never looked at
+and requests fall through to PHP pages and group pages instead. The option is
+<code>super_components</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/config/config.xml"><code>config/config.xml</code></a>;
+see the <a href="../../../reference/configuration/components/groups/index.html">generated reference</a>.</p>
+<h2 id="structure">Structure</h2>
+<p>A super group component is the <code>site</code> half of a CMS component, flattened:</p>
+<pre><code>app/site/groups/1051/components/com_drwho/
+├── drwho.php            entry file, required
+├── router.php           optional
+├── controllers/
+│   └── episodes.php
+├── models/
+│   └── episode.php
+├── helpers/
+├── views/
+│   └── episodes/
+│       └── tmpl/
+│           └── display.php
+├── language/
+│   └── en-GB/
+│       └── en-GB.com_drwho.ini
+└── assets/
+    ├── css/
+    └── js/
 </code></pre>
-<p>Here you can see that the contents of the super group component is the same as the <code>/site</code> sub-directory of the CMS component with the addition of the XML manifest and <code>/helpers</code> &amp; <code>/models</code> directories. With include path updated, this covers the bulk of the changes. Views, models, routing, controllers, and so on should handled int he same manner as full CMS components.</p>
-<p>For more information regarding developing components see: <a href="../../components/index.html">https://hubzero.org/documentation/1.3.0/webdevs/components</a></p>
-<h2 id="components-directory">Components Directory</h2>
-<p><code>/{web_root}/site/groups/{group_id}/components/com_{component}/</code></p>
-<h2 id="component-language-files">Component Language Files</h2>
-<p><code>/{web_root}/site/groups/{group_id}/language/en-GB/en-GB.com_{component}.ini</code></p>
-<h2 id="component-paths">Component Paths</h2>
-<p>As a helper for super group component developers the path to the component directory is defined in a constant.</p>
-<p><code>JPATH_GROUPCOMPONENT</code></p>
-<p>So as an example, if your creating the component &quot;com_drwho&quot;, the JPATH_GROUPCOMPONENT constant equals:</p>
-<p><code>/{web_root}/site/groups/{group_id}/components/com_drwho/</code></p>
+<p>Two names are fixed: the directory is <code>com_&lt;name&gt;</code> and the entry file inside
+it is <code>&lt;name&gt;.php</code>. Everything else is convention that the framework's own
+defaults happen to follow.</p>
+<p>There is no <code>admin</code>, no <code>api</code> and no <code>site</code> subdirectory. A super group
+component is only ever dispatched on the site, so the directories a full
+component keeps under <code>site/</code> sit at the top here. Writing controllers,
+views, models and routes is otherwise the same job as in a
+<a href="../../components/index.html">CMS component</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Older documentation said an XML manifest belongs here and that a
+super group component can be moved into the main components directory
+unchanged. Neither is true. Nothing reads a manifest in a group directory,
+and moving the component would mean moving everything but <code>router.php</code> down
+into a <code>site/</code> directory first.</p>
+</aside>
+<h2 id="how-it-is-reached">How it is reached</h2>
+<p>The second segment of the group URL becomes the component name:</p>
+<pre><code>/groups/mygroup/drwho          -&gt;  components/com_drwho/drwho.php
+</code></pre>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>Components\Groups\Helpers\View::superGroupComponents()</code></a>
+checks for the directory and the entry file, and gives up quietly if either is
+missing. It runs before PHP pages and before group pages, so a component
+shadows both.</p>
+<p>The same collisions apply as for <a href="../php-pages/index.html#when-a-php-page-is-reached">PHP pages</a>:
+a name that matches an enabled group plugin, or one of the segments the group
+router claims for itself, never reaches the component.</p>
+<h2 id="what-the-entry-file-gets">What the entry file gets</h2>
+<p>The file is <code>include</code>d and everything it prints becomes the component's
+output. Before it runs, the hub defines:</p>
+<pre><code class="language-php">JPATH_GROUPCOMPONENT   // /path/to/app/site/groups/1051/components/com_drwho
+</code></pre>
+<p><code>$group</code> and <code>$tab</code> are in scope, holding the <code>Hubzero\User\Group</code> and the
+active tab name.</p>
+<p>Class autoloading does <strong>not</strong> reach into a group directory — the autoloader
+maps <code>Components\Drwho\*</code> to <code>core/components/com_drwho</code> and
+<code>app/components/com_drwho</code>, neither of which exists. The entry file has to
+require what it needs:</p>
+<pre><code class="language-php">&lt;?php
+require_once JPATH_GROUPCOMPONENT . DS . 'controllers' . DS . 'episodes.php';
+
+$controller = new \Components\Drwho\Controllers\Episodes();
+$controller-&gt;execute();
+</code></pre>
+<p>That constant is also what several parts of the framework key off:</p>
+<table>
+<thead>
+<tr>
+<th>Behaviour</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Assets::addComponentStylesheet()</code> and <code>addComponentScript()</code> resolve to the component's own <code>assets/css</code> and <code>assets/js</code></td>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Assets.php"><code>Hubzero\Document\Assets</code></a></td>
+</tr>
+<tr>
+<td>The <code>css()</code> and <code>js()</code> view helpers do the same</td>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/Helper/Css.php"><code>Hubzero\View\Helper\Css</code></a></td>
+</tr>
+<tr>
+<td>A model extending <code>Hubzero\Base\Model</code> whose file sits under the component directory gets the group's database instead of the hub's</td>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Model.php"><code>Hubzero\Base\Model::initDbo()</code></a></td>
+</tr>
+</tbody>
+</table>
+<p>A controller extending
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/SiteController.php"><code>Hubzero\Component\SiteController</code></a>
+needs no configuration: it takes its base path from its own file, two levels
+up, which is the component directory. Views therefore resolve to
+<code>views/&lt;name&gt;/tmpl</code>, helpers to <code>helpers/</code>, and the component's language file
+is loaded from <code>language/en-GB/en-GB.com_&lt;name&gt;.ini</code> inside the component.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The group's own top-level <code>language/</code> directory is a different
+thing: it overrides the strings of the hub's <em>group plugins</em>, as described
+in <a href="../index.html">the section overview</a>. A component's
+strings belong inside the component.</p>
+</aside>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Note: You should be able to move the component to the main components folder and and have it work without any changes.</p>
+<p><strong>Warning:</strong> <code>$this-&gt;database</code> on a <code>SiteController</code> is the <strong>hub's</strong>
+connection, not the group's. Call
+<code>\Hubzero\User\Group\Helper::getDbo()</code> when you mean the group's
+<a href="../databases/index.html">database</a>.</p>
 </aside>
+<p>The component's output is then wrapped by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/site/views/pages/tmpl/_view_component.php"><code>site/views/pages/tmpl/_view_component.php</code></a>:</p>
+<pre><code class="language-php">&lt;div class=&quot;group-component&quot;&gt;
+	&lt;?php echo $this-&gt;content; ?&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Put a <code>_view_component.php</code> in the group's <code>template/</code> directory to replace
+that wrapper.</p>
+<h2 id="routing">Routing</h2>
+<p>URLs built inside a super group component come back prefixed with
+<code>/groups/&lt;alias&gt;/&lt;component&gt;/</code> automatically. Do not add the prefix yourself.</p>
+<p>Both halves are done by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/supergroup/supergroup.php"><code>core/plugins/system/supergroup</code></a>:</p>
+<ul>
+<li><strong>Building.</strong> A rule appended to the router turns
+<code>Route::url('index.php?option=com_drwho&amp;…')</code> into
+<code>/groups/mygroup/drwho/&lt;segments&gt;</code>, where the segments come from the
+component's <code>router.php</code>. It only fires while the current request is already
+inside <code>/groups/…</code> and the option names a directory the group actually has.</li>
+<li><strong>Parsing.</strong> Before the component runs, the remainder of the path — what is
+left after <code>groups/&lt;alias&gt;/&lt;component&gt;</code> — is handed to the same router and
+every variable it returns is set on the request.</li>
+</ul>
+<p><code>router.php</code> may provide either a class or a pair of functions:</p>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>Parse</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Components\&lt;Name&gt;\Site\Router</code></td>
+<td><code>parse($segments)</code></td>
+<td><code>build($query)</code></td>
+</tr>
+<tr>
+<td><code>Components\&lt;Name&gt;\Router</code></td>
+<td><code>parse($segments)</code></td>
+<td><code>build($query)</code></td>
+</tr>
+<tr>
+<td>Plain functions</td>
+<td><code>&lt;Name&gt;ParseRoute($segments)</code></td>
+<td><code>&lt;Name&gt;BuildRoute($query)</code></td>
+</tr>
+</tbody>
+</table>
+<p>A component with no <code>router.php</code> still works; it just has no path segments of
+its own beyond the component name.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> URL's built within a super group component will automatically have &quot;/groups/{group_cn}/&quot; prepended to them. Please don't manually do that in your component or it will result in an error.</p>
+<p><strong>Note:</strong> If a file defines both a router class and the plain functions, the
+two halves disagree about which wins: on parse the function's result
+replaces the class's, while on build the class is used and the function
+ignored. Define one or the other.</p>
 </aside>
-<h2 id="creating-a-component">Creating a Component</h2>
-<p>Creating components can always be done manually by creating the files in the correct location as described above. You can also utilize the Hubzero command line application. From the command line run the following command (in the web root):</p>
-<p><code>/{web_root}/cli/muse.php group scaffolding component --group={group_cn} -n=com_{component}</code></p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Simply replate {group_cn} with your groups cname and {component} with the component. The component files will be automatically placed into the correct location, ready for you to modify and commit when ready.</p>
-</aside>
+<h3 id="query-strings">Query strings</h3>
+<p>Query string parameters reaching a super group component are moved out of the
+way and put back: the group router copies every parameter to an <code>sg_</code>-prefixed
+name during parsing, and the system plugin copies them back to their plain
+names immediately before the component is included. This keeps a component's
+<code>?task=</code>, <code>?id=</code> and the like from being read as instructions to com_groups.
+It happens automatically, and a component reads its parameters through
+<code>Request</code> as usual.</p>
+<h2 id="creating-one">Creating one</h2>
+<p><code>muse group scaffolding component</code> is documented in older material. On this
+release it does not work for a group: scaffolding resolves its install
+directory against <code>core/</code> rather than <code>app/</code>, so the files land in
+<code>core/site/groups/&lt;id&gt;/components/</code>, and the template it writes is a full CMS
+component with <code>admin/</code> and <code>site/</code> directories rather than the flat layout a
+group needs. The <code>@FIXME</code> on the path is in the source. Both problems are
+recorded in the project record.</p>
+<p>Build the directory by hand, or copy the <code>site/</code> directory of an existing
+component up one level and adjust. It is a small amount of typing compared
+with what the component itself will take.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../../supergroups-gitlab/index.html" rel="next"><span>Next</span>Super Groups &amp; Gitlab</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../../supergroups-gitlab/index.html" rel="next"><span>Next</span>Super groups with GitLab</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/07-components.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

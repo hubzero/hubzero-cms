@@ -6,7 +6,7 @@
    "pages": 3,
    "counts": {
     "draft": 2,
-    "imported": 1
+    "reviewed": 1
    }
   },
   {
@@ -51,8 +51,7 @@
    "title": "Developers",
    "pages": 103,
    "counts": {
-    "rewritten": 60,
-    "imported": 43
+    "rewritten": 103
    }
   },
   {
@@ -84,9 +83,10 @@
  ],
  "totals": {
   "draft": 5,
-  "imported": 92,
-  "rewritten": 192,
+  "reviewed": 1,
+  "rewritten": 235,
   "merged": 10,
+  "imported": 48,
   "generated": 183
  }
 }

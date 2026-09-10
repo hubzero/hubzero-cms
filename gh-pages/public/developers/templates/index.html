@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Templates · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A template is a series of files within the CMS that control the presentation of the content. The template is not a website; it&#x27;s also not considered a…">
+  <meta name="description" content="A template is the set of files that turn a hub&#x27;s content into pages. It owns the document shell, the module positions, the stylesheets and the scripts. It is…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -123,41 +123,43 @@
 <li class="tree__leaf"><a class="tree__link" href="../plugins/loading/index.html">Loading</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Templates</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#examples">Examples</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-templates-live">Where templates live</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-start">Where to start</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-chapters">The chapters</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -172,32 +174,113 @@
           <p class="eyebrow">Developers</p>
           <h1>Templates</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/templates">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A template is a series of files within the CMS that control the presentation of the content. The template is not a website; it's also not considered a complete website design. The template is the basic foundation design for viewing your website. To produce the effect of a &quot;complete&quot; website, the template works hand-in-hand with the content stored in the database.</p>
-<p>This article guides you through the process of designing your own template for a HUB. This is intended for web designers/developers with a solid knowledge of CSS and HTML and some basic sense of aesthetics.</p>
-<p>Although many currently available HUBs tend to look somewhat similar, you have the freedom to make your HUB look as unique as you want it to be simply by modifying a few CSS and HTML files within your template folder.</p>
+<p>A template is the set of files that turn a hub's content into pages. It owns
+the document shell, the module positions, the stylesheets and the scripts.
+It is not the site: the template supplies the frame, and components, modules
+and plugins supply what goes inside it.</p>
+<p>These chapters are for developers writing a template against the Hubzero
+framework. They assume you are comfortable with HTML, CSS and PHP.</p>
+<h2 id="where-templates-live">Where templates live</h2>
+<p>Templates are found in two places:</p>
+<ul>
+<li><code>core/templates/</code> — the templates that ship with the CMS. They are marked
+<em>protected</em> and are replaced on upgrade, so do not edit them in place.</li>
+<li><code>app/templates/</code> — the templates belonging to this hub. Put your own work
+here.</li>
+</ul>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Loader.php"><code>Hubzero\Template\Loader</code></a>
+looks in <code>app/templates/{name}</code> first and falls back to
+<code>core/templates/{name}</code>, so a template in <code>app/</code> of the same name overrides a
+shipped one entirely. If neither has an <code>index.php</code>, the loader falls back to
+<code>core/templates/system</code>.</p>
+<h2 id="what-ships">What ships</h2>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Client</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kimera</code></td>
+<td>Site</td>
+<td>The default site template. LESS sources, a colour and background theme in its parameters, and a large set of output overrides in <code>html/</code>.</td>
+</tr>
+<tr>
+<td><code>lucent</code></td>
+<td>Site</td>
+<td>A newer site template. Registered but not made the home style by its migration.</td>
+</tr>
+<tr>
+<td><code>welcome</code></td>
+<td>Site</td>
+<td>A single-page welcome/splash template, used before a hub has content.</td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>Site</td>
+<td>The fallback. Also holds the default <code>email.php</code>, <code>group.php</code>, <code>help.php</code>, <code>login.php</code> and <code>offline.php</code> layouts.</td>
+</tr>
+<tr>
+<td><code>kameleon</code></td>
+<td>Administrator</td>
+<td>The administration template, with a set of colour themes.</td>
+</tr>
+</tbody>
+</table>
+<p>Run <code>git ls-files core/templates</code> to see the whole tree.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> All the following articles will refer to construction of a front-end template. However, the concepts, techniques, and methods used also apply to the creation of administrative (back-end) templates unless otherwise noted.</p>
+<p><strong>Note:</strong> <code>kimera</code> and <code>lucent</code> are the two worth reading before you start.
+<code>kimera</code> shows the override-heavy approach; <code>lucent</code> shows a leaner one.</p>
 </aside>
-<h2 id="examples">Examples</h2>
-<p>We have provided an example template that you may use to follow along with the articles or use as a starter for your own HUB template.</p>
-<p><strong>Download</strong> <a href="https://help.hubzero.org/app/site/documentation/2-0-0/examples/tpl_neutral.zip">Basic Template</a> (zip)</p>
+<h2 id="where-to-start">Where to start</h2>
+<p>The quickest start is to copy a shipped template into <code>app/templates</code> and work
+from there:</p>
+<pre><code class="language-bash">php core/bin/muse scaffolding copy template core/kimera to app/mytemplate
+</code></pre>
+<p>That copies the directory and rewrites the template name inside every copied
+file. Then write a <a href="migrations/index.html">migration</a> so the CMS knows the
+template exists.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The copy rewrites file <em>contents</em> only. Filenames keep the
+source template's name, so after copying you must rename
+<code>language/en-GB/en-GB.tpl_kimera.ini</code> and the file in <code>migrations/</code> yourself,
+or the language file will not load and the migration class will not match
+its filename.</p>
+</aside>
+<h2 id="the-chapters">The chapters</h2>
+<ul>
+<li><a href="migrations/index.html">Migrations</a> — registering the template with the CMS.</li>
+<li><a href="languages/index.html">Languages</a> — translatable strings.</li>
+<li><a href="structure/index.html">Structure</a> — the files and directories a template holds.</li>
+<li><a href="designing/index.html">Designing</a> — planning the design before you write markup.</li>
+<li><a href="layouts/index.html">Page layout</a> — <code>index.php</code>, <code>error.php</code> and the rest.</li>
+<li><a href="css/index.html">Cascading style sheets</a> — the stylesheets a template loads.</li>
+<li><a href="javascript/index.html">JavaScript</a> — jQuery, template scripts and extension assets.</li>
+<li><a href="overrides/index.html">Output overrides</a> — replacing an extension's markup.</li>
+<li><a href="packaging/index.html">Packaging</a> — the manifests and how a template is installed.</li>
+<li><a href="socicons/index.html">Socicons</a> and <a href="fontcons/index.html">Fontcons</a> — the icon fonts.</li>
+<li><a href="elements/index.html">Elements and typography</a> — the shared grid, buttons and
+notification styles.</li>
+</ul>
 <section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="migrations/index.html">Migrations</a></li>
 <li><a href="languages/index.html">Languages</a></li>
 <li><a href="structure/index.html">Structure</a></li>
 <li><a href="designing/index.html">Designing</a></li>
-<li><a href="layouts/index.html">Page Layout</a></li>
-<li><a href="css/index.html">Cascading Style Sheets</a></li>
+<li><a href="layouts/index.html">Page layouts</a></li>
+<li><a href="css/index.html">Cascading style sheets</a></li>
 <li><a href="javascript/index.html">JavaScript</a></li>
-<li><a href="overrides/index.html">Output Overrides</a></li>
+<li><a href="overrides/index.html">Output overrides</a></li>
 <li><a href="packaging/index.html">Packaging</a></li>
 <li><a href="socicons/index.html">Socicons</a></li>
 <li><a href="fontcons/index.html">Fontcons</a></li>
-<li><a href="elements/index.html">Elements &amp; Typography</a></li></ul></section>
+<li><a href="elements/index.html">Elements and typography</a></li></ul></section>
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../plugins/loading/index.html" rel="prev"><span>Previous</span>Loading</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/README.md">Edit this page on GitHub</a>

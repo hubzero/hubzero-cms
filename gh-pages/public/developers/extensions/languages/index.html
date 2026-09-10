@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Languages · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview To create your own language file it is necessary that you use the exact contents of the default language file and translate the contents of the define…">
+  <meta name="description" content="Every string an extension shows comes out of an INI file, looked up by key. This page covers what an extension has to ship: which files, where, named what,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/extensions/languages/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,16 +81,19 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Languages</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#working-with-ini-files">Working With INI Files</a></li>
-<li class="toc__item toc__item--l2"><a href="#setup">Setup</a></li>
-<li class="toc__item toc__item--l2"><a href="#translating-text">Translating Text</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-files">The files</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-sys-ini-file">The .sys.ini file</a></li>
+<li class="toc__item toc__item--l3"><a href="#declaring-them-in-the-manifest">Declaring them in the manifest</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-the-file">Writing the file</a></li>
+<li class="toc__item toc__item--l2"><a href="#naming-keys">Naming keys</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-the-file-is-loaded">When the file is loaded</a></li>
+<li class="toc__item toc__item--l2"><a href="#checking-your-work">Checking your work</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -132,34 +135,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -168,120 +171,165 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">CMS Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Languages</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Languages</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
           <h1>Languages</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/extensions/languages">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was never published there, so read it as a draft.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>To create your own language file it is necessary that you use the exact contents of the default language file and translate the contents of the define statements. Language files are INI files which are readable by standard text editors and are set up as key/value pairs.</p>
-<h2 id="working-with-ini-files">Working With INI Files</h2>
-<p>INI files have several restrictions. If a value in the <code>ini</code> file contains any non-alphanumeric characters it needs to be enclosed in double-quotes (<code>&quot;</code>). There are also reserved words which must not be used as keys for <code>ini</code> files. These include: <code>NULL</code>, <code>yes</code>, <code>no</code>, <code>TRUE</code>, and <code>FALSE</code>. Values <code>NULL</code>, <code>no</code> and <code>FALSE</code> results in <code>&quot;&quot;</code>, <code>yes</code> and <code>TRUE</code> results in <code>1</code>. Characters <code>{}|&amp;~![()&quot;</code> must not be used anywhere in the key and have a special meaning in the value. Do not use them as it will produce unexpected behavior.</p>
-<p>Files are named after their internationally defined standard abbreviation and may include a locale suffix, written as language_REGION. Both the language and region parts are abbreviated to alphabetic, ASCII characters. A user from the USA would expect the language <code>English</code> and the region <code>USA</code>, yielding the locale identifier &quot;<code>en_US</code>&quot;. However, a user from the UK may expect a region of <code>UK</code>, yielding &quot;<code>en_UK</code>&quot;.</p>
-<h2 id="setup">Setup</h2>
-<p>As previously mentioned, language files are setup as key/value pairs. A key is used within the widget's view and the translator retrieves the associated string for the given language. The following code is an extract from a typical widget language file.</p>
-<pre><code class="language-ini">; Module - Example (en_US)
-MOD_EXAMPLE_HERE_IS_LINE_ONE = &quot;Here is line one&quot;
-MOD_EXAMPLE_HERE_IS_LINE_TWO = &quot;Here is line two&quot;
-MOD_EXAMPLE_MYLINE = &quot;My Line&quot;
+<p>Every string an extension shows comes out of an INI file, looked up by key.
+This page covers what an extension has to ship: which files, where, named
+what, with keys named how. <a href="../../basics/languages/index.html">Languages</a> covers the
+<code>Lang</code> API — <code>txt()</code>, <code>txts()</code>, plurals, overrides — and is the page to read
+before writing view code.</p>
+<h2 id="the-files">The files</h2>
+<p>One directory per language tag, one file per extension inside it. The tag
+appears twice: as the directory name and as the start of the filename.</p>
+<pre><code>core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini
+core/components/com_blog/admin/language/en-GB/en-GB.com_blog.ini
+core/components/com_blog/admin/language/en-GB/en-GB.com_blog.sys.ini
+core/components/com_blog/api/language/en-GB/en-GB.com_blog.ini
+core/modules/mod_login/language/en-GB/en-GB.mod_login.ini
+core/plugins/system/debug/language/en-GB/en-GB.plg_system_debug.ini
+core/templates/kimera/language/en-GB/en-GB.tpl_kimera.ini
 </code></pre>
-<p>Translation keys can be upper or lowercase or a mix of the two and may contain underscores but no spaces. HUBzero convention is to have keys all uppercase with words separated by underscores, following a pattern of <code>{ExtensionPrefix}_{WidgetName}_{TextName}</code> for naming.</p>
+<p>A component has one file per face, because the administrator interface and
+the site need different strings and there is no reason to load both. A
+module, plugin or template has one.</p>
+<p>The tag is a language and a region joined by a <strong>hyphen</strong>, following
+<a href="https://www.rfc-editor.org/info/bcp47">BCP 47</a>: <code>en-GB</code>, <code>en-US</code>, <code>fr-FR</code>,
+<code>pt-BR</code>. Not an underscore. <code>Hubzero\Language\Translator</code> builds the path
+from the tag literally, so <code>en_US</code> produces a file nothing will ever look
+for.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Hubzero ships <code>en-GB</code> and nothing else. The spelling in the
+strings is US English despite the tag; that is inherited and not worth
+fighting.</p>
+</aside>
+<h3 id="the-sys-ini-file">The <code>.sys.ini</code> file</h3>
+<p>The administrator interface has to name an extension in a list before that
+extension has run — in the Extension Manager, the Plugin Manager, the module
+type picker. The strings for that live in a second file with <code>.sys</code> before
+the extension:</p>
+<pre><code>en-GB.com_blog.sys.ini
+en-GB.mod_login.sys.ini
+en-GB.plg_system_debug.sys.ini
+</code></pre>
+<p>Put the extension's <code>&lt;name&gt;</code> and <code>&lt;description&gt;</code> keys — the ones its XML
+manifest refers to — in there, and everything else in the ordinary file.
+Ship a <code>.sys.ini</code> for any extension an administrator will see listed.</p>
+<h3 id="declaring-them-in-the-manifest">Declaring them in the manifest</h3>
+<p>The manifest lists the files, per face:</p>
+<pre><code class="language-xml">&lt;languages folder=&quot;site&quot;&gt;
+	&lt;language tag=&quot;en-GB&quot;&gt;en-GB.com_blog.ini&lt;/language&gt;
+&lt;/languages&gt;
+&lt;administration&gt;
+	&lt;languages folder=&quot;admin&quot;&gt;
+		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.com_blog.ini&lt;/language&gt;
+		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.com_blog.sys.ini&lt;/language&gt;
+	&lt;/languages&gt;
+&lt;/administration&gt;
+</code></pre>
+<h2 id="writing-the-file">Writing the file</h2>
+<p>Key/value pairs. Always quote the value:</p>
+<pre><code class="language-ini">; @package  hubzero-cms
+; Note : All ini files need to be saved as UTF-8 - No BOM
+
+COM_EXAMPLE_ENTRIES = &quot;Entries&quot;
+COM_EXAMPLE_ENTRY_SAVED = &quot;Entry saved&quot;
+COM_EXAMPLE_POSTED_BY = &quot;Posted by %s on %s&quot;
+</code></pre>
+<p>It is parsed by PHP, so PHP's rules apply:</p>
+<ul>
+<li><code>NULL</code>, <code>yes</code>, <code>no</code>, <code>TRUE</code> and <code>FALSE</code> are reserved and cannot be keys.</li>
+<li><code>{}|&amp;~![()&quot;</code> have meaning in an unquoted value. Quoting every value makes
+the question moot.</li>
+<li>Comments start with <code>;</code>.</li>
+<li>UTF-8, no byte order mark.</li>
+</ul>
+<h2 id="naming-keys">Naming keys</h2>
+<p>Uppercase, words separated by underscores, prefixed with the extension type
+and the extension name:</p>
 <table>
 <thead>
 <tr>
-<th>Extension Type</th>
-<th>Key Prefix</th>
+<th>Extension</th>
+<th>Prefix</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Component</td>
-<td>COM_</td>
+<td><code>COM_</code></td>
+<td><code>COM_BLOG_ENTRY_SAVED</code></td>
 </tr>
 <tr>
 <td>Module</td>
-<td>MOD_</td>
+<td><code>MOD_</code></td>
+<td><code>MOD_LOGIN_REMEMBER_ME</code></td>
 </tr>
 <tr>
 <td>Plugin</td>
-<td>PLG_</td>
+<td><code>PLG_</code></td>
+<td><code>PLG_CRON_SUPPORT_CLOSE_PENDING</code></td>
 </tr>
 <tr>
 <td>Template</td>
-<td>TPL_</td>
+<td><code>TPL_</code></td>
+<td><code>TPL_KIMERA_FIELD_HEADER_LABEL</code></td>
 </tr>
 </tbody>
 </table>
-<p>Adhering to this naming convention is not required but is strongly recommended as it can help avoid potential translation collisions. Since a component can potentially have modules loaded into it, the possibility of a widget and a module having the same translation key arises. To illustrate this, we have the following example of a component named <code>mycomponent</code> that loads a module named <code>mymodule</code>.</p>
-<p>The language files for both:</p>
-<pre><code class="language-ini">; mymodule en_US.ini
+<p>The prefix is not a tidiness rule; it is the only thing preventing a whole
+class of bug. Every loaded string goes into <strong>one flat array</strong>, and a file
+loaded later overwrites keys already in it. So:</p>
+<pre><code class="language-ini">; mymodule
 MYLINE = &quot;Your Line&quot;
 </code></pre>
-<pre><code class="language-ini">; mycomponent en_US.ini
+<pre><code class="language-ini">; mycomponent
 MYLINE = &quot;My Line&quot;
 </code></pre>
-<p>The layout files for both:</p>
-<pre><code class="language-php">&lt;!-- mymodule layout --&gt;
-&lt;strong&gt;&lt;php echo Lang::txt('MYLINE'); ?&gt;&lt;/strong&gt;
+<pre><code class="language-php">// A component view that renders a module
+echo Module::byPosition('mymodule');   // loads the module's file here
+echo Lang::txt('MYLINE');              // &quot;Your Line&quot;
 </code></pre>
-<pre><code class="language-php">&lt;!-- mycomponent layout --&gt;
-&lt;div&gt;
-	&lt;!-- Load the module --&gt;
-	&lt;php echo Module::byPosition('mymodule'); ?&gt;
-	&lt;!-- Translate some component text --&gt;
-	&lt;php echo Lang::txt('MYLINE'); ?&gt;
-&lt;/div&gt;
+<p>The component's own string is gone, replaced by the module's, and the fault
+appears only on pages where that module happens to be published. Prefixed
+keys — <code>MOD_MYMODULE_MYLINE</code> and <code>COM_MYCOMPONENT_MYLINE</code> — cannot collide,
+whatever loads in what order.</p>
+<p>Beyond the prefix, name for what the string <em>is</em>, not what it says. A key
+called <code>COM_EXAMPLE_SAVE_FAILED</code> survives a rewording; <code>COM_EXAMPLE_SORRY</code>
+does not.</p>
+<h2 id="when-the-file-is-loaded">When the file is loaded</h2>
+<p>You rarely load one yourself:</p>
+<ul>
+<li>A controller extending <code>Hubzero\Component\SiteController</code> or
+<code>AdminController</code> loads its component's file in its constructor;
+<code>Hubzero\Component\Loader</code> has already loaded it by then in the usual
+case.</li>
+<li><code>Hubzero\Module\Loader</code> loads a module's file before the module renders.</li>
+<li>A <strong>plugin's file is not loaded automatically.</strong> Set
+<code>protected $_autoloadLanguage = true;</code> on the plugin class, or call
+<code>$this-&gt;loadLanguage()</code> before you translate anything.</li>
+</ul>
+<h2 id="checking-your-work">Checking your work</h2>
+<p>A key with no definition is not an error: <code>Lang::txt()</code> returns the key
+unchanged, so the page renders <code>COM_EXAMPLE_SAVE_FAILED</code> in place of a
+sentence. That fails quietly, and it fails hardest on the paths nobody
+exercises.</p>
+<pre><code class="language-bash">php tools/lint/undefined-language-keys.php core/components/com_example
 </code></pre>
-<p>Outputs:</p>
-<pre><code class="language-php">&lt;div&gt;
-	&lt;!-- Load the module --&gt;
-	&lt;strong&gt;Your Line&lt;/strong&gt;
-	&lt;!-- Translate some component text --&gt;
-	Your Line
-&lt;/div&gt;
-</code></pre>
-<p>Since the module is loaded in the component view, i.e. <em>after</em> the component's translation files have been loaded, the module's instance of <code>MYLINE</code> overwrites the existing <code>MYLINE</code> from the component. Thus, the view outputs &quot;Your Line&quot; for the component translation instead of the expected &quot;My Line&quot;. Using the HUBzero naming convention of adding component and module name prefixes helps avoid such errors:</p>
-<p>The language files for both:</p>
-<pre><code class="language-ini">; mymodule en-US.ini
-MOD_MYMODULE_MYLINE = &quot;Your Line&quot;
-</code></pre>
-<pre><code class="language-ini">; mycomponent en-US.ini
-COM_MYCOMPONENT_MYLINE = &quot;My Line&quot;
-</code></pre>
-<p>The view files for both:</p>
-<pre><code class="language-php">&lt;!-- mymodule view --&gt;
-&lt;strong&gt;&lt;php echo Lang::txt('MOD_MYMODULE_MYLINE'); ?&gt;&lt;/strong&gt;
-</code></pre>
-<pre><code class="language-php">&lt;!-- mycomponent view --&gt;
-&lt;div&gt;
-	&lt;!-- Load the module --&gt;
-	&lt;php echo $this-&gt;Widgets()-&gt;renderWidget('mywidget'); ?&gt;
-	&lt;!-- Translate some module text --&gt;
-	&lt;php echo Lang::txt('COM_MYCOMPONENT_MYLINE'); ?&gt;
-&lt;/div&gt;
-</code></pre>
-<p>Outputs:</p>
-<pre><code class="language-php">&lt;div&gt;
-	&lt;!-- Load the widget --&gt;
-	&lt;strong&gt;Your Line&lt;/strong&gt;
-	&lt;!-- Translate some module text --&gt;
-	My Line
-&lt;/div&gt;
-</code></pre>
-<p>To Further avoid potential collisions as it is possible to have a component and module with the same name, module translation keys are prefixed with <code>MOD_</code> and component translation keys with <code>COM_</code>.</p>
-<h2 id="translating-text">Translating Text</h2>
-<p>A translate helper (<code>Lang</code>) is available in all views and the appropriate language file for an extension is preloaded when the extension is instantiated. This is all done automatically and requires no extra work on the developer's part to load and parse translations.</p>
-<p>Below is an example of accessing the translate helper:</p>
-<pre><code class="language-php">&lt;p&gt;&lt;?php echo Lang::txt(&quot;MOD_EXAMPLE_MY_LINE&quot;); ?&gt;&lt;/p&gt;
-</code></pre>
-<p>Strings or keys not found in the current translation file will output as is.</p>
+<p>That reports every literal key the code asks for that no <code>en-GB</code> file
+anywhere defines. It cannot check keys assembled at runtime
+(<code>'COM_EXAMPLE_' . strtoupper($type)</code>), so a clean run is necessary and not
+sufficient.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../parameters/index.html" rel="prev"><span>Previous</span>Parameters</a><a class="pager__next" href="../deployext/index.html" rel="next"><span>Next</span>Deploying Extensions</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../parameters/index.html" rel="prev"><span>Previous</span>Parameters</a><a class="pager__next" href="../deployext/index.html" rel="next"><span>Next</span>Deploying extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/03-languages.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

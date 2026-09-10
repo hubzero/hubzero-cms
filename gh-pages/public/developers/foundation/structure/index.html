@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Application Structure · Developers · Hubzero Documentation</title>
-  <meta name="description" content="The Root Directory The default application structure of a hub is intended to provide a clean separation of a hub&#x27;s content, configuration, extensions, and…">
+  <title>Application structure · Developers · Hubzero Documentation</title>
+  <meta name="description" content="A Hubzero installation is two trees and one entry point. is the platform as the release ships it. is everything that makes one hub different from another. is…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/structure/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,24 +41,23 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Application Structure</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#the-root-directory">The Root Directory</a></li>
-<li class="toc__item toc__item--l2"><a href="#the-app-directory">The App Directory</a></li>
-<li class="toc__item toc__item--l2"><a href="#the-core-directory">The Core Directory</a></li>
-<li class="toc__item toc__item--l2"><a href="#admin-api">Admin &amp; API</a></li>
-<li class="toc__item toc__item--l2"><a href="#request-lifecycle">Request Lifecycle</a></li>
-<li class="toc__item toc__item--l2"><a href="#entry-point">Entry Point</a></li>
-<li class="toc__item toc__item--l3"><a href="#application-initialization-core-bootstrap-start-php">Application Initialization (core/bootstrap/start.php)</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Application structure</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#core">core/</a></li>
+<li class="toc__item toc__item--l2"><a href="#app">app/</a></li>
+<li class="toc__item toc__item--l3"><a href="#overriding-a-core-extension">Overriding a core extension</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-request-lifecycle">The request lifecycle</a></li>
+<li class="toc__item toc__item--l3"><a href="#boot">Boot</a></li>
+<li class="toc__item toc__item--l3"><a href="#handle">Handle</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
@@ -89,11 +88,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -135,34 +134,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -171,154 +170,274 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Foundation</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Application Structure</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Foundation</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Application structure</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Application Structure</h1>
+          <h1>Application structure</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/foundation/structure">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="the-root-directory">The Root Directory</h2>
-<p>The default application structure of a hub is intended to provide a clean separation of a hub's content, configuration, extensions, and everything else that makes a hub unique from the core framework.</p>
-<pre><code>/hubzero
-.. /administrator
-.. /api
-.. /app
-.. /core
-.. muse
-.. index.php
-.. htaccess.txt
-.. robots.txt
+<p>A Hubzero installation is two trees and one entry point. <code>core/</code> is the
+platform as the release ships it. <code>app/</code> is everything that makes one hub
+different from another. <code>index.php</code> is the only file a web request ever
+reaches.</p>
+<pre><code>hubzero-cms/
+    index.php       the single entry point
+    core/           the platform
+    app/            this hub
+    docs/           this documentation
+    gh-pages/       the documentation site builder
+    tools/          linters and documentation generators
+    docker/         database containers used by the test suite
+    .github/        CI workflows
 </code></pre>
-<h2 id="the-app-directory">The App Directory</h2>
-<p>The brain, or uniqueness, of a hub lives in the <code>app</code> directory. All (non-core) extensions installed, templates, cache files, uploaded content, and configurations will reside in this directory.</p>
-<p>When developing extensions for a hub, the <a href="../constants/index.html">constant</a> <code>PATH_APP</code> should be used for any paths relating to directories or files within the <code>app</code> directory. This is shorter and allows for the potential renaming of the directory while keeping the hub functioning smoothly.</p>
-<p>The <code>app</code> directory contains a number of sub-directories used by the hub for managing extensions and files. Most of these directories will initially be empty.</p>
-<ul>
-<li><strong><code>bootstrap</code></strong><br />
-The bootstrap folder contains a few files that bootstrap the framework and configure available services.</li>
-<li><strong><code>cache</code></strong><br />
-The <code>cache</code> directory is used for storing generated content. Nothing within is vital but, rather, is used for dramatically improving site performance. The directory is further sub-divided by application type: <code>admin</code>, <code>site</code>, <code>api</code>, <code>cli</code>.</li>
-<li><strong><code>components</code></strong><br />
-The <code>components</code> directory is where 3rd-party and custom made components will reside.</li>
-<li><strong><code>config</code></strong><br />
-The <code>config</code> directory, as the name implies, contains all of the hub's configuration files.</li>
-<li><strong><code>tmp</code></strong></li>
-</ul>
-<h2 id="the-core-directory">The Core Directory</h2>
-<p>If the <code>app</code> directory is the brain, the <code>core</code> directory is the skeleton, muscles, and heart of a hub, containing the framework and numerous pre-installed extensions.</p>
-<p>As with the app directory, a global constant of <code>PATH_CORE</code> representing the file path is available.</p>
-<h2 id="admin-api">Admin &amp; API</h2>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> The <code>administrator</code> and <code>api</code> directories are carry-overs from prior versions of the hub framework and marked for deprecation in a future version fo the framework. Do not place any files or folders within these two directories.</p>
+<p>Only the first three matter at runtime. The rest is repository furniture.</p>
+<h2 id="core"><code>core/</code></h2>
+<p>The platform: the framework, every extension the release ships, and the
+command-line tool. An upgrade replaces this tree wholesale, so nothing you
+write belongs in it unless you are contributing the change back.</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bootstrap/</code></td>
+<td>Per-client service and facade lists, routes, and the shared language files.</td>
+</tr>
+<tr>
+<td><code>libraries/Hubzero/</code></td>
+<td>The framework. One directory per subsystem: <code>Base</code>, <code>Database</code>, <code>Config</code>, <code>Language</code>, <code>Routing</code>, <code>Session</code>, <code>Form</code>, <code>View</code>, and the rest.</td>
+</tr>
+<tr>
+<td><code>components/</code></td>
+<td><code>com_blog</code>, <code>com_groups</code>, <code>com_resources</code> … the shipped components.</td>
+</tr>
+<tr>
+<td><code>plugins/</code></td>
+<td>Grouped by what they extend: <code>plugins/authentication/</code>, <code>plugins/content/</code>, <code>plugins/members/</code>.</td>
+</tr>
+<tr>
+<td><code>modules/</code></td>
+<td><code>mod_login</code>, <code>mod_menu</code> … the shipped modules.</td>
+</tr>
+<tr>
+<td><code>templates/</code></td>
+<td><code>kimera</code> (site), <code>kameleon</code> (administrator), plus <code>system</code>, <code>lucent</code> and <code>welcome</code>.</td>
+</tr>
+<tr>
+<td><code>migrations/</code></td>
+<td>Platform migrations, the ones not owned by a single extension.</td>
+</tr>
+<tr>
+<td><code>assets/</code></td>
+<td>Shared CSS, JavaScript and images, including <code>assets/js/hubzero.js</code>.</td>
+</tr>
+<tr>
+<td><code>bin/</code></td>
+<td><code>muse</code>, <code>composer</code>, <code>lessc</code>.</td>
+</tr>
+<tr>
+<td><code>vendor/</code></td>
+<td>Composer dependencies. Not in the repository; <code>composer install</code> creates it.</td>
+</tr>
+</tbody>
+</table>
+<p>Refer to paths under here with the <code>PATH_CORE</code> constant, never a literal
+<code>/core</code>. See <a href="../constants/index.html">Constants</a>.</p>
+<h2 id="app"><code>app/</code></h2>
+<p>One hub's own directory: its configuration, its uploads, its cache and logs,
+and any extension it adds or overrides. It is <strong>not in the repository</strong> —
+<code>app/**</code> is the first line of <code>.gitignore</code> — because it is a running hub's
+local state, not shipped code. <code>muse install</code> creates it, and everything
+inside it is that installation's.</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config/</code></td>
+<td>The configuration, one PHP file per group: <code>database.php</code>, <code>mail.php</code>, <code>session.php</code>, <code>cache.php</code>, <code>app.php</code>. Created mode <code>0770</code>.</td>
+</tr>
+<tr>
+<td><code>components/</code>, <code>modules/</code>, <code>plugins/</code>, <code>templates/</code></td>
+<td>This hub's own extensions, and its replacements for core ones.</td>
+</tr>
+<tr>
+<td><code>bootstrap/</code></td>
+<td>Optional. Extra service providers and facade aliases, and the language overrides.</td>
+</tr>
+<tr>
+<td><code>site/</code></td>
+<td>Uploaded content — group files, media, project repositories.</td>
+</tr>
+<tr>
+<td><code>cache/</code></td>
+<td>Generated content, sub-divided by client: <code>admin</code>, <code>site</code>, <code>api</code>, <code>cli</code>. Nothing in it is precious.</td>
+</tr>
+<tr>
+<td><code>logs/</code></td>
+<td>The hub's logs.</td>
+</tr>
+</tbody>
+</table>
+<p>Only <code>config/</code> is created at install time. The others appear when something
+needs them, so a healthy hub can be missing most of this list.</p>
+<p>Refer to paths under here with <code>PATH_APP</code>.</p>
+<h3 id="overriding-a-core-extension">Overriding a core extension</h3>
+<p>The loaders check <code>app/</code> before <code>core/</code> and take the first directory they
+find. Put <code>app/components/com_blog</code> on disk and nothing under
+<code>core/components/com_blog</code> is used again — it is a whole-extension
+replacement, not a merge, and the copy will not receive upgrades. To change
+a few files, use a <a href="../../templates/overrides/index.html">template override</a> instead.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClassLoader.php"><code>Hubzero\Base\ClassLoader</code></a>
+applies the same rule to classes. It maps the extension namespaces to
+directories in both trees:</p>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Looked for in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Components\Blog\Models\Entry</code></td>
+<td><code>{app,core}/components/com_blog/Models/Entry.php</code></td>
+</tr>
+<tr>
+<td><code>Modules\Menu\Helper</code></td>
+<td><code>{app,core}/modules/mod_menu/Helper.php</code></td>
+</tr>
+<tr>
+<td><code>Plugins\System\Debug\Helper</code></td>
+<td><code>{app,core}/plugins/system/debug/Helper.php</code></td>
+</tr>
+<tr>
+<td><code>Templates\Kimera\Helper</code></td>
+<td><code>{app,core}/templates/kimera/Helper.php</code></td>
+</tr>
+</tbody>
+</table>
+<p>Composer's PSR-4 map covers only <code>Hubzero\</code> and <code>Bootstrap\</code>; every
+extension class comes through this loader, which also tries a lowercase
+variant of each path so that the older lowercase filenames still resolve.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There are no <code>/administrator</code> and <code>/api</code> directories. Earlier
+releases had one entry point per client; this one has a single <code>index.php</code>
+and works the client out from the URL. The <code>JPATH_ADMINISTRATOR</code> and
+<code>JPATH_API</code> constants still exist and still compute, but they name
+directories that are not there.</p>
 </aside>
-<ul>
-<li><strong><code>administrator</code></strong><br />
-The Administrator application, also known as the Back-end, Admin Panel or Control Panel, is the interface where administrators and other site officials with appropriate privileges can manipulate the appearance, enable/disable installed extensions, or manage users and content.</li>
-<li><strong><code>api</code></strong><br />
-Every hub comes with an API for accessing data from the various components and extensions in a light-weight, speedy manner. This directory contains the entry point to the API and can be accessed by visiting http://{yourhub}.org/api</li>
-</ul>
-<h2 id="request-lifecycle">Request Lifecycle</h2>
-<p>The entry point for all requests to an application is the <code>index.php</code> file. For <code>/administrator</code> and <code>/api</code>, this is the only file within those directories! All requests are directed to this file by the web server configuration. The <code>index.php</code> file doesn't contain much code. Rather, it is simply a starting point for loading the rest of the framework.</p>
-<pre><code>ROOT/administrator/index.php
-ROOT/api/index.php
-ROOT/index.php
-</code></pre>
-<p>The file itself is rather short and simple. Within <code>index.php</code>, a number of constants and paths are established, the file autoloader is included, and the core application bootstrap, which initializes the application / service container, is included.</p>
-<p>The application serves as the central location that all requests flow through. Part of the instantiation process includes registering an array of bootstrappers that will be run before the request is executed. These bootstrappers configure error handling, logging, detect the application environment, and perform other tasks that need to be done before the request is actually handled.</p>
-<p>All requests must then pass through a list of middleware, each of which processes the request and builds a response.</p>
-<h2 id="entry-point">Entry Point</h2>
-<p>For <code>/administrator</code>, <code>/api</code>, and <code>/</code>, all incoming calls are routed to the <code>index.php</code> file within those directories.</p>
-<pre><code>ROOT/administrator/index.php
-ROOT/api/index.php
-ROOT/index.php
-</code></pre>
-<p>The file itself is rather short and simple. Within <code>index.php</code>, a number of constants and paths are established, the file autoloader in included, and the core application bootstrap which initializes the application is included. Finally, <code>run</code> is called on the application.</p>
-<pre><code>Incoming call
-    -&gt; index.php
-        // Define constants for paths to the ROOT, /app, and /core directories
-        -&gt; include 'core/bootstrap/paths.php'
+<h2 id="the-request-lifecycle">The request lifecycle</h2>
+<p>Every request, whatever the URL, runs
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/index.php"><code>index.php</code></a>:</p>
+<pre><code class="language-php">define('PATH_ROOT', isset($_SERVER['DOCUMENT_ROOT']) &amp;&amp; $_SERVER['DOCUMENT_ROOT'] ? $_SERVER['DOCUMENT_ROOT'] : __DIR__);
+define('PATH_CORE', isset($_ENV['PATH_CORE']) &amp;&amp; $_ENV['PATH_CORE'] ? $_ENV['PATH_CORE'] : PATH_ROOT . '/core');
 
-        // Include the file autoloader
-        -&gt; include 'core/bootstrap/autoload.php'
-
-        // Include the application
-        -&gt; include 'core/bootstrap/start.php'
-
-        // Run the application
-        -&gt; $app-&gt;run()
-</code></pre>
-<p>As noted, the initialization of the application, registering of services, and a number of other setup processes are contained within <code>core/bootstrap/start.php</code>. Next, we'll take a closer look at what happens in that file.</p>
-<h3 id="application-initialization-core-bootstrap-start-php">Application Initialization (core/bootstrap/start.php)</h3>
-<p>First and foremost, we set the strictest error reporting options, and also turn off PHP's error reporting, since all errors will be handled by the framework and we don't want any output leaking back to the user.</p>
-<pre><code class="language-php">error_reporting(-1);
-ini_set('display_errors', 0);
-</code></pre>
-<p>Next, we create a new application instance which serves as the &quot;glue&quot; for all the parts of a hub, and is the IoC container for the system binding all of the various parts.</p>
-<pre><code class="language-php">$app = new Hubzero\Base\Application;
-</code></pre>
-<p>From there we try to automatically detect the client type being called (administrator, api, site, cli, etc). This will determine the set of services, facades, etc. that get loaded further on in the application lifecycle. Note that we detect the client and assign it to a <code>$client</code> variable, which we'll use later.</p>
-<pre><code class="language-php">$client = $app-&gt;detectClient(array(
-
-	'administrator' =&gt; 'administrator',
-	'api'           =&gt; 'api',
-	'cli'           =&gt; 'cli',
-	'install'       =&gt; 'install',
-	'files'         =&gt; 'files',
-
-))-&gt;name;
-</code></pre>
-<p>The next step may look strange, but we actually want to bind the app into itself in case we need to Facade test an application. This will allow us to resolve the &quot;app&quot; key out of this container for the app's facade.</p>
-<pre><code class="language-php">$app['app'] = $app;
-</code></pre>
-<p>Next up, the app's configuration is loaded. The configuration repository is used to lazily load in the options for this application from the configuration files (<code>/app/config/*</code>). The files are easily separated by their concerns so they do not become really crowded.</p>
-<pre><code class="language-php">/* Note that we pass in the client type. This is because configuration options can potentially be overridden per client type. */
-$app['config'] = new \Hubzero\Config\Repository($client);
-
-// [!] Some legacy support here for old Joomla-defined constants
-if (!defined('JDEBUG'))   define('JDEBUG',   $app['config']-&gt;get('debug'));
-if (!defined('JPROFILE')) define('JPROFILE', $app['config']-&gt;get('debug') || $app['config']-&gt;get('profile'));
-</code></pre>
-<p>Register all of the core pieces of the framework including session, caching, and more. First, we'll load the core bootstrap list of services and then we'll give the app a chance to modify that list.</p>
-<pre><code class="language-php">// Bootstrap path: core/bootstrap/client/services.php
-$providers = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
-$services  = file_exists($providers) ? require $providers : array();
-
-// Alternate bootstrap path following PSR-4 conventions: core/bootstrap/Client/services.php
-$providers = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'services.php';
-$services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
-
-// App bootstrap path: app/bootstrap/client/services.php
-$providers = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'services.php';
-$services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
-
-foreach ($services as $service)
-{
-	$app-&gt;register($service);
+// Check if vendor dependencies are installed
+if (!file_exists(PATH_CORE . '/vendor/autoload.php')) {
+    // Run the bootstrap installer to handle missing vendor
+    require PATH_CORE . '/bootstrap/Install/web/bootstrap.php';
+    exit;
 }
-</code></pre>
-<p>The alias loader is responsible for lazy loading the class aliases setup for the application. First, we'll load the core bootstrap list of aliases and then, as with services, we'll give the app a chance to modify that list.</p>
-<pre><code class="language-php">// Bootstrap path: core/bootstrap/client/aliases.php
-$facades = PATH_CORE . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
-$aliases = file_exists($facades) ? require $facades : array();
 
-// Alternate bootstrap path following PSR-4 conventions: core/bootstrap/Client/aliases.php
-$facades = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($client) .  DS . 'aliases.php';
-$aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
+require PATH_CORE . '/vendor/autoload.php';
 
-// App bootstrap path: app/bootstrap/client/aliases.php
-$facades = PATH_APP . DS . 'bootstrap' . DS . $client .  DS . 'aliases.php';
-$aliases = file_exists($facades) ? array_merge($aliases, require $facades) : $aliases;
+(new Hubzero\Base\Application())-&gt;run();
+</code></pre>
+<p>That is the whole entry point. <code>PATH_ROOT</code> comes from the web server's
+document root and <code>PATH_CORE</code> from the environment, so the platform can live
+outside the document root. Composer's autoloader pulls in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a> — it is listed
+under <code>autoload.files</code> — which defines the constants, registers the class
+loader, and declares the <code>app()</code>, <code>config()</code> and <code>dump()</code> helpers. Then one
+object is built and <code>run()</code> is called on it.</p>
+<h3 id="boot">Boot</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Application.php"><code>Hubzero\Base\Application</code></a>
+is the container and the application both; it extends
+<code>Hubzero\Container\Container</code>. Its constructor builds the <code>request</code> and
+<code>response</code> objects and binds itself under <code>app</code>, so a facade can resolve the
+application out of its own container.</p>
+<p><code>run()</code> then calls <code>boot()</code>, which calls <code>load()</code>, which does four things in
+order:</p>
+<ol>
+<li>
+<p><strong>Detect the client.</strong>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClientDetector.php"><code>ClientDetector</code></a>
+picks one of <code>site</code>, <code>administrator</code>, <code>api</code>, <code>cli</code>, <code>install</code> or <code>files</code>.
+A command-line invocation is <code>cli</code>. A web request with no
+<code>app/config/database.*</code> on disk is <code>install</code> — that is what puts the
+installer in front of a fresh checkout. Otherwise the first URL segment
+decides: <code>/administrator/…</code> is the administrator interface, <code>/api/…</code> the
+REST API, and anything else the site.</p>
+</li>
+<li>
+<p><strong>Load the configuration.</strong> A
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Config/Repository.php"><code>Hubzero\Config\Repository</code></a>
+is built for that client and bound as <code>config</code>. It has to come first,
+because the service providers read it.</p>
+</li>
+<li>
+<p><strong>Register the service providers.</strong> The list is read from up to three
+files and merged in order, so a hub can add its own without touching the
+platform:</p>
+<pre><code>core/bootstrap/&lt;client&gt;/services.php
+core/bootstrap/&lt;Client&gt;/services.php
+app/bootstrap/&lt;client&gt;/services.php
+</code></pre>
+<p>Both spellings of the core path are tried because the directories are
+capitalised — <code>core/bootstrap/Site/</code> — while the client name is not. Each
+provider is registered, not booted. See
+<a href="../providers/index.html">Service providers</a>.</p>
+</li>
+<li>
+<p><strong>Register the facades.</strong> The alias lists are read from the matching
+<code>aliases.php</code> files and merged the same way, then registered as
+root-namespace class aliases. See <a href="../facades/index.html">Facades</a>.</p>
+</li>
+</ol>
+<p><code>boot()</code> then calls <code>boot()</code> on every provider that has one, and <code>run()</code>
+starts the error handlers and fires <code>system.onAfterInitialise</code>.</p>
+<h3 id="handle">Handle</h3>
+<p>The providers that are also middleware are collected and the request is sent
+through them as a stack:</p>
+<pre><code class="language-php">$this['stack'] = new Stack($this);
 
-$app-&gt;registerFacades($aliases);
+$this['stack']
+    -&gt;send($this['request'])
+    -&gt;through($this-&gt;middleware($this-&gt;serviceProviders))
+    -&gt;then(function($request, $response)
+    {
+        $response-&gt;prepare($request);
+        $response-&gt;send();
+    });
 </code></pre>
-<p>Finally, this script returns the application instance. The instance is given to the calling script so we can separate the building of the instances from the actual running of the application and sending responses.</p>
-<pre><code class="language-php">return $app;
-</code></pre>
+<p>A provider joins the stack by extending
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Middleware.php"><code>Hubzero\Base\Middleware</code></a>
+rather than <code>ServiceProvider</code>. On the site three do: the router, the
+component dispatcher, and the document — which is where the template renders.
+Each may act on the request, hand it onward, and act on the response coming
+back, so the component that owns the URL runs part-way down the stack and the
+template wraps its output on the way out. The other twenty-two providers only
+register services.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Every provider is registered on every request. Registration is
+cheap — it assigns a closure to a container key — and the <em>service</em> is
+lazy, but there is no mechanism for skipping a provider whose service is
+never asked for.</p>
+</aside>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Foundation</a><a class="pager__next" href="../constants/index.html" rel="next"><span>Next</span>Constants</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/01-structure.md">Edit this page on GitHub</a>

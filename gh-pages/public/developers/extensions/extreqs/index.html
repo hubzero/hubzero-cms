@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Requirements · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Installing The CMS provides a convenient Installer utility in the administrative back-end. The installer downloads the code and moves all the necessary files…">
+  <meta name="description" content="What an extension has to have before a hub will load it. Getting the code onto a hub is a separate question, covered in Deploying extensions . The platform…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/extensions/extreqs/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,18 +81,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Requirements</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#installing">Installing</a></li>
-<li class="toc__item toc__item--l2"><a href="#installing-by-hand">Installing By Hand</a></li>
-<li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
-<li class="toc__item toc__item--l3"><a href="#modules">Modules</a></li>
-<li class="toc__item toc__item--l3"><a href="#plugins">Plugins</a></li>
-<li class="toc__item toc__item--l3"><a href="#templates">Templates</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-platform">The platform</a></li>
+<li class="toc__item toc__item--l2"><a href="#naming">Naming</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-layout">The layout</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-entry-point">The entry point</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-xml-manifest">The XML manifest</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-composer-manifest">The Composer manifest</a></li>
+<li class="toc__item toc__item--l3"><a href="#language-files">Language files</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-migration">The migration</a></li>
+<li class="toc__item toc__item--l3"><a href="#index-html">index.html</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-entry-guard">The entry guard</a></li>
+<li class="toc__item toc__item--l2"><a href="#facade-imports">Facade imports</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -134,34 +139,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -170,165 +175,289 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">CMS Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Requirements</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Requirements</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
           <h1>Requirements</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/extensions/extreqs">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was never published there, so read it as a draft.</aside>
+        
         <div class="prose">
-<h2 id="installing">Installing</h2>
-<p>The CMS provides a convenient Installer utility in the administrative back-end. The installer downloads the code and moves all the necessary files to their appropriate locations.</p>
-<ol>
-<li>Log in to the administrative back-end of the HUB you wish to install the extension on.</li>
-<li>Once logged-in navigate to &quot;Extensions Manager&quot; in the drop-down under &quot;Extensions&quot;. From there, you should be presented with a choice of &quot;Packages&quot; and &quot;Repositories&quot;.</li>
-<li>To install a package, go to Administrator &gt; Extensions &gt; Extension Manager and find &quot;Packages&quot; in the sub-menu. From there, you should be presented with a choice of &quot;Packages&quot; and &quot;Repositories&quot;. First, we need to register a repository and then select a package from the branches or tags listed for the repository we added.</li>
-<li>Go the &quot;Repositories&quot; sub-menu item and click the &quot;New&quot; toolbar button. Here you will provide some information about your repository (it's considered good practice to name it the same as the extension you're installing) and the URL to that extension's GitLab or GitHub repository.</li>
-<li>Once the repository has been added, go to the &quot;Packages&quot; sub-menu and click the &quot;New&quot; toolbar button. From here you will be able to select the repository you just added. Click &quot;install package&quot; and Composer will download the code and move it to the correct location.</li>
-</ol>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The most common issue found when installing extensions is incorrect file permissions. If you have any issues or an extension fails to install, first check that permissions are set accordingly.</p>
-</aside>
-<h2 id="installing-by-hand">Installing By Hand</h2>
-<p>Installing an extension by hand requires a few more steps than the Extensions Installer but is still a fairly easy and quick process.</p>
-<ol>
-<li>If the extension is packaged as a <code>.zip</code> file, extract the files to a location on your local machine.</li>
-<li>Upload the entire contents of the extension, except language files, via SSH/sFTP to the <code>/yourhub/app/{ExtensionType}/</code> directory.
+<p>What an extension has to have before a hub will load it. Getting the code
+onto a hub is a separate question, covered in
+<a href="../deployext/index.html">Deploying extensions</a>.</p>
+<h2 id="the-platform">The platform</h2>
+<p>Hubzero 2.4 requires <strong>PHP 8.2 or later</strong>
+(<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/System/Requirements.php"><code>Hubzero\System\Requirements</code></a>
+holds the minimum and the list of required PHP extensions) and MariaDB or
+MySQL. Write extensions against that, not against the PHP 5.4 constraint
+that most shipped <code>composer.json</code> files still carry — those constraints are
+stale, and nothing enforces them.</p>
+<h2 id="naming">Naming</h2>
+<p>The name is not decoration. It determines the directory, the entry file, the
+manifest, the language files, the class namespace and the <code>#__extensions</code>
+row, and all of them have to agree.</p>
 <table>
 <thead>
 <tr>
-<th>Extension Type</th>
-<th>Install Location</th>
+<th>Kind</th>
+<th>Directory</th>
+<th>Element name</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Component</td>
-<td><code>/yourhub/app/components/{ExtensionName}</code></td>
+<td><code>components/com_example</code></td>
+<td><code>com_example</code></td>
 </tr>
 <tr>
 <td>Module</td>
-<td><code>/yourhub/app/modules/{ExtensionName}</code></td>
+<td><code>modules/mod_example</code></td>
+<td><code>mod_example</code></td>
 </tr>
 <tr>
 <td>Plugin</td>
-<td><code>/yourhub/app/plugins/{PluginType}/{PluginName}</code></td>
+<td><code>plugins/{group}/example</code></td>
+<td><code>example</code>, with <code>folder = '{group}'</code></td>
 </tr>
 <tr>
 <td>Template</td>
-<td><code>/yourhub/app/templates/{ExtensionName}</code></td>
+<td><code>templates/example</code></td>
+<td><code>example</code></td>
 </tr>
 </tbody>
 </table>
-</li>
-<li>Log in to the administrative back-end of the HUB.</li>
-<li>
-<h3 id="components">Components</h3>
-<ol>
-<li>Components do not technically need a database entry to function in their simplest form. However, an entry is needed if one wishes to use parameters or have the component appear under the &quot;Components&quot; list in the administrative back-end. The preferred method is to create a <a href="../../database/migrations/index.html">migration</a> for your extension and to then run migrations via the command-line utility <a href="../../muse/index.html">muse</a>. The alternative is to have it done by hand via MySQL command-line, some form of MySQL database GUI, or executing a PHP script. A sample SQL is provided below:<pre><code class="language-sql">INSERT INTO #__extensions(
-	`extension_id`,
-	`name`,
-	`type`,
-	`element`,
-	`folder`,
-	`client_id`,
-	`enabled`,
-	`access`,
-	`protected`,
-	`manifest_cache`,
-	`params`,
-	`custom_data`,
-	`system_data`,
-	`checked_out`,
-	`checked_out_time`,
-	`ordering`,
-	`state`
-)
-VALUES(
-	'',
-	'com_mycomponent',
-	'component',
-	'com_mycomponent',
-	'',
-	0,
-	1,
-	1,
-	0,
-	'',
-	'',
-	'',
-	'',
-	0,
-	'0000-00-00 00:00:00',
-	0,
-	0
-);
+<p>Use lowercase and, where you need a separator, an underscore. A plugin's
+package directory is conventionally <code>plg_{group}_{name}</code>, but what is
+installed is <code>plugins/{group}/{name}</code> — the group is where the package
+lands, not a directory inside it.</p>
+<h2 id="the-layout">The layout</h2>
+<p>Each kind has its own chapter on structure —
+<a href="../../components/structure/index.html">components</a>,
+<a href="../../modules/structure/index.html">modules</a>, <a href="../../plugins/structure/index.html">plugins</a>,
+<a href="../../templates/structure/index.html">templates</a> — but the shape is the same
+everywhere: an entry point, an XML manifest named after the extension, a
+<code>composer.json</code>, language files under <code>language/{tag}/</code>, and a <code>migrations/</code>
+directory.</p>
+<p>A component is the one with more than one face:</p>
+<pre><code>com_example/
+    admin/          the administrator interface
+        example.php
+        controllers/  views/  language/en-GB/  config.xml
+    api/            the REST controllers
+    site/           what hub visitors see
+        example.php
+        router.php  controllers/  views/  language/en-GB/
+    config/config.xml
+    migrations/
+    models/
+    composer.json
+    example.xml
 </code></pre>
-</li>
-</ol>
-<h3 id="modules">Modules</h3>
-<ol>
-<li>Once logged-in navigate to the Modules Manager. This can be found from the main menu by following the &quot;Modules Manager&quot; option found in the drop-down under &quot;Extensions&quot;.</li>
-<li>Click the &quot;New&quot; button in the toolbar. This will present you with a list of all available modules, including those with existing directories but no database entries (such as the one you just copied to <code>/yourhub/app/modules/</code>).</li>
-<li>Find the name of your newly added module and click its radio button. Once selected, click the &quot;Next&quot; button in the toolbar. This will take you to an &quot;edit module&quot; screen where you may enter a title, adjust parameters, select a position, etc.</li>
-<li>Enter a title, adjust parameters, select a position, and enter any other necessary information. Click &quot;Save&quot; in the toolbar.</li>
-</ol>
-<h3 id="plugins">Plugins</h3>
-<ol>
-<li>A sample SQL is provided below:<pre><code class="language-sql">INSERT INTO #__extensions(
-	`extension_id`,
-	`name`,
-	`type`,
-	`element`,
-	`folder`,
-	`client_id`,
-	`enabled`,
-	`access`,
-	`protected`,
-	`manifest_cache`,
-	`params`,
-	`custom_data`,
-	`system_data`,
-	`checked_out`,
-	`checked_out_time`,
-	`ordering`,
-	`state`
-)
-VALUES(
-	'',
-	'System - Hello World',
-	'plugin',
-	'helloworld',
-	'system',
-	0,
-	1,
-	1,
-	0,
-	'',
-	'',
-	'',
-	'',
-	0,
-	'0000-00-00 00:00:00',
-	0,
-	0
-);
+<h3 id="the-entry-point">The entry point</h3>
+<p><code>Hubzero\Component\Loader</code> looks, in order, for a
+<code>Components\Example\Site\Bootstrap</code> class, then for
+<code>site/example.php</code>, then for a React application under <code>site/assets/react/</code>,
+and only then falls back to its default dispatcher. Most components ship
+<code>site/example.php</code> and <code>admin/example.php</code>, four lines that hand off to the
+controller:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\Blog\Site;
+
+require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
+
+$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'entries'));
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
+{
+	$controllerName = 'entries';
+}
+require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+// Instantiate controller
 </code></pre>
-</li>
-</ol>
-<h3 id="templates">Templates</h3>
-<ol>
-<li>Once logged-in navigate to the Templates Manager. This can be found from the main menu by following the &quot;Template Manager&quot; option found in the drop-down under &quot;Extensions&quot;.</li>
-<li>Here you will be presented with a list of available templates. Your newly added template should be available. To make it the default template of the site, select it by clicking the radio button next to its name.</li>
-<li>Click the &quot;Default&quot; button to make the template the default.</li>
-</ol>
-</li>
-</ol>
+<p>A module's entry point is <code>mod_example.php</code>, and on this release it is a stub
+that requires <code>helper.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s the file.
+A plugin's entry point is <code>example.php</code>, holding a class whose public methods
+are named for the events it answers.</p>
+<h3 id="the-xml-manifest">The XML manifest</h3>
+<p>Every extension carries an XML manifest named after it — <code>example.xml</code> — and
+the manifest is not listed in its own <code>&lt;files&gt;</code> block. The CMS reads the
+display name, the description and the parameter form from it, and caches it
+in the extension row's <code>manifest_cache</code> column. <strong>Refresh Cache</strong> in the
+<a href="../../../managers/extensions/extension-manager/index.html">Extension Manager</a> re-reads
+it after an edit.</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;extension version=&quot;2.5&quot; type=&quot;plugin&quot; group=&quot;system&quot;&gt;
+	&lt;name&gt;plg_system_debug&lt;/name&gt;
+	&lt;creationDate&gt;December 2012&lt;/creationDate&gt;
+	&lt;author&gt;HUBzero&lt;/author&gt;
+	&lt;authorUrl&gt;hubzero.org&lt;/authorUrl&gt;
+	&lt;authorEmail&gt;support@hubzero.org&lt;/authorEmail&gt;
+	&lt;copyright&gt;Copyright (c) 2005-2020 The Regents of the University of California.&lt;/copyright&gt;
+	&lt;license&gt;http://opensource.org/licenses/MIT MIT&lt;/license&gt;
+	&lt;version&gt;2.5.0&lt;/version&gt;
+	&lt;description&gt;PLG_DEBUG_XML_DESCRIPTION&lt;/description&gt;
+	&lt;files&gt;
+		&lt;filename plugin=&quot;debug&quot;&gt;debug.php&lt;/filename&gt;
+		&lt;filename&gt;index.html&lt;/filename&gt;
+	&lt;/files&gt;
+	&lt;languages&gt;
+		&lt;language tag=&quot;en-GB&quot;&gt;en-GB.plg_system_debug.ini&lt;/language&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td><code>component</code>, <code>module</code>, <code>plugin</code> or <code>template</code>. Required.</td>
+</tr>
+<tr>
+<td><code>group</code></td>
+<td>The plugin group. Plugins only, and required for them.</td>
+</tr>
+<tr>
+<td><code>client</code></td>
+<td><code>site</code> or <code>administrator</code>. Modules and templates.</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>The manifest format version, not the extension's.</td>
+</tr>
+<tr>
+<td><code>&lt;name&gt;</code></td>
+<td>Shown in the administrator's lists. A language key or a readable string.</td>
+</tr>
+<tr>
+<td><code>&lt;description&gt;</code></td>
+<td>A language key, resolved from the <code>.sys.ini</code> file.</td>
+</tr>
+<tr>
+<td><code>&lt;files&gt;</code></td>
+<td>What to install. <code>&lt;folder&gt;</code> for a whole directory; the <code>plugin=</code> or <code>module=</code> attribute on a <code>&lt;filename&gt;</code> marks the entry point.</td>
+</tr>
+<tr>
+<td><code>&lt;languages&gt;</code></td>
+<td>Translation files.</td>
+</tr>
+<tr>
+<td><code>&lt;config&gt;</code></td>
+<td>The parameter form. See <a href="../parameters/index.html">Parameters</a>.</td>
+</tr>
+<tr>
+<td><code>&lt;positions&gt;</code></td>
+<td>Template positions. Templates only.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>&lt;files&gt;</code> list matters only to a packager that copies files
+one at a time. Nothing in this release installs an extension that way — the
+code arrives as a whole directory, by <code>git</code> or by hand — so a <code>&lt;files&gt;</code>
+block that has drifted from what is on disk breaks nothing. Do not read it
+as a description of the extension.</p>
+</aside>
+<h3 id="the-composer-manifest">The Composer manifest</h3>
+<pre><code class="language-json">{
+	&quot;name&quot;: &quot;myorg/com_example&quot;,
+	&quot;description&quot;: &quot;Example component for the Hubzero CMS&quot;,
+	&quot;type&quot;: &quot;hubzero-component&quot;,
+	&quot;keywords&quot;: [&quot;hubzero&quot;],
+	&quot;license&quot;: &quot;MIT&quot;,
+	&quot;require&quot;: {
+		&quot;php&quot;: &quot;^8.2&quot;
+	}
+}
+</code></pre>
+<p>The recognised types are <code>hubzero-component</code>, <code>hubzero-module</code>,
+<code>hubzero-plugin</code> and <code>hubzero-template</code>. A plugin must also declare where it
+installs, because its group cannot be recovered from a name like
+<code>plg_system_example</code>:</p>
+<pre><code class="language-json">	&quot;extra&quot;: {
+		&quot;install-directory&quot;: &quot;/plugins/system/example/&quot;
+	}
+</code></pre>
+<h3 id="language-files">Language files</h3>
+<p>One directory per language tag, one file named for the tag and the
+extension:</p>
+<pre><code>language/en-GB/en-GB.mod_example.ini
+language/en-GB/en-GB.mod_example.sys.ini
+</code></pre>
+<p>See <a href="../languages/index.html">Languages</a>.</p>
+<h3 id="the-migration">The migration</h3>
+<p>The row in <code>#__extensions</code> is what makes an extension exist as far as the
+platform is concerned, and a
+<a href="../../database/migrations/index.html">migration</a> is how an extension creates it. The
+migration also creates the extension's tables and drops them again on the
+way down.</p>
+<pre><code class="language-php">use Hubzero\Content\Migration\Base;
+
+defined('_HZEXEC_') or die();
+
+class Migration20260101000000ComExample extends Base
+{
+	public function up()
+	{
+		$this-&gt;addComponentEntry('example');
+	}
+
+	public function down()
+	{
+		$this-&gt;deleteComponentEntry('example');
+	}
+}
+</code></pre>
+<p><code>addComponentEntry</code> is a <em>macro</em> — one of the helpers <code>Base</code> resolves out of
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Content/Migration/Macros"><code>Hubzero\Content\Migration\Macros</code></a>.
+There is one per kind — <code>addComponentEntry</code>, <code>addModuleEntry</code>,
+<code>addPluginEntry</code>, <code>addTemplateEntry</code> — with a matching <code>delete...</code> for each,
+and <code>enable...</code> / <code>disable...</code> alongside. Use them rather than writing the
+<code>INSERT</code> yourself: they set the columns the loaders read, and re-running them
+is safe.</p>
+<h3 id="index-html"><code>index.html</code></h3>
+<p>Every directory carries an empty <code>index.html</code>, so that a misconfigured web
+server cannot list it. Copy the ones already in the tree.</p>
+<h2 id="the-entry-guard">The entry guard</h2>
+<p>Any file that produces output — a view template, an entry point, anything
+outside a class — opens with:</p>
+<pre><code class="language-php">defined('_HZEXEC_') or die();
+</code></pre>
+<p><code>_HZEXEC_</code> is defined by <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a>
+and by nothing else, so the guard stops the file dead if it is requested
+directly over HTTP. A file that only declares a namespaced class does not
+need it. See <a href="../../foundation/constants/index.html">Constants</a>.</p>
+<h2 id="facade-imports">Facade imports</h2>
+<p>The platform's short names — <code>Route</code>, <code>Lang</code>, <code>User</code>, <code>Config</code>, <code>Request</code>,
+<code>Component</code> — are aliases in the <strong>root</strong> namespace. An extension class is
+namespaced, so an unqualified <code>Route::url()</code> inside it resolves to
+<code>Components\Example\Site\Controllers\Route</code> and fatals when that line runs.
+The file parses; nothing fails until the branch executes.</p>
+<p>Import every facade you use:</p>
+<pre><code class="language-php">namespace Components\Example\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Request;
+use Route;
+use Lang;
+</code></pre>
+<p><code>php tools/lint/missing-facade-imports.php</code> finds the ones you missed, and
+runs on every push. See <a href="../../foundation/facades/index.html">Facades</a>.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>CMS Extensions</a><a class="pager__next" href="../parameters/index.html" rel="next"><span>Next</span>Parameters</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../parameters/index.html" rel="next"><span>Next</span>Parameters</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/01-extreqs.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

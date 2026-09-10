@@ -1,17 +1,26 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/upgrade
 source-id: 3426
 modified: 2015-07-06
-imported: 2026-09-09
 -->
-# Upgrade Guide
+# Upgrade guide
 
-## Directory Structure & Files
+Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the
+Joomla names with its own. An extension written against `JFactory`,
+`JText` and `JRequest` still needs converting. This page is that
+translation table, plus what to do about the database when you upgrade a
+hub.
 
-Most notable about the 2.0.0 release will be the new directory structure and reorganization of the various files and extensions comprising the CMS.
+For the Hubzero 1.x names that changed at the same time, see
+[Release notes](releasenotes.md#the-2-0-namespacing).
 
-Files are essentially divided between two primary directories: `app` and `core`.
+## Directory structure
+
+The tree has two top-level directories:
 
 ```
 /app
@@ -19,116 +28,121 @@ Files are essentially divided between two primary directories: `app` and `core`.
 index.php
 ```
 
-The `app` directory is where everything concerning a specific hub lives. That is, it's the home to all the logs, cache data, uploads, and extensions unique to a specific instance of a hub.
+`core/` is the platform — the framework library, the shipped components,
+plugins, modules and templates, and the migrations. `app/` is one hub's
+own state: its configuration, its overrides, its logs, cache and uploads.
+`index.php` at the root is the only entry point. There is no
+`administrator/` directory and no `api/` directory; both applications are
+served from the same front controller.
+
+[Structure](../03-foundation/01-structure.md) covers the layout in full.
 
 ## Constants
 
 | Joomla | Hubzero |
 |---|---|
-| JPATH_ROOT | PATH_ROOT |
-| JPATH_BASE | PATH_ROOT |
-| JPATH_SITE | PATH_ROOT |
-| JPATH_ADMINISTRATOR | PATH_ROOT No files or code should be placed into or read from the `administrator` directory and it is slated for deletion in a future version. |
-| JPATH_COMPONENT | `Component::path($option)` |
-| n/a | PATH_APP Points to `ROOT/app` where all hub-specific data resides. |
-| n/a | PATH_CORE Points to `ROOT/core` where the framework and core extensions live. |
-| \_JEXEC | \_HZEXEC\_ |
+| `JPATH_ROOT`, `JPATH_BASE`, `JPATH_SITE` | `PATH_ROOT` |
+| `JPATH_ADMINISTRATOR` | Nothing. The directory does not exist. |
+| `JPATH_COMPONENT` | `Component::path($option)` |
+| `_JEXEC` | `_HZEXEC_` |
+| n/a | `PATH_APP` — `ROOT/app`, this hub's own data |
+| n/a | `PATH_CORE` — `ROOT/core`, the framework and shipped extensions |
 
-It is highly recommended, when including files within the same extension (component, module, plugin), to use the `__DIR__` and `__FILE__` PHP constants and relative paths.
+> **Note:** The `JPATH_*` names are still defined, in
+> [`core/bootstrap/app.php`](../../../core/bootstrap/app.php), so old code
+> keeps running. They are compatibility aliases, not the names to write.
+> `JPATH_ADMINISTRATOR` points at a `ROOT/administrator` that is not in the
+> tree.
+
+When including a file from within the same extension, prefer PHP's own
+`__DIR__` and `__FILE__` over any constant:
 
 ```php
-<?php
-// This file is example.php, located in:
-// ROOT/app/components/com_example/admin
+// This file is ROOT/app/components/com_example/admin/example.php
 
-// dirname(__DIR__) moves up one directory
-// ROOT/app/components/com_example/models
-require_once(dirname(__DIR__) . DS . 'models' . DS . 'foo.php');
-
-// ROOT/app/components/com_example/admin/controllers
-require_once(__DIR__ . DS . 'controllers' . DS . 'example.php');
+// dirname(__DIR__) moves up one level, to com_example
+require_once dirname(__DIR__) . DS . 'models' . DS . 'foo.php';
+require_once __DIR__ . DS . 'controllers' . DS . 'example.php';
 ```
 
-## Common Classes
+Better still, do not include anything. The class loader resolves
+`Components\Example\Models\Foo` to that path on its own; see
+[Constants](../03-foundation/02-constants.md) and
+[Structure](../03-foundation/01-structure.md).
 
-To make upgrading an extension a little easier, a number of Joomla classes (and their methods) have equivalent classes in the new framework.
+## Classes
+
+Most of the conversions are a facade with the `J` dropped. Facades are
+registered as root-namespace aliases, so a namespaced file must import the
+one it uses — `use Route;` — or the call fatals at runtime. See
+[Facades](../03-foundation/04-facades.md#importing-a-facade).
 
 ### JRoute
 
-| `JRoute::_();` | `Route::url();` |
+| Joomla | Hubzero |
 |---|---|
+| `JRoute::_($url)` | `Route::url($url)` |
 
 ### JText
 
-The `JText` class, used for translating language keys, was replaced by the `Lang` facade. Along with this, the `_()` and `sprintf()` methods were merged to allow for a single call to `Lang::txt()` with a variable number of arguments. If more than one argument is passed to the `txt()` method, the translator will attempt to perform variable replacement in the translated string.
+`Lang` replaces `JText`, and `_()` and `sprintf()` merged into one
+`Lang::txt()` that takes a variable number of arguments. Pass more than
+one and the translator does the replacement.
 
 ```php
 // Language file
 COM_EXAMPLE_HELLO="Hello!"
 COM_EXAMPLE_HELLO_NAME="Hello, %s!"
+```
 
-...
-
-// PHP
-
+```php
 // Outputs 'Hello!'
 echo Lang::txt('COM_EXAMPLE_HELLO');
 
-// Outputs 'Hello, HUBzero!'
-echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'HUBzero');
+// Outputs 'Hello, Hubzero!'
+echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'Hubzero');
 ```
 
-| `JText::_();` | `Lang::txt();` |
+| Joomla | Hubzero |
 |---|---|
-| `JText::sprintf();` | `Lang::txt();` |
-| `JText::plural();` | `Lang::txts();` |
-| `JText::alt();` | `Lang::alt();` |
+| `JText::_()` | `Lang::txt()` |
+| `JText::sprintf()` | `Lang::txt()` |
+| `JText::plural()` | `Lang::txts()` |
+| `JText::alt()` | `Lang::alt()` |
 
 ### JRequest
 
-To make transitioning easier, all public `JRequest` methods have been preserved on the global request object, which can be accessed through the application container or the `Request` facade.
+Every public `JRequest` method survives on the request object, so dropping
+the `J` is usually enough:
 
 ```php
 // Via the application container
-$request = App::get('request');
-$foo = $request->getVar('foo');
+$foo = App::get('request')->getVar('foo');
 
 // Via the facade
 $foo = Request::getVar('foo');
 ```
 
-In the majority of cases, this means simply dropping the 'J' from `JRequest` will be sufficient for upgrading an extension's code.
-
-| `JRequest::*` | `Request::*` |
+| Joomla | Hubzero |
 |---|---|
+| `JRequest::*` | `Request::*` |
 
-### JToolbarHelper
+### JToolbarHelper and JSubMenuHelper
 
-Perhaps one of the easier conversions; Simply replace instances of `JToolbarHelper` with the `Toolbar` facade. Method names and the arguments passed to them stay the same.
+Class name only; the methods and their arguments are unchanged.
 
 ```php
 // Joomla
 JToolbarHelper::publishList();
-JToolbarHelper::unpublishList();
 
 // Hubzero
 Toolbar::publishList();
-Toolbar::unpublishList();
 ```
 
-### JSubMenuHelper
-
-As with `JToolbarHelper` above, only the class name need be updated. All primary method names stay the same.
+`JSubMenuHelper` becomes `Submenu`, with one difference worth noticing:
+the link is routed.
 
 ```php
-// Joomla
-JSubMenuHelper::addEntry(
-	JText::_('COM_COLLECTIONS_POSTS'),
-	'index.php?option=com_collections&controller=posts',
-	$controllerName == 'posts'
-);
-
-// Hubzero
 Submenu::addEntry(
 	Lang::txt('COM_COLLECTIONS_POSTS'),
 	Route::url('index.php?option=com_collections&controller=posts'),
@@ -138,33 +152,32 @@ Submenu::addEntry(
 
 ### JHtml
 
-Unlike may of the other classes mentioned above, the class, method, and arguments changed for the replacement of `Html`. Easily enough, the "J" can simply be dropped to have a class name of just `Html`. The method name and first argument passed to said method is a little more complicated but follows a strict pattern. For `Html`, all arguments were passed to a method of `_()`, the first argument being a dot-notation combination of sub library and the function to call within it.
-
-```php
-echo JHTML::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']);
-```
-
-For the `Html` class, the method is now the name of the sub-library and the first argument passed is the name of the function to call.
-
-```php
-echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']);
-```
-
-Examples:
+This one is not a rename. Joomla passed everything through `JHtml::_()`
+with a dotted first argument naming the sub-library and the function.
+Hubzero makes the sub-library the method and the function the first
+argument:
 
 ```php
 // Joomla
-JHtml::_('behavior.framework');
+echo JHtml::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
+echo JHtml::_('behavior.framework');
 
 // Hubzero
-Html::behavior('framework');
+echo Html::grid('sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
+echo Html::behavior('framework');
 ```
 
-## Factory Objects
+The sub-libraries are the classes in
+[`core/libraries/Hubzero/Html/Builder/`](../../../core/libraries/Hubzero/Html/Builder):
+`access`, `asset`, `batch`, `behavior`, `category`, `content`,
+`contentlanguage`, `grid`, `input`, `select`, `sliders`, `tabs`. There is
+no `date` sub-library; for a relative date use `Date::of($d)->relative()`.
 
-The following is a list of conversions for objects typically acquired from Joomla's `JFactory`. In most cases, the objects or their equivalents are available for retrieval from the global `App`. A number of the objects also have associated Facades for quicker access. In the examples below **method()** is variable and implies that the method formerly called on the Joomla object can be called statically on the facade.
+## Factory objects
 
-Example 1:
+Objects that came from `JFactory` come from the service container, and most
+have a facade in front of them. `method()` below stands for whatever you
+used to call on the Joomla object:
 
 ```php
 // Joomla
@@ -175,65 +188,53 @@ echo $user->get('name');
 echo User::get('name');
 ```
 
-Example 2:
-
-```php
-// Joomla
-$doc = JFactory::getDocument();
-$doc->addStylesheet('/some/file.css');
-
-// Hubzero
-Document::addStylesheet('/some/file.css');
-```
-
-| Joomla | Hubzero | Hubzero Facade |
+| Joomla | Container | Facade |
 |---|---|---|
-| JFactory::getDbo(); | App::get('db'); | n/a |
-| JFactory::getUser(); JUser::getInstance(); | App::get('user'); User::getInstance(); | User::**method()**; |
-| JFactory::getSession(); | App::get('session'); | Session::**method()**; |
-| JFactory::getDocument(); | App::get('document'); | Document::**method()**; |
-| JFactory::getConfig(); | App::get('config'); | Config::**method()**; |
-| JFactory::getLanguage(); | App::get('lang'); | Lang::**method()**; |
-| JFactory::getCache(); | App::get('cache.store'); | Cache::**method()**; |
-| JFactory::getLogger(); | App::get('log')->logger('{log name}'); | Log::**method()**; Note: The facade only interacts with the `debug` log. Use `App::get('log');` to interact with any other log. |
+| `JFactory::getDbo()` | `App::get('db')` | n/a |
+| `JFactory::getUser()`, `JUser::getInstance()` | `App::get('user')` | `User::method()` |
+| `JFactory::getSession()` | `App::get('session')` | `Session::method()` |
+| `JFactory::getDocument()` | `App::get('document')` | `Document::method()` |
+| `JFactory::getConfig()` | `App::get('config')` | `Config::method()` |
+| `JFactory::getLanguage()` | `App::get('lang')` | `Lang::method()` |
+| `JFactory::getCache()` | `App::get('cache.store')` | `Cache::method()` |
+| `JFactory::getLogger()` | `App::get('log')->logger('{name}')` | `Log::method()` |
+
+> **Note:** The `Log` facade writes to the `debug` log. For any other log,
+> go through `App::get('log')->logger('{name}')`.
 
 ## Dates
 
-Along with a replacement class for Joomla's `JDate`, the CMS includes a global `Date` class to make handling and formatting of dates a little easier.
-
-### Now
-
-The `Date` class will always return an instance of `Hubzero\Utility\Date`. If no specific time or timestamp is specified, it will default to 'now'.
+`JDate` becomes [`Hubzero\Utility\Date`](../../../core/libraries/Hubzero/Utility/Date.php),
+reached through the `Date` facade. With no argument it means now, in UTC.
 
 ```php
-// Output the current timestamp (UTC) in the database's format. ex: "2015-04-03 12:23:56"
+// The current UTC timestamp in the database's format: "2026-04-03 12:23:56"
 echo Date::toSql();
 
-// Output the current timestamp (UTC) in Unix format.
+// The current UTC timestamp as a Unix time
 echo Date::toUnix();
 
-// Output the current timestamp (UTC) year. ex: "2015"
+// The current UTC year: "2026"
 echo Date::format('Y');
 
-// Output the current timestamp adjusted to the timezone of the hub. For example, if the UTC time is "12:23 pm" and the hub's set timezone is Eastern Standard Time (EST), the time outoutted will be "08:23 am"
+// Adjusted to the hub's timezone. UTC 12:23 pm on an Eastern hub is "08:23 am"
 echo Date::toLocal('g:i a');
 ```
 
-### Specified date
-
-A specific timestamp and timezone can be passed to the `of` method. If no timezone is provided, the timezone will default to UTC.
+`Date::of()` takes a specific timestamp, and an optional timezone that
+defaults to UTC:
 
 ```php
-// Output the current timestamp (UTC) year. ex: "2013"
-echo Date::of('2013-08-12 17:01:34')->format('Y');
-
-// Output the current timestamp adjusted to the timezone of the hub. ex: "1:01 pm"
-echo Date::of('2013-08-12 17:01:34')->toLocal('g:i a');
+echo Date::of('2013-08-12 17:01:34')->format('Y');    // "2013"
+echo Date::of('2013-08-12 17:01:34')->toLocal('g:i a'); // "1:01 pm"
 ```
+
+See [Dates](../05-basics/05-dates.md).
 
 ## Users
 
-The global user object, retrieved from `JFactory::getUser()` can now be accessed anywhere within the CMS from the `User` facade. Any method, other than `getInstance()`, statically called on `User` will be acted upon the current, global user. This is the same as calling `JFactory::getUser()->method()`.
+Any method called statically on `User`, other than `getInstance()`, acts on
+the current user — the equivalent of `JFactory::getUser()->method()`.
 
 ```php
 // Joomla
@@ -243,26 +244,36 @@ echo JFactory::getUser()->get('name');
 echo User::get('name');
 ```
 
-The `getInstance()` method can be used to retrieve the underlying object (of the facade) and assigned to a variable as needed.
+`getInstance()` returns the object behind the facade, with or without an
+id or username:
 
 ```php
-// Joomla
-$user = JFactory::getUser();
-// ... or ...
-$user = JUser::getInstance();
-
-// Hubzero
-$user = User::getInstance();
+$user  = User::getInstance();      // the current user
+$other = User::getInstance(1234);  // JFactory::getUser(1234)
 ```
 
-Obtaining instances of new users can be achieved by calling `getInstance($id_or_username)` on the `User` facade in the same manner as calling `JUser::getInstance($id_or_username)` or `JFactory::getUser($id_or_username)`.
+## The database
 
-```php
-// Joomla
-$user = JFactory::getUser(1234);
-// ... or ...
-$user = JUser::getInstance(1234);
+An upgrade is not finished when the files are in place. Schema and data
+changes ship as [migrations](../06-database/02-migrations.md) — small PHP
+classes under a `migrations` directory with an `up()` and a `down()` —
+and [muse](../12-muse/README.md) runs the ones a hub has not seen,
+recording each in `#__migrations` so it never runs twice.
 
-// Hubzero
-$user = User::getInstance(1234);
+```bash
+php core/bin/muse migration      # dry run: lists what would happen
+php core/bin/muse migration -f   # actually run them
 ```
+
+The dry run is the default, which is the safest thing about the command
+and the easiest to miss. `-e com_example` limits the run to one extension,
+`-d down` reverses, and the full option list is in the
+[muse migration reference](../../reference/muse/migration.md).
+
+> **Warning:** Reversing a schema change is often impossible without data
+> loss, whatever `down()` claims. Take a database dump before an upgrade:
+> `php core/bin/muse database dump`.
+
+> **Note:** Older instructions pair `-f` with `-i`. `-i` now behaves as
+> `-a`, which only widens the list of migrations considered; it is not
+> needed for an ordinary upgrade.

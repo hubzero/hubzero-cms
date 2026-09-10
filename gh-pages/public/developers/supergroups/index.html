@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Super Groups · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Super groups are advanced HUB groups, that have their own webspace within the HUB to showcase their group. Super groups have a lot of extra…">
+  <meta name="description" content="A super group is a hub group with a directory of its own on the server. The directory holds a template, optional PHP pages, optional components, macros,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/supergroups/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
@@ -81,11 +81,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
@@ -127,37 +127,38 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Super Groups</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#group-pages-modules">Group Pages &amp; Modules</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-group-directory">The group directory</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-super-group-can-do">What a super group can do</a></li>
+<li class="toc__item toc__item--l2"><a href="#code-in-pages-and-modules">Code in pages and modules</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -172,23 +173,137 @@
           <p class="eyebrow">Developers</p>
           <h1>Super Groups</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/supergroups">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Super groups are advanced HUB groups, that have their own webspace within the HUB to showcase their group.</p>
-<p>Super groups have a lot of extra functionality built in to allow them to customize their group.</p>
-<h2 id="group-pages-modules">Group Pages &amp; Modules</h2>
-<p>Super groups have the ability to include PHP and javascript code into group pages and modules. Pages or modules that contain PHP or Javascript code will then need to be approved by a group page approver. Notifications are sent to approvers when a page needs to be approved. Another notification will be sent to the group managers when the page has been approved.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="templating-system/index.html">Templating System</a></li>
-<li><a href="page-templates/index.html">Page Templates</a></li>
-<li><a href="custom-macros/index.html">Custom Macros</a></li>
-<li><a href="php-pages/index.html">PHP Pages</a></li>
+<p>A super group is a hub group with a directory of its own on the server. The
+directory holds a template, optional PHP pages, optional components, macros,
+migrations and a database configuration, and the group renders through that
+template instead of the site's. This section is about writing the code that
+goes in that directory.</p>
+<p>A group's type is a database value only an administrator can set. Nothing a
+group manager does from the site turns an ordinary group into a super group,
+and nothing in the group's own web space can be edited from the site either:
+the group file browser reaches the group's <code>uploads</code> folder and nothing else,
+for every group, super or not. You edit a super group's template on the
+server, or through the repository workflow in
+<a href="../supergroups-gitlab/index.html">Super Groups with GitLab</a>.</p>
+<p>For what the status gives a group and how an administrator creates one, see
+<a href="../../managers/users/supergroups/index.html">Super Groups</a> in the managers
+book.</p>
+<h2 id="the-group-directory">The group directory</h2>
+<p>Group files live under the <strong>Upload Path</strong> option of <code>com_groups</code>,
+<code>/site/groups</code> by default, resolved against <code>PATH_APP</code> — so
+<code>app/site/groups/</code> on a stock install. Each group gets a directory named
+after its numeric <code>gidNumber</code>, not its alias:</p>
+<pre><code>app/site/groups/1051/
+├── components/          super group components
+├── config/
+│   └── db.php           credentials for the group's own database
+├── language/
+│   └── en-GB/           string overrides
+├── macros/              custom and overridden wiki macros
+├── migrations/          schema changes for the group's database
+├── pages/               standalone PHP pages
+├── template/
+│   ├── index.php        the template, the only required file
+│   ├── error.php        error page (see the note below)
+│   ├── includes/
+│   │   ├── header.php
+│   │   └── footer.php
+│   └── assets/
+│       ├── css/
+│       └── js/
+└── uploads/             everything the group's file browser can reach
+</code></pre>
+<p>Everything except <code>pages/</code> is created when the group is saved as a super
+group, from the skeleton in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/super/default"><code>core/components/com_groups/super/default</code></a>.
+Existing files are never overwritten, so re-saving a group is safe. Create
+<code>pages/</code> yourself when you need it.</p>
+<p>Two directories are excluded from the group's git repository by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/assets/scripts/gitlab_setup.sh"><code>gitlab_setup.sh</code></a>:
+<code>uploads/*</code> and <code>config/db.php</code>. Keep generated files and credentials out of
+the repository.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If the hub's active site template ships a <code>super/</code> directory, it
+is copied over <code>template/</code> first and the skeleton fills in whatever it did
+not provide. No template in this repository ships one, so in practice every
+new super group starts from the skeleton.</p>
+</aside>
+<h2 id="what-a-super-group-can-do">What a super group can do</h2>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Render the group through its own template</td>
+<td><a href="templating-system/index.html">Templating system</a></td>
+</tr>
+<tr>
+<td>Give individual pages their own layout</td>
+<td><a href="page-templates/index.html">Page templates</a></td>
+</tr>
+<tr>
+<td>Add or replace <code>[[Macro()]]</code> handlers</td>
+<td><a href="custom-macros/index.html">Custom macros</a></td>
+</tr>
+<tr>
+<td>Serve a plain PHP file at a group URL</td>
+<td><a href="php-pages/index.html">PHP pages</a></td>
+</tr>
+<tr>
+<td>Read and write a private database</td>
+<td><a href="databases/index.html">Databases</a></td>
+</tr>
+<tr>
+<td>Version that database's schema</td>
+<td><a href="migrations/index.html">Migrations</a></td>
+</tr>
+<tr>
+<td>Ship a full MVC component</td>
+<td><a href="components/index.html">Components</a></td>
+</tr>
+</tbody>
+</table>
+<p>A super group also overrides the strings of any group plugin: every
+<code>core/plugins/groups/*</code> plugin looks in the group directory's <code>language/</code>
+folder before its own, so
+<code>language/en-GB/en-GB.plg_groups_blog.ini</code> renames or rewords anything the
+Blog tab says for that group alone.</p>
+<h2 id="code-in-pages-and-modules">Code in pages and modules</h2>
+<p>Group page and module content is run through HTML Purifier before it is
+stored. For an ordinary group, PHP tags and <code>&lt;script&gt;</code> elements are stripped.
+For a super group — and for an ordinary group whose <strong>Trusted content</strong> page
+setting is on — they survive, handled by the <code>Php</code> and <code>ExternalScripts</code>
+filters in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/helpers/filters"><code>core/components/com_groups/helpers/filters/</code></a>.</p>
+<p>Content that contains <code>&lt;?</code>, <code>&lt;?php</code> or <code>&lt;script</code> is saved unapproved and
+mailed to the usernames in the <strong>Page Approvers</strong> option. Visitors see a
+placeholder until an approver approves it; approval then notifies the group's
+managers. The approval screens are described in
+<a href="../../managers/users/supergroups/index.html#approval-of-pages-and-modules">Super Groups</a>.</p>
+<p>The <code>&lt;group:include&gt;</code> tags described in the next chapters survive
+purification for every group, because the <code>GroupInclude</code> filter is always
+applied. They only <em>do</em> anything where the renderer runs them.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Escaping the approval queue is what the <code>pages/</code> directory is
+for. A <code>.php</code> file placed there by someone with server access is executed
+as written and is never queued for approval.</p>
+</aside>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="templating-system/index.html">Templating system</a></li>
+<li><a href="page-templates/index.html">Page templates</a></li>
+<li><a href="custom-macros/index.html">Custom macros</a></li>
+<li><a href="php-pages/index.html">PHP pages</a></li>
 <li><a href="databases/index.html">Databases</a></li>
 <li><a href="migrations/index.html">Migrations</a></li>
 <li><a href="components/index.html">Components</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../muse/commands/index.html" rel="prev"><span>Previous</span>Common tasks</a><a class="pager__next" href="templating-system/index.html" rel="next"><span>Next</span>Templating System</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../muse/commands/index.html" rel="prev"><span>Previous</span>Common tasks</a><a class="pager__next" href="templating-system/index.html" rel="next"><span>Next</span>Templating system</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -1,354 +1,165 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/fontcons
 source-id: 3515
 modified: 2012-10-19
-imported: 2026-09-09
 -->
 # Fontcons
 
-## Overview
+Fontcons is the CMS's general-purpose icon font: pencils, folders, arrows,
+warning triangles and so on. Roughly 295 glyphs, originally derived from Font
+Awesome and heavily extended. Components, modules and the admin templates all
+use it, so a site template that does not carry it renders a lot of blank
+squares.
 
-In a single collection, Fontcons is a pictographic language designed for a full array of web-related actions and content. Although originally inspired by [Font Awesome](http://fortawesome.github.com/Font-Awesome/), we've heavily modified and added to the available icons; Fontcons brings over 250 icons for use in a package equivalent in file size to just one or two bitmapped icons!
+## What ships
 
-## Integration
+| File | What it is |
+|---|---|
+| [`core/assets/less/fontcons.less`](../../../core/assets/less/fontcons.less) | The `@font-face` rule, plus 273 named `@icon…` variables — one per glyph |
+| [`core/assets/less/icons.less`](../../../core/assets/less/icons.less) | 292 `.icon-*` classes built from those variables |
+| [`core/assets/css/fontcons.css`](../../../core/assets/css/fontcons.css) | The `@font-face` rule alone, for stylesheets not written in LESS |
+| `core/assets/css/fonts/fontcons-webfont.{eot,svg,ttf,woff}` | The font itself |
 
-The [open source](https://hubzero.org/download) package contains several bootstrap CSS files for inclusion in your template. These stylesheets can be found in the web root's `/media/system/css` directory. Here, our attention is on `fontcons.css` which contains the necessary `@font-face` rules to start using Fontcons.
+> **Warning:** `fontcons.css` is 17 lines and contains *only* the `@font-face`
+> rule. Linking it gives you the family, not the classes. The `.icon-*` classes
+> exist only in `icons.less`. Older documentation implied otherwise.
 
-```css
-@font-face {
-	font-family: 'Fontcons';
-	src: url('/media/system/css/fonts/fontcons-webfont.eot');
-	src: url('/media/system/css/fonts/fontcons-webfont.eot?#iefix') format('embedded-opentype'),
-		 url('/media/system/css/fonts/fontcons-webfont.woff') format('woff'),
-		 url('/media/system/css/fonts/fontcons-webfont.ttf') format('truetype'),
-		 url('/media/system/css/fonts/fontcons-webfont.svg#FontconsRegular') format('svg');
-	font-weight: normal;
-	font-style: normal;
-}
+## Adding it to a template
+
+If your template is written in LESS — as `kimera`, `kameleon` and `lucent` all
+are — import the two files near the top, in this order:
+
+```less
+@import "../../../../core/assets/less/fontcons.less"; // Defines the available icons
+@import "../../../../core/assets/less/icons.less";    // Depends on fontcons.less
 ```
 
-While you can include Fontcons on a per use basis (e.g., individual components), due to it being relatively light-weight and several Hubzero components making use of it, we recommend including the stylesheet into your site template.
+`icons.less` refers to variables that `fontcons.less` defines, so importing it
+alone fails to compile. That is what the `!!` in `kimera`'s comment means.
 
-In the `<head>` of your template's html, reference the location to `fontcons.css`:
+`fontcons.less` builds its URLs from a `@pathSystemCss` variable, so define it
+in your `_variables.less` before the import. The shipped values are:
+
+| Template | `@pathSystemCss` |
+|---|---|
+| `core/assets/less/variables.less` | `"/core/assets/css"` — an absolute path |
+| `kimera/less/_variables.less` | `"../../../../core/assets/css"` — relative, from `css/` |
+
+Use the relative form if your compiled CSS sits in the template's own `css/`
+directory, the absolute form otherwise.
+
+If you are not using LESS, link the plain stylesheet and write your own classes:
 
 ```html
-<link rel="stylesheet" href="/media/system/css/fontcons.css" />
+<link rel="stylesheet" href="/core/assets/css/fontcons.css" />
 ```
 
-Or import fontcons.css into your site's CSS:
+> **Note:** Do not `@import` it from inside another stylesheet. Imported
+> stylesheets are fetched only after the importing one has been parsed, which
+> delays the font and can show a flash of unstyled content.
 
-```css
-/* Note: import rules MUST come first */
-@import "/media/system/css/fontcons.css";
+> **Note:** Older copies of this page pointed at `/media/system/css/`. That
+> path has not existed since the `core`/`app` split.
 
-/* Other styles here */
+## Using it
+
+`icons.less` sets the family on anything whose class begins `icon-`, and each
+class supplies its own glyph:
+
+```less
+*[class^="icon-"]:before,
+*[class*=" icon-"]:before {
+	font-family: "Fontcons";
+	margin-right: 0.2em;
+	speak: none;
+}
+
+.icon-edit:before   { content: "\@{iconPencil}"; }
+.icon-delete:before { content: "\@{iconTrash}"; }
 ```
 
-> **Note:** A word of caution on using `@import`: Internet Explorer 8 and older will download stylesheets in sequence rather than in parallel. This can have effects on page speed and flashes of un-styled content before the CSS files have finished downloading. See Steve Souder's ["donâ€™t use @import"](http://www.stevesouders.com/blog/2009/04/09/dont-use-import/) for more details.
-
-## Use
-
-There are two primary ways to use the font, both with advantages and disadvantages. The first, is to include the necessary HTML and unicode character directly into your markup.
-
-The HTML:
+So all you write is the class:
 
 ```html
-<a href="#"><span class="edit">&#x270E;</span> edit</a>
+<a class="icon-edit" href="…">Edit</a>
 ```
 
-The CSS:
+Keep the visible text. The glyph is in a pseudo-element, which assistive
+technology does not read, so the class alone leaves the control unlabelled.
 
-```css
-.edit {
-    font-family: "Fontcons"
+To use a glyph outside the `icon-` naming, three mixins in
+[`core/assets/less/mixins.less`](../../../core/assets/less/mixins.less) do the
+work:
+
+```less
+.my-thing:before {
+	.fontcons(@iconWrench);
 }
 ```
 
-The advantage here is greater browser compatibility. `@font-face` is supported by even Internet Explorer 6. The disadvantage, however, is that you now have to edit the HTML wherever you wish to insert an icon which could change depending upon the styling and theme of your template. That could quickly become a headache!
+`.ie7-fontcons-before()` and `.ie7-fontcons-after()` are the other two. They
+emit a `zoom: expression(…)` hack for Internet Explorer 7, which cannot render
+`:before`. They are still compiled into the shipped CSS. There is no reason to
+use them in new work.
 
-The alternative is to use the CSS pseudo-elements `:before` and `:after`. This takes a little more setup in your styles but offers greater flexibility and ease of change. Unfortunately, pseudo-elements are **not** supported in Internet Explorer 7 or older. There is, however, a solution which we'll get to in a moment.
+## The icons
 
-The HTML:
+Named variables in `fontcons.less` and matching classes in `icons.less`, in
+these groups:
 
-```html
-<a class="edit" href="#">edit</a>
+| Group | Examples |
+|---|---|
+| Voting | `.icon-heart`, `.icon-star`, `.icon-star-half`, `.icon-thumbs-up` |
+| Notifications | `.icon-help`, `.icon-info`, `.icon-success`, `.icon-error`, `.icon-warning` |
+| Security | `.icon-lock`, `.icon-unlock`, `.icon-flag`, `.icon-shield` |
+| Config | `.icon-tools`, `.icon-settings`, `.icon-dashboard`, `.icon-key`, `.icon-wrench` |
+| Mail | `.icon-envelope`, `.icon-inbox` |
+| User, Zoom, Tags | `.icon-user`, `.icon-zoom-in`, `.icon-tag` |
+| Travel, Download/Upload, Sound, Video, Media | `.icon-plane`, `.icon-download`, `.icon-volume-up`, `.icon-play` |
+| Text edit | `.icon-bold`, `.icon-align-left`, `.icon-list` |
+| Actions, Directional | `.icon-edit`, `.icon-delete`, `.icon-prev`, `.icon-next` |
+| Folders, Files, Date/time | `.icon-folder`, `.icon-file`, `.icon-calendar`, `.icon-alarm-clock` |
+| Commerce, Comments, Sign in/out | `.icon-shopping-cart`, `.icon-comment`, `.icon-signin` |
+| Charts, States, Quotes, Awards | `.icon-line-graph`, `.icon-quote-open`, `.icon-trophy` |
+| Computers, Gauge, Misc | `.icon-laptop`, `.icon-gauge-high` |
+
+The last group in `icons.less` is aliases: `.icon-danger` is `.icon-error`,
+`.icon-add` is `.icon-plus-sign`, `.icon-edit` is `.icon-pencil`,
+`.icon-delete` is `.icon-trash`, and so on. Use whichever name reads better.
+
+For the complete list, read the two files. They are the only authority — the
+old page's bare list of codepoints has no names attached and cannot be checked
+against anything.
+
+## The alternative: SVG icons
+
+The CMS also ships 325 SVG icons in
+[`core/assets/icons`](../../../core/assets/icons), and this is the newer of the
+two systems:
+
+```php
+<?php echo Html::asset('icon', 'edit'); ?>
 ```
 
-The CSS:
+That inlines the file wrapped in `<span class="icn icn-edit" aria-hidden="true"
+focusable="false">`. The `.icn` rules in
+[`core/assets/less/utilities.less`](../../../core/assets/less/utilities.less) size
+the SVG to `1em` and fill it with `currentColor`, so it inherits the
+surrounding text's size and colour exactly as a font glyph would.
 
-```css
-/* Note the :before pseudo-element */
-small.edit,  /* for IE 7, more on that below */
-.edit:before {
-    font-family: "Fontcons"
-    content: "\\270E"; /* unicode characters must start with a backslash */
-}
-```
+| | Fontcons | SVG icons |
+|---|---|---|
+| Added by | A stylesheet import | `Html::asset('icon', …)` in a layout |
+| Overridable per template | Only by restyling the class | `html/icons/{symbol}.svg` replaces the file |
+| Cost | One font download, then free | Markup weight on every use |
+| Colour | One per glyph | One per glyph, from `currentColor` |
+| Multi-colour | No | Possible |
 
-What about Internet Explorer 7?
-
-```css
-.edit {
-    *zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit">&#x270E;</small>' + this.innerHTML);
-}
-```
-
-We use `<small>` in the example above since it's a relatively unused tag and lessens the potential for styling conflicts. It should be noted that over-use of this technique can slow down IE 7 as it has to process and dynamically include content into the page upon render.
-
-## Icon List
-
-- \\\\f000
-- \\\\266B
-- \\\\f002
-- \\\\2709
-- \\\\2665
-- \\\\2605
-- \\\\2606
-- \\\\f007
-- \\\\f008
-- \\\\f009
-- \\\\f00a
-- \\\\f00b
-- \\\\2714
-- \\\\2716
-- \\\\f00e
-- \\\\f010
-- \\\\f011
-- \\\\f012
-- \\\\2699
-- \\\\f014
-- \\\\2302
-- \\\\f016
-- \\\\f017
-- \\\\2641
-- \\\\f01e
-- \\\\f018
-- \\\\f019
-- \\\\f01a
-- \\\\f01b
-- \\\\f01c
-- \\\\f01d
-- \\\\21BB
-- \\\\f083
-- \\\\f092
-- \\\\f085
-- \\\\f08e
-- \\\\f08d
-- \\\\f077
-- \\\\23F0
-- \\\\f071
-- \\\\f081
-- \\\\260E
-- \\\\f056
-- \\\\f067
-- \\\\f062
-- \\\\f044
-- \\\\f061
-- \\\\f069
-- \\\\f07f
-- \\\\f01f
-- \\\\269B
-- \\\\f09c
-- \\\\f095
-- \\\\f0a1
-- \\\\f0a2
-- \\\\f0a3
-- \\\\f0ad
-- \\\\f0ae
-- \\\\f0b0
-- \\\\f0b2
-- \\\\f0e3
-- \\\\f0d0
-- \\\\f0ea
-
-- \\\\f021
-- \\\\f022
-- \\\\f023
-- \\\\2691
-- \\\\f025
-- \\\\f026
-- \\\\f027
-- \\\\f028
-- \\\\f029
-- \\\\f02a
-- \\\\f02b
-- \\\\f02c
-- \\\\f02d
-- \\\\f02e
-- \\\\2399
-- \\\\f030
-- \\\\f031
-- \\\\f032
-- \\\\f033
-- \\\\f034
-- \\\\f035
-- \\\\f036
-- \\\\f037
-- \\\\f038
-- \\\\f039
-- \\\\f03a
-- \\\\f03b
-- \\\\f03c
-- \\\\f03d
-- \\\\f03e
-- \\\\f082
-- \\\\2692
-- \\\\25F7
-- \\\\f080
-- \\\\f084
-- \\\\26DF
-- \\\\f004
-- \\\\26D3
-- \\\\f00c
-- \\\\237E
-- \\\\f072
-- \\\\231B
-- \\\\f068
-- \\\\f005
-- \\\\f05c
-- \\\\f054
-- \\\\f063
-- \\\\f053
-- \\\\f07d
-- \\\\f07e
-- \\\\f05f
-- \\\\f09a
-- \\\\f08f
-- \\\\f0a4
-- \\\\f0a5
-- \\\\f0a6
-- \\\\f0a7
-- \\\\f0ca
-- \\\\f0cb
-- \\\\f0cc
-- \\\\f0cd
-- \\\\f0ce
-- \\\\f0db
-
-- \\\\270E
-- \\\\f041
-- \\\\f043
-- \\\\25D1
-- \\\\270D
-- \\\\f045
-- \\\\2611
-- \\\\f047
-- \\\\21E4
-- \\\\f049
-- \\\\219E
-- \\\\25B6
-- \\\\f04c
-- \\\\2588
-- \\\\21A0
-- \\\\21E4
-- \\\\f049
-- \\\\f052
-- \\\\2039
-- \\\\203A
-- \\\\2295
-- \\\\2296
-- \\\\f057
-- \\\\f058
-- \\\\f059
-- \\\\f05a
-- \\\\f05b
-- \\\\2297
-- \\\\f05d
-- \\\\2298
-- \\\\f087
-- \\\\f088
-- \\\\f086
-- \\\\f091
-- \\\\f093
-- \\\\270B
-- \\\\f00d
-- \\\\f08a
-- \\\\f006
-- \\\\f003
-- \\\\f001
-- \\\\f094
-- \\\\f078
-- \\\\f040
-- \\\\f060
-- \\\\f05e
-- \\\\f08c
-- \\\\f079
-- \\\\f097
-- \\\\f098
-- \\\\f03f
-- \\\\f096
-- \\\\f09d
-- \\\\f0a8
-- \\\\f0a9
-- \\\\f0aa
-- \\\\f0ab
-- \\\\f0b1
-- \\\\f0c1
-- \\\\f0c2
-- \\\\f0c3
-- \\\\2622
-- \\\\2746
-
-- \\\\2190
-- \\\\2192
-- \\\\2191
-- \\\\2193
-- \\\\f064
-- \\\\f065
-- \\\\f066
-- \\\\271A
-- \\\\2010
-- \\\\273D
-- \\\\f06b
-- \\\\f06c
-- \\\\f06d
-- \\\\2601
-- \\\\f046
-- \\\\f06e
-- \\\\f070
-- \\\\26A0
-- \\\\2757
-- \\\\2708
-- \\\\f073
-- \\\\f074
-- \\\\f075
-- \\\\f0e5
-- \\\\f0e6
-- \\\\f02f
-- \\\\2303
-- \\\\2304
-- \\\\267B
-- \\\\f07a
-- \\\\f07b
-- \\\\f07c
-- \\\\2195
-- \\\\2194
-- \\\\f076
-- \\\\f090
-- \\\\f08b
-- \\\\f089
-- \\\\2661
-- \\\\26A1
-- \\\\2702
-- \\\\22EF
-- \\\\f055
-- \\\\f042
-- \\\\2693
-- \\\\275D
-- \\\\275E
-- \\\\f04a
-- \\\\f048
-- \\\\f04d
-- \\\\f04e
-- \\\\f06f
-- \\\\f04f
-- \\\\f09b
-- \\\\f0a0
-- \\\\f0d7
-- \\\\f0d8
-- \\\\f0d9
-- \\\\f0da
-- \\\\f0d6
-- \\\\f0ea
-- \\\\f0c5
+Both are current. Fontcons is what the existing component and template
+stylesheets use, and you need it for those to look right. Reach for
+`Html::asset('icon', …)` in new markup, where a template can override the
+symbol without touching your stylesheet.

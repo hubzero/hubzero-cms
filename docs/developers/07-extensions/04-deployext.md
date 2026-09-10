@@ -1,119 +1,136 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions/deployext
 source-id: 3470
 modified: 2020-12-29
 imported: 2026-09-09
 -->
-# Deploying Extensions
+# Deploying extensions
 
-## Installing with the Extension Manager
+Getting an extension onto a running hub is two separate things: putting the
+code in the right directory, and writing the row in `#__extensions` that
+makes the platform notice it. Nothing scans the filesystem, so the code
+alone does nothing.
 
-See [https://help.hubzero.org/documentation/22/managers/extensions/extmanger](../../managers/10-extensions/04-extension-manager.md)
+> **Important:** There is no package installer. Hubzero's Extension Manager
+> is not the Joomla one it descends from — the **Install**, **Update**,
+> **Discover** and **Database** screens were removed, and only some orphan
+> language strings are left behind. You cannot upload a `.zip` and have it
+> unpack itself, and any instruction that says otherwise, here or elsewhere,
+> is describing software this release does not have. See the
+> [Extension Manager](../../managers/extensions/extension-manager.md).
 
-## Installing By Hand
+Two ways remain, and they are the two below.
 
-Installing an extension by hand requires a few more steps than the Extensions Installer but is still a fairly easy and quick process.
+## From a git repository
 
-1. If the extension is packaged as a `.zip` file, extract the files to a location on your local machine.
-2. Upload the entire contents of the extension, except language files, via SSH/sFTP to the `/yourhub/app/{ExtensionType}/` directory.
-   | Extension Type | Install Location |
-   |---|---|
-   | Component | `/yourhub/app/components/{ExtensionName}` |
-   | Module | `/yourhub/app/modules/{ExtensionName}` |
-   | Plugin | `/yourhub/app/plugins/{PluginType}/{PluginName}` |
-   | Template | `/yourhub/app/templates/{ExtensionName}` |
-3. Log in to the administrative back-end of the HUB.
-4. ### Components
-   1. Components do not technically need a database entry to function in their simplest form. However, an entry is needed if one wishes to use parameters or have the component appear under the "Components" list in the administrative back-end. The preferred method is to create a [migration](../06-database/02-migrations.md) for your extension and to then run migrations via the command-line utility [muse](../12-muse/README.md). The alternative is to have it done by hand via MySQL command-line, some form of MySQL database GUI, or executing a PHP script. A sample SQL is provided below:
-      ```sql
-      INSERT INTO #__extensions(
-      	`extension_id`,
-      	`name`,
-      	`type`,
-      	`element`,
-      	`folder`,
-      	`client_id`,
-      	`enabled`,
-      	`access`,
-      	`protected`,
-      	`manifest_cache`,
-      	`params`,
-      	`custom_data`,
-      	`system_data`,
-      	`checked_out`,
-      	`checked_out_time`,
-      	`ordering`,
-      	`state`
-      )
-      VALUES(
-      	'',
-      	'com_mycomponent',
-      	'component',
-      	'com_mycomponent',
-      	'',
-      	0,
-      	1,
-      	1,
-      	0,
-      	'',
-      	'',
-      	'',
-      	'',
-      	0,
-      	'0000-00-00 00:00:00',
-      	0,
-      	0
-      );
-      ```
-   ### Modules
-   1. Once logged-in navigate to the Modules Manager. This can be found from the main menu by following the "Modules Manager" option found in the drop-down under "Extensions".
-   2. Click the "New" button in the toolbar. This will present you with a list of all available modules, including those with existing directories but no database entries (such as the one you just copied to `/yourhub/app/modules/`).
-   3. Find the name of your newly added module and click its radio button. Once selected, click the "Next" button in the toolbar. This will take you to an "edit module" screen where you may enter a title, adjust parameters, select a position, etc.
-   4. Enter a title, adjust parameters, select a position, and enter any other necessary information. Click "Save" in the toolbar.
-   ### Plugins
-   1. A sample SQL is provided below:
-      ```sql
-      INSERT INTO #__extensions(
-      	`extension_id`,
-      	`name`,
-      	`type`,
-      	`element`,
-      	`folder`,
-      	`client_id`,
-      	`enabled`,
-      	`access`,
-      	`protected`,
-      	`manifest_cache`,
-      	`params`,
-      	`custom_data`,
-      	`system_data`,
-      	`checked_out`,
-      	`checked_out_time`,
-      	`ordering`,
-      	`state`
-      )
-      VALUES(
-      	'',
-      	'System - Hello World',
-      	'plugin',
-      	'helloworld',
-      	'system',
-      	0,
-      	1,
-      	1,
-      	0,
-      	'',
-      	'',
-      	'',
-      	'',
-      	0,
-      	'0000-00-00 00:00:00',
-      	0,
-      	0
-      );
-      ```
-   ### Templates
-   1. Once logged-in navigate to the Templates Manager. This can be found from the main menu by following the "Template Manager" option found in the drop-down under "Extensions".
-   2. Here you will be presented with a list of available templates. Your newly added template should be available. To make it the default template of the site, select it by clicking the radio button next to its name.
-   3. Click the "Default" button to make the template the default.
+The Extension Manager's **Custom Extensions** tab clones a git repository
+into `app/` and updates it by fetching and merging. This is the supported
+route for a hub's own extensions, and the one to use if the extension has a
+repository.
+
+1. Push the extension to a repository whose contents are laid out as the
+   extension directory itself — the manifest at the top level, not inside a
+   wrapper directory.
+2. In the administrator interface, go to **Extensions** → **Extension
+   Manager** → **Custom Extensions** and select **New**.
+3. Fill in the HTTPS clone URL, a name, the alias — the directory name to
+   create, prefix included, so `com_example` or `mod_example` — and the
+   type. For a plugin, also set **Folder (Plugins Only)** to its group. A
+   private repository needs a **GIT Personal Access Token**.
+4. **Save & Close**, then tick the row and select **Update Selected Custom
+   Extensions**. That is what actually fetches the code; saving the record
+   does not.
+5. Review the incoming commits and select **Merge Code**.
+
+The type determines where the clone lands, under `PATH_APP`:
+
+| Type | Installed to |
+|---|---|
+| `component` | `app/components/{alias}` |
+| `module` | `app/modules/{alias}` |
+| `plugin` | `app/plugins/{folder}/{alias}` |
+| `template` | `app/templates/{alias}` |
+| `language` | `app/languages/{alias}` |
+| `library` | `app/libraries/{alias}` |
+| `non-standard` | `app/{alias}`, contents as they are |
+
+The full field-by-field description of the form is in the
+[Extension Manager](../../managers/extensions/extension-manager.md) chapter.
+
+## By hand
+
+For development, and for anything without a repository, copy the directory
+into place yourself.
+
+1. Put the extension directory under `app/`, at the path its type requires —
+   the table above gives them. Ownership and permissions must match the rest
+   of `app/`, or the web server will not read it.
+2. Register it. From the CMS root:
+
+   ```bash
+   php core/bin/muse migration -e=com_example      # dry run: what would happen
+   php core/bin/muse migration -e=com_example -f   # actually run it
+   ```
+
+   That runs the extension's own [migrations](../database/migrations.md),
+   creating its tables and its `#__extensions` row. Without `-f` the runner
+   only reports; `-e` restricts it to the one extension.
+
+3. Clear the cache if the extension is a component: `Hubzero\Component\Loader`
+   caches the extension row for `cachetime` minutes, so a component
+   registered a moment ago can still 404 until the cache expires.
+
+An extension under `app/` completely replaces a core extension of the same
+name. The loaders take the first directory they find, `app/` before `core/`,
+and never mix the two.
+
+### Registering without muse
+
+If migrations are not an option, the row can be written directly. The
+columns the loaders read are `type`, `element`, `folder`, `client_id` and
+`enabled`; the rest have workable defaults.
+
+```sql
+INSERT INTO `#__extensions`
+	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
+VALUES
+	('com_example', 'component', 'com_example', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+```
+
+A plugin's row carries its group in `folder` and its bare name in `element`
+— `('System - Example', 'plugin', 'example', 'system', 0, 1, ...)`.
+
+Prefer the migration. It is versioned with the code, it reverses cleanly,
+and it is what an upgrade will run on the next hub.
+
+## After the code is in place
+
+- **Components** appear under **Components** in the administrator menu once
+  the row exists and `enabled` is `1`. **Refresh Cache** in the Extension
+  Manager re-reads the XML manifest if you have edited it.
+- **Modules** need a second step. The row registers the module *type*; an
+  instance is created in **Extensions** → **Module Manager** → **New**,
+  where you pick the type, give it a title, choose a position and set its
+  parameters. Nothing renders until an instance is published.
+- **Plugins** need no second step. An enabled plugin is imported with its
+  group and bound to every event its public methods are named after.
+- **Templates** are assigned in **Extensions** → **Template Manager**, by
+  selecting the template and making it the default for the site or the
+  administrator interface.
+
+## Core migrations
+
+Migrations that belong to the platform rather than to one extension are run
+from the Extension Manager's **Core Migrations** screen, or on the command
+line:
+
+```bash
+php core/bin/muse migration -f
+```
+
+See [Migrations](../database/migrations.md) for what a migration can do and
+how the runner decides what is pending.

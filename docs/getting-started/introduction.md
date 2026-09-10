@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/240/introduction
 source-id: 3749
 modified: 2025-01-31

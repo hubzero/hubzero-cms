@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Parameters · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Standard parameter types There are 21 different standard parameter types supported for all extension types (templates, components, modules and…">
+  <meta name="description" content="A parameter is a setting an administrator can change without editing code. You declare them in XML; the CMS builds a form from the declaration, stores what was…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/extensions/parameters/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,17 +41,17 @@
         <a class="rail__book" href="../../index.html">Developers</a>
         <nav aria-label="Developers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release Notes</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct Database Access</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade Guide</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser Support</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development Environment</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
@@ -81,14 +81,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">CMS Extensions</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Parameters</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l3"><a href="#standard-parameter-types">Standard parameter types</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-declaration-goes">Where the declaration goes</a></li>
+<li class="toc__item toc__item--l2"><a href="#fieldsets">Fieldsets</a></li>
+<li class="toc__item toc__item--l2"><a href="#fields">Fields</a></li>
+<li class="toc__item toc__item--l2"><a href="#field-types">Field types</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-values-end-up">Where the values end up</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../deployext/index.html">Deploying extensions</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
@@ -130,34 +134,34 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page Layout</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading Style Sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output Overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements &amp; Typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating System</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page Templates</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom Macros</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP Pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super Groups &amp; Gitlab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why Gitlab</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 </ul>
         </nav>
@@ -166,42 +170,365 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">CMS Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Parameters</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Extensions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Parameters</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
           <h1>Parameters</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/extensions/parameters">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was never published there, so read it as a draft.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<h3 id="standard-parameter-types">Standard parameter types</h3>
-<p>There are 21 different standard parameter types supported for all extension types (templates, components, modules and plugins). This section gives a brief description of each parameter type, in alphabetical order. Full details of each parameter type are given on the following pages.</p>
+<p>A parameter is a setting an administrator can change without editing code.
+You declare them in XML; the CMS builds a form from the declaration, stores
+what was entered as JSON in the extension's <code>#__extensions</code> row, and hands
+them back to you as a <code>Registry</code>.</p>
+<p>This page is about declaring them. <a href="../../basics/config/index.html">Config</a> covers
+reading them at runtime — <code>Component::params()</code>, <code>$this-&gt;params</code>, and the
+<code>Registry</code> methods. Every parameter the shipped extensions declare is listed
+in the <a href="../../../reference/configuration/index.html">configuration reference</a>.</p>
+<h2 id="where-the-declaration-goes">Where the declaration goes</h2>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>File</th>
+<th>Root</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td><code>config/config.xml</code></td>
+<td><code>&lt;config&gt;</code></td>
+</tr>
+<tr>
+<td>Module</td>
+<td>its XML manifest</td>
+<td><code>&lt;config&gt;&lt;fields name=&quot;params&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td>its XML manifest</td>
+<td><code>&lt;config&gt;&lt;fields name=&quot;params&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>Template</td>
+<td><code>templateDetails.xml</code></td>
+<td><code>&lt;config&gt;&lt;fields name=&quot;params&quot;&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>A component keeps its parameters in a separate file, and that file's root
+element is <code>&lt;config&gt;</code> with <code>&lt;fieldset&gt;</code> children directly inside it:</p>
+<pre><code class="language-xml">&lt;config&gt;
+	&lt;fieldset name=&quot;basic&quot;&gt;
+		&lt;field name=&quot;title&quot; type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;&quot; label=&quot;COM_BLOG_CONFIG_TITLE_LABEL&quot; description=&quot;COM_BLOG_CONFIG_TITLE_DESC&quot; /&gt;
+		&lt;field name=&quot;@spacer&quot; type=&quot;spacer&quot; default=&quot;&quot; label=&quot;&quot; description=&quot;&quot; /&gt;
+		&lt;field name=&quot;uploadpath&quot; type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;/site/blog&quot; label=&quot;COM_BLOG_CONFIG_UPLOADS_LABEL&quot; description=&quot;COM_BLOG_CONFIG_UPLOADS_DESC&quot; /&gt;
+	&lt;/fieldset&gt;
+</code></pre>
+<p>Everything else declares them inside its manifest, wrapped in a
+<code>&lt;fields name=&quot;params&quot;&gt;</code>:</p>
+<pre><code class="language-xml">	&lt;config&gt;
+		&lt;fields name=&quot;params&quot;&gt;
+
+			&lt;fieldset name=&quot;basic&quot;&gt;
+				&lt;field name=&quot;filter_groups&quot; type=&quot;usergroup&quot;
+					description=&quot;PLG_DEBUG_FIELD_ALLOWED_GROUPS_DESC&quot;
+					label=&quot;PLG_DEBUG_FIELD_ALLOWED_GROUPS_LABEL&quot;
+					multiple=&quot;true&quot;
+					size=&quot;10&quot;
+				/&gt;
+</code></pre>
+<h2 id="fieldsets">Fieldsets</h2>
+<p>A <code>&lt;fieldset&gt;</code> becomes a tab or a titled group on the settings screen. The
+names are conventional rather than enforced:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Where it appears</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>basic</code></td>
+<td>The first tab. Most parameters belong here.</td>
+</tr>
+<tr>
+<td><code>advanced</code></td>
+<td>A second tab, for the layout and CSS class settings a module gets.</td>
+</tr>
+<tr>
+<td>Anything else</td>
+<td>Its own tab, labelled from the fieldset's <code>label</code> attribute or its name.</td>
+</tr>
+</tbody>
+</table>
+<p><code>com_blog</code> uses <code>basic</code>, <code>archive</code>, <code>entry</code> and <code>feeds</code>; a component is free
+to group its settings however reads best.</p>
+<h2 id="fields">Fields</h2>
+<pre><code class="language-xml">&lt;field
+	name=&quot;introlength&quot;
+	type=&quot;text&quot;
+	default=&quot;300&quot;
+	label=&quot;COM_BLOG_CONFIG_INTROLENGTH_LABEL&quot;
+	description=&quot;COM_BLOG_CONFIG_INTROLENGTH_DESC&quot;
+/&gt;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The key. <code>$params-&gt;get('introlength')</code> reads it. Required.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Which field class renders it. Defaults to <code>text</code>.</td>
+</tr>
+<tr>
+<td><code>default</code></td>
+<td>The value used until an administrator saves something else.</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>A language key for the field's label.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>A language key for its help text.</td>
+</tr>
+<tr>
+<td><code>required</code></td>
+<td><code>true</code> to refuse an empty value.</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>How the submitted value is cleaned — <code>safehtml</code>, <code>integer</code>, <code>raw</code>.</td>
+</tr>
+<tr>
+<td><code>class</code>, <code>size</code>, <code>cols</code>, <code>rows</code></td>
+<td>Passed to the rendered control.</td>
+</tr>
+</tbody>
+</table>
+<p><code>label</code> and <code>description</code> are language keys, resolved from the extension's
+own <code>.ini</code> file. Put them there rather than writing English into the
+manifest. See <a href="../languages/index.html">Languages</a>.</p>
+<p>Fields that offer a fixed set of choices carry <code>&lt;option&gt;</code> children, whose
+text is also a language key:</p>
+<pre><code class="language-xml">&lt;field name=&quot;show_from&quot; type=&quot;list&quot; default=&quot;site&quot;
+	label=&quot;COM_BLOG_CONFIG_DATA_SRC_LABEL&quot;
+	description=&quot;COM_BLOG_CONFIG_DATA_SRC_DESC&quot;&gt;
+	&lt;option value=&quot;site&quot;&gt;COM_BLOG_CONFIG_DATA_SRC_SITE&lt;/option&gt;
+	&lt;option value=&quot;member&quot;&gt;COM_BLOG_CONFIG_DATA_SRC_MEMBER&lt;/option&gt;
+	&lt;option value=&quot;group&quot;&gt;COM_BLOG_CONFIG_DATA_SRC_GROUP&lt;/option&gt;
+&lt;/field&gt;
+</code></pre>
+<h2 id="field-types">Field types</h2>
+<p>A <code>type</code> is resolved to a class in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Form/Fields"><code>Hubzero\Form\Fields</code></a> by
+<code>Hubzero\Form\Helper::loadFieldType()</code>: <code>type=&quot;calendar&quot;</code> loads
+<code>Fields\Calendar</code>. Two things are worth knowing about that lookup:</p>
 <ul>
-<li><strong>calendar</strong> provides a text box for entry of a date. An icon next to the text box provides a link to a pop-up calendar, which can also be used to enter the date value.</li>
-<li><strong>category</strong> provides a drop down list of categories from a given section.</li>
-<li><strong>editors</strong> provides a drop down list of the available WYSIWYG editors.</li>
-<li><strong>filelist</strong> provides a drop down list of files from a specified directory.</li>
-<li><strong>folderlist</strong> provides a drop down list of folders from a specified directory.</li>
-<li><strong>helpsites</strong> provides a drop down list of the help sites for your Joomla installation.</li>
-<li><strong>hidden</strong> provides a hidden field for saving a parameter whose value cannot be altered directly by a user in the Administrator (it can be altered in code or by editing the <em>params.ini</em> file).</li>
-<li><strong>imagelist</strong> provides a drop down list of image files in a specified directory.</li>
-<li><strong>languages</strong> provides a drop down list of the installed languages for the Front-end or Back-end.</li>
-<li><strong>list</strong> provides a drop down list of custom-defined entries.</li>
-<li><strong>menu</strong> provides a drop down list of the available menus from your Joomla site.</li>
-<li><strong>menuitem</strong> provides a drop down list of the available menu items from your Joomla site.</li>
-<li><strong>password</strong> provides a text box for entry of a password. The password characters will be obscured as they are entered.</li>
-<li><strong>radio</strong> provides radio buttons to select different options.</li>
-<li><strong>spacer</strong> provides a visual separator between parameter field elements. It is purely a visual aid and no parameter value is stored.</li>
-<li><strong>sql</strong> provides a drop down list of entries obtained by running a query on the Joomla Database. The first results column returned by the query provides the values for the drop down box.</li>
-<li><strong>text</strong> provides a text box for data entry.</li>
-<li><strong>textarea</strong> provides a text area for entry of multi-line text.</li>
-<li><strong>timezones</strong> provides a drop down list of time zones.</li>
-<li><strong>usergroup</strong> provides a drop down list of user groups.</li>
+<li><code>type=&quot;list&quot;</code> is special-cased to <code>Fields\Select</code>, because <code>List</code> cannot be
+a PHP class name. Most of the tree writes <code>list</code>.</li>
+<li><strong>An unrecognised type silently becomes a text box.</strong> There is no error and
+no log line, so a typo in <code>type</code> costs you the widget and nothing tells
+you. Check the name against the directory.</li>
 </ul>
+<p>These are the types that exist:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Single-line text box</td>
+</tr>
+<tr>
+<td><code>textarea</code></td>
+<td>Multi-line text box</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>Text box that obscures what is typed</td>
+</tr>
+<tr>
+<td><code>email</code>, <code>url</code>, <code>tel</code></td>
+<td>Text boxes with the matching HTML input type</td>
+</tr>
+<tr>
+<td><code>number</code>, <code>integer</code></td>
+<td>Numeric input; <code>integer</code> renders a range as a drop-down</td>
+</tr>
+<tr>
+<td><code>hidden</code></td>
+<td>Stored but not shown</td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td>Drop-down of the <code>&lt;option&gt;</code> children</td>
+</tr>
+<tr>
+<td><code>select</code></td>
+<td>The same class, under its own name</td>
+</tr>
+<tr>
+<td><code>groupedlist</code></td>
+<td>Drop-down with <code>&lt;group&gt;</code> headings</td>
+</tr>
+<tr>
+<td><code>combo</code></td>
+<td>Drop-down that also accepts a typed value</td>
+</tr>
+<tr>
+<td><code>radio</code></td>
+<td>Radio buttons</td>
+</tr>
+<tr>
+<td><code>checkbox</code>, <code>checkboxes</code></td>
+<td>One box, or a set of them</td>
+</tr>
+<tr>
+<td><code>spacer</code></td>
+<td>A visual separator; stores nothing</td>
+</tr>
+<tr>
+<td><code>calendar</code></td>
+<td>Text box with a date picker</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>Colour picker</td>
+</tr>
+<tr>
+<td><code>editor</code></td>
+<td>WYSIWYG editor</td>
+</tr>
+<tr>
+<td><code>media</code>, <code>file</code></td>
+<td>Media picker, file upload</td>
+</tr>
+<tr>
+<td><code>filelist</code>, <code>folderlist</code>, <code>imagelist</code></td>
+<td>Files, folders, or images from a named directory</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Content categories</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>Tag input</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td>User picker</td>
+</tr>
+<tr>
+<td><code>usergroup</code></td>
+<td>User groups</td>
+</tr>
+<tr>
+<td><code>accesslevel</code></td>
+<td>Viewing access levels</td>
+</tr>
+<tr>
+<td><code>rules</code></td>
+<td>The permissions grid</td>
+</tr>
+<tr>
+<td><code>language</code>, <code>contentlanguage</code></td>
+<td>Installed languages, content languages</td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>Country list</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>Time zones</td>
+</tr>
+<tr>
+<td><code>plugins</code></td>
+<td>Plugins in a given group</td>
+</tr>
+<tr>
+<td><code>templatestyle</code></td>
+<td>Installed template styles</td>
+</tr>
+<tr>
+<td><code>componentlayout</code>, <code>modulelayout</code></td>
+<td>Alternative layouts for a component or module</td>
+</tr>
+<tr>
+<td><code>menuitem</code></td>
+<td>Menu items</td>
+</tr>
+<tr>
+<td><code>sql</code></td>
+<td>Options from a query given in the field's <code>query</code> attribute</td>
+</tr>
+<tr>
+<td><code>cachehandler</code>, <code>sessionhandler</code>, <code>databaseconnection</code></td>
+<td>The configured handlers</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The old version of this page listed <code>editors</code>, <code>languages</code>,
+<code>timezones</code>, <code>menu</code> and <code>helpsites</code>. None of those exist. The singular
+forms — <code>editor</code>, <code>language</code>, <code>timezone</code> — are the real names, there is no
+menu-picker field, and <code>helpsites</code> went with the Joomla help system.</p>
+</aside>
+<h2 id="permissions">Permissions</h2>
+<p>Permissions are declared in a second file, <code>config/access.xml</code>, which names
+the actions the component recognises, grouped into sections:</p>
+<pre><code class="language-xml">&lt;access component=&quot;com_blog&quot;&gt;
+	&lt;section name=&quot;component&quot;&gt;
+		&lt;action name=&quot;core.admin&quot; title=&quot;JACTION_ADMIN&quot; description=&quot;JACTION_ADMIN_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.manage&quot; title=&quot;JACTION_MANAGE&quot; description=&quot;JACTION_MANAGE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.create&quot; title=&quot;JACTION_CREATE&quot; description=&quot;JACTION_CREATE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.delete&quot; title=&quot;JACTION_DELETE&quot; description=&quot;JACTION_DELETE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit&quot; title=&quot;JACTION_EDIT&quot; description=&quot;JACTION_EDIT_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.state&quot; title=&quot;JACTION_EDITSTATE&quot; description=&quot;JACTION_EDITSTATE_COMPONENT_DESC&quot; /&gt;
+		&lt;action name=&quot;core.edit.own&quot; title=&quot;JACTION_EDITOWN&quot; description=&quot;JACTION_EDITOWN_COMPONENT_DESC&quot; /&gt;
+	&lt;/section&gt;
+</code></pre>
+<p>The grid an administrator edits is a field in <code>config.xml</code> like any other,
+of <code>type=&quot;rules&quot;</code>, pointing at a section of that file:</p>
+<pre><code class="language-xml">&lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot;
+	class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot;
+	component=&quot;com_answers&quot; section=&quot;component&quot; /&gt;
+</code></pre>
+<p>See <a href="../../basics/user/index.html">Users</a> for how a controller then checks an action.</p>
+<h2 id="where-the-values-end-up">Where the values end up</h2>
+<p>Saved parameters are JSON in the <code>params</code> column of the extension's
+<code>#__extensions</code> row. A module instance's parameters are in <code>#__modules</code>
+instead, because the same module can be published several times with
+different settings.</p>
+<p>Nothing writes those columns at install time. Until an administrator saves
+the settings screen the column is empty, and every <code>$params-&gt;get()</code> returns
+its second argument — <strong>not</strong> the <code>default</code> in the manifest. Always pass a
+default in code:</p>
+<pre><code class="language-php">$limit = (int) $params-&gt;get('introlength', 300);
+</code></pre>
+<p>A migration can seed the column instead, with the <code>saveParams</code> macro, if a
+sensible value matters before anyone visits the screen.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extreqs/index.html" rel="prev"><span>Previous</span>Requirements</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/02-parameters.md">Edit this page on GitHub</a>

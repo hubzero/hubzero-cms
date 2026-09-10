@@ -1,345 +1,313 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ ab49f763b0
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/overrides
 source-id: 3512
-imported: 2026-09-09
 -->
-# Output Overrides
+# Output overrides
 
-## Overview
+A template can replace almost any markup or asset a component, module or
+plugin produces, without touching the extension. Put a file of the right name
+in the right place under the template's `html` directory and the framework
+finds it first. Overrides survive upgrades, because the extension's own files
+are never edited.
 
-There are many competing requirements for web designers ranging from accessibility to legislative to personal preferences. Rather than trying to over-parameterise views, or trying to aim for some sort of line of best fit, or worse, sticking its head in the sand, the CMS gives the potential for the designer to take over control of virtually all of the output that is generated.
+Every override belongs to one template. Switch template and the overrides go
+with it.
 
-Except for files that are provided in the distribution itself, these methods for customization eliminate the need for designers and developers to "hack" core files that could change when the site is updated to a new version. Because they are contained within the template, they can be deployed to the Web site without having to worry about changes being accidentally overwritten when your System Administrator upgrades the site.
+## Where overrides live
 
-HUBzero allows for overriding not only views but CSS and Javascript as well. This allows for even more individualistic styling of components and modules on HUBs.
+The root is `App::get('template')->path . '/html'` — the active template's
+directory plus `html`. That directory is `app/templates/{name}` when it
+exists and `core/templates/{name}` otherwise; see
+[the book's introduction](README.md#where-templates-live).
 
-## Component Overrides
+Site and administrator templates are separate. An override of an admin screen
+goes under the admin template's `html` directory, not the site template's.
 
-> **Note:** Not all HUBzero modules will have layouts or CSS that can be overridden.
+> **Warning:** Do not put overrides in a shipped template. `core/templates` is
+> replaced on upgrade. Copy the template into `app/templates` first.
 
-### Layouts
+None of the shipped templates overrides a layout. Kimera's `html` directory
+holds 32 files and every one of them is a stylesheet; Kameleon's holds
+`modules.php` and nothing else. Use them as examples of asset overrides, not layout ones.
 
-Layout overrides only work within the active template and are located under the `/html/` directory in the template. For example, the overrides for "corenil" are located under `/app/templates/corenil/html/`.
+## Component layouts
 
-It is important to understand that if you create overrides in one template, they will not be available in other templates.
+A component view resolves its layout through
+[`Hubzero\View\View::setPath()`](../../../core/libraries/Hubzero/View/View.php),
+which builds the search list:
 
-The layout overrides must be placed in particular way. Using "kimera" as an example you will see the following structure:
+<!--include: core/libraries/Hubzero/View/View.php:551-585-->
+
+Paths are pushed onto the front of the stack, so the last one added is
+searched first. For a component view the order is:
+
+1. `{template}/html/{option}/{view}/`
+2. `{component}/{client}/views/{view}/tmpl/`
+3. `{component}/{client}/views/{view}/`
+
+`{option}` is the `option` request variable — `com_blog`, `com_kb` — and
+`{view}` is the view's name. So the override of
 
 ```
-/templates
-.. /kimera
-.. .. /html
-.. .. .. /com_content  (this directory matches the component directory name)
-.. .. .. .. /articles        (this directory matches the view directory name)
-.. .. .. .. .. default.php (this file matches the layout file name)
-.. .. .. .. .. form.php
+core/components/com_blog/site/views/entries/tmpl/display.php
 ```
 
-The structure for component overrides is quite simple: `/html/com_{ComponentName}/{ViewName}/{LayoutName}.php`.
+is
 
-### Sub-Layouts
+```
+app/templates/mytemplate/html/com_blog/entries/display.php
+```
 
-In some views you will see that some of the layouts have a group of files that start with the same name. The category view has an example of this. The blog layout actually has three parts: the main layout file `blog.php` and two sub-layout files, `blog_item.php` and `blog_links.php`. You can see where these sub-layouts are loaded in the `blog.php` file using the `loadTemplate` method, for example:
+> **Note:** The override directory is named for the component **of the current
+> request**, not for the component that owns the view. A view rendered by one
+> component on behalf of another is overridden under the requesting
+> component's name.
+
+### Layout names
+
+The layout name is the file name. `Hubzero\Component\View` defaults it to
+`display`, not `default`, and a controller sets another with
+`$view->setLayout('edit')`.
+
+If the named layout is not found anywhere on the search path,
+[`loadTemplate()`](../../../core/libraries/Hubzero/View/View.php) falls back to
+`default.php`. That fallback is why components such as `com_login`, whose
+views ship only `tmpl/default.php`, render at all.
+
+### Sub-layouts
+
+A layout can render a fragment of itself by calling `loadTemplate()` with a
+suffix. The file taken is `{layout}_{suffix}.php`:
 
 ```php
-echo $this->loadTemplate('item');
-// or
-echo $this->loadTemplate('links');
+<?php echo $this->loadTemplate('batch'); ?>
 ```
 
-When loading sub-layouts, the view already knows what layout you are in, so you don't have to provide the prefix (that is, you load just 'item', not 'blog_item').
+in `com_categories/admin/views/categories/tmpl/default.php` renders
+`default_batch.php` from the same directory. You pass `batch`, not
+`default_batch` — the layout name is already known.
 
-What is important to note here is that it is possible to override just a sub-layout without copying the whole set of files. For example, if you were happy with the default output for the blog layout, but just wanted to customize the item sub-layout, you could just copy:
-
-```
-/components/com_content/views/category/tmpl/blog_item.php
-```
-
-to:
+Each sub-layout is looked up separately, on the same search path, so a
+template can override one fragment and leave the rest alone. Copying
 
 ```
-/templates/kimera/html/com_content/category/blog_item.php
+core/components/com_categories/admin/views/categories/tmpl/default_batch.php
 ```
 
-When the CMS is parsing the view, it will automatically know to load `blog.php` from `com_content` natively and `blog_item.php` from your template overrides.
-
-### Cascading Style Sheets
-
-Over-ridding CSS is a little more straight-forward over-ridding layouts. Take the `com_groups` component for example:
+to
 
 ```
-/components
-  /com_groups
-    ...
-    com_groups.css   (the component CSS file)
+app/templates/myadmintemplate/html/com_categories/categories/default_batch.php
 ```
 
-To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:
+replaces the batch panel while `default.php` still comes from the component.
+`com_categories` is an administrator component, so that override belongs to
+the administrator template.
+
+## Plugin layouts
+
+[`Hubzero\Plugin\View`](../../../core/libraries/Hubzero/Plugin/View.php) builds
+its own search list:
+
+<!--include: core/libraries/Hubzero/Plugin/View.php:205-226-->
+
+The override directory is named `plg_{folder}_{element}`, and the view name is
+a directory inside it. So
 
 ```
-/templates
-.. /corenil
-.. .. /html
-.. .. .. /com_groups   (this directory matches the component directory name)
-.. .. .. .. groups.css   (this file matches the CSS file name)
+core/plugins/groups/forum/views/categories/tmpl/display.php
 ```
 
-To push CSS from a component to the template, add the following somewhere in the component:
+is overridden at
+
+```
+app/templates/mytemplate/html/plg_groups_forum/categories/display.php
+```
+
+Unlike component views, plugin views search only the `tmpl` directory and the
+override — there is no fallback to the view directory above `tmpl`.
+
+## Module layouts
+
+Modules do not use a view object. `Hubzero\Module\Module::display()` requires
+one file, chosen by
+[`Hubzero\Module\Loader::getLayoutPath()`](../../../core/libraries/Hubzero/Module/Loader.php):
+
+<!--include: core/libraries/Hubzero/Module/Loader.php:346-381-->
+
+There are exactly three candidates, tried in order:
+
+1. `{templates}/{template}/html/{mod_name}/{layout}.php`
+2. `{module}/tmpl/{layout}.php`
+3. `{module}/tmpl/default.php`
+
+A module is a `mod_name.php` stub, a `helper.php` holding the data logic, and
+one or more layouts in `tmpl/`:
+
+```
+core/modules/mod_reportproblems/
+    assets/css/mod_reportproblems.css
+    assets/js/mod_reportproblems.js
+    helper.php
+    mod_reportproblems.php
+    mod_reportproblems.xml
+    tmpl/default.php
+```
+
+Its layout is overridden at
+`app/templates/mytemplate/html/mod_reportproblems/default.php`.
+
+Two things are specific to modules. The layout comes from the module
+instance's own `layout` parameter, so an administrator can point one instance
+at a different file. And the parameter accepts a `{template}:{layout}` form,
+which reads the layout from a *named* template rather than the active one —
+`_` means the active template.
+
+## Stylesheets and scripts
+
+Every asset pushed with `$this->css()`, `$this->js()` or the
+`Hubzero\Document\Assets` statics goes through
+[`Hubzero\Document\Asset\File`](../../../core/libraries/Hubzero/Document/Asset/File.php),
+which checks the template before the extension:
+
+<!--include: core/libraries/Hubzero/Document/Asset/File.php:350-358-->
+
+The override path is **flat**. It is the extension's name and the file's name,
+with no `assets`, no `css` and no `js` directory in between, whatever the
+source file's own path was:
+
+| Source | Override |
+|---|---|
+| `core/components/com_groups/site/assets/css/groups.css` | `html/com_groups/groups.css` |
+| `core/modules/mod_reportproblems/assets/css/mod_reportproblems.css` | `html/mod_reportproblems/mod_reportproblems.css` |
+| `core/plugins/groups/forum/assets/css/forum.css` | `html/plg_groups_forum/forum.css` |
+| `core/plugins/groups/forum/assets/js/forum.js` | `html/plg_groups_forum/forum.js` |
+
+Kimera's `html` directory is a real set of these — `com_blog/blog.css`,
+`com_kb/kb.css`, `mod_notices/mod_notices.css`,
+`plg_groups_citations/citations.css` and twenty-odd more.
+
+An override replaces the file; it does not add to it. Start from a copy of the
+extension's stylesheet, or you lose every rule it had.
+
+> **Note:** Because the path is flat, two assets of the same name from the same
+> extension collide. `plg_groups_forum` ships both `forum.css` and `like.css`;
+> those are fine. An extension shipping `assets/css/x.css` and
+> `assets/print/x.css` could not have both overridden.
+
+See [Cascading style sheets](07-css.md#where-the-file-is-looked-for) for the
+source paths these fall back to.
+
+## System assets
+
+The shared stylesheets and scripts in `core/assets` are overridable too. They
+use the extension name `system`, and they are the one case that keeps a
+directory segment — the asset's type:
+
+```
+{template}/html/system/css/introduction.css
+{template}/html/system/js/jquery.fancybox.js
+```
+
+Kimera overrides three of them: `introduction.css`, `jquery.fancybox.css` and
+`jquery.fancyselect.css`. A view asks for one by naming `system` as the
+extension:
 
 ```php
-$this->css('example.css');
+$this->css('introduction.css', 'system');
 ```
 
-## Module Overrides
+## Images
 
-> **Note:** Not all HUBzero modules will have layouts or CSS that can be overridden.
-
-### Layouts
-
-Modules, like components, are set up in a particular directory structure.
-
-```
-/modules
-.. /mod_latest_news
-.. .. /tmpl
-.. .. .. default.php   (the layout)
-.. .. .. helper.php   (a helper file containing data logic)
-.. .. mod_latest_news.php   (the main module file)
-.. .. mod_latest_news.xml   (the installation XML file)
-```
-
-Similar to components, under the main module directory (in the example, `mod_latest_news`) there is a `/tmpl/` directory. There is usually only one layout file but depending on who wrote the module, and how it is written, there could be more.
-
-As for components, the layout override for a module must be placed in particular way. Using "corenil" as an example again, you will see the following structure:
-
-```
-/templates
-.. /corenil
-.. .. /html
-.. .. .. /mod_latest_news   (this directory matches the module directory name)
-.. .. .. .. default.php   (this file matches the layout file name)
-```
-
-Take care with overriding module layout because there are a number of different ways that modules can or have been designed so you need to treat each one individually.
-
-### Cascading Style Sheets
-
-Over-ridding CSS files works in precisely the same way as over-ridding layouts. Take the `mod_reportproblems` module for example:
-
-```
-/modules
-  /mod_reportproblems
-    ...
-    mod_reportproblems.css   (the module CSS file)
-```
-
-To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:
-
-```
-/templates
-.. /corenil
-.. .. /html
-.. .. .. /mod_reportproblems   (this directory matches the module directory name)
-.. .. .. .. mod_reportproblems.css   (this file matches the CSS file name)
-```
-
-To push CSS from a module to the template, add the following somewhere in the module:
+`img()` resolves the same way, with `img` as the asset type, so an image is
+overridden at `{template}/html/{extension}/{file}`:
 
 ```php
-$this->css('mod_example.css');
+<img src="<?php echo $this->img('logo.png'); ?>" alt="" />
 ```
 
-## Plugin Overrides
+> **Note:** The older static `Assets::getComponentImage()`,
+> `getModuleImage()` and `getPluginImage()` do **not** agree with this. They
+> look for the override at `{template}/html/{extension}/images/{file}`, with
+> an `images` segment `img()` does not use, and they search only
+> `app/templates`. Use `img()`.
 
-> **Note:** Not all HUBzero plugins will have layouts or CSS that can be overridden.
+## Module chrome
 
-### Layouts
+Chrome is the markup wrapped around a module's own output. It is a set of
+plain functions named `modChrome_{style}`, and a template supplies them in a
+single file, `{template}/html/modules.php`.
 
-Plugins, like components and modules, are set up in a particular directory structure.
+[`Hubzero\Module\Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php)
+always includes `core/templates/system/html/modules.php` first, then the
+active template's `modules.php` if it has one. Both are included, so a
+template's file adds new styles and redefining an existing one is a fatal
+error — PHP will not let the same function be declared twice.
 
-```
-/plugins
-.. /groups
-.. .. /forum
-.. .. .. forum.php   (the main plugin file)
-.. .. .. forum.xml   (the installation XML file)
-.. .. .. /views
-.. .. .. .. /browse
-.. .. .. .. .. /tmpl
-.. .. .. .. .. .. default.php   (the layout)
-.. .. .. .. .. .. default.xml   (the layout installation XML file)
-```
+The system file defines `none`, `table`, `xhtml`, `outline`, `sliders` and
+`tabs`. The default is `none`:
 
-Similar to components, under the `views` directory of the plugin's self-titled directory (in the example, `forum`) there are directories for each view name. Within each view directory is a `/tmpl/` directory. There is usually only one layout file but depending on who wrote the plugin, and how it is written, there could be more.
+<!--include: core/templates/system/html/modules.php:10-16-->
 
-As with components and modules, the layout override for a plugin must be placed in a particular way. Using "corenil" as an example again, you will see the following structure:
-
-```
-/templates
-.. /corenil
-.. .. /html
-.. .. .. /plg_groups_forum   (this directory follows the naming pattern of plg_{group}_{plugin})
-.. .. .. .. /browse   (this file matches the layout directory name)
-.. .. .. .. .. default.php   (this file matches the layout file name)
-```
-
-Take care with overriding plugin layout because there are a number of different ways that plugins can or have been designed so you need to treat each one individually.
-
-### Cascading Style Sheets
-
-Over-ridding CSS files works in precisely the same way as over-ridding layouts. Take the `forum` plugin for groups for example:
-
-```
-/plugins
-.. /groups
-.. .. /forum
-.. .. .. /assets
-.. .. .. .. /css
-.. .. .. .. .. forum.css   (the plugin CSS file)
-```
-
-To override the CSS, we simply copy or create a new CSS file named the same and place it in the template's overrides:
-
-```
-/templates
-.. /corenil
-.. .. /html
-.. .. .. /plg_groups_forum   (this directory follows the naming pattern of plg_{group}_{plugin})
-.. .. .. .. forum.css   (this file matches the CSS file name)
-```
-
-To push CSS from a module to the template, add the following somewhere in the module:
+A layout picks a style with the `style` attribute on the `jdoc` tag:
 
 ```php
-$this->css('forum.css');
+<jdoc:include type="modules" name="left" style="xhtml" />
 ```
 
-## Pagination Links Overrides
+The value is split on spaces and each name applied in turn, so
+`style="xhtml outline"` runs both. `outline` is appended automatically when a
+request carries `tp=1` **and** **Preview Module Positions** is enabled in the
+`com_templates` options; that is how the position names appear on the page.
 
-This override can control the display of items-per-page and the pagination links that are used with lists of information. Most HUBzero templates will come with a pagination override that outputs what we feel is a good standard for displaying pagination links and controls. However, feel free to alter this as you see fit. The override can be found here:
+Kameleon adds one style of its own, `modChrome_cpanel`, for the control panel
+icons.
 
-```
-/templates/{TemplateName}/html/pagination.php
-```
+## Pagination
 
-When the pagination list is required, Joomla! will look for this file in the default templates. If it is found it will be loaded and the display functions it contains will be used. There are four functions that can be used:
+Pagination is rendered by
+[`Hubzero\Pagination\Paginator`](../../../core/libraries/Hubzero/Pagination/Paginator.php)
+through a view whose layout is
+[`Hubzero/Pagination/Views/paginator.php`](../../../core/libraries/Hubzero/Pagination/Views/paginator.php).
 
-- **`pagination_list_footer`**  
-  This function is responsible for showing the select list for the number of items to display per page.
-- **`pagination_list_render`**  
-  This function is responsible for showing the list of page number links as well at the Start, End, Previous and Next links.
-- **`pagination_item_active`**  
-  This function displays the links to other page numbers other than the "current" page.
-- **`pagination_item_inactive`**  
-  This function displays the current page number, usually not hyperlinked.
+> **Warning:** The pagination override does not work. `Hubzero\Pagination\View`
+> adds `{override_path}/html/pagination/` to its search path only when an
+> `override_path` was passed into its constructor, and `Paginator::render()`
+> never passes one. A `html/pagination/paginator.php` in your template is
+> ignored. This is recorded with the project.
+>
+> The older mechanism — a `templates/{name}/html/pagination.php` defining
+> `pagination_list_footer()`, `pagination_list_render()`,
+> `pagination_item_active()` and `pagination_item_inactive()` — was removed
+> and no code looks for it. To change pagination markup today, style it, or
+> pass your own view object to `render()`.
 
-## Quick Reference
+## Quick reference
 
-Using the `corenil` template as an example, here is a brief summary of the principles that have been discussed.
+Using a template named `mytemplate`:
 
-> **Note:** Not all HUBzero components, plugins, and modules will have layouts that can be overridden.
+| To override | Copy | To |
+|---|---|---|
+| A component layout | `core/components/com_blog/site/views/entries/tmpl/display.php` | `app/templates/mytemplate/html/com_blog/entries/display.php` |
+| A component sub-layout | `core/components/com_categories/admin/views/categories/tmpl/default_batch.php` | `app/templates/myadmintemplate/html/com_categories/categories/default_batch.php` |
+| A plugin layout | `core/plugins/groups/forum/views/categories/tmpl/display.php` | `app/templates/mytemplate/html/plg_groups_forum/categories/display.php` |
+| A module layout | `core/modules/mod_reportproblems/tmpl/default.php` | `app/templates/mytemplate/html/mod_reportproblems/default.php` |
+| A component stylesheet | `core/components/com_groups/site/assets/css/groups.css` | `app/templates/mytemplate/html/com_groups/groups.css` |
+| A module stylesheet | `core/modules/mod_reportproblems/assets/css/mod_reportproblems.css` | `app/templates/mytemplate/html/mod_reportproblems/mod_reportproblems.css` |
+| A plugin stylesheet | `core/plugins/groups/forum/assets/css/forum.css` | `app/templates/mytemplate/html/plg_groups_forum/forum.css` |
+| A shared stylesheet | `core/assets/css/introduction.css` | `app/templates/mytemplate/html/system/css/introduction.css` |
+| Module chrome | `core/templates/system/html/modules.php` | `app/templates/mytemplate/html/modules.php` (add styles; do not redeclare) |
 
-### Component Output
+## What you cannot override this way
 
-To override a component layout (for example the default layout in the article view), copy:
-
-```
-/components/com_content/views/article/tmpl/default.php
-```
-
-to:
-
-```
-/templates/corenil/html/com_content/article/default.php
-```
-
-To override a component CSS (for example the stylesheet in the `com_groups`), copy:
-
-```
-/components/com_groups/site/assets/css/com_groups.css
-```
-
-to:
-
-```
-/templates/corenil/html/com_groups/groups.css
-```
-
-To push CSS from a component to the template, add the following somewhere in the component:
-
-```php
-Hubzero\Document\Assets::addComponentStylesheet('com_example');
-```
-
-### Module Output
-
-To override a module layout (for example the Latest News module), copy:
-
-```
-/modules/mod_latest_news/tmpl/default.php
-```
-
-to:
-
-```
-/templates/corenil/html/mod_latest_news/default.php
-```
-
-To override a module CSS (for example the stylesheet in the `mod_reportproblems`), copy:
-
-```
-/modules/mod_reportproblems/assets/css/mod_reportproblems.css
-```
-
-to:
-
-```
-/templates/corenil/html/mod_reportproblems/mod_reportproblems.css
-```
-
-To push CSS from a module to the template, add the following somewhere in the module:
-
-```php
-Hubzero\Document\Assets::addModuleStylesheet('mod_example');
-```
-
-### Plugin Output
-
-To override a plugin layout (for example the Forum plugin for groups), copy:
-
-```
-/plugins/groups/forum/views/browse/tmpl/default.php
-```
-
-to:
-
-```
-/templates/corenil/html/plg_groups_forum/browse/default.php
-```
-
-To override a plugin CSS (for example the stylesheet for the `forum` plugin for groups), copy:
-
-```
-/plugins/groups/forum/forum.css
-```
-
-to:
-
-```
-/templates/corenil/html/plg_groups_forum/assets/css/forum.css
-```
-
-To push CSS from a plugin to the template, add the following somewhere in the plugin:
-
-```php
-Hubzero\Document\Assets::addPluginStylesheet('groups', 'forum');
-```
-
-### Customise the Pagination Links
-
-To customize the way the items-per-page selector and pagination links display, edit the following file:
-
-```
-/templates/corenil/html/pagination.php
-```
+- **The template's own layouts.** `index.php`, `component.php` and the rest
+  belong to the template already; see [Page layouts](06-layouts.md).
+- **Language strings.** Those are replaced through the language override
+  files, not through `html`; see [Languages](02-languages.md).
+- **Anything a view prints from a helper or a model.** Overrides replace
+  markup, not logic. If the string you want to change is built in PHP outside
+  the layout, the override cannot reach it.
