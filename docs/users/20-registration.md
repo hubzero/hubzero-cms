@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/users/registration
 source-id: 3324
 modified: 2014-11-14
@@ -7,27 +10,110 @@ imported: 2026-09-09
 -->
 # Registration
 
-## Overview
+Registering creates a member account: a username, a password, an email
+address the hub can reach you at, and whatever else your hub asks for. Once
+the account is confirmed you can contribute content, join groups, and run
+tools.
 
-Registration is a way for community members to submit identification records to the Hub in order to gain access to the site. Common requirements are to state a name, username, choose a secure password, and validate an email address. Once registered, community members can become Hub users with the ability to submit content on the Hub.
+No two hubs ask exactly the same questions. The fieldsets below are the ones
+built into the software; the **Personal Information** fieldset in the middle
+is entirely the hub's own, and any of the standard fields can be made
+required, optional, read-only, or hidden. Administrators set that up on the
+**Users > Members > Registration** screen, described in the
+[Registration chapter](../managers/users/registration.md) of the Hub managers
+book.
 
-## Creating an Account on a HUB
+> **Note:** The images on this page were captured from an older release. The
+> first one shows a member dashboard rather than the registration form and is
+> misleading; ignore it until the screenshots are recaptured.
 
-![210registration](media/registration-210registration.png)
+## Creating an account
 
-1. Navigate to the front page of the HUB (e.g. **https://yourhub.org/**)
-2. Click the **Register** link
-3. Under the *Login Information* section, provide a username in the **User Login** textbox. It can only contain lowercase letters and numbers. No spaces or punctuation can be used in the username
-4. Press tab or click to the **Password** textbox. If the text that appears below **User Login** states that the User login name is not available, then repeat the previous step with a different username
-5. Provide a password in the **Password** textbox. Ensure it follows the list of rules mentioned below the **Password** textbox
-6. Repeat the same password in the **Confirm Password** textbox
-7. Under the *Contact Information* section provide a name in **First Name**, **Last Name** textboxes
-8. Provide a valid e-mail address in the **Valid E-mail** textbox
-   > **Note:** The e-mail address must be valid since a confirmation e-mail will be sent that has an activation link that must be used to activate the account
-   ![210registration2](media/registration-210registration2.png)
-9. Under the *Receive Email Updates* section, select from the drop down on whether or not to receive email updates from the HUB
-10. In the *Human Check* portion, type the characters shown in the image in the textbox directly below the image. If the image didn't appear or is unclear, click the **click to renew CAPTCHA** link to refresh
-11. Under *Terms & Conditions* click the **Terms of Use** link to open and read the terms. Check the box provided to indicate agreement to the terms
-12. After verifying all information provided is correct, click **Create Account**
-13. Check the inbox of the e-mail provided for the confirmation e-mail
-14. Navigate to the activation link provided in the e-mail. Provide the account credentials when prompted to login. Once logged in, the account will be successfully activated
+![A member area, captured for an older release](media/registration-210registration.png)
+
+1. Go to the hub's front page and select **Register**, or go straight to
+   `https://yourhub.org/register`. The login form also carries a
+   **Create an account** link, which goes to the same place.
+2. If the hub accepts logins from other services — Google, ORCID, Globus,
+   Shibboleth and others are all possible — a **Connect With** panel appears
+   at the top of the form. Using one fills in part of the form for you and
+   links that account to your new hub account.
+3. Under **Login Information**, type a **Username**. The hint under the box
+   says what is allowed: *Combination of lowercase letters and numbers. No
+   spaces or punctuation.* When you leave the box, the hub checks the name
+   against the accounts that already exist and reports underneath whether it
+   is available.
+
+   > **Note:** Usernames cannot be changed afterwards.
+4. Type a **Password**, then repeat it in **Confirm Password**. The list of
+   rules under the boxes is your hub's own — it is a table an administrator
+   edits, so its length and content vary. The list updates as you type, marking
+   each rule as it is satisfied.
+5. Under **Contact Information**, fill in **First Name**, **Middle Name**, and
+   **Last Name**. Middle name is never required.
+6. Type your address in **Valid E-mail** and again in **Confirm E-mail**. A
+   warning under the boxes names the address the confirmation message will
+   come from.
+
+   > **Important:** The address has to work. Unless the hub has switched
+   > confirmation off, the account cannot be used until you follow a link sent
+   > to it.
+
+   ![The Contact Information fieldset of the registration form](media/registration-210registration2.png)
+
+   If the address already belongs to an account, the form says so and offers
+   two buttons instead: one that emails you the existing account's details, and
+   one that opens a support ticket asking for that account's resource limits to
+   be raised.
+7. Answer the questions in **Personal Information**. These are your hub's own
+   fields — organisation, discipline, position, and so on. Fields marked
+   *required* have to be answered; the rest can be left blank and filled in
+   later from your profile. Some fields reveal further questions depending on
+   the answer you give.
+8. Under **Receive Email Updates**, tick or clear the box beside *Would you
+   like to receive email updates (newsletters, etc.)?* It is ticked by
+   default.
+9. Complete the **Human Check**. Its contents depend on which CAPTCHA plugin
+   the hub runs: an image of distorted characters to retype (with a
+   *Letters not clear? Refresh CAPTCHA.* link), an arithmetic question, or
+   Google reCAPTCHA.
+
+   > **Note:** This fieldset also contains a box labelled *Please leave this
+   > field blank.* That is a trap for automated form fillers. Leave it empty,
+   > as it says.
+10. Under **Terms & Conditions**, open the **Terms of Use** link, read it, and
+    tick *Yes, I have read and agree to the Terms of Use.*
+11. Select **Create Account**.
+
+## Activating the account
+
+If confirmation is switched on, the hub answers with *Account Created!* and a
+four-step reminder: find the email, follow the activation link, log in, done.
+The message names the address it was sent to.
+
+Follow the link and log in. That confirms the address and, on a hub that does
+not also require administrator approval, the account is ready.
+
+If nothing arrives:
+
+- The message is generated automatically and some filters treat it as spam.
+  Check the spam folder first.
+- Log in and use the resend option, or contact the hub's support.
+- If you mistyped the address, correct it from your profile. Changing an email
+  address un-confirms the account and sends a fresh confirmation link, so you
+  will have to confirm again.
+
+Some hubs also require an administrator to approve new accounts. In that case
+the account stays unusable after you confirm, until someone approves it. You
+are emailed when that happens.
+
+## Third-party logins
+
+An account created by logging in through another service starts out
+incomplete: the hub does not get a usable email address from every provider,
+so it holds you on the registration form until you supply the missing pieces.
+Until you do, you cannot be messaged by other members and the account shows as
+incomplete.
+
+You can link further services to an existing account, and set a local
+password, from the **Account** tab of your member area.

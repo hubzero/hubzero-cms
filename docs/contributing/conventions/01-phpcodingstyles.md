@@ -1,507 +1,333 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/conventions/phpcodingstyles
-source-id: 3432
-modified: 2015-07-29
-imported: 2026-09-09
 -->
-# PHP Coding Styles
+# PHP Coding Style
 
-## Code Demarcation
+Hubzero writes PHP to [PSR-12](https://www.php-fig.org/psr/psr-12/) with three
+deliberate departures: indentation is a tab, the opening brace of a control
+structure goes on its own line, and a leading underscore on a non-public member
+is still allowed. Everything else PSR-12 says holds.
 
-PHP code must always be delimited by the full-form, standard PHP tags:
+> **Note:** The repository ships no phpcs ruleset. PSR-12 is a description of
+> the house style, not a gate the build enforces. What continuous integration
+> checks is in [What the build checks](#what-the-build-checks) below.
 
+## The three departures
+
+### Indent with tabs
+
+One tab per level. PSR-12 asks for four spaces; core does not use them. Of the
+2,870 PHP files under `core/components`, 2,809 indent with tabs and 32 with
+spaces.
+
+Newer framework files written from scratch — `Hubzero\Base\ClassLoader`, for
+one — use four spaces. Match the file you are editing. Never mix the two in a
+single file, and never reindent a file you are otherwise only patching: it
+buries the change in a diff nobody can read.
+
+### Braces on their own line
+
+The opening brace goes on the line below, for classes, methods, functions
+**and** control structures. PSR-12 puts a control structure's brace on the same
+line; core does not.
+
+```php
+if ($filters['month'] > 12)
+{
+	$filters['month'] = 0;
+}
+
+foreach ($rows as $row)
+{
+	$row->save();
+}
 ```
-<?php
 
-?>
+### A leading underscore is allowed
+
+PSR-12 says an underscore prefix has no meaning. Core uses one on protected and
+private members throughout — 887 methods and 718 properties under
+`core/components` and `core/libraries`. Do not add the prefix to new code;
+do not strip it from existing code either, because the name is part of the
+class's contract with its subclasses.
+
+## Files
+
+- Open with `<?php`. Short tags are never allowed, and `<?=` appears nowhere in
+  core.
+- Omit the closing `?>` in a file that is only PHP; it is not required, and
+  leaving it off keeps trailing whitespace out of the response. A file that
+  ends in markup keeps its final `?>` because it has to.
+- End the file with a single newline, and use Unix line endings (LF, `0x0A`).
+  Never CR or CRLF.
+- One class per file.
+
+Every PHP file opens with the same four-line docblock:
+
+<!--include: core/components/com_blog/site/controllers/entries.php:1-6-->
+
+`@package` is `hubzero-cms` for extensions and `framework` for files under
+`core/libraries/Hubzero`. `@license` is always MIT. A new file gets
+
+```php
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
 ```
 
-Short tags are never allowed.
+and a file modified from core keeps the earliest year already there:
+`Copyright © 2015-2026 …`. The long LGPL preamble that older documentation
+showed is gone; no file in the tree carries it.
 
-For files that contain only PHP code, the closing tag (”?>”) is never permitted. It is not required by PHP, and omitting it prevents the accidental injection of trailing white space into the response.
+### The direct-access gate
 
-## Indention
+A file that is reached by including it — a view template, a plugin entry point,
+a helper the router pulls in — declares the gate immediately after the header:
 
-Indentation should consist of 1 tab per indentation level. Spaces are not allowed.
+```php
+// No direct access
+defined('_HZEXEC_') or die;
+```
 
-## Line Length
+3,389 files do. A file that is only ever reached through the autoloader does
+not need it; the autoloader will not run arbitrary code on request.
 
-The target line length is 120 characters. Longer lines are acceptable as long as readability is maintained.
+### Importing global facades
 
-## Line Termination
+The CMS registers `Route`, `App`, `User`, `Lang`, `Event`, `Config`, `Request`,
+`Notify` and the rest as root-namespace aliases. Inside a namespaced file an
+unqualified `Route::url()` resolves to `Current\Namespace\Route`, not the alias,
+and fatals when the line runs. Import every facade you call:
 
-Line termination follows the Unix text file convention. Lines must end with a single linefeed (LF) character. Linefeed characters are represented as ordinal 10, or hexadecimal 0×0A.
+```php
+namespace Components\Blog\Site\Controllers;
 
-> **Note:** Do not use carriage returns (CR) as is the convention in Apple OS’s (0×0D) or the carriage return – linefeed combination (CRLF) as is standard for the Windows OS (0×0D, 0×0A).
+use Hubzero\Component\SiteController;
+use Request;
+use Route;
+use Lang;
+use User;
+```
+
+A leading backslash (`\Route::url()`) works too, but the `use` list is the house
+form. This is the one style rule with a linter behind it; see below.
+
+## Lines
+
+The soft limit is 120 characters. There is no hard limit: a longer line is a
+warning, never an error, and readability wins over the count. Split a long call
+by pulling its arguments into variables first.
+
+No trailing whitespace. One statement per line.
 
 ## Strings
 
-### String Literals
-
-When a string is literal (contains no variable substitutions), the apostrophe or “single quote” should always be used to demarcate the string:
+Single quotes for a literal with no substitution:
 
 ```php
 $a = 'Example String';
 ```
 
-### String Literals Containing Apostrophes
-
-When a literal string itself contains apostrophes, it is permitted to demarcate the string with quotation marks or “double quotes”. This is especially useful for SQL statements:
-
-```php
-$sql = "SELECT `id`, `name` from `people` "
-     . "WHERE `name`='Fred' OR `name`='Susan'";
-```
-
-This syntax is preferred over escaping apostrophes as it is much easier to read.
-
-### Variable Substitution
-
-Variable substitution is permitted using either of these forms:
+Double quotes when the string contains apostrophes or interpolates a variable.
+Both interpolation forms are accepted:
 
 ```php
 $greeting = "Hello $name, welcome back!";
-
 $greeting = "Hello {$name}, welcome back!";
 ```
 
-For consistency, this form is not permitted:
+`"${name}"` is not permitted; PHP 8.2 deprecates it.
 
-```php
-$greeting = "Hello ${name}, welcome back!";
-```
-
-### String Concatenation
-
-Strings must be concatenated using the “.” operator. A space must always be added before and after the “.” operator to improve readability:
-
-```php
-$company = 'HUBzero' . ' ' . 'content management system';
-```
-
-When concatenating long strings with the “.” operator, it is encouraged to break the statement into multiple lines to improve readability. In these cases, each successive line should be padded with white space such that the “.”; operator is aligned under the “=” operator:
+Concatenate with `.`, a space on each side. When a concatenated expression runs
+long, break it and align the `.` under the `=`:
 
 ```php
 $sql = "SELECT `id`, `name` FROM `users` "
      . "WHERE `name` = 'Jim' "
-     . "ORDER BY `name` ASC ";
+     . "ORDER BY `name` ASC";
 ```
 
 ## Arrays
 
-### Numerically Indexed Arrays
+`array()` is the prevailing form in core — 11,377 uses under
+`core/components` — and short `[]` syntax is accepted in new code. Pick one per
+file.
 
-Negative numbers are not permitted as indices.
-
-An indexed array may start with any non-negative number, however all base indices besides 0 are discouraged.
-
-When declaring indexed arrays with the Array function, a trailing space must be added after each comma delimiter to improve readability:
-
-```php
-$sampleArray = array(1, 2, 3, 'HUBzero');
-```
-
-It is permitted to declare multi-line indexed arrays using the “array” construct. In this case, each successive line must be indented to the same level as first line and then padded with spaces such that beginning of each line is aligned:
+A single space after each comma. A multi-line array indents its items one level
+and puts the closing paren on its own line at the level of the declaration:
 
 ```php
-$sampleArray = array(1, 2, 3, 'HUBzero',
-                     $a, $b, $c,
-                     56.44, $d, 500);
-```
-
-Alternately, the initial array item may begin on the following line. If so, it should be padded at one indentation level greater than the line containing the array declaration, and all successive lines should have the same indentation; the closing paren should be on a line by itself at the same indentation level as the line containing the array declaration:
-
-```php
-$sampleArray = array(
-    1, 2, 3, 'HUBzero',
-    $a, $b, $c,
-    56.44, $d, 500,
+$filters = array(
+	'year'       => Request::getInt('year', 0),
+	'month'      => Request::getInt('month', 0),
+	'scope'      => $this->config->get('show_from', 'site'),
+	'authorized' => false,
+	'state'      => 1,
+	'access'     => User::getAuthorisedViewLevels()
 );
 ```
 
-When using this latter declaration, we encourage using a trailing comma for the last item in the array; this minimizes the impact of adding new items on successive lines, and helps to ensure no parse errors occur due to a missing comma.
-
-### Associative Arrays
-
-When declaring associative arrays with the Array construct, breaking the statement into multiple lines is encouraged. In this case, each successive line must be padded with white space such that both the keys and the values are aligned:
-
-```php
-$sampleArray = array('firstKey'  => 'firstValue',
-                     'secondKey' => 'secondValue');
-```
-
-Alternately, the initial array item may begin on the following line. If so, it should be padded at one indentation level greater than the line containing the array declaration, and all successive lines should have the same indentation; the closing paren should be on a line by itself at the same indentation level as the line containing the array declaration. For readability, the various “=>” assignment operators should be padded such that they align.
-
-```php
-$sampleArray = array(
-    'firstKey'  => 'firstValue',
-    'secondKey' => 'secondValue',
-);
-```
-
-When using this latter declaration, we encourage using a trailing comma for the last item in the array; this minimizes the impact of adding new items on successive lines, and helps to ensure no parse errors occur due to a missing comma.
+Aligning the `=>` operators is house style, as above. A trailing comma on the
+last item is allowed but core generally omits it.
 
 ## Classes
 
-- Classes must be named according to HUBzero’s naming conventions.
-- The brace should always be written on the line underneath the class name.
-- Every class must have a documentation block that conforms to the PHPDocumentor standard.
-- All code in a class must be indented with a single tab.
-- Only one class is preferred in each PHP file. Additional classes are permitted but strongly discouraged.
-- Placing additional code in class files is permitted but discouraged.
-
-The following is an example of an acceptable class declaration:
+Name classes as [PHP Naming Conventions](02-phpnamingconventions.md) describes.
+`extends` and `implements` stay on the class line:
 
 ```php
-/**
-* Documentation Block Here
-*/
-class SampleClass
-{
-    // all contents of class
-    // must be indented
-}
-```
-
-Classes that extend other classes or which implement interfaces should declare their dependencies on the same line when possible.
-
-```php
-class SampleClass extends FooAbstract implements BarInterface
+class Entries extends SiteController
 {
 }
 ```
 
-If as a result of such declarations, readability suffers due to line length, break the line before the “extends” and/or “implements” keywords, and pad those lines by one indentation level.
+Declare visibility on every property and method. `var` is not used. Properties
+come before methods.
+
+## Functions and methods
+
+No space between the name and the opening parenthesis. Arguments separated by
+`, `. Arguments with defaults go last, and the default gets a space on each
+side of the `=` — `$limit = 25`, not `$limit=25`. Both forms are in core; the
+spaced one is more common and is what PSR-12 asks for. Do not wrap a return
+value in parentheses — `return $this->bar;`, not `return($this->bar);`.
+
+Call-time pass-by-reference (`foo(&$bar)` at the call site) is a PHP fatal and
+is never used. Declare the reference in the signature instead:
 
 ```php
-class SampleClass
-    extends FooAbstract
-    implements BarInterface
+public function onContentPrepare($context, &$article, &$params)
 {
 }
 ```
 
-If the class implements multiple interfaces and the declaration covers multiple lines, break after each comma separating the interfaces, and indent the interface names such that they align.
+## Control structures
+
+One space after the keyword, none inside the parentheses. Braces are always
+required, even for a single statement. `elseif`, not `else if` — both appear in
+core, and `elseif` is the rule for new code.
+
+Break a long condition before the operator, and indent the continuation so the
+operator hangs one column left of the first clause:
 
 ```php
-class SampleClass
-    implements BarInterface,
-               BazInterface
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+```
+
+Put the operator at the start of the continuation line, not the end of the one
+before, and do not mix the two in one condition.
+
+A `switch` indents its `case` one level and the case body one more. Give it a
+`default`. Where a non-empty case falls through deliberately, say so with a
+`// no break` comment, so the next reader does not read it as a bug:
+
+```php
+switch ($state)
 {
+	case 'archived':
+		$this->archive();
+		// no break
+
+	case 'published':
+		$this->publish();
+		break;
+
+	default:
+		break;
 }
 ```
 
-### Class Member Variables
+## Documentation blocks
 
-Member variables must be named according to HUBzero’s variable naming conventions.
-
-Any variables declared in a class must be listed at the top of the class, above the declaration of any methods.
-
-The var construct is permitted but discouraged. Member variables should declare their visibility by using one of the private, protected, or public modifiers. Giving access to member variables directly by declaring them as public is permitted but discouraged in favor of accessor methods (set & get).
-
-## Functions
-
-### Declaration
-
-Functions must be named according to HUBzero’s function naming conventions.
-
-Methods inside classes must always declare their visibility by using one of the `private`, `protected`, or `public` modifiers.
-
-As with classes, the brace should always be written on the line underneath the function name. Space between the function name and the opening parenthesis for the arguments is not permitted.
-
-Functions in the global scope are strongly discouraged.
-
-The following is an example of an acceptable function declaration in a class:
+Docblocks are phpDocumentor format. Every class gets a short description; every
+method gets a description, its parameters, and its return type. Columns are
+aligned with spaces, two after each tag:
 
 ```php
-/**
-* Documentation Block Here
-*/
-class Foo
-{
-    /**
-     * Documentation Block Here
-     */
-    public function bar()
-    {
-        // all contents of function
-        // must be indented four spaces
-    }
-}
+	/**
+	 * Generate an alias from the data being saved
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
 ```
 
-In cases where the argument list affects readability, you may introduce line breaks. Additional arguments to the function or method must be indented one additional level beyond the function or method declaration. The following is an example of one such situation:
+Add `@throws` for every exception class a method can raise. Do not write
+`@access`; the visibility modifier already says it. Do not write `@version` or
+`@package_version@`; nothing substitutes them.
+
+## SQL
+
+Keywords uppercase, identifiers lowercase and backquoted. Write the table
+prefix as the `#__` placeholder, never a literal `jos_` — see
+[Database Schema](04-databaseschema.md).
 
 ```php
-/**
-* Documentation Block Here
-*/
-class Foo
-{
-    /**
-     * Documentation Block Here
-     */
-    public function bar($arg1, $arg2, $arg3,
-        $arg4, $arg5, $arg6)
-    {
-        // all contents of function
-        // must be indented four spaces
-    }
-}
+$this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote($title));
 ```
 
-> **Note:** Pass-by-reference is the only parameter passing mechanism permitted in a method declaration.
+Quote every value through `$db->quote()` or bind it. Prefer the query builder
+over hand-written SQL in new code; see
+[Database](../../developers/06-database/README.md).
 
-```php
-/**
-* Documentation Block Here
-*/
-class Foo
-{
-    /**
-     * Documentation Block Here
-     */
-    public function bar(&$baz)
-    {
-    }
-}
+## Checking your work
+
+The tools live under `core/vendor/bin`, installed by `php bin/composer install`
+run from the `core` directory. The lint and test commands expect that working
+directory too:
+
+```bash
+cd core
+vendor/bin/parallel-lint --exclude vendor .
+vendor/bin/phpunit -c phpunit.xml.dist
 ```
 
-Call-time pass-by-reference is strictly prohibited.
+The facade check runs from the repository root:
 
-The return value must not be enclosed in parentheses. This can hinder readability, in additional to breaking code if a method is later changed to return by reference.
-
-```php
-/**
-* Documentation Block Here
-*/
-class Foo
-{
-    /**
-     * WRONG
-     */
-    public function bar()
-    {
-        return($this->bar);
-    }
-
-    /**
-     * RIGHT
-     */
-    public function bar()
-    {
-        return $this->bar;
-    }
-}
+```bash
+php tools/lint/missing-facade-imports.php
 ```
 
-### Function and Method Usage
+It takes `--fix` to insert the missing `use` statements, and any path to narrow
+the scan; with no path it scans `core/components`, `core/plugins`,
+`core/modules` and `core/libraries/Hubzero`.
 
-Function arguments should be separated by a single trailing space after the comma delimiter. The following is an example of an acceptable invocation of a function that takes three arguments:
+phpcs is installed as a development dependency but the repository commits no
+ruleset, so running plain PSR-12 against core reports mostly the three
+departures above: one ordinary controller draws 772 errors, nearly all of them
+tab indentation and control-structure braces. Excluding the sniffs that see only
+those departures makes the result readable — the same file drops to a few dozen
+findings worth reading:
 
-```php
-threeArguments(1, 2, 3);
+```bash
+house_style=Generic.WhiteSpace.DisallowTabIndent
+house_style=$house_style,Generic.WhiteSpace.ScopeIndent
+house_style=$house_style,Squiz.WhiteSpace.ScopeClosingBrace
+house_style=$house_style,Squiz.ControlStructures.ControlSignature
+house_style=$house_style,PSR12.ControlStructures.ControlStructureSpacing
+house_style=$house_style,PSR2.Methods.MethodDeclaration
+house_style=$house_style,Squiz.Functions.MultiLineFunctionDeclaration
+
+core/vendor/bin/phpcs --standard=PSR12 --exclude=$house_style path/to/changed/file.php
 ```
 
-Call-time pass-by-reference is strictly prohibited. See the function declarations section for the proper way to pass function arguments by-reference.
+Run it on the files you changed, not on the tree.
 
-In passing arrays as arguments to a function, the function call may include the “array” hint and may be split into multiple lines to improve readability. In such cases, the normal guidelines for writing arrays still apply:
+## What the build checks
 
-```php
-threeArguments(array(1, 2, 3), 2, 3);
+Two GitHub Actions workflows run on every pull request.
 
-threeArguments(array(1, 2, 3, 'HUBzero',
-                     $a, $b, $c,
-                     56.44, $d, 500), 2, 3);
+| Workflow | Checks |
+|---|---|
+| [`php-lint.yml`](../../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php` |
+| [`pages.yml`](../../../.github/workflows/pages.yml) | Builds the documentation, regenerates `docs/reference`, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 
-threeArguments(array(
-    1, 2, 3, 'HUBzero',
-    $a, $b, $c,
-    56.44, $d, 500
-), 2, 3);
-```
-
-## Control Statements
-
-### If/Else/Elseif
-
-Control statements based on the `if` and `else if` constructs must have a single space before the opening parenthesis of the conditional.
-
-Within the conditional statements between the parentheses, operators must be separated by spaces for readability. Inner parentheses are encouraged to improve logical grouping for larger conditional expressions.
-
-The opening brace is written on the line after the conditional statement. The closing brace is always written on its own line. Any content within the braces must be indented using 1 tab.
-
-```php
-if ($a != 2)
-{
-    $a = 2;
-}
-```
-
-If the conditional statement causes the line length to affect readability and has several clauses, you may break the conditional into multiple lines. In such a case, break the line prior to a logic operator, and pad the line such that it aligns under the first character of the conditional clause. The closing paren in the conditional will then be placed on a line with the opening brace, with one space separating the two, at an indentation level equivalent to the opening control statement.
-
-```php
-if (($a == $b)
-    && ($b == $c)
-    || (Foo::CONST == $d))
-{
-    $a = $d;
-}
-```
-
-The intention of this latter declaration format is to prevent issues when adding or removing clauses from the conditional during later revisions.
-
-For `if` statements that include `else if` or `else`, the formatting conventions are similar to the `if` construct. The following examples demonstrate proper formatting for `if` statements with `else` and/or `{else if` constructs:
-
-```php
-if ($a != 2)
-{
-    $a = 2;
-}
-else
-{
-    $a = 7;
-}
-
-if ($a != 2)
-{
-    $a = 2;
-}
-elseif ($a == 3)
-{
-    $a = 4;
-}
-else
-{
-    $a = 7;
-}
-
-if (($a == $b)
-    && ($b == $c)
-    || (Foo::CONST == $d))
-{
-    $a = $d;
-}
-elseif (($a != $b)
-          || ($b != $c))
-{
-    $a = $c;
-}
-else
-{
-    $a = $b;
-}
-```
-
-PHP allows statements to be written without braces in some circumstances. This is not permitted; all `if`, `else if` or `else` statements must use braces.
-
-### Switch
-
-Control statements written with the `switch` statement must have a single space before the opening parenthesis of the conditional statement and after the closing parenthesis.
-
-All content within the `switch` statement must be indented one indention level. Content under each `case` statement must be indented using an additional indention level.
-
-```php
-switch ($numPeople)
-{
-    case 1:
-        break;
-
-    case 2:
-        break;
-
-    default:
-        break;
-}
-```
-
-The construct `default` should not be omitted from a switch statement.
-
-Note: It is sometimes useful to write a case statement which falls through to the next case by not including a break or return within that case. To distinguish these cases from bugs, any case statement where break or return are omitted should contain a comment indicating that the break was intentionally omitted.
-
-## Inline Documentation
-
-### Format
-
-All documentation blocks (“docblocks”) must be compatible with the phpDocumentor format. Describing the phpDocumentor format is beyond the scope of this document. For more information, visit: [[1]](http://phpdoc.org/)
-
-All class files must contain a “file-level” docblock at the top of each file and a “class-level” docblock immediately above each class.
-
-### Files
-
-Every file that contains PHP code must have a docblock at the top of the file that contains these phpDocumentor tags at a minimum:
-
-```php
-/**
- * @package     hubzero-cms
- * @author      Joe Smith <joesmith@hubzero.org>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- *
- * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
- *
- * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
- * software: you can redistribute it and/or modify it under the terms of
- * the GNU Lesser General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any
- * later version.
- *
- * HUBzero is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * HUBzero is a registered trademark of Purdue University.
- */
-```
-
-### Classes
-
-Every class must have a docblock that contains these phpDocumentor tags at a minimum:
-
-```php
-/**
- * Short description for class
- *
- * Long description for class (if any)...
- *
- * @package     hubzero-cms
- * @subpackage  com_members
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @version     Release: @package_version@
- * @since       Class available since Release 1.5.0
- * @deprecated  Class deprecated in Release 2.0.0
- */
-```
-
-### Functions
-
-Every function, including object methods, must have a docblock that contains at a minimum:
-
-- A description of the function
-- All of the arguments
-- All of the possible return values
-
-It is not necessary to use the “@access” tag because the access level is already known from the “public”, “private”, or “protected” modifier used to declare the function.
-
-If a function or method may throw an exception, use @throws for all known exception classes:
-
-```php
-@throws exceptionclass [description]
-```
-
-## SQL Queries
-
-SQL keywords are to be written in uppercase, while all other identifiers (which the exception of quoted text) is to be in lowercase.
-
-```php
-$sql = "SELECT `id`, `name` from `people` "
-     . "WHERE `name`='Fred' OR `name`='Susan'";
-```
+Neither runs phpcs. A style problem is caught in review, not by the build; a
+missing facade import and a syntax error are caught by the build.

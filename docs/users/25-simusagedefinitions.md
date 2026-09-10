@@ -1,52 +1,63 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/users/simusagedefinitions
 source-id: 3329
 modified: 2016-03-22
 imported: 2026-09-09
 -->
-# Simulation Usage Definitions
+# Simulation usage definitions
 
-## Simulation Users
+The **Simulation** half of the hub's [`/usage`](usage.md) page reports ten
+figures about the tools members have run. This chapter says what each one
+means.
 
-Number of Registered Users that ran one or more simulation runs.
+Two of them — **Simulation Users** and **Simulation Runs** — are drawn as
+charts over the period you selected. The other eight are shown underneath as
+single values for one point in time; selecting a point on either chart moves
+them to that month.
 
-A registered user is assigned and identified with a unique login identity on the system.
+> **Warning:** These figures come from a statistics database that the CMS
+> reads but never writes. Nothing in this repository computes any of them.
+> They are produced by the hub's metrics tooling, which is separate software.
+> On a hub where that tooling is not installed and running, the simulation
+> section of `/usage` reports a missing table rather than zeroes. See
+> [Usage](../managers/components/usage.md) in the Hub managers book.
 
-## Simulation Jobs
+## The vocabulary
 
-A unit of work to be processed, generally comprising an application program or group of related programs and data, linkages, and instructions to the operating system needed for running the program.
+A **simulation run** — the page also calls it a job — is one unit of work
+submitted by a tool: a program, its inputs, and the instructions needed to run
+it. Starting a tool session is not a run; asking that tool to compute
+something is.
 
-## Total CPU Time
+A **simulation user** is a registered account, identified by its own login,
+that submitted at least one run in the period.
 
-CPU time measures the amount of time a single CPU spent running your code. If multiple cores are used during the same time frame the CPU time is multiplied by the number of cores.
+## The ten figures
 
-CPU time does not include other time on the system such as waiting in the queue, file I/O, etc..
+| Figure | Meaning |
+|---|---|
+| **Simulation Users** | Registered users who ran one or more simulation runs in the period. |
+| **Simulation Runs** | Simulation runs submitted in the period. |
+| **Total CPU Time** | Processor time spent executing those runs. A run using several cores at once accumulates CPU time on each of them, so this exceeds the elapsed time. It excludes anything the run was not computing during — queue waits, file I/O. |
+| **Total Wall Time** | Elapsed time from a run starting to it finishing, as a stopwatch would measure it. Anything else the machine was busy with counts against it. |
+| **Total Interaction Time** | Time users spent working inside tool sessions, as distinct from the compute time above. |
+| **Users with > 10 mins of CPU Time** | Users whose runs consumed more than ten minutes of CPU time — a rough separation of real work from a first look. |
+| **Avg. Number of Simulation Runs/User** | Simulation runs divided by simulation users, for the period. |
+| **Avg. Time between First and Last Simulation** | Mean gap, per user, between their earliest and their latest run. A measure of how long people keep coming back. |
+| **Repeat Users with > 10 Simulation Jobs** | Users who have submitted more than ten runs. |
+| **Repeat Users with > 3 Months** | Users who came back after a gap of more than three months. |
 
-## Total Wall Time
+> **Note:** Two of those labels are stored with a placeholder in them —
+> `Simulation Users {5}` and `Repeat Users with > 3 Months {9}` — and nothing
+> substitutes the placeholder, so the braces are shown to readers as they
+> stand. It is a fault in the seeded label rather than in the figure beside
+> it.
 
-Wall clock time (clock on the wall) is the actual elapsed time taken to perform a job from beginning to end. This is equivalent to timing your job with a stopwatch and the measured time to complete your task can be affected by anything else that the system (file I/O) happens to be doing at the time.
-
-## Total Interaction Time
-
-??
-
-## Users with > 10 mins of CPU Time
-
-Users who ran a simulation that used more than 10 mins of CPU Time.
-
-## Avg. Number of Simulation Jobs/User
-
-The average number of simulation jobs that the user executed in the selected time frame.
-
-## Avg. Time between First and Last Simulation
-
-??
-
-## Repeat Users with > 10 Simulation Jobs
-
-Number of users that have executed more than 10 simulation jobs.
-
-## Repeat Users with > 3 Months 9
-
-The number of simulation users that returned after a gap of 3 months.
+The labels themselves are rows in the statistics database, so a hub that
+maintains its own metrics tooling can rename them or report different things
+under the same names. If a label on your hub does not match this list, trust
+the hub.

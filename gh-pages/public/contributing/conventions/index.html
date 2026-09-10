@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Style Guide · Contributing · Hubzero Documentation</title>
-  <meta name="description" content="Overview This document provides guidelines for code formatting and documentation to individuals and teams contributing to HUBzero CMS. Topics covered: PHP File…">
+  <title>Conventions · Contributing · Hubzero Documentation</title>
+  <meta name="description" content="The rules a change has to follow to land in Hubzero. Most of them exist so that one person can read code another person wrote; a few of them — the naming rules…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +41,14 @@
         <a class="rail__book" href="../index.html">Contributing</a>
         <nav aria-label="Contributing contents">
 <ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../contributions/index.html">Contribution Guide</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Style Guide</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../contributions/index.html">Contributions</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Conventions</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
+<li class="toc__item toc__item--l2"><a href="#see-also">See also</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="phpcodingstyles/index.html">PHP Coding Style</a></li>
 <li class="tree__leaf"><a class="tree__link" href="phpnamingconventions/index.html">PHP Naming Conventions</a></li>
-<li class="tree__leaf"><a class="tree__link" href="csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="csscodingstyles/index.html">CSS Coding Style</a></li>
 <li class="tree__leaf"><a class="tree__link" href="databaseschema/index.html">Database Schema Conventions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="commits/index.html">Commit Messages</a></li>
 </ul></details></li>
@@ -59,42 +60,50 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Style Guide</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Conventions</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Contributing</p>
-          <h1>Style Guide</h1>
+          <h1>Conventions</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>This document provides guidelines for code formatting and documentation to individuals and teams contributing to HUBzero CMS.</p>
-<p>Topics covered:</p>
+<p>The rules a change has to follow to land in Hubzero. Most of them exist so that
+one person can read code another person wrote; a few of them — the naming
+rules especially — exist because the autoloader turns a class name into a file
+path and gets it wrong when the name is wrong.</p>
+<p>Each chapter describes what the code in this repository actually does, with the
+counts to show how consistently, and says where core is not uniform so you know
+which way to follow.</p>
+<h2 id="in-this-section">In this section</h2>
 <ul>
-<li>PHP File Formatting
+<li><a href="phpcodingstyles/index.html">PHP Coding Style</a> — PSR-12, its three house
+departures, file headers, docblocks, and the checks the build runs.</li>
+<li><a href="phpnamingconventions/index.html">PHP Naming Conventions</a> — how a class name
+becomes a file path for components, plugins, modules, templates and
+migrations.</li>
+<li><a href="csscodingstyles/index.html">CSS Coding Style</a> — stylesheets and the LESS sources
+the templates compile from.</li>
+<li><a href="databaseschema/index.html">Database Schema Conventions</a> — the <code>#__</code> prefix
+placeholder, table and column names, indexes.</li>
+<li><a href="commits/index.html">Commit Messages</a> — the subject prefix, the body, and what the
+history on this branch actually looks like.</li>
+</ul>
+<h2 id="see-also">See also</h2>
 <ul>
-<li>
-<p>PHP and Database Naming Conventions</p>
-<ul>
-<li>
-<p>PHP, CSS Coding Style</p>
-</li>
-<li>
-<p>PHP Inline Documentation</p>
-</li>
+<li><a href="../contributions/index.html">Contributions</a> — the process a change goes through.</li>
+<li><a href="../documentation/index.html">Working on the documentation</a> — writing these pages.</li>
+<li><a href="../../developers/index.html">Developers</a> — how the pieces the conventions
+govern actually work.</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="phpcodingstyles/index.html">PHP Coding Style</a></li>
 <li><a href="phpnamingconventions/index.html">PHP Naming Conventions</a></li>
-<li><a href="csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li><a href="csscodingstyles/index.html">CSS Coding Style</a></li>
 <li><a href="databaseschema/index.html">Database Schema Conventions</a></li>
 <li><a href="commits/index.html">Commit Messages</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../contributions/index.html" rel="prev"><span>Previous</span>Contribution Guide</a><a class="pager__next" href="phpcodingstyles/index.html" rel="next"><span>Next</span>PHP Coding Styles</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../contributions/index.html" rel="prev"><span>Previous</span>Contributions</a><a class="pager__next" href="phpcodingstyles/index.html" rel="next"><span>Next</span>PHP Coding Style</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

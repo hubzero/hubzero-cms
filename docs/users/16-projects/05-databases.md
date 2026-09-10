@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/users/projects/databases
 source-id: 3318
 modified: 2014-11-19
@@ -7,85 +10,193 @@ imported: 2026-09-09
 -->
 # Databases
 
-## DataStore Lite
+A project database — DataStore Lite — turns a spreadsheet in your project's
+files into a searchable, sortable table anyone on the team can browse. You
+upload a `.csv` file, tell the hub what each column holds, and the hub builds
+a real database table from it and opens it in the hub's DataViewer.
 
-Creating a searchable hub database from a spreadsheet with data is made possible by DataStore Lite within Projects.
-**Note:** You must be logged in on the hub and inside a project in order to use this feature.
+You need to be a manager or a collaborator on the project. Reviewers can see
+the databases a project has but cannot create, update, or delete them.
 
-> **Tip:** A .csv (comma separated values) file containing the data is required to create the database. A spreadsheet program such as Excel can be used as long as the file is saved in the .csv format. The first row should contain the labels for each data field/column. Each row below represents a unique data entry. If the database is to contain links to files stored in the project, provide a column with the case sensitive name and extension of each file (e.g. “projectstep1.png”).
+## If there is no Databases tab
 
-## Creating a Database
+The Databases tab is not a standard part of a project. It comes from the
+**Projects - Databases** plugin, which needs two MySQL accounts that only a
+hub administrator can set: a read/write account that builds the tables and a
+read-only account that the DataViewer uses to read them.
 
-**Upload the File to the Project**
+If either account is missing or wrong, the plugin hides the tab entirely.
+There is no error message and no explanation — the tab simply is not there:
 
-1. Navigate to **https://yourhub.org/projects**
-2. Locate the project where the database is to be added in the *My Projects* section, or use the **Start a project** button to create a new project (for help with creating a project, go to: [https://hubzero.org/documentation/1.3.0/users/projects](README.md))
-3. Click **Files** underneath *Assets* on the left project menu
-4. Click **Upload**
-5. Drag and drop the .csv file as well as any files that are to be linked in the database into the **click or drop file** textbox. Alternately, click the **Click or drop file** box and select the .csv file as well as any additional files to add (ctrl + click to select multiple) and click **Open**
-6. Click "Upload now!" and the file(s) will be uploaded
+<!--include: core/plugins/projects/databases/databases.php:79-83-->
 
-## **Create the Database - Step 1: Select the File**
+So if your project has no **Databases** tab, one of three things is true:
+the plugin is disabled, the hub has restricted it to a list of projects that
+does not include yours, or its database accounts are not configured. All
+three are for an administrator to fix; see
+[Projects](../../managers/09-components/15-projects/README.md#enabling-a-project-feature)
+in the managers book, and ask the hub's support staff.
 
-1. Click **Databases** underneath *Assets* on the left project menu
-2. Click **Create a database** in the upper right
-3. Select the .csv file that contains the data for the Database from the list
-4. Click **Next**
+A configured tab can still fail at the last step. If the databases list
+loads but selecting a database's title gives you an error rather than a
+table, the read-only account exists but cannot read what the read/write
+account created. That is also one for the administrator.
 
-## **Create the Database – Step 2: Verify Data**
+## Preparing the spreadsheet
 
-1. Click the pencil **Edit** icon underneath a column heading to make changes to it
-2. On the **General** tab of the *Column Properties* window, several values can be set:
-   
-   **Label (Required)** ­– This is the title that is shown for the column.
-   
-   **Description** – A column description can be provided here. The user will see this description when clicking on the column title.
-   
-   **Width** – This column accepts a numeric pixel value. With this set, the column will remain fixed at the specified width.
-   
-   **Units** *–* This column accepts a unit of measure (e.g. inches, meters, liters) and will show underneath the column heading.
-3. On the **Column Type** tab of the *Column Properties* window, select the appropriate column type from the drop down list:
-   
-   **Text [small]** – This column type should be used to display a title or short description of the entry.
-   
-   **Text [large]** – This column type should be used for a long description or text that is more than one sentence.
-   
-   On either text Column Type, check “**Limit text to a single line**” to prevent the provided text from wrapping. If the length of the text exceeds the width of the column, it will truncate what displays and the user can click on the text to view the entire content of that particular field.
-   
-   **Image** – This column type will display a preview of the image directly in the data field. This can be either a URL to an image on the web, or the name of an image contained in the Project files.
-   
-   **Link** - This column type will provide a hyperlink to the file specified. It can either be a full URL link to the page, or the name of a file contained in Project files.
-   
-   Check **Repository Files?** and choose the Repository Path from the drop down if the images or files are contained within the Project.
-4. On the **Other** tab of the *Column Properties* window the content alignment, text color, and background color can be configured
-5. Click **Update Column** to save all changes made
-6. When you have verified all the columns look as intended, click **Next**
+The source has to be a `.csv` file — comma-separated values, which every
+spreadsheet program can save.
 
-## **Create the Database - Step 3: Title & Description, Finish**
+- The first row holds the column labels.
+- Every row below it is one record.
+- To link a database row to a file in the project, put the file's name and
+  extension in a column, spelled exactly as the file is — `projectstep1.png`,
+  not `ProjectStep1.PNG`. The file has to be in the same folder as the `.csv`
+  or in a folder below it.
 
-1. Type a title and description to the Database in the text boxes provided
-2. Click **Finish** to finalize all changes and make the database available
+## Creating a database
 
-## Updating a Database
+### Upload the file
 
-## **Change the Database File**
+1. Open the project and select **Files**.
+2. Select **Upload**.
+3. Drag the `.csv` file onto the drop area, along with any images or
+   documents the database will link to. Select **Upload now!**.
 
-1. Navigate to **https://yourhub.org/projects**
-2. Click on the Project that contains the Database that needs updating
-3. Click on **Databases** underneath *Assets* on the left project menu
-4. Click the name of the .csv file being used by the database in the **Files** column to download the file
-5. Open the file on your local machine using a spreadsheet application or text editor
-6. Make the changes to the file that are required and save, ensuring that the file name remains the same name as the original source file
-7. Navigate to **Files** underneath *Assets* on the left project menu
-8. On the Files page within the project, click **Upload**
-9. Drag and drop the updated .csv file into the **click or drop file** box and click **Upload now!** Alternately, click the **Click or drop file** box, select the file, click **Open** and then click **Upload now!**
-10. The .csv file contained on the project files has been updated, but additional steps will need to be taken in order to update the database, as discussed in the next step
+See [Project files](02-projectfiles.md) for more on uploading.
 
-**Update the Database**
+### Step 1: select the file
 
-1. Within the project, click on **Databases** underneath *Assets* on the left project menu
-2. Click **Update Database** next to the database that requires updates since changes have been made to its original .csv file
-3. Verify the columns shown are correct, especially if changes were made to the data and/or additional columns were added
-4. Also click **Edit** below the column label to change its column type as well as add optional information to the column (such as a column description)
-5. Click **Next** when finished
-6. Provide a title and description (perhaps indicate an update was made) and click **Finish**
+1. Select **Databases**.
+2. Select **Create a database**.
+3. Pick the `.csv` file from the drop-down. It lists every `.csv` file in the
+   project, grouped by folder.
+4. Select **Next »**.
+
+If the drop-down is empty, the project has no `.csv` files, or the only ones
+it has are already used by a database. The screen offers links back to the
+databases list and to the file area.
+
+### Step 2: verify data
+
+The hub reads the file, guesses a type for each column, and shows a preview.
+The heading tells you how many records the file holds and how many are shown
+— the preview loads the first hundred rows, but the database is built from
+all of them.
+
+Select the edit control in a column heading to open **Column Properties**,
+which has three tabs.
+
+**General**
+
+| Field | What it does |
+|---|---|
+| **Label** | The column heading. Required |
+| **Description** | Shown when a reader selects the column title |
+| **Width** | A pixel value. The column is held to that width |
+| **Truncate text at width** | Cuts the text off at that width |
+| **Units** | A unit of measure — inches, meters, liters — shown under the heading |
+
+**Column Type**
+
+Choose one of: **Text [small]**, **Text [large]**, **Link**, **Image**,
+**Email**, **Integer**, **Floating Point**, **Numeric [4 decimal places]**,
+**Date [yyyy-mm-dd]**, or **Date & Time [yyyy-mm-dd HH:MM:SS]**.
+
+- Use **Text [small]** for a title or a short label, **Text [large]** for
+  anything longer than a sentence. Either can be set to **Limit text to a
+  single line**, which hides the overflow; a reader sees the whole value by
+  hovering over it or selecting it.
+- **Image** shows a preview in the cell. **Link** makes the value a
+  hyperlink. Both accept a full URL, or the name of a file in the project.
+  For a file in the project, tick **Repository Files?** and choose the
+  **Repository Path** — only the folder holding the `.csv` and folders below
+  it are offered, and the `.csv` must give the bare file name.
+
+**Other**
+
+Set the column's **Alignment**, **Text Color**, and **Background Color**.
+
+Select **Update Column** to keep the changes, or **Cancel** to drop them.
+When every column looks right, select **Next »**. **« Back** returns to the
+file selection.
+
+### Step 3: title and description
+
+1. Type a **Title** and a **Description**.
+2. Select **Finish**.
+
+The hub creates the table and returns you to the databases list.
+
+> **Important:** Creating a database rewrites the source `.csv` in your
+> project files. The hub writes three header rows into it — the column
+> labels, the column properties, and a row reading `DATASTART` — followed by
+> the data. That is how the database remembers its column setup. Keep those
+> three rows when you edit the file later, and change only the rows below
+> `DATASTART`.
+
+## Using a database
+
+The databases list shows one row per database:
+
+| Column | What it is |
+|---|---|
+| **Title** | Opens the database in the hub's DataViewer, in a new tab |
+| **Source File** | Downloads the `.csv` the database was built from |
+| **Created On**, **Created By** | Who built it and when |
+| **Update Database** | Rebuilds it from the current `.csv` |
+| **Delete** | Removes the database |
+
+The last two appear only for managers and collaborators.
+
+A source file the hub can no longer find is greyed out, and **Update
+Database** is disabled until the file is restored. A source file that has
+changed since the database was built is flagged, which is your cue to update.
+
+Until the database is attached to a published publication, only members of
+the project can open it in the DataViewer.
+
+To change a database's title or description without rebuilding it, select
+the small edit control next to its title in the list, change the values in
+the **Update Title & Description** box, and save.
+
+## Updating a database
+
+Do this whenever the data changes, or when you want to change how a column
+is displayed. If you only want to change the display, skip to step 6.
+
+1. Select **Databases**, then the database's **Source File** to download
+   the `.csv`.
+2. Open it in a spreadsheet program or a text editor. The first three rows
+   are the DataStore header; the data starts after the `DATASTART` row.
+3. Add, remove, or change rows *below* `DATASTART` only. Keep the values
+   consistent with the column types, which the second row lists.
+4. Save it in the same `.csv` format, under the same name.
+5. Go to **Files**, select **Upload**, and upload the file back into the same
+   folder, replacing the old one.
+6. Go back to **Databases** and select **Update Database** on the row.
+7. Check the columns in step 2, adjusting any column properties you want to
+   change, and select **Next »**.
+8. Confirm the title and description and select **Finish**.
+
+The old table is dropped and rebuilt, so anything the DataViewer showed
+before is replaced by the new data.
+
+## Deleting a database
+
+Select **Delete** on the database's row and confirm. This drops the table
+and removes the database from the project. The source `.csv` stays in the
+project's files, so you can build the database again from it.
+
+## Quota
+
+Project databases are stored on the hub's database server, not in the
+project's file area, so they do not count against the project's disk quota.
+The source `.csv` in the file area does.
+
+## Publishing a database
+
+A database can be attached to a publication, which is how you make it
+readable outside the project. The publication's editor offers a **Select a
+Database** picker listing the project's databases. See
+[Publications](../18-publications/README.md).

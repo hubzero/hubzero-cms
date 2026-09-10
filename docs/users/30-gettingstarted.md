@@ -1,59 +1,112 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/gettingstarted
 source-id: 3334
 modified: 2021-05-18
 imported: 2026-09-09
 source-state: unpublished
 -->
-# Getting Started
+# Getting started
 
-A hub is a single community place for your colleagues, peers, and collaborators. Your community will interact with the HUBzero® platform through the user interface, enabling access to analytical tools, publishing data, sharing resources, collaborating, and building community spaces.
+The first hour on a hub, in order: create an account, confirm it, fill in
+enough of a profile to be findable, arrange a dashboard, and then find the
+part of the site you actually came for.
 
-- [How to create an account on a hub](https://help.hubzero.org/documentation/240/users/gettingstarted/registration)
-- [Filling out your member profile](https://help.hubzero.org/documentation/240/users/gettingstarted/profile)
-- [Customizing your member dashboard](https://help.hubzero.org/documentation/240/users/gettingstarted/dashboard)
+## 1. Create an account
 
-## Every HUBzero® platform offers the following core features.
+Go to `/register`, or select **Create an account** under the login form.
+The form asks for a username, a password, your name, and an email address,
+plus whatever profile questions your hub has added. Full instructions,
+including what each fieldset means and what the password rules are, are in
+[Registration](registration.md).
 
-## [Run Applications](22-tools.md)
+> **Note:** If the hub has turned registration off, `/register` returns a
+> "not found" page and the link under the login form is not shown. Ask the
+> hub's support staff for an account instead.
 
-Every instance of HUBzero® has the ability for online applications, otherwise known as "tools," to be hosted on the hub. These interactive computations and analytical tools can use Linux, Jupyter, RStudio, and other Web Applications.
+## 2. Confirm your email address
 
-The process starts with a member filling out a web form to register their intent to submit a tool. The member then uploads code into a subversion source code repository and develops the code within a workspace. The member can work alone or with their team to build the tool and design a graphical user interface. With a little help from the managers of the hub, tools can be installed and published for either a limited group of colleagues or for the entire community.
+Unless the hub has been set to skip it, you are sent a message with an
+activation link. Follow it and log in. Until you do, the account exists but
+cannot be used. Some hubs also require an administrator to approve the
+account, which happens after you confirm.
+
+The message is generated automatically, so check your spam folder if it does
+not arrive within a few minutes.
+
+## 3. Fill in your profile
+
+Your profile is at **Members > (your name) > Profile**, or directly at
+`/members/myaccount`. Each row is one field with an **Edit** link beside it;
+selecting it opens the field in place, with a **Privacy** menu next to the
+value. See [Member profile](profile.md) for the field-by-field detail and for
+uploading a picture.
+
+Two things are worth doing straight away:
+
+- Decide whether the whole profile is public or private, using the toggle at
+  the top of the Profile tab. Per-field privacy only works while the profile
+  itself is public.
+- Fill in your organisation and interests. They are what makes you findable
+  by other members, and on hubs that run Solr search, member profiles are
+  indexed.
+
+## 4. Arrange your dashboard
+
+The Dashboard tab is your own page of modules — current tool sessions and
+disk usage, your groups, your projects, recent activity, whatever the hub
+offers. It starts from a default arrangement and you rearrange it by dragging.
+[Member dashboard](dashboard.md) covers adding, removing, and configuring
+modules.
+
+## 5. Find your way around
+
+What a hub offers beyond that varies. These are the parts most hubs turn on.
+
+### Groups
+
+A [group](groups/README.md) is a shared space, private or public. Each one can
+have its own pages, membership roles, announcements, blog, calendar,
+collections, forum, wiki, and file area. Joining an existing group is usually
+the fastest way to see what a hub is actually used for.
+
+### Projects
+
+A [project](projects/README.md) is a workspace for a piece of research: files,
+notes, a to-do list, and a database area. Project file storage can be the
+hub's own, or connected to Amazon S3, Dropbox, GitHub, or Google Drive through
+the hub's filesystem plugins. When the work is ready, a project is the
+starting point for a publication.
+
+### Publications
+
+[Publications](publications/README.md) walks a contributor through releasing
+data, code, or a paper in steps — files, authors, abstract, licence — that can
+be revisited in any order. A published version can carry a licence and a minted
+DOI. Where the hub uses curation, a curator reviews the draft and leaves notes
+before it goes live; see [Curation](publications/curation.md).
+
+### Tools
+
+Where a hub runs the tool platform, published tools launch in the browser and
+execute on the hub's own machines. Running one, sharing a session, and
+contributing your own are covered in [Tools](tools.md).
 
 ![Animation of a simulation](media/gettingstarted-tools2.gif)
 
-## Collaborate
+### Wiki and collections
 
-HUBzero<sup>®</sup> instances provide multiple spaces for research teams and collaborators to discuss data concepts, track progress and share files by using the services you already know, such as [Google Drive](https://www.google.com/drive/), [GitHub](https://github.com), or [Dropbox](https://dropbox.com).
+The [wiki](wiki.md) holds member-written articles; an article's author can keep
+a fixed list of authors or leave it open for anyone to edit.
+[Collections](collections.md) are a lighter way to gather images, links, and
+files into a board that other members can follow and re-collect.
 
-## [Groups](11-groups/README.md)
+## What is not here
 
-Groups are an easy way to share content and conversation, either privately or with the world. Each group comes with the ability to create group-specific content pages, invite and manage group membership, send announcements, publish a blog, add events through a calendar, share ideas through collections, discuss methods through forums, work on tasks through projects, share information through wikis, manage files, and much more.
-
-## [Projects](16-projects/README.md)
-
-Whether working on a new funding proposal, research paper or developing an application, projects are a great way to manage your data, workflow, and communication. Each project space comes with a wiki area, to-do list management, the ability to connect to Google Drive, Dropbox and other file management systems, and publishing data straight from a project space.
-
-## [Wiki](23-wiki.md)
-
-Wiki pages are user-written articles on a range of subjects. Any contributor or a group of contributors can create new articles, and there can be multiple articles on the same wiki, each written by a different author. Any member can create a new article. When creating a new article, the initial contributor can choose to have a defined list of authors, all of whom can edit the page, or have an open, wiki-like format where anyone can contribute.
-
-## [Collections](01-collections.md)
-
-A quick and easy way to share, favorite, and organize information on a hub. Start with an image, link, or file you would like to share with your community. Share the collected content in a post by uploading the materials or collecting the materials from around the hub. Fellow community members can collect and follow your collections and individual posts, which allows for any updates to appear in their collection feed.
-
-## Publish
-
-HUBzero<sup>®</sup> offers several ways to publish information on a hub. Step–by–step guided systems walk you through publishing research products, including datasets and white papers. All research can be published with a minted DOI, a license, and an opportunity for peer review.
-
-While most publishing features come with predefined categories, administrators can manage categories and master types through a configuration interface along with adding new licenses, batch creates materials, and administer all drafted to published versions of data.
-
-## [Publications](18-publications/README.md)
-
-Contributors are guided through the publishing process in easy, manageable steps. Whether uploading files, writing an abstract, or managing authorship, the member is always kept up-to-date on what has been done and what's left to do. Every step can be re-visited at a later time, allowing members to work at their own pace.
-
-## [Curation](18-publications/curation.md)
-
-Site members can be designated as curators to ensure quality content before final publishing. Curators can review all the parts of the publication and make notes on areas of improvement before the publication is officially published. Curation helps ensure your visitors are treated to the highest caliber content.
+The tool execution platform, the Solr search service, and the statistics
+collection behind the hub's `/usage` page are separate software that runs
+alongside the CMS. Chapters that depend on them say so, because on a hub where
+they are not installed the corresponding pages are empty or absent.

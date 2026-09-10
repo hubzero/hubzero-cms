@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/users/tools
 source-id: 3326
 modified: 2011-11-04
@@ -7,43 +10,151 @@ imported: 2026-09-09
 -->
 # Tools
 
-## Overview
+A tool is a program that runs on the hub's own machines and appears in your
+browser. You do not install anything, and it does not matter what operating
+system you use. Published tools have a page of their own under `/tools`, which
+is a resource page like any other, with a **Launch Tool** button on it.
 
-Have a simulation/modeling tool that you want to deploy for others to use? The Hub makes it easy. You don't have to build the tool for multiple platforms. You don't have to distribute binaries or tar balls. Just get your tool installed and running within the Hub environment, and others can access your tool via the Web.
+> **Important:** The execution side of this is separate software. This
+> repository holds the CMS: the tool pages, the session screens, the sharing
+> form, and the contribution pipeline. The machines that run the tools, the
+> middleware that starts and stops sessions, the shared file system, and the
+> source code hosting are all installed alongside the hub and are not part of
+> the CMS. A hub whose administrators have not set them up shows tool pages
+> that cannot launch anything.
 
-**Existing Graphical User Interface that runs under Linux/X11**
+## Running a tool
 
-If you already have a tool with a graphical user interface built with Java, Qt, MATLAB, or anything else that runs under Linux/X11, you can probably deploy it as-is within this Hub in a matter of hours. There are a few caveats:
+Select **Launch Tool** on the tool's page. The hub allocates a session on an
+execution host and shows it in a frame on the session page. What you see
+inside the frame is the tool's own interface — the CMS only delivers it.
 
-- **If your tool relies on a graphics card for acceleration, the graphics performance will be slow.** Tools running within the virtual machines of this Hub use software rendering for all graphics. It will probably work, but graphics may be clunky.
-- **If your tool needs to pull data from external sites (other web sites and databases), you will have to let the Hub team know.** All such connections are blocked by default, in order to safeguard against malicious tools. Once your tool has been approved and white-listed, it will have controlled access to external sites.
-- **Your tool will be running in a remote server environment with its own file system.** The usual *File > Open...* operation will look for files on the server--not on the user's desktop. Users can upload files via `sftp`, WebDAV, and the hub's own `importfile` command. You might consider modifying your tool so that *File > Open...* launches `importfile`, so your users can upload files from their desktop on demand.
+Across the top of the session page:
 
-**Command-line interface that runs under Linux**
+| Control | What it does |
+|---|---|
+| The session title | Select it to rename the session. |
+| **Keep for later** | Leaves the session running and returns you to your member area. Come back to it from the **My Sessions** module on your dashboard. |
+| **Terminate** | Ends the session and discards it. |
+| **Options** | Chooses which viewer renders the session, if your hub has more than one installed. Tick *Use for future sessions.* to make the choice stick. The control only appears when there is more than one viewer to choose from. |
 
-If you don't have a graphical user interface for your tool, you can create one in short order by using our [Rappture Toolkit](http://rappture.org). Rappture integrates with a wide variety of programming languages, including C/C++, Fortran, Java, MATLAB, R, Python, Perl, Ruby, and Tcl/Tk. Check out these videos to get started:
+Closing the browser tab does neither of the first two: the session keeps
+running until you terminate it, or until the execution platform reclaims it.
+Because a session occupies a slot, the hub caps how many you may have open at
+once. Beyond that cap, launching reports that your quota is exceeded and asks
+you to close one first.
 
-- [Introducing the Rappture Toolkit](https://help.hubzero.org/resources/361)
-- [What's Under the Hood?](https://help.hubzero.org/resources/364)
-- [More Rappture Objects](https://help.hubzero.org/resources/367)
-- [Advanced Visualization](https://help.hubzero.org/resources/370)
+Where the hub shows a storage meter, it sits under the session and reports how
+much of your disk quota you have used. Filling it stops the tool writing
+files.
 
-Can your tool take advantage of cluster resources or parallel execution? We have additional computing resources within the hub that you can tap into via the [submit](../tools/developers/05-grid/01-submitcmd.md) command. Write a wrapper program in your favorite language, and have it gather the input values, prepare input files, and [submit](../tools/developers/05-grid/01-submitcmd.md) your runs to our remote computing resources.
+Where a hub runs sessions in more than one zone, the session page names the
+zone you landed in and offers to relaunch elsewhere.
 
-**Tools for Microsoft Windows or Macintosh Systems**
+### Your files
 
-Sorry, your options here are limited. All tools deployed on this Hub must run in a Linux/X11 environment. In some cases, tools written for Microsoft Windows will run under Linux via [Wine](http://www.winehq.org/) emulation. If that works in your case, then you can deploy your tool after setting up the appropriate Wine configuration files. If not, then we won't be able to host your tool.
+A tool session sees the hub's file system, not your computer's. **File >
+Open…** inside a tool looks at your home directory on the hub, so a file on
+your desktop has to be transferred there first. How you do that — `sftp`,
+WebDAV, or a file-import command from inside the session — is decided by the
+execution platform rather than the CMS, so ask your hub's support staff which
+of them it offers.
 
-**Follow These Steps**
+### Sharing a session
 
-- Create a project area for your tool
-  [Watch this video](https://help.hubzero.org/resources/375) to get a sense of the tool upload process, then [register your tool project](https://help.hubzero.org/tools/create). This lets us know that you're starting a new tool. We'll grant you access to our remote development environment, and we'll create a project area with a Subversion source code repository where you can store your code.
+Where the hub allows it, the session page carries a **Share session** form:
 
-- Upload your code and build/test in the workspace
-  A [workspace](https://help.hubzero.org/tools/workspace) is a remote Linux desktop--a window into our remote development environment that you can access from any Web browser. [Watch this video](https://help.hubzero.org/resources/154) to learn how to use workspaces, then go to the [workspace page](https://help.hubzero.org/tools/workspace) and click *Launch Tool*. You can use `sftp`, WebDAV, or `importfile` to upload your code into the workspace. After that, you can build and test your code as you would in any other Linux environment. Once your tool runs properly in the workspace, it is ready to deploy.
+1. Type the usernames, user IDs, or email addresses to share with, and/or pick
+   one of your groups.
+2. Tick **Read-Only?** to keep control of the session yourself. Without it,
+   everyone you share with can drive the tool.
+3. Tick the acknowledgement that shared users can alter and control the
+   session.
+4. Submit.
 
-- Check in your code and tell us you're ready for deployment
-  The project area that you created in Step 1 comes with a Subversion source code repository. After having tested your code in the workspace, commit it to the Subversion repository. If you've never used Subversion before, you should [watch this tutorial](http://nanohub.org/resources/3061). Once your code is checked in, you can click a link in your project that says *My code is committed*, as described in [this video](https://help.hubzero.org/resources/375). We'll install your code and get it ready for final testing. Click another link to say that you approve the tool, we'll make it available for others to use.
+The session then appears in those people's **My Sessions** alongside their
+own, marked with your username as its owner. They leave it with **Stop sharing** on the session
+itself, or **disconnect** from the session list; only you can terminate it.
 
-- Keep an eye on your tool
-  Each published tool has its own page listing the name of the tool, the authors, and a brief description. This page also shows the number of people who have accessed the tools, along with any questions they have posted, and ideas for improvement. Keep an eye on this page and watch your tool's popularity grow. Help answer the questions, use the feedback to make improvements, and publish improved versions of your tool. The more you support your tool, the more your user base will grow.
+## Contributing a tool
+
+If you have a program you want others to run, the hub can host it. What is
+practical:
+
+- **A Linux/X11 program with a graphical interface** — Java, Qt, MATLAB, or
+  anything else — can usually be deployed close to as-is. Two caveats:
+  graphics are rendered in software, so anything depending on a GPU will be
+  slow; and outbound network connections are blocked by default, so a tool
+  that fetches data from elsewhere has to be approved and allowed through.
+- **A command-line program** needs an interface built for it. The
+  [Rappture toolkit](http://rappture.org) is the usual answer and binds to
+  C/C++, Fortran, Java, MATLAB, R, Python, Perl, Ruby, and Tcl/Tk. Work that
+  needs a cluster is dispatched with the
+  [submit](../tools/developers/grid/submitcmd.md) command.
+- **Windows and macOS programs** cannot be hosted. Some Windows programs run
+  under [Wine](http://www.winehq.org/), which is worth trying, but everything
+  deployed here runs under Linux.
+
+Hubs can also publish tools as Jupyter notebooks or as Sim2Ls, where those
+options are switched on.
+
+### The pipeline
+
+Contribution runs through the hub's **Contribtool** pipeline at `/tools`. Your
+tool moves through a fixed sequence of states, and the status page shows where
+it is and what you have to do next.
+
+| State | Meaning |
+|---|---|
+| **Registered** | You have filled in the registration form. The hub's staff are setting up your project area and source repository. |
+| **Created** | The project area exists. Upload and commit your code, then say so. |
+| **Uploaded** | You have told the hub the code is ready. Staff install it for testing. |
+| **Installed** | The installed version is ready for you to test. |
+| **Approved** | You have approved it for publication. Staff do the final checks. |
+| **Published** | Live, with its own tool page. |
+
+Two later states are also possible: **Updated**, when you commit changes to an
+already-installed tool and ask for them to be reinstalled, and **Retired**,
+when a published tool is withdrawn.
+
+The steps:
+
+1. **Register the tool.** Select **New Tool** on the pipeline page and fill in
+   the form. Choose where the source lives: a Subversion repository hosted by
+   the hub, a Git repository hosted by the hub, or an external Git repository
+   on GitHub or GitLab that the hub pulls from.
+2. **Build and test it.** Use the hub's workspace tool — a Linux desktop in
+   your browser — to build and test exactly as you would anywhere else.
+3. **Commit and say so.** When the code is in the repository, follow the link
+   on the status page reading *My code is committed, working, and ready to be
+   installed.*
+4. **Test the installed copy.** When the hub reports the tool installed, launch
+   it and check it. If it is right, follow *I approve it.* If it is not,
+   commit a fix and follow *I've committed new code. Please install the latest
+   version for testing and approval.*
+5. **Choose a licence.** The status page's **change license** link sets the
+   tool open or closed source. Open source lets anyone download the code under
+   the terms you state; closed source lets people run the tool but not read it.
+   Once released as open source it stays open for anyone who took a copy, so
+   get agreement from everyone involved first.
+6. **Write the tool page.** The **Edit description page** link opens the resource
+   page people will see: title, abstract, screenshots, and attachments.
+   **Preview** shows it as they will.
+
+While the tool is in the pipeline, the status page carries a **Message** link
+for talking to the hub's staff, a **History** link into the support ticket
+tracking it, and links into the development site's wiki, source browser, and
+timeline. Those last three point at a separate development site, not at the
+hub.
+
+### After publication
+
+The published tool page counts the people who have used it, and collects
+questions and suggestions from them. Answering those and publishing improved
+versions is what grows a tool's user base. Your own contribution figures are
+gathered on the **Usage** tab of your member area — see [Usage](usage.md),
+which explains why that tab is often empty.
+
+The [Tools](../tools/README.md) book covers the developer side in depth:
+repository structure, invoke scripts, tool paths, file transfer, the submit
+command, and Jupyter notebooks as tools.

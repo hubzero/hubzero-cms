@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tools · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview Have a simulation/modeling tool that you want to deploy for others to use? The Hub makes it easy. You don&#x27;t have to build the tool for multiple…">
+  <meta name="description" content="Launching a tool session, keeping or terminating it, sharing a session, and what is involved in contributing a tool of your own. This chapter lives in the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/users/tools/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -86,13 +86,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../../developers/process/index.html">Process</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Hub Users</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Video Tutorials</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tools</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-</ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../simusagedefinitions/index.html">Simulation usage definitions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../gettingstarted/index.html">Getting Started</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../gettingstarted/index.html">Getting started</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -107,51 +105,23 @@
           <p class="eyebrow">Tools</p>
           <h1>Tools</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/users/tools">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2011.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Have a simulation/modeling tool that you want to deploy for others to use? The Hub makes it easy. You don't have to build the tool for multiple platforms. You don't have to distribute binaries or tar balls. Just get your tool installed and running within the Hub environment, and others can access your tool via the Web.</p>
-<p><strong>Existing Graphical User Interface that runs under Linux/X11</strong></p>
-<p>If you already have a tool with a graphical user interface built with Java, Qt, MATLAB, or anything else that runs under Linux/X11, you can probably deploy it as-is within this Hub in a matter of hours. There are a few caveats:</p>
+<p>Launching a tool session, keeping or terminating it, sharing a session,
+and what is involved in contributing a tool of your own.</p>
+<p>This chapter lives in the users book, which is written for everyone on a
+hub rather than for tool authors. Read it there:</p>
 <ul>
-<li><strong>If your tool relies on a graphics card for acceleration, the graphics performance will be slow.</strong> Tools running within the virtual machines of this Hub use software rendering for all graphics. It will probably work, but graphics may be clunky.</li>
-<li><strong>If your tool needs to pull data from external sites (other web sites and databases), you will have to let the Hub team know.</strong> All such connections are blocked by default, in order to safeguard against malicious tools. Once your tool has been approved and white-listed, it will have controlled access to external sites.</li>
-<li><strong>Your tool will be running in a remote server environment with its own file system.</strong> The usual <em>File &gt; Open...</em> operation will look for files on the server--not on the user's desktop. Users can upload files via <code>sftp</code>, WebDAV, and the hub's own <code>importfile</code> command. You might consider modifying your tool so that <em>File &gt; Open...</em> launches <code>importfile</code>, so your users can upload files from their desktop on demand.</li>
+<li><a href="../../../users/tools/index.html">Tools</a> — using and contributing tools.</li>
 </ul>
-<p><strong>Command-line interface that runs under Linux</strong></p>
-<p>If you don't have a graphical user interface for your tool, you can create one in short order by using our <a href="http://rappture.org">Rappture Toolkit</a>. Rappture integrates with a wide variety of programming languages, including C/C++, Fortran, Java, MATLAB, R, Python, Perl, Ruby, and Tcl/Tk. Check out these videos to get started:</p>
-<ul>
-<li><a href="https://help.hubzero.org/resources/361">Introducing the Rappture Toolkit</a></li>
-<li><a href="https://help.hubzero.org/resources/364">What's Under the Hood?</a></li>
-<li><a href="https://help.hubzero.org/resources/367">More Rappture Objects</a></li>
-<li><a href="https://help.hubzero.org/resources/370">Advanced Visualization</a></li>
-</ul>
-<p>Can your tool take advantage of cluster resources or parallel execution? We have additional computing resources within the hub that you can tap into via the <a href="../../developers/grid/submitcmd/index.html">submit</a> command. Write a wrapper program in your favorite language, and have it gather the input values, prepare input files, and <a href="../../developers/grid/submitcmd/index.html">submit</a> your runs to our remote computing resources.</p>
-<p><strong>Tools for Microsoft Windows or Macintosh Systems</strong></p>
-<p>Sorry, your options here are limited. All tools deployed on this Hub must run in a Linux/X11 environment. In some cases, tools written for Microsoft Windows will run under Linux via <a href="http://www.winehq.org/">Wine</a> emulation. If that works in your case, then you can deploy your tool after setting up the appropriate Wine configuration files. If not, then we won't be able to host your tool.</p>
-<p><strong>Follow These Steps</strong></p>
-<ul>
-<li>
-<p>Create a project area for your tool
-<a href="https://help.hubzero.org/resources/375">Watch this video</a> to get a sense of the tool upload process, then <a href="https://help.hubzero.org/tools/create">register your tool project</a>. This lets us know that you're starting a new tool. We'll grant you access to our remote development environment, and we'll create a project area with a Subversion source code repository where you can store your code.</p>
-</li>
-<li>
-<p>Upload your code and build/test in the workspace
-A <a href="https://help.hubzero.org/tools/workspace">workspace</a> is a remote Linux desktop--a window into our remote development environment that you can access from any Web browser. <a href="https://help.hubzero.org/resources/154">Watch this video</a> to learn how to use workspaces, then go to the <a href="https://help.hubzero.org/tools/workspace">workspace page</a> and click <em>Launch Tool</em>. You can use <code>sftp</code>, WebDAV, or <code>importfile</code> to upload your code into the workspace. After that, you can build and test your code as you would in any other Linux environment. Once your tool runs properly in the workspace, it is ready to deploy.</p>
-</li>
-<li>
-<p>Check in your code and tell us you're ready for deployment
-The project area that you created in Step 1 comes with a Subversion source code repository. After having tested your code in the workspace, commit it to the Subversion repository. If you've never used Subversion before, you should <a href="http://nanohub.org/resources/3061">watch this tutorial</a>. Once your code is checked in, you can click a link in your project that says <em>My code is committed</em>, as described in <a href="https://help.hubzero.org/resources/375">this video</a>. We'll install your code and get it ready for final testing. Click another link to say that you approve the tool, we'll make it available for others to use.</p>
-</li>
-<li>
-<p>Keep an eye on your tool
-Each published tool has its own page listing the name of the tool, the authors, and a brief description. This page also shows the number of people who have accessed the tools, along with any questions they have posted, and ideas for improvement. Keep an eye on this page and watch your tool's popularity grow. Help answer the questions, use the feedback to make improvements, and publish improved versions of your tool. The more you support your tool, the more your user base will grow.</p>
-</li>
-</ul>
+<p>The copy that used to sit here was an import of the same page from a
+parallel source tree. It was left behind when the two trees were merged
+and is gone now, so that there is one reviewed version rather than two
+that disagree.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../introduction/index.html" rel="prev"><span>Previous</span>Video Tutorials</a><a class="pager__next" href="../simusagedefinitions/index.html" rel="next"><span>Next</span>Simulation Usage Definitions</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../introduction/index.html" rel="prev"><span>Previous</span>Introduction</a><a class="pager__next" href="../simusagedefinitions/index.html" rel="next"><span>Next</span>Simulation usage definitions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/users/02-tools.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

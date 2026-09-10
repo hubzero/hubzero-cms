@@ -1,19 +1,22 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/users/usage
-source-id: 3795
-modified: 2016-08-30
-imported: 2026-09-09
 -->
 # Usage
 
-## Overview
+The usage tab on your profile, which of its figures are computed live,
+and which depend on statistics collection that a hub must set up
+separately.
 
-Usage compiles user statistics from contributions on the Hub, such as tool usage or publishing usage.
+This chapter lives in the users book, which is written for everyone on a
+hub rather than for tool authors. Read it there:
 
-To find the user Usage:
+- [Usage](../../users/28-usage.md) — your own usage figures.
 
-1. Navigate to **https://yourhub.org/**
-2. Log in to the frontend of the Hub and navigate to the user dashboard
-3. In the left sided tab list there will be **Usage**, proceed to that page
-4. There, all of the personal usage that the user has consumed on the Hub has been recorded in tables
+The copy that used to sit here was an import of the same page from a
+parallel source tree. It was left behind when the two trees were merged
+and is gone now, so that there is one reviewed version rather than two
+that disagree.

@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/users/projects
 source-id: 3313
 modified: 2013-07-10
@@ -7,184 +10,270 @@ imported: 2026-09-09
 -->
 # Projects
 
-## Overview
+A project is a private workspace you and a few colleagues share on the hub:
+a file area, a place for notes, a to-do list, an activity feed, and — where
+the hub offers them — data stores and a route to publishing your work. You
+create a project yourself, you decide who is on the team, and nothing in it
+is visible to anyone else unless you make it so.
 
-Projects is a project-management/collaboration tool. Whether working on a new funding proposal, research paper or developing an application, projects are a great way to manage your data, workflow and communication. Projects can be created by groups or individual users, and may include multiple groups in the team.
+Projects live at `/projects` on the hub. The **Learn more** button on that
+page opens `/projects/features`, the hub's own tour of what a project can do.
 
-With each project you get:
+## Finding your projects
 
-- a Git-based repository for data and apps with a built-in web browser;
-- a Wiki area for project notes;
-- To-do list management;
-- a Facebook-like microblogging tool providing a stream of project updates from all team members, with the ability to comment on certain activities.
+Go to `/projects`. The page has two halves. The top explains what a project
+is and offers **Start a project** and **Learn more**; the **My Projects**
+section below lists every project you belong to. If you are not logged in,
+that section asks you to log in first.
 
-Projects can be accessed by going to /projects on your hub. You can read in more detail about all project features by going to /projects/features.
+**Browse public projects**, at the top right, lists the projects whose
+owners have made them public. You can search the list, sort it by title or
+owner, and filter it to show archived projects.
 
-## Creating Projects
+> **Note:** **Start a project** appears only if the hub lets you create one.
+> Some hubs restrict project creation to the members of a named group. If
+> you do not see the button, ask the hub's support staff.
 
-### **Starting a Project**
+## Starting a project
 
-1. ### Login into your HUB
-2. Navigate to **https://yourhub.org/projects**
-3. Click **Start a project**
-4. Provide a title in the **Title** textbox. This should be the full name of the project
-5. Provide an alias in the **Alias** textbox. This is a short name for the project used in the project URL therefore spaces, special characters, or punctuation cannot be used
-6. Under *Describe your* *project* click **Yes, I'll do it now**
-7. Optionally, add a description of the project in the About textbox or upload an image to use as the project thumbnail
-8. Under *Include project in search?* select whether the project should be private or public. If public is chosen, then the project can appear in search results and have its basic information available for public viewing
-9. Click **Save all and continue** to move to adding initial team members
+Setup is a short wizard. By default it has two steps — **Describe your
+project** and **Add team member(s)** — and a third, **One last thing...**,
+appears only on hubs that have turned on the agree-to-terms screen. The
+progress bar at the top of each step shows where you are.
 
-![CurationWorkflow3](../media/projects-projects-1.png)
+![The first step of project setup: title and alias](../media/projects-projects-1.png)
 
-### **Adding Initial Team Members**
+### Step 1: describe your project
 
-1. Select the level of access that should be granted:
-   #### ***Collaborator*** can:
+1. Select **Start a project**.
+2. Type the project's full name in **Title** — for example, *Quantum Dot
+   Lab*.
+3. Type a short name in **Alias Name (for the project URL)**. Use lowercase
+   letters and numbers only: no spaces, punctuation, or special characters.
+   The alias becomes the project's address, `/projects/<alias>`, and cannot
+   be changed afterwards. The form checks the name as you type and suggests
+   an alternative if it is taken.
+4. Answer *Would you like to provide more information about your project?*
+   with **Yes, I'll do it now** to fill in the rest of the step, or **No,
+   later** to skip straight to the team.
+5. In **About**, describe the project. This is what visitors see if the
+   project is public.
+6. Under *Include project in search?* choose one:
+   - **Project is hidden from search and listings (private project)**
+   - **Anyone can find this project in search & listings and view its basic
+     information (public project)**
+7. Under *Add a project picture*, upload an image to use as the project's
+   thumbnail.
+8. Select **Save all and continue**.
 
-   - Upload and manage project files.
-   - Edit project publications.
-   - Use available project tools.
+### Step 2: add team members
 
-   #### ***Manager*** can:
+The second step is the team editor. Add people now or leave it empty and
+come back later — you are already a member, as the project's manager.
 
-   - Invite or remove other team members.
-   - Change project information and global settings.
-   - Do everything a collaborator can do.
-2. Start typing last name of the user to add in the **Individual** textbox, or the group name of the group to add in the **User Group** textbox
-3. An autocomplete box will appear below these textboxes with suggested users or groups (depending on the textbox used). Click on the suggestion that is associated with the user or group that should be added
-4. Click **Add** to have the user or group added to the team
-5. Repeat steps 1-4 above to add additional users or groups to the team
-6. Check the box next to the names of the users that should be removed and click **Delete**
-7. Click **Save all and continue** when finished adding users
+1. Choose the role for the people you are about to add: **manager**,
+   **collaborator**, or **reviewers**.
+2. Type a name in **Individual**, or an email address to invite someone who
+   has no account on the hub yet. Type a group name in **User group** to add
+   everyone in a hub group at once. Both boxes suggest matches as you type;
+   pick one from the list.
+3. Select **add**.
+4. Repeat for each person or group. The table below the form lists everyone
+   on the team.
+5. Select **Save all and continue**.
 
-### **Finalizing the Project**
+The three roles are:
 
-Depending on the HUB configuration, reading information on HIPAA or FERPA rules on privacy as well as agreeing not to store certain types of data may be required.
+| Role | Can |
+|---|---|
+| Manager | Invite and remove team members, change project information and settings, and everything a collaborator can do |
+| Collaborator | Upload and manage project files, edit project publications, use the project's tools such as notes and to-do items |
+| Reviewer | View files, publications, notes, to-do items and team members. Read only |
 
-1. Read the statement:
-   "No, this project will **not** include any sensitive or restricted data such as HIPAA protected health information (PHI) or student information. I understand that this site cannot be used to store government restricted, export-controlled, or proprietary company data (without permission)." Check the box next to it to indicate agreement.
-2. Click the word **Privacy Terms** to read the Privacy Terms
-3. To indicate agreement with this statement:
-   "Yes, I read, understand and acknowledge Privacy Terms as they relate to the use of this project. I am responsible for ensuring compliance with these terms for **all project members."** Check the box next to it.
-4. Click **Save all and continue**. The project is now ready to use
+### Step 3: agree to terms
 
-## Adding a Project Thumbnail/ Editing Project Information
+Where the hub has enabled it, a final screen asks you to accept the hub's
+privacy terms before the project opens. Depending on how the hub is
+configured it may also ask:
 
-1. Login to your Hub
-2. Navigate to **https://yourhub.org/projects**
-3. Click on the **Project** you want to edit on the *My Projects* section
-4. Hover over the **Project Manager** text in the upper right and click **Edit Project**
-5. The project title can be changed by changing the text in the **Title** textbox
-6. The **About** textbox allows you to add/ change the description of the project
-7. Click **Choose File** in the **Picture** section to select a thumbnail image
-8. Find the image you want and click **Open**
-9. Click **Upload** to add the thumbnail to your Project
-10. After you have finished making the changes you want, click **Save Changes**
-11. The **Project info has been saved**. notice will appear at the top if the changes were successfully saved
-12. Click **Return to project page** to navigate back to the project
+- **Are you planning to upload datasets containing any sensitive or
+  restricted data?** — either as a single acknowledgement that the project
+  will *not* hold sensitive data, or as a set of checkboxes for
+  export-controlled data, IRB-governed data, HIPAA-protected health
+  information, and FERPA-protected student records. Ticking one of the
+  latter two may add an extra acknowledgement you have to confirm.
+- **Grant information** — grant title, PI, award number, agency and budget,
+  if the hub collects it.
 
-## Editing the Team
+Tick the box next to *Yes, I read, understand and acknowledge* the privacy
+terms, then select **Save all and continue**. The project opens.
 
-1. Login to your HUB
-2. Navigate to **https://yourhub.org/projects**
-3. Click on the **Project** you want to edit in the *My Projects* section
-4. Click the **Team** tab on the left menu
-5. Click **Edit Team**
-6. If you do not see the **Edit Team** button and are listed as a manager for this project, then it is likely that this is a project that was created within a Group. If this is the case then all membership must be controlled on the Group level
+On hubs that require approval for sensitive-data projects, answering yes to
+the export, HIPAA, or FERPA questions puts the project into *pending
+approval* instead. An administrator reviews it before it becomes active.
 
-### **Adding Team Members**
+## Inside a project
 
-1. Select either **Manager** or **Collaborator** depending on the level of access you want to give the user or group:
-   #### ***Collaborator*** can:
+Each area of a project is a tab. Which tabs you see depends on which project
+plugins the hub has enabled and configured:
 
-   - Upload and manage project files.
-   - Edit project publications.
-   - Use available project tools.
+| Tab | What it is |
+|---|---|
+| Updates | The activity feed: a stream of what everyone on the team has done, with a box to post your own update and comment on others |
+| Info | The project description, and the grant information if the hub collects it |
+| Team | The member list and, for managers, the team editor |
+| Files | The project's file area. See [Project files](02-projectfiles.md) |
+| Databases | Searchable tables built from a spreadsheet. See [Databases](05-databases.md) |
+| Notes | Wiki-style pages for anything the team needs to write down |
+| To Do | Shared task lists |
+| Publications | Drafts and released versions of work published from the project |
 
-   #### ***Manager*** can:
+Two more plugins ship but add no tab of their own: **Projects - Watch**
+provides the feed subscription described below, and **Projects - Links**
+supplies external content that publications can cite.
 
-   - Invite or remove other team members.
-   - Change project information and global settings.
-   - Do everything a collaborator can do.
-2. Start typing last name of the user you'd like to add in the **Individual** textbox, or the group name of the group you'd like to add in the **User Group** textbox
-3. An autocomplete box will appear below these textboxes with suggested users or groups (depending on the textbox you use). Click on the suggestion that is associated with the user or group you want to add
-4. Click **Add** to have the user or group added to the team
-5. Repeat steps 1-4 above to add additional users or groups to the team
+The tabs sit in a menu down the left of the project page. Where the hub uses
+the extended page layout instead, they run across the top and **Files** and
+**Databases** are grouped under an **Assets** heading.
 
-### **Removing Team Members**
+![The project menu, an activity feed, and the feed subscription box](../media/projects-210projects4.png)
 
-1. Check the boxes next the names of the users you want to remove
-2. Click **Delete** to permanently remove the selected users from the group
+> **Note:** The picture above shows the extended layout, where **Files** and
+> **Databases** sit under **Assets**. In the standard layout, which is the
+> default, every tab is listed on its own.
 
-## Deleting a Project
+At the top right of every project page is your role in it — *Project
+manager*, *Project collaborator*, or *Project reviewer*. Hover over it for
+the menu of project-wide actions: **Edit project**, **Invite people to
+join**, **View public profile** (public projects only), and **Leave this
+project**.
 
-1. Login to your Hub
-2. Navigate to **https://yourhub.org/projects**
-3. Click on the Project you want to edit in the *My Projects* section
-4. Hover over the **Project Manager** text in the upper right and click **Edit Project**. In the lower right below the *Edit Info* box there is the text "Need to cancel project?"
-   ![210projects](../media/projects-210projects.png)
-   - You have an option to permanently *delete* your project
-5. Click on the word **delete** in that phrase
-6. Click **Yes, Delete** to verify that you intend to permanently remove the project
-7. The Project will now no longer exist
+## Editing project information
 
-## Changing the Layout of the "To-Do"
+1. Open the project.
+2. Hover over your role at the top right and select **Edit project**.
+3. Change the **Title** and edit the description in **About**.
+4. To change the thumbnail, choose a file under *Upload new image* and
+   select **Upload**. It replaces the existing one.
+5. Select **Save changes**.
 
-1. Navigate to **https://yourhub.org/projects** and log into the hub
-2. Locate a project and click on the blue title to open up the project
-3. Select the **To-Do** tab on the left side of the page
-4. To change the layout of the To-Do page, click the **Pinboard view** button or the **List view** button
-   1. **Pinboard View** will sort the pins inside the To-Do from newest proceeding to oldest.
-   2. **List view** will sort the pins inside the To-Do from newest proceeding to oldest; pins will be stacked horizontally.
+Managers can always do this. On hubs that allow it, collaborators can edit
+the description too.
 
-![210projects2](../media/projects-210projects2.png)
+The alias cannot be changed. Ask the hub's support staff if a project's
+address has to move.
 
-## Sharing Project Notes
+## The team
 
-![210projects3](../media/projects-210projects3.png)
+The **Team** tab lists everyone on the project with their role, when they
+joined, when they last visited, and — for members who came in through a hub
+group — which group. The list itself is read-only, except that a manager
+sees **Approve request** and **Deny request** beside anyone who has asked to
+join.
 
-1. Navigate to **https://yourhub.org/projects** and log into the hub
-2. Locate a project and click on the blue title to open up the project
-3. Select the **Notes** tab on the left side of the page
-4. Locate the note that you would like to share publicly
-5. At the bottom of the published note, click the blue link **Generate public link**
-6. A link will be provided in the pop-up
-   1. This public link allows others to access content by people outside of your project team. You can send the link to anyone by pasting them into your emails, instant messages, and web pages.
-7. To exit the pop-up, click the **Close this** button
+Managers get an **Edit Team** button above the list. It opens the same
+editor used during setup: add people, change a member's role by selecting
+it, tick the boxes beside members and select **delete** to remove them.
+Under *Project owner* in that editor, **Edit** hands the project to someone
+else.
 
-## Project Feed Module
+Any member of a project with more than one member can leave it: hover over
+your role at the top right and select **Leave this project**.
 
-Users can subscribe to a feed module inside of Projects and receive email updates whenever there is activity inside the Project. To enable the Project feed updates, follow these steps:
+> **Warning:** The **Edit Team** button, and the **Invite people to join**
+> entry in the role menu, both open the team editor only if the hub has
+> turned on *Allow project settings editing?*, which is off by default.
+> Where it is off, both land on the Edit Info screen instead, and there is
+> no other way to reach the editor. Add everyone you need during setup, or
+> ask the hub's support staff to enable the setting.
 
-![210projects4](../media/projects-210projects4.png)
+### Group-owned projects
 
-1. Navigate to the **Project** of your choosing
-2. Inside of the Project, locale the **Feed Module** and click on *Subscribe to feed updates*
-3. Inside the Feed Module, select the categories that you wish to receive updates about, then click **Save**
+A project can be owned by a hub group rather than by a person. In a
+group-owned project the team editor offers a choice:
 
-![Feed Module2](../media/projects-projects-feedmodule2.png)
+- **Include all group members.** Everyone in the group has project access
+  for as long as their group membership lasts, and cannot be removed
+  individually.
+- **Specify membership.** You choose which group members get access.
 
-## Projects: How do you connect Google Drive, Dropbox, or GitHub to a Project?
+Add people from outside the group in the usual way.
 
-> **Note:** You must be the creator or manager of the project in order to connect with a file connector.
+## Notes
 
-1. Navigate to **https://yourhub.org/projects**
-2. Access the project that you wish to add your the file connector of your choice
-3. Inside of the project, click on **Files**
-4. Select from the dropdown the file connector
-5. Complete authentication into your Dropbox, GoogleDrive, or GitHub account
-6. Return to the project, and you will have a connection with the files and folders in that account
+The **Notes** tab is a small wiki. Create a page, write in it, tag it, and
+comment on it. Each note keeps its history, so you can see what changed.
 
-## Projects: How can I view file history in Projects?
+A note is private to the team until you share it. At the bottom of a note,
+select **Generate public link**. The pop-up gives you an address anyone can
+open — paste it into email, chat, or a web page. Select **Close this** to
+dismiss the pop-up. In a public project you can also choose whether the note
+is *listed* on the project's public page or reachable only by its link.
 
-Each project comes with a **[Git](http://git-scm.com/)** repository to store your files and data. With this comes a built-in web file browser, which reads the repository and allows to do multiple-file uploads, delete, rename and move files around, compile LaTeX files into PDF, as well as view file history, diff revisions and download all previous versions. In addition, we are now working on a solution for you to use the full power of Git for advanced file management through direct Git commands.
+![A project note, with the Generate public link control below it](../media/projects-210projects3.png)
 
-To view file history, click on the date in the **Modified** column in the Files area. This will show you the history of the file, and any previous versions if they have been uploaded.
+## To Do
 
-## Projects: What are “My To-Dos” in Projects?
+The **To Do** tab holds the project's task lists. Add an item, assign it to
+someone, and check it off when it is done. Two buttons above the list switch
+the layout: **Pinboard view** shows items as cards you can drag to reorder,
+**List view** stacks them as rows. Both show the newest first.
 
-Inside of Projects there is a special feature where tasks can be posted and assigned to members of the project. On the right side of the page under the lists of to-do’s are the **My To-do’s**. This is the list of all to-do lists assigned to you. The default to-do list is a list of all to-do’s inside of the project. You will see your personally owned to–do lists by clicking on **My To-do’s**. To add a new to-do list, simply click on**Add**. When you create a new to-do item, you can choose from the list any of the to-do lists you created. You will not be able to add to **My To-do’s** because this is a default list that is automatically populated with to-do items assigned to you.
+![The To Do tab and its view buttons](../media/projects-210projects2.png)
 
-## Why does my file say N/A in my Project files?
+The sidebar lists the project's to-do lists. **My to do's** is a built-in
+list of everything assigned to you; you cannot add to it directly, because
+it fills itself from items assigned to you elsewhere. Select **Add** to make
+a list of your own, and pick a list when you create an item.
 
-It defaults to N/A if no timestamp is found. Whatever command it’s using to retrieve the timestamp is either not returning it or not retuning it in a way the PHP code is expecting.
+## Following what happens
+
+Everything the team does shows up on the **Updates** tab. To get it by
+email as well, find the **Subscribe to feed updates** box in the sidebar of
+a project page and select it.
+
+![The feed subscription options](../media/projects-projects-feedmodule2.png)
+
+Tick the categories you want to hear about — project updates and comments,
+team changes, new files, publishing activity, new to-do items, new notes —
+and select **Save**. Mail goes to the address on your hub profile. Come back
+to the same box, now labelled **Manage feed subscription**, to change or
+cancel it.
+
+Some hubs subscribe members automatically when they join a project; in that
+case the box lets you opt out.
+
+## Deleting a project
+
+Deleting a project is a manager's job and it cannot be undone from the front
+end.
+
+1. Hover over your role at the top right and select **Edit project**.
+2. Under *Need to cancel this project?* in the left column, select
+   **Delete**.
+3. Confirm with **Yes, delete**.
+
+![The delete control on the Edit Project screen](../media/projects-210projects.png)
+
+> **Note:** The picture above shows an older Edit Project screen, where
+> **delete** was a link at the foot of the page. It is now a **Delete**
+> button in the left column, under the same wording.
+
+The project disappears from your list and from search, and the hub revokes
+the file-system access that went with it. The files themselves stay on the
+hub's disk. If you delete a project by mistake, ask the hub's support staff:
+an administrator can still reach it.
+
+Archiving is the gentler option, and only an administrator can do it. An
+archived project keeps its files and stays readable, but nobody can change
+it.
+
+## What administrators control
+
+Much of what a project offers is set hub-wide, not per project: which tabs
+exist, how much disk space a project gets, whether the setup wizard asks
+about sensitive data or grants, and which external storage providers a
+project can connect to. Those settings are described in
+[Projects](../../managers/09-components/15-projects/README.md) and
+[Project file connectors](../../managers/09-components/15-projects/projectfileconnect.md)
+in the managers book.
