@@ -37,6 +37,11 @@ if ($engine != 'basic' && $engine != 'hubgraph')
 		$controllerName = $controller;
 	}
 }
+else
+{
+	// An explicit request for the basic engine's screens
+	$controllerName = 'basic';
+}
 
 if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
