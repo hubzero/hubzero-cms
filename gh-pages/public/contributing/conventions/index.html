@@ -2,116 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Conventions · Contributing · Hubzero Documentation</title>
-  <meta name="description" content="The rules a change has to follow to land in Hubzero. Most of them exist so that one person can read code another person wrote; a few of them — the naming rules…">
-  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/">
-  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../assets/site.css?v=3ffa751e">
+  <meta http-equiv="refresh" content="0; url=../../developers/conventions/index.html">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/conventions/">
+  <meta name="robots" content="noindex">
+  <title>Moved</title>
 </head>
-<body class="site-doc">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-
-  <header class="site-header">
-    <a class="brand" href="../../index.html">
-      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
-      <span class="brand__name">Hubzero</span>
-      <span class="brand__version">2.4</span>
-    </a>
-    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
-      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <label class="visually-hidden" for="search-input">Search the documentation</label>
-      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
-      <ul class="search__results" hidden></ul>
-    </form>
-    <nav class="site-nav" aria-label="Site">
-      <a href="../../docs/index.html">All books</a>
-      <a href="../../status/index.html">Status</a>
-      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
-    </nav>
-  </header>
-
-  <div class="doc">
-    <aside class="rail">
-      <details class="rail__fold">
-        <summary class="rail__summary">In this book</summary>
-        <a class="rail__book" href="../index.html">Contributing</a>
-        <nav aria-label="Contributing contents">
-<ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../contributions/index.html">Contributions</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Conventions</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
-<li class="toc__item toc__item--l2"><a href="#see-also">See also</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="phpcodingstyles/index.html">PHP Coding Style</a></li>
-<li class="tree__leaf"><a class="tree__link" href="phpnamingconventions/index.html">PHP Naming Conventions</a></li>
-<li class="tree__leaf"><a class="tree__link" href="csscodingstyles/index.html">CSS Coding Style</a></li>
-<li class="tree__leaf"><a class="tree__link" href="databaseschema/index.html">Database Schema Conventions</a></li>
-<li class="tree__leaf"><a class="tree__link" href="commits/index.html">Commit Messages</a></li>
-</ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../documentation/index.html">Working on the documentation</a></li>
-</ul>
-        </nav>
-      </details>
-      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
-    </aside>
-
-    <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Conventions</span></nav>
-      <article class="article">
-        <header class="article__header">
-          <p class="eyebrow">Contributing</p>
-          <h1>Conventions</h1>
-        </header>
-        
-        <div class="prose">
-<p>The rules a change has to follow to land in Hubzero. Most of them exist so that
-one person can read code another person wrote; a few of them — the naming
-rules especially — exist because the autoloader turns a class name into a file
-path and gets it wrong when the name is wrong.</p>
-<p>Each chapter describes what the code in this repository actually does, with the
-counts to show how consistently, and says where core is not uniform so you know
-which way to follow.</p>
-<h2 id="in-this-section">In this section</h2>
-<ul>
-<li><a href="phpcodingstyles/index.html">PHP Coding Style</a> — PSR-12, its three house
-departures, file headers, docblocks, and the checks the build runs.</li>
-<li><a href="phpnamingconventions/index.html">PHP Naming Conventions</a> — how a class name
-becomes a file path for components, plugins, modules, templates and
-migrations.</li>
-<li><a href="csscodingstyles/index.html">CSS Coding Style</a> — stylesheets and the LESS sources
-the templates compile from.</li>
-<li><a href="databaseschema/index.html">Database Schema Conventions</a> — the <code>#__</code> prefix
-placeholder, table and column names, indexes.</li>
-<li><a href="commits/index.html">Commit Messages</a> — the subject prefix, the body, and what the
-history on this branch actually looks like.</li>
-</ul>
-<h2 id="see-also">See also</h2>
-<ul>
-<li><a href="../contributions/index.html">Contributions</a> — the process a change goes through.</li>
-<li><a href="../documentation/index.html">Working on the documentation</a> — writing these pages.</li>
-<li><a href="../../developers/index.html">Developers</a> — how the pieces the conventions
-govern actually work.</li>
-</ul>
-
-        </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../contributions/index.html" rel="prev"><span>Previous</span>Contributions</a><a class="pager__next" href="phpcodingstyles/index.html" rel="next"><span>Next</span>PHP Coding Style</a></nav>
-        <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/README.md">Edit this page on GitHub</a>
-          <span>Hubzero 2.4 documentation</span>
-        </footer>
-      </article>
-    </main>
-  </div>
-
-  <footer class="site-footer">
-    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
-  </footer>
-
-  <script src="../../assets/search.js?v=3ffa751e" defer></script>
+<body>
+  <p>This page has moved to <a href="../../developers/conventions/index.html">../../developers/conventions/index.html</a>.</p>
 </body>
 </html>

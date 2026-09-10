@@ -49,14 +49,7 @@
    "title": "Developers",
    "dir": "docs/developers",
    "audience": "Build on Hubzero",
-   "summary": "Extending the CMS: the framework foundation, components, plugins, modules, templates, the database layer, and the REST API."
-  },
-  {
-   "slug": "contributing",
-   "title": "Contributing",
-   "dir": "docs/contributing",
-   "audience": "Build on Hubzero",
-   "summary": "Coding conventions, commit practice, testing, and how to send changes back to the project."
+   "summary": "Components, plugins, modules, templates, the framework libraries, the API, and how to contribute a change back."
   },
   {
    "slug": "reference",

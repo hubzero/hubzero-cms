@@ -46,18 +46,9 @@
   {
    "slug": "developers",
    "title": "Developers",
-   "pages": 97,
+   "pages": 99,
    "counts": {
-    "rewritten": 97
-   }
-  },
-  {
-   "slug": "contributing",
-   "title": "Contributing",
-   "pages": 9,
-   "counts": {
-    "draft": 1,
-    "rewritten": 8
+    "rewritten": 99
    }
   },
   {
@@ -71,9 +62,9 @@
   }
  ],
  "totals": {
-  "draft": 6,
+  "draft": 5,
   "reviewed": 24,
-  "rewritten": 239,
+  "rewritten": 233,
   "generated": 153
  }
 }

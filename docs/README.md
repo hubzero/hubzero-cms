@@ -31,7 +31,8 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 - [Developers](developers/README.md) — extending the CMS: the framework
   foundation, components, plugins, modules, templates, the database layer,
   and the REST API.
-- [Contributing](contributing/README.md) — coding conventions, commit
+- [Contributing](developers/18-contributing.md) — sending a change back, and
+  the [conventions](developers/19-conventions.md) the codebase follows: commit
   practice, testing, and how to send changes back to the project.
 
 ## Reference

@@ -260,15 +260,8 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/testing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/api/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/aws/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/contributions/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/phpcodingstyles/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/phpnamingconventions/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/csscodingstyles/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/databaseschema/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/conventions/commits/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/contributing/documentation/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/contributing/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/api/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/api/activity/</loc></url>
