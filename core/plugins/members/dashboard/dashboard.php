@@ -136,7 +136,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				throw new Exception('Members dashboard action does not exist: [$doAction].', 404);
+				throw new Exception(Lang::txt('Members dashboard action does not exist: [%s].', $doAction), 404);
 			}
 		}
 
