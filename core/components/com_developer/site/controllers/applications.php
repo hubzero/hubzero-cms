@@ -568,6 +568,9 @@ class Applications extends SiteController
 		// CSRF check
 		Request::checkToken('get');
 
+		// Get the application
+		$id = Request::getInt('id', 0);
+
 		// Must be logged in
 		if (User::isGuest())
 		{
@@ -578,8 +581,6 @@ class Applications extends SiteController
 			return;
 		}
 
-		// Get the application 
-		$id = Request::getInt('id', 0);
 		$application = Application::oneOrFail($id);
 
 		// Set up the authorization code request and response

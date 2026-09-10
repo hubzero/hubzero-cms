@@ -63,14 +63,14 @@ $this->js();
 				<table class="meta">
 					<tbody>
 						<tr>
-							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:</th>
 							<td>
 								<?php echo $this->escape(stripslashes($this->row->creator->get('name', 'System User'))); ?>
 								<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:</th>
+							<th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
 							<td>
 								<?php echo Date::of($this->row->get('created'))->toLocal(); ?>
 								<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
