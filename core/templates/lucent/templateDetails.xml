@@ -20,6 +20,7 @@
 		<position>footer</position>
 		<position>breadcrumbs</position>
 		<position>banner</position>
+		<position>hero</position>
 		<position>welcome</position>
 		<position>left</position>
 		<position>right</position>
