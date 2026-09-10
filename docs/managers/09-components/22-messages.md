@@ -32,7 +32,7 @@ Nothing in this chapter touches that system. It is configured through:
   carries the rate limits (**time_limit**, **daily_limit**) that stop a
   runaway component from flooding a mailbox.
 - The **Messaging** tab on a member's record; see
-  [Members](../users/members/README.md).
+  [Members](../06-users/01-members/README.md).
 
 **The Messages component**, documented below, is a separate, administrator-only
 private-message inbox using the `#__messages` table. It exists so that one

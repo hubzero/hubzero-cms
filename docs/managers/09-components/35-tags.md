@@ -11,7 +11,7 @@ field on a resource, a group, a wiki page, a support ticket or a profile,
 and that word becomes a link that gathers everything else carrying it. This
 chapter covers the administrator's side: the tag list, aliases, merging,
 tagged items, relationships and focus areas. The
-[Hub users](../../users/tags.md) book covers what members see at `/tags`.
+[Hub users](../../users/27-tags.md) book covers what members see at `/tags`.
 
 Open it under **Components > Tags**. Four sub-menu links sit at the top
 left: **Tags**, the list below; **Relationships**; **Focus Areas**; and

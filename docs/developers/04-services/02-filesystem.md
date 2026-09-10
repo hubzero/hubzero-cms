@@ -30,7 +30,7 @@ out; see below.
 > point.
 
 > **Note:** Paths are real paths, not paths relative to some configured
-> root. Build them from the [constants](../foundation/constants.md) —
+> root. Build them from the [constants](../03-foundation/02-constants.md) —
 > `PATH_APP . DS . 'site' . DS . 'wiki'` — and pass them whole.
 
 ## Reading and writing

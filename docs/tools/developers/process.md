@@ -1,5 +1,8 @@
 <!--
-status: merged
+status: rewritten
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/22/toolsnewdocs/process
 source-id: 2853
 modified: 2025-01-31
@@ -7,52 +10,149 @@ imported: 2026-09-09
 merged-from: 2.2
 source-state: unpublished
 -->
-# Process
+# The contribution process
 
-## Tool Development Process
+How a tool gets from a registration form to a published page, told from the
+developer's side. This page is about the pipeline;
+[What you can publish as a tool](02-overview.md) is about the program you put
+through it.
 
-Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a [Subversion](https://subversion.apache.org) source code repository, and develops the code within a workspace. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the "published" state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.
+> **Note:** The pipeline itself is CMS-side and was checked against
+> `com_tools` in this repository. The work you do between the states — writing
+> code in a workspace, building it on the execution host, launching a
+> session — happens on the tool platform, which is separate software and could
+> not be checked here.
 
-The complete process is explained in the [tool maintenance documentation for hub managers](../../managers/03-maintenance/02-tools.md). Additional details about this process can be found in the following seminars:
+## The nine states
 
-- [Bootcamp Course for New Developers](https://nanohub.org/resources/14671)
-- [Overview of Tool Development Process](https://nanohub.org/resources/14668)
-- [Using Workspaces](http://nanohub.org/resources/3081)
-- [Using Subversion for Source Code Control](https://nanohub.org/resources/14669)
+Every tool contribution sits in one of nine states. The state decides who the
+pipeline is waiting on: you, or a hub administrator.
 
-> **Note:** The tool contribution process currently only supports Subversion (SVN). We are investigating support for [Git](https://git-scm.com) but there is no timeline for availability.
+| # | State | Waiting on | What happens next |
+|---|---|---|---|
+| 1 | Registered | Administrator | The administrator creates the project area and the repository |
+| 2 | Created | You | Commit your code, then flip the state to Uploaded |
+| 3 | Uploaded | Administrator | The administrator installs the code on the hub |
+| 4 | Installed | You | Test the tool, write its information page, pick a licence, then approve |
+| 5 | Updated | Administrator | You committed new code; the administrator reinstalls it |
+| 6 | Approved | Administrator | The administrator publishes the tool |
+| 7 | Published | — | The tool is live. Committing new code moves it back to Updated |
+| 8 | Retired | — | The tool page stays as a record; the tool can no longer be run |
+| 9 | Abandoned | — | You cancelled the contribution before it was published |
 
-## Creating Graphical User Interfaces
+*(Verified: the numbers are the `state` column on `#__tool` and the names come
+from `getStatusName()` in `com_tools`.)*
 
-If a tool already has a graphical user interface that runs under Linux/X11, then it can be published as-is, usually in a matter of hours. There are two caveats:
+The administrator's half of each step — what the buttons do, what the host
+scripts are called, and how the output is reported — is in
+[Tools](../../managers/03-maintenance/02-tools.md) in the hub managers book.
+That page also lists every field on the registration form. Read it alongside
+this one; between them they cover both sides of the same pipeline.
 
-- **If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.** Our containers run in cluster nodes without graphics cards, and are therefore configured with MESA for software emulation of OpenGL. This has much poorer performance than ordinary desktop computers with a decent graphics card, so frame rates are much lower. Also, all graphics are transmitted to the user's web browser after rendering, again lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below 100 frames/sec that you would normally see on a desktop computer.
-- **Tools running within the hub have access to the hub's local file system--not the user's desktop.** Many tools have a *File* menu with an *Open* option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's `importfile` command.
+## Registering
 
-The graphical user interface for any tool published in the hub environment can be created using standard toolkits for desktop applications--including Java, Matlab, Python/QT, etc.
+Start the contribution flow on the hub and choose the tool contribution type,
+or go straight to `/tools/create`. The form asks for a tool alias of 3 to 15
+alphanumeric characters, which becomes the tool's directory name and cannot be
+changed afterwards. Everything else on the form can be changed later.
 
-If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the [Rappture Toolkit](http://rappture.org) that is included as part of HUBzero. Rappture reads a simple XML-based description of a tool and generates a graphical user interface automatically. It interfaces naturally with many programming languages, including C/C++, Fortran, Matlab, Python, Perl, Tcl/Tk, and Ruby. It creates tools that look something like the following:
+Two of the choices decide how the rest of your work looks:
 
-![example of a Rappture-based tool](../media/process-rappture-01.png)
+**Repository Host** — where the source lives:
 
-Rappture was designed for the hub environment and therefore addresses the caveats listed above. All Rappture-based tools have integrated visualization capabilities that take advantage of hardware-accelerated rendering available on the HUBzero rendering farm. Rappture-based tools also include options to upload/download data from the end user's desktop via the `importfile`/`exportfile` commands available within HUBzero.
+| Option | Label on screen |
+|---|---|
+| `gitExternal` | Host Git repository on GitHub, GitLab, etc. |
+| `gitLocal` | Host Git repository here |
+| `svnLocal` | Host subversion repository here |
 
-For more details about Rappture, see the following links:
+`gitExternal` is the default where the hub has the component's **External
+GitHub Repo** option turned on, and it adds a field for the repository URL.
+Subversion is still supported but is no longer the only choice, and it is not
+the default on a current hub.
 
-- [Rappture Quick Overview](https://nanohub.org/infrastructure/rappture/wiki/whatIsRappture)
-- [Developing Scientific Tools for the HUBzero Platform](https://help.hubzero.org/resources/tooldev) (introductory course with 7 lectures)
-- [Rappture Reference Manual](https://nanohub.org/infrastructure/rappture/wiki/Documentation)
+**Publishing Option** — what kind of tool it is:
 
-## Learn more about HUBzero Tools
+| Option | Label on screen |
+|---|---|
+| `standard` | Rappture or Linux-GUI based tool |
+| `jupyter` | Web application (Jupyter, Rstudio, ...) |
+| `simtool` | Sim2L |
 
-Discover the power of HUBzero tools and how easy it is to visualize research using the HUBzero platform.
+The Jupyter and Sim2L choices appear only where the hub has turned the
+matching options on. Which one you pick decides the starter invoke script the
+hub writes for you; see
+[Tool repository structure](01-toolrepostructure.md).
 
-Jupyter Notebooks:
+*(Verified: both option sets are read from the registration form and the
+`com_tools` configuration.)*
 
-RStudio:
+**Register Tool** puts the contribution in the **Registered** state and opens
+a support ticket for it. From then on the tool has a status page under
+`/tools/pipeline`, which is where every remaining step starts.
 
----
+## Writing the code
 
-Check out custom software and tool projects the HUBzero development team has helped design and implement on sites using the HUBzero platform.
+Once an administrator has moved the tool to **Created**, the project area and
+its repository exist. Check the repository out — in a workspace on the hub, or
+on your own machine for an external Git repository — and lay the tool out the
+way the hub expects it. [Tool repository structure](01-toolrepostructure.md)
+covers the directory layout and the `middleware/invoke` script every tool
+needs.
 
-REMEDI Central:
+The commands for the checkout, the build, and the commit are in the
+[hub managers' walkthrough](../../managers/03-maintenance/02-tools.md), which
+gives the Subversion form and notes the Git equivalents. Test the tool in a
+workspace before you flip the state:
+
+```console
+$ cd src
+$ make all install
+$ cd ..
+$ ./middleware/invoke -T $PWD
+```
+
+That is the same sequence the administrator runs when installing the tool, so
+anything that fails here fails there too.
+
+When the code is committed, use the **What's next?** panel on the tool's
+status page to say that it is ready to install. The state becomes
+**Uploaded**.
+
+## Testing and approving
+
+After the administrator installs the tool, the status page offers a **Launch
+tool** button. Use it and run the tool the way a member would. Each time you
+fix something, commit and use the status page link to move the state to
+**Updated**, which asks for another install.
+
+Before the tool can be approved it needs:
+
+- a tool information page — the resource page with authors, credits,
+  publications, and screenshots, built by a wizard the status page links to;
+- a licence, chosen from the same page. Closed source needs a reason.
+
+Then **Approve this tool**. An administrator publishes it, and it becomes a
+resource page with a **Launch Tool** button like any other. See
+[Tools](../../users/22-tools.md) in the users book for what members get.
+
+## After publishing
+
+A published tool stays published while you work on the next version. Commit
+the changes and move the state to **Updated**: the published version keeps
+serving members, and the install–approve–publish cycle runs again on the
+development version.
+
+You can cancel a contribution that has not been published yet, with the
+**Cancel** link under **Developer Tools**. It unpublishes the draft page and
+sets the state to **Abandoned**. Cancelling a published tool is refused.
+
+## Background material
+
+These recorded seminars are hosted on nanoHUB and are the original source for
+this material. They predate the Git and Jupyter options above.
+
+- [Bootcamp course for new developers](https://nanohub.org/resources/14671)
+- [Overview of the tool development process](https://nanohub.org/resources/14668)
+- [Using workspaces](https://nanohub.org/resources/3081)
+- [Using Subversion for source code control](https://nanohub.org/resources/14669)

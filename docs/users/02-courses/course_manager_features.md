@@ -43,7 +43,7 @@ material becomes available, certificates, badges, coupon codes and roles.
 | Course roles | Administrator only |
 
 The administrator side is covered in the
-[Courses chapter](../../managers/09-components/07-courses.md) of the Hub
+[Courses chapter](../../managers/09-components/10-courses.md) of the Hub
 managers book.
 
 ## Creating a course

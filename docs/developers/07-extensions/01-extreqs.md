@@ -44,9 +44,9 @@ lands, not a directory inside it.
 ## The layout
 
 Each kind has its own chapter on structure —
-[components](../components/structure.md),
-[modules](../modules/structure.md), [plugins](../plugins/structure.md),
-[templates](../templates/structure.md) — but the shape is the same
+[components](../09-components/02-structure.md),
+[modules](../08-modules/02-structure.md), [plugins](../10-plugins/02-structure.md),
+[templates](../11-templates/03-structure.md) — but the shape is the same
 everywhere: an entry point, an XML manifest named after the extension, a
 `composer.json`, language files under `language/{tag}/`, and a `migrations/`
 directory.
@@ -91,7 +91,7 @@ Every extension carries an XML manifest named after it — `example.xml` — and
 the manifest is not listed in its own `<files>` block. The CMS reads the
 display name, the description and the parameter form from it, and caches it
 in the extension row's `manifest_cache` column. **Refresh Cache** in the
-[Extension Manager](../../managers/extensions/extension-manager.md) re-reads
+[Extension Manager](../../managers/10-extensions/04-extension-manager.md) re-reads
 it after an edit.
 
 <!--include: core/plugins/system/debug/debug.xml:1-17-->
@@ -157,7 +157,7 @@ See [Languages](03-languages.md).
 
 The row in `#__extensions` is what makes an extension exist as far as the
 platform is concerned, and a
-[migration](../database/migrations.md) is how an extension creates it. The
+[migration](../06-database/02-migrations.md) is how an extension creates it. The
 migration also creates the extension's tables and drops them again on the
 way down.
 
@@ -205,7 +205,7 @@ defined('_HZEXEC_') or die();
 `_HZEXEC_` is defined by [`core/bootstrap/app.php`](../../../core/bootstrap/app.php)
 and by nothing else, so the guard stops the file dead if it is requested
 directly over HTTP. A file that only declares a namespaced class does not
-need it. See [Constants](../foundation/constants.md).
+need it. See [Constants](../03-foundation/02-constants.md).
 
 ## Facade imports
 
@@ -227,4 +227,4 @@ use Lang;
 ```
 
 `php tools/lint/missing-facade-imports.php` finds the ones you missed, and
-runs on every push. See [Facades](../foundation/facades.md).
+runs on every push. See [Facades](../03-foundation/04-facades.md).

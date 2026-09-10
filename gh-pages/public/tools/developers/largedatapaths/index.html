@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Large Data Paths · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview A directory structure for the storage of large data may be available upon request. Communication with the specific Hub PI is required to determine the…">
+  <title>Large data paths · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Where a large dataset lives on a hub, so that a tool session can read it without every member carrying a copy in their home directory. Important: The…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/largedatapaths/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,50 +46,52 @@
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Large Data Paths</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#shared-data-directory-for-a-specific-tool-and-its-tool-developers">Shared data directory for a specific tool and its tool developers</a></li>
-<li class="toc__item toc__item--l2"><a href="#shared-data-directory-for-a-specific-group-and-its-members">Shared data directory for a specific group and its members</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Large data paths</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#asking-for-space">Asking for space</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-directory-for-a-tool">A directory for a tool</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-directory-for-a-group">A directory for a group</a></li>
+<li class="toc__item toc__item--l2"><a href="#reaching-it-from-a-session">Reaching it from a session</a></li>
+<li class="toc__item toc__item--l2"><a href="#launching-a-tool-at-a-large-data-path">Launching a tool at a large data path</a></li>
 </ol></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -103,27 +105,64 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Large Data Paths</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Large data paths</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Large Data Paths</h1>
+          <h1>Large data paths</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/largedatapaths">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A directory structure for the storage of large data may be available upon request.</p>
-<p>Communication with the specific Hub PI is required to determine the scope of resources needed for the implementation of large data sets. Hard disk space allocation will take into consideration the amount of available disk space remaining and the size of the data set that is to be placed on the hub. When approved, please submit a support ticket to have the directory created.</p>
-<h2 id="shared-data-directory-for-a-specific-tool-and-its-tool-developers">Shared data directory for a specific tool and its tool developers</h2>
-<p>A possible directory of &quot;/data/tools/[toolname]&quot; is to be set with permissions of 775, including write access for only members listed as developers of the tool (app-[toolname] group). Data stored here is intended to be used in a tool.</p>
-<p>/data/tools should be mounted in the tool containers.</p>
-<h2 id="shared-data-directory-for-a-specific-group-and-its-members">Shared data directory for a specific group and its members</h2>
-<p>A possible directory of &quot;/data/groups/[groupname]&quot; is set with permissions of 775, including write access for only members listed members of the group. Data stored here is intended to be maintained by group members and will be available for use in one or more tools.</p>
-<p>/data/groups should be mounted in the tool containers.</p>
+<p>Where a large dataset lives on a hub, so that a tool session can read it
+without every member carrying a copy in their home directory.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The directories below are created on the hub's shared
+filesystem and mounted into tool containers by the tool execution platform.
+That platform is separate software and is <strong>not in this repository</strong>, so the
+paths, permissions and mounts could not be verified here; they are the
+convention recorded in the 2.4 documentation and a hub may differ. The one
+CMS setting that touches these paths is described at the end of the page and
+was checked against <code>com_tools</code>.</p>
+</aside>
+<h2 id="asking-for-space">Asking for space</h2>
+<p>Large data space is granted on request, not by default. Agreeing to it is a
+decision for the people who run the hub: how much disk is left, how big the
+dataset is, and whether it belongs on the hub at all. Settle that first, then
+open a support ticket asking for the directory to be created.</p>
+<h2 id="a-directory-for-a-tool">A directory for a tool</h2>
+<pre><code class="language-text">/data/tools/&lt;toolname&gt;
+</code></pre>
+<p>Mode 775, writable by the tool's development group, readable by everyone else.
+Data kept here is meant to be read by that tool while it runs.</p>
+<p>The development group is <code>app-&lt;toolname&gt;</code> — <code>com_tools</code> creates it when the
+tool registration is saved, naming it from the <strong>Dev group prefix</strong> option
+(default <code>app-</code>) and the tool alias in lower case, and sets its membership
+from the development team named on the form. That much is CMS-side and
+verified. Whether the group grants write access on the shared
+filesystem is the platform's business.</p>
+<h2 id="a-directory-for-a-group">A directory for a group</h2>
+<pre><code class="language-text">/data/groups/&lt;groupname&gt;
+</code></pre>
+<p>Mode 775, writable by the members of that hub group. Data kept here is
+maintained by the group and can be read by more than one tool.</p>
+<h2 id="reaching-it-from-a-session">Reaching it from a session</h2>
+<p>Both <code>/data/tools</code> and <code>/data/groups</code> are mounted in tool containers, so a
+tool reads them as ordinary paths. Nothing is copied into the session and
+nothing counts against the member's home directory quota.</p>
+<p>For the other directories a tool session sees, see
+<a href="../toolpaths/index.html">Tool paths</a>.</p>
+<h2 id="launching-a-tool-at-a-large-data-path">Launching a tool at a large data path</h2>
+<p>A tool session can be started with file and directory names in the launch
+URL's <code>params</code> argument. <code>com_tools</code> refuses any path that does not begin with
+a directory on the <strong>Directory Parameter Whitelist</strong>, and the shipped default
+lists only <code>/home</code>. So pointing a launch link at something under <code>/data</code>
+requires an administrator to add that prefix to the whitelist first. See
+<a href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a>
+for the check and how to change it.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../fileinout/exportfile/index.html" rel="prev"><span>Previous</span>Export File</a><a class="pager__next" href="../jupyter-notebooks/index.html" rel="next"><span>Next</span>Jupyter Notebooks</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../fileinout/exportfile/index.html" rel="prev"><span>Previous</span>Export file</a><a class="pager__next" href="../jupyter-notebooks/index.html" rel="next"><span>Next</span>Jupyter notebooks</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/09-largedatapaths.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

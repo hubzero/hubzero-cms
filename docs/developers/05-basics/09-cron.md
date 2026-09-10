@@ -103,7 +103,7 @@ that job, which is why two jobs on one method can behave differently. Return
 
 ## How it runs
 
-The runner is a [muse](../muse/README.md) command:
+The runner is a [muse](../12-muse/README.md) command:
 
 ```bash
 muse cron:jobs run
@@ -136,7 +136,7 @@ side of it.
 
 Until a job exists, a declared task never runs. Rather than asking every
 hub's administrator to create one, ship a
-[migration](../database/migrations.md) that inserts the row — check for the
+[migration](../06-database/02-migrations.md) that inserts the row — check for the
 job first so re-running the migration does not duplicate it:
 
 <!--include: core/plugins/cron/groups/migrations/Migration20260810000000PlgCronGroups.php:19-56-->

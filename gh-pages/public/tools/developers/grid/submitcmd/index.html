@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Submit Command · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview submit takes a user command and executes it remotely. The objective is to allow the user to issue a command in the same manner as a locally executed…">
+  <title>Submit command · Tools · Hubzero Documentation</title>
+  <meta name="description" content="takes a command you would run in a tool session and runs it somewhere else — a cluster, a campus resource, a national one — then brings the results back. You…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/grid/submitcmd/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,49 +46,62 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Submit Command</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#command-syntax">Command Syntax</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Submit command</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-a-run-does">What a run does</a></li>
+<li class="toc__item toc__item--l2"><a href="#finding-out-what-your-hub-offers">Finding out what your hub offers</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l3"><a href="#running-and-controlling-runs">Running and controlling runs</a></li>
+<li class="toc__item toc__item--l3"><a href="#choosing-where-the-run-goes">Choosing where the run goes</a></li>
+<li class="toc__item toc__item--l3"><a href="#asking-for-resources">Asking for resources</a></li>
+<li class="toc__item toc__item--l3"><a href="#files">Files</a></li>
+<li class="toc__item toc__item--l3"><a href="#sweep-options">Sweep options</a></li>
+<li class="toc__item toc__item--l3"><a href="#watching-a-run">Watching a run</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-a-command-remotely">Running a command remotely</a></li>
+<li class="toc__item toc__item--l2"><a href="#parameter-sweeps">Parameter sweeps</a></li>
+<li class="toc__item toc__item--l3"><a href="#examples">Examples</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-a-venue-is-chosen">How a venue is chosen</a></li>
+<li class="toc__item toc__item--l2"><a href="#submission-mechanisms">Submission mechanisms</a></li>
+<li class="toc__item toc__item--l2"><a href="#files-in-and-files-out">Files in and files out</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -102,86 +115,75 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing Outside Computing Resources</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Submit Command</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing outside computing resources</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Submit command</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Submit Command</h1>
+          <h1>Submit command</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/submitcmd">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2009.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>submit takes a user command and executes it remotely. The objective is to allow the user to issue a command in the same manner as a locally executed command. Multiple submission mechanisms are available for run dissemination. A set of steps are executed for each run submission:</p>
-<ul>
-<li>Destination site is selected</li>
-<li>A wrapper script is generated for remote execution</li>
-<li>If needed a batch system description file is generated.</li>
-<li>Input files for a run are gathered and transferred to the remote site. Transferred files include the wrapper and batch description scripts.</li>
-<li>The wrapper script is executed remotely.</li>
-<li>Progress of the remote run is monitored until completion.</li>
-<li>Output files from the run are returned to the dissemination point.</li>
-</ul>
-<h2 id="command-syntax">Command Syntax</h2>
-<p>submit command options can be determined by using the help parameter of the submit command.</p>
-<pre><code>$ submit --help
-Usage: submit [options]
-
-Options:
-  -h, --help            Report command usage. Optionally request listing of
-                        managers, tools, venues, or examples.
-  -l, --local           Execute command locally
-  --status              Report status for runs executing remotely.
-  -k, --kill            Kill runs executing remotely.
-  --venueStatus         Report venue status.
-  -v, --venue           Remote job destination
-  -i, --inputfile       Input file
-  -p, --parameters      Parameter sweep variables. See examples.
-  -d, --data            Parametric variable data - csv format
-  -s SEPARATOR, --separator=SEPARATOR
-                        Parameter sweep variable list separator
-  -n NCPUS, --nCpus=NCPUS
-                        Number of processors for MPI execution
-  -N PPN, --ppn=PPN     Number of processors/node for MPI execution
-  --stripes=NSTRIPES    Number of parallel local jobs when doing parametric
-                        sweep
-  -w WALLTIME, --wallTime=WALLTIME
-                        Estimated walltime hh:mm:ss or minutes
-  -e, --env             Variable=value
-  --runName=RUNNAME     Name used for directories and files created during the
-                        run. Restricted to alphanumeric characters
-  -m, --manager         Multiprocessor job manager
-  -r NREDUNDANT, --redundancy=NREDUNDANT
-                        Number of identical simulations to execute in parallel
-  -M, --metrics         Report resource usage on exit
-  --detach              Detach client after launching run
-  --attach=ATTACHID     Attach to previously detached started server
-  -W, --wait            Wait for reduced job load before submission
-  -Q, --quota           Enforce local user quota on remote execution host
-  -q, --noquota         Do not enforce local user quota on remote execution
-                        host
-  --tailStdout          Periodically report tail of stdout file.
-  --tailStderr          Periodically report tail of stderr file.
-  --tail                Periodically report tail of application file.
-  --progress            Show progress method. Choices are auto, curses,
-                        submit, text, pegasus, or silent.
-  --asynchronous        Asynchronous simulation - results will not be returned
-</code></pre>
-<p>Additional information is available by requesting user specific lists of choices for some command options. The available option lists are generated for a user based on configured restrictions and availability. The values listed here are for example only and may not be available on all HUBs.</p>
-<pre><code>$ submit --help tools
-
-Currently available TOOLs are:
-   lammps-03Mar20-parallel
-   lammps-03Mar20-serial
-   lammps-05Jun19-parallel
-   lammps-05Jun19-serial
-   lammps-11Aug17-parallel
-   lammps-11Aug17-serial
-   lammps-22Aug18-parallel
-   lammps-22Aug18-serial
-   lammps-31Mar17-parallel
-   lammps-31Mar17-serial
-
-$ submit --help venues
+<p><code>submit</code> takes a command you would run in a tool session and runs it
+somewhere else — a cluster, a campus resource, a national one — then brings
+the results back. You write the command the way you always would and put
+<code>submit</code> and its options in front of it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>submit</code> belongs to the tool execution platform, which is
+separate software and is <strong>not in this repository</strong>. None of this page
+could be checked against the code here. The option list below is a
+transcript of one hub's client, reorganised and made internally
+consistent; treat <code>submit --help</code> on your own hub as the authority on
+what your client accepts and which venues and tools you may use.</p>
+</aside>
+<h2 id="what-a-run-does">What a run does</h2>
+<p>Each submission goes through the same steps.</p>
+<ol>
+<li>A destination venue is selected.</li>
+<li>A wrapper script is generated for remote execution.</li>
+<li>A batch system description file is generated, if the venue needs one.</li>
+<li>Input files are gathered into a tarball and transferred to the remote
+site, along with the wrapper and batch scripts.</li>
+<li>The wrapper script runs remotely.</li>
+<li>Progress is monitored until the run completes.</li>
+<li>Output files are returned.</li>
+</ol>
+<h2 id="finding-out-what-your-hub-offers">Finding out what your hub offers</h2>
+<p><code>submit --help</code> prints the option list. It also takes an argument, and the
+lists it prints are generated for you from your hub's configuration and
+your own permissions, so they differ from hub to hub and from user to user.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Prints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>submit --help</code></td>
+<td>The option list</td>
+</tr>
+<tr>
+<td><code>submit --help tools</code></td>
+<td>Pre-staged applications you may run</td>
+</tr>
+<tr>
+<td><code>submit --help venues</code></td>
+<td>Destinations you may send a run to</td>
+</tr>
+<tr>
+<td><code>submit --help managers</code></td>
+<td>Multiprocessor job managers you may ask for</td>
+</tr>
+<tr>
+<td><code>submit --help examples</code></td>
+<td>The parameter sweep examples, reproduced below</td>
+</tr>
+</tbody>
+</table>
+<p>The lists look like this. The names are examples only; nothing here is
+guaranteed to exist on your hub.</p>
+<pre><code class="language-text">$ submit --help venues
 
 Currently available VENUES are:
    OSG
@@ -193,197 +195,385 @@ Currently available VENUES are:
 $ submit --help managers
 
 Currently available MANAGERs are:
-   lammps-03Mar20_mpi
-   lammps-03Mar20_serial
-   lammps-05Jun19_mpi
-   lammps-05Jun19_serial
-   lammps-11Aug17_mpi
-   lammps-11Aug17_serial
-   lammps-22Aug18_mpi
-   lammps-22Aug18_serial
-   lammps-31Mar17_mpi
-   lammps-31Mar17_serial
    mpi
    mpich
    mpirun
    parallel
    serial
+   lammps-03Mar20_mpi
+   lammps-03Mar20_serial
 </code></pre>
-<p>Examples of how to use the submit command to execute parameter sweeps are provided by asking for help on examples.</p>
-<pre><code>$ submit --help examples
-Usage: submit [options]
-
-Options:
-  -h, --help            Report command usage. Optionally request listing of
-                        managers, tools, venues, or examples.
-  -l, --local           Execute command locally
-  --status              Report status for runs executing remotely.
-  -k, --kill            Kill runs executing remotely.
-  --venueStatus         Report venue status.
-  -v, --venue           Remote job destination
-  -i, --inputfile       Input file
-  -p, --parameters      Parameter sweep variables. See examples.
-  -d, --data            Parametric variable data - csv format
-  -s SEPARATOR, --separator=SEPARATOR
-                        Parameter sweep variable list separator
-  -n NCPUS, --nCpus=NCPUS
-                        Number of processors for MPI execution
-  -N PPN, --ppn=PPN     Number of processors/node for MPI execution
-  --stripes=NSTRIPES    Number of parallel local jobs when doing parametric
-                        sweep
-  -w WALLTIME, --wallTime=WALLTIME
-                        Estimated walltime hh:mm:ss or minutes
-  -e, --env             Variable=value
-  --runName=RUNNAME     Name used for directories and files created during the
-                        run. Restricted to alphanumeric characters
-  -m, --manager         Multiprocessor job manager
-  -r NREDUNDANT, --redundancy=NREDUNDANT
-                        Number of identical simulations to execute in parallel
-  -M, --metrics         Report resource usage on exit
-  --detach              Detach client after launching run
-  --attach=ATTACHID     Attach to previously detached started server
-  -W, --wait            Wait for reduced job load before submission
-  -Q, --quota           Enforce local user quota on remote execution host
-  -q, --noquota         Do not enforce local user quota on remote execution
-                        host
-  --tailStdout          Periodically report tail of stdout file.
-  --tailStderr          Periodically report tail of stderr file.
-  --tail                Periodically report tail of application file.
-  --progress            Show progress method. Choices are auto, curses,
-                        submit, text, pegasus, or silent.
-  --asynchronous        Asynchronous simulation - results will not be returned
-
-Parameter examples:
-
-submit -p @@cap=10pf,100pf,1uf sim.exe @:indeck
-
-        Submit 3 jobs. The @:indeck means &quot;use the file indeck as a template
-file.&quot; Substitute the values 10pf, 100pf, and 1uf in place of @@cap within the
-file. Send off one job for each of the values and bring back the results.
-
-submit -p @@vth=0:0.2:5 -p @@cap=10pf,100pf,1uf sim.exe @:indeck
-
-        Submit 78 jobs. The parameter @@vth goes from 0 to 5 in steps of 0.2,
-so there are 26 values for @@vth. For each of those values, the parameter
-@@cap changes from 10pf to 100pf to 1uf. 26 x 3 = 78 jobs total. Again
-@:indeck is treated as a template, and the values are substituted in place of
-@@vth and @@cap in that file.
-
-submit -p params sim.exe @:indeck
-
-        In this case, parameter definitions are taken from the file named
-params instead of the command line. The file might have the following
-contents:
-
-                # paramters for my job submission
-                parameter @@vth=0:0.2:5
-                parameter @@cap = 10pf,100pf,1uf
-
-submit -p &quot;params;@@num=1-10;@@color=blue&quot; job.sh @:job.data
-
-        For someone who loves syntax and complexity... The semicolon separates
-the parameters value into three parts. The first says to load parameters from
-a file params. The next part says add an additional parameter @@num that goes
-from 1 to 10. The last part says add an additional parameter @@color with a
-single value blue. The parameters @@num and @@color cannot override anything
-defined within params; they must be new parameter names.
-
-submit -d input.csv sim.exe @:indeck
-
-        Takes parameters from the data file input.csv, which must be in comma-
-separated value format. The first line of this file may contain a series of
-@@param names for each of the columns. Whitespace is significant for all
-values entered in the csv file. If it doesn't, then the columns are assumed to
-be called @@1, @@2, @@3, etc. Each of the remaining lines represents a set of
-parameter values for one job; if there are 100 such lines, there will be 100
-jobs. For example, the file input.csv might look like this:
-
-                @@vth,@@cap
-                1.1,1pf
-                2.2,1pf
-                1.1,10pf
-                2.2,10pf
-
-        Parameters are substituted as before into template files such as
-@:indeck.
-
-submit -d input.csv -p &quot;@@doping=1e15-1e17 in 30 log&quot; sim.exe @:infile
-
-        Takes parameters from the data file input.csv, but also adds another
-parameter @@doping which goes from 1e15 to 1e17 in 30 points on a log scale.
-For each of these points, all values in the data file will be executed. If the
-data file specifies 50 jobs, then this command would run 30 x 50 = 1500 jobs.
-
-submit -d input.csv -i @:extra/data.txt sim.exe @:indeck
-
-        In addition to the template indeck file, send along another file
-extra/data.txt with each job, and treat it as a template too.
-
-submit -s / -p @@address=23 Main St.,Hometown,Indiana/42
-Broadway,Hometown,Indiana -s , -p @@color=red,green,blue job.sh @:job.data
-
-        Change the separator to slash when defining the addresses, then change
-back to comma for the @@color parameter and any remaining arguments. We
-shouldn't have to change the separator often, but it might come in handy if
-the value strings themselves have commas.
-
-submit -p @@num=1:1000 sim.exe input@@num
-
-        Submit jobs 1,2,3,...,1000. Parameter names such as @@num are
-recognized not only in template files, but also for arguments on the command
-line. In this case, the numbers 1,2,3,...,1000 are substituted into the file
-name, so the various jobs take their input from &quot;input1&quot;, &quot;input2&quot;, ...,
-&quot;input1000&quot;.
-
-submit -p @@file=glob:indeck* sim.exe @@file
-
-        Look for files matching indeck* and use the list of names as the
-parameter @@file. Those values could be substituted into other template files,
-or used on the command line as in this example. Suppose the directory contains
-files indeck1, indeck10, and indeck2.  The glob option will order the files in
-a natural order: indeck1, indeck2, indeck10.  This example would launch three
-jobs using each of those files as input for the job.
-
-submit -p @@file=globnat:indeck* sim.exe @@file
-
-        This option has been deprecated.  The functionality is now available
-with the glob option.
-</code></pre>
-<p>By specifying a suitable set of command line parameters it is possible to execute commands on configured remote systems. The simple premise is that a typical command line can be prefaced by submit and its arguments to execute the command remotely.</p>
-<pre><code>$ submit -v clusterA echo Hello world!
+<h2 id="options">Options</h2>
+<h3 id="running-and-controlling-runs">Running and controlling runs</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-h</code>, <code>--help [tools|venues|managers|examples]</code></td>
+<td>Report command usage, or one of the lists above</td>
+</tr>
+<tr>
+<td><code>-l</code>, <code>--local</code></td>
+<td>Execute the command in the tool session instead of sending it away</td>
+</tr>
+<tr>
+<td><code>--status</code></td>
+<td>Report status for runs executing remotely</td>
+</tr>
+<tr>
+<td><code>-k</code>, <code>--kill</code></td>
+<td>Kill runs executing remotely</td>
+</tr>
+<tr>
+<td><code>--venueStatus</code></td>
+<td>Report venue status</td>
+</tr>
+</tbody>
+</table>
+<h3 id="choosing-where-the-run-goes">Choosing where the run goes</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-v</code>, <code>--venue</code></td>
+<td>Remote job destination</td>
+</tr>
+<tr>
+<td><code>-m</code>, <code>--manager</code></td>
+<td>Multiprocessor job manager</td>
+</tr>
+<tr>
+<td><code>-r N</code>, <code>--redundancy=N</code></td>
+<td>Number of identical simulations to execute in parallel</td>
+</tr>
+</tbody>
+</table>
+<h3 id="asking-for-resources">Asking for resources</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-n N</code>, <code>--nCpus=N</code></td>
+<td>Number of processors for MPI execution</td>
+</tr>
+<tr>
+<td><code>-N N</code>, <code>--ppn=N</code></td>
+<td>Number of processors per node for MPI execution</td>
+</tr>
+<tr>
+<td><code>-w</code>, <code>--wallTime</code></td>
+<td>Estimated walltime, <code>hh:mm:ss</code> or minutes</td>
+</tr>
+<tr>
+<td><code>-e</code>, <code>--env</code></td>
+<td>Set an environment variable, <code>Variable=value</code></td>
+</tr>
+<tr>
+<td><code>-W</code>, <code>--wait</code></td>
+<td>Wait for reduced job load before submitting</td>
+</tr>
+<tr>
+<td><code>-Q</code>, <code>--quota</code></td>
+<td>Enforce local user quota on the remote execution host</td>
+</tr>
+<tr>
+<td><code>-q</code>, <code>--noquota</code></td>
+<td>Do not enforce local user quota on the remote execution host</td>
+</tr>
+</tbody>
+</table>
+<h3 id="files">Files</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-i</code>, <code>--inputfile</code></td>
+<td>Send an extra input file or directory tree with the run</td>
+</tr>
+<tr>
+<td><code>--runName=NAME</code></td>
+<td>Name used for directories and files created during the run. Alphanumeric characters only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sweep-options">Sweep options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p</code>, <code>--parameters</code></td>
+<td>Parameter sweep variables, or a file of them</td>
+</tr>
+<tr>
+<td><code>-d</code>, <code>--data</code></td>
+<td>Parametric variable data, in csv format</td>
+</tr>
+<tr>
+<td><code>-s SEP</code>, <code>--separator=SEP</code></td>
+<td>Separator for parameter value lists</td>
+</tr>
+<tr>
+<td><code>--stripes=N</code></td>
+<td>Number of parallel local jobs when doing a parametric sweep</td>
+</tr>
+</tbody>
+</table>
+<h3 id="watching-a-run">Watching a run</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--progress</code></td>
+<td>Progress display: <code>auto</code>, <code>curses</code>, <code>submit</code>, <code>text</code>, <code>pegasus</code> or <code>silent</code></td>
+</tr>
+<tr>
+<td><code>--tailStdout</code></td>
+<td>Periodically report the tail of the standard output file</td>
+</tr>
+<tr>
+<td><code>--tailStderr</code></td>
+<td>Periodically report the tail of the standard error file</td>
+</tr>
+<tr>
+<td><code>--tail</code></td>
+<td>Periodically report the tail of an application file</td>
+</tr>
+<tr>
+<td><code>-M</code>, <code>--metrics</code></td>
+<td>Report resource usage on exit</td>
+</tr>
+<tr>
+<td><code>--detach</code></td>
+<td>Detach the client after launching the run</td>
+</tr>
+<tr>
+<td><code>--attach=ID</code></td>
+<td>Attach to a previously detached run</td>
+</tr>
+<tr>
+<td><code>--asynchronous</code></td>
+<td>Asynchronous simulation; results are not returned</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The Python interface described in
+<a href="../jupyter-submit/index.html">Submitting from a Jupyter notebook</a> also offers
+<code>--stdin</code>, <code>--debug</code> and <code>--version</code>, which do not appear in the option
+transcript above. The transcript is older than the Python class, and
+which of the two matches your hub could not be established here. Check
+<code>submit --help</code> before relying on any of the three.</p>
+</aside>
+<h2 id="running-a-command-remotely">Running a command remotely</h2>
+<pre><code class="language-text">$ submit -v clusterA echo Hello world!
 Hello world!
 </code></pre>
-<p>In this example the echo command is executed on the venue named clusterA where runs are executed directly on the host. Execution of the same command on a cluster using a batch scheduler such as SLURM would be done in a similar fashion</p>
-<pre><code>$ submit -v clusterB echo Hello world!
-(2586337) Simulation Queued Wed Oct  7 14:45:21 2009
-(2586337) Simulation Done Wed Oct  7 14:54:36 2009
+<p>Here <code>echo</code> runs on the venue <code>clusterA</code>, which executes runs directly on
+the host, so the output comes straight back. On a venue that puts the run
+through a batch scheduler, <code>submit</code> reports the job through the queue and
+leaves the output in files instead.</p>
+<pre><code class="language-text">$ submit -v clusterB echo Hello world!
+(00577296) Simulation Queued Wed Oct  7 14:45:21 2020
+(00577296) Simulation Done Wed Oct  7 14:54:36 2020
 $ cat 00577296.stdout
 Hello world!
 </code></pre>
-<p>submit supports an extensible variety of submission mechanisms. HUBzero supported submission mechanisms are</p>
+<p>The number in parentheses is the run id, and it names the output files.</p>
+<h2 id="parameter-sweeps">Parameter sweeps</h2>
+<p>A sweep declares substitutable parameters named <code>@@something</code>. <code>submit</code>
+substitutes their values into template files and into command arguments,
+and runs one job per combination. A file argument written <code>@:name</code> is
+treated as a template rather than copied as it is.</p>
+<table>
+<thead>
+<tr>
+<th>Written as</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@@cap=10pf,100pf,1uf</code></td>
+<td>The three values listed</td>
+</tr>
+<tr>
+<td><code>@@num=1:1000</code></td>
+<td>1, 2, 3, … 1000</td>
+</tr>
+<tr>
+<td><code>@@vth=0:0.2:5</code></td>
+<td>0 to 5 in steps of 0.2, so 26 values</td>
+</tr>
+<tr>
+<td><code>@@doping=1e15-1e17 in 30 log</code></td>
+<td>30 points from 1e15 to 1e17 on a log scale</td>
+</tr>
+<tr>
+<td><code>@@file=glob:indeck*</code></td>
+<td>The names of the files matching the pattern, in natural order</td>
+</tr>
+<tr>
+<td><code>-p params</code></td>
+<td>Parameter definitions read from the file <code>params</code></td>
+</tr>
+<tr>
+<td><code>-p &quot;params;@@num=1-10;@@color=blue&quot;</code></td>
+<td>The file <code>params</code>, plus two more parameters</td>
+</tr>
+</tbody>
+</table>
+<p>Values are separated by commas unless <code>-s</code> changes the separator.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>globnat:</code> is deprecated. <code>glob:</code> now sorts in natural order —
+<code>indeck1</code>, <code>indeck2</code>, <code>indeck10</code> rather than <code>indeck1</code>, <code>indeck10</code>,
+<code>indeck2</code> — so use <code>glob:</code> for both.</p>
+</aside>
+<h3 id="examples">Examples</h3>
+<p>These are the examples <code>submit --help examples</code> prints.</p>
+<pre><code class="language-text">submit -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+</code></pre>
+<p>Submit 3 jobs. <code>@:indeck</code> means &quot;use the file indeck as a template file&quot;.
+Substitute the values 10pf, 100pf and 1uf in place of <code>@@cap</code> in the file,
+send off one job for each value, and bring back the results.</p>
+<pre><code class="language-text">submit -p @@vth=0:0.2:5 -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+</code></pre>
+<p>Submit 78 jobs. <code>@@vth</code> goes from 0 to 5 in steps of 0.2, so there are 26
+values. For each of those, <code>@@cap</code> takes its three values: 26 x 3 = 78 jobs.
+Both parameters are substituted into the template.</p>
+<pre><code class="language-text">submit -p params sim.exe @:indeck
+</code></pre>
+<p>Take the parameter definitions from a file named <code>params</code> instead of the
+command line. The file might read:</p>
+<pre><code class="language-text"># parameters for my job submission
+parameter @@vth=0:0.2:5
+parameter @@cap = 10pf,100pf,1uf
+</code></pre>
+<pre><code class="language-text">submit -p &quot;params;@@num=1-10;@@color=blue&quot; job.sh @:job.data
+</code></pre>
+<p>The semicolons split the value into three parts. The first loads parameters
+from the file <code>params</code>. The second adds a parameter <code>@@num</code> running from 1
+to 10. The third adds <code>@@color</code> with the single value <code>blue</code>. <code>@@num</code> and
+<code>@@color</code> must be new names; they cannot override anything defined in
+<code>params</code>.</p>
+<pre><code class="language-text">submit -d input.csv sim.exe @:indeck
+</code></pre>
+<p>Take the parameters from the comma-separated file <code>input.csv</code>. Each line
+after the first is one job's parameter values, so 100 lines means 100 jobs.
+The first line may name the columns with <code>@@param</code> names; if it does not,
+the columns are called <code>@@1</code>, <code>@@2</code>, <code>@@3</code> and so on. Whitespace is
+significant in every value in the file. For example:</p>
+<pre><code class="language-text">@@vth,@@cap
+1.1,1pf
+2.2,1pf
+1.1,10pf
+2.2,10pf
+</code></pre>
+<p>Parameters are substituted into template files such as <code>@:indeck</code> as before.</p>
+<pre><code class="language-text">submit -d input.csv -p &quot;@@doping=1e15-1e17 in 30 log&quot; sim.exe @:infile
+</code></pre>
+<p>Take the parameters from <code>input.csv</code> and add <code>@@doping</code>, which runs from
+1e15 to 1e17 in 30 points on a log scale. Every value in the data file runs
+at each of those points, so a data file of 50 jobs gives 30 x 50 = 1500 jobs.</p>
+<pre><code class="language-text">submit -d input.csv -i @:extra/data.txt sim.exe @:indeck
+</code></pre>
+<p>Besides the template indeck file, send <code>extra/data.txt</code> with each job and
+treat it as a template too.</p>
+<pre><code class="language-text">submit -s / -p @@address=23 Main St.,Hometown,Indiana/42 Broadway,Hometown,Indiana \
+       -s , -p @@color=red,green,blue job.sh @:job.data
+</code></pre>
+<p>Change the separator to a slash while defining the addresses, then change it
+back to a comma for <code>@@color</code> and everything after it. This is worth doing
+when the values themselves contain commas.</p>
+<pre><code class="language-text">submit -p @@num=1:1000 sim.exe input@@num
+</code></pre>
+<p>Submit jobs 1, 2, 3, … 1000. Parameter names are recognised in command line
+arguments as well as in template files, so here the numbers are substituted
+into the file name and each job reads <code>input1</code>, <code>input2</code>, … <code>input1000</code>.</p>
+<pre><code class="language-text">submit -p @@file=glob:indeck* sim.exe @@file
+</code></pre>
+<p>Use the names of the files matching <code>indeck*</code> as the values of <code>@@file</code>.
+If the directory holds <code>indeck1</code>, <code>indeck10</code> and <code>indeck2</code>, this launches
+three jobs, one per file, in natural order.</p>
+<h2 id="how-a-venue-is-chosen">How a venue is chosen</h2>
+<p>The first of these that applies wins.</p>
+<ol>
+<li><code>-l</code>/<code>--local</code> runs the command in your tool session.</li>
+<li><code>-v</code>/<code>--venue</code> names a destination.</li>
+<li>A site is chosen at random from those holding the pre-staged application.</li>
+<li>A site is chosen at random from all configured sites.</li>
+</ol>
+<p>Venues that cannot meet the run's resource request are not considered.
+Venues are usually configured with limits on cores, walltime or core-hours.</p>
+<p><code>-r</code>/<code>--redundancy</code> sends the same run to more than one venue at once. The
+first one to finish successfully cancels the others; if none succeed, the
+results of one of them are returned. Redundant submission is not allowed
+with parameter sweeps.</p>
+<h2 id="submission-mechanisms">Submission mechanisms</h2>
+<p><code>submit</code> supports several mechanisms, and the set is extensible.</p>
 <ul>
-<li>local - use batch submission mechanisms available directly on the submit host. These include condorHT, and Pegasus batch queue submission.</li>
-<li>ssh - direct use of ssh. Submit manages access to a venue using a common ssh key, essentially serving as a proxy for the HUB user.</li>
-<li>ssh + remote batch submission - use ssh to do batch run submission remotely. Again methods for common batch schedulers PBS, condorHT, Pegasus, and SLURM are provided. Additional interfaces to SGE, Load Leveler, BOINC, LSF, and Tapis are also available.</li>
+<li><strong>local</strong> — batch submission available on the submit host itself,
+including condorHT and Pegasus queue submission.</li>
+<li><strong>ssh</strong> — direct use of ssh. <code>submit</code> manages access to a venue with a
+shared key and acts as a proxy for the hub user.</li>
+<li><strong>ssh with remote batch submission</strong> — ssh to the venue and submit there.
+Methods are provided for PBS, condorHT, Pegasus and SLURM, with further
+interfaces to SGE, Load Leveler, BOINC, LSF and Tapis.</li>
 </ul>
-<p>In addition to single site submission the -r/--redundancy option provides the option to simultaneously submit runs to multiple remote venues. In such cases the successful completion of a run at one venue cancels runs at all other venues. If none of the runs are successful results from one of the runs are returned to the user. Redundant submission is not allowed when performing parametric sweeps.</p>
-<p>A venue for remote execution is selected in one of the following ways, listed in order of precedence:</p>
-<ul>
-<li>Execute the command within the user tool session, -l/--local option</li>
-<li>User specified on the command line with -v/--venue option.</li>
-<li>Randomly selected from remote sites associated with pre-staged application.</li>
-<li>Select randomly from all configured sites</li>
-</ul>
-<p>Venues that do not meet the resource requirements of the run request are not considered. Venues are typically configured with limits on the number of cores, walltime, or core-hours.</p>
-<p>Any files specified by the user plus internally generated scripts are packed into a tarball for delivery to the remote site. Individual files or entire directory trees may be listed as command inputs using the -i/--inputfile option. In addition, command arguments that exist as files or directories will be packed into the tarball. If using ssh based submission mechanisms the tarball is transferred using scp.</p>
-<p>The job wrapper script is executed remotely either directly or submitted to a batch queue. The job is subject to all remote queuing restrictions and idiosyncrasies.</p>
-<p>Remote batch jobs are monitored for progress. Methods appropriate to the batch queuing system are used to check job status at a configurable frequency. A typical frequency is on the order one minute. Job status changes are reported to the user. The maximum time between reports to the user is set on the order of five minutes even in the absence of change. The job status is used to detect job completion.</p>
-<p>The same methods used to transfer input files are applied in reverse to retrieve output files. Any files and directories created or modified by the application are be retrieved. A tarball is retrieved and expanded to the home base directory. It is up to the user to avoid the overwriting of files.</p>
-<p>In addition to the application generated output files additional files are generated in the course of remote run execution. Some of these files are for internal bookkeeping and are consumed by submit, a few files however remain in the home base directory. The remaining files include RUNID.stdout and RUNID.stderr, it is also possible that a second set of standard output/error files will exist containing the output from the batch job submission script. By default, RUNID represents unique job identifier assigned by submit. If preferred a user can specify a different RUNID using the --runName command argument.</p>
+<h2 id="files-in-and-files-out">Files in and files out</h2>
+<p>Files you name and the scripts <code>submit</code> generates are packed into a tarball
+for delivery. Individual files and whole directory trees can be listed with
+<code>-i</code>/<code>--inputfile</code>, and command arguments that name existing files or
+directories are packed too. With the ssh mechanisms the tarball travels by
+<code>scp</code>.</p>
+<p>The wrapper script then runs remotely, directly or through a batch queue,
+and the job is subject to every restriction of that queue.</p>
+<p>Remote batch jobs are monitored with the methods appropriate to the queuing
+system, at a configurable frequency — typically about a minute. Status
+changes are reported to you as they happen, and a report is made at least
+every few minutes even when nothing has changed. Completion is detected the
+same way.</p>
+<p>Output travels back the way the input came. Any file or directory the
+application created or changed is retrieved as a tarball and expanded into
+your home base directory. <strong>Nothing stops it overwriting what is already
+there</strong>, so keep runs in their own directories.</p>
+<p>Alongside the application's own output, a run leaves <code>RUNID.stdout</code> and
+<code>RUNID.stderr</code> in the home base directory, and possibly a second pair
+holding the output of the batch submission script itself. <code>RUNID</code> is the
+identifier <code>submit</code> assigns, unless <code>--runName</code> gave it one.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Accessing Outside Computing Resources</a><a class="pager__next" href="../pegasuswf/index.html" rel="next"><span>Next</span>Pegasus Workflow Submission</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Accessing outside computing resources</a><a class="pager__next" href="../pegasuswf/index.html" rel="next"><span>Next</span>Pegasus workflow submission</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/05-grid/01-submitcmd.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

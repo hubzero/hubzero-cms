@@ -99,7 +99,7 @@ application calls this once, at the end of the request; a component calling
 it is almost always a mistake.
 
 Serving a file off disk is a separate path with its own headers and byte
-ranges. Use [`Hubzero\Content\Server`](../services/server.md), not the
+ranges. Use [`Hubzero\Content\Server`](../04-services/06-server.md), not the
 response object.
 
 ## Redirects

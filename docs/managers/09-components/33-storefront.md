@@ -11,7 +11,7 @@ purchasable variants of each product, and the collections that group them. It
 holds no cart and no orders — a shopper's basket, checkout and order history
 belong to the [Cart](cart.md) component, which the storefront hands off to.
 This chapter covers the administrator's side; the
-[Hub users](../../users/storefront.md) book covers shopping.
+[Hub users](../../users/26-storefront.md) book covers shopping.
 
 Open it under **Components > Storefront**. Three sub-menu links sit at the
 top: **Products**, **Collections**, and **Option Groups**. Four more

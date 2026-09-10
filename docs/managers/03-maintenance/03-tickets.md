@@ -10,12 +10,12 @@ imported: 2026-09-09
 # Support Tickets
 
 Users open a ticket when something on the hub goes wrong and neither
-[Questions and Answers](../09-components/01-answers.md) nor the
-[Knowledge Base](../09-components/13-kb.md) answers it. Administrators work
+[Questions and Answers](../09-components/02-answers.md) nor the
+[Knowledge Base](../09-components/19-kb.md) answers it. Administrators work
 those tickets in the **Support** component. This page is about handling the
 queue day to day; for setting the component up — categories, canned messages,
 statuses, and who may see what — read
-[Support](../09-components/20-support.md).
+[Support](../09-components/34-support.md).
 
 ## The screens
 

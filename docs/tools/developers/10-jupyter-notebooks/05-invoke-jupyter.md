@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/invoke-jupyter
 source-id: 3562
 modified: 2022-11-22
@@ -7,118 +10,119 @@ imported: 2026-09-09
 -->
 # Invoke scripts for Jupyter notebooks
 
-## Invoke scripts for Jupyter notebooks
+Every tool has an invoke script in its `middleware` directory, and the one the
+pipeline creates launches a Rappture or Linux-GUI tool. A Jupyter tool needs
+it replaced. This page gives the script for each of the three
+[deployment styles](01-jupyter-deployment-styles.md), and what the arguments
+mean.
 
-The hub tool invoke script is located in the tool's middleware/ subdirectory. When you first create a tool, the basic invoke script provided must be edited to work with Jupyter notebook tools.
+> **Important:** `invoke_app` and `start_jupyter` are programs on the tool
+> execution platform, which is separate software and is **not in this
+> repository**. The scripts and argument lists below are the written record
+> carried over from the platform documentation, last revised in 2022, and
+> could not be checked here. Run `start_jupyter --help` on your own hub before
+> relying on a flag. For invoke scripts in general, see
+> [Launching tools with invoke scripts](../03-invoke.md).
 
-This writeup shows you how to create Jupyter tools with three different appearances: notebook, App, and Tool mode.
+## The shape of it
 
-### invoke_app and start_jupyter
+`invoke_app` sets up the session, and the command it is given starts the
+notebook server. For a Jupyter tool that command is `start_jupyter`:
 
-To deploy a Jupyter notebook as a tool on your hub, you call the invoke_app executable, which in turn calls start_jupyter. Each have their own arguments:
-
-arguments for start_jupyter
-
-```
-  -h, --help  show this help message and exit.
-  -d          Show debug (verbose) output.
-  -t          Run as a Tool with no notebook controls.
-  -c          Copy instead of link notebook files.
-  -A          Run in AppMode.
-  -T dir      Search for notebook starting in dir.
-  --themes    Enable notebook themes
-
-arguments for invoke_app
-
-  -t Tool name
-  -C command to execute
-  -r Rappture version to use (normally specify none for notebook tools)
-  -w headless
-  -u environment package (repeat as necessary)
-```
-
-### invoke_app: starting point
-
-The basic invoke script for Jupyter notebooks looks like this:
-
-```
+```sh
 /usr/bin/invoke_app "$@" -t TOOLNAME \
-	                 -C "start_jupyter -T @tool APP.ipynb" \
-	                 -r none \
+                         -C "start_jupyter -T @tool APP.ipynb" \
+                         -r none \
                          -w headless \
-	                 -u anaconda-X
+                         -u anaconda-X
 ```
 
-Invoking a Jupyter tool this way gives a notebook with all its code cells displayed to the user.
+- `TOOLNAME` is the tool's short name, the one you registered.
+- `APP.ipynb` is the notebook that runs the tool.
+- `anaconda-X` is the Anaconda installation your hub deploys. Ask which
+  version, rather than copying a number out of documentation.
+- `@tool` stands for the installed tool's own directory, which is where
+  `-T` starts looking for the notebook.
 
-Where:
+That script gives Notebook style: every code cell visible.
 
-- TOOLNAME is the short name of the tool
-- APP is the name of the main notebook that runs the tool
-- anaconda-X is the current anaconda installation
+## Arguments
 
-### start_jupyter arguments
+`invoke_app`, in the flags a notebook tool uses:
 
-Control the way the notebook appears when run as a tool, using the arguments passed to the start_jupyter executable.
+| Flag | Meaning |
+|---|---|
+| `-t` | Tool name |
+| `-C` | Command to run |
+| `-r` | Rappture version. Notebook tools pass `none` |
+| `-w` | Window manager. Notebook tools pass `headless` |
+| `-u` | Environment package to load. Repeat for more than one |
 
-You can run a Jupyter tool in three ways:
+`start_jupyter`:
 
-- notebook mode, in which all code cells are displayed to the user (shown above)
-- app mode, in which code cells are initially hidden but can be displayed
-- tool mode, in which code cells are hidden and cannot be displayed
+| Flag | Meaning |
+|---|---|
+| `-h`, `--help` | Show the help |
+| `-d` | Verbose output, for debugging |
+| `-t` | Tool style: no notebook controls |
+| `-c` | Copy the notebook files instead of linking them |
+| `-A` | App style |
+| `-T dir` | Start looking for the notebook in `dir` |
+| `--themes` | Enable notebook themes |
 
-#### for App Mode
+> **Warning:** `-t` means one thing to `invoke_app` and another to
+> `start_jupyter`. On `invoke_app` it names the tool; on `start_jupyter` it
+> hides the code cells. `-A` differs between the two as well. Check which
+> command a flag is attached to before you change it.
 
-For a notebook tool that hides its code cells and shows only the UI and markdown elements on initial run, add the -A argument in the start_jupyter call:
+## App style
 
-```
+Code cells hidden, with an **Edit App** button to reveal them:
+
+```sh
 /usr/bin/invoke_app "$@" -t TOOLNAME \
-	                 -C "start_jupyter -A -T @tool APP.ipynb" \
-	                 -u anaconda-X \
+                         -C "start_jupyter -A -T @tool APP.ipynb" \
+                         -u anaconda-X \
                          -w headless \
-	                 -r none
+                         -r none
 ```
 
-The tool user can toggle the tool's "Edit App" button to show the underlying code cells, making this a great teaching/demo option.
+## Tool style
 
-NOTE that this differs from the invoke_app -A argument.
+Code cells hidden, with no way to reveal them:
 
-#### for Tool Mode
-
-To permanently hide code cells from the user in App Mode, specify the -A and -t arguments in the start_jupyter call:
-
-```
+```sh
 /usr/bin/invoke_app "$@" -t TOOLNAME \
-	                 -C "start_jupyter -A -t -T @tool APP.ipynb" \
-	                 -u anaconda-X \
+                         -C "start_jupyter -A -t -T @tool APP.ipynb" \
+                         -u anaconda-X \
                          -w headless \
-	                 -r none
+                         -r none
 ```
 
-The Edit App button will not be displayed to the tool user.
+## Common errors
 
-NOTE that this differs from the invoke_app -t argument.
+**`could not find a rappture installation: RAPPTURE_PATH=,`**
 
-### errors
+`invoke_app` looked for Rappture because the script did not tell it not to.
+Add `-r none` to the `invoke_app` call — no quotation marks — and run it
+again.
 
-#### specify no rappture
+Rappture itself is deprecated; a Jupyter notebook is the current path for a
+new tool on most hubs. `-r none` stays necessary all the same, because
+`invoke_app` still looks for Rappture unless told otherwise.
 
-```
-/usr/bin/invoke_app "$@" -t TOOLNAME \
-	                 -C "start_jupyter -T @tool APP.ipynb" \
-	                 -u anaconda-X \
-                         -w headless \
-	                 -r none
-```
+## Testing the script
 
-##### **Error:**
+Run it by hand before you flag the code as ready:
 
-Running the tool's invoke script from a workspace, returns:
-
-```
-"could not find a rappture installation: RAPPTURE_PATH=,"
+```bash
+cd ~/apps/toolname/middleware
+./invoke
 ```
 
-##### **Fix:**
+[Testing a Jupyter tool](03-testing-jupyter.md) goes through what the output
+should say and how to open the notebook it starts.
 
-Be sure to supply the "-r none" argument in the invoke_app call, as above. No quotation marks are needed.
+Notebooks that dispatch work to a cluster call `submit` from a cell rather
+than from the invoke script — see
+[Jupyter integration with submit](../05-grid/04-jupyter_submit.md).

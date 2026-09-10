@@ -274,6 +274,6 @@ Much of what a project offers is set hub-wide, not per project: which tabs
 exist, how much disk space a project gets, whether the setup wizard asks
 about sensitive data or grants, and which external storage providers a
 project can connect to. Those settings are described in
-[Projects](../../managers/09-components/15-projects/README.md) and
-[Project file connectors](../../managers/09-components/15-projects/projectfileconnect.md)
+[Projects](../../managers/09-components/26-projects/README.md) and
+[Project file connectors](../../managers/09-components/26-projects/projectfileconnect.md)
 in the managers book.

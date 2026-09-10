@@ -19,8 +19,8 @@ use it; the generated
 every option of every component in one place.
 
 The extension managers themselves — modules, plugins and templates — are
-covered in [Extensions](../extensions/README.md), and the article, category
-and media managers in [Content](../content/README.md), rather than here.
+covered in [Extensions](../10-extensions/README.md), and the article, category
+and media managers in [Content](../08-content/README.md), rather than here.
 
 ## Content and discussion
 
@@ -87,5 +87,5 @@ and media managers in [Content](../content/README.md), rather than here.
 | [DataViewer](dataviewer.md) | Renders a database table as a searchable spreadsheet. |
 
 Members and access groups have their own chapters under
-[Users](../users/README.md), and the hub's global settings are in
-[Configuring](../configuring/README.md).
+[Users](../06-users/README.md), and the hub's global settings are in
+[Configuring](../05-configuring/README.md).

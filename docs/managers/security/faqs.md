@@ -108,7 +108,7 @@ The parameters are listed in the
 That is the **System - Spamjail** plugin. Clear the counter from **Users** >
 **Members**, open the member, and use **Reset** beside **Lifetime Spam
 Incidents**. The full procedure, including the per-session counter that
-clears itself, is in [Spam](../spam.md).
+clears itself, is in [Spam](../11-spam.md).
 
 ## Can I stop a specific address from reaching the hub?
 

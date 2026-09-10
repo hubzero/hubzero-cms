@@ -10,7 +10,7 @@ The Events component is the hub calendar. It holds events with a start
 and end time, a category, an optional set of extra pages, and optional
 registration that collects respondent details. Events appear on the site
 at `/events`. This chapter covers the administrator's side; the
-[Hub users](../../users/events.md) book covers browsing, submitting, and
+[Hub users](../../users/07-events.md) book covers browsing, submitting, and
 registering.
 
 Open it in the administrator interface under **Components > Events**.

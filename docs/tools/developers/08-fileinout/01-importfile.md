@@ -1,25 +1,57 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/fileinout/importfile
 source-id: 3554
 modified: 2015-02-18
 imported: 2026-09-09
 -->
-# Import File
+# Import file
 
-## Overview
+`importfile` moves one or more files from the member's desktop into a running
+tool session.
 
-"importfile" is the command line tool that, when run, opens a pop-up window prompting the user to browse and select file(s) from their computer to be uploaded. If a filename is provided for the imported file the pop-up window can alternatively be used to paste text from the user clipboard. This is most useful in workspace tools which do not allow text to be directly pasted to terminals or other applications.
+> **Important:** `importfile` is part of the filexfer package on the tool
+> execution platform. That platform is separate software and is **not in this
+> repository**, so nothing on this page could be verified against code here.
+> It is the record carried over from the 2.4 documentation, with the help text
+> quoted as it stood. Check the command's own `--help` output on your hub
+> before relying on an option.
 
-You can use this command to transfer one or more files from your desktop to your tool session via a web browser. This command causes a web page to pop up prompting you for various files on your desktop. Choose one or more files and submit the form. The selected files will be uploaded to your tool session and saved with the file names specified on the command line. **You must have popups enabled for this to work properly.**
+## What it does
 
-## Implementation
+Run `importfile` inside a tool session and it opens a page in the member's
+browser asking them to choose files from their computer. They pick the files
+and submit the form; the files arrive in the session under the names given on
+the command line. The command prints the names of the files it actually
+received.
 
-This script should be implemented as a background process in a non-rappture tool. Typically a pipe is used to run this script off the main process of the tool. The piped process should be monitored by the tool code for a response upon completion of the user's file upload. The script will continue to wait for a file to be uploaded indefinitely. Please code appropriately for this.
+The browser must allow pop-ups from the hub, or the page never appears.
+
+When a filename is given for the imported file, the same page also accepts
+text pasted from the clipboard. That is the usual way to get text into a
+workspace tool, since a terminal or an application inside the session does not
+share the desktop clipboard.
+
+## Using it from a tool
+
+Do not call `importfile` on the tool's main thread. It waits for the upload
+and it waits indefinitely, so a tool that blocks on it stops responding to the
+member who is meant to be answering the prompt.
+
+Run it as a background process instead — typically through a pipe — and have
+the tool watch that pipe for the result. Handle the case where the reply never
+comes.
+
+A Rappture tool does not need this command; Rappture's own user interface has
+upload built in. Neither does a Jupyter notebook tool, which has Jupyter's
+file browser.
 
 ## Help text
 
-```
+```text
 USAGE: /usr/bin/importfile [-f|--for text] [-l|--label text] file file ...
 
   options:
@@ -72,3 +104,12 @@ on the command line.
 
 This command returns a list of names for files actually uploaded.
 ```
+
+> **Note:** The usage line is quoted as it stands, misspelling included. The
+> descriptions below it name the three modes as `ascii`, `binary` and `auto`.
+
+## See also
+
+- [Export file](02-exportfile.md), for the other direction.
+- [Getting files in and out of a tool session](README.md), for how filexfer is
+  started and what the CMS serves.

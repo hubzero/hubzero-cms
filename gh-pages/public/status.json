@@ -41,10 +41,8 @@
    "pages": 43,
    "counts": {
     "draft": 1,
-    "rewritten": 7,
-    "reviewed": 2,
-    "imported": 25,
-    "merged": 8
+    "rewritten": 11,
+    "reviewed": 31
    }
   },
   {
@@ -84,10 +82,10 @@
  ],
  "totals": {
   "draft": 5,
-  "reviewed": 3,
-  "rewritten": 254,
-  "merged": 10,
-  "imported": 44,
+  "reviewed": 32,
+  "rewritten": 258,
+  "merged": 2,
+  "imported": 19,
   "generated": 183
  }
 }

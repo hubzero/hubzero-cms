@@ -1,26 +1,73 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/largedatapaths
 source-id: 3556
 modified: 2016-01-25
 imported: 2026-09-09
 -->
-# Large Data Paths
+# Large data paths
 
-## Overview
+Where a large dataset lives on a hub, so that a tool session can read it
+without every member carrying a copy in their home directory.
 
-A directory structure for the storage of large data may be available upon request.
+> **Important:** The directories below are created on the hub's shared
+> filesystem and mounted into tool containers by the tool execution platform.
+> That platform is separate software and is **not in this repository**, so the
+> paths, permissions and mounts could not be verified here; they are the
+> convention recorded in the 2.4 documentation and a hub may differ. The one
+> CMS setting that touches these paths is described at the end of the page and
+> was checked against `com_tools`.
 
-Communication with the specific Hub PI is required to determine the scope of resources needed for the implementation of large data sets. Hard disk space allocation will take into consideration the amount of available disk space remaining and the size of the data set that is to be placed on the hub. When approved, please submit a support ticket to have the directory created.
+## Asking for space
 
-## Shared data directory for a specific tool and its tool developers
+Large data space is granted on request, not by default. Agreeing to it is a
+decision for the people who run the hub: how much disk is left, how big the
+dataset is, and whether it belongs on the hub at all. Settle that first, then
+open a support ticket asking for the directory to be created.
 
-A possible directory of "/data/tools/[toolname]" is to be set with permissions of 775, including write access for only members listed as developers of the tool (app-[toolname] group). Data stored here is intended to be used in a tool.
+## A directory for a tool
 
-/data/tools should be mounted in the tool containers.
+```text
+/data/tools/<toolname>
+```
 
-## Shared data directory for a specific group and its members
+Mode 775, writable by the tool's development group, readable by everyone else.
+Data kept here is meant to be read by that tool while it runs.
 
-A possible directory of "/data/groups/[groupname]" is set with permissions of 775, including write access for only members listed members of the group. Data stored here is intended to be maintained by group members and will be available for use in one or more tools.
+The development group is `app-<toolname>` — `com_tools` creates it when the
+tool registration is saved, naming it from the **Dev group prefix** option
+(default `app-`) and the tool alias in lower case, and sets its membership
+from the development team named on the form. That much is CMS-side and
+verified. Whether the group grants write access on the shared
+filesystem is the platform's business.
 
-/data/groups should be mounted in the tool containers.
+## A directory for a group
+
+```text
+/data/groups/<groupname>
+```
+
+Mode 775, writable by the members of that hub group. Data kept here is
+maintained by the group and can be read by more than one tool.
+
+## Reaching it from a session
+
+Both `/data/tools` and `/data/groups` are mounted in tool containers, so a
+tool reads them as ordinary paths. Nothing is copied into the session and
+nothing counts against the member's home directory quota.
+
+For the other directories a tool session sees, see
+[Tool paths](07-toolpaths/README.md).
+
+## Launching a tool at a large data path
+
+A tool session can be started with file and directory names in the launch
+URL's `params` argument. `com_tools` refuses any path that does not begin with
+a directory on the **Directory Parameter Whitelist**, and the shipped default
+lists only `/home`. So pointing a launch link at something under `/data`
+requires an administrator to add that prefix to the whitelist first. See
+[Directory parameter whitelist](../administrators/whitelistdirectories.md)
+for the check and how to change it.

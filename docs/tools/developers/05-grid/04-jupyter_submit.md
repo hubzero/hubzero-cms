@@ -1,344 +1,203 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/jupyter_submit
 source-id: 3543
 modified: 2023-05-05
 imported: 2026-09-09
 source-state: unpublished
 -->
-# Jupyter Integration with Submit
+# Submitting from a Jupyter notebook
 
-## Overview
+How to send a job to a cluster from a notebook cell, either by calling
+`submit` as a shell command or through the `SubmitCommand` class in the
+`hubzero.submit` library. This is the current way to reach outside
+computing resources from a tool, and the page to read if you are writing a
+new one.
 
-The submit command may be used like any other shell command in a notebook cell. In addition a more integrated approach is available by using the SubmitCommand class. The SubmitCommand class provides a fully functional interface to all submit command options. For each `submit` command argument there are typically two method types - set and reset. The standard Python `help` builtin can be used to show methods and associated arguments.
+> **Note:** `submit` and the `hubzero.submit` library belong to the tool
+> execution platform, which is separate software and is **not in this
+> repository**, so nothing on this page could be checked against the code
+> here. What the CMS does know is that a tool can be a Jupyter application:
+> `com_tools` has an **Enable Jupyter** option, and while it is on the tool
+> registration form offers **Web application (Jupyter, Rstudio, ...)** as a
+> publishing choice, stored on the tool version as `publishType` =
+> `jupyter`. See
+> [registering a tool](../../../managers/03-maintenance/02-tools.md) for
+> that form, and
+> [Jupyter notebooks as tools](../10-jupyter-notebooks/README.md) for
+> publishing a notebook in the first place.
 
-## SubmitCommand class
+## Two ways to call it
 
-The SubmitCommand class is available from the `hubzero.submit` library and can be easily instantiated.
+`submit` is an ordinary command, so a shell escape in a cell works and
+behaves exactly as it would in a terminal:
 
+```python
+!submit --help venues
+!submit -v venueName -w 5 sim.exe input.dat
 ```
+
+Use that for a quick job. For anything the notebook has to build up,
+inspect or repeat, use the `SubmitCommand` class instead: it exposes every
+`submit` option as a method, so the arguments come from Python values
+rather than from string formatting, and the command can be printed before
+it runs and saved for later.
+
+Both routes end up at the same client, so read
+[Submit command](01-submitcmd.md) for what the options mean, how a venue
+is chosen, and what files a run leaves behind.
+
+## The SubmitCommand class
+
+```python
 from hubzero.submit.SubmitCommand import SubmitCommand
 
 submitCommand = SubmitCommand()
 help(submitCommand)
 ```
 
-```
-Help on SubmitCommand in module hubzero.submit.SubmitCommand object:
+`help()` prints the authoritative list of methods for the library
+installed on your hub. The tables below organise that list; where they
+disagree, believe `help()`.
 
-class SubmitCommand(builtins.object)
- |  Methods defined here:
- |
- |  __init__(self, configurationDirectory='/etc/submit', hubLogPath='/tmp/submit/.submit.log')
- |      Initialize self.  See help(type(self)) for accurate signature.
- |
- |  addParameters(self, parameters, separator=None)
- |      Supply additional set of parameters for submit run.
- |      parameters can be specified as a single string or
- |      of list of strings.
- |
- |  loadSubmitCommand(self, submitCommandJSONFile)
- |      Load JSON file containing submit command settings.
- |
- |  resetAttachId(self)
- |      Do not reattach to a previously detached submit run.
- |
- |  resetCommand(self)
- |      Remove previous command and command argument settings.
- |
- |  resetCommandArguments(self)
- |      Remove previous command argument settings.
- |
- |  resetDataFile(self)
- |      Remove parameter datafile for submit run.
- |
- |  resetDebug(self)
- |      Turn submit debug reporting off.
- |
- |  resetDefaultSeparator(self)
- |      Set the default parameter separator to the system default.
- |
- |  resetDefaultTailNlines(self)
- |      Set the default number of lines to report when
- |      tailing output files to the system default.
- |
- |  resetDetach(self)
- |      Disable detachment from submit run.
- |
- |  resetEnvironmentVariables(self)
- |      Remove all environment variables set for submit run.
- |
- |  resetHelp(self, detail=None)
- |      Disable requests for general help or a variety of more specific help.
- |      See setHelp() for detail values.
- |
- |  resetInputFiles(self)
- |      Remove inputfiles from submit run.
- |
- |  resetKillJobs(self)
- |      Disable killing of previously submitted runs.
- |
- |  resetLocal(self)
- |      Turn submit local execution off.
- |
- |  resetManager(self)
- |      Set manager for submit run to the default manager.
- |
- |  resetNcores(self)
- |      Set number of cores requested for submit run to the default value.
- |
- |  resetPPN(self)
- |      Set number of cores per node requested for submit run to the default value.
- |
- |  resetParameters(self)
- |      Remove parameters from submit run.
- |
- |  resetProgress(self)
- |      Specify progress reporting to the default style.
- |
- |  resetQueryJobs(self)
- |      Disable query for the status of previously submitted runs.
- |
- |  resetQuota(self)
- |      Enable quota limit for submit run.
- |
- |  resetRedundancy(self)
- |      Set redundancy factor for submit run to the default value.
- |
- |  resetReportMetrics(self)
- |      Turn submit resource metrics reporting off.
- |
- |  resetRunName(self)
- |      Set submit run name to default name.
- |
- |  resetStdin(self)
- |      Remove previous stdin settings.
- |
- |  resetSubmitCommand(self)
- |      Reset submit command settings to default values.
- |
- |  resetTailFiles(self)
- |      Disable real time reporting of files other than
- |      standard output and standard error.
- |
- |  resetTailStderr(self)
- |      Disable real time reporting of standard error file.
- |
- |  resetTailStdout(self)
- |      Disable real time reporting of standard output file.
- |
- |  resetVenue(self)
- |      Remove venue setting from submit command.
- |
- |  resetVenueStatus(self)
- |      Disable request of submit venue status.
- |
- |  resetVersion(self, detail=None)
- |      Disable requests for version information.
- |      See setVersion() for detail values.
- |
- |  resetWait(self)
- |      Do not wait for period of reduced run submission rate to submit run.
- |      If your measured rate of job submission is to high your request for
- |      a new submit run will be denied.
- |
- |  resetWallTime(self)
- |      Set wall time requested for submit run to the default value.
- |
- |  saveSubmitCommand(self, submitCommandJSONFile=None)
- |      Save JSON file containing submit command settings.
- |
- |  setAttachId(self, attachId)
- |      Reattach to a previously detached submit run.
- |
- |  setCommand(self, command)
- |      Specify command to be run on remote resource.
- |      command can be given as a single string or a list
- |      of strings.  A single string will be split to form
- |      a list.  The first list element is taken to be the
- |      command and additional elements are taken to be
- |      command arguments.
- |
- |  setCommandArguments(self, commandArguments)
- |      Specify command arguments to be used on remote resource.
- |      commandArguments can be given as a single string or a list
- |      of strings.  A single string will be split to form
- |      a list.
- |
- |  setDataFile(self, dataFile)
- |      Supply parameter datafile for submit run.
- |      dataFile is a single filename.
- |
- |  setDebug(self, debug=True)
- |      Turn submit debug reporting on or off.
- |
- |  setDefaultSeparator(self, separatorDefault)
- |      Set the default parameter separator.
- |
- |  setDefaultTailNlines(self, tailNlinesDefault)
- |      Set the default number of lines to report when
- |      tailing output files.
- |
- |  setDetach(self, detach=True)
- |      Enable or disable detachment from submit run.
- |      If a job is detached you can continue with other
- |      operations and not wait for the submit to complete.
- |      Job status will need to be monitored to determine
- |      when completion occurs.  A detached can be reattached
- |      at a later time.
- |
- |  setEnvironmentVariables(self, environmentVariables)
- |      Provide a set of environment variables to be set
- |      for submit run.  environmentVariables should be a
- |      dictionary with keys being the environment variable
- |      names.
- |
- |  setHelp(self, detail=None)
- |      Request general help or a variety of more specific help.
- |      detail       submit arguments
- |      None         --help
- |      managers     --help managers
- |      tools        --help tools
- |      venues       --help venues
- |      examples     --help examples
- |
- |  setInputFiles(self, inputFiles)
- |      Supply set of input files for submit run.
- |      inputFiles can be specified as a single filename or
- |      of list of filenames.
- |
- |  setKillJobs(self, killJobs)
- |      Kill previously submitted runs.
- |      killJobs can be given as a single integer id or list
- |      of integer ids.
- |
- |  setLocal(self, local=True)
- |      Turn submit local execution on or off.
- |
- |  setManager(self, manager)
- |      Set manager for submit run.
- |      By default manager is set by the venue or tool configuration.
- |
- |  setNcores(self, nCores)
- |      Set number of cores requested for submit run.
- |      If only one core is required no setting is necessary.
- |
- |  setPPN(self, ppn)
- |      Set number of cores per node requested for submit run.
- |      If number of cores per node is not set for the submit run
- |      a default number of cores per node is set based on the
- |      venue configuration.  This default value is typical based
- |      on the node hardware.
- |
- |  setParameters(self, parameters, separator=None)
- |      Supply set of parameters for submit run.
- |      parameters can be specified as a single string or
- |      of list of strings.  Previously set parameters are
- |      removed.
- |
- |  setProgress(self, detail=None)
- |      Specify progress reporting style.
- |      detail       submit arguments
- |      None
- |      curses       --progress curses
- |      submit       --progress submit
- |      text         --progress text
- |      pegasus      --progress pegasus
- |      silent       --progress silent
- |
- |  setQueryJobs(self, queryJobs)
- |      Do a query for the status of previously submitted runs.
- |      queryJobs can be given as a single integer id or list
- |      of integer ids.
- |
- |  setQuota(self, quota)
- |      Enable or disable quota limit for submit run.
- |      If enabled your HUB disk quota is used to limit data
- |      generation on the remote resource.  This property is
- |      enabled by default.
- |
- |  setRedundancy(self, redundancy)
- |      Set redundancy factor for submit run.
- |      The default redundancy factor is set by submit configuration.
- |
- |  setReportMetrics(self, reportMetrics=True)
- |      Turn submit resource metrics reporting on or off.
- |
- |  setRunName(self, runName)
- |      Set submit run name.
- |      Default run name is the auto generated submit jobId.
- |      The runName is used to set the standard output and
- |      standard error filenames.
- |
- |  setStdin(self, stdinPath)
- |      Specify path to stdin file.
- |
- |  setTailFiles(self, tailFiles)
- |      Enable real time reporting of files other than
- |      standard output and standard error.
- |      tailFiles can be specified as a single filename
- |      or a list of filenames.  To specify the number (#)
- |      of lines to report add :# to the filename.
- |
- |  setTailStderr(self, tailStderr=True, tailStderrNlines=None)
- |      Enable or disable real time reporting of standard error file.
- |
- |  setTailStdout(self, tailStdout=True, tailStdoutNlines=None)
- |      Enable or disable real time reporting of standard output file.
- |
- |  setVenue(self, venue)
- |      Request that run be submitted to "venue".
- |
- |  setVenueStatus(self, venueStatus)
- |      Request status of submit venue named venueStatus.
- |
- |  setVersion(self, detail=None)
- |      Request complete or partial version information.
- |      detail       submit arguments
- |      None         --version
- |      client       --version client
- |      server       --version server
- |      distributor  --version distributor
- |
- |  setWait(self, wait=True)
- |      Wait for period of reduced run submission rate to submit run.
- |      Users have a limited rate at which they are allowed to submit jobs.
- |      The measured rate of run submission is measured over time with
- |      more attention payed to the most recent submission.
- |
- |  setWallTime(self, wallTime)
- |      Set the wall time limit for batch queue runs.
- |      wallTime can be given as integer or floating
- |      point number of minutes.
- |
- |  show(self, args=None, textWidth=80)
- |      Show submit command as determined from previous settings.
- |      If args is supplied previous settings are ignored but not
- |      replaced or overwritten.
- |
- |  submit(self, args=None, stdin=None)
- |      Execute submit command as determined from previous settings.
- |      If args is supplied previous settings are ignored but not
- |      replaced or overwritten.
- |
- |  ----------------------------------------------------------------------
-```
+The constructor takes two arguments, both with defaults:
+`configurationDirectory` (`/etc/submit`) and `hubLogPath`
+(`/tmp/submit/.submit.log`). Most notebooks need neither.
 
-The SubmitCommand class has a method that excepts command arguments as a simple list.
+Nearly every option has a **set** method and a matching **reset** method.
+`set` applies the option; `reset` returns it to the default, which is
+either the system default or whatever the venue and tool configuration
+supply.
 
-```
+### Running the command
+
+| Method | What it does |
+|---|---|
+| `submit(args=None, stdin=None)` | Run the command built up so far. If `args` is given, the previous settings are ignored for this run but not overwritten |
+| `show(args=None, textWidth=80)` | Print the command that would run, without running it |
+| `saveSubmitCommand(submitCommandJSONFile=None)` | Save the current settings as JSON |
+| `loadSubmitCommand(submitCommandJSONFile)` | Load settings from a JSON file |
+| `resetSubmitCommand()` | Return every setting to its default |
+
+### The command to run
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setCommand(command)` | — | A string or a list. A string is split; the first element is the command, the rest are its arguments |
+| `setCommandArguments(commandArguments)` | — | A string or list of arguments only |
+| `setInputFiles(inputFiles)` | `-i` | One filename or a list |
+| `setStdin(stdinPath)` | — | Path to a file to feed the command on standard input |
+| `setRunName(runName)` | `--runName` | Names the standard output and error files. Defaults to the generated job id |
+
+`resetCommand()` clears the command and its arguments;
+`resetCommandArguments()`, `resetInputFiles()` and `resetStdin()` clear
+just their own setting.
+
+### Where the run goes
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setVenue(venue)` | `-v` | Names the destination. `submit --help venues` lists the ones you may use |
+| `setManager(manager)` | `-m` | Defaults to whatever the venue or tool configuration sets |
+| `setRedundancy(redundancy)` | `-r` | Defaults to the value in the submit configuration |
+| `setLocal(local=True)` | `-l` | Run in the tool session instead of sending the job away |
+
+### Resources
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setNcores(nCores)` | `-n` | Not needed for a single-core run |
+| `setPPN(ppn)` | `-N` | Cores per node. Defaults to a value derived from the venue's node hardware |
+| `setWallTime(wallTime)` | `-w` | Minutes, as an integer or a float |
+| `setEnvironmentVariables(environmentVariables)` | `-e` | A dictionary keyed by variable name |
+| `setQuota(quota)` | `-Q` / `-q` | Uses your hub disk quota to limit what the run may generate on the remote resource. On by default |
+| `setWait(wait=True)` | `-W` | Wait for a quieter moment before submitting. Each user has a limited submission rate, measured over time and weighted towards recent submissions; exceed it and a new run is refused |
+
+### Parameter sweeps
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setParameters(parameters, separator=None)` | `-p` | A string or list of strings. Replaces any parameters already set |
+| `addParameters(parameters, separator=None)` | `-p` | Adds to them instead |
+| `setDataFile(dataFile)` | `-d` | One csv filename |
+| `setDefaultSeparator(separatorDefault)` | `-s` | The separator used in parameter value lists |
+
+The sweep syntax itself — `@@name` parameters, `@:file` templates, ranges,
+`glob:` — is on the [submit command](01-submitcmd.md) page.
+
+### Watching a run
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setProgress(detail=None)` | `--progress` | `curses`, `submit`, `text`, `pegasus` or `silent`. `None` leaves the default |
+| `setTailStdout(tailStdout=True, tailStdoutNlines=None)` | `--tailStdout` | Report the standard output file as the run proceeds |
+| `setTailStderr(tailStderr=True, tailStderrNlines=None)` | `--tailStderr` | The same for standard error |
+| `setTailFiles(tailFiles)` | `--tail` | Report other files. One filename or a list; append `:#` to a name for the number of lines |
+| `setDefaultTailNlines(tailNlinesDefault)` | — | How many lines a tail reports when a call does not say |
+| `setReportMetrics(reportMetrics=True)` | `-M` | Report resource usage on exit |
+| `setDetach(detach=True)` | `--detach` | Return control as soon as the run is launched. Monitor its status to learn when it finishes; you can reattach later |
+| `setAttachId(attachId)` | `--attach` | Reattach to a detached run |
+
+> **Tip:** `silent` progress suits a notebook that is generating its own
+> output; the `curses` display is designed for a terminal.
+
+### Status, help and version
+
+| Method | `submit` option | Notes |
+|---|---|---|
+| `setQueryJobs(queryJobs)` | `--status` | One integer job id or a list of them |
+| `setKillJobs(killJobs)` | `-k` | One integer job id or a list of them |
+| `setVenueStatus(venueStatus)` | `--venueStatus` | Status of the named venue |
+| `setHelp(detail=None)` | `--help` | `managers`, `tools`, `venues` or `examples` |
+| `setVersion(detail=None)` | `--version` | `client`, `server` or `distributor` |
+| `setDebug(debug=True)` | — | Turn debug reporting on |
+
+Each of these has a matching `reset` method that turns the request off
+again — a `SubmitCommand` object is reused across cells, so clear a query
+or a kill request before submitting real work with the same object.
+
+> **Note:** `setStdin`, `setDebug` and `setVersion` have no counterpart in
+> the `submit --help` transcript on the [submit command](01-submitcmd.md)
+> page. The transcript is the older of the two records; which matches your
+> hub could not be established here.
+
+## Examples
+
+Pass the arguments exactly as you would on the command line:
+
+```python
 submitCommand = SubmitCommand()
-result = submitCommand.submit(['-w','5',applicationCode,'--C','0.001','--Vin','3'])
+result = submitCommand.submit(['-w', '5', applicationCode, '--C', '0.001', '--Vin', '3'])
 ```
 
-Another option is build the command incrementally, one argument at a time.
+Here `-w 5` is a five minute walltime for `submit` itself, while `--C` and
+`--Vin` are arguments of the application and are passed through untouched.
 
-```
+Or build the command one setting at a time, print it, then run it:
+
+```python
 submitCommand = SubmitCommand()
 submitCommand.setWallTime(5)
-submitCommand.setVenue('OSGFactory')
+submitCommand.setVenue(venueName)
 submitCommand.setCommand(applicationCode)
-submitCommand.setCommandArguments(['--C','0.001','--Vin','3'])
+submitCommand.setCommandArguments(['--C', '0.001', '--Vin', '3'])
 submitCommand.show()
 result = submitCommand.submit()
 ```
+
+Take `venueName` from `submit --help venues` on your own hub; venue names
+differ from hub to hub, and a name that works on one hub means nothing on
+another.
+
+A long run is easier to live with detached, since the cell returns as soon
+as the job is launched:
+
+```python
+submitCommand.setDetach()
+result = submitCommand.submit()
+```
+
+Then query it later, from another cell, by its job id.

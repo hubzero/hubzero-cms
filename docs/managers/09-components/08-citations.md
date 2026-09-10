@@ -11,7 +11,7 @@ papers — that have cited the hub or something published on it. The
 component keeps a catalogue of them, links each one to the resource or
 publication it references, formats it with a bibliographic style you
 choose, and offers it for download in BibTeX or EndNote. The catalogue is
-on the site at `/citations`; the [Hub users](../../users/citations/README.md)
+on the site at `/citations`; the [Hub users](../../users/06-citations/README.md)
 book covers browsing, submitting, and importing.
 
 Open it in the administrator interface under **Components > Citations**.

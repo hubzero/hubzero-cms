@@ -229,7 +229,7 @@ echo Date::of('2013-08-12 17:01:34')->format('Y');    // "2013"
 echo Date::of('2013-08-12 17:01:34')->toLocal('g:i a'); // "1:01 pm"
 ```
 
-See [Dates](../05-basics/05-dates.md).
+See [Dates](../05-basics/10-dates.md).
 
 ## Users
 

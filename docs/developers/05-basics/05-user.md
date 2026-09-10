@@ -11,7 +11,7 @@ The `User` facade resolves
 which hands out
 [`Hubzero\User\User`](../../../core/libraries/Hubzero/User/User.php)
 objects. `Hubzero\User\User` is a
-[`Relational`](../database/orm.md) model over `#__users`, so everything the
+[`Relational`](../06-database/03-orm.md) model over `#__users`, so everything the
 ORM offers — `get()`, `set()`, `save()`, relationships, query scopes — is
 available on it.
 

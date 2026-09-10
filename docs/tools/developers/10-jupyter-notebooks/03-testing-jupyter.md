@@ -1,77 +1,107 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/testing-jupyter
 source-id: 3560
 modified: 2022-11-22
 imported: 2026-09-09
 -->
-# Testing Jupyter-based tools
+# Testing a Jupyter tool
 
-## Testing Jupyter-based tools
+Before you tell the pipeline your code is ready, run the invoke script by hand
+and open the notebook it starts. This catches the mistakes that are otherwise
+found by the hub's staff during installation: a missing kernel, a wrong path
+in the invoke script, a notebook that needs a network address the hub blocks.
 
-The proxied Jupyter tool is a useful place to develop code and analyses in a notebook style. Hub users can easily share their notebooks with other users by publishing notebooks as tools.
+> **Important:** The test below happens entirely on the tool execution
+> platform — the workspace tool, `invoke_app`, `start_jupyter` and the session
+> proxy. That platform is separate software and is **not in this repository**,
+> so the procedure could not be checked here; it is the written record carried
+> over from the platform documentation. The pipeline states it refers to are
+> CMS-side and were checked: see
+> [Tools](../../../managers/03-maintenance/02-tools.md) in the hub managers
+> book.
 
-These instructions take you through *testing* the deployment of a Jupyter notebook based tool. Here, we'll assume that the short name for your tool is *toolname*. To test the notebook tool, it's handy to use the hub's [Workspace](https://help.hubzero.org/tools/workspace) tool, since this allows you to fully test the deployment in the context of the hub.
+The example assumes your tool's short name is *toolname* and that you have
+checked its repository out into `~/apps/toolname`.
 
-### 1. Create the tool
+## 1. Have a tool to test
 
-Once you have your notebook working to your satisfaction on the hub, you next create the tool to house it, and edit the invoke script. Once this is done, it is time to test.
+Register the tool first, so that a repository exists and the invoke script is
+in it. Registration is a CMS form, and it is where you choose the **Web
+application (Jupyter, Rstudio, ...)** publishing option that makes this a
+Jupyter tool rather than a Rappture or Linux-GUI one. The form and the states
+that follow it are described in
+[Tools](../../../managers/03-maintenance/02-tools.md#registering-a-tool).
 
-NOTE that any new development, and any updates to existing tools, should make use of Debian10 containers. Develop these using the appropriate Jupyter tool and Workspace10.
+Ask your hub's administrators which container image new tools should be built
+against. It changes over time, and a tool built against a retired image is
+work you will have to redo.
 
-### 2. Test invoke the tool
+## 2. Run the invoke script
 
-From the Workspace10 tool, or the Jupyter terminal tool, navigate to the directory where your tool's repo is located. For a tool you've called *toolname* and stored in the apps subdirectory of your home, this will be something like:
+Start the hub's workspace tool, or open a terminal in the Jupyter tool, and
+run the script from the tool's `middleware` directory:
 
-```
-~/apps/toolname
-```
-
-Now, navigate to your tool's middleware directory, and call the invoke script for your tool, by typing:
-
-```
-cd middleware
+```bash
+cd ~/apps/toolname/middleware
 ./invoke
 ```
 
-Check the command line output to determine the success of your tool invoke call. Errors will display here if a problem is encountered. Use these to aid in your troubleshooting. If you see errors, you will need to revisit the tool sources, retesting to see if your fixes have worked, before going on with this procedure. Note that you may also see warnings displayed, as well as informational output. Neither warnings nor information indicate issues that need to be fixed.
+Read the output. Lines beginning `I` are informational and lines beginning `W`
+are warnings; neither means something is wrong. Errors do, and the notebook
+will not appear until they are fixed. Fix, commit, and run it again.
 
-A successful invoke script call will output in part:
+A successful run says:
 
-```
+```text
 The Jupyter notebook is running
 ```
 
-...followed by a lengthy URL that reads, in part:
+and prints a long URL under the hub's session proxy, of the form
+`https://proxy.yourhub.org/weber/...`.
 
-```
-https://proxy.yourhub.org/weber/
-```
+> **Note:** That URL is what the CMS hands the browser when a user launches
+> a published Jupyter tool. The middleware returns it, and the session
+> controller redirects to it rather than rendering a VNC session in the page,
+> after setting the session's authentication cookie. That much is CMS-side and
+> was checked in
+> [`sessions.php`](../../../../core/components/com_tools/site/controllers/sessions.php);
+> [Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the
+> administrators section describes it.
 
-Congratulations, your notebook-based tool is now running!
+## 3. Open the notebook
 
-### 3. Check the running notebook
+The URL only works from inside your session on the hub. That is deliberate: it
+keeps an unreleased tool off the public network.
 
-In the Workspace10 tool's command line output, note the informational output, denoted by lines starting in "I", and warning output, denoted by lines starting in "W", that is also displayed. These messages can be ignored safely; refer to the figure below.
+1. Copy the URL from the invoke output.
+2. Start a browser inside the workspace session, from the session's own
+   application menu.
+3. Paste the URL into it — inside a workspace, the middle mouse button pastes
+   the selection — and load it.
 
-Within the Workspace10 tool, you can now start a browser and paste into it the URL of the running Jupyter kernel. This test is not possible from outside your development environment, in order to protect your unreleased tool.
+What appears is your notebook running as a tool, in the
+[deployment style](01-jupyter-deployment-styles.md) your invoke script sets.
+Step through it as a user would.
 
-#### Copy the running kernel's URL
+## 4. Watch for blocked addresses
 
-First, locate and highlight the kernel URL provided in the output from the invoke script.
+Outbound network connections from a tool session are blocked by default. A
+notebook that fetches data from an external service will hang and time out
+here, and will do the same after publication.
 
-#### Start the Workspace10 browser
+Collect every address your notebook needs and put them in one support ticket:
+name the tool, list the addresses, and say what each is for. The hub's
+administrators decide whether to allow them. Doing this during testing is much
+faster than discovering it after the tool is installed.
 
-Start the Firefox browser from the Workspace tool's menu. To do so, click the black button at the bottom left of the Workspace10 and access the Firefox menu item.
+## 5. Stop
 
-#### Navigate to the running kernel
+Close the browser inside the workspace, then press Ctrl-C in the terminal
+running the invoke script. The prompt returns when the notebook has stopped.
 
-A browser window will display, running inside your Workspace tool session on your hub. Finally, click (mouse wheel or both mouse buttons) to paste the running Jupyter kernel's URL into the browser navigation bar, as shown in this graphic
-
-Now, the Workspace browser will display the running tool. This is the notebook running as a tool, and should be a good indication of how the tool will run once it is deployed.
-
-One important error type you should watch for is the URL timeout. If there are URLs that your notebook needs access to in order to run, they will likely time out during this test. Collect any such URLs and include them in a support ticket on your hub to your hub administrators. The administrator will need to approve (whitelist) these URLs in order for them to be accessible to your notebook once it is a deployed tool. Be sure to explain this in your ticket, and clearly identify the tool name and the reason each URL is needed.
-
-To stop testing, close the browser session running inside your Workspace10, then type "control-c" in the terminal where you called the invoke script. Once the prompt returns, your notebook kernel has stopped.
-
-You can make any adjustments needed to the underlying code before you flag your tool as Uploaded and continue with the deployment process.
+When the tool runs the way you want it to, commit and move the tool to
+**Uploaded** so the hub's staff can install it.

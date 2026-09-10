@@ -32,7 +32,7 @@ namespace standing in for an object in the application container.
 > before the line runs, so a rarely taken error path can carry the fault for
 > a long time; `php tools/lint/missing-facade-imports.php` finds them, and
 > it runs in continuous integration. See
-> [facades](../foundation/facades.md).
+> [facades](../03-foundation/04-facades.md).
 
 ## In this section
 

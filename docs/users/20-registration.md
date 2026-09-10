@@ -20,7 +20,7 @@ built into the software; the **Personal Information** fieldset in the middle
 is entirely the hub's own, and any of the standard fields can be made
 required, optional, read-only, or hidden. Administrators set that up on the
 **Users > Members > Registration** screen, described in the
-[Registration chapter](../managers/users/registration.md) of the Hub managers
+[Registration chapter](../managers/06-users/02-registration.md) of the Hub managers
 book.
 
 > **Note:** The images on this page were captured from an older release. The

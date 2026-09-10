@@ -17,7 +17,7 @@ There are four kinds, and each is found and run a different way.
 
 This page is the platform's side of that: what each kind is, and the code
 that loads it. The authoring side — package layout, manifests, parameters,
-languages, deployment — is in [Extensions](../extensions/README.md), and
+languages, deployment — is in [Extensions](../07-extensions/README.md), and
 each kind then has a book of its own.
 
 ## The four kinds
@@ -139,14 +139,14 @@ The templates that ship are in `core/templates`:
 | `welcome` | The first-run landing page |
 
 A template can override any extension's view without copying the extension.
-See [Overrides](../templates/overrides.md).
+See [Overrides](../11-templates/09-overrides.md).
 
 ## Languages
 
 A language is not an extension. It is a set of INI files and an XML metadata
 file, loaded by `Hubzero\Language\Translator`, and Hubzero ships `en-GB`
 only. Earlier versions of this page called languages a fifth extension type;
-they are not one. See [Languages](../basics/languages.md).
+they are not one. See [Languages](../05-basics/04-languages.md).
 
 ## Nothing scans the filesystem
 
@@ -154,6 +154,6 @@ Worth saying plainly, because it is the first thing that trips people up: a
 directory on disk is not an extension. Every loader above reads a database
 table. Copy a component into `app/components/` and visit its URL and you get
 a 404, because there is no `#__extensions` row; copy a plugin in and no
-event ever reaches it. A [migration](../database/migrations.md) writes that
+event ever reaches it. A [migration](../06-database/02-migrations.md) writes that
 row, which is why every extension ships one. See
-[Deploying extensions](../extensions/deployext.md).
+[Deploying extensions](../07-extensions/04-deployext.md).

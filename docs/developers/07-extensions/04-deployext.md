@@ -21,7 +21,7 @@ alone does nothing.
 > language strings are left behind. You cannot upload a `.zip` and have it
 > unpack itself, and any instruction that says otherwise, here or elsewhere,
 > is describing software this release does not have. See the
-> [Extension Manager](../../managers/extensions/extension-manager.md).
+> [Extension Manager](../../managers/10-extensions/04-extension-manager.md).
 
 Two ways remain, and they are the two below.
 
@@ -59,7 +59,7 @@ The type determines where the clone lands, under `PATH_APP`:
 | `non-standard` | `app/{alias}`, contents as they are |
 
 The full field-by-field description of the form is in the
-[Extension Manager](../../managers/extensions/extension-manager.md) chapter.
+[Extension Manager](../../managers/10-extensions/04-extension-manager.md) chapter.
 
 ## By hand
 
@@ -76,7 +76,7 @@ into place yourself.
    php core/bin/muse migration -e=com_example -f   # actually run it
    ```
 
-   That runs the extension's own [migrations](../database/migrations.md),
+   That runs the extension's own [migrations](../06-database/02-migrations.md),
    creating its tables and its `#__extensions` row. Without `-f` the runner
    only reports; `-e` restricts it to the one extension.
 
@@ -132,5 +132,5 @@ line:
 php core/bin/muse migration -f
 ```
 
-See [Migrations](../database/migrations.md) for what a migration can do and
+See [Migrations](../06-database/02-migrations.md) for what a migration can do and
 how the runner decides what is pending.

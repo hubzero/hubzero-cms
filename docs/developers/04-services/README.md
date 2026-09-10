@@ -25,7 +25,7 @@ rest of the request.
 Because the closure reads `$app['config']`, the service you get back depends
 on the hub's configuration. The cache store above is a real file cache on a
 hub with caching turned on and a do-nothing `None` store on one without.
-The [service providers](../foundation/providers.md) chapter covers the
+The [service providers](../03-foundation/03-providers.md) chapter covers the
 registration mechanism itself; the chapters here cover what each service
 does once you have it.
 
@@ -48,7 +48,7 @@ container under the same key and the facade will pick it up.
 > `Your\Namespace\Filesystem`, which does not exist — a fatal error the
 > moment the line runs. Import each facade you use (`use Filesystem;`) or
 > write it fully qualified (`\Filesystem::exists(...)`). See
-> [facades](../foundation/facades.md).
+> [facades](../03-foundation/04-facades.md).
 
 Not every client registers every service. `Cache`, `Session`, `Module`,
 `Pathway`, `Notify`, `Document` and `Html` are site and administrator only;
@@ -69,4 +69,4 @@ list is its own `aliases.php`.
 - [Server](server.md) — serving a file off disk as a download.
 
 Configuration, requests, responses, language, dates and users are covered in
-[the basics](../basics/README.md).
+[the basics](../05-basics/README.md).

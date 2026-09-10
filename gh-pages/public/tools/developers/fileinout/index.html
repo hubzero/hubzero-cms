@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Importing and exporting user files · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Overview We provide two scripts to facilitate the uploading and downloading of files for a tool. This allows users to upload their own input file to the tool…">
+  <title>Getting files in and out of a tool session · Tools · Hubzero Documentation</title>
+  <meta name="description" content="A tool session runs on a hub execution host, not on the member&#x27;s computer. Two commands move files across that gap: uploads a file from the desktop into the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/fileinout/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,48 +46,50 @@
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Importing and exporting user files</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting files in and out of a tool session</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-two-commands">The two commands</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-filexfer-comes-from">Where filexfer comes from</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-cms-contributes">What the CMS contributes</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="exportfile/index.html">Export File</a></li>
+<li class="tree__leaf"><a class="tree__link" href="importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -101,22 +103,95 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Importing and exporting user files</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Getting files in and out of a tool session</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Importing and exporting user files</h1>
+          <h1>Getting files in and out of a tool session</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/fileinout">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
-        <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>We provide two scripts to facilitate the uploading and downloading of files for a tool. This allows users to upload their own input file to the tool via the web interface. The export script allows a user to download a tool simulation result directly from the tool via the web interface without accessing their home directory separately.</p>
-<p>Both scripts are included in the filexfer application. filexfer can be used as a secondary application with standard tools as a means for users to transfer files between their computer and tool sessions. Rappture tools do not need the secondary application as file transfer methods are already included in the UI.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="importfile/index.html">Import File</a></li>
-<li><a href="exportfile/index.html">Export File</a></li></ul></section>
-        </div>
         
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../toolpaths/toolpathsresults/index.html" rel="prev"><span>Previous</span>Tool Generated Files</a><a class="pager__next" href="importfile/index.html" rel="next"><span>Next</span>Import File</a></nav>
+        <div class="prose">
+<p>A tool session runs on a hub execution host, not on the member's computer. Two
+commands move files across that gap: <code>importfile</code> uploads a file from the
+desktop into the session, and <code>exportfile</code> sends a file from the session back
+to the desktop. Both are part of the filexfer package.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <code>importfile</code>, <code>exportfile</code> and filexfer belong to the tool
+execution platform. That platform is separate software and is <strong>not in this
+repository</strong>, so the commands, their options and their behaviour could not
+be verified here; they are the written record carried over from the 2.4
+documentation. The one part of this mechanism that is in the CMS — the
+stylesheets the transfer pages load — is described below and was checked
+against <code>com_tools</code>.</p>
+</aside>
+<h2 id="the-two-commands">The two commands</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Direction</th>
+<th>Page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>importfile</code></td>
+<td>Desktop into the session</td>
+<td><a href="importfile/index.html">Import file</a></td>
+</tr>
+<tr>
+<td><code>exportfile</code></td>
+<td>Session out to the desktop</td>
+<td><a href="exportfile/index.html">Export file</a></td>
+</tr>
+</tbody>
+</table>
+<p>Both work by opening a page in the member's browser, so the browser must allow
+pop-ups from the hub for either to complete.</p>
+<h2 id="where-filexfer-comes-from">Where filexfer comes from</h2>
+<p>filexfer is a helper program started alongside a tool, not something the tool
+links against. A tool asks for it in its invoke script, with the <code>-c</code> option
+that runs a command in the background before the tool starts:</p>
+<pre><code class="language-sh">/usr/bin/invoke_app &quot;$@&quot; -t toolname -C toolname -c filexfer
+</code></pre>
+<p>See <a href="../invoke/index.html">Launching tools with invoke scripts</a> for the rest of the
+invoke_app options, and <a href="../accesshomedir/filexfer/index.html">filexfer</a> for the
+graphical front end members can run themselves inside a workspace.</p>
+<p>A tool that never needs a file from the member does not need filexfer, and
+leaving it out of the invoke script is the normal thing to do.</p>
+<p>Tools that carry their own transfer controls do not need these commands
+either. Rappture tools have upload and download built into the Rappture user
+interface, and a Jupyter notebook tool has Jupyter's own file browser.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Rappture is deprecated. Its site now redirects to a nanoHUB page
+that is not readable without an account. Hubs still run Rappture tools, but
+a Jupyter notebook is the current path for a new tool on most hubs — see
+<a href="../jupyter-notebooks/index.html">Jupyter Notebooks</a>.</p>
+</aside>
+<h2 id="what-the-cms-contributes">What the CMS contributes</h2>
+<p>The transfer pages that pop up are served by the hub, and their styling is
+template-overridable. <code>com_tools</code> answers <code>/tools/assets/css/&lt;file&gt;.css</code> by
+looking for the named stylesheet in three places, in order:</p>
+<ol>
+<li>the active site template's <code>css</code> directory,</li>
+<li>the component's <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_tools/site/assets/css"><code>site/assets/css</code></a> directory,</li>
+<li>the component's <code>site/css</code> directory.</li>
+</ol>
+<p>The first one that exists is returned as <code>text/css</code>; if none exists the
+request gets a 404. The component ships
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/site/assets/css/upload.css"><code>upload.css</code></a>
+and
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/site/assets/css/download.css"><code>download.css</code></a>
+containing nothing but their licence header, so they are hooks: put a file of
+the same name in the template and the transfer pages pick it up. The older
+<code>/tools/site_css.css</code> route works the same way and has no shipped file behind
+it at all.</p>
+<p>Nothing else about file transfer is decided in the CMS.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="importfile/index.html">Import file</a></li>
+<li><a href="exportfile/index.html">Export file</a></li></ul></section>
+        </div>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../toolpaths/toolpathsresults/index.html" rel="prev"><span>Previous</span>Tool generated files</a><a class="pager__next" href="importfile/index.html" rel="next"><span>Next</span>Import file</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/08-fileinout/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

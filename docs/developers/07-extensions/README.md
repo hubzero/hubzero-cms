@@ -19,8 +19,8 @@ plugins, modules and templates sitting on top of it.
 This section covers what all four kinds have in common: what a package must
 contain, how parameters are declared, how strings are translated, and how
 code gets onto a running hub. Each kind then has its own chapter set —
-[Components](../components/README.md), [Plugins](../plugins/README.md),
-[Modules](../modules/README.md), [Templates](../templates/README.md) — for
+[Components](../09-components/README.md), [Plugins](../10-plugins/README.md),
+[Modules](../08-modules/README.md), [Templates](../11-templates/README.md) — for
 the parts that differ.
 
 ## The four kinds
@@ -42,7 +42,7 @@ main content area. A menu is, in effect, a switch between components.
 
 A component is the only kind with three faces: `site/` for hub visitors,
 `admin/` for the administrator interface, and `api/` for the REST API. See
-[Components](../components/README.md).
+[Components](../09-components/README.md).
 
 ### Plugins
 
@@ -54,7 +54,7 @@ directory: `plugins/authentication/`, `plugins/content/`,
 `plugins/members/`. Most of the CMS's pluggable behaviour — the tabs on a
 group page, the login methods, the cron jobs — is a plugin group. The
 [events reference](../../reference/events/README.md) lists what the tree
-triggers. See [Plugins](../plugins/README.md).
+triggers. See [Plugins](../10-plugins/README.md).
 
 ### Modules
 
@@ -62,7 +62,7 @@ A module renders a small block of HTML into a named position in the
 template: a login form, a breadcrumb trail, a list of recent entries. It
 never owns the request. The same module can be published in different
 positions on different templates and appear several times with different
-parameters. See [Modules](../modules/README.md).
+parameters. See [Modules](../08-modules/README.md).
 
 ### Templates
 
@@ -70,7 +70,7 @@ A template is the page around whatever the component produced — the markup,
 the CSS, the positions modules render into, and the error and offline pages.
 The templates that ship are in `core/templates`: `kimera` for the site,
 `kameleon` for the administrator interface, plus `system`, `lucent` and
-`welcome`. See [Templates](../templates/README.md).
+`welcome`. See [Templates](../11-templates/README.md).
 
 > **Note:** The old version of this page listed languages as a fifth
 > extension type. A language pack is a set of INI files and an XML metadata
@@ -91,7 +91,7 @@ find, so a hub replaces a core extension by putting a directory of the same
 name under `app/`. That is an all-or-nothing replacement: once
 `app/components/com_blog` exists, nothing under `core/components/com_blog`
 is used. To change a few files rather than a component, use a
-[template override](../templates/overrides.md) instead.
+[template override](../11-templates/09-overrides.md) instead.
 
 The class loader,
 [`Hubzero\Base\ClassLoader`](../../../core/libraries/Hubzero/Base/ClassLoader.php),
@@ -109,8 +109,8 @@ receives an event. The row also holds the extension's parameters, in its
 `params` column.
 
 An extension creates its own row from a
-[migration](../database/migrations.md).
-[Extensions](../foundation/extensions.md) in the Foundation section covers
+[migration](../06-database/02-migrations.md).
+[Extensions](../03-foundation/05-extensions.md) in the Foundation section covers
 each loader in detail; [Requirements](01-extreqs.md) covers what else a
 package must carry.
 

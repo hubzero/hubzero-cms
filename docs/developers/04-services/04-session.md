@@ -107,7 +107,7 @@ token that member sees after logging in are different values.
 The provider puts two things into every new session: a `user` holding a
 `Hubzero\User\User`, and a `registry` holding a
 `Hubzero\Config\Registry`. The registry is what
-[`User::getState()` and `User::setState()`](../basics/user.md) read and
+[`User::getState()` and `User::setState()`](../05-basics/05-user.md) read and
 write, and what `Request::getState()` uses to remember a list screen's
 filters between requests. Use those rather than writing filter state into
 the session yourself.

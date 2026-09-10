@@ -94,4 +94,4 @@ shows missing-table errors there rather than an empty report. The terms it
 uses are defined in
 [Simulation usage definitions](simusagedefinitions.md); the administrator's
 view of the same problem is in
-[Usage](../managers/components/usage.md) in the Hub managers book.
+[Usage](../managers/09-components/37-usage.md) in the Hub managers book.

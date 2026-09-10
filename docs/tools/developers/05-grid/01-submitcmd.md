@@ -1,90 +1,58 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ e097e0236d
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/submitcmd
 source-id: 3540
 modified: 2009-12-01
 imported: 2026-09-09
 -->
-# Submit Command
+# Submit command
 
-## Overview
+`submit` takes a command you would run in a tool session and runs it
+somewhere else — a cluster, a campus resource, a national one — then brings
+the results back. You write the command the way you always would and put
+`submit` and its options in front of it.
 
-submit takes a user command and executes it remotely. The objective is to allow the user to issue a command in the same manner as a locally executed command. Multiple submission mechanisms are available for run dissemination. A set of steps are executed for each run submission:
+> **Note:** `submit` belongs to the tool execution platform, which is
+> separate software and is **not in this repository**. None of this page
+> could be checked against the code here. The option list below is a
+> transcript of one hub's client, reorganised and made internally
+> consistent; treat `submit --help` on your own hub as the authority on
+> what your client accepts and which venues and tools you may use.
 
-- Destination site is selected
-- A wrapper script is generated for remote execution
-- If needed a batch system description file is generated.
-- Input files for a run are gathered and transferred to the remote site. Transferred files include the wrapper and batch description scripts.
-- The wrapper script is executed remotely.
-- Progress of the remote run is monitored until completion.
-- Output files from the run are returned to the dissemination point.
+## What a run does
 
-## Command Syntax
+Each submission goes through the same steps.
 
-submit command options can be determined by using the help parameter of the submit command.
+1. A destination venue is selected.
+2. A wrapper script is generated for remote execution.
+3. A batch system description file is generated, if the venue needs one.
+4. Input files are gathered into a tarball and transferred to the remote
+   site, along with the wrapper and batch scripts.
+5. The wrapper script runs remotely.
+6. Progress is monitored until the run completes.
+7. Output files are returned.
 
-```
-$ submit --help
-Usage: submit [options]
+## Finding out what your hub offers
 
-Options:
-  -h, --help            Report command usage. Optionally request listing of
-                        managers, tools, venues, or examples.
-  -l, --local           Execute command locally
-  --status              Report status for runs executing remotely.
-  -k, --kill            Kill runs executing remotely.
-  --venueStatus         Report venue status.
-  -v, --venue           Remote job destination
-  -i, --inputfile       Input file
-  -p, --parameters      Parameter sweep variables. See examples.
-  -d, --data            Parametric variable data - csv format
-  -s SEPARATOR, --separator=SEPARATOR
-                        Parameter sweep variable list separator
-  -n NCPUS, --nCpus=NCPUS
-                        Number of processors for MPI execution
-  -N PPN, --ppn=PPN     Number of processors/node for MPI execution
-  --stripes=NSTRIPES    Number of parallel local jobs when doing parametric
-                        sweep
-  -w WALLTIME, --wallTime=WALLTIME
-                        Estimated walltime hh:mm:ss or minutes
-  -e, --env             Variable=value
-  --runName=RUNNAME     Name used for directories and files created during the
-                        run. Restricted to alphanumeric characters
-  -m, --manager         Multiprocessor job manager
-  -r NREDUNDANT, --redundancy=NREDUNDANT
-                        Number of identical simulations to execute in parallel
-  -M, --metrics         Report resource usage on exit
-  --detach              Detach client after launching run
-  --attach=ATTACHID     Attach to previously detached started server
-  -W, --wait            Wait for reduced job load before submission
-  -Q, --quota           Enforce local user quota on remote execution host
-  -q, --noquota         Do not enforce local user quota on remote execution
-                        host
-  --tailStdout          Periodically report tail of stdout file.
-  --tailStderr          Periodically report tail of stderr file.
-  --tail                Periodically report tail of application file.
-  --progress            Show progress method. Choices are auto, curses,
-                        submit, text, pegasus, or silent.
-  --asynchronous        Asynchronous simulation - results will not be returned
-```
+`submit --help` prints the option list. It also takes an argument, and the
+lists it prints are generated for you from your hub's configuration and
+your own permissions, so they differ from hub to hub and from user to user.
 
-Additional information is available by requesting user specific lists of choices for some command options. The available option lists are generated for a user based on configured restrictions and availability. The values listed here are for example only and may not be available on all HUBs.
+| Command | Prints |
+|---|---|
+| `submit --help` | The option list |
+| `submit --help tools` | Pre-staged applications you may run |
+| `submit --help venues` | Destinations you may send a run to |
+| `submit --help managers` | Multiprocessor job managers you may ask for |
+| `submit --help examples` | The parameter sweep examples, reproduced below |
 
-```
-$ submit --help tools
+The lists look like this. The names are examples only; nothing here is
+guaranteed to exist on your hub.
 
-Currently available TOOLs are:
-   lammps-03Mar20-parallel
-   lammps-03Mar20-serial
-   lammps-05Jun19-parallel
-   lammps-05Jun19-serial
-   lammps-11Aug17-parallel
-   lammps-11Aug17-serial
-   lammps-22Aug18-parallel
-   lammps-22Aug18-serial
-   lammps-31Mar17-parallel
-   lammps-31Mar17-serial
-
+```text
 $ submit --help venues
 
 Currently available VENUES are:
@@ -97,206 +65,283 @@ Currently available VENUES are:
 $ submit --help managers
 
 Currently available MANAGERs are:
-   lammps-03Mar20_mpi
-   lammps-03Mar20_serial
-   lammps-05Jun19_mpi
-   lammps-05Jun19_serial
-   lammps-11Aug17_mpi
-   lammps-11Aug17_serial
-   lammps-22Aug18_mpi
-   lammps-22Aug18_serial
-   lammps-31Mar17_mpi
-   lammps-31Mar17_serial
    mpi
    mpich
    mpirun
    parallel
    serial
+   lammps-03Mar20_mpi
+   lammps-03Mar20_serial
 ```
 
-Examples of how to use the submit command to execute parameter sweeps are provided by asking for help on examples.
+## Options
 
-```
-$ submit --help examples
-Usage: submit [options]
+### Running and controlling runs
 
-Options:
-  -h, --help            Report command usage. Optionally request listing of
-                        managers, tools, venues, or examples.
-  -l, --local           Execute command locally
-  --status              Report status for runs executing remotely.
-  -k, --kill            Kill runs executing remotely.
-  --venueStatus         Report venue status.
-  -v, --venue           Remote job destination
-  -i, --inputfile       Input file
-  -p, --parameters      Parameter sweep variables. See examples.
-  -d, --data            Parametric variable data - csv format
-  -s SEPARATOR, --separator=SEPARATOR
-                        Parameter sweep variable list separator
-  -n NCPUS, --nCpus=NCPUS
-                        Number of processors for MPI execution
-  -N PPN, --ppn=PPN     Number of processors/node for MPI execution
-  --stripes=NSTRIPES    Number of parallel local jobs when doing parametric
-                        sweep
-  -w WALLTIME, --wallTime=WALLTIME
-                        Estimated walltime hh:mm:ss or minutes
-  -e, --env             Variable=value
-  --runName=RUNNAME     Name used for directories and files created during the
-                        run. Restricted to alphanumeric characters
-  -m, --manager         Multiprocessor job manager
-  -r NREDUNDANT, --redundancy=NREDUNDANT
-                        Number of identical simulations to execute in parallel
-  -M, --metrics         Report resource usage on exit
-  --detach              Detach client after launching run
-  --attach=ATTACHID     Attach to previously detached started server
-  -W, --wait            Wait for reduced job load before submission
-  -Q, --quota           Enforce local user quota on remote execution host
-  -q, --noquota         Do not enforce local user quota on remote execution
-                        host
-  --tailStdout          Periodically report tail of stdout file.
-  --tailStderr          Periodically report tail of stderr file.
-  --tail                Periodically report tail of application file.
-  --progress            Show progress method. Choices are auto, curses,
-                        submit, text, pegasus, or silent.
-  --asynchronous        Asynchronous simulation - results will not be returned
+| Option | Meaning |
+|---|---|
+| `-h`, `--help [tools\|venues\|managers\|examples]` | Report command usage, or one of the lists above |
+| `-l`, `--local` | Execute the command in the tool session instead of sending it away |
+| `--status` | Report status for runs executing remotely |
+| `-k`, `--kill` | Kill runs executing remotely |
+| `--venueStatus` | Report venue status |
 
-Parameter examples:
+### Choosing where the run goes
 
-submit -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+| Option | Meaning |
+|---|---|
+| `-v`, `--venue` | Remote job destination |
+| `-m`, `--manager` | Multiprocessor job manager |
+| `-r N`, `--redundancy=N` | Number of identical simulations to execute in parallel |
 
-        Submit 3 jobs. The @:indeck means "use the file indeck as a template
-file." Substitute the values 10pf, 100pf, and 1uf in place of @@cap within the
-file. Send off one job for each of the values and bring back the results.
+### Asking for resources
 
-submit -p @@vth=0:0.2:5 -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+| Option | Meaning |
+|---|---|
+| `-n N`, `--nCpus=N` | Number of processors for MPI execution |
+| `-N N`, `--ppn=N` | Number of processors per node for MPI execution |
+| `-w`, `--wallTime` | Estimated walltime, `hh:mm:ss` or minutes |
+| `-e`, `--env` | Set an environment variable, `Variable=value` |
+| `-W`, `--wait` | Wait for reduced job load before submitting |
+| `-Q`, `--quota` | Enforce local user quota on the remote execution host |
+| `-q`, `--noquota` | Do not enforce local user quota on the remote execution host |
 
-        Submit 78 jobs. The parameter @@vth goes from 0 to 5 in steps of 0.2,
-so there are 26 values for @@vth. For each of those values, the parameter
-@@cap changes from 10pf to 100pf to 1uf. 26 x 3 = 78 jobs total. Again
-@:indeck is treated as a template, and the values are substituted in place of
-@@vth and @@cap in that file.
+### Files
 
-submit -p params sim.exe @:indeck
+| Option | Meaning |
+|---|---|
+| `-i`, `--inputfile` | Send an extra input file or directory tree with the run |
+| `--runName=NAME` | Name used for directories and files created during the run. Alphanumeric characters only |
 
-        In this case, parameter definitions are taken from the file named
-params instead of the command line. The file might have the following
-contents:
+### Sweep options
 
-                # paramters for my job submission
-                parameter @@vth=0:0.2:5
-                parameter @@cap = 10pf,100pf,1uf
+| Option | Meaning |
+|---|---|
+| `-p`, `--parameters` | Parameter sweep variables, or a file of them |
+| `-d`, `--data` | Parametric variable data, in csv format |
+| `-s SEP`, `--separator=SEP` | Separator for parameter value lists |
+| `--stripes=N` | Number of parallel local jobs when doing a parametric sweep |
 
-submit -p "params;@@num=1-10;@@color=blue" job.sh @:job.data
+### Watching a run
 
-        For someone who loves syntax and complexity... The semicolon separates
-the parameters value into three parts. The first says to load parameters from
-a file params. The next part says add an additional parameter @@num that goes
-from 1 to 10. The last part says add an additional parameter @@color with a
-single value blue. The parameters @@num and @@color cannot override anything
-defined within params; they must be new parameter names.
+| Option | Meaning |
+|---|---|
+| `--progress` | Progress display: `auto`, `curses`, `submit`, `text`, `pegasus` or `silent` |
+| `--tailStdout` | Periodically report the tail of the standard output file |
+| `--tailStderr` | Periodically report the tail of the standard error file |
+| `--tail` | Periodically report the tail of an application file |
+| `-M`, `--metrics` | Report resource usage on exit |
+| `--detach` | Detach the client after launching the run |
+| `--attach=ID` | Attach to a previously detached run |
+| `--asynchronous` | Asynchronous simulation; results are not returned |
 
-submit -d input.csv sim.exe @:indeck
+> **Note:** The Python interface described in
+> [Submitting from a Jupyter notebook](04-jupyter_submit.md) also offers
+> `--stdin`, `--debug` and `--version`, which do not appear in the option
+> transcript above. The transcript is older than the Python class, and
+> which of the two matches your hub could not be established here. Check
+> `submit --help` before relying on any of the three.
 
-        Takes parameters from the data file input.csv, which must be in comma-
-separated value format. The first line of this file may contain a series of
-@@param names for each of the columns. Whitespace is significant for all
-values entered in the csv file. If it doesn't, then the columns are assumed to
-be called @@1, @@2, @@3, etc. Each of the remaining lines represents a set of
-parameter values for one job; if there are 100 such lines, there will be 100
-jobs. For example, the file input.csv might look like this:
+## Running a command remotely
 
-                @@vth,@@cap
-                1.1,1pf
-                2.2,1pf
-                1.1,10pf
-                2.2,10pf
-
-        Parameters are substituted as before into template files such as
-@:indeck.
-
-submit -d input.csv -p "@@doping=1e15-1e17 in 30 log" sim.exe @:infile
-
-        Takes parameters from the data file input.csv, but also adds another
-parameter @@doping which goes from 1e15 to 1e17 in 30 points on a log scale.
-For each of these points, all values in the data file will be executed. If the
-data file specifies 50 jobs, then this command would run 30 x 50 = 1500 jobs.
-
-submit -d input.csv -i @:extra/data.txt sim.exe @:indeck
-
-        In addition to the template indeck file, send along another file
-extra/data.txt with each job, and treat it as a template too.
-
-submit -s / -p @@address=23 Main St.,Hometown,Indiana/42
-Broadway,Hometown,Indiana -s , -p @@color=red,green,blue job.sh @:job.data
-
-        Change the separator to slash when defining the addresses, then change
-back to comma for the @@color parameter and any remaining arguments. We
-shouldn't have to change the separator often, but it might come in handy if
-the value strings themselves have commas.
-
-submit -p @@num=1:1000 sim.exe input@@num
-
-        Submit jobs 1,2,3,...,1000. Parameter names such as @@num are
-recognized not only in template files, but also for arguments on the command
-line. In this case, the numbers 1,2,3,...,1000 are substituted into the file
-name, so the various jobs take their input from "input1", "input2", ...,
-"input1000".
-
-submit -p @@file=glob:indeck* sim.exe @@file
-
-        Look for files matching indeck* and use the list of names as the
-parameter @@file. Those values could be substituted into other template files,
-or used on the command line as in this example. Suppose the directory contains
-files indeck1, indeck10, and indeck2.  The glob option will order the files in
-a natural order: indeck1, indeck2, indeck10.  This example would launch three
-jobs using each of those files as input for the job.
-
-submit -p @@file=globnat:indeck* sim.exe @@file
-
-        This option has been deprecated.  The functionality is now available
-with the glob option.
-```
-
-By specifying a suitable set of command line parameters it is possible to execute commands on configured remote systems. The simple premise is that a typical command line can be prefaced by submit and its arguments to execute the command remotely.
-
-```
+```text
 $ submit -v clusterA echo Hello world!
 Hello world!
 ```
 
-In this example the echo command is executed on the venue named clusterA where runs are executed directly on the host. Execution of the same command on a cluster using a batch scheduler such as SLURM would be done in a similar fashion
+Here `echo` runs on the venue `clusterA`, which executes runs directly on
+the host, so the output comes straight back. On a venue that puts the run
+through a batch scheduler, `submit` reports the job through the queue and
+leaves the output in files instead.
 
-```
+```text
 $ submit -v clusterB echo Hello world!
-(2586337) Simulation Queued Wed Oct  7 14:45:21 2009
-(2586337) Simulation Done Wed Oct  7 14:54:36 2009
+(00577296) Simulation Queued Wed Oct  7 14:45:21 2020
+(00577296) Simulation Done Wed Oct  7 14:54:36 2020
 $ cat 00577296.stdout
 Hello world!
 ```
 
-submit supports an extensible variety of submission mechanisms. HUBzero supported submission mechanisms are
+The number in parentheses is the run id, and it names the output files.
 
-- local - use batch submission mechanisms available directly on the submit host. These include condorHT, and Pegasus batch queue submission.
-- ssh - direct use of ssh. Submit manages access to a venue using a common ssh key, essentially serving as a proxy for the HUB user.
-- ssh + remote batch submission - use ssh to do batch run submission remotely. Again methods for common batch schedulers PBS, condorHT, Pegasus, and SLURM are provided. Additional interfaces to SGE, Load Leveler, BOINC, LSF, and Tapis are also available.
+## Parameter sweeps
 
-In addition to single site submission the -r/--redundancy option provides the option to simultaneously submit runs to multiple remote venues. In such cases the successful completion of a run at one venue cancels runs at all other venues. If none of the runs are successful results from one of the runs are returned to the user. Redundant submission is not allowed when performing parametric sweeps.
+A sweep declares substitutable parameters named `@@something`. `submit`
+substitutes their values into template files and into command arguments,
+and runs one job per combination. A file argument written `@:name` is
+treated as a template rather than copied as it is.
 
-A venue for remote execution is selected in one of the following ways, listed in order of precedence:
+| Written as | Means |
+|---|---|
+| `@@cap=10pf,100pf,1uf` | The three values listed |
+| `@@num=1:1000` | 1, 2, 3, … 1000 |
+| `@@vth=0:0.2:5` | 0 to 5 in steps of 0.2, so 26 values |
+| `@@doping=1e15-1e17 in 30 log` | 30 points from 1e15 to 1e17 on a log scale |
+| `@@file=glob:indeck*` | The names of the files matching the pattern, in natural order |
+| `-p params` | Parameter definitions read from the file `params` |
+| `-p "params;@@num=1-10;@@color=blue"` | The file `params`, plus two more parameters |
 
-- Execute the command within the user tool session, -l/--local option
-- User specified on the command line with -v/--venue option.
-- Randomly selected from remote sites associated with pre-staged application.
-- Select randomly from all configured sites
+Values are separated by commas unless `-s` changes the separator.
 
-Venues that do not meet the resource requirements of the run request are not considered. Venues are typically configured with limits on the number of cores, walltime, or core-hours.
+> **Note:** `globnat:` is deprecated. `glob:` now sorts in natural order —
+> `indeck1`, `indeck2`, `indeck10` rather than `indeck1`, `indeck10`,
+> `indeck2` — so use `glob:` for both.
 
-Any files specified by the user plus internally generated scripts are packed into a tarball for delivery to the remote site. Individual files or entire directory trees may be listed as command inputs using the -i/--inputfile option. In addition, command arguments that exist as files or directories will be packed into the tarball. If using ssh based submission mechanisms the tarball is transferred using scp.
+### Examples
 
-The job wrapper script is executed remotely either directly or submitted to a batch queue. The job is subject to all remote queuing restrictions and idiosyncrasies.
+These are the examples `submit --help examples` prints.
 
-Remote batch jobs are monitored for progress. Methods appropriate to the batch queuing system are used to check job status at a configurable frequency. A typical frequency is on the order one minute. Job status changes are reported to the user. The maximum time between reports to the user is set on the order of five minutes even in the absence of change. The job status is used to detect job completion.
+```text
+submit -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+```
 
-The same methods used to transfer input files are applied in reverse to retrieve output files. Any files and directories created or modified by the application are be retrieved. A tarball is retrieved and expanded to the home base directory. It is up to the user to avoid the overwriting of files.
+Submit 3 jobs. `@:indeck` means "use the file indeck as a template file".
+Substitute the values 10pf, 100pf and 1uf in place of `@@cap` in the file,
+send off one job for each value, and bring back the results.
 
-In addition to the application generated output files additional files are generated in the course of remote run execution. Some of these files are for internal bookkeeping and are consumed by submit, a few files however remain in the home base directory. The remaining files include RUNID.stdout and RUNID.stderr, it is also possible that a second set of standard output/error files will exist containing the output from the batch job submission script. By default, RUNID represents unique job identifier assigned by submit. If preferred a user can specify a different RUNID using the --runName command argument.
+```text
+submit -p @@vth=0:0.2:5 -p @@cap=10pf,100pf,1uf sim.exe @:indeck
+```
+
+Submit 78 jobs. `@@vth` goes from 0 to 5 in steps of 0.2, so there are 26
+values. For each of those, `@@cap` takes its three values: 26 x 3 = 78 jobs.
+Both parameters are substituted into the template.
+
+```text
+submit -p params sim.exe @:indeck
+```
+
+Take the parameter definitions from a file named `params` instead of the
+command line. The file might read:
+
+```text
+# parameters for my job submission
+parameter @@vth=0:0.2:5
+parameter @@cap = 10pf,100pf,1uf
+```
+
+```text
+submit -p "params;@@num=1-10;@@color=blue" job.sh @:job.data
+```
+
+The semicolons split the value into three parts. The first loads parameters
+from the file `params`. The second adds a parameter `@@num` running from 1
+to 10. The third adds `@@color` with the single value `blue`. `@@num` and
+`@@color` must be new names; they cannot override anything defined in
+`params`.
+
+```text
+submit -d input.csv sim.exe @:indeck
+```
+
+Take the parameters from the comma-separated file `input.csv`. Each line
+after the first is one job's parameter values, so 100 lines means 100 jobs.
+The first line may name the columns with `@@param` names; if it does not,
+the columns are called `@@1`, `@@2`, `@@3` and so on. Whitespace is
+significant in every value in the file. For example:
+
+```text
+@@vth,@@cap
+1.1,1pf
+2.2,1pf
+1.1,10pf
+2.2,10pf
+```
+
+Parameters are substituted into template files such as `@:indeck` as before.
+
+```text
+submit -d input.csv -p "@@doping=1e15-1e17 in 30 log" sim.exe @:infile
+```
+
+Take the parameters from `input.csv` and add `@@doping`, which runs from
+1e15 to 1e17 in 30 points on a log scale. Every value in the data file runs
+at each of those points, so a data file of 50 jobs gives 30 x 50 = 1500 jobs.
+
+```text
+submit -d input.csv -i @:extra/data.txt sim.exe @:indeck
+```
+
+Besides the template indeck file, send `extra/data.txt` with each job and
+treat it as a template too.
+
+```text
+submit -s / -p @@address=23 Main St.,Hometown,Indiana/42 Broadway,Hometown,Indiana \
+       -s , -p @@color=red,green,blue job.sh @:job.data
+```
+
+Change the separator to a slash while defining the addresses, then change it
+back to a comma for `@@color` and everything after it. This is worth doing
+when the values themselves contain commas.
+
+```text
+submit -p @@num=1:1000 sim.exe input@@num
+```
+
+Submit jobs 1, 2, 3, … 1000. Parameter names are recognised in command line
+arguments as well as in template files, so here the numbers are substituted
+into the file name and each job reads `input1`, `input2`, … `input1000`.
+
+```text
+submit -p @@file=glob:indeck* sim.exe @@file
+```
+
+Use the names of the files matching `indeck*` as the values of `@@file`.
+If the directory holds `indeck1`, `indeck10` and `indeck2`, this launches
+three jobs, one per file, in natural order.
+
+## How a venue is chosen
+
+The first of these that applies wins.
+
+1. `-l`/`--local` runs the command in your tool session.
+2. `-v`/`--venue` names a destination.
+3. A site is chosen at random from those holding the pre-staged application.
+4. A site is chosen at random from all configured sites.
+
+Venues that cannot meet the run's resource request are not considered.
+Venues are usually configured with limits on cores, walltime or core-hours.
+
+`-r`/`--redundancy` sends the same run to more than one venue at once. The
+first one to finish successfully cancels the others; if none succeed, the
+results of one of them are returned. Redundant submission is not allowed
+with parameter sweeps.
+
+## Submission mechanisms
+
+`submit` supports several mechanisms, and the set is extensible.
+
+- **local** — batch submission available on the submit host itself,
+  including condorHT and Pegasus queue submission.
+- **ssh** — direct use of ssh. `submit` manages access to a venue with a
+  shared key and acts as a proxy for the hub user.
+- **ssh with remote batch submission** — ssh to the venue and submit there.
+  Methods are provided for PBS, condorHT, Pegasus and SLURM, with further
+  interfaces to SGE, Load Leveler, BOINC, LSF and Tapis.
+
+## Files in and files out
+
+Files you name and the scripts `submit` generates are packed into a tarball
+for delivery. Individual files and whole directory trees can be listed with
+`-i`/`--inputfile`, and command arguments that name existing files or
+directories are packed too. With the ssh mechanisms the tarball travels by
+`scp`.
+
+The wrapper script then runs remotely, directly or through a batch queue,
+and the job is subject to every restriction of that queue.
+
+Remote batch jobs are monitored with the methods appropriate to the queuing
+system, at a configurable frequency — typically about a minute. Status
+changes are reported to you as they happen, and a report is made at least
+every few minutes even when nothing has changed. Completion is detected the
+same way.
+
+Output travels back the way the input came. Any file or directory the
+application created or changed is retrieved as a tarball and expanded into
+your home base directory. **Nothing stops it overwriting what is already
+there**, so keep runs in their own directories.
+
+Alongside the application's own output, a run leaves `RUNID.stdout` and
+`RUNID.stderr` in the home base directory, and possibly a second pair
+holding the output of the batch submission script itself. `RUNID` is the
+identifier `submit` assigns, unless `--runName` gave it one.

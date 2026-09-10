@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WebDAV · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Accessing your home directory via WebDAV WebDAV is the Distributed Authoring and Versioning extension to the standard HTTP/HTTPS web protocol. It allows a…">
+  <meta name="description" content="WebDAV is the Distributed Authoring and Versioning extension to HTTP. It lets a client browse a remote filesystem, usually in a graphical browser that makes…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/webdav/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,61 +46,51 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">WebDAV</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#accessing-your-home-directory-via-webdav">Accessing your home directory via WebDAV</a></li>
-<li class="toc__item toc__item--l2"><a href="#linux-unix">Linux/Unix</a></li>
-<li class="toc__item toc__item--l2"><a href="#macintosh">Macintosh</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-10-8-1-8-and-7">Windows 10, 8.1, 8 and 7</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-10">Windows 10</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-8-x">Windows 8.x</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-7">Windows 7</a></li>
-<li class="toc__item toc__item--l2"><a href="#material-from-the-2-2-documentation">Material from the 2.2 documentation</a></li>
-<li class="toc__item toc__item--l2"><a href="#webdav-2">WebDAV</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-address">The address</a></li>
 <li class="toc__item toc__item--l2"><a href="#linux">Linux</a></li>
-<li class="toc__item toc__item--l2"><a href="#macintosh-2">Macintosh</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-10-2">Windows 10</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-8-x-2">Windows 8.x</a></li>
-<li class="toc__item toc__item--l2"><a href="#windows-7-2">Windows 7</a></li>
+<li class="toc__item toc__item--l2"><a href="#macos">macOS</a></li>
+<li class="toc__item toc__item--l2"><a href="#windows">Windows</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">Process</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../process/index.html">The contribution process</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -114,156 +104,80 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accesing your home directory</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">WebDAV</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Accessing your home directory</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">WebDAV</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
           <h1>WebDAV</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tooldevs/accesshomedir/webdav">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        
         <div class="prose">
-<h2 id="accessing-your-home-directory-via-webdav">Accessing your home directory via WebDAV</h2>
-<p>WebDAV is the Distributed Authoring and Versioning extension to the standard HTTP/HTTPS web protocol. It allows a client to browse a remote filesystem, usually with a graphical browser that makes it appear that your files are on your desktop. You may access your hub storage using only the secure version of this service (HTTPS). We do not support HTTP. Most modern computer platforms support HTTPS transport for WebDAV with either small adjustments or freely available software.</p>
-<h2 id="linux-unix">Linux/Unix</h2>
-<p>Firefox and Chrome browsers provide text-mode support by connecting to <code>https://hubname.org/webdav</code>. You will be prompted for hub login and password. If you use the KDE graphical desktop environment, you can access your hub storage with the Konqueror browser by typing the special URL <code>webdavs://hubname.org/webdav/</code>into the Location field of the browser. It will prompt you for your hub login and password. Thereafter, you traverse your home directory by clicking on folders and you can drag and drop files to your desktop.
-<a href="http://www.webdav.org/cadaver/">Cadaver</a> is a text-mode WebDAV browser. It can be used if it is compiled with SSL support. Invoke it with the command <code>cadaver https://hubname.org/webdav/</code> and it will prompt you for your hub login and password. You can then use it in a manner similar to FTP.
-If you are using Linux, you can use the <a href="http://dav.sourceforge.net/">davfs</a> kernel module to mount your hub storage area as a local filesystem.</p>
-<h2 id="macintosh">Macintosh</h2>
-<p>MacOS versions 10.4 and higher support HTTPS transport for WebDAV using the Finder.</p>
-<ol>
-<li>Select the Go menu in the Finder and choose &quot;Connect to Network Server&quot;.</li>
-<li>Enter the URL <code>https://hubname.org/webdav/</code> into the address field.</li>
-<li>When prompted, enter your Network ID credentials.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the site to which you just connected.</p>
-<h2 id="windows-10-8-1-8-and-7">Windows 10, 8.1, 8 and 7</h2>
-<p>Windows 10, 8.1 and 8 use the <strong>WebClient Services</strong> to connect to a WebDAV Servers, by default the WebClient service is disabled, so we need to enable it.</p>
-<ol>
-<li>From the Start menu, choose Control Panel, then System and Security, then Administrative Tools, and then Services.</li>
-<li>Scroll down to WebClient, set the service to Automatic, and then click Apply.</li>
-<li>If the service is not already running, click Start.</li>
-<li>Click OK to close the Control Panel and close other windows.</li>
-</ol>
-<h2 id="windows-10">Windows 10</h2>
-<p>To set up a WebDAV connection in Windows 10:</p>
-<ol>
-<li>From the <strong>Start Menu</strong> go to <strong>File Explorer</strong> and select <strong>This PC</strong> on the left hand pane</li>
-<li>Select <strong>Computer</strong> from the top ribbon</li>
-<li>Click on <strong>Map Network Drive</strong></li>
-<li>Click <strong>Connect to a Web site that you can use to store your documents and pictures.</strong></li>
-<li>Click <strong>Next</strong></li>
-<li>Select <strong>Choose another network location</strong> and click <strong>Next</strong></li>
-<li>Enter &quot;<code>https://hubname.org/webdav/&quot;</code>. Replace &quot;hubname.org&quot; with the URL of the destination hub and click <strong>Next</strong></li>
-<li>Enter your <strong>password</strong>, and click <strong>Ok</strong></li>
-<li>Click <strong>Next</strong>, then <strong>Finish</strong></li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<h2 id="windows-8-x">Windows 8.x</h2>
-<p>To set up a WebDAV connection in Windows 8.x:</p>
-<ol>
-<li>Using the Search interface in tile mode, locate and select the Computer tile.</li>
-<li>In the quick menu at the top of the screen, click Map Network Drive.</li>
-<li>In the &quot;Folder&quot; field, enter a URL that points to the destination hub similar to the following URL &quot;<code>https://hubname.org/webdav/&quot;</code> Replace &quot;hubname.org&quot; with the URL of the destination hub.</li>
-<li>Select the Connect using different credentials box, and then click Finish.</li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<h2 id="windows-7">Windows 7</h2>
-<p>To set up a WebDAV connection in Windows 7.</p>
-<ol>
-<li>From the Start menu, right-click Computer, and select Map network drive.</li>
-<li>Enter a URL that points to the destination hub similar to the following URL &quot;<code>https://hubname.org/webdav/&quot;</code>. Replace &quot;hubname.org&quot; with the URL of the destination hub. Clink finish.</li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<p>If you have difficulty dragging and dropping, right-click the file or folder you want to copy, and choose Copy. Then right-click the directory you want to put it in, and choose Paste.</p>
-<h2 id="material-from-the-2-2-documentation">Material from the 2.2 documentation</h2>
+<p>WebDAV is the Distributed Authoring and Versioning extension to HTTP. It lets a
+client browse a remote filesystem, usually in a graphical browser that makes
+your hub files look like files on your desktop. Hubs offer WebDAV over HTTPS
+only; plain HTTP is not supported.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The text below comes from the older 2.2 page of the same name, where it differed substantially from the 2.4 page above. Reconcile the two when reviewing.</p>
+<p><strong>Note:</strong> The WebDAV server is part of the tool platform, which is separate
+software and is not in this repository, so none of the client procedures below
+could be checked. What the CMS knows is only the mount the web server writes
+through, <code>/webdav/home/&lt;username&gt;</code>, which is not the address you connect to.</p>
 </aside>
-<h2 id="webdav-2">WebDAV</h2>
-<p>WebDAV is the Distributed Authoring and Versioning extension to the standard HTTP/HTTPS web protocol. It allows a client to browse a remote filesystem, usually with a graphical browser that makes it appear that your files are on your desktop. You may access your hub storage using only the secure version of this service (HTTPS). We do not support HTTP. Most modern computer platforms support HTTPS transport for WebDAV with either small adjustments or freely available software.</p>
+<h2 id="the-address">The address</h2>
+<p>On a standard installation the endpoint is:</p>
+<pre><code class="language-text">https://yourhub.org/webdav/
+</code></pre>
+<p>Some hubs put it on a host of its own, <code>https://webdav.yourhub.org/</code>. If neither
+works, ask your hub administrator which one it uses. You authenticate with your
+hub login and password.</p>
 <h2 id="linux">Linux</h2>
-<p>If you use the KDE graphical desktop environment, you can access your hub storage with the Konqueror browser by typing the special URL <code>webdavs://webdav.hubname.org/webdav/</code> (open source: <code>webdavs://hubname.org/webdav/)</code>into the Location field of the browser. It will prompt you for your hub login and password. Thereafter, you traverse your home directory by clicking on folders and you can drag and drop files to your desktop.</p>
-<p>For Cinnamon or other graphical desktops, you can use the file browser with webdav. In the location field, enter <strong>davs://username@yourhub.org/webdav</strong>.</p>
-<p>OR</p>
-<p>From the menu, select &quot;Connect to Server&quot; and fill out the form. Be sure to select &quot;Secure WebDAV (HTTPS)&quot; and folder &quot;/webdav&quot;.
-<img src="../../../media/webdav-connect-menu-linux.png" alt="Connect Menu for Linux" /><img src="../../../media/webdav-connect-dialog-linux.png" alt="" />
-You can also use the <a href="http://savannah.nongnu.org/projects/davfs2">davfs2</a> kernel module to mount your hub storage area as a local filesystem.</p>
-<h2 id="macintosh-2">Macintosh</h2>
-<p>MacOS versions 10.4 and higher support HTTPS transport for WebDAV using the Finder.</p>
+<p>Most desktop file managers speak WebDAV. In the location bar of GNOME Files, KDE
+Dolphin or Nemo, enter:</p>
+<pre><code class="language-text">davs://username@yourhub.org/webdav
+</code></pre>
+<p>Some file managers offer a <strong>Connect to Server</strong> entry instead. Choose <strong>Secure
+WebDAV (HTTPS)</strong> and give <code>/webdav</code> as the folder.</p>
+<p><img src="../../../media/webdav-connect-menu-linux.png" alt="The Connect to Server menu entry in a Linux file manager" /><img src="../../../media/webdav-connect-dialog-linux.png" alt="The Connect to Server dialog, with Secure WebDAV selected" /></p>
+<p>To mount your hub storage as a filesystem rather than browse it, use
+<a href="https://savannah.nongnu.org/projects/davfs2">davfs2</a>. For a text-mode client,
+<code>cadaver</code> behaves much like FTP; run it against the address above and it prompts
+for your login.</p>
+<h2 id="macos">macOS</h2>
 <ol>
-<li>Select the Go menu in the Finder and choose &quot;Connect to Network Server&quot;.</li>
-<li>Enter the URL <code>https://webdav.hubname.org/webdav/ (open source: https://hubname.org/webdav/</code> into the address field.</li>
-<li>When prompted, enter your Network ID credentials.</li>
+<li>In the Finder, choose <strong>Go → Connect to Server</strong>.</li>
+<li>Enter the address for your hub and select <strong>Connect</strong>.</li>
+<li>Enter your hub login and password when prompted.</li>
 </ol>
-<p>You should now be able to drag files and folders between your computer and the site to which you just connected.</p>
-<h2 id="windows-10-2">Windows 10</h2>
-<p>The <strong>WebClient Services</strong> to connect to a WebDAV Servers, by default, the WebClient service is disabled, so we need to enable it.</p>
+<p>The hub then appears in the Finder and you can drag files and folders to and
+from it.</p>
+<h2 id="windows">Windows</h2>
+<p>Windows connects through the <strong>WebClient</strong> service, which is not always running.
+Turn it on first:</p>
 <ol>
-<li>From the Start menu, choose Control Panel, then System and Security, then Administrative Tools, and then Services.</li>
-<li>Scroll down to WebClient, set the service to Automatic, and then click Apply.</li>
-<li>If the service is not already running, click Start.</li>
-<li>Click OK to close the Control Panel and close other windows.</li>
+<li>Open <strong>Services</strong>.</li>
+<li>Find <strong>WebClient</strong>, set its startup type to <strong>Automatic</strong>, and select
+<strong>Apply</strong>.</li>
+<li>If it is not running, select <strong>Start</strong>.</li>
 </ol>
-<p>To set up a WebDAV connection in Windows 10:</p>
+<p>Then map the hub as a network location:</p>
 <ol>
-<li>From the <strong>Start Menu</strong> go to <strong>File Explorer</strong> and select <strong>This PC</strong> on the left hand pane</li>
-<li>Select <strong>Computer</strong> from the top ribbon</li>
-<li>Click on <strong>Map Network Drive</strong></li>
-<li>Click <strong>Connect to a Web site that you can use to store your documents and pictures.</strong></li>
-<li>Click <strong>Next</strong></li>
-<li>Select <strong>Choose another network location</strong> and click <strong>Next</strong></li>
-<li>Enter &quot;<code>https://webdav.hubname.org/webdav/&quot; (open source: https://hubname.org/webdav/)</code>. Replace &quot;hubname.org&quot; with the URL of the destination hub and click <strong>Next</strong></li>
-<li>Enter your <strong>password</strong>, and click <strong>Ok</strong></li>
-<li>Click <strong>Next</strong>, then <strong>Finish</strong></li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
+<li>Open <strong>File Explorer</strong> and select <strong>This PC</strong>.</li>
+<li>Select <strong>Map network drive → Connect to a Web site that you can use to store
+your documents and pictures</strong>.</li>
+<li>Select <strong>Next</strong>, then <strong>Choose another network location</strong>, then <strong>Next</strong>.</li>
+<li>Enter the address for your hub and select <strong>Next</strong>.</li>
+<li>Enter your hub credentials.</li>
+<li>Name the location and finish the wizard.</li>
 </ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<h2 id="windows-8-x-2">Windows 8.x</h2>
-<p>The <strong>WebClient Services</strong> to connect to a WebDAV Servers, by default, the WebClient service is disabled, so we need to enable it.</p>
-<ol>
-<li>From the Start menu, choose Control Panel, then System and Security, then Administrative Tools, and then Services.</li>
-<li>Scroll down to WebClient, set the service to Automatic, and then click Apply.</li>
-<li>If the service is not already running, click Start.</li>
-<li>Click OK to close the Control Panel and close other windows.</li>
-</ol>
-<p>To set up a WebDAV connection in Windows 8.x:</p>
-<ol>
-<li>Using the Search interface in tile mode, locate and select the Computer tile.</li>
-<li>In the quick menu at the top of the screen, click Map Network Drive.</li>
-<li>In the &quot;Folder&quot; field, enter a URL that points to the destination hub similar to the following URL &quot;<code>https://webdav.hubname.org/webdav/&quot; (open source: https://hubname.org/webdav/)</code>. Replace &quot;hubname.org&quot; with the URL of the destination hub.</li>
-<li>Select the Connect using different credentials box, and then click Finish.</li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<h2 id="windows-7-2">Windows 7</h2>
-<p>The <strong>WebClient Services</strong> to connect to a WebDAV Servers, by default, the WebClient service is disabled, so we need to enable it.</p>
-<ol>
-<li>From the Start menu, choose Control Panel, then System and Security, then Administrative Tools, and then Services.</li>
-<li>Scroll down to WebClient, set the service to Automatic, and then click Apply.</li>
-<li>If the service is not already running, click Start.</li>
-<li>Click OK to close the Control Panel and close other windows.</li>
-</ol>
-<p>To set up a WebDAV connection in Windows 7.</p>
-<ol>
-<li>From the Start menu, right-click Computer, and select Map network drive.</li>
-<li>Enter a URL that points to the destination hub similar to the following URL &quot;<code>https://webdav.hubname.org/webdav/&quot; (open source: https://hubname.org/webdav/)</code>. Replace &quot;hubname.org&quot; with the URL of the destination hub. Clink finish.</li>
-<li>When prompted, enter your Hub credentials.</li>
-<li>You should see a new Network Drive under your Computer/This PC. Double click on it to open.</li>
-</ol>
-<p>You should now be able to drag files and folders between your computer and the hub via the network drive to which you just connected.</p>
-<p>If you have difficulty dragging and dropping, right-click the file or folder you want to copy, and choose Copy. Then right-click the directory you want to put it in, and choose Paste.</p>
+<p>The new network location appears under <strong>This PC</strong>. Open it and drag files and
+folders between it and your computer.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> If dragging does not work, right-click the file or folder and choose
+<strong>Copy</strong>, then right-click the destination and choose <strong>Paste</strong>.</p>
+</aside>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../sftp/index.html" rel="prev"><span>Previous</span>sFTP</a><a class="pager__next" href="../filexfer/index.html" rel="next"><span>Next</span>filexfer (in Workspace tool)</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../sftp/index.html" rel="prev"><span>Previous</span>sFTP</a><a class="pager__next" href="../filexfer/index.html" rel="next"><span>Next</span>filexfer</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/06-accesshomedir/02-webdav.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

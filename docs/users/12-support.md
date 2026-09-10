@@ -139,7 +139,7 @@ ticket has been updated, with a link to come and read it. Hubs that must
 keep sensitive material out of e-mail — those working to HIPAA or FISMA
 rules — turn this on hub-wide, and then the box is checked for every
 comment; staff can still clear it one comment at a time. See
-[Support](../managers/09-components/support.md) in the managers book.
+[Support](../managers/09-components/34-support.md) in the managers book.
 
 ## Reporting abuse
 

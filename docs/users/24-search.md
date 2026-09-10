@@ -40,7 +40,7 @@ weighting plugins that promote matching titles and contributors.
 A hub can instead run Apache Solr alongside itself, which gives ranked
 results, counts per content type, and per-type boosting. Setting that up is an
 administrator's job — see
-[Search](../managers/components/search/README.md) in the Hub managers book.
+[Search](../managers/09-components/31-search/README.md) in the Hub managers book.
 
 The results page has three parts:
 

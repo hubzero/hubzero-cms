@@ -79,7 +79,7 @@ The loaders check `app/` before `core/` and take the first directory they
 find. Put `app/components/com_blog` on disk and nothing under
 `core/components/com_blog` is used again — it is a whole-extension
 replacement, not a merge, and the copy will not receive upgrades. To change
-a few files, use a [template override](../templates/overrides.md) instead.
+a few files, use a [template override](../11-templates/09-overrides.md) instead.
 
 [`Hubzero\Base\ClassLoader`](../../../core/libraries/Hubzero/Base/ClassLoader.php)
 applies the same rule to classes. It maps the extension namespaces to

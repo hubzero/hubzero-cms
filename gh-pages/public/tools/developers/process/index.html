@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Process · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Tool Development Process Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a…">
+  <title>The contribution process · Tools · Hubzero Documentation</title>
+  <meta name="description" content="How a tool gets from a registration form to a published page, told from the developer&#x27;s side. This page is about the pipeline; What you can publish as a tool…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/process/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,50 +46,53 @@
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Developers</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool Repository Structure</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../invoke/index.html">Launching tools with invoke scripts</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining Tools</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing Outside Computing Resources</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit Command</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus Workflow Submission</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Rappture Integration with Submit</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Jupyter Integration with Submit</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../nanowhim/index.html">Combining tools in one session</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../grid/index.html">Accessing outside computing resources</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../grid/submitcmd/index.html">Submit command</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/pegasuswf/index.html">Pegasus workflow submission</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accesing your home directory</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer (in Workspace tool)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool Paths</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment Variables</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the Invoke Script</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example Files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool Generated Files</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Importing and exporting user files</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import File</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export File</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large Data Paths</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter Notebooks</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Jupyter Tool Deployment Styles</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing Jupyter-based tools</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment Variables</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/pyton-from-jupyter/index.html">Using Python packages from Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/testing-jupyter/index.html">Testing a Jupyter tool</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Process</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#tool-development-process">Tool Development Process</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-graphical-user-interfaces">Creating Graphical User Interfaces</a></li>
-<li class="toc__item toc__item--l2"><a href="#learn-more-about-hubzero-tools">Learn more about HUBzero Tools</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">The contribution process</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-nine-states">The nine states</a></li>
+<li class="toc__item toc__item--l2"><a href="#registering">Registering</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-the-code">Writing the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#testing-and-approving">Testing and approving</a></li>
+<li class="toc__item toc__item--l2"><a href="#after-publishing">After publishing</a></li>
+<li class="toc__item toc__item--l2"><a href="#background-material">Background material</a></li>
 </ol></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Hub Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../users/introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -103,53 +106,222 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Process</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool developers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">The contribution process</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Process</h1>
+          <h1>The contribution process</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/22/toolsnewdocs/process">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025. It was never published there, so read it as a draft. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        
         <div class="prose">
-<h2 id="tool-development-process">Tool Development Process</h2>
-<p>Each hub relies on its user community to upload tools and other resources. Hubs are normally configured to allow any user to upload a tool. The process starts with a particular user filling out a web form to register his intent to submit a tool. This tells the hub manager to create a new project area for the tool. The user then uploads code into a <a href="https://subversion.apache.org">Subversion</a> source code repository, and develops the code within a workspace. The user can work alone or with a team of other users. When the tool is ready for testing, the hub manager installs the tool and asks the development team to approve it. Then, the hub manager takes one last look at the tool, and if everything looks good, moves the tool to the &quot;published&quot; state. Of course, a tool can be improved even after it is published, and re-installed, approved, and published over and over again.</p>
-<p>The complete process is explained in the <a href="../../../managers/maintenance/tools/index.html">tool maintenance documentation for hub managers</a>. Additional details about this process can be found in the following seminars:</p>
-<ul>
-<li><a href="https://nanohub.org/resources/14671">Bootcamp Course for New Developers</a></li>
-<li><a href="https://nanohub.org/resources/14668">Overview of Tool Development Process</a></li>
-<li><a href="http://nanohub.org/resources/3081">Using Workspaces</a></li>
-<li><a href="https://nanohub.org/resources/14669">Using Subversion for Source Code Control</a></li>
-</ul>
+<p>How a tool gets from a registration form to a published page, told from the
+developer's side. This page is about the pipeline;
+<a href="../overview/index.html">What you can publish as a tool</a> is about the program you put
+through it.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The tool contribution process currently only supports Subversion (SVN). We are investigating support for <a href="https://git-scm.com">Git</a> but there is no timeline for availability.</p>
+<p><strong>Note:</strong> The pipeline itself is CMS-side and was checked against
+<code>com_tools</code> in this repository. The work you do between the states — writing
+code in a workspace, building it on the execution host, launching a
+session — happens on the tool platform, which is separate software and could
+not be checked here.</p>
 </aside>
-<h2 id="creating-graphical-user-interfaces">Creating Graphical User Interfaces</h2>
-<p>If a tool already has a graphical user interface that runs under Linux/X11, then it can be published as-is, usually in a matter of hours. There are two caveats:</p>
+<h2 id="the-nine-states">The nine states</h2>
+<p>Every tool contribution sits in one of nine states. The state decides who the
+pipeline is waiting on: you, or a hub administrator.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>State</th>
+<th>Waiting on</th>
+<th>What happens next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Registered</td>
+<td>Administrator</td>
+<td>The administrator creates the project area and the repository</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Created</td>
+<td>You</td>
+<td>Commit your code, then flip the state to Uploaded</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Uploaded</td>
+<td>Administrator</td>
+<td>The administrator installs the code on the hub</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Installed</td>
+<td>You</td>
+<td>Test the tool, write its information page, pick a licence, then approve</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Updated</td>
+<td>Administrator</td>
+<td>You committed new code; the administrator reinstalls it</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Approved</td>
+<td>Administrator</td>
+<td>The administrator publishes the tool</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Published</td>
+<td>—</td>
+<td>The tool is live. Committing new code moves it back to Updated</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Retired</td>
+<td>—</td>
+<td>The tool page stays as a record; the tool can no longer be run</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Abandoned</td>
+<td>—</td>
+<td>You cancelled the contribution before it was published</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Verified: the numbers are the <code>state</code> column on <code>#__tool</code> and the names come
+from <code>getStatusName()</code> in <code>com_tools</code>.)</em></p>
+<p>The administrator's half of each step — what the buttons do, what the host
+scripts are called, and how the output is reported — is in
+<a href="../../../managers/maintenance/tools/index.html">Tools</a> in the hub managers book.
+That page also lists every field on the registration form. Read it alongside
+this one; between them they cover both sides of the same pipeline.</p>
+<h2 id="registering">Registering</h2>
+<p>Start the contribution flow on the hub and choose the tool contribution type,
+or go straight to <code>/tools/create</code>. The form asks for a tool alias of 3 to 15
+alphanumeric characters, which becomes the tool's directory name and cannot be
+changed afterwards. Everything else on the form can be changed later.</p>
+<p>Two of the choices decide how the rest of your work looks:</p>
+<p><strong>Repository Host</strong> — where the source lives:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Label on screen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gitExternal</code></td>
+<td>Host Git repository on GitHub, GitLab, etc.</td>
+</tr>
+<tr>
+<td><code>gitLocal</code></td>
+<td>Host Git repository here</td>
+</tr>
+<tr>
+<td><code>svnLocal</code></td>
+<td>Host subversion repository here</td>
+</tr>
+</tbody>
+</table>
+<p><code>gitExternal</code> is the default where the hub has the component's <strong>External
+GitHub Repo</strong> option turned on, and it adds a field for the repository URL.
+Subversion is still supported but is no longer the only choice, and it is not
+the default on a current hub.</p>
+<p><strong>Publishing Option</strong> — what kind of tool it is:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Label on screen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>standard</code></td>
+<td>Rappture or Linux-GUI based tool</td>
+</tr>
+<tr>
+<td><code>jupyter</code></td>
+<td>Web application (Jupyter, Rstudio, ...)</td>
+</tr>
+<tr>
+<td><code>simtool</code></td>
+<td>Sim2L</td>
+</tr>
+</tbody>
+</table>
+<p>The Jupyter and Sim2L choices appear only where the hub has turned the
+matching options on. Which one you pick decides the starter invoke script the
+hub writes for you; see
+<a href="../toolrepostructure/index.html">Tool repository structure</a>.</p>
+<p><em>(Verified: both option sets are read from the registration form and the
+<code>com_tools</code> configuration.)</em></p>
+<p><strong>Register Tool</strong> puts the contribution in the <strong>Registered</strong> state and opens
+a support ticket for it. From then on the tool has a status page under
+<code>/tools/pipeline</code>, which is where every remaining step starts.</p>
+<h2 id="writing-the-code">Writing the code</h2>
+<p>Once an administrator has moved the tool to <strong>Created</strong>, the project area and
+its repository exist. Check the repository out — in a workspace on the hub, or
+on your own machine for an external Git repository — and lay the tool out the
+way the hub expects it. <a href="../toolrepostructure/index.html">Tool repository structure</a>
+covers the directory layout and the <code>middleware/invoke</code> script every tool
+needs.</p>
+<p>The commands for the checkout, the build, and the commit are in the
+<a href="../../../managers/maintenance/tools/index.html">hub managers' walkthrough</a>, which
+gives the Subversion form and notes the Git equivalents. Test the tool in a
+workspace before you flip the state:</p>
+<pre><code class="language-console">$ cd src
+$ make all install
+$ cd ..
+$ ./middleware/invoke -T $PWD
+</code></pre>
+<p>That is the same sequence the administrator runs when installing the tool, so
+anything that fails here fails there too.</p>
+<p>When the code is committed, use the <strong>What's next?</strong> panel on the tool's
+status page to say that it is ready to install. The state becomes
+<strong>Uploaded</strong>.</p>
+<h2 id="testing-and-approving">Testing and approving</h2>
+<p>After the administrator installs the tool, the status page offers a <strong>Launch
+tool</strong> button. Use it and run the tool the way a member would. Each time you
+fix something, commit and use the status page link to move the state to
+<strong>Updated</strong>, which asks for another install.</p>
+<p>Before the tool can be approved it needs:</p>
 <ul>
-<li><strong>If the tool relies heavily on graphics, it may not perform very well within HUBzero execution containers.</strong> Our containers run in cluster nodes without graphics cards, and are therefore configured with MESA for software emulation of OpenGL. This has much poorer performance than ordinary desktop computers with a decent graphics card, so frame rates are much lower. Also, all graphics are transmitted to the user's web browser after rendering, again lowering the frame rate. You can expect to achieve a few frames per second in the hub environment--good enough to view and interact with the data, but far below 100 frames/sec that you would normally see on a desktop computer.</li>
-<li><strong>Tools running within the hub have access to the hub's local file system--not the user's desktop.</strong> Many tools have a <em>File</em> menu with an <em>Open</em> option. When a user invokes this option within the hub environment, it will bring up a file dialog showing the hub file system. The user won't see his own local files there unless he uploads them first via sftp, webdav, or the hub's <code>importfile</code> command.</li>
+<li>a tool information page — the resource page with authors, credits,
+publications, and screenshots, built by a wizard the status page links to;</li>
+<li>a licence, chosen from the same page. Closed source needs a reason.</li>
 </ul>
-<p>The graphical user interface for any tool published in the hub environment can be created using standard toolkits for desktop applications--including Java, Matlab, Python/QT, etc.</p>
-<p>If you're looking for an easy way to create a graphical interface for a legacy tool or simple modeling code, check out the <a href="http://rappture.org">Rappture Toolkit</a> that is included as part of HUBzero. Rappture reads a simple XML-based description of a tool and generates a graphical user interface automatically. It interfaces naturally with many programming languages, including C/C++, Fortran, Matlab, Python, Perl, Tcl/Tk, and Ruby. It creates tools that look something like the following:</p>
-<p><img src="../../media/process-rappture-01.png" alt="example of a Rappture-based tool" /></p>
-<p>Rappture was designed for the hub environment and therefore addresses the caveats listed above. All Rappture-based tools have integrated visualization capabilities that take advantage of hardware-accelerated rendering available on the HUBzero rendering farm. Rappture-based tools also include options to upload/download data from the end user's desktop via the <code>importfile</code>/<code>exportfile</code> commands available within HUBzero.</p>
-<p>For more details about Rappture, see the following links:</p>
+<p>Then <strong>Approve this tool</strong>. An administrator publishes it, and it becomes a
+resource page with a <strong>Launch Tool</strong> button like any other. See
+<a href="../../../users/tools/index.html">Tools</a> in the users book for what members get.</p>
+<h2 id="after-publishing">After publishing</h2>
+<p>A published tool stays published while you work on the next version. Commit
+the changes and move the state to <strong>Updated</strong>: the published version keeps
+serving members, and the install–approve–publish cycle runs again on the
+development version.</p>
+<p>You can cancel a contribution that has not been published yet, with the
+<strong>Cancel</strong> link under <strong>Developer Tools</strong>. It unpublishes the draft page and
+sets the state to <strong>Abandoned</strong>. Cancelling a published tool is refused.</p>
+<h2 id="background-material">Background material</h2>
+<p>These recorded seminars are hosted on nanoHUB and are the original source for
+this material. They predate the Git and Jupyter options above.</p>
 <ul>
-<li><a href="https://nanohub.org/infrastructure/rappture/wiki/whatIsRappture">Rappture Quick Overview</a></li>
-<li><a href="https://help.hubzero.org/resources/tooldev">Developing Scientific Tools for the HUBzero Platform</a> (introductory course with 7 lectures)</li>
-<li><a href="https://nanohub.org/infrastructure/rappture/wiki/Documentation">Rappture Reference Manual</a></li>
+<li><a href="https://nanohub.org/resources/14671">Bootcamp course for new developers</a></li>
+<li><a href="https://nanohub.org/resources/14668">Overview of the tool development process</a></li>
+<li><a href="https://nanohub.org/resources/3081">Using workspaces</a></li>
+<li><a href="https://nanohub.org/resources/14669">Using Subversion for source code control</a></li>
 </ul>
-<h2 id="learn-more-about-hubzero-tools">Learn more about HUBzero Tools</h2>
-<p>Discover the power of HUBzero tools and how easy it is to visualize research using the HUBzero platform.</p>
-<p>Jupyter Notebooks:</p>
-<p>RStudio:</p>
-<hr />
-<p>Check out custom software and tool projects the HUBzero development team has helped design and implement on sites using the HUBzero platform.</p>
-<p>REMEDI Central:</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../prerequisites/environment/index.html" rel="prev"><span>Previous</span>Environment</a><a class="pager__next" href="../../users/index.html" rel="next"><span>Next</span>Hub Users</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../prerequisites/environment/index.html" rel="prev"><span>Previous</span>Environment</a><a class="pager__next" href="../../users/index.html" rel="next"><span>Next</span>Tool users</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/process.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
