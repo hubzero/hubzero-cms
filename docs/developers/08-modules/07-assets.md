@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/modules/assets
 -->
 # Assets
@@ -12,14 +12,23 @@ helpers come from the `AssetAware` trait, which
 [`Hubzero\Module\Module`](../../../core/libraries/Hubzero/Module/Module.php) mixes
 in, so they are available on `$this` anywhere in a module.
 
+Push them; do not write a `<link>` tag in the layout. A module can appear
+twice on a page, and the document collects each asset once no matter how many
+instances ask for it. A hand-written tag in the layout is emitted once per
+instance, in the middle of the body.
+
+Keep the stylesheet small and scoped. Your module lands inside a template you
+did not write, so a rule on `ul` or `.item` will reach into the rest of the
+page. Scope everything under one class of your own.
+
 ## Where assets live
 
 ```
-core/modules/mod_mygroups/
+app/modules/mod_upcoming_bookings/
     assets/
-        css/mod_mygroups.css
+        css/mod_upcoming_bookings.css
         img/
-        js/mod_mygroups.js
+        js/mod_upcoming_bookings.js
 ```
 
 The `assets` directory is split by type, and the type directory name matches
@@ -50,6 +59,10 @@ $this->css()
      ->js();
 ```
 
+Name your files after the module and the no-argument form is all you ever
+write: `mod_upcoming_bookings/assets/css/mod_upcoming_bookings.css` is found
+by a bare `$this->css()`.
+
 Naming a file explicitly works the same way, with or without the extension:
 
 ```php
@@ -70,21 +83,21 @@ For a module, `Hubzero\Document\Asset\File` builds this list and takes the
 first path that exists:
 
 ```
-app/modules/mod_example/assets/css/name.css
-app/modules/mod_example/css/name.css
-app/modules/example/assets/css/name.css
-app/modules/example/css/name.css
-core/modules/mod_example/assets/css/name.css
-core/modules/mod_example/css/name.css
-core/modules/example/assets/css/name.css
-core/modules/example/css/name.css
+app/modules/mod_upcoming_bookings/assets/css/name.css
+app/modules/mod_upcoming_bookings/css/name.css
+app/modules/upcoming_bookings/assets/css/name.css
+app/modules/upcoming_bookings/css/name.css
+core/modules/mod_upcoming_bookings/assets/css/name.css
+core/modules/mod_upcoming_bookings/css/name.css
+core/modules/upcoming_bookings/assets/css/name.css
+core/modules/upcoming_bookings/css/name.css
 ```
 
 Every `app/` path is tried before any `core/` path, so a hub overrides a
 shipped module's stylesheet by dropping a file into `app/modules`. An active
 template can override any of them with a file at
-`{template}/html/mod_example/name.css`, which is checked last and wins when it
-exists.
+`{template}/html/mod_upcoming_bookings/name.css`, which is checked last and
+wins when it exists.
 
 The returned URL carries a cache-buster taken from the file's modification
 time: `/core/modules/mod_mygroups/assets/css/mod_mygroups.css?v=1568392841`.
@@ -128,6 +141,10 @@ web font, build the path yourself from `Request::root(true)`.
 
 Both work, because both run with `$this` bound to the module object.
 `mod_login` pushes its assets from `display()` in `helper.php`; `mod_mygroups`
-does it at the top of `tmpl/default.php`. Pushing from the layout has the
-small advantage that a template override which replaces the markup also
-replaces the asset it depends on.
+does it at the top of `tmpl/default.php`.
+
+Push from the layout. The stylesheet exists to style *that* markup, and a hub
+that overrides the layout should get to drop your stylesheet along with it —
+which happens automatically if the `$this->css()` call lives in the file they
+replaced. Push from the class only for an asset the module needs whatever
+layout is chosen.

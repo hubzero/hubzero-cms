@@ -120,6 +120,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Loading</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#importing-a-group">Importing a group</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-all-selects">What all() selects</a></li>
 <li class="toc__item toc__item--l2"><a href="#triggering-an-event">Triggering an event</a></li>
 <li class="toc__item toc__item--l2"><a href="#dot-notation">Dot notation</a></li>
 <li class="toc__item toc__item--l2"><a href="#arguments-and-responses">Arguments and responses</a></li>
@@ -176,12 +177,15 @@
         <div class="prose">
 <p>Nothing loads a plugin until something needs it. A group is imported — its
 files required, its classes constructed, its public methods registered as
-listeners — and only then can an event reach it. This page covers importing a
-group, triggering an event, and what comes back.</p>
+listeners — and only then can an event reach it.</p>
+<p>This chapter is the other half of the section: not how to write a plugin, but
+how a component reaches one. Read it when you are adding an extension point to
+your own component, as <code>com_bookings</code> does, and when you are working out why a
+plugin you have written is not being called.</p>
 <h2 id="importing-a-group">Importing a group</h2>
-<pre><code class="language-php">Plugin::import('groups');
+<pre><code class="language-php">Plugin::import('bookings');
 </code></pre>
-<p>That requires and constructs every enabled plugin registered in the <code>groups</code>
+<p>That requires and constructs every enabled plugin registered in the <code>bookings</code>
 group — taking each one's directory from <code>app/plugins</code> when it exists there
 and <code>core/plugins</code> otherwise — and registers each instance with the
 application's dispatcher. The <code>Plugin</code> facade fronts
@@ -221,20 +225,43 @@ whose other useful methods are:</p>
 </tr>
 </tbody>
 </table>
+<p>Most components never call <code>import()</code>. Triggering a prefixed event does it for
+you, and that is the form to use — see <a href="#dot-notation">Dot notation</a> below.
+Call <code>import()</code> directly only when you need something the trigger cannot give
+you: one named plugin rather than the whole group
+(<code>Plugin::import('mw', $app-&gt;name)</code> in <code>com_tools</code>), the group loaded before
+some other code triggers into it (<code>com_login</code> with <code>authentication</code>), or a
+group imported with autocreation off so you can construct the classes yourself
+(<code>Hubzero\Html\Editor</code> with <code>editors-xtd</code>).</p>
+<h2 id="what-all-selects">What <code>all()</code> selects</h2>
 <p><code>Plugin::all()</code> runs one query and caches the result for the request. It
 returns rows from <code>#__extensions</code> where <code>type = 'plugin'</code>, <code>enabled &gt;= 1</code>,
 <code>state &gt;= 0</code>, and <code>access</code> is one of the current user's authorised view
 levels, ordered by <code>ordering</code> ascending.</p>
+<p>Each of those four conditions is a way for a plugin to be silently absent, and
+so is the absence of the row itself.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A plugin whose access level the visitor does not hold is not
 merely inert — it is never loaded, so its events never fire and its
-constructor never runs.</p>
+constructor never runs. A plugin that works when you are logged in as an
+administrator and does nothing for a guest is nearly always this.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The result is also cached <em>across</em> requests, under a key made
+from the visitor's view levels, for <code>cachetime</code> minutes — fifteen by
+default. The administrator client forces the cache handler to <code>none</code>, so the
+Plugin Manager shows a change immediately while the site can go on ignoring
+it for a quarter of an hour. Clear the cache, or turn caching off, before
+concluding that enabling a plugin did not work.</p>
 </aside>
 <p>Importing the same group twice is cheap: <code>import()</code> remembers which groups it
-has done, and even without that, a plugin whose class is already declared is
-skipped rather than re-instantiated.</p>
+has done, and <code>Loader::init()</code> skips any plugin whose class is already
+declared rather than constructing a second instance. One consequence is worth
+knowing: a plugin file that some other code has already <code>require</code>d — an
+<code>editors-xtd</code> button, say — is passed over by a later import of its group and
+never gets registered as a listener.</p>
 <h2 id="triggering-an-event">Triggering an event</h2>
-<pre><code class="language-php">$results = Event::trigger('onAlbumAdded', array($artist, $title));
+<pre><code class="language-php">$results = Event::trigger('bookings.onReservationCreate', array($reservation));
 </code></pre>
 <p><code>Event</code> is the facade for
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Events/Dispatcher.php"><code>Hubzero\Events\Dispatcher</code></a>.
@@ -243,7 +270,7 @@ arguments, calls every registered listener, and returns an array of their
 return values.</p>
 <h2 id="dot-notation">Dot notation</h2>
 <p>Writing the group name into the event does the import for you:</p>
-<pre><code class="language-php">$results = Event::trigger('media.onAlbumAdded', array($artist, $title));
+<pre><code class="language-php">$results = Event::trigger('bookings.onReservationCreate', array($reservation));
 </code></pre>
 <p>The dispatcher splits the name at the first dot, treats the left half as a
 listener group, imports it through the registered loader, and then triggers
@@ -251,55 +278,82 @@ the right half. This is the form used almost everywhere in the CMS —
 <code>content.onContentPrepare</code>, <code>groups.onGroupAreas</code>, <code>user.onUserLogin</code> — and
 it is why event handlers are named <code>onContentPrepare</code> and not
 <code>onContentPrepareContent</code>.</p>
+<p>Naming a group nothing has ever heard of is not an error. <code>bookings</code> is a
+group because <code>com_bookings</code> says so; the loader looks for rows with
+<code>folder = 'bookings'</code>, finds however many there are, and gets on with it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> An event name with no dot loads no group at all. It reaches
+only listeners something else has already imported this request — in
+practice the <code>system</code> group, which is loaded early — and nothing else.
+<code>Event::trigger('onReservationCreate', …)</code> therefore works on some pages and
+not others. If a plugin's method is never called, check the prefix on the
+trigger before anything else.</p>
+</aside>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The group prefix only decides what gets <em>imported</em>. Once
 imported, all listeners live in one dispatcher, so triggering
-<code>media.onAlbumAdded</code> will also reach a <code>system</code> plugin that happens to
-define <code>onAlbumAdded</code>. Prefix your event names with something specific to
-the extension that owns them.</p>
+<code>bookings.onReservationCreate</code> will also reach a <code>system</code> plugin that
+happens to define <code>onReservationCreate</code>. Prefix your event names with
+something specific to the extension that owns them, and check the
+<a href="../../../reference/events/index.html">events reference</a> — 279 events across 41
+groups — before you settle on a name.</p>
 </aside>
 <h2 id="arguments-and-responses">Arguments and responses</h2>
 <p>Arguments are attached to the event by array key and spread across the
 listener's parameters in order, so a handler's signature must match the array
-the trigger builds. See <a href="../controllers/index.html">Controllers</a>.</p>
+the trigger builds. See <a href="../controllers/index.html#how-arguments-arrive">Controllers</a>.</p>
 <p>Every non-null return value is appended to the event's response array, in the
 order the listeners ran. A listener that returns nothing contributes nothing —
-which is how a plugin declines to answer an event it is registered for:</p>
+which is how a plugin declines to answer an event it is registered for.
+<code>plg_bookings_notify</code> returns nothing at all, so <code>com_bookings</code> gets an empty
+array back and has nothing to do with it:</p>
+<pre><code class="language-php">Event::trigger('bookings.onReservationCreate', array($reservation));
+</code></pre>
+<p>A component that wants an answer collects one:</p>
 <pre><code class="language-php">$results = Event::trigger('members.onMembersAreas', array($user, $member));
 
 foreach ($results as $area)
 {
-    // one entry per plugin that answered
+	// one entry per plugin that answered
 }
 </code></pre>
 <p>Concatenating the array is a common idiom when the responses are HTML:</p>
 <pre><code class="language-php">$results = Event::trigger('wiki.onWikiParseText', array($content, $params, true, true));
 $content = implode('', $results);
 </code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An empty array does not distinguish &quot;no plugin is installed&quot; from
+&quot;every plugin returned null&quot; from &quot;the group name was wrong&quot;. There is no
+error to catch and nothing is logged. That is the cost of the extension
+point, and it is why the first thing to check is always the extension row.</p>
+</aside>
 <h2 id="ordering">Ordering</h2>
 <p>Listeners run in priority order, then in registration order.
-<code>Hubzero\Events\Priority</code> defines <code>MIN</code> through <code>MAX</code> around <code>NORMAL</code>, and
-plugins are all registered at <code>NORMAL</code>, so in practice the order is the
-<code>ordering</code> column of <code>#__extensions</code> — which is what an administrator changes
-by reordering the Plugin Manager list.</p>
+<code>Hubzero\Events\Priority</code> defines <code>MIN</code> (-3) through <code>MAX</code> (3) around
+<code>NORMAL</code> (0), and plugins are all registered at <code>NORMAL</code>, so in practice the
+order is the <code>ordering</code> column of <code>#__extensions</code> — which is what an
+administrator changes by reordering the Plugin Manager list.</p>
 <h2 id="stopping-propagation">Stopping propagation</h2>
 <p>A plugin can prevent the remaining listeners from running by stopping the
 event. The event object is assigned to <code>$this-&gt;event</code> on the plugin before its
 method is called:</p>
 <pre><code class="language-php">class plgSystemExample extends \Hubzero\Plugin\Plugin
 {
-    public function onAfterRoute()
-    {
-        if ($this-&gt;handled())
-        {
-            $this-&gt;event-&gt;stop();
-        }
-    }
+	public function onAfterRoute()
+	{
+		if ($this-&gt;handled())
+		{
+			$this-&gt;event-&gt;stop();
+		}
+	}
 }
 </code></pre>
 <p><code>trigger()</code> checks <code>isStopped()</code> after each listener and breaks out of the
 loop. Responses already collected are still returned; listeners that had not
-yet run contribute nothing.</p>
+yet run contribute nothing. Stopping an event is rude to every plugin ordered
+after yours, and there is no way for them to find out it happened. Use it for
+a plugin that genuinely takes over — an authentication factor, a request the
+plugin has answered itself — and not to skip work.</p>
 <h2 id="closures">Closures</h2>
 <p>The dispatcher is not restricted to plugins. Any object can be added with
 <code>Event::listen($object)</code>, and a closure can be registered if you name the
@@ -307,14 +361,19 @@ events it should answer, since a closure has no method name to infer one
 from:</p>
 <pre><code class="language-php">Event::listen(function($event)
 {
-    // ...
+	// ...
 }, array('onAfterRoute' =&gt; \Hubzero\Events\Priority::HIGH));
 </code></pre>
 <p>The closure receives the <code>Event</code> object itself, not the unpacked arguments;
-read them with <code>$event-&gt;getArgument('name')</code> or <code>$event['name']</code>.</p>
+read them with <code>$event-&gt;getArgument('name')</code> or <code>$event['name']</code>. This is the
+one way to get a listener at a priority other than <code>NORMAL</code>, and the one way
+to listen from code that is not a plugin — a
+<a href="../../foundation/providers/index.html">service provider</a>, for instance. It is not
+a substitute for a plugin: nothing an administrator can see lists it, and
+nothing can turn it off.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="../../templates/index.html" rel="next"><span>Next</span>Templates</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/09-loading.md">Edit this page on GitHub</a>

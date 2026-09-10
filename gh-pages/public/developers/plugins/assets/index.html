@@ -179,6 +179,12 @@ live beside the plugin's code and are pushed to the document by helpers named
 <code>css()</code>, <code>js()</code>, and <code>img()</code> — available both on the plugin class and on a
 plugin view, though the two are different methods with different third
 arguments.</p>
+<p>Most plugins need none of this. <code>plg_bookings_notify</code> renders a mail body and
+nothing that reaches a browser, so it ships no <code>assets</code> directory at all. This
+chapter is for the group tabs, member panels and project steps that do draw
+something on a page — and its whole content is the answer to one question:
+where does the framework look for the file, and what happens when it is not
+there.</p>
 <h2 id="where-assets-live">Where assets live</h2>
 <pre><code>core/plugins/members/blog/
     assets/
@@ -198,6 +204,12 @@ name for you:</p>
 <li>the file name defaults to the plugin's <em>element</em>, the third segment of that
 string — <code>blog</code>.</li>
 </ul>
+<p>&quot;Third segment&quot; is literal: <code>Hubzero\Document\Asset\File</code> splits the
+extension name on underscores and takes <code>$parts[1]</code> as the group directory and
+<code>$parts[2]</code> as the element. A group or element name containing an underscore
+resolves to a directory that does not exist, and by the rule at the end of this
+chapter that means nothing loads and nothing complains. See
+<a href="../structure/index.html#characters-in-the-two-names">Characters in the two names</a>.</p>
 <p>So <code>blog.css</code> and <code>blog.js</code> are what <code>$this-&gt;css()-&gt;js()</code> loads, and
 <code>forum.css</code> is what the groups forum plugin loads. Name your files after the
 plugin and you never have to pass an argument.</p>
@@ -312,7 +324,7 @@ you give it:</p>
 the path from <code>Request::root(true)</code> yourself.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../views/index.html" rel="prev"><span>Previous</span>Views</a><a class="pager__next" href="../configuration/index.html" rel="next"><span>Next</span>Configuration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/06-assets.md">Edit this page on GitHub</a>

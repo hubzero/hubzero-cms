@@ -92,6 +92,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Views</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-one">The smallest one</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-layouts-live">Where layouts live</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-a-layout-is-found">How a layout is found</a></li>
 <li class="toc__item toc__item--l2"><a href="#choosing-the-layout">Choosing the layout</a></li>
@@ -178,6 +179,34 @@
 class that gathers the data. Keeping them apart is not only tidiness: a layout
 in <code>tmpl/</code> can be overridden by a template, and markup echoed from the class
 cannot.</p>
+<p>That override point is the whole argument. A module ends up in the sidebar of
+a hub whose designer you will never meet, and the only way they can make your
+booking list match the rest of the page — without forking the module and
+inheriting your bugs — is to drop a file into their template. Echo the markup
+from <code>helper.php</code> and you have taken that away.</p>
+<h2 id="the-smallest-one">The smallest one</h2>
+<p><code>mod_upcoming_bookings/tmpl/default.php</code>, in full:</p>
+<pre><code class="language-php">&lt;?php
+defined('_HZEXEC_') or die();
+
+$this-&gt;css();
+?&gt;
+&lt;h3&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_HEADING'); ?&gt;&lt;/h3&gt;
+&lt;?php if (!count($this-&gt;reservations)) : ?&gt;
+	&lt;p&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?&gt;&lt;/p&gt;
+&lt;?php else : ?&gt;
+	&lt;ul id=&quot;upcoming-bookings-&lt;?php echo $this-&gt;module-&gt;id; ?&gt;&quot;&gt;
+		&lt;?php foreach ($this-&gt;reservations as $reservation) : ?&gt;
+			&lt;li&gt;&lt;?php echo Lang::txt(
+				'MOD_UPCOMING_BOOKINGS_SLOT',
+				$this-&gt;escape($reservation-&gt;get('starts')),
+				$this-&gt;escape($reservation-&gt;get('ends'))
+			); ?&gt;&lt;/li&gt;
+		&lt;?php endforeach; ?&gt;
+	&lt;/ul&gt;
+&lt;?php endif; ?&gt;
+</code></pre>
+<p>Everything the class set is on <code>$this</code>. There is no view object between them.</p>
 <h2 id="where-layouts-live">Where layouts live</h2>
 <pre><code>core/modules/mod_mygroups/
     tmpl/
@@ -195,7 +224,7 @@ required from another layout, not chosen directly.</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::getLayoutPath()</code></a>,
 which returns the first of three paths:</p>
 <ol>
-<li><code>{templates}/{template}/html/mod_example/{layout}.php</code> — the active
+<li><code>{templates}/{template}/html/mod_upcoming_bookings/{layout}.php</code> — the active
 template's override.</li>
 <li><code>{module directory}/tmpl/{layout}.php</code> — the module's own layout.</li>
 <li><code>{module directory}/tmpl/default.php</code> — the fallback.</li>
@@ -282,7 +311,7 @@ that <code>Hubzero\Module\Loader::render()</code> opened around the entry file. 
 work differently — see <a href="../../plugins/views/index.html">Plugin views</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../assets/index.html" rel="next"><span>Next</span>Assets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/06-views.md">Edit this page on GitHub</a>

@@ -374,6 +374,18 @@ triggers the event, prints <em>Starting</em> and <em>Finished</em> lines, and re
 job whether the task returned, threw, or fataled — so a broken task does not
 wedge the job or stop the others in the run. An exception is caught, its
 message printed against the job, and the run recorded.</p>
+<p>Three guarantees are worth knowing before you write a task, because they
+decide how defensive it has to be.</p>
+<ul>
+<li><strong>The claim is atomic</strong>, so two runners on a short interval cannot take
+the same job. You do not need your own lock.</li>
+<li><strong>A job left claimed by a process that died is reclaimed</strong> once its
+process is gone, so a fatal in your task does not retire the job
+permanently.</li>
+<li><strong>A job whose recurrence cannot be parsed keeps its next run time and is
+retried</strong> rather than wedging, so a bad schedule is a job that never
+fires rather than a runner that stops.</li>
+</ul>
 <p>Print nothing from a task. It may run inside a web request rather than on
 the command line, and output there lands in the page.</p>
 <p><code>muse cron:jobs list</code> shows what is due. The full set of runner tasks, and

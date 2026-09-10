@@ -137,6 +137,9 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../muse/index.html">Muse</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Super Groups</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-want-one">When you want one</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-example-this-section-carries">The example this section carries</a></li>
+<li class="toc__item toc__item--l2"><a href="#who-can-change-what">Who can change what</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-group-directory">The group directory</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-super-group-can-do">What a super group can do</a></li>
 <li class="toc__item toc__item--l2"><a href="#code-in-pages-and-modules">Code in pages and modules</a></li>
@@ -175,11 +178,133 @@ directory holds a template, optional PHP pages, optional components, macros,
 migrations and a database configuration, and the group renders through that
 template instead of the site's. This section is about writing the code that
 goes in that directory.</p>
+<h2 id="when-you-want-one">When you want one</h2>
+<p>A super group is the answer to one question: <em>this part of the hub has to look
+and behave like its own site, but the people in it are hub members and the
+content is hub content.</em> A research centre with its own identity, a partner
+institution, a facility that runs a booking desk — those are super groups.</p>
+<p>Reach for something else when that is not the requirement:</p>
+<table>
+<thead>
+<tr>
+<th>You want</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A team space with a forum, wiki, blog, calendar and files</td>
+<td>an ordinary hub group — it already has all of that</td>
+</tr>
+<tr>
+<td>A group whose pages may contain PHP or <code>&lt;script&gt;</code>, and nothing more</td>
+<td>an ordinary group with <strong>Trusted content</strong> turned on</td>
+</tr>
+<tr>
+<td>A new area of the hub, not attached to a group</td>
+<td>a <a href="../components/index.html">component</a></td>
+</tr>
+<tr>
+<td>A different look for the whole hub</td>
+<td>a <a href="../templates/index.html">template</a></td>
+</tr>
+</tbody>
+</table>
+<p>A super group costs somebody a template to write and maintain. If nobody on
+the team can do that, the group gets a harder version of what it already had.</p>
+<h3 id="the-example-this-section-carries">The example this section carries</h3>
+<p>The pages that follow build one super group: the <strong>Coastal Resilience
+Center</strong>, alias <code>coastal</code>, <code>gidNumber</code> 1051. The centre already has a hub
+group. What it wants is a look of its own and two pages the page editor
+cannot produce — a status board fed by its own tide-gauge readings, and a
+catalogue of field sites. In the order the chapters come, that is:</p>
+<table>
+<thead>
+<tr>
+<th>The centre wants</th>
+<th>It gets</th>
+<th>Chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Its own header, colours and footer</td>
+<td><code>template/index.php</code></td>
+<td><a href="templating-system/index.html">Templating system</a></td>
+</tr>
+<tr>
+<td>A wide layout for the field-site pages</td>
+<td><code>template/fieldsite.php</code></td>
+<td><a href="page-templates/index.html">Page templates</a></td>
+</tr>
+<tr>
+<td><code>[[GaugeStatus(pier-7)]]</code> inside ordinary page text</td>
+<td><code>macros/gaugestatus.php</code></td>
+<td><a href="custom-macros/index.html">Custom macros</a></td>
+</tr>
+<tr>
+<td>A status board written in code</td>
+<td><code>pages/status.php</code></td>
+<td><a href="php-pages/index.html">PHP pages</a></td>
+</tr>
+<tr>
+<td>Somewhere to keep gauge readings</td>
+<td><code>sg_coastal</code>, via <code>config/db.php</code></td>
+<td><a href="databases/index.html">Databases</a></td>
+</tr>
+<tr>
+<td>That schema under version control</td>
+<td><code>migrations/</code></td>
+<td><a href="migrations/index.html">Migrations</a></td>
+</tr>
+<tr>
+<td>A browsable gauge catalogue with its own URLs</td>
+<td><code>components/com_gauges/</code></td>
+<td><a href="components/index.html">Components</a></td>
+</tr>
+</tbody>
+</table>
+<p>Nothing here is hypothetical about the framework: every file above is loaded
+by code named in the chapter that describes it.</p>
+<h2 id="who-can-change-what">Who can change what</h2>
 <p>A group's type is a database value only an administrator can set. Nothing a
-group manager does from the site turns an ordinary group into a super group,
-and nothing in the group's own web space can be edited from the site either:
-the group file browser reaches the group's <code>uploads</code> folder and nothing else,
-for every group, super or not. You edit a super group's template on the
+group manager does from the site turns an ordinary group into a super group.
+That boundary matters when you plan the work, because it decides who has to be
+in the room.</p>
+<table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Who</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logo, tab access, pages, categories, modules</td>
+<td>a group manager, from the site</td>
+</tr>
+<tr>
+<td>Super group status</td>
+<td>an administrator</td>
+</tr>
+<tr>
+<td><strong>Trusted content</strong> on an ordinary group</td>
+<td>an administrator</td>
+</tr>
+<tr>
+<td>A group's site template override</td>
+<td>an administrator</td>
+</tr>
+<tr>
+<td>Template files, macros, PHP pages, components</td>
+<td>someone with server or repository access</td>
+</tr>
+</tbody>
+</table>
+<p>The group's file browser reaches the group's <code>uploads</code> folder and nothing
+else, <strong>for every group, super or not</strong> — the super group branch in the media
+controller is commented out. So there is no route from the site to
+<code>template/</code>, <code>macros/</code>, <code>pages/</code> or <code>components/</code>. You edit those on the
 server, or through the repository workflow in
 <a href="../supergroups-gitlab/index.html">Super Groups with GitLab</a>.</p>
 <p>For what the status gives a group and how an administrator creates one, see
@@ -210,6 +335,10 @@ after its numeric <code>gidNumber</code>, not its alias:</p>
 │       └── js/
 └── uploads/             everything the group's file browser can reach
 </code></pre>
+<p>The directory is named after the <code>gidNumber</code> and the database after the alias,
+which is a trap the first time you go looking: <code>coastal</code> on the web is
+<code>app/site/groups/1051</code> on disk and <code>sg_coastal</code> in MySQL. The alias is fixed
+at creation and cannot be renamed.</p>
 <p>Everything except <code>pages/</code> is created when the group is saved as a super
 group, from the skeleton in
 <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/super/default"><code>core/components/com_groups/super/default</code></a>.
@@ -268,11 +397,19 @@ new super group starts from the skeleton.</p>
 <code>core/plugins/groups/*</code> plugin looks in the group directory's <code>language/</code>
 folder before its own, so
 <code>language/en-GB/en-GB.plg_groups_blog.ini</code> renames or rewords anything the
-Blog tab says for that group alone.</p>
+Blog tab says for that group alone. That is the cheapest customisation in the
+section — the centre calls its blog tab <strong>Field Notes</strong> with one file and no
+code.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Every group plugin resolves that override to a hardcoded
+<code>PATH_APP/site/groups/&lt;gid&gt;</code>, ignoring the <strong>Upload Path</strong> option the rest
+of <code>com_groups</code> reads. A hub that has moved its group files keeps working
+and loses its language overrides silently.</p>
+</aside>
 <h2 id="code-in-pages-and-modules">Code in pages and modules</h2>
 <p>Group page and module content is run through HTML Purifier before it is
 stored. For an ordinary group, PHP tags and <code>&lt;script&gt;</code> elements are stripped.
-For a super group — and for an ordinary group whose <strong>Trusted content</strong> page
+For a super group — and for an ordinary group whose <strong>Trusted content</strong>
 setting is on — they survive, handled by the <code>Php</code> and <code>ExternalScripts</code>
 filters in
 <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components/com_groups/helpers/filters"><code>core/components/com_groups/helpers/filters/</code></a>.</p>
@@ -287,11 +424,13 @@ applied. They only <em>do</em> anything where the renderer runs them.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Escaping the approval queue is what the <code>pages/</code> directory is
 for. A <code>.php</code> file placed there by someone with server access is executed
-as written and is never queued for approval.</p>
+as written and is never queued for approval. That is the point of the
+directory, and the reason it can only be filled from the server or the
+repository.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../muse/index.html" rel="prev"><span>Previous</span>Muse</a><a class="pager__next" href="templating-system/index.html" rel="next"><span>Next</span>Templating system</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/README.md">Edit this page on GitHub</a>

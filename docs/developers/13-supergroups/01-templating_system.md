@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups/templating_system
 source-id: 3520
@@ -13,14 +13,40 @@ A super group renders through a template of its own instead of the site
 template. The template is ordinary PHP with a handful of `<group:include>`
 tags in it, and it lives in the group's `template/` directory.
 
-## The one required file
+This is the first thing you write and usually the only thing the group asked
+for. The Coastal Resilience Center wants its own banner, its own colours and
+its own footer around content the hub is already producing — the group's
+pages, its wiki, its calendar. The template is where that frame goes. It does
+not render the content; it says where the content goes.
+
+## The smallest thing that works
+
+One file, and it can be four lines:
+
+```php
+<?php // app/site/groups/1051/template/index.php ?>
+<div class="coastal">
+	<h1>Coastal Resilience Center</h1>
+	<group:include type="menu" />
+	<group:include type="content" />
+</div>
+```
+
+Save that, reload the group, and every tab — Overview, Wiki, Calendar,
+Forum — comes back inside it. Everything else in this chapter is options.
 
 ```
 app/site/groups/<gidNumber>/template/index.php
 ```
 
-That is the only file a super group template needs. Everything else — the
-error page, the includes, the stylesheets — is convention.
+That is the only file a super group template needs. The error page, the
+includes and the stylesheets are convention.
+
+> **Warning:** With no `index.php` and no `default.php`, the group does not
+> fall back to the site template. It aborts with *Missing "Super Group"
+> template file.* — a 500, on every tab, for every visitor. That is the usual
+> first symptom of a mistyped filename or a directory copied without its
+> contents.
 
 ## How the file is chosen
 
@@ -37,15 +63,14 @@ is being rendered the order is:
 
 When there is no active page — a plugin tab such as Wiki or Calendar, for
 instance — only `default.php` and `index.php` are considered, in that order.
-If neither exists the group aborts with *Missing "Super Group" template
-file.*
 
 The per-page files are the subject of [Page templates](02-page_templates.md).
+Start with `index.php` alone and add the others when a page needs one.
 
 ## What the template can see
 
-The template is `require`d by the `Template` helper, so `$this` inside it is
-that helper. Four properties are set before it runs:
+The template is loaded with `require_once` by the `Template` helper, so
+`$this` inside it is that helper. Four properties are set before it runs:
 
 | Property | What it holds |
 |---|---|
@@ -54,9 +79,16 @@ that helper. Four properties are set before it runs:
 | `$this->tab` | The active tab, from the `active` URL segment |
 | `$this->content` | The rendered body of the active tab |
 
+`$this->page` is `null` on every plugin tab, so guard it before you read a
+title from it. The skeleton shows the pattern.
+
 The file's output is then scanned for `<group:include>` tags, those are
 replaced with rendered content, and the result is `eval`ed — so PHP written
 inside a group page or module runs at that point too.
+
+> **Note:** Because the file is `require_once`d, it is included at most once
+> per request. That is invisible in normal use — one page, one render — but a
+> second render of the same template inside one request produces nothing.
 
 ## Include tags
 
@@ -78,12 +110,18 @@ and each one is handled by a class in `helpers/document/renderer/`.
 
 Tags must be self-closing, exactly as written. Anything else — a misspelled
 `type`, or a tag used where it is not allowed — renders as an HTML comment
-saying so rather than failing.
+saying so rather than failing. That comment is the thing to look for when a
+region of the page is mysteriously empty: view source.
 
 > **Warning:** A single module is `type="module"` with a `title`; a position
 > is `type="modules"` with a `position`. Older documentation showed
 > `type="modules" title="..."`, which matches no renderer, and spelled the
 > attribute `postion`. Both are wrong.
+
+> **Warning:** Leaving the toolbar out is the most expensive omission. Without
+> `<group:include type="toolbar" />` a manager has no route from the group's
+> own pages to **Group Manager**, and no way to reach the page and module
+> screens except by typing `/groups/coastal/pages`.
 
 ### Script and stylesheet paths
 
@@ -94,7 +132,17 @@ saying so rather than failing.
 - Omitting `base` looks in the group's `uploads` directory.
 
 The file is served through the group's own download route, so a group
-stylesheet arrives as `/groups/<alias>/File:template/assets/css/main.css`.
+stylesheet arrives as `/groups/coastal/File:template/assets/css/main.css`.
+That route applies the group's Overview access setting, so a members-only
+group's assets are members-only too, and it refuses two things outright: any
+path containing `.php`, and anything under `config/` or `.git/`. You cannot
+serve a PHP file to the browser this way, which is the intended behaviour and
+not a bug to work around.
+
+The skeleton takes the other route and calls `Document::addStyleSheet()` with
+a path relative to the document root. Both work on a stock install. Use the
+include tag when the hub blocks direct access to `app/`, and the direct call
+when it does not; do not mix the two for one file.
 
 ### Modules and approval
 
@@ -114,7 +162,9 @@ footer.
 
 Note the `no_html` check. When a request carries `no_html=1` the template
 emits only the content, which is what AJAX requests from group plugins rely
-on. Keep that behaviour in any template you write from scratch.
+on. Keep that behaviour in any template you write from scratch — the Files
+tab, among others, fetches fragments that way, and a template that wraps them
+in a banner returns a banner inside a file listing.
 
 ![An example of a finished super group template](../media/templating-system-template.png)
 

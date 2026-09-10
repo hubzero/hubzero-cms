@@ -138,7 +138,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../muse/index.html">Muse</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Super Groups</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Templating system</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#the-one-required-file">The one required file</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-thing-that-works">The smallest thing that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-the-file-is-chosen">How the file is chosen</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-template-can-see">What the template can see</a></li>
 <li class="toc__item toc__item--l2"><a href="#include-tags">Include tags</a></li>
@@ -179,11 +179,33 @@
 <p>A super group renders through a template of its own instead of the site
 template. The template is ordinary PHP with a handful of <code>&lt;group:include&gt;</code>
 tags in it, and it lives in the group's <code>template/</code> directory.</p>
-<h2 id="the-one-required-file">The one required file</h2>
+<p>This is the first thing you write and usually the only thing the group asked
+for. The Coastal Resilience Center wants its own banner, its own colours and
+its own footer around content the hub is already producing — the group's
+pages, its wiki, its calendar. The template is where that frame goes. It does
+not render the content; it says where the content goes.</p>
+<h2 id="the-smallest-thing-that-works">The smallest thing that works</h2>
+<p>One file, and it can be four lines:</p>
+<pre><code class="language-php">&lt;?php // app/site/groups/1051/template/index.php ?&gt;
+&lt;div class=&quot;coastal&quot;&gt;
+	&lt;h1&gt;Coastal Resilience Center&lt;/h1&gt;
+	&lt;group:include type=&quot;menu&quot; /&gt;
+	&lt;group:include type=&quot;content&quot; /&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Save that, reload the group, and every tab — Overview, Wiki, Calendar,
+Forum — comes back inside it. Everything else in this chapter is options.</p>
 <pre><code>app/site/groups/&lt;gidNumber&gt;/template/index.php
 </code></pre>
-<p>That is the only file a super group template needs. Everything else — the
-error page, the includes, the stylesheets — is convention.</p>
+<p>That is the only file a super group template needs. The error page, the
+includes and the stylesheets are convention.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> With no <code>index.php</code> and no <code>default.php</code>, the group does not
+fall back to the site template. It aborts with <em>Missing &quot;Super Group&quot;
+template file.</em> — a 500, on every tab, for every visitor. That is the usual
+first symptom of a mistyped filename or a directory copied without its
+contents.</p>
+</aside>
 <h2 id="how-the-file-is-chosen">How the file is chosen</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/template.php"><code>Components\Groups\Helpers\Template::_fetch()</code></a>
 builds a list of candidates and uses the first that exists. When a group page
@@ -197,13 +219,12 @@ is being rendered the order is:</p>
 <li><code>index.php</code></li>
 </ol>
 <p>When there is no active page — a plugin tab such as Wiki or Calendar, for
-instance — only <code>default.php</code> and <code>index.php</code> are considered, in that order.
-If neither exists the group aborts with <em>Missing &quot;Super Group&quot; template
-file.</em></p>
-<p>The per-page files are the subject of <a href="../page-templates/index.html">Page templates</a>.</p>
+instance — only <code>default.php</code> and <code>index.php</code> are considered, in that order.</p>
+<p>The per-page files are the subject of <a href="../page-templates/index.html">Page templates</a>.
+Start with <code>index.php</code> alone and add the others when a page needs one.</p>
 <h2 id="what-the-template-can-see">What the template can see</h2>
-<p>The template is <code>require</code>d by the <code>Template</code> helper, so <code>$this</code> inside it is
-that helper. Four properties are set before it runs:</p>
+<p>The template is loaded with <code>require_once</code> by the <code>Template</code> helper, so
+<code>$this</code> inside it is that helper. Four properties are set before it runs:</p>
 <table>
 <thead>
 <tr>
@@ -230,9 +251,16 @@ that helper. Four properties are set before it runs:</p>
 </tr>
 </tbody>
 </table>
+<p><code>$this-&gt;page</code> is <code>null</code> on every plugin tab, so guard it before you read a
+title from it. The skeleton shows the pattern.</p>
 <p>The file's output is then scanned for <code>&lt;group:include&gt;</code> tags, those are
 replaced with rendered content, and the result is <code>eval</code>ed — so PHP written
 inside a group page or module runs at that point too.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Because the file is <code>require_once</code>d, it is included at most once
+per request. That is invisible in normal use — one page, one render — but a
+second render of the same template inside one request produces nothing.</p>
+</aside>
 <h2 id="include-tags">Include tags</h2>
 <p>A template may use these tags. They are parsed by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/document.php"><code>Components\Groups\Helpers\Document</code></a>
@@ -285,12 +313,19 @@ and each one is handled by a class in <code>helpers/document/renderer/</code>.</
 </table>
 <p>Tags must be self-closing, exactly as written. Anything else — a misspelled
 <code>type</code>, or a tag used where it is not allowed — renders as an HTML comment
-saying so rather than failing.</p>
+saying so rather than failing. That comment is the thing to look for when a
+region of the page is mysteriously empty: view source.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> A single module is <code>type=&quot;module&quot;</code> with a <code>title</code>; a position
 is <code>type=&quot;modules&quot;</code> with a <code>position</code>. Older documentation showed
 <code>type=&quot;modules&quot; title=&quot;...&quot;</code>, which matches no renderer, and spelled the
 attribute <code>postion</code>. Both are wrong.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Leaving the toolbar out is the most expensive omission. Without
+<code>&lt;group:include type=&quot;toolbar&quot; /&gt;</code> a manager has no route from the group's
+own pages to <strong>Group Manager</strong>, and no way to reach the page and module
+screens except by typing <code>/groups/coastal/pages</code>.</p>
 </aside>
 <h3 id="script-and-stylesheet-paths">Script and stylesheet paths</h3>
 <p><code>base</code> selects where <code>source</code> is resolved from:</p>
@@ -300,7 +335,16 @@ attribute <code>postion</code>. Both are wrong.</p>
 <li>Omitting <code>base</code> looks in the group's <code>uploads</code> directory.</li>
 </ul>
 <p>The file is served through the group's own download route, so a group
-stylesheet arrives as <code>/groups/&lt;alias&gt;/File:template/assets/css/main.css</code>.</p>
+stylesheet arrives as <code>/groups/coastal/File:template/assets/css/main.css</code>.
+That route applies the group's Overview access setting, so a members-only
+group's assets are members-only too, and it refuses two things outright: any
+path containing <code>.php</code>, and anything under <code>config/</code> or <code>.git/</code>. You cannot
+serve a PHP file to the browser this way, which is the intended behaviour and
+not a bug to work around.</p>
+<p>The skeleton takes the other route and calls <code>Document::addStyleSheet()</code> with
+a path relative to the document root. Both work on a stock install. Use the
+include tag when the hub blocks direct access to <code>app/</code>, and the direct call
+when it does not; do not mix the two for one file.</p>
 <h3 id="modules-and-approval">Modules and approval</h3>
 <p>The module renderers list only published modules. Unapproved modules are
 included only when the template is rendered with <code>allMods</code> set, which is what
@@ -344,7 +388,9 @@ Document::addScript($base . DS . 'assets/js/main.js');
 </code></pre>
 <p>Note the <code>no_html</code> check. When a request carries <code>no_html=1</code> the template
 emits only the content, which is what AJAX requests from group plugins rely
-on. Keep that behaviour in any template you write from scratch.</p>
+on. Keep that behaviour in any template you write from scratch — the Files
+tab, among others, fetches fragments that way, and a template that wraps them
+in a banner returns a banner inside a file listing.</p>
 <p><img src="../../media/templating-system-template.png" alt="An example of a finished super group template" /></p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> That screenshot shows a custom template built on a hub, not the
@@ -373,7 +419,7 @@ layout.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Super Groups</a><a class="pager__next" href="../page-templates/index.html" rel="next"><span>Next</span>Page templates</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/13-supergroups/01-templating_system.md">Edit this page on GitHub</a>

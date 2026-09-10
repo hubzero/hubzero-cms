@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/fontcons
 source-id: 3515
@@ -14,6 +14,20 @@ warning triangles and so on. Roughly 295 glyphs, originally derived from Font
 Awesome and heavily extended. Components, modules and the admin templates all
 use it, so a site template that does not carry it renders a lot of blank
 squares.
+
+## Why you have to care
+
+You do not get to choose whether your template supports Fontcons. Sixty-odd
+components already print `<a class="icon-edit">` and `<span class="icon-user">`
+into pages your template wraps. If the font and the `.icon-*` classes are not
+in the cascade, every one of those controls loses its icon — and, because the
+glyph lives in a `:before` pseudo-element, some of them lose their only visible
+content.
+
+So: import the two LESS files, or link the plain stylesheet and write the
+classes. Then, for the markup **you** write, prefer
+[`Html::asset('icon', …)`](#the-alternative-svg-icons) — the newer system, which
+a template can override per symbol.
 
 ## What ships
 

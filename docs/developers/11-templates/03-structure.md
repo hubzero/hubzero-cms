@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/structure
 source-id: 3506
@@ -12,20 +12,33 @@ modified: 2015-08-24
 A template is a directory. This chapter says what goes in it, what is
 required, and what the CMS does with each part.
 
+Read it once before you start deleting things from the copy you made. Most of
+a template directory is convention you can rename or drop; a small part of it
+is looked for by name, and dropping that part fails silently rather than
+loudly.
+
 ## Where it lives
 
 Your templates go in `app/templates/{name}`. The templates that ship with the
 CMS are in `core/templates/{name}` and are replaced on upgrade, so do not edit
 them in place — copy one into `app/templates` instead, as the
-[overview](README.md) describes.
+[overview](README.md#where-to-start) describes. Nothing under `app/` is part of
+the distribution.
 
 [`Hubzero\Template\Loader`](../../../core/libraries/Hubzero/Template/Loader.php)
 resolves a style to a directory, checking `app/` before `core/`. A template in
 `app/templates/kimera` therefore shadows the shipped `kimera` entirely.
 
+> **Warning:** That shadowing is total and it is easy to do by accident. If you
+> copy `kimera` and forget to change the destination name, every hub page that
+> asks for the `kimera` style gets your copy instead — including any style an
+> administrator set up earlier. Give the copy its own name (`northgate`) and
+> register it as its own style.
+
 ## The tree
 
-This is `kimera`, the fullest of the shipped site templates:
+This is `kimera`, the fullest of the shipped site templates, and the tree
+`northgate` inherits by copying it:
 
 ```
 core/templates/kimera/
@@ -61,11 +74,13 @@ what you like. The rest the CMS looks for by name.
 Only two things:
 
 - **`index.php`.** If it is missing, `Hubzero\Document\Type\Html` silently
-  falls back to `core/templates/system` and renders that instead.
+  falls back to `core/templates/system` and renders that instead. The symptom
+  is a hub that looks unstyled rather than broken.
 - **A row in `#__extensions`, and a style in `#__template_styles`.** The
   administrator's template list is a query against `#__extensions`, not a scan
-  of the filesystem, so a directory nobody has registered is invisible. Write
-  a [migration](01-migrations.md) to register it.
+  of the filesystem, so a directory nobody has registered is invisible — and,
+  the other way round, a registered name whose directory is missing is still
+  listed. Write a [migration](01-migrations.md) to register it.
 
 `templateDetails.xml` is *not* required for the template to render. It is
 required for the administrator to configure it: without it the template has no
@@ -110,6 +125,25 @@ skip:
 has neither a manifest nor a migration. It also holds the shared `email.php`,
 `group.php`, `help.php`, `login.php` and `offline.php` layouts that other
 templates inherit when they do not define their own.
+
+## What to keep in `northgate`
+
+Working from the `kimera` copy, this is the honest division:
+
+| Keep | Because |
+|---|---|
+| `index.php`, `component.php`, `error.php` | Three of the four layouts a visitor can reach. Restyle all three or the hub looks unfinished inside every modal. |
+| `less/` and the compiled `css/` beside it | Where the branding actually goes. |
+| `language/`, renamed | Every string the layout prints. |
+| `migrations/`, renamed | Nothing works until this runs. |
+| `templateDetails.xml` | The parameters and the position list. |
+
+| Drop | Because |
+|---|---|
+| `css/pages/*.css`, `css/print.css`, `css/download.css`, `css/upload.css` | No layout links them and nothing pushes them. They are dead in `kimera` too. See [Cascading style sheets](07-css.md). |
+| `css/browser/ie8.css`, `css/browser/ie9.css` and their conditional comments | Conditional comments stopped working at Internet Explorer 10. |
+| `js/html5.js` | The HTML5 shiv, for the same browsers. |
+| Most of `html/` | 32 per-component stylesheets tuned to `kimera`'s colours. Keep the ones for components your hub actually shows — for `northgate`, that means the `com_bookings` overrides you write, not `kimera`'s `com_projects` ones. |
 
 > **Note:** `lucent` ships a `templateDetails.xml` whose root element is
 > `<install>` rather than `<extension>`, with an empty `<files>` list and a

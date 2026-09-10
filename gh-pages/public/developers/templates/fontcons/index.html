@@ -132,6 +132,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Fontcons</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-you-have-to-care">Why you have to care</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
 <li class="toc__item toc__item--l2"><a href="#adding-it-to-a-template">Adding it to a template</a></li>
 <li class="toc__item toc__item--l2"><a href="#using-it">Using it</a></li>
@@ -177,6 +178,17 @@ warning triangles and so on. Roughly 295 glyphs, originally derived from Font
 Awesome and heavily extended. Components, modules and the admin templates all
 use it, so a site template that does not carry it renders a lot of blank
 squares.</p>
+<h2 id="why-you-have-to-care">Why you have to care</h2>
+<p>You do not get to choose whether your template supports Fontcons. Sixty-odd
+components already print <code>&lt;a class=&quot;icon-edit&quot;&gt;</code> and <code>&lt;span class=&quot;icon-user&quot;&gt;</code>
+into pages your template wraps. If the font and the <code>.icon-*</code> classes are not
+in the cascade, every one of those controls loses its icon — and, because the
+glyph lives in a <code>:before</code> pseudo-element, some of them lose their only visible
+content.</p>
+<p>So: import the two LESS files, or link the plain stylesheet and write the
+classes. Then, for the markup <strong>you</strong> write, prefer
+<a href="#the-alternative-svg-icons"><code>Html::asset('icon', …)</code></a> — the newer system, which
+a template can override per symbol.</p>
 <h2 id="what-ships">What ships</h2>
 <table>
 <thead>
@@ -403,7 +415,7 @@ stylesheets use, and you need it for those to look right. Reach for
 symbol without touching your stylesheet.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../socicons/index.html" rel="prev"><span>Previous</span>Socicons</a><a class="pager__next" href="../elements/index.html" rel="next"><span>Next</span>Elements and typography</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/12-fontcons.md">Edit this page on GitHub</a>

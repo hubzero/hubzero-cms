@@ -176,10 +176,16 @@
 list it or let an administrator create an instance of it. That registration is
 done by a migration: a small PHP class in the module's <code>migrations</code> directory
 that the <a href="../../muse/index.html"><code>muse migration</code></a> command runs.</p>
+<p>Write it first. A module is the one extension kind that cannot be published at
+all without its row — a component with no row still serves its own pages, a
+plugin at least fails at a known event, but an unregistered module simply is
+not in the Module Manager's list of things you can create.
+<a href="../../extensions/index.html#how-an-extension-is-found">How an extension is found</a>
+sets the four kinds side by side.</p>
 <h2 id="where-migrations-live">Where migrations live</h2>
-<pre><code>core/modules/mod_mygroups/
+<pre><code>app/modules/mod_upcoming_bookings/
     migrations/
-        Migration20190109000000ModMyGroups.php
+        Migration20260101000000ModUpcomingBookings.php
 </code></pre>
 <p>The class name carries the timestamp and the extension, and the file is named
 after the class. Migrations are run in timestamp order across every extension
@@ -222,6 +228,24 @@ class Migration20190109000000ModMyGroups extends Base
 	}
 }
 </code></pre>
+<p><code>mod_upcoming_bookings</code> is the same file with its own name in it:</p>
+<pre><code class="language-php">class Migration20260101000000ModUpcomingBookings extends Base
+{
+	public function up()
+	{
+		$this-&gt;addModuleEntry('mod_upcoming_bookings');
+	}
+
+	public function down()
+	{
+		$this-&gt;deleteModuleEntry('mod_upcoming_bookings');
+	}
+}
+</code></pre>
+<p>That is the whole of it, because the module owns no tables. It reads
+<code>#__bookings_reservations</code>, which <code>com_bookings</code>'s own migration creates — so
+give the module a timestamp later than the component's, and declare the
+dependency in <code>composer.json</code> as well. See <a href="../packaging/index.html">Packaging</a>.</p>
 <p><code>addModuleEntry()</code> and <code>deleteModuleEntry()</code> are macros resolved by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration/Base.php"><code>Hubzero\Content\Migration\Base</code></a>
 from the <code>Macros</code> directory beside it. Their signatures are:</p>
@@ -273,22 +297,89 @@ migration does not create a duplicate registration.</p>
 </aside>
 <h2 id="creating-an-instance-from-a-migration">Creating an instance from a migration</h2>
 <p>Registering a module does not place it anywhere. If your module is meant to
-appear as soon as it is installed — a footer, a set of admin quick icons — use
-<code>installModule()</code>, which writes both the <code>#__extensions</code> row and a published
-<code>#__modules</code> instance assigned to a position:</p>
-<pre><code class="language-php">public function up()
-{
-    // Registers mod_quickicon and places an instance in the &quot;icon&quot; position
-    $this-&gt;installModule('quickicon', 'icon', true, '', 1);
-}
+appear as soon as it is installed, <code>installModule()</code> writes a published
+<code>#__modules</code> instance assigned to a position, and a <code>#__modules_menu</code> row for
+each menu id in <code>$menus</code> — the default of <code>0</code> meaning all of them.</p>
+<p>One migration in the tree does this, and it is worth reading whole because it
+gets both hard parts right:</p>
+<pre><code class="language-php">	public function up()
+	{
+		$this-&gt;deletePluginEntry('content', 'collect');
+		$this-&gt;deletePluginEntry('resources', 'collect');
+		$this-&gt;deletePluginEntry('wiki', 'collect');
+
+		$this-&gt;addModuleEntry('mod_collect', 1, '', 0);
+
+		$query = &quot;SELECT COUNT(*) FROM `#__modules` WHERE `module`='mod_collect'&quot;;
+		$this-&gt;db-&gt;setQuery($query);
+		if (!$this-&gt;db-&gt;loadResult())
+		{
+			$position = 'endpage';
+			$found = false;
+
+			$query  = &quot;SELECT COUNT(*) FROM `#__modules` WHERE `client_id`=0 AND `position`=&quot;;
+			$this-&gt;db-&gt;setQuery($query . $this-&gt;db-&gt;quote($position));
+			if ($this-&gt;db-&gt;loadResult())
+			{
+				$found = true;
+			}
+
+			if (!$found)
+			{
+				$position = 'footer';
+				$this-&gt;db-&gt;setQuery($query . $this-&gt;db-&gt;quote($position));
+				if ($this-&gt;db-&gt;loadResult())
+				{
+					$found = true;
+				}
+			}
+
+			if ($found)
+			{
+				$this-&gt;installModule('collect', $position);
+			}
+		}
+	}
 </code></pre>
-<p>Note that <code>installModule()</code> takes the name <em>without</em> the <code>mod_</code> prefix and
-adds it itself, while <code>addModuleEntry()</code> takes the prefixed name. The
-<code>$always</code> argument controls the <code>#__modules_menu</code> row: <code>true</code> assigns the
-instance to all menu items, <code>false</code> restricts it to the ids in <code>$menus</code>.</p>
+<p><code>addModuleEntry()</code> first, <code>installModule()</code> second, and the position is not
+guessed: the migration looks for a position other site modules are already
+using — <code>endpage</code>, then <code>footer</code> — and places the instance only if it finds
+one. A position no template renders would have left <code>mod_collect</code> published
+and invisible.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>installModule()</code> writes <code>#__modules</code> and <code>#__modules_menu</code> and
+nothing else. It does <strong>not</strong> register the extension, despite the name. On
+its own it leaves a published instance whose module has no <code>#__extensions</code>
+row, and <code>Loader::all()</code> joins the two and requires <code>e.enabled = 1</code>, so the
+instance renders nothing and shows no error. Call <code>addModuleEntry()</code> first,
+as <code>mod_collect</code> does.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>installModule()</code> takes the name <em>without</em> the <code>mod_</code> prefix
+and adds it itself — <code>$module = 'mod_' . strtolower($module)</code>. Every other
+module macro takes the prefixed name. Pass the prefixed name here and the
+<code>#__modules</code> row records <code>mod_mod_upcoming_bookings</code>, which resolves to no
+directory and renders nothing.</p>
+</aside>
+<p><code>$always</code> does not mean what the name suggests either. It does not control the
+menu assignment: <code>$menus</code> does that, in every case. <code>$always = false</code> makes the
+macro skip the insert when a <code>#__modules</code> instance of that module already
+exists, so a re-run does not add a second copy. <code>$always = true</code>, the default,
+inserts every time.</p>
+<p>Most modules should not use <code>installModule()</code> at all. Placing a block is the
+hub's decision — not every hub wants <code>mod_upcoming_bookings</code>, and those that
+do will not agree on which column — so register it with <code>addModuleEntry()</code> and
+let an administrator place it. Reach for <code>installModule()</code> only when the
+module is useless anywhere else, and then find the position the way
+<code>mod_collect</code> does rather than naming one and hoping. See
+<a href="../loading/index.html#positions-belong-to-the-template">Loading</a>.</p>
 <h2 id="tables-and-schema">Tables and schema</h2>
-<p>A module that needs its own tables creates them in the same migration, using
-the raw query helpers described in the
+<p>Most modules need none. A module that renders somebody else's records — the
+booking module reads <code>#__bookings_reservations</code> and writes nothing — has
+nothing to create, and a module that finds itself wanting a table of its own
+is usually a component in disguise.</p>
+<p>Where a module really does own data, it creates the tables in the same
+migration, using the raw query helpers described in the
 <a href="../../database/index.html#migrations">database migrations</a> chapter:</p>
 <pre><code class="language-php">public function up()
 {
@@ -316,9 +407,13 @@ muse migration -f -i    # apply, including migrations dated before the last run
 return the module — its query joins <code>#__modules</code> to <code>#__extensions</code> and
 requires <code>e.enabled = 1</code> — so an unregistered module renders nothing even if
 every file is in place.</p>
+<p>What that looks like: <strong>New</strong> in the Module Manager does not list
+<code>mod_upcoming_bookings</code> at all. There is no error and no log line; the module
+is simply not among the things you can create. If it is missing from that
+list, the migration has not run.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Modules</a><a class="pager__next" href="../structure/index.html" rel="next"><span>Next</span>Structure</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/01-migrations.md">Edit this page on GitHub</a>

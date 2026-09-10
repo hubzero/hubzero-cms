@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/templates/languages
 source-id: 3505
@@ -13,13 +13,27 @@ Every string a template prints should come from a language file, so the
 template can be translated without being edited. A template's strings live in
 its own `language` directory and are loaded for you.
 
+## Why bother
+
+Two reasons, and the second is the one that catches people.
+
+A template is the part of the hub that prints the most bare English: *Log in*,
+*Search*, *Skip to main content*, *Help*. If those are literals in `index.php`,
+the hub cannot be translated no matter what anyone does to the components.
+
+More immediately, a hub that installs your template can replace any string in
+it *without editing your files* — by dropping a file into its own
+`app/bootstrap/site/language/` directory. That is the supported way for one hub
+to say **Reserve** where `northgate` says **Book**. A hardcoded string forces a
+fork of the template.
+
 ## Where the files go
 
 ```
-core/templates/kimera/
+app/templates/northgate/
     language/
         en-GB/
-            en-GB.tpl_kimera.ini
+            en-GB.tpl_northgate.ini
 ```
 
 The directory is `language`, singular. Inside it, one directory per language
@@ -33,10 +47,12 @@ directory name.
 All four site templates and `kameleon` ship one. Nothing else in a template
 tree is scanned for strings.
 
-> **Warning:** `muse scaffolding copy template` rewrites file *contents* but
-> not filenames, so a template copied from `kimera` still has a file called
-> `en-GB.tpl_kimera.ini`. Rename it to match the new template or none of its
-> strings will load.
+> **Warning:** `muse scaffolding copy template` rewrites file *contents* only,
+> and only at the top level of the copied directory — `language/` is a
+> subdirectory, so its file arrives untouched and still named
+> `en-GB.tpl_kimera.ini`, still full of `TPL_KIMERA_*` keys. Rename the file to
+> match the new template and rewrite the key prefix, or none of its strings
+> load.
 
 ## Writing one
 
@@ -65,17 +81,20 @@ Note the pair of calls. The first looks under
 template's own directory. Whichever loads first wins, so a hub can override
 individual templates' strings without touching `core/`.
 
-To load some other extension's strings, call `Lang::load()` yourself:
+To load some other extension's strings, call `Lang::load()` yourself. A
+template layout that prints a `com_bookings` string needs this, because nothing
+loads a component's language file for a page that is not running that
+component:
 
 ```php
 <?php
 defined('_HZEXEC_') or die();
 
-// From app/bootstrap/site/language/en-GB/en-GB.com_example.ini
-Lang::load('com_example');
+// From app/bootstrap/site/language/en-GB/en-GB.com_bookings.ini
+Lang::load('com_bookings');
 
 // From a specific directory
-Lang::load('com_example', PATH_CORE . '/components/com_example/site');
+Lang::load('com_bookings', PATH_APP . '/components/com_bookings/site');
 ```
 
 The signature is
@@ -90,7 +109,7 @@ current language has no file of its own.
 ## Printing a string
 
 ```php
-<p><?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?></p>
+<p><?php echo Lang::txt('TPL_NORTHGATE_BOOK_AN_INSTRUMENT'); ?></p>
 ```
 
 Extra arguments are passed through `sprintf`, so a file can hold format
@@ -104,30 +123,49 @@ TPL_WELCOME_CONGRATS="Congratulations, you are now running HUBzero %s."
 echo Lang::txt('TPL_WELCOME_CONGRATS', $version);
 ```
 
-A key with no translation is returned unchanged, which is why an untranslated
-page shows `TPL_KIMERA_LOGIN` rather than an empty space. Turn on **Debug
-Language** in Global Configuration to make this obvious: found strings are
-wrapped in `**asterisks**` and missing ones in `??question marks??`.
+### What failure looks like
+
+A key with no translation is returned unchanged. There is no error and no blank
+space: the page shows the literal `TPL_NORTHGATE_BOOK_AN_INSTRUMENT` where the
+words should be. Every cause produces the same symptom —
+
+- the file is named for the template it was copied from;
+- the key is defined but the file is in `languages/` rather than `language/`;
+- the key is misspelled in the layout;
+- the string is a component's and nobody called `Lang::load()`.
+
+Turn on **Debug Language** in Global Configuration to tell them apart: found
+strings are wrapped in `**asterisks**` and missing ones in `??question marks??`.
+A key with no asterisks and no question marks is not being looked up at all.
 
 ## Strings the administrator sees
 
-Two things outside the template itself are translated from the same file.
+Two things outside the template itself are translated, and they do not load the
+same file.
 
 **Parameter labels.** The `label` and `description` attributes in the
 `<config>` block of [`templateDetails.xml`](10-packaging.md) are language keys.
-`com_templates` loads `tpl_{template}` before it builds the style-editing form,
-so `TPL_KIMERA_FIELD_HEADER_LABEL` resolves there.
+[`com_templates`](../../../core/components/com_templates/admin/controllers/styles.php)
+loads the template's **main** `tpl_{template}` file before it builds the
+style-editing form, so `TPL_NORTHGATE_FIELD_HEADER_LABEL` resolves there.
 
-**Module position names.** When `com_modules` builds the position list it reads
-`<positions>` from the manifest and looks for a key named
-`TPL_{TEMPLATE}_POSITION_{POSITION}`, upper-cased. Define
-`TPL_MYTEMPLATE_POSITION_INTROBLOCK` to give the `introblock` position a
-readable name; without it the administrator sees the raw position name.
+**Module position names.** When
+[`com_modules`](../../../core/components/com_modules/admin/controllers/modules.php)
+builds the position list it reads `<positions>` from every installed template's
+manifest and, for each, loads only `tpl_{template}.sys` — the `.sys.ini` file,
+never the main one. It then looks for a key named
+`TPL_{TEMPLATE}_POSITION_{POSITION}`, upper-cased, and falls back to
+`COM_MODULES_POSITION_{POSITION}` from its own language file if the template's
+key is not defined.
 
-Both of those lookups prefer a `.sys.ini` file — `en-GB.tpl_kimera.sys.ini` —
-and fall back to the main file. A `.sys.ini` holds the subset of strings the
-administrator interface needs before the extension itself runs. No shipped
-Hubzero template has one, and nothing breaks without it.
+> **Warning:** No shipped Hubzero template has a `.sys.ini`, so no shipped
+> template's `TPL_*_POSITION_*` key is ever loaded. Every position label you see
+> in the administrator today comes from the `COM_MODULES_POSITION_*` fallback,
+> or renders as the raw key when there is no fallback either. If you want your
+> own positions named, ship
+> `language/en-GB/en-GB.tpl_northgate.sys.ini` — a `.sys.ini` holds the subset
+> of strings the administrator interface needs before the extension itself runs.
+> Putting the keys in the main file has no effect on this list.
 
 > **Tip:** The [Languages](../07-extensions/03-languages.md) chapter covers the
 > same file format for components, modules and plugins.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Plugins · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A plugin is a class whose public methods are bound to event names. Something elsewhere in the CMS triggers an event; every enabled plugin with a matching…">
+  <meta name="description" content="A plugin is a class whose public methods are bound to event names. Something elsewhere triggers an event; every enabled plugin with a matching method runs, and…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,9 +110,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/packaging/index.html">Packaging</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Plugins</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-example-carried-through-this-section">The example carried through this section</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-working-thing">The smallest working thing</a></li>
 <li class="toc__item toc__item--l2"><a href="#groups">Groups</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-plugin-is-made-of">What a plugin is made of</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-a-method-becomes-a-listener">How a method becomes a listener</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-events-exist">Which events exist</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="migrations/index.html">Migrations</a></li>
@@ -172,17 +175,107 @@
         
         <div class="prose">
 <p>A plugin is a class whose public methods are bound to event names. Something
-elsewhere in the CMS triggers an event; every enabled plugin with a matching
-method runs, and what those methods return is collected and handed back to the
-caller. That is the entire mechanism. It is how the login form finds its
-authentication providers, how a group page grows a Forum tab, and how wiki
-markup becomes HTML.</p>
-<p>Plugins live in <code>core/plugins</code> and <code>app/plugins</code>, one directory per group and
-one directory per plugin inside it.</p>
+elsewhere triggers an event; every enabled plugin with a matching method runs,
+and what those methods return is collected and handed back to the caller. That
+is the entire mechanism. It is how the login form finds its authentication
+providers, how a group page grows a Forum tab, and how wiki markup becomes
+HTML.</p>
+<p>Reach for a plugin when you want to <em>react</em> to something a component already
+does, and you do not want to edit that component to do it. The component
+triggers an event because it does not know, and should not know, what a
+particular hub wants to happen next. If instead the thing you are adding owns
+a URL and a screen of its own, you want a component; if it draws a box beside
+somebody else's page, you want a module. The
+<a href="../extensions/index.html#which-kind-do-you-want">table of the four kinds</a>
+is the quick way to decide.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>A plugin with no row in <code>#__extensions</code> never loads at all.</strong>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader::all()</code></a>
+builds its list from that table and never looks at the filesystem, so a
+plugin sitting on disk that no migration registered is not disabled — it is
+invisible. Nothing is required, nothing is constructed, nothing is bound to
+an event, and there is no error, no log line and no entry in the Plugin
+Manager. Of the four extension kinds, this is the one that fails most
+silently; see
+<a href="../extensions/index.html#how-an-extension-is-found">what a missing row costs</a>.
+Writing the migration is step one, not step last. See
+<a href="migrations/index.html">Migrations</a>.</p>
+</aside>
+<h2 id="the-example-carried-through-this-section">The example carried through this section</h2>
+<p>The rest of this book builds <code>com_bookings</code>, a component that books a lab's
+instruments. When it saves a new reservation it triggers one event of its
+own:</p>
+<pre><code class="language-php">Event::trigger('bookings.onReservationCreate', array($reservation));
+</code></pre>
+<p>The component does not send mail. This lab wants the instrument's manager
+emailed whenever somebody books, so that behaviour goes in a plugin —
+<code>plg_bookings_notify</code> — which every chapter here builds a piece of. Another
+hub running the same component might answer the same event by writing to a
+shared calendar, or not install a plugin at all and get nothing. That choice
+belongs to whoever runs the hub, which is the point of triggering an event
+instead of sending the mail from the component.</p>
+<h2 id="the-smallest-working-thing">The smallest working thing</h2>
+<p>Three files under <code>app/plugins/bookings/notify/</code>, and one command.</p>
+<p><code>notify.php</code>:</p>
+<pre><code class="language-php">&lt;?php
+// No direct access
+defined('_HZEXEC_') or die();
+
+class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+{
+	public function onReservationCreate($reservation)
+	{
+		$to = $this-&gt;params-&gt;get('manager_email');
+
+		if (!$to)
+		{
+			return;
+		}
+
+		$message = new \Hubzero\Mail\Message();
+		$message-&gt;setSubject('New reservation')
+		        -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
+		        -&gt;addTo($to)
+		        -&gt;addPart('A new reservation was created.', 'text/plain');
+
+		$message-&gt;send();
+	}
+}
+</code></pre>
+<p><code>notify.xml</code> — the manifest, which the Plugin Manager reads for the display
+name and the parameter form. <code>migrations/Migration20260210000000PlgBookingsNotify.php</code>:</p>
+<pre><code class="language-php">&lt;?php
+
+use Hubzero\Content\Migration\Base;
+
+defined('_HZEXEC_') or die();
+
+class Migration20260210000000PlgBookingsNotify extends Base
+{
+	public function up()
+	{
+		$this-&gt;addPluginEntry('bookings', 'notify');
+	}
+
+	public function down()
+	{
+		$this-&gt;deletePluginEntry('bookings', 'notify');
+	}
+}
+</code></pre>
+<p>Then:</p>
+<pre><code class="language-bash">php core/bin/muse migration -f
+</code></pre>
+<p>Nothing else is declared anywhere. The method name <code>onReservationCreate</code> is
+the whole registration, and the row the migration wrote is what makes the
+loader find the file. The later chapters add the language file, the
+parameters, and a view for the mail body.</p>
 <h2 id="groups">Groups</h2>
-<p>A plugin's group is the directory it sits in. It decides which events the
-plugin is loaded for and nothing else; the group is not a type in any stronger
-sense. The groups shipped in <code>core/plugins</code> are:</p>
+<p>A plugin's group is the directory it sits in, and it is also the <code>folder</code>
+column of the plugin's extension row and the prefix on the events it hears.
+The group decides which events the plugin is loaded for and nothing else; it
+is not a type in any stronger sense. The groups shipped in <code>core/plugins</code>
+are:</p>
 <pre><code>answers         cron            members         tags
 antispam        editors         metadata        tools
 authentication  editors-xtd     newsletter      update
@@ -198,9 +291,11 @@ courses         mail            system
 transform text on its way to the page, <code>user</code> plugins react to account
 changes, <code>cron</code> plugins register scheduled jobs. Most of the rest belong to
 one component — <code>groups</code>, <code>members</code>, <code>projects</code>, <code>resources</code>,
-<code>publications</code> — and add a tab, a panel, or a step to it. A hub may add its
-own group simply by creating a directory and triggering events prefixed with
-its name.</p>
+<code>publications</code> — and add a tab, a panel, or a step to it.</p>
+<p>A hub adds its own group, as <code>com_bookings</code> does, simply by creating the
+directory and triggering events prefixed with its name. There is no register
+of groups to add to. Because of that there is also nothing to catch a typo:
+see <a href="structure/index.html#group-and-directory-must-match">Group and directory must match</a>.</p>
 <h2 id="what-a-plugin-is-made-of">What a plugin is made of</h2>
 <pre><code>core/plugins/members/blog/
     assets/css/blog.css
@@ -213,8 +308,8 @@ its name.</p>
     blog.xml
     composer.json
 </code></pre>
-<p>Only <code>blog.php</code> and <code>blog.xml</code> are required. The class inside <code>blog.php</code> is
-<code>plgMembersBlog</code>, it extends
+<p>Only <code>blog.php</code> and <code>blog.xml</code> are required, plus the migration if the plugin
+is ever to run. The class inside <code>blog.php</code> is <code>plgMembersBlog</code>, it extends
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Plugin.php"><code>Hubzero\Plugin\Plugin</code></a>, and
 its public <code>onMembersAreas()</code> and <code>onMembers()</code> methods are what
 <code>com_members</code> triggers.</p>
@@ -231,9 +326,16 @@ triggered, the method is called with the event's arguments.</p>
 not mean to expose. Keep helpers <code>protected</code> or <code>private</code>; a public
 <code>display()</code> will be called for any event named <code>display</code>.</p>
 </aside>
+<h2 id="which-events-exist">Which events exist</h2>
+<p>The authoritative list is generated from the source tree: the
+<a href="../../reference/events/index.html">events reference</a> covers 279 events across
+41 groups, and for each one names the call sites that fire it, the arguments
+they pass, and the plugins that already listen. Read the page for the group
+you are extending before you invent a method name — half the time the
+extension point you want is already there.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
-<li><a href="migrations/index.html">Migrations</a> — registering the plugin.</li>
+<li><a href="migrations/index.html">Migrations</a> — registering the plugin. Read this first.</li>
 <li><a href="structure/index.html">Structure</a> — the directory layout and class naming.</li>
 <li><a href="controllers/index.html">Controllers</a> — the plugin class, and the events it can
 answer.</li>
@@ -241,13 +343,14 @@ answer.</li>
 <li><a href="views/index.html">Views</a> — returning HTML from a plugin.</li>
 <li><a href="assets/index.html">Assets</a> — CSS, JavaScript, and images.</li>
 <li><a href="configuration/index.html">Configuration</a> — parameters, global and per-object.</li>
-<li><a href="packaging/index.html">Packaging</a> — the Composer and XML manifests.</li>
+<li><a href="packaging/index.html">Packaging</a> — the Composer and XML manifests, and how a
+plugin reaches a running hub.</li>
 <li><a href="loading/index.html">Loading</a> — importing groups, triggering events, and reading
 the responses.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/README.md">Edit this page on GitHub</a>

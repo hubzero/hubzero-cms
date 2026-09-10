@@ -128,6 +128,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">JavaScript</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-a-template-author-needs-this">Why a template author needs this</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-is-already-there">What is already there</a></li>
 <li class="toc__item toc__item--l3"><a href="#jquery">jQuery</a></li>
 <li class="toc__item toc__item--l3"><a href="#core-js">core.js</a></li>
@@ -181,6 +182,15 @@
 <p>What the CMS puts in the page before your template runs, how a template adds
 scripts of its own, and how a component, module or plugin pushes a script to
 the document.</p>
+<h2 id="why-a-template-author-needs-this">Why a template author needs this</h2>
+<p>A template rarely needs much JavaScript of its own — a menu toggle, a search
+overlay. What it does need is to know what is <em>already</em> on the page, because
+adding a second copy of jQuery, or binding a handler the CMS has already bound,
+breaks components you did not write and did not test.</p>
+<p>The short version: jQuery is already there on the site, <code>Hubzero</code> in
+<code>core/assets/js/core.js</code> already does most of what you were about to write, and
+markup that carries <code>data-</code> attributes is already wired. Reach for those before
+adding a file.</p>
 <h2 id="what-is-already-there">What is already there</h2>
 <h3 id="jquery">jQuery</h3>
 <p>jQuery is not loaded by the template. The <code>System - jQuery</code> plugin loads it, on
@@ -368,8 +378,11 @@ on, which inline <code>&lt;script&gt;</code> blocks do not — that plugin ships
 default <code>script-src</code> still allows <code>'unsafe-inline'</code>, but neither is something
 to rely on.</p>
 <h2 id="adding-a-template-s-own-scripts">Adding a template's own scripts</h2>
-<p>Put them in <code>js/</code> and add them from <code>index.php</code>. <code>kimera</code> does exactly one
-thing:</p>
+<p>Put them in <code>js/</code> and add them from <code>index.php</code>. Anything more elaborate than a
+menu toggle should probably not be in the template at all: a template's script
+runs on every page of the hub, including pages whose component has its own idea
+of what a click on that element means.</p>
+<p><code>kimera</code> does exactly one thing:</p>
 <pre><code class="language-php">// Include global scripts
 $this-&gt;addScript($this-&gt;baseurl . '/templates/' . $this-&gt;template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 </code></pre>
@@ -413,6 +426,12 @@ documentation suggested:</p>
 </tr>
 </tbody>
 </table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>kimera/js/hub.js</code> is loaded on every page of a hub running
+<code>kimera</code>, and it is the jQuery <code>growl</code> plugin — nothing else. A template
+copied from <code>kimera</code> that never calls <code>growl</code> is shipping a file for no
+reason. Check what you inherited before you keep linking it.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The <code>HUB</code> namespace — <code>HUB.Base</code>, <code>HUB.Components</code>, <code>HUB.Modules</code>,
 <code>HUB.Plugins</code> — still exists in <code>lucent/js/hub.js</code> and <code>system/js/hub.js</code>,
@@ -424,9 +443,9 @@ namespace from <code>core.js</code> instead. Do not copy <code>HUB</code> into a
 <p>Inside a view layout, <code>$this-&gt;js()</code> is the short way. It resolves the file,
 checks for a template override, and adds it to the document:</p>
 <pre><code class="language-php">&lt;?php
-// Push {extension}/assets/js/{name of this component}.js
+// Push com_bookings/site/assets/js/bookings.js
 $this-&gt;js()
-     -&gt;js('another')            // .js is optional
+     -&gt;js('calendar')           // .js is optional
      -&gt;js('tags', 'com_tags');  // A file belonging to another component
 ?&gt;
 </code></pre>
@@ -450,7 +469,7 @@ about data attributes above before reaching for it.</p>
 and plugins come from
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Traits/AssetAware.php"><code>Hubzero\Base\Traits\AssetAware</code></a>,
 and their <strong>third argument is an attributes array</strong>, not a plugin element:
-<code>$this-&gt;js('thing', 'com_example', ['defer' =&gt; true])</code>. Pass the full
+<code>$this-&gt;js('calendar', 'com_bookings', ['defer' =&gt; true])</code>. Pass the full
 <code>plg_{folder}_{element}</code> as the extension there.</p>
 </aside>
 <h3 id="the-static-methods">The static methods</h3>
@@ -458,8 +477,8 @@ and their <strong>third argument is an attributes array</strong>, not a plugin e
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Assets.php"><code>Hubzero\Document\Assets</code></a>:</p>
 <pre><code class="language-php">use Hubzero\Document\Assets;
 
-Assets::addComponentScript('com_example');           // com_example/assets/js/example.js
-Assets::addComponentScript('com_example', 'other');  // …/js/other.js
+Assets::addComponentScript('com_bookings');             // com_bookings/assets/js/bookings.js
+Assets::addComponentScript('com_bookings', 'calendar'); // …/js/calendar.js
 Assets::addModuleScript('mod_example');
 Assets::addPluginScript('examples', 'test');         // plugins/examples/test/assets/js/test.js
 Assets::addSystemScript('jquery.fancybox');          // core/assets/js/…
@@ -481,9 +500,16 @@ the modern layout — wins over a bare <code>js/</code>.</p>
 <pre><code>{active template}/html/{extension name}/{name}.js
 </code></pre>
 <p>That is the same directory as the layout overrides, so
-<code>app/templates/mytemplate/html/com_example/example.js</code> replaces the component's
-script without touching the component. System assets nest one level deeper —
+<code>app/templates/northgate/html/com_bookings/bookings.js</code> replaces the
+component's script without touching the component. Note the path is flat: no
+<code>assets</code>, no <code>js</code>. System assets are the exception and nest one level deeper —
 <code>html/system/js/{name}.js</code>. See <a href="../overrides/index.html">Output overrides</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> An override <em>replaces</em> the file. A <code>bookings.js</code> override that
+defines only the one function you wanted to change removes every other
+function the component's script defined, and the failure shows up as a
+component that half works. Start from a copy of the original.</p>
+</aside>
 <p>A name beginning <code>http</code>, <code>//</code> or <code>://</code> is treated as external and passed
 through untouched. A name beginning <code>./</code> or <code>/</code> is resolved from the web root
 instead of the extension.</p>
@@ -555,7 +581,7 @@ them with <code>html/icons/{symbol}.svg</code>. No script and no webfont is invo
 <a href="../fontcons/index.html">Fontcons</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../css/index.html" rel="prev"><span>Previous</span>Cascading style sheets</a><a class="pager__next" href="../overrides/index.html" rel="next"><span>Next</span>Output overrides</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/08-javascript.md">Edit this page on GitHub</a>

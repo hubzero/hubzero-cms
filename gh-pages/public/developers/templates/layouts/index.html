@@ -126,11 +126,15 @@
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Page layouts</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-layout-that-works">The smallest layout that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-layout-files">The layout files</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-the-cms-picks-a-layout">How the CMS picks a layout</a></li>
 <li class="toc__item toc__item--l2"><a href="#inside-a-layout">Inside a layout</a></li>
 <li class="toc__item toc__item--l2"><a href="#jdoc-includes">jdoc includes</a></li>
 <li class="toc__item toc__item--l2"><a href="#module-positions">Module positions</a></li>
+<li class="toc__item toc__item--l2"><a href="#why-a-position-renders-nothing">Why a position renders nothing</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-shipped-install-demonstrates-all-of-this">The shipped install demonstrates all of this</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-check-to-run">The check to run</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-head-block">The head block</a></li>
 <li class="toc__item toc__item--l2"><a href="#error-layouts">Error layouts</a></li>
 <li class="toc__item toc__item--l2"><a href="#parameters">Parameters</a></li>
@@ -180,6 +184,53 @@ its markup by the time a layout runs; the layout wraps it, adds the masthead
 and the footer, and marks the places where modules go. Layout files sit at the
 top level of a template directory — never in a subdirectory — and the CMS
 picks one per request by name.</p>
+<p>A layout is the only file in a template that decides <em>what appears on a page</em>.
+The stylesheets decide how it looks; the layout decides whether the component's
+output, the system messages and each module position are on the page at all. If
+something is missing from every page of a hub, this is the file to open.</p>
+<h2 id="the-smallest-layout-that-works">The smallest layout that works</h2>
+<p>Two <code>jdoc</code> tags and the HTML around them:</p>
+<pre><code class="language-php">&lt;?php
+defined('_HZEXEC_') or die();
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot;&gt;
+	&lt;head&gt;
+		&lt;jdoc:include type=&quot;head&quot; /&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;jdoc:include type=&quot;message&quot; /&gt;
+		&lt;jdoc:include type=&quot;component&quot; /&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Save that as <code>app/templates/northgate/index.php</code>,
+<a href="../migrations/index.html">register the template</a>, and every page of the hub renders:
+<code>com_bookings</code>, the knowledge base, the members directory, all of it, unstyled.
+That is the floor. Everything else — the masthead, the navigation, the module
+positions — is added on top.</p>
+<p>The shipped <code>system</code> template's <code>component.php</code> is almost exactly this file,
+which is why it works as the fallback:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+defined('_HZEXEC_') or die();
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; class=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot;&gt;
+	&lt;head&gt;
+		&lt;jdoc:include type=&quot;head&quot; /&gt;
+	&lt;/head&gt;
+	&lt;body class=&quot;contentpane&quot;&gt;
+		&lt;jdoc:include type=&quot;message&quot; /&gt;
+		&lt;jdoc:include type=&quot;component&quot; /&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 <h2 id="the-layout-files">The layout files</h2>
 <table>
 <thead>
@@ -388,28 +439,6 @@ statements.</p>
 <p>Every layout opens with the entry guard:</p>
 <pre><code class="language-php">defined('_HZEXEC_') or die();
 </code></pre>
-<p><code>core/templates/system/component.php</code> is the smallest complete layout in the
-repository:</p>
-<pre><code class="language-php">&lt;?php
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-defined('_HZEXEC_') or die();
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; class=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot;&gt;
-	&lt;head&gt;
-		&lt;jdoc:include type=&quot;head&quot; /&gt;
-	&lt;/head&gt;
-	&lt;body class=&quot;contentpane&quot;&gt;
-		&lt;jdoc:include type=&quot;message&quot; /&gt;
-		&lt;jdoc:include type=&quot;component&quot; /&gt;
-	&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
 <p><code>countModules()</code> takes a boolean expression over position names, which is how
 a layout collapses empty columns:</p>
 <pre><code class="language-php">&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
@@ -460,7 +489,9 @@ expression is strict:</p>
 </ul>
 <p><code>&lt;jdoc:include type=&quot;component&quot; /&gt;</code> works. <code>&lt;jdoc:include type=&quot;component&quot;/&gt;</code>
 does not — it is left in the page as literal text. If a hole in your layout
-renders as nothing at all, check the spacing first.</p>
+renders as nothing at all, check the spacing first. Viewing source is the
+quickest test: a mis-spaced tag appears verbatim in the delivered HTML, where
+the browser drops it as an unknown element.</p>
 <h2 id="module-positions">Module positions</h2>
 <p>A position is just a string. A layout asks for one by name, and the loader
 returns whatever the administrator has assigned to it. Kimera's content region
@@ -546,6 +577,75 @@ them, and declares <code>banner</code> and <code>introblock</code> without using
 </tr>
 </tbody>
 </table>
+<h2 id="why-a-position-renders-nothing">Why a position renders nothing</h2>
+<p>This is the single most common &quot;the framework is broken&quot; report, and it is
+almost never the framework. Four independent things have to line up, and
+nothing in the CMS checks that they do.</p>
+<ol>
+<li><strong>A layout has to include the position.</strong> A <code>&lt;jdoc:include type=&quot;modules&quot; name=&quot;mainnav&quot; /&gt;</code> tag somewhere in the layout that is actually running.</li>
+<li><strong>A module has to be published to that exact string.</strong> Positions are
+compared literally. <code>left</code> and <code>Left</code> are two positions.</li>
+<li><strong>The module has to be enabled and visible</strong> to the current user and the
+current menu item.</li>
+<li><strong>The layout that is running has to be yours.</strong> Which is not a given — see
+below.</li>
+</ol>
+<p>The position picker in the administrator does not verify step 1. Look at
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_modules/admin/controllers/modules.php"><code>Modules::positionsTask()</code></a>:
+the list it offers is the union of the <code>&lt;positions&gt;</code> declared by <em>every</em>
+installed template for that client and every <code>DISTINCT(position)</code> already
+present in <code>#__modules</code>. So a position appears in the picker if any template
+mentions it, or if any module already sits in it. Being in the list means
+nothing about whether anything will draw it.</p>
+<h3 id="the-shipped-install-demonstrates-all-of-this">The shipped install demonstrates all of this</h3>
+<p>Two facts about a fresh hub, both in
+<code>core/bootstrap/Install/sql/mysql/data.sql</code>, and both worth checking before you
+suspect your own code.</p>
+<p><strong>The default site style is <code>welcome</code>, and <code>welcome</code> renders nothing.</strong></p>
+<pre><code class="language-sql">INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
+VALUES (1,'welcome',0,'1','Welcome Template','{&quot;flavor&quot;:&quot;&quot;,&quot;template&quot;:&quot;kimera&quot;}');
+</code></pre>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
+<code>jdoc:include</code> tag of any type — not <code>modules</code>, not <code>message</code>, not even
+<code>component</code>. It prints a fixed splash page and discards whatever the request
+produced. On a fresh hub, therefore, no module renders and no component output
+reaches the page, and both are working as built.</p>
+<p>The splash page's <strong>ready</strong> link is <code>?getstarted=1</code>. That branch of
+<code>welcome/index.php</code> looks up the style named by the template's own <code>template</code>
+parameter — seeded as <code>kimera</code> — sets <code>home = 0</code> on every site style and <code>home = 1</code> on that one, and redirects. From then on the hub renders <code>kimera</code>. An
+administrator can do the same thing from <strong>Extensions → Templates</strong> by making
+another style the default.</p>
+<p><strong>The main menu is published to a position no site template includes.</strong></p>
+<pre><code class="language-sql">INSERT INTO `#__modules` (…, `position`, …, `published`, `module`, …, `client_id`, …)
+VALUES (1,'Main Menu',…,'position-7',…,1,'mod_menu',…,0,'*');
+</code></pre>
+<p><code>position-7</code> appears in no layout of <code>kimera</code>, <code>lucent</code>, <code>welcome</code> or <code>system</code>.
+The seeded <strong>Login Form</strong> module is in the same position. So after switching to
+<code>kimera</code> the hub still has no main menu, and the module manager still shows both
+modules as published — to a position labelled a friendly <em>Position 7</em>, because
+<code>com_modules</code> ships a <code>COM_MODULES_POSITION_POSITION-7</code> string for it.</p>
+<p>The seeded <strong>Breadcrumbs</strong> module, by contrast, is in <code>breadcrumbs</code>, which
+<code>kimera</code> does include, and it appears immediately. That is the difference, and
+it is entirely in the <code>position</code> column.</p>
+<p>Move the menu to a position your layout includes — <code>user3</code> for <code>kimera</code> and
+<code>northgate</code>, or whatever <code>northgate</code> calls its main navigation — and it renders.</p>
+<h3 id="the-check-to-run">The check to run</h3>
+<p>When a position of yours is empty, in this order.</p>
+<p><strong>1. Which layout is actually running?</strong> The home style for the site client, or
+whatever the menu item's <code>template_style_id</code> chose:</p>
+<pre><code class="language-sql">SELECT id, template, home FROM `#__template_styles` WHERE client_id = 0;
+</code></pre>
+<p><strong>2. Does that template's layout include the position?</strong></p>
+<pre><code class="language-bash">grep -rn 'name=&quot;mainnav&quot;' app/templates/northgate/*.php
+</code></pre>
+<p><strong>3. What is published there, and to which client?</strong></p>
+<pre><code class="language-sql">SELECT id, title, position, published, client_id FROM `#__modules` WHERE position = 'mainnav';
+</code></pre>
+<p>Step 1 catches the fresh-hub case and every case where a menu item selected a
+different style. Step 2 catches the typo and the layout you edited that is not
+the one running. Step 3 catches the module published to a position one
+character away from yours, and the module published to the administrator
+client.</p>
 <p>See <a href="../../modules/loading/index.html">Modules: loading</a> for what the loader does
 with a position, and <a href="../overrides/index.html">Overrides</a> for module chrome — the
 <code>style</code> attribute on a <code>jdoc</code> tag and the <code>modChrome_*</code> functions a template
@@ -620,10 +720,12 @@ settable parameters at all. Follow Kimera.</p>
 <p>Because parameters belong to a template <em>style</em>, one template can be installed
 several times with different settings, and a menu item can select a style
 through its <code>template_style_id</code>. <code>?templateStyle={id}</code> overrides that for one
-request.</p>
+request. That is how one <code>northgate</code> template can serve two partner
+institutions with different accent colours, and it is also the first thing to
+check when one page of a hub looks different from all the others.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../designing/index.html" rel="prev"><span>Previous</span>Designing</a><a class="pager__next" href="../css/index.html" rel="next"><span>Next</span>Cascading style sheets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/06-layouts.md">Edit this page on GitHub</a>

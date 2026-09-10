@@ -1,17 +1,25 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/plugins/views
 -->
 # Views
 
-Most plugins return data, not markup. But a plugin that adds a tab to a group
-or a panel to a member profile has to return HTML, and that HTML belongs in a
-layout file rather than in a string inside the class — because a layout can be
-overridden by a template, and a string cannot.
+Most plugins return data, not markup, and never build a view. Reach for one
+when the text you are producing is longer than the logic that produces it: a
+plugin that adds a tab to a group page, a panel to a member profile, or — like
+`plg_bookings_notify` — the body of an email. The reason is not tidiness. A
+layout in a file can be overridden by a template or a super group; a string
+built inside the class cannot.
 
 ## Where layouts live
+
+```
+app/plugins/bookings/notify/
+    views/
+        email/tmpl/message.php
+```
 
 ```
 core/plugins/groups/forum/
@@ -24,32 +32,42 @@ core/plugins/groups/forum/
 
 Under `views` there is one directory per view *name*, and inside it a `tmpl`
 directory holding one file per *layout*. Both names are yours to choose;
-`default` is the layout used when none is given.
+`default` is the layout used when none is given. The `tmpl` directory is not
+optional for a plugin view — `Hubzero\Plugin\View` searches
+`{plugin}/views/{name}/tmpl` and the template override path, and nowhere else.
 
 ## Creating a view
 
 `$this->view($layout, $name)` on the plugin returns a
 [`Hubzero\Plugin\View`](../../../core/libraries/Hubzero/Plugin/View.php)
 configured for this plugin. Note the argument order: **layout first, name
-second**. `plgGroupsForum` renders `views/sections/tmpl/display.php` with
+second**. So `plg_bookings_notify` reaches `views/email/tmpl/message.php` with
+
+```php
+$body = $this->view('message', 'email')
+	->set('reservation', $reservation)
+	->loadTemplate();
+```
+
+and `plgGroupsForum` renders `views/sections/tmpl/display.php` with
 
 ```php
 $this->view = $this->view('display', 'sections');
 ```
 
 Either argument may be omitted. `$this->view()` gives the `default` layout of
-a view named after the plugin itself, so a plugin called `blog` with a single
-screen can keep it at `views/blog/tmpl/default.php`.
+a view named after the plugin itself, so a plugin called `notify` with a single
+screen can keep it at `views/notify/tmpl/default.php`.
 
 Constructing the view class directly works too, and is what the helper does
 underneath:
 
 ```php
 $view = new \Hubzero\Plugin\View(array(
-    'folder'  => 'groups',
-    'element' => 'forum',
-    'name'    => 'sections',
-    'layout'  => 'display'
+	'folder'  => 'bookings',
+	'element' => 'notify',
+	'name'    => 'email',
+	'layout'  => 'message'
 ));
 ```
 
@@ -70,6 +88,13 @@ happens to be rather than in the response the component asked for.
 Assigning to properties works as well as `set()` — `$view->group = $group;` —
 and reads the same in the layout.
 
+> **Note:** `loadTemplate()` takes one optional argument, and it is not a
+> boolean. It is a suffix: `loadTemplate('html')` renders
+> `{layout}_html.php`, which is how a plugin ships a plain-text and an HTML
+> version of the same mail. Several core plugins call `loadTemplate(false)`,
+> which reads as "not HTML" and in fact means exactly the same as
+> `loadTemplate()`. Do not copy it.
+
 ## Writing a layout
 
 ```php
@@ -77,19 +102,28 @@ and reads the same in the layout.
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<div class="section">
-	<h3><?php echo $this->escape($this->group->get('description')); ?></h3>
+<?php
+$who = User::getInstance($this->reservation->get('created_by'));
+echo Lang::txt('PLG_BOOKINGS_NOTIFY_BOOKED_BY', $who->get('name'));
+?>
 
-	<?php foreach ($this->sections as $section) : ?>
-		<p><?php echo $this->escape($section->get('title')); ?></p>
-	<?php endforeach; ?>
-</div>
+<?php echo $this->reservation->instrument->get('title'); ?>
+<?php echo $this->reservation->get('starts'); ?>
 ```
 
 Inside the layout, `$this` is the view. Every variable you `set()` is a
-property. `$this->escape()` is available for anything that came from the
-database or the request, and layouts run in the global namespace, so `Lang`,
-`Route`, `User`, and the rest need no imports.
+property. `$this->escape()` is available and should be used for anything that
+came from the database or the request and is going into HTML; the plain-text
+mail body above is the case where it is wrong to use it. Layouts run in the
+global namespace, so `Lang`, `Route`, `User`, and the rest need no imports.
+
+> **Warning:** A layout that is not found does not fail where you expect.
+> `loadTemplate()` first retries with `default.php` in the same directory, so a
+> mistyped layout name renders the default layout instead — silently, and with
+> the data you set for a different screen. Only if there is no `default.php`
+> either does it throw `InvalidLayoutException` with a 404. Layout names are
+> also lower-cased before the lookup, so `views/email/tmpl/Message.php` is not
+> found on a case-sensitive filesystem.
 
 ## Template overrides
 
@@ -101,9 +135,12 @@ any layout:
 ```
 
 For the forum's sections view under the `kimera` template that is
-`core/templates/kimera/html/plg_groups_forum/sections/display.php`. The
-plugin's own file is tried first and the template path second. See
-[Overrides](../11-templates/09-overrides.md).
+`core/templates/kimera/html/plg_groups_forum/sections/display.php`. Note there
+is no `tmpl` directory in the override path.
+
+The override path is searched **before** the plugin's own file, which is what
+makes it an override — the search paths are a stack and the override is pushed
+on last. See [Overrides](../11-templates/09-overrides.md).
 
 ## Sub-views
 
@@ -133,7 +170,11 @@ a file `helpers/{method}.php` under the plugin directory, then a class named
 to the view and called. This is how plugins share a formatting routine between
 several layouts without a global function.
 
+The namespaced form is the one to write. The `Plugin…Helper…` form is
+inherited naming kept for the plugins that still use it, and a new helper
+should not add to them.
+
 > **Note:** A plugin does not have to use views at all. Returning a small
 > string of markup from an event handler is legitimate for a one-line
 > response, and `plg_content_*` plugins that rewrite article text never build
-> a view. Reach for a view when the markup is longer than the logic.
+> a view.

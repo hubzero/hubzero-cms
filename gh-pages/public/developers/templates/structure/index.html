@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Structure · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A template is a directory. This chapter says what goes in it, what is required, and what the CMS does with each part. Where it lives Your templates go in . The…">
+  <meta name="description" content="A template is a directory. This chapter says what goes in it, what is required, and what the CMS does with each part. Read it once before you start deleting…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/structure/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -129,6 +129,7 @@
 <li class="toc__item toc__item--l2"><a href="#what-is-actually-required">What is actually required</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-parts">The parts</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-shipped-templates-leave-out">What the shipped templates leave out</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-to-keep-in-northgate">What to keep in northgate</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
@@ -174,16 +175,29 @@
         <div class="prose">
 <p>A template is a directory. This chapter says what goes in it, what is
 required, and what the CMS does with each part.</p>
+<p>Read it once before you start deleting things from the copy you made. Most of
+a template directory is convention you can rename or drop; a small part of it
+is looked for by name, and dropping that part fails silently rather than
+loudly.</p>
 <h2 id="where-it-lives">Where it lives</h2>
 <p>Your templates go in <code>app/templates/{name}</code>. The templates that ship with the
 CMS are in <code>core/templates/{name}</code> and are replaced on upgrade, so do not edit
 them in place — copy one into <code>app/templates</code> instead, as the
-<a href="../index.html">overview</a> describes.</p>
+<a href="../index.html#where-to-start">overview</a> describes. Nothing under <code>app/</code> is part of
+the distribution.</p>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Loader.php"><code>Hubzero\Template\Loader</code></a>
 resolves a style to a directory, checking <code>app/</code> before <code>core/</code>. A template in
 <code>app/templates/kimera</code> therefore shadows the shipped <code>kimera</code> entirely.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That shadowing is total and it is easy to do by accident. If you
+copy <code>kimera</code> and forget to change the destination name, every hub page that
+asks for the <code>kimera</code> style gets your copy instead — including any style an
+administrator set up earlier. Give the copy its own name (<code>northgate</code>) and
+register it as its own style.</p>
+</aside>
 <h2 id="the-tree">The tree</h2>
-<p>This is <code>kimera</code>, the fullest of the shipped site templates:</p>
+<p>This is <code>kimera</code>, the fullest of the shipped site templates, and the tree
+<code>northgate</code> inherits by copying it:</p>
 <pre><code>core/templates/kimera/
     css/               Compiled stylesheets
         browser/       Per-browser fixes: ie8.css, ie9.css
@@ -214,11 +228,13 @@ what you like. The rest the CMS looks for by name.</p>
 <p>Only two things:</p>
 <ul>
 <li><strong><code>index.php</code>.</strong> If it is missing, <code>Hubzero\Document\Type\Html</code> silently
-falls back to <code>core/templates/system</code> and renders that instead.</li>
+falls back to <code>core/templates/system</code> and renders that instead. The symptom
+is a hub that looks unstyled rather than broken.</li>
 <li><strong>A row in <code>#__extensions</code>, and a style in <code>#__template_styles</code>.</strong> The
 administrator's template list is a query against <code>#__extensions</code>, not a scan
-of the filesystem, so a directory nobody has registered is invisible. Write
-a <a href="../migrations/index.html">migration</a> to register it.</li>
+of the filesystem, so a directory nobody has registered is invisible — and,
+the other way round, a registered name whose directory is missing is still
+listed. Write a <a href="../migrations/index.html">migration</a> to register it.</li>
 </ul>
 <p><code>templateDetails.xml</code> is <em>not</em> required for the template to render. It is
 required for the administrator to configure it: without it the template has no
@@ -372,6 +388,64 @@ skip:</p>
 has neither a manifest nor a migration. It also holds the shared <code>email.php</code>,
 <code>group.php</code>, <code>help.php</code>, <code>login.php</code> and <code>offline.php</code> layouts that other
 templates inherit when they do not define their own.</p>
+<h2 id="what-to-keep-in-northgate">What to keep in <code>northgate</code></h2>
+<p>Working from the <code>kimera</code> copy, this is the honest division:</p>
+<table>
+<thead>
+<tr>
+<th>Keep</th>
+<th>Because</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.php</code>, <code>component.php</code>, <code>error.php</code></td>
+<td>Three of the four layouts a visitor can reach. Restyle all three or the hub looks unfinished inside every modal.</td>
+</tr>
+<tr>
+<td><code>less/</code> and the compiled <code>css/</code> beside it</td>
+<td>Where the branding actually goes.</td>
+</tr>
+<tr>
+<td><code>language/</code>, renamed</td>
+<td>Every string the layout prints.</td>
+</tr>
+<tr>
+<td><code>migrations/</code>, renamed</td>
+<td>Nothing works until this runs.</td>
+</tr>
+<tr>
+<td><code>templateDetails.xml</code></td>
+<td>The parameters and the position list.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Drop</th>
+<th>Because</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>css/pages/*.css</code>, <code>css/print.css</code>, <code>css/download.css</code>, <code>css/upload.css</code></td>
+<td>No layout links them and nothing pushes them. They are dead in <code>kimera</code> too. See <a href="../css/index.html">Cascading style sheets</a>.</td>
+</tr>
+<tr>
+<td><code>css/browser/ie8.css</code>, <code>css/browser/ie9.css</code> and their conditional comments</td>
+<td>Conditional comments stopped working at Internet Explorer 10.</td>
+</tr>
+<tr>
+<td><code>js/html5.js</code></td>
+<td>The HTML5 shiv, for the same browsers.</td>
+</tr>
+<tr>
+<td>Most of <code>html/</code></td>
+<td>32 per-component stylesheets tuned to <code>kimera</code>'s colours. Keep the ones for components your hub actually shows — for <code>northgate</code>, that means the <code>com_bookings</code> overrides you write, not <code>kimera</code>'s <code>com_projects</code> ones.</td>
+</tr>
+</tbody>
+</table>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>lucent</code> ships a <code>templateDetails.xml</code> whose root element is
 <code>&lt;install&gt;</code> rather than <code>&lt;extension&gt;</code>, with an empty <code>&lt;files&gt;</code> list and a
@@ -380,7 +454,7 @@ manifest rather than <code>lucent</code>'s.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../designing/index.html" rel="next"><span>Next</span>Designing</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/03-structure.md">Edit this page on GitHub</a>

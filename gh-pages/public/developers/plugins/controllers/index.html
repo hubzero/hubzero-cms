@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Controllers · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A plugin has one class, in the file named after it, extending . It has no tasks and no routing. Its public methods are its interface: each one is registered…">
+  <meta name="description" content="A plugin has one class, in the file named after it, extending . It is called a controller here only by analogy with a component: it has no tasks, no routing,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/plugins/controllers/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -113,12 +113,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Controllers</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#the-class">The class</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-working-thing">The smallest working thing</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-real-one">A real one</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-base-class-gives-you">What the base class gives you</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-constructor">The constructor</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-methods-become-listeners">How methods become listeners</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-arguments-arrive">How arguments arrive</a></li>
-<li class="toc__item toc__item--l2"><a href="#events-the-cms-triggers">Events the CMS triggers</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-events-to-answer">Which events to answer</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
@@ -175,10 +176,57 @@
         <div class="prose">
 <p>A plugin has one class, in the file named after it, extending
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Plugin.php"><code>Hubzero\Plugin\Plugin</code></a>. It
-has no tasks and no routing. Its public methods are its interface: each one is
-registered under its own name as an event listener, and is called when an
-event of that name fires.</p>
-<h2 id="the-class">The class</h2>
+is called a controller here only by analogy with a component: it has no tasks,
+no routing, and nothing it can decide to render. Its public methods are its
+entire interface. Each one is registered under its own name as an event
+listener and is called when an event of that name fires.</p>
+<p>That is a smaller surface than a component controller, and the work of writing
+a plugin is mostly deciding which events to answer and keeping everything else
+out of the public interface.</p>
+<h2 id="the-smallest-working-thing">The smallest working thing</h2>
+<p><code>plg_bookings_notify</code> answers one event and returns nothing:</p>
+<pre><code class="language-php">&lt;?php
+// No direct access
+defined('_HZEXEC_') or die();
+
+class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+{
+	/**
+	 * Email the lab manager when a reservation is created.
+	 *
+	 * @param   object  $reservation  Components\Bookings\Models\Reservation
+	 * @return  void
+	 */
+	public function onReservationCreate($reservation)
+	{
+		if (!($to = $this-&gt;params-&gt;get('manager_email')))
+		{
+			return;
+		}
+
+		$body = $this-&gt;view('message', 'email')
+			-&gt;set('reservation', $reservation)
+			-&gt;loadTemplate();
+
+		$message = new \Hubzero\Mail\Message();
+		$message-&gt;setSubject(Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $reservation-&gt;instrument-&gt;get('title')))
+		        -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
+		        -&gt;addTo($to)
+		        -&gt;addHeader('X-Component', 'com_bookings')
+		        -&gt;addPart($body, 'text/plain');
+
+		if (!$message-&gt;send())
+		{
+			$this-&gt;setError(Lang::txt('PLG_BOOKINGS_NOTIFY_SEND_FAILED', $to));
+		}
+	}
+}
+</code></pre>
+<p>Nothing registers <code>onReservationCreate</code> anywhere else. The method name is the
+registration, and <code>com_bookings</code> triggering <code>bookings.onReservationCreate</code> is
+what calls it.</p>
+<h2 id="a-real-one">A real one</h2>
+<p><code>plgContentFormatwiki</code> is the same shape with two methods:</p>
 <pre><code class="language-php">// No direct access
 defined('_HZEXEC_') or die;
 
@@ -188,9 +236,9 @@ defined('_HZEXEC_') or die;
 class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 {
 </code></pre>
-<p><code>plgContentFormatwiki</code> answers two events, <code>onContentBeforeSave</code> and
-<code>onContentPrepare</code>, and keeps its two helpers, <code>_isWiki()</code> and <code>_key()</code>,
-private.</p>
+<p>It answers <code>onContentBeforeSave</code> and <code>onContentPrepare</code>, and keeps its two
+helpers, <code>_isWiki()</code> and <code>_key()</code>, private — which is not a style preference.
+See the warning below.</p>
 <h2 id="what-the-base-class-gives-you">What the base class gives you</h2>
 <table>
 <thead>
@@ -210,7 +258,7 @@ private.</p>
 </tr>
 <tr>
 <td><code>$option</code></td>
-<td><code>com_</code> plus the group name. Legacy; do not rely on it.</td>
+<td><code>com_</code> plus the group name. Legacy, and wrong for any group that is not a component; do not rely on it.</td>
 </tr>
 <tr>
 <td><code>$_name</code>, <code>$_type</code></td>
@@ -238,17 +286,18 @@ private.</p>
 </tr>
 </tbody>
 </table>
-<p>Because <code>Plugin</code> extends <code>Hubzero\Base\Obj</code>, <code>setError()</code>, <code>getError()</code>, and
-<code>getErrors()</code> are available too, and plugins use them to hand a message back
-to the component that triggered them.</p>
+<p>Because <code>Plugin</code> extends <code>Hubzero\Base\Obj</code>, which uses the <code>ErrorBag</code> trait,
+<code>setError()</code>, <code>getError()</code>, and <code>getErrors()</code> are available too, and plugins
+use them to hand a message back to the component that triggered them. The
+component has to ask: an error set in a plugin goes nowhere on its own.</p>
 <h2 id="the-constructor">The constructor</h2>
 <p>You rarely need one. If you write one, call the parent — it is what populates
 <code>$params</code>, <code>$_name</code>, and <code>$_type</code>, and what loads the language file:</p>
 <pre><code class="language-php">public function __construct(&amp;$subject, $config)
 {
-    parent::__construct($subject, $config);
+	parent::__construct($subject, $config);
 
-    // Extra initialisation
+	// Extra initialisation
 }
 </code></pre>
 <p><code>$subject</code> is the dispatcher the plugin was created with, retained only for
@@ -256,23 +305,35 @@ backward compatibility. <code>$config</code> is the plugin's <code>#__extensions
 an array, so <code>$config['name']</code>, <code>$config['type']</code>, and <code>$config['params']</code> are
 what the parent reads.</p>
 <p>The constructor runs when the group is imported, whether or not any of the
-plugin's events ever fire. Keep it cheap: no queries, no HTTP.</p>
+plugin's events ever fire. Keep it cheap: no queries, no HTTP. A <code>system</code>
+plugin's constructor runs on every request on the hub.</p>
 <h2 id="how-methods-become-listeners">How methods become listeners</h2>
 <p><code>Hubzero\Events\Dispatcher::addListener()</code> calls <code>get_class_methods()</code> on the
-plugin instance and registers it once per public method name. There is no
-list of events to declare and no annotation to write — the method name <em>is</em>
-the registration.</p>
+plugin instance and registers it once per public method name. There is no list
+of events to declare and no annotation to write — the method name <em>is</em> the
+registration.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Every public method is registered, inherited ones included. A
-public <code>display()</code> will be called for any event named <code>display</code>, and a
-public helper named after nothing in particular is harmless only until
-someone triggers an event with that name. Name your event handlers
-<code>onSomething</code> and make everything else <code>protected</code> or <code>private</code>.</p>
+<p><strong>Warning:</strong> Every public method is registered, and that includes the
+seventeen a plugin inherits without writing: <code>__construct</code>, <code>loadLanguage</code>,
+<code>getParams</code>, <code>view</code>, <code>__toString</code>, <code>def</code>, <code>get</code>, <code>getProperties</code>, <code>set</code>,
+<code>setProperties</code>, <code>getError</code>, <code>getErrors</code>, <code>setError</code>, <code>setErrors</code>, <code>css</code>,
+<code>js</code> and <code>img</code>. Every plugin on the hub is a listener for an event called
+<code>get</code>. Add a public <code>display()</code> and it becomes a listener for <code>display</code>.
+Name your handlers <code>onSomething</code>, and make every helper <code>protected</code> or
+<code>private</code>.</p>
 </aside>
+<p>The failure in the other direction is quieter still. A handler that is
+<code>private</code>, or misspelled — <code>onReservationCreated</code> for
+<code>bookings.onReservationCreate</code> — is simply not registered. The event fires,
+<code>trigger()</code> returns an empty array, and nothing is logged. When a plugin does
+not appear to run, check in this order: the extension row exists and is
+enabled, the group directory matches the <code>folder</code> column, the method is
+public, and the method name matches the event exactly, case included.</p>
 <h2 id="how-arguments-arrive">How arguments arrive</h2>
 <p>The dispatcher does not call your method with the raw arguments. It calls the
-listener with the <code>Event</code> object, and <code>Hubzero\Events\WrappedListener</code> unpacks
-it: it assigns the event to <code>$this-&gt;event</code> on your plugin, takes
+listener with the <code>Event</code> object, and
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Events/WrappedListener.php"><code>Hubzero\Events\WrappedListener</code></a>
+unpacks it: it assigns the event to <code>$this-&gt;event</code> on your plugin, takes
 <code>$event-&gt;getArguments()</code>, re-indexes it if the keys are associative, and
 spreads the values across your method's parameters in order.</p>
 <p>So a trigger of</p>
@@ -282,18 +343,25 @@ spreads the values across your method's parameters in order.</p>
 <pre><code class="language-php">public function onContentPrepare($context, &amp;$article, &amp;$params, $page = 0)
 </code></pre>
 <p>with the four values in the order they were given. Give every parameter after
-the ones you require a default, because a caller may pass fewer.</p>
+the ones you require a default, because a caller may pass fewer — and because
+several core events are triggered from more than one place with different
+argument counts. A missing default is an <code>ArgumentCountError</code> raised inside
+the dispatcher, which reads as a framework fault rather than a plugin one.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Arguments are passed by value through <code>call_user_func_array</code> for
-five or more arguments, and positionally for four or fewer. A <code>&amp;$article</code>
-parameter still works because the argument is an object, and objects are
-handles; do not expect to modify a scalar argument in place.</p>
+<p><strong>Note:</strong> Arguments are spread positionally for four or fewer and passed
+through <code>call_user_func_array</code> for five or more. A <code>&amp;$article</code> parameter
+still works because the argument is an object, and objects are handles; do
+not expect to modify a scalar argument in place, because what the listener
+receives is the dispatcher's copy.</p>
 </aside>
-<p>Whatever the method returns is collected into the event's response array. See
-<a href="../loading/index.html">Loading</a>.</p>
-<h2 id="events-the-cms-triggers">Events the CMS triggers</h2>
+<p>Whatever the method returns is collected into the event's response array;
+returning nothing contributes nothing, which is how a plugin declines an event
+it is registered for. See <a href="../loading/index.html">Loading</a>.</p>
+<h2 id="which-events-to-answer">Which events to answer</h2>
 <p>Event names are prefixed with the plugin group when triggered, in
-<code>group.eventName</code> form. The lifecycle events, all in the <code>system</code> group, are:</p>
+<code>group.eventName</code> form; the method is named after the half on the right. The
+lifecycle events, all in the <code>system</code> group, are the ones every hub developer
+ends up using:</p>
 <table>
 <thead>
 <tr>
@@ -324,28 +392,28 @@ handles; do not expect to modify a scalar argument in place.</p>
 </tr>
 </tbody>
 </table>
-<p>Content plugins see <code>content.onContentPrepare</code>, <code>onContentBeforeSave</code>,
-<code>onContentAfterSave</code>, <code>onContentBeforeDelete</code>, <code>onContentAfterDelete</code>,
-<code>onContentBeforeDisplay</code>, <code>onContentAfterDisplay</code>, <code>onContentAfterTitle</code>, and
-<code>onAfterContentSubmission</code>. User plugins see <code>user.onUserBeforeSave</code>,
-<code>onUserAfterSave</code>, <code>onUserBeforeDelete</code>, <code>onUserAfterDelete</code>, <code>onUserLogin</code>,
-<code>onUserLogout</code>, <code>onUserLogoutFailure</code>, <code>onUserDeidentify</code>, and the profile and
-password variants. <code>cron.onCronEvents</code> registers scheduled jobs;
-<code>antispam.onAntispamDetector</code> and <code>onAntispamTrain</code> drive spam filtering.</p>
-<p>Component groups define their own: <code>groups.onGroupAreas</code> and <code>groups.onGroup</code>,
-<code>members.onMembersAreas</code> and <code>members.onMembers</code>, <code>projects.onProject</code>,
-<code>resources.onResourcesSub</code>, <code>search.onIndex</code>, <code>wiki.onWikiParseText</code>, and so
-on. The authoritative list is the code: search for <code>Event::trigger(</code> in the
-component you are extending.</p>
+<p>For everything else, read the
+<a href="../../../reference/events/index.html">events reference</a>. It is generated from the
+source tree and covers 279 events across 41 groups, with the call sites that
+fire each one, the arguments they pass, and the plugins that already listen —
+which is both the list of what you can answer and the set of worked examples
+for answering it. Start with the page for the group you are extending:
+<a href="../../../reference/events/content/index.html">content</a>,
+<a href="../../../reference/events/user/index.html">user</a>,
+<a href="../../../reference/events/groups/index.html">groups</a>,
+<a href="../../../reference/events/members/index.html">members</a>,
+<a href="../../../reference/events/system/index.html">system</a>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A plugin is not restricted to its group's events. All imported
 plugins are registered with the same dispatcher, so a <code>system</code> plugin can
 implement <code>onContentPrepare</code> and it will fire. The converse is the hazard:
-two groups that pick the same event name will hear each other's triggers.</p>
+two groups that pick the same event name will hear each other's triggers.
+The reference is also how you check that the name you are about to invent
+for your own component is not already taken.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/03-controllers.md">Edit this page on GitHub</a>

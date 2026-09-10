@@ -178,6 +178,9 @@
 a blank page: it inherits a grid, a set of element styles, an icon font and
 the markup of some sixty components, and the design work is mostly about
 deciding how much of that to keep.</p>
+<p>Every decision on this page is expensive to change later, which is the only
+reason to make it first. Positions strand modules. Class names break component
+views. Parameters that should have been parameters become a fork.</p>
 <p><img src="../../media/designing-tmpl-commonelements.jpg" alt="Common elements of a hub front page" /></p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> That diagram dates from before Hubzero 1.0 and the small examples
@@ -190,11 +193,14 @@ The shipped <code>kimera</code> and <code>lucent</code> templates are the curren
 <code>kimera</code>'s <code>index.php</code> and its 27-file <code>less/</code> tree by hand, and the first
 thing you will discover is that the components assume classes you have not
 defined.</p>
-<pre><code class="language-bash">php core/bin/muse scaffolding copy template core/kimera to app/mytemplate
+<pre><code class="language-bash">php core/bin/muse scaffolding copy template core/kimera to app/northgate
 </code></pre>
 <p><code>kimera</code> is the fuller starting point and shows the override-heavy approach.
 <code>lucent</code> is leaner and its LESS is organised into <code>tokens/</code>, <code>theme/</code> and
 <code>template/</code> layers, which is easier to re-colour. Read both.</p>
+<p><code>northgate</code> — the partner-institution template these chapters build — starts
+from <code>kimera</code>, because Northgate's brand is a colour and typography change on
+top of a layout that already works, not a new layout.</p>
 <h2 id="what-the-framework-decides-for-you">What the framework decides for you</h2>
 <p>Four things are not really yours to design, because component markup depends
 on them:</p>
@@ -212,21 +218,33 @@ are emitted by <code>jdoc:include type=&quot;message&quot;</code> and by compone
 <a href="../fontcons/index.html">Fontcons</a>.</li>
 </ul>
 <p>You can restyle all of these. You cannot rename them without breaking
-components, and you cannot skip them without leaving parts of the hub unstyled.</p>
+components, and you cannot skip them without leaving parts of the hub unstyled.
+The failure is partial and quiet: <code>com_bookings</code> keeps working, but its
+instrument list loses its sidebar and its buttons render as plain links.</p>
 <h2 id="decide-the-positions-first">Decide the positions first</h2>
 <p>The module positions your <code>index.php</code> includes are the contract between the
 template and whoever configures the hub. Changing them later means re-siting
 every module on a live site, so settle them early.</p>
 <p><code>kimera</code> and <code>lucent</code> agree on <code>notices</code>, <code>helppane</code>, <code>search</code>, <code>user3</code>,
 <code>left</code>, <code>right</code> and <code>endpage</code>, so a hub that switches between them keeps most
-of its modules. They already disagree about the rest: <code>kimera</code> has
-<code>breadcrumbs</code>, <code>footer</code> and <code>welcome</code>, <code>lucent</code> has <code>html-head</code>. Inventing your
-own names is allowed, but it strands every module placed in a position you
-dropped.</p>
+of its modules. They already disagree about the rest: <code>kimera</code> includes
+<code>breadcrumbs</code>, <code>footer</code> and <code>welcome</code>, <code>lucent</code> includes <code>html-head</code>. Inventing
+your own names is allowed, but it strands every module placed in a position you
+dropped. <code>northgate</code> keeps <code>kimera</code>'s set exactly, so that switching between
+them is reversible.</p>
 <p>Whatever you choose, declare it in <code>&lt;positions&gt;</code> in
 <a href="../packaging/index.html"><code>templateDetails.xml</code></a> so the administrator can pick it from
-a list, and give each one a <code>TPL_{TEMPLATE}_POSITION_{NAME}</code> string so it reads
-as English.</p>
+a list, and give each one a <code>TPL_{TEMPLATE}_POSITION_{NAME}</code> string in a
+<code>.sys.ini</code> so it reads as English. See <a href="../languages/index.html#strings-the-administrator-sees">Languages</a>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing connects the manifest, the layout and the modules
+already published. A position can be declared and never rendered, rendered
+and never declared, or full of modules that no template will ever draw. The
+shipped install is an example of the last one, and it is why a fresh hub
+shows no main menu. Read
+<a href="../layouts/index.html#why-a-position-renders-nothing">Why a position renders nothing</a>
+before you decide anything is broken.</p>
+</aside>
 <h2 id="decide-what-is-a-parameter">Decide what is a parameter</h2>
 <p>Anything a hub might want to change without editing files belongs in the
 manifest's <code>&lt;config&gt;</code> block rather than in a stylesheet. <code>kimera</code> parameterises
@@ -236,6 +254,11 @@ result through a PHP stylesheet — <code>css/theme.php</code> and <code>css/the
 that reads <code>$this-&gt;params</code> and prints CSS.</p>
 <p>That is the pattern to copy when a colour has to be configurable. Everything
 else should be plain CSS.</p>
+<p>For <code>northgate</code> the test is whether a second partner institution would ever run
+the same template. If the answer is yes, the accent colour and the wordmark are
+parameters and there is one template. If no, they are plain CSS and the second
+institution gets its own copy. Guessing wrong in the cautious direction costs
+an afternoon; guessing wrong the other way costs a fork.</p>
 <h2 id="decide-how-far-the-overrides-go">Decide how far the overrides go</h2>
 <p>The heaviest part of a hub template is not <code>index.php</code>; it is <code>html/</code>.
 <code>kimera</code> ships 32 override files, almost all of them per-component
@@ -243,7 +266,9 @@ stylesheets — <code>html/com_projects/projects.css</code>, <code>html/com_reso
 and so on — that restyle a component's own CSS to match the template.
 <code>lucent</code> ships none and accepts the components' default look.</p>
 <p>Decide which of those two you are doing before you start, because it is the
-difference between a week's work and a month's. See
+difference between a week's work and a month's. The middle path is the one
+<code>northgate</code> takes: override the handful of components a Northgate user actually
+sees — <code>com_bookings</code> above all — and leave the rest looking like the CMS. See
 <a href="../overrides/index.html">Output overrides</a>.</p>
 <h2 id="things-that-are-easy-to-forget">Things that are easy to forget</h2>
 <ul>
@@ -259,7 +284,9 @@ does.</li>
 <li><strong>The site name is text, not an image.</strong> <code>kimera</code>'s masthead prints
 <code>Config::get('sitename')</code> inside an <code>&lt;h1&gt;</code> and lets the stylesheet replace it
 with a logo. Hubs change their name in Global Configuration and their logo in
-CSS, so neither should be hardcoded in <code>index.php</code>.</li>
+CSS, so neither should be hardcoded in <code>index.php</code>. <code>lucent</code> gets this wrong —
+its logo link is the literal word <code>Lucent</code> — and you can see the result on any
+hub using it.</li>
 </ul>
 <h2 id="then-build-it">Then build it</h2>
 <ul>
@@ -270,7 +297,7 @@ CSS, so neither should be hardcoded in <code>index.php</code>.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../layouts/index.html" rel="next"><span>Next</span>Page layouts</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/04-designing.md">Edit this page on GitHub</a>

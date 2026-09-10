@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 91d03d0a23
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/modules/loading
 -->
 # Loading
@@ -11,6 +11,15 @@ component or plugin renders one inline, or an article contains a tag that
 expands into one. All three end at the same place —
 [`Hubzero\Module\Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php),
 reachable through the `Module` facade.
+
+Almost always you want the first. A module placed by an administrator into a
+template position is the arrangement everything else is built around: the hub
+decides where it goes, on which pages, and who sees it, without touching code.
+Render a module from a component only when the component's own layout is the
+only place the block makes sense. Read this chapter mainly to know why your
+module is not appearing — the section on
+[positions](#positions-belong-to-the-template) is the answer more often than
+not.
 
 ## What the loader knows
 
@@ -27,6 +36,19 @@ the published instances that pass every one of these filters:
 An instance assigned negatively to the current menu item is then removed, and
 duplicates are collapsed. The result is ordered by position, then by
 `ordering`.
+
+Read that list as a checklist. Each line is a way for a published module to be
+absent from one page and present on another, and two of them catch people. A
+module assigned to a single menu item is invisible on every other page, which
+looks exactly like a broken module if you test on the wrong one. And a module
+whose access level is not Public disappears for the logged-out visitor you are
+probably testing as. `mod_upcoming_bookings` has nothing to show a guest
+anyway, so give it a Registered access level rather than letting it render an
+empty box.
+
+The result is cached under a key made from the menu item, the user's view
+levels, the client and the language tag, so a module that is right for one
+visitor is not served to another.
 
 ## In a template
 
@@ -72,8 +94,10 @@ $this->countModules('user1 + user2')
 
 ## In a component, plugin, or view
 
-`Hubzero\Module\Helper` is a static wrapper over the same loader, and is what
-component views use:
+Sometimes the block has to sit inside a component's own markup rather than
+beside it — a note halfway down a booking form, where no template position
+reaches. `Hubzero\Module\Helper` is a static wrapper over the same loader, and
+is what component views use:
 
 | Call | Result |
 |---|---|
@@ -135,7 +159,46 @@ that renders a position where it stands:
 
 None of this happens without an instance. In the administrative interface, go
 to the Module Manager, create a new instance of the module, give it a title,
-choose a position from the template's declared positions, set the access level
-and menu assignment, and publish it. The position name is arbitrary text: a
-position no template asks for renders nowhere, and a `jdoc` tag for a position
-with no modules renders as nothing.
+choose a position, set the access level and menu assignment, and publish it.
+
+## Positions belong to the template
+
+This is the one to read twice, because it is the most common reason a module
+that works is not on the page.
+
+Your module never declares a position. It does not know what positions exist,
+and it cannot create one. A position is a string that a template's `index.php`
+asks for:
+
+```html
+<jdoc:include type="modules" name="right" />
+```
+
+The loader returns the published instances whose `position` column holds that
+string. That is the entire contract. A position is a name two parties happen
+to agree on, and nothing checks that they do.
+
+So there are three ways for a correct module to render nothing, and none of
+them logs anything:
+
+| What you did | What happens |
+|---|---|
+| Assigned the instance to a position the active template's `index.php` never includes | Nothing renders. The instance is published and looks fine in the Module Manager. |
+| Assigned it to a position the template declares in `templateDetails.xml` but never uses in `index.php` | Same. The `<positions>` block only fills the picker; it renders nothing by itself. |
+| Switched the site to a template with different position names | Every module in a dropped position goes quiet at once. |
+
+The `<positions>` block is documentation for the administrator, not a
+declaration to the framework. Templates in the tree already drift from it:
+`kimera` renders `breadcrumbs` and `endpage` without declaring them, and
+declares `banner` and `introblock` without rendering them.
+
+> **Tip:** When a module will not appear, check the position before anything
+> else. Open the active template's `index.php` and search for the position
+> name. If it is not there, the module was never going to render, and no
+> amount of checking the access level or the menu assignment will find it.
+
+Which position to put `mod_upcoming_bookings` in is therefore a question about
+the hub's template, not about your module. `right` and `left` are the two most
+widely shared names; both `kimera` and `lucent` render them. See
+[Layouts](../11-templates/06-layouts.md#module-positions) for the full list per
+shipped template.

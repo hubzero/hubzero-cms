@@ -179,22 +179,50 @@ files into <code>core/plugins</code> or <code>app/plugins</code> is not enough:
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader::all()</code></a>
 builds its list from that table, not from the filesystem, so an unregistered
 plugin is never required, never constructed, and never bound to an event.</p>
+<p>This is the first chapter of the section because it is the first thing to
+write. A plugin with no migration behaves exactly like a plugin whose event
+never fires and exactly like a plugin with a misspelled method name — nothing
+happens, and nothing says why. Write the migration, run it, confirm the plugin
+appears in the Plugin Manager, and only then start debugging anything else.</p>
 <p>Registration is done by a migration in the plugin's own <code>migrations</code>
 directory, run by <a href="../../muse/index.html"><code>muse migration</code></a>.</p>
 <h2 id="where-migrations-live">Where migrations live</h2>
-<pre><code>core/plugins/members/blog/
+<pre><code>app/plugins/bookings/notify/
     migrations/
-        Migration20170831000000PlgMembersBlog.php
+        Migration20260210000000PlgBookingsNotify.php
 </code></pre>
 <p>The class name is <code>Migration{timestamp}Plg{Group}{Name}</code>, and the file is
 named after the class. Migrations run in timestamp order across every
 extension on the hub, so give a plugin that depends on a component's tables a
-later timestamp than the migration that creates them.</p>
+later timestamp than the migration that creates them — <code>plg_bookings_notify</code>
+after <code>com_bookings</code>, not before.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> See <a href="../../database/index.html#migrations">Migrations</a> for naming
 conventions, the <code>muse</code> commands, and the schema helpers on <code>$this-&gt;db</code>.</p>
 </aside>
 <h2 id="the-registration-migration">The registration migration</h2>
+<p>For <code>plg_bookings_notify</code>, the whole migration is two calls:</p>
+<pre><code class="language-php">&lt;?php
+
+use Hubzero\Content\Migration\Base;
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+class Migration20260210000000PlgBookingsNotify extends Base
+{
+	public function up()
+	{
+		$this-&gt;addPluginEntry('bookings', 'notify');
+	}
+
+	public function down()
+	{
+		$this-&gt;deletePluginEntry('bookings', 'notify');
+	}
+}
+</code></pre>
+<p>Which is, allowing for the names, the shipped members blog migration:</p>
 <pre><code class="language-php">&lt;?php
 /**
  * @package    hubzero-cms
@@ -266,77 +294,130 @@ The plugin-related ones are:</p>
 </tr>
 </tbody>
 </table>
-<p><code>$folder</code> is the group directory — <code>members</code>, <code>content</code>, <code>system</code> — and
+<p><code>$folder</code> is the group directory — <code>bookings</code>, <code>content</code>, <code>system</code> — and
 <code>$element</code> is the plugin's own directory name. Neither carries a prefix; the
-<code>plg_members_blog</code> form is assembled where it is needed.</p>
+<code>plg_bookings_notify</code> form is assembled where it is needed.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration/Macros/AddPluginEntry.php"><code>AddPluginEntry</code></a>
+lower-cases both before writing them, so the row always holds
+<code>folder = 'bookings'</code>, whatever case you passed.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <code>$folder</code> must be the name of the directory the plugin is in.
+The loader turns the <code>folder</code> column straight into a path, and nothing
+checks that the path exists. Register <code>bookings</code> for a plugin living in
+<code>app/plugins/booking/</code> and the row is written, the Plugin Manager lists the
+plugin, and it still never loads. See
+<a href="../structure/index.html#group-and-directory-must-match">Group and directory must match</a>.</p>
+</aside>
+<p>The row is written with <code>enabled</code> as given, <code>access</code> 1 (Public), <code>state</code> 0,
+and <code>client_id</code> 0. <code>addPluginEntry()</code> first checks for an existing row with
+that folder and element and returns early if it finds one, so re-running a
+migration is safe — and so a second <code>addPluginEntry()</code> cannot be used to
+change a plugin that is already installed. Use <code>enablePlugin()</code>,
+<code>disablePlugin()</code> or <code>savePluginParams()</code> for that.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> <code>deletePluginEntry('members')</code> with no element removes <strong>every</strong>
+<p><strong>Note:</strong> <code>deletePluginEntry('bookings')</code> with no element removes <strong>every</strong>
 plugin in the group. Always pass the element unless that is genuinely what
 you want.</p>
 </aside>
 <h2 id="shipping-default-parameters">Shipping default parameters</h2>
-<p><code>addPluginEntry()</code> takes a fourth argument, a JSON string stored in the row's
-<code>params</code> column. Use it when a plugin must arrive with a value other than the
-manifest default:</p>
+<p><code>addPluginEntry()</code> takes a fourth argument, stored in the row's <code>params</code>
+column. Pass a JSON string, or an array, which the macro encodes for you. Use
+it when a plugin must arrive with a value other than the manifest default:</p>
 <pre><code class="language-php">public function up()
 {
-    $this-&gt;addPluginEntry('content', 'formatwiki', 1, '{&quot;applyFormat&quot;:&quot;0&quot;,&quot;convertFormat&quot;:&quot;1&quot;}');
+	$this-&gt;addPluginEntry('content', 'formatwiki', 1, '{&quot;applyFormat&quot;:&quot;0&quot;,&quot;convertFormat&quot;:&quot;1&quot;}');
 }
 </code></pre>
-<p>For a plugin that is already installed, <code>savePluginParams()</code> merges into the
-existing row instead, which is the right tool when a later migration adds a
-field:</p>
+<p>For a plugin that is already installed, <code>savePluginParams()</code> writes the
+<code>params</code> column instead. It <strong>replaces</strong> the column outright — it does not
+merge — so read the current values first and set only what you are changing.
+That is the right tool when a later migration adds a field:</p>
 <pre><code class="language-php">public function up()
 {
-    $params = $this-&gt;getParams('plg_content_formatwiki');
-    $params-&gt;set('convertFormat', 0);
+	$params = $this-&gt;getParams('plg_content_formatwiki');
+	$params-&gt;set('convertFormat', 0);
 
-    $this-&gt;savePluginParams('content', 'formatwiki', $params);
+	$this-&gt;savePluginParams('content', 'formatwiki', $params);
 }
 </code></pre>
+<p><code>getParams()</code> returns a <code>Hubzero\Config\Registry</code> unless you pass <code>true</code> as
+its second argument, in which case you get the raw JSON string.
+<code>savePluginParams()</code> accepts a <code>Registry</code>, an array, or nothing usable — the
+third case logs a warning and returns <code>false</code> rather than throwing.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>getParams()</code> and <code>savePluginParams()</code> locate the row by
+splitting <code>plg_group_element</code> on underscores and taking the second and third
+pieces. An underscore anywhere in the group or the element breaks that:
+<code>plg_bookings_lab_notify</code> is read as group <code>bookings</code>, element <code>lab</code>, and
+the call quietly reads or writes the wrong row, or none. No plugin shipped
+in <code>core/plugins</code> has an underscore in either name. Do not be the first.</p>
+</aside>
 <h2 id="installing-disabled">Installing disabled</h2>
 <p>Pass <code>0</code> as the third argument to register a plugin without switching it on.
-This is the polite default for anything that changes site behaviour on sight —
-an authentication provider, a content filter — leaving an administrator to
-enable it once it is configured:</p>
-<pre><code class="language-php">$this-&gt;addPluginEntry('authentication', 'orcid', 0);
+This is the polite default for anything that changes site behaviour on sight,
+or that cannot work until it is configured — an authentication provider, a
+content filter, or <code>plg_bookings_notify</code>, which has no manager address to mail
+until an administrator types one in:</p>
+<pre><code class="language-php">$this-&gt;addPluginEntry('bookings', 'notify', 0);
 </code></pre>
+<p>The plugin then appears in the Plugin Manager, disabled, which is the
+difference between &quot;waiting for you&quot; and the silence of no row at all.</p>
 <h2 id="ordering">Ordering</h2>
 <p>Plugins in a group run in the order given by the <code>ordering</code> column, ascending;
 <code>Loader::all()</code> sorts on it and the dispatcher preserves insertion order for
-listeners of equal priority. <code>addPluginEntry()</code> does not set an ordering, so a
-new plugin lands wherever the default puts it. If your plugin must run before
-or after a specific sibling — a content filter that has to see raw text, for
-instance — set the column explicitly in the migration and say why in a
-comment.</p>
+listeners of equal priority.</p>
+<p><code>addPluginEntry()</code> sets the ordering itself: it takes the highest <code>ordering</code>
+already present in the same folder and adds one, so a newly registered plugin
+runs <strong>last</strong> in its group. That is the right default. If your plugin must run
+before a specific sibling — a content filter that has to see raw text, for
+instance — update the column explicitly in the migration and say why in a
+comment, because nothing else in the tree records the dependency.</p>
 <h2 id="tables">Tables</h2>
 <p>Create any tables the plugin needs in the same migration, and write the
 matching <code>down()</code>:</p>
 <pre><code class="language-php">public function up()
 {
-    if (!$this-&gt;db-&gt;tableExists('#__example_log'))
-    {
-        $this-&gt;db-&gt;query(&quot;CREATE TABLE `#__example_log` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `created` datetime DEFAULT NULL,
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;&quot;);
-    }
+	if (!$this-&gt;db-&gt;tableExists('#__bookings_notifications'))
+	{
+		$this-&gt;db-&gt;query(&quot;CREATE TABLE `#__bookings_notifications` (
+			`id` int(11) NOT NULL AUTO_INCREMENT,
+			`reservation_id` int(11) NOT NULL DEFAULT 0,
+			`sent` datetime DEFAULT NULL,
+			PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;&quot;);
+	}
 
-    $this-&gt;addPluginEntry('system', 'example');
+	$this-&gt;addPluginEntry('bookings', 'notify', 0);
 }
 </code></pre>
-<p>Most core plugins reverse only the registration in <code>down()</code> and leave the
-schema alone, because dropping a table throws away data that a re-run cannot
-restore.</p>
+<p>Write <code>#__</code> for the table prefix, never a literal <code>jos_</code>; see
+<a href="../../database/index.html#the-table-prefix">Database</a>. Most core plugins reverse only
+the registration in <code>down()</code> and leave the schema alone, because dropping a
+table throws away data that a re-run cannot restore.</p>
 <h2 id="running-them">Running them</h2>
 <pre><code class="language-bash">muse migration          # dry run
 muse migration -f       # apply
 muse migration -f -i    # apply, including migrations dated before the last run
 </code></pre>
+<p><code>-e=plg_bookings_notify</code> limits a run to one extension, which is what you want
+while iterating.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>-e</code> matches on the <strong>class name</strong>, not the directory. The
+value is split on underscores, each piece is <code>ucfirst()</code>ed, and the result
+is matched against <code>/Migration[0-9]{14}PlgBookingsNotify\.php/</code>. A file
+called <code>Migration20260210000000BookingsNotify.php</code> sits in the right
+directory and is skipped in silence — the runner reports nothing to do. The
+option itself is validated against
+<code>^plg_[[:alnum:]]+_[[:alnum:]]+$</code>, so a group or element containing an
+underscore is refused outright, and the filename must match
+<code>^Migration[0-9]{14}[[:alnum:]]+\.php$</code>, so it cannot contain one either.</p>
+</aside>
+<p>If the migration runs and the plugin still does not appear, the row went in
+under a folder or element you did not expect: check <code>#__extensions</code> directly
+before assuming the loader is at fault.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Plugins</a><a class="pager__next" href="../structure/index.html" rel="next"><span>Next</span>Structure</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/01-migrations.md">Edit this page on GitHub</a>

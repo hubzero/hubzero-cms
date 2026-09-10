@@ -174,44 +174,51 @@
         <div class="prose">
 <p>A module is distributed as its own directory, exactly as it will sit on disk
 after installation. Two manifests describe it: <code>composer.json</code>, which the
-package manager reads, and <code>mod_example.xml</code>, which the CMS reads for the name,
-the client, and the parameter form shown in the Module Manager.</p>
+package manager reads, and <code>mod_upcoming_bookings.xml</code>, which the CMS reads
+for the name, the client, and the parameter form shown in the Module Manager.</p>
+<p>The XML is the one that changes what an administrator sees. Every field you
+want on the module's edit screen has to be declared there; a parameter your
+code reads but the manifest does not declare has no way of being set.</p>
 <h2 id="package-layout">Package layout</h2>
-<pre><code>mod_example/
-    assets/css/mod_example.css
-    language/en-GB/en-GB.mod_example.ini
-    language/en-GB/en-GB.mod_example.sys.ini
-    migrations/Migration20260101000000ModExample.php
+<pre><code>mod_upcoming_bookings/
+    assets/css/mod_upcoming_bookings.css
+    language/en-GB/en-GB.mod_upcoming_bookings.ini
+    language/en-GB/en-GB.mod_upcoming_bookings.sys.ini
+    migrations/Migration20260101000000ModUpcomingBookings.php
     tmpl/default.php
     tmpl/index.html
     composer.json
     helper.php
     index.html
-    mod_example.php
-    mod_example.xml
+    mod_upcoming_bookings.php
+    mod_upcoming_bookings.xml
 </code></pre>
 <p>Nothing is rearranged on install. Whatever is in the package appears under
-<code>app/modules/mod_example</code> or <code>core/modules/mod_example</code>.</p>
+<code>app/modules/mod_upcoming_bookings</code>.</p>
 <h2 id="the-composer-manifest">The Composer manifest</h2>
 <pre><code class="language-json">{
-	&quot;name&quot;: &quot;myorg/mod_example&quot;,
-	&quot;description&quot;: &quot;Example module for the Hubzero CMS&quot;,
+	&quot;name&quot;: &quot;myorg/mod_upcoming_bookings&quot;,
+	&quot;description&quot;: &quot;A user's next instrument reservations&quot;,
 	&quot;type&quot;: &quot;hubzero-module&quot;,
 	&quot;keywords&quot;: [&quot;hubzero&quot;],
 	&quot;homepage&quot;: &quot;https://example.org&quot;,
 	&quot;license&quot;: &quot;MIT&quot;,
 	&quot;require&quot;: {
-		&quot;php&quot;: &quot;^5.4&quot;
+		&quot;php&quot;: &quot;^5.4&quot;,
+		&quot;myorg/com_bookings&quot;: &quot;dev-master&quot;
 	}
 }
 </code></pre>
 <p>The <code>type</code> must be <code>hubzero-module</code>. The recognised types are
 <code>hubzero-component</code>, <code>hubzero-module</code>, <code>hubzero-plugin</code>, and
 <code>hubzero-template</code>; the installer uses the type to decide where the package
-belongs. A module that depends on a component declares it, as <code>mod_mygroups</code>
-does with <code>&quot;hubzero/com_groups&quot;: &quot;dev-master&quot;</code> — the module reads
-<code>Components\Groups\Models\Recent</code>, and installing it without the component
-would break at render time.</p>
+belongs.</p>
+<p>Declare the component you read from, as above. <code>mod_mygroups</code> does the same
+with <code>&quot;hubzero/com_groups&quot;: &quot;dev-master&quot;</code>, because it reads
+<code>Components\Groups\Models\Recent</code>. This is documentation with teeth in one
+direction only — nothing at render time checks it, so a module installed
+without its component fails when someone loads a page, with a &quot;class not
+found&quot; fatal naming a component nobody realised was missing.</p>
 <p>Unlike a plugin, a module needs no <code>extra.install-directory</code>: the package name
 already determines the directory.</p>
 <h2 id="the-xml-manifest">The XML manifest</h2>
@@ -257,7 +264,7 @@ after the module, and it is not listed in its own <code>&lt;files&gt;</code> blo
 </tr>
 <tr>
 <td><code>&lt;name&gt;</code></td>
-<td>The element name, <code>mod_example</code>. Used as the default title of new instances.</td>
+<td>The element name, <code>mod_upcoming_bookings</code>. Used as the default title of new instances.</td>
 </tr>
 <tr>
 <td><code>&lt;description&gt;</code></td>
@@ -307,16 +314,43 @@ after the module, and it is not listed in its own <code>&lt;files&gt;</code> blo
 		&lt;/fields&gt;
 	&lt;/config&gt;
 </code></pre>
+<p><code>mod_upcoming_bookings</code> needs two fields of its own and the conventional
+suffix:</p>
+<pre><code class="language-xml">&lt;config&gt;
+	&lt;fields name=&quot;params&quot;&gt;
+		&lt;fieldset name=&quot;basic&quot;&gt;
+			&lt;field name=&quot;moduleclass_sfx&quot; type=&quot;text&quot; default=&quot;&quot;
+				label=&quot;MOD_UPCOMING_BOOKINGS_PARAM_CLASS_LABEL&quot;
+				description=&quot;MOD_UPCOMING_BOOKINGS_PARAM_CLASS_DESC&quot; /&gt;
+			&lt;field name=&quot;limit&quot; type=&quot;text&quot; default=&quot;5&quot;
+				label=&quot;MOD_UPCOMING_BOOKINGS_PARAM_LIMIT_LABEL&quot;
+				description=&quot;MOD_UPCOMING_BOOKINGS_PARAM_LIMIT_DESC&quot; /&gt;
+			&lt;field name=&quot;instrument_id&quot; type=&quot;text&quot; default=&quot;0&quot;
+				label=&quot;MOD_UPCOMING_BOOKINGS_PARAM_INSTRUMENT_LABEL&quot;
+				description=&quot;MOD_UPCOMING_BOOKINGS_PARAM_INSTRUMENT_DESC&quot; /&gt;
+		&lt;/fieldset&gt;
+	&lt;/fields&gt;
+&lt;/config&gt;
+</code></pre>
+<p><code>limit</code> and <code>instrument_id</code> are what let one module do two jobs. An instance
+in the sidebar with <code>instrument_id</code> at <code>0</code> lists everything the user has
+booked; a second instance on a lab page narrows the same code to one
+instrument. Parameters are the cheapest way to avoid writing a second module.</p>
 <p><code>label</code> and <code>description</code> are language keys. <code>default</code> is what
 <code>params-&gt;get()</code> returns for an instance saved before the field existed only if
 you pass it yourself as the second argument — the manifest default is applied
-by the form, not by the Registry.</p>
+by the form, not by the Registry. So <code>default=&quot;5&quot;</code> here and
+<code>$this-&gt;params-&gt;get('limit', 5)</code> in the class: write both, or an older
+instance reads null. See <a href="../helpers/index.html#parameters">Helpers</a>.</p>
 <p>Two field names are conventional across almost every module:</p>
 <ul>
 <li><code>moduleclass_sfx</code> — a suffix the chrome function appends to the wrapper's
 CSS class, so an administrator can style one instance differently.</li>
-<li><code>cache</code> and <code>cache_time</code> — read by <code>getCacheContent()</code>. See
-<a href="../helpers/index.html">Helpers</a>.</li>
+<li><code>cache</code> and <code>cache_time</code> — read by <code>getCacheContent()</code>. Declare these only
+if your module's output is the same for every visitor. The cache key is the
+instance id alone, so on a per-user module such as <code>mod_upcoming_bookings</code>
+they hand one researcher's reservations to the next visitor. See
+<a href="../helpers/index.html#caching">Helpers</a>.</li>
 </ul>
 <p>The <code>member_dashboard=&quot;1&quot;</code> attribute seen on some fields marks a parameter as
 editable by a member when the module appears on their dashboard, rather than
@@ -338,9 +372,16 @@ position.</p>
 invisible: <code>Loader::all()</code> joins <code>#__modules</code> to <code>#__extensions</code> and requires
 an enabled row there.</p>
 </aside>
+<p>Say all three in your README, because none of them announces itself:</p>
+<ol>
+<li>run the migration;</li>
+<li>create an instance in the Module Manager;</li>
+<li>assign it to a position the site's template actually renders — see
+<a href="../loading/index.html#positions-belong-to-the-template">Loading</a>.</li>
+</ol>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../assets/index.html" rel="prev"><span>Previous</span>Assets</a><a class="pager__next" href="../loading/index.html" rel="next"><span>Next</span>Loading</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/08-packaging.md">Edit this page on GitHub</a>
