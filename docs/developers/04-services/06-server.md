@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services/server
 -->
 # Server
@@ -10,6 +10,14 @@ source: https://help.hubzero.org/documentation/240/webdevs/services/server
 sends a file off disk to the browser. It handles the headers a download
 needs — content type, length, disposition, byte ranges — and streams the
 body, so a controller that serves an attachment does not have to.
+
+You need it whenever a file must not sit under the document root: a
+calibration report attached to an instrument booking, a dataset only the
+lab's members may read. The file lives somewhere the web server will not
+serve, your controller decides whether this member may have it, and `Server`
+does the rest. Byte ranges are why you should not roll your own — without
+them a member cannot resume an interrupted download, and audio and video
+will not seek.
 
 There is no facade for it. Construct one where you need it:
 
@@ -51,9 +59,9 @@ display, and is what `saveas()` names:
 
 ```php
 $server = new Server();
-$server->filename(PATH_APP . DS . 'site' . DS . 'patches' . DS . $file);
+$server->filename(PATH_APP . DS . 'site' . DS . 'bookings' . DS . $booking->get('id') . DS . $file);
 $server->disposition('attachment');
-$server->saveas('bugfix.patch');
+$server->saveas('calibration.pdf');
 $server->serve();
 ```
 
@@ -96,3 +104,18 @@ Confirm the file exists and that the current user is entitled to it before
 serving. `Server` does neither; give it a path you have already resolved
 against a directory you control, never one assembled straight from the
 request.
+
+The order to write it in:
+
+1. Load the record the file belongs to, by id, from your own table.
+2. Check the current user may see that record.
+3. Build the path from the record — the directory from `PATH_APP` and the
+   record's id, the name from the record's own column.
+4. `Filesystem::exists()`.
+5. Serve.
+
+Taking the filename from the request and validating it with
+`Server::valid()` is not step 3. `valid()` stops a path escaping upwards;
+it has nothing to say about whether this member may read this file, so a
+member who swaps one booking id for another in the URL gets somebody else's
+report and no error.

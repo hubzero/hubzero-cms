@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Packaging · Developers · Hubzero Documentation</title>
-  <meta name="description" content="There is no build step. A distributable component is the directory exactly as it appears once installed, plus two descriptive files at its root. Zip that…">
+  <meta name="description" content="There is no build step and no package format. A distributable component is the directory exactly as it appears once installed, plus two descriptive files at…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/packaging/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -169,37 +171,49 @@
         </header>
         
         <div class="prose">
-<p>There is no build step. A distributable component is the directory exactly as
-it appears once installed, plus two descriptive files at its root.</p>
-<pre><code>com_example/
+<p>There is no build step and no package format. A distributable component is
+the directory exactly as it appears once installed, plus two descriptive files
+at its root.</p>
+<pre><code>com_bookings/
     composer.json
-    example.xml
+    bookings.xml
     config/
         config.xml
         access.xml
     migrations/
-        Migration20260901000000ComExample.php
+        Migration20260901000000ComBookings.php
     models/
-        thing.php
+        instrument.php
+        reservation.php
     site/
-        example.php
+        bookings.php
         router.php
-        controllers/things.php
-        views/things/tmpl/display.php
-        assets/css/example.css
-        language/en-GB/en-GB.com_example.ini
+        controllers/instruments.php
+        views/instruments/tmpl/display.php
+        assets/css/bookings.css
+        language/en-GB/en-GB.com_bookings.ini
     admin/
-        example.php
-        controllers/things.php
-        views/things/tmpl/display.php
-        views/things/tmpl/edit.php
-        language/en-GB/en-GB.com_example.ini
-        language/en-GB/en-GB.com_example.sys.ini
+        bookings.php
+        controllers/instruments.php
+        views/instruments/tmpl/display.php
+        views/instruments/tmpl/edit.php
+        language/en-GB/en-GB.com_bookings.ini
+        language/en-GB/en-GB.com_bookings.sys.ini
 </code></pre>
-<p>Zip that directory and you have something installable. Unzip it into
-<code>app/components/</code> and you have something installed. The
-<a href="../../../managers/extensions/extension-manager/index.html">Extension manager</a> does
-the same thing with a click.</p>
+<p>Copy that directory into <code>app/components/</code> and you have something installed.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> There is no package installer to hand it to. The
+<strong>Install</strong>, <strong>Update</strong>, <strong>Discover</strong> and <strong>Database</strong> screens were removed
+from this release, so a <code>.zip</code> is a way to move the directory between
+machines and nothing more — nothing on the hub will unpack it or read its
+manifest. The two routes that work are the Extension Manager's <strong>Custom
+Extensions</strong> tab, which clones a git repository into <code>app/</code>, and copying
+the directory by hand. Both are in
+<a href="../../extensions/deployext/index.html">Deploying extensions</a>.</p>
+</aside>
+<p>The practical consequence: <strong>ship the component as a git repository</strong>, laid
+out so that the repository root <em>is</em> the component directory. That is what
+the supported route consumes, and it is how a hub gets updates afterwards.</p>
 <h2 id="composer-json"><code>composer.json</code></h2>
 <p>The package definition names the component and declares its type:</p>
 <pre><code class="language-json">{
@@ -231,32 +245,43 @@ a third-party library it will <code>use</code>.</p>
 <p><strong>Note:</strong> The platform does not ship a Composer installer plugin for
 <code>hubzero-component</code>, so <code>composer require</code> will not place a component in
 <code>app/components/</code> on its own. The file documents the package; the directory
-is deployed by the Extension manager, by hand, or by whatever the hub uses
-to deploy code.</p>
+is deployed by the Extension Manager's git flow, by hand, or by whatever the
+hub uses to deploy code.</p>
 </aside>
+<p>Most shipped <code>composer.json</code> files still declare <code>&quot;php&quot;: &quot;&gt;=5.4&quot;</code> or similar.
+Those constraints are stale and nothing enforces them. Hubzero 2.4 needs PHP
+8.2; write that.</p>
 <h2 id="the-manifest">The manifest</h2>
 <p><code>{componentname}.xml</code> carries the metadata the administrator displays: name,
 author, copyright, licence, description, and version. Its root element is
 <code>&lt;extension type=&quot;component&quot;&gt;</code>.</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;extension type=&quot;component&quot; version=&quot;1.5&quot;&gt;
-    &lt;name&gt;Example&lt;/name&gt;
+    &lt;name&gt;COM_BOOKINGS&lt;/name&gt;
     &lt;author&gt;Your Organisation&lt;/author&gt;
     &lt;authorUrl&gt;example.org&lt;/authorUrl&gt;
     &lt;authorEmail&gt;support@example.org&lt;/authorEmail&gt;
     &lt;version&gt;1.0.0&lt;/version&gt;
     &lt;copyright&gt;Copyright (c) 2026 Your Organisation&lt;/copyright&gt;
     &lt;license&gt;http://opensource.org/licenses/MIT MIT&lt;/license&gt;
-    &lt;description&gt;Manage examples&lt;/description&gt;
+    &lt;description&gt;COM_BOOKINGS_XML_DESCRIPTION&lt;/description&gt;
     &lt;administration&gt;
-        &lt;menu&gt;Examples&lt;/menu&gt;
+        &lt;menu&gt;COM_BOOKINGS&lt;/menu&gt;
     &lt;/administration&gt;
 &lt;/extension&gt;
 </code></pre>
+<p><code>&lt;name&gt;</code> and <code>&lt;description&gt;</code> may be language keys, resolved from the
+administrator <code>.sys.ini</code> file. Write keys unless the component is for one hub
+in one language.</p>
+<p>The manifest is metadata. It installs nothing, creates nothing and is read by
+nothing at request time; a component with no manifest at all still runs. It
+exists so the administrator's lists have something to show.</p>
 <p>Older manifests, <code>com_kb</code>'s included, also carry <code>&lt;files&gt;</code>, <code>&lt;languages&gt;</code>,
-<code>&lt;install&gt;&lt;sql&gt;</code>, and <code>&lt;params&gt;</code> blocks. None of them do anything now, and
-most are stale — <code>com_kb</code>'s <code>&lt;files&gt;</code> list names files that were deleted years
-ago. Do not copy them into a new component:</p>
+<code>&lt;install&gt;&lt;sql&gt;</code>, and <code>&lt;params&gt;</code> blocks. They are inherited from when a
+package installer read them. None of them do anything now, and most are stale
+— <code>com_kb</code>'s <code>&lt;files&gt;</code> list names files that were deleted years ago. Do not
+read an existing <code>&lt;files&gt;</code> block as a description of the component, and do not
+copy one into a new component:</p>
 <table>
 <thead>
 <tr>
@@ -290,19 +315,22 @@ ago. Do not copy them into a new component:</p>
 component in the tree is named <code>{name}.xml</code>, so the manifest cache is never
 refreshed from the file, and the Extensions manager shows whatever was
 recorded when the row was created. Naming a new component's manifest
-<code>com_example.xml</code> makes the refresh work.</p>
+<code>com_bookings.xml</code> makes the refresh work; naming it <code>bookings.xml</code> matches
+the rest of the tree and does not. Neither choice affects anything else, so
+pick the one that matters to you and know which you picked.</p>
 </aside>
 <h2 id="what-actually-installs-it">What actually installs it</h2>
 <p>Nothing in the package creates database tables or the <code>#__extensions</code> row.
 That is the job of the component's migrations, run after the files are in
 place:</p>
-<pre><code class="language-bash">php core/bin/muse migration -f -e=com_example
+<pre><code class="language-bash">php core/bin/muse migration -f -e=com_bookings
 </code></pre>
 <p>Ship the migrations with the component and installation is one command that
-works the same on every hub, is idempotent, and can be rolled back. See
-<a href="../migrations/index.html">Migrations</a>.</p>
+works the same on every hub, is idempotent, and can be rolled back. Leave them
+out and the component is invisible to the administrator on every hub it
+reaches. See <a href="../migrations/index.html">Migrations</a>.</p>
 <h2 id="where-it-goes">Where it goes</h2>
-<p><code>app/components/com_example/</code>. Never <code>core/components/</code> — that directory is
+<p><code>app/components/com_bookings/</code>. Never <code>core/components/</code> — that directory is
 the platform's, and an upgrade will overwrite it. The class loader and
 <code>Component::path()</code> both check <code>app</code> before <code>core</code>, so a component in <code>app</code>
 takes precedence over a core component of the same name, and everything a hub
@@ -312,7 +340,7 @@ the Extension manager cannot write to the filesystem, is in
 <a href="../../extensions/deployext/index.html">Deploying extensions</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../configuration/index.html" rel="prev"><span>Previous</span>Configuration</a><a class="pager__next" href="../../plugins/index.html" rel="next"><span>Next</span>Plugins</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/11-packaging.md">Edit this page on GitHub</a>

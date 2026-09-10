@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Events are how one extension reaches another without either of them naming the other. A component announces that something happened; whatever plugins are…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/events/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">About</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Events</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-working-pair">The smallest working pair</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-dispatcher-comes-from">Where the dispatcher comes from</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-a-name-reaches-a-directory">How a name reaches a directory</a></li>
+<li class="toc__item toc__item--l2"><a href="#nothing-here-scans-the-filesystem">Nothing here scans the filesystem</a></li>
+<li class="toc__item toc__item--l2"><a href="#naming-events-for-your-own-component">Naming events for your own component</a></li>
+<li class="toc__item toc__item--l2"><a href="#finding-the-events-that-already-exist">Finding the events that already exist</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/accessibility/index.html">Accessibility</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/index.html">Muse</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/index.html">Conventions</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Foundation</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Events</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Events</h1>
+        </header>
+        
+        <div class="prose">
+<p>Events are how one extension reaches another without either of them naming
+the other. A component announces that something happened; whatever plugins
+are installed and enabled answer. That is the only extension point the
+platform has: components do not call plugins, templates do not call
+components, and nothing in the tree looks up another extension's classes to
+call a method on them.</p>
+<p>You need this page in two situations. You are writing a plugin and want to
+know what will call it and when. Or you are writing a component — an
+instrument-booking component, say — and you want other people's plugins to
+be able to react when a booking is saved, without com_booking knowing they
+exist.</p>
+<p>The full API of the dispatcher — arguments, priorities, stopping
+propagation, registering something that is not a plugin — is in
+<a href="../../services/events/index.html">Events</a> under Services. This page is the
+wiring underneath it: where the dispatcher comes from, how a name reaches a
+directory, and why an event sometimes reaches nobody.</p>
+<h2 id="the-smallest-working-pair">The smallest working pair</h2>
+<p>A component triggers a named event and reads back what came home:</p>
+<pre><code class="language-php">use Event;
+
+// core/components/com_booking/site/controllers/bookings.php
+$results = Event::trigger('booking.onBookingAfterSave', array(&amp;$row, $isNew));
+</code></pre>
+<p>A plugin in the matching group answers it by having a method of that name:</p>
+<pre><code class="language-php">// core/plugins/booking/notify/notify.php
+defined('_HZEXEC_') or die;
+
+class plgBookingNotify extends \Hubzero\Plugin\Plugin
+{
+    public function onBookingAfterSave($row, $isNew)
+    {
+        // ...
+        return true;
+    }
+}
+</code></pre>
+<p>Nothing connects those two files. The name does.</p>
+<p>The plugin's entry file is <code>plugins/{group}/{name}/{name}.php</code> and the loader
+<code>require</code>s it by that path, so autoloading is not involved in reaching it. It
+accepts either of two class names: <code>plg{Group}{Name}</code> in the root namespace,
+which is what every shipped plugin uses, or <code>Plugins\{Group}\{Name}</code>. Helper
+classes <em>inside</em> the plugin are namespaced <code>Plugins\{Group}\{Name}\…</code> and are
+autoloaded normally — <code>Plugins\Content\Formathtml\Parser</code> is
+<code>core/plugins/content/formathtml/parser.php</code>. See
+<a href="../autoloading/index.html">Autoloading</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>trigger()</code> returns an <strong>array</strong> of what the listeners returned,
+with nulls dropped — not a boolean and not the last result. Treating it as
+a boolean asks &quot;did any plugin return something truthy&quot;, which is rarely
+what the caller means.</p>
+</aside>
+<h2 id="where-the-dispatcher-comes-from">Where the dispatcher comes from</h2>
+<p>The <code>Event</code> facade resolves the container key <code>dispatcher</code>, which
+<code>EventServiceProvider</code> binds:</p>
+<pre><code class="language-php">	public function register()
+	{
+		$this-&gt;app['dispatcher'] = function($app)
+		{
+			$dispatcher = new Dispatcher();
+
+			if ($app['config'] instanceof Repository)
+			{
+				if ($app['config']-&gt;get('debug'))
+				{
+					$dispatcher = new TraceableDispatcher($dispatcher);
+				}
+			}
+
+			return $dispatcher;
+		};
+	}
+</code></pre>
+<p>In debug mode the real dispatcher is wrapped in a <code>TraceableDispatcher</code> so
+the debug bar can list what fired — the quickest way to see whether an event
+you expected actually happened.</p>
+<p>Plugins become reachable one step later. <code>PluginServiceProvider</code> registers
+the plugin loader as a service, then attaches it to the dispatcher in
+<code>boot()</code>, after every provider has registered:</p>
+<pre><code class="language-php">	public function boot()
+	{
+		if ($this-&gt;app-&gt;has('dispatcher'))
+		{
+			$this-&gt;app['dispatcher']-&gt;addListenerLoader($this-&gt;app['plugin']);
+		}
+	}
+</code></pre>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Anything that triggers an event before the application has
+booted reaches no plugins at all, and fails silently — <code>trigger()</code> returns
+an empty array exactly as it does when no plugin answered. This is the
+ordering to suspect first when a plugin that is definitely enabled is
+definitely not being called.</p>
+</aside>
+<h2 id="how-a-name-reaches-a-directory">How a name reaches a directory</h2>
+<p>The part of the event name before the first dot is its <strong>group</strong>, and the
+group is a plugin directory:</p>
+<table>
+<thead>
+<tr>
+<th>Event name</th>
+<th>Group</th>
+<th>Plugins loaded from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>content.onContentPrepare</code></td>
+<td><code>content</code></td>
+<td><code>{app,core}/plugins/content/</code></td>
+</tr>
+<tr>
+<td><code>members.onMembersAreas</code></td>
+<td><code>members</code></td>
+<td><code>{app,core}/plugins/members/</code></td>
+</tr>
+<tr>
+<td><code>booking.onBookingAfterSave</code></td>
+<td><code>booking</code></td>
+<td><code>{app,core}/plugins/booking/</code></td>
+</tr>
+<tr>
+<td><code>onBookingAfterSave</code></td>
+<td>none</td>
+<td>nothing is loaded for it</td>
+</tr>
+</tbody>
+</table>
+<p><code>Dispatcher::trigger()</code> sees the group and calls <code>addListeners($group)</code>
+before dispatching, which asks the plugin loader for every enabled plugin in
+that directory, instantiates each, and binds its public methods by name.
+Groups load lazily, on the first trigger, so a plugin's <code>__construct()</code> and
+its language file do not run until something in its group fires.</p>
+<p>An event name with <strong>no</strong> dot loads nothing. It still reaches listeners that
+were registered some other way — in practice the <code>system</code> plugins, which are
+loaded early — which is why a handful of undotted names in the tree appear to
+work. Do not rely on it. Give your component's events a group prefix and
+create the group.</p>
+<h2 id="nothing-here-scans-the-filesystem">Nothing here scans the filesystem</h2>
+<p>A plugin directory is not a plugin. The loader builds its list from
+<code>#__extensions</code>, filtered to rows that are enabled, not trashed, and whose
+<code>access</code> level the current user holds, ordered by <code>ordering</code>. A plugin with
+no row is invisible; a plugin whose access level the visitor does not have is
+not loaded at all, rather than loaded and skipped, so there is nothing for
+the plugin itself to guard against.</p>
+<p>That row is written by a <a href="../../database/index.html#migrations">migration</a>, which is
+why every extension ships one. See
+<a href="../../extensions/deployext/index.html">Deploying extensions</a> and
+<a href="../extensions/index.html#nothing-scans-the-filesystem">Extensions</a>.</p>
+<p>So a new group is three things, in this order:</p>
+<ol>
+<li>A directory, <code>core/plugins/booking/</code> (or <code>app/plugins/booking/</code> for one
+hub's own).</li>
+<li>A plugin in it, with a manifest, and a migration that inserts its
+<code>#__extensions</code> row with <code>folder</code> set to <code>booking</code>.</li>
+<li>A <code>Event::trigger('booking.…')</code> call in the component.</li>
+</ol>
+<p>Miss the second and the trigger is a no-op with no error anywhere.</p>
+<h2 id="naming-events-for-your-own-component">Naming events for your own component</h2>
+<p>The convention across the tree is <code>group.onSubjectVerb</code>, with the group
+matching the plugin directory and the method name repeating the subject:
+<code>onBookingAfterSave</code>, <code>onBookingBeforeDelete</code>, <code>onBookingView</code>. The method
+name has to be unique enough not to collide, because a plugin's public
+methods are bound by name and a plugin may sit in a group that several
+components trigger.</p>
+<p>Pass the row by reference when you want listeners to be able to change it —
+<code>array(&amp;$row, $isNew)</code> — and expect them to. That is how content plugins
+rewrite text in place.</p>
+<p>Two shapes are worth telling apart before you settle on one:</p>
+<ul>
+<li><strong>A notification.</strong> You trigger it, ignore the return, and carry on.
+Cheapest and hardest to misuse.</li>
+<li><strong>A question.</strong> You trigger it and act on the answers, which means
+deciding what a plugin returning nothing means, and what two plugins
+returning different answers means. Say so in the docblock, because nothing
+in the mechanism enforces it.</li>
+</ul>
+<h2 id="finding-the-events-that-already-exist">Finding the events that already exist</h2>
+<p>Do not read the tree for this. The
+<a href="../../../reference/events/index.html">events reference</a> is generated from every
+<code>Event::trigger()</code> call in the source and lists, per group, each event, the
+places that fire it, and the plugins that answer it. It also shows which
+events are declared by a plugin but fired by nothing, and which are fired
+with no listener anywhere — both of which are worth knowing before you write
+against one.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An event that the reference shows as fired in the CMS with zero
+listeners is not necessarily dead; it may be there for hubs to hook. An
+event with listeners but no call site <em>is</em> dead, and there are some.</p>
+</aside>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../autoloading/index.html" rel="prev"><span>Previous</span>Autoloading</a><a class="pager__next" href="../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/04-events.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+</body>
+</html>

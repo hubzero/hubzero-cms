@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/components/views
 -->
 # Views
@@ -10,26 +10,31 @@ A view is two things: a `Hubzero\Component\View` object that carries data, and
 a PHP file — the layout — that turns that data into markup. The controller
 fills the object; the layout reads it back as `$this`.
 
+The split is what makes a component restyleable. A hub can replace one layout
+from its template without touching your code — but only for work that is in
+the layout. A query run inside a layout, or a permission decided there, is
+work a template override silently loses. Decide in the controller or the
+model; render in the layout.
+
 ## Where layouts go
 
 ```
-core/components/com_kb/
+app/components/com_bookings/
     site/views/
-        articles/            the view name, matching the controller
+        instruments/         the view name, matching the controller
             tmpl/
                 display.php  the layout, matching the task
                 display.xml  menu-item metadata for that layout
-                category.php  category.xml
-                article.php   article.xml
-                _list.php     partials
-                _comment.php
-                _vote.php
+                view.php     view.xml
+                book.php     book.xml
+                _calendar.php   partials
+                _slot.php
 ```
 
 The controller has already built a view for you before your task runs: its
 name is the controller name and its layout is the task name. A controller
-`Articles` running task `article` renders
-`site/views/articles/tmpl/article.php`. Nothing needs to be wired up.
+`Instruments` running task `book` renders
+`site/views/instruments/tmpl/book.php`. Nothing needs to be wired up.
 
 A layout whose basename starts with an underscore is a partial. The convention
 matters beyond readability — the menu manager ignores layouts with an
@@ -42,9 +47,9 @@ up as something an administrator can link to.
 
 ```php
 $this->view
-    ->set('article', $article)
-    ->set('category', $category)
-    ->setLayout('article')
+    ->set('instrument', $instrument)
+    ->set('reservations', $reservations)
+    ->setLayout('view')
     ->display();
 ```
 
@@ -58,13 +63,19 @@ Four variables are already set for you: `option`, `controller`, `task`, and
 ## Reading data out
 
 ```php
-<h3><?php echo $this->escape($this->article->get('title')); ?></h3>
-<p><?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?></p>
+<h3><?php echo $this->escape($this->instrument->get('title')); ?></h3>
+<p><?php echo Lang::txt('COM_BOOKINGS_AVAILABILITY'); ?></p>
 ```
 
-Anything that came from a person goes through `$this->escape()`. Content that
-is meant to carry markup goes through the content parser instead — see
-[Models](05-models.md).
+A name a person typed is not set by you but by whoever typed it. Anything from
+a person goes through `$this->escape()`; an instrument titled
+`<script>…</script>` is otherwise a stored cross-site scripting hole, and it
+renders perfectly until someone tries it. Content that is *meant* to carry
+markup goes through the content parser instead — see [Models](05-models.md).
+
+A property that was never `set()` reads as `null` and renders as nothing, so a
+typo in `$this->reservation` where the controller set `reservations` produces
+an empty page, not an error.
 
 > **Note:** A layout file declares no namespace, and `include` does not
 > inherit one, so a layout runs in the global namespace. That is why
@@ -114,13 +125,18 @@ order:
 
 The third exists so a view can skip the `tmpl` directory entirely. The first
 is how a hub restyles a component without editing it: dropping
-`app/templates/hubzero/html/com_kb/articles/article.php` into place replaces
-that one layout and leaves the rest of `com_kb` alone. See
+`app/templates/hubzero/html/com_bookings/instruments/view.php` into place
+replaces that one layout and leaves the rest of `com_bookings` alone. See
 [Overrides](../11-templates/09-overrides.md).
+
+An override is a copy, and copies rot. A layout you change in a later release
+does not reach a hub that overrode it, and nothing warns either of you.
 
 If none of the three has the requested layout, the search runs again for
 `default.php`. If that is missing too, `InvalidLayoutException` is thrown with
-a 404 status.
+a 404 status — which is the error you get when a task's name and its layout
+file's name have drifted apart. `bookTask()` with no `book.php` is a 404 on a
+page that plainly exists.
 
 ## Layout metadata
 
@@ -142,11 +158,11 @@ Outside a controller — in a module, a plugin, or a second view within one task
 ```php
 $view = new \Hubzero\Component\View(array(
     'base_path' => PATH_COMPONENT,
-    'name'      => 'articles',
+    'name'      => 'instruments',
     'layout'    => 'display'
 ));
 
-$view->set('archive', $archive)
+$view->set('instruments', $instruments)
      ->display();
 ```
 

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions/deployext
@@ -15,6 +15,9 @@ code in the right directory, and writing the row in `#__extensions` that
 makes the platform notice it. Nothing scans the filesystem, so the code
 alone does nothing.
 
+Read the box below before you plan a release. It is the difference between an
+afternoon and a wasted day.
+
 > **Important:** There is no package installer. The **Install**, **Update**,
 > **Discover** and **Database** screens were removed, and only some orphan
 > language strings are left behind. You cannot upload a `.zip` and have it
@@ -22,7 +25,18 @@ alone does nothing.
 > is describing software this release does not have. See the
 > [Extension Manager](../../managers/10-extensions/04-extension-manager.md).
 
-Two ways remain, and they are the two below.
+Two ways remain, and they are the two below. Both of them put a directory
+where it belongs and stop; neither creates a table or a row. That second half
+is always a [migration](../06-database.md#migrations).
+
+Which to use:
+
+- **The git flow** for anything a hub will keep and update — your own
+  extensions, and anything you distribute. The hub records where the code came
+  from and can fetch the next version.
+- **By hand** while you are writing the extension, and for anything with no
+  repository. It is faster to iterate on and leaves nothing behind that tells
+  the next administrator where the code came from.
 
 ## From a git repository
 
@@ -37,7 +51,7 @@ repository.
 2. In the administrator interface, go to **Extensions** → **Extension
    Manager** → **Custom Extensions** and select **New**.
 3. Fill in the HTTPS clone URL, a name, the alias — the directory name to
-   create, prefix included, so `com_example` or `mod_example` — and the
+   create, prefix included, so `com_bookings` or `mod_bookings` — and the
    type. For a plugin, also set **Folder (Plugins Only)** to its group. A
    private repository needs a **GIT Personal Access Token**.
 4. **Save & Close**, then tick the row and select **Update Selected Custom
@@ -71,21 +85,37 @@ into place yourself.
 2. Register it. From the CMS root:
 
    ```bash
-   php core/bin/muse migration -e=com_example      # dry run: what would happen
-   php core/bin/muse migration -e=com_example -f   # actually run it
+   php core/bin/muse migration -e=com_bookings      # dry run: what would happen
+   php core/bin/muse migration -e=com_bookings -f   # actually run it
    ```
 
    That runs the extension's own [migrations](../06-database.md#migrations),
    creating its tables and its `#__extensions` row. Without `-f` the runner
    only reports; `-e` restricts it to the one extension.
 
-3. Clear the cache if the extension is a component: `Hubzero\Component\Loader`
-   caches the extension row for `cachetime` minutes, so a component
-   registered a moment ago can still 404 until the cache expires.
+   `-e` matches on the migration **class name**, not the directory:
+   `com_bookings` becomes `ComBookings` and is matched against
+   `Migration{14 digits}ComBookings.php`. A file whose suffix does not match
+   is skipped silently, and the dry run reports nothing to do — which looks
+   exactly like an extension with no migrations. The same option rejects any
+   name with a second underscore, because it validates against
+   `^com_[[:alnum:]]+$`.
+
+3. If you have changed an existing component's row rather than created one,
+   clear the cache. `Hubzero\Component\Loader::load()` caches the
+   `#__extensions` row under `_system.{option}` for `cachetime` minutes
+   (15 by default), so a component you have just **enabled** can go on
+   returning `JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND_OR_ENABLED` as a 404,
+   and parameters you have just seeded can read stale, until the entry
+   expires. A component registered for the first time is not affected: no row
+   means nothing useful was cached.
 
 An extension under `app/` completely replaces a core extension of the same
 name. The loaders take the first directory they find, `app/` before `core/`,
-and never mix the two.
+and never mix the two. Copying half of a core component into `app/` to change
+one file therefore breaks the other half — every class you did not copy stops
+being found. To change a few files, use a
+[template override](../11-templates/09-overrides.md).
 
 ### Registering without muse
 
@@ -97,14 +127,17 @@ columns the loaders read are `type`, `element`, `folder`, `client_id` and
 INSERT INTO `#__extensions`
 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 VALUES
-	('com_example', 'component', 'com_example', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+	('com_bookings', 'component', 'com_bookings', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 ```
 
 A plugin's row carries its group in `folder` and its bare name in `element`
-— `('System - Example', 'plugin', 'example', 'system', 0, 1, ...)`.
+— `('Bookings - Notify', 'plugin', 'notify', 'bookings', 0, 1, ...)`.
 
-Prefer the migration. It is versioned with the code, it reverses cleanly,
-and it is what an upgrade will run on the next hub.
+Prefer the migration. It is versioned with the code, it reverses cleanly, it
+creates the asset row and administrator menu entry that a bare `INSERT`
+misses, and it is what will run on the next hub. Hand-written SQL is a hub
+that works and a second hub that does not, with nothing written down to
+explain the difference.
 
 ## After the code is in place
 
@@ -123,9 +156,12 @@ and it is what an upgrade will run on the next hub.
 
 ## Core migrations
 
+The Extension Manager's **Core Migrations** screen and the `muse` command are
+what remain of the removed **Database** screen, and between them they are the
+whole of the schema-management story in this release.
+
 Migrations that belong to the platform rather than to one extension are run
-from the Extension Manager's **Core Migrations** screen, or on the command
-line:
+from that screen, or on the command line:
 
 ```bash
 php core/bin/muse migration -f

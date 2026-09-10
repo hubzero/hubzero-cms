@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Services</a></summary><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#how-a-service-gets-there">How a service gets there</a></li>
@@ -173,6 +175,42 @@ container at boot: a cache store, a filesystem, a session, an event
 dispatcher. Extensions reach them through facades rather than constructing
 them, so that a hub can swap the implementation without touching extension
 code.</p>
+<p>That indirection is the point, and it is also the thing that surprises
+people. A service can be configured into a do-nothing version, and the
+do-nothing version accepts every call and answers plausibly rather than
+raising. Nothing in this section fails loudly.</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>What it silently does nothing about</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="cache/index.html">Cache</a></td>
+<td>With caching off, and in the administrator application always, the store is <code>None</code>: every <code>put()</code> succeeds and every <code>get()</code> misses</td>
+</tr>
+<tr>
+<td><a href="session/index.html">Session</a></td>
+<td><code>get()</code> and <code>has()</code> return the default when no session is active, rather than raising</td>
+</tr>
+<tr>
+<td><a href="events/index.html">Events</a></td>
+<td>An event nothing listens to returns an empty array, which is what a disabled plugin also returns</td>
+</tr>
+<tr>
+<td><a href="filesystem/index.html">Filesystem</a></td>
+<td>The <code>None</code> adapter exists for tests; <code>write()</code> returning <code>false</code> is the only signal a write failed</td>
+</tr>
+<tr>
+<td><a href="server/index.html">Server</a></td>
+<td><code>serve()</code> returns <code>false</code> rather than throwing, and checks nothing about permissions</td>
+</tr>
+</tbody>
+</table>
+<p>So test the return value, and do not build anything that depends on a
+service having remembered something.</p>
 <h2 id="how-a-service-gets-there">How a service gets there</h2>
 <p>Each service is registered by a service provider under <code>core/bootstrap/</code>,
 one directory per client (<code>Site</code>, <code>Administrator</code>, <code>Api</code>, <code>Cli</code>). The
@@ -243,8 +281,8 @@ listener, and what <code>Event::trigger()</code> gives back.</li>
 <a href="../basics/index.html">the basics</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../foundation/extensions/index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="cache/index.html" rel="next"><span>Next</span>Cache</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../foundation/providers/index.html" rel="prev"><span>Previous</span>Service providers</a><a class="pager__next" href="cache/index.html" rel="next"><span>Next</span>Cache</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

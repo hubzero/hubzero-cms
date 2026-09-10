@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
@@ -173,6 +175,13 @@
 sends a file off disk to the browser. It handles the headers a download
 needs — content type, length, disposition, byte ranges — and streams the
 body, so a controller that serves an attachment does not have to.</p>
+<p>You need it whenever a file must not sit under the document root: a
+calibration report attached to an instrument booking, a dataset only the
+lab's members may read. The file lives somewhere the web server will not
+serve, your controller decides whether this member may have it, and <code>Server</code>
+does the rest. Byte ranges are why you should not roll your own — without
+them a member cannot resume an interrupted download, and audio and video
+will not seek.</p>
 <p>There is no facade for it. Construct one where you need it:</p>
 <pre><code class="language-php">use Hubzero\Content\Server;
 </code></pre>
@@ -243,9 +252,9 @@ it, called with none it returns what is set.</p>
 set <code>filename()</code>. <code>attachment</code> asks the browser to save rather than
 display, and is what <code>saveas()</code> names:</p>
 <pre><code class="language-php">$server = new Server();
-$server-&gt;filename(PATH_APP . DS . 'site' . DS . 'patches' . DS . $file);
+$server-&gt;filename(PATH_APP . DS . 'site' . DS . 'bookings' . DS . $booking-&gt;get('id') . DS . $file);
 $server-&gt;disposition('attachment');
-$server-&gt;saveas('bugfix.patch');
+$server-&gt;saveas('calibration.pdf');
 $server-&gt;serve();
 </code></pre>
 <p>Two convenience methods skip the setters:</p>
@@ -300,9 +309,23 @@ exists or that the caller may read it.</p>
 serving. <code>Server</code> does neither; give it a path you have already resolved
 against a directory you control, never one assembled straight from the
 request.</p>
+<p>The order to write it in:</p>
+<ol>
+<li>Load the record the file belongs to, by id, from your own table.</li>
+<li>Check the current user may see that record.</li>
+<li>Build the path from the record — the directory from <code>PATH_APP</code> and the
+record's id, the name from the record's own column.</li>
+<li><code>Filesystem::exists()</code>.</li>
+<li>Serve.</li>
+</ol>
+<p>Taking the filename from the request and validating it with
+<code>Server::valid()</code> is not step 3. <code>valid()</code> stops a path escaping upwards;
+it has nothing to say about whether this member may read this file, so a
+member who swaps one booking id for another in the URL gets somebody else's
+report and no error.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../../basics/index.html" rel="next"><span>Next</span>The basics</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/06-server.md">Edit this page on GitHub</a>

@@ -138,7 +138,7 @@ on the page in capitals rather than as an error.
 
 > **Note:** Core plugin classes are in the global namespace, so `Lang` needs
 > no import. A namespaced helper class beside the plugin does need `use Lang;`.
-> See [Facades](../03-foundation/04-facades.md).
+> See [Facades](../03-foundation/06-facades.md).
 
 ## Registering the file
 

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
@@ -173,6 +175,12 @@ requests: who they are logged in as, the form token that guards their
 writes, the filters they left a list screen on. The <code>Session</code> facade
 resolves <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Session/Manager.php"><code>Hubzero\Session\Manager</code></a>,
 which wraps PHP's session with a namespace scheme and a token.</p>
+<p>Reach for it only for something that belongs to <strong>this visitor</strong>, is
+<strong>small</strong>, and does not matter if it is lost. A half-finished booking a
+member is stepping through, a flag saying they have dismissed a notice, the
+sort order they chose. Anything a member would be annoyed to lose belongs in
+a table, and anything expensive to compute but the same for everyone belongs
+in the <a href="../cache/index.html">cache</a>.</p>
 <p>The manager is registered by <code>SessionServiceProvider</code> in the site and
 administrator applications only. The storage handler comes from
 <code>session_handler</code> in <code>app/config/session.php</code> — <code>database</code> (the default on
@@ -182,12 +190,9 @@ multiplied out to seconds when the manager is built.</p>
 <h2 id="storing-and-reading">Storing and reading</h2>
 <pre><code class="language-php">use Session;
 
-Session::set('newsubmission.blog', true);
+Session::set('bookings.wizard.instrument', $id, 'com_bookings');
 
-if (Session::get('newsubmission.blog'))
-{
-    // first entry this member has posted
-}
+$id = Session::get('bookings.wizard.instrument', 0, 'com_bookings');
 </code></pre>
 <table>
 <thead>
@@ -222,6 +227,10 @@ extensions from colliding over a common name. It is stored prefixed with
 
 $cart = Session::get('cart', array(), 'com_cart');
 </code></pre>
+<p>Get the argument order wrong — <code>Session::get('cart', 'com_cart')</code> — and you
+have asked for <code>cart</code> in the <code>default</code> namespace with the string
+<code>'com_cart'</code> as its default. It compiles, it runs, and it returns
+<code>'com_cart'</code>. Nothing anywhere reports it.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>set()</code> with no value <strong>deletes</strong> the entry. <code>Session::set('x')</code>
 and <code>Session::set('x', null)</code> both unset <code>x</code>; they do not store a null.
@@ -332,7 +341,7 @@ there small — an id, a flag, a short array. Rendered output belongs in the
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../filesystem/index.html" rel="prev"><span>Previous</span>Filesystem</a><a class="pager__next" href="../events/index.html" rel="next"><span>Next</span>Events</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/04-session.md">Edit this page on GitHub</a>

@@ -5,9 +5,13 @@ name: PHP lint
 # The syntax pass is ordinary. The facade pass is not: the CMS registers its
 # facades as root-namespace aliases, so a namespaced file that writes
 # Route::url() without importing Route resolves the name inside its own
-# namespace and fatals when that line runs. The file parses, so a syntax
-# check says nothing, and the failure only surfaces on the path that reaches
-# it. 730 of these were fixed at once; this keeps them from coming back.
+# namespace. An autoloader fallback aliases the last path segment onto the
+# facade, so that usually still works — but not when the running client does
+# not register that alias, and not when a real class of the same short name
+# lives in the file's own namespace, where the call quietly reaches that class
+# instead. The file parses either way, so a syntax check says nothing, and the
+# failure only surfaces on the path that reaches it. 730 of these were fixed
+# at once; this keeps them from coming back.
 
 on:
   push:

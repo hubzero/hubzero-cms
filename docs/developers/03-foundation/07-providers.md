@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ aca22ea8f5
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/foundation/providers
 -->
 # Service providers
@@ -59,7 +59,7 @@ on every request.
 
 Register the service under the same key a facade resolves, and the facade
 reaches it. `Route` resolves `router`, so the provider above is what
-`Route::url()` ends up calling. See [Facades](04-facades.md).
+`Route::url()` ends up calling. See [Facades](06-facades.md).
 
 ## Booting
 

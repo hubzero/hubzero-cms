@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/foundation/constants
 -->
 # Constants
@@ -9,6 +9,12 @@ source: https://help.hubzero.org/documentation/240/webdevs/foundation/constants
 Every request defines these before anything else runs, in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php). Extensions may
 rely on them anywhere.
+
+You need them whenever you touch the filesystem. A hub's files are not
+necessarily under the code — the platform can sit outside the document root —
+so a path written as `'core/components/com_booking/…'` or `'/www/hub/app'`
+works on the machine you wrote it on and nowhere else. Build every path from
+the constants instead.
 
 ## Paths
 

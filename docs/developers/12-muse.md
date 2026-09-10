@@ -1,14 +1,39 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/muse
 -->
 # Muse
 
-Muse is the platform's command-line tool. It runs migrations, clears caches,
-generates extension scaffolding, packages extensions, manages users and
-groups, and installs a hub. Components can add commands of their own.
+Muse is the hub's command line. It is the way anything runs against a hub
+without a browser in front of it: migrations, cache clears, scheduled jobs,
+bulk data work, packaging an extension, installing the hub in the first
+place. Extensions add commands of their own, and that is how a component gets
+work done on a timer or by hand.
+
+The point of running through muse rather than a standalone PHP script is that
+muse boots the application first. Inside a command you have the configuration,
+the database, models, the language files, the event dispatcher and the
+container — the same objects a controller has. A script in `app/bin` has none
+of that until it bootstraps the framework itself, and usually bootstraps it
+slightly wrong.
+
+## When to write a command
+
+Write a muse command when the work is part of an extension and someone will
+run it more than once: a nightly job, a re-index, an import, a repair task
+that support staff run when a user reports something. Ship it with the
+extension, in the extension's own `commands` directory, so it travels with
+the code that it operates on.
+
+Write a plain script only for something genuinely throwaway that you will
+delete the same day.
+
+Do not write a command for a schema change. Schema changes are
+[migrations](06-database.md#migrations); the runner tracks which have run and
+an administrator applies them as part of an upgrade, which a command does not
+give you.
 
 ## Running it
 
@@ -31,9 +56,15 @@ confirm it.
 
 ## The commands
 
-The [muse reference](../reference/muse.md) lists every command and
-task, generated from the command classes, and
-[Common tasks](#common-tasks) walks through the ones used most.
+The [muse reference](../reference/muse.md) lists every command and task in the
+framework, generated from the command classes, and [Common tasks](#common-tasks)
+walks through the ones used most.
+
+> **Important:** The reference is generated from
+> `core/libraries/Hubzero/Console/Command/` only. Commands that ship inside a
+> component are not in it, and are not in `muse help` either — see
+> [Component commands](#component-commands) for why. To find them, look for a
+> `commands` directory under `core/components/`.
 
 Commands with a colon in the name are sub-commands, implemented in a
 subdirectory: `muse cache:css` is `Command/Cache/Css.php`, and
@@ -41,8 +72,20 @@ subdirectory: `muse cache:css` is `Command/Cache/Css.php`, and
 
 ## How a command is found
 
-Muse looks for commands in `core/libraries/Hubzero/Console/Command/`. The
-file name is the command name, so `muse database` runs
+Muse looks up a command by name in a list of registered namespaces. Three are
+registered, and the first that yields a class wins:
+
+| Namespace | Directory | Reached as |
+|---|---|---|
+| `\App\Commands` | `app/commands` | `muse <name>` |
+| `\Components\{Name}\Commands` | `app/components/com_<name>/commands`, then `core/components/com_<name>/commands` | `muse <name>:<command>` |
+| `Hubzero\Console\Command` | `core/libraries/Hubzero/Console/Command` | `muse <name>` |
+
+The framework namespace is registered last, so a hub can shadow a framework
+command by putting a class of the same name in `app/commands`. That is
+deliberate and it is also a good way to break an upgrade; prefer a new name.
+
+Within a namespace the file name is the command name, so `muse database` runs
 `Command/Database.php`, which declares:
 
 ```php
@@ -53,8 +96,9 @@ class Database extends Base implements CommandInterface
 }
 ```
 
-A command must extend `Base` and implement `CommandInterface`, which
-requires two methods:
+A command must extend `Base` and implement
+[`CommandInterface`](../../core/libraries/Hubzero/Console/Command/CommandInterface.php),
+which requires two methods:
 
 | Method | Called when |
 |---|---|
@@ -63,6 +107,49 @@ requires two methods:
 
 Every other public method is a task, named as it is typed:
 `muse database dump` runs `dump()`.
+
+> **Note:** A class that does not implement `CommandInterface` is not a
+> command, and muse reports `Unknown command` rather than telling you the
+> class was found but rejected. If a command you have just written is not
+> found, check the `implements` clause before anything else.
+
+### Component commands
+
+A component's commands live in `<component>/commands/` and are namespaced
+`Components\<Name>\Commands`. They are reached with a colon — the component
+name, then the command:
+
+```bash
+php core/bin/muse cron:jobs run
+php core/bin/muse publications:bundle
+```
+
+Those are [`core/components/com_cron/commands/jobs.php`](../../core/components/com_cron/commands/jobs.php)
+and [`core/components/com_publications/commands/bundle.php`](../../core/components/com_publications/commands/bundle.php).
+The class is the file name in studly case, and the file itself is lower case:
+
+```php
+namespace Components\Bookings\Commands;
+
+use Hubzero\Console\Command\Base;
+use Hubzero\Console\Command\CommandInterface;
+
+class Reminders extends Base implements CommandInterface
+{
+}
+```
+
+in `core/components/com_bookings/commands/reminders.php`, run as
+`muse bookings:reminders`.
+
+> **Warning:** `muse help` lists the framework commands and nothing else — it
+> scans its own directory. A component command is invisible until someone
+> knows its name, so document it in the component's own pages. The generated
+> [muse reference](../reference/muse.md) has the same limit.
+
+> **Note:** `muse bookings` on its own does not work. Without the second half
+> the lookup resolves to the namespace rather than a class, and the command is
+> reported as unknown. The colon form is not optional.
 
 ## Writing one
 
@@ -108,17 +195,13 @@ class Example extends Base implements CommandInterface
 ```
 
 `$this->output` writes to the terminal and `$this->arguments` reads what was
-typed. `addTasks($this)` builds the help from the docblocks, which is why
-the `@museDescription` line matters: it is the one-line description muse
-prints beside the task, and the generated reference reads the same tag.
+typed. `getOpt($key, $default = false)` returns an option by name;
+`getOpt(4)` and friends return positional words, which is how
+`muse scaffolding create migration for jos_things` reads its arguments.
 
-Two other tags are recognised in a task's docblock:
-
-| Tag | Effect |
-|---|---|
-| `@museDescription` | the task's one-line description |
-| `@museArgument` | describes an option the task accepts |
-| `@museIgnoreHelp` | hides the task from the help listing |
+`addTasks($this)` builds the help by reflection over the public methods,
+skipping the constructor, `execute()` and `help()`. A task with no
+`@museDescription` is still listed, as `no description available`.
 
 Run the example with:
 
@@ -126,287 +209,211 @@ Run the example with:
 php core/bin/muse example hello --name="Ada"
 ```
 
+### Docblock tags
+
+| Tag | Where | Effect |
+|---|---|---|
+| `@museDescription` | task | The one-line description muse prints beside the task, and the text the generated reference uses |
+| `@museIgnoreHelp` | class | Hides the whole command from the `muse help` listing |
+| `@museArgument` | task | Describes an option the task accepts |
+
+> **Warning:** Only `@museDescription` on a task and `@museIgnoreHelp` on a
+> class change what muse prints. `@museArgument` is read by the generator
+> that builds the [muse reference](../reference/muse.md) and by nothing in the
+> framework, so an option documented only with that tag never appears in
+> `muse <command> help`. `@museIgnoreHelp` on a *task* does nothing at all —
+> [`Output\Help::addTasks()`](../../core/libraries/Hubzero/Console/Output/Help.php)
+> never looks for it, and the task stays in the listing. Only
+> [`Command\Help`](../../core/libraries/Hubzero/Console/Command/Help.php),
+> which builds the top-level listing, reads it, and only from the class
+> docblock. That is how the `Scaffolding` sub-commands stay out of
+> `muse help`.
+
 ## Configuration, hooks, and aliases
 
 `muse configuration` stores settings muse itself uses, such as the name and
 email the scaffolding generator puts in file headers. It also holds hooks,
 which run a shell command at a named point, and aliases, which shorten a
 command name. See [Common tasks](#common-tasks).
+
 ## Common tasks
 
 The commands reached for most often, with the reasoning behind them. The
-[muse reference](../reference/muse.md) lists every command and
-task, generated from the source, and is the place to look for anything not
-covered here.
+[muse reference](../reference/muse.md) lists every framework command and task,
+generated from the source, and is the place to look for syntax and for
+anything not covered here.
 
-Run everything below from the hub's root directory. `muse` is not on the
-path; it lives at `core/bin/muse`.
+Run everything below from the hub's root directory.
 
 ### Cache
 
-The cache command is a helper for clearing your sites cache files. You can clear the entire cache, or just the CSS cache. Those commands, respectively, are:
+[`muse cache`](../reference/muse.md#muse-cache) clears the hub's cache files.
+[`muse cache:css`](../reference/muse.md#muse-cache-css) clears only the
+compiled CSS, which is what you want after changing a template's stylesheets
+and finding the browser still serving the old ones.
 
-```
+```bash
 php core/bin/muse cache clear
-
 php core/bin/muse cache:css clear
 ```
 
 ### Configuration
 
-The configuration command is used to personalize and customize your Muse experience. It's also used to store variables for repeated use. For example, the scaffolding command will ask you, if you haven't already, to set your name and email to be used when generating files.
+[`muse configuration`](../reference/muse.md#muse-configuration) holds settings
+muse itself uses. The scaffolding generator asks for your name and email the
+first time and stores them here, so generated files carry a sensible header.
 
-```
-php core/bin/muse configuration set --user_name="John Doe"
-php core/bin/muse configuration set --user_email=john.doe@gmail.com
+```bash
+php core/bin/muse configuration set --user_name="Ada Lovelace"
+php core/bin/muse configuration set --user_email=ada@example.org
 ```
 
-Configuration can also be used to store hooks and aliases. Hooks are additional commands that are run at pre-defined points. Aliases are command shortcuts. Here are some examples:
+It also stores hooks — shell commands run at a named point — and aliases,
+which are shortcuts for a command name:
 
-```
-# run permissions fix after updating the repository
+```bash
+# fix permissions after updating the repository
 php core/bin/muse configuration:hooks add repository.afterUpdate "chmod -R g+w /www/docroot"
 
-# Add a shortcut for the environment command
+# muse env  ->  muse environment
 php core/bin/muse configuration:aliases add env environment
 ```
 
+Aliases are resolved before the namespace search, so an alias can shadow a
+real command name.
+
 ### Database
 
-The database command was added for two primary reasons - the first backups, and the second, reverse content migration. Backups are fairly straight-forward, but a little more detail is in order for reverse content migration.
+[`muse database`](../reference/muse.md#muse-database) exists for two jobs:
+backups, and moving content backwards through a deployment chain.
 
-If you have an environment with more than one stop in your production flow, you've likely run into the problem of wanting to move data from prod to dev for testing purposes. But in so doing, you often overwrite some site-specific configuation on dev. So get around this, we perform a dump and load using the database command to move only those things that should move between environments.
+The second is the interesting one. Copying a production database over a
+development one takes the production configuration with it — hostnames, mail
+settings, credentials — and breaks the development hub. `dump` and `load`
+move only the parts that should travel.
 
-```
-# dump the database
+```bash
+# on production
 php core/bin/muse database dump
 
-# then make sure you copy to your dev environment
-# then from dev, load the dump back up (it will have a different name)
-php core/bin/muse database load filenamefromabovecommand
+# copy the file across, then on development
+php core/bin/muse database load <filename>
 ```
 
 ### Environment
 
-The environment command simply outputs the current environment variables.
-
-```
-Current user     : Mr Awesome <awesome@gmail.com>
-Current database : example
-```
+[`muse environment`](../reference/muse.md#muse-environment) prints the current
+user and database. It is a one-line sanity check before running anything
+destructive, and worth making a habit of.
 
 ### Extension
 
-If you don't already know, extensions are the general name for all of the 'apps' allowed by the HUBzero framework. They include (amoung some others), templates, components, modules, and plugins. When adding a new extension, you will often want to add it to the extensions database table and enable it. This command can help save you trips directly to the database.
+[`muse extension`](../reference/muse.md#muse-extension) adds, deletes,
+installs, enables and disables rows in the extensions table. Run with no task
+it prompts for what it needs, so there is no syntax to remember.
 
-The nice thing to about the extension command is that it will prompt you for what it needs, you don't really need to remember the syntax.
-
-```
-me@me.org:~# php core/bin/muse extension
-What do you want to do? [add|delete|install|enable|disable] add
-What extension were you wanting to add? com_awesome
-Successfully added com_awesome!
-```
-
-Or, as another example. Let's delete that entry we added above using the written out syntax
-
-```
-me@me.org:~# php core/bin/muse extension delete --name=com_awesome
-Successfully deleted com_awesome!
-```
-
-> **Note:** Note that if you're in a production environment and using migrations, this command is redundent. Use migrations! But if you're just testing and need a quick way to enable or disable something, this is the way to go.
+> **Warning:** On a hub that uses migrations — which is every hub that is not
+> your laptop — this command is the wrong tool. A
+> [migration](06-database.md#migrations) that calls `addComponentEntry()`
+> records what it did and travels with the extension; `muse extension` changes
+> one database and leaves no trace. Use it for local testing only.
 
 ### Group
 
-The group commands are simply wrappers on existing commands to be used within the super group context. Please review the super group documentation for more details.
+The [`muse group`](../reference/muse.md#muse-group) tasks are wrappers on
+existing commands, run in a super group's context and against its database.
+See [Super groups](13-supergroups/README.md).
 
 ### Log
 
-The log command is great for following and filtering log entries. There are currently two log types available, the profile log and the query log. To start, simply:
+[`muse log follow`](../reference/muse.md#muse-log-follow) tails and filters a
+log. Three log types are supported — `post`, `profile` and `sql` — and each
+has to be enabled before anything appears in it.
 
-```
+```bash
 php core/bin/muse log follow profile
 ```
 
-> **Note:** You have to having logging enabled for new entries to be displayed!
-
-Once started, you'll see info on the log fields being displayed.
+It prints the field layout first, with an asterisk against each visible
+field:
 
 ```
-me@me.org:~# php core/bin/muse log follow profile
-The profile log has the following format (* indicates visible field):
 <0:*timestamp> <1:*hubname> <2:*ip> <3:*app> <4:*uri> <5:*query> <6:*memory> <7:*querycount> <8:*timeinqueries> <9:*totaltime>
 ```
 
-To toggle a fields visibility, simply press the number next to the field of interest. For example, pressing `2`, and then `f` to show the fields again, results in:
-
-```
-> Hiding ip
-> The profile log has the following format (* indicates visible field):
-<0:*timestamp> <1:*hubname> <2:ip> <3:*app> <4:*uri> <5:*query> <6:*memory> <7:*querycount> <8:*timeinqueries> <9:*totaltime>
-```
-
-To show the available commands, simply type `h`.
-
-```
-> q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: rerender last 100 lines
-```
+Press a field's number to hide or show it, `f` to reprint the layout, and `h`
+for the rest: `q` quit, `i` input mode, `p` pause, `b` beep, `r` re-render the
+last hundred lines. Following the profile log while clicking through a page
+is the quickest way to find the request that runs four hundred queries.
 
 ### Migration
 
-For more info on the migration command, see the dedicated [migrations](06-database.md#migrations) section under the database chapter.
+See [Migrations](06-database.md#migrations) in the database chapter for
+writing one, and
+[`muse migration`](../reference/muse.md#muse-migration) for the command.
 
 ### Repository
 
-The repository command offers an abstraction on top of the mechanism used to manage and update the CMS. This could include GIT, HTTP-based package installs, or Debian packages. Currently, GIT is the only supported mechanism, but more are to come in the future.
+[`muse repository`](../reference/muse.md#muse-repository) wraps whatever
+mechanism manages this copy of the CMS. Git is the only one currently
+supported; run it with no task to find out whether it applies to your
+environment.
 
-To start, simply see if the repository command is supported in your environment.
-
-```
-me@me.org:~# php core/bin/muse repository
-This repository is managed by GIT and is clean
-```
-
-If you environment is not currently supported, you'll receive a message like this:
-
-```
-me@me.org:~# php core/bin/muse repository
-Sorry, this command currently only supports setups managed by GIT
+```bash
+php core/bin/muse repository            # is this repository managed, and is it clean?
+php core/bin/muse repository update     # what would the update bring?
+php core/bin/muse repository update -f  # do it
 ```
 
-To start the update process, use the update task. Depending on your current state, you'll either see that you're up-to-date, or see what's coming in the next update.
+As with migrations, the read-only form comes first and `-f` commits to it. A
+failed update rolls back to the state before it started, and leaves you to
+finish the update by hand.
 
-```
-me@me.org:~# php core/bin/muse repository update
-The repository is already up-to-date
-```
-
-or...
-
-```
-me@me.org:~# php core/bin/muse repository update
-The repository is behind by 747 update(s):
-...
-```
-
-Then, to perform the actual update, add the `-f` flag.
-
-```
-me@me.org:~# php core/bin/muse repository update -f
-Updating the repository...complete
-```
-
-> **Note:** If something goes wrong, the update mechanism will automatically roll back to it's state prior to attempting the update. Then you'll have to go in a manually perform the update depending on the mechanism.
-
-#### Spring Cleaning
-
-In addition to performing updates, the repository command also offers some help doing periodic cleanup. Using the `clean` command will allow you to prune rollback points and stashes.
-
-```
-me@me.org:~# php core/bin/muse repository clean
-Do you want to purge all rollback points except the latest? [y|n] y
-Purging rollback points.
-Do you want to purge all stashed changes? [y|n] y
-Purging repository stash.
-Clean up complete. Performed (2/2) cleanup operations available.
-```
+[`muse repository clean`](../reference/muse.md#muse-repository-clean) prunes
+rollback points and stashes, and asks before each.
 
 ### Scaffolding
 
-Scaffolding was create to help developers get started quickly. Let's be honest, developers rarely start from a blank file. We copy something existing and modify. With scaffolding, we give you a template a pre-fill known values to make this process even easier.
+[`muse scaffolding`](../reference/muse.md#muse-scaffolding) writes the files
+you would otherwise copy from an existing extension and rename. It knows how
+to create commands, components, migrations and tests.
 
-At this time, scaffolding knows how to create:
-
-- Commands
-- Components
-- Migrations
-- Tests
-
-So, for example, to create a new component, simply:
-
-```
-me@me.org:~# php core/bin/muse scaffolding create component com_awesome
-Creating /var/www/example/core/components/com_awesome/awesome.xml
-Creating /var/www/example/core/components/com_awesome/admin/awesome.php
-Creating /var/www/example/core/components/com_awesome/admin/controllers/awesome.php
-Creating /var/www/example/core/components/com_awesome/admin/language/en-GB/en-GB.com_awesome.ini
-Creating /var/www/example/core/components/com_awesome/admin/language/en-GB/en-GB.com_awesome.sys.ini
-Creating /var/www/example/core/components/com_awesome/admin/views/awesome/tmpl/display.php
-Creating /var/www/example/core/components/com_awesome/api/controllers/api.php
-Creating /var/www/example/core/components/com_awesome/config/access.xml
-Creating /var/www/example/core/components/com_awesome/config/config.xml
-Creating /var/www/example/core/components/com_awesome/models/awesomes.php
-Creating /var/www/example/core/components/com_awesome/site/awesome.php
-Creating /var/www/example/core/components/com_awesome/site/assets/css/awesome.css
-Creating /var/www/example/core/components/com_awesome/site/assets/js/awesome.js
-Creating /var/www/example/core/components/com_awesome/site/controllers/awesome.php
-Creating /var/www/example/core/components/com_awesome/site/language/en-GB/en-GB.com_awesome.ini
-Creating /var/www/example/core/components/com_awesome/site/router.php
-Creating /var/www/example/core/components/com_awesome/site/views/awesomes/tmpl/display.php
-Creating /var/www/example/core/components/com_awesome/site/views/awesomes/tmpl/edit.php
+```bash
+php core/bin/muse scaffolding create component com_bookings
 ```
 
-As you can see, this automatically generates all of the core files and views you're likely to need. It also names them appropriately, as well as using the provided component name to even tweak the contents of these files.
+That writes a component skeleton under `core/components/com_bookings`: the
+manifest, the site and admin entry points, a controller on each side, an
+admin display template, site display and edit templates, a model,
+`config/config.xml` and `config/access.xml`, the site and admin language
+files, a router, and empty CSS and JS assets. The component name is
+substituted throughout. It refuses to run if the directory already exists.
+
+What it does not write is an API controller or a migration. Add the migration
+yourself; see [Writing one](06-database.md#writing-one).
 
 ### Test
 
-Testing is critical to both deploying a new extension, and updating existing extensions without too much heartache. To facilitate testing, muse offers a framework and wrapper around the popular PHP Unit testing infrustucture.
-
-To see the current extensions with tests, run:
-
-```
-me@me.org:~# php core/bin/muse test show
-lib_database
-```
-
-Then, to run a specific extensions tests, you can use the run command.
-
-```
-me@me.org:~# php core/bin/muse test run lib_database
-PHPUnit 4.6.2 by Sebastian Bergmann and contributors.
-
-...................................................
-
-Time: 2.26 seconds, Memory: 17.5Mb
-
-OK (51 tests, 73 assertions)
-```
+[`muse test`](../reference/muse.md#muse-test) is a wrapper around PHPUnit that
+knows where each extension's tests live. `muse test show` lists the extensions
+that have tests; `muse test run <extension>` runs one extension's. See
+[Testing](15-testing.md).
 
 ### User
 
-The final command available at this time is the user command. It offers some advances administrative functionality for merging and unmerging users.
+[`muse user`](../reference/muse.md#muse-user) merges and unmerges accounts.
+People do create a second account by mistake and then ask for their
+contributions to be moved, which means updating a user id across every table
+that references one.
 
-> **Important:** This command is experimental!
-
-Occasionally, on a hub, one person will create two accounts and not realize it. They later ask you to merge the accounts and move the contributions from one to the other. This isn't a simple task, and involves updating many, many references in the database. Fortunately for you, we've been working on a solution.
-
-```
-me@me.org:~# php core/bin/muse user merge 1042 into 1003
-Updating (1) item(s) in jos_collections.object_id
-Updating (1) item(s) in jos_collections.created_by
-Updating (1) item(s) in jos_collections_items.created_by
-Updating (8) item(s) in jos_courses_asset_groups.created_by
-Updating (15) item(s) in jos_courses_assets.created_by
-Updating (1) item(s) in jos_courses_members.user_id
-Updating (2) item(s) in jos_courses_offering_section_dates.created_by
-Updating (2) item(s) in jos_courses_units.created_by
-Updating (76) item(s) in jos_developer_access_tokens.uidNumber
-Updating (1) item(s) in jos_developer_applications.created_by
-Updating (1) item(s) in jos_developer_rate_limit.uidNumber
-Updating (9) item(s) in jos_users_log_auth.user_id
-Ignoring jos_users_password.user_id due to integrity constraint violation
-Updating (1) item(s) in jos_users_points.uid
-Ignoring jos_xprofiles_bio.uidNumber due to integrity constraint violation
-Updating (3) item(s) in jos_xprofiles_tokens.user_id
+```bash
+php core/bin/muse user merge 1042 into 1003
+php core/bin/muse user unmerge 1042 from 1003
 ```
 
-Then, if needed, you can reverse the merge.
-
-```
-me@me.org:~# php core/bin/muse user unmerge 1042 from 1003
-Unmerged (122/122) records successfully!
-```
+> **Important:** This command is experimental. It reports each table it
+> touches and skips any where the change would violate an integrity
+> constraint, which means a merge can be partial.
 
 ### Commands not covered above
 

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/devenvironment
 source-id: 3429
@@ -181,12 +181,17 @@ dependencies or the migrations change.
 
 Three workflows, in `.github/workflows/`:
 
-- **`php-lint.yml`** — runs on PHP 8.3. Two checks: `php -l` over every PHP
-  file under `core/` and `app/` outside `vendor/`, and
-  `tools/lint/missing-facade-imports.php`. The second exists because the CMS
-  registers its facades as root-namespace aliases, so a namespaced file that
-  writes `Route::url()` without importing `Route` parses cleanly and fatals
-  only when that line runs.
+- **`php-lint.yml`** — runs on PHP 8.3. Three checks: `php -l` over every PHP
+  file under `core/` and `app/` outside `vendor/`;
+  `tools/lint/missing-facade-imports.php`, which fails on any namespaced file
+  that uses a facade without importing it; and
+  `tools/lint/undefined-language-keys.php --quiet --max=444`, which fails if
+  the number of language keys nothing defines rises above the current count.
+  The second exists because such a file parses cleanly and misbehaves only
+  when the line runs — see
+  [Facades](../03-foundation/06-facades.md#importing-a-facade). The
+  third is a ceiling rather than a gate: lower the number as keys are
+  defined.
 - **`pages.yml`** — builds this documentation, regenerates the references,
   checks every internal link, and fails if the committed `gh-pages/public/`
   is stale.

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions/parameters
@@ -15,6 +15,13 @@ You declare them in XML; the CMS builds a form from the declaration, stores
 what was entered as JSON in the extension's `#__extensions` row, and hands
 them back to you as a `Registry`.
 
+Declare one when a hub will reasonably want a different value from yours —
+how many days ahead `com_bookings` lets people reserve an instrument, whether
+a reservation needs approval. Do not declare one for every constant in the
+extension. Each parameter is a screen an administrator has to understand and a
+value your code has to keep working for; a setting nobody changes is a
+liability with a form field attached.
+
 This page is about declaring them. [Config](../05-basics/03-config.md) covers
 reading them at runtime — `Component::params()`, `$this->params`, and the
 `Registry` methods. Every parameter the shipped extensions declare is listed
@@ -28,6 +35,11 @@ in the [configuration reference](../../reference/configuration/README.md).
 | Module | its XML manifest | `<config><fields name="params">` |
 | Plugin | its XML manifest | `<config><fields name="params">` |
 | Template | `templateDetails.xml` | `<config><fields name="params">` |
+
+The difference between the two shapes is a common half-hour: a component's
+`config.xml` has `<fieldset>` children **directly** inside `<config>`, while
+everything else wraps them in `<fields name="params">`. Put a component's
+fieldsets inside a `<fields>` element and the Options screen comes up empty.
 
 A component keeps its parameters in a separate file, and that file's root
 element is `<config>` with `<fieldset>` children directly inside it:
@@ -78,7 +90,10 @@ to group its settings however reads best.
 
 `label` and `description` are language keys, resolved from the extension's
 own `.ini` file. Put them there rather than writing English into the
-manifest. See [Languages](03-languages.md).
+manifest. For a component that file is the **administrator** one, because the
+Options screen runs in the administrator client; a label defined only in
+`site/language/` renders on the settings screen as its own key. See
+[Languages](03-languages.md).
 
 Fields that offer a fixed set of choices carry `<option>` children, whose
 text is also a language key:
@@ -102,9 +117,12 @@ A `type` is resolved to a class in
 
 - `type="list"` is special-cased to `Fields\Select`, because `List` cannot be
   a PHP class name. Most of the tree writes `list`.
-- **An unrecognised type silently becomes a text box.** There is no error and
-  no log line, so a typo in `type` costs you the widget and nothing tells
-  you. Check the name against the directory.
+- **An unrecognised type silently becomes a text box.**
+  [`Form::loadField()`](../../../core/libraries/Hubzero/Form/Form.php) calls
+  `loadFieldType('text')` when the named class is not found. There is no error
+  and no log line, so a typo in `type` costs you the widget and nothing tells
+  you — and an administrator then types free text where a drop-down should
+  have constrained them. Check the name against the directory.
 
 These are the types that exist:
 
@@ -176,12 +194,23 @@ different settings.
 
 Nothing writes those columns at install time. Until an administrator saves
 the settings screen the column is empty, and every `$params->get()` returns
-its second argument — **not** the `default` in the manifest. Always pass a
-default in code:
+its second argument — **not** the `default` in the manifest.
+
+> **Warning:** This is the parameter trap. The declaration says
+> `default="300"`, the code says `$params->get('introlength')`, and on a
+> freshly installed extension the code gets `null`. Cast it and you have `0`;
+> use it as a limit and the feature does nothing, on exactly the hubs where
+> nobody has been into the settings yet. It works on your development hub
+> because you opened the screen once.
+
+Always pass a default in code, and make it the same value as the one in the
+manifest:
 
 ```php
 $limit = (int) $params->get('introlength', 300);
 ```
 
 A migration can seed the column instead, with the `saveParams` macro, if a
-sensible value matters before anyone visits the screen.
+sensible value matters before anyone visits the screen. That is worth doing
+when the parameter is not optional — when there is no sane fallback — and
+unnecessary otherwise.

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -101,7 +103,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../models/index.html">Models</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Languages</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#the-files">The files</a></li>
+<li class="toc__item toc__item--l2"><a href="#one-file-per-client">One file per client</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-format">The format</a></li>
 <li class="toc__item toc__item--l2"><a href="#translating">Translating</a></li>
 <li class="toc__item toc__item--l2"><a href="#when-files-are-loaded">When files are loaded</a></li>
@@ -175,19 +177,33 @@
 <code>Lang::txt()</code>. No component in the tree hard-codes display text, and neither
 should yours: a hub can override any string without touching your code, and a
 translator can supply another language without reading it.</p>
-<h2 id="the-files">The files</h2>
-<p>Language files belong to a client, so each client directory has its own:</p>
-<pre><code>core/components/com_kb/
+<p>The habit costs nothing while you are writing and is expensive to add later,
+because retrofitting it means finding every sentence in every layout.</p>
+<h2 id="one-file-per-client">One file per client</h2>
+<p>Language files belong to a <strong>client</strong>, and the client that is running loads
+only its own. This is the detail that catches people:</p>
+<pre><code>app/components/com_bookings/
     site/language/en-GB/
-        en-GB.com_kb.ini
+        en-GB.com_bookings.ini          the site loads this, and only this
     admin/language/en-GB/
-        en-GB.com_kb.ini
-        en-GB.com_kb.sys.ini
-        en-GB.com_kb.menu.ini
+        en-GB.com_bookings.ini          the administrator loads this
+        en-GB.com_bookings.sys.ini      and this, for lists of extensions
 </code></pre>
 <p>The name is <code>{tag}.{extension}.ini</code> inside a directory named for the tag. The
 loader looks in <code>{client directory}/language/{tag}/</code>, so the path is fixed
 once the client is.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A string used on both sides has to be in <strong>both</strong> files. There
+is no shared file and nothing merges the two. Put
+<code>COM_BOOKINGS_RESERVATION_SAVED</code> only in <code>site/language/</code> and the
+administrator screen that saves a reservation renders the literal text
+<code>COM_BOOKINGS_RESERVATION_SAVED</code> — while <code>grep -r COM_BOOKINGS_RESERVATION_SAVED</code>
+across the tree finds it defined, twice over, and looks fine. When a key
+renders as itself, check <em>which</em> file it is in before you check anything
+else.</p>
+</aside>
+<p>Duplicating a handful of strings is the cost of the split. It buys a site that
+does not carry the administrator's vocabulary into every page it renders.</p>
 <h2 id="the-format">The format</h2>
 <p>Key/value pairs, one per line, values in double quotes. Lines beginning with a
 semicolon are comments:</p>
@@ -215,50 +231,61 @@ COM_KB_FOUND_THIS_HELPFUL=&quot;%s out of %s people found this helpful.&quot;
 </code></pre>
 <p>Keys may contain letters, digits, and underscores, but no spaces. Convention is
 uppercase, words separated by underscores, prefixed with the component name:
-<code>COM_KB_WAS_THIS_HELPFUL</code>. Nothing enforces the prefix, but every language file
-loaded into a request shares one flat table of strings, so an unprefixed
-<code>SEARCH</code> will collide with somebody else's.</p>
+<code>COM_BOOKINGS_INSTRUMENT_UNAVAILABLE</code>. Nothing enforces the prefix, but every
+language file loaded into a request shares one flat table of strings, so an
+unprefixed <code>SEARCH</code> will collide with somebody else's — and the collision
+appears only on the pages where both are loaded. See
+<a href="../../extensions/languages/index.html#naming-keys">Languages</a>.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Lookup uppercases the key before matching, so <code>Lang::txt('com_kb_yes')</code>
-and <code>Lang::txt('COM_KB_YES')</code> find the same string. The file itself is
-conventionally uppercase.</p>
+<p><strong>Note:</strong> Lookup uppercases the key before matching, so
+<code>Lang::txt('com_bookings_yes')</code> and <code>Lang::txt('COM_BOOKINGS_YES')</code> find the
+same string. The file itself is conventionally uppercase.</p>
 </aside>
 <h2 id="translating">Translating</h2>
-<pre><code class="language-php">echo Lang::txt('COM_KB_ARTICLES');
+<pre><code class="language-php">echo Lang::txt('COM_BOOKINGS_INSTRUMENTS');
 </code></pre>
 <p>A key that is not defined is returned unchanged, which is why a missing
-translation shows up as a screaming uppercase key rather than a blank space.</p>
+translation shows up as a screaming uppercase key rather than a blank space.
+Nothing is logged, so the only way to find the ones you have not exercised is
+to look:</p>
+<pre><code class="language-bash">php tools/lint/undefined-language-keys.php app/components/com_bookings
+</code></pre>
 <p>Any further arguments are passed to <code>sprintf()</code>, so a string can carry
 placeholders:</p>
-<pre><code class="language-ini">COM_KB_FOUND_THIS_HELPFUL=&quot;%s out of %s people found this helpful.&quot;
+<pre><code class="language-ini">COM_BOOKINGS_SLOT_TAKEN=&quot;%s is already booked from %s until %s.&quot;
 </code></pre>
-<pre><code class="language-php">echo Lang::txt('COM_KB_FOUND_THIS_HELPFUL', $helpful, $total);
+<pre><code class="language-php">echo Lang::txt('COM_BOOKINGS_SLOT_TAKEN', $instrument-&gt;title, $from, $until);
 </code></pre>
 <p>Number the placeholders — <code>%1$s</code>, <code>%2$s</code> — whenever a translator might need to
-reorder them.</p>
+reorder them. Getting the count wrong is a PHP warning from <code>sprintf()</code> and a
+sentence with a hole in it, not an exception.</p>
 <h2 id="when-files-are-loaded">When files are loaded</h2>
 <p><code>Component::render()</code> loads two files before your entry point runs, in this
 order:</p>
 <ol>
-<li><code>{client directory}/language/{tag}/{tag}.com_kb.ini</code> — the component's own
-strings.</li>
-<li><code>PATH_APP/bootstrap/{client}/language/{tag}/{tag}.com_kb.ini</code> — the hub's
-overrides.</li>
+<li><code>{client directory}/language/{tag}/{tag}.com_bookings.ini</code> — the component's
+own strings, from the client that is running.</li>
+<li><code>PATH_APP/bootstrap/{client}/language/{tag}/{tag}.com_bookings.ini</code> — the
+hub's overrides.</li>
 </ol>
 <p>The second is loaded after the first, so a hub can redefine any single string
 by putting just that key in its own file. Nothing is copied and nothing needs
-to be complete.</p>
+to be complete. That is the supported way for a hub to reword your component;
+tell hub administrators about it rather than letting them edit your <code>.ini</code>,
+which an update overwrites.</p>
 <p><code>SiteController</code>'s constructor loads the component's file from the client
 directory as well, but only if nothing has loaded it yet — which covers a
-controller instantiated outside the normal render path.</p>
+controller instantiated outside the normal render path, from a module or a
+plugin.</p>
 <p>Requesting a non-default language loads the default language first, so a
 partial translation falls back to English string by string rather than showing
 raw keys.</p>
 <h2 id="the-system-file">The system file</h2>
-<p><code>{tag}.com_kb.sys.ini</code> in the <strong>administrator</strong> language directory holds the
-strings the platform needs when your component is not the one running: its
+<p><code>{tag}.com_bookings.sys.ini</code> in the <strong>administrator</strong> language directory holds
+the strings the platform needs when your component is not the one running: its
 name in the Extensions manager, and the labels for the menu item types it
-offers.</p>
+offers. Leave it out and your component appears in the administrator's lists
+as <code>COM_BOOKINGS</code>.</p>
 <pre><code class="language-ini">COM_KB=&quot;Knowledge Base&quot;
 
 ; Views
@@ -272,7 +299,6 @@ COM_KB_ARTICLES_VIEW_ARTICLE_DESC=&quot;Display a single article&quot;
 
 COM_KB_ARTICLES_VIEW_CATEGORY_TITLE=&quot;Category&quot;
 COM_KB_ARTICLES_VIEW_CATEGORY_OPTION=&quot;Category&quot;
-COM_KB_ARTICLES_VIEW_CATEGORY_DESC=&quot;Display a single category&quot;
 </code></pre>
 <p><code>COM_KB</code> is the component's name wherever the platform lists extensions. The
 <code>COM_KB_ARTICLES_VIEW_DEFAULT_TITLE</code> form is what the menu manager falls back
@@ -287,14 +313,16 @@ loads a <code>.menu.ini</code> file; the administrator menu takes its labels fro
 component.</p>
 </aside>
 <h2 id="adding-a-language">Adding a language</h2>
-<p>A translation is the same tree with a different tag: <code>fr-FR/fr-FR.com_kb.ini</code>
-beside the <code>en-GB</code> directory. The general mechanics — installing a language
-pack, the tag list, plural rules — are covered in
+<p>A translation is the same tree with a different tag: <code>fr-FR/fr-FR.com_bookings.ini</code>
+beside the <code>en-GB</code> directory. The tag is a language and a region joined by a
+hyphen; the path is built from it literally, so <code>fr_FR</code> produces a file
+nothing looks for. The general mechanics — the tag list, the <code>.sys.ini</code>
+convention, plural rules — are covered in
 <a href="../../extensions/languages/index.html">Languages</a> and
 <a href="../../basics/languages/index.html">Languages</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../models/index.html" rel="prev"><span>Previous</span>Models</a><a class="pager__next" href="../views/index.html" rel="next"><span>Next</span>Views</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/06-languages.md">Edit this page on GitHub</a>

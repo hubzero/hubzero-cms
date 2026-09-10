@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services/session
 -->
 # Session
@@ -11,6 +11,13 @@ requests: who they are logged in as, the form token that guards their
 writes, the filters they left a list screen on. The `Session` facade
 resolves [`Hubzero\Session\Manager`](../../../core/libraries/Hubzero/Session/Manager.php),
 which wraps PHP's session with a namespace scheme and a token.
+
+Reach for it only for something that belongs to **this visitor**, is
+**small**, and does not matter if it is lost. A half-finished booking a
+member is stepping through, a flag saying they have dismissed a notice, the
+sort order they chose. Anything a member would be annoyed to lose belongs in
+a table, and anything expensive to compute but the same for everyone belongs
+in the [cache](01-cache.md).
 
 The manager is registered by `SessionServiceProvider` in the site and
 administrator applications only. The storage handler comes from
@@ -24,12 +31,9 @@ multiplied out to seconds when the manager is built.
 ```php
 use Session;
 
-Session::set('newsubmission.blog', true);
+Session::set('bookings.wizard.instrument', $id, 'com_bookings');
 
-if (Session::get('newsubmission.blog'))
-{
-    // first entry this member has posted
-}
+$id = Session::get('bookings.wizard.instrument', 0, 'com_bookings');
 ```
 
 | Method | Signature |
@@ -48,6 +52,11 @@ Session::set('cart', $cart, 'com_cart');
 
 $cart = Session::get('cart', array(), 'com_cart');
 ```
+
+Get the argument order wrong — `Session::get('cart', 'com_cart')` — and you
+have asked for `cart` in the `default` namespace with the string
+`'com_cart'` as its default. It compiles, it runs, and it returns
+`'com_cart'`. Nothing anywhere reports it.
 
 > **Note:** `set()` with no value **deletes** the entry. `Session::set('x')`
 > and `Session::set('x', null)` both unset `x`; they do not store a null.

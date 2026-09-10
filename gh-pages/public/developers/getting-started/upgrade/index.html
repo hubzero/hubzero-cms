@@ -66,9 +66,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -182,6 +184,24 @@ most of them. An extension written against <code>JFactory</code>, <code>JText</c
 <code>JRequest</code> still needs converting. This page is that
 translation table, plus what to do about the database when you upgrade a
 hub.</p>
+<p><strong>This page is for inherited code only.</strong> Read it when you have an old
+extension to bring forward, or when you are reading a file in this tree that
+still uses the old names — there are plenty. Do not use it as a menu. Nothing
+new should be written against the legacy names, and nothing new should reach
+into the container where a facade exists: write <code>User::get('id')</code>, not
+<code>JFactory::getUser()</code> and not <code>App::get('user')-&gt;get('id')</code>. The container
+call is correct and works; it is simply the long way round, and it is what
+the right-hand column of the table below is <em>translating away from</em>. Use
+<code>App::get(...)</code> only for the few services that have no facade — the database
+driver is the one you will meet — as <a href="../../foundation/facades/index.html">Facades</a>
+sets out.</p>
+<p>The conversion is mechanical enough to do in an afternoon for a small
+extension. The order that wastes least time: rename the classes, add the
+<code>use</code> lines for every facade the file now names, run
+<code>php -l</code> over the result, then run
+<code>php tools/lint/missing-facade-imports.php &lt;your path&gt;</code> to catch the imports
+you missed. That last step is not optional — a missing import is the one
+mistake in this list that neither PHP nor your eyes will find.</p>
 <p>For the Hubzero 1.x names that changed at the same time, see
 <a href="../releasenotes/index.html#the-2-0-namespacing">Release notes</a>.</p>
 <h2 id="directory-structure">Directory structure</h2>
@@ -254,7 +274,11 @@ require_once __DIR__ . DS . 'controllers' . DS . 'example.php';
 <h2 id="classes">Classes</h2>
 <p>Most of the conversions are a facade with the <code>J</code> dropped. Facades are
 registered as root-namespace aliases, so a namespaced file must import the
-one it uses — <code>use Route;</code> — or the call fatals at runtime. See
+one it uses — <code>use Route;</code>. Leave the import out and the name resolves
+inside your own namespace instead, which usually still works by accident and
+fails outright on the API and CLI clients, in any namespace that already
+contains a class of that name, and in anything that runs before the
+application has loaded. See
 <a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
 <h3 id="jroute">JRoute</h3>
 <table>
@@ -494,7 +518,7 @@ needed for an ordinary upgrade.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../databaseaccess/index.html" rel="prev"><span>Previous</span>Direct database access</a><a class="pager__next" href="../browsersupport/index.html" rel="next"><span>Next</span>Browser support</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/04-upgrade.md">Edit this page on GitHub</a>

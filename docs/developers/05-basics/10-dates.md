@@ -1,19 +1,48 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/dates
 -->
 # Dates
 
-A hub has members in every time zone, so it keeps one rule: **store and
-compare in UTC, convert only for display.** Every `datetime` column in the
-schema holds UTC. Every date that reaches a member's screen has been
-converted on the way out.
+A hub has members in every time zone, so it keeps one rule:
+
+> **Important:** **Store and compare in UTC. Convert only for display.**
+> Every `datetime` column in the schema holds UTC. Every date that reaches a
+> member's screen has been converted on the way out.
 
 [`Hubzero\Utility\Date`](../../../core/libraries/Hubzero/Utility/Date.php)
-extends PHP's `DateTime` and enforces that rule. The `Date` facade is the
-short way to build one.
+extends PHP's `DateTime` and gives you the conversions. It does not enforce
+the rule — nothing does — so the whole of this page is about which side of
+the line a given value is on.
+
+## The whole rule, as a table
+
+An instrument-booking component reads a start time from a form, stores it,
+compares it against now, and shows it back. That is five values and five
+different calls:
+
+| The value | Write |
+|---|---|
+| Read from a database column | `Date::of($row->get('starts'))` — already UTC, no zone argument |
+| Typed by a member into a form | `Date::of($input, Config::get('offset'))` — their zone, said out loud |
+| Now, on the way into a column | `Date::of('now')->toSql()` |
+| On the way to a member's screen | `->toLocal(Lang::txt('DATE_FORMAT_HZ1'))` |
+| On the way to a machine — JSON, a feed, a `<time datetime="">` | `->format('Y-m-d\TH:i:s\Z')` or `toISO8601()` |
+
+### What getting it wrong looks like
+
+Nothing throws. No warning is logged. A booking made for 9am appears at 1pm,
+or a job that should have run at midnight runs at five. The reliable tell is
+that the error is a whole number of hours and **changes by one in summer**,
+because the offset that was wrongly applied is a daylight-saving one.
+
+The second tell is that comparisons stop agreeing with the display. A row
+written in local time sorts and filters wrongly against every other row:
+`publish_up <= now` is evaluated in the database against UTC, so a booking
+stored four hours ahead of where it should be simply does not appear until
+four hours later, on a page that shows the right time all along.
 
 ## Creating a date
 
@@ -24,8 +53,11 @@ $now     = Date::of('now');
 $created = Date::of($row->get('created'));
 ```
 
-`Date::of($date = 'now', $tz = null)` returns a new object each time; there
-is no shared instance. `Date::getRoot()` is `Date::of('now')`.
+`Date::of($date = 'now', $tz = null, $ignoreDst = false)` returns a new
+object each time; there is no shared instance. `Date::getRoot()` is
+`Date::of('now')`. `$ignoreDst` pins the zone to its standard offset, which
+is wanted only for a recurring wall-clock time that must not shift with
+daylight saving; leave it alone otherwise.
 
 **When `$tz` is omitted the string is read as UTC.** That is the important
 default. `Date::of('2015-06-01 09:00:00')` is nine in the morning UTC, not
@@ -37,11 +69,17 @@ $created = Date::of($row->get('created'));
 ```
 
 A value that came from a **member typing into a form** is in their time zone,
-and has to be told so:
+and has to be told so. This is the one line that matters, and the one that
+gets left out:
 
 ```php
-$fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))->toSql();
+// The member typed "2026-09-14 09:00" meaning nine in the morning where they are
+$fields['starts'] = Date::of($fields['starts'], Config::get('offset'))->toSql();
 ```
+
+Leave the second argument off and the same string is stored as nine in the
+morning UTC, which is four or five in the morning for the lab. The booking
+saves, the form redisplays it correctly, and only the slot list disagrees.
 
 `Config::get('offset')` is the hub's configured zone. `$tz` accepts a
 `DateTimeZone`, an identifier string such as `America/New_York`, or a
@@ -78,7 +116,7 @@ sorts and filters wrongly against all the others.
 `toLocal($format = '')` converts to the viewing member's zone and formats:
 
 ```php
-echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+echo Date::of($booking->get('starts'))->toLocal(Lang::txt('DATE_FORMAT_LC2'));
 ```
 
 It reads `User::getParam('timezone', Config::get('offset'))` — the member's

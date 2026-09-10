@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Assets · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Stylesheets, scripts, and images belong to a client, not to a component as a whole — the administrator interface and the public site rarely want the same CSS.…">
+  <meta name="description" content="A component does not write and tags. It asks for a file by name and the platform works out the path, appends a cache-busting version, lets the active template…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/assets/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -170,15 +172,22 @@
         </header>
         
         <div class="prose">
+<p>A component does not write <code>&lt;link&gt;</code> and <code>&lt;script&gt;</code> tags. It asks for a file by
+name and the platform works out the path, appends a cache-busting version,
+lets the active template override it, and adds it to the document once no
+matter how many layouts ask. That is the whole reason to use the helpers
+rather than writing the tag: a hand-written path is a path that breaks the
+first time the component is deployed under <code>app/</code>.</p>
 <p>Stylesheets, scripts, and images belong to a client, not to a component as a
 whole — the administrator interface and the public site rarely want the same
 CSS. Each client directory therefore has its own <code>assets</code> tree:</p>
-<pre><code>core/components/com_kb/
+<pre><code>app/components/com_bookings/
     site/assets/
-        css/kb.css
-        js/kb.js
+        css/bookings.css
+        js/bookings.js
+        img/instrument-placeholder.png
     admin/assets/
-        js/kb.js
+        js/bookings.js
 </code></pre>
 <p><code>css</code>, <code>js</code>, and <code>img</code> are the directories the helpers know about by name.
 Anything else — <code>fonts</code>, <code>less</code>, <code>scss</code> — is yours to organise, and is
@@ -203,7 +212,7 @@ the usual call sits at the top of a layout:</p>
 <tbody>
 <tr>
 <td>the asset name</td>
-<td>the component name without <code>com_</code>, so <code>com_kb</code> looks for <code>kb.css</code></td>
+<td>the component name without <code>com_</code>, so <code>com_bookings</code> looks for <code>bookings.css</code></td>
 </tr>
 <tr>
 <td>the extension</td>
@@ -211,11 +220,14 @@ the usual call sits at the top of a layout:</p>
 </tr>
 </tbody>
 </table>
-<p>So <code>$this-&gt;css()</code> in a <code>com_kb</code> view attaches <code>kb.css</code> from <code>com_kb</code>'s own
-assets. <code>$this-&gt;css('print')</code> attaches <code>print.css</code> from the same place.
-<code>$this-&gt;css('tags', 'com_tags')</code> reaches into another component. The file
-extension is optional — <code>css('print')</code> and <code>css('print.css')</code> are the same
-call.</p>
+<p>So <code>$this-&gt;css()</code> in a <code>com_bookings</code> view attaches <code>bookings.css</code> from
+<code>com_bookings</code>'s own assets. <code>$this-&gt;css('print')</code> attaches <code>print.css</code> from
+the same place. <code>$this-&gt;css('tags', 'com_tags')</code> reaches into another
+component. The file extension is optional — <code>css('print')</code> and
+<code>css('print.css')</code> are the same call.</p>
+<p>Name the component's main stylesheet after the component and the no-argument
+call works everywhere. Name it <code>style.css</code> and every layout has to remember to
+say so.</p>
 <p>Passing <code>'system'</code> as the extension reads from the platform's own assets in
 <code>core/assets</code>.</p>
 <p><code>img()</code> is the odd one: it attaches nothing, and returns a URL.</p>
@@ -227,16 +239,24 @@ controller it is an array of HTML attributes — <code>media</code>, <code>defer
 In a view it is a plugin element name, used only when the second argument is
 a plugin folder: <code>$this-&gt;css('style', 'members', 'dashboard')</code> resolves to
 <code>plg_members_dashboard</code>. Passing an attribute array to the view helper does
-nothing.</p>
+nothing, silently: the stylesheet is attached and the attributes are
+dropped, so a <code>media=&quot;print&quot;</code> that never took effect looks like a CSS
+problem.</p>
 </aside>
+<p>A file that does not exist is not an error either. <code>css()</code> and <code>js()</code> both
+test <code>$asset-&gt;exists()</code> first and <strong>do nothing at all</strong> when the candidate
+list runs out: no tag is written, nothing is logged, and there is no 404 in
+the browser's console to find. A page that renders unstyled with no
+<code>&lt;link&gt;</code> in its source is almost always a misspelled asset name or a file
+in <code>site/</code> that the administrator client was asking for.</p>
 <h2 id="how-a-file-is-found">How a file is found</h2>
 <p>The name and extension are turned into a list of candidate paths by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Asset/File.php"><code>Hubzero\Document\Asset\File</code></a>,
 and the first that exists wins. For a component, with <code>{client}</code> being <code>site</code>
 or <code>admin</code>:</p>
 <ol>
-<li><code>PATH_APP/components/com_kb/{client}/assets/css/kb.css</code></li>
-<li><code>PATH_APP/components/com_kb/{client}/css/kb.css</code></li>
+<li><code>PATH_APP/components/com_bookings/{client}/assets/css/bookings.css</code></li>
+<li><code>PATH_APP/components/com_bookings/{client}/css/bookings.css</code></li>
 <li>the same two under <code>PATH_CORE</code></li>
 </ol>
 <p>Every <code>app</code> path is tried before every <code>core</code> path, so a hub can replace a
@@ -250,19 +270,19 @@ the path relative to <code>PATH_ROOT</code> instead. A name beginning <code>http
 <h2 id="template-overrides">Template overrides</h2>
 <p>Before serving what it found, the asset checks the active template for an
 override at <code>{template path}/html/{extension}/{file}</code> — for example
-<code>app/templates/hubzero/html/com_kb/kb.css</code>. If that file exists it is used
+<code>app/templates/hubzero/html/com_bookings/bookings.css</code>. If that file exists it is used
 instead. This is the same mechanism templates use to override layouts, and it
 lets a template restyle a component without a copy of the component.</p>
 <h2 id="cache-busting">Cache busting</h2>
 <p><code>link()</code> appends the file's modification time as a query string:</p>
-<pre><code>/core/components/com_kb/site/assets/css/kb.css?v=1583172290
+<pre><code>/app/components/com_bookings/site/assets/css/bookings.css?v=1583172290
 </code></pre>
 <p>The URL changes whenever the file does, so browsers pick up an edit without
 being told to clear anything.</p>
 <h2 id="inline-styles-and-scripts">Inline styles and scripts</h2>
 <p>The same helpers take raw source rather than a file name, and add it as a
 declaration:</p>
-<pre><code class="language-php">$this-&gt;css('#content .article { margin-top: 0; }')
+<pre><code class="language-php">$this-&gt;css('#content .instrument { margin-top: 0; }')
      -&gt;js('jQuery(document).ready(function ($) { /* ... */ });');
 </code></pre>
 <p>Detection is by content, not by a flag. A stylesheet argument containing <code>{</code>
@@ -281,7 +301,7 @@ put behaviour in a <code>.js</code> file under <code>assets/js</code> and drive 
 attributes on the markup, rather than writing script into the page.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../views/index.html" rel="prev"><span>Previous</span>Views</a><a class="pager__next" href="../routing/index.html" rel="next"><span>Next</span>Routing</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/08-assets.md">Edit this page on GitHub</a>

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -175,6 +177,51 @@ way: the global settings, and the parameters belonging to a component, a
 plugin, or a module. All four end up as a
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Config/Registry.php"><code>Hubzero\Config\Registry</code></a>
 with the same <code>get()</code> on it.</p>
+<p>Which one you want depends on who is meant to set the value:</p>
+<table>
+<thead>
+<tr>
+<th>The value is</th>
+<th>Where it belongs</th>
+<th>How to read it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The same for the whole hub — the site name, the time zone, the mail server</td>
+<td>Global configuration</td>
+<td><code>Config::get('offset')</code></td>
+</tr>
+<tr>
+<td>A setting for your component that an administrator changes once — how many bookings a page lists</td>
+<td>The component's <code>config/config.xml</code></td>
+<td><code>Component::params('com_bookings')</code></td>
+</tr>
+<tr>
+<td>A setting for one instance of a plugin</td>
+<td>The plugin's manifest</td>
+<td><code>$this-&gt;params</code> inside the plugin</td>
+</tr>
+<tr>
+<td>A setting for one placement of a module on one page</td>
+<td>The module instance</td>
+<td><code>$this-&gt;params</code> inside the module</td>
+</tr>
+</tbody>
+</table>
+<p>A value that a <em>member</em> sets is none of these. That is a user parameter —
+<code>User::getParam()</code>, see <a href="../user/index.html">users</a> — or a column on one of your own
+tables.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A parameter that is not declared in the extension's XML can
+still be read, and comes back as your default. Nothing reports that the
+field does not exist, so a typo in a parameter name looks exactly like an
+administrator who has not set it yet. <code>com_tags</code> has three of these:
+<code>show_sizes</code>, <code>show_tag_count</code> and <code>show_tags_sort</code> are read by its layout
+and declared in no manifest, so the tag cloud takes its defaults on every
+hub. Check the name against the XML when a setting appears to have no
+effect.</p>
+</aside>
 <h2 id="global-configuration">Global configuration</h2>
 <p>The site settings live in <code>app/config/</code>, one PHP file per group, each
 returning a plain array:</p>
@@ -220,9 +267,9 @@ every option the tree declares.</p>
 the <code>#__extensions</code> row. Read them through the <code>Component</code> facade:</p>
 <pre><code class="language-php">use Component;
 
-$params = Component::params('com_blog');
+$params = Component::params('com_bookings');
 
-$limit  = $params-&gt;get('display_limit', 25);
+$limit  = (int) $params-&gt;get('display_limit', 25);
 $access = $params-&gt;get('access-view');
 </code></pre>
 <p><code>Component::params($option, $strict = false)</code> returns a <code>Registry</code>. Inside a
@@ -314,7 +361,7 @@ because the layout is included from within the module object.</p>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">$params = Component::params('com_blog');
+<pre><code class="language-php">$params = Component::params('com_bookings');
 $params-&gt;merge($menuParams);
 
 if ($params-&gt;has('feed_email'))
@@ -323,11 +370,17 @@ if ($params-&gt;has('feed_email'))
 }
 </code></pre>
 <p>A value read out of a <code>Registry</code> is whatever was stored — usually a string,
-even for a number or a checkbox. Cast it where the type matters:
-<code>(int) $params-&gt;get('limit', 25)</code>.</p>
+even for a number or a checkbox. Cast it where the type matters:</p>
+<pre><code class="language-php">$limit = (int) $params-&gt;get('limit', 25);
+</code></pre>
+<p><code>get('limit')</code> returns <code>&quot;25&quot;</code>, not <code>25</code>. It behaves as a number in
+arithmetic and in a query, so the fault only surfaces where the type is
+checked: a strict <code>=== 25</code> is false, <code>in_array($v, [1, 2], true)</code> is false,
+and a parameter typed <code>int</code> on a method signature raises a <code>TypeError</code> under
+<code>strict_types</code>. Cast on the way out of the registry, once.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../responses/index.html" rel="prev"><span>Previous</span>Responses</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/03-config.md">Edit this page on GitHub</a>

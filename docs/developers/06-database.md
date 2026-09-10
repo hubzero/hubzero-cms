@@ -1,22 +1,105 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/database
 -->
 # Database
 
 Hubzero talks to the database through three layers, each built on the one
-below it. The driver ([`Hubzero\Database\Driver`](../../core/libraries/Hubzero/Database/Driver.php))
+below it, and this page covers all three. The
+[driver](#the-driver) ([`Hubzero\Database\Driver`](../../core/libraries/Hubzero/Database/Driver.php))
 wraps PDO and runs prepared statements. The
 [query builder](#query-builder) assembles statements without you writing SQL
-strings. The [ORM](#orm) maps table rows to model objects. Schema changes
-are made by [migrations](#migrations).
+strings. The [ORM](#orm) maps table rows to model objects. Schema changes are
+made by [migrations](#migrations), which is the only supported way to change a
+hub's tables.
 
-This page covers the bottom layer: how a connection is configured, how to
-get one, and what the driver can do once you have it.
+The examples that are not taken from a shipped extension use one running
+example: a component that books a lab's instruments, `com_bookings`, whose
+reservations live in `#__bookings_reservations` and are modelled by
+`Components\Bookings\Models\Reservation`.
 
-## Configuration
+## Which layer to use
+
+Reach for the ORM. A `Relational` model gives you validation, automatic
+fields, relationships and objects instead of anonymous rows, and because it
+forwards every method it does not define down to its own query builder, you
+lose nothing by starting there. That forwarding is why the examples on this
+page mix the two freely: `Reservation::all()->whereEquals('state', 1)->rows()`
+is a model call and a builder call in the same chain.
+
+| Use | When |
+|---|---|
+| [ORM](#orm) | Anything that reads or writes rows of your own table. This is the default. |
+| [Query builder](#query-builder) | A report, an aggregate, a join across tables that have no models, or a one-off statement in a controller. |
+| [Driver](#the-driver) | A statement the builder cannot express — `ALTER TABLE`, a stored procedure, a vendor-specific query — and the schema checks a migration needs. |
+
+Write raw SQL only when the layer above genuinely cannot express the
+statement. Older code in this tree builds SQL strings by concatenation and
+passes them to `setQuery()`; that still runs, but it is not the pattern to
+copy. A concatenated string is where prefix bugs and injection bugs come
+from, and both of the layers above bind their values for you.
+
+> **Note:** There is a second, older family of table classes in the tree:
+> classes extending
+> [`Hubzero\Database\Table`](../../core/libraries/Hubzero/Database/Table.php),
+> with `load()`, `bind()`, `check()` and `store()`. The base class is marked
+> `@deprecated` and over a hundred of them are still in `core/components`.
+> They work. Do not write new ones and do not copy one as a starting point —
+> `Relational` replaced them.
+
+## The table prefix
+
+Get this right before anything else, because it fails on someone else's hub
+rather than on yours.
+
+Every hub picks its own table prefix at install time. Never write it out.
+Write the placeholder `#__` and let the driver substitute the real one:
+
+```php
+// Right — runs on any hub
+$db->setQuery("SELECT COUNT(*) FROM `#__bookings_reservations` WHERE `state` = 1");
+
+// Wrong — runs only on a hub whose prefix happens to be jos_
+$db->setQuery("SELECT COUNT(*) FROM `jos_bookings_reservations` WHERE `state` = 1");
+```
+
+`Hubzero\Database\Driver\Pdo::prepare()` passes every statement through
+`Driver::replacePrefix()` before handing it to PDO, so the substitution
+happens at prepare time and applies to raw SQL, query builder calls and
+migrations alike. The scan skips quoted string literals, so a `#__` inside a
+bound or quoted value is left alone.
+
+The failure is quiet on the machine you develop on and total everywhere
+else. `jos_` is the default prefix, so a literal prefix works on a default
+install and on nothing else: the hub that renamed its prefix gets
+`Table 'hub.jos_bookings_reservations' doesn't exist`, raised as a
+[`QueryFailedException`](../../core/libraries/Hubzero/Database/Exception/QueryFailedException.php),
+usually as a white page in the middle of a page that worked yesterday. Nothing
+in the test suite catches it.
+
+> **Warning:** The same rule covers everything that carries a table name —
+> `insertObject()`, `updateObject()`, `from()`, `join()`, a model's `$table`
+> property, a migration's `CREATE TABLE`, and the `--group` database of a
+> super group. If you have written a prefix out anywhere, it is a bug.
+
+If you genuinely need the configured prefix — printing a table name in a
+report, say — read it rather than assuming it: `$db->getPrefix()`, or
+`Config::get('dbprefix')`.
+
+The rest of the naming rules for a new table — what to call it, its columns
+and its indexes — are in
+[Database schema conventions](19-conventions.md#database-schema-conventions).
+
+## The driver
+
+The driver is the bottom layer: a connection, a prepared statement, and the
+methods that read a result back. Use it directly for the statements the
+builder cannot express, and for the schema questions a migration has to ask.
+Everything above it ends up here.
+
+### Configuration
 
 The connection settings live in `app/config/database.php`, which returns a
 plain array:
@@ -45,7 +128,7 @@ extends `Hubzero\Database\Driver\Pdo`. The drivers that ship are `mysql`,
 `mariadb`, `percona`, `pgsql` and `sqlite`; every one of them is a PDO
 driver.
 
-## Getting a connection
+### Getting a connection
 
 Inside the application, ask the container:
 
@@ -77,23 +160,14 @@ two calls with identical options hand back the same instance. An unknown
 > driver against whatever defaults the driver class supplies, which is not
 > the hub's database. Use `App::get('db')` for the hub connection.
 
-## The table prefix
-
-Tables are written with the placeholder prefix `#__` rather than the real
-one. `Driver::replacePrefix()` swaps it for the configured `dbprefix` when
-the statement is prepared, so `#__blog_entries` becomes `jos_blog_entries`
-on a hub whose prefix is `jos_`. Write `#__` everywhere — in raw SQL, in
-query builder calls, in migrations — and the same code runs on a hub with
-any prefix.
-
-## Running a statement
+### Running a statement
 
 `setQuery()` prepares a statement; a load method or `query()` executes it.
 
 ```php
 $db = App::get('db');
 
-$db->setQuery("SELECT COUNT(*) FROM `#__blog_entries` WHERE `state` = 1");
+$db->setQuery("SELECT COUNT(*) FROM `#__bookings_reservations` WHERE `state` = 1");
 
 $total = $db->loadResult();
 ```
@@ -107,14 +181,14 @@ load method rather than testing its return value.
 > `Hubzero\Database\Exception\QueryFailedException`. Catch that if you need
 > to handle a failure.
 
-### Binding values
+#### Binding values
 
 Never interpolate user input into a statement. Prepare it with `?`
 placeholders and bind:
 
 ```php
-$db->prepare("SELECT * FROM `#__blog_entries` WHERE `scope` = ? AND `state` = ?")
-   ->bind(['site', 1]);
+$db->prepare("SELECT * FROM `#__bookings_reservations` WHERE `instrument_id` = ? AND `state` = ?")
+   ->bind([$instrumentId, 1]);
 
 $rows = $db->loadObjectList();
 ```
@@ -134,7 +208,7 @@ Where a value genuinely cannot be bound — an identifier, say — quote it:
 `q()`, `qn()` and `nq()` are deprecated aliases handled by `__call()`.
 `nameQuote()` is not one of them and does not exist.
 
-## Reading results
+### Reading results
 
 Every method below prepares nothing itself; call `setQuery()` or
 `prepare()` first.
@@ -152,11 +226,11 @@ Every method below prepares nothing itself; call `setQuery()` or
 | `loadNextRow()` / `loadNextObject($class)` | The next row from an already executed statement, or `false` at the end |
 
 ```php
-$db->setQuery("SELECT `id`, `title`, `alias` FROM `#__kb_articles` ORDER BY `title`");
+$db->setQuery("SELECT `id`, `title`, `alias` FROM `#__bookings_instruments` ORDER BY `title`");
 
-foreach ($db->loadObjectList('alias') as $alias => $article)
+foreach ($db->loadObjectList('alias') as $alias => $instrument)
 {
-    echo $article->title;
+    echo $instrument->title;
 }
 ```
 
@@ -168,18 +242,19 @@ execute fails they return `null`.
 > still open. The `load*` methods free the result when they finish, so call
 > `getNumRows()` after `query()` and before any `load*` call.
 
-## Writing rows
+### Writing rows
 
 For a single row built from an object, the driver has two helpers that
 compose the statement for you:
 
 ```php
-$entry = new stdClass;
-$entry->title = 'Release notes';
-$entry->state = 1;
+$reservation = new stdClass;
+$reservation->instrument_id = 12;
+$reservation->starts = '2026-09-14 09:00:00';
+$reservation->state = 1;
 
-$db->insertObject('#__blog_entries', $entry, 'id');   // sets $entry->id
-$db->updateObject('#__blog_entries', $entry, 'id');   // $nulls = false skips null fields
+$db->insertObject('#__bookings_reservations', $reservation, 'id');   // sets ->id
+$db->updateObject('#__bookings_reservations', $reservation, 'id');   // $nulls = false skips null fields
 ```
 
 Both skip array and object properties and any property whose name starts
@@ -189,7 +264,7 @@ with an underscore. `insertid()` returns the last auto-increment value.
 For anything more involved, use the [query builder](#query-builder), which
 builds and binds the statement for you.
 
-## Transactions and locks
+### Transactions and locks
 
 `transactionStart()`, `transactionCommit()` and `transactionRollback()` wrap
 the PDO equivalents. `lockTable($table)` and `unlockTables()` are available
@@ -197,7 +272,7 @@ for the cases transactions do not cover. Since the driver throws on failure,
 the natural shape is a `try`/`catch` around the body with a rollback in the
 `catch`.
 
-## Inspecting the schema
+### Inspecting the schema
 
 Migrations lean on these heavily, and so should any code that has to cope
 with more than one schema version:
@@ -217,7 +292,7 @@ with more than one schema version:
 | `dropTable($table, $ifExists = true)` | Drops a table |
 | `renameTable($old, $new)` | Renames a table |
 
-## Debugging
+### Debugging
 
 `enableDebugging()` turns on timing and statement logging;
 `disableDebugging()` turns it off again. `getLog()` returns the recorded
@@ -225,19 +300,22 @@ statements, `getCount()` the number run, and `getTimer()` the accumulated
 time. `toString()` on the driver interpolates the bound values back into the
 prepared statement, which is the fastest way to see what actually ran.
 
-## Where to go next
-
-- [Query builder](#query-builder) — building statements without SQL strings.
-- [ORM](#orm) — `Relational` models, relationships, and saving rows.
-- [Migrations](#migrations) — changing the schema in a repeatable way.
 ## Query builder
 
 [`Hubzero\Database\Query`](../../core/libraries/Hubzero/Database/Query.php)
 assembles a statement from method calls instead of string concatenation, binds
-every value it is given, and hands the result to the
-[driver](README.md). It sits between raw SQL and the
-[ORM](#orm): models forward any method they do not define themselves down to
-their query object, so everything on this page works on a model too.
+every value it is given, and hands the result to the [driver](#the-driver).
+
+Reach for it when there is no model to reach for: a report that joins tables
+belonging to three components, a `COUNT()` for a dashboard, a one-off update
+in an administrator controller. It is also the layer you are already using
+whenever you chain `whereEquals()` or `order()` onto a model, because a model
+forwards any method it does not define itself down to its own query object.
+Everything in this section therefore works unchanged on a model.
+
+The gain over a hand-built string is that every value you pass is bound, not
+interpolated, so a search box cannot become an injection, and `#__` is
+handled for you.
 
 ### Getting a query
 
@@ -258,13 +336,13 @@ $query = new \Hubzero\Database\Query($mydb);
 ```php
 $query = new \Hubzero\Database\Query;
 
-$entries = $query->select('*')
-                 ->from('#__blog_entries')
-                 ->whereEquals('scope', 'site')
-                 ->whereEquals('state', 1)
-                 ->order('publish_up', 'desc')
-                 ->limit(10)
-                 ->fetch();
+$reservations = $query->select('*')
+                       ->from('#__bookings_reservations')
+                       ->whereEquals('instrument_id', 12)
+                       ->whereEquals('state', 1)
+                       ->order('starts', 'asc')
+                       ->limit(10)
+                       ->fetch();
 ```
 
 `select($column, $as = null, $count = false)` adds one column per call. The
@@ -273,7 +351,7 @@ string `distinct` makes it `COUNT(DISTINCT …)`:
 
 ```php
 $total = $query->select('id', 'total', true)
-               ->from('#__blog_entries')
+               ->from('#__bookings_reservations')
                ->fetch('row')
                ->total;
 ```
@@ -286,10 +364,10 @@ every model query.
 #### Joins
 
 ```php
-$query->select('e.*')
-      ->select('c.title', 'category_title')
-      ->from('#__kb_articles', 'e')
-      ->join('#__categories AS c', 'e.category', 'c.id', 'left');
+$query->select('r.*')
+      ->select('i.title', 'instrument_title')
+      ->from('#__bookings_reservations', 'r')
+      ->join('#__bookings_instruments AS i', 'r.instrument_id', 'i.id', 'left');
 ```
 
 `join($table, $leftKey, $rightKey, $type = 'inner')` is the general form.
@@ -324,15 +402,15 @@ parentheses, and `resetDepth($depth)` closes back down to the given level:
 
 ```php
 $query->select('*')
-      ->from('#__blog_entries')
+      ->from('#__bookings_reservations')
       ->whereEquals('state', 1)
-      ->whereEquals('scope', 'site', 1)
-      ->orWhereEquals('scope', 'group', 1)
+      ->whereEquals('instrument_id', 12, 1)
+      ->orWhereEquals('instrument_id', 13, 1)
       ->resetDepth()
-      ->order('publish_up', 'desc');
+      ->order('starts', 'asc');
 ```
 
-That is `state = 1 AND (scope = 'site' OR scope = 'group')`.
+That is `state = 1 AND (instrument_id = 12 OR instrument_id = 13)`.
 
 #### Ordering, grouping, limiting
 
@@ -357,10 +435,10 @@ the result in one of three shapes:
 | `column` | `loadColumn()` | A flat array of the first column |
 
 ```php
-$titles = $query->select('title')
-                ->from('#__blog_entries')
-                ->whereEquals('state', 1)
-                ->fetch('column');
+$ids = $query->select('id')
+             ->from('#__bookings_reservations')
+             ->whereEquals('state', 1)
+             ->fetch('column');
 ```
 
 #### Caching
@@ -391,12 +469,12 @@ Each of these has a long form and a shortcut. The long form ends in
 
 ```php
 // Insert
-$query->insert('#__blog_entries')
-      ->values(['title' => 'Hello', 'scope' => 'site'])
+$query->insert('#__bookings_reservations')
+      ->values(['instrument_id' => 12, 'state' => 1])
       ->execute();
 
 // Shortcut: returns the new auto-increment id
-$id = $query->push('#__blog_entries', ['title' => 'Hello', 'scope' => 'site']);
+$id = $query->push('#__bookings_reservations', ['instrument_id' => 12, 'state' => 1]);
 ```
 
 `insert($table, $ignore = false)` and `push($table, $data, $ignore = false)`
@@ -404,23 +482,23 @@ both accept an `$ignore` flag that produces `INSERT IGNORE`.
 
 ```php
 // Update
-$query->update('#__blog_entries')
-      ->set(['title' => 'Hello again'])
+$query->update('#__bookings_reservations')
+      ->set(['state' => 0])
       ->whereEquals('id', 1)
       ->execute();
 
 // Shortcut
-$query->alter('#__blog_entries', 'id', 1, ['title' => 'Hello again']);
+$query->alter('#__bookings_reservations', 'id', 1, ['state' => 0]);
 ```
 
 ```php
 // Delete
-$query->delete('#__blog_entries')
+$query->delete('#__bookings_reservations')
       ->whereEquals('id', 1)
       ->execute();
 
 // Shortcut
-$query->remove('#__blog_entries', 'id', 1);
+$query->remove('#__bookings_reservations', 'id', 1);
 ```
 
 > **Note:** `remove()` returns `false` without running anything when the
@@ -442,7 +520,7 @@ interpolates the bindings back in, without executing it:
 
 ```php
 echo $query->select('*')
-           ->from('#__blog_entries')
+           ->from('#__bookings_reservations')
            ->whereEquals('state', 1);
 ```
 
@@ -465,6 +543,7 @@ method calls to its query object and qualifies bare column names in `where`
 clauses with the model's table alias. Once a model is involved you usually want
 `rows()` or `row()` rather than `fetch()`, because those return models instead
 of `stdClass`. See the [ORM](#orm).
+
 ## Migrations
 
 A migration is a small PHP class with an `up()` method and a `down()` method
@@ -472,6 +551,20 @@ that makes and reverses one change to a hub — a table, a column, an extension
 entry, a data fix. [Muse](12-muse.md) finds them, works out which
 have not run yet, runs them, and records each run in `#__migrations` so it
 never runs the same one twice.
+
+Migrations are how a schema change ships. There is no other supported way.
+An extension that needs a table creates it in a migration, not in an
+installer, not in a `.sql` file someone is told to load, and not in code that
+runs a `CREATE TABLE IF NOT EXISTS` on every request. The reason is that a
+hub is upgraded, not reinstalled: the administrator runs
+[`muse migration -f`](../reference/muse.md#muse-migration), every pending
+migration in `core`, `app` and every extension runs once in timestamp order,
+and the run is recorded. A change made any other way is a change that some
+hubs have and others do not.
+
+Write one whenever your extension needs the database to look different from
+the way it looked in the last release — including on the very first release,
+where the migration is what creates your tables and registers the extension.
 
 The runner is
 [`Hubzero\Content\Migration`](../../core/libraries/Hubzero/Content/Migration.php);
@@ -515,8 +608,12 @@ Files are run in sorted order, which is why the timestamp comes first.
 
 ### Writing one
 
-`muse scaffolding create migration -e=com_example` writes a stub from the
-template and opens it in `$EDITOR`. The result is:
+A migration does one thing and undoes it. `up()` makes the change; `down()`
+reverses it. Both halves are yours to write, and both run against a database
+whose exact state you do not know, so both start by asking.
+
+Here is the whole of the first migration `com_bookings` would ship — it
+creates the reservations table and registers the component:
 
 ```php
 <?php
@@ -527,16 +624,34 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for ...
+ * Migration script for com_bookings
  **/
-class Migration20260901120000ComExample extends Base
+class Migration20260910120000ComBookings extends Base
 {
     /**
      * Up
      **/
     public function up()
     {
-        // Changes to be made ...
+        if (!$this->db->tableExists('#__bookings_reservations'))
+        {
+            $query = "CREATE TABLE `#__bookings_reservations` (
+                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `instrument_id` int(11) unsigned NOT NULL DEFAULT 0,
+                `starts` datetime DEFAULT NULL,
+                `ends` datetime DEFAULT NULL,
+                `state` tinyint(2) NOT NULL DEFAULT 0,
+                `created` datetime DEFAULT NULL,
+                `created_by` int(11) unsigned NOT NULL DEFAULT 0,
+                PRIMARY KEY (`id`),
+                KEY `idx_instrument_id` (`instrument_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+
+        $this->addComponentEntry('bookings');
     }
 
     /**
@@ -544,29 +659,101 @@ class Migration20260901120000ComExample extends Base
      **/
     public function down()
     {
-        // Reverse the changes ...
+        $this->deleteComponentEntry('bookings');
+
+        if ($this->db->tableExists('#__bookings_reservations'))
+        {
+            $this->db->setQuery("DROP TABLE `#__bookings_reservations`");
+            $this->db->query();
+        }
     }
 }
 ```
 
-> **Note:** `-e` only decides the suffix on the class name. The file is
-> written to `core/migrations` regardless. Pass `--app` to write into `app`
-> instead, and `--install-dir=components/com_example` to put it in the
-> extension's own directory — which is where an extension's migrations
-> belong.
+Three things in there are not optional. The table is written with `#__`. The
+`up()` half checks before it creates and the `down()` half checks before it
+drops, because a migration is re-run in testing and against hubs that are
+already part-way there. And `down()` reverses `up()` in the opposite order.
 
-`muse scaffolding create migration for jos_example_things -e=com_example`
-writes the migration for you, filling `up()` with a `CREATE TABLE` taken from
-the live table, with the prefix replaced by `#__` and `AUTO_INCREMENT` reset
-to zero, and `down()` with the matching drop.
+> **Warning:** Nothing verifies that `down()` undoes `up()`. A migration with
+> an empty `down()` is recorded as reversed successfully, and the hub is left
+> with the change still applied. If a change genuinely cannot be reversed —
+> data that has been discarded — say so with
+> `$this->setError('Cannot be reversed', 'warning')` rather than leaving the
+> method blank.
+
+#### Generating the stub
+
+`muse scaffolding create migration` writes the file and opens it in
+`$EDITOR`. `-e` is required and names the extension, which must already
+exist:
+
+```bash
+php core/bin/muse scaffolding create migration -e=com_bookings \
+    --install-dir=components/com_bookings
+```
+
+The stub it writes is the class above with both methods empty:
+
+```php
+<?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+use Hubzero\Content\Migration\Base;
+
+/**
+ * Migration script for ...
+ **/
+class Migration20260910120000ComBookings extends Base
+{
+    /**
+     * Up
+     **/
+    public function up()
+    {
+    }
+
+    /**
+     * Down
+     **/
+    public function down()
+    {
+    }
+}
+```
+
+> **Note:** `-e` only decides the suffix on the class name. Without
+> `--install-dir` the file lands in `core/migrations` whatever extension you
+> named, which is not where an extension's migrations belong. `--app` writes
+> under `app` instead of `core`.
+
+The stub omits the `defined('_HZEXEC_') or die();` guard that every shipped
+migration carries. Add it.
+
+If the table already exists on your development hub, muse will write the
+migration for you. Name the table with its **real** prefix; the generator
+substitutes `#__` in what it writes:
+
+```bash
+php core/bin/muse scaffolding create migration for jos_bookings_reservations \
+    -e=com_bookings --install-dir=components/com_bookings
+```
+
+That fills `up()` with a guarded `CREATE TABLE` taken from the live table,
+with `AUTO_INCREMENT` reset to zero, and `down()` with the matching guarded
+drop.
 
 ### Working with the database
 
-`$this->db` is a [database driver](README.md). Anything the driver can do, a
+`$this->db` is a [database driver](#the-driver). Anything the driver can do, a
 migration can do:
 
 ```php
-$this->db->setQuery("ALTER TABLE `#__blog_entries` ADD `summary` TEXT");
+$this->db->setQuery("ALTER TABLE `#__bookings_reservations` ADD `notes` TEXT");
 $this->db->query();
 ```
 
@@ -684,15 +871,22 @@ is the one that ships.
 
 ### Running migrations
 
-```bash
-php core/bin/muse migration
-```
+[`muse migration`](../reference/muse.md#muse-migration) is what runs them, and
+it is the command an administrator runs after every update. Run it yourself
+before you commit, both ways, on a hub that has the change and on one that
+does not.
 
-With no options this is a dry run: it lists what would happen and changes
-nothing. Add `-f` to actually run it:
+With no options it is a **dry run**: it lists what would happen and changes
+nothing. That is the first thing to do with a migration you have just written,
+because it tells you whether the runner found the file at all — a file the
+naming rules reject is skipped in silence, and a dry run that lists nothing is
+what that looks like.
 
 ```bash
-php core/bin/muse migration -f
+php core/bin/muse migration                       # dry run: what would happen
+php core/bin/muse migration -f                    # actually do it
+php core/bin/muse migration -f -e=com_bookings    # just this extension
+php core/bin/muse migration -f -d=down -e=com_bookings   # and reverse it
 ```
 
 | Option | Effect |
@@ -710,8 +904,11 @@ php core/bin/muse migration -f
 | `--vendor` | Also search `app/vendor` packages |
 | `--email=you@example.org` | Mail the output, if any files were affected |
 
-`php core/bin/muse migration history` prints the contents of the migrations
-table, and `php core/bin/muse migration help` prints the full option list.
+[`muse migration history`](../reference/muse.md#muse-migration-history) prints
+the contents of the migrations table, and `php core/bin/muse migration help`
+prints the full option list. The
+[muse reference](../reference/muse.md#muse-migration) is generated from the
+command class.
 
 ### The migrations table
 
@@ -737,6 +934,7 @@ why running `down` before an `up` is refused, and why a `skipped` or
   migration fits into shipping an extension.
 - [Muse](12-muse.md) and the
   [migration command reference](../reference/muse.md#muse-migration).
+
 ## ORM
 
 A model that extends
@@ -747,26 +945,49 @@ not define itself, so the whole query API is available on the model. What the
 model adds on top is validation rules, automatically populated fields,
 relationships to other models, and objects instead of `stdClass` rows.
 
+This is where a new extension starts. One model per table, written once, and
+every controller, view and plugin that touches the table goes through it —
+which is what keeps the validation and the automatic `created` and
+`created_by` fields from being reimplemented, slightly differently, in each
+place that writes a row.
+
+> **Note:** `Relational` is the current ORM. The `@deprecated`
+> [`Hubzero\Database\Table`](../../core/libraries/Hubzero/Database/Table.php)
+> classes described [above](#which-layer-to-use) are what it replaced. A
+> component's `tables/` directory holds those; a component's `models/`
+> directory should hold these.
+
 ### A model
 
 The smallest useful model is a class with a namespace property:
 
 ```php
-namespace Components\Blog\Models;
+namespace Components\Bookings\Models;
 
 use Hubzero\Database\Relational;
 
-class Entry extends Relational
+class Reservation extends Relational
 {
-    protected $namespace = 'blog';
+    protected $namespace = 'bookings';
 }
 ```
 
+That alone gives you `Reservation::all()`, `Reservation::one($id)`, `save()`
+and `destroy()` against `#__bookings_reservations`.
+
 The table name is derived in the constructor as `#__` + namespace + `_` +
-the pluralised, lower-cased short class name, so `Entry` with a namespace of
-`blog` becomes `#__blog_entries`. Set `protected $table` explicitly when the
-real name does not follow that pattern. The primary key defaults to `id` and
-is changed with `protected $pk`.
+the pluralised, lower-cased short class name, so `Reservation` with a
+namespace of `bookings` becomes `#__bookings_reservations`. Set
+`protected $table` explicitly when the real name does not follow that
+pattern — and write `#__` there too. The primary key defaults to `id` and is
+changed with `protected $pk`.
+
+> **Note:** A model whose table does not exist fails at the first fetch, not
+> at construction, and the error is a `QueryFailedException` naming a table
+> you never typed. That usually means the pluralisation guessed differently
+> from your [migration](#migrations): `Reservation` gives
+> `#__bookings_reservations`, but `Status` gives `#__bookings_statuses`. Set
+> `$table` rather than arguing with it.
 
 Here is a real model's declarations — a knowledge base article:
 
@@ -803,20 +1024,24 @@ A model needing constructor work overrides `setup()` rather than
 | `->latest($limiter = 'created')` | The newest single row by that column |
 
 ```php
-use Components\Blog\Models\Entry;
+use Components\Bookings\Models\Reservation;
 
-$entries = Entry::all()
-    ->whereEquals('scope', 'site')
-    ->whereEquals('state', Entry::STATE_PUBLISHED)
+$reservations = Reservation::all()
+    ->whereEquals('instrument_id', $instrumentId)
+    ->whereEquals('state', 1)
     ->ordered()
     ->paginated()
     ->rows();
 
-foreach ($entries as $entry)
+foreach ($reservations as $reservation)
 {
-    echo $entry->title;
+    echo $reservation->starts;
 }
 ```
+
+`whereEquals()`, `ordered()` and `paginated()` in that chain are not on the
+model at all — `ordered()` and `paginated()` are, but `whereEquals()` is the
+query builder's, reached by the forwarding described above.
 
 Models implement `IteratorAggregate`, so iterating one fetches for you — but
 it iterates a *copy*, leaving the original query intact for a later call.
@@ -904,16 +1129,17 @@ write yourself; a slug generator is the usual case:
 ### Saving and deleting
 
 ```php
-$entry = Entry::oneOrNew($id);
-$entry->set([
-    'title'   => 'Release notes',
-    'content' => 'Everything that changed.',
-    'scope'   => 'site'
+$reservation = Reservation::oneOrNew($id);
+$reservation->set([
+    'instrument_id' => 12,
+    'starts'        => '2026-09-14 09:00:00',
+    'ends'          => '2026-09-14 11:00:00',
+    'state'         => 1
 ]);
 
-if (!$entry->save())
+if (!$reservation->save())
 {
-    // $entry->getError() / getErrors() explain why
+    // $reservation->getError() / getErrors() explain why
 }
 ```
 

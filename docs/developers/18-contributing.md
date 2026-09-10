@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 68f32bba55
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -85,13 +85,19 @@ contributors.
 
 ### Branches
 
-Each release line has a `X.Y-main` branch: `2.2-main`, `2.3-main`, `2.4-main`.
+Each release line has a `X.Y-main` branch. The repository carries them back to
+`1.0-main`; the recent ones are `2.2-main`, `2.3-main` and `2.4-main`.
 `2.4-main` is the current line and the repository's default branch. Point
 releases are tagged from it.
 
 Branch your work from the release line the fix belongs to, and open the pull
 request against that same branch. Give the branch a name that means something
 to you; nothing depends on it.
+
+There are also `X.Y-dev` branches — `2.4-dev`, `2.5-dev`, `3.0-dev` — carrying
+work for lines that are not released. Unless a maintainer asks you to target
+one, send a fix to `2.4-main`: a change that lands on a `-dev` branch reaches
+nobody's hub until that line ships.
 
 > **Warning:** `.github/CONTRIBUTING.md` still tells you to avoid a `master`
 > branch and to work against a stable branch. There is no `master` branch in
@@ -115,7 +121,9 @@ php tools/lint/missing-facade-imports.php
 
 Read [PHP Coding Style](19-conventions.md#checking-your-work)
 for what each of those catches and how to run phpcs usefully against a
-codebase that has no committed ruleset.
+codebase that has no committed ruleset. The suite takes about half a minute;
+[Testing](15-testing.md#running-one-test) covers running one test while you
+work on it.
 
 If you touched anything under `docs/`, rebuild the site and commit the result:
 
@@ -125,12 +133,18 @@ sh tools/docs/rebuild.sh
 
 ### What the build checks
 
-Two workflows run on every pull request.
+Three workflows run on a pull request, each on the paths it cares about. A
+pull request that touches only `docs/` runs the documentation one and nothing
+else.
 
-| Workflow | Checks |
-|---|---|
-| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php` |
-| [`pages.yml`](../../.github/workflows/pages.yml) | Runs the documentation builder's tests, regenerates `docs/reference` and fails if it differs, builds the site, checks every internal link, and fails if the committed `gh-pages/public` is stale |
+| Workflow | Runs when | Checks |
+|---|---|---|
+| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | any `*.php` changes | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php`, then `tools/lint/undefined-language-keys.php` against a ceiling |
+| [`tests.yml`](../../.github/workflows/tests.yml) | `core/**.php`, `core/phpunit.xml.dist` or the Composer files change | Installs the Composer dependencies and runs `vendor/bin/phpunit -c phpunit.xml.dist` |
+| [`pages.yml`](../../.github/workflows/pages.yml) | `docs/`, `gh-pages/` or `tools/docs/` changes | Runs the documentation builder's tests, regenerates `docs/reference` and fails if it differs, builds the site, checks every internal link, and fails if the committed `gh-pages/public` is stale |
+
+A fourth, [`dev-push.yml`](../../.github/workflows/dev-push.yml), deploys to a
+Purdue development host and is switched off.
 
 The facade check is worth understanding before it fails on you. The CMS
 registers `Route`, `User`, `Lang` and the rest as root-namespace aliases, so an
@@ -140,7 +154,15 @@ unqualified `Route::url()` inside a namespaced file resolves to
 730 of these were fixed at once; the linter keeps them from coming back. Run it
 with `--fix` to insert the missing `use` statements.
 
-Neither workflow runs phpcs. Style is caught in review.
+The language-key check is graded, not absolute. `Lang::txt()` prints the key
+when nothing defines it, and 444 keys in the tree are undefined today, so the
+workflow runs the linter with `--max=444`: the build passes at today's number
+and fails the moment your change adds one. Define the keys your change asks
+for. If you fix some existing ones, lower the ceiling in the workflow in the
+same pull request, so the count cannot creep back.
+
+No workflow runs phpcs. Style is caught in review; see
+[When the linter and the house style disagree](19-conventions.md#when-the-linter-and-the-house-style-disagree).
 
 ### The pull request
 
@@ -155,8 +177,13 @@ The [pull request template](../../.github/pull_request_template.md) asks for:
   rollout
 - a named reviewer
 
-Every pull request needs a review before it merges;
-[`CODEOWNERS`](../../.github/CODEOWNERS) requests one automatically.
+[`CODEOWNERS`](../../.github/CODEOWNERS) is a single line, `* @nkissebe`, so
+every pull request automatically requests a review from the repository's
+maintainer, whatever it touches. Whether GitHub then *blocks* the merge until
+that review arrives is branch protection, which is a repository setting and
+not a file you can read here. Write for the review either way: the template's
+testing question is the one reviewers most often have to send a pull request
+back for.
 
 Write the commit messages the way
 [Commit Messages](19-conventions.md#commit-messages) describes: an extension prefix, a

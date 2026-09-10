@@ -782,7 +782,12 @@ class Request extends BaseRequest
 					break;
 				case 'float':
 					$new_state = (string) self::_flatten('', $new_state);
-					$new_state = (float) preg_replace('/-?[0-9]+(\.[0-9]+)?/', '', $new_state);
+					// Anchored match, as getFloat() does. This was a preg_replace()
+					// that stripped the digits out and cast what was left, so every
+					// float state resolved to 0.0 whatever was submitted.
+					$new_state = preg_match('/^-?[0-9]+(\.[0-9]+)?/', trim($new_state), $m)
+						? (float) $m[0]
+						: (float) $default;
 					break;
 				case 'string':
 					$new_state = (string) self::_flatten('', $new_state);

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 68f32bba55
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -49,6 +49,17 @@ is still allowed. Everything else PSR-12 says holds.
 
 ### The three departures
 
+None of the three is a better idea than what PSR-12 asks for. They are older
+than PSR-12, they are what the tree is written in, and the cost of changing
+them is the point: reformatting 2,800 files rewrites every line of every file,
+which destroys `git blame`, turns every open pull request into a conflict, and
+buries the next real change in a diff nobody can review. The style is frozen
+because unfreezing it is expensive, not because it is right.
+
+The rule that follows from that: **match the file you are editing.** A patch
+that fixes one line and reindents the surrounding forty is a patch a reviewer
+has to read twice.
+
 #### Indent with tabs
 
 One tab per level. PSR-12 asks for four spaces; core does not use them. Of the
@@ -85,6 +96,13 @@ private members throughout — 887 methods and 718 properties under
 `core/components` and `core/libraries`. Do not add the prefix to new code;
 do not strip it from existing code either, because the name is part of the
 class's contract with its subclasses.
+
+That last part is the reason this one is not simply a tidy-up waiting to
+happen. Renaming `_sortNames()` to `sortNames()` in a base class silently
+breaks every subclass that overrides it — including subclasses in extensions
+that are not in this repository, on hubs you cannot see. PHP raises nothing;
+the override just stops being an override and the base implementation runs
+instead. The prefix stays.
 
 ### Files
 
@@ -351,17 +369,46 @@ core/vendor/bin/phpcs --standard=PSR12 --exclude=$house_style path/to/changed/fi
 
 Run it on the files you changed, not on the tree.
 
+### When the linter and the house style disagree
+
+phpcs has no committed ruleset here, so there is nothing in the repository
+that encodes the house style. `--standard=PSR12` is the closest thing
+available and it is wrong about three rules, which is why the exclude list
+above exists. When a finding and this page disagree:
+
+1. **The three departures win.** Tabs, braces on their own line, and a
+   leading underscore on an existing non-public member are the house style.
+   phpcs is not configured to know that. Exclude the sniff, do not change the
+   code.
+2. **Everything else, phpcs wins.** Trailing whitespace, a missing visibility
+   modifier, a space before a comma, `else if` for `elseif` — fix those. They
+   are PSR-12 and they are also what this page asks for.
+3. **The file you are in wins over both, for anything cosmetic.** A file
+   already written with four-space indentation or `[]` arrays stays that way.
+   Consistency inside one file beats consistency across the tree, because the
+   reader is looking at one file.
+4. **When it is still not clear, leave it.** A style question that needs a
+   decision is not worth holding a fix for. Say in the pull request that you
+   left it and why; a reviewer can settle it in one comment.
+
+Do not add a ruleset to the repository as part of an unrelated change. A
+committed `phpcs.xml` would decide the house style for everyone, and that is
+its own pull request with its own discussion.
+
 ### What the build checks
 
-Two GitHub Actions workflows run on every pull request.
+Three GitHub Actions workflows run on a pull request, each on the paths it
+cares about.
 
 | Workflow | Checks |
 |---|---|
-| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php` |
+| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php`, then `tools/lint/undefined-language-keys.php` against a ceiling of 444 |
+| [`tests.yml`](../../.github/workflows/tests.yml) | The PHPUnit suite, for a change under `core` |
 | [`pages.yml`](../../.github/workflows/pages.yml) | Builds the documentation, regenerates `docs/reference`, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 
-Neither runs phpcs. A style problem is caught in review, not by the build; a
-missing facade import and a syntax error are caught by the build.
+None of them runs phpcs. A style problem is caught in review, not by the
+build. A syntax error, a missing facade import, a language key nothing
+defines, and a broken test are caught by the build.
 
 ## PHP Naming Conventions
 

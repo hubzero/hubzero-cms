@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -174,15 +176,26 @@
 the settings an administrator can change; <code>access.xml</code> declares the things a
 group can be allowed to do. Neither is required, and a component with no
 settings and no permissions of its own needs neither.</p>
-<pre><code>core/components/com_kb/
+<pre><code>app/components/com_bookings/
     config/
         config.xml
         access.xml
 </code></pre>
+<p>Declare a parameter when a hub will reasonably want a different value from
+yours — how far ahead <code>com_bookings</code> lets people book, whether a reservation
+needs approval. Do not declare one for every constant in the component: each
+is a screen an administrator has to understand, and a value your code has to
+keep working for.</p>
+<p>Permissions are the other half. Anything a lab manager may do and a user may
+not is an action in <code>access.xml</code>, checked with <code>User::authorise()</code>. A
+component that decides by checking <code>User::get('username')</code> against a list has
+made a rule no hub can change.</p>
 <h2 id="config-xml"><code>config.xml</code></h2>
-<p>The root element is <code>&lt;config&gt;</code>. Each <code>&lt;fieldset&gt;</code> becomes a tab on the
-component's Options screen, and each <code>&lt;field&gt;</code> becomes a control. <code>com_kb</code>'s is
-short enough to read whole:</p>
+<p>The root element is <code>&lt;config&gt;</code>, with <code>&lt;fieldset&gt;</code> children directly inside it
+— not wrapped in a <code>&lt;fields&gt;</code> element the way a module or plugin manifest
+wraps them. Each <code>&lt;fieldset&gt;</code> becomes a tab on the component's Options screen,
+and each <code>&lt;field&gt;</code> becomes a control. <code>com_kb</code>'s is short enough to read
+whole:</p>
 <pre><code class="language-xml">&lt;config&gt;
 	&lt;fieldset name=&quot;basic&quot;&gt;
 		&lt;field name=&quot;show_date&quot; type=&quot;list&quot; default=&quot;2&quot; label=&quot;COM_KB_SHOW_DATE_LABEL&quot; description=&quot;COM_KB_SHOW_DATE_DESC&quot;&gt;
@@ -218,8 +231,10 @@ short enough to read whole:</p>
 &lt;/config&gt;
 </code></pre>
 <p><code>label</code> and <code>description</code> are language keys, resolved from the component's
-administrator language file. Write them as keys, not as English — a hub
-running in another language sees whatever you put there.</p>
+<strong>administrator</strong> language file — the Options screen runs in the administrator
+client. Write them as keys, not as English; a hub running in another language
+sees whatever you put there. A key defined only in <code>site/language/</code> renders on
+the Options screen as itself. See <a href="../languages/index.html">Languages</a>.</p>
 <p>Field <code>type</code> names a class in <code>core/libraries/Hubzero/Form/Fields</code> —
 <code>text</code>, <code>textarea</code>, <code>radio</code>, <code>checkboxes</code>, <code>number</code>, <code>password</code>, <code>filelist</code>,
 <code>folderlist</code>, <code>accesslevel</code>, <code>usergroup</code>, <code>editor</code>, <code>tags</code>, and about thirty
@@ -227,19 +242,26 @@ more. <code>list</code> is the exception: PHP will not allow a class called <cod
 form aliases it to <code>Select</code>. A <code>list</code> carries <code>&lt;option&gt;</code> children whose bodies
 are language keys too.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> A <code>type</code> the form cannot resolve falls back to <code>text</code> silently. A
-misspelled type shows up as a plain text box, not as an error.</p>
+<p><strong>Note:</strong> A <code>type</code> the form cannot resolve falls back to <code>text</code> silently.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Form/Form.php"><code>Form::loadField()</code></a> calls
+<code>loadFieldType('text')</code> when the named class is not found, so a misspelled
+type shows up as a plain text box, not as an error — and an administrator
+then types free text into what should have been a drop-down. Check the name
+against <code>core/libraries/Hubzero/Form/Fields</code>; the full list is in
+<a href="../../extensions/parameters/index.html#field-types">Parameters</a>.</p>
 </aside>
 <p>The last fieldset is the same in every component that has permissions:</p>
 <pre><code class="language-xml">&lt;fieldset name=&quot;permissions&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; description=&quot;JCONFIG_PERMISSIONS_DESC&quot;&gt;
     &lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot;
            class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot;
-           component=&quot;com_kb&quot; section=&quot;component&quot; /&gt;
+           component=&quot;com_bookings&quot; section=&quot;component&quot; /&gt;
 &lt;/fieldset&gt;
 </code></pre>
 <p>The <code>rules</code> field reads <code>access.xml</code> for the component named in its
 <code>component</code> attribute and renders the permission grid. Change the component
-name when you copy this block.</p>
+name when you copy this block — leave <code>com_kb</code> in it and the administrator
+edits the knowledge base's permissions from your Options screen, which is a
+bug nobody notices until the wrong people can do the wrong thing.</p>
 <p><code>com_config</code> reads <code>config.xml</code> from <code>{component path}/config/config.xml</code>, and
 the administrator reaches the form from the toolbar:</p>
 <pre><code class="language-php">Toolbar::preferences($this-&gt;option, '550');
@@ -317,25 +339,34 @@ component that only needs the standard actions writes no new strings.</p>
 </table>
 <p>Check them with <code>User::authorise()</code>, against the component or against one
 record:</p>
-<pre><code class="language-php">User::authorise('core.manage', 'com_kb');          // the component
-User::authorise('core.edit', 'com_kb.article.42'); // one article
+<pre><code class="language-php">User::authorise('core.manage', 'com_bookings');             // the component
+User::authorise('core.edit', 'com_bookings.instrument.42'); // one instrument
 </code></pre>
+<p>The component-level asset those checks hang off is created by
+<code>addComponentEntry()</code> in the migration. Without it there is no row to consult
+and no permissions to edit — see <a href="../migrations/index.html">Migrations</a>. Per-record
+assets are a component's own business; most components only check at
+component level and keep record ownership in a <code>created_by</code> column.</p>
 <p><code>com_kb</code> wraps the component-level checks in a helper so its views can ask
 once and reuse the answer — see <a href="../helpers/index.html">Helpers</a>.</p>
 <h2 id="reading-settings-back">Reading settings back</h2>
 <p><code>Component::params()</code> returns a <code>Hubzero\Config\Registry</code>:</p>
-<pre><code class="language-php">$params = Component::params('com_kb');
+<pre><code class="language-php">$params = Component::params('com_bookings');
 
-echo $params-&gt;get('feed_entries', 'partial');
+echo $params-&gt;get('max_days_ahead', 30);
 </code></pre>
 <p>Inside a controller the same registry is already on hand as <code>$this-&gt;config</code>,
 set by the constructor.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The registry holds only what is stored in the component's
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The registry holds only what is stored in the component's
 <code>#__extensions</code> row. The <code>default</code> attributes in <code>config.xml</code> are used to
 populate the <em>form</em>, not the registry, so until an administrator opens
-Options and saves, every setting is absent. Always pass a default to <code>get()</code>
-— and make it the same value as the one in <code>config.xml</code>.</p>
+Options and saves, every setting is absent and <code>get()</code> returns its second
+argument — or <code>null</code> if you did not pass one. On a freshly installed
+component that means <code>(int) $params-&gt;get('max_days_ahead')</code> is <code>0</code>, and a
+loop bounded by it does nothing at all. Always pass a default in code, and
+make it the same value as the one in <code>config.xml</code>. A migration can seed the
+column instead, with the <code>saveParams</code> macro.</p>
 </aside>
 <h2 id="per-record-settings">Per-record settings</h2>
 <p>A record may carry its own parameters in a <code>params</code> column, overriding the
@@ -344,19 +375,23 @@ component's for that record alone. <code>com_kb</code>'s <code>Article</code> me
 value came from:</p>
 <pre><code class="language-php">$params = new Registry($this-&gt;get('params'));
 
-$this-&gt;params = Component::params('com_kb');
+$this-&gt;params = Component::params('com_bookings');
 $this-&gt;params-&gt;merge($params);
 </code></pre>
+<p>Merge in that direction — component first, record over the top — or a record
+with an empty <code>params</code> column wipes out the component's settings for that
+record.</p>
 <h2 id="the-manifest-block">The manifest <code>&lt;params&gt;</code> block</h2>
 <p><code>kb.xml</code> and other component manifests still carry a <code>&lt;params&gt;</code> element
-listing settings in an older format. It is not what the Options screen reads —
-that is <code>config.xml</code>. <code>com_kb</code>'s administrator edit form does still parse the
+listing settings in an older format. It is inherited, and it is not what the
+Options screen reads — that is <code>config.xml</code>. A setting added to <code>&lt;params&gt;</code>
+never appears anywhere. <code>com_kb</code>'s administrator edit form does still parse the
 manifest, through <code>Hubzero\Html\Parameter</code>, to render the per-article
 parameter controls. Do not add one to a new component; put the settings in
 <code>config.xml</code> and the per-record form fields in <code>models/forms/</code>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../routing/index.html" rel="prev"><span>Previous</span>Routing</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/10-configuration.md">Edit this page on GitHub</a>

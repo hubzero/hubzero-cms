@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -96,6 +98,7 @@
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Migrations</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#why-this-comes-first">Why this comes first</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-they-go">Where they go</a></li>
 <li class="toc__item toc__item--l2"><a href="#three-migrations-not-one">Three migrations, not one</a></li>
 <li class="toc__item toc__item--l3"><a href="#registering-the-component">Registering the component</a></li>
@@ -179,21 +182,48 @@ the component changes.</p>
 <p>This page covers what a component's migrations do. The mechanics — naming,
 the runner, logging, hooks, and the full macro list — are in
 <a href="../../database/index.html#migrations">Migrations</a> under Database.</p>
+<h2 id="why-this-comes-first">Why this comes first</h2>
+<p><strong>The migration is the installer.</strong> There is no other one. No package
+installer reads an XML manifest and creates anything from it; the
+<strong>Install</strong>, <strong>Update</strong>, <strong>Discover</strong> and <strong>Database</strong> screens do not exist in
+this release (see
+<a href="../../extensions/deployext/index.html">Deploying extensions</a>). Code arrives as a
+directory, by <code>git</code> or by hand, and then a migration is run against it.</p>
+<p>That makes the first migration you write the one that decides whether the
+hub can see the component at all. Its failure mode is quiet and confusing:</p>
+<ul>
+<li><code>/index.php?option=com_bookings</code> renders. The component <em>works</em>.</li>
+<li><strong>Components</strong> in the administrator menu does not list it.</li>
+<li><code>Component::params('com_bookings')</code> returns an empty registry, so every
+setting silently falls back to whatever second argument you passed
+<code>get()</code> — or to <code>null</code> if you passed none.</li>
+<li><code>User::authorise('core.manage', 'com_bookings')</code> has no asset row to consult.</li>
+</ul>
+<p>The component runs because
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Loader.php"><code>Hubzero\Component\Loader::load()</code></a>
+manufactures a default record with <code>enabled</code> set to 1 when the query finds no
+row. Everything stored <em>against</em> the row is what you lose.</p>
 <h2 id="where-they-go">Where they go</h2>
-<pre><code>core/components/com_kb/
+<pre><code>app/components/com_bookings/
     migrations/
-        Migration20170831000000ComKb.php
-        Migration20170901000000ComKb.php
-        Migration20190221000000ComKb.php
+        Migration20260901000000ComBookings.php   register the component
+        Migration20260901000100ComBookings.php   create the tables
+        Migration20260901000200ComBookings.php   seed the instruments
 </code></pre>
 <p>The file name is <code>Migration</code> + a fourteen-digit timestamp + the component name
 in studly case with <code>com_</code> expanded to <code>Com</code>. The class name matches the file
 name exactly. Files run in sorted order, so the timestamp decides the
 sequence.</p>
+<p>The runner finds them without being told. On construction
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration.php"><code>Hubzero\Content\Migration</code></a>
+scans <code>core/</code> and <code>app/</code> and every directory under their <code>components</code>,
+<code>modules</code>, <code>templates</code> and <code>plugins</code> trees, and adds any that has a
+<code>migrations</code> subdirectory. A component dropped into <code>app/components/</code> is
+picked up on the next run.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> <code>muse scaffolding create migration -e=com_example</code> writes the stub
+<p><strong>Note:</strong> <code>muse scaffolding create migration -e=com_bookings</code> writes the stub
 into <code>core/migrations</code>, not into the component. Add
-<code>--install-dir=components/com_example</code> to put it where it belongs.</p>
+<code>--install-dir=components/com_bookings</code> to put it where it belongs.</p>
 </aside>
 <h2 id="three-migrations-not-one">Three migrations, not one</h2>
 <p>Convention splits installation into three files: register the component,
@@ -202,8 +232,8 @@ could do all three — but keeping them apart lets you re-run a piece without
 re-running the rest, and makes each <code>down()</code> obvious.</p>
 <h3 id="registering-the-component">Registering the component</h3>
 <p><code>addComponentEntry()</code> writes the <code>#__extensions</code> row, creates the asset row
-that permissions hang off, and adds the administrator menu entry. It is the
-whole of <code>com_kb</code>'s first migration:</p>
+that permissions hang off, and adds the administrator menu entry. That one
+call is the whole of the first migration. <code>com_kb</code>'s is the pattern to copy:</p>
 <pre><code class="language-php">use Hubzero\Content\Migration\Base;
 
 // No direct access
@@ -231,13 +261,37 @@ class Migration20170831000000ComKb extends Base
 	}
 }
 </code></pre>
-<p>The <code>com_</code> prefix is optional; <code>addComponentEntry('kb')</code> and
-<code>addComponentEntry('com_kb')</code> do the same thing. The full signature is
+<p><code>com_bookings</code> is the same file with the name changed:</p>
+<pre><code class="language-php">use Hubzero\Content\Migration\Base;
+
+defined('_HZEXEC_') or die();
+
+class Migration20260901000000ComBookings extends Base
+{
+	public function up()
+	{
+		$this-&gt;addComponentEntry('bookings');
+	}
+
+	public function down()
+	{
+		$this-&gt;deleteComponentEntry('bookings');
+	}
+}
+</code></pre>
+<p>The <code>com_</code> prefix is optional; <code>addComponentEntry('bookings')</code> and
+<code>addComponentEntry('com_bookings')</code> do the same thing. The full signature is
 <code>addComponentEntry($name, $option = null, $enabled = 1, $params = '', $createMenuItem = true)</code>,
 so pass <code>false</code> as the fifth argument for a component that should not appear in
 the administrator's Components menu.</p>
 <p><code>deleteComponentEntry()</code> in <code>down()</code> removes the extension row, the asset row,
 and the menu entry.</p>
+<p>The macros are the way to do this. Writing the <code>INSERT</code> yourself is the older
+route, and it goes wrong in ways that are hard to see: a missing asset row, a
+menu entry with no place in the nested set, a second row when you re-run.
+<code>addComponentEntry()</code> sets everything the loaders read and is safe to run
+twice. The same is true of <code>addModuleEntry()</code>, <code>addPluginEntry()</code> and
+<code>addTemplateEntry()</code> for the other kinds.</p>
 <h3 id="creating-the-tables">Creating the tables</h3>
 <p><code>$this-&gt;db</code> is a full database driver. Guard every statement so the migration
 can run against a hub that already has the table:</p>
@@ -278,42 +332,48 @@ can run against a hub that already has the table:</p>
 </code></pre>
 <p><code>com_kb</code> repeats that block for <code>#__kb_comments</code> and <code>#__kb_votes</code>, and its
 <code>down()</code> drops all three. Table names use the <code>#__</code> prefix placeholder, which
-the driver expands to the hub's configured prefix.</p>
-<p>Name tables after the component: <code>#__kb_articles</code>, <code>#__blog_entries</code>. The ORM
-depends on it — a <code>Relational</code> model with <code>protected $namespace = 'kb'</code> and
-the class name <code>Article</code> resolves to <code>#__kb_articles</code> without being told. See
+the driver expands to the hub's configured prefix. Writing <code>jos_</code> or <code>hub_</code>
+into a migration hard-codes one hub's prefix into every other hub — see
+<a href="../../database/index.html">the prefix</a>.</p>
+<p>Name tables after the component: <code>#__bookings_instruments</code>,
+<code>#__bookings_reservations</code>. The ORM depends on it — a <code>Relational</code> model with
+<code>protected $namespace = 'bookings'</code> and the class name <code>Reservation</code> resolves
+to <code>#__bookings_reservations</code> without being told. Get the plural wrong in the
+migration and the model looks for a table that is not there. See
 <a href="../models/index.html">Models</a>.</p>
 <h3 id="seeding-data">Seeding data</h3>
 <p>A data migration checks whether its rows are already there before inserting,
 the same way a table migration checks for its table:</p>
 <pre><code class="language-php">public function up()
 {
-    if (!$this-&gt;db-&gt;tableExists('#__example_entries'))
-    {
-        return;
-    }
+	if (!$this-&gt;db-&gt;tableExists('#__bookings_instruments'))
+	{
+		return;
+	}
 
-    $this-&gt;db-&gt;setQuery(
-        &quot;SELECT `id` FROM `#__example_entries` WHERE `alias`='sample'&quot;
-    );
+	$this-&gt;db-&gt;setQuery(
+		&quot;SELECT `id` FROM `#__bookings_instruments` WHERE `alias`='confocal'&quot;
+	);
 
-    if ($this-&gt;db-&gt;loadResult())
-    {
-        return;
-    }
+	if ($this-&gt;db-&gt;loadResult())
+	{
+		return;
+	}
 
-    $now = with(new \Hubzero\Utility\Date('now'))-&gt;toSql();
+	$now = with(new \Hubzero\Utility\Date('now'))-&gt;toSql();
 
-    $this-&gt;db-&gt;setQuery(
-        &quot;INSERT INTO `#__example_entries`
-         (`title`, `alias`, `content`, `created`, `created_by`, `state`, `access`)
-         VALUES ('Sample', 'sample', 'Sample content!', &quot;
-         . $this-&gt;db-&gt;quote($now) . &quot;, 1000, 1, 1)&quot;
-    );
-    $this-&gt;db-&gt;query();
+	$this-&gt;db-&gt;setQuery(
+		&quot;INSERT INTO `#__bookings_instruments`
+		 (`title`, `alias`, `created`, `created_by`, `state`, `access`)
+		 VALUES ('Confocal microscope', 'confocal', &quot;
+		 . $this-&gt;db-&gt;quote($now) . &quot;, 1000, 1, 1)&quot;
+	);
+	$this-&gt;db-&gt;query();
 }
 </code></pre>
 <p><code>down()</code> deletes the same rows by the same criteria.</p>
+<p>Seed only what the component cannot work without. Sample content that a hub
+then has to delete is worse than none.</p>
 <h2 id="changing-an-existing-schema">Changing an existing schema</h2>
 <p>Everything after the install migrations is maintenance, and it follows the
 same rule: check first, then change. <code>com_kb</code>'s third migration converts its
@@ -365,24 +425,39 @@ and checks both the table and the column before touching either:</p>
 </code></pre>
 <p>The three checks worth knowing are <code>tableExists()</code>, <code>tableHasField()</code>, and
 <code>tableHasKey()</code>.</p>
+<p>Never edit a migration that has run anywhere. <code>#__migrations</code> records it as
+done, so the edit will never be applied on the hubs that already have it, and
+the two hubs drift apart with nothing to show for it. Add another migration
+instead.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Write <code>down()</code> even when you do not expect to use it. It is the
 only description of what the migration changed that a later reader can trust,
 and <code>muse migration -d=down</code> rolls a hub back with it.</p>
 </aside>
 <h2 id="running-them">Running them</h2>
-<pre><code class="language-bash">php core/bin/muse migration                    # dry run: what would happen
-php core/bin/muse migration -f                 # actually run it
-php core/bin/muse migration -f -e=com_kb       # only this component
-php core/bin/muse migration -f -d=down -e=com_kb   # roll it back
+<pre><code class="language-bash">php core/bin/muse migration                          # dry run: what would happen
+php core/bin/muse migration -f                       # actually run it
+php core/bin/muse migration -f -e=com_bookings       # only this component
+php core/bin/muse migration -f -d=down -e=com_bookings   # roll it back
 </code></pre>
+<p>Run the dry form first. It prints the files it would execute, which is also
+the quickest way to find out that it can see none of yours.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>-e</code> matches on the <strong>class name suffix</strong>, not on the
+directory. <code>-e=com_bookings</code> is turned into <code>ComBookings</code> and matched against
+<code>/Migration[0-9]{14}ComBookings\.php/</code>. A file named
+<code>Migration20260901000000Bookings.php</code>, or <code>...ComBooking.php</code>, is in the
+right directory and is skipped without comment — the runner reports nothing
+to do. The same option also validates the extension against
+<code>^com_[[:alnum:]]+$</code>, so a name with a second underscore is refused outright.</p>
+</aside>
 <p>Every migration that runs is recorded in <code>#__migrations</code>, so a second run is a
 no-op. That is a record, not a guarantee: a hub restored from a backup or an
 extension copied between hubs can present a migration with a schema it did not
 expect, which is why the existence checks matter.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="../structure/index.html" rel="next"><span>Next</span>Structure</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/01-migrations.md">Edit this page on GitHub</a>

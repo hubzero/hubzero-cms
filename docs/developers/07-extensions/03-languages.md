@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions/languages
@@ -15,6 +15,12 @@ This page covers what an extension has to ship: which files, where, named
 what, with keys named how. [Languages](../05-basics/04-languages.md) covers the
 `Lang` API — `txt()`, `txts()`, plurals, overrides — and is the page to read
 before writing view code.
+
+Two reasons to bother, even on a hub that will only ever run in English. A hub
+can reword any string your extension shows without editing your code, so an
+administrator who dislikes your wording does not end up with a local patch
+that the next update destroys. And a sentence in a file is a sentence someone
+can find; a sentence in a layout is not.
 
 ## The files
 
@@ -31,9 +37,27 @@ core/plugins/system/debug/language/en-GB/en-GB.plg_system_debug.ini
 core/templates/kimera/language/en-GB/en-GB.tpl_kimera.ini
 ```
 
-A component has one file per face, because the administrator interface and
-the site need different strings and there is no reason to load both. A
-module, plugin or template has one.
+A component has one file per face, and **only the face that is running is
+loaded**. The site loads `site/language/{tag}/{tag}.com_bookings.ini`; the
+administrator loads `admin/language/{tag}/{tag}.com_bookings.ini` plus the
+`.sys.ini` beside it. `Component::render()` builds the path from
+`PATH_COMPONENT`, which is the component directory plus the current client,
+so the other file is never read. A module, plugin or template has one file,
+because it has one face.
+
+> **Warning:** A string both faces use has to be defined in **both** files.
+> Nothing merges them and nothing warns. Define
+> `COM_BOOKINGS_RESERVATION_SAVED` in `site/language/` only, and the
+> administrator screen that saves a reservation displays the literal text
+> `COM_BOOKINGS_RESERVATION_SAVED` — while `grep -r` across the tree finds the
+> key defined and looks entirely correct. When a key renders as itself, the
+> first question is not *is it defined* but *is it defined in the file this
+> client loads*.
+
+The same rule decides where a parameter's `label` goes: an extension's
+settings screen runs in the administrator client, so the labels in a
+component's `config/config.xml` are resolved from its **administrator** file
+even though the parameter may only be read by site code.
 
 The tag is a language and a region joined by a **hyphen**, following
 [BCP 47](https://www.rfc-editor.org/info/bcp47): `en-GB`, `en-US`, `fr-FR`,
@@ -60,7 +84,12 @@ en-GB.plg_system_debug.sys.ini
 
 Put the extension's `<name>` and `<description>` keys — the ones its XML
 manifest refers to — in there, and everything else in the ordinary file.
-Ship a `.sys.ini` for any extension an administrator will see listed.
+Ship a `.sys.ini` for any extension an administrator will see listed. Leave it
+out and your extension appears in those lists as `COM_BOOKINGS`, which is
+correct behaviour and looks like a bug.
+
+For a component the `.sys.ini` belongs in the **administrator** language
+directory, because that is the client doing the listing.
 
 ### Declaring them in the manifest
 
@@ -77,6 +106,10 @@ The manifest lists the files, per face:
 	</languages>
 </administration>
 ```
+
+Like the `<files>` block, this list is inherited from a package installer that
+no longer exists. Files are found by path, not by this declaration, so an
+omission here breaks nothing and a listing here fixes nothing.
 
 ## Writing the file
 
@@ -151,7 +184,9 @@ You rarely load one yourself:
 - `Hubzero\Module\Loader` loads a module's file before the module renders.
 - A **plugin's file is not loaded automatically.** Set
   `protected $_autoloadLanguage = true;` on the plugin class, or call
-  `$this->loadLanguage()` before you translate anything.
+  `$this->loadLanguage()` before you translate anything. Forget it and every
+  string the plugin shows renders as its key — the same symptom as a missing
+  definition, from an entirely different cause.
 
 ## Checking your work
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Direct database access · Developers · Hubzero Documentation</title>
-  <meta name="description" content="How to reach a hub&#x27;s database from the command line, and the one convention that will confuse you if nobody tells you about it: the table prefix. The…">
+  <meta name="description" content="How to reach a hub&#x27;s database from the command line, and the one convention that will confuse you if nobody tells you about it: the table prefix. You will want…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/databaseaccess/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,9 +58,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -171,6 +173,11 @@
         <div class="prose">
 <p>How to reach a hub's database from the command line, and the one convention
 that will confuse you if nobody tells you about it: the <code>#__</code> table prefix.</p>
+<p>You will want a <code>mysql</code> prompt sooner than you expect — to see what a
+migration actually did, or what a form saved. Read this before you write a
+query into an extension, because the prefix rule is not optional and the
+mistake it prevents does not show up until someone installs your work on a
+hub configured differently from yours.</p>
 <h2 id="the-credentials">The credentials</h2>
 <p>A hub keeps its database credentials in <code>app/config/database.php</code>, which
 returns a plain PHP array:</p>
@@ -216,6 +223,10 @@ the statement goes out:</p>
 </code></pre>
 <p>So <code>#__users</code> in a query is <code>jos_users</code> in the database, and a query with a
 literal <code>jos_</code> in it is a bug: it breaks on any hub whose prefix differs.
+It will not break on yours, which is the problem — the failure arrives on
+somebody else's hub as <code>Table 'theirdb.jos_booking_instruments' doesn't exist</code>, naming a prefix they have never used. Copying a working statement
+out of a <code>mysql</code> prompt and into a model is how it happens; put the <code>#__</code>
+back on the way in.
 The same placeholder is the default table name a model derives for itself —
 <code>#__{namespace}_{plural model name}</code> — so a <code>Post</code> model in the <code>blog</code>
 namespace reads and writes <code>#__blog_posts</code> without being told to.</p>
@@ -246,7 +257,7 @@ changes belong in a migration, not in a <code>mysql</code> prompt — a change m
 hand is a change the next hub to run the migrations will not have.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../fileaccess/index.html" rel="prev"><span>Previous</span>Accessing files</a><a class="pager__next" href="../upgrade/index.html" rel="next"><span>Next</span>Upgrade guide</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/03-databaseaccess.md">Edit this page on GitHub</a>

@@ -1,22 +1,27 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/components/routing
 -->
 # Routing
+
+A router exists to make a component's URLs readable and stable. Nothing else
+depends on it: a component with no router works, and its URLs are query
+strings. Write one when the URLs will be shared, bookmarked or printed on a
+lab door, and skip it while you are still deciding what the screens are.
 
 Every component is reachable by query string: `option` names it, and
 everything else is a request variable.
 
 ```
-https://yourhub.org/index.php?option=com_kb&task=category&categoryAlias=printing
+https://yourhub.org/index.php?option=com_bookings&task=view&instrument=confocal
 ```
 
 With search engine friendly URLs turned on the same request looks like this:
 
 ```
-https://yourhub.org/kb/printing
+https://yourhub.org/bookings/confocal
 ```
 
 The first path segment identifies the component; if no component matches, the
@@ -28,9 +33,10 @@ URLs.
 ## Where the router goes
 
 `Component::router()` looks for a class named
-`Components\{Name}\{Client}\Router`, so `com_kb`'s site router is
-`Components\Kb\Site\Router`. If the class is not already loaded it tries these
-files, in order, and includes the first that exists:
+`Components\{Name}\{Client}\Router`, so `com_bookings`'s site router is
+`Components\Bookings\Site\Router` in `site/router.php`. If the class is not
+already loaded it tries these files, in order, and includes the first that
+exists:
 
 1. `{component}/{client}/routerv{version}.php`, when a version was requested;
 2. `{component}/{client}/router.php`;
@@ -42,10 +48,55 @@ and they parse quite different URLs.
 The class must implement
 [`Hubzero\Component\Router\RouterInterface`](../../../core/libraries/Hubzero/Component/Router/RouterInterface.php) —
 this is checked by reflection, and a class that does not is ignored without
-comment. Extending
+comment. **That is the failure to know about.** A router with a typo in the
+class name, in the wrong namespace, or implementing nothing is not an error:
+`Component::router()` falls through to a generic router, `Route::url()` keeps
+returning query-string URLs, and the only symptom is that your pretty URLs
+never appeared.
+
+Extending
 [`Hubzero\Component\Router\Base`](../../../core/libraries/Hubzero/Component/Router/Base.php)
 satisfies the interface and supplies a pass-through `preprocess()`, leaving you
-two methods to write.
+two methods to write:
+
+```php
+namespace Components\Bookings\Site;
+
+use Hubzero\Component\Router\Base;
+
+class Router extends Base
+{
+	public function build(&$query)
+	{
+		$segments = array();
+
+		if (isset($query['instrument']))
+		{
+			$segments[] = $query['instrument'];
+			unset($query['instrument']);
+		}
+
+		return $segments;
+	}
+
+	public function parse(&$segments)
+	{
+		$vars = array();
+
+		if (count($segments) > 0)
+		{
+			$vars['instrument'] = $segments[0];
+		}
+
+		return $vars;
+	}
+}
+```
+
+`build()` and `parse()` have to be exact inverses. When they are not, a URL
+the component generated does not come back as the request that generated it —
+usually as a listing where a record was expected, because the missing variable
+simply defaults.
 
 ## `build()`
 
@@ -68,6 +119,10 @@ only one. So:
 Route::url('index.php?option=com_kb&category=printing&alias=duplex');
 // -> /kb/printing/duplex
 ```
+
+Anything `build()` does not `unset()` reappears as a query string on the end
+of the pretty URL. A router that forgets one `unset()` produces
+`/bookings/confocal?instrument=confocal`, which works and looks broken.
 
 ## `parse()`
 
@@ -132,8 +187,16 @@ Never assemble a component URL by hand. `Route::url()` runs `preprocess()`,
 then `build()`, then adds the base path and whatever is left of the query:
 
 ```php
-$url = Route::url('index.php?option=com_kb&category=' . $category . '&alias=' . $alias);
+$url = Route::url('index.php?option=com_bookings&instrument=' . $instrument->alias);
 ```
 
-Pass `false` as the second argument for an unencoded URL — the administrator
-uses that form when the result goes into a redirect rather than into markup.
+Pass `false` as the second argument for an unencoded URL. The default encodes
+`&` as `&amp;`, which is what markup wants and what an HTTP `Location` header
+does not: an encoded redirect target arrives with a literal `amp;` glued to
+the front of the next variable name, and the receiving task sees neither
+variable. Use `Route::url($url, false)` in every redirect.
+
+Hand-assembled URLs break in a different way. They ignore `preprocess()`, so
+they lose the `Itemid` — and a URL without one is routed against whatever menu
+item the application guesses, which changes the template, the module
+positions, and sometimes the breadcrumb.

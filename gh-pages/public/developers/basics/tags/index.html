@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tags · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Tags are free text a member attaches to something — a resource, a wiki page, a blog entry, another member. Any component can offer them, and they all share one…">
+  <meta name="description" content="Tags are free text a member attaches to something — a resource, a wiki page, a booking, another member. Any component can offer them, and they all share one…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/tags/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -171,9 +173,27 @@
         
         <div class="prose">
 <p>Tags are free text a member attaches to something — a resource, a wiki page,
-a blog entry, another member. Any component can offer them, and they all
-share one vocabulary, so a tag applied to a resource and the same tag
-applied to a group are the same tag and lead to the same page.</p>
+a booking, another member. Any component can offer them, and they all share
+one vocabulary, so a tag applied to a resource and the same tag applied to a
+group are the same tag and lead to the same page.</p>
+<p>You do not build this yourself. Adding tags to a component is one small
+class and two calls:</p>
+<pre><code class="language-php">// core/components/com_bookings/models/tags.php
+namespace Components\Bookings\Models;
+
+class Tags extends \Components\Tags\Models\Cloud
+{
+    protected $_scope = 'bookings';
+}
+</code></pre>
+<pre><code class="language-php">// saving
+$cloud = new Tags($instrument-&gt;get('id'));
+$cloud-&gt;setTags(Request::getString('tags', ''), User::get('id'));
+
+// displaying
+echo $cloud-&gt;render();
+</code></pre>
+<p>Everything else on this page is detail around those two calls.</p>
 <h2 id="how-they-are-stored">How they are stored</h2>
 <p>Two tables. <code>#__tags</code> holds the vocabulary, one row per distinct tag:</p>
 <table>
@@ -276,14 +296,20 @@ class Tags extends Cloud
 	protected $_scope = 'blog';
 }
 </code></pre>
-<p>Pick a scope name once and never change it; existing rows are found by it.
-Every component in the tree that tags anything has a <code>models/tags.php</code> of
+<p>Pick a scope name once and never change it. <code>#__tags_object</code> rows are found
+by <code>tbl</code>, so renaming a scope does not migrate anything: every existing tag
+on every existing record silently stops being found, and the records look as
+though they were never tagged. Nothing errors.</p>
+<p>Do not reuse another component's scope either. Two components sharing a
+scope means record 12 in yours and record 12 in theirs carry each other's
+tags.</p>
+<p>Every component in the tree that tags anything has a <code>models/tags.php</code> of
 this shape.</p>
 <h2 id="reading-and-writing">Reading and writing</h2>
 <p>Construct it with the id of the object being tagged:</p>
-<pre><code class="language-php">use Components\Blog\Models\Tags;
+<pre><code class="language-php">use Components\Bookings\Models\Tags;
 
-$cloud = new Tags($entry-&gt;get('id'));
+$cloud = new Tags($instrument-&gt;get('id'));
 </code></pre>
 <p><code>Cloud::__construct($scope_id = 0, $scope = '')</code> also lets you pass a scope
 directly if you would rather not subclass, and
@@ -292,13 +318,15 @@ directly if you would rather not subclass, and
 whether the object had tags before or not:</p>
 <pre><code class="language-php">$tags = Request::getString('tags', '');
 
-$cloud = new Tags($entry-&gt;get('id'));
+$cloud = new Tags($instrument-&gt;get('id'));
 
 if (!$cloud-&gt;setTags($tags, User::get('id')))
 {
     $this-&gt;setError($cloud-&gt;getError());
 }
 </code></pre>
+<p>That guard is what every controller in the tree writes, and it is worth
+knowing that it never fires — see the warning below.</p>
 <p><code>setTags($tag_string, $tagger_id = 0, $admin = 0, $strength = 1, $label = '')</code> takes a comma-separated string, works out which tags are new and which
 have gone, adds and removes accordingly, and leaves untouched tags alone so
 their timestamps survive. With <code>$tagger_id</code> left at <code>0</code> it uses the current
@@ -341,9 +369,17 @@ user.</p>
 </tr>
 </tbody>
 </table>
-<p><code>add()</code> creates any tag that is not in the vocabulary yet, then links it.
-All four writers return <code>false</code> and set an error when the cloud has no
-<code>scope_id</code>, so construct it with an id.</p>
+<p><code>add()</code> creates any tag that is not in the vocabulary yet, then links it.</p>
+<p><code>add()</code>, <code>remove()</code> and <code>removeAll()</code> return <code>false</code> and set an error when
+the cloud has no <code>scope_id</code>, so construct it with an id.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>setTags()</code> does not. It calls <code>add()</code> and <code>remove()</code>,
+discards what they return, and returns <code>true</code> regardless. Tagging a
+<strong>new</strong> record before saving it — <code>new Tags($booking-&gt;get('id'))</code> on an
+unsaved model, which constructs with <code>0</code> — therefore reports success and
+stores nothing at all. Save the row first, then tag it with the id
+<code>save()</code> assigned, and check the row after if you are unsure.</p>
+</aside>
 <h2 id="rendering">Rendering</h2>
 <pre><code class="language-php">$cloud = new Tags($entry-&gt;get('id'));
 
@@ -381,6 +417,10 @@ plain alphabetical list — unless a hub sets them another way.</p>
 through <code>setTags()</code>:</p>
 <pre><code class="language-php">$tags = $cloud-&gt;render('string');
 </code></pre>
+<p>Do not use <code>render('array')</code> for that. It returns the <code>tag</code> column — the
+normalised form — so the edit form redisplays the member's <em>Mass
+Spectrometer</em> as <em>massspectrometer</em>. <code>render('string')</code> returns <code>raw_tag</code>,
+which is what they typed.</p>
 <p>For the tag rows themselves — id, <code>raw_tag</code>, <code>admin</code>, <code>count</code> — call
 <code>tags('list')</code> and iterate.</p>
 <h2 id="the-tag-editor">The tag editor</h2>
@@ -407,7 +447,7 @@ disabled, and <code>trigger()</code> then returns an empty array.</p>
 value.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../user/index.html" rel="prev"><span>Previous</span>Users &amp; profiles</a><a class="pager__next" href="../debugging/index.html" rel="next"><span>Next</span>Debugging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/06-tags.md">Edit this page on GitHub</a>

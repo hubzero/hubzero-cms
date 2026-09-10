@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Helpers · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A helper is a class that holds work several controllers or views need but that belongs to none of them: building a from a list of categories, resolving what…">
+  <meta name="description" content="A helper is a class that holds work several controllers or views need but that belongs to none of them: building a from a list of instruments, resolving what…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/helpers/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -170,9 +172,14 @@
         
         <div class="prose">
 <p>A helper is a class that holds work several controllers or views need but that
-belongs to none of them: building a <code>&lt;select&gt;</code> from a list of categories,
+belongs to none of them: building a <code>&lt;select&gt;</code> from a list of instruments,
 resolving what the current user is allowed to do, formatting something for
 display. Helpers keep that code in one place.</p>
+<p>Reach for one when the same few lines have appeared in a second file. Do not
+reach for one when the work belongs to a record — whether a reservation
+overlaps another is the <code>Reservation</code> model's business, not a helper's, and a
+helper that takes a model and asks questions about it is a method that got
+lost. See <a href="../models/index.html">Models</a>.</p>
 <h2 id="where-they-go">Where they go</h2>
 <p>A component may have helpers in two places:</p>
 <table>
@@ -185,18 +192,18 @@ display. Helpers keep that code in one place.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>com_kb/helpers/</code></td>
-<td><code>Components\Kb\Helpers</code></td>
+<td><code>com_bookings/helpers/</code></td>
+<td><code>Components\Bookings\Helpers</code></td>
 <td>shared by every client</td>
 </tr>
 <tr>
-<td><code>com_kb/admin/helpers/</code></td>
-<td><code>Components\Kb\Admin\Helpers</code></td>
+<td><code>com_bookings/admin/helpers/</code></td>
+<td><code>Components\Bookings\Admin\Helpers</code></td>
 <td>administrator only</td>
 </tr>
 <tr>
-<td><code>com_kb/site/helpers/</code></td>
-<td><code>Components\Kb\Site\Helpers</code></td>
+<td><code>com_bookings/site/helpers/</code></td>
+<td><code>Components\Bookings\Site\Helpers</code></td>
 <td>site only</td>
 </tr>
 </tbody>
@@ -210,6 +217,11 @@ so <code>Components\Kb\Admin\Helpers\Permissions</code> is found at
 <code>core/components/com_kb/admin/helpers/permissions.php</code> with no <code>require</code>. Some
 shipped components still <code>require_once</code> their helpers from the entry point;
 that is left over from before the class loader and is not needed in new code.</p>
+<p>Get the namespace segment wrong and the class is simply not found:
+<code>Components\Bookings\Helpers\Slots</code> declared in
+<code>com_bookings/site/helpers/slots.php</code> never loads, because the loader looks
+under <code>com_bookings/helpers/</code>. The error is <code>Class ... not found</code> at the first
+call, with nothing to say the file exists a directory away.</p>
 <h2 id="a-static-helper">A static helper</h2>
 <p>The common shape is a class of static methods with no state. <code>com_kb</code>
 resolves the current user's permissions this way, and both administrator views
@@ -275,6 +287,10 @@ if ($canDo-&gt;get('core.create'))
     Toolbar::addNew();
 }
 </code></pre>
+<p><code>com_bookings</code> wants the same thing under its own name —
+<code>Components\Bookings\Admin\Helpers\Permissions::getActions('instrument')</code> —
+reading the actions out of its own <code>config/access.xml</code>. See
+<a href="../configuration/index.html">Configuration</a>.</p>
 <p><code>com_kb</code>'s other helper, <code>Components\Kb\Admin\Helpers\Html</code>, is the same
 pattern applied to markup: one static method that renders the category
 <code>&lt;select&gt;</code> used by the edit form, so the list and the indentation rules are
@@ -351,18 +367,20 @@ work. The built-in set lives in
 extends that lookup to your component. Before falling back to the built-ins it
 looks for <code>Components\{Name}\Helpers\{Method}</code>, and if it finds one that is
 invokable it registers it. So a class
-<code>Components\Kb\Helpers\Byline</code> with a <code>__invoke()</code> method, extending
-<code>Hubzero\View\Helper\AbstractHelper</code>, becomes <code>$this-&gt;byline($article)</code> in
-every <code>com_kb</code> view:</p>
-<pre><code class="language-php">namespace Components\Kb\Helpers;
+<code>Components\Bookings\Helpers\Slot</code> with a <code>__invoke()</code> method, extending
+<code>Hubzero\View\Helper\AbstractHelper</code>, becomes <code>$this-&gt;slot($reservation)</code> in
+every <code>com_bookings</code> view:</p>
+<pre><code class="language-php">namespace Components\Bookings\Helpers;
 
 use Hubzero\View\Helper\AbstractHelper;
 
-class Byline extends AbstractHelper
+class Slot extends AbstractHelper
 {
-    public function __invoke($article)
+    public function __invoke($reservation)
     {
-        return $this-&gt;getView()-&gt;escape($article-&gt;creator()-&gt;get('name'));
+        return $this-&gt;getView()-&gt;escape(
+            $reservation-&gt;starts . ' - ' . $reservation-&gt;ends
+        );
     }
 }
 </code></pre>
@@ -378,7 +396,7 @@ practice.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../controllers/index.html" rel="prev"><span>Previous</span>Controllers</a><a class="pager__next" href="../models/index.html" rel="next"><span>Next</span>Models</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/04-helpers.md">Edit this page on GitHub</a>

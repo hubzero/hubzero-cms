@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Models · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A model represents one thing the component stores: an article, a category, a comment. It owns the table, the validation rules, the relationships to other…">
+  <meta name="description" content="A model represents one thing the component stores: an instrument, a reservation, a comment. It owns the table, the validation rules, the relationships to other…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/components/models/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -100,9 +102,14 @@
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Models</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-one">The smallest one</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-orm-model">The ORM model</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-table-name-is-derived">The table name is derived</a></li>
+<li class="toc__item toc__item--l3"><a href="#validation">Validation</a></li>
 <li class="toc__item toc__item--l2"><a href="#relationships">Relationships</a></li>
 <li class="toc__item toc__item--l2"><a href="#querying">Querying</a></li>
+<li class="toc__item toc__item--l2"><a href="#events-a-save-fires">Events a save fires</a></li>
+<li class="toc__item toc__item--l2"><a href="#firing-your-own-event">Firing your own event</a></li>
 <li class="toc__item toc__item--l2"><a href="#plain-model-classes">Plain model classes</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-older-base-class">The older base class</a></li>
 </ol></li>
@@ -170,18 +177,38 @@
         </header>
         
         <div class="prose">
-<p>A model represents one thing the component stores: an article, a category, a
-comment. It owns the table, the validation rules, the relationships to other
-models, and any behaviour that belongs to the record rather than to a screen.</p>
+<p>A model represents one thing the component stores: an instrument, a
+reservation, a comment. It owns the table, the validation rules, the
+relationships to other models, and any behaviour that belongs to the record
+rather than to a screen.</p>
+<p>Put the rules here, not in the controller. <code>com_bookings</code> has two ways to
+create a reservation — a user booking a slot on the site, and a lab manager
+adding one in the administrator — and a rule that lives on the model is
+enforced by both. A rule written into <code>saveTask()</code> is enforced by one.</p>
 <p>Models live in <code>com_{componentname}/models/</code>, above the client directories,
 because the site, the administrator, and the API all use the same ones. A file
-<code>models/article.php</code> holds <code>Components\Kb\Models\Article</code>, and the class loader
-finds it from the class name alone — no <code>require</code> is needed.</p>
+<code>models/reservation.php</code> holds <code>Components\Bookings\Models\Reservation</code>, and
+the class loader finds it from the class name alone — no <code>require</code> is needed.</p>
+<h2 id="the-smallest-one">The smallest one</h2>
+<pre><code class="language-php">namespace Components\Bookings\Models;
+
+use Hubzero\Database\Relational;
+
+class Instrument extends Relational
+{
+	protected $namespace = 'bookings';
+}
+</code></pre>
+<p>That is enough to read and write <code>#__bookings_instruments</code>:</p>
+<pre><code class="language-php">$instrument = Instrument::oneOrFail($id);
+$instrument-&gt;set('title', 'Confocal microscope');
+$instrument-&gt;save();
+</code></pre>
 <h2 id="the-orm-model">The ORM model</h2>
 <p>New models extend
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Hubzero\Database\Relational</code></a>.
 The class declares what makes it different from every other model and inherits
-the rest:</p>
+the rest. <code>com_kb</code>'s <code>Article</code> shows the full set:</p>
 <pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
 {
 	/**
@@ -284,24 +311,44 @@ the rest:</p>
 </tr>
 </tbody>
 </table>
-<p>The table name is derived, not declared. The constructor pluralises the
-lowercased class name and prefixes it with <code>#__</code> and the namespace, so
-<code>Article</code> with <code>$namespace = 'kb'</code> is <code>#__kb_articles</code>. Set <code>$table</code>
-explicitly when a legacy table does not fit that pattern.</p>
+<h3 id="the-table-name-is-derived">The table name is derived</h3>
+<p>The constructor pluralises the lowercased class name and prefixes it with
+<code>#__</code> and the namespace:</p>
+<pre><code class="language-php">$namespace = (!$this-&gt;namespace ? '' : $this-&gt;namespace . '_');
+$plural    = \Hubzero\Utility\Inflector::pluralize(strtolower($this-&gt;getModelName()));
+$this-&gt;table = $this-&gt;table ?: '#__' . $namespace . $plural;
+</code></pre>
+<p>So <code>Reservation</code> with <code>$namespace = 'bookings'</code> is <code>#__bookings_reservations</code>,
+and <code>Instrument</code> is <code>#__bookings_instruments</code>. Set <code>$table</code> explicitly when an
+inherited table does not fit that pattern.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Two mistakes here look identical from the outside — a fatal
+from the database driver naming a table you have never heard of.
+Forgetting <code>$namespace</code> gives <code>#__reservations</code>. An irregular plural the
+inflector does not agree with — a class <code>Equipment</code>, a class <code>Analysis</code> —
+gives something you did not write in the migration. Whichever it is, the
+table in the migration and the table the model derives have to be the same
+string; when in doubt set <code>$table</code> and stop guessing.</p>
+</aside>
+<h3 id="validation">Validation</h3>
 <p><code>$rules</code> names a validator per field — <code>notempty</code>, <code>positive|nonzero</code>, and so
 on. <code>save()</code> returns false and fills the error bag when one fails, which is
 why a save task reads:</p>
 <pre><code class="language-php">if (!$row-&gt;save())
 {
-    Notify::error($row-&gt;getError());
-    return $this-&gt;editTask($row);
+	Notify::error($row-&gt;getError());
+	return $this-&gt;editTask($row);
 }
 </code></pre>
+<p>Checking the return value is not optional. <code>save()</code> does not throw on a failed
+rule; ignore the <code>false</code> and the task redirects with a success message over a
+record that was never written.</p>
 <p><code>$always</code> and <code>$initiate</code> are filled by convention: a field named <code>alias</code> in
 either list looks for an <code>automaticAlias($data)</code> method on the model, <code>created</code>
 for <code>automaticCreated()</code>, and so on. <code>com_kb</code>'s <code>Article</code> defines
 <code>automaticAlias()</code> to slugify the title, so the alias is maintained without a
-controller ever setting it.</p>
+controller ever setting it. <code>com_bookings</code> uses the same hook for a
+reservation's <code>created</code> and <code>created_by</code>.</p>
 <p><code>setup()</code> runs after construction. <code>com_kb</code> uses it to merge the article's own
 <code>params</code> over the component's, giving <code>$article-&gt;params</code> as one registry.</p>
 <h2 id="relationships">Relationships</h2>
@@ -326,28 +373,79 @@ controller ever setting it.</p>
 		return $this-&gt;oneToMany('Comment', 'entry_id');
 	}
 </code></pre>
-<p><code>belongsToOne()</code>, <code>oneToMany()</code>, <code>manyToMany()</code>, <code>oneShiftsToMany()</code>, and <code>oneToManyThrough()</code> are
-the ones in common use. Call the method to get the related rows,
-<code>$article-&gt;comments()-&gt;rows()</code>, or read it as a property,
-<code>$article-&gt;creator-&gt;get('name')</code>, and the query runs lazily.</p>
+<p><code>belongsToOne()</code>, <code>oneToMany()</code>, <code>manyToMany()</code>, <code>oneShiftsToMany()</code>, and
+<code>oneToManyThrough()</code> are the ones in common use. For <code>com_bookings</code>, an
+<code>Instrument</code> has many <code>Reservation</code>s and a <code>Reservation</code> belongs to one
+<code>Instrument</code>:</p>
+<pre><code class="language-php">public function reservations()
+{
+	return $this-&gt;oneToMany('Reservation', 'instrument_id');
+}
+</code></pre>
+<p>Call the method to get the related rows,
+<code>$instrument-&gt;reservations()-&gt;rows()</code>, or read it as a property,
+<code>$reservation-&gt;instrument-&gt;get('title')</code>, and the query runs lazily.</p>
+<p>Lazily is the word to watch. Reading a relation as a property inside a loop
+over a list runs one query per row, and the page is slow for reasons the code
+does not show. See the <a href="../../database/index.html#orm">ORM</a> chapter for eager loading.</p>
 <h2 id="querying">Querying</h2>
 <p><code>Relational</code> is also the query builder. Static calls start a query and instance
 calls chain onto it:</p>
-<pre><code class="language-php">$rows = Article::all()
-    -&gt;whereEquals('category', $id)
-    -&gt;whereEquals('state', Article::STATE_PUBLISHED)
-    -&gt;ordered('filter_order', 'filter_order_Dir')
-    -&gt;paginated('limitstart', 'limit')
-    -&gt;rows();
+<pre><code class="language-php">$rows = Reservation::all()
+	-&gt;whereEquals('instrument_id', $id)
+	-&gt;whereEquals('state', Reservation::STATE_PUBLISHED)
+	-&gt;ordered('filter_order', 'filter_order_Dir')
+	-&gt;paginated('limitstart', 'limit')
+	-&gt;rows();
 
-$one = Article::oneOrNew($id);       // existing row, or a blank one
-$one = Article::oneOrFail($id);      // or throw
+$one = Reservation::oneOrNew($id);       // existing row, or a blank one
+$one = Reservation::oneOrFail($id);      // or throw
 </code></pre>
 <p><code>ordered()</code> and <code>paginated()</code> take the <em>names</em> of request variables, read the
 sort column, direction, and page from the request, and remember them in model
 state — which is why an administrator list controller passes
-<code>'filter_order'</code> and <code>'limitstart'</code> rather than values. Full details are in the
+<code>'filter_order'</code> and <code>'limitstart'</code> rather than values. Passing a column name
+straight into <code>ordered()</code> sorts by whatever request variable happens to carry
+that name, which is usually none, so the list comes back in the default order
+and nothing complains. Full details are in the
 <a href="../../database/index.html#orm">ORM</a> chapter.</p>
+<h2 id="events-a-save-fires">Events a save fires</h2>
+<p><code>save()</code> triggers two events, and they are the hook a hub uses to react to a
+component's records without editing the component:</p>
+<pre><code class="language-php">if ($this-&gt;isNew())
+{
+	\Event::trigger($this-&gt;getTableName() . '_new', ['model' =&gt; $this]);
+}
+
+\Event::trigger('system.onContentSave', array($this-&gt;getTableName(), $this));
+</code></pre>
+<p><code>system.onContentSave</code> carries a group — the part before the dot — so the
+dispatcher loads the <code>system</code> plugin group before firing it. That is how
+<code>plg_system_content</code> gets a chance to index the record.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>{table}_new</code> carries <strong>no</strong> group, because the table name has
+no dot in it. The dispatcher therefore loads nothing, and the event reaches
+only listeners some other code has already imported this request. A plugin
+that answers <code>#__bookings_reservations_new</code> will fire on some pages and not
+others depending on what else ran first. Do not build on it.</p>
+</aside>
+<h2 id="firing-your-own-event">Firing your own event</h2>
+<p>To let a hub react to a reservation reliably, trigger an event yourself, with
+a group of your own:</p>
+<pre><code class="language-php">Event::trigger('bookings.onReservationCreate', array($reservation));
+</code></pre>
+<p>The dispatcher splits on the dot, loads every enabled plugin whose
+<code>#__extensions</code> row has <code>folder = 'bookings'</code>, and calls
+<code>onReservationCreate($reservation)</code> on each — the arguments array is spread
+onto the method positionally. Nothing else has to be declared; the group is
+whatever you name.</p>
+<p>A plugin answering it is one class in
+<code>app/plugins/bookings/notify/notify.php</code> with its own migration. See
+<a href="../../foundation/events/index.html">Events</a>, <a href="../../plugins/index.html">Plugins</a> and
+the <a href="../../../reference/events/index.html">events reference</a>.</p>
+<p>The failure here is quiet in the usual way: a plugin whose directory exists
+but whose <code>#__extensions</code> row does not is never loaded, so the event fires,
+nothing answers, and <code>Event::trigger()</code> returns an empty array.</p>
 <h2 id="plain-model-classes">Plain model classes</h2>
 <p>Not everything that lives in <code>models/</code> is a <code>Relational</code>. <code>com_kb</code>'s
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/models/archive.php"><code>Archive</code></a> is an ordinary
@@ -355,16 +453,18 @@ class that assembles cross-model queries — the category list with article
 counts, the most popular articles — and has no table of its own. Controllers
 build one in <code>execute()</code> and hand it to the view.</p>
 <p>That is the right shape whenever the thing you are modelling is a view over
-several tables rather than a row in one.</p>
+several tables rather than a row in one: for <code>com_bookings</code>, &quot;the calendar for
+this week&quot; is an <code>Archive</code>, not a record.</p>
 <h2 id="the-older-base-class">The older base class</h2>
 <p><code>Hubzero\Base\Model</code> predates the ORM and is still present; older components
 extend it. It wraps a <code>Hubzero\Database\Table</code> object, exposes state constants,
 and offers <code>get()</code>/<code>set()</code> through <code>Hubzero\Base\Obj</code>. Do not use it for new
 work — <code>Relational</code> does the same job with far less code, and new tables should
-be modelled with it.</p>
+be modelled with it. If you are reading a component that uses it, you are
+reading inherited code, not a pattern to copy.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../helpers/index.html" rel="prev"><span>Previous</span>Helpers</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/05-models.md">Edit this page on GitHub</a>

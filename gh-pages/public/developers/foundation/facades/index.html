@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Facades · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Facades serve as static proxies to underlying classes in the service container. This provides flexibility over traditional static methods with the…">
+  <meta name="description" content=", , , , , . These are the names you will type most often, and they are the shortest thing in the framework to explain and the easiest thing in the framework to…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/facades/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,16 +53,20 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Facades</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#use">Use</a></li>
-<li class="toc__item toc__item--l2"><a href="#class-reference">Class Reference</a></li>
-<li class="toc__item toc__item--l2"><a href="#importing-a-facade">Importing a facade</a></li>
-<li class="toc__item toc__item--l2"><a href="#the-facades">The facades</a></li>
-<li class="toc__item toc__item--l2"><a href="#testing">Testing</a></li>
-</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Facades</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-working-thing">The smallest working thing</a></li>
+<li class="toc__item toc__item--l2"><a href="#why-they-exist">Why they exist</a></li>
+<li class="toc__item toc__item--l2"><a href="#importing-a-facade">Importing a facade</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-actually-happens-when-you-forget">What actually happens when you forget</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-linter">The linter</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-facades">The facades</a></li>
+<li class="toc__item toc__item--l2"><a href="#writing-one">Writing one</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-not-to-use-one">When not to use one</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -171,233 +175,187 @@
         </header>
         
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Facades serve as &quot;static proxies&quot; to underlying classes in the service container. This provides flexibility over traditional static methods with the benefit of terser syntax.</p>
-<h2 id="use">Use</h2>
-<p>In the context of a hub, a facade is a class that provides access to an object from the container. For this to work, all facades extend the base <code>Hubzero\Facades\Facade</code> class.</p>
-<p>A facade class only needs to implement a single method: <code>getAccessor</code>, which defines what to resolve from the container. The base Facade class makes use of the <code>__callStatic()</code> magic-method to defer calls from the facade to the resolved object.</p>
-<p>Below is the facade for the Filesystem wherein the <code>getAccessor()</code> method returns the string 'filesystem', which is the key that the Filesystem service is registered with on the application.</p>
-<pre><code class="language-php">class Filesystem extends Facade
-{
-    /**
-     * Get the registered name.
-     *
-     * @return  string
-     */
-    protected static function getAccessor()
-    {
-        return 'filesystem';
-    }
-}
-</code></pre>
-<p>In the example below, a call is made to Filesystem to check that a file exists. Looking quickly at the code, one might assume that the static method <code>exists()</code> is being called on the <code>Filesystem</code> class:</p>
-<pre><code class="language-php">&lt;?php
+<p><code>Route</code>, <code>Lang</code>, <code>User</code>, <code>Request</code>, <code>Config</code>, <code>Event</code>. These are the names
+you will type most often, and they are the shortest thing in the framework to
+explain and the easiest thing in the framework to get wrong.</p>
+<p>A facade is a short, root-namespace name standing in front of a service in
+the application container. <code>Route::url()</code> looks like a static method on a
+class called <code>Route</code>. There is no such method and, until the moment you call
+it, no such class. The name is an alias; the call is forwarded to whatever
+object the container holds under <code>router</code>.</p>
+<p><strong>If you read one section of this chapter, read
+<a href="#importing-a-facade">Importing a facade</a>.</strong> It is the
+single most common defect in this codebase's history: 730 unimported facade
+calls were fixed in one pass, and a linter now runs in CI to keep them from
+coming back.</p>
+<h2 id="the-smallest-working-thing">The smallest working thing</h2>
+<pre><code class="language-php">namespace Components\Booking\Site\Controllers;
 
-namespace Components\Blog\Site\Controllers;
+use Hubzero\Component\SiteController;
+use Route;
+use Lang;
+use Request;
 
-use Hubzero\Component\Site\Controller;
-use Filesystem;
-use App;
-
-class Media extends SiteController
-{
-    public function downloadTask()
-    {
-        //...
-
-        if ( ! Filesystem::exists($file))
-        {
-            App::abort(404, 'File not found');
-        }
-
-        //...
-    }
-}
-</code></pre>
-<p>This facade serves as a proxy to accessing the underlying implementation of the <code>Hubzero\Filesystem\Filesystem</code> interface. So, when any static method on the facade is referenced, the application resolves the binding from the service container and runs the requested method against that object. In short, any calls made using the facade will be passed to the underlying instance of the filesystem service.</p>
-<h2 id="class-reference">Class Reference</h2>
-<p>Below is a list of every facade, its underlying class, and the service container binding key where applicable.</p>
-<table>
-<thead>
-<tr>
-<th>Facade</th>
-<th>Class</th>
-<th>Service Key</th>
-<th>Client</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>App</td>
-<td>Hubzero\Base\Application</td>
-<td>app</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Auth</td>
-<td>Hubzero\Auth\Manager</td>
-<td>auth</td>
-<td>admin, site, api</td>
-</tr>
-<tr>
-<td>Cache</td>
-<td>Hubzero\Cache\Manager</td>
-<td>cache</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Component</td>
-<td>Hubzero\Component\Loader</td>
-<td>component</td>
-<td>admin, site, api</td>
-</tr>
-<tr>
-<td>Config</td>
-<td>Hubzero\Config\Repository</td>
-<td>config</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Date</td>
-<td>Hubzero\Utility\Date</td>
-<td></td>
-<td>all</td>
-</tr>
-<tr>
-<td>Document</td>
-<td>Hubzero\Document\Manager</td>
-<td>document</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Event</td>
-<td>Hubzero\Events\Dispatcher</td>
-<td>dispatcher</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Filesystem</td>
-<td>Hubzero\Filesystem\Filesystem</td>
-<td>filesystem</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Html</td>
-<td>Hubzero\Html\Builder</td>
-<td>html.builder</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Lang</td>
-<td>Hubzero\Language\Translator</td>
-<td>language</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Log</td>
-<td>Hubzero\Log\Writer</td>
-<td>log.debug</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Module</td>
-<td>Hubzero\Module\Loader</td>
-<td>module</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Notify</td>
-<td>Hubzero\Notification\Handler</td>
-<td>notification</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Pathway</td>
-<td>Hubzero\Pathway\Trail</td>
-<td>pathway</td>
-<td>site</td>
-</tr>
-<tr>
-<td>Plugin</td>
-<td>Hubzero\Plugin\Loader</td>
-<td>plugin</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Request</td>
-<td>Hubzero\Http\Request</td>
-<td>request</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Response</td>
-<td>Hubzero\Http\Response</td>
-<td>response</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Router</td>
-<td>Hubzero\Routing\Router</td>
-<td>router</td>
-<td>all</td>
-</tr>
-<tr>
-<td>Session</td>
-<td>Hubzero\Session\Manager</td>
-<td>session</td>
-<td>admin, site</td>
-</tr>
-<tr>
-<td>Toolbar</td>
-<td>Hubzero\Html\Toolbar</td>
-<td>toolbar</td>
-<td>admin</td>
-</tr>
-<tr>
-<td>Submenu</td>
-<td>Hubzero\Html\Toolbar</td>
-<td>submenu</td>
-<td>admin</td>
-</tr>
-<tr>
-<td>User</td>
-<td>Hubzero\User\Manager</td>
-<td>user</td>
-<td>all</td>
-</tr>
-</tbody>
-</table>
-<h2 id="importing-a-facade">Importing a facade</h2>
-<p>This is the one thing to get right. The facades are registered as aliases in
-the <strong>root</strong> namespace, in <code>core/bootstrap/&lt;client&gt;/aliases.php</code>. Almost every
-file you write is namespaced, and inside a namespace an unqualified name
-resolves against that namespace first:</p>
-<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
-
-class Entries extends SiteController
+class Instruments extends SiteController
 {
     public function displayTask()
     {
-        // resolves to Components\Blog\Site\Controllers\Route, which does not
-        // exist: &quot;Class not found&quot;, fatal, the moment this line runs
-        $url = Route::url('index.php?option=com_blog');
+        $id  = Request::getInt('id', 0);
+        $url = Route::url('index.php?option=com_booking&amp;id=' . $id);
+
+        $this-&gt;view
+            -&gt;set('title', Lang::txt('COM_BOOKING_INSTRUMENTS'))
+            -&gt;set('url', $url)
+            -&gt;display();
     }
 }
 </code></pre>
-<p>Import each facade you use, and the name resolves to the alias:</p>
-<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
+<p>Three facades, three imports, and nothing else to wire up. That is the whole
+usage pattern.</p>
+<h2 id="why-they-exist">Why they exist</h2>
+<p>Everything a facade reaches is in the container and can be reached without
+one:</p>
+<pre><code class="language-php">$url = App::get('router')-&gt;url('index.php?option=com_booking');   // the service
+$url = Route::url('index.php?option=com_booking');                // the facade
+</code></pre>
+<p>The second is the house style, for two reasons.</p>
+<p><strong>It stays readable.</strong> A controller that reads configuration, translates a
+string, routes a URL and checks a user does four container lookups per line
+otherwise.</p>
+<p><strong>It stays swappable.</strong> The facade resolves the key <em>each time it is called</em>,
+so a test can put a double in the container under the same key and every call
+site picks it up, with no constructor to thread the fake through:</p>
+<pre><code class="language-php">Route::swap($fakeRouter);   // replaces the container's 'router' binding
+</code></pre>
+<p><code>swap()</code> is on the base class and does exactly that. This is the practical
+argument for a facade over <code>new Hubzero\Routing\Router(...)</code> in your own
+code: the object you construct yourself is the one nobody can replace.</p>
+<p>Reach for the container directly (<code>App::get('db')</code>) only where there is no
+facade. There is no facade for the database driver, and none for a named log
+other than <code>debug</code> — <code>Hubzero\Log\Manager::__call()</code> forwards every static
+<code>Log::</code> call to the logger named <code>debug</code>, so a component log goes through
+<code>App::get('log')-&gt;logger('booking')</code>.</p>
+<h2 id="importing-a-facade">Importing a facade</h2>
+<p>The aliases are registered in the <strong>root</strong> namespace. Almost every file you
+write declares a namespace, and inside a namespace an unqualified class name
+resolves against the current namespace first. So this:</p>
+<pre><code class="language-php">namespace Components\Booking\Site\Controllers;
+
+class Instruments extends SiteController
+{
+    public function displayTask()
+    {
+        // PHP looks for Components\Booking\Site\Controllers\Route
+        $url = Route::url('index.php?option=com_booking');
+    }
+}
+</code></pre>
+<p>does not ask for the <code>Route</code> alias at all. It asks for
+<code>Components\Booking\Site\Controllers\Route</code>.</p>
+<p>Import it, and the name means the alias:</p>
+<pre><code class="language-php">namespace Components\Booking\Site\Controllers;
 
 use Route;
-use App;
 use Lang;
+use App;
 </code></pre>
-<p>Writing <code>\Route::url(...)</code> works too, but the import is the house style.</p>
+<p>Writing <code>\Route::url(...)</code> works equally well. The import is the house style
+because it puts every global name a file depends on at the top of the file.</p>
+<h3 id="what-actually-happens-when-you-forget">What actually happens when you forget</h3>
+<p>Worth knowing exactly, because the behaviour is not the one the warning
+implies and the difference explains why this bug class survived so long.</p>
+<p>PHP asks the autoloaders for <code>Components\Booking\Site\Controllers\Route</code>.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClassLoader.php"><code>ClassLoader</code></a> looks
+for a matching file and finds none. Then the alias autoloader that
+<code>Facade::createAliases()</code> registered gets its turn, and it does not only
+match whole names — it takes the <strong>last segment</strong> of the name and looks that
+up too:</p>
+<pre><code class="language-php">	public static function loadAliases($class)
+	{
+		$aliases = static::$aliases;
+
+		if (array_key_exists($class, $aliases))
+		{
+			return class_alias($aliases[$class], $class);
+		}
+
+		// Allow calling facade in namespaced class
+		// without resetting to the root namespace
+		$classPieces = explode('\\', $class);
+		$classAlt    = array_pop($classPieces);
+		if (array_key_exists($classAlt, $aliases))
+		{
+			return class_alias($aliases[$classAlt], $class);
+		}
+	}
+</code></pre>
+<p><code>Route</code> is in the alias map, so it aliases the namespaced name to the facade
+and the call proceeds. Most of the time, on a site request, an unimported
+facade quietly works. That is why nothing caught these for years.</p>
+<p>It stops working in three situations, and all three are worse than an error
+at the point of the mistake:</p>
+<ol>
+<li>
+<p><strong>The client does not register that alias.</strong> Each client has its own list
+— <code>core/bootstrap/Site/aliases.php</code> has twenty, <code>Api</code> and <code>Cli</code> have
+fourteen and thirteen. <code>Notify</code>, <code>Document</code>, <code>Module</code>, <code>Pathway</code>, <code>Cache</code>
+and <code>Html</code> are site and administrator only; <code>Session</code> is not in the CLI
+list. A model shared between a component's site and API halves that calls
+an unimported <code>Document::setTitle()</code> is fine on the site and fatal under
+<code>/api/</code>:</p>
+<pre><code class="language-text">PHP Fatal error:  Uncaught Error: Class &quot;Components\Booking\Models\Document&quot; not found
+</code></pre>
+<p>Note which class name the message reports. It is not <code>Document</code>, and
+searching the tree for that class finds nothing, which is why this error
+reads as a mystery the first time.</p>
+</li>
+<li>
+<p><strong>A real class of that name exists in the same namespace.</strong> The class
+loader runs first and wins. <code>Components\Events\Models\Event</code>,
+<code>Components\Publications\Models\Log</code>, <code>Components\Groups\Models\Module</code>
+and <code>Components\Wishlist\Models\Adapters\User</code> are all real classes in
+this tree. An unimported <code>Event::trigger()</code> written in
+<code>Components\Events\Models</code> loads the model instead of the facade and dies
+differently:</p>
+<pre><code class="language-text">PHP Fatal error:  Uncaught Error: Call to undefined method
+Components\Events\Models\Event::trigger()
+</code></pre>
+<p>Nothing warns you. The two names are indistinguishable in the source.</p>
+</li>
+<li>
+<p><strong>The aliases are not registered yet.</strong> They are registered by
+<code>Application::load()</code>. Code that runs before that — an installer step, a
+bootstrap-time helper — has no aliases to fall back on.</p>
+</li>
+</ol>
+<p>To all of which add the ordinary cost: every unimported call runs a failed
+sweep of both trees before the alias autoloader answers.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Nothing catches a missing import before the line runs. The file
-parses, autoloading has nothing to complain about, and an error path that is
-rarely taken can carry the fault for years.
-<code>php tools/lint/missing-facade-imports.php</code> finds them; it runs in
-continuous integration on every push.</p>
+<p><strong>Warning:</strong> Nothing catches a missing import at parse time. The file is
+valid PHP, the syntax check passes, and where the fallback does not save it
+the failure appears only when that line runs. An error path taken once a
+year can carry the fault for years — which is exactly where most of the 730
+were found.</p>
+</aside>
+<h3 id="the-linter">The linter</h3>
+<pre><code class="language-bash">php tools/lint/missing-facade-imports.php            # scans components, plugins, modules, libraries
+php tools/lint/missing-facade-imports.php --fix      # inserts the missing use statements
+php tools/lint/missing-facade-imports.php core/components/com_booking
+</code></pre>
+<p>Paths are relative to the repository root. With no path it scans
+<code>core/components</code>, <code>core/plugins</code>, <code>core/modules</code> and
+<code>core/libraries/Hubzero</code>, and it exits non-zero when it finds anything, which
+is how <code>.github/workflows/php-lint.yml</code> gates every push and pull request.</p>
+<p>It reads the file with PHP's own tokenizer rather than matching text, so a
+facade name inside a comment, a string or a heredoc is not counted, and a
+name the file declares itself — or that another file declares in the same
+namespace — is left alone. Run it before you send a change; the fix it
+applies is the <code>use</code> line you forgot.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Plugin entry files are the one place the rule does not bite.
+<code>plgContentFormathtml</code> and the rest are declared in the root namespace, so
+an unqualified <code>Route::url()</code> in them already means the alias. Their
+namespaced helper classes are subject to the rule like anything else.</p>
 </aside>
 <h2 id="the-facades">The facades</h2>
 <table>
@@ -405,137 +363,207 @@ continuous integration on every push.</p>
 <tr>
 <th>Facade</th>
 <th>Container key</th>
-<th>Notes</th>
+<th>Behind it</th>
+<th>Typical call</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>App</code></td>
 <td><code>app</code></td>
-<td><code>App::get('db')</code>, <code>App::abort()</code>, <code>App::redirect()</code></td>
+<td><code>Hubzero\Base\Application</code></td>
+<td><code>App::get('db')</code>, <code>App::abort(404)</code>, <code>App::redirect($url)</code></td>
 </tr>
 <tr>
 <td><code>Cache</code></td>
 <td><code>cache.store</code></td>
-<td></td>
+<td>a <code>Hubzero\Cache\Storage\*</code> adapter, chosen by the hub's cache handler</td>
+<td><code>Cache::get($key)</code></td>
 </tr>
 <tr>
 <td><code>Component</code></td>
 <td><code>component</code></td>
-<td><code>Component::params('com_blog')</code></td>
+<td><code>Hubzero\Component\Loader</code></td>
+<td><code>Component::params('com_booking')</code></td>
 </tr>
 <tr>
 <td><code>Config</code></td>
 <td><code>config</code></td>
+<td><code>Hubzero\Config\Repository</code></td>
 <td><code>Config::get('sitename')</code></td>
 </tr>
 <tr>
 <td><code>Date</code></td>
-<td><code>date</code></td>
-<td><code>Date::of('now')-&gt;toSql()</code></td>
+<td>none — see below</td>
+<td><code>Hubzero\Utility\Date</code></td>
+<td><code>Date::of($row-&gt;created)-&gt;toLocal('d M Y')</code></td>
 </tr>
 <tr>
 <td><code>Document</code></td>
 <td><code>document</code></td>
+<td><code>Hubzero\Document\Manager</code></td>
 <td>titles, stylesheets, scripts, feeds</td>
 </tr>
 <tr>
 <td><code>Event</code></td>
 <td><code>dispatcher</code></td>
-<td><code>Event::trigger('content.onContentSave', [...])</code></td>
+<td><code>Hubzero\Events\Dispatcher</code></td>
+<td><code>Event::trigger('booking.onBookingAfterSave', [...])</code></td>
 </tr>
 <tr>
 <td><code>Filesystem</code></td>
 <td><code>filesystem</code></td>
-<td></td>
+<td><code>Hubzero\Filesystem\Filesystem</code></td>
+<td><code>Filesystem::exists($path)</code></td>
 </tr>
 <tr>
 <td><code>Html</code></td>
 <td><code>html.builder</code></td>
-<td></td>
+<td><code>Hubzero\Html\Builder</code></td>
+<td><code>Html::grid('sort', ...)</code></td>
 </tr>
 <tr>
 <td><code>Lang</code></td>
 <td><code>language</code></td>
-<td><code>Lang::txt('COM_BLOG_TITLE')</code></td>
+<td><code>Hubzero\Language\Translator</code></td>
+<td><code>Lang::txt('COM_BOOKING_TITLE')</code></td>
 </tr>
 <tr>
 <td><code>Log</code></td>
 <td><code>log</code></td>
-<td></td>
+<td><code>Hubzero\Log\Manager</code>, forwarding to the <code>debug</code> logger</td>
+<td><code>Log::debug($message)</code></td>
 </tr>
 <tr>
 <td><code>Module</code></td>
 <td><code>module</code></td>
+<td><code>Hubzero\Module\Loader</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>Notify</code></td>
 <td><code>notification</code></td>
-<td><code>Notify::success()</code>, <code>Notify::error()</code></td>
+<td><code>Hubzero\Notification\Handler</code></td>
+<td><code>Notify::success($message)</code></td>
 </tr>
 <tr>
 <td><code>Pathway</code></td>
 <td><code>pathway</code></td>
-<td></td>
+<td><code>Hubzero\Pathway\Trail</code></td>
+<td>breadcrumbs</td>
 </tr>
 <tr>
 <td><code>Plugin</code></td>
 <td><code>plugin</code></td>
-<td></td>
+<td><code>Hubzero\Plugin\Loader</code></td>
+<td><code>Plugin::byType('booking')</code></td>
 </tr>
 <tr>
 <td><code>Request</code></td>
 <td><code>request</code></td>
+<td><code>Hubzero\Http\Request</code></td>
 <td><code>Request::getInt('id', 0)</code></td>
 </tr>
 <tr>
 <td><code>Response</code></td>
 <td><code>response</code></td>
+<td><code>Hubzero\Http\Response</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>Route</code></td>
 <td><code>router</code></td>
-<td><code>Route::url('index.php?option=com_blog')</code></td>
+<td><code>Hubzero\Routing\Manager</code></td>
+<td><code>Route::url('index.php?option=com_booking')</code></td>
 </tr>
 <tr>
 <td><code>Session</code></td>
 <td><code>session</code></td>
+<td><code>Hubzero\Session\Manager</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>Submenu</code></td>
 <td><code>submenu</code></td>
+<td><code>Hubzero\Html\Toolbar</code></td>
 <td>administrator only</td>
 </tr>
 <tr>
 <td><code>Toolbar</code></td>
 <td><code>toolbar</code></td>
+<td><code>Hubzero\Html\Toolbar</code></td>
 <td>administrator only</td>
 </tr>
 <tr>
 <td><code>User</code></td>
 <td><code>user</code></td>
-<td><code>User::get('id')</code>, <code>User::isGuest()</code>, <code>User::authorise()</code></td>
+<td><code>Hubzero\User\Manager</code></td>
+<td><code>User::get('id')</code>, <code>User::isGuest()</code></td>
 </tr>
 </tbody>
 </table>
-<p>Not every client registers every one. The site and administrator applications
-register the full set above; the API and command-line applications register
-fewer, so <code>Toolbar</code> and <code>Submenu</code> are meaningless outside the administrator.
-Each client's list is its own <code>aliases.php</code>.</p>
-<h2 id="testing">Testing</h2>
-<p>Because a facade resolves through the container, a test can put a double in
-the container under the same key and the facade will return it. That is the
-practical reason to prefer a facade over calling the underlying class
-directly.</p>
+<p>Not every client registers every one. The site list is
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/aliases.php"><code>core/bootstrap/Site/aliases.php</code></a>;
+each client has its own beside it, and a hub can add to the list without
+touching the platform by dropping an <code>aliases.php</code> into
+<code>app/bootstrap/&lt;client&gt;/</code>, which is merged over the core one.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Any static call on <code>User</code> other than <code>getInstance()</code> acts on the
+<em>current</em> user. <code>User::get('name')</code> is the visitor's name, not a lookup.
+<code>User::getInstance($id)</code> returns another account.</p>
+</aside>
+<p><code>Date</code> is the exception to everything above. It declares the accessor <code>date</code>,
+but no provider registers that key and the facade overrides <code>getRoot()</code> to
+construct a <code>Hubzero\Utility\Date</code> on the spot. So it is a static helper
+wearing a facade's clothes: <code>Date::swap()</code> sets a container key nothing
+reads, and a test cannot replace it.</p>
+<h2 id="writing-one">Writing one</h2>
+<p>You need a facade only when you have added a service of your own and will
+call it from many places. It is one method:</p>
+<pre><code class="language-php">namespace Components\Booking\Facades;
+
+use Hubzero\Facades\Facade;
+
+class Calendar extends Facade
+{
+    protected static function getAccessor()
+    {
+        return 'booking.calendar';
+    }
+}
+</code></pre>
+<p><code>getAccessor()</code> returns the container key. The base class's <code>__callStatic()</code>
+does the rest: it resolves the key, calls the method on the object, and
+returns the result. Register the key from a
+<a href="../providers/index.html">service provider</a>, and add the alias in
+<code>app/bootstrap/site/aliases.php</code> if you want the short root-namespace name —
+otherwise import the class by its full name like anything else.</p>
+<p>A facade with no service behind it fails at the call, not at boot:</p>
+<pre><code class="language-text">RuntimeException: Facade does not implement getAccessor method.
+</code></pre>
+<p>is the base class refusing a subclass that forgot the method. A key no
+provider registered fails in the container instead, with
+<code>InvalidArgumentException: Identifier &quot;booking.calendar&quot; is not defined.</code> —
+which usually means the provider is missing from the client's
+<code>services.php</code>, not that the facade is wrong.</p>
+<h2 id="when-not-to-use-one">When not to use one</h2>
+<ul>
+<li><strong>In a library class that could be used outside a request.</strong> Anything under
+<code>core/libraries/Hubzero/</code> that a CLI job or a test may construct is better
+taking its dependency as a constructor argument. A facade needs a booted
+application; a constructor argument needs nothing.</li>
+<li><strong>When you need a specific instance.</strong> <code>Log</code> writes the <code>debug</code> log and
+nothing else. Any other log goes through
+<code>App::get('log')-&gt;logger('booking')</code>.</li>
+<li><strong>When there is no facade.</strong> The database driver is <code>App::get('db')</code>. Do
+not construct your own connection to get a shorter name.</li>
+</ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../providers/index.html" rel="prev"><span>Previous</span>Service providers</a><a class="pager__next" href="../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../providers/index.html" rel="next"><span>Next</span>Service providers</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/04-facades.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/06-facades.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

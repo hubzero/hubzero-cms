@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -171,6 +173,10 @@
 writing the response, finding configuration, translating strings, working
 with the current user, tagging things, handling dates, running scheduled
 work, and seeing what went wrong.</p>
+<p>The examples through this section build one small component: <code>com_bookings</code>,
+which lets a lab take reservations on its instruments. It is the ordinary
+shape of the work — a list, a form, a save, a nightly tidy-up — and it
+touches every page here.</p>
 <p>Each of these is reached through a facade — <code>Request</code>, <code>Response</code>,
 <code>Config</code>, <code>Lang</code>, <code>User</code>, <code>Date</code> — which is a short name in the root
 namespace standing in for an object in the application container.</p>
@@ -214,10 +220,10 @@ the platform stores and compares in UTC and converts only for display.</li>
 <h2 id="a-worked-shape">A worked shape</h2>
 <p>Most controller tasks look like this, and touch four of the above in a
 dozen lines:</p>
-<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
+<pre><code class="language-php">namespace Components\Bookings\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Components\Blog\Models\Entry;
+use Components\Bookings\Models\Booking;
 use Request;
 use Notify;
 use Config;
@@ -226,7 +232,7 @@ use Lang;
 use Date;
 use App;
 
-class Entries extends SiteController
+class Bookings extends SiteController
 {
     public function saveTask()
     {
@@ -235,8 +241,10 @@ class Entries extends SiteController
 
         $fields = Request::getArray('fields', array(), 'post');
 
-        $row = Entry::oneOrNew($fields['id'])-&gt;set($fields);
-        $row-&gt;set('publish_up', Date::of($fields['publish_up'], Config::get('offset'))-&gt;toSql());
+        $row = Booking::oneOrNew($fields['id'])-&gt;set($fields);
+
+        // The member typed a local time; the column holds UTC
+        $row-&gt;set('starts', Date::of($fields['starts'], Config::get('offset'))-&gt;toSql());
 
         if (!$row-&gt;save())
         {
@@ -247,17 +255,22 @@ class Entries extends SiteController
 
         App::redirect(
             Route::url('index.php?option=' . $this-&gt;_option),
-            Lang::txt('COM_BLOG_ENTRY_SAVED')
+            Lang::txt('COM_BOOKINGS_BOOKING_SAVED')
         );
     }
 }
 </code></pre>
-<p>Input arrives typed rather than raw, the date is read in the hub's time
-zone and written in UTC, the message is a language key, and the redirect
-ends the request.</p>
+<p>Input arrives typed rather than raw, the write is guarded by the token, the
+date is read in the hub's time zone and written in UTC, the message is a
+language key that must exist in the component's own INI file, and the
+redirect ends the request.</p>
+<p>Four of those five have a silent failure mode. Miss the token check and the
+task still works. Miss the time zone and the booking still saves. Miss the
+language key and the page still renders. Miss the redirect and the member
+still sees their booking. Each chapter says what that looks like.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../services/server/index.html" rel="prev"><span>Previous</span>Server</a><a class="pager__next" href="requests/index.html" rel="next"><span>Next</span>Requests</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/README.md">Edit this page on GitHub</a>

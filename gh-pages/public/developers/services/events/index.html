@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
@@ -174,6 +176,16 @@
 without knowing anything about them. The component triggers a named event
 and gets back whatever the listeners returned; the listeners are the
 plugins installed and enabled on the hub.</p>
+<p>You trigger one when you want the hub's administrator, not you, to decide
+what happens next. A booking component that must email the lab manager on
+every reservation should just send the mail. A booking component that
+triggers <code>bookings.onBookingSaved</code> lets one hub push the reservation into a
+calendar, another into an invoicing system, and a third do nothing — none of
+which you have to know about, and all of which are turned on and off from
+the Plugin Manager.</p>
+<p>The cost is that it is one more indirection, and a triggered event with no
+plugin listening is silent. Trigger where an extension point is genuinely
+wanted; call the code directly where it is not.</p>
 <p>The <code>Event</code> facade resolves the <code>dispatcher</code> binding, which is a
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Events/Dispatcher.php"><code>Hubzero\Events\Dispatcher</code></a>
 — wrapped in a <code>TraceableDispatcher</code> when the hub is in debug mode, so the
@@ -181,7 +193,7 @@ debug bar can list what fired.</p>
 <h2 id="triggering">Triggering</h2>
 <pre><code class="language-php">use Event;
 
-$results = Event::trigger('onBlogAfterSave', array(&amp;$row, $isNew));
+$results = Event::trigger('bookings.onBookingSaved', array(&amp;$booking, $isNew));
 </code></pre>
 <p>Two things about that line matter.</p>
 <p><strong>The return value is an array.</strong> <code>trigger()</code> collects each listener's
@@ -189,19 +201,22 @@ return value, skipping nulls, and hands back the collected array — not the
 event, and not a single result. Code that treats it as a boolean is testing
 &quot;did any listener return something truthy&quot;, which is usually not what it
 means:</p>
-<pre><code class="language-php">$results = Event::trigger('content.onContentPrepare', array('com_blog.entry', &amp;$row, $params));
+<pre><code class="language-php">$results = Event::trigger('content.onContentPrepare', array('com_bookings.note', &amp;$row, $params));
 
 foreach ($results as $result)
 {
     // ...
 }
 </code></pre>
+<p>An empty array back means &quot;no plugin in that group returned anything&quot;. It
+does not mean the event failed, and it does not distinguish &quot;no plugin
+listens&quot; from &quot;every plugin returned null&quot;. There is no error to catch.</p>
 <p><strong>The arguments are positional.</strong> <code>trigger()</code> walks the array and calls
 <code>addArgument($name, $value)</code> with the array's own keys, so a plain list
 produces arguments named <code>0</code>, <code>1</code>, <code>2</code>. The listener is then called with
 them spread across its parameters, which is why plugin methods have ordinary
 signatures:</p>
-<pre><code class="language-php">public function onBlogAfterSave($row, $isNew)
+<pre><code class="language-php">public function onBookingSaved($booking, $isNew)
 </code></pre>
 <p>Pass an associative array instead and the keys become the argument names —
 useful when the listener wants <code>$event-&gt;getArgument('file')</code> rather than a
@@ -211,9 +226,11 @@ positional parameter:</p>
     'recipients' =&gt; [...]
 ]);
 </code></pre>
-<p>References survive the trip: <code>array(&amp;$row, $isNew)</code> gives listeners a
+<p>References survive the trip: <code>array(&amp;$booking, $isNew)</code> gives listeners a
 handle on the caller's object, which is how <code>onContentPrepare</code> plugins
-rewrite content in place.</p>
+rewrite content in place. It also means a plugin you have never seen can
+change your model before you save it. Pass by reference only where you mean
+to offer that.</p>
 <h2 id="the-group-prefix">The group prefix</h2>
 <p>The dot prefix is not decoration. <code>Event::__construct()</code> splits the name on
 the first dot and keeps the left half as the event's <strong>group</strong>; <code>trigger()</code>
@@ -225,9 +242,17 @@ Event::trigger('cron.onClosePending', array($job));
 </code></pre>
 <p>So <code>content.onContentPrepare</code> reaches the content plugins,
 <code>members.onMembersAreas</code> the members plugins, <code>xmessage.onSendMessage</code> the
-xmessage plugins. A name with no prefix — <code>onBlogAfterSave</code> — reaches only
-listeners that were registered some other way; in practice the system
-plugins are loaded early enough that they see these.</p>
+xmessage plugins.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A name with no prefix — <code>onBookingSaved</code> — loads no group at
+all. It reaches only listeners registered some other way; in practice the
+system plugins are loaded early enough that they see these, and nothing
+else does. If you write a plugin, put it in a group and trigger
+<code>&lt;group&gt;.onSomething</code>; if your plugin's method is never called, the
+missing prefix on the trigger is the first thing to check. Nothing logs
+it — <code>trigger()</code> returns an empty array exactly as it would if the plugin
+were disabled.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Plugin groups are loaded lazily, on first trigger. A plugin's
 <code>__construct()</code> and <code>loadLanguage()</code> therefore do not run until something
@@ -326,8 +351,8 @@ carries the name, the group, the arguments, and the collected responses.</p>
 an argument and <code>count($event)</code> counts them.</p>
 <p>Build one yourself when you want to name arguments up front, then trigger
 it:</p>
-<pre><code class="language-php">$event = new Hubzero\Events\Event('blog.onBlogAfterSave');
-$event-&gt;setArgument('row', $row);
+<pre><code class="language-php">$event = new Hubzero\Events\Event('bookings.onBookingSaved');
+$event-&gt;setArgument('booking', $booking);
 
 $results = Event::trigger($event);
 </code></pre>
@@ -346,7 +371,7 @@ listener reached through <code>WrappedListener</code> gets the event on
 the tree triggers and every plugin method that answers one.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../session/index.html" rel="prev"><span>Previous</span>Session</a><a class="pager__next" href="../server/index.html" rel="next"><span>Next</span>Server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/04-services/05-events.md">Edit this page on GitHub</a>

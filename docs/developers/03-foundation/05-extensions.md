@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/foundation/extensions
@@ -32,7 +32,15 @@ each kind then has a book of its own.
 Each loader searches `PATH_APP` before `PATH_CORE` and stops at the first
 directory it finds, so a hub replaces a shipped extension by putting a
 directory of the same name under `app/`. See
-[Structure](01-structure.md#overriding-a-core-extension).
+[Structure](01-structure.md#overriding-a-core-extension), and
+[Autoloading](03-autoloading.md) for how the same rule applies to each
+extension's classes.
+
+Which kind you want is usually decided for you. A feature with its own URLs,
+tables and screens — booking a lab's instruments, say — is a component.
+Something that has to happen when *another* extension does something is a
+plugin. A block of markup in a template position is a module. The frame
+around all of it is a template.
 
 ## Components
 
@@ -69,7 +77,7 @@ and the group is the directory: `plugins/authentication/`,
 `plugins/content/`, `plugins/members/`. Most of the pluggable behaviour in
 the CMS is a plugin group, and the
 [events reference](../../reference/events/README.md) lists what the tree
-triggers.
+triggers. [Events](04-events.md) covers how a trigger reaches a group.
 
 [`Hubzero\Plugin\Loader`](../../../core/libraries/Hubzero/Plugin/Loader.php)
 builds its list once per request, from `#__extensions`:

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Requests · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Everything a browser sends arrives through one object. The facade resolves , which extends Symfony&#x27;s and adds the typed accessors the CMS uses. Read input…">
+  <meta name="description" content="Everything a browser sends arrives through one object. The facade resolves , which extends Symfony&#x27;s and adds the typed accessors the CMS uses. You reach for…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/requests/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -66,7 +68,9 @@
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Requests</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#never-read-the-superglobals">Never read the superglobals</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-input">Reading input</a></li>
+<li class="toc__item toc__item--l3"><a href="#which-of-them-to-trust-with-what">Which of them to trust with what</a></li>
 <li class="toc__item toc__item--l3"><a href="#where-to-look">Where to look</a></li>
 <li class="toc__item toc__item--l3"><a href="#files-cookies-headers">Files, cookies, headers</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-form-token">The form token</a></li>
@@ -173,9 +177,41 @@
         <div class="prose">
 <p>Everything a browser sends arrives through one object. The <code>Request</code> facade
 resolves <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Http/Request.php"><code>Hubzero\Http\Request</code></a>,
-which extends Symfony's <code>Request</code> and adds the typed accessors the CMS uses.
-Read input through it; never touch <code>$_GET</code>, <code>$_POST</code> or <code>$_REQUEST</code>
-directly.</p>
+which extends Symfony's <code>Request</code> and adds the typed accessors the CMS uses.</p>
+<p>You reach for it for one reason: it hands you a value of the type you asked
+for, or the default, with no branch of your own for &quot;absent&quot;, &quot;an array
+arrived where a scalar was expected&quot;, or &quot;somebody typed a word into a
+number field&quot;.</p>
+<pre><code class="language-php">use Request;
+
+$id = Request::getInt('id', 0);
+</code></pre>
+<p>That line cannot return anything but an integer.</p>
+<h2 id="never-read-the-superglobals">Never read the superglobals</h2>
+<p><code>$_GET</code>, <code>$_POST</code> and <code>$_REQUEST</code> are not the request. Three concrete
+things go wrong.</p>
+<p><strong>The router writes into the request object, not into <code>$_GET</code>.</strong> On a hub
+with search-engine-friendly URLs, <code>/bookings/instrument/12</code> is parsed by the
+router, which puts the result back with <code>setVar($key, $val, 'get')</code> —
+Symfony's query bag. So:</p>
+<pre><code class="language-php">			foreach ($this-&gt;app['router']-&gt;parse($request-&gt;getUri()) as $key =&gt; $val)
+			{
+				$request-&gt;setVar($key, $val, 'get');
+			}
+</code></pre>
+<pre><code class="language-php">$view = $_GET['view'];                  // undefined index — the URL had no query string
+$view = Request::getCmd('view', '');    // 'instrument'
+</code></pre>
+<p>Every menu-routed and SEF-routed page in the tree behaves this way. Code
+reading <code>$_GET</code> works on the developer's machine with <code>index.php?option=…</code>
+in the URL and breaks on the hub.</p>
+<p><strong><code>$_REQUEST</code> merges sources.</strong> A value you meant to accept only from a
+posted form can then be supplied in the query string, which is a link
+someone can send to a member. The typed accessors take a <code>$hash</code> argument
+precisely so you can refuse that.</p>
+<p><strong>There is no superglobal outside the web.</strong> A <a href="../../muse/index.html">muse</a>
+command, a cron run, and a test all build a request object without a browser
+behind it. Code that reads <code>$_POST</code> cannot run in any of them.</p>
 <h2 id="reading-input">Reading input</h2>
 <p>Ask for the type you want. Each accessor takes the key, a default, and
 optionally which part of the request to look in:</p>
@@ -204,7 +240,7 @@ $fields = Request::getArray('fields', array(), 'post');
 </tr>
 <tr>
 <td><code>getFloat($key, $default = 0.0, $hash = 'input')</code></td>
-<td>The first number in the value</td>
+<td>A leading decimal number, or the default</td>
 </tr>
 <tr>
 <td><code>getBool($key, $default = null, $hash = 'input')</code></td>
@@ -236,10 +272,37 @@ $fields = Request::getArray('fields', array(), 'post');
 </tr>
 </tbody>
 </table>
-<p><code>getInt()</code> matches only a <em>leading</em> integer, so an email address typed into
-an id field yields the default rather than a number scavenged from the
-middle of it. <code>getCmd()</code> is what task, view and layout names are read with,
-because its filter is exactly the character set those are allowed to use.</p>
+<h3 id="which-of-them-to-trust-with-what">Which of them to trust with what</h3>
+<p><code>getInt()</code>, <code>getUInt()</code>, <code>getFloat()</code> and <code>getString()</code> are the four to
+prefer. Each returns its declared type, and each returns the default you
+gave when the key is absent.</p>
+<p><code>getInt()</code> and <code>getFloat()</code> match only a <strong>leading</strong> number. That is a
+correction made in this repository, not inherited behaviour: the match used
+to be unanchored, so <code>getInt()</code> scavenged digits out of the middle of
+arbitrary text and an email address typed into a member-id field —
+<code>jesus1993coral@gmail.com</code> — resolved to user <code>1993</code>. <code>getFloat()</code> was
+anchored to match. Both now return the default rather than a number from the
+middle of a string.</p>
+<p><code>getCmd()</code> is what task, view and layout names are read with, because its
+filter is exactly the character set those may use. Two things about it and
+<code>getWord()</code>:</p>
+<ul>
+<li><strong>A falsy default does not survive.</strong> <code>Request::getCmd('layout', null)</code>
+returns <code>''</code>, not <code>null</code>, because the filter runs over <code>$result ?: ''</code>.
+Test against <code>''</code>.</li>
+<li>The filter strips rather than rejects. <code>getCmd('view', '')</code> on
+<code>view=../../etc</code> returns <code>etc</code> — the slashes are removed and the leading
+dots trimmed. Nothing was refused; a name came back that the caller never
+sent. It is a filter, not a validator, so compare the result against the
+names you accept.</li>
+</ul>
+<p><code>getBool()</code> is a plain <code>(bool)</code> cast of whatever arrived. A checkbox that
+posts nothing when unticked works; a field carrying the string <code>&quot;false&quot;</code> or
+<code>&quot;off&quot;</code> comes back <strong>true</strong>, because a non-empty string is truthy. For
+tri-state values read a <code>getCmd()</code> or a <code>getInt()</code> and decide yourself.</p>
+<p><code>getArray()</code> casts, so a scalar submitted where your form expects an array
+arrives as a one-element array rather than an error. Validate the shape
+before you <code>set()</code> it on a model.</p>
 <h3 id="where-to-look">Where to look</h3>
 <p>The <code>$hash</code> argument names the part of the request:</p>
 <table>
@@ -284,9 +347,9 @@ are ignored.</p>
 filter name in older versions and is now dead: for the default <code>input</code>
 hash it is discarded outright, and for the others only the value <code>array</code>
 still means anything. Lists of filter types like <code>INT</code>, <code>BASE64</code> and
-<code>PATH</code> no longer exist. Use the typed accessors above; reach for
-<code>getVar()</code> only where you genuinely want the value untouched, and escape
-it yourself.</p>
+<code>PATH</code> no longer exist, so a call that names one is silently unfiltered.
+Use the typed accessors above; reach for <code>getVar()</code> only where you
+genuinely want the value untouched, and escape it yourself.</p>
 </aside>
 <h3 id="files-cookies-headers">Files, cookies, headers</h3>
 <pre><code class="language-php">$file  = Request::file('upload');            // one uploaded file
@@ -303,16 +366,22 @@ several keys at once, returning true only if all are present.</p>
 <p>It looks in POST by default, delegates to the
 <a href="../../services/session/index.html">session</a>, and aborts the request with a 403 when
 the token is missing or wrong. Pass <code>'get'</code> or a comma-separated list to
-look elsewhere. <code>Request::checkHoneypot()</code> is its companion for public
-forms: it validates the hidden field emitted by <code>Hubzero\Spam\Honeypot</code> and
-returns <code>false</code> — logging to the spam log — when the form was filled in too
-fast or by a robot.</p>
+look elsewhere.</p>
+<p>Omitting it is the most common security fault in this tree. The task keeps
+working, so nothing tells you: it just also works when a member is walked
+onto a page that posts to it from somewhere else.</p>
+<p><code>Request::checkHoneypot()</code> is its companion for public forms: it validates
+the hidden field emitted by <code>Hubzero\Spam\Honeypot</code> and returns <code>false</code> —
+logging to the spam log — when the form was filled in too fast or by a
+robot. Unlike <code>checkToken()</code> it returns rather than aborting, so test the
+result.</p>
 <h2 id="remembering-state">Remembering state</h2>
-<p>List screens keep their filters across requests. <code>getState()</code> reads a value
-from the request if it is there and remembers it, and returns the remembered
-value when it is not:</p>
+<p>List screens keep their filters across requests, so that a member who opens
+a booking, then goes back, finds the list as they left it. <code>getState()</code>
+reads a value from the request if it is there and remembers it, and returns
+the remembered value when it is not:</p>
 <pre><code class="language-php">$search = Request::getState(
-    $this-&gt;_option . '.entries.search',
+    $this-&gt;_option . '.instruments.search',
     'search',
     ''
 );
@@ -320,8 +389,10 @@ value when it is not:</p>
 <p>The first argument is the key it is stored under, the second the request
 variable, then a default and an optional type (<code>int</code>, <code>word</code>, <code>cmd</code>,
 <code>bool</code>, <code>float</code>, <code>string</code>, <code>array</code>). The store is the user's session
-registry, so a member who leaves a list and comes back finds it as they
-left it.</p>
+registry, so the value outlives the request.</p>
+<p>Namespace the key with the component and the screen, as above. The registry
+is shared by every extension on the hub, and two screens that both call
+their key <code>search</code> will read each other's filter.</p>
 <h2 id="what-the-request-knows-about-itself">What the request knows about itself</h2>
 <table>
 <thead>
@@ -379,12 +450,13 @@ left it.</p>
 }
 </code></pre>
 <p><code>setVar($name, $value, $hash = 'method', $overwrite = true)</code> writes into the
-request. Use it sparingly — a controller handing a value to a view it is
-about to dispatch — and never as a way of passing data around inside your
-own code.</p>
+request. The router uses it, and so may a controller handing a value to a
+view it is about to dispatch. Never use it as a way of passing data around
+inside your own code: a value written there is visible to every later stage
+of the request, including plugins you did not write.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>The basics</a><a class="pager__next" href="../responses/index.html" rel="next"><span>Next</span>Responses</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/01-requests.md">Edit this page on GitHub</a>

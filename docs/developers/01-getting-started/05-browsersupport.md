@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/browsersupport
 source-id: 3427
@@ -13,7 +13,14 @@ Nothing in this repository enforces a browser support policy. There is no
 browserslist, no Babel, no PostCSS, and — with one exception — no build step
 that targets a language level. What the CMS runs in is decided by the
 libraries it ships and by the CSS and JavaScript its templates were written
-in. This page says what those actually require.
+in. This page says what those actually require, and therefore what to target
+when you write front-end code for a hub.
+
+The short answer, for anyone who came here to get on with it: **target
+current Chrome, Edge, Firefox and Safari, write ES2020 and modern CSS, and
+feature-detect anything newer.** The rest of the page is where that number
+comes from, because nobody in this repository will tell you if you get it
+wrong.
 
 The page this replaces carried a table of supported versions written in
 2012: Internet Explorer 7 through 9, Firefox 3 to 5, Safari 5, Android 2
@@ -152,13 +159,39 @@ Windows, ie 10.0
 These are minimums, so any current version of the browsers named passes. But
 a browser whose name does not appear in the list at all fails the check, and
 the plugin does not render. Vivaldi and Yandex are recognised by `Detector`
-under their own names and are not in the default list. See
-It is recorded with the project.
-## Writing front-end code
+under their own names and are not in the default list, so a visitor using
+either gets no tool session and no explanation. If your hub runs tools, add
+the names to the parameter rather than leaving the shipped default.
 
-Since nothing enforces a target, the burden is on what you write:
+## What to target
 
-- Assume an evergreen browser. Everything the CMS already loads does.
+Since nothing enforces a target, the burden is on what you write. Take these
+as the working baseline; each is what the shipped code already assumes, not
+a preference:
+
+| Decision | Target | Why |
+|---|---|---|
+| JavaScript language level | ES2020 | The one explicit number in the tree, from the editor bundle. `const`, arrow functions, classes, `async`/`await`, optional chaining and `Proxy` are all safe |
+| Module loading | Plain `<script>` | Nothing bundles the CMS's own scripts, so write scripts that work standalone. Do not assume a build step will be added |
+| DOM library | jQuery 3, if a template already loaded it | `Behavior::framework()` puts it on nearly every page. New code does not need it — `querySelector` and `fetch` are everywhere the CMS runs |
+| CSS layout | Flexbox and grid | Both are used across `core/templates/` and `core/components/` today |
+| CSS custom properties | Yes | Bootstrap 5.3 is built on them |
+| Anything newer | Feature-detect | `@supports` in CSS, a capability test in JavaScript. Never a user-agent test |
+| Internet Explorer | Not supported, at any version | jQuery 3, Bootstrap 5, htmx 2 and Alpine 3 each dropped it independently. There is nothing left to support it with |
+
+Concretely, a component's script may be written like this and needs no
+tooling:
+
+```js
+document.querySelectorAll('[data-booking-slot]').forEach(function (el) {
+    el.addEventListener('click', function () { /* ... */ });
+});
+```
+
+And the rules that go with it:
+
+- Assume an evergreen browser — one that updates itself. Everything the CMS
+  already loads does.
 - Build on working HTML. kimera and kameleon put a no-script class on
   `<html>` and remove it once script runs; use it if a feature needs
   JavaScript to be usable, and check which name your template uses.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Database · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Hubzero talks to the database through three layers, each built on the one below it. The driver ( ) wraps PDO and runs prepared statements. The query builder…">
+  <meta name="description" content="Hubzero talks to the database through three layers, each built on the one below it, and this page covers all three. The driver ( ) wraps PDO and runs prepared…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/database/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -77,17 +79,17 @@
 <li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Database</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#configuration">Configuration</a></li>
-<li class="toc__item toc__item--l2"><a href="#getting-a-connection">Getting a connection</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-layer-to-use">Which layer to use</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-table-prefix">The table prefix</a></li>
-<li class="toc__item toc__item--l2"><a href="#running-a-statement">Running a statement</a></li>
-<li class="toc__item toc__item--l3"><a href="#binding-values">Binding values</a></li>
-<li class="toc__item toc__item--l2"><a href="#reading-results">Reading results</a></li>
-<li class="toc__item toc__item--l2"><a href="#writing-rows">Writing rows</a></li>
-<li class="toc__item toc__item--l2"><a href="#transactions-and-locks">Transactions and locks</a></li>
-<li class="toc__item toc__item--l2"><a href="#inspecting-the-schema">Inspecting the schema</a></li>
-<li class="toc__item toc__item--l2"><a href="#debugging">Debugging</a></li>
-<li class="toc__item toc__item--l2"><a href="#where-to-go-next">Where to go next</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-driver">The driver</a></li>
+<li class="toc__item toc__item--l3"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l3"><a href="#getting-a-connection">Getting a connection</a></li>
+<li class="toc__item toc__item--l3"><a href="#running-a-statement">Running a statement</a></li>
+<li class="toc__item toc__item--l3"><a href="#reading-results">Reading results</a></li>
+<li class="toc__item toc__item--l3"><a href="#writing-rows">Writing rows</a></li>
+<li class="toc__item toc__item--l3"><a href="#transactions-and-locks">Transactions and locks</a></li>
+<li class="toc__item toc__item--l3"><a href="#inspecting-the-schema">Inspecting the schema</a></li>
+<li class="toc__item toc__item--l3"><a href="#debugging">Debugging</a></li>
 <li class="toc__item toc__item--l2"><a href="#query-builder">Query builder</a></li>
 <li class="toc__item toc__item--l3"><a href="#getting-a-query">Getting a query</a></li>
 <li class="toc__item toc__item--l3"><a href="#selecting">Selecting</a></li>
@@ -207,14 +209,101 @@
         
         <div class="prose">
 <p>Hubzero talks to the database through three layers, each built on the one
-below it. The driver (<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Driver.php"><code>Hubzero\Database\Driver</code></a>)
+below it, and this page covers all three. The
+<a href="#the-driver">driver</a> (<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Driver.php"><code>Hubzero\Database\Driver</code></a>)
 wraps PDO and runs prepared statements. The
 <a href="#query-builder">query builder</a> assembles statements without you writing SQL
-strings. The <a href="#orm">ORM</a> maps table rows to model objects. Schema changes
-are made by <a href="#migrations">migrations</a>.</p>
-<p>This page covers the bottom layer: how a connection is configured, how to
-get one, and what the driver can do once you have it.</p>
-<h2 id="configuration">Configuration</h2>
+strings. The <a href="#orm">ORM</a> maps table rows to model objects. Schema changes are
+made by <a href="#migrations">migrations</a>, which is the only supported way to change a
+hub's tables.</p>
+<p>The examples that are not taken from a shipped extension use one running
+example: a component that books a lab's instruments, <code>com_bookings</code>, whose
+reservations live in <code>#__bookings_reservations</code> and are modelled by
+<code>Components\Bookings\Models\Reservation</code>.</p>
+<h2 id="which-layer-to-use">Which layer to use</h2>
+<p>Reach for the ORM. A <code>Relational</code> model gives you validation, automatic
+fields, relationships and objects instead of anonymous rows, and because it
+forwards every method it does not define down to its own query builder, you
+lose nothing by starting there. That forwarding is why the examples on this
+page mix the two freely: <code>Reservation::all()-&gt;whereEquals('state', 1)-&gt;rows()</code>
+is a model call and a builder call in the same chain.</p>
+<table>
+<thead>
+<tr>
+<th>Use</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#orm">ORM</a></td>
+<td>Anything that reads or writes rows of your own table. This is the default.</td>
+</tr>
+<tr>
+<td><a href="#query-builder">Query builder</a></td>
+<td>A report, an aggregate, a join across tables that have no models, or a one-off statement in a controller.</td>
+</tr>
+<tr>
+<td><a href="#the-driver">Driver</a></td>
+<td>A statement the builder cannot express — <code>ALTER TABLE</code>, a stored procedure, a vendor-specific query — and the schema checks a migration needs.</td>
+</tr>
+</tbody>
+</table>
+<p>Write raw SQL only when the layer above genuinely cannot express the
+statement. Older code in this tree builds SQL strings by concatenation and
+passes them to <code>setQuery()</code>; that still runs, but it is not the pattern to
+copy. A concatenated string is where prefix bugs and injection bugs come
+from, and both of the layers above bind their values for you.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There is a second, older family of table classes in the tree:
+classes extending
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Table.php"><code>Hubzero\Database\Table</code></a>,
+with <code>load()</code>, <code>bind()</code>, <code>check()</code> and <code>store()</code>. The base class is marked
+<code>@deprecated</code> and over a hundred of them are still in <code>core/components</code>.
+They work. Do not write new ones and do not copy one as a starting point —
+<code>Relational</code> replaced them.</p>
+</aside>
+<h2 id="the-table-prefix">The table prefix</h2>
+<p>Get this right before anything else, because it fails on someone else's hub
+rather than on yours.</p>
+<p>Every hub picks its own table prefix at install time. Never write it out.
+Write the placeholder <code>#__</code> and let the driver substitute the real one:</p>
+<pre><code class="language-php">// Right — runs on any hub
+$db-&gt;setQuery(&quot;SELECT COUNT(*) FROM `#__bookings_reservations` WHERE `state` = 1&quot;);
+
+// Wrong — runs only on a hub whose prefix happens to be jos_
+$db-&gt;setQuery(&quot;SELECT COUNT(*) FROM `jos_bookings_reservations` WHERE `state` = 1&quot;);
+</code></pre>
+<p><code>Hubzero\Database\Driver\Pdo::prepare()</code> passes every statement through
+<code>Driver::replacePrefix()</code> before handing it to PDO, so the substitution
+happens at prepare time and applies to raw SQL, query builder calls and
+migrations alike. The scan skips quoted string literals, so a <code>#__</code> inside a
+bound or quoted value is left alone.</p>
+<p>The failure is quiet on the machine you develop on and total everywhere
+else. <code>jos_</code> is the default prefix, so a literal prefix works on a default
+install and on nothing else: the hub that renamed its prefix gets
+<code>Table 'hub.jos_bookings_reservations' doesn't exist</code>, raised as a
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Exception/QueryFailedException.php"><code>QueryFailedException</code></a>,
+usually as a white page in the middle of a page that worked yesterday. Nothing
+in the test suite catches it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The same rule covers everything that carries a table name —
+<code>insertObject()</code>, <code>updateObject()</code>, <code>from()</code>, <code>join()</code>, a model's <code>$table</code>
+property, a migration's <code>CREATE TABLE</code>, and the <code>--group</code> database of a
+super group. If you have written a prefix out anywhere, it is a bug.</p>
+</aside>
+<p>If you genuinely need the configured prefix — printing a table name in a
+report, say — read it rather than assuming it: <code>$db-&gt;getPrefix()</code>, or
+<code>Config::get('dbprefix')</code>.</p>
+<p>The rest of the naming rules for a new table — what to call it, its columns
+and its indexes — are in
+<a href="../conventions/index.html#database-schema-conventions">Database schema conventions</a>.</p>
+<h2 id="the-driver">The driver</h2>
+<p>The driver is the bottom layer: a connection, a prepared statement, and the
+methods that read a result back. Use it directly for the statements the
+builder cannot express, and for the schema questions a migration has to ask.
+Everything above it ends up here.</p>
+<h3 id="configuration">Configuration</h3>
 <p>The connection settings live in <code>app/config/database.php</code>, which returns a
 plain array:</p>
 <pre><code class="language-php">return array(
@@ -254,7 +343,7 @@ back into <code>mysql</code>. Both names reach <code>Hubzero\Database\Driver\Mys
 extends <code>Hubzero\Database\Driver\Pdo</code>. The drivers that ship are <code>mysql</code>,
 <code>mariadb</code>, <code>percona</code>, <code>pgsql</code> and <code>sqlite</code>; every one of them is a PDO
 driver.</p>
-<h2 id="getting-a-connection">Getting a connection</h2>
+<h3 id="getting-a-connection">Getting a connection</h3>
 <p>Inside the application, ask the container:</p>
 <pre><code class="language-php">$db = App::get('db');
 </code></pre>
@@ -279,18 +368,11 @@ connection with no arguments. With an empty array it builds a <code>mysql</code>
 driver against whatever defaults the driver class supplies, which is not
 the hub's database. Use <code>App::get('db')</code> for the hub connection.</p>
 </aside>
-<h2 id="the-table-prefix">The table prefix</h2>
-<p>Tables are written with the placeholder prefix <code>#__</code> rather than the real
-one. <code>Driver::replacePrefix()</code> swaps it for the configured <code>dbprefix</code> when
-the statement is prepared, so <code>#__blog_entries</code> becomes <code>jos_blog_entries</code>
-on a hub whose prefix is <code>jos_</code>. Write <code>#__</code> everywhere — in raw SQL, in
-query builder calls, in migrations — and the same code runs on a hub with
-any prefix.</p>
-<h2 id="running-a-statement">Running a statement</h2>
+<h3 id="running-a-statement">Running a statement</h3>
 <p><code>setQuery()</code> prepares a statement; a load method or <code>query()</code> executes it.</p>
 <pre><code class="language-php">$db = App::get('db');
 
-$db-&gt;setQuery(&quot;SELECT COUNT(*) FROM `#__blog_entries` WHERE `state` = 1&quot;);
+$db-&gt;setQuery(&quot;SELECT COUNT(*) FROM `#__bookings_reservations` WHERE `state` = 1&quot;);
 
 $total = $db-&gt;loadResult();
 </code></pre>
@@ -303,11 +385,11 @@ converts the <code>PDOException</code> into
 <code>Hubzero\Database\Exception\QueryFailedException</code>. Catch that if you need
 to handle a failure.</p>
 </aside>
-<h3 id="binding-values">Binding values</h3>
+<h4 id="binding-values">Binding values</h4>
 <p>Never interpolate user input into a statement. Prepare it with <code>?</code>
 placeholders and bind:</p>
-<pre><code class="language-php">$db-&gt;prepare(&quot;SELECT * FROM `#__blog_entries` WHERE `scope` = ? AND `state` = ?&quot;)
-   -&gt;bind(['site', 1]);
+<pre><code class="language-php">$db-&gt;prepare(&quot;SELECT * FROM `#__bookings_reservations` WHERE `instrument_id` = ? AND `state` = ?&quot;)
+   -&gt;bind([$instrumentId, 1]);
 
 $rows = $db-&gt;loadObjectList();
 </code></pre>
@@ -339,7 +421,7 @@ array of explicit types (<code>bool</code>, <code>null</code>, <code>int</code>,
 </table>
 <p><code>q()</code>, <code>qn()</code> and <code>nq()</code> are deprecated aliases handled by <code>__call()</code>.
 <code>nameQuote()</code> is not one of them and does not exist.</p>
-<h2 id="reading-results">Reading results</h2>
+<h3 id="reading-results">Reading results</h3>
 <p>Every method below prepares nothing itself; call <code>setQuery()</code> or
 <code>prepare()</code> first.</p>
 <table>
@@ -388,11 +470,11 @@ array of explicit types (<code>bool</code>, <code>null</code>, <code>int</code>,
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">$db-&gt;setQuery(&quot;SELECT `id`, `title`, `alias` FROM `#__kb_articles` ORDER BY `title`&quot;);
+<pre><code class="language-php">$db-&gt;setQuery(&quot;SELECT `id`, `title`, `alias` FROM `#__bookings_instruments` ORDER BY `title`&quot;);
 
-foreach ($db-&gt;loadObjectList('alias') as $alias =&gt; $article)
+foreach ($db-&gt;loadObjectList('alias') as $alias =&gt; $instrument)
 {
-    echo $article-&gt;title;
+    echo $instrument-&gt;title;
 }
 </code></pre>
 <p>Each of the <code>load*</code> methods executes the statement, reads the whole result,
@@ -403,28 +485,29 @@ execute fails they return <code>null</code>.</p>
 still open. The <code>load*</code> methods free the result when they finish, so call
 <code>getNumRows()</code> after <code>query()</code> and before any <code>load*</code> call.</p>
 </aside>
-<h2 id="writing-rows">Writing rows</h2>
+<h3 id="writing-rows">Writing rows</h3>
 <p>For a single row built from an object, the driver has two helpers that
 compose the statement for you:</p>
-<pre><code class="language-php">$entry = new stdClass;
-$entry-&gt;title = 'Release notes';
-$entry-&gt;state = 1;
+<pre><code class="language-php">$reservation = new stdClass;
+$reservation-&gt;instrument_id = 12;
+$reservation-&gt;starts = '2026-09-14 09:00:00';
+$reservation-&gt;state = 1;
 
-$db-&gt;insertObject('#__blog_entries', $entry, 'id');   // sets $entry-&gt;id
-$db-&gt;updateObject('#__blog_entries', $entry, 'id');   // $nulls = false skips null fields
+$db-&gt;insertObject('#__bookings_reservations', $reservation, 'id');   // sets -&gt;id
+$db-&gt;updateObject('#__bookings_reservations', $reservation, 'id');   // $nulls = false skips null fields
 </code></pre>
 <p>Both skip array and object properties and any property whose name starts
 with an underscore. <code>insertid()</code> returns the last auto-increment value.
 <code>getAffectedRows()</code> returns the row count of the last statement.</p>
 <p>For anything more involved, use the <a href="#query-builder">query builder</a>, which
 builds and binds the statement for you.</p>
-<h2 id="transactions-and-locks">Transactions and locks</h2>
+<h3 id="transactions-and-locks">Transactions and locks</h3>
 <p><code>transactionStart()</code>, <code>transactionCommit()</code> and <code>transactionRollback()</code> wrap
 the PDO equivalents. <code>lockTable($table)</code> and <code>unlockTables()</code> are available
 for the cases transactions do not cover. Since the driver throws on failure,
 the natural shape is a <code>try</code>/<code>catch</code> around the body with a rollback in the
 <code>catch</code>.</p>
-<h2 id="inspecting-the-schema">Inspecting the schema</h2>
+<h3 id="inspecting-the-schema">Inspecting the schema</h3>
 <p>Migrations lean on these heavily, and so should any code that has to cope
 with more than one schema version:</p>
 <table>
@@ -485,25 +568,25 @@ with more than one schema version:</p>
 </tr>
 </tbody>
 </table>
-<h2 id="debugging">Debugging</h2>
+<h3 id="debugging">Debugging</h3>
 <p><code>enableDebugging()</code> turns on timing and statement logging;
 <code>disableDebugging()</code> turns it off again. <code>getLog()</code> returns the recorded
 statements, <code>getCount()</code> the number run, and <code>getTimer()</code> the accumulated
 time. <code>toString()</code> on the driver interpolates the bound values back into the
 prepared statement, which is the fastest way to see what actually ran.</p>
-<h2 id="where-to-go-next">Where to go next</h2>
-<ul>
-<li><a href="#query-builder">Query builder</a> — building statements without SQL strings.</li>
-<li><a href="#orm">ORM</a> — <code>Relational</code> models, relationships, and saving rows.</li>
-<li><a href="#migrations">Migrations</a> — changing the schema in a repeatable way.</li>
-</ul>
 <h2 id="query-builder">Query builder</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Query.php"><code>Hubzero\Database\Query</code></a>
 assembles a statement from method calls instead of string concatenation, binds
-every value it is given, and hands the result to the
-<a href="../index.html">driver</a>. It sits between raw SQL and the
-<a href="#orm">ORM</a>: models forward any method they do not define themselves down to
-their query object, so everything on this page works on a model too.</p>
+every value it is given, and hands the result to the <a href="#the-driver">driver</a>.</p>
+<p>Reach for it when there is no model to reach for: a report that joins tables
+belonging to three components, a <code>COUNT()</code> for a dashboard, a one-off update
+in an administrator controller. It is also the layer you are already using
+whenever you chain <code>whereEquals()</code> or <code>order()</code> onto a model, because a model
+forwards any method it does not define itself down to its own query object.
+Everything in this section therefore works unchanged on a model.</p>
+<p>The gain over a hand-built string is that every value you pass is bound, not
+interpolated, so a search box cannot become an injection, and <code>#__</code> is
+handled for you.</p>
 <h3 id="getting-a-query">Getting a query</h3>
 <pre><code class="language-php">$query = new \Hubzero\Database\Query;
 </code></pre>
@@ -515,19 +598,19 @@ another connection:</p>
 <h3 id="selecting">Selecting</h3>
 <pre><code class="language-php">$query = new \Hubzero\Database\Query;
 
-$entries = $query-&gt;select('*')
-                 -&gt;from('#__blog_entries')
-                 -&gt;whereEquals('scope', 'site')
-                 -&gt;whereEquals('state', 1)
-                 -&gt;order('publish_up', 'desc')
-                 -&gt;limit(10)
-                 -&gt;fetch();
+$reservations = $query-&gt;select('*')
+                       -&gt;from('#__bookings_reservations')
+                       -&gt;whereEquals('instrument_id', 12)
+                       -&gt;whereEquals('state', 1)
+                       -&gt;order('starts', 'asc')
+                       -&gt;limit(10)
+                       -&gt;fetch();
 </code></pre>
 <p><code>select($column, $as = null, $count = false)</code> adds one column per call. The
 second argument is an alias; the third wraps the column in <code>COUNT()</code>, and the
 string <code>distinct</code> makes it <code>COUNT(DISTINCT …)</code>:</p>
 <pre><code class="language-php">$total = $query-&gt;select('id', 'total', true)
-               -&gt;from('#__blog_entries')
+               -&gt;from('#__bookings_reservations')
                -&gt;fetch('row')
                -&gt;total;
 </code></pre>
@@ -536,10 +619,10 @@ string <code>distinct</code> makes it <code>COUNT(DISTINCT …)</code>:</p>
 to it, which is how the ORM narrows down the default <code>select *</code> it seeds onto
 every model query.</p>
 <h4 id="joins">Joins</h4>
-<pre><code class="language-php">$query-&gt;select('e.*')
-      -&gt;select('c.title', 'category_title')
-      -&gt;from('#__kb_articles', 'e')
-      -&gt;join('#__categories AS c', 'e.category', 'c.id', 'left');
+<pre><code class="language-php">$query-&gt;select('r.*')
+      -&gt;select('i.title', 'instrument_title')
+      -&gt;from('#__bookings_reservations', 'r')
+      -&gt;join('#__bookings_instruments AS i', 'r.instrument_id', 'i.id', 'left');
 </code></pre>
 <p><code>join($table, $leftKey, $rightKey, $type = 'inner')</code> is the general form.
 <code>innerJoin()</code>, <code>leftJoin()</code>, <code>rightJoin()</code> and <code>fullJoin()</code> take the same first
@@ -600,14 +683,14 @@ that.</p>
 <p>Nested groups are expressed with <code>$depth</code>. Anything at depth 1 is wrapped in
 parentheses, and <code>resetDepth($depth)</code> closes back down to the given level:</p>
 <pre><code class="language-php">$query-&gt;select('*')
-      -&gt;from('#__blog_entries')
+      -&gt;from('#__bookings_reservations')
       -&gt;whereEquals('state', 1)
-      -&gt;whereEquals('scope', 'site', 1)
-      -&gt;orWhereEquals('scope', 'group', 1)
+      -&gt;whereEquals('instrument_id', 12, 1)
+      -&gt;orWhereEquals('instrument_id', 13, 1)
       -&gt;resetDepth()
-      -&gt;order('publish_up', 'desc');
+      -&gt;order('starts', 'asc');
 </code></pre>
-<p>That is <code>state = 1 AND (scope = 'site' OR scope = 'group')</code>.</p>
+<p>That is <code>state = 1 AND (instrument_id = 12 OR instrument_id = 13)</code>.</p>
 <h4 id="ordering-grouping-limiting">Ordering, grouping, limiting</h4>
 <table>
 <thead>
@@ -672,10 +755,10 @@ the result in one of three shapes:</p>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">$titles = $query-&gt;select('title')
-                -&gt;from('#__blog_entries')
-                -&gt;whereEquals('state', 1)
-                -&gt;fetch('column');
+<pre><code class="language-php">$ids = $query-&gt;select('id')
+             -&gt;from('#__bookings_reservations')
+             -&gt;whereEquals('state', 1)
+             -&gt;fetch('column');
 </code></pre>
 <h4 id="caching">Caching</h4>
 <p>Results are cached in a static array on the class, keyed by a hash of the
@@ -698,31 +781,31 @@ survives nothing.</p>
 <code>execute()</code>, which builds the statement for whichever of <code>select()</code>,
 <code>insert()</code>, <code>update()</code> or <code>delete()</code> was called most recently.</p>
 <pre><code class="language-php">// Insert
-$query-&gt;insert('#__blog_entries')
-      -&gt;values(['title' =&gt; 'Hello', 'scope' =&gt; 'site'])
+$query-&gt;insert('#__bookings_reservations')
+      -&gt;values(['instrument_id' =&gt; 12, 'state' =&gt; 1])
       -&gt;execute();
 
 // Shortcut: returns the new auto-increment id
-$id = $query-&gt;push('#__blog_entries', ['title' =&gt; 'Hello', 'scope' =&gt; 'site']);
+$id = $query-&gt;push('#__bookings_reservations', ['instrument_id' =&gt; 12, 'state' =&gt; 1]);
 </code></pre>
 <p><code>insert($table, $ignore = false)</code> and <code>push($table, $data, $ignore = false)</code>
 both accept an <code>$ignore</code> flag that produces <code>INSERT IGNORE</code>.</p>
 <pre><code class="language-php">// Update
-$query-&gt;update('#__blog_entries')
-      -&gt;set(['title' =&gt; 'Hello again'])
+$query-&gt;update('#__bookings_reservations')
+      -&gt;set(['state' =&gt; 0])
       -&gt;whereEquals('id', 1)
       -&gt;execute();
 
 // Shortcut
-$query-&gt;alter('#__blog_entries', 'id', 1, ['title' =&gt; 'Hello again']);
+$query-&gt;alter('#__bookings_reservations', 'id', 1, ['state' =&gt; 0]);
 </code></pre>
 <pre><code class="language-php">// Delete
-$query-&gt;delete('#__blog_entries')
+$query-&gt;delete('#__bookings_reservations')
       -&gt;whereEquals('id', 1)
       -&gt;execute();
 
 // Shortcut
-$query-&gt;remove('#__blog_entries', 'id', 1);
+$query-&gt;remove('#__bookings_reservations', 'id', 1);
 </code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>remove()</code> returns <code>false</code> without running anything when the
@@ -740,7 +823,7 @@ clause. <code>deselect()</code> is shorthand for <code>clear('select')</code>.</
 <p><code>toString()</code>, which <code>__toString()</code> also calls, prepares the statement and
 interpolates the bindings back in, without executing it:</p>
 <pre><code class="language-php">echo $query-&gt;select('*')
-           -&gt;from('#__blog_entries')
+           -&gt;from('#__bookings_reservations')
            -&gt;whereEquals('state', 1);
 </code></pre>
 <p><code>query($sql, $structure = null)</code> runs a statement you built yourself, using any
@@ -764,6 +847,18 @@ that makes and reverses one change to a hub — a table, a column, an extension
 entry, a data fix. <a href="../muse/index.html">Muse</a> finds them, works out which
 have not run yet, runs them, and records each run in <code>#__migrations</code> so it
 never runs the same one twice.</p>
+<p>Migrations are how a schema change ships. There is no other supported way.
+An extension that needs a table creates it in a migration, not in an
+installer, not in a <code>.sql</code> file someone is told to load, and not in code that
+runs a <code>CREATE TABLE IF NOT EXISTS</code> on every request. The reason is that a
+hub is upgraded, not reinstalled: the administrator runs
+<a href="../../reference/muse/index.html#muse-migration"><code>muse migration -f</code></a>, every pending
+migration in <code>core</code>, <code>app</code> and every extension runs once in timestamp order,
+and the run is recorded. A change made any other way is a change that some
+hubs have and others do not.</p>
+<p>Write one whenever your extension needs the database to look different from
+the way it looked in the last release — including on the very first release,
+where the migration is what creates your tables and registers the extension.</p>
 <p>The runner is
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration.php"><code>Hubzero\Content\Migration</code></a>;
 every migration extends
@@ -796,8 +891,11 @@ for a file in <code>core/components/com_blog/migrations</code> — and looks for
 A file whose class it cannot find is logged as a warning and skipped.</p>
 <p>Files are run in sorted order, which is why the timestamp comes first.</p>
 <h3 id="writing-one">Writing one</h3>
-<p><code>muse scaffolding create migration -e=com_example</code> writes a stub from the
-template and opens it in <code>$EDITOR</code>. The result is:</p>
+<p>A migration does one thing and undoes it. <code>up()</code> makes the change; <code>down()</code>
+reverses it. Both halves are yours to write, and both run against a database
+whose exact state you do not know, so both start by asking.</p>
+<p>Here is the whole of the first migration <code>com_bookings</code> would ship — it
+creates the reservations table and registers the component:</p>
 <pre><code class="language-php">&lt;?php
 
 use Hubzero\Content\Migration\Base;
@@ -806,16 +904,34 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for ...
+ * Migration script for com_bookings
  **/
-class Migration20260901120000ComExample extends Base
+class Migration20260910120000ComBookings extends Base
 {
     /**
      * Up
      **/
     public function up()
     {
-        // Changes to be made ...
+        if (!$this-&gt;db-&gt;tableExists('#__bookings_reservations'))
+        {
+            $query = &quot;CREATE TABLE `#__bookings_reservations` (
+                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `instrument_id` int(11) unsigned NOT NULL DEFAULT 0,
+                `starts` datetime DEFAULT NULL,
+                `ends` datetime DEFAULT NULL,
+                `state` tinyint(2) NOT NULL DEFAULT 0,
+                `created` datetime DEFAULT NULL,
+                `created_by` int(11) unsigned NOT NULL DEFAULT 0,
+                PRIMARY KEY (`id`),
+                KEY `idx_instrument_id` (`instrument_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8&quot;;
+
+            $this-&gt;db-&gt;setQuery($query);
+            $this-&gt;db-&gt;query();
+        }
+
+        $this-&gt;addComponentEntry('bookings');
     }
 
     /**
@@ -823,25 +939,86 @@ class Migration20260901120000ComExample extends Base
      **/
     public function down()
     {
-        // Reverse the changes ...
+        $this-&gt;deleteComponentEntry('bookings');
+
+        if ($this-&gt;db-&gt;tableExists('#__bookings_reservations'))
+        {
+            $this-&gt;db-&gt;setQuery(&quot;DROP TABLE `#__bookings_reservations`&quot;);
+            $this-&gt;db-&gt;query();
+        }
+    }
+}
+</code></pre>
+<p>Three things in there are not optional. The table is written with <code>#__</code>. The
+<code>up()</code> half checks before it creates and the <code>down()</code> half checks before it
+drops, because a migration is re-run in testing and against hubs that are
+already part-way there. And <code>down()</code> reverses <code>up()</code> in the opposite order.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing verifies that <code>down()</code> undoes <code>up()</code>. A migration with
+an empty <code>down()</code> is recorded as reversed successfully, and the hub is left
+with the change still applied. If a change genuinely cannot be reversed —
+data that has been discarded — say so with
+<code>$this-&gt;setError('Cannot be reversed', 'warning')</code> rather than leaving the
+method blank.</p>
+</aside>
+<h4 id="generating-the-stub">Generating the stub</h4>
+<p><code>muse scaffolding create migration</code> writes the file and opens it in
+<code>$EDITOR</code>. <code>-e</code> is required and names the extension, which must already
+exist:</p>
+<pre><code class="language-bash">php core/bin/muse scaffolding create migration -e=com_bookings \
+    --install-dir=components/com_bookings
+</code></pre>
+<p>The stub it writes is the class above with both methods empty:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+use Hubzero\Content\Migration\Base;
+
+/**
+ * Migration script for ...
+ **/
+class Migration20260910120000ComBookings extends Base
+{
+    /**
+     * Up
+     **/
+    public function up()
+    {
+    }
+
+    /**
+     * Down
+     **/
+    public function down()
+    {
     }
 }
 </code></pre>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> <code>-e</code> only decides the suffix on the class name. The file is
-written to <code>core/migrations</code> regardless. Pass <code>--app</code> to write into <code>app</code>
-instead, and <code>--install-dir=components/com_example</code> to put it in the
-extension's own directory — which is where an extension's migrations
-belong.</p>
+<p><strong>Note:</strong> <code>-e</code> only decides the suffix on the class name. Without
+<code>--install-dir</code> the file lands in <code>core/migrations</code> whatever extension you
+named, which is not where an extension's migrations belong. <code>--app</code> writes
+under <code>app</code> instead of <code>core</code>.</p>
 </aside>
-<p><code>muse scaffolding create migration for jos_example_things -e=com_example</code>
-writes the migration for you, filling <code>up()</code> with a <code>CREATE TABLE</code> taken from
-the live table, with the prefix replaced by <code>#__</code> and <code>AUTO_INCREMENT</code> reset
-to zero, and <code>down()</code> with the matching drop.</p>
+<p>The stub omits the <code>defined('_HZEXEC_') or die();</code> guard that every shipped
+migration carries. Add it.</p>
+<p>If the table already exists on your development hub, muse will write the
+migration for you. Name the table with its <strong>real</strong> prefix; the generator
+substitutes <code>#__</code> in what it writes:</p>
+<pre><code class="language-bash">php core/bin/muse scaffolding create migration for jos_bookings_reservations \
+    -e=com_bookings --install-dir=components/com_bookings
+</code></pre>
+<p>That fills <code>up()</code> with a guarded <code>CREATE TABLE</code> taken from the live table,
+with <code>AUTO_INCREMENT</code> reset to zero, and <code>down()</code> with the matching guarded
+drop.</p>
 <h3 id="working-with-the-database">Working with the database</h3>
-<p><code>$this-&gt;db</code> is a <a href="../index.html">database driver</a>. Anything the driver can do, a
+<p><code>$this-&gt;db</code> is a <a href="#the-driver">database driver</a>. Anything the driver can do, a
 migration can do:</p>
-<pre><code class="language-php">$this-&gt;db-&gt;setQuery(&quot;ALTER TABLE `#__blog_entries` ADD `summary` TEXT&quot;);
+<pre><code class="language-php">$this-&gt;db-&gt;setQuery(&quot;ALTER TABLE `#__bookings_reservations` ADD `notes` TEXT&quot;);
 $this-&gt;db-&gt;query();
 </code></pre>
 <p>Migrations run against hubs at different versions and are re-run in testing,
@@ -1060,11 +1237,19 @@ full migration, before or after the migrations themselves, and are skipped on
 a dry run or a log-only run. <code>core/migrations/hooks/UpdateTimezoneDatabase.php</code>
 is the one that ships.</p>
 <h3 id="running-migrations">Running migrations</h3>
-<pre><code class="language-bash">php core/bin/muse migration
-</code></pre>
-<p>With no options this is a dry run: it lists what would happen and changes
-nothing. Add <code>-f</code> to actually run it:</p>
-<pre><code class="language-bash">php core/bin/muse migration -f
+<p><a href="../../reference/muse/index.html#muse-migration"><code>muse migration</code></a> is what runs them, and
+it is the command an administrator runs after every update. Run it yourself
+before you commit, both ways, on a hub that has the change and on one that
+does not.</p>
+<p>With no options it is a <strong>dry run</strong>: it lists what would happen and changes
+nothing. That is the first thing to do with a migration you have just written,
+because it tells you whether the runner found the file at all — a file the
+naming rules reject is skipped in silence, and a dry run that lists nothing is
+what that looks like.</p>
+<pre><code class="language-bash">php core/bin/muse migration                       # dry run: what would happen
+php core/bin/muse migration -f                    # actually do it
+php core/bin/muse migration -f -e=com_bookings    # just this extension
+php core/bin/muse migration -f -d=down -e=com_bookings   # and reverse it
 </code></pre>
 <table>
 <thead>
@@ -1124,8 +1309,11 @@ nothing. Add <code>-f</code> to actually run it:</p>
 </tr>
 </tbody>
 </table>
-<p><code>php core/bin/muse migration history</code> prints the contents of the migrations
-table, and <code>php core/bin/muse migration help</code> prints the full option list.</p>
+<p><a href="../../reference/muse/index.html#muse-migration-history"><code>muse migration history</code></a> prints
+the contents of the migrations table, and <code>php core/bin/muse migration help</code>
+prints the full option list. The
+<a href="../../reference/muse/index.html#muse-migration">muse reference</a> is generated from the
+command class.</p>
 <h3 id="the-migrations-table">The migrations table</h3>
 <p>Runs are recorded in <code>#__migrations</code>, which the runner creates on first use:
 <code>file</code>, <code>scope</code>, <code>hash</code>, <code>direction</code>, <code>date</code>, <code>action_by</code> and <code>status</code>. The
@@ -1157,22 +1345,45 @@ maps one database table to one PHP class. It carries a
 not define itself, so the whole query API is available on the model. What the
 model adds on top is validation rules, automatically populated fields,
 relationships to other models, and objects instead of <code>stdClass</code> rows.</p>
+<p>This is where a new extension starts. One model per table, written once, and
+every controller, view and plugin that touches the table goes through it —
+which is what keeps the validation and the automatic <code>created</code> and
+<code>created_by</code> fields from being reimplemented, slightly differently, in each
+place that writes a row.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>Relational</code> is the current ORM. The <code>@deprecated</code>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Table.php"><code>Hubzero\Database\Table</code></a>
+classes described <a href="#which-layer-to-use">above</a> are what it replaced. A
+component's <code>tables/</code> directory holds those; a component's <code>models/</code>
+directory should hold these.</p>
+</aside>
 <h3 id="a-model">A model</h3>
 <p>The smallest useful model is a class with a namespace property:</p>
-<pre><code class="language-php">namespace Components\Blog\Models;
+<pre><code class="language-php">namespace Components\Bookings\Models;
 
 use Hubzero\Database\Relational;
 
-class Entry extends Relational
+class Reservation extends Relational
 {
-    protected $namespace = 'blog';
+    protected $namespace = 'bookings';
 }
 </code></pre>
+<p>That alone gives you <code>Reservation::all()</code>, <code>Reservation::one($id)</code>, <code>save()</code>
+and <code>destroy()</code> against <code>#__bookings_reservations</code>.</p>
 <p>The table name is derived in the constructor as <code>#__</code> + namespace + <code>_</code> +
-the pluralised, lower-cased short class name, so <code>Entry</code> with a namespace of
-<code>blog</code> becomes <code>#__blog_entries</code>. Set <code>protected $table</code> explicitly when the
-real name does not follow that pattern. The primary key defaults to <code>id</code> and
-is changed with <code>protected $pk</code>.</p>
+the pluralised, lower-cased short class name, so <code>Reservation</code> with a
+namespace of <code>bookings</code> becomes <code>#__bookings_reservations</code>. Set
+<code>protected $table</code> explicitly when the real name does not follow that
+pattern — and write <code>#__</code> there too. The primary key defaults to <code>id</code> and is
+changed with <code>protected $pk</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A model whose table does not exist fails at the first fetch, not
+at construction, and the error is a <code>QueryFailedException</code> naming a table
+you never typed. That usually means the pluralisation guessed differently
+from your <a href="#migrations">migration</a>: <code>Reservation</code> gives
+<code>#__bookings_reservations</code>, but <code>Status</code> gives <code>#__bookings_statuses</code>. Set
+<code>$table</code> rather than arguing with it.</p>
+</aside>
 <p>Here is a real model's declarations — a knowledge base article:</p>
 <pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
 {
@@ -1337,20 +1548,23 @@ is changed with <code>protected $pk</code>.</p>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">use Components\Blog\Models\Entry;
+<pre><code class="language-php">use Components\Bookings\Models\Reservation;
 
-$entries = Entry::all()
-    -&gt;whereEquals('scope', 'site')
-    -&gt;whereEquals('state', Entry::STATE_PUBLISHED)
+$reservations = Reservation::all()
+    -&gt;whereEquals('instrument_id', $instrumentId)
+    -&gt;whereEquals('state', 1)
     -&gt;ordered()
     -&gt;paginated()
     -&gt;rows();
 
-foreach ($entries as $entry)
+foreach ($reservations as $reservation)
 {
-    echo $entry-&gt;title;
+    echo $reservation-&gt;starts;
 }
 </code></pre>
+<p><code>whereEquals()</code>, <code>ordered()</code> and <code>paginated()</code> in that chain are not on the
+model at all — <code>ordered()</code> and <code>paginated()</code> are, but <code>whereEquals()</code> is the
+query builder's, reached by the forwarding described above.</p>
 <p>Models implement <code>IteratorAggregate</code>, so iterating one fetches for you — but
 it iterates a <em>copy</em>, leaving the original query intact for a later call.
 <code>ArrayAccess</code> is implemented too, so <code>$entry['title']</code> works alongside
@@ -1461,16 +1675,17 @@ write yourself; a slug generator is the usual case:</p>
 	}
 </code></pre>
 <h3 id="saving-and-deleting">Saving and deleting</h3>
-<pre><code class="language-php">$entry = Entry::oneOrNew($id);
-$entry-&gt;set([
-    'title'   =&gt; 'Release notes',
-    'content' =&gt; 'Everything that changed.',
-    'scope'   =&gt; 'site'
+<pre><code class="language-php">$reservation = Reservation::oneOrNew($id);
+$reservation-&gt;set([
+    'instrument_id' =&gt; 12,
+    'starts'        =&gt; '2026-09-14 09:00:00',
+    'ends'          =&gt; '2026-09-14 11:00:00',
+    'state'         =&gt; 1
 ]);
 
-if (!$entry-&gt;save())
+if (!$reservation-&gt;save())
 {
-    // $entry-&gt;getError() / getErrors() explain why
+    // $reservation-&gt;getError() / getErrors() explain why
 }
 </code></pre>
 <p><code>save()</code> decides between insert and update from whether the primary key is
@@ -1597,7 +1812,7 @@ extends <code>Relational</code> for nested-set trees, adding <code>saveAsRoot()<
 the gap left in the tree.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../basics/redirect/index.html" rel="prev"><span>Previous</span>Redirect</a><a class="pager__next" href="../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/06-database.md">Edit this page on GitHub</a>

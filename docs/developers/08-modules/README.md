@@ -53,7 +53,7 @@ which gathers data and requires a layout out of `tmpl/`.
 > the layouts they require are not. A namespaced class must `use` every facade
 > it calls — `use User;`, `use Request;` — or the call resolves to a class in
 > the module's own namespace and fatals. See
-> [Facades](../03-foundation/04-facades.md). Layouts run in the global
+> [Facades](../03-foundation/06-facades.md). Layouts run in the global
 > namespace and need no imports.
 
 ## Placing a module

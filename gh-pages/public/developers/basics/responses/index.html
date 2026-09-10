@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -67,6 +69,7 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">The basics</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../requests/index.html">Requests</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Responses</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-actually-need-it">When you actually need it</a></li>
 <li class="toc__item toc__item--l2"><a href="#getting-at-it">Getting at it</a></li>
 <li class="toc__item toc__item--l2"><a href="#headers">Headers</a></li>
 <li class="toc__item toc__item--l2"><a href="#content">Content</a></li>
@@ -183,6 +186,18 @@ you never touch it.</p>
 <a href="https://symfony.com/doc/current/components/http_foundation.html">Symfony HttpFoundation documentation</a>.
 This page covers what Hubzero adds and when reaching for it is right.</p>
 </aside>
+<h2 id="when-you-actually-need-it">When you actually need it</h2>
+<p>Four cases, and outside them you should not be touching the response:</p>
+<ul>
+<li>An <strong>AJAX task</strong> that returns JSON instead of a page.</li>
+<li>A <strong>feed or export</strong> — CSV, iCalendar, an XML dump — where you set the
+content type and write the body yourself.</li>
+<li>A <strong>system plugin</strong> rewriting the finished page on <code>onAfterRender</code>.</li>
+<li><strong>Middleware</strong> that must send something before the application would.</li>
+</ul>
+<p>Serving a file off disk is <em>not</em> one of them. Use
+<a href="../../services/server/index.html"><code>Hubzero\Content\Server</code></a>, which handles
+disposition, length and byte ranges.</p>
 <h2 id="getting-at-it">Getting at it</h2>
 <pre><code class="language-php">use Response;
 
@@ -213,13 +228,22 @@ then echoing the payload and ending the request:</p>
 {
     Response::header('Content-Type', 'application/json');
 
-    echo json_encode(array('state' =&gt; $row-&gt;get('state')));
+    echo json_encode(array('state' =&gt; $booking-&gt;get('state')));
 
     App::close();
 }
 </code></pre>
 <p><code>App::close()</code> calls <code>exit()</code>. Nothing after it runs, and nothing else gets
 appended to the body.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Leave the <code>App::close()</code> out and the template renders the
+whole page after your JSON, so the browser gets valid JSON followed by
+HTML and <code>JSON.parse</code> fails on a response that looks right in the network
+panel until you scroll. Any stray output <em>before</em> the header call —
+a <code>dump()</code>, a blank line after a closing <code>?&gt;</code> in a file you included —
+means the header never goes out at all, because headers cannot follow a
+body.</p>
+</aside>
 <h2 id="content">Content</h2>
 <p><code>setContent($output)</code> replaces the body; it takes a string. <code>getContent()</code>
 reads it back. The site template's output is set here at the end of the
@@ -302,7 +326,7 @@ error template renders the right page:</p>
 <code>App::abort()</code> is the shorter way to say it.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../requests/index.html" rel="prev"><span>Previous</span>Requests</a><a class="pager__next" href="../config/index.html" rel="next"><span>Next</span>Config</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/02-responses.md">Edit this page on GitHub</a>

@@ -95,7 +95,7 @@ error.
 > **Note:** In a layout, `Lang` needs no import — layouts run in the global
 > namespace. In `helper.php`, which declares `namespace Modules\Example`, you
 > must write `use Lang;` at the top of the file or the call fatals. See
-> [Facades](../03-foundation/04-facades.md).
+> [Facades](../03-foundation/06-facades.md).
 
 ## Registering the file
 

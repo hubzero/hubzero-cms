@@ -53,8 +53,8 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Extensions</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-four-kinds">The four kinds</a></li>
 <li class="toc__item toc__item--l2"><a href="#components">Components</a></li>
@@ -64,6 +64,8 @@
 <li class="toc__item toc__item--l2"><a href="#languages">Languages</a></li>
 <li class="toc__item toc__item--l2"><a href="#nothing-scans-the-filesystem">Nothing scans the filesystem</a></li>
 </ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -220,7 +222,14 @@ each kind then has a book of its own.</p>
 <p>Each loader searches <code>PATH_APP</code> before <code>PATH_CORE</code> and stops at the first
 directory it finds, so a hub replaces a shipped extension by putting a
 directory of the same name under <code>app/</code>. See
-<a href="../structure/index.html#overriding-a-core-extension">Structure</a>.</p>
+<a href="../structure/index.html#overriding-a-core-extension">Structure</a>, and
+<a href="../autoloading/index.html">Autoloading</a> for how the same rule applies to each
+extension's classes.</p>
+<p>Which kind you want is usually decided for you. A feature with its own URLs,
+tables and screens — booking a lab's instruments, say — is a component.
+Something that has to happen when <em>another</em> extension does something is a
+plugin. A block of markup in a template position is a module. The frame
+around all of it is a template.</p>
 <h2 id="components">Components</h2>
 <p>A component is an application in its own right: controllers, models, its own
 tables, its own routes, its own views, and up to three faces — <code>site/</code>,
@@ -252,7 +261,7 @@ and the group is the directory: <code>plugins/authentication/</code>,
 <code>plugins/content/</code>, <code>plugins/members/</code>. Most of the pluggable behaviour in
 the CMS is a plugin group, and the
 <a href="../../../reference/events/index.html">events reference</a> lists what the tree
-triggers.</p>
+triggers. <a href="../events/index.html">Events</a> covers how a trigger reaches a group.</p>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader</code></a>
 builds its list once per request, from <code>#__extensions</code>:</p>
 <pre><code class="language-sql">SELECT folder AS type, element AS name, protected, params
@@ -348,8 +357,8 @@ row, which is why every extension ships one. See
 <a href="../../extensions/deployext/index.html">Deploying extensions</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../facades/index.html" rel="prev"><span>Previous</span>Facades</a><a class="pager__next" href="../../services/index.html" rel="next"><span>Next</span>Services</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../facades/index.html" rel="next"><span>Next</span>Facades</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/05-extensions.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

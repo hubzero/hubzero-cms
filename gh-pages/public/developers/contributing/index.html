@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -266,12 +268,17 @@ license its package declares.</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/ACKNOWLEDGMENTS.md"><code>ACKNOWLEDGMENTS.md</code></a>, which also lists the
 contributors.</p>
 <h3 id="branches">Branches</h3>
-<p>Each release line has a <code>X.Y-main</code> branch: <code>2.2-main</code>, <code>2.3-main</code>, <code>2.4-main</code>.
+<p>Each release line has a <code>X.Y-main</code> branch. The repository carries them back to
+<code>1.0-main</code>; the recent ones are <code>2.2-main</code>, <code>2.3-main</code> and <code>2.4-main</code>.
 <code>2.4-main</code> is the current line and the repository's default branch. Point
 releases are tagged from it.</p>
 <p>Branch your work from the release line the fix belongs to, and open the pull
 request against that same branch. Give the branch a name that means something
 to you; nothing depends on it.</p>
+<p>There are also <code>X.Y-dev</code> branches — <code>2.4-dev</code>, <code>2.5-dev</code>, <code>3.0-dev</code> — carrying
+work for lines that are not released. Unless a maintainer asks you to target
+one, send a fix to <code>2.4-main</code>: a change that lands on a <code>-dev</code> branch reaches
+nobody's hub until that line ships.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> <code>.github/CONTRIBUTING.md</code> still tells you to avoid a <code>master</code>
 branch and to work against a stable branch. There is no <code>master</code> branch in
@@ -288,30 +295,44 @@ php tools/lint/missing-facade-imports.php
 </code></pre>
 <p>Read <a href="../conventions/index.html#checking-your-work">PHP Coding Style</a>
 for what each of those catches and how to run phpcs usefully against a
-codebase that has no committed ruleset.</p>
+codebase that has no committed ruleset. The suite takes about half a minute;
+<a href="../testing/index.html#running-one-test">Testing</a> covers running one test while you
+work on it.</p>
 <p>If you touched anything under <code>docs/</code>, rebuild the site and commit the result:</p>
 <pre><code class="language-bash">sh tools/docs/rebuild.sh
 </code></pre>
 <h3 id="what-the-build-checks">What the build checks</h3>
-<p>Two workflows run on every pull request.</p>
+<p>Three workflows run on a pull request, each on the paths it cares about. A
+pull request that touches only <code>docs/</code> runs the documentation one and nothing
+else.</p>
 <table>
 <thead>
 <tr>
 <th>Workflow</th>
+<th>Runs when</th>
 <th>Checks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a></td>
-<td><code>php -l</code> on every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>tools/lint/missing-facade-imports.php</code></td>
+<td>any <code>*.php</code> changes</td>
+<td><code>php -l</code> on every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>tools/lint/missing-facade-imports.php</code>, then <code>tools/lint/undefined-language-keys.php</code> against a ceiling</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/tests.yml"><code>tests.yml</code></a></td>
+<td><code>core/**.php</code>, <code>core/phpunit.xml.dist</code> or the Composer files change</td>
+<td>Installs the Composer dependencies and runs <code>vendor/bin/phpunit -c phpunit.xml.dist</code></td>
 </tr>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/pages.yml"><code>pages.yml</code></a></td>
+<td><code>docs/</code>, <code>gh-pages/</code> or <code>tools/docs/</code> changes</td>
 <td>Runs the documentation builder's tests, regenerates <code>docs/reference</code> and fails if it differs, builds the site, checks every internal link, and fails if the committed <code>gh-pages/public</code> is stale</td>
 </tr>
 </tbody>
 </table>
+<p>A fourth, <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/dev-push.yml"><code>dev-push.yml</code></a>, deploys to a
+Purdue development host and is switched off.</p>
 <p>The facade check is worth understanding before it fails on you. The CMS
 registers <code>Route</code>, <code>User</code>, <code>Lang</code> and the rest as root-namespace aliases, so an
 unqualified <code>Route::url()</code> inside a namespaced file resolves to
@@ -319,7 +340,14 @@ unqualified <code>Route::url()</code> inside a namespaced file resolves to
 <code>php -l</code> says nothing, and the fault only surfaces on the path that reaches it.
 730 of these were fixed at once; the linter keeps them from coming back. Run it
 with <code>--fix</code> to insert the missing <code>use</code> statements.</p>
-<p>Neither workflow runs phpcs. Style is caught in review.</p>
+<p>The language-key check is graded, not absolute. <code>Lang::txt()</code> prints the key
+when nothing defines it, and 444 keys in the tree are undefined today, so the
+workflow runs the linter with <code>--max=444</code>: the build passes at today's number
+and fails the moment your change adds one. Define the keys your change asks
+for. If you fix some existing ones, lower the ceiling in the workflow in the
+same pull request, so the count cannot creep back.</p>
+<p>No workflow runs phpcs. Style is caught in review; see
+<a href="../conventions/index.html#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a>.</p>
 <h3 id="the-pull-request">The pull request</h3>
 <p>The <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/pull_request_template.md">pull request template</a> asks for:</p>
 <ul>
@@ -332,8 +360,13 @@ to ask for</li>
 rollout</li>
 <li>a named reviewer</li>
 </ul>
-<p>Every pull request needs a review before it merges;
-<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/CODEOWNERS"><code>CODEOWNERS</code></a> requests one automatically.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/CODEOWNERS"><code>CODEOWNERS</code></a> is a single line, <code>* @nkissebe</code>, so
+every pull request automatically requests a review from the repository's
+maintainer, whatever it touches. Whether GitHub then <em>blocks</em> the merge until
+that review arrives is branch protection, which is a repository setting and
+not a file you can read here. Write for the review either way: the template's
+testing question is the one reviewers most often have to send a pull request
+back for.</p>
 <p>Write the commit messages the way
 <a href="../conventions/index.html#commit-messages">Commit Messages</a> describes: an extension prefix, a
 sentence, and a body that says why.</p>
@@ -435,7 +468,7 @@ committed copy does not match, so a stale copy cannot be deployed by
 accident.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 68f32bba55</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../aws/index.html" rel="prev"><span>Previous</span>AWS</a><a class="pager__next" href="../conventions/index.html" rel="next"><span>Next</span>Conventions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/18-contributing.md">Edit this page on GitHub</a>
