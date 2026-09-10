@@ -164,7 +164,7 @@ class Publication extends Obj
      * @param   mixed   $oid  ID or alias
      * @return  object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 

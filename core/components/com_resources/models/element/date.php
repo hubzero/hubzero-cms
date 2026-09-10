@@ -24,6 +24,7 @@ class Date extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Date';
 
     /**
@@ -86,19 +87,22 @@ class Date extends Base
 
             $output = '<legend id="' . $control_name . $name . '-lgd"';
             if (isset($element->description) && $element->description) {
-                $output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($element->description) . '">';
+                $output .= ' class="hasTip" title="' . Lang::txt($label) . '::'
+                . Lang::txt($element->description) . '">';
             } else {
                 $output .= '>';
             }
             $output .= Lang::txt($label);
-            $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+            $isRequired = isset($element->required) && $element->required;
+            $requiredSpan = ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+            $output .= $isRequired ? $requiredSpan : '';
             $output .= '</legend>';
 
             $html[] = $output;
         }
 
         if (isset($element->year) && $element->year) {
-            $year = $this->_getValue('year', $value);
+            $year = $this->getValue('year', $value);
 
             // Get the year range
             // 0 = start
@@ -145,7 +149,7 @@ class Date extends Base
         }
 
         if (isset($element->month) && $element->month) {
-            $month = $this->_getValue('month', $value);
+            $month = $this->getValue('month', $value);
 
             // Build the list of years
             $options = array(
@@ -172,7 +176,7 @@ class Date extends Base
         }
 
         if (isset($element->day) && $element->day) {
-            $day = $this->_getValue('day', $value);
+            $day = $this->getValue('day', $value);
 
             // Build the list of years
             $options = array(
@@ -210,7 +214,7 @@ class Date extends Base
      * @param   integer  $month  Month numerical value
      * @return  string
      */
-    private function _getMonth($month)
+    private function getMonth($month)
     {
         switch ($month) {
             case 1:
@@ -263,7 +267,7 @@ class Date extends Base
      * @param   string  $text  Data
      * @return  string
      */
-    private function _getValue($tag, $text)
+    private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
         preg_match($pattern, $text, $matches);
@@ -278,16 +282,16 @@ class Date extends Base
      */
     public function display($value)
     {
-        $year  = intval($this->_getValue('year', $value));
-        $month = intval($this->_getValue('month', $value));
-        $day   = intval($this->_getValue('day', $value));
+        $year  = intval($this->getValue('year', $value));
+        $month = intval($this->getValue('month', $value));
+        $day   = intval($this->getValue('day', $value));
 
         $html = '';
         if ($day && $day != 0) {
             $html .= $day . ' ';
         }
         if ($month && $month != 0) {
-            $html .= $this->_getMonth($month) . ' ';
+            $html .= $this->getMonth($month) . ' ';
         }
         if ($year && $year != 0) {
             $html .= $year;
@@ -332,24 +336,41 @@ class Date extends Base
         $html[] = '<table class="admintable" id="' . $name . '">';
         $html[] = '<tbody>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-year">' . Lang::txt('Year') . '</label></td>';
-        $html[] = '<td><input type="checkbox" name="' . $control_name . '[' . $name . '][year]" id="' . $control_name . '-' . $name . '-year" value="1" ' . (isset($element->year) && $element->year == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $labelFor = $control_name . '-' . $name . '-year';
+        $html[] = '<td><label for="' . $labelFor . '">' . Lang::txt('Year') . '</label></td>';
+        $inputName = $control_name . '[' . $name . '][year]';
+        $checked = isset($element->year) && $element->year == 1 ? 'checked="checked"' : '';
+        $html[] = '<td><input type="checkbox" name="' . $inputName . '" id="' . $labelFor
+            . '" value="1" ' . $checked . ' /></td>';
         if (isset($element->options) && is_array($element->options)) {
             foreach ($element->options as $option) {
-                $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? Lang::txt('Start') : Lang::txt('End')) . '</label></td>';
-                $html[] = '<td><input type="text" size="4" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . ($k == 0 ? ($option->label ? $option->label : 1950) : $option->label) . '" /></td>';
+                $labelId = $control_name . '-' . $name . '-label-' . $k;
+                $labelText = $k == 0 ? Lang::txt('Start') : Lang::txt('End');
+                $html[] = '<td><label for="' . $labelId . '">' . $labelText . '</label></td>';
+                $optName = $control_name . '[' . $name . '][options][' . $k . '][label]';
+                $optValue = $k == 0 ? ($option->label ? $option->label : 1950) : $option->label;
+                $html[] = '<td><input type="text" size="4" name="' . $optName . '" id="'
+                    . $labelId . '" value="' . $optValue . '" /></td>';
 
                 $k++;
             }
         }
         $html[] = '</tr>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-month">' . Lang::txt('Month') . '</label></td>';
-        $html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][month]" id="' . $control_name . '-' . $name . '-month" value="1" ' . (isset($element->month) && $element->month == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $labelFor = $control_name . '-' . $name . '-month';
+        $html[] = '<td><label for="' . $labelFor . '">' . Lang::txt('Month') . '</label></td>';
+        $inputName = $control_name . '[' . $name . '][month]';
+        $checked = isset($element->month) && $element->month == 1 ? 'checked="checked"' : '';
+        $html[] = '<td colspan="3"><input type="checkbox" name="' . $inputName . '" id="'
+            . $labelFor . '" value="1" ' . $checked . ' /></td>';
         $html[] = '</tr>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-day">' . Lang::txt('Day') . '</label></td>';
-        $html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][day]" id="' . $control_name . '-' . $name . '-day" value="1" ' . (isset($element->day) && $element->day == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $labelFor = $control_name . '-' . $name . '-day';
+        $html[] = '<td><label for="' . $labelFor . '">' . Lang::txt('Day') . '</label></td>';
+        $inputName = $control_name . '[' . $name . '][day]';
+        $checked = isset($element->day) && $element->day == 1 ? 'checked="checked"' : '';
+        $html[] = '<td colspan="3"><input type="checkbox" name="' . $inputName . '" id="'
+            . $labelFor . '" value="1" ' . $checked . ' /></td>';
         $html[] = '</tr>';
         $html[] = '</tbody>';
         $html[] = '</table>';
