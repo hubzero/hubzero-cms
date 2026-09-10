@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dates · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A hub has members in every time zone, so it keeps one rule: store and compare in UTC, convert only for display. Every column in the schema holds UTC. Every…">
+  <meta name="description" content="A hub has members in every time zone, so it keeps one rule: Important: Store and compare in UTC. Convert only for display. Every column in the schema holds…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/dates/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -74,6 +76,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../debugging/index.html">Debugging</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled tasks</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Dates</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-whole-rule-as-a-table">The whole rule, as a table</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-getting-it-wrong-looks-like">What getting it wrong looks like</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-a-date">Creating a date</a></li>
 <li class="toc__item toc__item--l2"><a href="#storing">Storing</a></li>
 <li class="toc__item toc__item--l2"><a href="#displaying">Displaying</a></li>
@@ -169,21 +173,71 @@
         </header>
         
         <div class="prose">
-<p>A hub has members in every time zone, so it keeps one rule: <strong>store and
-compare in UTC, convert only for display.</strong> Every <code>datetime</code> column in the
-schema holds UTC. Every date that reaches a member's screen has been
-converted on the way out.</p>
+<p>A hub has members in every time zone, so it keeps one rule:</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <strong>Store and compare in UTC. Convert only for display.</strong>
+Every <code>datetime</code> column in the schema holds UTC. Every date that reaches a
+member's screen has been converted on the way out.</p>
+</aside>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Date.php"><code>Hubzero\Utility\Date</code></a>
-extends PHP's <code>DateTime</code> and enforces that rule. The <code>Date</code> facade is the
-short way to build one.</p>
+extends PHP's <code>DateTime</code> and gives you the conversions. It does not enforce
+the rule — nothing does — so the whole of this page is about which side of
+the line a given value is on.</p>
+<h2 id="the-whole-rule-as-a-table">The whole rule, as a table</h2>
+<p>An instrument-booking component reads a start time from a form, stores it,
+compares it against now, and shows it back. That is five values and five
+different calls:</p>
+<table>
+<thead>
+<tr>
+<th>The value</th>
+<th>Write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Read from a database column</td>
+<td><code>Date::of($row-&gt;get('starts'))</code> — already UTC, no zone argument</td>
+</tr>
+<tr>
+<td>Typed by a member into a form</td>
+<td><code>Date::of($input, Config::get('offset'))</code> — their zone, said out loud</td>
+</tr>
+<tr>
+<td>Now, on the way into a column</td>
+<td><code>Date::of('now')-&gt;toSql()</code></td>
+</tr>
+<tr>
+<td>On the way to a member's screen</td>
+<td><code>-&gt;toLocal(Lang::txt('DATE_FORMAT_HZ1'))</code></td>
+</tr>
+<tr>
+<td>On the way to a machine — JSON, a feed, a <code>&lt;time datetime=&quot;&quot;&gt;</code></td>
+<td><code>-&gt;format('Y-m-d\TH:i:s\Z')</code> or <code>toISO8601()</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-getting-it-wrong-looks-like">What getting it wrong looks like</h3>
+<p>Nothing throws. No warning is logged. A booking made for 9am appears at 1pm,
+or a job that should have run at midnight runs at five. The reliable tell is
+that the error is a whole number of hours and <strong>changes by one in summer</strong>,
+because the offset that was wrongly applied is a daylight-saving one.</p>
+<p>The second tell is that comparisons stop agreeing with the display. A row
+written in local time sorts and filters wrongly against every other row:
+<code>publish_up &lt;= now</code> is evaluated in the database against UTC, so a booking
+stored four hours ahead of where it should be simply does not appear until
+four hours later, on a page that shows the right time all along.</p>
 <h2 id="creating-a-date">Creating a date</h2>
 <pre><code class="language-php">use Date;
 
 $now     = Date::of('now');
 $created = Date::of($row-&gt;get('created'));
 </code></pre>
-<p><code>Date::of($date = 'now', $tz = null)</code> returns a new object each time; there
-is no shared instance. <code>Date::getRoot()</code> is <code>Date::of('now')</code>.</p>
+<p><code>Date::of($date = 'now', $tz = null, $ignoreDst = false)</code> returns a new
+object each time; there is no shared instance. <code>Date::getRoot()</code> is
+<code>Date::of('now')</code>. <code>$ignoreDst</code> pins the zone to its standard offset, which
+is wanted only for a recurring wall-clock time that must not shift with
+daylight saving; leave it alone otherwise.</p>
 <p><strong>When <code>$tz</code> is omitted the string is read as UTC.</strong> That is the important
 default. <code>Date::of('2015-06-01 09:00:00')</code> is nine in the morning UTC, not
 nine in the morning wherever the server is. A value that came out of the
@@ -191,9 +245,14 @@ database is already UTC, so reading it back needs no time zone:</p>
 <pre><code class="language-php">$created = Date::of($row-&gt;get('created'));
 </code></pre>
 <p>A value that came from a <strong>member typing into a form</strong> is in their time zone,
-and has to be told so:</p>
-<pre><code class="language-php">$fields['publish_up'] = Date::of($fields['publish_up'], Config::get('offset'))-&gt;toSql();
+and has to be told so. This is the one line that matters, and the one that
+gets left out:</p>
+<pre><code class="language-php">// The member typed &quot;2026-09-14 09:00&quot; meaning nine in the morning where they are
+$fields['starts'] = Date::of($fields['starts'], Config::get('offset'))-&gt;toSql();
 </code></pre>
+<p>Leave the second argument off and the same string is stored as nine in the
+morning UTC, which is four or five in the morning for the lab. The booking
+saves, the form redisplays it correctly, and only the slot list disagrees.</p>
 <p><code>Config::get('offset')</code> is the hub's configured zone. <code>$tz</code> accepts a
 <code>DateTimeZone</code>, an identifier string such as <code>America/New_York</code>, or a
 numeric offset resolved through the class's own table of common zones.</p>
@@ -241,7 +300,7 @@ alone. Every comparison the CMS makes — <code>publish_up &lt;= now</code>, a c
 sorts and filters wrongly against all the others.</p>
 <h2 id="displaying">Displaying</h2>
 <p><code>toLocal($format = '')</code> converts to the viewing member's zone and formats:</p>
-<pre><code class="language-php">echo Date::of($row-&gt;get('created'))-&gt;toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+<pre><code class="language-php">echo Date::of($booking-&gt;get('starts'))-&gt;toLocal(Lang::txt('DATE_FORMAT_LC2'));
 </code></pre>
 <p>It reads <code>User::getParam('timezone', Config::get('offset'))</code> — the member's
 own preference where they have set one, the hub's offset otherwise — so the
@@ -363,7 +422,7 @@ not represent a date anybody wants to show.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cron/index.html" rel="prev"><span>Previous</span>Scheduled tasks</a><a class="pager__next" href="../redirect/index.html" rel="next"><span>Next</span>Redirect</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/10-dates.md">Edit this page on GitHub</a>

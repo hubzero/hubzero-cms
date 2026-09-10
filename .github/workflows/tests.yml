@@ -1,7 +1,7 @@
 name: Tests
 
 # The suite is at core/phpunit.xml.dist and covers the framework libraries,
-# eight components and two plugins. Nothing ran it automatically before, so a
+# seven components and two plugins. Nothing ran it automatically before, so a
 # break could sit unnoticed between the times someone thought to run it.
 
 on:

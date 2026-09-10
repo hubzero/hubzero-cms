@@ -1,22 +1,30 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/components/assets
 -->
 # Assets
+
+A component does not write `<link>` and `<script>` tags. It asks for a file by
+name and the platform works out the path, appends a cache-busting version,
+lets the active template override it, and adds it to the document once no
+matter how many layouts ask. That is the whole reason to use the helpers
+rather than writing the tag: a hand-written path is a path that breaks the
+first time the component is deployed under `app/`.
 
 Stylesheets, scripts, and images belong to a client, not to a component as a
 whole — the administrator interface and the public site rarely want the same
 CSS. Each client directory therefore has its own `assets` tree:
 
 ```
-core/components/com_kb/
+app/components/com_bookings/
     site/assets/
-        css/kb.css
-        js/kb.js
+        css/bookings.css
+        js/bookings.js
+        img/instrument-placeholder.png
     admin/assets/
-        js/kb.js
+        js/bookings.js
 ```
 
 `css`, `js`, and `img` are the directories the helpers know about by name.
@@ -37,14 +45,18 @@ Both arguments have defaults, and both defaults are what you usually want:
 
 | Argument | Default |
 |---|---|
-| the asset name | the component name without `com_`, so `com_kb` looks for `kb.css` |
+| the asset name | the component name without `com_`, so `com_bookings` looks for `bookings.css` |
 | the extension | the component currently running |
 
-So `$this->css()` in a `com_kb` view attaches `kb.css` from `com_kb`'s own
-assets. `$this->css('print')` attaches `print.css` from the same place.
-`$this->css('tags', 'com_tags')` reaches into another component. The file
-extension is optional — `css('print')` and `css('print.css')` are the same
-call.
+So `$this->css()` in a `com_bookings` view attaches `bookings.css` from
+`com_bookings`'s own assets. `$this->css('print')` attaches `print.css` from
+the same place. `$this->css('tags', 'com_tags')` reaches into another
+component. The file extension is optional — `css('print')` and
+`css('print.css')` are the same call.
+
+Name the component's main stylesheet after the component and the no-argument
+call works everywhere. Name it `style.css` and every layout has to remember to
+say so.
 
 Passing `'system'` as the extension reads from the platform's own assets in
 `core/assets`.
@@ -60,7 +72,16 @@ Passing `'system'` as the extension reads from the platform's own assets in
 > In a view it is a plugin element name, used only when the second argument is
 > a plugin folder: `$this->css('style', 'members', 'dashboard')` resolves to
 > `plg_members_dashboard`. Passing an attribute array to the view helper does
-> nothing.
+> nothing, silently: the stylesheet is attached and the attributes are
+> dropped, so a `media="print"` that never took effect looks like a CSS
+> problem.
+
+A file that does not exist is not an error either. `css()` and `js()` both
+test `$asset->exists()` first and **do nothing at all** when the candidate
+list runs out: no tag is written, nothing is logged, and there is no 404 in
+the browser's console to find. A page that renders unstyled with no
+`<link>` in its source is almost always a misspelled asset name or a file
+in `site/` that the administrator client was asking for.
 
 ## How a file is found
 
@@ -69,8 +90,8 @@ The name and extension are turned into a list of candidate paths by
 and the first that exists wins. For a component, with `{client}` being `site`
 or `admin`:
 
-1. `PATH_APP/components/com_kb/{client}/assets/css/kb.css`
-2. `PATH_APP/components/com_kb/{client}/css/kb.css`
+1. `PATH_APP/components/com_bookings/{client}/assets/css/bookings.css`
+2. `PATH_APP/components/com_bookings/{client}/css/bookings.css`
 3. the same two under `PATH_CORE`
 
 Every `app` path is tried before every `core` path, so a hub can replace a
@@ -87,7 +108,7 @@ the path relative to `PATH_ROOT` instead. A name beginning `http`, `//`, or
 
 Before serving what it found, the asset checks the active template for an
 override at `{template path}/html/{extension}/{file}` — for example
-`app/templates/hubzero/html/com_kb/kb.css`. If that file exists it is used
+`app/templates/hubzero/html/com_bookings/bookings.css`. If that file exists it is used
 instead. This is the same mechanism templates use to override layouts, and it
 lets a template restyle a component without a copy of the component.
 
@@ -96,7 +117,7 @@ lets a template restyle a component without a copy of the component.
 `link()` appends the file's modification time as a query string:
 
 ```
-/core/components/com_kb/site/assets/css/kb.css?v=1583172290
+/app/components/com_bookings/site/assets/css/bookings.css?v=1583172290
 ```
 
 The URL changes whenever the file does, so browsers pick up an edit without
@@ -108,7 +129,7 @@ The same helpers take raw source rather than a file name, and add it as a
 declaration:
 
 ```php
-$this->css('#content .article { margin-top: 0; }')
+$this->css('#content .instrument { margin-top: 0; }')
      ->js('jQuery(document).ready(function ($) { /* ... */ });');
 ```
 

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/extensions
@@ -22,6 +22,31 @@ code gets onto a running hub. Each kind then has its own chapter set —
 [Components](../09-components/README.md), [Plugins](../10-plugins/README.md),
 [Modules](../08-modules/README.md), [Templates](../11-templates/README.md) — for
 the parts that differ.
+
+Read this section once before you start, and the four rules it establishes
+will save you the four days they otherwise cost: an extension is a row in a
+table, that row comes from a migration, every facade must be imported, and
+every visible string comes from a language file whose client you have to get
+right.
+
+## Which kind do you want
+
+Decide by asking what owns the page.
+
+| The thing you are adding | Kind | Because |
+|---|---|---|
+| A screen with records behind it — booking a lab's instruments | Component | it owns the URL and the request |
+| A reaction to something happening — mirroring a publication to an external service when it is saved | Plugin | it owns no page and answers events |
+| A block that appears beside other people's pages — the instruments free right now | Module | it renders into a template position |
+| A different look for a partner institution | Template | it is the page around everything else |
+
+Pick wrong and you fight the framework. A component that only ever renders a
+sidebar box competes for a URL it never uses; a plugin that wants a settings
+screen of its own is a component with the wrong base class.
+
+The worked example carried through the component chapters — `com_bookings`,
+which books a lab's instruments — is referred to here too, along with the
+`bookings` plugin group it triggers.
 
 ## The four kinds
 
@@ -104,12 +129,29 @@ every extension class comes through this loader.
 
 Nothing scans the filesystem. Every extension has a row in the
 `#__extensions` table, and that row — not the directory — is what the
-loaders read. A component with no row 404s; a plugin with no row never
-receives an event. The row also holds the extension's parameters, in its
-`params` column.
+loaders read. The row also holds the extension's parameters, in its `params`
+column.
+
+What a missing row costs depends on the kind, and only one of the four fails
+loudly:
+
+| Kind | With the directory but no row |
+|---|---|
+| Component | **still runs.** `Hubzero\Component\Loader::load()` manufactures a default record with `enabled` set to 1 when the query finds nothing. What is lost is everything stored against the row: the administrator's Components menu, the parameters, the permissions asset. |
+| Plugin | never loads. The plugin loader selects rows `WHERE type = 'plugin' AND enabled >= 1`; no row, no listener, and the event fires into nothing. |
+| Module | cannot be published. The row registers the module *type*; an administrator creates instances from it. |
+| Template | cannot be assigned to the site or the administrator. |
+
+A component that exists on disk and is invisible in the administrator
+interface is the single most common symptom of a missed migration, and it is
+confusing precisely because the component's own pages work.
 
 An extension creates its own row from a
-[migration](../06-database.md#migrations).
+[migration](../06-database.md#migrations), by calling `addComponentEntry()`,
+`addPluginEntry()`, `addModuleEntry()` or `addTemplateEntry()`. Nothing else
+creates it: there is no package installer that reads a manifest and does it
+for you. See [Deploying extensions](04-deployext.md).
+
 [Extensions](../03-foundation/05-extensions.md) in the Foundation section covers
 each loader in detail; [Requirements](01-extreqs.md) covers what else a
 package must carry.

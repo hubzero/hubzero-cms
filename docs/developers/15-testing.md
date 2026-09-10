@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/testing
@@ -10,9 +10,10 @@ imported: 2026-09-09
 -->
 # Testing
 
-Hubzero has a working PHPUnit suite across the framework libraries, eight
+Hubzero has a working PHPUnit suite across the framework libraries, seven
 components and two plugins, plus two custom linters that catch faults nothing
-else does. This page says what is there, how to run it, and how to add to it.
+else does. This page says what is there, how to run it, what is worth adding
+to it, and how to run one test instead of all of them.
 
 A full run on 2.4-main passes:
 
@@ -22,6 +23,43 @@ Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 
 The deprecations come from PHPUnit 11 warning about older test syntax, not
 from failures. Six tests skip themselves when what they need is absent.
+
+## What is worth testing
+
+The suite is not a safety net over the whole CMS and pretending otherwise
+wastes your afternoon. It is 855 tests over a codebase of several thousand
+files, and it splits sharply:
+
+| Suite | Tests | What it covers |
+|---|---|---|
+| `libraries` | 694 | The framework: the query builder, `Relational`, the config registry and its processors, the container, facades, cache, encryption, utility string and array helpers |
+| `components` | 150 | Seven components, and mostly their pure helpers — search query building, a migration's column statements, a publication bundle builder, SAML metadata |
+| `plugins` | 11 | Two plugins, one method each |
+
+Everything in that table has the same shape: **a class you can construct with
+`new`, hand some input, and check the output of.** That is what this suite is
+good at, and it is what to write a test for.
+
+What is not covered, and what a test here cannot easily reach:
+
+- **Controllers.** Nothing tests a site, administrator or API controller
+  end to end. A controller reaches for `Request`, `User`, `Config`, the
+  document and the session, and the test bootstrap gives you a container with
+  enough in it to load the file, not enough to serve a request.
+- **Views.** No layout is rendered by any test.
+- **Permissions.** No test exercises `User::authorise()` or an access level.
+  A change to a `WHERE` clause that widens who can read a row will not be
+  caught here; say what it now allows in the pull request instead.
+- **MySQL.** `Hubzero\Test\Database` runs against SQLite, so a test proves
+  the query builder produced something SQLite accepted. It does not prove
+  MySQL accepts it, and it does not exercise a migration.
+
+So the practical rule for a new extension — say a component that books time
+on a lab instrument — is: put the logic that decides something in a class of
+its own and test that. The overlap rule the booking has to enforce, the
+policy that says who may cancel, the parser for the reservation code: those
+are testable, they are where the bugs will be, and testing them costs you
+nothing in fixtures. The controller that calls them is checked by using it.
 
 ## What exists
 
@@ -43,8 +81,8 @@ inside the thing they test:
 core/libraries/Hubzero/Database/Tests/QueryTest.php
 core/libraries/Hubzero/Config/Tests/RegistryTest.php
 core/components/com_blog/tests/EntryTest.php
-core/components/com_resources/helpers/tests/
-core/plugins/user/hubzero/tests/
+core/components/com_search/tests/boostQueryHelperTest.php
+core/plugins/user/hubzero/tests/HubzeroIsThirdPartyPlaceholderTest.php
 ```
 
 ## Running them
@@ -66,6 +104,43 @@ The `libraries` suite covers `libraries/Hubzero` and excludes three
 production classes that happen to be named `Test.php`. `components` globs
 `components/*/tests` and `components/*/helpers/tests`; `plugins` globs
 `plugins/*/*/tests`.
+
+> **Note:** The `components/*/helpers/tests` glob matches exactly one
+> directory, `com_resources/helpers/tests`, and collects nothing from it. The
+> two files there implement `Hubzero\Content\Auditor\Test`, the content
+> auditor's interface — the same word, a different thing, and the reason the
+> `libraries` suite has to exclude three production files named `Test.php` by
+> name. Do not read the glob as evidence that a `helpers/tests` directory is
+> a convention here; put a component's tests in `components/com_x/tests`.
+
+### Running one test
+
+A full run takes about half a minute, which is short enough to sit through
+and long enough that you will stop doing it while you iterate. Two ways to
+narrow it.
+
+By file — pass the path after the configuration:
+
+```bash
+cd core
+vendor/bin/phpunit -c phpunit.xml.dist libraries/Hubzero/Utility/Tests/InflectorTest.php
+```
+
+By name — `--filter` takes a method name, a class name, or a regular
+expression matching either:
+
+```bash
+vendor/bin/phpunit -c phpunit.xml.dist --filter testBasicFetch
+vendor/bin/phpunit -c phpunit.xml.dist --filter QueryTest
+```
+
+Run both from `core`. PHPUnit finds `phpunit.xml.dist` there without being
+told, so `-c` is belt and braces — but only there. Run the same command from
+the installation root and PHPUnit picks up a root `phpunit.xml` if you have
+one, which is a different configuration with a different bootstrap and
+different suite names. That filename is in `.gitignore`, so a root
+`phpunit.xml` is yours, not the project's, and what it does is not what CI
+does.
 
 ### Through muse
 

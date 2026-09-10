@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/config
 -->
 # Config
@@ -11,6 +11,28 @@ way: the global settings, and the parameters belonging to a component, a
 plugin, or a module. All four end up as a
 [`Hubzero\Config\Registry`](../../../core/libraries/Hubzero/Config/Registry.php)
 with the same `get()` on it.
+
+Which one you want depends on who is meant to set the value:
+
+| The value is | Where it belongs | How to read it |
+|---|---|---|
+| The same for the whole hub — the site name, the time zone, the mail server | Global configuration | `Config::get('offset')` |
+| A setting for your component that an administrator changes once — how many bookings a page lists | The component's `config/config.xml` | `Component::params('com_bookings')` |
+| A setting for one instance of a plugin | The plugin's manifest | `$this->params` inside the plugin |
+| A setting for one placement of a module on one page | The module instance | `$this->params` inside the module |
+
+A value that a *member* sets is none of these. That is a user parameter —
+`User::getParam()`, see [users](05-user.md) — or a column on one of your own
+tables.
+
+> **Warning:** A parameter that is not declared in the extension's XML can
+> still be read, and comes back as your default. Nothing reports that the
+> field does not exist, so a typo in a parameter name looks exactly like an
+> administrator who has not set it yet. `com_tags` has three of these:
+> `show_sizes`, `show_tag_count` and `show_tags_sort` are read by its layout
+> and declared in no manifest, so the tag cloud takes its defaults on every
+> hub. Check the name against the XML when a setting appears to have no
+> effect.
 
 ## Global configuration
 
@@ -69,9 +91,9 @@ the `#__extensions` row. Read them through the `Component` facade:
 ```php
 use Component;
 
-$params = Component::params('com_blog');
+$params = Component::params('com_bookings');
 
-$limit  = $params->get('display_limit', 25);
+$limit  = (int) $params->get('display_limit', 25);
 $access = $params->get('access-view');
 ```
 
@@ -154,7 +176,7 @@ All four return the same class, so the same methods apply:
 | `toString($format = 'json')` | Serialise; `json`, `ini`, `xml`, `php`, `yaml` |
 
 ```php
-$params = Component::params('com_blog');
+$params = Component::params('com_bookings');
 $params->merge($menuParams);
 
 if ($params->has('feed_email'))
@@ -165,4 +187,13 @@ if ($params->has('feed_email'))
 
 A value read out of a `Registry` is whatever was stored — usually a string,
 even for a number or a checkbox. Cast it where the type matters:
-`(int) $params->get('limit', 25)`.
+
+```php
+$limit = (int) $params->get('limit', 25);
+```
+
+`get('limit')` returns `"25"`, not `25`. It behaves as a number in
+arithmetic and in a query, so the fault only surfaces where the type is
+checked: a strict `=== 25` is false, `in_array($v, [1, 2], true)` is false,
+and a parameter typed `int` on a method signature raises a `TypeError` under
+`strict_types`. Cast on the way out of the registry, once.

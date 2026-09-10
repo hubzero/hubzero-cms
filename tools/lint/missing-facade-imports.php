@@ -7,11 +7,23 @@
  * The CMS registers its facades as root-namespace aliases (see
  * core/bootstrap/<client>/aliases.php): Route, App, Event, User, and the rest.
  * Inside a namespaced file an unqualified `Route::url()` resolves to
- * `Current\Namespace\Route`, not to the alias, so the call is a fatal
- * "class not found" unless the file carries `use Route;` or writes
- * `\Route::url()`.
+ * `Current\Namespace\Route`, not to the alias.
  *
- * Nothing catches this before the line runs: the file parses, autoloading
+ * That usually still works, and it is worth being accurate about why. The
+ * autoloader `Hubzero\Facades\Facade::loadAliases()` falls back to the last
+ * segment of the class name, so `Current\Namespace\Route` is aliased onto the
+ * `Route` facade and the call succeeds. Three cases defeat that fallback, and
+ * each is a fatal or, worse, a silent wrong answer:
+ *
+ *   1. The running client does not register that alias. Site has 20,
+ *      Administrator 21, Api 14, Cli 13, and they are not the same 20.
+ *   2. A real class of the same short name exists in the file's own
+ *      namespace, so the class loader wins. Components\Events\Models\Event,
+ *      Components\Groups\Models\Module and Components\Publications\Models\Log
+ *      all exist, and there the call reaches the model, not the facade.
+ *   3. The aliases are not registered yet when the line runs.
+ *
+ * Nothing catches any of it before the line runs: the file parses, autoloading
  * finds nothing to complain about, and the failure only appears when that
  * branch executes. Rarely used error paths can carry the fault for years.
  *

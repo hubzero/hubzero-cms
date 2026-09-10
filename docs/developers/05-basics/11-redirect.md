@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/redirect
 -->
 # Redirect
@@ -17,11 +17,21 @@ use Route;
 use Lang;
 
 App::redirect(
-    Route::url('index.php?option=com_support&controller=tickets'),
-    Lang::txt('COM_SUPPORT_TICKET_SAVED'),
+    Route::url('index.php?option=com_bookings&controller=instruments'),
+    Lang::txt('COM_BOOKINGS_BOOKING_SAVED'),
     'success'
 );
 ```
+
+The member lands on the list, sees the message, and the URL in their address
+bar is a `GET` they can reload, bookmark or share. Render the list directly
+instead and the URL is still the `POST` that saved the booking, so a refresh
+offers to save it again — and a member who says yes gets two.
+
+> **Note:** Not from an AJAX task. The browser follows the redirect
+> transparently and hands your JavaScript the HTML of the page it landed on,
+> so `JSON.parse` fails on markup. Set the content type, echo the payload,
+> and `App::close()` — see [responses](02-responses.md).
 
 ## The arguments
 
@@ -39,7 +49,7 @@ why the message survives the redirect. On a client with no notification
 service — the API, the command line — the message is dropped and only the
 redirect happens.
 
-The types match the [`Notify`](../03-foundation/04-facades.md) facade's methods,
+The types match the [`Notify`](../03-foundation/06-facades.md) facade's methods,
 so these two are equivalent:
 
 ```php
@@ -61,7 +71,7 @@ redirect target is decided later.
 calls `App::close()`, which is `exit()`. Nothing after the call runs:
 
 ```php
-App::redirect(Route::url('index.php?option=com_support'));
+App::redirect(Route::url('index.php?option=com_bookings'));
 
 // never reached
 $this->doSomethingElse();

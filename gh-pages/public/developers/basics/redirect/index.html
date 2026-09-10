@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -179,11 +181,21 @@ use Route;
 use Lang;
 
 App::redirect(
-    Route::url('index.php?option=com_support&amp;controller=tickets'),
-    Lang::txt('COM_SUPPORT_TICKET_SAVED'),
+    Route::url('index.php?option=com_bookings&amp;controller=instruments'),
+    Lang::txt('COM_BOOKINGS_BOOKING_SAVED'),
     'success'
 );
 </code></pre>
+<p>The member lands on the list, sees the message, and the URL in their address
+bar is a <code>GET</code> they can reload, bookmark or share. Render the list directly
+instead and the URL is still the <code>POST</code> that saved the booking, so a refresh
+offers to save it again — and a member who says yes gets two.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not from an AJAX task. The browser follows the redirect
+transparently and hands your JavaScript the HTML of the page it landed on,
+so <code>JSON.parse</code> fails on markup. Set the content type, echo the payload,
+and <code>App::close()</code> — see <a href="../responses/index.html">responses</a>.</p>
+</aside>
 <h2 id="the-arguments">The arguments</h2>
 <p><code>App::redirect($url, $message = null, $type = 'success')</code></p>
 <table>
@@ -226,7 +238,7 @@ redirect target is decided later.</p>
 <h2 id="it-does-not-return">It does not return</h2>
 <p><code>App::redirect()</code> builds a <code>Hubzero\Http\RedirectResponse</code>, sends it, and
 calls <code>App::close()</code>, which is <code>exit()</code>. Nothing after the call runs:</p>
-<pre><code class="language-php">App::redirect(Route::url('index.php?option=com_support'));
+<pre><code class="language-php">App::redirect(Route::url('index.php?option=com_bookings'));
 
 // never reached
 $this-&gt;doSomethingElse();
@@ -278,7 +290,7 @@ App::close();
 target is sent exactly as given.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../dates/index.html" rel="prev"><span>Previous</span>Dates</a><a class="pager__next" href="../../database/index.html" rel="next"><span>Next</span>Database</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/11-redirect.md">Edit this page on GitHub</a>

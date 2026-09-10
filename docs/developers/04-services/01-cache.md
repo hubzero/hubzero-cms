@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services/cache
 -->
 # Cache
@@ -10,6 +10,20 @@ The cache holds expensive results — rendered wiki text, a tag cloud, a
 statistics query — so the next request does not have to compute them again.
 It is a plain key/value store with a time to live, and nothing in the CMS
 depends on a value being there.
+
+Reach for it when a value is **expensive to compute, the same for everybody,
+and tolerable when stale**. All three. An instrument-booking component might
+cache the list of instruments and their opening hours, which changes twice a
+year; it must not cache the day's free slots, which change as members book
+them, and it must not cache anything that depends on who is looking.
+
+> **Warning:** The commonest cache bug on a hub is a key that leaves out
+> something the value depends on — usually the member. Cache a rendered
+> panel under `bookings.sidebar` and the first member to load it decides
+> what every other member sees, including whoever is logged in as an
+> administrator. Nothing errors; the page simply shows somebody else's
+> data. If a value varies by user, access level or language, put that in the
+> key — or do not cache it.
 
 ## What the facade resolves to
 
@@ -41,6 +55,9 @@ Cache::put('wiki.r' . $revision->get('id'), $rendered, 15);
 $rendered = Cache::get('wiki.r' . $revision->get('id'));
 ```
 
+The third argument catches people out. `Cache::put($key, $value, 3600)`
+means two and a half **days**, not an hour.
+
 That is the shape of nearly every use in the tree — write with a TTL, read
 back, recompute on a miss:
 
@@ -66,7 +83,10 @@ back, recompute on a miss:
 > manager; reach it with `App::get('cache')->get('key', $default)`.
 
 Values are serialized, so anything `serialize()` can round-trip is a legal
-value. Store the rendered string, not the model that produced it.
+value. Store the rendered string, not the model that produced it: a model
+carries a database connection and a query object, and what comes back out of
+the cache is a half-woken object that fails the first time something calls a
+method on it.
 
 ## Groups
 

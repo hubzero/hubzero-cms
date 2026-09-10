@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services/filesystem
 -->
 # Filesystem
@@ -11,6 +11,13 @@ is the file API. It holds an adapter, delegates every operation to it, and
 adds a virus scan, path normalisation, and a macro mechanism. Because the
 adapter is chosen at boot, the same calls work whether the hub writes to
 local disk or over FTP.
+
+Use it rather than `fopen()`, `file_get_contents()` and `unlink()` for two
+reasons. A hub configured to write over FTP — because the web server does
+not own the document root — has no working `unlink()`, and PHP's own
+functions will fail there in ways that only appear on that hub. And the
+virus scan is here, not in your controller: everything a member uploads has
+to pass `isSafe()`, and code that writes the file itself skips it.
 
 ## What the facade resolves to
 
@@ -61,6 +68,19 @@ missing source raises
 [`FileNotFoundException`](../../../core/libraries/Hubzero/Filesystem/Exception/FileNotFoundException.php)
 rather than returning `false`.
 
+`delete()` asserts the same way, which is the one that surprises people:
+**deleting a file that is already gone throws rather than doing nothing.**
+Cleaning up after a failed upload, or removing an attachment a previous
+run already removed, is a stack trace on the member's screen unless you
+test `exists()` first.
+
+| Missing source | What happens |
+|---|---|
+| `read()`, `delete()`, `copy()`, `rename()`, `move()` | `FileNotFoundException` |
+| `write()`, `exists()`, `isFile()` | `false` |
+
+Check `exists()` first, as the example above does, and neither bites.
+
 ## Inspecting
 
 | Method | Returns |
@@ -83,9 +103,13 @@ if (!Filesystem::isSafe($path . DS . $file['name']))
 {
     Filesystem::delete($path . DS . $file['name']);
 
-    throw new Exception(Lang::txt('File rejected because the anti-virus scan failed.'));
+    throw new Exception(Lang::txt('COM_BOOKINGS_FILE_FAILED_SCAN'));
 }
 ```
+
+Scan after the file is in place and delete it if the scan fails, in that
+order. `isSafe()` needs a path on disk, so there is no way to check before
+writing.
 
 ## Directories
 
@@ -100,7 +124,9 @@ if (!Filesystem::isSafe($path . DS . $file['name']))
 ## Cleaning names
 
 Never build a path out of an uploaded filename without normalising it
-first:
+first. The name arrives from the browser and can be anything —
+`../../config/app.php`, a name with a null byte, a name that is 300
+characters of Unicode:
 
 | Method | What it does |
 |---|---|

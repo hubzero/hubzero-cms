@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/languages
 -->
 # Languages
@@ -13,6 +13,103 @@ its wording through an upgrade.
 
 The `Lang` facade resolves
 [`Hubzero\Language\Translator`](../../../core/libraries/Hubzero/Language/Translator.php).
+
+## The failure to know about first
+
+**An undefined key is returned unchanged.** Nothing is logged, nothing
+throws, and the page renders the key:
+
+```php
+// COM_BOOKINGS_HOLD_RELEASED is defined nowhere
+echo Lang::txt('COM_BOOKINGS_HOLD_RELEASED');
+```
+
+```
+COM_BOOKINGS_HOLD_RELEASED
+```
+
+That is the whole failure. It looks like a shouting constant in the middle
+of a sentence, and it survives review because the path that renders it is
+usually an error branch, a confirmation email, or a screen only an
+administrator sees.
+
+It is not rare. `php tools/lint/undefined-language-keys.php` currently
+reports **444 keys** the tree asks for that no `en-GB` file anywhere
+defines, and the
+[PHP lint workflow](../../../.github/workflows/php-lint.yml) runs it against
+that number as a ceiling rather than against zero:
+
+```yaml
+run: php tools/lint/undefined-language-keys.php --quiet --max=444
+```
+
+So the build fails when your change makes it 445. Three rules keep you off
+that list.
+
+### 1. Define the key
+
+Add it to the extension's INI file in the same change that adds the
+`Lang::txt()` call. Nothing else in the toolchain will remind you: the file
+parses, PHP is happy, and the view renders.
+
+```ini
+COM_BOOKINGS_HOLD_RELEASED = "Your hold on %s expired and the slot is free again."
+```
+
+### 2. Put it in the file the code actually loads
+
+This is the one the linter cannot catch. A key counts as defined if *any*
+`en-GB` file under `core/` or `app/` defines it, but only a handful of files
+load on any given request. A key defined in
+
+```
+core/components/com_bookings/admin/language/en-GB/en-GB.com_bookings.ini
+```
+
+and used from a site view passes the linter and still renders raw in the
+browser, because the site request never loads the admin file. The same trap
+catches a string defined in a component's file and used from a plugin, or
+a `.sys.ini` string used outside the extension manager.
+
+Match the file to the code that reads it:
+
+| Reading code | File |
+|---|---|
+| Site controller or view | `<component>/site/language/en-GB/en-GB.com_x.ini` |
+| Admin controller or view | `<component>/admin/language/en-GB/en-GB.com_x.ini` |
+| Plugin | `<plugin>/language/en-GB/en-GB.plg_<group>_<name>.ini` |
+| Module | `<module>/language/en-GB/en-GB.mod_x.ini` |
+| Used by every client | `core/bootstrap/Site/language/en-GB/en-GB.ini` and its siblings |
+
+Needing the same string on both faces of a component means defining it
+twice, once in each file. That is the intended answer, not a shared file.
+
+### 3. Match the placeholder count
+
+Extra arguments go to `sprintf()`. Under PHP 8 a format string with more
+placeholders than arguments raises `ArgumentCountError`, which nothing here
+catches:
+
+```ini
+COM_BOOKINGS_CONFIRMED = "%s is booked for %s"
+```
+
+```php
+// Fatal: ArgumentCountError: 3 arguments are required, 2 given
+echo Lang::txt('COM_BOOKINGS_CONFIRMED', $instrument->get('name'));
+```
+
+A blank page from a translation call is nearly always this. Note that it
+takes a **defined** key to produce it — while the key is missing the string
+has no placeholders at all, so the same line renders the key quietly and
+starts fataling only once somebody defines it. Count the `%s` in the INI
+file against the arguments at every call site when you edit a string.
+
+> **Warning:** A single boolean argument is not a `sprintf()` argument.
+> `txt($string, $jsSafe)` and `txt($string, $jsSafe, $interpretBackSlashes)`
+> are separate signatures, so `Lang::txt('COM_BOOKINGS_STATE', $isOpen)`
+> with a boolean `$isOpen` sets escaping options and substitutes nothing.
+> Cast the value, or pass a string.
 
 ## Where the files live
 
@@ -46,6 +143,10 @@ and you do not have to ask:
 true)` is the underlying call if you need a file the framework will not
 fetch for you.
 
+[Languages](../07-extensions/03-languages.md) in the extensions section
+covers what an extension has to *ship* — the manifest entries, the `.sys.ini`
+file, the directory layout.
+
 ## Writing the file
 
 Key/value pairs, values always double-quoted:
@@ -54,9 +155,9 @@ Key/value pairs, values always double-quoted:
 ; @package  hubzero-cms
 ; Note : All ini files need to be saved as UTF-8 - No BOM
 
-COM_BLOG_ENTRIES = "Entries"
-COM_BLOG_ENTRY_SAVED = "Entry saved"
-COM_BLOG_POSTED_BY = "Posted by %s on %s"
+COM_BOOKINGS_INSTRUMENTS = "Instruments"
+COM_BOOKINGS_BOOKING_SAVED = "Booking saved"
+COM_BOOKINGS_BOOKED_BY = "Booked by %s on %s"
 ```
 
 The parser is PHP's, so its rules apply. `NULL`, `yes`, `no`, `TRUE` and
@@ -70,7 +171,7 @@ Prefix by extension type and extension name:
 
 | Extension | Prefix | Example |
 |---|---|---|
-| Component | `COM_` | `COM_BLOG_ENTRY_SAVED` |
+| Component | `COM_` | `COM_BOOKINGS_BOOKING_SAVED` |
 | Module | `MOD_` | `MOD_LOGIN_REMEMBER_ME` |
 | Plugin | `PLG_` | `PLG_CRON_SUPPORT_CLOSE_PENDING` |
 | Template | `TPL_` | `TPL_SYSTEM_LOGOUT` |
@@ -81,23 +182,24 @@ renders a module — and the module's file loads at that point — will find its
 own unprefixed `MYLINE` replaced by the module's. Prefixed keys cannot
 collide.
 
+Name the key for what the string *is*, not for what it says.
+`COM_BOOKINGS_SAVE_FAILED` survives a rewording; `COM_BOOKINGS_SORRY` does
+not.
+
 ## Translating
 
 ```php
 use Lang;
 
-echo Lang::txt('COM_BLOG_ENTRIES');
+echo Lang::txt('COM_BOOKINGS_INSTRUMENTS');
 ```
-
-A key with no entry in any loaded file is returned unchanged, so a typo
-shows up as a shouting constant on the page rather than an empty space.
 
 Extra arguments are passed to `sprintf()`, after the string has been looked
 up:
 
 ```php
-// COM_BLOG_POSTED_BY = "Posted by %s on %s"
-echo Lang::txt('COM_BLOG_POSTED_BY', $author, $date);
+// COM_BOOKINGS_BOOKED_BY = "Booked by %s on %s"
+echo Lang::txt('COM_BOOKINGS_BOOKED_BY', $member->get('name'), $date);
 ```
 
 Numbered placeholders in the form `[[%1:name]]` are rewritten to `%1$s`
@@ -114,15 +216,28 @@ happens to put in a particular order.
 | `getTag()` / `getName()` / `isRTL()` | About the current language |
 | `transliterate($string)` | ASCII-fold a string, using the language's own rules |
 
+`hasKey()` is the guard for a key assembled at runtime, which is the one
+case the linter cannot check for you:
+
+```php
+$key = 'COM_BOOKINGS_STATUS_' . strtoupper($booking->get('status'));
+
+echo Lang::hasKey($key) ? Lang::txt($key) : $booking->get('status');
+```
+
+Prefer a fixed `switch` over a constructed key wherever you can. A key built
+from a database value is a key nothing can audit, and it becomes undefined
+the day somebody adds a status.
+
 `txts()` is the one to reach for wherever a count appears:
 
 ```ini
-COM_BLOG_COMMENTS_1 = "1 comment"
-COM_BLOG_COMMENTS = "%s comments"
+COM_BOOKINGS_SLOTS_1 = "1 slot free"
+COM_BOOKINGS_SLOTS = "%s slots free"
 ```
 
 ```php
-echo Lang::txts('COM_BLOG_COMMENTS', $total);
+echo Lang::txts('COM_BOOKINGS_SLOTS', $total);
 ```
 
 ## Overrides
@@ -163,9 +278,18 @@ Change** box resolves a piece of wording back to the key that produced it.
 
 ## Checking your work
 
-Two things go wrong: a key used in a view but never defined, and a file that
-does not parse. `php tools/lint/undefined-language-keys.php` catches the
-first across the tree. For the second, `Lang::debugFile($path)` returns a
-count of parse errors in one file, and turning on `debug_lang` in the global
-configuration marks untranslated strings on the rendered page —
-`getOrphans()` and `getUsed()` back the report.
+```bash
+php tools/lint/undefined-language-keys.php core/components/com_bookings
+```
+
+Run it against your own extension before you push, and against nothing at
+all — the whole of `core/` — to see where the ceiling stands. A clean run is
+necessary and not sufficient: it reads literal keys with PHP's tokenizer, so
+keys assembled at runtime are skipped, and it does not know which file a
+given request loads.
+
+For a file that will not parse, `Lang::debugFile($path)` returns a count of
+parse errors in one file. Turning on `debug_lang` in the global
+configuration marks untranslated strings on the rendered page; `getOrphans()`
+and `getUsed()` back that report, and the **System - Debug** plugin renders
+it. See [debugging](08-debugging.md).

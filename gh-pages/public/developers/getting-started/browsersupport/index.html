@@ -52,7 +52,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-internet-explorer-leftovers">The Internet Explorer leftovers</a></li>
 <li class="toc__item toc__item--l2"><a href="#browser-detection-and-what-it-is-used-for">Browser detection, and what it is used for</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-one-real-gate">The one real gate</a></li>
-<li class="toc__item toc__item--l2"><a href="#writing-front-end-code">Writing front-end code</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-to-target">What to target</a></li>
 <li class="toc__item toc__item--l2"><a href="#next">Next</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
@@ -61,9 +61,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -176,7 +178,13 @@
 browserslist, no Babel, no PostCSS, and — with one exception — no build step
 that targets a language level. What the CMS runs in is decided by the
 libraries it ships and by the CSS and JavaScript its templates were written
-in. This page says what those actually require.</p>
+in. This page says what those actually require, and therefore what to target
+when you write front-end code for a hub.</p>
+<p>The short answer, for anyone who came here to get on with it: <strong>target
+current Chrome, Edge, Firefox and Safari, write ES2020 and modern CSS, and
+feature-detect anything newer.</strong> The rest of the page is where that number
+comes from, because nobody in this repository will tell you if you get it
+wrong.</p>
 <p>The page this replaces carried a table of supported versions written in
 2012: Internet Explorer 7 through 9, Firefox 3 to 5, Safari 5, Android 2
 WebKit, Opera 10. None of it is meaningful now. The code in this tree cannot
@@ -355,12 +363,69 @@ Windows, ie 10.0
 <p>These are minimums, so any current version of the browsers named passes. But
 a browser whose name does not appear in the list at all fails the check, and
 the plugin does not render. Vivaldi and Yandex are recognised by <code>Detector</code>
-under their own names and are not in the default list. See
-the project record.</p>
-<h2 id="writing-front-end-code">Writing front-end code</h2>
-<p>Since nothing enforces a target, the burden is on what you write:</p>
+under their own names and are not in the default list, so a visitor using
+either gets no tool session and no explanation. If your hub runs tools, add
+the names to the parameter rather than leaving the shipped default.</p>
+<h2 id="what-to-target">What to target</h2>
+<p>Since nothing enforces a target, the burden is on what you write. Take these
+as the working baseline; each is what the shipped code already assumes, not
+a preference:</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Target</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JavaScript language level</td>
+<td>ES2020</td>
+<td>The one explicit number in the tree, from the editor bundle. <code>const</code>, arrow functions, classes, <code>async</code>/<code>await</code>, optional chaining and <code>Proxy</code> are all safe</td>
+</tr>
+<tr>
+<td>Module loading</td>
+<td>Plain <code>&lt;script&gt;</code></td>
+<td>Nothing bundles the CMS's own scripts, so write scripts that work standalone. Do not assume a build step will be added</td>
+</tr>
+<tr>
+<td>DOM library</td>
+<td>jQuery 3, if a template already loaded it</td>
+<td><code>Behavior::framework()</code> puts it on nearly every page. New code does not need it — <code>querySelector</code> and <code>fetch</code> are everywhere the CMS runs</td>
+</tr>
+<tr>
+<td>CSS layout</td>
+<td>Flexbox and grid</td>
+<td>Both are used across <code>core/templates/</code> and <code>core/components/</code> today</td>
+</tr>
+<tr>
+<td>CSS custom properties</td>
+<td>Yes</td>
+<td>Bootstrap 5.3 is built on them</td>
+</tr>
+<tr>
+<td>Anything newer</td>
+<td>Feature-detect</td>
+<td><code>@supports</code> in CSS, a capability test in JavaScript. Never a user-agent test</td>
+</tr>
+<tr>
+<td>Internet Explorer</td>
+<td>Not supported, at any version</td>
+<td>jQuery 3, Bootstrap 5, htmx 2 and Alpine 3 each dropped it independently. There is nothing left to support it with</td>
+</tr>
+</tbody>
+</table>
+<p>Concretely, a component's script may be written like this and needs no
+tooling:</p>
+<pre><code class="language-js">document.querySelectorAll('[data-booking-slot]').forEach(function (el) {
+    el.addEventListener('click', function () { /* ... */ });
+});
+</code></pre>
+<p>And the rules that go with it:</p>
 <ul>
-<li>Assume an evergreen browser. Everything the CMS already loads does.</li>
+<li>Assume an evergreen browser — one that updates itself. Everything the CMS
+already loads does.</li>
 <li>Build on working HTML. kimera and kameleon put a no-script class on
 <code>&lt;html&gt;</code> and remove it once script runs; use it if a feature needs
 JavaScript to be usable, and check which name your template uses.</li>
@@ -381,7 +446,7 @@ programme Hubzero does not run.</li>
 against.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../upgrade/index.html" rel="prev"><span>Previous</span>Upgrade guide</a><a class="pager__next" href="../devenvironment/index.html" rel="next"><span>Next</span>Development environment</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/05-browsersupport.md">Edit this page on GitHub</a>

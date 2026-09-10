@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/upgrade
 source-id: 3426
@@ -14,6 +14,26 @@ most of them. An extension written against `JFactory`, `JText` and
 `JRequest` still needs converting. This page is that
 translation table, plus what to do about the database when you upgrade a
 hub.
+
+**This page is for inherited code only.** Read it when you have an old
+extension to bring forward, or when you are reading a file in this tree that
+still uses the old names — there are plenty. Do not use it as a menu. Nothing
+new should be written against the legacy names, and nothing new should reach
+into the container where a facade exists: write `User::get('id')`, not
+`JFactory::getUser()` and not `App::get('user')->get('id')`. The container
+call is correct and works; it is simply the long way round, and it is what
+the right-hand column of the table below is *translating away from*. Use
+`App::get(...)` only for the few services that have no facade — the database
+driver is the one you will meet — as [Facades](../03-foundation/06-facades.md)
+sets out.
+
+The conversion is mechanical enough to do in an afternoon for a small
+extension. The order that wastes least time: rename the classes, add the
+`use` lines for every facade the file now names, run
+`php -l` over the result, then run
+`php tools/lint/missing-facade-imports.php <your path>` to catch the imports
+you missed. That last step is not optional — a missing import is the one
+mistake in this list that neither PHP nor your eyes will find.
 
 For the Hubzero 1.x names that changed at the same time, see
 [Release notes](01-releasenotes.md#the-2-0-namespacing).
@@ -74,8 +94,12 @@ Better still, do not include anything. The class loader resolves
 
 Most of the conversions are a facade with the `J` dropped. Facades are
 registered as root-namespace aliases, so a namespaced file must import the
-one it uses — `use Route;` — or the call fatals at runtime. See
-[Facades](../03-foundation/04-facades.md#importing-a-facade).
+one it uses — `use Route;`. Leave the import out and the name resolves
+inside your own namespace instead, which usually still works by accident and
+fails outright on the API and CLI clients, in any namespace that already
+contains a class of that name, and in anything that runs before the
+application has loaded. See
+[Facades](../03-foundation/06-facades.md#importing-a-facade).
 
 ### JRoute
 

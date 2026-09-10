@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services/events
 -->
 # Events
@@ -10,6 +10,18 @@ Events are how a component lets plugins take part in what it is doing
 without knowing anything about them. The component triggers a named event
 and gets back whatever the listeners returned; the listeners are the
 plugins installed and enabled on the hub.
+
+You trigger one when you want the hub's administrator, not you, to decide
+what happens next. A booking component that must email the lab manager on
+every reservation should just send the mail. A booking component that
+triggers `bookings.onBookingSaved` lets one hub push the reservation into a
+calendar, another into an invoicing system, and a third do nothing — none of
+which you have to know about, and all of which are turned on and off from
+the Plugin Manager.
+
+The cost is that it is one more indirection, and a triggered event with no
+plugin listening is silent. Trigger where an extension point is genuinely
+wanted; call the code directly where it is not.
 
 The `Event` facade resolves the `dispatcher` binding, which is a
 [`Hubzero\Events\Dispatcher`](../../../core/libraries/Hubzero/Events/Dispatcher.php)
@@ -21,7 +33,7 @@ debug bar can list what fired.
 ```php
 use Event;
 
-$results = Event::trigger('onBlogAfterSave', array(&$row, $isNew));
+$results = Event::trigger('bookings.onBookingSaved', array(&$booking, $isNew));
 ```
 
 Two things about that line matter.
@@ -33,13 +45,17 @@ event, and not a single result. Code that treats it as a boolean is testing
 means:
 
 ```php
-$results = Event::trigger('content.onContentPrepare', array('com_blog.entry', &$row, $params));
+$results = Event::trigger('content.onContentPrepare', array('com_bookings.note', &$row, $params));
 
 foreach ($results as $result)
 {
     // ...
 }
 ```
+
+An empty array back means "no plugin in that group returned anything". It
+does not mean the event failed, and it does not distinguish "no plugin
+listens" from "every plugin returned null". There is no error to catch.
 
 **The arguments are positional.** `trigger()` walks the array and calls
 `addArgument($name, $value)` with the array's own keys, so a plain list
@@ -48,7 +64,7 @@ them spread across its parameters, which is why plugin methods have ordinary
 signatures:
 
 ```php
-public function onBlogAfterSave($row, $isNew)
+public function onBookingSaved($booking, $isNew)
 ```
 
 Pass an associative array instead and the keys become the argument names —
@@ -62,9 +78,11 @@ Event::trigger('system.logActivity', [
 ]);
 ```
 
-References survive the trip: `array(&$row, $isNew)` gives listeners a
+References survive the trip: `array(&$booking, $isNew)` gives listeners a
 handle on the caller's object, which is how `onContentPrepare` plugins
-rewrite content in place.
+rewrite content in place. It also means a plugin you have never seen can
+change your model before you save it. Pass by reference only where you mean
+to offer that.
 
 ## The group prefix
 
@@ -81,9 +99,16 @@ Event::trigger('cron.onClosePending', array($job));
 
 So `content.onContentPrepare` reaches the content plugins,
 `members.onMembersAreas` the members plugins, `xmessage.onSendMessage` the
-xmessage plugins. A name with no prefix — `onBlogAfterSave` — reaches only
-listeners that were registered some other way; in practice the system
-plugins are loaded early enough that they see these.
+xmessage plugins.
+
+> **Warning:** A name with no prefix — `onBookingSaved` — loads no group at
+> all. It reaches only listeners registered some other way; in practice the
+> system plugins are loaded early enough that they see these, and nothing
+> else does. If you write a plugin, put it in a group and trigger
+> `<group>.onSomething`; if your plugin's method is never called, the
+> missing prefix on the trigger is the first thing to check. Nothing logs
+> it — `trigger()` returns an empty array exactly as it would if the plugin
+> were disabled.
 
 > **Note:** Plugin groups are loaded lazily, on first trigger. A plugin's
 > `__construct()` and `loadLanguage()` therefore do not run until something
@@ -159,8 +184,8 @@ Build one yourself when you want to name arguments up front, then trigger
 it:
 
 ```php
-$event = new Hubzero\Events\Event('blog.onBlogAfterSave');
-$event->setArgument('row', $row);
+$event = new Hubzero\Events\Event('bookings.onBookingSaved');
+$event->setArgument('booking', $booking);
 
 $results = Event::trigger($event);
 ```

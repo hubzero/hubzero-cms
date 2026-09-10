@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/responses
 -->
 # Responses
@@ -17,6 +17,20 @@ you never touch it.
 > `getContent()`, `headers`, `setCache()` — see the
 > [Symfony HttpFoundation documentation](https://symfony.com/doc/current/components/http_foundation.html).
 > This page covers what Hubzero adds and when reaching for it is right.
+
+## When you actually need it
+
+Four cases, and outside them you should not be touching the response:
+
+- An **AJAX task** that returns JSON instead of a page.
+- A **feed or export** — CSV, iCalendar, an XML dump — where you set the
+  content type and write the body yourself.
+- A **system plugin** rewriting the finished page on `onAfterRender`.
+- **Middleware** that must send something before the application would.
+
+Serving a file off disk is *not* one of them. Use
+[`Hubzero\Content\Server`](../04-services/06-server.md), which handles
+disposition, length and byte ranges.
 
 ## Getting at it
 
@@ -59,7 +73,7 @@ public function statusTask()
 {
     Response::header('Content-Type', 'application/json');
 
-    echo json_encode(array('state' => $row->get('state')));
+    echo json_encode(array('state' => $booking->get('state')));
 
     App::close();
 }
@@ -67,6 +81,14 @@ public function statusTask()
 
 `App::close()` calls `exit()`. Nothing after it runs, and nothing else gets
 appended to the body.
+
+> **Warning:** Leave the `App::close()` out and the template renders the
+> whole page after your JSON, so the browser gets valid JSON followed by
+> HTML and `JSON.parse` fails on a response that looks right in the network
+> panel until you scroll. Any stray output *before* the header call —
+> a `dump()`, a blank line after a closing `?>` in a file you included —
+> means the header never goes out at all, because headers cannot follow a
+> body.
 
 ## Content
 

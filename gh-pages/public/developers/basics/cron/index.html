@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Scheduled tasks · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Work that has to happen on a schedule — closing stale tickets, sending digests, cleaning up temporary uploads — is written as a cron plugin . The plugin…">
+  <meta name="description" content="Work that has to happen on a schedule — closing stale tickets, sending digests, releasing instrument bookings nobody confirmed — is written as a cron plugin .…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/cron/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -73,10 +75,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../debugging/index.html">Debugging</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Scheduled tasks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-working-plugin">The smallest working plugin</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-plugin-goes">Where the plugin goes</a></li>
 <li class="toc__item toc__item--l2"><a href="#declaring-tasks">Declaring tasks</a></li>
+<li class="toc__item toc__item--l2"><a href="#job-parameters">Job parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-the-task">Writing the task</a></li>
-<li class="toc__item toc__item--l2"><a href="#how-it-runs">How it runs</a></li>
+<li class="toc__item toc__item--l2"><a href="#testing-it">Testing it</a></li>
 <li class="toc__item toc__item--l2"><a href="#registering-the-job">Registering the job</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../dates/index.html">Dates</a></li>
@@ -171,12 +175,52 @@
         
         <div class="prose">
 <p>Work that has to happen on a schedule — closing stale tickets, sending
-digests, cleaning up temporary uploads — is written as a <strong>cron plugin</strong>.
-The plugin declares the tasks it can perform; an administrator creates a
-job that names one of them and says how often to run it; the cron runner
-triggers it.</p>
-<p>Nothing in the plugin decides when it runs. That is the job's business, and
-the same task can back several jobs with different parameters.</p>
+digests, releasing instrument bookings nobody confirmed — is written as a
+<strong>cron plugin</strong>. Two halves:</p>
+<ul>
+<li><strong>Yours.</strong> A plugin declares the tasks it can perform and implements them.
+That is this page.</li>
+<li><strong>The administrator's.</strong> A job names one of those tasks, says how often to
+run it, and fills in its parameters. The runner ticks and fires it. That is
+<a href="../../../managers/maintenance/cron/index.html">scheduled tasks</a> in the managers
+book.</li>
+</ul>
+<p>The split is the point. Nothing in the plugin decides when it runs, so the
+same task can back several jobs with different parameters and different
+schedules, and an administrator can change any of that without touching your
+code.</p>
+<h2 id="the-smallest-working-plugin">The smallest working plugin</h2>
+<p>A plugin in the <code>cron</code> group with two methods: one that lists the tasks, one
+that is the task.</p>
+<pre><code class="language-php">&lt;?php
+defined('_HZEXEC_') or die();
+
+class plgCronBookings extends \Hubzero\Plugin\Plugin
+{
+    public function onCronEvents()
+    {
+        $this-&gt;loadLanguage();
+
+        $obj = new stdClass();
+        $obj-&gt;plugin = 'bookings';
+        $obj-&gt;events = array(
+            array(
+                'name'   =&gt; 'releaseExpiredHolds',
+                'label'  =&gt; Lang::txt('PLG_CRON_BOOKINGS_RELEASE_HOLDS'),
+                'params' =&gt; ''
+            )
+        );
+
+        return $obj;
+    }
+
+    public function releaseExpiredHolds(\Components\Cron\Models\Job $job)
+    {
+        // ... do the work ...
+    }
+}
+</code></pre>
+<p>Install it, create a job naming <strong>Release expired holds</strong>, and it runs.</p>
 <h2 id="where-the-plugin-goes">Where the plugin goes</h2>
 <p>In the <code>cron</code> group, one directory per plugin:</p>
 <pre><code>core/plugins/cron/support/support.php
@@ -184,10 +228,11 @@ core/plugins/cron/support/support.xml
 core/plugins/cron/support/language/en-GB/en-GB.plg_cron_support.ini
 </code></pre>
 <p>A hub's own plugins go under <code>app/plugins/cron/</code> instead, and are found the
-same way.</p>
+same way. Put yours there unless you are changing the distribution.</p>
 <h2 id="declaring-tasks">Declaring tasks</h2>
 <p>The plugin answers <code>onCronEvents</code> with a <code>stdClass</code> carrying a <code>plugin</code>
-name and an <code>events</code> array:</p>
+name and an <code>events</code> array. The support plugin is the fullest example in the
+tree:</p>
 <pre><code class="language-php">	/**
 	 * Return a list of events
 	 *
@@ -249,11 +294,19 @@ name and an <code>events</code> array:</p>
 </tr>
 </tbody>
 </table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A <code>name</code> that does not match a method is the failure to watch
+for. The runner triggers the event, no listener answers, and it prints
+<em>Finished event</em> and advances the job's <code>next_run</code> exactly as if the work
+had been done. The job's history shows a clean run every time and nothing
+happens. Check the spelling and the case against the method.</p>
+</aside>
 <p><code>loadLanguage()</code> is the first line for a reason. Cron plugins do not set
 <code>$_autoloadLanguage</code>, so without it the labels come back as raw keys in the
-administrator's job form.</p>
+administrator's job form — see <a href="../languages/index.html">languages</a>.</p>
+<h2 id="job-parameters">Job parameters</h2>
 <p><code>params</code> is what lets one task back several jobs. The support plugin's
-<code>sendTicketsReminder</code> names the <code>ticketreminder</code> fieldset:</p>
+<code>sendTicketsReminder</code> names the <code>ticketreminder</code> fieldset in its manifest:</p>
 <pre><code class="language-xml">&lt;fieldset group=&quot;ticketreminder&quot;&gt;
     &lt;field name=&quot;support_ticketreminder_severity&quot; type=&quot;list&quot; default=&quot;all&quot;
         label=&quot;Tickets with severity&quot; description=&quot;Ticket severity to message users about.&quot;&gt;
@@ -269,57 +322,64 @@ administrator's job form.</p>
 <p>An administrator can then have one job mailing reminders for all open
 tickets weekly and another mailing only the critical ones daily, both
 running the same method.</p>
+<p>The fieldset is optional. Leave <code>params</code> empty where the task has nothing to
+configure, as the booking plugin above does.</p>
 <h2 id="writing-the-task">Writing the task</h2>
 <p>The runner triggers <code>cron.&lt;event name&gt;</code> with the job as its only argument,
 so the method signature is fixed:</p>
 <pre><code class="language-php">/**
- * Delete temporary ticket uploads older than the configured age
+ * Release instrument holds nobody confirmed
  *
  * @param   object   $job  \Components\Cron\Models\Job
- * @return  boolean
+ * @return  void
  */
-public function cleanTempUploads(\Components\Cron\Models\Job $job)
+public function releaseExpiredHolds(\Components\Cron\Models\Job $job)
 {
     $params = $job-&gt;params;
 
-    $days = intval($params-&gt;get('support_tickettemp_age', '7'));
+    $hours = intval($params-&gt;get('bookings_hold_hours', '24'));
 
-    // ... do the work ...
+    $cutoff = Date::of('now')-&gt;modify('-' . $hours . ' hours')-&gt;toSql();
 
-    return true;
+    foreach (Booking::all()-&gt;whereEquals('state', 'held')
+                 -&gt;where('created', '&lt;', $cutoff)-&gt;rows() as $booking)
+    {
+        $booking-&gt;set('state', 'free')-&gt;save();
+    }
 }
 </code></pre>
-<p><code>$job-&gt;params</code> is a <code>Registry</code> of the values the administrator entered on
-that job, which is why two jobs on one method can behave differently. Return
-<code>true</code> on completion.</p>
+<p>Three things to know about that method.</p>
+<p><strong><code>$job-&gt;params</code> is a <code>Registry</code></strong> of the values the administrator entered on
+that job — not the plugin's own parameters, which are still on
+<code>$this-&gt;params</code>. This is why two jobs on one method behave differently.</p>
+<p><strong>The return value is discarded.</strong> The runner calls <code>Event::trigger()</code> and
+ignores what comes back, so returning <code>false</code> does not mark the job failed
+and returning <code>true</code> does not mark it succeeded. The tree's cron plugins
+return <code>true</code> out of habit; nothing reads it. To signal a failure, throw.</p>
+<p><strong>The cutoff is UTC.</strong> <code>next_run</code>, <code>created</code> and every other stored datetime
+are UTC, and so is <code>Date::of('now')</code>. Never build a cutoff from a local
+time — see <a href="../dates/index.html">dates</a>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Because the group prefix on the trigger is <code>cron</code>, the whole
 <code>cron</code> plugin group is loaded when the runner fires — including plugins
 whose tasks no job uses. Keep the constructor and <code>onCronEvents()</code> cheap;
 do the work in the task method.</p>
 </aside>
-<h2 id="how-it-runs">How it runs</h2>
-<p>The runner is a <a href="../../muse/index.html">muse</a> command:</p>
-<pre><code class="language-bash">muse cron:jobs run
+<h2 id="testing-it">Testing it</h2>
+<p>Force the job, ignoring its schedule:</p>
+<pre><code class="language-bash">muse cron:jobs run --job=12
 </code></pre>
-<p>It selects published jobs whose <code>next_run</code> has passed and which are inside
-their publish window, claims each one atomically so two runners cannot take
-the same job, triggers the event, and records the run:</p>
-<pre><code class="language-php">Event::trigger('cron.' . $job-&gt;get('event'), array($job));
-</code></pre>
-<p>The claim is what makes it safe to run the command on a short interval. A
-job left <code>active</code> by a process that died is reclaimed once its pid is gone,
-and a job whose recurrence cannot be parsed keeps its <code>next_run</code> and is
-retried rather than wedging. <code>--job=&lt;id&gt;</code> force-runs one job regardless of
-its schedule, which is how you test a new task.</p>
-<p>A thrown exception is caught and logged against the job; the job is released
-either way, so one failing task does not stop the rest of the run.</p>
+<p>That is the loop you want while writing a task. The runner claims the job,
+triggers the event, prints <em>Starting</em> and <em>Finished</em> lines, and releases the
+job whether the task returned, threw, or fataled — so a broken task does not
+wedge the job or stop the others in the run. An exception is caught, its
+message printed against the job, and the run recorded.</p>
+<p>Print nothing from a task. It may run inside a web request rather than on
+the command line, and output there lands in the page.</p>
+<p><code>muse cron:jobs list</code> shows what is due. The full set of runner tasks, and
+how the tick is delivered, is in
+<a href="../../../managers/maintenance/cron/index.html">scheduled tasks</a>.</p>
 <h2 id="registering-the-job">Registering the job</h2>
-<p>Administrators create jobs in <strong>Components → Cron</strong>, choosing the event from
-the list your <code>onCronEvents</code> produced, setting a recurrence, and filling in
-whatever fields your <code>params</code> fieldset declared. See the
-<a href="../../../managers/maintenance/cron/index.html">managers documentation</a> for that
-side of it.</p>
 <p>Until a job exists, a declared task never runs. Rather than asking every
 hub's administrator to create one, ship a
 <a href="../../database/index.html#migrations">migration</a> that inserts the row — check for the
@@ -365,7 +425,7 @@ job first so re-running the migration does not duplicate it:</p>
 </code></pre>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../debugging/index.html" rel="prev"><span>Previous</span>Debugging</a><a class="pager__next" href="../dates/index.html" rel="next"><span>Next</span>Dates</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/09-cron.md">Edit this page on GitHub</a>

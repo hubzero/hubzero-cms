@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -95,6 +97,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/loading/index.html">Loading</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Components</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-you-want-one">When you want one</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-example-this-section-builds">The example this section builds</a></li>
+<li class="toc__item toc__item--l2"><a href="#register-it-or-it-is-invisible">Register it, or it is invisible</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-smallest-component-that-runs">The smallest component that runs</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-components-live">Where components live</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-three-clients">The three clients</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-a-request-reaches-your-code">How a request reaches your code</a></li>
@@ -175,12 +181,117 @@ application with its own controllers, views, models, database tables,
 configuration, permissions, and URL space. <code>com_blog</code>, <code>com_kb</code>, and
 <code>com_resources</code> are components. Each owns a top-level path on the site and
 everything below it.</p>
-<p>The pages in this section walk through the parts of a component in the order
-you build them. The worked example throughout is
-<code>com_kb</code>, the knowledge base: it is small
-enough to read in an afternoon and complete enough to show every piece — site,
-administrator, and API clients, an ORM model, a router, <code>config.xml</code>,
-<code>access.xml</code>, language files, and migrations.</p>
+<h2 id="when-you-want-one">When you want one</h2>
+<p>Reach for a component when the thing you are adding <strong>is a page</strong> — when a
+user will navigate to it, it has records of its own, and someone has to
+administer them. A component owns the request, so only one runs per page.</p>
+<p>Reach for something smaller when it does not:</p>
+<table>
+<thead>
+<tr>
+<th>You want</th>
+<th>Build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A screen with records behind it</td>
+<td>a component</td>
+</tr>
+<tr>
+<td>Something to happen when a record is saved, a user logs in, a group page is drawn</td>
+<td>a <a href="../plugins/index.html">plugin</a></td>
+</tr>
+<tr>
+<td>A block in the sidebar of pages someone else owns</td>
+<td>a <a href="../modules/index.html">module</a></td>
+</tr>
+<tr>
+<td>A different look for pages that already exist</td>
+<td>a <a href="../templates/index.html">template</a> or a <a href="../templates/overrides/index.html">template override</a></td>
+</tr>
+</tbody>
+</table>
+<p>A component that only ever renders a box on other people's pages is a module
+wearing the wrong clothes, and it will fight the router for a URL it does not
+need.</p>
+<h2 id="the-example-this-section-builds">The example this section builds</h2>
+<p>The pages that follow build one component, in the order you would build it:
+<strong><code>com_bookings</code></strong>, which books a lab's instruments. It is small and it is
+complete:</p>
+<ul>
+<li>two tables, <code>#__bookings_instruments</code> and <code>#__bookings_reservations</code>;</li>
+<li>an administrator face where a lab manager adds instruments and cancels
+reservations;</li>
+<li>a site face where a user picks an instrument, sees what is already booked,
+and reserves a slot;</li>
+<li>a <code>bookings</code> plugin group, so a hub can hook a reservation being created —
+to email the lab, or push it to a scheduling system — without editing the
+component.</li>
+</ul>
+<p><code>com_bookings</code> is the component being written. The code samples that are
+<em>included from the tree</em> come from <code>com_kb</code>, the knowledge base: it is a real
+shipped component small enough to read in an afternoon and complete enough to
+show every piece — site, administrator and API clients, an ORM model, a
+router, <code>config.xml</code>, <code>access.xml</code>, language files, and migrations. Where a
+page shows <code>com_kb</code>, that is what the working code looks like today. Where it
+shows <code>com_bookings</code>, that is what you write.</p>
+<p>The same example runs through <a href="../database/index.html">Database</a>; the model,
+queries and table names there are the ones used here.</p>
+<h2 id="register-it-or-it-is-invisible">Register it, or it is invisible</h2>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> A component is not installed by its XML manifest. Nothing
+reads a manifest and creates anything from it, and there is no package
+installer to run one — see
+<a href="../extensions/deployext/index.html">Deploying extensions</a>. A component
+announces itself to the hub from a <strong>migration</strong>, by calling
+<code>addComponentEntry()</code>. Skip that step and you get a component that exists on
+disk, runs when you type its URL, and is invisible everywhere else: absent
+from the administrator's <strong>Components</strong> menu, with no parameters, and with
+no asset row for its permissions to hang off.</p>
+</aside>
+<p>This is the step most often missed, which is why <a href="migrations/index.html">Migrations</a>
+is the first chapter rather than the last.</p>
+<h2 id="the-smallest-component-that-runs">The smallest component that runs</h2>
+<p>Four files under <code>app/components/com_bookings/</code> and one command:</p>
+<pre><code>app/components/com_bookings/
+    site/bookings.php
+    site/controllers/instruments.php
+    site/views/instruments/tmpl/display.php
+    migrations/Migration20260901000000ComBookings.php
+</code></pre>
+<p><code>site/bookings.php</code> — the entry point. It is <code>require</code>d, so it runs at the top
+level; it names a controller and executes it:</p>
+<pre><code class="language-php">namespace Components\Bookings\Site;
+
+defined('_HZEXEC_') or die();
+
+$controller = new Controllers\Instruments();
+$controller-&gt;execute();
+</code></pre>
+<p><code>site/controllers/instruments.php</code> — one class, one task:</p>
+<pre><code class="language-php">namespace Components\Bookings\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+
+class Instruments extends SiteController
+{
+	public function displayTask()
+	{
+		$this-&gt;view-&gt;display();
+	}
+}
+</code></pre>
+<p><code>site/views/instruments/tmpl/display.php</code> — the layout the task renders,
+chosen by name and wired up by nothing:</p>
+<pre><code class="language-php">&lt;?php defined('_HZEXEC_') or die(); ?&gt;
+&lt;h2&gt;Instruments&lt;/h2&gt;
+</code></pre>
+<p>Then register it:</p>
+<pre><code class="language-bash">php core/bin/muse migration -f -e=com_bookings
+</code></pre>
+<p><code>/index.php?option=com_bookings</code> now renders the heading. Everything in the
+rest of this section is added on top of those four files.</p>
 <h2 id="where-components-live">Where components live</h2>
 <p>There are two roots. <code>core/components/</code> holds what the platform ships.
 <code>app/components/</code> holds what a single hub adds, and it wins. <code>Component::path()</code>
@@ -197,6 +308,8 @@ tries four directories and takes the first that exists:</p>
 it wholesale; the two trees are never merged, so a partial copy is a broken
 copy. The same rule governs class loading — see
 <a href="structure/index.html">Structure</a>.</p>
+<p>Write your own component into <code>app/</code>. <code>core/</code> is the platform's, and an
+upgrade replaces it.</p>
 <h2 id="the-three-clients">The three clients</h2>
 <p>A component serves up to three applications, and each gets its own
 subdirectory:</p>
@@ -230,12 +343,13 @@ subdirectory:</p>
 inside its directory. Models, <code>config/</code>, and <code>migrations/</code> sit above the client
 directories because all three clients share them.</p>
 <p>None of the three is required. A component with only <code>site/</code> is perfectly
-valid; so is one with only <code>api/</code>.</p>
+valid; so is one with only <code>api/</code>. <code>com_bookings</code> grows a <code>site/</code> first, then
+an <code>admin/</code>, and never needs an <code>api/</code>.</p>
 <h2 id="how-a-request-reaches-your-code">How a request reaches your code</h2>
 <p>The site and administrator applications route a request to a single component,
 identified by the <code>option</code> query variable, then call
-<code>Component::render('com_kb')</code>. That method defines <code>PATH_COMPONENT</code> (the client
-directory), loads the component's language files, and executes the entry
+<code>Component::render('com_bookings')</code>. That method defines <code>PATH_COMPONENT</code> (the
+client directory), loads the component's language files, and executes the entry
 point. The entry point picks a controller class, constructs it, and calls
 <code>execute()</code>. The controller runs a task, hands data to a view, and the view
 renders a layout. See <a href="controllers/index.html">Controllers</a> and <a href="views/index.html">Views</a>.</p>
@@ -244,15 +358,60 @@ renders a layout. See <a href="controllers/index.html">Controllers</a> and <a hr
 which resolves a versioned controller class and calls <code>execute()</code> on it
 directly. There is no view layer; responses are set on the response object.</p>
 <h2 id="naming">Naming</h2>
-<p>Throughout these pages, <code>{ComponentName}</code> stands for the studly-cased name a
-developer chooses — <code>Kb</code>, <code>Blog</code>, <code>Resources</code> — and <code>{componentname}</code> for its
-lowercase form. Directories on disk are lowercase and prefixed: <code>com_kb</code>.
-Namespaces are studly-cased and unprefixed: <code>Components\Kb</code>. The same pairing
-applies to <code>{ControllerName}</code>, <code>{ViewName}</code>, and <code>{ModelName}</code>.</p>
+<p>Every name in a component derives from one word. For <code>com_bookings</code> that word
+is <code>bookings</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Thing</th>
+<th>Form</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Directory</td>
+<td><code>com_bookings</code></td>
+</tr>
+<tr>
+<td>Entry points</td>
+<td><code>site/bookings.php</code>, <code>admin/bookings.php</code></td>
+</tr>
+<tr>
+<td>Namespace</td>
+<td><code>Components\Bookings</code></td>
+</tr>
+<tr>
+<td>Table prefix</td>
+<td><code>#__bookings_</code></td>
+</tr>
+<tr>
+<td>Language files</td>
+<td><code>en-GB.com_bookings.ini</code></td>
+</tr>
+<tr>
+<td>Migration classes</td>
+<td><code>Migration20260901000000ComBookings</code></td>
+</tr>
+<tr>
+<td>Language keys</td>
+<td><code>COM_BOOKINGS_*</code></td>
+</tr>
+</tbody>
+</table>
+<p>Throughout these pages, <code>{ComponentName}</code> stands for the studly-cased name —
+<code>Bookings</code>, <code>Kb</code>, <code>Blog</code> — and <code>{componentname}</code> for its lowercase form. The
+same pairing applies to <code>{ControllerName}</code>, <code>{ViewName}</code>, and <code>{ModelName}</code>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Keep the name a single word of letters and digits. The
+migration runner's <code>-e</code> option validates the extension against
+<code>^com_[[:alnum:]]+$</code>, so <code>muse migration -e=com_instrument_bookings</code> is
+refused outright — a component whose name carries a second underscore cannot
+be migrated by name.</p>
+</aside>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="migrations/index.html">Migrations</a> — registering the component and creating its
-tables.</li>
+tables. Start here.</li>
 <li><a href="structure/index.html">Structure</a> — the directory layout, the namespaces, and the
 entry point.</li>
 <li><a href="controllers/index.html">Controllers</a> — tasks, the task map, and the site,
@@ -274,7 +433,7 @@ distributable component contains.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../modules/loading/index.html" rel="prev"><span>Previous</span>Loading</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/README.md">Edit this page on GitHub</a>

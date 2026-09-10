@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/fileaccess
 source-id: 3424
@@ -94,7 +94,17 @@ registered by the service provider at boot.
 [Filesystem](../04-services/02-filesystem.md) is the full chapter: the
 adapters, the macro mechanism, the safe-path rules, and the archive types.
 
+What it looks like when it goes wrong: `Filesystem::read()` on a path that
+is not there throws
+[`FileNotFoundException`](../../../core/libraries/Hubzero/Filesystem/Exception/FileNotFoundException.php),
+so an unguarded read of a missing upload takes the whole page down. A file
+that exists but that the web server user cannot read is worse: PHP's
+`file_get_contents()` warns and returns `false`, which `read()` casts to a
+string, so you get an empty string and a blank patch of page with nothing in
+the log but a warning. Test `exists()` first, and check what `write()`
+returns — it is a boolean, and a failed write is not an exception.
+
 > **Note:** The facade is a root-namespace alias. A namespaced file that
 > writes `Filesystem::read()` without a `use Filesystem;` resolves the name
-> inside its own namespace and fatals. See
-> [Facades](../03-foundation/04-facades.md#importing-a-facade).
+> inside its own namespace, which is a different class name entirely. See
+> [Facades](../03-foundation/06-facades.md#importing-a-facade).

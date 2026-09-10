@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/releasenotes
 source-id: 3423
@@ -11,6 +11,12 @@ modified: 2014-03-18
 
 Where to find what changed in a release, and the one historic change that
 still explains most of what you read in the framework.
+
+Read it for one of two reasons: you want to know what a version number means
+and where the record is, or you are staring at a class name in an old
+extension that no longer exists anywhere. The tables below are the second
+answer. They describe what code *was*; nothing new should be written to
+either column's left-hand side.
 
 ## Where release notes live
 

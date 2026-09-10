@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -146,9 +148,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">REST API</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#when-to-write-one">When to write one</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-client">The client</a></li>
 <li class="toc__item toc__item--l2"><a href="#routing">Routing</a></li>
 <li class="toc__item toc__item--l2"><a href="#controllers">Controllers</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-smallest-working-endpoint">The smallest working endpoint</a></li>
 <li class="toc__item toc__item--l3"><a href="#documenting-an-endpoint">Documenting an endpoint</a></li>
 <li class="toc__item toc__item--l2"><a href="#authentication">Authentication</a></li>
 <li class="toc__item toc__item--l3"><a href="#from-javascript-on-the-hub-itself">From JavaScript on the hub itself</a></li>
@@ -180,6 +184,18 @@ component's <code>api/</code> directory.</p>
 <p>The <a href="../../reference/api/index.html">API reference</a> lists every endpoint, its
 method, its URI and its parameters, generated from the source. This page is
 about how the API works and how to add to it.</p>
+<h2 id="when-to-write-one">When to write one</h2>
+<p>A component gets an API controller when something outside the page needs the
+data: a script that loads a term's instrument bookings overnight, a lab's own
+front end, a mobile client, or the component's own JavaScript fetching a
+month of the calendar without reloading the page. If the only caller is a
+form on a page the component already renders, a site controller task is
+less work and gives you the session, the document and the template for free.</p>
+<p>The three controller kinds are the same class hierarchy with different
+surroundings, so the split is about what the caller is, not about what the
+code does. Where the logic is the same for both, put it in a model or a
+helper and have the site controller and the API controller both call it.
+Duplicating it is how the two faces start disagreeing.</p>
 <h2 id="the-client">The client</h2>
 <p><code>/api</code> is not a directory. <code>ClientDetector</code> sees <code>api</code> as the first URL
 segment and selects the API client, which loads its own service providers
@@ -227,6 +243,26 @@ class Entriesv1_0 extends ApiController
 <p>The version is in the class name, which is how two versions of an endpoint
 coexist: add <code>Entriesv2_0</code> beside <code>Entriesv1_0</code> and a request that asks for
 <code>v2.0</code> gets the new one while everything else keeps working.</p>
+<h3 id="the-smallest-working-endpoint">The smallest working endpoint</h3>
+<p>An API controller that declares no tasks at all is not empty.
+<code>ApiController</code> ships <code>listTask()</code>, <code>readTask()</code>, <code>createTask()</code>,
+<code>updateTask()</code> and <code>deleteTask()</code>, each of which resolves a
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a> model
+from the controller's own name — singularised, in
+<code>Components\[Name]\Models\</code> — and does the obvious thing with it. So a
+<code>Bookingsv1_0</code> controller in an instrument-booking component gets CRUD over
+<code>Components\Bookings\Models\Booking</code> for free, and you override only the
+tasks whose behaviour has to differ. Set <code>protected $_model</code> if the class
+name is not the singular of the controller name; no core controller does.</p>
+<p>That inheritance is also a trap. When the model cannot be resolved the
+request aborts — 404 if the derived file path does not exist, 500 if it is
+unreadable or defines a different class — and nothing says the task you meant
+to write is missing rather than broken. And these five tasks are documented
+on the base class, with <code>{component}</code> and <code>{controller}</code> placeholders in
+<code>@apiUri</code>, so the explorer lists them for every controller. The generated
+reference reads only files under <code>core/components/*/api/controllers/</code>, so it
+does not: an endpoint you inherited appears on a hub's <code>/developer/api/docs</code>
+and not in the <a href="../../reference/api/index.html">API reference</a>.</p>
 <p><code>send()</code> hands an object to
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/Response.php"><code>Hubzero\Api\Response</code></a>,
 which serialises it according to the <code>format</code> query variable — <code>json</code> (the
@@ -251,25 +287,70 @@ decoration — two things read them. <code>Hubzero\Api\Doc\Generator</code> buil
 interactive explorer a hub serves at <code>/developer/api/docs</code>, and
 <code>tools/docs/gen_api_reference.py</code> builds the
 <a href="../../reference/api/index.html">API reference</a> in these pages.</p>
-<pre><code class="language-php">/**
- * Display a list of entries
- *
- * @apiMethod GET
- * @apiUri    /blog/list
- * @apiParameter {
- * 		&quot;name&quot;:          &quot;limit&quot;,
- * 		&quot;description&quot;:   &quot;Number of results to return.&quot;,
- * 		&quot;type&quot;:          &quot;integer&quot;,
- * 		&quot;required&quot;:      false,
- * 		&quot;default&quot;:       25
- * }
- * @return  void
- */
-public function listTask()
+<pre><code class="language-php">	/**
+	 * Display a list of entries
+	 *
+	 * @apiMethod GET
+	 * @apiUri    /blog/list
+	 * @apiParameter {
+	 * 		&quot;name&quot;:          &quot;scope&quot;,
+	 * 		&quot;description&quot;:   &quot;Scope type (group, member, etc.)&quot;,
+	 * 		&quot;type&quot;:          &quot;string&quot;,
+	 * 		&quot;required&quot;:      false,
+	 * 		&quot;default&quot;:       &quot;site&quot;
+	 * }
 </code></pre>
-<p><code>@apiParameter</code> takes a JSON object. An endpoint with no <code>@apiMethod</code> and
-<code>@apiUri</code> appears in neither place, so a new endpoint is undocumented until
-you add them.</p>
+<p>More <code>@apiParameter</code> blocks follow, one per parameter, and then
+<code>public function listTask()</code>.</p>
+<p>The rules, and what breaks when you get them wrong:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>What it does</th>
+<th>If it is missing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The first line of the docblock</td>
+<td>The endpoint's summary</td>
+<td>The explorer <strong>drops the endpoint</strong> and records <em>Missing docblock for method</em> in its error list. The reference still lists it, with a blank summary</td>
+</tr>
+<tr>
+<td><code>@apiMethod</code></td>
+<td>The HTTP verb</td>
+<td>The reference assumes <code>GET</code>. Nothing routes off this tag, so a <code>POST</code> endpoint documented without it reads as a <code>GET</code> and the caller's first request fails</td>
+</tr>
+<tr>
+<td><code>@apiUri</code></td>
+<td>The path the caller requests</td>
+<td>The reference invents <code>/{component}/{task}</code>, which is right only by luck</td>
+</tr>
+<tr>
+<td><code>@apiParameter</code></td>
+<td>One JSON object per parameter</td>
+<td>The parameter is simply undocumented; the caller finds it by reading your controller</td>
+</tr>
+</tbody>
+</table>
+<p>An endpoint with <strong>neither</strong> <code>@apiMethod</code> nor <code>@apiUri</code> is skipped outright
+by the reference generator, so a new task is invisible until you write them.</p>
+<p><code>@apiParameter</code> takes a JSON object, one per tag, with <code>name</code>, <code>description</code>,
+<code>type</code>, <code>required</code> and <code>default</code>; <code>allowedValues</code> is used where a parameter
+is an enumeration. Both readers parse it as JSON, so a trailing comma or a
+missing quote costs you the parameter — the explorer records <em>Unable to parse
+parameter info</em>, and the reference generator falls back to a loose regular
+expression that may pick up some fields and not others. Neither says anything
+on the page itself.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The two readers are separate implementations of the same
+convention. <code>Generator</code> uses <code>phpDocumentor</code>'s reflection over the loaded
+class; <code>gen_api_reference.py</code> matches the docblock with a regular
+expression that requires <code>public function &lt;name&gt;Task(</code>. A task declared
+<code>protected</code>, or a docblock separated from its signature by anything else,
+is in one and not the other.</p>
+</aside>
 <h2 id="authentication">Authentication</h2>
 <p>The API authenticates with OAuth 2.0 bearer tokens.
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Api/Guard.php"><code>Hubzero\Api\Guard</code></a> reads the
@@ -317,11 +398,24 @@ extending <code>ApiController</code>.</li>
 <li>Check authorisation explicitly. An API controller has no menu item and no
 component parameters merged into it; nothing is checked for you.</li>
 <li>Return data with <code>$this-&gt;send()</code>. Do not echo.</li>
-<li>Regenerate the reference: <code>python3 tools/docs/gen_api_reference.py</code>.</li>
+<li>Regenerate the reference: <code>python3 tools/docs/gen_api_reference.py</code>. The
+documentation workflow regenerates it too and fails if your committed copy
+differs.</li>
 </ol>
+<p>What the mistakes look like:</p>
+<ul>
+<li><strong>The class name does not match the file.</strong> The router builds
+<code>Components\[Name]\Api\Controllers\[Controller]v[Major]_[Minor]</code> from
+the request; get a letter wrong and the request 404s with nothing in the
+log to say why.</li>
+<li><strong>You echoed instead of sending.</strong> The output lands ahead of the serialised
+body and the caller's JSON parser fails on the first character.</li>
+<li><strong>You skipped the authorisation check.</strong> It works, which is the problem.
+Nothing upstream of an API controller checks anything for you.</li>
+</ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../testing/index.html" rel="prev"><span>Previous</span>Testing</a><a class="pager__next" href="../aws/index.html" rel="next"><span>Next</span>AWS</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/16-api.md">Edit this page on GitHub</a>

@@ -62,9 +62,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -382,12 +384,17 @@ dependencies or the migrations change.</p>
 <h2 id="continuous-integration">Continuous integration</h2>
 <p>Three workflows, in <code>.github/workflows/</code>:</p>
 <ul>
-<li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.3. Two checks: <code>php -l</code> over every PHP
-file under <code>core/</code> and <code>app/</code> outside <code>vendor/</code>, and
-<code>tools/lint/missing-facade-imports.php</code>. The second exists because the CMS
-registers its facades as root-namespace aliases, so a namespaced file that
-writes <code>Route::url()</code> without importing <code>Route</code> parses cleanly and fatals
-only when that line runs.</li>
+<li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.3. Three checks: <code>php -l</code> over every PHP
+file under <code>core/</code> and <code>app/</code> outside <code>vendor/</code>;
+<code>tools/lint/missing-facade-imports.php</code>, which fails on any namespaced file
+that uses a facade without importing it; and
+<code>tools/lint/undefined-language-keys.php --quiet --max=444</code>, which fails if
+the number of language keys nothing defines rises above the current count.
+The second exists because such a file parses cleanly and misbehaves only
+when the line runs — see
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>. The
+third is a ceiling rather than a gate: lower the number as keys are
+defined.</li>
 <li><strong><code>pages.yml</code></strong> — builds this documentation, regenerates the references,
 checks every internal link, and fails if the committed <code>gh-pages/public/</code>
 is stale.</li>
@@ -407,7 +414,7 @@ syntax check in one call, the same pair the old Travis configuration ran.</p>
 <p><a href="../../foundation/index.html">Foundation</a> covers how a request is served.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../browsersupport/index.html" rel="prev"><span>Previous</span>Browser support</a><a class="pager__next" href="../../tutorials/index.html" rel="next"><span>Next</span>Video tutorials</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/01-getting-started/06-devenvironment.md">Edit this page on GitHub</a>

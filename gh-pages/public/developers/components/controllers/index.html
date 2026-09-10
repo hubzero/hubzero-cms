@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -98,10 +100,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Controllers</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-smallest-one">The smallest one</a></li>
 <li class="toc__item toc__item--l2"><a href="#tasks">Tasks</a></li>
 <li class="toc__item toc__item--l2"><a href="#a-site-controller">A site controller</a></li>
 <li class="toc__item toc__item--l2"><a href="#properties">Properties</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-view">The view</a></li>
+<li class="toc__item toc__item--l2"><a href="#redirecting-after-a-write">Redirecting after a write</a></li>
 <li class="toc__item toc__item--l2"><a href="#remapping-tasks">Remapping tasks</a></li>
 <li class="toc__item toc__item--l2"><a href="#administrator-controllers">Administrator controllers</a></li>
 <li class="toc__item toc__item--l2"><a href="#api-controllers">API controllers</a></li>
@@ -180,14 +184,40 @@ redirects. There are three base classes —
 and <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/ApiController.php"><code>ApiController</code></a> —
 and all three implement <code>Hubzero\Component\ControllerInterface</code>, whose single
 method is <code>execute()</code>.</p>
+<p>Keep controllers thin. A task should read the request, call a model, and pick
+a view; the rules about what a reservation <em>is</em> belong on the model, where the
+administrator side and the site side both get them. A rule written into a site
+task is a rule the administrator screens do not enforce.</p>
+<h2 id="the-smallest-one">The smallest one</h2>
+<pre><code class="language-php">namespace Components\Bookings\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+
+class Instruments extends SiteController
+{
+	public function displayTask()
+	{
+		$this-&gt;view-&gt;display();
+	}
+}
+</code></pre>
+<p>That is a working controller. <code>/index.php?option=com_bookings</code> runs
+<code>displayTask()</code>, which renders
+<code>site/views/instruments/tmpl/display.php</code>. Nothing else is registered
+anywhere.</p>
 <h2 id="tasks">Tasks</h2>
 <p>A controller's public methods whose names end in <code>Task</code> are its tasks, and
 nothing else is callable from the outside. The constructor reflects over the
 class and builds a map of task name to method name, dropping the suffix and
 lowercasing the key. Methods inherited from <code>SiteController</code> are excluded, with
 one exception: <code>displayTask</code> stays available.</p>
-<p>So <code>otherTask()</code> is reached by <code>task=other</code>, and <code>savecommentTask()</code> by
-<code>task=savecomment</code>. Lookup is case-insensitive.</p>
+<p>So <code>bookTask()</code> is reached by <code>task=book</code>, and <code>cancelbookingTask()</code> by
+<code>task=cancelbooking</code>. Lookup is case-insensitive.</p>
+<p>The suffix is the whole of the access control on method visibility. A public
+method without it — a helper you meant to keep to yourself — is unreachable
+from a URL; a public method <em>with</em> it is reachable by anyone who can guess the
+name, whether or not you linked to it. Every task decides for itself who may
+run it.</p>
 <p><code>execute()</code> reads the task from the request, preferring <code>task</code> and falling
 back to <code>layout</code>:</p>
 <pre><code class="language-php">$this-&gt;_task = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
@@ -196,9 +226,11 @@ back to <code>layout</code>:</p>
 <code>display</code> unless you change it.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> An unknown task therefore renders the default view rather than
-returning 404. Call <code>$this-&gt;disableDefaultTask()</code> if you would rather an
-unrecognised task fail; with <code>__default</code> unregistered, <code>execute()</code> throws
-<code>InvalidTaskException</code> with a 404 status.</p>
+returning 404. <code>task=delete</code> misspelled as <code>task=delele</code> shows the listing
+and looks like a page that quietly did nothing. Call
+<code>$this-&gt;disableDefaultTask()</code> if you would rather an unrecognised task fail;
+with <code>__default</code> unregistered, <code>execute()</code> throws <code>InvalidTaskException</code>
+with a 404 status.</p>
 </aside>
 <h2 id="a-site-controller">A site controller</h2>
 <pre><code class="language-php">namespace Components\Kb\Site\Controllers;
@@ -231,6 +263,21 @@ unqualified <code>Route</code> resolves to
 call is a fatal error the moment it runs. Import every facade the file uses,
 or fully qualify it as <code>\Route::url()</code>. See
 <a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
+<p>The failure is worth picturing, because it is the most common one in this
+tree: the file parses, the page loads, and one branch — the error path, the
+&quot;you already have a reservation&quot; path — dies with
+<code>Class &quot;Components\Bookings\Site\Controllers\Lang&quot; not found</code>. Run
+<code>php tools/lint/missing-facade-imports.php</code> rather than waiting to find out.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Not every facade exists in every client. <code>Toolbar</code> and
+<code>Submenu</code> are declared only in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/aliases.php"><code>core/bootstrap/Administrator/aliases.php</code></a>;
+<code>Pathway</code> only in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/aliases.php"><code>core/bootstrap/Site/aliases.php</code></a>.
+The API client has neither, and no <code>Notify</code>, <code>Document</code> or <code>Html</code> either.
+Importing <code>Toolbar</code> into a site controller is a correct-looking <code>use</code>
+statement for a class that is never registered.</p>
+</aside>
 <p>A task takes no arguments and returns nothing; it produces output or a
 redirect:</p>
 <pre><code class="language-php">	/**
@@ -258,15 +305,15 @@ redirect:</p>
 <tbody>
 <tr>
 <td><code>$this-&gt;_name</code></td>
-<td>the component name without the prefix, e.g. <code>kb</code></td>
+<td>the component name without the prefix, e.g. <code>bookings</code></td>
 </tr>
 <tr>
 <td><code>$this-&gt;_option</code></td>
-<td>the full component name, e.g. <code>com_kb</code></td>
+<td>the full component name, e.g. <code>com_bookings</code></td>
 </tr>
 <tr>
 <td><code>$this-&gt;_controller</code></td>
-<td>the lowercased short class name, e.g. <code>articles</code></td>
+<td>the lowercased short class name, e.g. <code>instruments</code></td>
 </tr>
 <tr>
 <td><code>$this-&gt;_task</code></td>
@@ -274,7 +321,7 @@ redirect:</p>
 </tr>
 <tr>
 <td><code>$this-&gt;_basePath</code></td>
-<td>the client directory, e.g. <code>.../com_kb/site</code></td>
+<td>the client directory, e.g. <code>.../com_bookings/site</code></td>
 </tr>
 <tr>
 <td><code>$this-&gt;view</code></td>
@@ -286,32 +333,48 @@ redirect:</p>
 </tr>
 </tbody>
 </table>
+<p><code>$this-&gt;_name</code> and <code>$this-&gt;_option</code> come from the class namespace, not from
+the request — see <a href="../structure/index.html#the-name-is-load-bearing">Structure</a>.</p>
 <p><code>SiteController</code> extends <code>Hubzero\Base\Obj</code>, so <code>get()</code>, <code>set()</code>,
 <code>setError()</code>, <code>getErrors()</code>, and the rest of that class are available. Any
 other property you assign is stored in an internal array through <code>__set()</code> and
 read back through <code>__get()</code>, which is why <code>$this-&gt;archive = new Archive()</code> in
-<code>execute()</code> above works without a declared property.</p>
+<code>execute()</code> above works without a declared property. The cost of that
+convenience is that a typo in a property name is not an error: <code>$this-&gt;intrument</code>
+reads back <code>null</code>, and the page renders empty.</p>
 <p><code>$this-&gt;juser</code> and <code>$this-&gt;database</code> are still set by the constructor and are
 still marked deprecated. Use the <code>User</code> facade and <code>App::get('db')</code>.</p>
 <h2 id="the-view">The view</h2>
 <p><code>execute()</code> builds the view before calling the task. Its name is the
-controller name and its layout is the task name, so a controller <code>Articles</code>
-running task <code>category</code> renders
-<code>site/views/articles/tmpl/category.php</code>. The view is pre-loaded with
+controller name and its layout is the task name, so a controller <code>Instruments</code>
+running task <code>book</code> renders
+<code>site/views/instruments/tmpl/book.php</code>. The view is pre-loaded with
 <code>option</code>, <code>task</code>, and <code>controller</code>.</p>
 <p>Change the layout when a task needs to render something other than its own
 name — most often when <code>saveTask()</code> fails validation and falls through to the
 edit form:</p>
 <pre><code class="language-php">$this-&gt;view
-    -&gt;set('row', $row)
-    -&gt;setLayout('edit')
-    -&gt;display();
+	-&gt;set('row', $row)
+	-&gt;setLayout('edit')
+	-&gt;display();
 </code></pre>
 <p>Assigned data survives a <code>setLayout()</code> call. To change the view directory as
 well, call <code>$this-&gt;setView($name, $layout)</code>, which replaces <code>$this-&gt;view</code>
-entirely — assign your data after that call, not before.</p>
+entirely — assign your data after that call, not before. Assigning before is a
+silent loss: the new view has none of it, and the layout renders blanks.</p>
 <p>Override <code>_onBeforeDoTask()</code> to run something between building the view and
 calling the task.</p>
+<h2 id="redirecting-after-a-write">Redirecting after a write</h2>
+<p>A task that changes something should redirect rather than render, so that a
+reload does not repeat the write:</p>
+<pre><code class="language-php">App::redirect(
+	Route::url('index.php?option=' . $this-&gt;_option . '&amp;controller=reservations', false),
+	Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
+);
+</code></pre>
+<p>Pass <code>false</code> as the second argument to <code>Route::url()</code> here. The encoded form is
+for markup; an encoded <code>&amp;amp;</code> in a <code>Location</code> header produces a URL with a
+literal <code>amp;</code> in a variable name. See <a href="../../basics/redirect/index.html">Redirects</a>.</p>
 <h2 id="remapping-tasks">Remapping tasks</h2>
 <p><code>registerTask($task, $method)</code> points one more task name at a method that is
 already a task. <code>com_kb</code>'s administrator controller uses it so that <strong>New</strong>
@@ -343,7 +406,8 @@ task map, compared case-sensitively. The values are method names with the
 <code>registerTask('add', 'edit')</code> works for <code>editTask()</code> but
 <code>registerTask('add', 'editEntry')</code> does nothing at all for <code>editEntryTask()</code>:
 the check is <code>in_array(strtolower($method), $this-&gt;_taskMap)</code>, which
-lowercases the argument but not the stored value. The call fails silently.</p>
+lowercases the argument but not the stored value. The call fails silently,
+and <code>task=add</code> falls through to the default view.</p>
 </aside>
 <h2 id="administrator-controllers">Administrator controllers</h2>
 <p><code>AdminController</code> extends <code>SiteController</code> and adds exactly one thing, a
@@ -365,14 +429,23 @@ cancel task that returns to the controller's default view:</p>
 }
 </code></pre>
 <p>Everything else — the toolbar, the sub-menu, permission checks — is written by
-the component. Administrator tasks conventionally check <code>User::authorise()</code>
-before doing anything and call <code>Request::checkToken()</code> on anything that
-writes.</p>
+the component. Two habits are not optional:</p>
+<ul>
+<li>Check <code>User::authorise()</code> in the task, against the component or the record.
+The <code>core.manage</code> gate in the entry point decides who may open the client at
+all; it says nothing about who may delete an instrument.</li>
+<li>Call <code>Request::checkToken()</code> at the top of anything that writes. Without it
+a <code>GET</code> from another site can delete records as whoever is logged in.</li>
+</ul>
+<p>The entry point's habit of building a controller class name out of
+<code>Request::getCmd('controller')</code> is why <code>com_kb</code> checks <code>file_exists()</code> on the
+path before using it. Copy the check with the rest of the entry point.</p>
 <h2 id="api-controllers">API controllers</h2>
 <p><code>ApiController</code> is a separate base class, not a <code>SiteController</code>. Its
 constructor takes the response object, its default task is <code>index</code> rather
 than <code>display</code>, and there is no view — a task calls <code>$this-&gt;send($data)</code> and,
-optionally, a status code.</p>
+optionally, a status code. <code>Notify</code>, <code>Toolbar</code> and <code>Pathway</code> do not exist in
+this client.</p>
 <p>Controller files are versioned. The API loader takes the controller name from
 the request or the third URL segment and appends <code>v{major}_{minor}</code>; with no
 <code>version</code> variable in the request it globs
@@ -404,6 +477,8 @@ docblocks back with reflection to publish the endpoint list:</p>
 	 */
 	public function listTask()
 </code></pre>
+<p>That means the docblock is the API documentation, not a comment about it. An
+endpoint with no docblock is an endpoint nobody discovers.</p>
 <p>A task that changes anything should call <code>$this-&gt;requiresAuthentication()</code>
 first; it aborts with 403 when the request carries no authenticated user.</p>
 <p><code>ApiController</code> also ships generic <code>listTask()</code>, <code>createTask()</code>, <code>readTask()</code>,
@@ -413,7 +488,7 @@ controller name, in <code>Components\{Name}\Models</code>. Set <code>$_model</co
 qualified class name to point them somewhere else.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../helpers/index.html" rel="next"><span>Next</span>Helpers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/03-controllers.md">Edit this page on GitHub</a>

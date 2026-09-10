@@ -92,7 +92,7 @@ conventionally, and freely, named `Helper`. Every core module uses `Helper`.
 > `Modules\Example` first. `User::get('id')` in a namespaced helper looks for
 > `Modules\Example\User` and fatals with "Class not found". Import each facade
 > you use at the top of the file: `use User;`, `use Request;`, `use App;`. See
-> [Facades](../03-foundation/04-facades.md).
+> [Facades](../03-foundation/06-facades.md).
 
 ## Site and administrator modules
 

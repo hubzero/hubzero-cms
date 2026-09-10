@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/webdevs/supergroups_gitlab
 source-id: 3527
@@ -18,6 +18,14 @@ result into the hub from the administrator interface.
 
 This section covers what the CMS does, what a hub has to configure, and how a
 developer works against a group that is managed this way.
+
+Reach for it when a super group's code is written by more than one person, or
+by anyone who should not have a shell account on the production hub, or when
+you want to be able to say what changed and put it back. Do not reach for it
+for a group whose template one person edits twice a year: the arrangement
+needs a GitLab that somebody runs, accounts granted by hand, and a hub with
+`application_env` set to production before the CMS will create anything at
+all. [What it costs](#what-it-costs) is the honest list.
 
 ## What ships and what does not
 

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -175,6 +177,12 @@
 You declare them in XML; the CMS builds a form from the declaration, stores
 what was entered as JSON in the extension's <code>#__extensions</code> row, and hands
 them back to you as a <code>Registry</code>.</p>
+<p>Declare one when a hub will reasonably want a different value from yours —
+how many days ahead <code>com_bookings</code> lets people reserve an instrument, whether
+a reservation needs approval. Do not declare one for every constant in the
+extension. Each parameter is a screen an administrator has to understand and a
+value your code has to keep working for; a setting nobody changes is a
+liability with a form field attached.</p>
 <p>This page is about declaring them. <a href="../../basics/config/index.html">Config</a> covers
 reading them at runtime — <code>Component::params()</code>, <code>$this-&gt;params</code>, and the
 <code>Registry</code> methods. Every parameter the shipped extensions declare is listed
@@ -211,6 +219,10 @@ in the <a href="../../../reference/configuration/index.html">configuration refer
 </tr>
 </tbody>
 </table>
+<p>The difference between the two shapes is a common half-hour: a component's
+<code>config.xml</code> has <code>&lt;fieldset&gt;</code> children <strong>directly</strong> inside <code>&lt;config&gt;</code>, while
+everything else wraps them in <code>&lt;fields name=&quot;params&quot;&gt;</code>. Put a component's
+fieldsets inside a <code>&lt;fields&gt;</code> element and the Options screen comes up empty.</p>
 <p>A component keeps its parameters in a separate file, and that file's root
 element is <code>&lt;config&gt;</code> with <code>&lt;fieldset&gt;</code> children directly inside it:</p>
 <pre><code class="language-xml">&lt;config&gt;
@@ -313,7 +325,10 @@ to group its settings however reads best.</p>
 </table>
 <p><code>label</code> and <code>description</code> are language keys, resolved from the extension's
 own <code>.ini</code> file. Put them there rather than writing English into the
-manifest. See <a href="../languages/index.html">Languages</a>.</p>
+manifest. For a component that file is the <strong>administrator</strong> one, because the
+Options screen runs in the administrator client; a label defined only in
+<code>site/language/</code> renders on the settings screen as its own key. See
+<a href="../languages/index.html">Languages</a>.</p>
 <p>Fields that offer a fixed set of choices carry <code>&lt;option&gt;</code> children, whose
 text is also a language key:</p>
 <pre><code class="language-xml">&lt;field name=&quot;show_from&quot; type=&quot;list&quot; default=&quot;site&quot;
@@ -332,9 +347,12 @@ text is also a language key:</p>
 <ul>
 <li><code>type=&quot;list&quot;</code> is special-cased to <code>Fields\Select</code>, because <code>List</code> cannot be
 a PHP class name. Most of the tree writes <code>list</code>.</li>
-<li><strong>An unrecognised type silently becomes a text box.</strong> There is no error and
-no log line, so a typo in <code>type</code> costs you the widget and nothing tells
-you. Check the name against the directory.</li>
+<li><strong>An unrecognised type silently becomes a text box.</strong>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Form/Form.php"><code>Form::loadField()</code></a> calls
+<code>loadFieldType('text')</code> when the named class is not found. There is no error
+and no log line, so a typo in <code>type</code> costs you the widget and nothing tells
+you — and an administrator then types free text where a drop-down should
+have constrained them. Check the name against the directory.</li>
 </ul>
 <p>These are the types that exist:</p>
 <table>
@@ -513,15 +531,26 @@ instead, because the same module can be published several times with
 different settings.</p>
 <p>Nothing writes those columns at install time. Until an administrator saves
 the settings screen the column is empty, and every <code>$params-&gt;get()</code> returns
-its second argument — <strong>not</strong> the <code>default</code> in the manifest. Always pass a
-default in code:</p>
+its second argument — <strong>not</strong> the <code>default</code> in the manifest.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This is the parameter trap. The declaration says
+<code>default=&quot;300&quot;</code>, the code says <code>$params-&gt;get('introlength')</code>, and on a
+freshly installed extension the code gets <code>null</code>. Cast it and you have <code>0</code>;
+use it as a limit and the feature does nothing, on exactly the hubs where
+nobody has been into the settings yet. It works on your development hub
+because you opened the screen once.</p>
+</aside>
+<p>Always pass a default in code, and make it the same value as the one in the
+manifest:</p>
 <pre><code class="language-php">$limit = (int) $params-&gt;get('introlength', 300);
 </code></pre>
 <p>A migration can seed the column instead, with the <code>saveParams</code> macro, if a
-sensible value matters before anyone visits the screen.</p>
+sensible value matters before anyone visits the screen. That is worth doing
+when the parameter is not optional — when there is no sane fallback — and
+unnecessary otherwise.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extreqs/index.html" rel="prev"><span>Previous</span>Requirements</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/02-parameters.md">Edit this page on GitHub</a>

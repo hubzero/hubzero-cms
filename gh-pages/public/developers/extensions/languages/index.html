@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -177,6 +179,11 @@ This page covers what an extension has to ship: which files, where, named
 what, with keys named how. <a href="../../basics/languages/index.html">Languages</a> covers the
 <code>Lang</code> API — <code>txt()</code>, <code>txts()</code>, plurals, overrides — and is the page to read
 before writing view code.</p>
+<p>Two reasons to bother, even on a hub that will only ever run in English. A hub
+can reword any string your extension shows without editing your code, so an
+administrator who dislikes your wording does not end up with a local patch
+that the next update destroys. And a sentence in a file is a sentence someone
+can find; a sentence in a layout is not.</p>
 <h2 id="the-files">The files</h2>
 <p>One directory per language tag, one file per extension inside it. The tag
 appears twice: as the directory name and as the start of the filename.</p>
@@ -188,9 +195,27 @@ core/modules/mod_login/language/en-GB/en-GB.mod_login.ini
 core/plugins/system/debug/language/en-GB/en-GB.plg_system_debug.ini
 core/templates/kimera/language/en-GB/en-GB.tpl_kimera.ini
 </code></pre>
-<p>A component has one file per face, because the administrator interface and
-the site need different strings and there is no reason to load both. A
-module, plugin or template has one.</p>
+<p>A component has one file per face, and <strong>only the face that is running is
+loaded</strong>. The site loads <code>site/language/{tag}/{tag}.com_bookings.ini</code>; the
+administrator loads <code>admin/language/{tag}/{tag}.com_bookings.ini</code> plus the
+<code>.sys.ini</code> beside it. <code>Component::render()</code> builds the path from
+<code>PATH_COMPONENT</code>, which is the component directory plus the current client,
+so the other file is never read. A module, plugin or template has one file,
+because it has one face.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A string both faces use has to be defined in <strong>both</strong> files.
+Nothing merges them and nothing warns. Define
+<code>COM_BOOKINGS_RESERVATION_SAVED</code> in <code>site/language/</code> only, and the
+administrator screen that saves a reservation displays the literal text
+<code>COM_BOOKINGS_RESERVATION_SAVED</code> — while <code>grep -r</code> across the tree finds the
+key defined and looks entirely correct. When a key renders as itself, the
+first question is not <em>is it defined</em> but <em>is it defined in the file this
+client loads</em>.</p>
+</aside>
+<p>The same rule decides where a parameter's <code>label</code> goes: an extension's
+settings screen runs in the administrator client, so the labels in a
+component's <code>config/config.xml</code> are resolved from its <strong>administrator</strong> file
+even though the parameter may only be read by site code.</p>
 <p>The tag is a language and a region joined by a <strong>hyphen</strong>, following
 <a href="https://www.rfc-editor.org/info/bcp47">BCP 47</a>: <code>en-GB</code>, <code>en-US</code>, <code>fr-FR</code>,
 <code>pt-BR</code>. Not an underscore. <code>Hubzero\Language\Translator</code> builds the path
@@ -212,7 +237,11 @@ en-GB.plg_system_debug.sys.ini
 </code></pre>
 <p>Put the extension's <code>&lt;name&gt;</code> and <code>&lt;description&gt;</code> keys — the ones its XML
 manifest refers to — in there, and everything else in the ordinary file.
-Ship a <code>.sys.ini</code> for any extension an administrator will see listed.</p>
+Ship a <code>.sys.ini</code> for any extension an administrator will see listed. Leave it
+out and your extension appears in those lists as <code>COM_BOOKINGS</code>, which is
+correct behaviour and looks like a bug.</p>
+<p>For a component the <code>.sys.ini</code> belongs in the <strong>administrator</strong> language
+directory, because that is the client doing the listing.</p>
 <h3 id="declaring-them-in-the-manifest">Declaring them in the manifest</h3>
 <p>The manifest lists the files, per face:</p>
 <pre><code class="language-xml">&lt;languages folder=&quot;site&quot;&gt;
@@ -225,6 +254,9 @@ Ship a <code>.sys.ini</code> for any extension an administrator will see listed.
 	&lt;/languages&gt;
 &lt;/administration&gt;
 </code></pre>
+<p>Like the <code>&lt;files&gt;</code> block, this list is inherited from a package installer that
+no longer exists. Files are found by path, not by this declaration, so an
+omission here breaks nothing and a listing here fixes nothing.</p>
 <h2 id="writing-the-file">Writing the file</h2>
 <p>Key/value pairs. Always quote the value:</p>
 <pre><code class="language-ini">; @package  hubzero-cms
@@ -306,7 +338,9 @@ case.</li>
 <li><code>Hubzero\Module\Loader</code> loads a module's file before the module renders.</li>
 <li>A <strong>plugin's file is not loaded automatically.</strong> Set
 <code>protected $_autoloadLanguage = true;</code> on the plugin class, or call
-<code>$this-&gt;loadLanguage()</code> before you translate anything.</li>
+<code>$this-&gt;loadLanguage()</code> before you translate anything. Forget it and every
+string the plugin shows renders as its key — the same symptom as a missing
+definition, from an entirely different cause.</li>
 </ul>
 <h2 id="checking-your-work">Checking your work</h2>
 <p>A key with no definition is not an error: <code>Lang::txt()</code> returns the key
@@ -321,7 +355,7 @@ anywhere defines. It cannot check keys assembled at runtime
 sufficient.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../parameters/index.html" rel="prev"><span>Previous</span>Parameters</a><a class="pager__next" href="../deployext/index.html" rel="next"><span>Next</span>Deploying extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/03-languages.md">Edit this page on GitHub</a>

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -78,6 +80,7 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../database/index.html">Database</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Extensions</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-kind-do-you-want">Which kind do you want</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-four-kinds">The four kinds</a></li>
 <li class="toc__item toc__item--l3"><a href="#components">Components</a></li>
 <li class="toc__item toc__item--l3"><a href="#plugins">Plugins</a></li>
@@ -184,6 +187,50 @@ code gets onto a running hub. Each kind then has its own chapter set —
 <a href="../components/index.html">Components</a>, <a href="../plugins/index.html">Plugins</a>,
 <a href="../modules/index.html">Modules</a>, <a href="../templates/index.html">Templates</a> — for
 the parts that differ.</p>
+<p>Read this section once before you start, and the four rules it establishes
+will save you the four days they otherwise cost: an extension is a row in a
+table, that row comes from a migration, every facade must be imported, and
+every visible string comes from a language file whose client you have to get
+right.</p>
+<h2 id="which-kind-do-you-want">Which kind do you want</h2>
+<p>Decide by asking what owns the page.</p>
+<table>
+<thead>
+<tr>
+<th>The thing you are adding</th>
+<th>Kind</th>
+<th>Because</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A screen with records behind it — booking a lab's instruments</td>
+<td>Component</td>
+<td>it owns the URL and the request</td>
+</tr>
+<tr>
+<td>A reaction to something happening — mirroring a publication to an external service when it is saved</td>
+<td>Plugin</td>
+<td>it owns no page and answers events</td>
+</tr>
+<tr>
+<td>A block that appears beside other people's pages — the instruments free right now</td>
+<td>Module</td>
+<td>it renders into a template position</td>
+</tr>
+<tr>
+<td>A different look for a partner institution</td>
+<td>Template</td>
+<td>it is the page around everything else</td>
+</tr>
+</tbody>
+</table>
+<p>Pick wrong and you fight the framework. A component that only ever renders a
+sidebar box competes for a URL it never uses; a plugin that wants a settings
+screen of its own is a component with the wrong base class.</p>
+<p>The worked example carried through the component chapters — <code>com_bookings</code>,
+which books a lab's instruments — is referred to here too, along with the
+<code>bookings</code> plugin group it triggers.</p>
 <h2 id="the-four-kinds">The four kinds</h2>
 <table>
 <thead>
@@ -293,12 +340,45 @@ every extension class comes through this loader.</p>
 <h2 id="how-an-extension-is-found">How an extension is found</h2>
 <p>Nothing scans the filesystem. Every extension has a row in the
 <code>#__extensions</code> table, and that row — not the directory — is what the
-loaders read. A component with no row 404s; a plugin with no row never
-receives an event. The row also holds the extension's parameters, in its
-<code>params</code> column.</p>
+loaders read. The row also holds the extension's parameters, in its <code>params</code>
+column.</p>
+<p>What a missing row costs depends on the kind, and only one of the four fails
+loudly:</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>With the directory but no row</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td><strong>still runs.</strong> <code>Hubzero\Component\Loader::load()</code> manufactures a default record with <code>enabled</code> set to 1 when the query finds nothing. What is lost is everything stored against the row: the administrator's Components menu, the parameters, the permissions asset.</td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td>never loads. The plugin loader selects rows <code>WHERE type = 'plugin' AND enabled &gt;= 1</code>; no row, no listener, and the event fires into nothing.</td>
+</tr>
+<tr>
+<td>Module</td>
+<td>cannot be published. The row registers the module <em>type</em>; an administrator creates instances from it.</td>
+</tr>
+<tr>
+<td>Template</td>
+<td>cannot be assigned to the site or the administrator.</td>
+</tr>
+</tbody>
+</table>
+<p>A component that exists on disk and is invisible in the administrator
+interface is the single most common symptom of a missed migration, and it is
+confusing precisely because the component's own pages work.</p>
 <p>An extension creates its own row from a
-<a href="../database/index.html#migrations">migration</a>.
-<a href="../foundation/extensions/index.html">Extensions</a> in the Foundation section covers
+<a href="../database/index.html#migrations">migration</a>, by calling <code>addComponentEntry()</code>,
+<code>addPluginEntry()</code>, <code>addModuleEntry()</code> or <code>addTemplateEntry()</code>. Nothing else
+creates it: there is no package installer that reads a manifest and does it
+for you. See <a href="deployext/index.html">Deploying extensions</a>.</p>
+<p><a href="../foundation/extensions/index.html">Extensions</a> in the Foundation section covers
 each loader in detail; <a href="extreqs/index.html">Requirements</a> covers what else a
 package must carry.</p>
 <h2 id="in-this-section">In this section</h2>
@@ -314,7 +394,7 @@ hub.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../database/index.html" rel="prev"><span>Previous</span>Database</a><a class="pager__next" href="extreqs/index.html" rel="next"><span>Next</span>Requirements</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/README.md">Edit this page on GitHub</a>

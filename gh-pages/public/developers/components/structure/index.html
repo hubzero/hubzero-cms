@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -99,8 +101,9 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Structure</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-layout">The layout</a></li>
 <li class="toc__item toc__item--l2"><a href="#namespaces-and-the-class-loader">Namespaces and the class loader</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-name-is-load-bearing">The name is load-bearing</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-entry-point">The entry point</a></li>
-<li class="toc__item toc__item--l2"><a href="#installation">Installation</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-directory-alone-gets-you">What the directory alone gets you</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
@@ -172,6 +175,10 @@
 <p>A component is a directory named <code>com_{componentname}</code>, split first by client
 and then by role. This page shows the layout of a real one, explains how class
 names map onto it, and follows a request from the URL to the controller.</p>
+<p>Almost nothing here is configurable, and that is the point: put a file in the
+place the convention names and it is found, with no registration anywhere. Put
+it a directory to one side and nothing reports it — the class simply does not
+exist, and the first line that mentions it is a fatal.</p>
 <h2 id="the-layout">The layout</h2>
 <p>Everything below is from <code>core/components/com_kb</code>, with a few files elided:</p>
 <pre><code>core/components/com_kb/
@@ -231,12 +238,35 @@ names map onto it, and follows a request from the URL to the controller.</p>
 because all three clients use them. Everything else belongs to exactly one
 client. A component may also carry a <code>helpers/</code> directory at the top level for
 helpers shared between clients, and a <code>tests/</code> directory.</p>
+<p><code>com_bookings</code> is the same shape with two clients and no API:</p>
+<pre><code>app/components/com_bookings/
+    bookings.xml
+    composer.json
+    config/config.xml  config/access.xml
+    migrations/Migration20260901000000ComBookings.php ...
+    models/
+        instrument.php              Components\Bookings\Models\Instrument
+        reservation.php             Components\Bookings\Models\Reservation
+    site/
+        bookings.php  router.php
+        controllers/instruments.php  controllers/reservations.php
+        views/instruments/tmpl/display.php  view.php  book.php
+        assets/css/bookings.css
+        language/en-GB/en-GB.com_bookings.ini
+    admin/
+        bookings.php
+        controllers/instruments.php  controllers/reservations.php
+        views/instruments/tmpl/display.php  edit.php
+        language/en-GB/
+            en-GB.com_bookings.ini
+            en-GB.com_bookings.sys.ini
+</code></pre>
 <h2 id="namespaces-and-the-class-loader">Namespaces and the class loader</h2>
 <p>Every component class lives under the <code>Components</code> namespace, and the segment
 after it is the studly-cased component name without the <code>com_</code> prefix:</p>
-<pre><code>Components\Kb\Site\Controllers\Articles
+<pre><code>Components\Bookings\Site\Controllers\Instruments
+Components\Bookings\Models\Reservation
 Components\Kb\Admin\Helpers\Permissions
-Components\Kb\Models\Article
 </code></pre>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClassLoader.php"><code>Hubzero\Base\ClassLoader</code></a>,
 registered in <code>core/bootstrap/app.php</code>, resolves those names. It drops the
@@ -249,27 +279,43 @@ registered in <code>core/bootstrap/app.php</code>, resolves those names. It drop
 <code>PATH_APP</code> first and then <code>PATH_CORE</code>. This is the one place the naming
 convention bends: <strong>files and directories may be lowercase even when the class
 name is not.</strong> Practically every component in the tree uses the lowercase
-form.</p>
+form, and so should yours; the mixed-case path is a fallback, not a choice
+worth making.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Whichever root holds the extension owns it. If
 <code>app/components/com_kb/</code> exists, no class is ever loaded from
-<code>core/components/com_kb/</code> — not even one the app copy does not define.</p>
+<code>core/components/com_kb/</code> — not even one the app copy does not define. This
+is why a partial copy of a core component is a broken copy: the loader finds
+the app directory, stops looking, and every class you did not copy is
+missing.</p>
 </aside>
 <p>Because classes autoload, <code>require_once</code> on a component class is redundant.
 Several shipped components still do it — <code>com_kb</code>'s entry points among them —
-which is harmless but no longer necessary.</p>
+which is harmless but is inherited practice, not the current one. Leave it out
+of new code.</p>
+<h3 id="the-name-is-load-bearing">The name is load-bearing</h3>
+<p><code>SiteController</code>'s constructor derives the component from the <strong>class
+namespace</strong>, not from the directory or the request: it explodes the class name
+and takes the second segment. <code>Components\Bookings\Site\Controllers\Instruments</code>
+gives <code>$this-&gt;_name = 'bookings'</code> and <code>$this-&gt;_option = 'com_bookings'</code>.</p>
+<p>Get the namespace segment and the directory out of step — a class declared
+<code>namespace Components\Booking\...</code> inside <code>com_bookings/</code> — and nothing throws.
+The controller quietly reports itself as <code>com_booking</code>: it loads that
+component's parameters (empty), looks for <code>com_booking</code>'s language file
+(missing, so every string renders as its own key), and <code>Route::url()</code> builds
+URLs into a component that is not there.</p>
 <h2 id="the-entry-point">The entry point</h2>
 <p>The URL carries the component in <code>option</code>:</p>
-<pre><code>index.php?option=com_kb&amp;task=category&amp;categoryAlias=printing
+<pre><code>index.php?option=com_bookings&amp;task=view&amp;instrument=confocal
 </code></pre>
 <p>With search engine friendly URLs on, the first path segment names the
 component instead, and the rest is handed to the component's router:</p>
-<pre><code>/kb/printing
+<pre><code>/bookings/confocal
 </code></pre>
-<p>Either way the application ends at <code>Component::render('com_kb')</code> in
+<p>Either way the application ends at <code>Component::render('com_bookings')</code> in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/Loader.php"><code>Hubzero\Component\Loader</code></a>.
 That method defines <code>PATH_COMPONENT</code> (the client directory,
-<code>com_kb/site</code> or <code>com_kb/admin</code>), plus <code>PATH_COMPONENT_SITE</code> and
+<code>com_bookings/site</code> or <code>com_bookings/admin</code>), plus <code>PATH_COMPONENT_SITE</code> and
 <code>PATH_COMPONENT_ADMINISTRATOR</code>, loads the component's language files, and then
 looks for something to run, in this order:</p>
 <ol>
@@ -281,8 +327,8 @@ application;</li>
 <li>failing all of those, a <code>Hubzero\Component\DefaultSiteController</code> is
 synthesised for the requested controller.</li>
 </ol>
-<p>Every component in the tree today uses the second form. Here is the whole of
-<code>com_kb</code>'s site entry point:</p>
+<p>Every component in the tree today uses the second form, and it is the one to
+write. Here is the whole of <code>com_kb</code>'s site entry point:</p>
 <pre><code class="language-php">namespace Components\Kb\Site;
 
 require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
@@ -292,9 +338,10 @@ require_once __DIR__ . DS . 'controllers' . DS . 'articles.php';
 $controller = new Controllers\Articles();
 $controller-&gt;execute();
 </code></pre>
-<p>That is the minimum: a namespace, a controller, <code>execute()</code>. The
-administrator entry point does more, because the administrator needs an
-authorisation gate and a sub-menu:</p>
+<p>That is the minimum: a namespace, a controller, <code>execute()</code>. (The two
+<code>require_once</code> lines above it in the file are the inherited habit noted above;
+the class loader covers both.) The administrator entry point does more,
+because the administrator needs an authorisation gate and a sub-menu:</p>
 <pre><code class="language-php">namespace Components\Kb\Admin;
 
 if (!\User::authorise('core.manage', 'com_kb'))
@@ -332,31 +379,34 @@ $controller-&gt;execute();
 </code></pre>
 <p>Three things are worth copying from it. The <code>core.manage</code> check is what keeps
 non-managers out of the whole client — no controller sees the request without
-it. <code>Submenu::addEntry()</code> builds the row of links under the toolbar. And the
-controller name comes from the request, with a fallback, so
-<code>index.php?option=com_kb&amp;controller=articles</code> reaches
-<code>Components\Kb\Admin\Controllers\Articles</code>.</p>
+it, and leaving it out means every logged-in user can reach the administrator
+screens by typing the URL. <code>Submenu::addEntry()</code> builds the row of links under
+the toolbar. And the controller name comes from the request, with a fallback,
+so <code>index.php?option=com_bookings&amp;controller=reservations</code> reaches
+<code>Components\Bookings\Admin\Controllers\Reservations</code>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Entry point files are namespaced, so the facades they call must be
 imported or fully qualified. <code>com_kb</code>'s administrator entry point writes
 <code>\User::authorise()</code> and <code>\Route::url()</code> with a leading backslash for
 exactly this reason; see
-<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>.</p>
+<a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>. The file parses
+either way — the fatal arrives only when the line runs.</p>
 </aside>
 <p>Do not close the PHP tag in a file that contains only PHP. A stray newline
 after <code>?&gt;</code> becomes output, and output before the document is assembled breaks
 redirects and headers.</p>
-<h2 id="installation">Installation</h2>
-<p>Placing the directory on disk is enough to make a component run. When
+<h2 id="what-the-directory-alone-gets-you">What the directory alone gets you</h2>
+<p>Placing the directory on disk is enough to make a component <em>run</em>. When
 <code>Component::load()</code> finds no row in <code>#__extensions</code> it builds a default record
 with <code>enabled</code> set to 1, so the component executes.</p>
 <p>What a missing row costs you is everything stored against it: the component
-does not appear in the administrator's list of components, <code>Component::params()</code>
-returns an empty registry, and there is no asset row for its permissions. A
-<a href="../migrations/index.html">migration</a> creates that row.</p>
+does not appear in the administrator's list of components,
+<code>Component::params()</code> returns an empty registry, and there is no asset row for
+its permissions. A <a href="../migrations/index.html">migration</a> creates that row, and that is
+the step to do before anything else.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../controllers/index.html" rel="next"><span>Next</span>Controllers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/02-structure.md">Edit this page on GitHub</a>

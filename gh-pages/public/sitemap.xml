@@ -171,9 +171,11 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/structure/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/constants/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/providers/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/facades/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/autoloading/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/events/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/extensions/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/facades/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/providers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/services/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/services/cache/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/services/filesystem/</loc></url>

@@ -60,9 +60,11 @@
 <li class="toc__item toc__item--l3"><a href="#handle">Handle</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -175,6 +177,10 @@
 platform as the release ships it. <code>app/</code> is everything that makes one hub
 different from another. <code>index.php</code> is the only file a web request ever
 reaches.</p>
+<p>Read this before you decide where to put anything. The <code>core</code>/<code>app</code> split
+decides whether your work survives an upgrade, and the lifecycle at the end
+of the page decides what has already happened by the time your controller
+runs — which is the answer to most &quot;why is this empty here&quot; questions.</p>
 <pre><code>hubzero-cms/
     index.php       the single entry point
     core/           the platform
@@ -322,7 +328,15 @@ directories in both trees:</p>
 </table>
 <p>Composer's PSR-4 map covers only <code>Hubzero\</code> and <code>Bootstrap\</code>; every
 extension class comes through this loader, which also tries a lowercase
-variant of each path so that the older lowercase filenames still resolve.</p>
+variant of each path so that the older lowercase filenames still resolve.
+<a href="../autoloading/index.html">Autoloading</a> gives the exact paths tried, the case trap
+between those two variants, and what to check when a class will not load.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The directory that holds the extension owns the whole
+namespace. An <code>app/components/com_booking/</code> containing one file does not
+fall back to <code>core/</code> for the others; those classes stop loading. Override
+the whole extension or none of it.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> There are no <code>/administrator</code> and <code>/api</code> directories. Earlier
 releases had one entry point per client; this one has a single <code>index.php</code>
@@ -430,7 +444,7 @@ never asked for.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Foundation</a><a class="pager__next" href="../constants/index.html" rel="next"><span>Next</span>Constants</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/01-structure.md">Edit this page on GitHub</a>

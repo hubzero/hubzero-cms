@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Constants · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Every request defines these before anything else runs, in . Extensions may rely on them anywhere. Paths All of these are absolute filesystem paths, not URLs,…">
+  <meta name="description" content="Every request defines these before anything else runs, in . Extensions may rely on them anywhere. You need them whenever you touch the filesystem. A hub&#x27;s…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/constants/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,9 +59,11 @@
 <li class="toc__item toc__item--l2"><a href="#legacy-path-aliases">Legacy path aliases</a></li>
 <li class="toc__item toc__item--l2"><a href="#locale">Locale</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -173,6 +175,11 @@
 <p>Every request defines these before anything else runs, in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a>. Extensions may
 rely on them anywhere.</p>
+<p>You need them whenever you touch the filesystem. A hub's files are not
+necessarily under the code — the platform can sit outside the document root —
+so a path written as <code>'core/components/com_booking/…'</code> or <code>'/www/hub/app'</code>
+works on the machine you wrote it on and nowhere else. Build every path from
+the constants instead.</p>
 <h2 id="paths">Paths</h2>
 <p>All of these are absolute filesystem paths, not URLs, and none has a
 trailing separator.</p>
@@ -293,8 +300,8 @@ compared in UTC and converted for display, so do not change the default time
 zone. See <a href="../../basics/dates/index.html">Dates</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Application structure</a><a class="pager__next" href="../providers/index.html" rel="next"><span>Next</span>Service providers</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Application structure</a><a class="pager__next" href="../autoloading/index.html" rel="next"><span>Next</span>Autoloading</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/02-constants.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

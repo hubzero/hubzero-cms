@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Testing · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Hubzero has a working PHPUnit suite across the framework libraries, eight components and two plugins, plus two custom linters that catch faults nothing else…">
+  <meta name="description" content="Hubzero has a working PHPUnit suite across the framework libraries, seven components and two plugins, plus two custom linters that catch faults nothing else…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/testing/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -145,8 +147,10 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Testing</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-is-worth-testing">What is worth testing</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-exists">What exists</a></li>
 <li class="toc__item toc__item--l2"><a href="#running-them">Running them</a></li>
+<li class="toc__item toc__item--l3"><a href="#running-one-test">Running one test</a></li>
 <li class="toc__item toc__item--l3"><a href="#through-muse">Through muse</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-a-test">Writing a test</a></li>
 <li class="toc__item toc__item--l3"><a href="#basic">Basic</a></li>
@@ -177,14 +181,68 @@
         </header>
         
         <div class="prose">
-<p>Hubzero has a working PHPUnit suite across the framework libraries, eight
+<p>Hubzero has a working PHPUnit suite across the framework libraries, seven
 components and two plugins, plus two custom linters that catch faults nothing
-else does. This page says what is there, how to run it, and how to add to it.</p>
+else does. This page says what is there, how to run it, what is worth adding
+to it, and how to run one test instead of all of them.</p>
 <p>A full run on 2.4-main passes:</p>
 <pre><code>Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 </code></pre>
 <p>The deprecations come from PHPUnit 11 warning about older test syntax, not
 from failures. Six tests skip themselves when what they need is absent.</p>
+<h2 id="what-is-worth-testing">What is worth testing</h2>
+<p>The suite is not a safety net over the whole CMS and pretending otherwise
+wastes your afternoon. It is 855 tests over a codebase of several thousand
+files, and it splits sharply:</p>
+<table>
+<thead>
+<tr>
+<th>Suite</th>
+<th>Tests</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>libraries</code></td>
+<td>694</td>
+<td>The framework: the query builder, <code>Relational</code>, the config registry and its processors, the container, facades, cache, encryption, utility string and array helpers</td>
+</tr>
+<tr>
+<td><code>components</code></td>
+<td>150</td>
+<td>Seven components, and mostly their pure helpers — search query building, a migration's column statements, a publication bundle builder, SAML metadata</td>
+</tr>
+<tr>
+<td><code>plugins</code></td>
+<td>11</td>
+<td>Two plugins, one method each</td>
+</tr>
+</tbody>
+</table>
+<p>Everything in that table has the same shape: <strong>a class you can construct with
+<code>new</code>, hand some input, and check the output of.</strong> That is what this suite is
+good at, and it is what to write a test for.</p>
+<p>What is not covered, and what a test here cannot easily reach:</p>
+<ul>
+<li><strong>Controllers.</strong> Nothing tests a site, administrator or API controller
+end to end. A controller reaches for <code>Request</code>, <code>User</code>, <code>Config</code>, the
+document and the session, and the test bootstrap gives you a container with
+enough in it to load the file, not enough to serve a request.</li>
+<li><strong>Views.</strong> No layout is rendered by any test.</li>
+<li><strong>Permissions.</strong> No test exercises <code>User::authorise()</code> or an access level.
+A change to a <code>WHERE</code> clause that widens who can read a row will not be
+caught here; say what it now allows in the pull request instead.</li>
+<li><strong>MySQL.</strong> <code>Hubzero\Test\Database</code> runs against SQLite, so a test proves
+the query builder produced something SQLite accepted. It does not prove
+MySQL accepts it, and it does not exercise a migration.</li>
+</ul>
+<p>So the practical rule for a new extension — say a component that books time
+on a lab instrument — is: put the logic that decides something in a class of
+its own and test that. The overlap rule the booking has to enforce, the
+policy that says who may cancel, the parser for the reservation code: those
+are testable, they are where the bugs will be, and testing them costs you
+nothing in fixtures. The controller that calls them is checked by using it.</p>
 <h2 id="what-exists">What exists</h2>
 <table>
 <thead>
@@ -242,8 +300,8 @@ inside the thing they test:</p>
 <pre><code>core/libraries/Hubzero/Database/Tests/QueryTest.php
 core/libraries/Hubzero/Config/Tests/RegistryTest.php
 core/components/com_blog/tests/EntryTest.php
-core/components/com_resources/helpers/tests/
-core/plugins/user/hubzero/tests/
+core/components/com_search/tests/boostQueryHelperTest.php
+core/plugins/user/hubzero/tests/HubzeroIsThirdPartyPlaceholderTest.php
 </code></pre>
 <h2 id="running-them">Running them</h2>
 <p>Everything, through the shipped configuration:</p>
@@ -257,6 +315,35 @@ vendor/bin/phpunit -c phpunit.xml.dist
 production classes that happen to be named <code>Test.php</code>. <code>components</code> globs
 <code>components/*/tests</code> and <code>components/*/helpers/tests</code>; <code>plugins</code> globs
 <code>plugins/*/*/tests</code>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>components/*/helpers/tests</code> glob matches exactly one
+directory, <code>com_resources/helpers/tests</code>, and collects nothing from it. The
+two files there implement <code>Hubzero\Content\Auditor\Test</code>, the content
+auditor's interface — the same word, a different thing, and the reason the
+<code>libraries</code> suite has to exclude three production files named <code>Test.php</code> by
+name. Do not read the glob as evidence that a <code>helpers/tests</code> directory is
+a convention here; put a component's tests in <code>components/com_x/tests</code>.</p>
+</aside>
+<h3 id="running-one-test">Running one test</h3>
+<p>A full run takes about half a minute, which is short enough to sit through
+and long enough that you will stop doing it while you iterate. Two ways to
+narrow it.</p>
+<p>By file — pass the path after the configuration:</p>
+<pre><code class="language-bash">cd core
+vendor/bin/phpunit -c phpunit.xml.dist libraries/Hubzero/Utility/Tests/InflectorTest.php
+</code></pre>
+<p>By name — <code>--filter</code> takes a method name, a class name, or a regular
+expression matching either:</p>
+<pre><code class="language-bash">vendor/bin/phpunit -c phpunit.xml.dist --filter testBasicFetch
+vendor/bin/phpunit -c phpunit.xml.dist --filter QueryTest
+</code></pre>
+<p>Run both from <code>core</code>. PHPUnit finds <code>phpunit.xml.dist</code> there without being
+told, so <code>-c</code> is belt and braces — but only there. Run the same command from
+the installation root and PHPUnit picks up a root <code>phpunit.xml</code> if you have
+one, which is a different configuration with a different bootstrap and
+different suite names. That filename is in <code>.gitignore</code>, so a root
+<code>phpunit.xml</code> is yours, not the project's, and what it does is not what CI
+does.</p>
 <h3 id="through-muse">Through muse</h3>
 <p><a href="../muse/index.html">Muse</a> wraps the runner for one extension at a time.
 <code>muse test show</code> lists what can be run:</p>
@@ -406,7 +493,7 @@ is the one to change if the change should reach other people.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups-gitlab/index.html" rel="prev"><span>Previous</span>Super groups with GitLab</a><a class="pager__next" href="../api/index.html" rel="next"><span>Next</span>REST API</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/15-testing.md">Edit this page on GitHub</a>

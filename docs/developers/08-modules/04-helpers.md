@@ -59,7 +59,7 @@ view object and no `assign()` step.
 > an unqualified `User` resolves to `Modules\Example\User`, which does not
 > exist, and the call is a fatal error. Import every facade the file names —
 > `App`, `Lang`, `Request`, `Route`, `User`, `Component`, `Plugin`. See
-> [Facades](../03-foundation/04-facades.md).
+> [Facades](../03-foundation/06-facades.md).
 
 ## Choosing a layout
 

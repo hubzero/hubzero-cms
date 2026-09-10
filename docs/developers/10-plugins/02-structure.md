@@ -107,7 +107,7 @@ class plgSystemExample extends \Hubzero\Plugin\Plugin
 > must `use` each facade it calls, or the unqualified name resolves inside the
 > plugin's own namespace and fatals. The same applies to any namespaced helper
 > class you add beside the plugin. See
-> [Facades](../03-foundation/04-facades.md).
+> [Facades](../03-foundation/06-facades.md).
 
 ## The entry guard
 

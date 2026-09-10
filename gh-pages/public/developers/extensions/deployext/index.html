@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -174,6 +176,8 @@
 code in the right directory, and writing the row in <code>#__extensions</code> that
 makes the platform notice it. Nothing scans the filesystem, so the code
 alone does nothing.</p>
+<p>Read the box below before you plan a release. It is the difference between an
+afternoon and a wasted day.</p>
 <aside class="admonition admonition--important">
 <p><strong>Important:</strong> There is no package installer. The <strong>Install</strong>, <strong>Update</strong>,
 <strong>Discover</strong> and <strong>Database</strong> screens were removed, and only some orphan
@@ -182,7 +186,18 @@ unpack itself, and any instruction that says otherwise, here or elsewhere,
 is describing software this release does not have. See the
 <a href="../../../managers/extensions/extension-manager/index.html">Extension Manager</a>.</p>
 </aside>
-<p>Two ways remain, and they are the two below.</p>
+<p>Two ways remain, and they are the two below. Both of them put a directory
+where it belongs and stop; neither creates a table or a row. That second half
+is always a <a href="../../database/index.html#migrations">migration</a>.</p>
+<p>Which to use:</p>
+<ul>
+<li><strong>The git flow</strong> for anything a hub will keep and update — your own
+extensions, and anything you distribute. The hub records where the code came
+from and can fetch the next version.</li>
+<li><strong>By hand</strong> while you are writing the extension, and for anything with no
+repository. It is faster to iterate on and leaves nothing behind that tells
+the next administrator where the code came from.</li>
+</ul>
 <h2 id="from-a-git-repository">From a git repository</h2>
 <p>The Extension Manager's <strong>Custom Extensions</strong> tab clones a git repository
 into <code>app/</code> and updates it by fetching and merging. This is the supported
@@ -195,7 +210,7 @@ wrapper directory.</li>
 <li>In the administrator interface, go to <strong>Extensions</strong> → <strong>Extension
 Manager</strong> → <strong>Custom Extensions</strong> and select <strong>New</strong>.</li>
 <li>Fill in the HTTPS clone URL, a name, the alias — the directory name to
-create, prefix included, so <code>com_example</code> or <code>mod_example</code> — and the
+create, prefix included, so <code>com_bookings</code> or <code>mod_bookings</code> — and the
 type. For a plugin, also set <strong>Folder (Plugins Only)</strong> to its group. A
 private repository needs a <strong>GIT Personal Access Token</strong>.</li>
 <li><strong>Save &amp; Close</strong>, then tick the row and select <strong>Update Selected Custom
@@ -255,22 +270,37 @@ of <code>app/</code>, or the web server will not read it.</p>
 </li>
 <li>
 <p>Register it. From the CMS root:</p>
-<pre><code class="language-bash">php core/bin/muse migration -e=com_example      # dry run: what would happen
-php core/bin/muse migration -e=com_example -f   # actually run it
+<pre><code class="language-bash">php core/bin/muse migration -e=com_bookings      # dry run: what would happen
+php core/bin/muse migration -e=com_bookings -f   # actually run it
 </code></pre>
 <p>That runs the extension's own <a href="../../database/index.html#migrations">migrations</a>,
 creating its tables and its <code>#__extensions</code> row. Without <code>-f</code> the runner
 only reports; <code>-e</code> restricts it to the one extension.</p>
+<p><code>-e</code> matches on the migration <strong>class name</strong>, not the directory:
+<code>com_bookings</code> becomes <code>ComBookings</code> and is matched against
+<code>Migration{14 digits}ComBookings.php</code>. A file whose suffix does not match
+is skipped silently, and the dry run reports nothing to do — which looks
+exactly like an extension with no migrations. The same option rejects any
+name with a second underscore, because it validates against
+<code>^com_[[:alnum:]]+$</code>.</p>
 </li>
 <li>
-<p>Clear the cache if the extension is a component: <code>Hubzero\Component\Loader</code>
-caches the extension row for <code>cachetime</code> minutes, so a component
-registered a moment ago can still 404 until the cache expires.</p>
+<p>If you have changed an existing component's row rather than created one,
+clear the cache. <code>Hubzero\Component\Loader::load()</code> caches the
+<code>#__extensions</code> row under <code>_system.{option}</code> for <code>cachetime</code> minutes
+(15 by default), so a component you have just <strong>enabled</strong> can go on
+returning <code>JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND_OR_ENABLED</code> as a 404,
+and parameters you have just seeded can read stale, until the entry
+expires. A component registered for the first time is not affected: no row
+means nothing useful was cached.</p>
 </li>
 </ol>
 <p>An extension under <code>app/</code> completely replaces a core extension of the same
 name. The loaders take the first directory they find, <code>app/</code> before <code>core/</code>,
-and never mix the two.</p>
+and never mix the two. Copying half of a core component into <code>app/</code> to change
+one file therefore breaks the other half — every class you did not copy stops
+being found. To change a few files, use a
+<a href="../../templates/overrides/index.html">template override</a>.</p>
 <h3 id="registering-without-muse">Registering without muse</h3>
 <p>If migrations are not an option, the row can be written directly. The
 columns the loaders read are <code>type</code>, <code>element</code>, <code>folder</code>, <code>client_id</code> and
@@ -278,12 +308,15 @@ columns the loaders read are <code>type</code>, <code>element</code>, <code>fold
 <pre><code class="language-sql">INSERT INTO `#__extensions`
 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)
 VALUES
-	('com_example', 'component', 'com_example', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
+	('com_bookings', 'component', 'com_bookings', '', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);
 </code></pre>
 <p>A plugin's row carries its group in <code>folder</code> and its bare name in <code>element</code>
-— <code>('System - Example', 'plugin', 'example', 'system', 0, 1, ...)</code>.</p>
-<p>Prefer the migration. It is versioned with the code, it reverses cleanly,
-and it is what an upgrade will run on the next hub.</p>
+— <code>('Bookings - Notify', 'plugin', 'notify', 'bookings', 0, 1, ...)</code>.</p>
+<p>Prefer the migration. It is versioned with the code, it reverses cleanly, it
+creates the asset row and administrator menu entry that a bare <code>INSERT</code>
+misses, and it is what will run on the next hub. Hand-written SQL is a hub
+that works and a second hub that does not, with nothing written down to
+explain the difference.</p>
 <h2 id="after-the-code-is-in-place">After the code is in place</h2>
 <ul>
 <li><strong>Components</strong> appear under <strong>Components</strong> in the administrator menu once
@@ -300,16 +333,18 @@ selecting the template and making it the default for the site or the
 administrator interface.</li>
 </ul>
 <h2 id="core-migrations">Core migrations</h2>
+<p>The Extension Manager's <strong>Core Migrations</strong> screen and the <code>muse</code> command are
+what remain of the removed <strong>Database</strong> screen, and between them they are the
+whole of the schema-management story in this release.</p>
 <p>Migrations that belong to the platform rather than to one extension are run
-from the Extension Manager's <strong>Core Migrations</strong> screen, or on the command
-line:</p>
+from that screen, or on the command line:</p>
 <pre><code class="language-bash">php core/bin/muse migration -f
 </code></pre>
 <p>See <a href="../../database/index.html#migrations">Migrations</a> for what a migration can do and
 how the runner decides what is pending.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../../modules/index.html" rel="next"><span>Next</span>Modules</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/04-deployext.md">Edit this page on GitHub</a>

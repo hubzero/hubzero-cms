@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/databaseaccess
 source-id: 3425
@@ -10,6 +10,12 @@ source-id: 3425
 
 How to reach a hub's database from the command line, and the one convention
 that will confuse you if nobody tells you about it: the `#__` table prefix.
+
+You will want a `mysql` prompt sooner than you expect — to see what a
+migration actually did, or what a form saved. Read this before you write a
+query into an extension, because the prefix rule is not optional and the
+mistake it prevents does not show up until someone installs your work on a
+hub configured differently from yours.
 
 ## The credentials
 
@@ -50,6 +56,11 @@ the statement goes out:
 
 So `#__users` in a query is `jos_users` in the database, and a query with a
 literal `jos_` in it is a bug: it breaks on any hub whose prefix differs.
+It will not break on yours, which is the problem — the failure arrives on
+somebody else's hub as `Table 'theirdb.jos_booking_instruments' doesn't
+exist`, naming a prefix they have never used. Copying a working statement
+out of a `mysql` prompt and into a model is how it happens; put the `#__`
+back on the way in.
 The same placeholder is the default table name a model derives for itself —
 `#__{namespace}_{plural model name}` — so a `Post` model in the `blog`
 namespace reads and writes `#__blog_posts` without being told to.

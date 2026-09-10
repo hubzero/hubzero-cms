@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/services
 -->
 # Services
@@ -11,6 +11,22 @@ container at boot: a cache store, a filesystem, a session, an event
 dispatcher. Extensions reach them through facades rather than constructing
 them, so that a hub can swap the implementation without touching extension
 code.
+
+That indirection is the point, and it is also the thing that surprises
+people. A service can be configured into a do-nothing version, and the
+do-nothing version accepts every call and answers plausibly rather than
+raising. Nothing in this section fails loudly.
+
+| Service | What it silently does nothing about |
+|---|---|
+| [Cache](01-cache.md) | With caching off, and in the administrator application always, the store is `None`: every `put()` succeeds and every `get()` misses |
+| [Session](04-session.md) | `get()` and `has()` return the default when no session is active, rather than raising |
+| [Events](05-events.md) | An event nothing listens to returns an empty array, which is what a disabled plugin also returns |
+| [Filesystem](02-filesystem.md) | The `None` adapter exists for tests; `write()` returning `false` is the only signal a write failed |
+| [Server](06-server.md) | `serve()` returns `false` rather than throwing, and checks nothing about permissions |
+
+So test the return value, and do not build anything that depends on a
+service having remembered something.
 
 ## How a service gets there
 
@@ -25,7 +41,7 @@ rest of the request.
 Because the closure reads `$app['config']`, the service you get back depends
 on the hub's configuration. The cache store above is a real file cache on a
 hub with caching turned on and a do-nothing `None` store on one without.
-The [service providers](../03-foundation/03-providers.md) chapter covers the
+The [service providers](../03-foundation/07-providers.md) chapter covers the
 registration mechanism itself; the chapters here cover what each service
 does once you have it.
 
@@ -48,7 +64,7 @@ container under the same key and the facade will pick it up.
 > `Your\Namespace\Filesystem`, which does not exist — a fatal error the
 > moment the line runs. Import each facade you use (`use Filesystem;`) or
 > write it fully qualified (`\Filesystem::exists(...)`). See
-> [facades](../03-foundation/04-facades.md).
+> [facades](../03-foundation/06-facades.md).
 
 Not every client registers every service. `Cache`, `Session`, `Module`,
 `Pathway`, `Notify`, `Document` and `Html` are site and administrator only;

@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -176,23 +178,27 @@
 <p>A view is two things: a <code>Hubzero\Component\View</code> object that carries data, and
 a PHP file — the layout — that turns that data into markup. The controller
 fills the object; the layout reads it back as <code>$this</code>.</p>
+<p>The split is what makes a component restyleable. A hub can replace one layout
+from its template without touching your code — but only for work that is in
+the layout. A query run inside a layout, or a permission decided there, is
+work a template override silently loses. Decide in the controller or the
+model; render in the layout.</p>
 <h2 id="where-layouts-go">Where layouts go</h2>
-<pre><code>core/components/com_kb/
+<pre><code>app/components/com_bookings/
     site/views/
-        articles/            the view name, matching the controller
+        instruments/         the view name, matching the controller
             tmpl/
                 display.php  the layout, matching the task
                 display.xml  menu-item metadata for that layout
-                category.php  category.xml
-                article.php   article.xml
-                _list.php     partials
-                _comment.php
-                _vote.php
+                view.php     view.xml
+                book.php     book.xml
+                _calendar.php   partials
+                _slot.php
 </code></pre>
 <p>The controller has already built a view for you before your task runs: its
 name is the controller name and its layout is the task name. A controller
-<code>Articles</code> running task <code>article</code> renders
-<code>site/views/articles/tmpl/article.php</code>. Nothing needs to be wired up.</p>
+<code>Instruments</code> running task <code>book</code> renders
+<code>site/views/instruments/tmpl/book.php</code>. Nothing needs to be wired up.</p>
 <p>A layout whose basename starts with an underscore is a partial. The convention
 matters beyond readability — the menu manager ignores layouts with an
 underscore in the name when it lists menu item types, so a partial never turns
@@ -200,9 +206,9 @@ up as something an administrator can link to.</p>
 <h2 id="passing-data-in">Passing data in</h2>
 <p><code>set()</code> chains, which is why most tasks end in one statement:</p>
 <pre><code class="language-php">$this-&gt;view
-    -&gt;set('article', $article)
-    -&gt;set('category', $category)
-    -&gt;setLayout('article')
+    -&gt;set('instrument', $instrument)
+    -&gt;set('reservations', $reservations)
+    -&gt;setLayout('view')
     -&gt;display();
 </code></pre>
 <p><code>$this-&gt;view-&gt;article = $article</code> works too, and <code>assign()</code> takes an array or
@@ -211,12 +217,17 @@ underscore are refused, because those are the view's own.</p>
 <p>Four variables are already set for you: <code>option</code>, <code>controller</code>, <code>task</code>, and
 <code>baseurl</code>.</p>
 <h2 id="reading-data-out">Reading data out</h2>
-<pre><code class="language-php">&lt;h3&gt;&lt;?php echo $this-&gt;escape($this-&gt;article-&gt;get('title')); ?&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?&gt;&lt;/p&gt;
+<pre><code class="language-php">&lt;h3&gt;&lt;?php echo $this-&gt;escape($this-&gt;instrument-&gt;get('title')); ?&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;?php echo Lang::txt('COM_BOOKINGS_AVAILABILITY'); ?&gt;&lt;/p&gt;
 </code></pre>
-<p>Anything that came from a person goes through <code>$this-&gt;escape()</code>. Content that
-is meant to carry markup goes through the content parser instead — see
-<a href="../models/index.html">Models</a>.</p>
+<p>A name a person typed is not set by you but by whoever typed it. Anything from
+a person goes through <code>$this-&gt;escape()</code>; an instrument titled
+<code>&lt;script&gt;…&lt;/script&gt;</code> is otherwise a stored cross-site scripting hole, and it
+renders perfectly until someone tries it. Content that is <em>meant</em> to carry
+markup goes through the content parser instead — see <a href="../models/index.html">Models</a>.</p>
+<p>A property that was never <code>set()</code> reads as <code>null</code> and renders as nothing, so a
+typo in <code>$this-&gt;reservation</code> where the controller set <code>reservations</code> produces
+an empty page, not an error.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A layout file declares no namespace, and <code>include</code> does not
 inherit one, so a layout runs in the global namespace. That is why
@@ -264,12 +275,16 @@ directory;</li>
 </ol>
 <p>The third exists so a view can skip the <code>tmpl</code> directory entirely. The first
 is how a hub restyles a component without editing it: dropping
-<code>app/templates/hubzero/html/com_kb/articles/article.php</code> into place replaces
-that one layout and leaves the rest of <code>com_kb</code> alone. See
+<code>app/templates/hubzero/html/com_bookings/instruments/view.php</code> into place
+replaces that one layout and leaves the rest of <code>com_bookings</code> alone. See
 <a href="../../templates/overrides/index.html">Overrides</a>.</p>
+<p>An override is a copy, and copies rot. A layout you change in a later release
+does not reach a hub that overrode it, and nothing warns either of you.</p>
 <p>If none of the three has the requested layout, the search runs again for
 <code>default.php</code>. If that is missing too, <code>InvalidLayoutException</code> is thrown with
-a 404 status.</p>
+a 404 status — which is the error you get when a task's name and its layout
+file's name have drifted apart. <code>bookTask()</code> with no <code>book.php</code> is a 404 on a
+page that plainly exists.</p>
 <h2 id="layout-metadata">Layout metadata</h2>
 <p>The <code>.xml</code> file beside a layout describes it to the menu manager, so an
 administrator can create a menu item pointing straight at it:</p>
@@ -296,18 +311,18 @@ A view with no <code>.xml</code> files at all offers no menu item types.</p>
 — construct one directly:</p>
 <pre><code class="language-php">$view = new \Hubzero\Component\View(array(
     'base_path' =&gt; PATH_COMPONENT,
-    'name'      =&gt; 'articles',
+    'name'      =&gt; 'instruments',
     'layout'    =&gt; 'display'
 ));
 
-$view-&gt;set('archive', $archive)
+$view-&gt;set('instruments', $instruments)
      -&gt;display();
 </code></pre>
 <p><code>display()</code> echoes; casting the view to a string returns the markup instead,
 which is what you want when the result has to be embedded rather than emitted.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../assets/index.html" rel="next"><span>Next</span>Assets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/09-components/07-views.md">Edit this page on GitHub</a>

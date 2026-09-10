@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Requirements · Developers · Hubzero Documentation</title>
-  <meta name="description" content="What an extension has to have before a hub will load it. Getting the code onto a hub is a separate question, covered in Deploying extensions . The platform…">
+  <meta name="description" content="What an extension has to have before a hub will load it. Getting the code onto a hub is a separate question, covered in Deploying extensions . Nothing on this…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/extensions/extreqs/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -179,6 +181,13 @@
 <p>What an extension has to have before a hub will load it. Getting the code
 onto a hub is a separate question, covered in
 <a href="../deployext/index.html">Deploying extensions</a>.</p>
+<p>Nothing on this page is negotiable and none of it is checked for you. There
+is no validator, no install step that inspects the package and complains.
+Every requirement here fails at runtime instead, and most of them fail
+quietly: a directory in the wrong place is a class that does not exist, a
+missing row is an extension the hub cannot see, an unimported facade is a
+fatal on one branch. Get the shape right first and the rest of the work is
+ordinary PHP.</p>
 <h2 id="the-platform">The platform</h2>
 <p>Hubzero 2.4 requires <strong>PHP 8.2 or later</strong>
 (<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/System/Requirements.php"><code>Hubzero\System\Requirements</code></a>
@@ -201,23 +210,23 @@ row, and all of them have to agree.</p>
 <tbody>
 <tr>
 <td>Component</td>
-<td><code>components/com_example</code></td>
-<td><code>com_example</code></td>
+<td><code>components/com_bookings</code></td>
+<td><code>com_bookings</code></td>
 </tr>
 <tr>
 <td>Module</td>
-<td><code>modules/mod_example</code></td>
-<td><code>mod_example</code></td>
+<td><code>modules/mod_bookings</code></td>
+<td><code>mod_bookings</code></td>
 </tr>
 <tr>
 <td>Plugin</td>
-<td><code>plugins/{group}/example</code></td>
-<td><code>example</code>, with <code>folder = '{group}'</code></td>
+<td><code>plugins/bookings/notify</code></td>
+<td><code>notify</code>, with <code>folder = 'bookings'</code></td>
 </tr>
 <tr>
 <td>Template</td>
-<td><code>templates/example</code></td>
-<td><code>example</code></td>
+<td><code>templates/partner</code></td>
+<td><code>partner</code></td>
 </tr>
 </tbody>
 </table>
@@ -225,6 +234,13 @@ row, and all of them have to agree.</p>
 package directory is conventionally <code>plg_{group}_{name}</code>, but what is
 installed is <code>plugins/{group}/{name}</code> — the group is where the package
 lands, not a directory inside it.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Prefer a single word with no separator at all. The migration
+runner's <code>-e</code> option validates against <code>^com_[[:alnum:]]+$</code>,
+<code>^mod_[[:alnum:]]+$</code>, <code>^tpl_[[:alnum:]]+$</code> or <code>^plg_[[:alnum:]]+_[[:alnum:]]+$</code>,
+so <code>com_instrument_bookings</code> cannot be migrated by name at all. <code>com_bookings</code>
+can.</p>
+</aside>
 <h2 id="the-layout">The layout</h2>
 <p>Each kind has its own chapter on structure —
 <a href="../../components/structure/index.html">components</a>,
@@ -233,27 +249,29 @@ lands, not a directory inside it.</p>
 everywhere: an entry point, an XML manifest named after the extension, a
 <code>composer.json</code>, language files under <code>language/{tag}/</code>, and a <code>migrations/</code>
 directory.</p>
-<p>A component is the one with more than one face:</p>
-<pre><code>com_example/
+<p>A component is the one with more than one face. Laid out for <code>com_bookings</code>,
+the instrument-booking component the <a href="../../components/index.html">component chapters</a>
+build:</p>
+<pre><code>com_bookings/
     admin/          the administrator interface
-        example.php
-        controllers/  views/  language/en-GB/  config.xml
+        bookings.php
+        controllers/  views/  language/en-GB/
     api/            the REST controllers
     site/           what hub visitors see
-        example.php
+        bookings.php
         router.php  controllers/  views/  language/en-GB/
     config/config.xml
     migrations/
     models/
     composer.json
-    example.xml
+    bookings.xml
 </code></pre>
 <h3 id="the-entry-point">The entry point</h3>
 <p><code>Hubzero\Component\Loader</code> looks, in order, for a
-<code>Components\Example\Site\Bootstrap</code> class, then for
-<code>site/example.php</code>, then for a React application under <code>site/assets/react/</code>,
-and only then falls back to its default dispatcher. Most components ship
-<code>site/example.php</code> and <code>admin/example.php</code>, four lines that hand off to the
+<code>Components\Bookings\Site\Bootstrap</code> class, then for
+<code>site/bookings.php</code>, then for a React application under <code>site/assets/react/</code>,
+and only then falls back to its default dispatcher. Write the second form:
+every component in the tree uses it, and it is four lines that hand off to the
 controller:</p>
 <pre><code class="language-php">&lt;?php
 /**
@@ -276,17 +294,21 @@ $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($contro
 
 // Instantiate controller
 </code></pre>
-<p>A module's entry point is <code>mod_example.php</code>, and on this release it is a stub
-that requires <code>helper.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s the file.
-A plugin's entry point is <code>example.php</code>, holding a class whose public methods
-are named for the events it answers.</p>
+<p>A module's entry point is <code>mod_{name}.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s
+the file. A plugin's entry point is <code>{name}.php</code>, holding a class whose public
+methods are named for the events it answers — the method name <em>is</em> the
+registration, so a misspelled event name is a method that is simply never
+called.</p>
 <h3 id="the-xml-manifest">The XML manifest</h3>
-<p>Every extension carries an XML manifest named after it — <code>example.xml</code> — and
+<p>Every extension carries an XML manifest named after it — <code>bookings.xml</code> — and
 the manifest is not listed in its own <code>&lt;files&gt;</code> block. The CMS reads the
 display name, the description and the parameter form from it, and caches it
 in the extension row's <code>manifest_cache</code> column. <strong>Refresh Cache</strong> in the
 <a href="../../../managers/extensions/extension-manager/index.html">Extension Manager</a> re-reads
 it after an edit.</p>
+<p>The manifest is metadata, not an installer script. Nothing in it creates a
+table, a row or a menu entry; an extension with no manifest at all still
+runs.</p>
 <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;extension version=&quot;2.5&quot; type=&quot;plugin&quot; group=&quot;system&quot;&gt;
 	&lt;name&gt;plg_system_debug&lt;/name&gt;
@@ -364,8 +386,8 @@ as a description of the extension.</p>
 </aside>
 <h3 id="the-composer-manifest">The Composer manifest</h3>
 <pre><code class="language-json">{
-	&quot;name&quot;: &quot;myorg/com_example&quot;,
-	&quot;description&quot;: &quot;Example component for the Hubzero CMS&quot;,
+	&quot;name&quot;: &quot;myorg/com_bookings&quot;,
+	&quot;description&quot;: &quot;Instrument booking component for the Hubzero CMS&quot;,
 	&quot;type&quot;: &quot;hubzero-component&quot;,
 	&quot;keywords&quot;: [&quot;hubzero&quot;],
 	&quot;license&quot;: &quot;MIT&quot;,
@@ -377,48 +399,58 @@ as a description of the extension.</p>
 <p>The recognised types are <code>hubzero-component</code>, <code>hubzero-module</code>,
 <code>hubzero-plugin</code> and <code>hubzero-template</code>. A plugin must also declare where it
 installs, because its group cannot be recovered from a name like
-<code>plg_system_example</code>:</p>
+<code>plg_bookings_notify</code>:</p>
 <pre><code class="language-json">	&quot;extra&quot;: {
-		&quot;install-directory&quot;: &quot;/plugins/system/example/&quot;
+		&quot;install-directory&quot;: &quot;/plugins/bookings/notify/&quot;
 	}
 </code></pre>
 <h3 id="language-files">Language files</h3>
 <p>One directory per language tag, one file named for the tag and the
 extension:</p>
-<pre><code>language/en-GB/en-GB.mod_example.ini
-language/en-GB/en-GB.mod_example.sys.ini
+<pre><code>language/en-GB/en-GB.mod_bookings.ini
+language/en-GB/en-GB.mod_bookings.sys.ini
 </code></pre>
-<p>See <a href="../languages/index.html">Languages</a>.</p>
+<p>A component has one set per client, and the administrator's set is not the
+site's. See <a href="../languages/index.html">Languages</a>.</p>
 <h3 id="the-migration">The migration</h3>
 <p>The row in <code>#__extensions</code> is what makes an extension exist as far as the
 platform is concerned, and a
-<a href="../../database/index.html#migrations">migration</a> is how an extension creates it. The
-migration also creates the extension's tables and drops them again on the
+<a href="../../database/index.html#migrations">migration</a> is how an extension creates it —
+the only way, because this release has no package installer to do it for you.
+The migration also creates the extension's tables and drops them again on the
 way down.</p>
 <pre><code class="language-php">use Hubzero\Content\Migration\Base;
 
 defined('_HZEXEC_') or die();
 
-class Migration20260101000000ComExample extends Base
+class Migration20260901000000ComBookings extends Base
 {
 	public function up()
 	{
-		$this-&gt;addComponentEntry('example');
+		$this-&gt;addComponentEntry('bookings');
 	}
 
 	public function down()
 	{
-		$this-&gt;deleteComponentEntry('example');
+		$this-&gt;deleteComponentEntry('bookings');
 	}
 }
 </code></pre>
+<p>Write this file first, before the controllers. It is one call, it takes a
+minute, and skipping it produces an extension that appears to work and is
+absent from every administrative screen.</p>
 <p><code>addComponentEntry</code> is a <em>macro</em> — one of the helpers <code>Base</code> resolves out of
 <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Content/Migration/Macros"><code>Hubzero\Content\Migration\Macros</code></a>.
 There is one per kind — <code>addComponentEntry</code>, <code>addModuleEntry</code>,
 <code>addPluginEntry</code>, <code>addTemplateEntry</code> — with a matching <code>delete...</code> for each,
 and <code>enable...</code> / <code>disable...</code> alongside. Use them rather than writing the
-<code>INSERT</code> yourself: they set the columns the loaders read, and re-running them
-is safe.</p>
+<code>INSERT</code> yourself: they set the columns the loaders read, they create the
+asset row that permissions hang off and the administrator menu entry, and
+re-running them is safe. A hand-written <code>INSERT</code> is the older way and gets
+those side effects wrong.</p>
+<p>Note the argument order for a plugin: <code>addPluginEntry($folder, $element)</code> —
+the group first, then the name. <code>addComponentEntry($name)</code> takes the name
+first.</p>
 <h3 id="index-html"><code>index.html</code></h3>
 <p>Every directory carries an empty <code>index.html</code>, so that a misconfigured web
 server cannot list it. Copy the ones already in the tree.</p>
@@ -435,10 +467,11 @@ need it. See <a href="../../foundation/constants/index.html">Constants</a>.</p>
 <p>The platform's short names — <code>Route</code>, <code>Lang</code>, <code>User</code>, <code>Config</code>, <code>Request</code>,
 <code>Component</code> — are aliases in the <strong>root</strong> namespace. An extension class is
 namespaced, so an unqualified <code>Route::url()</code> inside it resolves to
-<code>Components\Example\Site\Controllers\Route</code> and fatals when that line runs.
-The file parses; nothing fails until the branch executes.</p>
+<code>Components\Bookings\Site\Controllers\Route</code> and fatals when that line runs.
+The file parses; nothing fails until the branch executes — which is why it
+usually turns up on the error path, in front of a user.</p>
 <p>Import every facade you use:</p>
-<pre><code class="language-php">namespace Components\Example\Site\Controllers;
+<pre><code class="language-php">namespace Components\Bookings\Site\Controllers;
 
 use Hubzero\Component\SiteController;
 use Request;
@@ -447,9 +480,13 @@ use Lang;
 </code></pre>
 <p><code>php tools/lint/missing-facade-imports.php</code> finds the ones you missed, and
 runs on every push. See <a href="../../foundation/facades/index.html">Facades</a>.</p>
+<p>Which facades exist depends on the client. <code>Toolbar</code> and <code>Submenu</code> are
+registered only for the administrator, <code>Pathway</code> only for the site, and the
+API client has none of those, nor <code>Notify</code>, <code>Document</code> or <code>Html</code>. The <code>use</code>
+statement is valid either way; the class is not there.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Extensions</a><a class="pager__next" href="../parameters/index.html" rel="next"><span>Next</span>Parameters</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/01-extreqs.md">Edit this page on GitHub</a>

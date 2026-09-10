@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ab49f763b0
+reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/foundation/structure
@@ -14,6 +14,11 @@ A Hubzero installation is two trees and one entry point. `core/` is the
 platform as the release ships it. `app/` is everything that makes one hub
 different from another. `index.php` is the only file a web request ever
 reaches.
+
+Read this before you decide where to put anything. The `core`/`app` split
+decides whether your work survives an upgrade, and the lifecycle at the end
+of the page decides what has already happened by the time your controller
+runs — which is the answer to most "why is this empty here" questions.
 
 ```
 hubzero-cms/
@@ -95,6 +100,13 @@ directories in both trees:
 Composer's PSR-4 map covers only `Hubzero\` and `Bootstrap\`; every
 extension class comes through this loader, which also tries a lowercase
 variant of each path so that the older lowercase filenames still resolve.
+[Autoloading](03-autoloading.md) gives the exact paths tried, the case trap
+between those two variants, and what to check when a class will not load.
+
+> **Warning:** The directory that holds the extension owns the whole
+> namespace. An `app/components/com_booking/` containing one file does not
+> fall back to `core/` for the others; those classes stop loading. Override
+> the whole extension or none of it.
 
 > **Note:** There are no `/administrator` and `/api` directories. Earlier
 > releases had one entry point per client; this one has a single `index.php`
@@ -155,11 +167,11 @@ order:
    Both spellings of the core path are tried because the directories are
    capitalised — `core/bootstrap/Site/` — while the client name is not. Each
    provider is registered, not booted. See
-   [Service providers](03-providers.md).
+   [Service providers](07-providers.md).
 
 4. **Register the facades.** The alias lists are read from the matching
    `aliases.php` files and merged the same way, then registered as
-   root-namespace class aliases. See [Facades](04-facades.md).
+   root-namespace class aliases. See [Facades](06-facades.md).
 
 `boot()` then calls `boot()` on every provider that has one, and `run()`
 starts the error handlers and fires `system.onAfterInitialise`.

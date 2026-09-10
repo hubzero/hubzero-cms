@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Users &amp; profiles · Developers · Hubzero Documentation</title>
-  <meta name="description" content="The facade resolves , which hands out objects. is a model over , so everything the ORM offers — , , , relationships, query scopes — is available on it. The…">
+  <meta name="description" content="The facade resolves , which hands out objects. is a model over , so everything the ORM offers — , , , relationships, query scopes — is available on it. Three…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/basics/user/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -180,6 +182,38 @@ objects. <code>Hubzero\User\User</code> is a
 <a href="../../database/index.html#orm"><code>Relational</code></a> model over <code>#__users</code>, so everything the
 ORM offers — <code>get()</code>, <code>set()</code>, <code>save()</code>, relationships, query scopes — is
 available on it.</p>
+<p>Three separate things are called &quot;the user&quot; on a hub, and reaching for the
+wrong one is the mistake this page exists to prevent:</p>
+<table>
+<thead>
+<tr>
+<th>You want</th>
+<th>Ask for</th>
+<th>Lives in</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The account — id, name, username, email, blocked</td>
+<td><code>Hubzero\User\User</code>, via the <code>User</code> facade</td>
+<td><code>#__users</code></td>
+</tr>
+<tr>
+<td>The profile — bio, organisation, phone, ORCID</td>
+<td><code>Components\Members\Models\Member</code></td>
+<td><code>#__user_profiles</code></td>
+</tr>
+<tr>
+<td>Community group membership</td>
+<td><code>-&gt;groups()</code> on either</td>
+<td><code>#__xgroups</code> and its maps</td>
+</tr>
+</tbody>
+</table>
+<p>The first two look identical from the outside — <code>Member</code> extends <code>User</code>, and
+both answer <code>get()</code>. They are not identical, and asking the wrong one for a
+profile field gets you a default rather than an error. That is the section
+on <a href="#extended-profile-fields">extended profile fields</a> below.</p>
 <h2 id="the-current-user">The current user</h2>
 <p>Any call on the facade that is not <code>getInstance()</code> is forwarded to the
 current user, because the manager's <code>__call()</code> passes it on:</p>
@@ -192,13 +226,27 @@ $email = User::get('email');
 <p>The current user comes from the session, and is a <code>User</code> with no id when
 nobody is logged in. <code>User::get('id')</code> returns <code>0</code> rather than <code>null</code> in that
 case, which is why so much code can compare against it without a guard.</p>
+<p>That <code>0</code> is also the trap. Writing <code>User::get('id')</code> into a <code>created_by</code>
+column without checking <code>isGuest()</code> first records a row owned by nobody, and
+every later <code>getInstance(0)</code> on it returns an empty <code>User</code> whose <code>name</code> is
+blank. The row is not wrong enough to notice: the booking exists, the list
+renders, and the owner column is simply empty. Check first.</p>
 <h2 id="other-users">Other users</h2>
-<pre><code class="language-php">$author = User::getInstance($row-&gt;get('created_by'));
+<pre><code class="language-php">$author = User::getInstance($booking-&gt;get('created_by'));
 </code></pre>
 <p><code>getInstance($id = null)</code> takes a numeric id, a username, or an email
 address. With no argument it returns the current user. Resolved users are
 cached for the request, so asking twice costs one query. An id that matches
 nothing gives you an empty <code>User</code> — check <code>get('id')</code> before using it.</p>
+<p>Two things follow from how it resolves:</p>
+<ul>
+<li>Anything <code>is_numeric()</code> is treated as an <strong>id</strong>, never as a username. A
+hub that allows all-digit usernames cannot look one up this way.</li>
+<li>When the id you pass is the current user's, you get back the object <strong>in
+the session</strong>, not a copy. <code>set()</code> on it changes the logged-in user for
+the rest of the request. Load a fresh model with the ORM if you mean to
+modify somebody.</li>
+</ul>
 <p>The ORM's own finders are there for anything more selective:</p>
 <pre><code class="language-php">$user = Hubzero\User\User::oneByUsername('janedoe');
 $user = Hubzero\User\User::oneByEmail('jane@example.org');
@@ -297,10 +345,14 @@ $gender = $member-&gt;get('gender');
 <p>A key that occurs several times for one member — a multi-value field such as
 <code>disability</code> — comes back as an array; a key that occurs once comes back as
 a string.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> <code>User::getInstance($id)-&gt;get('bio')</code> returns the default. The
-profile rows are only collected by <code>Member::get()</code>, so ask for a <code>Member</code>
-whenever you want anything beyond the account columns.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <code>User::getInstance($id)-&gt;get('bio')</code> returns the default —
+<code>null</code>, or whatever you passed as a second argument. It does not raise, and
+it does not tell you the column does not exist there. A profile field that
+renders as blank for every member on the page, including members you know
+have filled it in, is this. The profile rows are only collected by
+<code>Member::get()</code>, so ask for a <code>Member</code> whenever you want anything beyond
+the account columns.</p>
 </aside>
 <p><code>$member-&gt;picture($anonymous = 0, $thumbnail = true, $serveFile = true)</code>
 returns a URL for the member's picture, falling back to a generated
@@ -387,7 +439,7 @@ carrying:</p>
 which is what profile pages use to decide how much to show.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../tags/index.html" rel="next"><span>Next</span>Tags</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/05-user.md">Edit this page on GitHub</a>

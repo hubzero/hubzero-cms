@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../services/cache/index.html">Cache</a></li>
@@ -199,6 +201,13 @@ propose changes as merge requests, and an administrator pulls the approved
 result into the hub from the administrator interface.</p>
 <p>This section covers what the CMS does, what a hub has to configure, and how a
 developer works against a group that is managed this way.</p>
+<p>Reach for it when a super group's code is written by more than one person, or
+by anyone who should not have a shell account on the production hub, or when
+you want to be able to say what changed and put it back. Do not reach for it
+for a group whose template one person edits twice a year: the arrangement
+needs a GitLab that somebody runs, accounts granted by hand, and a hub with
+<code>application_env</code> set to production before the CMS will create anything at
+all. <a href="#what-it-costs">What it costs</a> is the honest list.</p>
 <h2 id="what-ships-and-what-does-not">What ships and what does not</h2>
 <p>GitLab is a separate application. Nothing in this repository runs one, and no
 hub gets one by installing the CMS. What ships is a client:</p>
@@ -567,7 +576,7 @@ reversed by running its <code>down()</code>, with
 working copy looks like without changing anything.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ab49f763b0</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../supergroups/components/index.html" rel="prev"><span>Previous</span>Components</a><a class="pager__next" href="../testing/index.html" rel="next"><span>Next</span>Testing</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/14-supergroups-gitlab.md">Edit this page on GitHub</a>

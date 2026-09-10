@@ -53,9 +53,11 @@
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
@@ -69,6 +71,10 @@
 <li class="tree__leaf"><a class="tree__link" href="../responses/index.html">Responses</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../config/index.html">Config</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Languages</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-failure-to-know-about-first">The failure to know about first</a></li>
+<li class="toc__item toc__item--l3"><a href="#1-define-the-key">1. Define the key</a></li>
+<li class="toc__item toc__item--l3"><a href="#2-put-it-in-the-file-the-code-actually-loads">2. Put it in the file the code actually loads</a></li>
+<li class="toc__item toc__item--l3"><a href="#3-match-the-placeholder-count">3. Match the placeholder count</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-files-live">Where the files live</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-the-file">Writing the file</a></li>
 <li class="toc__item toc__item--l2"><a href="#naming-keys">Naming keys</a></li>
@@ -177,6 +183,97 @@ administrator reword a page without editing a view, and what lets a hub keep
 its wording through an upgrade.</p>
 <p>The <code>Lang</code> facade resolves
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Language/Translator.php"><code>Hubzero\Language\Translator</code></a>.</p>
+<h2 id="the-failure-to-know-about-first">The failure to know about first</h2>
+<p><strong>An undefined key is returned unchanged.</strong> Nothing is logged, nothing
+throws, and the page renders the key:</p>
+<pre><code class="language-php">// COM_BOOKINGS_HOLD_RELEASED is defined nowhere
+echo Lang::txt('COM_BOOKINGS_HOLD_RELEASED');
+</code></pre>
+<pre><code>COM_BOOKINGS_HOLD_RELEASED
+</code></pre>
+<p>That is the whole failure. It looks like a shouting constant in the middle
+of a sentence, and it survives review because the path that renders it is
+usually an error branch, a confirmation email, or a screen only an
+administrator sees.</p>
+<p>It is not rare. <code>php tools/lint/undefined-language-keys.php</code> currently
+reports <strong>444 keys</strong> the tree asks for that no <code>en-GB</code> file anywhere
+defines, and the
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml">PHP lint workflow</a> runs it against
+that number as a ceiling rather than against zero:</p>
+<pre><code class="language-yaml">run: php tools/lint/undefined-language-keys.php --quiet --max=444
+</code></pre>
+<p>So the build fails when your change makes it 445. Three rules keep you off
+that list.</p>
+<h3 id="1-define-the-key">1. Define the key</h3>
+<p>Add it to the extension's INI file in the same change that adds the
+<code>Lang::txt()</code> call. Nothing else in the toolchain will remind you: the file
+parses, PHP is happy, and the view renders.</p>
+<pre><code class="language-ini">COM_BOOKINGS_HOLD_RELEASED = &quot;Your hold on %s expired and the slot is free again.&quot;
+</code></pre>
+<h3 id="2-put-it-in-the-file-the-code-actually-loads">2. Put it in the file the code actually loads</h3>
+<p>This is the one the linter cannot catch. A key counts as defined if <em>any</em>
+<code>en-GB</code> file under <code>core/</code> or <code>app/</code> defines it, but only a handful of files
+load on any given request. A key defined in</p>
+<pre><code>core/components/com_bookings/admin/language/en-GB/en-GB.com_bookings.ini
+</code></pre>
+<p>and used from a site view passes the linter and still renders raw in the
+browser, because the site request never loads the admin file. The same trap
+catches a string defined in a component's file and used from a plugin, or
+a <code>.sys.ini</code> string used outside the extension manager.</p>
+<p>Match the file to the code that reads it:</p>
+<table>
+<thead>
+<tr>
+<th>Reading code</th>
+<th>File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site controller or view</td>
+<td><code>&lt;component&gt;/site/language/en-GB/en-GB.com_x.ini</code></td>
+</tr>
+<tr>
+<td>Admin controller or view</td>
+<td><code>&lt;component&gt;/admin/language/en-GB/en-GB.com_x.ini</code></td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td><code>&lt;plugin&gt;/language/en-GB/en-GB.plg_&lt;group&gt;_&lt;name&gt;.ini</code></td>
+</tr>
+<tr>
+<td>Module</td>
+<td><code>&lt;module&gt;/language/en-GB/en-GB.mod_x.ini</code></td>
+</tr>
+<tr>
+<td>Used by every client</td>
+<td><code>core/bootstrap/Site/language/en-GB/en-GB.ini</code> and its siblings</td>
+</tr>
+</tbody>
+</table>
+<p>Needing the same string on both faces of a component means defining it
+twice, once in each file. That is the intended answer, not a shared file.</p>
+<h3 id="3-match-the-placeholder-count">3. Match the placeholder count</h3>
+<p>Extra arguments go to <code>sprintf()</code>. Under PHP 8 a format string with more
+placeholders than arguments raises <code>ArgumentCountError</code>, which nothing here
+catches:</p>
+<pre><code class="language-ini">COM_BOOKINGS_CONFIRMED = &quot;%s is booked for %s&quot;
+</code></pre>
+<pre><code class="language-php">// Fatal: ArgumentCountError: 3 arguments are required, 2 given
+echo Lang::txt('COM_BOOKINGS_CONFIRMED', $instrument-&gt;get('name'));
+</code></pre>
+<p>A blank page from a translation call is nearly always this. Note that it
+takes a <strong>defined</strong> key to produce it — while the key is missing the string
+has no placeholders at all, so the same line renders the key quietly and
+starts fataling only once somebody defines it. Count the <code>%s</code> in the INI
+file against the arguments at every call site when you edit a string.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A single boolean argument is not a <code>sprintf()</code> argument.
+<code>txt($string, $jsSafe)</code> and <code>txt($string, $jsSafe, $interpretBackSlashes)</code>
+are separate signatures, so <code>Lang::txt('COM_BOOKINGS_STATE', $isOpen)</code>
+with a boolean <code>$isOpen</code> sets escaping options and substitutes nothing.
+Cast the value, or pass a string.</p>
+</aside>
 <h2 id="where-the-files-live">Where the files live</h2>
 <p>One file per extension, per language, named for the language tag and the
 extension:</p>
@@ -203,14 +300,17 @@ administrator ever sees them.</li>
 </ul>
 <p><code>Lang::load($extension, $basePath, $lang = null, $reload = false, $default = true)</code> is the underlying call if you need a file the framework will not
 fetch for you.</p>
+<p><a href="../../extensions/languages/index.html">Languages</a> in the extensions section
+covers what an extension has to <em>ship</em> — the manifest entries, the <code>.sys.ini</code>
+file, the directory layout.</p>
 <h2 id="writing-the-file">Writing the file</h2>
 <p>Key/value pairs, values always double-quoted:</p>
 <pre><code class="language-ini">; @package  hubzero-cms
 ; Note : All ini files need to be saved as UTF-8 - No BOM
 
-COM_BLOG_ENTRIES = &quot;Entries&quot;
-COM_BLOG_ENTRY_SAVED = &quot;Entry saved&quot;
-COM_BLOG_POSTED_BY = &quot;Posted by %s on %s&quot;
+COM_BOOKINGS_INSTRUMENTS = &quot;Instruments&quot;
+COM_BOOKINGS_BOOKING_SAVED = &quot;Booking saved&quot;
+COM_BOOKINGS_BOOKED_BY = &quot;Booked by %s on %s&quot;
 </code></pre>
 <p>The parser is PHP's, so its rules apply. <code>NULL</code>, <code>yes</code>, <code>no</code>, <code>TRUE</code> and
 <code>FALSE</code> are reserved and must not be used as keys. The characters
@@ -230,7 +330,7 @@ avoids the question. Comments start with <code>;</code>.</p>
 <tr>
 <td>Component</td>
 <td><code>COM_</code></td>
-<td><code>COM_BLOG_ENTRY_SAVED</code></td>
+<td><code>COM_BOOKINGS_BOOKING_SAVED</code></td>
 </tr>
 <tr>
 <td>Module</td>
@@ -254,17 +354,18 @@ file loaded later overwrites a key already in it. A component whose view
 renders a module — and the module's file loads at that point — will find its
 own unprefixed <code>MYLINE</code> replaced by the module's. Prefixed keys cannot
 collide.</p>
+<p>Name the key for what the string <em>is</em>, not for what it says.
+<code>COM_BOOKINGS_SAVE_FAILED</code> survives a rewording; <code>COM_BOOKINGS_SORRY</code> does
+not.</p>
 <h2 id="translating">Translating</h2>
 <pre><code class="language-php">use Lang;
 
-echo Lang::txt('COM_BLOG_ENTRIES');
+echo Lang::txt('COM_BOOKINGS_INSTRUMENTS');
 </code></pre>
-<p>A key with no entry in any loaded file is returned unchanged, so a typo
-shows up as a shouting constant on the page rather than an empty space.</p>
 <p>Extra arguments are passed to <code>sprintf()</code>, after the string has been looked
 up:</p>
-<pre><code class="language-php">// COM_BLOG_POSTED_BY = &quot;Posted by %s on %s&quot;
-echo Lang::txt('COM_BLOG_POSTED_BY', $author, $date);
+<pre><code class="language-php">// COM_BOOKINGS_BOOKED_BY = &quot;Booked by %s on %s&quot;
+echo Lang::txt('COM_BOOKINGS_BOOKED_BY', $member-&gt;get('name'), $date);
 </code></pre>
 <p>Numbered placeholders in the form <code>[[%1:name]]</code> are rewritten to <code>%1$s</code>
 before the <code>sprintf()</code>, so a translator can reorder arguments that English
@@ -307,11 +408,20 @@ happens to put in a particular order.</p>
 </tr>
 </tbody>
 </table>
-<p><code>txts()</code> is the one to reach for wherever a count appears:</p>
-<pre><code class="language-ini">COM_BLOG_COMMENTS_1 = &quot;1 comment&quot;
-COM_BLOG_COMMENTS = &quot;%s comments&quot;
+<p><code>hasKey()</code> is the guard for a key assembled at runtime, which is the one
+case the linter cannot check for you:</p>
+<pre><code class="language-php">$key = 'COM_BOOKINGS_STATUS_' . strtoupper($booking-&gt;get('status'));
+
+echo Lang::hasKey($key) ? Lang::txt($key) : $booking-&gt;get('status');
 </code></pre>
-<pre><code class="language-php">echo Lang::txts('COM_BLOG_COMMENTS', $total);
+<p>Prefer a fixed <code>switch</code> over a constructed key wherever you can. A key built
+from a database value is a key nothing can audit, and it becomes undefined
+the day somebody adds a status.</p>
+<p><code>txts()</code> is the one to reach for wherever a count appears:</p>
+<pre><code class="language-ini">COM_BOOKINGS_SLOTS_1 = &quot;1 slot free&quot;
+COM_BOOKINGS_SLOTS = &quot;%s slots free&quot;
+</code></pre>
+<pre><code class="language-php">echo Lang::txts('COM_BOOKINGS_SLOTS', $total);
 </code></pre>
 <h2 id="overrides">Overrides</h2>
 <p>A hub can replace any string without touching the extension. Overrides are
@@ -340,15 +450,21 @@ differently&quot;. A view override for a wording change duplicates a file that
 will then drift from the original at the next upgrade.</p>
 </aside>
 <h2 id="checking-your-work">Checking your work</h2>
-<p>Two things go wrong: a key used in a view but never defined, and a file that
-does not parse. <code>php tools/lint/undefined-language-keys.php</code> catches the
-first across the tree. For the second, <code>Lang::debugFile($path)</code> returns a
-count of parse errors in one file, and turning on <code>debug_lang</code> in the global
-configuration marks untranslated strings on the rendered page —
-<code>getOrphans()</code> and <code>getUsed()</code> back the report.</p>
+<pre><code class="language-bash">php tools/lint/undefined-language-keys.php core/components/com_bookings
+</code></pre>
+<p>Run it against your own extension before you push, and against nothing at
+all — the whole of <code>core/</code> — to see where the ceiling stands. A clean run is
+necessary and not sufficient: it reads literal keys with PHP's tokenizer, so
+keys assembled at runtime are skipped, and it does not know which file a
+given request loads.</p>
+<p>For a file that will not parse, <code>Lang::debugFile($path)</code> returns a count of
+parse errors in one file. Turning on <code>debug_lang</code> in the global
+configuration marks untranslated strings on the rendered page; <code>getOrphans()</code>
+and <code>getUsed()</code> back that report, and the <strong>System - Debug</strong> plugin renders
+it. See <a href="../debugging/index.html">debugging</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../config/index.html" rel="prev"><span>Previous</span>Config</a><a class="pager__next" href="../user/index.html" rel="next"><span>Next</span>Users &amp; profiles</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/05-basics/04-languages.md">Edit this page on GitHub</a>

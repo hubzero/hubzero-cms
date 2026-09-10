@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a668500422
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 348f0057c2
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/webdevs/basics/user
 -->
 # Users & profiles
@@ -14,6 +14,20 @@ objects. `Hubzero\User\User` is a
 [`Relational`](../06-database.md#orm) model over `#__users`, so everything the
 ORM offers — `get()`, `set()`, `save()`, relationships, query scopes — is
 available on it.
+
+Three separate things are called "the user" on a hub, and reaching for the
+wrong one is the mistake this page exists to prevent:
+
+| You want | Ask for | Lives in |
+|---|---|---|
+| The account — id, name, username, email, blocked | `Hubzero\User\User`, via the `User` facade | `#__users` |
+| The profile — bio, organisation, phone, ORCID | `Components\Members\Models\Member` | `#__user_profiles` |
+| Community group membership | `->groups()` on either | `#__xgroups` and its maps |
+
+The first two look identical from the outside — `Member` extends `User`, and
+both answer `get()`. They are not identical, and asking the wrong one for a
+profile field gets you a default rather than an error. That is the section
+on [extended profile fields](#extended-profile-fields) below.
 
 ## The current user
 
@@ -32,16 +46,31 @@ The current user comes from the session, and is a `User` with no id when
 nobody is logged in. `User::get('id')` returns `0` rather than `null` in that
 case, which is why so much code can compare against it without a guard.
 
+That `0` is also the trap. Writing `User::get('id')` into a `created_by`
+column without checking `isGuest()` first records a row owned by nobody, and
+every later `getInstance(0)` on it returns an empty `User` whose `name` is
+blank. The row is not wrong enough to notice: the booking exists, the list
+renders, and the owner column is simply empty. Check first.
+
 ## Other users
 
 ```php
-$author = User::getInstance($row->get('created_by'));
+$author = User::getInstance($booking->get('created_by'));
 ```
 
 `getInstance($id = null)` takes a numeric id, a username, or an email
 address. With no argument it returns the current user. Resolved users are
 cached for the request, so asking twice costs one query. An id that matches
 nothing gives you an empty `User` — check `get('id')` before using it.
+
+Two things follow from how it resolves:
+
+- Anything `is_numeric()` is treated as an **id**, never as a username. A
+  hub that allows all-digit usernames cannot look one up this way.
+- When the id you pass is the current user's, you get back the object **in
+  the session**, not a copy. `set()` on it changes the logged-in user for
+  the rest of the request. Load a fresh model with the ORM if you mean to
+  modify somebody.
 
 The ORM's own finders are there for anything more selective:
 
@@ -117,9 +146,13 @@ A key that occurs several times for one member — a multi-value field such as
 `disability` — comes back as an array; a key that occurs once comes back as
 a string.
 
-> **Note:** `User::getInstance($id)->get('bio')` returns the default. The
-> profile rows are only collected by `Member::get()`, so ask for a `Member`
-> whenever you want anything beyond the account columns.
+> **Warning:** `User::getInstance($id)->get('bio')` returns the default —
+> `null`, or whatever you passed as a second argument. It does not raise, and
+> it does not tell you the column does not exist there. A profile field that
+> renders as blank for every member on the page, including members you know
+> have filled it in, is this. The profile rows are only collected by
+> `Member::get()`, so ask for a `Member` whenever you want anything beyond
+> the account columns.
 
 `$member->picture($anonymous = 0, $thumbnail = true, $serveFile = true)`
 returns a URL for the member's picture, falling back to a generated
