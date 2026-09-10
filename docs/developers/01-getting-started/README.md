@@ -44,8 +44,8 @@ The platform targets PHP 8.2; `core/composer.json` pins the platform to
   and reading and writing files from code.
 - [Direct database access](databaseaccess.md) — the hub's credentials, the
   shell, and the `#__` table prefix.
-- [Upgrade guide](upgrade.md) — the Joomla names an older extension uses
-  and what replaced them.
+- [Upgrade guide](04-upgrade.md) — the legacy class names an older extension
+  uses and what replaced them.
 - [Browser support](browsersupport.md) — what the code actually targets,
   which is less than you might expect.
 - [Development environment](devenvironment.md) — getting a hub to develop

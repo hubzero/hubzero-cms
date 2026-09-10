@@ -79,3 +79,5 @@ template exists.
 - [Socicons](11-socicons.md) and [Fontcons](12-fontcons.md) — the icon fonts.
 - [Elements and typography](13-elements.md) — the shared grid, buttons and
   notification styles.
+- [Accessibility](14-accessibility.md) — what the shipped templates and the
+  HTML helpers emit, and where the gaps are.

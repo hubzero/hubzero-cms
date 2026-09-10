@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Categories · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Category Manager is one screen that several components borrow. Articles, user notes, knowledge base articles and events all file their content in…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/categories/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Categories</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#one-manager-four-extensions">One manager, four extensions</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-submenu-disappears">The submenu disappears</a></li>
+<li class="toc__item toc__item--l3"><a href="#without-the-extension-parameter">Without the extension parameter</a></li>
+<li class="toc__item toc__item--l2"><a href="#nesting">Nesting</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-category-list">The category list</a></li>
+<li class="toc__item toc__item--l3"><a href="#batch-processing">Batch processing</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-category-form">The category form</a></li>
+<li class="toc__item toc__item--l2"><a href="#states-and-permissions">States and permissions</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../states/index.html">States, deleting and check-out</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Content</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Categories</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Categories</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Category Manager is one screen that several components borrow. Articles,
+user notes, knowledge base articles and events all file their content in
+categories, and all four open the same component, <code>com_categories</code>, to
+create and edit them. This chapter is for the administrator who has arrived
+at that screen from any of those places and wants to know what it does, what
+the categories they are looking at belong to, and why the screen looks
+identical no matter where they came from.</p>
+<p><code>com_categories</code> has no entry of its own in the <strong>Components</strong> menu, and
+that is deliberate — the migration that registers the component says so and
+passes <code>false</code> where it would otherwise ask for a menu item. You always
+reach the Category Manager through the component whose categories you want.</p>
+<h2 id="one-manager-four-extensions">One manager, four extensions</h2>
+<p>Every category row carries an <code>extension</code> column naming the component it
+belongs to. The screen is scoped by an <code>extension</code> parameter in the URL that
+matches it. Four components ship with a hub and open the manager:</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Where you open it from</th>
+<th>What the categories are for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>com_content</code></td>
+<td><strong>Content → Category Manager</strong>, the <strong>Categories</strong> submenu entry on the <a href="../articlemanager/index.html">Article Manager</a>, and the <strong>Category Manager</strong> icon on the control panel</td>
+<td>Filing articles, and building their URLs</td>
+</tr>
+<tr>
+<td><code>com_members</code></td>
+<td><strong>Users → User Note Categories</strong>, and <strong>Note Categories</strong> under <strong>Users → Members → Notes</strong></td>
+<td>Filing <a href="../../users/user-notes/index.html">user notes</a></td>
+</tr>
+<tr>
+<td><code>com_kb</code></td>
+<td>The <strong>Categories</strong> submenu entry in the Knowledge Base</td>
+<td>Grouping knowledge base articles</td>
+</tr>
+<tr>
+<td><code>com_events</code></td>
+<td>The <strong>Categories</strong> submenu entry in Events</td>
+<td>Grouping events</td>
+</tr>
+</tbody>
+</table>
+<p>Each of those links is the same URL with one word changed:</p>
+<pre><code class="language-text">/administrator/index.php?option=com_categories&amp;extension=com_content
+/administrator/index.php?option=com_categories&amp;extension=com_members
+/administrator/index.php?option=com_categories&amp;extension=com_kb
+/administrator/index.php?option=com_categories&amp;extension=com_events
+</code></pre>
+<p>The categories are <strong>not</strong> shared between them. A category created under
+<code>com_content</code> is invisible to notes, to the knowledge base and to events,
+and the list, the <strong>Parent</strong> menu and the batch panel are all filtered to
+one extension at a time. What is shared is the screen, the database table
+and the tree they all hang from.</p>
+<p>The page title says which extension you are in: <strong>Category Manager:
+Articles</strong> for <code>com_content</code>, <strong>Category Manager: Members</strong>, <strong>Category
+Manager: Knowledge Base</strong>, <strong>Category Manager: Events</strong>. The name comes from
+the owning component's language file, so if that file is not loaded the
+title falls back to the raw <code>com_…</code> string.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Note categories used to be scoped to <code>com_users</code>. Two migrations
+rename them to <code>com_members</code>, and nothing in the current code reads the old
+value, so a database upgraded from a version that predates the rename
+without running them would show no note categories at all.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The code allows a second, finer scope — an extension of the form
+<code>com_something.section</code> — and passes the section on to the owning
+component when it rebuilds the submenu. Nothing in the tree uses it. Every
+caller passes a plain component name.</p>
+</aside>
+<h3 id="the-submenu-disappears">The submenu disappears</h3>
+<p>When you open the Category Manager, the owning component's submenu is not
+drawn by that component any more, so <code>com_categories</code> tries to rebuild it:
+it looks for <code>admin/helpers/&lt;name&gt;.php</code> in the owning component, expects a
+class called <code>&lt;Name&gt;Helper</code> with an <code>addSubmenu</code> method, and calls it.</p>
+<p>Only <code>com_members</code> has one. Open the Category Manager from Articles, the
+Knowledge Base or Events and you lose that component's submenu until you
+navigate back to it; open <strong>User Note Categories</strong> and the Users submenu and
+the <strong>Notes / Note Categories</strong> sub-submenu are both still there.</p>
+<h3 id="without-the-extension-parameter">Without the extension parameter</h3>
+<p>The screen remembers the last extension you looked at, per user, in your
+session. Reaching <code>index.php?option=com_categories</code> with no <code>extension</code>
+therefore usually shows the extension you were in last, and every link on
+the page carries it forward.</p>
+<p>On a fresh session, with nothing remembered, the screen degrades in three
+ways at once. The permission check that guards it asks for <code>core.manage</code> on
+an empty extension name, which only a Super User passes, so everyone else
+gets a 404. Anyone who does get in finds the list applying no extension
+filter at all — every extension's categories, mixed together in one tree,
+with no column to tell them apart — and the <strong>- Select Max Levels -</strong> menu
+empty. Open a category from there and the edit form falls back to
+<code>com_content</code>, so saving would file it under Articles.</p>
+<p>Always arrive through one of the menu entries above.</p>
+<h2 id="nesting">Nesting</h2>
+<p>Categories nest to any depth. The table stores the tree as a nested set:
+<code>parent_id</code>, <code>lft</code> and <code>rgt</code> bounds, a <code>level</code> number, and a <code>path</code> of
+slash-separated aliases.</p>
+<p>All four extensions live in <strong>one</strong> tree. A hub installs a single root row —
+id 1, titled <code>ROOT</code>, alias <code>root</code>, <code>level</code> 0, extension <code>system</code> — and every
+category in every extension is a descendant of it. A top-level category is
+therefore <code>level</code> 1, and the list indents each row by <code>level - 1</code>.</p>
+<p>Nothing enforces a maximum depth. <code>level</code> is an unsigned integer and no
+check anywhere counts it. The real limit is <code>path</code>, a <code>varchar(255)</code>: the
+aliases of a category and all its ancestors are joined with <code>/</code> and stored
+there, and once that overflows 255 characters the path is silently
+truncated. For <code>com_content</code> the path is also the URL, so keep aliases
+short — see <a href="../urls/index.html">URLs</a>.</p>
+<p>The <strong>Parent</strong> menu on the form offers every category in the same extension
+plus <strong>- No parent -</strong>, and excludes the category being edited together with
+all of its descendants, so you cannot make a category its own child. To swap
+a parent and a child, move the child up rather than the parent down.</p>
+<p>Saving any category rebuilds the tree from the root — every <code>lft</code>, <code>rgt</code>,
+<code>level</code> and <code>path</code> in the table, across all four extensions, is rewritten.
+This is normally invisible, but it is why a save on a large hub is not
+instant.</p>
+<h2 id="the-category-list">The category list</h2>
+<p>Above the list are a search box and four menus.</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Filter:</strong></td>
+<td>Matches the text against the category title or description.</td>
+</tr>
+<tr>
+<td><strong>- Select Max Levels -</strong></td>
+<td>Shows only categories nested no deeper than the level you pick. The menu lists the depths that actually exist.</td>
+</tr>
+<tr>
+<td><strong>- Select Status -</strong></td>
+<td>Published, Unpublished, Archived, Trashed, or All.</td>
+</tr>
+<tr>
+<td><strong>- Select Access -</strong></td>
+<td>One access level.</td>
+</tr>
+<tr>
+<td><strong>- Select Language -</strong></td>
+<td>Nothing. See the warning below.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>- Select Language -</strong> menu does not filter. The
+controller reads it from the request and stores it in your session, but it
+never reaches the query, so the list is unchanged whatever you pick. The
+other three menus and the search box all work.</p>
+</aside>
+<p>With no status filter set, the list shows everything except trashed
+categories. To see trashed categories, set <strong>- Select Status -</strong> to
+<strong>Trashed</strong>.</p>
+<p>The columns are <strong>Title</strong>, <strong>Status</strong>, <strong>Ordering</strong>, <strong>Access</strong>,
+<strong>Language</strong> and <strong>ID</strong>. The alias sits under the title, with the category's
+note after it when it has one, and the full path is the title line's tooltip.
+Hovering the <strong>ID</strong> shows the row's <code>lft</code> and <code>rgt</code> bounds.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The column headed <strong>Access</strong> does not show the access level.
+It prints the category's nesting level, and its sort link sorts by title.
+Nothing in the list shows what access level a category has; open the
+category to see it.</p>
+</aside>
+<p>Sort by <strong>Ordering</strong> to enable the up and down arrows and the ordering
+boxes. Ordering is kept among siblings — the boxes number each category
+within its parent, not within the whole list — and the arrows only appear
+where there is a sibling to swap with on the page you are looking at.</p>
+<p>Selecting one or more checkboxes enables the toolbar:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong></td>
+<td>Opens an empty category in the current extension.</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the selected category. Selecting the title does the same.</td>
+</tr>
+<tr>
+<td><strong>Publish</strong> / <strong>Unpublish</strong></td>
+<td>Sets the state to Published or Unpublished.</td>
+</tr>
+<tr>
+<td><strong>Archive</strong></td>
+<td>Sets the state to Archived.</td>
+</tr>
+<tr>
+<td><strong>Check In</strong></td>
+<td>Clears the checked-out flag on the selected categories.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Sets the state to Trashed. It does not delete anything.</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>The <strong>owning component's</strong> configuration, not this one's.</td>
+</tr>
+</tbody>
+</table>
+<p>The state buttons skip any category you lack <code>core.edit.state</code> on. They do
+say so, but the message is an untranslated developer string — <em>Can't change
+state drop 0</em> — naming the row's position in the list rather than the
+category.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> As with articles, Hubzero 2.4 has no permanent delete for a
+category. The toolbar button reads <strong>Delete</strong> and runs the trash task, and
+no controller task removes the row. See <a href="../states/index.html">States, trash and
+check-in</a>. A <strong>Content - Categories</strong> plugin exists to refuse
+the deletion of a category that still has items in it, but nothing ever
+fires the event it listens for, and it only knows how to count articles in
+any case.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Options</strong> opens the configuration of the extension you are
+scoped to — <code>com_content</code>'s options from the article categories, and so
+on. <code>com_categories</code> has a <code>config.xml</code> of its own, but it declares an
+empty fieldset, so the component has no settings to configure.</p>
+</aside>
+<h3 id="batch-processing">Batch processing</h3>
+<p>Below the list, an administrator holding <strong>Create</strong>, <strong>Edit</strong> and <strong>Edit
+State</strong> on the extension gets a <strong>Batch process the selected categories</strong>
+panel. It sets the access level and the language of the checked categories,
+and moves or copies them — with all of their children — under another
+category. Copying leaves the originals alone and applies the other changes
+to the copies. A target category is mandatory: the batch is refused with
+<em>No target category selected for batch processing</em> without one, even if all
+you wanted to change was the access level.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>Select Category for Move/Copy</strong> control is only drawn
+when <strong>- Select Status -</strong> is set to <strong>Published</strong>, <strong>Unpublished</strong> or
+<strong>Archived</strong>. With the filter at its default, or on <strong>All</strong> or
+<strong>Trashed</strong>, the control is missing — and because a target is mandatory,
+the whole panel is then unusable. Set a status filter first.</p>
+</aside>
+<h2 id="the-category-form">The category form</h2>
+<p><strong>New</strong> or <strong>Edit</strong> opens <strong>Category Manager: Add A New Articles Category</strong>
+or <strong>Category Manager: Edit Articles Category</strong>, with the extension's name
+in the middle. The toolbar is <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Save as Copy</strong>,
+<strong>Save &amp; New</strong>, <strong>Cancel</strong> and <strong>Help</strong>.</p>
+<p>The main column holds:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>Alias</strong></td>
+<td>The slug. Leave it blank and it is generated from the title: transliterated, lowercased, and reduced to letters, digits and hyphens. A title with nothing usable in it produces a timestamp instead.</td>
+</tr>
+<tr>
+<td><strong>Parent</strong></td>
+<td><strong>- No parent -</strong> for a top-level category, or another category in the same extension.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, Unpublished, Archived or Trashed.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The viewing level. See <a href="../../users/accesslevels/index.html">Access levels</a>.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td><strong>All</strong>, or one installed content language.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Free text, in the site's default editor.</td>
+</tr>
+</tbody>
+</table>
+<p>The right column shows the <strong>Extension</strong>, the <strong>ID</strong>, and who created and
+last modified the category and when, above two collapsible panels:</p>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Basic Options</strong></td>
+<td><strong>Alternative Layout</strong>, <strong>Image</strong>, and <strong>Note</strong> — a short private label shown after the alias in the list.</td>
+</tr>
+<tr>
+<td><strong>Metadata Options</strong></td>
+<td><strong>Meta Description</strong>, <strong>Meta Keywords</strong>, <strong>Author</strong> and <strong>Robots</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>The form is the same for every extension. Nothing lets a component add its
+own fields to a category, so a note category and an article category carry
+exactly the same information, including the layout and image options that
+only articles use.</p>
+<p>An administrator also gets a <strong>Permissions</strong> block across the foot of the
+form, which sets this category's own rules and is inherited by its children
+and by the items filed in it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That Permissions block always lists <code>com_content</code>'s category
+actions. The form hardcodes the component and section it asks for instead
+of taking them from the extension you are in, so editing a note, knowledge
+base or event category shows the wrong action list. The rules you save are
+still stored against the right category.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Opening a category does not check it out. The controller sets
+the checked-out fields on the record and then never saves them — the line
+that would is commented out. In practice no category is ever marked as
+being edited by someone else, the checked-out marker never appears in the
+list, and <strong>Check In</strong> has nothing to clear unless another part of the
+hub set the flag.</p>
+</aside>
+<p>The form also defines a read-only <strong>Path</strong> field that no template renders,
+so the stored path is only ever visible as the tooltip on the list's title.</p>
+<h2 id="states-and-permissions">States and permissions</h2>
+<p>A category has the same four states as an article — Published, Unpublished,
+Archived and Trashed — and they mean the same things. <a href="../states/index.html">States, trash and
+check-in</a> covers them.</p>
+<p>What matters here is that a category's state and access level apply to
+everything inside it, not just to the category itself.</p>
+<p>For articles this is enforced in the query. Every article listing walks the
+category path from the root down to the article's own category and checks
+each one:</p>
+<ul>
+<li>If <strong>any</strong> category on that path is not published, the article is treated
+as unpublished, whatever the article's own state says.</li>
+<li>If a category on that path is archived, the articles beneath it are
+treated as archived.</li>
+<li>The access filter is applied to the article's access level <strong>and</strong> to its
+category's, so an article in a <strong>Special</strong> category is not visible to a
+member who lacks Special, even if the article itself is <strong>Public</strong>.</li>
+</ul>
+<p>So unpublishing a category is the way to take a whole branch off the site at
+once. Nothing is changed on the items themselves, and republishing the
+category brings them all back in the state they were already in.</p>
+<p>The other three extensions do less. The knowledge base filters child
+categories by state and access when it lists them, and events lists only
+published categories; neither walks the whole path the way articles do. User
+note categories have no state or access behaviour at all — the note list's
+category filter is the only thing a note category changes, and the manager's
+Status and Access controls have no visible effect on notes.</p>
+<p>Permissions on the Category Manager are checked against the <strong>owning
+extension</strong>, never against <code>com_categories</code>, which ships no <code>access.xml</code> of
+its own:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Against</th>
+<th>Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core.manage</code></td>
+<td>The extension</td>
+<td>Whether the screen opens at all. Without it you get a 404.</td>
+</tr>
+<tr>
+<td><code>core.create</code></td>
+<td>The extension, or a category</td>
+<td><strong>New</strong>, and which categories the <strong>Parent</strong> menu offers.</td>
+</tr>
+<tr>
+<td><code>core.edit</code>, <code>core.edit.own</code></td>
+<td><code>extension.category.id</code></td>
+<td>Opening a category.</td>
+</tr>
+<tr>
+<td><code>core.edit.state</code></td>
+<td><code>extension.category.id</code></td>
+<td>Publish, Unpublish, Archive, Delete, and whether you may move a category to a different parent.</td>
+</tr>
+<tr>
+<td><code>core.delete</code></td>
+<td>The extension</td>
+<td>Showing the <strong>Delete</strong> button.</td>
+</tr>
+<tr>
+<td><code>core.admin</code></td>
+<td>The extension</td>
+<td>The <strong>Permissions</strong> block and the <strong>Options</strong> button.</td>
+</tr>
+</tbody>
+</table>
+<p>Because the asset name is built from the extension, the same administrator
+can be allowed to manage article categories and refused note categories.
+Set those permissions on the owning component's <strong>Options</strong> screen, or per
+category in the Permissions block; see <a href="../../users/accessgroups/index.html">Access
+groups</a>.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 9924bea2ec</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../articlemanager/index.html" rel="prev"><span>Previous</span>Article Manager</a><a class="pager__next" href="../states/index.html" rel="next"><span>Next</span>States, deleting and check-out</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/categories.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

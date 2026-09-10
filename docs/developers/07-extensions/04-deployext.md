@@ -15,8 +15,7 @@ code in the right directory, and writing the row in `#__extensions` that
 makes the platform notice it. Nothing scans the filesystem, so the code
 alone does nothing.
 
-> **Important:** There is no package installer. Hubzero's Extension Manager
-> is not the Joomla one it descends from — the **Install**, **Update**,
+> **Important:** There is no package installer. The **Install**, **Update**,
 > **Discover** and **Database** screens were removed, and only some orphan
 > language strings are left behind. You cannot upload a `.zip` and have it
 > unpack itself, and any instruction that says otherwise, here or elsewhere,

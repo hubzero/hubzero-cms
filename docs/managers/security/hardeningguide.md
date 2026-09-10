@@ -49,10 +49,10 @@ debsums | grep FAILED
 Run the first two daily and the third at least weekly.
 
 > **Warning:** The original version of this page told administrators to add
-> a Hubzero package repository that also shipped patches for Joomla 1.5.
-> That has not been true for many releases. Hubzero maintains its own code
-> and does not carry Joomla patches; see
-> [the security questions](faqs.md#is-a-joomla-vulnerability-a-hubzero-vulnerability).
+> a Hubzero package repository that also carried patches for a third-party
+> content management system. That has not been true for many releases.
+> Hubzero maintains its own code and carries no other project's patches; see
+> [the security questions](faqs.md#does-an-advisory-for-another-content-management-system-apply-here).
 
 ## Web server
 

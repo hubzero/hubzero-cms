@@ -16,24 +16,25 @@ Answers to the questions hub managers ask most often about the CMS side of
 security. Questions about the host underneath the hub belong in
 [Operating system hardening](hardeningguide.md).
 
-## Is a Joomla vulnerability a Hubzero vulnerability?
+## Does an advisory for another content management system apply here?
 
-Usually not, but check each one.
+Usually not, but check each one rather than assuming.
 
-Hubzero began as a Joomla 1.5 distribution and the source tree still carries
-the inheritance in its naming: language keys beginning `J`, the `#__`
-table-prefix placeholder, `com_` component directories, and a handful of
-class names. The running code is Hubzero's own. The application object, the
-request and response objects, the session handler, the user object, the
-registration flow, the router, the database layer, and the plugin and module
-systems are all in [`core/libraries/Hubzero`](../../../core/libraries/Hubzero),
-and the components under [`core/components`](../../../core/components) were
-rewritten against them.
+Some naming in this tree is shared with other PHP content management
+systems: language keys beginning `J`, the `#__` table-prefix placeholder,
+and `com_` component directories. The running code is Hubzero's own. The
+application object, the request and response objects, the session handler,
+the user object, the registration flow, the router, the database layer, and
+the plugin and module systems are all in
+[`core/libraries/Hubzero`](../../../core/libraries/Hubzero), and the
+components under [`core/components`](../../../core/components) are written
+against them.
 
-That means a Joomla advisory rarely names code a hub actually runs. It also
-means you cannot dismiss one on the strength of the version number: read
-what the advisory describes and look for the same pattern here. Hubzero
-does not track Joomla releases and does not receive Joomla security patches.
+So an advisory for another project rarely names code a hub actually runs.
+It also means you cannot dismiss one on the strength of a version number:
+read what the advisory describes and look for the same pattern here.
+Hubzero tracks no other project's releases and receives no other project's
+security patches, so nothing arrives automatically.
 
 ## Where does the CMS record failed logins?
 

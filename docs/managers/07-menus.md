@@ -163,8 +163,8 @@ build the menu first and then show it:
 The module's other options are **Start Level**, **End Level**, **Show
 Sub-menu Items**, **Show as Disclosure Menu**, and **Show Top Level Items as
 Links**; the advanced tab adds a menu tag ID, a menu class suffix, a layout,
-and caching. There is no "Menu Style" option — that was a Joomla 1.5 setting
-and it is long gone.
+and caching. There is no "Menu Style" option. Older documentation describes
+one; it was removed years ago.
 
 ## Redirecting a URL
 

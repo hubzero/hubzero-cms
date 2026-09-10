@@ -112,7 +112,8 @@ These are all still current, and each has its own chapter:
   Sixteen ship in `core/plugins/geocode`, several of which need an account
   with the service before they return anything.
 
-## Joomla names
+## Older legacy names
 
-An extension written against Joomla rather than against Hubzero 1.x needs a
-different table. That is the [Upgrade guide](upgrade.md).
+An extension written against the pre-Hubzero class names rather than against
+Hubzero 1.x needs a different table. That is the
+[Upgrade guide](04-upgrade.md).

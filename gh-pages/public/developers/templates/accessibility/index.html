@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accessibility · Developers · Hubzero Documentation</title>
+  <meta name="description" content="What the shipped templates and the framework&#x27;s HTML helpers actually emit, so you know which parts of a page you control and which parts arrive already built.…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/templates/accessibility/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">Cascading style sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../overrides/index.html">Output overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../elements/index.html">Elements and typography</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Accessibility</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-the-shipped-templates-do">What the shipped templates do</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-skip-link-never-becomes-visible">The skip link never becomes visible</a></li>
+<li class="toc__item toc__item--l3"><a href="#headings">Headings</a></li>
+<li class="toc__item toc__item--l3"><a href="#untranslated-strings-in-lucent">Untranslated strings in lucent</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-framework-emits-for-you">What the framework emits for you</a></li>
+<li class="toc__item toc__item--l3"><a href="#pagination">Pagination</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-toolbar">The toolbar</a></li>
+<li class="toc__item toc__item--l3"><a href="#form-labels">Form labels</a></li>
+<li class="toc__item toc__item--l3"><a href="#tooltips">Tooltips</a></li>
+<li class="toc__item toc__item--l3"><a href="#icons">Icons</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-content-sanitizer">The content sanitizer</a></li>
+<li class="toc__item toc__item--l2"><a href="#messages-and-notifications">Messages and notifications</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-gaps-are">Where the gaps are</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-you-can-do-from-a-template">What you can do from a template</a></li>
+<li class="toc__item toc__item--l3"><a href="#fix-the-framework-s-markup-with-an-override">Fix the framework&#x27;s markup with an override</a></li>
+<li class="toc__item toc__item--l3"><a href="#keep-icon-glyphs-out-of-the-accessibility-tree">Keep icon glyphs out of the accessibility tree</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-data-attribute-javascript-and-the-keyboard">The data-attribute JavaScript and the keyboard</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-card-link-pattern">The card-link pattern</a></li>
+</ol></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Templates</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Accessibility</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>Accessibility</h1>
+        </header>
+        
+        <div class="prose">
+<p>What the shipped templates and the framework's HTML helpers actually emit, so
+you know which parts of a page you control and which parts arrive already
+built. This chapter is for someone writing a template or a component view
+layout. It is a description of the current state of this tree, not a checklist
+and not a claim about any standard: nothing in this repository asserts
+conformance with WCAG, Section 508 or anything else, and neither does this
+page.</p>
+<h2 id="what-the-shipped-templates-do">What the shipped templates do</h2>
+<p>The three layouts worth reading are
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/kimera/index.php"><code>kimera/index.php</code></a>,
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/lucent/index.php"><code>lucent/index.php</code></a> and
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/kameleon/index.php"><code>kameleon/index.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>kimera</code></th>
+<th><code>lucent</code></th>
+<th><code>kameleon</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lang</code> and <code>dir</code> on <code>&lt;html&gt;</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Skip link</td>
+<td><strong>no</strong></td>
+<td>yes, to <code>#maincontent</code></td>
+<td><strong>no</strong></td>
+</tr>
+<tr>
+<td><code>&lt;main&gt;</code> element</td>
+<td><code>&lt;main id=&quot;content&quot;&gt;</code></td>
+<td><code>&lt;main id=&quot;maincontent&quot;&gt;</code></td>
+<td><code>&lt;main id=&quot;wrap&quot;&gt;</code></td>
+</tr>
+<tr>
+<td><code>&lt;header&gt;</code></td>
+<td>yes</td>
+<td>yes</td>
+<td>yes, with <code>role=&quot;banner&quot;</code></td>
+</tr>
+<tr>
+<td><code>&lt;footer&gt;</code></td>
+<td>yes</td>
+<td>none in the layout</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Labelled <code>&lt;nav&gt;</code></td>
+<td>main menu only</td>
+<td>primary, mobile, plus an unlabelled <code>&lt;nav class=&quot;nav&quot;&gt;</code> wrapper and <code>&lt;nav class=&quot;subnav&quot;&gt;</code></td>
+<td>main and component menus</td>
+</tr>
+<tr>
+<td><code>&lt;aside&gt;</code> for module positions</td>
+<td>yes</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Menu button pattern</td>
+<td>none</td>
+<td><code>aria-haspopup</code>, <code>aria-controls</code>, <code>role=&quot;menu&quot;</code>/<code>menuitem</code>/<code>none</code></td>
+<td>none</td>
+</tr>
+<tr>
+<td>Search dialog</td>
+<td>none</td>
+<td><code>role=&quot;dialog&quot;</code>, <code>aria-modal</code>, <code>aria-labelledby</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>Everything in that table is in the layout files themselves. The <code>role=&quot;banner&quot;</code>
+and <code>role=&quot;navigation&quot;</code> attributes in <code>kameleon</code> duplicate what <code>&lt;header&gt;</code> and
+<code>&lt;nav&gt;</code> already convey; they are harmless and you do not need to copy them.</p>
+<p><code>lucent</code> is the only shipped template with a skip link, and it is the first
+thing in the body:</p>
+<pre><code class="language-php">&lt;body class=&quot;&lt;?php echo $bodyClass; ?&gt;&quot;&gt;
+&lt;a href=&quot;#maincontent&quot; class=&quot;vh&quot;&gt;Skip to main content&lt;/a&gt;
+</code></pre>
+<h3 id="the-skip-link-never-becomes-visible">The skip link never becomes visible</h3>
+<p><code>.vh</code> is <code>lucent</code>'s visually-hidden utility, and it has no focused state:</p>
+<pre><code class="language-less">// visually hidden
+.vh {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+}
+</code></pre>
+<p>There is no <code>.vh:focus</code> or <code>.vh:focus-within</code> rule anywhere in
+<code>core/templates/lucent/less</code>, so the link stays clipped to one pixel even while
+it holds focus. A screen reader announces it; a sighted keyboard user tabs onto
+something they cannot see. If you copy <code>lucent</code>, add a rule that restores the
+link on focus, or give the skip link its own class.</p>
+<p><code>kimera</code> and <code>kameleon</code> have no skip link at all. <code>kimera</code>'s <code>&lt;main&gt;</code> carries
+<code>id=&quot;content&quot;</code>, so adding one is a single line.</p>
+<h3 id="headings">Headings</h3>
+<p>Both site templates put the page's only structural heading in the masthead.
+<code>kimera</code> wraps the site name in <code>&lt;h1&gt;</code>; <code>kameleon</code> does the same in the
+administrator. On every page. Component output therefore starts at <code>&lt;h2&gt;</code> or
+lower, and no heading describes what the page is about.</p>
+<p><code>lucent</code> goes the other way: its logo is a <code>&lt;div class=&quot;logo&quot;&gt;</code> holding a plain
+link, so the shell contributes no heading at all and a <code>lucent</code> page has an
+<code>&lt;h1&gt;</code> only if the component supplies one.</p>
+<p>Neither arrangement is fixed for you. Decide which one your template uses and
+make it consistent, because component views are written against no assumption
+either way.</p>
+<h3 id="untranslated-strings-in-lucent">Untranslated strings in <code>lucent</code></h3>
+<p><code>lucent</code> hardcodes English in places where the accessible name is the only
+thing a screen reader user gets: <code>Skip to main content</code>,
+<code>aria-label=&quot;Primary navigation&quot;</code>, <code>aria-label=&quot;Mobile navigation&quot;</code>,
+<code>aria-label=&quot;search popup&quot;</code>, the <code>&lt;h2 class=&quot;vh&quot;&gt;Search&lt;/h2&gt;</code> inside the search
+dialog, <code>&lt;span class=&quot;vh&quot;&gt;Search&lt;/span&gt;</code> on the search trigger, and
+<code>&lt;span&gt;Menu&lt;/span&gt;</code> on the mobile button. <code>error.php</code> also hardcodes
+<code>close search</code>, where <code>index.php</code> uses <code>Lang::txt('TPL_SEARCH_CLOSE')</code> for the
+same button.</p>
+<p>The logo link's text is the literal word <code>Lucent</code>, not <code>Config::get('sitename')</code>,
+so on a hub using this template the link home announces the template's name.</p>
+<p>Run every one of these through <code>Lang::txt()</code> in your own template. See
+<a href="../languages/index.html">Languages</a>.</p>
+<h2 id="what-the-framework-emits-for-you">What the framework emits for you</h2>
+<p>A template author does not control the markup below. It comes out of
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Html"><code>Hubzero\Html</code></a> and out of the document
+renderers, and it sets the floor for anything built on top of it.</p>
+<h3 id="pagination">Pagination</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Pagination/Views/paginator.php"><code>core/libraries/Hubzero/Pagination/Views/paginator.php</code></a>
+is the best-behaved helper in the tree. It wraps the list in
+<code>&lt;nav class=&quot;pagination&quot; aria-label=&quot;Pagination&quot;&gt;</code>, marks the current page with
+<code>&lt;strong aria-current=&quot;page&quot;&gt;</code>, hides the <code>…</code> separators with <code>aria-hidden</code>,
+and gives the <em>Display #</em> select a real <code>&lt;label for&gt;</code>.</p>
+<p>Two things to know:</p>
+<ul>
+<li>
+<p>The <strong>site</strong> branch labels its arrows:</p>
+<pre><code class="language-php">  	&lt;li class=&quot;pagination-prev prev&quot;&gt;
+  		&lt;?php if ($this-&gt;pages-&gt;previous-&gt;base !== null) { ?&gt;
+  			&lt;a href=&quot;&lt;?php echo $this-&gt;pages-&gt;previous-&gt;link; ?&gt;&quot; aria-label=&quot;&lt;?php echo Lang::txt('Previous page'); ?&gt;&quot;&gt;&amp;lsaquo;&lt;/a&gt;
+  		&lt;?php } else { ?&gt;
+  			&lt;span class=&quot;disabled&quot; aria-hidden=&quot;true&quot;&gt;&amp;lsaquo;&lt;/span&gt;
+  		&lt;?php } ?&gt;
+  	&lt;/li&gt;
+</code></pre>
+</li>
+</ul>
+<pre><code>
+  The strings are passed to `Lang::txt()` as literal English — `'Previous page'`
+  and `'Next page'` — and no such keys exist in any `en-GB.ini`, so `Lang::txt()`
+  returns them unchanged and they cannot be translated. The *Go* button next to
+  the limit select is not passed through `Lang::txt()` at all.
+- The **administrator** branch emits `&lt;a&gt;` elements with `data-prefix` and
+  `data-start` and **no `href`**. An anchor without `href` is not focusable and
+  is not a link to assistive technology, so admin pagination cannot be reached
+  by keyboard. The click handler is `Hubzero.paginate()` at the bottom of
+  `core.js`. Admin pagination also has no `aria-label` on its previous/next
+  controls.
+
+The limit select in the administrator carries `onchange=&quot;this.form.submit()&quot;`,
+which submits the form on every value change — including the changes a keyboard
+user makes while arrowing through the options.
+
+### The grid helpers
+
+[`Hubzero\Html\Builder\Grid`](../../../core/libraries/Hubzero/Html/Builder/Grid.php)
+builds admin list tables. What it emits:
+
+- `Grid::sort()` returns `&lt;a href=&quot;#&quot; data-order=&quot;…&quot; class=&quot;grid-order sort&quot;&gt;`
+  with the column title as the link text and
+  `title=&quot;Click to sort by this column&quot;`. There is no `aria-sort` on the header
+  cell and nothing tells a screen reader which column is sorted or in which
+  direction — the current direction is carried in a CSS class.
+- `Grid::id()` builds the row checkbox:
+
+  ```php
+	public static function id($rowNum, $recId, $checkedOut = false, $name = 'cid')
+	{
+		if ($checkedOut)
+		{
+			return '';
+		}
+
+		return '&lt;input type=&quot;checkbox&quot; id=&quot;cb' . $rowNum . '&quot; name=&quot;' . $name . '[]&quot; value=&quot;' . $recId . '&quot; class=&quot;checkbox-toggle&quot; title=&quot;' . Lang::txt('JGRID_CHECKBOX_ROW_N', ($rowNum + 1)) . '&quot; /&gt;&lt;label for=&quot;cb' . $rowNum . '&quot; class=&quot;sr-only visually-hidden&quot;&gt;' . $recId . '&lt;/label&gt;';
+	}
+</code></pre>
+<p>The <code>&lt;label&gt;</code> text is the <strong>record's database id</strong>, and the useful string
+(&quot;Checkbox for row 3&quot;, from <code>JGRID_CHECKBOX_ROW_N</code>) is in the <code>title</code>
+attribute, which the label overrides as the accessible name. The label's
+classes are <code>sr-only visually-hidden</code>; <code>.sr-only</code> is defined in
+<code>core/templates/kameleon/css/index.css</code> and nowhere else, so if this helper is
+ever used on the site the record id renders as visible text.</p>
+<ul>
+<li><code>Grid::boolean()</code>, <code>Grid::state()</code>, <code>Grid::published()</code>, <code>Grid::orderUp()</code>,
+<code>Grid::orderDown()</code> and <code>Grid::action()</code> all return <code>&lt;a href=&quot;#toggle&quot;&gt;</code> or
+<code>&lt;a href=&quot;#&quot;&gt;</code> carrying a <code>data-task</code>. They are focusable and they do carry
+real text in a <code>&lt;span class=&quot;text&quot;&gt;</code>, but they are links that behave as
+buttons: they have no <code>role=&quot;button&quot;</code> and so do not respond to the space bar.
+When <code>$enabled</code> is false, <code>Grid::action()</code> drops the <code>href</code> and the
+<code>data-task</code> but keeps the <code>&lt;a&gt;</code>, the class and the <code>title</code> — so a disabled
+control leaves the tab order silently, with nothing saying it is disabled.</li>
+</ul>
+<h3 id="the-toolbar">The toolbar</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Html/Toolbar.php"><code>Hubzero\Html\Toolbar</code></a>
+renders <code>&lt;div class=&quot;toolbar-list&quot;&gt;&lt;ul&gt;</code> and each button as
+<code>&lt;li class=&quot;button&quot;&gt;</code>. Inside, every button type — <code>Standard</code>, <code>Confirm</code>,
+<code>Link</code>, <code>Popup</code>, <code>Help</code> — is an <code>&lt;a href=&quot;#&quot;&gt;</code> (or a real URL, for <code>Link</code> and
+<code>Popup</code>) whose text is inside a <code>&lt;span&gt;</code> carrying the Fontcons icon class.</p>
+<p>So the toolbar's labels are real text, which is the important part. What is
+missing is the same thing the grid helpers are missing: these are controls, not
+links, and they carry no <code>role=&quot;button&quot;</code>. <code>Confirm</code> uses a native <code>confirm()</code>
+dialog; <code>Popup</code> uses <code>window.open</code>. Neither returns focus anywhere when it
+closes.</p>
+<h3 id="form-labels">Form labels</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Form/Field.php"><code>Hubzero\Form\Field::getLabel()</code></a>
+emits <code>&lt;label id=&quot;{id}-lbl&quot; for=&quot;{id}&quot;&gt;</code>, correctly associated, with the label
+text translated. A required field appends
+<code>&lt;span class=&quot;required star&quot;&gt;Required&lt;/span&gt;</code> <strong>inside</strong> the label, so the word
+is part of the accessible name. That is the good news.</p>
+<p>The field's <code>description</code> becomes a <code>title</code> attribute on the <em>label</em>, in the
+form <code>Label::Description</code>, for the tooltip behaviour to split. It is never
+attached to the control with <code>aria-describedby</code>.</p>
+<p>And <code>required=&quot;true&quot;</code> in a form XML file changes only the label. Look at
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Form/Fields/Text.php"><code>Fields/Text.php</code></a>: the
+attribute list it builds is <code>type</code>, <code>value</code>, <code>name</code>, <code>id</code>, <code>size</code>, <code>maxlength</code>,
+<code>class</code>, <code>autocomplete</code>, <code>readonly</code>, <code>disabled</code>, <code>onchange</code>. No <code>required</code>, no
+<code>aria-required</code>. If your view depends on a required field being announced as
+required, add the attribute yourself.</p>
+<h3 id="tooltips">Tooltips</h3>
+<p><code>Html::behavior('tooltip')</code> binds jQuery UI tooltips to <code>.hasTip</code> and rewrites
+the <code>title</code> attribute on creation:</p>
+<pre><code class="language-php">					create: function(event, ui) {
+						var tip = $(this),
+							tipText = tip.attr('title');
+
+						if (tipText &amp;&amp; tipText.indexOf('::') != -1) {
+							var parts = tipText.split('::');
+							tip.attr('title', '&lt;div class=\&quot;tip-title\&quot;&gt;' + parts[0] + '&lt;/div&gt;&lt;div class=\&quot;tip-text\&quot;&gt;' + parts[1] + '&lt;/div&gt;');
+						} else {
+							tip.attr('title', '&lt;div class=\&quot;tip-text\&quot;&gt;' + tipText + '&lt;/div&gt;');
+						}
+					},
+</code></pre>
+<p>After that runs, the element's <code>title</code> attribute contains a string of HTML tags.
+<code>title</code> is what assistive technology falls back to for an element's description,
+so the description it has is that markup. Where the behaviour is <em>not</em> loaded —
+which is most of the site — the <code>Label::Description</code> string from <code>getLabel()</code>
+stays in the <code>title</code> verbatim, double colon and all.</p>
+<p>Prefer a visible <code>&lt;p class=&quot;hint&quot; id=&quot;…&quot;&gt;</code> and an <code>aria-describedby</code> on the
+control over a <code>.hasTip</code> tooltip in any view you write.</p>
+<h3 id="icons">Icons</h3>
+<p><code>Html::asset('icon', 'edit')</code> inlines an SVG from
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/assets/icons"><code>core/assets/icons</code></a> wrapped in
+<code>&lt;span class=&quot;icn icn-edit&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot;&gt;</code>. This one is
+right by default — the glyph is hidden and you supply the text. It is the safest
+of the three icon systems for that reason. See
+<a href="../fontcons/index.html#the-alternative-svg-icons">Fontcons</a>.</p>
+<h3 id="the-content-sanitizer">The content sanitizer</h3>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Utility/Sanitize.php"><code>Hubzero\Utility\Sanitize</code></a>
+runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
+keeps ARIA:</p>
+<pre><code class="language-php">	protected static function _addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
+	{
+		$htmlPurifierWhitelist-&gt;addAttribute('img', 'usemap', 'CDATA');
+
+		// Allow ARIA attributes on common elements for accessibility
+		$ariaElements = ['a', 'div', 'span', 'img', 'table', 'ul', 'ol', 'li', 'nav', 'section', 'button'];
+		foreach ($ariaElements as $element)
+		{
+			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-label', 'Text');
+			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-labelledby', 'Text');
+			$htmlPurifierWhitelist-&gt;addAttribute($element, 'aria-describedby', 'Text');
+			$htmlPurifierWhitelist-&gt;addAttribute($element, 'role', 'Text');
+		}
+	}
+</code></pre>
+<p>So <code>role</code>, <code>aria-label</code>, <code>aria-labelledby</code> and <code>aria-describedby</code> survive on
+<code>a</code>, <code>div</code>, <code>span</code>, <code>img</code>, <code>table</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>nav</code>, <code>section</code> and
+<code>button</code>. Nothing else does — <code>aria-hidden</code>, <code>aria-live</code>, <code>aria-expanded</code>,
+<code>aria-current</code> and <code>tabindex</code> are all stripped from sanitized content.</p>
+<h2 id="messages-and-notifications">Messages and notifications</h2>
+<p>System messages reach the page two ways, and the two do not produce the same
+markup.</p>
+<p>On a normal request, <code>&lt;jdoc:include type=&quot;message&quot; /&gt;</code> calls
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Document/Type/Html/Message.php"><code>Hubzero\Document\Type\Html\Message</code></a>:</p>
+<pre><code class="language-php">		$buffer[] = '&lt;div id=&quot;system-message-container&quot;&gt;';
+
+		// If messages exist render them
+		if (!empty($lists))
+		{
+			$buffer[] = $tab . '&lt;dl id=&quot;system-message&quot;&gt;';
+			foreach ($lists as $type =&gt; $msgs)
+			{
+				if (count($msgs))
+				{
+					$buffer[] = $tab . $tab . '&lt;dt class=&quot;' . strtolower($type) . '&quot;&gt;' . \App::get('language')-&gt;txt($type) . '&lt;/dt&gt;';
+					$buffer[] = $tab . $tab . '&lt;dd class=&quot;' . strtolower($type) . ' message&quot;&gt;';
+					$buffer[] = $tab . $tab . $tab . '&lt;ul&gt;';
+					foreach ($msgs as $msg)
+					{
+						$buffer[] = $tab . $tab . $tab . $tab . '&lt;li&gt;' . $msg . '&lt;/li&gt;';
+					}
+					$buffer[] = $tab . $tab . $tab . '&lt;/ul&gt;';
+					$buffer[] = $tab . $tab . '&lt;/dd&gt;';
+				}
+			}
+			$buffer[] = $tab . '&lt;/dl&gt;';
+		}
+
+		$buffer[] = '&lt;/div&gt;';
+</code></pre>
+<p>A <code>&lt;div id=&quot;system-message-container&quot;&gt;</code> holding a <code>&lt;dl id=&quot;system-message&quot;&gt;</code>,
+one <code>&lt;dt&gt;</code> per message type with the type name translated, and the messages in a
+<code>&lt;ul&gt;</code> inside the matching <code>&lt;dd&gt;</code>. There is no <code>role</code>, no <code>aria-live</code> and no
+heading. The container is always emitted, even with nothing in it.</p>
+<p>After the page has loaded, <code>Hubzero.renderMessages()</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/assets/js/core-uncompressed.js"><code>core-uncompressed.js</code></a> builds the
+same shape in JavaScript:</p>
+<pre><code class="language-javascript">Hubzero.renderMessages = function(messages) {
+	Hubzero.removeMessages();
+	var container = $('#system-message-container');
+
+	var dl = $('&lt;dl&gt;')
+				.attr('id', 'system-message')
+				.attr('role', 'alert');
+
+	$.each(messages, function (type, item) {
+		var dt = $('&lt;dt&gt;')
+					.addClass(type)
+					.html(type)
+					.appendTo(dl);
+
+		var dd = $('&lt;dd&gt;')
+					.addClass(type)
+					.addClass('message');
+		var list = $('&lt;ul&gt;');
+
+		$.each(item, function (index, item, object) {
+			var li = $('&lt;li&gt;')
+						.html(item)
+						.appendTo(list);
+		});
+		list.appendTo(dd);
+		dd.appendTo(dl);
+	});
+	dl.appendTo(container);
+
+	$(document).trigger('renderMessages');
+};
+</code></pre>
+<p>Two differences matter:</p>
+<ul>
+<li>The JavaScript version sets <code>role=&quot;alert&quot;</code>. The server-rendered version does
+not. So a message that was on the page when it loaded is not in a live region,
+and a message inserted afterwards is — which is backwards from what is useful.</li>
+<li>The <code>&lt;dl&gt;</code> is created detached, filled, given <code>role=&quot;alert&quot;</code>, and only then
+appended. A live region has to be in the document <em>before</em> its contents change
+for the change to be announced reliably; inserting an already-populated region
+is the pattern that most often stays silent.</li>
+</ul>
+<p>The <code>&lt;dt&gt;</code> text also differs: the PHP renderer runs the type through the
+language object, so it reads <strong>Error</strong> or <strong>Warning</strong>; the JavaScript renderer
+calls <code>.html(type)</code> on the raw key, so it reads <code>error</code>.</p>
+<p><code>Hubzero.removeMessages()</code> empties <code>#system-message-container</code> completely, so
+there is no persistent region left behind between updates.</p>
+<p>None of the shipped templates wrap the message container in anything, and none
+move focus to it. <code>kimera</code> and <code>lucent</code> render it only when
+<code>$this-&gt;getBuffer('message')</code> is non-empty, which means on those templates the
+container is not even in the DOM until a message exists.</p>
+<h2 id="where-the-gaps-are">Where the gaps are</h2>
+<p>Stated plainly, from the code above:</p>
+<ul>
+<li><code>kimera</code> and <code>kameleon</code> have no skip link. <code>lucent</code> has one that never becomes
+visible on focus.</li>
+<li>No shipped template moves focus after a dynamic update, and nothing in
+<code>core.js</code> does either. <code>renderMessages</code>, <code>submitform</code>, <code>filterClear</code>,
+<code>gridOrder</code> and <code>listItemTask</code> all change or replace content and leave focus
+where it was.</li>
+<li>The server-rendered message block is not a live region. The one built in
+JavaScript is, but is populated before insertion.</li>
+<li>Admin pagination links have no <code>href</code>, so they are not keyboard-reachable.</li>
+<li>Admin sortable column headers carry no <code>aria-sort</code>.</li>
+<li>Toolbar and grid controls are <code>&lt;a href=&quot;#&quot;&gt;</code> acting as buttons, without
+<code>role=&quot;button&quot;</code>.</li>
+<li>Form field descriptions are <code>title</code> attributes, not <code>aria-describedby</code>, and
+the tooltip behaviour replaces those attributes with HTML.</li>
+<li><code>required=&quot;true&quot;</code> on a form field produces no <code>required</code> or <code>aria-required</code>
+attribute on the control.</li>
+<li><code>lucent</code>'s accessible names are hardcoded English.</li>
+<li>Only one <code>aria-live</code> region exists in the whole of <code>core/</code>: the upload list in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/site/views/tickets/tmpl/new.php"><code>com_support</code>'s new-ticket view</a>.</li>
+</ul>
+<p>One convention does exist and is worth following.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Html/Builder/Behavior.php"><code>Behavior.php</code></a>
+marks its accessibility-motivated lines with an <code>[a11y]</code> comment, next to the
+MathJax configuration that enables <code>AssistiveMML.js</code> and hides the visual glyph
+spans. Follow that convention if you change something for this reason; it makes
+the change findable.</p>
+<h2 id="what-you-can-do-from-a-template">What you can do from a template</h2>
+<h3 id="fix-the-framework-s-markup-with-an-override">Fix the framework's markup with an override</h3>
+<p>You cannot change what <code>Grid::sort()</code> returns, but you rarely have to call it.
+An <a href="../overrides/index.html">output override</a> at
+<code>app/templates/mytemplate/html/{extension}/{view}/{layout}.php</code> replaces the
+whole layout, so you can write the header cell yourself:</p>
+<pre><code class="language-php">&lt;th scope=&quot;col&quot; aria-sort=&quot;&lt;?php echo $sorted ? $dir : 'none'; ?&gt;&quot;&gt;
+	&lt;a href=&quot;&lt;?php echo $sortUrl; ?&gt;&quot;&gt;&lt;?php echo Lang::txt('COM_EXAMPLE_TITLE'); ?&gt;&lt;/a&gt;
+&lt;/th&gt;
+</code></pre>
+<p>Pagination is harder, and the difference is worth knowing. There is no template
+override path for it. <code>Paginator::render()</code> accepts an optional
+<code>Hubzero\Pagination\View</code> — or an array of view config, which can carry a
+<code>base_path</code> or <code>template_path</code> — and only builds the default view when it is
+given neither. So replacing the markup means the <em>calling code</em> passes a view;
+a template on its own cannot. Everything that calls <code>render()</code> with no argument
+gets <code>Views/paginator.php</code> exactly as it ships.</p>
+<p>Overriding is also how you deal with <code>.hasTip</code>. If a view emits one and you want
+a described control instead, override the layout rather than trying to patch the
+tooltip behaviour globally.</p>
+<h3 id="keep-icon-glyphs-out-of-the-accessibility-tree">Keep icon glyphs out of the accessibility tree</h3>
+<p>The three icon systems fail differently, and two of them fail on you.</p>
+<p><strong>Fontcons</strong> puts the glyph in a <code>:before</code> pseudo-element on an <code>.icon-*</code> class.
+A pseudo-element is not read by a screen reader, so a control with only a class
+and no text has no accessible name at all. Always keep the text:</p>
+<pre><code class="language-html">&lt;a class=&quot;icon-edit&quot; href=&quot;…&quot;&gt;Edit&lt;/a&gt;
+</code></pre>
+<p>If the design shows the icon alone, hide the text with your template's
+visually-hidden class rather than deleting it — and make sure that class exists
+in your stylesheet. <code>lucent</code> has <code>.vh</code>; <code>kameleon</code> has <code>.sr-only</code>; <code>kimera</code> has
+neither. See <a href="../fontcons/index.html">Fontcons</a>.</p>
+<p><strong>Socicons</strong> is worse, because it has no stylesheet at all: every consumer
+declares its own <code>@font-face</code> and picks codepoints by hand. The three share
+plugins that use it get the pattern right — the class goes on a wrapper and the
+service name stays as text:</p>
+<pre><code class="language-html">&lt;a href=&quot;…&quot; title=&quot;Share on Twitter&quot; class=&quot;popup&quot; rel=&quot;external&quot;&gt;
+	&lt;span class=&quot;share_twitter&quot;&gt;&lt;span&gt;Twitter&lt;/span&gt;&lt;/span&gt;
+&lt;/a&gt;
+</code></pre>
+<p>Do the same. A social logo with no text is a blank to a screen reader and a
+blank on screen if the font fails to load. See <a href="../socicons/index.html">Socicons</a>.</p>
+<p><strong>The SVG icons</strong> are already handled: <code>Html::asset('icon', …)</code> sets
+<code>aria-hidden=&quot;true&quot; focusable=&quot;false&quot;</code> on the wrapper. <code>focusable=&quot;false&quot;</code>
+matters because older Internet Explorer put inline SVG in the tab order.</p>
+<p><code>lucent</code> inlines its search SVG directly in the layout, with neither attribute,
+and pairs it with <code>&lt;span class=&quot;vh&quot;&gt;Search&lt;/span&gt;</code>. The visible text is the
+right half of that; the SVG should carry <code>aria-hidden=&quot;true&quot;</code> as well.</p>
+<h3 id="the-data-attribute-javascript-and-the-keyboard">The data-attribute JavaScript and the keyboard</h3>
+<p><a href="../javascript/index.html#the-data-attribute-hooks">JavaScript</a> explains the pattern
+<code>core.js</code> uses: bind by class on <code>DOMContentLoaded</code>, read <code>data-</code> attributes off
+the element. Keep using it — it is the right pattern, and it is what survives the
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/csp/csp.php"><code>System - CSP</code></a> plugin. But it binds
+<code>click</code> and nothing else, which has consequences:</p>
+<ul>
+<li><strong>Put the handler on an element that is already a control.</strong> A <code>click</code> handler
+fires from the keyboard only on natively activatable elements. <code>&lt;button&gt;</code> is
+the right choice; <code>&lt;a href=&quot;…&quot;&gt;</code> works but only responds to Enter. A <code>&lt;div&gt;</code>
+or <code>&lt;span&gt;</code> with a <code>data-task</code> is unreachable by keyboard, full stop.</li>
+<li><strong><code>href=&quot;#&quot;</code> is not a destination.</strong> Every framework helper uses it, so a
+keyboard user tabbing through an admin list hears &quot;link&quot; over and over for
+things that are buttons. In markup you write, use <code>&lt;button type=&quot;button&quot;&gt;</code>.</li>
+<li><strong>Nothing restores focus.</strong> <code>Hubzero.filterClear</code> resets the filter fields and
+submits; <code>Hubzero.gridOrder</code> submits the form; <code>Hubzero.listItemTask</code> checks a
+row and submits. Each one replaces the page. If you write a handler that
+changes content in place instead, move focus to the changed region and say so
+in a live region — neither happens for you.</li>
+<li><strong><code>Hubzero.saveOrder</code> calls <code>alert()</code></strong> when a row is checked out, and
+<code>toolbarAction</code> calls <code>alert()</code> and <code>confirm()</code>. Native dialogs are announced,
+but they discard the page's focus position when dismissed.</li>
+</ul>
+<p>If you add your own live region, put the empty region in the page from
+<code>index.php</code> and write into it, rather than creating a region at the moment you
+have something to say.</p>
+<h3 id="the-card-link-pattern">The card-link pattern</h3>
+<p>A clickable card built from a stretched <code>::after</code> on the link — so the whole
+card is a hit target — does <strong>not</strong> appear in any shipped template. The only
+place <code>.stretched-link</code> exists in <code>core/</code> is the vendored Bootstrap stylesheet at
+<code>core/assets/css/bootstrap/5.3.3/bootstrap.css</code>, which no shipped template loads.</p>
+<p>If you introduce it, know what it costs. The stretched pseudo-element makes the
+card clickable but changes nothing about focus or reading order: the focus ring
+still draws around the link text, not the card; any second link inside the card
+is covered by the overlay and becomes unclickable; and text inside the card
+cannot be selected with a mouse. The accessible name is still only the link's own
+text, so if the card's heading is the link, everything else in the card —
+the byline, the date, the summary — is invisible to a user navigating by link.</p>
+<p>Either accept that and make the link text a complete label, or use a real
+<code>&lt;a&gt;</code> around the card's heading and let the rest of the card be inert content.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 9924bea2ec</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../elements/index.html" rel="prev"><span>Previous</span>Elements and typography</a><a class="pager__next" href="../../muse/index.html" rel="next"><span>Next</span>Muse</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/14-accessibility.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Upgrade guide · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the Joomla names with its own. An extension written against , and still needs converting.…">
+  <meta name="description" content="Before 2.0 the platform used an older set of class names, and 2.0 replaced most of them. An extension written against , and still needs converting. This page…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/upgrade/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -148,6 +148,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/accessibility/index.html">Accessibility</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
@@ -184,9 +185,9 @@
         </header>
         
         <div class="prose">
-<p>Hubzero began as a fork of Joomla, and at 2.0 it replaced most of the
-Joomla names with its own. An extension written against <code>JFactory</code>,
-<code>JText</code> and <code>JRequest</code> still needs converting. This page is that
+<p>Before 2.0 the platform used an older set of class names, and 2.0 replaced
+most of them. An extension written against <code>JFactory</code>, <code>JText</code> and
+<code>JRequest</code> still needs converting. This page is that
 translation table, plus what to do about the database when you upgrade a
 hub.</p>
 <p>For the Hubzero 1.x names that changed at the same time, see
@@ -208,7 +209,7 @@ served from the same front controller.</p>
 <table>
 <thead>
 <tr>
-<th>Joomla</th>
+<th>Legacy name</th>
 <th>Hubzero</th>
 </tr>
 </thead>
@@ -267,7 +268,7 @@ one it uses — <code>use Route;</code> — or the call fatals at runtime. See
 <table>
 <thead>
 <tr>
-<th>Joomla</th>
+<th>Legacy name</th>
 <th>Hubzero</th>
 </tr>
 </thead>
@@ -295,7 +296,7 @@ echo Lang::txt('COM_EXAMPLE_HELLO_NAME', 'Hubzero');
 <table>
 <thead>
 <tr>
-<th>Joomla</th>
+<th>Legacy name</th>
 <th>Hubzero</th>
 </tr>
 </thead>
@@ -330,7 +331,7 @@ $foo = Request::getVar('foo');
 <table>
 <thead>
 <tr>
-<th>Joomla</th>
+<th>Legacy name</th>
 <th>Hubzero</th>
 </tr>
 </thead>
@@ -343,7 +344,7 @@ $foo = Request::getVar('foo');
 </table>
 <h3 id="jtoolbarhelper-and-jsubmenuhelper">JToolbarHelper and JSubMenuHelper</h3>
 <p>Class name only; the methods and their arguments are unchanged.</p>
-<pre><code class="language-php">// Joomla
+<pre><code class="language-php">// Legacy
 JToolbarHelper::publishList();
 
 // Hubzero
@@ -358,11 +359,11 @@ the link is routed.</p>
 );
 </code></pre>
 <h3 id="jhtml">JHtml</h3>
-<p>This one is not a rename. Joomla passed everything through <code>JHtml::_()</code>
+<p>This one is not a rename. The legacy API passed everything through <code>JHtml::_()</code>
 with a dotted first argument naming the sub-library and the function.
 Hubzero makes the sub-library the method and the function the first
 argument:</p>
-<pre><code class="language-php">// Joomla
+<pre><code class="language-php">// Legacy
 echo JHtml::_('grid.sort', 'COM_COLLECTIONS_COL_TITLE', 'title', $dir, $sort);
 echo JHtml::_('behavior.framework');
 
@@ -378,8 +379,8 @@ no <code>date</code> sub-library; for a relative date use <code>Date::of($d)-&gt
 <h2 id="factory-objects">Factory objects</h2>
 <p>Objects that came from <code>JFactory</code> come from the service container, and most
 have a facade in front of them. <code>method()</code> below stands for whatever you
-used to call on the Joomla object:</p>
-<pre><code class="language-php">// Joomla
+used to call on the legacy object:</p>
+<pre><code class="language-php">// Legacy
 $user = JFactory::getUser();
 echo $user-&gt;get('name');
 
@@ -389,7 +390,7 @@ echo User::get('name');
 <table>
 <thead>
 <tr>
-<th>Joomla</th>
+<th>Legacy name</th>
 <th>Container</th>
 <th>Facade</th>
 </tr>
@@ -465,7 +466,7 @@ echo Date::of('2013-08-12 17:01:34')-&gt;toLocal('g:i a'); // &quot;1:01 pm&quot
 <h2 id="users">Users</h2>
 <p>Any method called statically on <code>User</code>, other than <code>getInstance()</code>, acts on
 the current user — the equivalent of <code>JFactory::getUser()-&gt;method()</code>.</p>
-<pre><code class="language-php">// Joomla
+<pre><code class="language-php">// Legacy
 echo JFactory::getUser()-&gt;get('name');
 
 // Hubzero

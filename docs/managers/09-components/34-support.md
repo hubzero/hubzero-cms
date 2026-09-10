@@ -207,8 +207,8 @@ component-wide *Configure*, *Access Administration Interface*, *Create*,
 *Delete*, *Edit*, *Edit State*, and *Edit Own*, plus a per-object set for
 tickets (view, create, delete, edit, edit state, edit own) and for ticket
 comments and private ticket comments (view and create). These are the
-Joomla-style rules; the day-to-day permissions that decide who answers
-tickets live in the [ACL](#acl) screen instead.
+platform-wide access rules; the day-to-day permissions that decide who
+answers tickets live in the [ACL](#acl) screen instead.
 
 ## API
 

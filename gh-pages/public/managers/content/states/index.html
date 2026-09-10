@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>States, deleting and check-out · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Every list screen in the administrator interface has a state column and a state filter, and almost every one of them offers some combination of Published ,…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/states/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../categories/index.html">Categories</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">States, deleting and check-out</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-stored-values">The stored values</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-filter-labels">The filter labels</a></li>
+<li class="toc__item toc__item--l2"><a href="#which-vocabulary-a-screen-uses">Which vocabulary a screen uses</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-worked-example-member-notes">A worked example: member notes</a></li>
+<li class="toc__item toc__item--l2"><a href="#deleting">Deleting</a></li>
+<li class="toc__item toc__item--l2"><a href="#check-out">Check-out</a></li>
+<li class="toc__item toc__item--l2"><a href="#see-also">See also</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Content</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">States, deleting and check-out</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>States, deleting and check-out</h1>
+        </header>
+        
+        <div class="prose">
+<p>Every list screen in the administrator interface has a state column and a
+state filter, and almost every one of them offers some combination of
+<strong>Published</strong>, <strong>Unpublished</strong>, <strong>Archived</strong>, <strong>Trashed</strong> and <strong>All</strong>. This
+chapter says what those words mean, what number each one stores, what
+happens when you delete something, and why a record sometimes refuses to
+open because it is &quot;checked out&quot;. It is for anyone who administers a hub and
+has to decide whether a record is safe to remove.</p>
+<p>The short version: <strong>the labels on screen do not map one-to-one onto the
+values in the database, and the same word means different numbers on
+different screens.</strong> The rest of this chapter is the detail.</p>
+<h2 id="the-stored-values">The stored values</h2>
+<p>The hub has two model base classes, and both define the same three numbers.</p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a>, which
+the newer components use:</p>
+<pre><code class="language-php">	const STATE_UNPUBLISHED = 0;
+	const STATE_PUBLISHED   = 1;
+	const STATE_DELETED     = 2;
+</code></pre>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Model.php"><code>Base\Model</code></a>, which the
+older ones use, adds a fourth:</p>
+<pre><code class="language-php">	const APP_STATE_UNPUBLISHED = 0;
+
+	/**
+	 * Published state
+	 *
+	 * @var  integer
+	 */
+	const APP_STATE_PUBLISHED   = 1;
+
+	/**
+	 * Deleted state
+	 *
+	 * @var  integer
+	 */
+	const APP_STATE_DELETED     = 2;
+
+	/**
+	 * Flagged state
+	 *
+	 * @var  integer
+	 */
+	const APP_STATE_FLAGGED     = 3;
+</code></pre>
+<p>So at the platform level there are three states a record can be in —
+unpublished, published, deleted — plus a flagged value used for reported
+content. <strong>There is no archived state and no trashed state in either base
+class.</strong> <code>2</code> means deleted.</p>
+<h2 id="the-filter-labels">The filter labels</h2>
+<p>The filter dropdown on the older administrator lists is built by
+<code>publishedOptions()</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Html/Builder/Grid.php"><code>Html\Builder\Grid</code></a>,
+which <code>Html::grid('publishedOptions')</code> calls. It offers five entries:</p>
+<table>
+<thead>
+<tr>
+<th>Label on screen</th>
+<th>Value it submits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Published</strong></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><strong>Unpublished</strong></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><strong>Archived</strong></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><strong>Trashed</strong></td>
+<td><code>-2</code></td>
+</tr>
+<tr>
+<td><strong>All</strong></td>
+<td><code>*</code></td>
+</tr>
+</tbody>
+</table>
+<p>The same file's <code>published()</code> helper draws the state icon in a row using the
+same four numbers, so a row holding <code>2</code> is drawn as <strong>Archived</strong> and a row
+holding <code>-2</code> as <strong>Trashed</strong>.</p>
+<p>Compare that with the list above and the collision is obvious: <code>2</code> is
+<strong>Archived</strong> to the grid helper and <strong>deleted</strong> to both model base classes.
+And <code>-2</code> — the value behind the word <strong>Trashed</strong> on those screens — is not a
+state either base class knows about at all.</p>
+<h2 id="which-vocabulary-a-screen-uses">Which vocabulary a screen uses</h2>
+<p>There is no way to tell from the label, so use the screen itself:</p>
+<p><strong>Screens using the inherited four-value scheme</strong> store <code>1</code>, <code>0</code>, <code>2</code>
+(archived) and <code>-2</code> (trashed). The Article Manager is the clearest example:
+its state task maps exactly those four tasks onto exactly those four values,
+in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_content/admin/controllers/articles.php"><code>com_content/admin/controllers/articles.php</code></a>.
+The module manager and the language manager present the same four words.</p>
+<p><strong>Screens using the platform scheme</strong> store <code>1</code>, <code>0</code> and <code>2</code>, where <code>2</code> is a
+soft delete — the record is kept, but it is gone as far as the site is
+concerned. Deleting a blog entry on the site sets <code>state</code> to <code>2</code>; the blog
+administrator list then offers three states and one all-states entry, and it
+labels <code>2</code> <strong>Trashed</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Label in the blog list</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>- All States -</strong></td>
+<td><code>-1</code></td>
+</tr>
+<tr>
+<td><strong>Unpublished</strong></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><strong>Published</strong></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><strong>Trashed</strong></td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both screens show you a <strong>Trashed</strong> filter. On one it means <code>-2</code>; on the
+other it means <code>2</code>. Both are internally consistent. Neither is wrong. They
+are simply two different conventions living in one administrator interface.</p>
+<p>The front end is not confused by any of this, because it asks only for
+<code>state = 1</code>. Every module that lists content — see
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/modules/mod_articles_latest/helper.php"><code>mod_articles_latest</code></a>,
+for instance — filters on the published value and nothing else. Anything
+that is not published is invisible to visitors, whichever of the other
+numbers it holds.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Some tables call the column <code>published</code> rather than <code>state</code> —
+modules and languages both do. The values are the same; only the column
+name differs.</p>
+</aside>
+<h2 id="a-worked-example-member-notes">A worked example: member notes</h2>
+<p><strong>Members → Notes</strong> is the screen that shows what happens when the two
+vocabularies meet in one component, and it is worth walking through because
+every symptom here is one you could otherwise waste an afternoon on.</p>
+<p>The note editor offers three states, in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/admin/views/notes/tmpl/edit.php"><code>admin/views/notes/tmpl/edit.php</code></a>:
+<strong>Unpublished</strong> (<code>0</code>), <strong>Published</strong> (<code>1</code>) and <strong>Trashed</strong> (<code>2</code>). That is the
+platform scheme, and by the platform's own definition <code>2</code> is deleted, not
+trashed.</p>
+<p>The list screen next door uses the inherited helper. Its state column calls
+<code>Html::grid('published')</code>, so a note saved as <strong>Trashed</strong> in the editor is
+drawn in the list as <strong>Archived</strong>. The same record, the same number, two
+labels, one screen apart.</p>
+<p>Its filter dropdown is built by <code>Html::grid('publishedOptions')</code>, so it
+offers <strong>Trashed</strong> as <code>-2</code> — a value the note editor cannot produce and
+nothing in the component ever writes. Selecting it could not match a note
+even if the filter worked.</p>
+<p>It does not work. The dropdown is named <code>filter_published</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/admin/views/notes/tmpl/display.php"><code>display.php</code></a>,
+while the controller reads a request variable called <code>state</code> in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/admin/controllers/notes.php"><code>notes.php</code></a>.
+Nothing connects the two, so the filter defaults to <code>-1</code> on every request,
+the controller's <code>if ($filters['state'] &gt;= 0)</code> test never passes, and the
+list always shows every note regardless of what the dropdown says.</p>
+<p>The same screen's toolbar draws <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Archive</strong> and
+<strong>Check-in</strong> buttons. The notes controller implements none of those tasks,
+and an unrecognised task falls through to the default task, which is to
+redraw the list. So those four buttons load the page again and change
+nothing — no error, no message.</p>
+<p>One button on that toolbar does work, and it is the dangerous one. See below.</p>
+<h2 id="deleting">Deleting</h2>
+<p>There is no single delete behaviour to learn. There are three, and which one
+a screen gives you is not stated anywhere on the screen.</p>
+<p><strong>Some screens have no permanent delete at all.</strong> The Article Manager is
+one. Its <strong>Delete</strong> button issues the <code>trash</code> task, which sets <code>state</code> to
+<code>-2</code> and nothing else; the controller has no task that removes a row. Once
+an article is trashed it stays in the database until somebody removes it by
+hand.</p>
+<p><strong>Some screens have the full pair.</strong> The module manager is the model to
+follow: <strong>Trash</strong> sets <code>published</code> to <code>-2</code>, and the toolbar swaps that button
+for <strong>Empty Trash</strong> — a genuine delete — only while the trashed filter is
+active. You cannot destroy a module you have not first trashed and then gone
+looking for.</p>
+<p><strong>And some screens delete outright from a button labelled Trash.</strong> This is
+the case to know about. <code>Toolbar::trash()</code> defaults to the task <code>remove</code>, and
+whether that means &quot;set the trashed state&quot; or &quot;erase the row&quot; depends
+entirely on what the component's <code>removeTask()</code> does. Two verified cases
+where it erases:</p>
+<ul>
+<li><strong>Members → Notes.</strong> <code>removeTask()</code> calls <code>destroy()</code> on each selected
+note. The button says <strong>Trash</strong>. The note is gone.</li>
+<li><strong>Languages.</strong> <code>removeTask()</code> calls <code>destroy()</code> on each selected language.
+Its state task only ever writes <code>1</code> or <code>0</code>, so no language can reach <code>-2</code>,
+which means the <strong>Empty Trash</strong> button its list screen is coded to show can
+never appear, and its <strong>Trashed</strong> filter can never match anything. The only
+removal that screen offers is the permanent one.</li>
+</ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Before you press <strong>Trash</strong> on a screen you have not used
+before, select one expendable record and check whether it reappears under
+the <strong>Trashed</strong> filter. If it does not, that button is a permanent delete
+and your only undo is a database backup.</p>
+</aside>
+<p>A permanent delete is thorough. <code>destroy()</code> removes the record's access
+asset row first, fires a <code>system.onContentDestroy</code> event so that other
+extensions can clean up after it, and then removes the row. Nothing keeps a
+copy.</p>
+<h2 id="check-out">Check-out</h2>
+<p>Separate from state, and easily mistaken for it: a record can be locked.</p>
+<p>Several of the hub's tables carry <code>checked_out</code> and <code>checked_out_time</code>
+columns. Opening a record for editing writes your user ID and the current
+time into them, and the list screen then draws a padlock beside the row and
+refuses the edit form to anybody else. Saving or cancelling clears the pair.</p>
+<p>Nothing else does. Closing the tab, letting the session time out, or hitting
+an error mid-request all leave the lock in place, and <strong>nothing expires it</strong> —
+there is no timeout and no scheduled job that sweeps locks up. A record left
+checked out stays checked out until a person releases it.</p>
+<p>That is what <strong>Site → Maintenance → Global Check-in</strong> is for, and it is
+described in <a href="../../components/checkin/index.html">Check-in</a>. Releasing a lock
+does not save the abandoned edit; it only makes the record openable again.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A checked-out record is still published. Visitors see it exactly
+as before. Check-out only affects who may edit in the administrator
+interface.</p>
+</aside>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../articlemanager/index.html">Article Manager</a> — the four-state scheme in the screen
+where a manager most often meets it.</li>
+<li><a href="../categories/index.html">Categories</a> — categories carry their own state, and a
+published article in an unpublished category is not reachable.</li>
+<li><a href="../../components/checkin/index.html">Check-in</a> — the screen that releases stuck
+records.</li>
+</ul>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 9924bea2ec</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../categories/index.html" rel="prev"><span>Previous</span>Categories</a><a class="pager__next" href="../urls/index.html" rel="next"><span>Next</span>URLs</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/states.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

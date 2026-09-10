@@ -147,7 +147,7 @@ These are the types that exist:
 > **Note:** The old version of this page listed `editors`, `languages`,
 > `timezones`, `menu` and `helpsites`. None of those exist. The singular
 > forms — `editor`, `language`, `timezone` — are the real names, there is no
-> menu-picker field, and `helpsites` went with the Joomla help system.
+> menu-picker field, and `helpsites` went with the help system it belonged to.
 
 ## Permissions
 

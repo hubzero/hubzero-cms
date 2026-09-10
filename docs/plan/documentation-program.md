@@ -457,7 +457,7 @@ committed; `docs/_import/` is deleted at the end of phase 2.
   diffed by CI. Hand-written landings for the installation, managers,
   users, and developers books; the thirteen one-command EL8 service pages
   and the two user-note pages are consolidated into single pages by
-  importer rules, so reruns reproduce them; the Joomla-era unpublished
+  importer rules, so reruns reproduce them; the pre-2.0 unpublished
   sections were dropped.
 - **2026-09-09, phase 3 begins.** Twelve components reviewed against the
   code: knowledge base, answers, blog, forum, wiki, tags, events, citations,

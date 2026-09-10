@@ -22,7 +22,7 @@ holds three screens:
 | Menu entry | Screen | Chapter |
 |---|---|---|
 | **Article Manager** | The list of articles and the article editor. | [Article Manager](articlemanager.md) |
-| **Category Manager** | The categories articles are filed under. | [Categories](articlemanager.md#categories) |
+| **Category Manager** | The categories articles are filed under. | [Categories](categories.md) |
 | **Media Manager** | The shared image and file library the editor's image button browses. | — |
 
 **Add New Article** and **Add New Category** appear under their managers when
@@ -58,8 +58,13 @@ Both are explained in [URLs](urls.md), along with redirects.
 
 - [Article Manager](articlemanager.md) — the article list, the editor,
   categories, and the publishing workflow.
+- [Categories](categories.md) — the shared category manager, which serves
+  articles, user notes, the knowledge base, and events.
 - [URLs](urls.md) — how an article's address is built, and how to redirect
   one address to another.
+- [States, deleting and check-out](states.md) — what published, unpublished,
+  archived and trashed store, which delete buttons are permanent, and why a
+  record gets stuck checked out.
 
 Every option on the Article Manager's **Options** screen is listed in the
 [Content configuration reference](../../reference/configuration/components/content.md).

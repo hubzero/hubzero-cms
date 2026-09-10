@@ -78,8 +78,7 @@ Two shorthands exist for a single-segment address, `/{alias}`:
 
 > **Note:** Older Hubzero documentation described URLs as built from a
 > **section**, a category, and an article, with segments collapsing when they
-> shared an alias. Sections have not existed since Joomla 1.6, and Hubzero
-> 2.4 has none. Categories nest instead, to any depth, and the path above is
+> shared an alias. Hubzero 2.4 has no sections. Categories nest instead, to any depth, and the path above is
 > what the router matches.
 
 If nothing matches, the hub falls back to the component router, which

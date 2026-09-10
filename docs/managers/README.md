@@ -12,12 +12,18 @@ screen by screen.
 
 ## Where to start
 
-If the hub is new, read [Getting started](getting-started/README.md) and
-then [Configuring](configuring/README.md). They cover the first login, the
-global configuration, and the choices that are hard to change later.
+If the hub is new, read
+[The administrator interface](01-getting-started/administrator.md) and then
+[The first week with a new hub](01-getting-started/02-newhub.md). The first
+covers the login and the back end's menus; the second is the ordered path
+through the choices that are hard to change later — mail, registration,
+access, the front page, and the scheduled jobs — with a link to the chapter
+covering each. [Configuring](05-configuring/README.md) has the settings
+screens in full.
 
 If you are taking over a running hub, start with
-[Daily maintenance](maintenance/README.md) and [Users](users/README.md).
+[Daily maintenance](03-maintenance/README.md) and
+[Users](06-users/README.md).
 
 ## In this book
 
