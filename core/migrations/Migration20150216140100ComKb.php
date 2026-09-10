@@ -32,7 +32,7 @@ class Migration20150216140100ComKb extends Base
             if ($exists) {
                 $this->db->getQuery(true)
                     ->update('#__faq')
-                    ->set('access = access + 1')
+                    ->setRaw('access', 'access + 1')
                     ->execute();
             }
         }
@@ -46,7 +46,7 @@ class Migration20150216140100ComKb extends Base
             if ($exists) {
                 $this->db->getQuery(true)
                     ->update('#__faq_categories')
-                    ->set('access = access + 1')
+                    ->setRaw('access', 'access + 1')
                     ->execute();
             }
         }
@@ -68,7 +68,7 @@ class Migration20150216140100ComKb extends Base
             if (!$exists) {
                 $this->db->getQuery(true)
                     ->update('#__faq')
-                    ->set('access = access - 1')
+                    ->setRaw('access', 'access - 1')
                     ->execute();
             }
         }
@@ -82,7 +82,7 @@ class Migration20150216140100ComKb extends Base
             if (!$exists) {
                 $this->db->getQuery(true)
                     ->update('#__faq_categories')
-                    ->set('access = access - 1')
+                    ->setRaw('access', 'access - 1')
                     ->execute();
             }
         }

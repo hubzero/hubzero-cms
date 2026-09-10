@@ -25,7 +25,7 @@ class Migration20150612203219Migrations extends Base
         if ($schema->tableExists('#__migrations')) {
             $this->db->getQuery(true)
                 ->update('#__migrations')
-                ->set(['scope' => $this->db->quote('core/migrations')])
+                ->set(['scope' => 'core/migrations'])
                 ->where('scope', '=', 'migrations')
                 ->execute();
         }
@@ -41,7 +41,7 @@ class Migration20150612203219Migrations extends Base
         if ($schema->tableExists('#__migrations')) {
             $this->db->getQuery(true)
                 ->update('#__migrations')
-                ->set(['scope' => $this->db->quote('migrations')])
+                ->set(['scope' => 'migrations'])
                 ->where('scope', '=', 'core/migrations')
                 ->execute();
         }
