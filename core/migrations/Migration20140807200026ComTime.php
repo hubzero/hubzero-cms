@@ -24,7 +24,7 @@ class Migration20140807200026ComTime extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__time_hubs') && !$schema->hasColumn('#__time_hubs', 'asset_id')) {
-            $schema->addColumn('asset_id')->integer()->nullable()->default(null);
+            $schema->addColumn('#__time_hubs', 'asset_id')->integer()->nullable()->default(null);
         }
     }
 

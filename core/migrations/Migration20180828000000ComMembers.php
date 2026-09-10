@@ -30,7 +30,7 @@ class Migration20180828000000ComMembers extends Base
                 ->select('group_concat(id)', 'duplicates')
                 ->from('#__user_profiles')
                 ->group(['user_id', 'profile_key', 'profile_value'])
-                ->having('count(*) > 1')
+                ->havingRaw('count(*) > 1')
                 ->order('user_id', 'ASC')
                 ->order('profile_key', 'ASC')
                 ->loadObjectList();
