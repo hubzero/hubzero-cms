@@ -12,11 +12,9 @@
   {
    "slug": "installation",
    "title": "Installation",
-   "pages": 22,
+   "pages": 1,
    "counts": {
-    "rewritten": 1,
-    "merged": 2,
-    "imported": 19
+    "draft": 1
    }
   },
   {
@@ -81,11 +79,9 @@
   }
  ],
  "totals": {
-  "draft": 5,
+  "draft": 6,
   "reviewed": 24,
-  "rewritten": 240,
-  "merged": 2,
-  "imported": 19,
+  "rewritten": 239,
   "generated": 153
  }
 }

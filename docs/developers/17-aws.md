@@ -58,6 +58,6 @@ overridden per client.
 ## Installing a hub
 
 Hubzero installs from packages on Enterprise Linux 8 or a compatible rebuild,
-on a cloud instance or anywhere else. Follow
-[Installation](../installation/README.md); nothing in it changes because the
-machine happens to be an EC2 instance.
+on a cloud instance or anywhere else. Nothing about the machine
+being an EC2 instance changes how a hub is installed; see
+[Installation](../installation/README.md) for where that is documented.

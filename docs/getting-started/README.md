@@ -16,7 +16,7 @@ documentation takes for granted and points you to the book you need.
 
 | You want to… | Read |
 |---|---|
-| Install a hub on your own servers | [Installation](../installation/README.md) |
+| Install a hub on your own servers | [Installation](../installation/README.md) — coming soon |
 | Administer a hub that is already running | [Hub managers](../managers/README.md) |
 | Use a hub's features as a member | [Hub users](../users/README.md) |
 | Publish or run simulation tools | [Tools](../tools/README.md) |

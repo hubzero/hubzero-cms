@@ -1,86 +1,111 @@
 {
-  "site_name": "Hubzero",
-  "site_title": "Hubzero Documentation",
-  "site_tagline": "Documentation for building, running, and extending a hub.",
-  "site_description": "Hubzero is an open source platform for scientific collaboration websites. These books cover installing and administering a hub, using one, and developing components, plugins, modules, and templates for the Hubzero CMS.",
-  "site_url": "https://hubzero.github.io/hubzero-cms",
-  "github_href": "https://github.com/hubzero/hubzero-cms",
-  "blob_ref": "2.4-main",
-  "version": "2.4",
-  "copyright": "Purdue University",
-  "start": [
-    {"title": "Install a hub", "text": "Requirements, packages, and the first configuration.", "href": "installation/"},
-    {"title": "Run a hub", "text": "The administrator's guide, component by component.", "href": "managers/"},
-    {"title": "Build on Hubzero", "text": "Components, plugins, modules, templates, and the API.", "href": "developers/"}
-  ],
-  "books": [
-    {
-      "slug": "getting-started",
-      "title": "Getting started",
-      "dir": "docs/getting-started",
-      "audience": "Start here",
-      "summary": "What a hub is, the vocabulary the rest of the documentation uses, and where to go next."
-    },
-    {
-      "slug": "installation",
-      "title": "Installation",
-      "dir": "docs/installation",
-      "audience": "Run a hub",
-      "summary": "Requirements, installing from packages on Enterprise Linux, first-run configuration, and upgrades."
-    },
-    {
-      "slug": "managers",
-      "title": "Hub managers",
-      "dir": "docs/managers",
-      "audience": "Run a hub",
-      "summary": "Administering a hub: configuration, users and access, content, extensions, maintenance, and each component's administrative side."
-    },
-    {
-      "slug": "users",
-      "title": "Hub users",
-      "dir": "docs/users",
-      "audience": "Use a hub",
-      "summary": "Using a hub's features: profiles, groups, projects, publications, resources, the wiki, forums, courses, and more."
-    },
-    {
-      "slug": "tools",
-      "title": "Tools",
-      "dir": "docs/tools",
-      "audience": "Use a hub",
-      "summary": "The tool platform: publishing simulation tools, invoke scripts, the submit command, Jupyter, and tool administration."
-    },
-    {
-      "slug": "developers",
-      "title": "Developers",
-      "dir": "docs/developers",
-      "audience": "Build on Hubzero",
-      "summary": "Extending the CMS: the framework foundation, components, plugins, modules, templates, the database layer, and the REST API."
-    },
-    {
-      "slug": "contributing",
-      "title": "Contributing",
-      "dir": "docs/contributing",
-      "audience": "Build on Hubzero",
-      "summary": "Coding conventions, commit practice, testing, and how to send changes back to the project."
-    },
-    {
-      "slug": "reference",
-      "title": "Reference",
-      "dir": "docs/reference",
-      "audience": "Reference",
-      "summary": "Generated references: configuration parameters, REST endpoints, muse console commands, and events."
-    },
-    {
-      "slug": "releases",
-      "title": "Releases",
-      "dir": "docs/releases",
-      "audience": "Reference",
-      "summary": "Release notes and upgrade guidance."
-    }
-  ],
-  "pages": [
-    {"slug": "docs", "source": "docs/README.md", "title": "All books", "index": true},
-    {"slug": "style", "source": "docs/STYLE.md", "title": "Writing guide"},
-    {"slug": "license", "source": "docs/LICENSE.md", "title": "License"}
-  ]
+ "site_name": "Hubzero",
+ "site_title": "Hubzero Documentation",
+ "site_tagline": "Documentation for building, running, and extending a hub.",
+ "site_description": "Hubzero is an open source platform for scientific collaboration websites. These books cover installing and administering a hub, using one, and developing components, plugins, modules, and templates for the Hubzero CMS.",
+ "site_url": "https://hubzero.github.io/hubzero-cms",
+ "github_href": "https://github.com/hubzero/hubzero-cms",
+ "blob_ref": "2.4-main",
+ "version": "2.4",
+ "copyright": "Purdue University",
+ "start": [
+  {
+   "title": "Install a hub",
+   "text": "Coming soon: the web installer replaces the old package process.",
+   "href": "installation/"
+  },
+  {
+   "title": "Run a hub",
+   "text": "The administrator's guide, component by component.",
+   "href": "managers/"
+  },
+  {
+   "title": "Build on Hubzero",
+   "text": "Components, plugins, modules, templates, and the API.",
+   "href": "developers/"
+  }
+ ],
+ "books": [
+  {
+   "slug": "getting-started",
+   "title": "Getting started",
+   "dir": "docs/getting-started",
+   "audience": "Start here",
+   "summary": "What a hub is, the vocabulary the rest of the documentation uses, and where to go next."
+  },
+  {
+   "slug": "installation",
+   "title": "Installation",
+   "dir": "docs/installation",
+   "audience": "Run a hub",
+   "summary": "Being rewritten for the new web installer."
+  },
+  {
+   "slug": "managers",
+   "title": "Hub managers",
+   "dir": "docs/managers",
+   "audience": "Run a hub",
+   "summary": "Administering a hub: configuration, users and access, content, extensions, maintenance, and each component's administrative side."
+  },
+  {
+   "slug": "users",
+   "title": "Hub users",
+   "dir": "docs/users",
+   "audience": "Use a hub",
+   "summary": "Using a hub's features: profiles, groups, projects, publications, resources, the wiki, forums, courses, and more."
+  },
+  {
+   "slug": "tools",
+   "title": "Tools",
+   "dir": "docs/tools",
+   "audience": "Use a hub",
+   "summary": "The tool platform: publishing simulation tools, invoke scripts, the submit command, Jupyter, and tool administration."
+  },
+  {
+   "slug": "developers",
+   "title": "Developers",
+   "dir": "docs/developers",
+   "audience": "Build on Hubzero",
+   "summary": "Extending the CMS: the framework foundation, components, plugins, modules, templates, the database layer, and the REST API."
+  },
+  {
+   "slug": "contributing",
+   "title": "Contributing",
+   "dir": "docs/contributing",
+   "audience": "Build on Hubzero",
+   "summary": "Coding conventions, commit practice, testing, and how to send changes back to the project."
+  },
+  {
+   "slug": "reference",
+   "title": "Reference",
+   "dir": "docs/reference",
+   "audience": "Reference",
+   "summary": "Generated references: configuration parameters, REST endpoints, muse console commands, and events."
+  },
+  {
+   "slug": "releases",
+   "title": "Releases",
+   "dir": "docs/releases",
+   "audience": "Reference",
+   "summary": "Release notes and upgrade guidance."
+  }
+ ],
+ "pages": [
+  {
+   "slug": "docs",
+   "source": "docs/README.md",
+   "title": "All books",
+   "index": true
+  },
+  {
+   "slug": "style",
+   "source": "docs/STYLE.md",
+   "title": "Writing guide"
+  },
+  {
+   "slug": "license",
+   "source": "docs/LICENSE.md",
+   "title": "License"
+  }
+ ]
 }
