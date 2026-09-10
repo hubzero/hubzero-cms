@@ -21,7 +21,7 @@ documentation takes for granted and points you to the book you need.
 | Use a hub's features as a member | [Hub users](../users/README.md) |
 | Publish or run simulation tools | [Tools](../tools/README.md) |
 | Write components, plugins, modules, or templates | [Developers](../developers/README.md) |
-| Send changes back to the Hubzero project | [Contributing](../contributing/README.md) |
+| Send changes back to the Hubzero project | [Contributing](../developers/18-contributing.md) |
 | Look up a configuration parameter, API endpoint, or console command | [Reference](../reference/README.md) |
 
 ## In this book

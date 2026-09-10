@@ -1,18 +1,29 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 68f32bba55
+reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/index/contributions
 -->
-# Contributions
+# Contributing
+
+Hubzero is an open source project with contributions from many groups and
+organizations. This book explains how to work on the code in a way that
+lands cleanly: the conventions the codebase follows, how commits are
+written, how to run the tests, and how to send a change back.
+
+
+## Reporting problems
+
+Report bugs and security issues at https://help.hubzero.org/support.
+
+## Contributions
 
 How a change gets from your working copy into Hubzero. The short version: fork
 [hubzero/hubzero-cms](https://github.com/hubzero/hubzero-cms), branch from the
 release line you are fixing, open a pull request, and say in it what broke and
 how you tested the fix.
 
-## The repository
+### The repository
 
 The CMS is one repository, `hubzero/hubzero-cms`, with two top-level trees:
 
@@ -72,7 +83,7 @@ Third-party code the CMS includes or derives from is listed in
 [`ACKNOWLEDGMENTS.md`](../../ACKNOWLEDGMENTS.md), which also lists the
 contributors.
 
-## Branches
+### Branches
 
 Each release line has a `X.Y-main` branch: `2.2-main`, `2.3-main`, `2.4-main`.
 `2.4-main` is the current line and the repository's default branch. Point
@@ -86,7 +97,7 @@ to you; nothing depends on it.
 > branch and to work against a stable branch. There is no `master` branch in
 > this repository and has not been for several release lines. Use `2.4-main`.
 
-## Before you open a pull request
+### Before you open a pull request
 
 Install the development dependencies once:
 
@@ -102,7 +113,7 @@ Then:
 php tools/lint/missing-facade-imports.php
 ```
 
-Read [PHP Coding Style](conventions/01-phpcodingstyles.md#checking-your-work)
+Read [PHP Coding Style](19-conventions.md#checking-your-work)
 for what each of those catches and how to run phpcs usefully against a
 codebase that has no committed ruleset.
 
@@ -112,7 +123,7 @@ If you touched anything under `docs/`, rebuild the site and commit the result:
 sh tools/docs/rebuild.sh
 ```
 
-## What the build checks
+### What the build checks
 
 Two workflows run on every pull request.
 
@@ -131,7 +142,7 @@ with `--fix` to insert the missing `use` statements.
 
 Neither workflow runs phpcs. Style is caught in review.
 
-## The pull request
+### The pull request
 
 The [pull request template](../../.github/pull_request_template.md) asks for:
 
@@ -148,12 +159,12 @@ Every pull request needs a review before it merges;
 [`CODEOWNERS`](../../.github/CODEOWNERS) requests one automatically.
 
 Write the commit messages the way
-[Commit Messages](conventions/05-commits.md) describes: an extension prefix, a
+[Commit Messages](19-conventions.md#commit-messages) describes: an extension prefix, a
 sentence, and a body that says why.
 
-## What makes a change acceptable
+### What makes a change acceptable
 
-Beyond the [conventions](conventions/README.md):
+Beyond the [conventions](19-conventions.md):
 
 - **It works, and you say how you know.** A description of what you tested is
   worth more than an assertion that you did.
@@ -178,7 +189,7 @@ Before proposing a feature rather than a fix, consider:
 3. What does it cost to maintain?
 4. Does something similar already exist that could be extended instead?
 
-## Reporting problems
+### Reporting problems
 
 - **Bugs and feature requests**: https://help.hubzero.org/support, or a GitHub
   issue using the [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
@@ -191,7 +202,7 @@ Some faults come from a Composer package rather than from Hubzero. When that
 happens the maintainers will usually work around it here and point you at the
 package's own tracker.
 
-## A development environment
+### A development environment
 
 You need a working hub to develop against; the CMS does not run standalone.
 [Development Environment](../developers/01-getting-started/06-devenvironment.md)
@@ -217,3 +228,52 @@ great deal more than migrations.
 
 > **Tip:** Break your development environment freely. Snapshot the virtual
 > machine first and roll back when you have learned what you needed to.
+
+## Working on the documentation
+
+The documentation is Markdown under `docs/` in the hubzero-cms repository,
+built into the site you are reading by the scripts under `gh-pages/`. It is
+edited the same way as the code: on a branch, in a pull request, with the
+site rebuilt and checked before it merges.
+
+### Editing a page
+
+Every page has an **Edit this page on GitHub** link in its footer. For
+anything larger than a typo, clone the repository and work locally:
+
+```bash
+python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
+sh tools/docs/rebuild.sh
+python3 -m http.server -d gh-pages/public 8000
+```
+
+Then open http://localhost:8000/. Rebuild after each change; the build
+takes a few seconds.
+
+The [writing guide](../STYLE.md) covers file naming, the metadata header,
+links, code blocks, callouts, and house style.
+
+### Reviewing an imported page
+
+Most pages were imported from help.hubzero.org and carry a banner until
+someone checks them against the code. To review one:
+
+1. Read the page against the current code on `2.4-main`: the controllers,
+   views, and `config.xml` of the component it describes. Fix or rewrite
+   what has drifted. Replace pasted code with an include directive that
+   pulls the real file.
+2. Regenerate any screenshots from a current hub.
+3. Change the header to `status: reviewed`, add `reviewed-against` with the
+   branch and commit you checked, and `reviewed` with the date.
+4. Rebuild, commit `gh-pages/public/` with the change, and open a pull
+   request.
+
+The [status page](https://hubzero.github.io/hubzero-cms/status/) shows what
+is left in each book.
+
+### Committing
+
+Commit `gh-pages/public/` together with the source change. The Pages
+workflow rebuilds the site from source on every push and fails if the
+committed copy does not match, so a stale copy cannot be deployed by
+accident.

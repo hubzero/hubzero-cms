@@ -47,6 +47,10 @@ extension.
 - [Running on AWS](17-aws.md) — what in this repository is specific to it,
   which is very little.
 - [Video tutorials](02-tutorials.md).
+- [Contributing](18-contributing.md) — sending a change back, and working
+  on these pages.
+- [Conventions](19-conventions.md) — PHP style and naming, CSS, the
+  database schema, and commit messages.
 
 ## Reference
 
@@ -54,4 +58,4 @@ The generated [configuration](../reference/configuration/README.md),
 [REST API](../reference/api/README.md), [muse](../reference/muse.md),
 and [events](../reference/events/README.md) references list what the code
 declares today. Coding conventions and the contribution process are in the
-[Contributing](../contributing/README.md) book.
+[Contributing](18-contributing.md) book.
