@@ -228,61 +228,61 @@ class TableBuilder
     /**
      * Add an integer column
      *
-     * @param  string $name     Column name
-     * @param  bool   $unsigned Whether the column is unsigned
+     * @param  string     $name     Column name
+     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
-    public function integer(string $name, bool $unsigned = false): self
+    public function integer(string $name, $unsigned = false): self
     {
-        return $this->column($name, 'integer')->unsigned($unsigned);
+        return $this->column($name, 'integer')->applyOptions($unsigned);
     }
 
     /**
      * Add a tiny integer column
      *
-     * @param  string $name     Column name
-     * @param  bool   $unsigned Whether the column is unsigned
+     * @param  string     $name     Column name
+     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
-    public function tinyInteger(string $name, bool $unsigned = false): self
+    public function tinyInteger(string $name, $unsigned = false): self
     {
-        return $this->column($name, 'tinyInteger')->unsigned($unsigned);
+        return $this->column($name, 'tinyInteger')->applyOptions($unsigned);
     }
 
     /**
      * Add a small integer column
      *
-     * @param  string $name     Column name
-     * @param  bool   $unsigned Whether the column is unsigned
+     * @param  string     $name     Column name
+     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
-    public function smallInteger(string $name, bool $unsigned = false): self
+    public function smallInteger(string $name, $unsigned = false): self
     {
-        return $this->column($name, 'smallInteger')->unsigned($unsigned);
+        return $this->column($name, 'smallInteger')->applyOptions($unsigned);
     }
 
     /**
      * Add a medium integer column
      *
-     * @param  string $name     Column name
-     * @param  bool   $unsigned Whether the column is unsigned
+     * @param  string     $name     Column name
+     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
-    public function mediumInteger(string $name, bool $unsigned = false): self
+    public function mediumInteger(string $name, $unsigned = false): self
     {
-        return $this->column($name, 'mediumInteger')->unsigned($unsigned);
+        return $this->column($name, 'mediumInteger')->applyOptions($unsigned);
     }
 
     /**
      * Add a big integer column
      *
-     * @param  string $name     Column name
-     * @param  bool   $unsigned Whether the column is unsigned
+     * @param  string     $name     Column name
+     * @param  bool|array $unsigned True if the column is unsigned, or its modifiers
      * @return $this
      */
-    public function bigInteger(string $name, bool $unsigned = false): self
+    public function bigInteger(string $name, $unsigned = false): self
     {
-        return $this->column($name, 'bigInteger')->unsigned($unsigned);
+        return $this->column($name, 'bigInteger')->applyOptions($unsigned);
     }
 
     /**
@@ -452,56 +452,61 @@ class TableBuilder
     /**
      * Add an unsigned integer column
      *
-     * @param  string $name Column name
+     * @param  string $name      Column name
+     * @param  array  $modifiers Modifiers to apply to the column
      * @return $this
      */
-    public function unsignedInteger(string $name): self
+    public function unsignedInteger(string $name, array $modifiers = []): self
     {
-        return $this->column($name, 'INT(10) UNSIGNED');
+        return $this->column($name, 'INT(10) UNSIGNED')->applyOptions($modifiers);
     }
 
     /**
      * Add an unsigned big integer column
      *
-     * @param  string $name Column name
+     * @param  string $name      Column name
+     * @param  array  $modifiers Modifiers to apply to the column
      * @return $this
      */
-    public function unsignedBigInteger(string $name): self
+    public function unsignedBigInteger(string $name, array $modifiers = []): self
     {
-        return $this->column($name, 'BIGINT(20) UNSIGNED');
+        return $this->column($name, 'BIGINT(20) UNSIGNED')->applyOptions($modifiers);
     }
 
     /**
      * Add an unsigned tiny integer column
      *
-     * @param  string $name Column name
+     * @param  string $name     Column name
+     * @param  array  $modifiers Modifiers to apply to the column
      * @return $this
      */
-    public function unsignedTinyInteger(string $name): self
+    public function unsignedTinyInteger(string $name, array $modifiers = []): self
     {
-        return $this->tinyInteger($name, true);
+        return $this->tinyInteger($name, true)->applyOptions($modifiers);
     }
 
     /**
      * Add an unsigned small integer column
      *
-     * @param  string $name Column name
+     * @param  string $name     Column name
+     * @param  array  $modifiers Modifiers to apply to the column
      * @return $this
      */
-    public function unsignedSmallInteger(string $name): self
+    public function unsignedSmallInteger(string $name, array $modifiers = []): self
     {
-        return $this->smallInteger($name, true);
+        return $this->smallInteger($name, true)->applyOptions($modifiers);
     }
 
     /**
      * Add an unsigned medium integer column
      *
-     * @param  string $name Column name
+     * @param  string $name     Column name
+     * @param  array  $modifiers Modifiers to apply to the column
      * @return $this
      */
-    public function unsignedMediumInteger(string $name): self
+    public function unsignedMediumInteger(string $name, array $modifiers = []): self
     {
-        return $this->mediumInteger($name, true);
+        return $this->mediumInteger($name, true)->applyOptions($modifiers);
     }
 
     /**
@@ -902,6 +907,64 @@ class TableBuilder
     public function comment(string $comment): self
     {
         return $this->setModifier('comment', $comment);
+    }
+
+    /**
+     * Apply the trailing argument of a column helper to the column just added
+     *
+     * The argument is normally a flag saying the column is unsigned. Passing
+     * the column's modifiers instead reads the same way at the call site, and
+     * migrations do, so both are understood here rather than at each of them.
+     *
+     * @param   bool|array  $options  True if unsigned, or a map of modifiers
+     * @return  $this
+     */
+    private function applyOptions($options): self
+    {
+        if (!is_array($options)) {
+            return $this->unsigned((bool) $options);
+        }
+
+        foreach ($options as $name => $value) {
+            switch ($name) {
+                case 'autoIncrement':
+                case 'auto_increment':
+                    $this->autoIncrement((bool) $value);
+                    break;
+
+                case 'unsigned':
+                    $this->unsigned((bool) $value);
+                    break;
+
+                case 'nullable':
+                    $this->nullable((bool) $value);
+                    break;
+
+                case 'default':
+                    $this->default($value);
+                    break;
+
+                case 'length':
+                    $this->length((int) $value);
+                    break;
+
+                case 'comment':
+                    $this->comment((string) $value);
+                    break;
+
+                case 'primary':
+                    if ($value && ($column = array_key_last($this->columns)) !== null) {
+                        $this->primaryKey($column);
+                    }
+                    break;
+
+                default:
+                    $this->setModifier($name, $value);
+                    break;
+            }
+        }
+
+        return $this;
     }
 
     /**
