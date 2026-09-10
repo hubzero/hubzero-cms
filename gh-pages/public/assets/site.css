@@ -846,7 +846,12 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 640px) {
-  .shelf { grid-template-columns: 1fr; gap: .9rem; }
+  /* One volume across, and a larger one: a cover stretched the full width of
+     a phone stops looking like a book, so it is capped and centred. */
+  .shelf { grid-template-columns: minmax(0, 1fr); gap: 1rem; justify-items: center; }
+  .cover { width: 100%; max-width: 16rem; min-height: 22.5rem; }
+  .cover__title { font-size: 1.45rem; }
+  .cover__mark { width: 1.9rem; }
 }
 
 @media (max-width: 520px) {
