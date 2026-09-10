@@ -89,6 +89,10 @@ class AdminUser
             return $existingAdmin;
         }
 
+        if (Answers::isUnattended()) {
+            return self::createUnattended($pdo, $prefix, $ansi, $defaults);
+        }
+
         // Collect user details
         $userData = [];
 
@@ -143,6 +147,61 @@ class AdminUser
 
         self::output("\n", $ansi);
         self::output("\e[32mAdmin user created successfully!\e[39m\n", $ansi);
+        self::output("\n", $ansi);
+        self::output("  Username: \e[32m{$userData['username']}\e[39m\n", $ansi);
+        self::output("  Email:    \e[32m{$userData['email']}\e[39m\n", $ansi);
+
+        return $userData;
+    }
+
+    /**
+     * Create the admin account from the answers given up front
+     *
+     * @param   \PDO    $pdo       PDO connection
+     * @param   string  $prefix    Table prefix
+     * @param   bool    $ansi      Whether to use ANSI color output
+     * @param   array   $defaults  Values carried over from the site settings
+     * @return  array|null  User data array, or null if an answer was unusable
+     */
+    private static function createUnattended($pdo, $prefix, $ansi, $defaults)
+    {
+        $answers = Answers::section('admin');
+
+        $userData = [
+            'name'     => $answers['name'] ?? $defaults['name'] ?? 'Site Administrator',
+            'username' => $answers['username'] ?? 'admin',
+            'email'    => $answers['email'] ?? $defaults['email'] ?? '',
+            'password' => $answers['password'] ?? '',
+        ];
+
+        self::output("\n", $ansi);
+
+        if (!preg_match('/^[a-zA-Z][a-zA-Z0-9_]{2,29}$/', $userData['username'])) {
+            $msg = "\e[31mNot a usable username: {$userData['username']}\e[39m\n";
+            self::output($msg, $ansi, true);
+            self::output("Must start with a letter, 3-30 chars, alphanumeric/underscore only.\n", $ansi, true);
+            return null;
+        }
+
+        if (!preg_match('/^[^@]+@[^@]+$/', $userData['email'])) {
+            self::output("\e[31mNot a valid admin email address: {$userData['email']}\e[39m\n", $ansi, true);
+            return null;
+        }
+
+        if (strlen($userData['password']) < self::MIN_PASSWORD_LENGTH) {
+            $minLen = self::MIN_PASSWORD_LENGTH;
+            self::output("\e[31mThe admin password must be at least {$minLen} characters.\e[39m\n", $ansi, true);
+            return null;
+        }
+
+        self::output("Creating admin user... ", $ansi);
+
+        if (self::createUser($pdo, $prefix, $userData) === null) {
+            self::output("\e[31mFailed.\e[39m\n", $ansi, true);
+            return null;
+        }
+
+        self::output("\e[32mDone.\e[39m\n", $ansi);
         self::output("\n", $ansi);
         self::output("  Username: \e[32m{$userData['username']}\e[39m\n", $ansi);
         self::output("  Email:    \e[32m{$userData['email']}\e[39m\n", $ansi);
