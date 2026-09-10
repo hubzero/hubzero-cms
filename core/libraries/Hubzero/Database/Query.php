@@ -16,6 +16,84 @@ namespace Hubzero\Database;
 class Query
 {
     /**
+     * Render the query as SQL
+     *
+     * @return  string
+     **/
+    public function build()
+    {
+        return $this->toString();
+    }
+
+    /**
+     * End the current condition group
+     *
+     * @return  $this
+     **/
+    public function endAndGroup()
+    {
+        return $this->endGroup();
+    }
+
+    /**
+     * End the current condition group
+     *
+     * @return  $this
+     **/
+    public function endOrGroup()
+    {
+        return $this->endGroup();
+    }
+
+    /**
+     * Add a "where column is not null" clause
+     *
+     * @param   string  $column  The column to check
+     * @param   int     $depth   The depth level of the clause
+     * @return  $this
+     **/
+    public function whereNotNull($column, $depth = 0)
+    {
+        return $this->whereIsNotNull($column, $depth);
+    }
+
+    /**
+     * Add a "where column is null" clause
+     *
+     * @param   string  $column  The column to check
+     * @param   int     $depth   The depth level of the clause
+     * @return  $this
+     **/
+    public function whereNull($column, $depth = 0)
+    {
+        return $this->whereIsNull($column, $depth);
+    }
+
+    /**
+     * Add an or "where column is not null" clause
+     *
+     * @param   string  $column  The column to check
+     * @param   int     $depth   The depth level of the clause
+     * @return  $this
+     **/
+    public function orWhereNotNull($column, $depth = 0)
+    {
+        return $this->orWhereIsNotNull($column, $depth);
+    }
+
+    /**
+     * Add an or "where column is null" clause
+     *
+     * @param   string  $column  The column to check
+     * @param   int     $depth   The depth level of the clause
+     * @return  $this
+     **/
+    public function orWhereNull($column, $depth = 0)
+    {
+        return $this->orWhereIsNull($column, $depth);
+    }
+
+    /**
      * The actual database connection object
      *
      * @var  object
@@ -456,6 +534,11 @@ class Query
      **/
     public function select($column, $as = null, $count = false)
     {
+        // A query or a closure names where the rows come from, not a column
+        if ($column instanceof self || $column instanceof \Closure) {
+            return $this->fromSelect($column);
+        }
+
         // TODO: Consider Laravel-style select('a', 'b', ...) support in the future.
         // Right now, select('a', 'b') is treated as column + alias for BC with existing code.
         // If we add variadic support, it must not break alias usage.
@@ -736,12 +819,13 @@ class Query
     /**
      * Applies an update statement to the pending query
      *
-     * @param   string  $table  The table whose fields will be updated
+     * @param   string  $table  The table to update
+     * @param   string  $as     An alias for the table
      * @return  $this
      **/
-    public function update($table)
+    public function update($table, $as = null)
     {
-        $this->syntax->setUpdate($table);
+        $this->syntax->setUpdate($as ? $table . ' AS ' . $as : $table);
         $this->type = 'update';
         return $this;
     }
@@ -1091,6 +1175,16 @@ class Query
      **/
     public function where($column, $operator, $value, $logical = 'and', $depth = 0)
     {
+        // A closure standing in for the values of an IN builds a subquery,
+        // which the dedicated clauses already know how to do
+        if ($value instanceof \Closure) {
+            $comparison = strtoupper(trim((string) $operator));
+
+            if ($comparison === 'IN' || $comparison === 'NOT IN') {
+                return $this->whereInSub($column, $value, $logical, $comparison === 'NOT IN', $depth);
+            }
+        }
+
         // Use effective depth (from group stack if no explicit depth)
         $effectiveDepth = $this->getEffectiveDepth($depth);
 
@@ -2669,11 +2763,16 @@ class Query
     /**
      * Sets the values to be modified in the database
      *
-     * @param   array  $data  The data to be modified
+     * @param   array|string  $data   The data to set, or a single column name
+     * @param   mixed         $value  The value for that column
      * @return  $this
      **/
-    public function set($data)
+    public function set($data, $value = null)
     {
+        if (func_num_args() > 1) {
+            $data = [$data => $value];
+        }
+
         $this->syntax->setSet($data);
         return $this;
     }
@@ -2712,6 +2811,17 @@ class Query
             $column => Expression::column($targetColumn)
         ]);
         return $this;
+    }
+
+    /**
+     * Render an expression as SQL for this connection
+     *
+     * @param   Expression  $expression  The expression to render
+     * @return  string
+     */
+    public function buildExpression(Expression $expression)
+    {
+        return $this->syntax->buildExpression($expression);
     }
 
     /**
@@ -2861,12 +2971,15 @@ class Query
     /**
      * Sets the group by element on the query
      *
-     * @param   string  $column  The column on which to apply the group by
+     * @param   array|string  $column  The column, or columns, to group by
      * @return  $this
      **/
     public function group($column)
     {
-        $this->syntax->setGroup($column);
+        foreach ((array) $column as $one) {
+            $this->syntax->setGroup($one);
+        }
+
         return $this;
     }
 
