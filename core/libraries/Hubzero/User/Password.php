@@ -690,7 +690,13 @@ class Password
             // A stored {CRYPT} hash that is not in $N$salt$ form (DES, or an
             // imported hash with another salt length) leaves $parts empty
             preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);
-            $salt = isset($parts[0]) ? $parts[0] : '';
+            // Such a hash cannot be matched, so refuse rather than compare
+            // against an empty salt
+            if (empty($parts)) {
+                return false;
+            }
+
+            $salt = $parts[0];
 
             switch (isset($parts[1]) ? $parts[1] : '6') {
                 case '6':
