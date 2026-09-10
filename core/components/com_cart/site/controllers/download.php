@@ -18,10 +18,6 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 //use Hubzero\User\Group;
 use Hubzero\Access\Group as Accessgroup;
-use App;
-use Component;
-use Lang;
-use Route;
 
 /**
  * Product viewing controller class

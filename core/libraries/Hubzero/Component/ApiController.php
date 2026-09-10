@@ -241,9 +241,8 @@ class ApiController implements ControllerInterface
             if (isset($this->_taskMap['__default'])) {
                 $doTask = $this->_taskMap['__default'];
             }
-        }
-        // Check if the task is in the taskMap
-        else if (isset($this->_taskMap[$this->_task])) {
+        } else if (isset($this->_taskMap[$this->_task])) {
+            // Check if the task is in the taskMap
             $doTask = $this->_taskMap[$this->_task];
         }
 
@@ -597,12 +596,11 @@ class ApiController implements ControllerInterface
 
             if ($type == 'integer') {
                 $fields[$property] = Request::getInt($property, 0, 'post');
-            }
-            /*else if ($type == 'date')
-            {
+            } else {
+                /*else if ($type == 'date')
+                {
                 $fields[$property] = Request::getString($property, with(new Date('now'))->toSql(), 'post');
-            }*/
-            else {
+                }*/
                 $fields[$property] = Request::getVar($property, null, 'post');
             }
         }

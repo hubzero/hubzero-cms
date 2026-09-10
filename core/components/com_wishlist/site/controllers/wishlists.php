@@ -1294,9 +1294,8 @@ class Wishlists extends SiteController
                 $message['multipart'] = $eview->loadTemplate();
                 $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
             }
-        }
-        // no status change, only information
-        else if ($this->_task == 'editwish') {
+        } else if ($this->_task == 'editwish') {
+            // no status change, only information
             return $this->addwishTask($wish->get('id'));
         }
 

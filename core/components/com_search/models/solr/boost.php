@@ -14,6 +14,7 @@ use Components\Search\Traits\isUnique;
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Arr;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 /**
  * Database model for Solr Boost
@@ -23,7 +24,6 @@ use Hubzero\Facades\Lang;
 class Boost extends Relational
 {
     use isUnique;
-    use Hubzero\Facades\Component;
 
     protected static $uniqueKeys = [['field', 'field_value']];
 

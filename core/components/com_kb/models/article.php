@@ -636,13 +636,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         if ($this->get('state') == 1 && $this->get('access') == 1) {
             $access_level = 'public';
-        }
-        // Registered condition
-        elseif ($this->get('state') == 1 && $this->get('access') == 2) {
+        } elseif ($this->get('state') == 1 && $this->get('access') == 2) {
+            // Registered condition
             $access_level = 'registered';
-        }
-        // Default private
-        else {
+        } else {
+            // Default private
             $access_level = 'private';
         }
 

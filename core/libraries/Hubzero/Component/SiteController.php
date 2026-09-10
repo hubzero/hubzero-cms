@@ -268,13 +268,11 @@ class SiteController extends Obj implements ControllerInterface
         // Check if the task is in the taskMap
         if (isset($this->_taskMap[$this->_task])) {
             $doTask = $this->_taskMap[$this->_task];
-        }
-        // Check if the default task is set
-        elseif (isset($this->_taskMap['__default'])) {
+        } elseif (isset($this->_taskMap['__default'])) {
+            // Check if the default task is set
             $doTask = $this->_taskMap['__default'];
-        }
-        // Raise an error (hopefully, this shouldn't happen)
-        else {
+        } else {
+            // Raise an error (hopefully, this shouldn't happen)
             throw new InvalidTaskException(Lang::txt('The requested task "%s" was not found.', $this->_task), 404);
         }
 
@@ -295,9 +293,8 @@ class SiteController extends Obj implements ControllerInterface
                 $this->_controller = strtolower($r[2]);
                 $name   = $this->_controller;
                 $layout = preg_replace('/[^A-Z0-9_]/i', '', $doTask);
-            }
-            // No controller name found - single controller component
-            else {
+            } else {
+                // No controller name found - single controller component
                 $name = $doTask;
             }
         }
@@ -452,9 +449,8 @@ class SiteController extends Obj implements ControllerInterface
             if (empty($this->_messageType)) {
                 $this->_messageType = 'message';
             }
-        }
-        // If the type is explicitly set, set it.
-        else {
+        } else {
+            // If the type is explicitly set, set it.
             $this->_messageType = $type;
         }
 
