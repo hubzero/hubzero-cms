@@ -23,7 +23,7 @@ if ($canDo->get('core.create'))
 	Toolbar::save2new();
 }
 // If an existing item, can save to a copy.
-if (!$this->row->get('id') && $canDo->get('core.create'))
+if (!$this->row->isNew() && $canDo->get('core.create'))
 {
 	Toolbar::save2copy();
 }

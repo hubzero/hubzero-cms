@@ -8,7 +8,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title( Lang::txt( 'MEMBERS' ).': Manage Points', 'user.png' );
+Toolbar::title( Lang::txt('COM_MEMBERS').': Manage Points', 'user.png' );
 Toolbar::save( 'process_batch', 'Process Batch' );
 Toolbar::cancel();
 

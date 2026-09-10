@@ -360,7 +360,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		// If we have a name but no individual parts...
-		if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surame') && $this->record->entry->get('name'))
+		if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surname') && $this->record->entry->get('name'))
 		{
 			$name = explode(' ', $this->record->entry->get('name'));
 			$this->record->entry->set('givenName', array_shift($name));
@@ -369,7 +369,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		// If we have the individual name parts but not the combined whole...
-		if (($this->record->entry->get('givenName') || $this->record->entry->get('surame')) && !$this->record->entry->get('name'))
+		if (($this->record->entry->get('givenName') || $this->record->entry->get('surname')) && !$this->record->entry->get('name'))
 		{
 			$name = array(
 				$this->record->entry->get('givenName'),
@@ -478,14 +478,14 @@ class Record extends \Hubzero\Content\Import\Model\Record
 					$username = strstr($this->record->entry->get('email'), '@', true);
 					if (Validate::username($username))
 					{
-						if ($this->_usernameExists($username))
+						if (!$this->_usernameExists($username))
 						{
 							$valid = true;
 						}
 					}
 				}
 
-				// Try to create from whole email address
+				// Try to create from the name with a numeric suffix
 				if (!$valid)
 				{
 					for ($i = 0; $i <= 99; $i++)
@@ -493,7 +493,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 						$username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name'))) . $i;
 						if (Validate::username($username))
 						{
-							if ($this->_usernameExists($username))
+							if (!$this->_usernameExists($username))
 							{
 								$valid = true;
 								break;

@@ -32,7 +32,7 @@ $this->js('import')
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=com_members&controller=import&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=com_members&controller=imports&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<fieldset class="adminform import-results">
 
@@ -46,7 +46,7 @@ $this->js('import')
 		<div class="countdown" data-timeout="5">
 			<?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_START', '<span>5</span>'); ?>
 		</div>
-		<div class="countdown-actions" data-progress="<?php echo Route::url('index.php?option=com_members&controller=import&task=progress&id=' . $this->import->get('id')); ?>">
+		<div class="countdown-actions" data-progress="<?php echo Route::url('index.php?option=com_members&controller=imports&task=progress&id=' . $this->import->get('id')); ?>">
 			<button type="button" class="start"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_START'); ?></button>
 			<button type="button" class="stop"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_STOP'); ?></button>
 
