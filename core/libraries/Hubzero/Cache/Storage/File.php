@@ -55,8 +55,10 @@ class File extends None
 
         $this->directory = $this->cleanPath($this->options['cachebase']);
 
+        // The path names a client's directory inside the cache directory, and
+        // on a new install neither of them is there yet
         if (!is_dir($this->directory)) {
-            mkdir($this->directory, 0775);
+            mkdir($this->directory, 0775, true);
         }
 
         if (!is_dir($this->directory) || !is_readable($this->directory) || !is_writable($this->directory)) {
