@@ -62,8 +62,9 @@ Lang::load('tpl_' . $this->template, __DIR__);
                     <header>
                         <div class="inner">
                             <div class="logo">
-                                <a href="<?php echo Request::root(); ?>" title="<?php echo Config::get('sitename'); ?>">
-                                    Lucent
+                                <a href="<?php echo Request::root(); ?>"
+                                   title="<?php echo Config::get('sitename'); ?>">
+                                    <?php echo Config::get('sitename'); ?>
                                 </a>
                             </div>
     
