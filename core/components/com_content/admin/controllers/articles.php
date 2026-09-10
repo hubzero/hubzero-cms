@@ -624,20 +624,24 @@ class Articles extends AdminController
 
 		$ids = Request::getArray('cid');
 
-		if (!empty($ids))
+		if (empty($ids))
 		{
-			$articles = Article::all()->whereIn('id', $ids)->rows();
-			$permissionErrors = 0;
-			foreach ($articles as $index => $article)
+			Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
+			return $this->cancelTask();
+		}
+
+		$articles = Article::all()->whereIn('id', $ids)->rows();
+		$permissionErrors = 0;
+
+		foreach ($articles as $index => $article)
+		{
+			if (!User::authorise('core.edit.state', $article->asset_id))
 			{
-				if (!User::authorise('core.edit.state', $article->asset_id))
-				{
-					Notify::error("Can't change state drop $index");
-					$permissionErrors++;
-					continue;
-				}
-				$article->set('state', $state['value']);
+				Notify::error("Can't change state drop $index");
+				$permissionErrors++;
+				continue;
 			}
+			$article->set('state', $state['value']);
 		}
 
 		if ($articles->count() != $permissionErrors)

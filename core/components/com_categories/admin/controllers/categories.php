@@ -383,24 +383,28 @@ class Categories extends AdminController
 
 		$ids = Request::getArray('cid');
 
-		if (!empty($ids))
+		if (empty($ids))
 		{
-			$categories = Category::all()
-				->whereIn('id', $ids)
-				->rows();
+			Notify::warning(Lang::txt('COM_CATEGORIES_NO_ITEM_SELECTED'));
+			return $this->cancelTask();
+		}
 
-			$permissionErrors = 0;
-			foreach ($categories as $index => $category)
+		$categories = Category::all()
+			->whereIn('id', $ids)
+			->rows();
+
+		$permissionErrors = 0;
+
+		foreach ($categories as $index => $category)
+		{
+			if (!User::authorise('core.edit.state', $category->asset_id))
 			{
-				if (!User::authorise('core.edit.state', $category->asset_id))
-				{
-					Notify::error("Can't change state drop $index");
-					$permissionErrors++;
-					continue;
-				}
-
-				$category->set('published', $state['value']);
+				Notify::error("Can't change state drop $index");
+				$permissionErrors++;
+				continue;
 			}
+
+			$category->set('published', $state['value']);
 		}
 
 		$count = count($categories);
