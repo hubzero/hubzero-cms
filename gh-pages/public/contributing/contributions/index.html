@@ -116,14 +116,40 @@ the <code>@license</code> line. The documentation under <code>docs/</code> is
 <code>Copyright (c) 2005-2020 The Regents of the University of California.</code>, from an
 earlier stewardship of the project. Leave those lines as they are; the change of
 holder applies to new work.</p>
+<p>The root <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE"><code>LICENSE</code></a> file and <code>core/composer.json</code> both say
+MIT, and they agree with the header above. They did not until recently: the
+root file was the GNU General Public License version 2 and the manifest
+declared <code>GPL-2.0-or-later</code>, while every source file said MIT. The project
+settled on MIT and the two outliers were corrected.</p>
+<p>Two files outside <code>core/vendor/</code> remain third-party and stay under the GNU
+General Public License, because relicensing someone else's work is not the
+project's to do. Both are named at the foot of <code>LICENSE</code>, and their notices
+live in the files themselves:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Origin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core/components/com_wiki/helpers/sanitizer.php</code></td>
+<td>The MediaWiki XHTML sanitizer, GPL version 2 or later</td>
+</tr>
+<tr>
+<td><code>core/plugins/user/domainrestriction/helpers/IPv6Net.php</code></td>
+<td>Copyright (c) 2011 Juergen Enge, GPL version 2</td>
+</tr>
+</tbody>
+</table>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The repository's root <code>LICENSE</code> file is the GNU General Public
-License version 2 and <code>core/composer.json</code> declares <code>GPL-2.0-or-later</code>, while
-4,894 source files carry the MIT header above and <code>docs/LICENSE.md</code> says the
-documentation is MIT &quot;like the code&quot;. They do not agree. Recorded in
-the project record; ask before relying on any of them for
-anything that matters.</p>
+<p><strong>Note:</strong> The sanitizer carries the project's MIT header above the original
+GPL notice. The two contradict each other inside one file. Do not treat that
+file as MIT on the strength of its header.</p>
 </aside>
+<p>Everything under <code>core/vendor/</code> is installed by Composer and carries whatever
+license its package declares.</p>
 <p>Third-party code the CMS includes or derives from is listed in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/ACKNOWLEDGMENTS.md"><code>ACKNOWLEDGMENTS.md</code></a>, which also lists the
 contributors.</p>
