@@ -63,6 +63,13 @@ abstract class BaseSqlSyntax
     protected $delete = '';
     protected $set    = [];
     protected $values = [];
+
+    /**
+     * Value tuples given as SQL rather than as data
+     *
+     * @var  array
+     **/
+    protected $rawValues = [];
     protected $from   = [];
     protected $join   = [];
     protected $where  = [];
@@ -1673,6 +1680,13 @@ abstract class BaseSqlSyntax
      */
     public function setValues($data)
     {
+        // A string is a value tuple written as SQL, and several of them make
+        // an insert of several rows. Anything else is data to be bound.
+        if (is_string($data)) {
+            $this->rawValues[] = $data;
+            return;
+        }
+
         $this->values = $data;
     }
 
@@ -1683,7 +1697,8 @@ abstract class BaseSqlSyntax
      */
     public function resetValues()
     {
-        $this->values = [];
+        $this->values    = [];
+        $this->rawValues = [];
     }
 
     // =========================================================================
@@ -2443,7 +2458,12 @@ abstract class BaseSqlSyntax
         // because we might have INSERT ... SELECT instead
         if ($type === 'values') {
             // Call buildValues() if we have either regular values OR INSERT SELECT
-            if (!empty($this->values) || $this->insertSelectQuery !== null) {
+            if (
+                !empty($this->values)
+                || !empty($this->rawValues)
+                || !empty($this->set)
+                || $this->insertSelectQuery !== null
+            ) {
                 return $this->buildValues();
             }
             return false;
@@ -2527,7 +2547,7 @@ abstract class BaseSqlSyntax
      */
     public function buildUpdate()
     {
-        return 'UPDATE ' . $this->connection->quoteName($this->update);
+        return 'UPDATE ' . $this->connection->wrap($this->update);
     }
 
     /**
@@ -2539,7 +2559,7 @@ abstract class BaseSqlSyntax
      */
     protected function buildUpdateWithJoinClause()
     {
-        $sql = 'UPDATE ' . $this->connection->quoteName($this->update);
+        $sql = 'UPDATE ' . $this->connection->wrap($this->update);
 
         if (!empty($this->join)) {
             $sql .= ' ' . $this->buildJoin();
@@ -2582,7 +2602,9 @@ abstract class BaseSqlSyntax
                     $string .= ' AS ' . $this->connection->quoteName($from['as']);
                 }
             } else {
-                $string = $this->connection->quoteName($from['table']);
+                // wrap() rather than quoteName(): a table can name its alias
+                // in the same string, and a plain name quotes the same either way
+                $string = $this->connection->wrap($from['table']);
 
                 // See if we're including an alias
                 if (isset($from['as'])) {
@@ -3047,10 +3069,25 @@ abstract class BaseSqlSyntax
     }
 
     /**
+     * Whether a SET clause may name the table a column belongs to
+     *
+     * Standard SQL updates one table, so the qualifier says nothing and most
+     * dialects reject it. The ones that can update through a join need it to
+     * tell two same-named columns apart, and say so by overriding this.
+     *
+     * @return  bool
+     */
+    protected function qualifiesSetColumns()
+    {
+        return false;
+    }
+
+    /**
      * Builds a set statement from the set params
      *
-     * Strips table qualifiers from field names since most databases
-     * require unqualified column names in SET clauses.
+     * Strips table qualifiers from field names, which most databases require
+     * to be unqualified, unless the update joins and needs them to tell two
+     * same-named columns apart.
      *
      * @return  string
      */
@@ -3058,10 +3095,21 @@ abstract class BaseSqlSyntax
     {
         $updates = [];
 
-        foreach ($this->set as $field => $value) {
-            $field = $this->stripTableQualifier($field);
+        // An update that joins is naming columns across more than one table,
+        // where the qualifier is what tells two same-named columns apart.
+        $qualified = !empty($this->join) && $this->qualifiesSetColumns();
 
-            if (is_object($value)) {
+        foreach ($this->set as $field => $value) {
+            if (!$qualified) {
+                $field = $this->stripTableQualifier($field);
+            }
+
+            if ($value instanceof \Hubzero\Database\Query) {
+                // A query standing in for a value is a scalar subquery, and
+                // has to be parenthesised to read as one
+                $updates[] = $this->connection->quoteName($field)
+                    . ' = (' . $value->toString() . ')';
+            } elseif (is_object($value)) {
                 $updates[] = $this->connection->quoteName($field)
                     . ' = ' . $value->build($this);
             } else {
@@ -3102,17 +3150,119 @@ abstract class BaseSqlSyntax
             return $this->insertSelectQuery;
         }
 
+        // Value tuples written as SQL go in as they stand
+        if (!empty($this->rawValues)) {
+            $tuples = [];
+
+            foreach ($this->rawValues as $tuple) {
+                $tuples[] = '(' . $tuple . ')';
+            }
+
+            return $this->buildInsertColumnList() . 'VALUES ' . implode(',', $tuples);
+        }
+
         // Standard INSERT VALUES
         $fields = [];
         $values = [];
+        $data   = is_array($this->values) ? $this->values : [];
 
-        foreach ($this->values as $field => $value) {
+        // An insert written with set() names its fields the same way an
+        // update does, and reads no differently at the call site.
+        if (empty($data) && !empty($this->set) && is_array($this->set)) {
+            $data = $this->set;
+        }
+
+        // A list of rows inserts every one of them
+        if (!empty($data) && array_is_list($data) && is_array(reset($data))) {
+            return $this->buildMultiRowValues($data);
+        }
+
+        // A value list on its own is already keyed by field name. When
+        // columns() named the fields instead, values() gives them in that
+        // order, so pair the two up before building the statement.
+        if (
+            !empty($this->insertColumns)
+            && array_is_list($data)
+            && count($data) === count($this->insertColumns)
+        ) {
+            $data = array_combine($this->insertColumns, $data);
+        }
+
+        foreach ($data as $field => $value) {
             $fields[] = $this->connection->quoteName($field);
             $values[] = '?';
             $this->bind(is_string($value) ? trim($value) : $value);
         }
 
         return '(' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
+    }
+
+    /**
+     * Builds the column list an insert names its fields with, if it named any
+     *
+     * @return  string
+     */
+    protected function buildInsertColumnList()
+    {
+        if (empty($this->insertColumns)) {
+            return '';
+        }
+
+        $quoted = [];
+
+        foreach ($this->insertColumns as $column) {
+            $quoted[] = $this->connection->quoteName($column);
+        }
+
+        return '(' . implode(',', $quoted) . ') ';
+    }
+
+    /**
+     * Builds the values statement for an insert of several rows
+     *
+     * @param   array  $rows  The rows to insert, each keyed by field name
+     * @return  string
+     */
+    protected function buildMultiRowValues(array $rows)
+    {
+        $first  = reset($rows);
+        $fields = array_keys($first);
+
+        // Rows given in column order are named by columns(), not by their keys
+        if (
+            array_is_list($first)
+            && !empty($this->insertColumns)
+            && count($first) === count($this->insertColumns)
+        ) {
+            $fields = $this->insertColumns;
+
+            foreach ($rows as $i => $row) {
+                if (is_array($row) && count($row) === count($fields)) {
+                    $rows[$i] = array_combine($fields, array_values($row));
+                }
+            }
+        }
+
+        $quoted = [];
+        $tuples = [];
+
+        foreach ($fields as $field) {
+            $quoted[] = $this->connection->quoteName($field);
+        }
+
+        foreach ($rows as $row) {
+            $placeholders = [];
+
+            foreach ($fields as $field) {
+                $value = $row[$field] ?? null;
+                $placeholders[] = '?';
+                $this->bind(is_string($value) ? trim($value) : $value);
+            }
+
+            $tuples[] = '(' . implode(',', $placeholders) . ')';
+        }
+
+        return '(' . implode(',', $quoted) . ') VALUES ' . implode(',', $tuples);
     }
 
     /**
@@ -3153,7 +3303,11 @@ abstract class BaseSqlSyntax
                 }
             } else {
                 // Structured having clause
-                $havings[] = $prefix . $having['column'] . ' ' . $having['operator'] . ' ?';
+                $column = ($having['column'] instanceof \Hubzero\Database\Expression)
+                    ? $having['column']->build($this)
+                    : $having['column'];
+
+                $havings[] = $prefix . $column . ' ' . $having['operator'] . ' ?';
                 $this->bind(is_string($having['value']) ? trim($having['value']) : $having['value']);
             }
 

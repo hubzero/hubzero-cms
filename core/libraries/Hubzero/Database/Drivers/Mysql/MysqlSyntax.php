@@ -648,4 +648,16 @@ class MysqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 return parent::buildFunctionExpression($expression);
         }
     }
+
+    /**
+     * Whether a SET clause may name the table a column belongs to
+     *
+     * It updates through a join, so it can and must.
+     *
+     * @return  bool
+     */
+    protected function qualifiesSetColumns()
+    {
+        return true;
+    }
 }
