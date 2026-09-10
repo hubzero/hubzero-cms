@@ -1537,11 +1537,11 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$recipients = array(
 			['collection', $post->get('collection_id')],
-			['user', $comment->get('created_by')]
+			['user', $row->get('created_by')]
 		);
-		if ($comment->get('parent'))
+		if ($row->get('parent'))
 		{
-			$recipients[] = ['user', $comment->parent()->get('created_by')];
+			$recipients[] = ['user', $row->parent()->get('created_by')];
 		}
 
 		$title = $post->item()->get('title');
@@ -1551,15 +1551,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'action'      => (!empty($comment['id']) ? 'updated' : 'created'),
 				'scope'       => 'collections.comment',
-				'scope_id'    => $comment->get('id'),
-				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . $title . '</a>'),
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . (!empty($comment['id']) ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . $url . '#c' . $row->get('id') . '">' . $title . '</a>'),
 				'details'     => array(
 					'collection_id' => $post->get('collection_id'),
 					'post_id'       => $post->get('id'),
 					'item_id'       => $row->get('item_id'),
-					'url'           => $url . '#c' . $comment->get('id')
+					'url'           => $url . '#c' . $row->get('id')
 				)
 			],
 			'recipients' => $recipients
