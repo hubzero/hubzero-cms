@@ -21,6 +21,17 @@ use Hubzero\Database\Driver;
 class AlterTableBuilder
 {
     /**
+     * Set the current column's default to an expression
+     *
+     * @param  \Hubzero\Database\Expression $expression The default expression
+     * @return $this
+     */
+    public function defaultExpression(\Hubzero\Database\Expression $expression): self
+    {
+        return $this->setModifier('default', $expression);
+    }
+
+    /**
      * The database driver instance
      *
      * @var Driver

@@ -730,6 +730,37 @@ class SchemaManager
     }
 
     /**
+     * Add an auto-increment primary key column to a table
+     *
+     * @param   string  $table      The table name
+     * @param   string  $column     The column name
+     * @param   bool    $first      Add it as the first column
+     * @param   bool    $useBigInt  Use BIGINT rather than INT
+     * @return  bool
+     */
+    public function addAutoIncrementPrimaryKey(
+        string $table,
+        string $column = 'id',
+        bool $first = false,
+        bool $useBigInt = true
+    ): bool {
+        return $this->driver->addAutoIncrementPrimaryKey($table, $column, $first, $useBigInt);
+    }
+
+    /**
+     * Convert a table to a character set
+     *
+     * @param   string       $table    The table name
+     * @param   string       $charset  The character set
+     * @param   string|null  $collate  The collation
+     * @return  bool
+     */
+    public function setTableCharset(string $table, string $charset, ?string $collate = null): bool
+    {
+        return $this->convertToCharset($table, $charset, $collate);
+    }
+
+    /**
      * Get the auto-increment value for a table
      *
      * @param   string  $table  The table name
