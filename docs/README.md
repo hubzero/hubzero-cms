@@ -38,7 +38,8 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 
 - [Reference](reference/README.md) — generated references: configuration
   parameters, REST endpoints, muse console commands, and events.
-- [Releases](releases/README.md) — release notes and upgrade guidance.
+- [Releases](getting-started/03-releases.md) — how Hubzero is released and
+  where upgrade guidance lives.
 
 ## About the documentation
 

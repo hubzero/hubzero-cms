@@ -8,30 +8,13 @@
  "blob_ref": "2.4-main",
  "version": "2.4",
  "copyright": "Purdue University",
- "start": [
-  {
-   "title": "Install a hub",
-   "text": "Coming soon: the web installer replaces the old package process.",
-   "href": "installation/"
-  },
-  {
-   "title": "Run a hub",
-   "text": "The administrator's guide, component by component.",
-   "href": "managers/"
-  },
-  {
-   "title": "Build on Hubzero",
-   "text": "Components, plugins, modules, templates, and the API.",
-   "href": "developers/"
-  }
- ],
  "books": [
   {
    "slug": "getting-started",
    "title": "Getting started",
    "dir": "docs/getting-started",
    "audience": "Start here",
-   "summary": "What a hub is, the vocabulary the rest of the documentation uses, and where to go next."
+   "summary": "What a hub is, the vocabulary the rest of the documentation uses, how releases work, and where to go next."
   },
   {
    "slug": "installation",
@@ -81,13 +64,6 @@
    "dir": "docs/reference",
    "audience": "Reference",
    "summary": "Generated references: configuration parameters, REST endpoints, muse console commands, and events."
-  },
-  {
-   "slug": "releases",
-   "title": "Releases",
-   "dir": "docs/releases",
-   "audience": "Reference",
-   "summary": "Release notes and upgrade guidance."
   }
  ],
  "pages": [

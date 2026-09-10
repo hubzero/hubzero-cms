@@ -3,9 +3,9 @@
   {
    "slug": "getting-started",
    "title": "Getting started",
-   "pages": 3,
+   "pages": 4,
    "counts": {
-    "draft": 2,
+    "draft": 3,
     "reviewed": 1
    }
   },
@@ -67,14 +67,6 @@
    "counts": {
     "rewritten": 1,
     "generated": 153
-   }
-  },
-  {
-   "slug": "releases",
-   "title": "Releases",
-   "pages": 1,
-   "counts": {
-    "draft": 1
    }
   }
  ],

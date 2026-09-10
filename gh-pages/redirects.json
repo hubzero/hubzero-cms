@@ -636,6 +636,7 @@
  "reference/muse/test": "reference/muse/index.html#muse-test",
  "reference/muse/user": "reference/muse/index.html#muse-user",
  "reference/muse/user-terms": "reference/muse/index.html#muse-user-terms",
+ "releases": "getting-started/releases/index.html",
  "tools/administrators/installing-tool-dependencies": "tools/administrators/index.html#installing-tool-dependencies",
  "tools/administrators/jupyter-notebooks": "tools/administrators/index.html#jupyter-notebooks",
  "tools/administrators/whitelistdirectories": "tools/administrators/index.html#directory-parameter-whitelist",

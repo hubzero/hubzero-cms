@@ -915,13 +915,8 @@ def main() -> int:
 
     # Home page.
     home_context = common_context(output_dir / "index.html")
-    start_links = "".join(
-        f'<a href="{escape(item["href"])}"><strong>{escape(item["title"])}</strong><span>{escape(item.get("text", ""))}</span></a>'
-        for item in config.get("start", [])
-    )
     home_context.update({
         "book_cards": build_book_cards(books, config),
-        "start_links": start_links,
         "canonical_tag": canonical_tag(""),
         "page_count": str(sum(1 for p in all_pages if not p.synthetic)),
     })
