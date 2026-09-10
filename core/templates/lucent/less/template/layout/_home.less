@@ -61,10 +61,73 @@
 			}
 		}
 
-		.btn,
-		.actions a {
-			margin-top: 1.5rem;
+		// An eyebrow says what kind of place this is before the heading
+		// says which one
+		.eyebrow {
+			font-size: 0.8rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: @colorBrand;
+			margin: 0 0 0.75rem;
 		}
+
+		.hero-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin-top: 1.75rem;
+		}
+
+		.btn,
+		.primary-button,
+		.outline-button {
+			display: inline-block;
+			padding: 0.65em 1.4em;
+			border-radius: 3px;
+			border: 1px solid @colorBrand;
+			font-weight: 600;
+			line-height: 1.2;
+		}
+
+		.btn,
+		.primary-button {
+			background: @colorBtn;
+			border-color: @colorBtn;
+			color: @colorBtnText;
+
+			&:hover,
+			&:focus {
+				background: @colorBtnHover;
+				border-color: @colorBtnHover;
+				color: @colorBtnText;
+			}
+		}
+
+		.outline-button {
+			background: transparent;
+			color: @colorBrand;
+
+			&:hover,
+			&:focus {
+				background: @colorBrand;
+				border-color: @colorBrand;
+				color: #fff;
+			}
+		}
+	}
+
+	// A picture behind the whole block, if the hub has one to put there
+	.hero-art {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		object-fit: cover;
+		object-position: top right;
+		z-index: 0;
+		pointer-events: none;
 	}
 }
 
