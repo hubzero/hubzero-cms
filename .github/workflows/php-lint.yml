@@ -49,3 +49,10 @@ jobs:
 
       - name: Global facades are imported where they are used
         run: php tools/lint/missing-facade-imports.php
+
+      # Lang::txt() returns its argument when a key is undefined, so a missing
+      # string is not an error: the raw key is printed into the page. 444 are
+      # undefined today. The ceiling stops that number growing; lower it as
+      # they are defined.
+      - name: Language keys the code asks for are defined
+        run: php tools/lint/undefined-language-keys.php --quiet --max=444

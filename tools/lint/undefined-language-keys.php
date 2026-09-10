@@ -32,12 +32,17 @@ $root = dirname(__DIR__, 2);
 $defaults = ['core'];
 
 $quiet = false;
+$max   = null;
 $paths = [];
 foreach (array_slice($argv, 1) as $arg) {
     if ($arg === '--quiet') {
         $quiet = true;
+    } elseif (strpos($arg, '--max=') === 0) {
+        $max = (int) substr($arg, 6);
     } elseif ($arg === '--help' || $arg === '-h') {
-        fwrite(STDOUT, "usage: php tools/lint/undefined-language-keys.php [--quiet] [path ...]\n");
+        fwrite(STDOUT, "usage: php tools/lint/undefined-language-keys.php [--quiet] [--max=N] [path ...]\n\n"
+            . "  --max=N  succeed while N or fewer keys are undefined, so the count\n"
+            . "           can be ratcheted down instead of gating on zero.\n");
         exit(0);
     } else {
         $paths[] = $arg;
@@ -172,5 +177,20 @@ foreach ($missing as $key => $sites) {
     }
 }
 
-echo count($missing), " key(s) defined nowhere, $references reference(s)\n";
-exit($missing ? 1 : 0);
+$found = count($missing);
+echo $found, " key(s) defined nowhere, $references reference(s)\n";
+
+if ($max === null) {
+    exit($found ? 1 : 0);
+}
+
+if ($found > $max) {
+    fwrite(STDERR, "\nThis is more than the agreed ceiling of $max. Define the keys you added,\n"
+        . "or lower the ceiling in the workflow if you have fixed some.\n");
+    exit(1);
+}
+if ($found < $max) {
+    echo "\nBelow the ceiling of $max. Lower it in .github/workflows/php-lint.yml\n"
+        . "so the count cannot creep back up.\n";
+}
+exit(0);

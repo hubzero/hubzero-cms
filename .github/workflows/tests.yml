@@ -1,0 +1,57 @@
+name: Tests
+
+# The suite is at core/phpunit.xml.dist and covers the framework libraries,
+# eight components and two plugins. Nothing ran it automatically before, so a
+# break could sit unnoticed between the times someone thought to run it.
+
+on:
+  push:
+    branches: [2.4-main]
+    paths:
+      - 'core/**.php'
+      - 'core/phpunit.xml.dist'
+      - 'core/composer.json'
+      - 'core/composer.lock'
+      - '.github/workflows/tests.yml'
+  pull_request:
+    paths:
+      - 'core/**.php'
+      - 'core/phpunit.xml.dist'
+      - 'core/composer.json'
+      - 'core/composer.lock'
+      - '.github/workflows/tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql, json, mbstring, openssl, curl, gd, fileinfo, zip
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: core/vendor
+          key: composer-${{ hashFiles('core/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies
+        working-directory: core
+        run: php bin/composer install --no-interaction --no-progress --prefer-dist
+
+      - name: PHPUnit
+        working-directory: core
+        run: vendor/bin/phpunit -c phpunit.xml.dist
