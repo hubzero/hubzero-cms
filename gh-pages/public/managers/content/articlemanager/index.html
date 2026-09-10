@@ -43,6 +43,7 @@
 <ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/howitfits/index.html">How a hub fits together</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
@@ -79,9 +80,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Content</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Article Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-articles-are-for">What articles are for</a></li>
+<li class="toc__item toc__item--l2"><a href="#worked-example-an-about-this-hub-page">Worked example: an &quot;About this hub&quot; page</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-article-list">The article list</a></li>
 <li class="toc__item toc__item--l3"><a href="#batch-processing">Batch processing</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-editor">The editor</a></li>
+<li class="toc__item toc__item--l2"><a href="#featured-articles">Featured articles</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-publishing-workflow">The publishing workflow</a></li>
 <li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -178,6 +182,106 @@ one. Reach it at <strong>Content → Article Manager</strong>, or directly at
 <code>/administrator/index.php?option=com_content</code>. The screen is titled <strong>Article
 Manager: Articles</strong>, and carries a submenu with two entries, <strong>Articles</strong> and
 <strong>Categories</strong>.</p>
+<h2 id="what-articles-are-for">What articles are for</h2>
+<p>An article is a page of the hub's own prose, written by whoever runs the hub:
+the About page, the acceptable use policy, the instructions for citing the
+hub's data, a notice about next month's maintenance window. If you type it
+once and visitors only read it, it is an article.</p>
+<p>Most of a hub's content is not an article, and a manager who does not know
+that ends up building the whole hub out of them. Tools, datasets and their
+documentation are resources. Formally released datasets are publications.
+Pages members edit themselves are wiki pages. A group's own pages belong to
+the group. Questions and answers, forum threads, blog entries, support
+tickets, knowledge base entries and courses each have their own component,
+their own permissions, and their own chapter in
+<a href="../../components/index.html">Components</a>. Those components hold far more than
+text — authorship, versions, tags, ratings, review — and an article holds
+none of it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An article has no address and no place in the navigation. Both
+come from a menu item that points at it, and nothing you set on the article
+puts it in a menu. See <a href="../urls/index.html">URLs</a>.</p>
+</aside>
+<h2 id="worked-example-an-about-this-hub-page">Worked example: an &quot;About this hub&quot; page</h2>
+<p>Nearly every hub needs a page saying who runs it, what it is for, and who to
+write to. It is the first article most managers create, and it exercises
+everything in this chapter. The rest of the chapter refers back to it.</p>
+<ol>
+<li>
+<p><strong>Decide whether it needs a category.</strong> A category does two jobs: it groups
+articles in the list and the batch panel, and — for an article that no menu
+item points at — it supplies the front of the URL. A single About page
+reached through a menu item needs neither, so leaving it in
+<strong>Uncategorised</strong> is a defensible answer. Create a category when you can
+already see the second and third article coming: an About section that will
+also hold a contact page and an acknowledgements page. To create one, go to
+<strong>Content → Category Manager → New</strong>, set <strong>Title</strong> to <code>About</code>, leave
+<strong>Alias</strong> blank so it is generated as <code>about</code>, leave <strong>Parent Item</strong> at
+<strong>- No parent -</strong>, and select <strong>Save &amp; Close</strong>. This example uses that
+category.</p>
+</li>
+<li>
+<p><strong>Write the article.</strong> Go to <strong>Content → Article Manager → New</strong>. Set
+<strong>Title</strong> to <code>About this hub</code>. Leave <strong>Alias</strong> blank; it is generated as
+<code>about-this-hub</code>. Set <strong>Category</strong> to <strong>About</strong>. Most of the rest arrives
+with the value you want: <strong>Status</strong> is <strong>Published</strong>, <strong>Language</strong> is
+<strong>All</strong>, <strong>Start Publishing</strong> is now, and every panel down the right is set
+to <strong>Use Global</strong>. Check that <strong>Access</strong> reads <strong>Public</strong>, and fill in
+<strong>Meta Description</strong> under <strong>Metadata Options</strong> — the sentence a search
+engine prints under the page title. Leave everything else alone.</p>
+</li>
+<li>
+<p><strong>Type the body.</strong> <strong>Article Text</strong> opens in whichever editor plugin the
+<strong>Default Editor</strong> setting names, at <strong>Site → Global Configuration</strong> on the
+<strong>Site</strong> tab. The installer writes <code>ckeditor</code> into the hub's configuration,
+so on a stock hub you get <strong>Editor - CKEditor</strong>: a <strong>Format</strong> menu for
+headings, the usual bold and italic, lists, blockquote and alignment,
+<strong>Link</strong>, <strong>Image</strong> and <strong>Table</strong>, and find and replace. There is no
+<strong>Source</strong> button until someone turns <strong>Source View</strong> on at <strong>Extensions →
+Plugin Manager → Editor - CKEditor</strong>. Write the page as prose and take
+headings from the <strong>Format</strong> menu rather than setting fonts and colours by
+hand; the template supplies the appearance. Under the text area sit four
+more buttons, one per enabled button plugin: <strong>Article</strong>, which inserts a
+link to another article; <strong>Image</strong>, which opens the shared library from
+<strong>Content → Media Manager</strong> and can upload into it; <strong>Page Break</strong>; and
+<strong>Read More</strong>, which marks where the intro text ends. Use <strong>Image</strong> for
+pictures — the <strong>Image</strong> button in CKEditor's own toolbar is a different
+dialog that only takes a URL, because a stock hub gives it no server to
+browse. Select <strong>Save &amp; Close</strong>.</p>
+</li>
+<li>
+<p><strong>Publish it.</strong> The article is published already, because <strong>Status</strong>
+defaults to <strong>Published</strong>; the list shows it as such in the <strong>Status</strong>
+column. <strong>Status</strong> and <strong>Access</strong> are different questions. <strong>Status</strong> decides
+whether the article exists for the site at all: an unpublished article
+answers 404, even to someone following a menu item straight at it. <strong>Access</strong>
+decides who may read the body of an article that does exist. A published
+article whose <strong>Access</strong> is <strong>Registered</strong> still renders its title to a
+guest; only the body is withheld, and the guest is shown the intro text and
+a link to log in only where <strong>Show Unauthorised Links</strong> is on. The
+category's access level counts too — a <strong>Public</strong> article filed in a
+<strong>Registered</strong> category is not readable by a guest. Leave both at
+<strong>Published</strong> and <strong>Public</strong> for an About page.</p>
+</li>
+<li>
+<p><strong>Make it reachable.</strong> Publishing does not put the page anywhere. Go to
+<strong>Menus</strong>, open the menu you want it in, and select <strong>New</strong>. Set <strong>Menu
+Item Type</strong> to <strong>Articles → Single Article</strong>, choose <strong>About this hub</strong> in
+the <strong>Select Article</strong> field, set <strong>Menu Title</strong> to <code>About</code>, and leave
+<strong>Alias</strong> blank so it is generated as <code>about</code>. Save, and the page answers
+at <code>/about</code>. <a href="../../menus/index.html">Menus</a> covers the rest of that form, nesting
+items to build an About section, and showing the menu with a module.</p>
+</li>
+<li>
+<p><strong>Check it on the site.</strong> Open <code>/about</code> in a browser where you are not
+logged in to the hub; that is what a visitor sees. The menu item's route is
+the address to publish and to link to. Had you skipped the menu item, the
+article would have answered at its category path instead,
+<code>/about/about-this-hub</code>. A 404 means the article is not published, the menu
+item is not published, or the menu item points at something else.
+<a href="../urls/index.html">URLs</a> explains how the address is decided.</p>
+</li>
+</ol>
 <h2 id="the-article-list">The article list</h2>
 <p>Seven filters sit above the list, and a search box.</p>
 <table>
@@ -228,6 +332,10 @@ offers an <code>ID:</code> prefix that the list does not implement either.</p>
 </aside>
 <p>With no status filter set, the list shows everything except trashed
 articles. To see trashed articles, set <strong>- Select Status -</strong> to <strong>Trashed</strong>.</p>
+<p>To find the About this hub article from the worked example, type <code>about</code> in
+the search box — it matches the title and the alias — or set <strong>- Select
+Category -</strong> to <strong>About</strong>. An article filed in a category nested under About
+does not appear under that filter.</p>
 <p>The columns are <strong>Title</strong> (with the alias beneath it), <strong>Status</strong>,
 <strong>Category</strong>, <strong>Ordering</strong>, <strong>Access</strong>, <strong>Created by</strong>, <strong>Date</strong>,
 <strong>Language</strong>, and <strong>ID</strong>. Every column heading except Ordering sorts. Sort by
@@ -329,7 +437,7 @@ dates to now, and clear the finish-publishing date.</p>
 </tr>
 <tr>
 <td><strong>Article Text</strong></td>
-<td>The body, in the site's default editor.</td>
+<td>The body, in the site's default editor. On a stock hub that is <strong>Editor - CKEditor</strong>; see step 3 of the worked example.</td>
 </tr>
 </tbody>
 </table>
@@ -383,6 +491,18 @@ The administrator's own Featured Articles screen is unreachable — its menu
 entry is commented out, and the code behind it refers to a model class that
 does not exist. Both are recorded in the project record.</p>
 </aside>
+<h2 id="featured-articles">Featured articles</h2>
+<p>The <strong>Featured</strong> field on the article, and the <strong>Featured Articles</strong> menu item
+type that lists featured articles, look like the way to choose what appears on
+a hub's front page. They are not. As the warning above records, the field
+writes one place and the site's featured page reads another, and nothing fills
+the table it reads; the page's query joins that table, so it matches no
+articles at all. A <strong>Featured Articles</strong> page is empty whatever <strong>Featured</strong>
+is set to, and setting <strong>Featured</strong> to <strong>Yes</strong> does nothing you can see.</p>
+<p>Set the home page with a menu item instead: open the item you want as the
+front page and set <strong>Default Page</strong> to <strong>Yes</strong>. A <strong>Single Article</strong> item
+pointed at the About this hub article is a serviceable front page for a new
+hub. See <a href="../../menus/index.html">Menus</a>.</p>
 <h2 id="the-publishing-workflow">The publishing workflow</h2>
 <p>An article has one of four states.</p>
 <table>
@@ -411,6 +531,13 @@ does not exist. Both are recorded in the project record.</p>
 </tr>
 </tbody>
 </table>
+<p>Unpublish the About this hub article while you rewrite it and the menu item
+stays in the menu, but a visitor who follows it gets a 404 — the site refuses
+an article that is not published, whether it was reached by menu item or by
+category path. You keep seeing it, because anyone holding <code>core.edit</code> or
+<code>core.edit.state</code> on <code>com_content</code> is served unpublished articles as well.
+Archived articles are served to everyone: archiving takes the article out of
+the listings, but a menu item pointed straight at it still opens it.</p>
 <p><strong>Start Publishing</strong> and <strong>Finish Publishing</strong> narrow a published article to
 a window. An article published with a start date in the future stays hidden
 until then.</p>
@@ -439,6 +566,10 @@ In</strong>, <strong>Delete</strong>, and <strong>Options</strong> toolbar appli
 <strong>Access</strong> level, a <strong>Language</strong>, and a <strong>Description</strong>, plus panels for
 options, metadata, and — for administrators — permissions. The permissions
 you set on a category are inherited by the articles in it.</p>
+<p>The <strong>About</strong> category from the worked example is as plain as a category
+gets: a title, an alias generated from it, no parent. Its alias is what puts
+the article at <code>/about/about-this-hub</code> when no menu item points at it, and any
+permissions set on it are inherited by every article filed there.</p>
 <p>A stock hub installs an <strong>Uncategorised</strong> category, which new articles
 default to. An article in <strong>Uncategorised</strong> is reachable at
 <code>/{article-alias}</code> with nothing in front of it; see <a href="../urls/index.html">URLs</a>.</p>
@@ -456,13 +587,15 @@ the
 <p>On a single-article layout the precedence is straightforward: a setting on
 the article wins over the same setting on the menu item, which wins over the
 global here. A setting left at <strong>Use Global</strong> falls through to the next level
-up.</p>
+up. So setting <strong>Show Author</strong> to <strong>Hide</strong> in the About this hub article's
+<strong>Article Options</strong> panel drops the byline from <code>/about</code>, whatever the menu
+item and the global say.</p>
 <p>Blog and featured layouts invert that. There the menu item's setting wins,
 and the article's value is used only where the menu item's setting is
 <strong>Use Article</strong>; if the article has nothing set, the global is used.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 754ab96b09</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Content</a><a class="pager__next" href="../categories/index.html" rel="next"><span>Next</span>Categories</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/articlemanager.md">Edit this page on GitHub</a>

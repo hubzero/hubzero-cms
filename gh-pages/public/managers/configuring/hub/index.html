@@ -43,6 +43,7 @@
 <ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/howitfits/index.html">How a hub fits together</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
@@ -274,7 +275,7 @@ every key it contains.</p>
 </tr>
 <tr>
 <td><strong>Default Editor</strong></td>
-<td>The editor plugin used for rich text. Defaults to <code>tinymce</code>.</td>
+<td>The editor plugin used for rich text. The field's own fallback is <code>tinymce</code>, but that only applies when the setting is absent; the installer always writes <code>ckeditor</code>, so a stock hub runs CKEditor.</td>
 </tr>
 <tr>
 <td><strong>Default Captcha</strong></td>

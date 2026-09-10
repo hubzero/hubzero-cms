@@ -22,9 +22,9 @@
   {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 98,
+   "pages": 99,
    "counts": {
-    "rewritten": 98
+    "rewritten": 99
    }
   },
   {
@@ -83,7 +83,7 @@
  "totals": {
   "draft": 5,
   "reviewed": 32,
-  "rewritten": 262,
+  "rewritten": 263,
   "merged": 2,
   "imported": 19,
   "generated": 183

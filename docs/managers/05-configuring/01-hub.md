@@ -65,7 +65,7 @@ every key it contains.
 | **Site Name** | The hub's name. It appears in page titles, in mail subjects, and wherever a component asks for the site name. |
 | **Site Code** | Short code identifying the installation. |
 | **FQDN** | The hub's fully qualified domain name. |
-| **Default Editor** | The editor plugin used for rich text. Defaults to `tinymce`. |
+| **Default Editor** | The editor plugin used for rich text. The field's own fallback is `tinymce`, but that only applies when the setting is absent; the installer always writes `ckeditor`, so a stock hub runs CKEditor. |
 | **Default Captcha** | The captcha plugin used where a component does not name its own. |
 | **Default Access Level** | The viewing level given to new content. |
 | **Default List Limit** | Rows per page in administrator lists. Defaults to 20. |

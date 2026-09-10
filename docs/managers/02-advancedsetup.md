@@ -106,7 +106,7 @@ plugins:
 
 | Plugin | Notes |
 |---|---|
-| **Editor - TinyMCE** | The default. |
+| **Editor - TinyMCE** | The manifest's fallback, but not what a hub runs: the installer writes `ckeditor`. |
 | **Editor - CKEditor** | CKEditor 4. |
 | **Editor - CKEditor 5** | CKEditor 5. |
 | **Editor - CodeMirror** | A source editor with syntax highlighting. |

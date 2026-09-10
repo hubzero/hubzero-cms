@@ -21,8 +21,8 @@ four administrator screens that manage extensions, all reached from the
 | [Plug-in Manager](03-plugins.md) | Plugin state, access level and run order |
 | [Template Manager](02-templates.md) | Template styles, the default template, and template source files |
 
-A fifth entry, **Language Manager**, opens `com_languages`. It is not covered
-in this book.
+A fifth entry, **Language Manager**, opens `com_languages` and has its own
+chapter under [Components](../09-components/20-languages.md).
 
 ## The extension types
 

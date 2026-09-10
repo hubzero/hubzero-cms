@@ -294,9 +294,11 @@ script layer, and it is the thing to reach for before writing your own:</p>
 </tr>
 </tbody>
 </table>
-<p>Every one of them is also aliased onto a second, legacy global that older
-third-party code expects, so that code keeps working. Write against
-<code>Hubzero</code>.</p>
+<p>Every one of them is also aliased onto a <code>Joomla</code> global. That name is a
+compatibility shim and nothing more: each alias forwards straight to the
+<code>Hubzero</code> method of the same name. It exists so that inherited third-party
+code keeps running, and you will meet it when debugging such code. Write
+against <code>Hubzero</code>.</p>
 <p><code>core/assets/js/hubzero.js</code> is a separate, smaller file with <code>Hubzero.root()</code>
 and <code>Hubzero.initApi()</code>; <code>Html::behavior('core')</code> is what adds it.</p>
 <h3 id="the-data-attribute-hooks">The data-attribute hooks</h3>

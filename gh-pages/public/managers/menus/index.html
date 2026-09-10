@@ -43,6 +43,7 @@
 <ul class="tree">
 <li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/newhub/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/howitfits/index.html">How a hub fits together</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
@@ -77,11 +78,15 @@
 <li class="tree__leaf"><a class="tree__link" href="../users/user-notes/index.html">User notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Menus</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#menus-menu-items-and-modules">Menus, menu items, and modules</a></li>
 <li class="toc__item toc__item--l2"><a href="#menu-manager">Menu Manager</a></li>
 <li class="toc__item toc__item--l3"><a href="#creating-a-menu">Creating a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#menu-items">Menu items</a></li>
 <li class="toc__item toc__item--l3"><a href="#adding-a-menu-item">Adding a menu item</a></li>
 <li class="toc__item toc__item--l3"><a href="#where-the-types-come-from">Where the types come from</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does besides appear in a menu</a></li>
+<li class="toc__item toc__item--l2"><a href="#example-navigation-for-a-new-hub">Example: navigation for a new hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#example-linking-into-one-component-s-content">Example: linking into one component&#x27;s content</a></li>
 <li class="toc__item toc__item--l2"><a href="#grouping-articles-under-a-menu">Grouping articles under a menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#redirecting-a-url">Redirecting a URL</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -179,17 +184,35 @@
 a way to move around, and it gives the pages it points at their URLs. A page
 no menu item points at is reachable but hard to find, and often has an
 address nobody would guess.</p>
+<p>Most of a hub's content needs no menu item at all. Members find a dataset by
+searching the resource catalogue, a question by browsing Answers, a group by
+its name. What menus are for is the small set of destinations that have to be
+one click from anywhere: the front page, the page that says what the hub is,
+the way into the thing the hub exists for. A coastal-flooding research group
+running a hub for its models needs four links across the top, not forty.</p>
 <p>Menus are managed at <strong>Menus → Menu Manager</strong>. The <strong>Menus</strong> menu also lists
 every menu defined on the hub, with <strong>Add New Menu Item</strong> under each.</p>
-<p>Two things are easy to confuse:</p>
+<h2 id="menus-menu-items-and-modules">Menus, menu items, and modules</h2>
+<p>Three different things share the word &quot;menu&quot;, and confusing them is the usual
+reason a new menu appears nowhere.</p>
 <ul>
-<li>A <strong>menu</strong> is the container. It has a system name (its <em>menu type</em>), a
-title, and a description.</li>
-<li>A <strong>menu item</strong> is one link inside it.</li>
+<li>A <strong>menu</strong> is the container: a row in the database with a system name (its
+<em>menu type</em>), a title, and a description. It has no position, no styling
+and no presence on the site.</li>
+<li>A <strong>menu item</strong> is one link inside a menu. It has a <em>type</em>, which decides
+which page it opens and which options the form offers, and an <em>alias</em>,
+which — with its parents' aliases — is the page's URL.</li>
+<li>A <strong>module</strong> is what puts a menu on a page. A <strong>Menu</strong> module (<code>mod_menu</code>)
+is pointed at one menu by its menu type and given a template position; the
+template decides where on the page that position lands, and whether it
+renders at all.</li>
 </ul>
-<p>A menu is not displayed anywhere until a <strong>Menu</strong> module is pointed at it and
-given a template position. Creating a menu and creating the module that shows
-it are two separate steps.</p>
+<p>Creating a menu and creating the module that displays it are two separate
+steps, and neither does the other's job. A menu with no module is invisible.
+A module in a position the template does not render is also invisible. The
+module side is covered in <a href="../extensions/modules/index.html">Modules</a>.</p>
+<p>A plain hub ships one site menu — <strong>Main Menu</strong>, menu type <code>mainmenu</code> —
+holding a single item, <strong>Home</strong>.</p>
 <h2 id="menu-manager">Menu Manager</h2>
 <p><strong>Menus → Menu Manager</strong> opens <strong>Menu Manager: Menus</strong>. Each row shows the
 menu's title, its menu type beneath, the number of published, unpublished and
@@ -327,12 +350,30 @@ the project record.</p>
 <h3 id="where-the-types-come-from">Where the types come from</h3>
 <p>The picker is built from every enabled component. For each one the hub looks
 for a <code>&lt;menu&gt;</code> block in the component's <code>site/metadata.xml</code>. If there is
-none — as for Articles — it scans <code>site/views/</code>, taking each view that is not
-prefixed with an underscore and each layout XML file inside it, and uses the
-title declared there. That is why Articles offers <strong>Single Article</strong>,
-<strong>Category Blog</strong>, <strong>Category List</strong>, <strong>List All Categories</strong>, <strong>Featured
-Articles</strong>, <strong>Archived Articles</strong>, and <strong>Create Article</strong>: one entry per
-layout under <code>core/components/com_content/site/views</code>.</p>
+none — and only Articles ships that file at all, with the block missing from
+it — it scans <code>site/views/</code>, taking each view that is not prefixed with an
+underscore and each layout XML file inside it, and uses the title declared
+there. That is why Articles offers <strong>Single Article</strong>, <strong>Category Blog</strong>,
+<strong>Category List</strong>, <strong>List All Categories</strong>, <strong>Featured Articles</strong>, <strong>Archived
+Articles</strong>, and <strong>Create Article</strong>: one entry per layout under
+<code>core/components/com_content/site/views</code>.</p>
+<p>A type's <em>request fields</em> come from the same XML. A layout that declares one
+lets the menu item name a particular thing — <strong>Single Article</strong> declares an
+article picker, <strong>Category List</strong> a category picker, <strong>Resources → Resource
+(standard) Layout</strong> a resource ID. A layout that declares none can only point
+at the view in general.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The scan lists every layout it finds, whether or not the
+component can act on it. A type works only if the component has a task
+named after the layout, and it can point at a particular item only if the
+layout declares a request field. Several shipped types fail one test or the
+other: <strong>Knowledge base → Article</strong> and <strong>Knowledge base → Category</strong>
+declare no request field, so neither can name the article or category it is
+meant to open; <strong>Resources → Standard browse layout</strong>, <strong>Resources item</strong>
+and <strong>Browse by tags</strong> all fall through to the Resources front page;
+<strong>Articles → Create Article</strong> returns a 404. Open a new menu item on the
+site before you publish it. Recorded in the project record.</p>
+</aside>
 <p>The <strong>System Links</strong> group at the end is fixed, and holds three types that
 belong to no component:</p>
 <table>
@@ -357,6 +398,151 @@ belong to no component:</p>
 </tr>
 </tbody>
 </table>
+<h3 id="what-a-menu-item-does-besides-appear-in-a-menu">What a menu item does besides appear in a menu</h3>
+<p>A menu item is also the hub's record of what a URL means, and that has two
+consequences worth knowing before you plan a menu.</p>
+<p><strong>A page can be reachable with no menu item at all.</strong> When a request arrives,
+the site looks for the menu item whose route is the longest prefix of the
+path. If none matches, the path is handed to the component's own router,
+which resolves it on its own terms — an article by its category path and
+alias, a resource by its ID, a group by its name. Those pages work. They are
+simply unadvertised, and their addresses are whatever the router produces
+rather than anything you chose. <a href="../content/urls/index.html">URLs</a> has the rules for
+articles; each component's own chapter under
+<a href="../components/index.html">Components</a> covers the rest.</p>
+<p><strong>A menu item can change a page it did not send you to.</strong> Because the match
+is on a prefix, an item with alias <code>resources</code> becomes the active item for
+<code>/resources/42</code> as much as for <code>/resources</code>, and the leftover segments go to
+the component. Everything the active item carries then applies: its <strong>Page
+Display Options</strong>, its <strong>Template Style</strong>, and the modules assigned to it. So
+one menu item can change the look of every page beneath it, and the same page
+can look different depending on which route the reader took. For articles,
+which of the item's options beat the article's own depends on the layout —
+see <a href="../content/articlemanager/index.html">Article Manager</a>.</p>
+<h2 id="example-navigation-for-a-new-hub">Example: navigation for a new hub</h2>
+<p>A coastal-flooding research group has just had its hub installed and nothing
+has been added to it. It needs four links across the top: the front page, a
+page saying what the hub is, the member directory, and the resource catalogue
+the hub exists to hold.</p>
+<p>Two facts about a fresh install decide whether any of this is visible.</p>
+<ul>
+<li>The default site template style on a new hub is <strong>Welcome</strong>, a pre-launch
+splash that renders no modules and no component output whatsoever.
+Following its <strong>get started</strong> link switches the site's default style to
+<strong>kimera</strong>. Until that has happened nothing you do in the Module Manager
+shows anywhere. See <a href="../extensions/templates/index.html">Templates</a>.</li>
+<li>The <strong>Main Menu</strong> module a plain install creates sits in <code>position-7</code>,
+which no template in this tree declares or renders, so a plain install
+comes up with no navigation at all. Installing the optional sample content
+moves that module to <code>user3</code> — the position both site templates use for the
+main navigation. Check which of the two you have before you start.</li>
+</ul>
+<p>Then build the menu.</p>
+<ol>
+<li>Write the two articles first — <strong>Content → Article Manager</strong>, <strong>New</strong> —
+one for the front page and one about the hub, both filed under
+<strong>Uncategorised</strong>. See <a href="../content/articlemanager/index.html">Article Manager</a>.</li>
+<li><strong>Menus → Menu Manager</strong>, then <strong>New</strong>. Set <strong>Menu type</strong> to <code>hubnav</code> and
+<strong>Title</strong> to <code>Hub navigation</code>. <strong>Save &amp; Close</strong>.</li>
+<li>Open the new menu, select <strong>New</strong>, and next to <strong>Menu Item Type</strong> select
+<strong>Select</strong>, then <strong>Articles → Single Article</strong>. Set <strong>Menu Title</strong> to
+<code>Home</code>, choose the front-page article in <strong>Select Article</strong>, and
+<strong>Save &amp; Close</strong>.</li>
+<li>Add the second item the same way: <strong>Articles → Single Article</strong>, <strong>Menu
+Title</strong> <code>About</code>, the About article in <strong>Select Article</strong>, <strong>Alias</strong>
+<code>about</code>. Its URL becomes <code>/about</code>.</li>
+<li>Add the third: <strong>Members → Browse Members</strong>, <strong>Menu Title</strong> <code>Members</code>,
+<strong>Alias</strong> <code>members</code>.</li>
+<li>Add the fourth: <strong>Resources → Main page</strong>, <strong>Menu Title</strong> <code>Resources</code>,
+<strong>Alias</strong> <code>resources</code>.</li>
+<li>Sort the list by <strong>Ordering</strong> ascending and put the four in the order you
+want them read.</li>
+<li>Tick the <code>Home</code> item and select <strong>Home</strong> in the toolbar. A hub has exactly
+one home item, so this takes the flag off the shipped <strong>Home</strong> item in
+Main Menu.</li>
+<li>Back on <strong>Menus → Menu Manager</strong>, in the <strong>Hub navigation</strong> row, follow
+<strong>Add a module for this menu type</strong>.</li>
+<li>In the module, set <strong>Title</strong> to <code>Hub navigation</code>, <strong>Show Title</strong> to Hide,
+<strong>Position</strong> to <code>user3</code>, <strong>Status</strong> to Published and <strong>Access</strong> to
+Public. Under <strong>Select Menu</strong> choose <code>hubnav</code>, and under <strong>Menu
+Assignment</strong> choose <strong>On all pages</strong>. <strong>Save &amp; Close</strong>.</li>
+<li>Deal with the shipped module. <strong>Extensions → Module Manager</strong>, open
+<strong>Main Menu</strong>. On a hub with sample data it is published in <code>user3</code> and
+will now render alongside yours, so set <strong>Status</strong> to Unpublished. On a
+hub without, it is in <code>position-7</code> and renders nothing — unpublish it
+anyway, so the next administrator is not left wondering.</li>
+</ol>
+<p>Why those four types and not others:</p>
+<ul>
+<li><strong>Single Article</strong> for the front page, not <strong>Featured Articles</strong>. The
+shipped home item is a Featured Articles item and no screen in the
+administrator interface can put an article on it, so a hub left on it has
+an empty front page for ever. The warning is in
+<a href="../content/articlemanager/index.html">Article Manager</a>.</li>
+<li><strong>Browse Members</strong> rather than <strong>Members main page</strong>: it is the directory
+itself, with the search and sort controls. It is for signed-in members —
+a guest who follows it is sent to the login form and returned afterwards.</li>
+<li><strong>Resources → Main page</strong> is the catalogue's front page, listing the major
+resource types. Because routes match as prefixes, this one item is also the
+active item for every <code>/resources/…</code> page beneath it, which is what gives
+the whole catalogue a consistent heading and template style.</li>
+</ul>
+<p>If you would rather not have a second menu, the same result comes from
+skipping step 2, adding the four items to <strong>Main Menu</strong>, and moving the
+shipped module to <code>user3</code> instead of unpublishing it.</p>
+<h2 id="example-linking-into-one-component-s-content">Example: linking into one component's content</h2>
+<p>The same hub now has thirty short method notes, written as articles and filed
+in a category <strong>Methods</strong> with two sub-categories, <strong>Tides</strong> and <strong>Storm
+surge</strong>. The group wants three more links: one into the method notes as a
+whole, one to the storm-surge notes alone, and one to the single note people
+ask for most often.</p>
+<p>All three are Articles types, and what separates them is what the page does
+with the category or article you pick.</p>
+<ol>
+<li><strong>Menus → Menu Manager → New</strong>. <strong>Menu type</strong> <code>methods</code>, <strong>Title</strong>
+<code>Methods</code>. <strong>Save &amp; Close</strong>.</li>
+<li><strong>The list.</strong> In the new menu, <strong>New</strong>, then <strong>Menu Item Type</strong> →
+<strong>Select</strong> → <strong>Articles → List All Categories</strong>. <strong>Menu Title</strong>
+<code>Methods</code>, <strong>Alias</strong> <code>methods</code>, and in <strong>Select a Top Level Category</strong>
+choose <strong>Methods</strong>. <strong>Save &amp; Close</strong>.</li>
+<li><strong>The filtered view.</strong> <strong>New</strong>, then <strong>Articles → Category Blog</strong>. <strong>Menu
+Title</strong> <code>Storm surge</code>, <strong>Alias</strong> <code>storm-surge</code>, <strong>Parent Item</strong>
+<code>Methods</code>, and in <strong>Choose a category</strong> choose <strong>Storm surge</strong>.
+<strong>Save &amp; Close</strong>. Its URL is <code>/methods/storm-surge</code>.</li>
+<li><strong>The single item.</strong> <strong>New</strong>, then <strong>Articles → Single Article</strong>. <strong>Menu
+Title</strong> <code>Calibrating the surge model</code>, <strong>Parent Item</strong> <code>Methods</code>, and pick
+the article in <strong>Select Article</strong>. <strong>Save &amp; Close</strong>.</li>
+<li>Add a module for the <code>methods</code> menu as in the previous example, or leave
+the menu without one and reach the pages by their URLs — the items still
+give the pages their addresses either way.</li>
+</ol>
+<p>What each type changes on the page:</p>
+<ul>
+<li><strong>List All Categories</strong> shows the <em>categories</em> beneath the one you chose —
+Tides and Storm surge — not the notes. Its options are about the category
+listing: <strong>Top Level Category Description</strong>, <strong>Subcategories
+Descriptions</strong>, <strong># Articles in Category</strong>, and whether <strong>Empty
+Categories</strong> appear at all. Use it when the sub-categories are the thing
+worth choosing between.</li>
+<li><strong>Category Blog</strong> shows the articles in one category, laid out with their
+intro text: <strong># Leading Articles</strong> across the full width, then <strong># Intro
+Articles</strong> in <strong># Columns</strong>, then <strong># Links</strong> as bare titles. It is the
+layout for a section people browse.</li>
+<li><strong>Category List</strong> — not used here — shows the same articles as a table of
+titles with <strong># Articles to List</strong> per page, <strong>Table Headings</strong> and a
+<strong>Filter Field</strong>. Same category, same articles, a very different page: pick
+it when readers are looking something up rather than reading down.</li>
+<li><strong>Single Article</strong> shows one article and nothing else. Because the item
+names that article, it is also the article's canonical address; reached
+through this item, the options set on the item apply to it.</li>
+</ul>
+<p>Note what none of them do: none of these items limits who can <em>find</em> the
+articles. A note in the Methods category still answers at its category-path
+address whether or not a menu item points at it. <strong>Access</strong> on a menu item
+decides who sees the <em>link</em> — the module leaves out items above the reader's
+viewing level — and nothing in the routing turns it into a check on the page.
+What guards the page is the article's own access level and the component's
+permissions. See <a href="../users/accesslevels/index.html">Access levels</a>.</p>
 <h2 id="grouping-articles-under-a-menu">Grouping articles under a menu</h2>
 <p>To give a set of articles a section of their own — an About section, say —
 build the menu first and then show it:</p>
@@ -377,6 +563,9 @@ pages selected</strong> and tick, in <strong>Menu Selection</strong>, the menu i
 module should appear on.</li>
 <li><strong>Save &amp; Close</strong>.</li>
 </ol>
+<p>That is the side-menu pattern: the top navigation from the first example
+stays in <code>user3</code> on every page, and this second menu appears in <code>left</code> only
+on the pages of its own section.</p>
 <p>The module's other options are <strong>Start Level</strong>, <strong>End Level</strong>, <strong>Show
 Sub-menu Items</strong>, <strong>Show as Disclosure Menu</strong>, and <strong>Show Top Level Items as
 Links</strong>; the advanced tab adds a menu tag ID, a menu class suffix, a layout,
@@ -395,7 +584,7 @@ They are listed in the
 <a href="../../reference/configuration/components/menus/index.html">Menus configuration reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 754ab96b09</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../users/user-notes/index.html" rel="prev"><span>Previous</span>User notes</a><a class="pager__next" href="../content/index.html" rel="next"><span>Next</span>Content</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/07-menus.md">Edit this page on GitHub</a>
