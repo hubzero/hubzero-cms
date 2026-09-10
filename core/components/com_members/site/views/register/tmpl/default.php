@@ -203,7 +203,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 					<?php if ($this->registrationUsername == Field::STATE_READONLY) { ?>
 						<div class="form-group">
 							<label for="userlogin">
-								<?php Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?><br />
+								<?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?><br />
 								<?php echo $this->escape($this->registration['login']); ?>
 								<input name="login" id="userlogin" class="form-control" type="hidden" value="<?php echo $this->escape($this->registration['login']); ?>" />
 							</label>
