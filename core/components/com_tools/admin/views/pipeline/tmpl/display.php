@@ -29,7 +29,7 @@ Html::behavior('tooltip');
 				<button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 			<div class="col span6">
-				<label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
+				<label for="filter-state"><?php echo Lang::txt('COM_TOOLS_FIELD_STATE'); ?>:</label>
 				<select name="state" id="filter-state" class="filter filter-submit">
 					<option value="-1"<?php if ($this->filters['state'] == '-1') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_ALL_STATES'); ?></option>
 					<option value="0"<?php if ($this->filters['state'] === 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
