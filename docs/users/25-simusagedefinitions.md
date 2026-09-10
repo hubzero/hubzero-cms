@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/simusagedefinitions
 source-id: 3329
@@ -13,6 +13,12 @@ imported: 2026-09-09
 The **Simulation** half of the hub's [`/usage`](28-usage.md) page reports ten
 figures about the tools members have run. This chapter says what each one
 means.
+
+It is a reference, not a task. Read it when a figure on `/usage` is about to
+go into a report and you need to be sure what it counts — *simulation users*
+and *simulation runs* in particular are easy to misread, and the difference
+between CPU time and wall time changes what a total means. If you are not
+quoting one of these numbers, you do not need this page.
 
 Two of them — **Simulation Users** and **Simulation Runs** — are drawn as
 charts over the period you selected. The other eight are shown underneath as

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/introduction
 source-id: 3294
@@ -15,6 +15,13 @@ A hub is a web site where a research community keeps its people, its work,
 and the software it runs, in one place. This book is for the people who use
 one: how to get an account, what your member area holds, and what each part
 of the site is for.
+
+Most people arrive at a hub because someone told them to. A supervisor says
+the field data is on the hub; a course lists an assignment there; a
+collaborator sends a link to a model and says run it. This chapter is the
+five minutes of orientation that makes those instructions make sense. If you
+already know where you are going, go straight to
+[Getting started](30-gettingstarted.md).
 
 Every hub is built from the same set of components, but each hub turns on
 only the ones it needs. If a tab, a menu entry, or a whole section described
@@ -41,6 +48,10 @@ Registering is described in [Registration](20-registration.md). What the hub ask
 you for varies: the form is assembled from the fields the hub's administrators
 chose, so two hubs rarely ask exactly the same questions.
 
+An account is specific to one hub. Hubs do not share members with each other,
+so an account on one hub gives you nothing on another, even when both are
+Hubzero sites and both accept a sign-in from the same outside service.
+
 ## How the site is laid out
 
 Three things are worth knowing before you start clicking.
@@ -54,10 +65,15 @@ will use first are described in [Member dashboard](14-dashboard.md) and
 [Member profile](15-profile.md).
 
 **Shared spaces.** Groups and projects are the places where several people
-work on the same thing. A [group](11-groups/README.md) is a community space with
-its own pages, forum, calendar, blog, and file area. A
-[project](16-projects.md) is a workspace for a piece of research, with
-files, notes, to-dos, and a path to publishing what comes out of it.
+work on the same thing, and they are not the same thing. A
+[group](11-groups/README.md) is a standing community space with its own pages,
+forum, calendar, blog, and file area — a lab, a course cohort, a committee
+that keeps going after any one piece of work is finished. A
+[project](16-projects.md) is a workspace for one piece of research, with
+files, notes, to-dos, and a path to publishing what comes out of it. A soil
+hydrology lab might keep a group for its seminar announcements and shared
+reading, and open a separate project for each field season whose data it
+intends to release.
 
 **Published content.** Resources, publications, wiki pages, knowledge base
 articles, courses, and collections are the hub's library. They are public by

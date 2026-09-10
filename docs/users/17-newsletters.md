@@ -1,14 +1,27 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/newsletters
 -->
 # Newsletters
 
 A hub's newsletter carries news, announcements, and highlights of new
-content. Past issues are readable on the hub at `/newsletter`, and you can
-have new ones mailed to you by joining a mailing list. You do not need an
+content: a new tool released, a workshop coming up, a change to how
+something works. It is the hub telling you things, on the hub's
+schedule.
+
+**You read a newsletter; you do not write one.** There is no way for a
+member to compose or send one from the hub's own pages — writing and
+sending them is work a hub administrator does in the administrator
+interface. Everything on this page is about the receiving end: reading
+past issues, getting new ones by email, and stopping them. If you want
+to publish something yourself, you want a [blog](05-blog.md); if you
+want to reach one group, a group's own announcements do that, where the
+hub has that plugin enabled; see [Groups](11-groups/README.md).
+
+Past issues are readable on the hub at `/newsletter`, and you can have
+new ones mailed to you by joining a mailing list. You do not need an
 account to read them or, on most hubs, to subscribe.
 
 ## Reading a newsletter
@@ -33,6 +46,12 @@ the sidebar explains how the hub tracks newsletter opens and clicks.
 
 ## Subscribing to a mailing list
 
+A hub sends more than one newsletter — a general bulletin, a list for
+tool users, one for people teaching with the hub — and each is a
+separate **mailing list** you join or leave on its own. Subscribing is
+what gets an issue into your inbox; reading `/newsletter` does not
+subscribe you to anything.
+
 Press **Subscribe To Mailing Lists**, or go to `/newsletter/subscribe`.
 
 If you are not logged in, the hub first asks for an email address. Type it
@@ -53,14 +72,17 @@ message did not arrive. Following the link confirms the subscription
 immediately.
 
 Private lists never appear here. Someone who runs the hub has to add your
-address to one.
+address to one — so if you were told to expect a newsletter and cannot
+find its list on this page, that is why, and asking the hub's
+[support](12-support.md) staff is the way in.
 
 Some hubs also put a single-list sign-up box in a page sidebar. Type your
 address, submit, and confirm from the email exactly as above.
 
 ## Unsubscribing
 
-There are three ways off a list.
+Nothing here is a trap. There are three ways off a list, and the one to
+use depends on where you are when you decide.
 
 - On `/newsletter/subscribe`, uncheck the list under **My Mailing Lists** and
   press **Save Mailing List Subscriptions**. The list then shows

@@ -110,6 +110,36 @@ of images, a piece of software. You assemble one from files you have already
 put in a project, a curator reviews it, and once it is approved the hub gives
 it a permanent page and a DOI so other people can cite it. Published work
 lives at <code>/publications</code> on the hub.</p>
+<p>You publish when you need someone outside your team to be able to point at
+the exact thing you used. The soil lab from <a href="../projects/index.html">Projects</a> has
+spent a year measuring nitrate in field samples; the paper is nearly
+written, and the journal wants the data available. The lab publishes the
+cleaned dataset from its project, gets back a DOI, and puts that DOI in the
+paper's data-availability statement. Anyone who follows it a decade later
+gets the same files the paper was written from.</p>
+<p>That last part is the whole point, and it is what makes a publication
+different from everything else on the hub:</p>
+<ul>
+<li>A <strong>project</strong> is private and changes every day. A publication is public
+and frozen. Once a version is approved you cannot quietly edit it — you
+add a new version instead, and the old one stays reachable at its own DOI.</li>
+<li>A <strong>collection</strong> is a personal board of things you found interesting. It
+is not citable and nothing reviews it. See
+<a href="../collections/index.html">Collections</a>.</li>
+<li>A <strong>resource</strong> page describes work. A publication <em>is</em> the work, with the
+files attached and an identifier on them.</li>
+</ul>
+<p>Publishing is deliberate. Putting a file in a project does not publish it,
+and nothing publishes itself.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A DOI is issued only where the hub holds an account with an
+identifier service and an administrator has configured it. Those settings
+ship empty. On a hub without them, publications still get a permanent page
+and a version history, but no DOI, and the <code>doi:</code> line does not appear.
+Whether a given publication type demands a DOI at all is set per type by
+an administrator. If you need a citable identifier, check with the hub's
+support staff before you submit.</p>
+</aside>
 <h2 id="finding-a-publication">Finding a publication</h2>
 <p>The Publications home page lists <strong>Recent Publications</strong> and <strong>Popular
 Publications</strong> side by side, with a <strong>Browse Publications</strong> button at the top
@@ -208,6 +238,8 @@ form it wants you to use, with the DOI as a link. Two export links follow:
 <strong>BibTex</strong> and <strong>EndNote</strong>, each of which downloads a file you can import
 into a reference manager.</p>
 <h2 id="publishing-your-own-work">Publishing your own work</h2>
+<p>Everything up to here is about reading somebody else's publication. This is
+the part where you make one.</p>
 <p>You need an account, and the hub must have publishing switched on. Most work
 starts in a project: go to your project, open <strong>Publications</strong> in its menu,
 and select <strong>Start a new publication</strong>. Working inside a project means your
@@ -220,7 +252,10 @@ The hub creates a hidden project for you behind the scenes. Some hubs turn
 this shortcut off, in which case only the project route is offered.</p>
 <p>Either way you first answer <strong>What are you going to publish?</strong> and pick a
 type — <strong>File(s)</strong>, <strong>Databases</strong>, <strong>Series</strong> and so on. The type decides
-which panels you are asked to fill in.</p>
+which panels you are asked to fill in. It is set when the draft is created
+and nothing in the front end changes it afterwards, so read the descriptions
+before you choose. The soil lab picks <strong>File(s)</strong>: a
+cleaned <code>.csv</code>, a data dictionary, and the script that produced them.</p>
 <h3 id="working-through-the-panels">Working through the panels</h3>
 <p>A bar across the top of the draft shows every panel, and its colour tells you
 whether that panel is finished. Press <strong>Save &amp; Continue</strong> to move on, or
@@ -248,6 +283,7 @@ citation for you; otherwise enter it by hand.</li>
 <li><strong>Notes</strong> — what changed in this version.</li>
 </ol>
 <h3 id="review-and-submit">Review and submit</h3>
+<p>This is the last decision point. After this the draft leaves your hands.</p>
 <p>The last panel is <strong>Review</strong>. It tells you whether the draft is complete —
 <em>Your draft is complete and ready for submission</em> — or what is still missing,
 and it collects the last few decisions:</p>
@@ -264,9 +300,24 @@ only by its direct link.</li>
 <li><strong>Comments</strong> for the curator, and the <strong>Agreements</strong> box: <em>I and all
 publication authors have read and agree to</em> the hub's <strong>Terms of Deposit</strong>.</li>
 </ul>
-<p>Press <strong>Submit draft</strong>. The publication goes to <em>pending approval</em>, curators
-are notified, and you get an email when they respond. If they ask for
-changes, see <a href="#curation">Curation</a>.</p>
+<p>Press <strong>Submit draft</strong>.</p>
+<p>What happens next is not up to you. On a hub that reviews submissions, the
+version goes to <em>pending curator review</em>, the curators are notified, and you
+wait. A curator reads every panel of your draft, marks each one as acceptable
+or as needing work, and then either approves the publication — which stamps
+the accepted date, freezes the record, and registers the DOI — or sends it
+back to you with an explanation of what has to change. Either way you get an
+email. <a href="#curation">Curation</a> describes both sides of that exchange, and what
+to do when a draft comes back.</p>
+<p>On a hub that does not review submissions, the version publishes the moment
+you press the button. Auto-approval is a hub-wide option and can also be set
+per publication type or for named members, and the hub's shipped
+configuration turns it on. Where it is on, the review panel offers the tick
+box <em>I would like for this publication to be reviewed instead of
+automatically being published</em>, and that box is the only way to ask for a
+curator. If you are not sure which kind of hub you are on, look at the
+version's status straight after submitting: <em>pending curator review</em> means
+somebody is reading it, <em>published</em> means nobody will.</p>
 <p>Once a version is published you cannot change most of it — that is what the
 DOI guarantees. To correct or extend the work, start a new version from the
 <strong>Versions</strong> panel; it keeps the same publication page and adds a new release
@@ -280,12 +331,20 @@ records where it came from, and the original's page lists it. The <strong>Diff</
 button on the Forks tab compares two versions side by side, section by
 section.</p>
 <h2 id="curation">Curation</h2>
+<p>Curation exists because a DOI is a promise. Once a version is approved its
+files and its metadata stop changing, and a paper somewhere can cite them,
+so somebody looks at the draft before that becomes true. A curator checks
+that the files are the ones the description says they are, that the authors
+are right, that the licence permits what it claims to permit, and that a
+stranger could work out what the data means. That is a different job from
+peer review: a curator is not judging whether the science is good.</p>
 <p>Curation is the review a publication goes through between the moment its
 authors submit it and the moment it goes live. A curator reads every part of
 the draft, marks each one as acceptable or as needing work, and either
 approves the publication or sends it back. This chapter covers both sides:
 reviewing as a curator, and answering a review as an author. Submitting a
-draft in the first place is covered in <a href="../index.html">Publications</a>.</p>
+draft in the first place is covered in
+<a href="#publishing-your-own-work">Publishing your own work</a> above.</p>
 <h3 id="who-can-curate">Who can curate</h3>
 <p>Curation is open to members of the hub's curators group and to site
 administrators. Where a publication type names a curators group of its own,
@@ -420,14 +479,21 @@ re-submitted, and the curator sees which items you changed and which you
 disputed. Your changes and their comments both land in the <strong>History</strong>, so
 either side can read the whole exchange later.</p>
 <h3 id="skipping-review">Skipping review</h3>
-<p>Some hubs approve some submissions automatically: a publication type can be
-set to auto-approve, and the hub can name particular members whose
-submissions never wait. In those cases the review panel offers the tick box
-<em>I would like for this publication to be reviewed instead of automatically
-being published</em>, so you can ask for a curator anyway.</p>
+<p>Some hubs approve submissions automatically, and the shipped configuration
+does exactly that. Auto-approval can be set three ways: hub-wide in the
+component's options, per publication type in that type's curation settings,
+and for named members whose submissions never wait. Where any of them
+applies, pressing <strong>Submit draft</strong> publishes the version there and then —
+accepted date stamped, DOI registered where the hub issues them, no curator
+involved.</p>
+<p>The review panel offers the tick box <em>I would like for this publication to be
+reviewed instead of automatically being published</em>, so you can ask for a
+curator anyway. On a hub that auto-approves, that box is the difference
+between someone checking your dataset and nobody checking it. Tick it for
+anything you would be embarrassed to have frozen.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="../questions/index.html" rel="next"><span>Next</span>Questions and answers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/18-publications.md">Edit this page on GitHub</a>

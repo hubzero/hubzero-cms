@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/groups
 source-id: 3303
@@ -14,6 +14,36 @@ conversation, privately or with the world. Every group has an address of its
 own at `/groups/<group ID>`, a member list, and a set of tabs — a forum, a
 wiki, a blog, a calendar, files, and more — that the group's managers switch
 on or off.
+
+People make groups when a body of work outlasts a mailing list. A soil carbon
+project spread over four institutions puts its sampling protocols on a group
+page, argues about the analysis pipeline in a forum thread that is still
+findable next year, and keeps the papers it produced on a **Citations** tab
+it can hand to the funder. None of that needs an administrator: any member
+can start a group, and the tabs are switches the group's own managers turn
+on. This chapter follows that group, `soilcarbon`, from creation onward.
+
+## Three things called a group
+
+Hubs have three arrangements that sound alike and do quite different jobs.
+
+- A **group** is what this chapter is about: a space members create and run
+  themselves, with its own pages, forum, files and membership. You join one,
+  or are invited to it.
+- A [**project**](../16-projects.md) is a workspace for a small team
+  preparing files and data before any of it is released. Its owner picks the
+  team and decides whether anyone else ever sees it. It is about work in
+  progress rather than community: there is no forum and no wiki, and nobody
+  asks to join.
+- An [**access group**](../../managers/06-users/06-accessgroups.md) is one of
+  the hub's permission buckets, set by administrators, which decides what you
+  are allowed to do on the hub at all. You cannot see it, join it, or make
+  one.
+
+A group's roles and permissions stop at the group's edge, and no combination
+of them makes you an administrator. Your access group can decide whether you
+are allowed to create a group at all, but being in one puts you in no group,
+and joining a group changes nothing about your access group.
 
 Groups start at `/groups`. What you see there depends on whether you are
 signed in:
@@ -33,6 +63,11 @@ by title, sort by **Group Title** or **Group Alias**, and filter by **State**
 Hidden groups never appear, in the list or in search results.
 
 ## Joining a group
+
+Joining is what gets you the tabs a group has kept to itself. Most groups
+leave **Overview** readable by anyone and shut everything interesting —
+files, forum, wiki — to members, so a group can look almost empty from
+outside and be busy within.
 
 Open a group and use the button at the top of its sidebar. What the button
 offers depends on the group's join policy:
@@ -54,9 +89,6 @@ If you have been invited, the sidebar offers **Accept Invitation** and
 Once you are a member the button becomes a **Group Member** menu, whose
 **Cancel Group Membership** entry leaves the group. A manager who is the only
 manager left cannot leave; promote someone else first.
-
-> **Note:** A hub group is not an access group. Access groups are the hub's
-> permission buckets, and the two systems are unrelated.
 
 ## The group page
 

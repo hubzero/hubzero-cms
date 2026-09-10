@@ -101,6 +101,16 @@
 browser. You do not install anything, and it does not matter what operating
 system you use. Published tools have a page of their own under <code>/tools</code>, which
 is a resource page like any other, with a <strong>Launch Tool</strong> button on it.</p>
+<p>Tools exist so that a piece of research software can be used by people who
+could not install it. A simulation code with a decade of accumulated build
+dependencies, a licensed solver, a model that needs 60 GB of memory — a
+student on a laptop selects <strong>Launch Tool</strong> and it is there. A class of
+thirty gets the same version on the same machines, so the results they get
+in week three can be compared with each other and with the paper.</p>
+<p>The other half of this chapter is for the person who wrote such a program
+and wants to put it on the hub. Running one is
+<a href="#running-a-tool">Running a tool</a>; contributing one is
+<a href="#contributing-a-tool">Contributing a tool</a>.</p>
 <aside class="admonition admonition--important">
 <p><strong>Important:</strong> The execution side of this is separate software. This
 repository holds the CMS: the tool pages, the session screens, the sharing
@@ -173,6 +183,12 @@ session.</li>
 own, marked with your username as its owner. They leave it with <strong>Stop sharing</strong> on the session
 itself, or <strong>disconnect</strong> from the session list; only you can terminate it.</p>
 <h2 id="contributing-a-tool">Contributing a tool</h2>
+<p>Contribute a tool when your program is the thing other researchers need and
+installing it is what stops them. The reward is a page with a launch button,
+a version history, and figures on who used it; the cost is a review pipeline
+and, usually, some work on the interface. If you only want to give people the
+source code and a citable identifier, publish it instead — see
+<a href="../publications/index.html">Publications</a> — which is a much shorter road.</p>
 <p>If you have a program you want others to run, the hub can host it. What is
 practical:</p>
 <ul>
@@ -196,6 +212,11 @@ deployed here runs under Linux.</li>
 <p>Hubs can also publish tools as Jupyter notebooks or as Sim2Ls, where those
 options are switched on.</p>
 <h3 id="the-pipeline">The pipeline</h3>
+<p>You do not upload a tool and have it appear. Contribution is a staged
+process with the hub's staff on the other side of it: they set up your source
+repository, they install each version onto the execution hosts, and they do
+the final checks before it goes live. Expect it to take weeks rather than an
+afternoon, and expect to be waiting on someone else for part of it.</p>
 <p>Contribution runs through the hub's <strong>Contribtool</strong> pipeline at <code>/tools</code>. Your
 tool moves through a fixed sequence of states, and the status page shows where
 it is and what you have to do next.</p>
@@ -276,7 +297,7 @@ repository structure, invoke scripts, tool paths, file transfer, the submit
 command, and Jupyter notebooks as tools.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../resources/index.html" rel="prev"><span>Previous</span>Resources</a><a class="pager__next" href="../wiki/index.html" rel="next"><span>Next</span>Wiki</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/22-tools.md">Edit this page on GitHub</a>

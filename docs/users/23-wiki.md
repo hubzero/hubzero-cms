@@ -1,16 +1,63 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/wiki
 -->
 # Wiki
 
-The wiki is a set of community-editable pages. Anyone can read them; logged-in
-members can create pages, edit them, attach files, and comment. Every save
-keeps the old text, so nothing is ever lost. The hub's wiki is at
+The wiki is a set of pages a community writes together. Anyone can read them.
+Editing them takes a permission, and who has it differs between the hub's own
+wiki and a group's — see [Who may edit](#who-may-edit). Every save keeps the
+old text, so nothing is ever lost. The hub's wiki is at
 `https://<your hub>/wiki`, and each group has its own wiki under the group's
 **Wiki** tab; see [Groups](11-groups/README.md).
+
+A wiki is the right place for knowledge that changes and has no single owner.
+A thermal transport lab writes down how it prepares samples and calibrates the
+apparatus: the protocol is corrected every few months, three people maintain
+it, and every new student needs it on their first day. Kept in the group's
+wiki, it has one address, everyone in the group can fix it, and the history
+shows what changed when a result stops reproducing.
+
+## The wiki is not the other places you could put this
+
+- A **blog** post is dated and stays as written. A wiki page is meant to be
+  rewritten. See [Blog](05-blog.md).
+- A **project**'s files are private to the project team and are the work
+  itself. A wiki page is the writing about the work. See
+  [Projects](16-projects.md).
+- A **resource** is a finished thing you are publishing to the whole hub,
+  with authors and a citation. A wiki page is a living document. See
+  [Resources](21-resources.md).
+
+One consequence worth knowing before you commit to it: on a hub running Solr
+search, wiki pages are not in the search index, so the hub's main search box
+will not find the lab's protocol. Its readers reach it by link, by the wiki's
+own **Search** box, or by tag. See [Search](24-search.md) and
+[Tags](27-tags.md).
+
+## Who may edit
+
+Reading is open to anyone who can see the page. Everything else depends on a
+permission, and this is the usual reason a member cannot find the **Edit**
+tab.
+
+In a **group** wiki, any member of the group can create pages, and edit and
+delete unlocked ones. Group managers can do all of that plus edit locked
+pages. This is the arrangement the lab's protocol wants, and it is why most
+working documents live in a group wiki rather than the hub's — and why a
+group member should treat the **Delete** tab with care.
+
+In the **hub's** wiki, creating and editing are hub-wide permissions an
+administrator grants. A bare install grants them to the hub's content-editing
+roles, not to every registered member, so on a hub whose administrator has not
+widened them, an ordinary member can read the site wiki and comment on it but
+cannot create or edit a page. If the **Edit** tab is not there, that is why;
+ask the hub's support team. See [Support](12-support.md).
+
+The `Help:` pages that ship with the wiki, and any page an administrator has
+locked, are editable only by wiki managers in both cases.
 
 ## Finding your way around
 
@@ -34,7 +81,15 @@ Above the page body is a row of tabs: **Article**, **Edit**, **Comments**,
 
 ## Creating a page
 
-Log in, then select **New page** from the sidebar. In a group, open the
+Log in, then select **New page** from the sidebar. If the link is not there,
+you do not hold the create permission — see [Who may edit](#who-may-edit).
+
+> **Note:** On the hub's own wiki the link can be there and the form still
+> refuse you. **New page** is offered to anyone holding the create
+> permission, but the form behind it demands the edit permission as well, so
+> a member granted only the first is turned away with *You are not authorized
+> to perform this action.* Group wikis are not affected. Ask an administrator
+> to grant both. In a group, open the
 group's **Wiki** tab first. You can also follow a red link to a page that
 does not exist yet and take the offer to create it.
 
@@ -49,7 +104,7 @@ The form has these fields:
 | Treat as | **Wiki page anyone can edit**, **Knowledge article with specific authors**, or **Static (open layout)** where it is offered. |
 | Authors | For a knowledge article, the members who may edit it. |
 | Hide author list | Leaves the author byline off a knowledge article. |
-| Allow other users to submit suggested changes | Others may save revisions, but they stay unapproved until an author approves them. |
+| Allow other users to submit suggested changes | Intended to let others save revisions that an author then approves. It does not work — see the warning under [Editing a page](#editing-a-page). |
 | Allow other users to post comments | Turns the comment thread on. |
 | Lock page. Only administrators may make changes. | Freezes the page against further editing. |
 | Tags | Comma-separated keywords; see [Tags](27-tags.md). Editing tags alone does not create a new revision. |
@@ -62,13 +117,24 @@ the page and use the **Rename** link on the edit form.
 ## Editing a page
 
 Open a page and choose the **Edit** tab. The same form appears, filled in.
-Write your **Edit summary**, then **Save**.
+Write your **Edit summary**, then **Save**. Say the lab's calibration step
+changes: open the protocol page, change the paragraph, put *new calibration
+interval* in the summary, and save. The old text stays in the history.
 
-On a page in Wiki mode, your revision goes live immediately. On a knowledge
-article you are not an author of, the form warns you that any changes will be
-saved as a **suggested** revision; an author has to approve it before readers
-see it. Locked pages, and the shipped `Help:` pages, are editable only by hub
-administrators.
+Your revision goes live immediately. There is no approval queue for the people
+who may edit.
+
+> **Warning:** The **Allow other users to submit suggested changes** option on
+> a knowledge article does not work. The edit screen turns anyone who is not
+> an author away with *You are not authorized to perform this action.* before
+> it reaches the suggestion path, so a non-author cannot open the form at all
+> and no suggested revision can be created. The **[ approve ]** link described
+> under [Page history](#page-history) therefore only ever appears for
+> revisions made some other way. Do not rely on the option; name the people
+> who need to edit an article as its authors instead.
+
+Locked pages, and the shipped `Help:` pages, are editable only by wiki
+managers.
 
 ## Attaching and embedding files
 

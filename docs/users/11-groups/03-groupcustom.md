@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/groups/groupcustom
 source-id: 3306
@@ -12,6 +12,20 @@ modified: 2011-11-04
 What a group manager can change about a group from the site: its logo and
 settings, the pages that make up its content, the categories those pages are
 filed under, and — on a super group — the modules around them.
+
+A new group is a shell. The **Overview** tab shows whatever the hub's custom
+fields collected and a list of members, and that is all, which is enough for
+a reading group and not enough for a project people are meant to find their
+way around. `soilcarbon`, the group built through this chapter, needs three
+pages — a sampling protocol, the analysis pipeline, and who to ask about
+what — filed under a **Methods** category so the two protocol pages sit
+together, and its own logo so a member can tell it apart from the other four
+groups in their list. All of that is on this page.
+
+What is *not* on this page is anything that changes the group's HTML, its
+template or its CSS. That is the boundary worth learning early, and the
+[section at the end](#php-and-javascript-in-a-page) says exactly where it
+falls.
 
 Two entries in the **Group Manager** menu do all of it: **Edit Group
 Settings** and **Manage Group Pages**.
@@ -36,6 +50,9 @@ summary of what changed.
 
 ### The group logo
 
+The logo is how a member picks the group out of a list. It shows on the group
+page, in the group browse listing, and in the mail the group sends.
+
 The **Logo** section only exists once the group has been saved at least once.
 
 1. Open **Edit Group Settings**.
@@ -52,6 +69,12 @@ The **Logo** section only exists once the group has been saved at least once.
 
 ### Which tabs appear
 
+Every tab is a separate decision about a separate audience, and the two
+useful moves are opposite ones: turn a tab off entirely so the menu stays
+short and nobody wonders what is behind it, or open one wider than the rest
+so outsiders can read something before they ask to join. `soilcarbon` keeps
+**Overview** and **Citations** open to anyone and everything else to members.
+
 **Access Permissions**, in the **Privacy Settings** section, lists every tab
 groups can have on this hub. Each one takes a value:
 
@@ -66,6 +89,11 @@ groups can have on this hub. Each one takes a value:
 default for that tab until you change it.
 
 ## Group pages
+
+Group pages are the group's own writing: the things that are true for a while
+and want a stable address. A protocol, a list of who does what, a set of
+instructions for a new student. They are not conversation, and they are not
+the wiki.
 
 The group's content pages live behind **Group Manager** → **Manage Group
 Pages**. The screen has two tabs, or three on a super group:
@@ -83,6 +111,10 @@ same one used for the logo. **Back to Group** returns to the group.
 > site.
 
 ### Creating a page
+
+The steps below make `soilcarbon` its first page: the sampling protocol,
+readable by members only because it quotes site coordinates that are not
+public yet.
 
 1. Open **Manage Group Pages** and select **New Page**.
 2. Fill in **Title**. It is required.
@@ -144,7 +176,11 @@ group's home page cannot be deleted, published or unpublished.
 ### Page categories
 
 Categories group pages together and give each one a colour, used as a stripe
-in the page list and as a filter.
+in the page list and as a filter. They matter once a group has more pages
+than fit on a screen — `soilcarbon` files the sampling protocol and the
+analysis pipeline under **Methods**, so a manager can pull up just those two.
+They are a manager's convenience, not a permission: putting a page in a
+category does not change who can read it.
 
 1. Open **Manage Group Pages** and select the **Manage Page Categories** tab.
 2. Select **New Page Category**.
@@ -166,6 +202,10 @@ The screen is described in
 [Super Groups](../../managers/06-users/08-supergroups.md#managing-modules-from-the-site).
 
 ## PHP and JavaScript in a page
+
+Sooner or later somebody wants a group page to do something: pull a live
+figure out of a database, embed a widget, run a script. This section is the
+answer, and mostly the answer is that you cannot do it yourself.
 
 An ordinary group's page content is filtered: `<script>` blocks and PHP tags
 are stripped out before the page is stored. Nothing you can do from the site
@@ -196,6 +236,11 @@ saying the page is awaiting approval. The page shows **Pending Approval** in
 > book for the templating itself.
 
 ## The group calendar
+
+A group's **Calendar** tab is only useful if people see the events without
+going to look. Both routes below put the group's events into the calendar a
+member already reads — the field season's sampling trips turning up beside
+their teaching, without anyone copying dates across by hand.
 
 Members can take a group's events away with them, in two ways. Both live in
 the **Subscribe** box below the calendar on the group's **Calendar** tab.

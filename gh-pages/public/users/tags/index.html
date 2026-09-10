@@ -72,6 +72,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../simusagedefinitions/index.html">Simulation usage definitions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tags</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#tags-are-not-search">Tags are not search</a></li>
 <li class="toc__item toc__item--l2"><a href="#adding-tags-to-your-content">Adding tags to your content</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-tags-page">The tags page</a></li>
 <li class="toc__item toc__item--l2"><a href="#browsing-all-tags">Browsing all tags</a></li>
@@ -101,10 +102,41 @@ something in common. Resources, publications, groups, wiki pages, blog
 posts, questions, forum threads, courses, events, support tickets and
 member profiles can all be tagged, and a tag's page collects all of them in
 one list. Tags live at <code>/tags</code> on the hub.</p>
+<p>Tagging is what you do when the work is scattered. A thermal transport lab
+puts its thin-film conductivity dataset in the resources catalogue, keeps the
+measurement protocol on its group wiki, and answers questions about it in the
+forum. Nothing on the hub links those three to each other. Tag all three
+<code>thinfilm</code> and <code>/tags/thinfilm</code> becomes the one page that has the lot — for
+the lab, for a new student, and for anyone outside who arrives at one of the
+three and wants the rest.</p>
+<p>If you only ever read the hub, you do not have to do anything with tags. Click
+one when you see it and you get everything else that carries it. The rest of
+this page is for the point at which you are adding something of your own.</p>
+<h2 id="tags-are-not-search">Tags are not search</h2>
+<p>Readers use the two interchangeably and they answer different questions.
+Search reads the text of an item and ranks what matches the words you typed.
+A tag is a label a person deliberately attached, and a tag page lists
+everything carrying it, in date or title order, with no ranking and no
+guessing.</p>
+<p>That difference matters most on a hub running Solr search, where only eleven
+kinds of content are indexed. Forum posts, wiki pages, questions and answers,
+wishlist items, events and support tickets are not searchable there — but all
+six can be tagged, and all six appear on tag pages. So on those hubs the tag
+is the <em>only</em> thing that will show you the lab's dataset, its wiki protocol
+and its forum thread on one page. See <a href="../search/index.html">Search</a>.</p>
 <h2 id="adding-tags-to-your-content">Adding tags to your content</h2>
 <p>Tags are not created on a page of their own. You add them while you are
 creating or editing something: a resource, a project, a group, a wiki page,
-your profile. Look for the field labelled <strong>Tags</strong>.</p>
+your profile. Look for the field labelled <strong>Tags</strong>. There is no screen for
+making a tag in advance of using one, and for most kinds of content only the
+people who may edit an item may tag it. Forum threads are the exception worth
+knowing: the reply form carries a <strong>Your tags</strong> field, prefilled with the
+thread's current tags, so anyone who can post to a thread can change what it
+is tagged with.</p>
+<p>To do the lab's tagging, you would open each of the three items in turn — the
+resource's <strong>Tags</strong> step, the wiki page's <strong>Edit</strong> tab, the forum thread's
+<strong>Your tags</strong> field — and add <code>thinfilm</code> to each. Three separate edits; the
+hub does not propagate a tag from one item to another.</p>
 <p>Type a word and press <strong>Enter</strong>, or pick one of the suggestions the field
 offers as you type. Repeat for as many tags as you want — there is no
 limit. To take a tag off, hover over it and click the <strong>x</strong> beside it. Save
@@ -120,7 +152,10 @@ will match it to the right one.</p>
 <p>Some tags are aliases for others. If the hub's managers have set &quot;aqua&quot; up
 as an alias of &quot;water&quot;, typing &quot;aqua&quot; tags your item with &quot;water&quot;.</p>
 <h2 id="the-tags-page">The tags page</h2>
-<p><code>/tags</code> is the hub's front door for tags. It has a search box that takes
+<p><code>/tags</code> is the hub's front door for tags. Go there when you want to see what
+the hub is collectively working on, or when you have half a keyword and want
+to find the tag that everyone else is actually using before you invent a
+near-duplicate of it. It has a search box that takes
 one or more tags, and two clouds: <strong>Recently Used</strong> and <strong>Top Used</strong>. Click
 any tag in either cloud to open its page. <strong>Browse the full list</strong> goes to
 the complete list.</p>
@@ -138,7 +173,8 @@ including pending, unpublished and private items, so it may be larger
 than the number of results you can actually see.</p>
 </aside>
 <h2 id="a-tag-s-page">A tag's page</h2>
-<p>Open a tag and you get everything on the hub tagged with it, at
+<p>A tag's page is the payoff for tagging: it is the single list the lab wanted.
+Open a tag and you get everything on the hub tagged with it, at
 <code>https://&lt;your hub&gt;/tags/&lt;tag&gt;</code>. If a manager has written a description for
 the tag, it appears at the top.</p>
 <p>Down the side, <strong>Categories</strong> breaks the results up by what kind of thing
@@ -169,9 +205,14 @@ remove a tag from your own content, by editing the item and deleting the
 tag from its <strong>Tags</strong> field.</p>
 <p>You also cannot see who tagged something. The hub records the tagger, but
 that information is not shown to members.</p>
+<p>Nor can you rely on a tag being there at all. A tag only reaches a tag page
+if the feature that holds the item supports tagging, and a hub can turn
+individual features off. If <code>/tags/thinfilm</code> shows the dataset but not the
+wiki page, the likeliest reasons are that nobody tagged the wiki page, or
+that the item is not visible to you.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../storefront/index.html" rel="prev"><span>Previous</span>Storefront</a><a class="pager__next" href="../usage/index.html" rel="next"><span>Next</span>Usage</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/27-tags.md">Edit this page on GitHub</a>

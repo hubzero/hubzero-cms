@@ -66,6 +66,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../questions/index.html">Questions and answers</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Registration</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#creating-an-account">Creating an account</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-happens-next">What happens next</a></li>
 <li class="toc__item toc__item--l2"><a href="#activating-the-account">Activating the account</a></li>
 <li class="toc__item toc__item--l2"><a href="#third-party-logins">Third-party logins</a></li>
 </ol></li>
@@ -98,6 +99,15 @@
 address the hub can reach you at, and whatever else your hub asks for. Once
 the account is confirmed you can contribute content, join groups, and run
 tools.</p>
+<p>Read this page if the form asked you something you did not expect, or if you
+registered and the account still will not work. If the form is short and
+obvious on your hub, fill it in and go to
+<a href="../gettingstarted/index.html">Getting started</a> instead.</p>
+<p>The form is longer than a sign-up form usually is, and for a reason. A hub is
+a place where work is attributed: your name goes on the datasets you release,
+the questions you answer, and the tool sessions the hub bills to a quota. The
+extra questions — organisation, discipline, position — are what let a group
+manager recognise the right person before letting them at the group's files.</p>
 <p>No two hubs ask exactly the same questions. The fieldsets below are the ones
 built into the software; the <strong>Personal Information</strong> fieldset in the middle
 is entirely the hub's own, and any of the standard fields can be made
@@ -123,26 +133,37 @@ misleading; ignore it until the screenshots are recaptured.</p>
 Shibboleth and others are all possible — a <strong>Connect With</strong> panel appears
 at the top of the form. Using one fills in part of the form for you and
 links that account to your new hub account.</p>
+<p>Signing in this way does not skip the rest of the form. It saves typing and
+gives you one fewer password to keep; see
+<a href="#third-party-logins">Third-party logins</a> below for what it leaves
+unfinished.</p>
 </li>
 <li>
 <p>Under <strong>Login Information</strong>, type a <strong>Username</strong>. The hint under the box
 says what is allowed: <em>Combination of lowercase letters and numbers. No
 spaces or punctuation.</em> When you leave the box, the hub checks the name
 against the accounts that already exist and reports underneath whether it
-is available.</p>
+is available. You do not have to submit the form to find out.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Usernames cannot be changed afterwards.</p>
 </aside>
+<p>Choose one you would not mind a co-author seeing. On hubs that offer SSH or
+SFTP access for tool development, the same username is your login there;
+the <strong>Account</strong> tab shows it as your local services username.</p>
 </li>
 <li>
 <p>Type a <strong>Password</strong>, then repeat it in <strong>Confirm Password</strong>. The list of
 rules under the boxes is your hub's own — it is a table an administrator
 edits, so its length and content vary. The list updates as you type, marking
-each rule as it is satisfied.</p>
+each rule as it is satisfied. Work down the list until nothing is left
+flagged; the form rejects the password otherwise, and it will tell you which
+rule failed.</p>
 </li>
 <li>
 <p>Under <strong>Contact Information</strong>, fill in <strong>First Name</strong>, <strong>Middle Name</strong>, and
 <strong>Last Name</strong>. Middle name is never required.</p>
+<p>This is the name that appears on anything you contribute, so type it as you
+would want it cited.</p>
 </li>
 <li>
 <p>Type your address in <strong>Valid E-mail</strong> and again in <strong>Confirm E-mail</strong>. A
@@ -157,7 +178,9 @@ to it.</p>
 <p>If the address already belongs to an account, the form says so and offers
 two buttons instead: one that emails you the existing account's details, and
 one that opens a support ticket asking for that account's resource limits to
-be raised.</p>
+be raised. That second button is there because the usual reason to register
+twice is running out of disk or session quota, and a second account is not
+the fix.</p>
 </li>
 <li>
 <p>Answer the questions in <strong>Personal Information</strong>. These are your hub's own
@@ -169,7 +192,8 @@ the answer you give.</p>
 <li>
 <p>Under <strong>Receive Email Updates</strong>, tick or clear the box beside <em>Would you
 like to receive email updates (newsletters, etc.)?</em> It is ticked by
-default.</p>
+default. It governs newsletters only — it does not stop the confirmation
+message, or the notifications a group or project sends you.</p>
 </li>
 <li>
 <p>Complete the <strong>Human Check</strong>. Its contents depend on which CAPTCHA plugin
@@ -179,7 +203,8 @@ Google reCAPTCHA.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> This fieldset also contains a box labelled <em>Please leave this
 field blank.</em> That is a trap for automated form fillers. Leave it empty,
-as it says.</p>
+as it says. If a password manager or browser autofill has put something in
+it, clear it, or the form is rejected as a bot.</p>
 </aside>
 </li>
 <li>
@@ -190,24 +215,44 @@ tick <em>Yes, I have read and agree to the Terms of Use.</em></p>
 <p>Select <strong>Create Account</strong>.</p>
 </li>
 </ol>
+<h2 id="what-happens-next">What happens next</h2>
+<p>In order, and depending on how the hub is set up:</p>
+<ol>
+<li>The account is created and the form is replaced by <em>Account Created!</em>, with
+a four-step reminder — find the email, follow the activation link, log in,
+done — and the address the message went to.</li>
+<li><strong>If email confirmation is on</strong>, which is the usual setting, the account
+cannot be used until you follow the link. This is the step most people are
+stuck at when they say the hub is not letting them in.</li>
+<li><strong>If the hub also requires administrator approval</strong>, confirming the address
+is not the end. Until someone approves the account, logging in reaches a
+page headed <em>Pending Approval</em>. Where the hub has the approval notice
+switched on, it emails you when the account is approved. Nothing you can do
+speeds it up; the page carries a link to raise a support ticket if you think
+it is wrong.</li>
+<li><strong>If the hub has switched confirmation off</strong>, the account works as soon as
+it is created and you can log in immediately.</li>
+</ol>
 <h2 id="activating-the-account">Activating the account</h2>
-<p>If confirmation is switched on, the hub answers with <em>Account Created!</em> and a
-four-step reminder: find the email, follow the activation link, log in, done.
-The message names the address it was sent to.</p>
-<p>Follow the link and log in. That confirms the address and, on a hub that does
-not also require administrator approval, the account is ready.</p>
+<p>Follow the link in the message and log in. That confirms the address and, on a
+hub that does not also require administrator approval, the account is ready.</p>
 <p>If nothing arrives:</p>
 <ul>
 <li>The message is generated automatically and some filters treat it as spam.
 Check the spam folder first.</li>
-<li>Log in and use the resend option, or contact the hub's support.</li>
+<li>Log in anyway. An unconfirmed account reaches a page headed <em>Email Address
+Unconfirmed</em>, which offers to send a new confirmation message to the address
+on the account. Failing that, contact the hub's support.</li>
 <li>If you mistyped the address, correct it from your profile. Changing an email
 address un-confirms the account and sends a fresh confirmation link, so you
 will have to confirm again.</li>
 </ul>
-<p>Some hubs also require an administrator to approve new accounts. In that case
-the account stays unusable after you confirm, until someone approves it. You
-are emailed when that happens.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That last point applies whenever you change the address, not
+just while fixing a typo. Changing your email at any later date puts the
+account back into the unconfirmed state until you follow the new link, so do
+not change it to an address you cannot read.</p>
+</aside>
 <h2 id="third-party-logins">Third-party logins</h2>
 <p>An account created by logging in through another service starts out
 incomplete: the hub does not get a usable email address from every provider,
@@ -215,10 +260,13 @@ so it holds you on the registration form until you supply the missing pieces.
 Until you do, you cannot be messaged by other members and the account shows as
 incomplete.</p>
 <p>You can link further services to an existing account, and set a local
-password, from the <strong>Account</strong> tab of your member area.</p>
+password, from the <strong>Account</strong> tab of your member area. A local password is
+worth setting even if you always sign in through a provider: SSH, SFTP, and
+tool development access use it, and a linked account cannot be removed if it
+is the only way you can get in.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../questions/index.html" rel="prev"><span>Previous</span>Questions and answers</a><a class="pager__next" href="../resources/index.html" rel="next"><span>Next</span>Resources</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/20-registration.md">Edit this page on GitHub</a>

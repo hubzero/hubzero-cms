@@ -1,16 +1,31 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/events
 -->
 # Events
 
-The hub calendar lists conferences, workshops, seminars, meetings and
-anything else the community is organising. It is at `/events`, and most
-hubs link it from their community menu. Anyone can read it and register
-for an event that accepts registrations; submitting an event needs a
-login.
+The hub calendar is where the community finds out what is happening and
+signs up for it: conferences, workshops, seminars, training days,
+anything open to the hub at large. A lab running a two-day workshop on
+its simulation tool puts it on the calendar, and everyone who might
+come sees it in the same place they see everything else, without a
+mailing list or a flyer.
+
+There are two sides to this page and you are probably on one of them.
+**Reading and registering** needs no account: browse the calendar, open
+an event, and fill in the organiser's form. **Adding an event** needs a
+login, and permission from the hub — and even then, setting up a
+registration form is not something you can do yourself.
+
+The calendar is at `/events`, and most hubs link it from their community
+menu.
+
+> **Note:** A hub event is not a group event. A group keeps its own
+> calendar, and events belonging to a group do not appear here; see
+> [Group customization](11-groups/03-groupcustom.md). If your workshop
+> is for one group's members, put it on that group's calendar instead.
 
 ## Browsing the calendar
 
@@ -62,11 +77,12 @@ An event may have extra pages — an agenda, directions, a speaker list —
 which appear as tabs next to **Overview**. A **Register** tab appears
 while registration is still open.
 
-> **Note:** Events belonging to a group are not shown here. Opening one
-> sends you to that group's calendar instead; see
-> [Group customization](11-groups/03-groupcustom.md).
-
 ## Registering for an event
+
+Registration is how the organiser knows how many people to expect and
+what they need — a room size, lunch numbers, a list of who gets an
+account on the machine. It is the organiser's form, not the hub's, so
+what it asks varies from event to event.
 
 Not every event takes registrations — the tab only exists when the
 organiser set a "register by" date, and it disappears once that date has
@@ -89,11 +105,21 @@ Press **Submit**. Confirmation email goes to the address you entered and
 to the organiser, and the page reports **Thank you for registering for
 this event!**
 
+Keep that email. There is no page listing the events you have registered
+for, and no way to change or cancel a registration from the site: the
+form refuses a second attempt from the same address, so if your plans
+change, write to the **Contact** named on the event's Overview tab.
+
 > **Note:** You can register only once per event with a given email
 > address. A second attempt is refused with "You have previously
 > registered for this event."
 
 ## Adding an event
+
+Adding an event is announcing it, and nothing more: you get a dated entry
+on the calendar with a description, a location and a link. The
+workshop's own sign-up sheet, agenda and directions are not yours to
+add — see the note at the end of this section.
 
 You have to be logged in, and the hub has to allow you to create events.
 When it does, an **Add an Event** button sits at the top right of every
@@ -123,7 +149,10 @@ back with "Event end time cannot be before event start time."
 
 Registration cannot be set up from this form. If your event needs a
 sign-up sheet, extra pages, or an invitation password, ask a hub manager
-to add them.
+to add them. So the lab announcing its two-day workshop submits the
+event itself — category, title, description, location, start and end,
+time zone — and then asks a hub manager to open registration and add the
+agenda tab before it advertises the link.
 
 ## Changing or removing your event
 

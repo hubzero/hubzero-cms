@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/publications
 -->
 # Publications
@@ -11,6 +11,37 @@ of images, a piece of software. You assemble one from files you have already
 put in a project, a curator reviews it, and once it is approved the hub gives
 it a permanent page and a DOI so other people can cite it. Published work
 lives at `/publications` on the hub.
+
+You publish when you need someone outside your team to be able to point at
+the exact thing you used. The soil lab from [Projects](16-projects.md) has
+spent a year measuring nitrate in field samples; the paper is nearly
+written, and the journal wants the data available. The lab publishes the
+cleaned dataset from its project, gets back a DOI, and puts that DOI in the
+paper's data-availability statement. Anyone who follows it a decade later
+gets the same files the paper was written from.
+
+That last part is the whole point, and it is what makes a publication
+different from everything else on the hub:
+
+- A **project** is private and changes every day. A publication is public
+  and frozen. Once a version is approved you cannot quietly edit it — you
+  add a new version instead, and the old one stays reachable at its own DOI.
+- A **collection** is a personal board of things you found interesting. It
+  is not citable and nothing reviews it. See
+  [Collections](01-collections.md).
+- A **resource** page describes work. A publication *is* the work, with the
+  files attached and an identifier on them.
+
+Publishing is deliberate. Putting a file in a project does not publish it,
+and nothing publishes itself.
+
+> **Note:** A DOI is issued only where the hub holds an account with an
+> identifier service and an administrator has configured it. Those settings
+> ship empty. On a hub without them, publications still get a permanent page
+> and a version history, but no DOI, and the `doi:` line does not appear.
+> Whether a given publication type demands a DOI at all is set per type by
+> an administrator. If you need a citable identifier, check with the hub's
+> support staff before you submit.
 
 ## Finding a publication
 
@@ -93,6 +124,9 @@ into a reference manager.
 
 ## Publishing your own work
 
+Everything up to here is about reading somebody else's publication. This is
+the part where you make one.
+
 You need an account, and the hub must have publishing switched on. Most work
 starts in a project: go to your project, open **Publications** in its menu,
 and select **Start a new publication**. Working inside a project means your
@@ -107,7 +141,10 @@ this shortcut off, in which case only the project route is offered.
 
 Either way you first answer **What are you going to publish?** and pick a
 type — **File(s)**, **Databases**, **Series** and so on. The type decides
-which panels you are asked to fill in.
+which panels you are asked to fill in. It is set when the draft is created
+and nothing in the front end changes it afterwards, so read the descriptions
+before you choose. The soil lab picks **File(s)**: a
+cleaned `.csv`, a data dictionary, and the script that produced them.
 
 ### Working through the panels
 
@@ -138,6 +175,8 @@ but a file publication usually asks for:
 
 ### Review and submit
 
+This is the last decision point. After this the draft leaves your hands.
+
 The last panel is **Review**. It tells you whether the draft is complete —
 *Your draft is complete and ready for submission* — or what is still missing,
 and it collects the last few decisions:
@@ -154,9 +193,26 @@ and it collects the last few decisions:
 - **Comments** for the curator, and the **Agreements** box: *I and all
   publication authors have read and agree to* the hub's **Terms of Deposit**.
 
-Press **Submit draft**. The publication goes to *pending approval*, curators
-are notified, and you get an email when they respond. If they ask for
-changes, see [Curation](#curation).
+Press **Submit draft**.
+
+What happens next is not up to you. On a hub that reviews submissions, the
+version goes to *pending curator review*, the curators are notified, and you
+wait. A curator reads every panel of your draft, marks each one as acceptable
+or as needing work, and then either approves the publication — which stamps
+the accepted date, freezes the record, and registers the DOI — or sends it
+back to you with an explanation of what has to change. Either way you get an
+email. [Curation](#curation) describes both sides of that exchange, and what
+to do when a draft comes back.
+
+On a hub that does not review submissions, the version publishes the moment
+you press the button. Auto-approval is a hub-wide option and can also be set
+per publication type or for named members, and the hub's shipped
+configuration turns it on. Where it is on, the review panel offers the tick
+box *I would like for this publication to be reviewed instead of
+automatically being published*, and that box is the only way to ask for a
+curator. If you are not sure which kind of hub you are on, look at the
+version's status straight after submitting: *pending curator review* means
+somebody is reading it, *published* means nobody will.
 
 Once a version is published you cannot change most of it — that is what the
 DOI guarantees. To correct or extend the work, start a new version from the
@@ -174,12 +230,21 @@ button on the Forks tab compares two versions side by side, section by
 section.
 ## Curation
 
+Curation exists because a DOI is a promise. Once a version is approved its
+files and its metadata stop changing, and a paper somewhere can cite them,
+so somebody looks at the draft before that becomes true. A curator checks
+that the files are the ones the description says they are, that the authors
+are right, that the licence permits what it claims to permit, and that a
+stranger could work out what the data means. That is a different job from
+peer review: a curator is not judging whether the science is good.
+
 Curation is the review a publication goes through between the moment its
 authors submit it and the moment it goes live. A curator reads every part of
 the draft, marks each one as acceptable or as needing work, and either
 approves the publication or sends it back. This chapter covers both sides:
 reviewing as a curator, and answering a review as an author. Submitting a
-draft in the first place is covered in [Publications](README.md).
+draft in the first place is covered in
+[Publishing your own work](#publishing-your-own-work) above.
 
 ### Who can curate
 
@@ -295,8 +360,16 @@ either side can read the whole exchange later.
 
 ### Skipping review
 
-Some hubs approve some submissions automatically: a publication type can be
-set to auto-approve, and the hub can name particular members whose
-submissions never wait. In those cases the review panel offers the tick box
-*I would like for this publication to be reviewed instead of automatically
-being published*, so you can ask for a curator anyway.
+Some hubs approve submissions automatically, and the shipped configuration
+does exactly that. Auto-approval can be set three ways: hub-wide in the
+component's options, per publication type in that type's curation settings,
+and for named members whose submissions never wait. Where any of them
+applies, pressing **Submit draft** publishes the version there and then —
+accepted date stamped, DOI registered where the hub issues them, no curator
+involved.
+
+The review panel offers the tick box *I would like for this publication to be
+reviewed instead of automatically being published*, so you can ask for a
+curator anyway. On a hub that auto-approves, that box is the difference
+between someone checking your dataset and nobody checking it. Tick it for
+anything you would be embarrassed to have frozen.

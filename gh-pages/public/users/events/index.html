@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Events · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="The hub calendar lists conferences, workshops, seminars, meetings and anything else the community is organising. It is at , and most hubs link it from their…">
+  <meta name="description" content="The hub calendar is where the community finds out what is happening and signs up for it: conferences, workshops, seminars, training days, anything open to the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/events/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,11 +96,25 @@
         </header>
         
         <div class="prose">
-<p>The hub calendar lists conferences, workshops, seminars, meetings and
-anything else the community is organising. It is at <code>/events</code>, and most
-hubs link it from their community menu. Anyone can read it and register
-for an event that accepts registrations; submitting an event needs a
-login.</p>
+<p>The hub calendar is where the community finds out what is happening and
+signs up for it: conferences, workshops, seminars, training days,
+anything open to the hub at large. A lab running a two-day workshop on
+its simulation tool puts it on the calendar, and everyone who might
+come sees it in the same place they see everything else, without a
+mailing list or a flyer.</p>
+<p>There are two sides to this page and you are probably on one of them.
+<strong>Reading and registering</strong> needs no account: browse the calendar, open
+an event, and fill in the organiser's form. <strong>Adding an event</strong> needs a
+login, and permission from the hub — and even then, setting up a
+registration form is not something you can do yourself.</p>
+<p>The calendar is at <code>/events</code>, and most hubs link it from their community
+menu.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A hub event is not a group event. A group keeps its own
+calendar, and events belonging to a group do not appear here; see
+<a href="../groups/groupcustom/index.html">Group customization</a>. If your workshop
+is for one group's members, put it on that group's calendar instead.</p>
+</aside>
 <h2 id="browsing-the-calendar">Browsing the calendar</h2>
 <p><code>/events</code> opens on whichever view the hub has chosen as its start page.
 Four tabs across the top switch between them:</p>
@@ -177,12 +191,11 @@ in another country reads correctly wherever you are.</p>
 <p>An event may have extra pages — an agenda, directions, a speaker list —
 which appear as tabs next to <strong>Overview</strong>. A <strong>Register</strong> tab appears
 while registration is still open.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Events belonging to a group are not shown here. Opening one
-sends you to that group's calendar instead; see
-<a href="../groups/groupcustom/index.html">Group customization</a>.</p>
-</aside>
 <h2 id="registering-for-an-event">Registering for an event</h2>
+<p>Registration is how the organiser knows how many people to expect and
+what they need — a room size, lunch numbers, a list of who gets an
+account on the machine. It is the organiser's form, not the hub's, so
+what it asks varies from event to event.</p>
 <p>Not every event takes registrations — the tab only exists when the
 organiser set a &quot;register by&quot; date, and it disappears once that date has
 passed. After it passes, the page says <strong>Registration is closed for this
@@ -200,12 +213,20 @@ in from your profile.</p>
 <p>Press <strong>Submit</strong>. Confirmation email goes to the address you entered and
 to the organiser, and the page reports <strong>Thank you for registering for
 this event!</strong></p>
+<p>Keep that email. There is no page listing the events you have registered
+for, and no way to change or cancel a registration from the site: the
+form refuses a second attempt from the same address, so if your plans
+change, write to the <strong>Contact</strong> named on the event's Overview tab.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> You can register only once per event with a given email
 address. A second attempt is refused with &quot;You have previously
 registered for this event.&quot;</p>
 </aside>
 <h2 id="adding-an-event">Adding an event</h2>
+<p>Adding an event is announcing it, and nothing more: you get a dated entry
+on the calendar with a description, a location and a link. The
+workshop's own sign-up sheet, agenda and directions are not yours to
+add — see the note at the end of this section.</p>
 <p>You have to be logged in, and the hub has to allow you to create events.
 When it does, an <strong>Add an Event</strong> button sits at the top right of every
 calendar page. It leads to <code>/events/add</code>.</p>
@@ -266,7 +287,10 @@ found until it is published. Your event is not lost — it is queued.</p>
 </aside>
 <p>Registration cannot be set up from this form. If your event needs a
 sign-up sheet, extra pages, or an invitation password, ask a hub manager
-to add them.</p>
+to add them. So the lab announcing its two-day workshop submits the
+event itself — category, title, description, location, start and end,
+time zone — and then asks a hub manager to open registration and add the
+agenda tab before it advertises the link.</p>
 <h2 id="changing-or-removing-your-event">Changing or removing your event</h2>
 <p>Open your event. <strong>edit</strong> and <strong>delete</strong> links sit beside its title, and
 they appear only for the member who submitted it (or for hub staff).</p>
@@ -276,7 +300,7 @@ The record itself is kept, so a hub manager can put it back; ask them if
 you removed something by mistake.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../citations/index.html" rel="prev"><span>Previous</span>Citations</a><a class="pager__next" href="../forum/index.html" rel="next"><span>Next</span>Forum</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/07-events.md">Edit this page on GitHub</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Projects · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="A project is a private workspace you and a few colleagues share on the hub: a file area, a place for notes, a to-do list, an activity feed, and — where the hub…">
+  <meta name="description" content="A project is a private workspace on the hub for a piece of work in progress. You create it, you choose who is on the team, and nobody outside that team sees…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/projects/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,13 +120,41 @@
         </header>
         
         <div class="prose">
-<p>A project is a private workspace you and a few colleagues share on the hub:
-a file area, a place for notes, a to-do list, an activity feed, and — where
-the hub offers them — data stores and a route to publishing your work. You
-create a project yourself, you decide who is on the team, and nothing in it
-is visible to anyone else unless you make it so.</p>
+<p>A project is a private workspace on the hub for a piece of work in progress.
+You create it, you choose who is on the team, and nobody outside that team
+sees anything in it unless you decide otherwise. Inside are a file area,
+wiki-style notes, a shared to-do list, an activity feed, and — where the hub
+offers them — searchable data tables and a route to publishing.</p>
+<p>Projects exist for the months before work is ready to show anyone. A soil
+lab measuring nitrate in field samples keeps the raw instrument readings,
+the script that cleans them, and the argument about which outliers to drop
+in a project, where the four people doing the work can all reach them and
+nobody else can. When the cleaned dataset is finally worth citing, the
+project is also where they release it.</p>
+<p>That release is the other half of the story, and
+<a href="../publications/index.html">Publications</a> tells it:</p>
+<ul>
+<li>A <strong>project</strong> is private, editable, and changes every day.</li>
+<li>A <strong>publication</strong> is public, frozen, and carries a DOI so a paper can cite
+it.</li>
+</ul>
+<p>You do the work in the first and release it from the second. One project can
+produce several publications, each publication can have several versions,
+and the project carries on after every release. Nothing you put in a project
+is published by putting it there; publishing is a deliberate, separate act.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A project is not a <a href="../groups/index.html">group</a>. A group is a
+standing community — a lab, a course, a research centre — with its own
+pages, forum and membership, and it outlasts any one piece of work. A
+project is one body of work, a small team, and a file area. A group can own
+a project, but the two are not the same thing.</p>
+</aside>
 <p>Projects live at <code>/projects</code> on the hub. The <strong>Learn more</strong> button on that
 page opens <code>/projects/features</code>, the hub's own tour of what a project can do.</p>
+<p>Read the two warnings in <a href="#the-team">The team</a> and
+<a href="#file-history">File history</a> before you start. On a hub left at its shipped
+settings, neither the team editor nor file versioning is available to you
+after setup, and both are easier to plan around than to discover later.</p>
 <h2 id="finding-your-projects">Finding your projects</h2>
 <p>Go to <code>/projects</code>. The page has two halves. The top explains what a project
 is and offers <strong>Start a project</strong> and <strong>Learn more</strong>; the <strong>My Projects</strong>
@@ -141,6 +169,10 @@ Some hubs restrict project creation to the members of a named group. If
 you do not see the button, ask the hub's support staff.</p>
 </aside>
 <h2 id="starting-a-project">Starting a project</h2>
+<p>Start a project when a piece of work needs a shared home: somewhere the
+whole team reaches the same files, and somewhere the record of what was done
+survives a laptop being replaced. One project per body of work is the usual
+shape — not one per person, and not one per file.</p>
 <p>Setup is a short wizard. By default it has two steps — <strong>Describe your
 project</strong> and <strong>Add team member(s)</strong> — and a third, <strong>One last thing...</strong>,
 appears only on hubs that have turned on the agree-to-terms screen. The
@@ -149,13 +181,14 @@ progress bar at the top of each step shows where you are.</p>
 <h3 id="step-1-describe-your-project">Step 1: describe your project</h3>
 <ol>
 <li>Select <strong>Start a project</strong>.</li>
-<li>Type the project's full name in <strong>Title</strong> — for example, <em>Quantum Dot
-Lab</em>.</li>
+<li>Type the project's full name in <strong>Title</strong>. The soil lab types <em>Nitrate
+in Field Samples 2026</em>.</li>
 <li>Type a short name in <strong>Alias Name (for the project URL)</strong>. Use lowercase
 letters and numbers only: no spaces, punctuation, or special characters.
-The alias becomes the project's address, <code>/projects/&lt;alias&gt;</code>, and cannot
-be changed afterwards. The form checks the name as you type and suggests
-an alternative if it is taken.</li>
+The soil lab types <code>nitrate2026</code>. The alias becomes the project's
+address, <code>/projects/nitrate2026</code>, and cannot be changed afterwards, so
+pick something you will still recognise in two years. The form checks the
+name as you type and suggests an alternative if it is taken.</li>
 <li>Answer <em>Would you like to provide more information about your project?</em>
 with <strong>Yes, I'll do it now</strong> to fill in the rest of the step, or <strong>No,
 later</strong> to skip straight to the team.</li>
@@ -173,8 +206,11 @@ thumbnail.</li>
 <li>Select <strong>Save all and continue</strong>.</li>
 </ol>
 <h3 id="step-2-add-team-members">Step 2: add team members</h3>
-<p>The second step is the team editor. Add people now or leave it empty and
-come back later — you are already a member, as the project's manager.</p>
+<p>The second step is the team editor. You are already on the team, as the
+project's manager; this step is where everyone else gets in.</p>
+<p>Add everyone here. On most hubs this is the only screen that opens the team
+editor — see the warning in <a href="#the-team">The team</a> — so the soil lab adds all
+four people now rather than planning to come back.</p>
 <ol>
 <li>Choose the role for the people you are about to add: <strong>manager</strong>,
 <strong>collaborator</strong>, or <strong>reviewers</strong>.</li>
@@ -230,6 +266,10 @@ terms, then select <strong>Save all and continue</strong>. The project opens.</p
 the export, HIPAA, or FERPA questions puts the project into <em>pending
 approval</em> instead. An administrator reviews it before it becomes active.</p>
 <h2 id="inside-a-project">Inside a project</h2>
+<p>A project is a set of areas, and you will not use all of them. Files and
+Updates carry most of the work on most projects; Notes, To Do and Databases
+earn their place on some and sit unused on others. Nothing is lost by
+ignoring a tab.</p>
 <p>Each area of a project is a tab. Which tabs you see depends on which project
 plugins the hub has enabled and configured:</p>
 <table>
@@ -324,6 +364,14 @@ turned on <em>Allow project settings editing?</em>, which is off by default.
 Where it is off, both land on the Edit Info screen instead, and there is
 no other way to reach the editor. Add everyone you need during setup, or
 ask the hub's support staff to enable the setting.</p>
+<p>What that costs you: once setup is finished you cannot add the student who
+joined in March, cannot remove the one who left in June, cannot promote a
+collaborator to manager, and cannot hand the project to someone else. The
+<strong>Team</strong> tab still lists everyone and still shows a manager <strong>Approve
+request</strong> and <strong>Deny request</strong> beside anyone who asks to join, so requests
+are the one route in that survives. Everything else goes through the hub's
+support staff, one request at a time. Plan the team before you finish
+setup.</p>
 </aside>
 <h3 id="group-owned-projects">Group-owned projects</h3>
 <p>A project can be owned by a hub group rather than by a person. In a
@@ -336,8 +384,15 @@ individually.</li>
 </ul>
 <p>Add people from outside the group in the usual way.</p>
 <h2 id="notes">Notes</h2>
+<p>Notes are for the writing that is not a file: the method as it currently
+stands, the meeting decisions, the reasons a parameter was changed. The soil
+lab keeps its sampling protocol here, so that when a reviewer asks how the
+samples were stored there is one page to point at rather than four people's
+memories.</p>
 <p>The <strong>Notes</strong> tab is a small wiki. Create a page, write in it, tag it, and
-comment on it. Each note keeps its history, so you can see what changed.</p>
+comment on it. Each note keeps its history, so you can see what changed.
+Note history is the notes plugin's own, and does not depend on the project's
+file version tracking.</p>
 <p>A note is private to the team until you share it. At the bottom of a note,
 select <strong>Generate public link</strong>. The pop-up gives you an address anyone can
 open — paste it into email, chat, or a web page. Select <strong>Close this</strong> to
@@ -345,6 +400,10 @@ dismiss the pop-up. In a public project you can also choose whether the note
 is <em>listed</em> on the project's public page or reachable only by its link.</p>
 <p><img src="../media/projects-210projects3.png" alt="A project note, with the Generate public link control below it" /></p>
 <h2 id="to-do">To Do</h2>
+<p>The To Do tab is for work that has to be assigned to a person and finished:
+<em>re-run the calibration</em>, <em>chase the missing March samples</em>, <em>write the
+data dictionary before we submit</em>. If your team already tracks its work
+somewhere else, skip this tab.</p>
 <p>The <strong>To Do</strong> tab holds the project's task lists. Add an item, assign it to
 someone, and check it off when it is done. Two buttons above the list switch
 the layout: <strong>Pinboard view</strong> shows items as cards you can drag to reorder,
@@ -355,6 +414,9 @@ list of everything assigned to you; you cannot add to it directly, because
 it fills itself from items assigned to you elsewhere. Select <strong>Add</strong> to make
 a list of your own, and pick a list when you create an item.</p>
 <h2 id="following-what-happens">Following what happens</h2>
+<p>You do not want to open a project every day to find out whether anyone
+uploaded anything. Feed subscription mails you the parts you care about
+instead.</p>
 <p>Everything the team does shows up on the <strong>Updates</strong> tab. To get it by
 email as well, find the <strong>Subscribe to feed updates</strong> box in the sidebar of
 a project page and select it.</p>
@@ -367,6 +429,9 @@ cancel it.</p>
 <p>Some hubs subscribe members automatically when they join a project; in that
 case the box lets you opt out.</p>
 <h2 id="deleting-a-project">Deleting a project</h2>
+<p>Delete a project only when the work is genuinely finished with. A project
+that has produced a publication should be left alone: the publication is a
+separate, permanent record, but the draft material behind it lives here.</p>
 <p>Deleting a project is a manager's job and it cannot be undone from the front
 end.</p>
 <ol>
@@ -397,6 +462,13 @@ project can connect to. Those settings are described in
 <a href="../../managers/components/projects/index.html#project-file-connectors">Project file connectors</a>
 in the managers book.</p>
 <h2 id="project-files">Project files</h2>
+<p>The file area is the reason most teams start a project. It is one folder
+tree that everyone on the team reaches from a browser, on the hub's own
+disk, with a quota and a backup policy the hub runs — rather than a folder
+on somebody's laptop, or an email thread with attachments. The soil lab puts
+the instrument exports, the cleaning script and the draft figures here.</p>
+<p>Read <a href="#file-history">File history</a> before you rely on it. On a new project
+there is no undo.</p>
 <p>The <strong>Files</strong> tab is the project's file area. Everyone on the team sees the
 same files; managers and collaborators can change them, reviewers can only
 read them. This chapter covers browsing and managing those files, the disk
@@ -482,16 +554,34 @@ file: every revision with its time and author, a <strong>Change</strong> column,
 <strong>Download</strong> link for each old version, and — for text files — <strong>Diff
 Revisions</strong> to compare two of them. A <strong>By</strong> column in the file list shows
 who last touched each file.</p>
-<p>Version tracking is a per-project setting, and in Hubzero 2.4 new projects
-are created with it switched off. In a project without it:</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Version tracking is a per-project setting, and in Hubzero 2.4
+every new project is created with it switched off. Project setup writes
+version tracking off both when the project is created and again when it is
+activated, and the setting chooses which file adapter the project uses. A
+project without it gets an adapter whose history, diff, restore and trash
+are all stubs that return nothing. In such a project:</p>
 <ul>
-<li>The <strong>Modified</strong> date is plain text, not a link, and there is no file
-history, no diff, and no restore.</li>
-<li>Deleted files are gone; there is no <strong>Show Deleted Files</strong> view.</li>
-<li>The file list has no <strong>By</strong> column.</li>
+<li>The <strong>Modified</strong> date is plain text, not a link. There is no <strong>File
+History</strong>, no <strong>Diff Revisions</strong>, and no way to fetch an earlier
+revision.</li>
+<li><strong>Delete</strong> is permanent. Deleted files do not go to a trash you can open,
+and there is no <strong>Show Deleted Files</strong> view to recover them from.</li>
+<li>Uploading a file over one that is already there replaces it, and the
+copy you replaced is gone.</li>
+<li>The file list has no <strong>By</strong> column, so nothing records who last changed
+a file.</li>
 </ul>
 <p>Nothing in the front end turns version tracking on. If your project needs
-it, ask the hub's support staff.</p>
+it, ask the hub's support staff before you put anything irreplaceable in
+the file area.</p>
+</aside>
+<p>What that costs a team in practice: the soil lab's cleaning script has no
+history, so when a result stops reproducing there is no way to see what
+changed in it or when. Two people editing the same spreadsheet overwrite
+each other silently. The usual answer is discipline the hub cannot enforce
+for you — date the file names, keep the working copy of code in a repository
+of your own, and say on the <strong>Updates</strong> tab what you changed and why.</p>
 <h3 id="disk-usage-and-quota">Disk usage and quota</h3>
 <p>Every project has a disk quota. At the bottom left of the file list is a
 <strong>Disk usage:</strong> bar and the project's <strong>Project Quota</strong>. The bar turns to a
@@ -516,6 +606,11 @@ in the hub's database server, not in the project's file area. See
 <a href="#databases">Databases</a>.</p>
 </aside>
 <h3 id="connecting-external-storage">Connecting external storage</h3>
+<p>Some data is already somewhere else and is not going to move: a shared
+Google Drive the department pays for, a GitHub repository the code already
+lives in, an S3 bucket holding more data than a project quota would ever
+hold. A connection lets you browse and work with that storage from the
+project's Files tab without copying it onto the hub.</p>
 <p>A project can browse storage the hub does not own — a Google Drive folder,
 a Dropbox account, a GitHub repository, an S3 bucket — in the same file
 interface. The files stay with the provider; the hub keeps only a name, a
@@ -598,6 +693,14 @@ with it and are usable by everyone the connection is shared with. Ask for a
 key scoped to the one bucket, or the one prefix, and nothing else.</p>
 </aside>
 <h2 id="databases">Databases</h2>
+<p>A spreadsheet in the file area is a file: you download it, open it, and
+scroll. A project database turns that same spreadsheet into a table your
+team can search, sort and filter in the browser, with images and links in
+the cells. It is worth doing when a table is big enough that reading it as a
+<code>.csv</code> is painful, and when several people need to look things up in it.
+The soil lab does this with its sample register — a few thousand rows of
+site, date, depth and reading — so anyone can find a sample without opening
+a spreadsheet.</p>
 <p>A project database — DataStore Lite — turns a spreadsheet in your project's
 files into a searchable, sortable table anyone on the team can browse. You
 upload a <code>.csv</code> file, tell the hub what each column holds, and the hub builds
@@ -800,13 +903,14 @@ project's files, so you can build the database again from it.</p>
 project's file area, so they do not count against the project's disk quota.
 The source <code>.csv</code> in the file area does.</p>
 <h3 id="publishing-a-database">Publishing a database</h3>
-<p>A database can be attached to a publication, which is how you make it
-readable outside the project. The publication's editor offers a <strong>Select a
-Database</strong> picker listing the project's databases. See
-<a href="../publications/index.html">Publications</a>.</p>
+<p>A project database is private to the team. Attaching it to a publication is
+how you make it readable outside the project, and how it gets a DOI. The
+publication's editor offers a <strong>Select a Database</strong> picker listing the
+project's databases; pick <strong>Databases</strong> as the publication type when you
+start the draft. See <a href="../publications/index.html">Publications</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../profile/index.html" rel="prev"><span>Previous</span>Member profile</a><a class="pager__next" href="../newsletters/index.html" rel="next"><span>Next</span>Newsletters</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/16-projects.md">Edit this page on GitHub</a>

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/users/projects
 source-id: 3313
@@ -10,14 +10,44 @@ imported: 2026-09-09
 -->
 # Projects
 
-A project is a private workspace you and a few colleagues share on the hub:
-a file area, a place for notes, a to-do list, an activity feed, and — where
-the hub offers them — data stores and a route to publishing your work. You
-create a project yourself, you decide who is on the team, and nothing in it
-is visible to anyone else unless you make it so.
+A project is a private workspace on the hub for a piece of work in progress.
+You create it, you choose who is on the team, and nobody outside that team
+sees anything in it unless you decide otherwise. Inside are a file area,
+wiki-style notes, a shared to-do list, an activity feed, and — where the hub
+offers them — searchable data tables and a route to publishing.
+
+Projects exist for the months before work is ready to show anyone. A soil
+lab measuring nitrate in field samples keeps the raw instrument readings,
+the script that cleans them, and the argument about which outliers to drop
+in a project, where the four people doing the work can all reach them and
+nobody else can. When the cleaned dataset is finally worth citing, the
+project is also where they release it.
+
+That release is the other half of the story, and
+[Publications](18-publications.md) tells it:
+
+- A **project** is private, editable, and changes every day.
+- A **publication** is public, frozen, and carries a DOI so a paper can cite
+  it.
+
+You do the work in the first and release it from the second. One project can
+produce several publications, each publication can have several versions,
+and the project carries on after every release. Nothing you put in a project
+is published by putting it there; publishing is a deliberate, separate act.
+
+> **Note:** A project is not a [group](11-groups/README.md). A group is a
+> standing community — a lab, a course, a research centre — with its own
+> pages, forum and membership, and it outlasts any one piece of work. A
+> project is one body of work, a small team, and a file area. A group can own
+> a project, but the two are not the same thing.
 
 Projects live at `/projects` on the hub. The **Learn more** button on that
 page opens `/projects/features`, the hub's own tour of what a project can do.
+
+Read the two warnings in [The team](#the-team) and
+[File history](#file-history) before you start. On a hub left at its shipped
+settings, neither the team editor nor file versioning is available to you
+after setup, and both are easier to plan around than to discover later.
 
 ## Finding your projects
 
@@ -36,6 +66,11 @@ owner, and filter it to show archived projects.
 
 ## Starting a project
 
+Start a project when a piece of work needs a shared home: somewhere the
+whole team reaches the same files, and somewhere the record of what was done
+survives a laptop being replaced. One project per body of work is the usual
+shape — not one per person, and not one per file.
+
 Setup is a short wizard. By default it has two steps — **Describe your
 project** and **Add team member(s)** — and a third, **One last thing...**,
 appears only on hubs that have turned on the agree-to-terms screen. The
@@ -46,13 +81,14 @@ progress bar at the top of each step shows where you are.
 ### Step 1: describe your project
 
 1. Select **Start a project**.
-2. Type the project's full name in **Title** — for example, *Quantum Dot
-   Lab*.
+2. Type the project's full name in **Title**. The soil lab types *Nitrate
+   in Field Samples 2026*.
 3. Type a short name in **Alias Name (for the project URL)**. Use lowercase
    letters and numbers only: no spaces, punctuation, or special characters.
-   The alias becomes the project's address, `/projects/<alias>`, and cannot
-   be changed afterwards. The form checks the name as you type and suggests
-   an alternative if it is taken.
+   The soil lab types `nitrate2026`. The alias becomes the project's
+   address, `/projects/nitrate2026`, and cannot be changed afterwards, so
+   pick something you will still recognise in two years. The form checks the
+   name as you type and suggests an alternative if it is taken.
 4. Answer *Would you like to provide more information about your project?*
    with **Yes, I'll do it now** to fill in the rest of the step, or **No,
    later** to skip straight to the team.
@@ -68,8 +104,12 @@ progress bar at the top of each step shows where you are.
 
 ### Step 2: add team members
 
-The second step is the team editor. Add people now or leave it empty and
-come back later — you are already a member, as the project's manager.
+The second step is the team editor. You are already on the team, as the
+project's manager; this step is where everyone else gets in.
+
+Add everyone here. On most hubs this is the only screen that opens the team
+editor — see the warning in [The team](#the-team) — so the soil lab adds all
+four people now rather than planning to come back.
 
 1. Choose the role for the people you are about to add: **manager**,
    **collaborator**, or **reviewers**.
@@ -113,6 +153,11 @@ the export, HIPAA, or FERPA questions puts the project into *pending
 approval* instead. An administrator reviews it before it becomes active.
 
 ## Inside a project
+
+A project is a set of areas, and you will not use all of them. Files and
+Updates carry most of the work on most projects; Notes, To Do and Databases
+earn their place on some and sit unused on others. Nothing is lost by
+ignoring a tab.
 
 Each area of a project is a tab. Which tabs you see depends on which project
 plugins the hub has enabled and configured:
@@ -186,6 +231,15 @@ your role at the top right and select **Leave this project**.
 > Where it is off, both land on the Edit Info screen instead, and there is
 > no other way to reach the editor. Add everyone you need during setup, or
 > ask the hub's support staff to enable the setting.
+>
+> What that costs you: once setup is finished you cannot add the student who
+> joined in March, cannot remove the one who left in June, cannot promote a
+> collaborator to manager, and cannot hand the project to someone else. The
+> **Team** tab still lists everyone and still shows a manager **Approve
+> request** and **Deny request** beside anyone who asks to join, so requests
+> are the one route in that survives. Everything else goes through the hub's
+> support staff, one request at a time. Plan the team before you finish
+> setup.
 
 ### Group-owned projects
 
@@ -201,8 +255,16 @@ Add people from outside the group in the usual way.
 
 ## Notes
 
+Notes are for the writing that is not a file: the method as it currently
+stands, the meeting decisions, the reasons a parameter was changed. The soil
+lab keeps its sampling protocol here, so that when a reviewer asks how the
+samples were stored there is one page to point at rather than four people's
+memories.
+
 The **Notes** tab is a small wiki. Create a page, write in it, tag it, and
 comment on it. Each note keeps its history, so you can see what changed.
+Note history is the notes plugin's own, and does not depend on the project's
+file version tracking.
 
 A note is private to the team until you share it. At the bottom of a note,
 select **Generate public link**. The pop-up gives you an address anyone can
@@ -213,6 +275,11 @@ is *listed* on the project's public page or reachable only by its link.
 ![A project note, with the Generate public link control below it](media/projects-210projects3.png)
 
 ## To Do
+
+The To Do tab is for work that has to be assigned to a person and finished:
+*re-run the calibration*, *chase the missing March samples*, *write the
+data dictionary before we submit*. If your team already tracks its work
+somewhere else, skip this tab.
 
 The **To Do** tab holds the project's task lists. Add an item, assign it to
 someone, and check it off when it is done. Two buttons above the list switch
@@ -227,6 +294,10 @@ it fills itself from items assigned to you elsewhere. Select **Add** to make
 a list of your own, and pick a list when you create an item.
 
 ## Following what happens
+
+You do not want to open a project every day to find out whether anyone
+uploaded anything. Feed subscription mails you the parts you care about
+instead.
 
 Everything the team does shows up on the **Updates** tab. To get it by
 email as well, find the **Subscribe to feed updates** box in the sidebar of
@@ -244,6 +315,10 @@ Some hubs subscribe members automatically when they join a project; in that
 case the box lets you opt out.
 
 ## Deleting a project
+
+Delete a project only when the work is genuinely finished with. A project
+that has produced a publication should be left alone: the publication is a
+separate, permanent record, but the draft material behind it lives here.
 
 Deleting a project is a manager's job and it cannot be undone from the front
 end.
@@ -278,6 +353,15 @@ project can connect to. Those settings are described in
 [Project file connectors](../managers/09-components/26-projects.md#project-file-connectors)
 in the managers book.
 ## Project files
+
+The file area is the reason most teams start a project. It is one folder
+tree that everyone on the team reaches from a browser, on the hub's own
+disk, with a quota and a backup policy the hub runs — rather than a folder
+on somebody's laptop, or an email thread with attachments. The soil lab puts
+the instrument exports, the cleaning script and the draft figures here.
+
+Read [File history](#file-history) before you rely on it. On a new project
+there is no undo.
 
 The **Files** tab is the project's file area. Everyone on the team sees the
 same files; managers and collaborators can change them, reviewers can only
@@ -346,16 +430,33 @@ file: every revision with its time and author, a **Change** column, a
 Revisions** to compare two of them. A **By** column in the file list shows
 who last touched each file.
 
-Version tracking is a per-project setting, and in Hubzero 2.4 new projects
-are created with it switched off. In a project without it:
+> **Warning:** Version tracking is a per-project setting, and in Hubzero 2.4
+> every new project is created with it switched off. Project setup writes
+> version tracking off both when the project is created and again when it is
+> activated, and the setting chooses which file adapter the project uses. A
+> project without it gets an adapter whose history, diff, restore and trash
+> are all stubs that return nothing. In such a project:
+>
+> - The **Modified** date is plain text, not a link. There is no **File
+>   History**, no **Diff Revisions**, and no way to fetch an earlier
+>   revision.
+> - **Delete** is permanent. Deleted files do not go to a trash you can open,
+>   and there is no **Show Deleted Files** view to recover them from.
+> - Uploading a file over one that is already there replaces it, and the
+>   copy you replaced is gone.
+> - The file list has no **By** column, so nothing records who last changed
+>   a file.
+>
+> Nothing in the front end turns version tracking on. If your project needs
+> it, ask the hub's support staff before you put anything irreplaceable in
+> the file area.
 
-- The **Modified** date is plain text, not a link, and there is no file
-  history, no diff, and no restore.
-- Deleted files are gone; there is no **Show Deleted Files** view.
-- The file list has no **By** column.
-
-Nothing in the front end turns version tracking on. If your project needs
-it, ask the hub's support staff.
+What that costs a team in practice: the soil lab's cleaning script has no
+history, so when a result stops reproducing there is no way to see what
+changed in it or when. Two people editing the same spreadsheet overwrite
+each other silently. The usual answer is discipline the hub cannot enforce
+for you — date the file names, keep the working copy of code in a repository
+of your own, and say on the **Updates** tab what you changed and why.
 
 ### Disk usage and quota
 
@@ -383,6 +484,12 @@ number.
 > [Databases](#databases).
 
 ### Connecting external storage
+
+Some data is already somewhere else and is not going to move: a shared
+Google Drive the department pays for, a GitHub repository the code already
+lives in, an S3 bucket holding more data than a project quota would ever
+hold. A connection lets you browse and work with that storage from the
+project's Files tab without copying it onto the hub.
 
 A project can browse storage the hub does not own — a Google Drive folder,
 a Dropbox account, a GitHub repository, an S3 bucket — in the same file
@@ -448,6 +555,15 @@ may use.
 > with it and are usable by everyone the connection is shared with. Ask for a
 > key scoped to the one bucket, or the one prefix, and nothing else.
 ## Databases
+
+A spreadsheet in the file area is a file: you download it, open it, and
+scroll. A project database turns that same spreadsheet into a table your
+team can search, sort and filter in the browser, with images and links in
+the cells. It is worth doing when a table is big enough that reading it as a
+`.csv` is painful, and when several people need to look things up in it.
+The soil lab does this with its sample register — a few thousand rows of
+site, date, depth and reading — so anyone can find a sample without opening
+a spreadsheet.
 
 A project database — DataStore Lite — turns a spreadsheet in your project's
 files into a searchable, sortable table anyone on the team can browse. You
@@ -635,7 +751,8 @@ The source `.csv` in the file area does.
 
 ### Publishing a database
 
-A database can be attached to a publication, which is how you make it
-readable outside the project. The publication's editor offers a **Select a
-Database** picker listing the project's databases. See
-[Publications](18-publications.md).
+A project database is private to the team. Attaching it to a publication is
+how you make it readable outside the project, and how it gets a DOI. The
+publication's editor offers a **Select a Database** picker listing the
+project's databases; pick **Databases** as the publication type when you
+start the draft. See [Publications](18-publications.md).

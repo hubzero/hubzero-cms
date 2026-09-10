@@ -104,6 +104,17 @@
 <p>Everything about a group's membership happens on its <strong>Members</strong> tab:
 inviting people, approving requests, handing out roles, promoting managers
 and removing members.</p>
+<p>Membership is what the rest of the group hangs off. A tab set to <strong>Group
+Members Only</strong> is readable by exactly the people on this list, and only
+members can post in the forum or edit the wiki, so getting the list right is
+the first thing a new group's manager does. This page follows <code>soilcarbon</code>,
+the multi-institution soil carbon group created in
+<a href="../createdeleteagroup/index.html">Creating and deleting a group</a>: its principal
+investigator has to bring in two postdocs who already use the hub and a
+collaborator at another university who has never heard of it, hand the lab
+manager the ability to invite people without making her a manager of
+everything, and promote the co-investigator so the group is not resting on
+one person.</p>
 <h2 id="the-members-tab">The Members tab</h2>
 <p>The tab is only open to signed-in users; a visitor is sent to the login page
 even when the tab is set to <strong>Any HUB Visitor</strong>.</p>
@@ -144,9 +155,16 @@ marker shows who is signed in. <strong>Message</strong> opens a message to that 
 <strong>Message All</strong> at the top of the list writes to everyone the current filter
 shows.</p>
 <h2 id="inviting-people">Inviting people</h2>
+<p>Inviting is how you add someone who has not asked to join. It works whatever
+the join policy is, so a <strong>Restricted</strong> or <strong>Invite Only</strong> group is not a
+closed shop — it just means the managers decide. You can invite people who
+have no hub account: they get mail with a link, and following it once they
+have registered puts them in the group.</p>
 <p>Group managers, and members holding a role with <strong>Invite New Members</strong>, can
 invite both hub members and people who have no account yet. The entry is
 missing on a <strong>Closed</strong> group.</p>
+<p>For <code>soilcarbon</code> that is one pass: the two postdocs by username, the outside
+collaborator by email address.</p>
 <ol>
 <li>Open the group.</li>
 <li>Select <strong>Invite Members</strong>, from the <strong>Group Manager</strong> menu or from the
@@ -176,7 +194,13 @@ final: a denied user may apply again.</li>
 </ul>
 <h2 id="roles">Roles</h2>
 <p>A role is a named set of extra permissions inside one group. It lets a member
-help run the group without being made a manager.</p>
+help run the group without being made a manager. It means nothing outside the
+group: a role on <code>soilcarbon</code> gives its holder no standing anywhere else on
+the hub, and no other group can see it.</p>
+<p>Reach for one when somebody does a job for the group but should not be able
+to change everything about it. The <code>soilcarbon</code> lab manager keeps the
+membership up to date as students arrive and leave, so she gets a role called
+<em>Membership</em> carrying <strong>Invite New Members</strong> and nothing else.</p>
 <p>A role carries a name and any of three permissions:</p>
 <ul>
 <li><strong>Invite New Members</strong></li>
@@ -184,6 +208,7 @@ help run the group without being made a manager.</p>
 <li><strong>Create/Edit Group Pages &amp; Categories</strong></li>
 </ul>
 <h3 id="creating-a-role">Creating a role</h3>
+<p>Following the lab manager through:</p>
 <ol>
 <li>Open the <strong>Members</strong> tab.</li>
 <li>Select <strong>Add a Member Role</strong>.</li>
@@ -200,6 +225,10 @@ help run the group without being made a manager.</p>
 it away again. Selecting the role's name filters the list to everyone who
 holds it.</p>
 <h2 id="promoting-and-demoting-managers">Promoting and demoting managers</h2>
+<p>A manager can do everything: settings, pages, membership, deletion. A group
+with one manager is a group that stops working when that person is on leave
+or leaves the institution, which is why <code>soilcarbon</code> promotes its
+co-investigator as soon as the group is set up.</p>
 <p>A group can have as many managers as it needs.</p>
 <ol>
 <li>Open the <strong>Members</strong> or <strong>Managers</strong> filter.</li>
@@ -224,7 +253,14 @@ else.</p>
 they receive. A removed member may apply to join again.</p>
 <h2 id="membership-end-dates">Membership end dates</h2>
 <p>If the hub allows time-limited memberships, a manager can put an end date on
-one. When the date passes the member is removed automatically.</p>
+one. When the date passes the member is removed automatically. It suits a
+group that takes people in for a fixed spell — a summer student, a visitor on
+a one-year secondment — and saves the manager remembering to clear them out.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Not every hub switches this on. Where it is off there are no end
+dates, no <strong>set an end date</strong> control, and no <strong>Membership length</strong> section
+in the group's settings.</p>
+</aside>
 <ol>
 <li>Open the <strong>Members</strong> or <strong>Managers</strong> filter.</li>
 <li>Select <strong>set an end date</strong> — or <strong>change end date</strong> — on the member's row.</li>
@@ -244,7 +280,7 @@ membership that has just lapsed keeps working until the next run.</p>
 Membership</strong>. A manager can only leave if the group has another manager.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../createdeleteagroup/index.html" rel="prev"><span>Previous</span>Creating and deleting a group</a><a class="pager__next" href="../groupcustom/index.html" rel="next"><span>Next</span>Customization</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/11-groups/02-groupmembers.md">Edit this page on GitHub</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Search · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="The search box at the top of a hub reaches . What it can find, and how the results are ordered, depends on which of two search engines your hub runs. You can…">
+  <meta name="description" content="Search is for the moment when you know roughly what you want and not where it lives: a dataset a colleague mentioned, a paper the hub holds, the profile of the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/search/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -69,11 +69,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Search</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-engine-your-hub-runs">Which engine your hub runs</a></li>
 <li class="toc__item toc__item--l2"><a href="#basic-search">Basic search</a></li>
 <li class="toc__item toc__item--l2"><a href="#solr-search">Solr search</a></li>
 <li class="toc__item toc__item--l3"><a href="#what-is-not-searchable">What is not searchable</a></li>
-<li class="toc__item toc__item--l3"><a href="#query-syntax">Query syntax</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-you-can-type">What you can type</a></li>
 <li class="toc__item toc__item--l3"><a href="#a-result">A result</a></li>
+<li class="toc__item toc__item--l2"><a href="#search-is-not-the-tags-page">Search is not the tags page</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-is-this-feed-button">What is this &quot;Feed&quot; button?</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../simusagedefinitions/index.html">Simulation usage definitions</a></li>
@@ -97,11 +99,26 @@
         </header>
         
         <div class="prose">
-<p>The search box at the top of a hub reaches <code>/search</code>. What it can find, and
-how the results are ordered, depends on which of two search engines your hub
-runs. You can tell them apart at a glance: the Solr results page has a
-<strong>Category</strong> list down the left with a count beside each type, and the Basic
-results page does not.</p>
+<p>Search is for the moment when you know roughly what you want and not where it
+lives: a dataset a colleague mentioned, a paper the hub holds, the profile of
+the person who wrote a tool. You type words, the hub looks across its content,
+and you get a ranked list. The search box at the top of a hub reaches
+<code>/search</code>.</p>
+<p>Read this page if search is not giving you what you expect. Hub search is
+narrower than a web search engine, in ways that are not obvious from the
+results page, and the fix is usually to search somewhere else rather than to
+search harder.</p>
+<p>Say a thermal transport lab has published a thin-film conductivity dataset on
+the hub, discussed the measurement protocol on its group wiki, and answered
+questions about it in the forum. On a hub running the Solr engine, searching
+for <em>thin film conductivity</em> finds the dataset and neither of the other two,
+and no rewording of the query will change that. The rest of this page explains
+why, and what to do instead.</p>
+<h2 id="which-engine-your-hub-runs">Which engine your hub runs</h2>
+<p>What search can find, and how the results are ordered, depends on which of two
+search engines your hub runs. You can tell them apart at a glance: the Solr
+results page has a <strong>Category</strong> list down the left with a count beside each
+type, and the Basic results page does not.</p>
 <p>Before you conclude that something is missing, read
 <a href="#what-is-not-searchable">What is not searchable</a>. Several parts of a hub have
 never been in the Solr index, and looking harder will not find them.</p>
@@ -117,6 +134,9 @@ title, the section it came from, its date, its contributors, and an excerpt
 with your terms highlighted. Related items are grouped under their parent.
 There is no field syntax and no faceting; ordering is decided by a handful of
 weighting plugins that promote matching titles and contributors.</p>
+<p>On a Basic hub the lab's forum thread and wiki protocol <em>are</em> reachable from
+<code>/search</code>, because those two plugins are installed. The gap described below is
+specific to hubs that have moved to Solr.</p>
 <h2 id="solr-search">Solr search</h2>
 <p>A hub can instead run Apache Solr alongside itself, which gives ranked
 results, counts per content type, and per-type boosting. Setting that up is an
@@ -131,13 +151,15 @@ one restricts the results to that type. Where the administrator has set up
 filters for a type, its filter controls appear underneath.</li>
 <li>The results themselves.</li>
 </ul>
-<p>If nothing matched but Solr can suggest a closer spelling, the page offers
-<strong>Did you mean:</strong> with the alternatives. If the query itself could not be
-parsed, the page says <em>We were unable to process your query. Try adjusting
-your query.</em> and shows unfiltered results.</p>
+<p>If the query could not be parsed, the page says <em>We were unable to process
+your query. Try adjusting your query.</em> and shows unfiltered results. If
+nothing matched at all, the page says so and stops; it does not suggest
+alternative spellings.</p>
 <p>Results are filtered by what you are allowed to see, inside the query rather
 than after it. Two members searching the same words can therefore get
-different counts, and the category counts are as restricted as the results.</p>
+different counts, and the category counts are as restricted as the results.
+If a colleague can see a result you cannot, the difference is access, not
+indexing.</p>
 <h3 id="what-is-not-searchable">What is not searchable</h3>
 <p>Only eleven components put anything into the Solr index:</p>
 <table>
@@ -197,30 +219,69 @@ different counts, and the category counts are as restricted as the results.</p>
 <p>Forum posts, wiki pages, questions and answers, wishlist items, calendar
 events, and support tickets are <strong>not</strong> in the Solr index. They have search
 plugins, but those plugins only serve the Basic engine. On a hub running Solr,
-the only way to search them is from inside the feature itself — the forum's
-own search, the wiki's, and so on.</p>
+the only way to search them is from inside the feature itself.</p>
+<p>That is the answer to the lab's missing protocol and forum thread. Go to the
+feature and use its own search:</p>
+<table>
+<thead>
+<tr>
+<th>What you are looking for</th>
+<th>Where to search for it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A wiki page</td>
+<td>The <strong>Search</strong> box in the wiki sidebar — see <a href="../wiki/index.html">Wiki</a></td>
+</tr>
+<tr>
+<td>A forum thread</td>
+<td>The forum's own search — see <a href="../forum/index.html">Forum</a></td>
+</tr>
+<tr>
+<td>A question or answer</td>
+<td>The search box on <code>/answers</code> — see <a href="../questions/index.html">Questions and answers</a></td>
+</tr>
+<tr>
+<td>A wish</td>
+<td>The search box on the wishlist itself — see <a href="../wishlist/index.html">Wishlist</a></td>
+</tr>
+<tr>
+<td>An event</td>
+<td>Nowhere. The calendar has no search box; browse it by year, month, week or day — see <a href="../events/index.html">Events</a></td>
+</tr>
+<tr>
+<td>A support ticket</td>
+<td>The search box on your ticket list — see <a href="../support/index.html">Support</a></td>
+</tr>
+</tbody>
+</table>
+<p>Tags reach further than search does. Every one of those six features can be
+tagged, and a tag's page lists tagged items from all of them, so if the lab
+tagged its wiki protocol and its forum thread <code>thinfilm</code>, opening
+<code>/tags/thinfilm</code> finds them when <code>/search</code> cannot. See <a href="../tags/index.html">Tags</a>.</p>
 <p>Your administrator also chooses which of the eleven are indexed, and an
 indexed type can be emptied again, so the working list on any given hub is
 whatever appears in the <strong>Category</strong> list.</p>
-<h3 id="query-syntax">Query syntax</h3>
-<p>Solr searches five fields by default, weighted so that a match in the URL or
-the title outranks one in the body: <code>url</code>, <code>title</code>, <code>description</code>,
+<h3 id="what-you-can-type">What you can type</h3>
+<p>Type the words you are looking for. Search does not read operators: before the
+query is sent, the hub escapes every character and word that Solr would treat
+as syntax — <code>+ - ! ( ) { } [ ] ^ &quot; ~ * ? : /</code>, <code>&amp;&amp;</code>, <code>||</code>, and the words
+<code>AND</code>, <code>OR</code> and <code>NOT</code>. So <code>title:diffusion</code> searches for the literal text
+<em>title:diffusion</em>, <code>pupp*</code> will not match &quot;puppies&quot;, and <code>cats OR dogs</code> looks
+for records containing the word <em>OR</em>. Leave them out and give plain words.</p>
+<p>Solr matches those words against five fields, weighted so that a match in the
+URL or the title outranks one in the body: <code>url</code>, <code>title</code>, <code>description</code>,
 <code>fulltext</code>, and <code>author</code>. (<code>fulltext</code> is only present on articles;
-<code>description</code> carries the body text for everything else.) An administrator can
-change the list and the weights.</p>
-<p><strong>Restricting to a field.</strong> Prefix a term with a field name and a colon:
-<code>title:diffusion</code> matches only in titles, <code>author:smith</code> only in authors.
-Besides the five above, <code>doi</code> is set on citations and publication versions, and
-<code>tags</code> on the types that carry tags. There is no <code>path</code> field.</p>
-<p><strong>Partial words.</strong> Solr does not know that &quot;puppy&quot; and &quot;puppies&quot; are the same
-word. Use <code>*</code> for the rest of a word: <code>pupp*</code> matches both.</p>
-<p><strong>Combining terms.</strong> <code>AND</code> and <code>OR</code> work as you would expect: <code>cats OR dogs</code>
-returns anything with either, <code>cats AND dogs</code> only records with both. Full
-syntax is in the <a href="https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html">Solr query parser
-documentation</a>.</p>
+<code>description</code> carries the body text for everything else.) There is no <code>path</code>
+field. An administrator can change the list and the weights.</p>
+<p>Because you cannot narrow a query by typing at it, narrow it afterwards
+instead: select a type in the <strong>Category</strong> list, and use any filters the
+administrator has set up under it.</p>
 <p><strong>Tags.</strong> Where the hub has switched tag search on, the form carries a second
 box for tags, and each result lists its tags as links that add that tag to the
-query.</p>
+query. This is the one way to combine two conditions: words in the box, a tag
+beside it.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Switching tag search on turns the field weights, the phrase
 matching, and the administrator's boosts off — the query is sent without
@@ -238,6 +299,13 @@ score.</p>
 <li><strong>Tags</strong>, as links back into search.</li>
 <li>The item's <strong>URL</strong>.</li>
 </ol>
+<h2 id="search-is-not-the-tags-page">Search is not the tags page</h2>
+<p>The two look similar and answer different questions. Search matches the words
+you typed against the text of an item, over the eleven indexed types, and
+ranks what it finds. A tag page lists items somebody deliberately labelled,
+over every type that supports tagging, in date or title order with no ranking.
+Search is for &quot;something about thin films&quot;; tags are for &quot;the things this lab
+decided belong together&quot;. When search comes up short, try the tag.</p>
 <h2 id="what-is-this-feed-button">What is this &quot;Feed&quot; button?</h2>
 <p>That is <strong>What's New</strong> (<code>/whatsnew</code>), which is a different page from search.
 It lists what has been added to the hub recently — resources, publications,
@@ -249,7 +317,7 @@ that category over that period, which you can add to a feed reader or a
 browser to keep up without visiting the page.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../wiki/index.html" rel="prev"><span>Previous</span>Wiki</a><a class="pager__next" href="../simusagedefinitions/index.html" rel="next"><span>Next</span>Simulation usage definitions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/24-search.md">Edit this page on GitHub</a>

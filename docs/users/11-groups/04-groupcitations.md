@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/groups/groupcitations
 source-id: 3307
@@ -14,6 +14,20 @@ group's work — a paper, a book, a thesis, a patent. The group's **Citations**
 tab lists them, and a group manager decides whether the list is the group's
 own curated set or that set plus whatever the group's members have cited on
 their own profiles.
+
+Use it when a group wants one bibliography it controls. The `soilcarbon`
+group used through this chapter has papers from four institutions and a
+reporting requirement: every year it has to hand its funder the list of
+publications the project produced. Rather than chase people for BibTeX, the
+managers import each new paper as it appears, so the list is always current
+and anyone can export the whole thing in one go.
+
+> **Note:** The tab is not on every group. A manager switches it on under
+> **Access Permissions**; see
+> [Customization](03-groupcustom.md#which-tabs-appear). The hub as a whole
+> also has a [citations catalogue](../06-citations.md), which is a different
+> list: it records works that cite the hub. A group's citations are works the
+> group wrote, and nothing you add here appears there.
 
 ## Setting the tab up
 
@@ -60,6 +74,10 @@ text area, or select its row in the table to insert it.
 
 Only a group manager can add citations. Three buttons sit at the top of the
 tab: **Submit a citation**, **Import Citations** and **Settings**.
+
+Import is the quicker route when you already have the records. The steps
+under **Importing a file** below follow a manager of `soilcarbon` loading the
+year's four papers from a single file exported out of a reference manager.
 
 ### One at a time
 

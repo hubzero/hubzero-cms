@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wish list · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="The wish list is where you ask the hub for something: a feature you want, a tool you wish existed, a fix you would like to see. Other members vote your wish up…">
+  <meta name="description" content="The wish list is where you ask for something that does not exist yet: a feature, a tool, a change to how something works. An instructor marking forty…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/wishlist/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,6 +74,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Wish list</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-one-do-i-want">Which one do I want?</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list">The list</a></li>
 <li class="toc__item toc__item--l2"><a href="#posting-a-wish">Posting a wish</a></li>
 <li class="toc__item toc__item--l2"><a href="#a-wish-s-page">A wish&#x27;s page</a></li>
@@ -99,12 +100,59 @@
         </header>
         
         <div class="prose">
-<p>The wish list is where you ask the hub for something: a feature you want,
-a tool you wish existed, a fix you would like to see. Other members vote
-your wish up or down and comment on it, and the people who own the list
-decide whether to accept, reject or grant it. The hub's main list is at
-<code>/wishlist</code>, usually linked from the support or help menu. Groups and
-resources can have lists of their own, shown on their <strong>Wishlist</strong> tab.</p>
+<p>The wish list is where you ask for something that does not exist yet: a
+feature, a tool, a change to how something works. An instructor marking
+forty submissions from a hub tool wants a button that exports the whole
+cohort's results as one file, because doing it one student at a time is
+the reason the assignment takes her a weekend. There is nothing broken
+to report and nobody can answer the question today — what she wants is
+for somebody to build it.</p>
+<p>That is what separates a wish from everything else you can write on the
+hub. A wish is a request for work. It goes on a list, other members vote
+it up or down and comment on it, the people who own the list rank it
+against everything else on the list, and it ends up <strong>Accepted</strong>,
+<strong>Granted</strong>, <strong>Rejected</strong> or <strong>Withdrawn</strong>. It is slow on purpose: the
+voting is the point, because it is how a list's owners find out which of
+forty requests matter to more than one person.</p>
+<p>The hub's main list is at <code>/wishlist</code>, usually linked from the support or
+help menu. Groups and resources can have lists of their own, shown on
+their <strong>Wishlist</strong> tab — so the export button above belongs on the
+tool's own list, where the tool's authors will see it, rather than on
+the hub-wide one.</p>
+<h2 id="which-one-do-i-want">Which one do I want?</h2>
+<table>
+<thead>
+<tr>
+<th>If you want to</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ask for a feature, tool, or change to be built</td>
+<td>The wish list — this page</td>
+</tr>
+<tr>
+<td>Report something broken, or ask the hub's staff for help</td>
+<td><a href="../support/index.html">Support</a></td>
+</tr>
+<tr>
+<td>Get one answer to a specific question, from anyone on the hub</td>
+<td><a href="../questions/index.html">Questions and answers</a></td>
+</tr>
+<tr>
+<td>Discuss something open-ended, where several answers are defensible</td>
+<td><a href="../forum/index.html">Forum</a></td>
+</tr>
+</tbody>
+</table>
+<p>The line that matters is between a wish and a ticket. If the software is
+doing something it should not, that is a fault and belongs in
+<a href="../support/index.html">Support</a>, where somebody is expected to answer. If the
+software is working as built and you want it built differently, that is
+a wish. Filing a fault here can leave it sitting for months waiting for
+votes; a list owner can move a wish onto a support ticket, but nobody
+will do it for you if you never say the thing is broken.</p>
 <h2 id="the-list">The list</h2>
 <p>The list page shows the wishes on one list, open ones first and the newest
 of those at the top, with an <strong>Add a Wish</strong> button at the top right. Each
@@ -123,6 +171,14 @@ or <strong>Submitter</strong>. <strong>Bonus</strong> appears when the hub award
 <strong>Granted</strong>, and, once you are logged in, <strong>Submitted by me</strong>. List
 owners also get <strong>Public</strong> and <strong>Private</strong>.</li>
 </ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> There is a sixth filter, <strong>Assigned to me</strong>, which does
+not work. The link is shown only to someone holding an access flag
+that no code in the hub ever sets, so nobody ever sees it; and if you
+build its address by hand, the controller discards the value and shows
+you every wish instead. To find the wishes assigned to you, open the
+list and read the <strong>Implementation Plan</strong> on each one.</p>
+</aside>
 <p>The sidebar carries a short description of the list, and on the main list
 a cloud of popular tags. Click a tag to narrow the list to wishes carrying
 it; click the small <strong>x</strong> on an applied tag to remove it again.</p>
@@ -132,8 +188,10 @@ unless you own the list. A whole list can be private too, in which case
 you have to log in and be one of its owners to see anything.</p>
 </aside>
 <h2 id="posting-a-wish">Posting a wish</h2>
-<p>Press <strong>Add a Wish</strong>. You have to be logged in; if you are not, the hub
-sends you to the login page and back again. The form asks for:</p>
+<p>Take the instructor's export button through. She opens the tool's page,
+selects its <strong>Wishlist</strong> tab, and presses <strong>Add a Wish</strong> at the top
+right. You have to be logged in; if you are not, the hub sends you to
+the login page and back again. The form asks for:</p>
 <table>
 <thead>
 <tr>
@@ -166,6 +224,12 @@ sends you to the login page and back again. The form asks for:</p>
 </table>
 <p>Press <strong>Save</strong>. Your wish goes onto the list as <strong>Pending</strong>, the list's
 owners are e-mailed, and you land on the wish's own page.</p>
+<p>Hers reads &quot;Export all students' results as one CSV&quot; in <strong>Summary of
+your wish</strong>, with the detail explaining that she does this for forty
+students each term and how long it takes. That second part is what earns
+votes: a wish that says who wants it and how often is a wish other
+people recognise and vote up, and the vote is what moves it up the
+list.</p>
 <h2 id="a-wish-s-page">A wish's page</h2>
 <p>Every wish has a permanent address of the form
 <code>https://&lt;your hub&gt;/wishlist/general/1/wish/&lt;number&gt;</code>, which you can share.
@@ -197,6 +261,10 @@ anonymously</strong> to hide your name.</p>
 the conversation nests three levels deep — and a <strong>Report abuse</strong> link.
 Replies carry no attachment.</p>
 <h2 id="how-the-consensus-is-worked-out">How the consensus is worked out</h2>
+<p>This section is about what the list's owners do, not what you do. Read
+it if you want to know why your wish is where it is in the list, or skip
+it — you cannot rank a wish unless you own the list or sit on its
+advisory committee.</p>
 <p>The owners of a list — and, where the hub has enabled one, its advisory
 committee — rank each wish under <strong>My Opinion</strong>. There are two
 selections:</p>
@@ -219,8 +287,9 @@ their rankings count four times as much as an ordinary owner's.</p>
 wish. Being a site administrator is not enough on its own.</p>
 </aside>
 <h2 id="the-implementation-plan">The implementation plan</h2>
-<p>Once a wish is accepted, its owners can write an <strong>Implementation Plan</strong>
-below the comments: who the wish is assigned to, when it is due, and a
+<p>The plan is how an accepted wish turns into a commitment you can check
+on. Once a wish is accepted, its owners can write an <strong>Implementation
+Plan</strong> below the comments: who the wish is assigned to, when it is due, and a
 description of the work. Each save can be kept as a new revision, so the
 plan's history survives. The wish shows how long is left before the due
 date, and turns overdue once it passes.</p>
@@ -237,11 +306,12 @@ be made private, and a list's built-in owner group cannot be removed.</p>
 <ul>
 <li><a href="../support/index.html">Support</a> — report a problem rather than ask for a feature.</li>
 <li><a href="../questions/index.html">Questions and answers</a> — ask the community.</li>
+<li><a href="../forum/index.html">Forum</a> — talk it over before you file it.</li>
 <li><a href="../knowledgebase/index.html">Knowledge base</a> — check whether it already exists.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../usage/index.html" rel="prev"><span>Previous</span>Usage</a><a class="pager__next" href="../gettingstarted/index.html" rel="next"><span>Next</span>Getting started</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/29-wishlist.md">Edit this page on GitHub</a>
