@@ -7454,9 +7454,64 @@ template {
     font-size: 1.25rem;
   }
 }
+.home-head .hero .eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #00548A;
+  margin: 0 0 0.75rem;
+}
+.home-head .hero .hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
 .home-head .hero .btn,
-.home-head .hero .actions a {
-  margin-top: 1.5rem;
+.home-head .hero .primary-button,
+.home-head .hero .outline-button {
+  display: inline-block;
+  padding: 0.65em 1.4em;
+  border-radius: 3px;
+  border: 1px solid #00548A;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.home-head .hero .btn,
+.home-head .hero .primary-button {
+  background: #003F68;
+  border-color: #003F68;
+  color: #fff;
+}
+.home-head .hero .btn:hover,
+.home-head .hero .primary-button:hover,
+.home-head .hero .btn:focus,
+.home-head .hero .primary-button:focus {
+  background: #00548A;
+  border-color: #00548A;
+  color: #fff;
+}
+.home-head .hero .outline-button {
+  background: transparent;
+  color: #00548A;
+}
+.home-head .hero .outline-button:hover,
+.home-head .hero .outline-button:focus {
+  background: #00548A;
+  border-color: #00548A;
+  color: #fff;
+}
+.home-head .hero-art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  object-fit: cover;
+  object-position: top right;
+  z-index: 0;
+  pointer-events: none;
 }
 .home-section {
   padding: 3rem 0;
