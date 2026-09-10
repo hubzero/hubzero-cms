@@ -17,8 +17,8 @@ Html::behavior('keepalive');
 $this->js();
 
 Toolbar::title(Lang::txt('COM_MESSAGES_WRITE_PRIVATE_MESSAGE'), 'new-privatemessage.png');
-Toolbar::save('message.save', 'COM_MESSAGES_TOOLBAR_SEND');
-Toolbar::cancel('message.cancel');
+Toolbar::save('save', 'COM_MESSAGES_TOOLBAR_SEND');
+Toolbar::cancel('cancel');
 Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
 ?>
 
@@ -40,7 +40,7 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
 			if (count($mc) > 0) {
 				echo $mc[0];
 			} else { ?>
-				<input type="text" name="fields[user_id_to]" id="field-user_id_to" class="required value="<?php echo $this->item->get('user_id_to'); ?>" />
+				<input type="text" name="fields[user_id_to]" id="field-user_id_to" class="required" value="<?php echo $this->escape($this->item->get('user_id_to')); ?>" />
 			<?php } ?>
 		</div>
 
@@ -51,7 +51,7 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
 
 		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_DESC'); ?>">
 			<label for="field-message"><?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_LABEL'); ?>:</label>
-			<textarea name="message" id="field-message" cols="80" rows="10"><?php echo $this->escape($this->item->get('message')); ?></textarea>
+			<textarea name="fields[message]" id="field-message" cols="80" rows="10"><?php echo $this->escape($this->item->get('message')); ?></textarea>
 		</div>
 	</fieldset>
 

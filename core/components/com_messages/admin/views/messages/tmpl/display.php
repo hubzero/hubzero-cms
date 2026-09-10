@@ -80,16 +80,16 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
 				</th>
 				<th class="title">
-					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'subject', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'a.state', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'state', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'a.user_id_from', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'user_id_from', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap">
-					<?php echo Html::grid('sort', 'JDATE', 'a.date_time', $listDirn, $listOrder); ?>
+					<?php echo Html::grid('sort', 'JDATE', 'date_time', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -117,7 +117,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 						<?php echo Components\Messages\Helpers\Utilities::state($item->state, $i, $canChange); ?>
 					</td>
 					<td>
-						<?php echo $item->user_from; ?>
+						<?php echo $this->escape($item->from->get('name')); ?>
 					</td>
 					<td>
 						<time><?php echo Date::of($item->date_time)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?></time>
