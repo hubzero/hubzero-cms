@@ -245,11 +245,11 @@ class Applications extends AdminController
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
+		$i = 0;
+
 		// Do we actually have any entries?
 		if (count($ids) > 0)
 		{
-			$i = 0;
-
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
