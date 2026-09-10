@@ -674,6 +674,24 @@ def build_children_list(page: Page, output_path: Path, output_dir: Path,
     return '<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list">' + "\n".join(items) + "</ul></section>"
 
 
+def build_home_facts(books: list[Book], totals: dict, page_count: int, status_href: str) -> str:
+    """Four numbers the build already knows, so the front page says something true."""
+    checked = sum(totals.get(k, 0) for k in ("reviewed", "rewritten", "generated"))
+    generated = totals.get("generated", 0)
+    facts = [
+        (f"{page_count}", "pages", None),
+        (f"{len(books)}", "books", None),
+        (f"{checked}", "checked against the code", status_href),
+        (f"{generated}", "generated from the source tree", None),
+    ]
+    items = []
+    for value, label, href in facts:
+        inner = (f'<a href="{escape(href)}"><strong>{escape(value)}</strong><span>{escape(label)}</span></a>'
+                 if href else f'<strong>{escape(value)}</strong><span>{escape(label)}</span>')
+        items.append(f"<li>{inner}</li>")
+    return '<ul class="facts">' + "".join(items) + "</ul>"
+
+
 def build_book_cards(books: list[Book], config: dict) -> str:
     groups: dict[str, list[Book]] = {}
     for book in books:
@@ -915,10 +933,13 @@ def main() -> int:
 
     # Home page.
     home_context = common_context(output_dir / "index.html")
+    real_pages = sum(1 for p in all_pages if not p.synthetic)
     home_context.update({
         "book_cards": build_book_cards(books, config),
+        "home_facts": build_home_facts(books, report_json.get("totals", {}), real_pages,
+                                       home_context["status_href"]),
         "canonical_tag": canonical_tag(""),
-        "page_count": str(sum(1 for p in all_pages if not p.synthetic)),
+        "page_count": str(real_pages),
     })
     write_text(output_dir / "index.html", render_template(SOURCE_DIR / "templates" / "home.html", home_context))
 
