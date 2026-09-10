@@ -10,6 +10,10 @@ extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at `/administrator`, which this book walks through
 screen by screen.
 
+The exception is the first step. [Installing a hub](00-installing.md) is
+being rewritten for the new web installer; everything after a hub is
+running is covered here and current.
+
 ## Where to start
 
 If the hub is new, read

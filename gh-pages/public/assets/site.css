@@ -726,44 +726,6 @@ img { max-width: 100%; height: auto; }
 .book-card p { margin: 0; color: var(--ink-2); font-size: .92rem; }
 .book-card__meta { margin-top: auto !important; padding-top: .75rem; color: var(--ink-3) !important; font-size: .78rem !important; }
 
-/* ------------------------------------------------------------ home facts */
-
-/* Four numbers the build computes, so the front page states something
-   checkable rather than a claim about itself. */
-.facts-strip {
-  border-bottom: 1px solid var(--rule);
-  background: var(--paper-2);
-}
-.facts-strip__inner {
-  max-width: 68rem;
-  margin: 0 auto;
-  padding: .9rem clamp(1rem, 4vw, 3rem);
-}
-.facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: .5rem 1.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.facts li { display: flex; align-items: baseline; gap: .45rem; }
-.facts a { display: flex; align-items: baseline; gap: .45rem; text-decoration: none; color: inherit; }
-.facts a:hover span { color: var(--accent-ink); text-decoration: underline; }
-.facts strong {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.facts span { color: var(--ink-3); font-size: .82rem; line-height: 1.3; }
-
-@media (max-width: 30rem) {
-  .facts { grid-template-columns: repeat(2, 1fr); gap: .6rem 1rem; }
-}
-
 /* ---------------------------------------------------------------- footer */
 
 .site-footer {

@@ -60,4 +60,4 @@ overridden per client.
 Hubzero installs from packages on Enterprise Linux 8 or a compatible rebuild,
 on a cloud instance or anywhere else. Nothing about the machine
 being an EC2 instance changes how a hub is installed; see
-[Installation](../installation/README.md) for where that is documented.
+[Installing a hub](../managers/00-installing.md) for where that is documented.

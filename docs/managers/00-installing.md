@@ -4,7 +4,7 @@ reviewed: 2026-09-10
 screenshots: none
 summary: Installation documentation is being rewritten for the new web installer.
 -->
-# Installation
+# Installing a hub
 
 **Coming soon.**
 
@@ -20,16 +20,16 @@ withdrawn rather than left to mislead.
 
 Everything after a hub is running is covered and current:
 
-- [Hub managers](../managers/README.md) — the administrator's guide,
+- [Hub managers](README.md) — the administrator's guide,
   screen by screen. Start with
-  [The first week with a new hub](../managers/01-getting-started.md), which
+  [The first week with a new hub](01-getting-started.md), which
   assumes a hub that is installed and answering, and walks the decisions
   that come next in order.
-- [Search](../managers/09-components/31-search/README.md) — connecting a hub
+- [Search](09-components/31-search/README.md) — connecting a hub
   to Apache Solr, which is a separate service a hub adds and not part of
   installing the CMS.
-- [Authentication](../managers/05-configuring/06-authentication.md) and
-  [External authentication](../managers/05-configuring/07-extauth.md) —
+- [Authentication](05-configuring/06-authentication.md) and
+  [External authentication](05-configuring/07-extauth.md) —
   the sign-in providers, including the Apache configuration a federated
   provider needs in front of it.
 - [Developers](../developers/README.md) — for working on the code rather
