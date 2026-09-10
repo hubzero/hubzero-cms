@@ -14,35 +14,35 @@
    "title": "Hub managers",
    "dir": "docs/managers",
    "audience": "Run a hub",
-   "summary": "Installing a hub, then administering it: configuration, members and access, content, extensions, and day-to-day maintenance."
+   "summary": "Installing a hub, then running it: configuration, members and access, content, extensions, and maintenance."
   },
   {
    "slug": "users",
    "title": "Hub users",
    "dir": "docs/users",
    "audience": "Use a hub",
-   "summary": "Using a hub's features: profiles, groups, projects, publications, resources, the wiki, forums, courses, and more."
+   "summary": "Using a hub: your profile, groups and projects, publications, resources, the wiki, forums, and courses."
   },
   {
    "slug": "tools",
    "title": "Tools",
    "dir": "docs/tools",
    "audience": "Use a hub",
-   "summary": "The tool platform: publishing simulation tools, invoke scripts, the submit command, Jupyter, and tool administration."
+   "summary": "Publishing and running simulation tools: invoke scripts, the submit command, Jupyter, and administration."
   },
   {
    "slug": "developers",
    "title": "Developers",
    "dir": "docs/developers",
    "audience": "Build on Hubzero",
-   "summary": "Components, plugins, modules, templates, the framework libraries, the API, and how to contribute a change back."
+   "summary": "Components, plugins, modules, templates, the framework libraries, the API, and contributing a change."
   },
   {
    "slug": "reference",
    "title": "Reference",
    "dir": "docs/reference",
    "audience": "Reference",
-   "summary": "Generated references: configuration parameters, REST endpoints, muse console commands, and events."
+   "summary": "Generated from the source tree: configuration parameters, REST endpoints, console commands, and events."
   }
  ],
  "pages": [

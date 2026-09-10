@@ -661,29 +661,13 @@ img { max-width: 100%; height: auto; }
    mark, the same series line, the same proportions, and a colour of its own
    so a reader learns to recognise it. */
 
-/* Each audience is a shelf: its label on the left, its volumes on the right,
-   so a shelf holding one book does not leave a mostly empty row. */
+/* One shelf, every volume the same height in its row, so the set reads as a
+   set rather than as five things that happen to be near each other. */
 .shelf {
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr);
-  gap: .9rem 1.5rem;
-  padding: 1.75rem 0;
-  border-bottom: 1px solid var(--rule);
-}
-.shelf:last-child { border-bottom: 0; }
-.shelf__title {
-  margin: .35rem 0 0;
-  color: var(--ink-3);
-  font-size: .78rem;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-.shelf__books {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
   gap: 1.1rem;
-  align-items: start;
+  padding: 1.5rem 0 2rem;
 }
 
 .cover {
@@ -692,6 +676,7 @@ img { max-width: 100%; height: auto; }
   position: relative;
   display: flex;
   min-height: 15.5rem;
+  height: 100%;
   border-radius: 3px 7px 7px 3px;
   background: var(--paper);
   box-shadow:
@@ -763,7 +748,7 @@ img { max-width: 100%; height: auto; }
 }
 .cover__blurb {
   color: var(--ink-2);
-  font-size: .88rem;
+  font-size: .86rem;
   line-height: 1.45;
 }
 .cover__meta {
@@ -861,7 +846,7 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 640px) {
-  .shelf { grid-template-columns: 1fr; gap: .5rem; padding: 1.1rem 0; }
+  .shelf { grid-template-columns: 1fr; gap: .9rem; }
 }
 
 @media (max-width: 520px) {
