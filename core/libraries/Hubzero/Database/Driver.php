@@ -2268,6 +2268,17 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Render an expression as SQL for this connection
+     *
+     * @param   \Hubzero\Database\Expression  $expression  The expression to render
+     * @return  string
+     */
+    public function buildExpression($expression)
+    {
+        return $this->queryBuilder()->buildExpression($expression);
+    }
+
+    /**
      * Sets the syntax
      *
      * @param   string  $syntax  The syntax being used based on the connection
