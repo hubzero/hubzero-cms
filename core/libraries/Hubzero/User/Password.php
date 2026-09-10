@@ -680,6 +680,12 @@ class Password
             $encryption = "md5-base64";
         } elseif ($encryption == 'crypt') {
             preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);
+
+            // A hash whose salt cannot be read cannot be matched against
+            if (empty($parts)) {
+                return false;
+            }
+
             $salt = $parts[0];
 
             switch ($parts[1]) {
