@@ -103,12 +103,23 @@
 taken the privilege away from your access group. Deleting one needs a group
 manager.</p>
 <h2 id="creating-a-group">Creating a group</h2>
+<p>Make a group when a set of people need somewhere on the hub that is theirs:
+an address to send collaborators to, a forum that is not everyone's forum, a
+file area, a wiki, a list of the papers the work produced. You do not need
+permission and you do not need to know how much of it you will use — the tabs
+are switches you can turn on later.</p>
+<p>This page follows one group the whole way through: <code>soilcarbon</code>, a soil
+carbon project running across four institutions. Its principal investigator
+wants the project's protocols and meeting notes in one place, wants people to
+be able to ask to join rather than be chased individually, and does not want
+the group turning up in hub searches while the funding is still unannounced.</p>
 <ol>
 <li>Sign in and go to <code>/groups</code>.</li>
 <li>Select <strong>Create New Group</strong>.</li>
 <li>Fill in the form and select <strong>Save Group</strong>.</li>
 </ol>
-<p>The form is one page, in these sections.</p>
+<p>The form is one page, in these sections. Everything on it except the <strong>Group
+ID</strong> can be changed afterwards, so it is not a form to agonise over.</p>
 <h3 id="group-details">Group Details</h3>
 <table>
 <thead>
@@ -132,15 +143,41 @@ manager.</p>
 </tr>
 </tbody>
 </table>
-<p>Your hub may add fields of its own beneath these — the hub's administrators
-define them, and their answers are what the group's <strong>Overview</strong> tab shows
-under <strong>About the Group</strong>.</p>
+<p>Those three rows are the only ones Hubzero puts there itself. There is no
+description box among them: the fixed <strong>Public Description</strong> and <strong>Private
+Description</strong> boxes groups used to have are gone from the form, and the
+hub's <strong>custom fields</strong> replaced them. Whatever your hub's administrators
+have defined appears beneath <strong>Interests (tags)</strong>, and the answers are what
+the group's <strong>Overview</strong> tab shows under <strong>About the Group</strong>.</p>
+<p>On most hubs that means the two descriptions are still there, because the
+upgrade turns them into custom fields of the same names and moves the old
+text across. But they are now ordinary fields: an administrator can rename
+them, reorder them, add others — a funding source, a principal investigator,
+a department — or take them away entirely. So the questions you are asked
+when you create <code>soilcarbon</code> are your hub's questions, not a fixed list, and
+another hub's form looks different.</p>
+<p>Each field also has its own audience, set when it was defined: some are shown
+to anyone at all, some only to people signed in to the hub, some only to
+members of the group. <strong>Public Description</strong> is the first kind and <strong>Private
+Description</strong> the last. The form does not label which is which, so if you
+are about to type something you would not want read by a stranger, ask the
+hub's support staff before you put it in a field you are unsure of.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The <strong>Logo</strong> section only appears once the group exists. Save the
 group first, then edit it to add a logo. See
 <a href="../groupcustom/index.html#the-group-logo">Customization</a>.</p>
 </aside>
 <h3 id="membership-settings-join-policy">Membership Settings/Join Policy</h3>
+<p>This is the decision that matters most, and it is not about secrecy — it is
+about who does the work of deciding. <strong>Open/Anyone</strong> means nobody does: the
+group takes whoever turns up. <strong>Restricted</strong> puts a manager in the loop for
+every applicant. <strong>Invite Only</strong> means people cannot even ask. <strong>Closed</strong>
+means the membership is fixed as it stands.</p>
+<p><code>soilcarbon</code> picks <strong>Restricted</strong>. The project wants collaborators from
+outside the four institutions to be able to find it and ask, but it does not
+want to end up explaining its unpublished data to a stranger, and somebody
+has to read the request either way. That costs a manager a minute per
+applicant and nothing else.</p>
 <p>Pick one, under <strong>Who can join?</strong>:</p>
 <table>
 <thead>
@@ -170,13 +207,24 @@ group first, then edit it to add a logo. See
 </table>
 <p><strong>Credentials</strong> is an optional block of text shown to anyone requesting
 membership. Use it on a restricted group to say what an applicant should
-tell you — a project number, a principal investigator, and so on.</p>
+tell you — a project number, a principal investigator, and so on. It is the
+difference between requests you can act on and requests that say &quot;please add
+me&quot;. <code>soilcarbon</code> uses it to ask for the applicant's institution and the name
+of the co-investigator who vouches for them.</p>
+<p>You can change the policy at any time afterwards, and changing it does not
+disturb anybody who has already joined.</p>
 <p><img src="../../media/createdeleteagroup-groupmembershipmanagement.png" alt="The Membership Settings/Join Policy section of the group form" /></p>
 <p>If the hub allows time-limited memberships, a <strong>Membership length</strong> section
 follows, where you set a default number of days after which new members are
 removed automatically. Leave it at 0 for memberships that never end. Changing
 it does not affect anyone who has already joined.</p>
 <h3 id="privacy-settings">Privacy Settings</h3>
+<p>Discoverability and the join policy are separate questions, and it is worth
+seeing why. The join policy says who may get in; discoverability says whether
+the group can be found at all. A <strong>Visible</strong>, <strong>Restricted</strong> group is the
+usual arrangement — findable, but you have to ask. <code>soilcarbon</code> starts
+<strong>Hidden</strong> instead, because the award is not announced yet, and its manager
+switches it to <strong>Visible</strong> the week the press release goes out.</p>
 <p><strong>Discoverability</strong> is one of two values:</p>
 <table>
 <thead>
@@ -196,8 +244,19 @@ it does not affect anyone who has already joined.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Access Permissions</strong> below it lists every tab available to groups on this
-hub. Set each one to <strong>Any HUB Visitor</strong>, <strong>Registered HUB Users</strong>, <strong>Group
+<p><strong>Access Permissions</strong> below it is where the group's shape is actually set.
+Every tab a group can have is listed, and each one is a separate decision
+about a separate audience. <code>soilcarbon</code> leaves <strong>Overview</strong> open to <strong>Any HUB
+Visitor</strong> so a collaborator can read what the project is before asking to
+join, and sets <strong>Files</strong>, <strong>Forum</strong> and <strong>Wiki</strong> to <strong>Group Members Only</strong>
+because that is where the unpublished work lives. The tabs it is not going to
+use — <strong>Blog</strong>, <strong>Wish List</strong> — go to <strong>Disabled/Off</strong> so the menu stays
+short.</p>
+<p>The list itself is the hub's, not the group's: a tab you have heard of may be
+missing because your hub does not run that plugin. Everything here can be
+changed later, from
+<a href="../groupcustom/index.html#which-tabs-appear">Customization</a>.</p>
+<p>The full list of options: Set each one to <strong>Any HUB Visitor</strong>, <strong>Registered HUB Users</strong>, <strong>Group
 Members Only</strong> or <strong>Disabled/Off</strong>. <strong>Overview</strong> cannot be set to
 Disabled/Off. Anything already selected is the hub's default until you
 override it.</p>
@@ -227,6 +286,13 @@ change it afterwards. See <a href="../groupforum/index.html">Group forum</a>.</p
 <h2 id="after-you-save">After you save</h2>
 <p>The group is created, you become its first member and its first manager, and
 you land on the group's page.</p>
+<p>That is the end of the form and the start of the work. <code>soilcarbon</code> now
+exists at <code>/groups/soilcarbon</code> with one member in it. Three things usually
+follow, in this order: promote a second manager so the group does not depend
+on one account, bring the members in, and write something on <strong>Overview</strong> so
+that people arriving know what they have found. The first two are in
+<a href="../groupmembers/index.html">Member functions</a>; the third is in
+<a href="../groupcustom/index.html">Customization</a>.</p>
 <p>Whether the group is visible to anyone else depends on the hub. Most hubs
 approve new groups automatically. If yours does not, the group is saved
 unapproved: only its managers, members and invitees can reach it, everyone
@@ -234,26 +300,51 @@ else gets a &quot;not found&quot;, and the group's page carries a warning until 
 administrator approves it. Nobody but a manager can open any tab other than
 <strong>Overview</strong> in the meantime.</p>
 <h2 id="deleting-a-group">Deleting a group</h2>
-<p>You must be a manager of the group. You do not have to be its only member —
-every member is notified, and you can write the message they get.</p>
+<p>Deleting is for a group that should never have existed — a typo in the
+<strong>Group ID</strong>, a duplicate, an experiment. It is almost never right for work
+that has finished, because a finished project's forum threads and wiki pages
+are exactly what somebody wants two years later. Read the alternative below
+before you go on.</p>
+<p>Any manager can do it, and that is worth saying plainly: it is not reserved
+to whoever created the group, and there is no second manager's approval. If
+<code>soilcarbon</code> has three managers, any one of them can destroy it on their own.
+The counterweight is that it cannot be done quietly — <strong>every</strong> member is
+emailed that the group has gone and who removed it, and you write the
+message they get. So the check on the power is that everyone finds out, not
+that you are stopped.</p>
+<p>You do not have to be the group's only member, and you do not have to empty
+it first.</p>
 <ol>
 <li>Open the group.</li>
 <li>Open the <strong>Group Manager</strong> menu and select <strong>Delete Group</strong>.</li>
-<li>The confirmation page lists what will be lost: the number of members who
-will be notified, and a line from each of the group's plugins counting the
-blog entries, forum posts, wiki pages and other content that go with it.</li>
-<li>Type the group's <strong>Group ID</strong> in the confirmation box.</li>
-<li>Optionally edit the message sent to the members.</li>
+<li>Read what the confirmation page lists. Under <strong>Are you sure you want to
+delete?</strong> it counts what will be lost: the number of members who will be
+notified, and a line from each of the group's plugins counting the blog
+entries, forum posts, wiki pages and other content that go with it. This
+is the only inventory you get, so take it seriously — a group that has
+been running for a year is usually holding more than its managers
+remember.</li>
+<li>Type the group's <strong>Group ID</strong> in the confirmation box. The page asks for
+it by name: <em>To prevent accidental actions we ask you to confirm your
+intent by typing &quot;soilcarbon&quot; below.</em> Nothing else is accepted, and the
+point is that you cannot delete the wrong group by mistyping — you have to
+spell out the one in front of you.</li>
+<li>Optionally edit <strong>Customize message sent to group member(s)</strong>. Whatever
+you write is inserted into the mail every member receives, beneath a line
+saying the group was deleted by you. A sentence saying where the work went
+is worth the ten seconds.</li>
 <li>Select <strong>Delete</strong>.</li>
 </ol>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> This is permanent. The group and everything its plugins hold
 are removed, and there is no undo.</p>
 </aside>
-<p>The confirmation page offers an alternative worth reading first: set the join
-policy to <strong>Closed</strong> and the discoverability to <strong>Hidden</strong>. The group then
-takes no new members and is invisible to everyone else, but it is still there
-if you want it later.</p>
+<p>The confirmation page offers an alternative worth reading first, under
+<strong>Alternative to deleting</strong>: set the join policy to <strong>Closed</strong> and the
+discoverability to <strong>Hidden</strong>. The group then takes no new members and is
+invisible to everyone else, but its content is still there, and a manager can
+still reach it. For work that has simply ended, this is nearly always the
+right answer.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <strong>Delete Group</strong> does not appear when the group's membership is
 managed outside the hub — some groups are driven by an external system.
@@ -263,7 +354,7 @@ Neither does <strong>Join Group</strong> or <strong>Cancel Group Membership</str
 see <a href="../../../managers/users/groups/index.html#deleting-a-group">Groups</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Groups</a><a class="pager__next" href="../groupmembers/index.html" rel="next"><span>Next</span>Member functions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/11-groups/01-createdeleteagroup.md">Edit this page on GitHub</a>

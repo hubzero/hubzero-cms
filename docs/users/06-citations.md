@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/citations
 -->
 # Citations
@@ -10,6 +10,27 @@ Citations are the works — papers, books, theses, conference proceedings —
 that have cited the hub or something published on it. Each one links to the
 hub content it references and can be downloaded in BibTeX or EndNote
 format. The catalogue is at `/citations` on the hub.
+
+The catalogue exists because impact has to be evidenced. When a thermal
+transport lab writes its next grant renewal, it needs to say who used its
+conductivity dataset and what came of it. The hub's citation list answers
+that: it is the running record of the papers that cite work hosted here, and
+it can be exported in one go and dropped into a reference manager.
+
+Reading it needs no account and no permission. Browsing, reading a citation
+and downloading one are open to anyone who can see the hub. Adding to it is
+different — see [Submitting a citation](#submitting-a-citation) and
+[Importing citations](#importing-citations), both of which a hub can restrict
+to administrators or switch off.
+
+## Citations are not publications
+
+A **publication** is work the hub holds and issues a DOI for; see
+[Publications](18-publications.md). A **citation** is a record of somebody
+else's paper that pointed at that work. The publication is yours; the
+citation is the evidence that it was used. A resource page's **Citations**
+tab shows the citations attached to that one resource; `/citations` shows
+the hub's whole set.
 
 ## The citations home page
 
@@ -28,6 +49,11 @@ Depending on how the hub is set up, **Submit a citation** and
 **Import Citations** buttons appear in the top right.
 
 ## Browsing
+
+Browse when you want the whole picture rather than one paper — everything
+citing the hub in a given year, or everything of one type. The lab preparing
+its renewal starts here, filters to the years of the award, and exports the
+result.
 
 `/citations/browse` lists the hub's published citations, formatted in the
 hub's chosen bibliographic style. Above the list, three tabs narrow it to
@@ -97,7 +123,8 @@ list.
 
 To export several at once, check the box beside each citation in the browse
 list, then press **EndNote** or **BibTex** under **Export Multiple
-Citations** in the right-hand panel. The file downloads as
+Citations** in the right-hand panel. This is the step that produces the lab's
+renewal bibliography in one file. The file downloads as
 `citations_export_<format>_<date>.bib` or `.enw`. Only the boxes checked on
 the page you are looking at are included, so export a page at a time or
 raise the number of results shown before checking them.
@@ -107,12 +134,17 @@ fields from exported records.
 
 ## Submitting a citation
 
+Submit when you find a paper that cites hub work and the hub does not know
+about it yet — most often your own paper, or one a colleague sent you.
+
 Press **Submit a citation** on the citations home page, or go to
 `/citations/add`. You have to be logged in; if you are not, the hub asks
 you to sign in first. Hubs can restrict submission to administrators or
-turn it off entirely, in which case the button is not shown.
+turn it off entirely, in which case the button is not shown. If you cannot
+see the button and you are logged in, that setting is why; send the reference
+to the hub's support team instead. See [Support](12-support.md).
 
-![The Citations: Add form, with the Details, Manually Format Citation, Tags and Badges, Citation For, and Affiliation sections](../media/citations-citations-1.png)
+![The Citations: Add form, with the Details, Manually Format Citation, Tags and Badges, Citation For, and Affiliation sections](media/citations-citations-1.png)
 
 1. Choose a **Type**. The form then shows the fields that type uses.
 2. Fill in **Title/Chapter** and the other details that apply — authors,
@@ -136,17 +168,34 @@ turn it off entirely, in which case the button is not shown.
 8. Press **Save**. You are returned to the browse list, where the new
    citation appears straight away.
 
-> **Note:** Citations submitted here are published immediately. The **Edit**
-> link that appears on a citation's page when you are the person who
-> submitted it only works for hub administrators and for owners of a
-> project whose publication the citation is attached to; anyone else gets a
-> not-authorized page.
+> **Note:** Citations submitted here are published immediately. There is no
+> review step, so check what you typed before pressing **Save**.
+
+An **Edit** link appears beside a citation's title when you are the member
+who submitted it, and an **Edit** column appears in the browse list for hub
+administrators. Editing is otherwise the same form as submitting, and is
+governed by the same setting: on a hub that has closed submission to
+administrators, or turned it off, the form is not reachable.
+
+> **Warning:** The edit form itself checks only that you are logged in and
+> that the hub allows submissions — it does not check that the citation is
+> yours. On a hub where any member may submit, a member who knows a
+> citation's ID can open and overwrite somebody else's record even though no
+> **Edit** link is shown to them. Treat the catalogue as shared, and tell
+> your hub's support team if an entry changes unexpectedly.
 
 ## Importing citations
 
+Import instead of submitting when you have more than two or three to add. The
+lab that has just collected forty citing papers in a reference manager
+exports them as one BibTeX file and uploads that, rather than typing forty
+forms.
+
 Press **Import Citations** on the citations home page, or go to
 `/citations/import`. You have to be logged in, and the hub can limit
-importing to administrators or switch it off.
+importing to administrators or switch it off — it is a separate setting from
+the one that governs single submissions, so a hub may allow one and not the
+other.
 
 The import runs in three steps.
 

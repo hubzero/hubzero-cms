@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/storefront
 -->
 # Storefront
@@ -10,6 +10,19 @@ The storefront is the hub's store. Hubs use it to distribute licensed
 software, to sell course seats and memberships, and occasionally to ship
 physical goods. It is at `/storefront`, and the cart and your order history
 are at `/cart`.
+
+> **Note:** Most hubs do not have one. The storefront ships switched off, and
+> an administrator has to turn it on and stock it before there is anything to
+> buy. If `/storefront` gives you a page-not-found, your hub does not sell
+> anything, and nothing on this page applies to you. Everything else on a hub
+> — tools, publications, groups, courses — is free to members whether or not
+> a store exists.
+
+Where a hub does run one, it is usually for the things it cannot simply give
+away: a solver whose licence is counted per seat, a training course with a
+registration fee, a data subscription. A department buying five seats of a
+licensed code for a semester goes through the storefront and gets the serial
+numbers back on the confirmation page.
 
 Many hubs require you to log in before you can see the store at all. Where
 that is the case, `/storefront` shows a welcome page with a **Login** button
@@ -78,6 +91,9 @@ When it is done you land on a **Thank you!** page with an order summary, and
 the hub emails a confirmation to the address on your account.
 
 ## Getting what you bought
+
+Nothing is posted to you unless you bought a physical thing. Software,
+course seats and memberships are delivered on the hub, straight away.
 
 The summary on the confirmation page carries the action for each item.
 

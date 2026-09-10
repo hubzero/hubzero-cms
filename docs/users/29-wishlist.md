@@ -1,17 +1,49 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/wishlist
 -->
 # Wish list
 
-The wish list is where you ask the hub for something: a feature you want,
-a tool you wish existed, a fix you would like to see. Other members vote
-your wish up or down and comment on it, and the people who own the list
-decide whether to accept, reject or grant it. The hub's main list is at
-`/wishlist`, usually linked from the support or help menu. Groups and
-resources can have lists of their own, shown on their **Wishlist** tab.
+The wish list is where you ask for something that does not exist yet: a
+feature, a tool, a change to how something works. An instructor marking
+forty submissions from a hub tool wants a button that exports the whole
+cohort's results as one file, because doing it one student at a time is
+the reason the assignment takes her a weekend. There is nothing broken
+to report and nobody can answer the question today — what she wants is
+for somebody to build it.
+
+That is what separates a wish from everything else you can write on the
+hub. A wish is a request for work. It goes on a list, other members vote
+it up or down and comment on it, the people who own the list rank it
+against everything else on the list, and it ends up **Accepted**,
+**Granted**, **Rejected** or **Withdrawn**. It is slow on purpose: the
+voting is the point, because it is how a list's owners find out which of
+forty requests matter to more than one person.
+
+The hub's main list is at `/wishlist`, usually linked from the support or
+help menu. Groups and resources can have lists of their own, shown on
+their **Wishlist** tab — so the export button above belongs on the
+tool's own list, where the tool's authors will see it, rather than on
+the hub-wide one.
+
+## Which one do I want?
+
+| If you want to | Use |
+|---|---|
+| Ask for a feature, tool, or change to be built | The wish list — this page |
+| Report something broken, or ask the hub's staff for help | [Support](12-support.md) |
+| Get one answer to a specific question, from anyone on the hub | [Questions and answers](19-questions.md) |
+| Discuss something open-ended, where several answers are defensible | [Forum](09-forum.md) |
+
+The line that matters is between a wish and a ticket. If the software is
+doing something it should not, that is a fault and belongs in
+[Support](12-support.md), where somebody is expected to answer. If the
+software is working as built and you want it built differently, that is
+a wish. Filing a fault here can leave it sitting for months waiting for
+votes; a list owner can move a wish onto a support ticket, but nobody
+will do it for you if you never say the thing is broken.
 
 ## The list
 
@@ -33,6 +65,13 @@ match wish titles and descriptions. Two menus sit beside it:
   **Granted**, and, once you are logged in, **Submitted by me**. List
   owners also get **Public** and **Private**.
 
+> **Warning:** There is a sixth filter, **Assigned to me**, which does
+> not work. The link is shown only to someone holding an access flag
+> that no code in the hub ever sets, so nobody ever sees it; and if you
+> build its address by hand, the controller discards the value and shows
+> you every wish instead. To find the wishes assigned to you, open the
+> list and read the **Implementation Plan** on each one.
+
 The sidebar carries a short description of the list, and on the main list
 a cloud of popular tags. Click a tag to narrow the list to wishes carrying
 it; click the small **x** on an applied tag to remove it again.
@@ -43,8 +82,10 @@ it; click the small **x** on an applied tag to remove it again.
 
 ## Posting a wish
 
-Press **Add a Wish**. You have to be logged in; if you are not, the hub
-sends you to the login page and back again. The form asks for:
+Take the instructor's export button through. She opens the tool's page,
+selects its **Wishlist** tab, and presses **Add a Wish** at the top
+right. You have to be logged in; if you are not, the hub sends you to
+the login page and back again. The form asks for:
 
 | Field | Notes |
 |---|---|
@@ -56,6 +97,13 @@ sends you to the login page and back again. The form asks for:
 
 Press **Save**. Your wish goes onto the list as **Pending**, the list's
 owners are e-mailed, and you land on the wish's own page.
+
+Hers reads "Export all students' results as one CSV" in **Summary of
+your wish**, with the detail explaining that she does this for forty
+students each term and how long it takes. That second part is what earns
+votes: a wish that says who wants it and how often is a wish other
+people recognise and vote up, and the vote is what moves it up the
+list.
 
 ## A wish's page
 
@@ -96,6 +144,11 @@ Replies carry no attachment.
 
 ## How the consensus is worked out
 
+This section is about what the list's owners do, not what you do. Read
+it if you want to know why your wish is where it is in the list, or skip
+it — you cannot rank a wish unless you own the list or sit on its
+advisory committee.
+
 The owners of a list — and, where the hub has enabled one, its advisory
 committee — rank each wish under **My Opinion**. There are two
 selections:
@@ -119,8 +172,9 @@ their rankings count four times as much as an ordinary owner's.
 
 ## The implementation plan
 
-Once a wish is accepted, its owners can write an **Implementation Plan**
-below the comments: who the wish is assigned to, when it is due, and a
+The plan is how an accepted wish turns into a commitment you can check
+on. Once a wish is accepted, its owners can write an **Implementation
+Plan** below the comments: who the wish is assigned to, when it is due, and a
 description of the work. Each save can be kept as a new revision, so the
 plan's history survives. The wish shows how long is left before the due
 date, and turns overdue once it passes.
@@ -141,4 +195,5 @@ be made private, and a list's built-in owner group cannot be removed.
 
 - [Support](12-support.md) — report a problem rather than ask for a feature.
 - [Questions and answers](19-questions.md) — ask the community.
+- [Forum](09-forum.md) — talk it over before you file it.
 - [Knowledge base](13-knowledgebase.md) — check whether it already exists.

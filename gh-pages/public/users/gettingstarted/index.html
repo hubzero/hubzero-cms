@@ -105,6 +105,15 @@
 <p>The first hour on a hub, in order: create an account, confirm it, fill in
 enough of a profile to be findable, arrange a dashboard, and then find the
 part of the site you actually came for.</p>
+<p>The point of the first four steps is the fifth. Nothing on a hub is much use
+until other members can find you and add you to things — a group cannot invite
+a member it cannot see, and a project owner has to pick you off a list by
+name. Half an hour spent on an account and a profile saves a week of &quot;who is
+this person and why can't they open the files&quot;.</p>
+<p>The example running through this chapter is a postdoc joining her lab's hub.
+She has been told two things: run the group's infiltration model, and get at
+the field data the lab is preparing for release. That is a typical reason to
+be here, and it needs all five steps.</p>
 <h2 id="1-create-an-account">1. Create an account</h2>
 <p>Go to <code>/register</code>, or select <strong>Create an account</strong> under the login form.
 The form asks for a username, a password, your name, and an email address,
@@ -123,6 +132,11 @@ cannot be used. Some hubs also require an administrator to approve the
 account, which happens after you confirm.</p>
 <p>The message is generated automatically, so check your spam folder if it does
 not arrive within a few minutes.</p>
+<p>Use an address you will still be reading in two years. The postdoc in the
+example uses her university address rather than the lab's shared mailbox: hub
+notifications about her project, her tool sessions, and her publication all go
+to whichever address is on the account, and the account is hers, not the
+lab's.</p>
 <h2 id="3-fill-in-your-profile">3. Fill in your profile</h2>
 <p>Your profile is at <strong>Members &gt; (your name) &gt; Profile</strong>, or directly at
 <code>/members/myaccount</code>. Each row is one field with an <strong>Edit</strong> link beside it;
@@ -133,17 +147,31 @@ uploading a picture.</p>
 <ul>
 <li>Decide whether the whole profile is public or private, using the toggle at
 the top of the Profile tab. Per-field privacy only works while the profile
-itself is public.</li>
+itself is public. Which state a new account starts in depends on the hub's
+<strong>Default Privacy</strong> setting, so look rather than assume.</li>
 <li>Fill in your organisation and interests. They are what makes you findable
 by other members, and on hubs that run Solr search, member profiles are
 indexed.</li>
 </ul>
+<p>For the postdoc, &quot;findable&quot; is the whole point of the step. The group's
+manager searches the member list for her name and her department to send the
+invitation; if the profile is private, or the organisation is blank, that
+search returns nothing useful and she has to be added by hand.</p>
 <h2 id="4-arrange-your-dashboard">4. Arrange your dashboard</h2>
 <p>The Dashboard tab is your own page of modules — current tool sessions and
 disk usage, your groups, your projects, recent activity, whatever the hub
 offers. It starts from a default arrangement and you rearrange it by dragging.
 <a href="../dashboard/index.html">Member dashboard</a> covers adding, removing, and configuring
 modules.</p>
+<p>This is the one step you can skip. Nobody else sees your dashboard and nothing
+depends on it. It is worth five minutes only because the panels you put there
+are the ones you will otherwise go looking for in a menu every day — for the
+postdoc, <strong>My Sessions</strong>, so she can get back into a running model, and
+<strong>My Projects</strong>, so the field-data project is one click away.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A hub can switch dashboard personalisation off. If there is no
+<strong>Add Modules</strong> button and nothing will drag, that is why.</p>
+</aside>
 <h2 id="5-find-your-way-around">5. Find your way around</h2>
 <p>What a hub offers beyond that varies. These are the parts most hubs turn on.</p>
 <h3 id="groups">Groups</h3>
@@ -151,28 +179,43 @@ modules.</p>
 have its own pages, membership roles, announcements, blog, calendar,
 collections, forum, wiki, and file area. Joining an existing group is usually
 the fastest way to see what a hub is actually used for.</p>
+<p>Groups are for people who keep working together: a lab, a course cohort, a
+standards committee. A group outlives any one piece of work in it.</p>
 <h3 id="projects">Projects</h3>
 <p>A <a href="../projects/index.html">project</a> is a workspace for a piece of research: files,
 notes, a to-do list, and a database area. Project file storage can be the
 hub's own, or connected to Amazon S3, Dropbox, GitHub, or Google Drive through
 the hub's filesystem plugins. When the work is ready, a project is the
 starting point for a publication.</p>
+<p>A project is not a group. It is private to the people invited to it, it is
+about one body of work, and it exists partly so that data can be shared
+inside the team before anyone is ready to show it to the world. The lab's
+field data lives in a project for exactly that reason: three people are
+cleaning it, and nothing is public until they say so.</p>
 <h3 id="publications">Publications</h3>
 <p><a href="../publications/index.html">Publications</a> walks a contributor through releasing
 data, code, or a paper in steps — files, authors, abstract, licence — that can
 be revisited in any order. A published version can carry a licence and a minted
 DOI. Where the hub uses curation, a curator reviews the draft and leaves notes
 before it goes live; see <a href="../publications/index.html#curation">Curation</a>.</p>
+<p>This is where the lab's field season ends up: the project is the workspace,
+the publication is the citable thing with a version number that a paper can
+point at.</p>
 <h3 id="tools">Tools</h3>
 <p>Where a hub runs the tool platform, published tools launch in the browser and
 execute on the hub's own machines. Running one, sharing a session, and
 contributing your own are covered in <a href="../tools/index.html">Tools</a>.</p>
+<p>Nothing is installed on your computer, and a session keeps running when you
+close the browser, which is why the postdoc can start the infiltration model
+on a laptop and pick the session up the next morning from <strong>My Sessions</strong>.</p>
 <p><img src="../media/gettingstarted-tools2.gif" alt="Animation of a simulation" /></p>
 <h3 id="wiki-and-collections">Wiki and collections</h3>
 <p>The <a href="../wiki/index.html">wiki</a> holds member-written articles; an article's author can keep
 a fixed list of authors or leave it open for anyone to edit.
 <a href="../collections/index.html">Collections</a> are a lighter way to gather images, links, and
-files into a board that other members can follow and re-collect.</p>
+files into a board that other members can follow and re-collect. A collection
+is not a publication: it points at things, it has no version and no DOI, and
+nobody curates it.</p>
 <h2 id="what-is-not-here">What is not here</h2>
 <p>The tool execution platform, the Solr search service, and the statistics
 collection behind the hub's <code>/usage</code> page are separate software that runs
@@ -180,7 +223,7 @@ alongside the CMS. Chapters that depend on them say so, because on a hub where
 they are not installed the corresponding pages are empty or absent.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../wishlist/index.html" rel="prev"><span>Previous</span>Wish list</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/30-gettingstarted.md">Edit this page on GitHub</a>

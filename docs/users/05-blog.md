@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/blog
 source-id: 3295
 modified: 2014-11-17
@@ -12,6 +12,19 @@ Your blog is a dated journal on your member profile: notes on what you are
 working on, results, opinions, anything you want to publish under your own
 name. Other members can comment on your entries, and you decide for each
 entry whether anyone, only logged-in members, or only you can read it.
+
+It suits work that accumulates in order. A postdoc writes a short entry
+each week — what she ran, what came out, what she is trying next — and by
+the end of a project the blog is the lab notebook, dated, searchable,
+and readable by whoever she lets read it. A group blog does the same job
+for a group's meeting notes.
+
+A blog is not a discussion and not a publication. You write, other
+people comment; if you want an argument with peers, that is the
+[forum](09-forum.md), and if you want a citable, versioned, reviewed
+record of a result, that is a [publication](18-publications.md). Nothing
+in a blog is reviewed, and nothing about it is permanent — you can
+delete an entry.
 
 There are three blogs on a hub, all built from the same component:
 
@@ -46,7 +59,9 @@ Two buttons sit at the top of your own blog: **New entry** and
 
 ## Writing an entry
 
-Press **New entry**. The form asks for:
+Follow the postdoc's Friday entry the whole way. She is on her profile,
+on the **Blog** tab, and presses **New entry** at the top of the page.
+The form asks for:
 
 | Field | Notes |
 |---|---|
@@ -62,6 +77,12 @@ Press **New entry**. The form asks for:
 Press **Save**. You land on the finished entry, at a permanent address
 built from its publication date and title, such as
 `/members/1042/blog/2026/09/my-first-results`.
+
+Hers is titled "Week 14: bias sweep reruns", set to **Registered
+members** so it stays inside the hub, tagged `negf theory`, with the
+week's plots uploaded through **Uploaded files** and referenced from the
+entry text. The address it gets is the one she pastes into the group's
+Friday email.
 
 > **Note:** You can only write and edit entries on your own blog. Opening
 > someone else's blog with an edit link returns "You do not have permission
@@ -94,6 +115,12 @@ Privacy is not a setting here; it belongs to each entry.
 > produce a private feed, so entries limited to registered members or to
 > yourself never appear in one, whatever the setting.
 
+That is worth knowing before you decide where notes live. The postdoc's
+registered-members entries are readable by anyone with a hub account,
+and invisible to her feed subscribers. If notes must stay inside a named
+set of people, they belong in a [group](11-groups/README.md) or a
+[project](16-projects.md), not in a member blog.
+
 ## Reading and commenting
 
 An entry page shows the title, the entry number, the date and time, the
@@ -124,8 +151,13 @@ On each existing comment you can:
 
 ## Group blogs
 
-A group's blog works the same way, but the group decides who may write in
-it. Group managers set that from the **Settings** button inside the
+A group blog is the one to reach for when the journal belongs to the
+work rather than to a person: a lab's meeting notes, a course's weekly
+announcements, a working group's progress log. It stays with the group
+when the person who wrote it moves on.
+
+A group's blog works the same way as your own, but the group decides who
+may write in it. Group managers set that from the **Settings** button inside the
 group's Blog tab, choosing whether **all members** or **managers only** may
 post, along with the group blog's feed options. Whether the Blog tab shows
 at all, and who can read it, are group plugin settings a hub administrator

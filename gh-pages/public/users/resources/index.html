@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Resources · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="Think of the hub as a library and resources as the items on its shelves: publications, datasets, presentations, videos, teaching materials, and simulation…">
+  <meta name="description" content="Resources are the hub&#x27;s catalogue, and for most members they are the reason the hub exists. A resource is one thing somebody has made and wants other people to…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/resources/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,6 +66,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../questions/index.html">Questions and answers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Resources</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#a-resource-is-not-a-publication">A resource is not a publication</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-kinds-of-resource-a-hub-holds">What kinds of resource a hub holds</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-a-resource">Finding a resource</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-a-resource-page">Reading a resource page</a></li>
 <li class="toc__item toc__item--l2"><a href="#rating-and-reviewing">Rating and reviewing</a></li>
@@ -98,10 +100,52 @@
         </header>
         
         <div class="prose">
-<p>Think of the hub as a library and resources as the items on its shelves:
-publications, datasets, presentations, videos, teaching materials, and
-simulation tools. Anyone with an account can contribute one. They live at
+<p>Resources are the hub's catalogue, and for most members they are the reason
+the hub exists. A resource is one thing somebody has made and wants other
+people to be able to find, use and cite: a dataset, a seminar recording, a
+set of slides, a homework assignment, a tutorial, a simulation tool. Each one
+gets a page with an abstract, its authors, its files, and a ready-made
+citation. Anyone with an account can contribute one. They live at
 <code>/resources</code> on the hub.</p>
+<p>The catalogue is what turns work that would otherwise sit on a lab share into
+something with an address. A thermal transport lab has a set of scripts that
+reduce raw thin-film conductivity measurements, and a worked example that
+shows how to use them. Every new student in the lab is emailed the same zip
+file. Contributed as a resource, it becomes a page anyone can link to, with
+the authors credited, a citation other groups can put in a paper, and one
+address that stays right when the scripts change.</p>
+<h2 id="a-resource-is-not-a-publication">A resource is not a publication</h2>
+<p>The two look alike and are not the same thing.</p>
+<ul>
+<li>A <strong>resource</strong> page describes and delivers work. You can edit it after it
+is live, and it carries no version history or identifier of its own.</li>
+<li>A <strong>publication</strong> is a frozen, citable release with its own DOI, assembled
+from a project and reviewed by a curator. See
+<a href="../publications/index.html">Publications</a>.</li>
+<li>A <strong>collection</strong> is your personal board of things you want to find again.
+It holds pointers, not work. See <a href="../collections/index.html">Collections</a>.</li>
+<li>A <strong>project</strong> is the private workspace a piece of work happens in before
+any of this. See <a href="../projects/index.html">Projects</a>.</li>
+</ul>
+<p>If you need a permanent identifier for a dataset a paper depends on, publish
+it. If you want colleagues to find and use something, contribute it as a
+resource. Many groups do both.</p>
+<h2 id="what-kinds-of-resource-a-hub-holds">What kinds of resource a hub holds</h2>
+<p>The types on offer are decided per hub, and a bare install creates none of
+them, so the <strong>Categories</strong> list on <code>/resources</code> is the only reliable
+statement of what your hub publishes. A typical set runs to Seminars,
+Workshops, Tools, Datasets, Presentation Slides, Teaching Materials, Course
+Lectures, Tutorials, Homework Assignments, Posters, Publication Preprints,
+Videos, Podcasts, and Series, but a hub can add, rename or remove any of
+them.</p>
+<p>The type matters to you for two reasons: it decides which tabs a resource
+page shows, and it decides which extra fields you fill in when you contribute
+one. A Seminar asks for a speaker biography; a Dataset does not.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A hub also marks which types members may contribute. If the type
+you want is missing from the first step of the submission form, the hub has
+not made it contributable.</p>
+</aside>
 <h2 id="finding-a-resource">Finding a resource</h2>
 <p>The resources home page explains what resources are and who may submit
 them, and gives you three ways in: a <strong>Find a resource</strong> search box, a
@@ -122,8 +166,14 @@ where you pick a tag and then a resource from the column beside it. Hub
 managers can turn the tag browser off, in which case the category link goes
 to the ordinary browse list.</p>
 <p>Every resource has a permanent address, <code>https://&lt;your hub&gt;/resources/&lt;id&gt;</code>,
-and often a friendlier one built from its alias.</p>
+and often a friendlier one built from its alias. That is the address to put
+in an email or a paper; it does not change when the contributor edits the
+page.</p>
 <h2 id="reading-a-resource-page">Reading a resource page</h2>
+<p>Getting from the listing to the thing itself is one click and then one more.
+The listing gives you titles; the title takes you to the resource page; the
+button at the top of the resource page gives you the thing. There is no
+download area to hunt for.</p>
 <p>A resource opens on its <strong>About</strong> tab. That shows the abstract, any
 screenshots, an <strong>At a glance</strong> table of details the contributor filled in,
 the <strong>Contributor(s)</strong> list, <strong>Tags</strong>, and a <strong>Cite this work</strong> block with
@@ -198,23 +248,31 @@ recommended format.</p>
 </aside>
 <h2 id="rating-and-reviewing">Rating and reviewing</h2>
 <p>Open the <strong>Reviews</strong> tab and select <strong>Write a review</strong>. Pick <strong>Your
-Rating</strong> from one to five stars, add <strong>Comments</strong> and any <strong>Tags</strong> you
-think fit, and press <strong>Submit</strong>. Check the anonymous box if you would
-rather your name did not appear. You must be logged in, and you cannot
-review a resource you are a contributor on. Come back and use <strong>Edit your
-review</strong> to change it. Other members can reply to a review, vote on whether
-it was helpful, and use <strong>Report abuse</strong> on anything offensive.</p>
+Rating</strong> from one to five stars, write your <strong>Comments</strong>, and press
+<strong>Submit</strong>. The form takes a rating and a comment and nothing else; there is
+no tag field on it. Check <strong>Anonymous</strong> if you would rather your name did not
+appear. You must be logged in, and you cannot review a resource you are a
+contributor on. Come back and use <strong>Edit your review</strong> to change it. Other
+members can reply to a review, vote on whether it was helpful, and use
+<strong>Report abuse</strong> on anything offensive.</p>
 <h2 id="watching-a-resource">Watching a resource</h2>
 <p><strong>Watch resource</strong> in the sidebar subscribes you to changes; the hub then
 notifies you when the resource is updated. <strong>Stop watching resource</strong> ends
 it. You have to be logged in for the button to appear.</p>
 <h2 id="contributing-a-resource">Contributing a resource</h2>
+<p>Contribute when you have something finished that other people would use, and
+you are tired of emailing it to them. The five steps below are followed the
+whole way with the thermal transport lab from the top of this page: it is
+contributing its measurement-reduction scripts, the worked example, and a
+short PDF explaining the method.</p>
 <p>Go to <code>/resources/new</code>, or use <strong>Submit a resource</strong> on the resources
 pages, and select <strong>Get Started</strong>. You must be logged in. The same page
 lists your submissions still <strong>In Progress</strong>, so you can pick up where you
 left off; each step saves as you leave it.</p>
 <p>First choose the type of resource you are contributing. Only types the hub
-has marked contributable appear.</p>
+has marked contributable appear. The lab picks <strong>Teaching Materials</strong>,
+because the scripts are meant to be learned from; a hub without that type
+would take <strong>File</strong> or <strong>Package</strong> instead.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Choosing <strong>Tools</strong> does not open this wizard. Simulation tools
 are registered through the tool pipeline instead; see
@@ -222,19 +280,23 @@ are registered through the tool pipeline instead; see
 </aside>
 <p>Then work through five steps.</p>
 <p><strong>Compose.</strong> Give the resource a <strong>Title</strong> and an <strong>Abstract/Description</strong>;
-both are required. <strong>Manage files</strong> below the abstract uploads images to
-use <em>inside</em> the abstract — not the resource's own files. It lists each
-uploaded file's address as plain text; copy that and paste it into the
+both are required. The lab's title is <em>Thin-film conductivity reduction
+scripts</em>, and its abstract says what the scripts do, what instrument output
+they expect, and what they produce — the things a stranger needs in order to
+decide whether to download it. <strong>Manage files</strong> below the abstract uploads
+images to use <em>inside</em> the abstract — not the resource's own files. It lists
+each uploaded file's address as plain text; copy that and paste it into the
 editor's image dialog where you want the picture. The <strong>Details</strong> section
 holds whatever extra fields your resource type defines, such as Credits,
 Sponsored by, or References.</p>
-<p><strong>Attach.</strong> These are the files a visitor actually downloads or views. Use
-the <strong>Click or drop file</strong> box to upload one, or the link adder beside it to
-point at a URL. Click a name to rename it, then press <strong>save</strong>, or
-<strong>cancel</strong> to leave it alone. The <strong>Order</strong> arrows move an entry up or down,
-the trash icon removes it without asking, and the <strong>Access</strong> cell toggles
-between <strong>Public</strong> (anyone may view or download it) and <strong>Registered</strong>
-(logged-in members only). If the type is a collection, such as a series,
+<p><strong>Attach.</strong> These are the files a visitor actually downloads or views. The
+lab uploads the script package, the worked example, and the method PDF here,
+and orders them with the package first. Use the <strong>Click or drop file</strong> box to
+upload one, or the link adder beside it to point at a URL. Click a name to
+rename it, then press <strong>save</strong>, or <strong>cancel</strong> to leave it alone. The
+<strong>Order</strong> arrows move an entry up or down, the trash icon removes it without
+asking, and the <strong>Access</strong> cell toggles between <strong>Public</strong> (anyone may view
+or download it) and <strong>Registered</strong> (logged-in members only). If the type is a collection, such as a series,
 this step adds existing resources as members instead of uploading files.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The instructions above the list say to double-click a name and
@@ -260,6 +322,8 @@ yourself off the list, you keep them only if you also created the
 submission.</p>
 <p><strong>Tags.</strong> Type keywords into <strong>Assigned Tags</strong>, choosing from the
 auto-complete list where you can so your resource sits with related work.
+The lab tags it <code>thinfilm</code>, the same tag it puts on its group wiki pages, so
+that one tag page gathers the lot. See <a href="../tags/index.html">Tags</a>.
 The hub may also suggest tags, and may ask you to pick a focus area.</p>
 <p><strong>Review.</strong> Read the authorization statement and tick the box to agree —
 the submission is rejected without it. Choose a <strong>License</strong> if the hub
@@ -298,7 +362,7 @@ feature, see <a href="../questions/index.html">Questions and answers</a> and
 <a href="../wishlist/index.html">Wishlist</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../registration/index.html" rel="prev"><span>Previous</span>Registration</a><a class="pager__next" href="../tools/index.html" rel="next"><span>Next</span>Tools</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/21-resources.md">Edit this page on GitHub</a>

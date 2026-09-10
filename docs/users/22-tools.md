@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/tools
 source-id: 3326
@@ -14,6 +14,18 @@ A tool is a program that runs on the hub's own machines and appears in your
 browser. You do not install anything, and it does not matter what operating
 system you use. Published tools have a page of their own under `/tools`, which
 is a resource page like any other, with a **Launch Tool** button on it.
+
+Tools exist so that a piece of research software can be used by people who
+could not install it. A simulation code with a decade of accumulated build
+dependencies, a licensed solver, a model that needs 60 GB of memory — a
+student on a laptop selects **Launch Tool** and it is there. A class of
+thirty gets the same version on the same machines, so the results they get
+in week three can be compared with each other and with the paper.
+
+The other half of this chapter is for the person who wrote such a program
+and wants to put it on the hub. Running one is
+[Running a tool](#running-a-tool); contributing one is
+[Contributing a tool](#contributing-a-tool).
 
 > **Important:** The execution side of this is separate software. This
 > repository holds the CMS: the tool pages, the session screens, the sharing
@@ -78,6 +90,13 @@ itself, or **disconnect** from the session list; only you can terminate it.
 
 ## Contributing a tool
 
+Contribute a tool when your program is the thing other researchers need and
+installing it is what stops them. The reward is a page with a launch button,
+a version history, and figures on who used it; the cost is a review pipeline
+and, usually, some work on the interface. If you only want to give people the
+source code and a citable identifier, publish it instead — see
+[Publications](18-publications.md) — which is a much shorter road.
+
 If you have a program you want others to run, the hub can host it. What is
 practical:
 
@@ -102,6 +121,12 @@ Hubs can also publish tools as Jupyter notebooks or as Sim2Ls, where those
 options are switched on.
 
 ### The pipeline
+
+You do not upload a tool and have it appear. Contribution is a staged
+process with the hub's staff on the other side of it: they set up your source
+repository, they install each version onto the execution hosts, and they do
+the final checks before it goes live. Expect it to take weeks rather than an
+afternoon, and expect to be waiting on someone else for part of it.
 
 Contribution runs through the hub's **Contribtool** pipeline at `/tools`. Your
 tool moves through a fixed sequence of states, and the status page shows where

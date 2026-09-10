@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/profile
 source-id: 3312
@@ -14,6 +14,17 @@ Your profile is what other members see when they look you up. It is one tab of
 your member area at `/members/myaccount`; the others — Dashboard, Account,
 Groups, Projects, Usage and so on — are listed down the left-hand side, and
 which of them exist depends on which Members plugins your hub has enabled.
+
+A profile is how work on a hub gets attributed to a person. Your name on a
+dataset, a wiki page, or an answer in the forum links here. It is also how
+people find you before they can include you: a group manager sending an
+invitation, or a project owner adding a collaborator, searches the member list
+and picks a name off it. A blank or private profile is not neutral — it makes
+you harder to add to things.
+
+Your profile is not your **Account** tab. The profile holds what other people
+see; the Account tab holds how you get in — your password, the outside
+services linked to your account, and an SSH key if your hub offers one.
 
 ## Editing your profile
 
@@ -47,6 +58,11 @@ Two rows behave differently:
 Above the rows is a **Profile Completeness** meter. On hubs that run
 incremental registration, filling in fields can earn points.
 
+> **Important:** Changing the **E-mail** row un-confirms your account. The hub
+> sends a fresh confirmation message to the new address and the account stays
+> unusable until you follow the link in it. Do not change it to an address you
+> cannot read.
+
 > **Note:** If your hub has since made a field compulsory that was optional
 > when you registered, the profile opens with those fields listed under
 > *You must update your profile before continuing* and holds you there until
@@ -54,7 +70,8 @@ incremental registration, filling in fields can earn points.
 
 ## Privacy
 
-Privacy works at two levels, and the outer one wins.
+Privacy is the decision most people get wrong here, so it is worth being
+deliberate about. Two settings are in play, and the outer one wins.
 
 **The whole profile.** At the top of the Profile tab is a toggle reading
 *Public Profile :: Click here to set your profile private.* or *Private
@@ -74,15 +91,31 @@ While the profile as a whole is private, those menus are replaced by the
 message *Account must be public to set access on individual profile fields.*
 Set the profile public first if you want per-field control.
 
+That is the part worth thinking through. There is no way to be findable and
+selective at the same time while the profile is private: the choice is all
+or nothing until you make the profile public, and only then can you hide the
+individual fields you would rather not publish. The useful middle setting for
+most members is a public profile with the name, organisation and interests
+left public — enough for a group manager to identify you — and the telephone
+number and address set to **Private (only you can see)**. Setting the email
+row to **Registered users** is a common compromise: colleagues who are logged
+in can reach you, and the open web cannot.
+
 The state a new account starts in comes from the hub's **Default Privacy**
 setting, not from a fixed default in the software, so it differs between hubs.
-Check the toggle after you register rather than assuming.
+Some hubs create every account private. Check the toggle after you register
+rather than assuming you are visible.
 
 > **Note:** Declining a new version of the Terms of Use sets your profile
 > private and logs you out. Agreeing again does not put it back; you have to
 > set it public yourself.
 
 ## Your profile picture
+
+The picture is small but it does real work: it is what appears beside your
+posts in a group forum and next to your name in a member list, and it is the
+fastest way for someone who met you at a meeting to be sure they have the
+right person.
 
 New accounts get a default silhouette. To replace it:
 

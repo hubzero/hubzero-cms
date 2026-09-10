@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Forum · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="The forum is the hub&#x27;s message board, at . Discussions are grouped into sections , each section holds categories , and each category holds discussions — a…">
+  <meta name="description" content="The forum is the hub&#x27;s message board: the place for a conversation that has no single right answer, held in public, where whoever arrives next can read it. A…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/forum/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,6 +49,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Forum</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-one-do-i-want">Which one do I want?</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-a-discussion">Finding a discussion</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-a-discussion">Reading a discussion</a></li>
 <li class="toc__item toc__item--l2"><a href="#posting-a-reply">Posting a reply</a></li>
@@ -99,13 +100,55 @@
         </header>
         
         <div class="prose">
-<p>The forum is the hub's message board, at <code>/forum</code>. Discussions are grouped
-into <strong>sections</strong>, each section holds <strong>categories</strong>, and each category holds
-<strong>discussions</strong> — a thread made up of an opening post and the replies to it.
-Groups have their own forums, described in
-<a href="../groups/groupforum/index.html">Group forum</a>.</p>
-<p>You can read the forum without an account if the hub allows it. Posting
+<p>The forum is the hub's message board: the place for a conversation that
+has no single right answer, held in public, where whoever arrives next
+can read it. A materials group argues out which exchange-correlation
+functional to trust for a family of compounds, three people weigh in
+over a fortnight, and the thread stays on the hub as the record of why
+the group settled where it did. Nothing about that fits a question with
+one accepted answer or a ticket that gets closed.</p>
+<p>If you only want to know whether the hub has a forum and where it is: it
+is at <code>/forum</code>, most hubs link it from the community or support menu,
+and you can read it without an account if the hub allows it. Posting
 always requires you to log in.</p>
+<p>Discussions are grouped into <strong>sections</strong>, each section holds
+<strong>categories</strong>, and each category holds <strong>discussions</strong> — a thread made
+up of an opening post and the replies to it. Groups have their own
+forums, described in <a href="../groups/groupforum/index.html">Group forum</a>.</p>
+<h2 id="which-one-do-i-want">Which one do I want?</h2>
+<p>Four parts of the hub take a written message from a member, and it is
+easy to file in the wrong one. The forum is the one that never closes.</p>
+<table>
+<thead>
+<tr>
+<th>If you want to</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discuss something open-ended, where several answers are defensible</td>
+<td>The forum — this page</td>
+</tr>
+<tr>
+<td>Get one answer to a specific question, and mark it as the answer</td>
+<td><a href="../questions/index.html">Questions and answers</a></td>
+</tr>
+<tr>
+<td>Report something broken, or ask the hub's staff for help</td>
+<td><a href="../support/index.html">Support</a></td>
+</tr>
+<tr>
+<td>Ask for a feature, tool, or change to be built</td>
+<td><a href="../wishlist/index.html">Wish list</a></td>
+</tr>
+</tbody>
+</table>
+<p>A forum thread has no accepted answer, no assignee, and no state that
+says it is finished. That is a feature when the subject is a method, a
+convention, or an argument, and a nuisance when you have a broken tool
+and need someone to fix it. If your post ends in &quot;is this a bug?&quot;, file
+a support ticket instead: nobody is on duty to read the forum.</p>
 <h2 id="finding-a-discussion">Finding a discussion</h2>
 <p>The forum's front page lists every section with the categories inside it. Each
 category row shows its description, how many discussions it holds, and how
@@ -157,9 +200,21 @@ opens a small form directly under it, so your answer is attached to that post
 rather than to the end of the discussion. Nesting stops at the depth the hub
 has set.</p>
 <h2 id="starting-a-discussion">Starting a discussion</h2>
-<p>Open the category you want to post in and press <strong>New Discussion</strong> in the
-sidebar. The button is absent when the category is locked; you are sent to the
-log-in page if you are not signed in.</p>
+<p>Say you want the functional argument on the record. You open <code>/forum</code>,
+find the section your hub uses for simulation topics, click into the
+category inside it that covers methods, and press <strong>New Discussion</strong> in
+the sidebar. Posting into the category you are already reading is the
+whole trick — the form starts with that category selected.</p>
+<ol>
+<li>Press <strong>New Discussion</strong>. The button is absent when the category is
+locked, and you are sent to the log-in page if you are not signed in.</li>
+<li>Fill in the form below. <strong>Category</strong> and <strong>Comments</strong> are required;
+everything else is optional.</li>
+<li>Press <strong>Submit</strong>.</li>
+</ol>
+<p>The hub confirms with &quot;You have successfully created a new discussion
+topic.&quot; and drops you into the new discussion, where you can copy its
+address out of the browser and paste it into your group's chat.</p>
 <table>
 <thead>
 <tr>
@@ -199,9 +254,11 @@ log-in page if you are not signed in.</p>
 </tbody>
 </table>
 <p>Forum moderators also get <strong>Make discussion sticky</strong> and <strong>Closed thread (no
-new posts)</strong> on this form. Press <strong>Submit</strong> to post; the hub confirms with
-&quot;You have successfully created a new discussion topic.&quot; and drops you into the
-new discussion.</p>
+new posts)</strong> on this form.</p>
+<p>If a discussion lands in the wrong category, press <strong>Edit</strong> on the
+opening post: the <strong>Category</strong> menu comes back and choosing another one
+moves the whole thread. The menu on a reply is hidden, because a reply
+always follows its discussion.</p>
 <h2 id="editing-and-deleting">Editing and deleting</h2>
 <p>Your own discussions and posts carry <strong>Edit</strong> and <strong>Delete</strong> links. Editing
 reopens the same form; the post is stamped as edited afterwards. Deleting asks
@@ -239,12 +296,17 @@ an error.</p>
 <p>A group's forum works the same way but is reached from the group's <strong>Forum</strong>
 tab, is limited to the group's members, and can email you new posts —
 individually or as a daily, weekly, or monthly digest. See
-<a href="../groups/groupforum/index.html">Group forum</a>. For questions that want a single answer
-rather than a discussion, use <a href="../questions/index.html">Questions and answers</a>; to reach
-the hub's staff, use <a href="../support/index.html">Support</a>.</p>
+<a href="../groups/groupforum/index.html">Group forum</a>. A lab that wants its method
+arguments kept among its own people wants that one rather than this one:
+the hub forum has no way to restrict a discussion to a named set of
+readers beyond the access levels the hub defines.</p>
+<p>For a question that wants a single answer rather than a discussion, use
+<a href="../questions/index.html">Questions and answers</a>. To reach the hub's staff about
+something broken, use <a href="../support/index.html">Support</a>. To ask for something to
+be built, use the <a href="../wishlist/index.html">wish list</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../groups/index.html" rel="next"><span>Next</span>Groups</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/09-forum.md">Edit this page on GitHub</a>

@@ -1,15 +1,62 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/resources
 -->
 # Resources
 
-Think of the hub as a library and resources as the items on its shelves:
-publications, datasets, presentations, videos, teaching materials, and
-simulation tools. Anyone with an account can contribute one. They live at
+Resources are the hub's catalogue, and for most members they are the reason
+the hub exists. A resource is one thing somebody has made and wants other
+people to be able to find, use and cite: a dataset, a seminar recording, a
+set of slides, a homework assignment, a tutorial, a simulation tool. Each one
+gets a page with an abstract, its authors, its files, and a ready-made
+citation. Anyone with an account can contribute one. They live at
 `/resources` on the hub.
+
+The catalogue is what turns work that would otherwise sit on a lab share into
+something with an address. A thermal transport lab has a set of scripts that
+reduce raw thin-film conductivity measurements, and a worked example that
+shows how to use them. Every new student in the lab is emailed the same zip
+file. Contributed as a resource, it becomes a page anyone can link to, with
+the authors credited, a citation other groups can put in a paper, and one
+address that stays right when the scripts change.
+
+## A resource is not a publication
+
+The two look alike and are not the same thing.
+
+- A **resource** page describes and delivers work. You can edit it after it
+  is live, and it carries no version history or identifier of its own.
+- A **publication** is a frozen, citable release with its own DOI, assembled
+  from a project and reviewed by a curator. See
+  [Publications](18-publications.md).
+- A **collection** is your personal board of things you want to find again.
+  It holds pointers, not work. See [Collections](01-collections.md).
+- A **project** is the private workspace a piece of work happens in before
+  any of this. See [Projects](16-projects.md).
+
+If you need a permanent identifier for a dataset a paper depends on, publish
+it. If you want colleagues to find and use something, contribute it as a
+resource. Many groups do both.
+
+## What kinds of resource a hub holds
+
+The types on offer are decided per hub, and a bare install creates none of
+them, so the **Categories** list on `/resources` is the only reliable
+statement of what your hub publishes. A typical set runs to Seminars,
+Workshops, Tools, Datasets, Presentation Slides, Teaching Materials, Course
+Lectures, Tutorials, Homework Assignments, Posters, Publication Preprints,
+Videos, Podcasts, and Series, but a hub can add, rename or remove any of
+them.
+
+The type matters to you for two reasons: it decides which tabs a resource
+page shows, and it decides which extra fields you fill in when you contribute
+one. A Seminar asks for a speaker biography; a Dataset does not.
+
+> **Note:** A hub also marks which types members may contribute. If the type
+> you want is missing from the first step of the submission form, the hub has
+> not made it contributable.
 
 ## Finding a resource
 
@@ -34,9 +81,16 @@ managers can turn the tag browser off, in which case the category link goes
 to the ordinary browse list.
 
 Every resource has a permanent address, `https://<your hub>/resources/<id>`,
-and often a friendlier one built from its alias.
+and often a friendlier one built from its alias. That is the address to put
+in an email or a paper; it does not change when the contributor edits the
+page.
 
 ## Reading a resource page
+
+Getting from the listing to the thing itself is one click and then one more.
+The listing gives you titles; the title takes you to the resource page; the
+button at the top of the resource page gives you the thing. There is no
+download area to hunt for.
 
 A resource opens on its **About** tab. That shows the abstract, any
 screenshots, an **At a glance** table of details the contributor filled in,
@@ -79,12 +133,13 @@ to join.
 ## Rating and reviewing
 
 Open the **Reviews** tab and select **Write a review**. Pick **Your
-Rating** from one to five stars, add **Comments** and any **Tags** you
-think fit, and press **Submit**. Check the anonymous box if you would
-rather your name did not appear. You must be logged in, and you cannot
-review a resource you are a contributor on. Come back and use **Edit your
-review** to change it. Other members can reply to a review, vote on whether
-it was helpful, and use **Report abuse** on anything offensive.
+Rating** from one to five stars, write your **Comments**, and press
+**Submit**. The form takes a rating and a comment and nothing else; there is
+no tag field on it. Check **Anonymous** if you would rather your name did not
+appear. You must be logged in, and you cannot review a resource you are a
+contributor on. Come back and use **Edit your review** to change it. Other
+members can reply to a review, vote on whether it was helpful, and use
+**Report abuse** on anything offensive.
 
 ## Watching a resource
 
@@ -94,13 +149,21 @@ it. You have to be logged in for the button to appear.
 
 ## Contributing a resource
 
+Contribute when you have something finished that other people would use, and
+you are tired of emailing it to them. The five steps below are followed the
+whole way with the thermal transport lab from the top of this page: it is
+contributing its measurement-reduction scripts, the worked example, and a
+short PDF explaining the method.
+
 Go to `/resources/new`, or use **Submit a resource** on the resources
 pages, and select **Get Started**. You must be logged in. The same page
 lists your submissions still **In Progress**, so you can pick up where you
 left off; each step saves as you leave it.
 
 First choose the type of resource you are contributing. Only types the hub
-has marked contributable appear.
+has marked contributable appear. The lab picks **Teaching Materials**,
+because the scripts are meant to be learned from; a hub without that type
+would take **File** or **Package** instead.
 
 > **Note:** Choosing **Tools** does not open this wizard. Simulation tools
 > are registered through the tool pipeline instead; see
@@ -109,20 +172,24 @@ has marked contributable appear.
 Then work through five steps.
 
 **Compose.** Give the resource a **Title** and an **Abstract/Description**;
-both are required. **Manage files** below the abstract uploads images to
-use *inside* the abstract — not the resource's own files. It lists each
-uploaded file's address as plain text; copy that and paste it into the
+both are required. The lab's title is *Thin-film conductivity reduction
+scripts*, and its abstract says what the scripts do, what instrument output
+they expect, and what they produce — the things a stranger needs in order to
+decide whether to download it. **Manage files** below the abstract uploads
+images to use *inside* the abstract — not the resource's own files. It lists
+each uploaded file's address as plain text; copy that and paste it into the
 editor's image dialog where you want the picture. The **Details** section
 holds whatever extra fields your resource type defines, such as Credits,
 Sponsored by, or References.
 
-**Attach.** These are the files a visitor actually downloads or views. Use
-the **Click or drop file** box to upload one, or the link adder beside it to
-point at a URL. Click a name to rename it, then press **save**, or
-**cancel** to leave it alone. The **Order** arrows move an entry up or down,
-the trash icon removes it without asking, and the **Access** cell toggles
-between **Public** (anyone may view or download it) and **Registered**
-(logged-in members only). If the type is a collection, such as a series,
+**Attach.** These are the files a visitor actually downloads or views. The
+lab uploads the script package, the worked example, and the method PDF here,
+and orders them with the package first. Use the **Click or drop file** box to
+upload one, or the link adder beside it to point at a URL. Click a name to
+rename it, then press **save**, or **cancel** to leave it alone. The
+**Order** arrows move an entry up or down, the trash icon removes it without
+asking, and the **Access** cell toggles between **Public** (anyone may view
+or download it) and **Registered** (logged-in members only). If the type is a collection, such as a series,
 this step adds existing resources as members instead of uploading files.
 
 > **Note:** The instructions above the list say to double-click a name and
@@ -149,6 +216,8 @@ submission.
 
 **Tags.** Type keywords into **Assigned Tags**, choosing from the
 auto-complete list where you can so your resource sits with related work.
+The lab tags it `thinfilm`, the same tag it puts on its group wiki pages, so
+that one tag page gathers the lot. See [Tags](27-tags.md).
 The hub may also suggest tags, and may ask you to pick a focus area.
 
 **Review.** Read the authorization statement and tick the box to agree —

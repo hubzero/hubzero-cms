@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/usage
 source-id: 3332
@@ -15,8 +15,15 @@ contributed to the hub and how much use those contributions have had. It is
 supplied by the Members - Usage plugin, and it appears on every member's
 profile, not only your own.
 
+People look at this tab for one of two reasons: to write a line in an annual
+report or a grant renewal — *the tool has served 400 users and been cited
+nine times* — or to see whether anyone is actually using what they
+contributed.
+
 Read the warning at the end before you rely on any of the numbers. Half of
-this page reports figures the CMS does not collect.
+this page reports figures the CMS does not collect, and a zero in those
+columns means nothing at all. Do not put a number from this tab into a report
+without checking first that your hub is collecting it.
 
 ## Finding it
 

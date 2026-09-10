@@ -1,16 +1,48 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d48e29db14
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/support
 -->
 # Support
 
-Support is where you tell the hub's staff that something is wrong. You
-file a ticket, the support team answers it, and you follow the
-conversation until the problem is fixed. It lives at `/support`, and most
-hubs also put a **?** tab or a help link on every page that opens the same
-form in place.
+Support is where you tell the hub's staff that something is wrong. A
+student's simulation tool dies two minutes into every session, she has
+a deadline, and she needs a person whose job it is to look. She files a
+ticket, the support team answers it, and she follows the conversation
+until the problem is fixed.
+
+That is the difference from everything else on the hub that takes a
+written message: a ticket is addressed to somebody. It gets a number, a
+severity, and eventually a member of staff whose name is on it. Nobody
+has to answer a forum thread; somebody is expected to answer a ticket.
+
+Support lives at `/support`, and most hubs also put a **?** tab or a help
+link on every page that opens the same form in place.
+
+## Which one do I want?
+
+| If you want to | Use |
+|---|---|
+| Report something broken, or ask the hub's staff for help | Support — this page |
+| Get one answer to a specific question, from anyone on the hub | [Questions and answers](19-questions.md) |
+| Discuss something open-ended, where several answers are defensible | [Forum](09-forum.md) |
+| Ask for a feature, tool, or change to be built | [Wish list](29-wishlist.md) |
+
+A ticket is for a fault, an account problem, or anything you cannot get
+past on your own. It is not the place to ask for a feature: that is what
+the [wish list](29-wishlist.md) is for, and the move only runs one way —
+a list owner can turn a wish into a support ticket, but a ticket carries
+no button that turns it into a wish, so a feature request filed here has
+to be posted again by hand. It is also the slowest of the four when the answer is
+already written down, so it is worth a minute in the
+[knowledge base](13-knowledgebase.md) first.
+
+Your ticket is not public. Only you, the hub's support staff, anyone
+watching it, the members of a group it is routed to, and anyone copied
+on the latest comment can read it. That makes it the right place for a
+log file with a path or an account name in it, and the wrong place for
+something the whole community would benefit from seeing answered.
 
 ## The Support Center
 
@@ -54,9 +86,9 @@ a simple sum to answer. It is there to keep robots from filling the queue
 with spam.
 
 Press **Submit**. The next page gives you your ticket number and a link to
-the ticket, thanks you, and reminds you that tickets are generally
-answered during business hours. A **New report** button starts another
-one.
+the ticket, thanks you, and tells you that "Trouble tickets are generally
+answered 9AM - 5PM EST, weekends and holidays excluded" and to allow
+24-48 hours for a reply. A **New report** button starts another one.
 
 > **Note:** If you submit the same text twice within a few seconds — a
 > double-clicked button, usually — the second submission is refused and the
@@ -65,6 +97,50 @@ one.
 The addresses the hub has set for new-ticket notifications are e-mailed
 straight away, and the ticket turns up in your own list under
 **Reported by me**.
+
+## What happens next
+
+The wait after you press Submit is where most people give up, so it is
+worth knowing what is going on.
+
+Your ticket starts as **New** and unassigned. A member of staff reads
+the queue, gives it a **Severity** — Critical, High, Normal or Low —
+and either answers it or assigns it to whoever handles that kind of
+problem, or to a group. Every one of those changes is written into the
+ticket's log, under the comments, so you can see the ticket move even
+before anyone writes to you.
+
+From there the **Status** column in your ticket list tells you whose
+turn it is. Two of the statuses are built in: a ticket you have just
+filed reads **New**, and a finished one reads **Closed**. The rest are
+defined by the hub, which is why the names differ from hub to hub. A
+fresh installation starts with **Open**, **Waiting response**,
+**Waiting review** and **Pending update**, plus one closed status for
+each way the hub records a resolution.
+
+**Waiting response** is the one that stalls a ticket. It means staff
+have asked you something and nobody is working on it until you reply. If
+your ticket has sat unchanged for a week, open it and read the last
+comment before you chase it — the question may be waiting for you.
+
+When staff comment, the hub emails you a copy by default. Two things can
+stop that copy arriving: a comment marked private by staff is never sent
+to you and never shown to you on the page, and the staff member can
+clear the box that sends you the copy. If you want to be certain, press
+**Watch ticket** — a watcher is emailed on every comment and change they
+are allowed to see, whoever wrote it. Private comments still do not
+reach you.
+
+Some hubs let you answer by replying to the notification email instead
+of coming back to the site; those emails carry a line saying "You can
+reply to this message, just include your reply text above this area."
+Where the hub has not turned that on, or has turned on the terse emails
+described below, the email is one-way and you have to reply on the site.
+
+The student's tool crash goes: New that afternoon, Open when a staff
+member picks it up, one comment asking which tool version she launched,
+Waiting response until she answers, then Closed when the fix ships. She
+never had to guess where it was, because the log on the ticket said.
 
 ## Tracking your tickets
 
@@ -143,13 +219,23 @@ comment; staff can still clear it one comment at a time. See
 
 ## Reporting abuse
 
+Reporting abuse is the other thing that comes here, and it is not a
+ticket. Where somebody has posted something offensive, off-topic, or
+spam on a forum thread, an answer, a blog comment, a review or a wish,
+you tell the hub's staff about it with **Report abuse** rather than
+arguing with them in public.
+
 Comments, reviews, and other member-written content around the hub carry a
 **Report abuse** link. It opens a short form at `/support/reportabuse`
 showing the content you are reporting and asking for a **Reason** —
 *Offensive content*, *Stupid*, *Spam*, or *Other* — with a box for
 anything you want to add. You have to be logged in.
 
-Submitting gives you a report number. A member of staff reviews the
-report and either releases the content or takes it down; if it is taken
-down, the person who posted it is e-mailed. Where the hub runs points, you
-may be credited some for a report that turns out to be valid.
+Submitting gives you a report number. The reported content does not
+disappear: it stays where it is with its text replaced by a notice
+saying it has been reported, so everyone can see that something was
+there and that it is being looked at. A member of staff reviews the
+report and either releases the content — the notice goes and the text
+comes back — or takes it down; if it is taken down, the person who
+posted it is e-mailed. Where the hub runs points, you may be credited
+some for a report that turns out to be valid.

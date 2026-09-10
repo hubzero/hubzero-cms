@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/users/collections
 source-id: 3292
@@ -16,6 +16,24 @@ their posts into your own, like them and comment on them. Administrators
 manage the same content from the
 [Collections chapter](../managers/09-components/09-collections.md) of the Hub
 managers book.
+
+Collections are for keeping track of things you want to find again, and for
+showing other people what you have been reading. A graduate student building
+a literature review pins the papers, datasets and tool pages she keeps
+returning to into a board called *Nitrate transport*, tags them, and sends
+the link to her advisor. A course instructor keeps a public board of worked
+examples his students can browse. Neither is doing anything formal — they
+are bookmarking in public.
+
+This is the part that matters: **a collection is not a publication.** Nothing
+is reviewed, nothing is versioned, nothing gets a DOI, and pinning a post
+does not give you any claim on what it points to. If you want a citable
+release of your own work, that is [Publications](18-publications.md). A
+collection is also not a project: it holds references to content, not the
+content a team is working on. Nobody collaborates in a collection — a
+collection has exactly one owner, a member or a group.
+
+If none of that describes what you came for, you can stop here.
 
 > **Note:** You must be logged in to do anything but browse public
 > collections.
@@ -91,6 +109,11 @@ explanation of what the tab is for.
 
 ## Creating a collection
 
+Make a collection before you have anything to put in it, or let the hub make
+one for you: the first time you post without one, it creates a private
+collection called **Favorites**. Most people end up with a few boards by
+subject rather than one large one.
+
 1. Open the **Collections** tab on your profile.
 2. Select the collections tab, then **New collection**.
 3. Set **Privacy**. There are three settings, not two:
@@ -129,6 +152,11 @@ Deleting a collection deletes its posts.
 
 ## Creating a post
 
+A post is how something gets onto a board. Use **New post** when you are
+adding something of your own — a file to upload, or a link to a page
+anywhere on the web. Use **Collect** instead when the thing is already a post
+on the hub; see [Collecting a post](#collecting-a-post).
+
 1. Open a collection, or the posts tab, and select **New post**.
 2. Add the content. The form has two drop targets side by side: **Click or
    drop file** on the left uploads a file, and **Click to add link** on the
@@ -148,16 +176,26 @@ Deleting a collection deletes its posts.
 Hover over the post. If it is yours, an **Edit** button appears; if it is
 somebody else's, you get **Like** instead. **Edit** opens the post form again.
 
-The last button on a post you own is either **Delete** or **Remove**:
+The last button on a post you own is either **Delete** or **Remove**, and
+the difference matters:
 
-- **Delete** appears on an original post and destroys the item along with
-  every repost of it.
-- **Remove** appears on a repost and takes it off your collection, leaving
-  the original alone.
+- **Delete** appears on an original post — one you created — and destroys the
+  item along with every repost of it. If ten people collected your post, all
+  ten boards lose it.
+- **Remove** appears on a repost — one you collected from somebody else — and
+  takes it off your collection, leaving the original and everybody else's
+  repost alone.
 
-Both ask you to confirm before anything happens.
+The hub decides which of the two you get; you cannot delete an item you only
+collected, and you cannot remove your original from other people's boards
+without destroying it. Both ask you to confirm before anything happens.
 
 ## Collecting a post
+
+Collecting is the point of the whole feature: you see something on somebody
+else's board and you want it on one of yours. The item itself is not copied
+and the original is not touched — your board gets a second post pointing at
+the same item, and the original owner keeps theirs.
 
 1. Find a post anywhere on the hub — the hub-wide page, a member's profile, a
    group.
@@ -212,6 +250,11 @@ picture are shown against whatever you write.
 > **Comment** button and the comment counts disappear.
 
 ## Following
+
+Following is how the **Recent Posts** feed fills up. If you follow the three
+people in your field who post the most useful things, opening your
+Collections tab becomes a way to see what they have found since you last
+looked.
 
 Following a member puts every new post they make, and every collection they
 create, on your **Recent Posts** feed. Following a single collection follows

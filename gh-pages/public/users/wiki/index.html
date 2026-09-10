@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wiki · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="The wiki is a set of community-editable pages. Anyone can read them; logged-in members can create pages, edit them, attach files, and comment. Every save keeps…">
+  <meta name="description" content="The wiki is a set of pages a community writes together. Anyone can read them. Editing them takes a permission, and who has it differs between the hub&#x27;s own…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/wiki/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,6 +68,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Wiki</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-wiki-is-not-the-other-places-you-could-put-this">The wiki is not the other places you could put this</a></li>
+<li class="toc__item toc__item--l2"><a href="#who-may-edit">Who may edit</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-your-way-around">Finding your way around</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-a-page">Creating a page</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-page">Editing a page</a></li>
@@ -101,11 +103,51 @@
         </header>
         
         <div class="prose">
-<p>The wiki is a set of community-editable pages. Anyone can read them; logged-in
-members can create pages, edit them, attach files, and comment. Every save
-keeps the old text, so nothing is ever lost. The hub's wiki is at
+<p>The wiki is a set of pages a community writes together. Anyone can read them.
+Editing them takes a permission, and who has it differs between the hub's own
+wiki and a group's — see <a href="#who-may-edit">Who may edit</a>. Every save keeps the
+old text, so nothing is ever lost. The hub's wiki is at
 <code>https://&lt;your hub&gt;/wiki</code>, and each group has its own wiki under the group's
 <strong>Wiki</strong> tab; see <a href="../groups/index.html">Groups</a>.</p>
+<p>A wiki is the right place for knowledge that changes and has no single owner.
+A thermal transport lab writes down how it prepares samples and calibrates the
+apparatus: the protocol is corrected every few months, three people maintain
+it, and every new student needs it on their first day. Kept in the group's
+wiki, it has one address, everyone in the group can fix it, and the history
+shows what changed when a result stops reproducing.</p>
+<h2 id="the-wiki-is-not-the-other-places-you-could-put-this">The wiki is not the other places you could put this</h2>
+<ul>
+<li>A <strong>blog</strong> post is dated and stays as written. A wiki page is meant to be
+rewritten. See <a href="../blog/index.html">Blog</a>.</li>
+<li>A <strong>project</strong>'s files are private to the project team and are the work
+itself. A wiki page is the writing about the work. See
+<a href="../projects/index.html">Projects</a>.</li>
+<li>A <strong>resource</strong> is a finished thing you are publishing to the whole hub,
+with authors and a citation. A wiki page is a living document. See
+<a href="../resources/index.html">Resources</a>.</li>
+</ul>
+<p>One consequence worth knowing before you commit to it: on a hub running Solr
+search, wiki pages are not in the search index, so the hub's main search box
+will not find the lab's protocol. Its readers reach it by link, by the wiki's
+own <strong>Search</strong> box, or by tag. See <a href="../search/index.html">Search</a> and
+<a href="../tags/index.html">Tags</a>.</p>
+<h2 id="who-may-edit">Who may edit</h2>
+<p>Reading is open to anyone who can see the page. Everything else depends on a
+permission, and this is the usual reason a member cannot find the <strong>Edit</strong>
+tab.</p>
+<p>In a <strong>group</strong> wiki, any member of the group can create pages, and edit and
+delete unlocked ones. Group managers can do all of that plus edit locked
+pages. This is the arrangement the lab's protocol wants, and it is why most
+working documents live in a group wiki rather than the hub's — and why a
+group member should treat the <strong>Delete</strong> tab with care.</p>
+<p>In the <strong>hub's</strong> wiki, creating and editing are hub-wide permissions an
+administrator grants. A bare install grants them to the hub's content-editing
+roles, not to every registered member, so on a hub whose administrator has not
+widened them, an ordinary member can read the site wiki and comment on it but
+cannot create or edit a page. If the <strong>Edit</strong> tab is not there, that is why;
+ask the hub's support team. See <a href="../support/index.html">Support</a>.</p>
+<p>The <code>Help:</code> pages that ship with the wiki, and any page an administrator has
+locked, are editable only by wiki managers in both cases.</p>
 <h2 id="finding-your-way-around">Finding your way around</h2>
 <p>A wiki page's address is its page name: <code>https://&lt;your hub&gt;/wiki/MyPageName</code>.
 Sub-pages add path segments: <code>.../wiki/ParentPage/ChildPage</code>.</p>
@@ -125,9 +167,18 @@ a wiki has a lot of content, but it returns few or no results on a small
 wiki, and it ignores very common words such as &quot;the&quot;.</p>
 </aside>
 <h2 id="creating-a-page">Creating a page</h2>
-<p>Log in, then select <strong>New page</strong> from the sidebar. In a group, open the
+<p>Log in, then select <strong>New page</strong> from the sidebar. If the link is not there,
+you do not hold the create permission — see <a href="#who-may-edit">Who may edit</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> On the hub's own wiki the link can be there and the form still
+refuse you. <strong>New page</strong> is offered to anyone holding the create
+permission, but the form behind it demands the edit permission as well, so
+a member granted only the first is turned away with <em>You are not authorized
+to perform this action.</em> Group wikis are not affected. Ask an administrator
+to grant both. In a group, open the
 group's <strong>Wiki</strong> tab first. You can also follow a red link to a page that
 does not exist yet and take the offer to create it.</p>
+</aside>
 <p>The form has these fields:</p>
 <table>
 <thead>
@@ -167,7 +218,7 @@ does not exist yet and take the offer to create it.</p>
 </tr>
 <tr>
 <td>Allow other users to submit suggested changes</td>
-<td>Others may save revisions, but they stay unapproved until an author approves them.</td>
+<td>Intended to let others save revisions that an author then approves. It does not work — see the warning under <a href="#editing-a-page">Editing a page</a>.</td>
 </tr>
 <tr>
 <td>Allow other users to post comments</td>
@@ -192,12 +243,23 @@ publish. The page name is generated from your title; to change it later, open
 the page and use the <strong>Rename</strong> link on the edit form.</p>
 <h2 id="editing-a-page">Editing a page</h2>
 <p>Open a page and choose the <strong>Edit</strong> tab. The same form appears, filled in.
-Write your <strong>Edit summary</strong>, then <strong>Save</strong>.</p>
-<p>On a page in Wiki mode, your revision goes live immediately. On a knowledge
-article you are not an author of, the form warns you that any changes will be
-saved as a <strong>suggested</strong> revision; an author has to approve it before readers
-see it. Locked pages, and the shipped <code>Help:</code> pages, are editable only by hub
-administrators.</p>
+Write your <strong>Edit summary</strong>, then <strong>Save</strong>. Say the lab's calibration step
+changes: open the protocol page, change the paragraph, put <em>new calibration
+interval</em> in the summary, and save. The old text stays in the history.</p>
+<p>Your revision goes live immediately. There is no approval queue for the people
+who may edit.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>Allow other users to submit suggested changes</strong> option on
+a knowledge article does not work. The edit screen turns anyone who is not
+an author away with <em>You are not authorized to perform this action.</em> before
+it reaches the suggestion path, so a non-author cannot open the form at all
+and no suggested revision can be created. The <strong>[ approve ]</strong> link described
+under <a href="#page-history">Page history</a> therefore only ever appears for
+revisions made some other way. Do not rely on the option; name the people
+who need to edit an article as its authors instead.</p>
+</aside>
+<p>Locked pages, and the shipped <code>Help:</code> pages, are editable only by wiki
+managers.</p>
 <h2 id="attaching-and-embedding-files">Attaching and embedding files</h2>
 <p>The edit form has a file area marked <strong>Click or drop file</strong>. Drop a file on it
 or click it to choose one, and it uploads to the page straight away. Then put
@@ -338,7 +400,7 @@ with it, and cannot be undone.</p>
 reading), and <strong>What links here</strong>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tools/index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="../search/index.html" rel="next"><span>Next</span>Search</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/23-wiki.md">Edit this page on GitHub</a>

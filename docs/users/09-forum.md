@@ -1,19 +1,46 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/users/forum
 -->
 # Forum
 
-The forum is the hub's message board, at `/forum`. Discussions are grouped
-into **sections**, each section holds **categories**, and each category holds
-**discussions** — a thread made up of an opening post and the replies to it.
-Groups have their own forums, described in
-[Group forum](11-groups/05-groupforum.md).
+The forum is the hub's message board: the place for a conversation that
+has no single right answer, held in public, where whoever arrives next
+can read it. A materials group argues out which exchange-correlation
+functional to trust for a family of compounds, three people weigh in
+over a fortnight, and the thread stays on the hub as the record of why
+the group settled where it did. Nothing about that fits a question with
+one accepted answer or a ticket that gets closed.
 
-You can read the forum without an account if the hub allows it. Posting
+If you only want to know whether the hub has a forum and where it is: it
+is at `/forum`, most hubs link it from the community or support menu,
+and you can read it without an account if the hub allows it. Posting
 always requires you to log in.
+
+Discussions are grouped into **sections**, each section holds
+**categories**, and each category holds **discussions** — a thread made
+up of an opening post and the replies to it. Groups have their own
+forums, described in [Group forum](11-groups/05-groupforum.md).
+
+## Which one do I want?
+
+Four parts of the hub take a written message from a member, and it is
+easy to file in the wrong one. The forum is the one that never closes.
+
+| If you want to | Use |
+|---|---|
+| Discuss something open-ended, where several answers are defensible | The forum — this page |
+| Get one answer to a specific question, and mark it as the answer | [Questions and answers](19-questions.md) |
+| Report something broken, or ask the hub's staff for help | [Support](12-support.md) |
+| Ask for a feature, tool, or change to be built | [Wish list](29-wishlist.md) |
+
+A forum thread has no accepted answer, no assignee, and no state that
+says it is finished. That is a feature when the subject is a method, a
+convention, or an argument, and a nuisance when you have a broken tool
+and need someone to fix it. If your post ends in "is this a bug?", file
+a support ticket instead: nobody is on duty to read the forum.
 
 ## Finding a discussion
 
@@ -79,9 +106,21 @@ has set.
 
 ## Starting a discussion
 
-Open the category you want to post in and press **New Discussion** in the
-sidebar. The button is absent when the category is locked; you are sent to the
-log-in page if you are not signed in.
+Say you want the functional argument on the record. You open `/forum`,
+find the section your hub uses for simulation topics, click into the
+category inside it that covers methods, and press **New Discussion** in
+the sidebar. Posting into the category you are already reading is the
+whole trick — the form starts with that category selected.
+
+1. Press **New Discussion**. The button is absent when the category is
+   locked, and you are sent to the log-in page if you are not signed in.
+2. Fill in the form below. **Category** and **Comments** are required;
+   everything else is optional.
+3. Press **Submit**.
+
+The hub confirms with "You have successfully created a new discussion
+topic." and drops you into the new discussion, where you can copy its
+address out of the browser and paste it into your group's chat.
 
 | Field | Notes |
 |---|---|
@@ -94,9 +133,12 @@ log-in page if you are not signed in.
 | Post Anonymously | Hides your name, if the hub allows anonymous posts. |
 
 Forum moderators also get **Make discussion sticky** and **Closed thread (no
-new posts)** on this form. Press **Submit** to post; the hub confirms with
-"You have successfully created a new discussion topic." and drops you into the
-new discussion.
+new posts)** on this form.
+
+If a discussion lands in the wrong category, press **Edit** on the
+opening post: the **Category** menu comes back and choosing another one
+moves the whole thread. The menu on a reply is hidden, because a reply
+always follows its discussion.
 
 ## Editing and deleting
 
@@ -141,6 +183,12 @@ offers to generate an example section and category for you to start from.
 A group's forum works the same way but is reached from the group's **Forum**
 tab, is limited to the group's members, and can email you new posts —
 individually or as a daily, weekly, or monthly digest. See
-[Group forum](11-groups/05-groupforum.md). For questions that want a single answer
-rather than a discussion, use [Questions and answers](19-questions.md); to reach
-the hub's staff, use [Support](12-support.md).
+[Group forum](11-groups/05-groupforum.md). A lab that wants its method
+arguments kept among its own people wants that one rather than this one:
+the hub forum has no way to restrict a discussion to a named set of
+readers beyond the access levels the hub defines.
+
+For a question that wants a single answer rather than a discussion, use
+[Questions and answers](19-questions.md). To reach the hub's staff about
+something broken, use [Support](12-support.md). To ask for something to
+be built, use the [wish list](29-wishlist.md).

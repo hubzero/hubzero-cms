@@ -47,6 +47,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Citations</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#citations-are-not-publications">Citations are not publications</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-citations-home-page">The citations home page</a></li>
 <li class="toc__item toc__item--l2"><a href="#browsing">Browsing</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-a-citation">Reading a citation</a></li>
@@ -102,6 +103,23 @@
 that have cited the hub or something published on it. Each one links to the
 hub content it references and can be downloaded in BibTeX or EndNote
 format. The catalogue is at <code>/citations</code> on the hub.</p>
+<p>The catalogue exists because impact has to be evidenced. When a thermal
+transport lab writes its next grant renewal, it needs to say who used its
+conductivity dataset and what came of it. The hub's citation list answers
+that: it is the running record of the papers that cite work hosted here, and
+it can be exported in one go and dropped into a reference manager.</p>
+<p>Reading it needs no account and no permission. Browsing, reading a citation
+and downloading one are open to anyone who can see the hub. Adding to it is
+different — see <a href="#submitting-a-citation">Submitting a citation</a> and
+<a href="#importing-citations">Importing citations</a>, both of which a hub can restrict
+to administrators or switch off.</p>
+<h2 id="citations-are-not-publications">Citations are not publications</h2>
+<p>A <strong>publication</strong> is work the hub holds and issues a DOI for; see
+<a href="../publications/index.html">Publications</a>. A <strong>citation</strong> is a record of somebody
+else's paper that pointed at that work. The publication is yours; the
+citation is the evidence that it was used. A resource page's <strong>Citations</strong>
+tab shows the citations attached to that one resource; <code>/citations</code> shows
+the hub's whole set.</p>
 <h2 id="the-citations-home-page">The citations home page</h2>
 <p>The home page answers <strong>What are citations?</strong> and <strong>Can I submit a
 citation?</strong>, then gives you two ways in: a <strong>Find a citation</strong> box where
@@ -115,6 +133,10 @@ the hub's parent organization.</p>
 <p>Depending on how the hub is set up, <strong>Submit a citation</strong> and
 <strong>Import Citations</strong> buttons appear in the top right.</p>
 <h2 id="browsing">Browsing</h2>
+<p>Browse when you want the whole picture rather than one paper — everything
+citing the hub in a given year, or everything of one type. The lab preparing
+its renewal starts here, filters to the years of the award, and exports the
+result.</p>
 <p><code>/citations/browse</code> lists the hub's published citations, formatted in the
 hub's chosen bibliographic style. Above the list, three tabs narrow it to
 <strong>All</strong>, <strong>Affiliated</strong>, or <strong>Non-affiliated</strong> citations, and a
@@ -212,17 +234,22 @@ and, where single citation pages are off, under its entry in the browse
 list.</p>
 <p>To export several at once, check the box beside each citation in the browse
 list, then press <strong>EndNote</strong> or <strong>BibTex</strong> under <strong>Export Multiple
-Citations</strong> in the right-hand panel. The file downloads as
+Citations</strong> in the right-hand panel. This is the step that produces the lab's
+renewal bibliography in one file. The file downloads as
 <code>citations_export_&lt;format&gt;_&lt;date&gt;.bib</code> or <code>.enw</code>. Only the boxes checked on
 the page you are looking at are included, so export a page at a time or
 raise the number of results shown before checking them.</p>
 <p>Your hub can turn single or bulk downloads off, and can exclude particular
 fields from exported records.</p>
 <h2 id="submitting-a-citation">Submitting a citation</h2>
+<p>Submit when you find a paper that cites hub work and the hub does not know
+about it yet — most often your own paper, or one a colleague sent you.</p>
 <p>Press <strong>Submit a citation</strong> on the citations home page, or go to
 <code>/citations/add</code>. You have to be logged in; if you are not, the hub asks
 you to sign in first. Hubs can restrict submission to administrators or
-turn it off entirely, in which case the button is not shown.</p>
+turn it off entirely, in which case the button is not shown. If you cannot
+see the button and you are logged in, that setting is why; send the reference
+to the hub's support team instead. See <a href="../support/index.html">Support</a>.</p>
 <p><img src="../media/citations-citations-1.png" alt="The Citations: Add form, with the Details, Manually Format Citation, Tags and Badges, Citation For, and Affiliation sections" /></p>
 <ol>
 <li>Choose a <strong>Type</strong>. The form then shows the fields that type uses.</li>
@@ -247,16 +274,32 @@ organization</strong> if either applies.</li>
 citation appears straight away.</li>
 </ol>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> Citations submitted here are published immediately. The <strong>Edit</strong>
-link that appears on a citation's page when you are the person who
-submitted it only works for hub administrators and for owners of a
-project whose publication the citation is attached to; anyone else gets a
-not-authorized page.</p>
+<p><strong>Note:</strong> Citations submitted here are published immediately. There is no
+review step, so check what you typed before pressing <strong>Save</strong>.</p>
+</aside>
+<p>An <strong>Edit</strong> link appears beside a citation's title when you are the member
+who submitted it, and an <strong>Edit</strong> column appears in the browse list for hub
+administrators. Editing is otherwise the same form as submitting, and is
+governed by the same setting: on a hub that has closed submission to
+administrators, or turned it off, the form is not reachable.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The edit form itself checks only that you are logged in and
+that the hub allows submissions — it does not check that the citation is
+yours. On a hub where any member may submit, a member who knows a
+citation's ID can open and overwrite somebody else's record even though no
+<strong>Edit</strong> link is shown to them. Treat the catalogue as shared, and tell
+your hub's support team if an entry changes unexpectedly.</p>
 </aside>
 <h2 id="importing-citations">Importing citations</h2>
+<p>Import instead of submitting when you have more than two or three to add. The
+lab that has just collected forty citing papers in a reference manager
+exports them as one BibTeX file and uploads that, rather than typing forty
+forms.</p>
 <p>Press <strong>Import Citations</strong> on the citations home page, or go to
 <code>/citations/import</code>. You have to be logged in, and the hub can limit
-importing to administrators or switch it off.</p>
+importing to administrators or switch it off — it is a separate setting from
+the one that governs single submissions, so a hub may allow one and not the
+other.</p>
 <p>The import runs in three steps.</p>
 <ol>
 <li><strong>Upload citations file.</strong> Choose a file and press <strong>Upload</strong>. The
@@ -289,7 +332,7 @@ everyone. Deleting an entry moves it to a trashed state rather than
 removing it, so a hub administrator can restore it.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 42a7a5b5c7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../blog/index.html" rel="prev"><span>Previous</span>Blog</a><a class="pager__next" href="../events/index.html" rel="next"><span>Next</span>Events</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/06-citations.md">Edit this page on GitHub</a>

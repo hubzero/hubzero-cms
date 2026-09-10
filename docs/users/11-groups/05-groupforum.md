@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 1924c22171
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 42a7a5b5c7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/users/groups/groupforum
 source-id: 3308
@@ -13,6 +13,17 @@ A group's **Forum** tab is where its members talk. It is organised in three
 levels: **sections** hold **categories**, and categories hold
 **discussions**. A discussion is a first post plus its replies.
 
+It is for conversation that should outlive a mailing list. The `soilcarbon`
+group used through this chapter runs three categories — one for the field
+season, one for the analysis pipeline, and one for papers in draft — so a
+question about a sampling protocol asked in March is still findable in
+October by whoever inherits the site. Members who would rather read it as
+mail can have the forum email them; see [Email settings](#email-settings).
+
+The hub also has a forum of its own, at `/forum`, open to every member. That
+one is the whole hub's; this one belongs to the group and is usually shut to
+everyone else. See [Forum](../09-forum.md) for the hub-wide one.
+
 Who can *read* the forum is set by the group's access permission for the
 **Forum** tab, which is **Group Members Only** unless a manager changes it.
 Only group members can post, whatever that setting says.
@@ -22,6 +33,9 @@ currently empty and requires some set-up by the managers before it can be
 used.* A manager has to make the first section before anyone can use it.
 
 ## Reading and posting
+
+Anyone who can reach the tab can read. Posting needs group membership, so
+this is where a member starts.
 
 The tab opens on the list of sections, each with its categories and a count
 of the discussions and posts in each. **Statistics** and **Last Post**
@@ -53,6 +67,12 @@ A closed discussion, or a category marked **No new posts**, takes no
 replies.
 
 ## What a manager can do
+
+A group's forum arrives empty and stays useless until someone gives it a
+shape. That is the manager's job, and it is worth doing once, carefully: a
+section per broad concern, categories inside it for the things people
+actually ask about.
+
 
 A group manager can:
 
