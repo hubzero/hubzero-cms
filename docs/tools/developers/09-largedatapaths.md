@@ -69,5 +69,5 @@ URL's `params` argument. `com_tools` refuses any path that does not begin with
 a directory on the **Directory Parameter Whitelist**, and the shipped default
 lists only `/home`. So pointing a launch link at something under `/data`
 requires an administrator to add that prefix to the whitelist first. See
-[Directory parameter whitelist](../administrators/whitelistdirectories.md)
+[Directory parameter whitelist](../administrators.md#directory-parameter-whitelist)
 for the check and how to change it.

@@ -76,11 +76,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../database/index.html">Database</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../database/queries/index.html">Query builder</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/index.html">Database</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
@@ -137,15 +133,27 @@
 <li class="tree__leaf"><a class="tree__link" href="../templates/elements/index.html">Elements and typography</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../templates/accessibility/index.html">Accessibility</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Muse</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Muse</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#running-it">Running it</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-commands">The commands</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-a-command-is-found">How a command is found</a></li>
 <li class="toc__item toc__item--l2"><a href="#writing-one">Writing one</a></li>
 <li class="toc__item toc__item--l2"><a href="#configuration-hooks-and-aliases">Configuration, hooks, and aliases</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="commands/index.html">Common tasks</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#common-tasks">Common tasks</a></li>
+<li class="toc__item toc__item--l3"><a href="#cache">Cache</a></li>
+<li class="toc__item toc__item--l3"><a href="#configuration">Configuration</a></li>
+<li class="toc__item toc__item--l3"><a href="#database">Database</a></li>
+<li class="toc__item toc__item--l3"><a href="#environment">Environment</a></li>
+<li class="toc__item toc__item--l3"><a href="#extension">Extension</a></li>
+<li class="toc__item toc__item--l3"><a href="#group">Group</a></li>
+<li class="toc__item toc__item--l3"><a href="#log">Log</a></li>
+<li class="toc__item toc__item--l3"><a href="#migration">Migration</a></li>
+<li class="toc__item toc__item--l3"><a href="#repository">Repository</a></li>
+<li class="toc__item toc__item--l3"><a href="#scaffolding">Scaffolding</a></li>
+<li class="toc__item toc__item--l3"><a href="#test">Test</a></li>
+<li class="toc__item toc__item--l3"><a href="#user">User</a></li>
+<li class="toc__item toc__item--l3"><a href="#commands-not-covered-above">Commands not covered above</a></li>
+</ol></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../supergroups/index.html">Super Groups</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/templating-system/index.html">Templating system</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/page-templates/index.html">Page templates</a></li>
@@ -155,11 +163,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/setup/index.html">Setup</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/developing/index.html">Developing</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
@@ -198,7 +202,7 @@ root. There is no <code>muse</code> there; the file moved under <code>core/bin</
 <h2 id="the-commands">The commands</h2>
 <p>The <a href="../../reference/muse/index.html">muse reference</a> lists every command and
 task, generated from the command classes, and
-<a href="commands/index.html">Common tasks</a> walks through the ones used most.</p>
+<a href="#common-tasks">Common tasks</a> walks through the ones used most.</p>
 <p>Commands with a colon in the name are sub-commands, implemented in a
 subdirectory: <code>muse cache:css</code> is <code>Command/Cache/Css.php</code>, and
 <code>muse app:package</code> is <code>Command/App/Package.php</code>.</p>
@@ -308,13 +312,209 @@ prints beside the task, and the generated reference reads the same tag.</p>
 <p><code>muse configuration</code> stores settings muse itself uses, such as the name and
 email the scaffolding generator puts in file headers. It also holds hooks,
 which run a shell command at a named point, and aliases, which shorten a
-command name. See <a href="commands/index.html">Common tasks</a>.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="commands/index.html">Common tasks</a></li></ul></section>
+command name. See <a href="#common-tasks">Common tasks</a>.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<p>The commands reached for most often, with the reasoning behind them. The
+<a href="../../reference/muse/index.html">muse reference</a> lists every command and
+task, generated from the source, and is the place to look for anything not
+covered here.</p>
+<p>Run everything below from the hub's root directory. <code>muse</code> is not on the
+path; it lives at <code>core/bin/muse</code>.</p>
+<h3 id="cache">Cache</h3>
+<p>The cache command is a helper for clearing your sites cache files. You can clear the entire cache, or just the CSS cache. Those commands, respectively, are:</p>
+<pre><code>php core/bin/muse cache clear
+
+php core/bin/muse cache:css clear
+</code></pre>
+<h3 id="configuration">Configuration</h3>
+<p>The configuration command is used to personalize and customize your Muse experience. It's also used to store variables for repeated use. For example, the scaffolding command will ask you, if you haven't already, to set your name and email to be used when generating files.</p>
+<pre><code>php core/bin/muse configuration set --user_name=&quot;John Doe&quot;
+php core/bin/muse configuration set --user_email=john.doe@gmail.com
+</code></pre>
+<p>Configuration can also be used to store hooks and aliases. Hooks are additional commands that are run at pre-defined points. Aliases are command shortcuts. Here are some examples:</p>
+<pre><code># run permissions fix after updating the repository
+php core/bin/muse configuration:hooks add repository.afterUpdate &quot;chmod -R g+w /www/docroot&quot;
+
+# Add a shortcut for the environment command
+php core/bin/muse configuration:aliases add env environment
+</code></pre>
+<h3 id="database">Database</h3>
+<p>The database command was added for two primary reasons - the first backups, and the second, reverse content migration. Backups are fairly straight-forward, but a little more detail is in order for reverse content migration.</p>
+<p>If you have an environment with more than one stop in your production flow, you've likely run into the problem of wanting to move data from prod to dev for testing purposes. But in so doing, you often overwrite some site-specific configuation on dev. So get around this, we perform a dump and load using the database command to move only those things that should move between environments.</p>
+<pre><code># dump the database
+php core/bin/muse database dump
+
+# then make sure you copy to your dev environment
+# then from dev, load the dump back up (it will have a different name)
+php core/bin/muse database load filenamefromabovecommand
+</code></pre>
+<h3 id="environment">Environment</h3>
+<p>The environment command simply outputs the current environment variables.</p>
+<pre><code>Current user     : Mr Awesome &lt;awesome@gmail.com&gt;
+Current database : example
+</code></pre>
+<h3 id="extension">Extension</h3>
+<p>If you don't already know, extensions are the general name for all of the 'apps' allowed by the HUBzero framework. They include (amoung some others), templates, components, modules, and plugins. When adding a new extension, you will often want to add it to the extensions database table and enable it. This command can help save you trips directly to the database.</p>
+<p>The nice thing to about the extension command is that it will prompt you for what it needs, you don't really need to remember the syntax.</p>
+<pre><code>me@me.org:~# php core/bin/muse extension
+What do you want to do? [add|delete|install|enable|disable] add
+What extension were you wanting to add? com_awesome
+Successfully added com_awesome!
+</code></pre>
+<p>Or, as another example. Let's delete that entry we added above using the written out syntax</p>
+<pre><code>me@me.org:~# php core/bin/muse extension delete --name=com_awesome
+Successfully deleted com_awesome!
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Note that if you're in a production environment and using migrations, this command is redundent. Use migrations! But if you're just testing and need a quick way to enable or disable something, this is the way to go.</p>
+</aside>
+<h3 id="group">Group</h3>
+<p>The group commands are simply wrappers on existing commands to be used within the super group context. Please review the super group documentation for more details.</p>
+<h3 id="log">Log</h3>
+<p>The log command is great for following and filtering log entries. There are currently two log types available, the profile log and the query log. To start, simply:</p>
+<pre><code>php core/bin/muse log follow profile
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You have to having logging enabled for new entries to be displayed!</p>
+</aside>
+<p>Once started, you'll see info on the log fields being displayed.</p>
+<pre><code>me@me.org:~# php core/bin/muse log follow profile
+The profile log has the following format (* indicates visible field):
+&lt;0:*timestamp&gt; &lt;1:*hubname&gt; &lt;2:*ip&gt; &lt;3:*app&gt; &lt;4:*uri&gt; &lt;5:*query&gt; &lt;6:*memory&gt; &lt;7:*querycount&gt; &lt;8:*timeinqueries&gt; &lt;9:*totaltime&gt;
+</code></pre>
+<p>To toggle a fields visibility, simply press the number next to the field of interest. For example, pressing <code>2</code>, and then <code>f</code> to show the fields again, results in:</p>
+<pre><code>&gt; Hiding ip
+&gt; The profile log has the following format (* indicates visible field):
+&lt;0:*timestamp&gt; &lt;1:*hubname&gt; &lt;2:ip&gt; &lt;3:*app&gt; &lt;4:*uri&gt; &lt;5:*query&gt; &lt;6:*memory&gt; &lt;7:*querycount&gt; &lt;8:*timeinqueries&gt; &lt;9:*totaltime&gt;
+</code></pre>
+<p>To show the available commands, simply type <code>h</code>.</p>
+<pre><code>&gt; q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: rerender last 100 lines
+</code></pre>
+<h3 id="migration">Migration</h3>
+<p>For more info on the migration command, see the dedicated <a href="../database/index.html#migrations">migrations</a> section under the database chapter.</p>
+<h3 id="repository">Repository</h3>
+<p>The repository command offers an abstraction on top of the mechanism used to manage and update the CMS. This could include GIT, HTTP-based package installs, or Debian packages. Currently, GIT is the only supported mechanism, but more are to come in the future.</p>
+<p>To start, simply see if the repository command is supported in your environment.</p>
+<pre><code>me@me.org:~# php core/bin/muse repository
+This repository is managed by GIT and is clean
+</code></pre>
+<p>If you environment is not currently supported, you'll receive a message like this:</p>
+<pre><code>me@me.org:~# php core/bin/muse repository
+Sorry, this command currently only supports setups managed by GIT
+</code></pre>
+<p>To start the update process, use the update task. Depending on your current state, you'll either see that you're up-to-date, or see what's coming in the next update.</p>
+<pre><code>me@me.org:~# php core/bin/muse repository update
+The repository is already up-to-date
+</code></pre>
+<p>or...</p>
+<pre><code>me@me.org:~# php core/bin/muse repository update
+The repository is behind by 747 update(s):
+...
+</code></pre>
+<p>Then, to perform the actual update, add the <code>-f</code> flag.</p>
+<pre><code>me@me.org:~# php core/bin/muse repository update -f
+Updating the repository...complete
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If something goes wrong, the update mechanism will automatically roll back to it's state prior to attempting the update. Then you'll have to go in a manually perform the update depending on the mechanism.</p>
+</aside>
+<h4 id="spring-cleaning">Spring Cleaning</h4>
+<p>In addition to performing updates, the repository command also offers some help doing periodic cleanup. Using the <code>clean</code> command will allow you to prune rollback points and stashes.</p>
+<pre><code>me@me.org:~# php core/bin/muse repository clean
+Do you want to purge all rollback points except the latest? [y|n] y
+Purging rollback points.
+Do you want to purge all stashed changes? [y|n] y
+Purging repository stash.
+Clean up complete. Performed (2/2) cleanup operations available.
+</code></pre>
+<h3 id="scaffolding">Scaffolding</h3>
+<p>Scaffolding was create to help developers get started quickly. Let's be honest, developers rarely start from a blank file. We copy something existing and modify. With scaffolding, we give you a template a pre-fill known values to make this process even easier.</p>
+<p>At this time, scaffolding knows how to create:</p>
+<ul>
+<li>Commands</li>
+<li>Components</li>
+<li>Migrations</li>
+<li>Tests</li>
+</ul>
+<p>So, for example, to create a new component, simply:</p>
+<pre><code>me@me.org:~# php core/bin/muse scaffolding create component com_awesome
+Creating /var/www/example/core/components/com_awesome/awesome.xml
+Creating /var/www/example/core/components/com_awesome/admin/awesome.php
+Creating /var/www/example/core/components/com_awesome/admin/controllers/awesome.php
+Creating /var/www/example/core/components/com_awesome/admin/language/en-GB/en-GB.com_awesome.ini
+Creating /var/www/example/core/components/com_awesome/admin/language/en-GB/en-GB.com_awesome.sys.ini
+Creating /var/www/example/core/components/com_awesome/admin/views/awesome/tmpl/display.php
+Creating /var/www/example/core/components/com_awesome/api/controllers/api.php
+Creating /var/www/example/core/components/com_awesome/config/access.xml
+Creating /var/www/example/core/components/com_awesome/config/config.xml
+Creating /var/www/example/core/components/com_awesome/models/awesomes.php
+Creating /var/www/example/core/components/com_awesome/site/awesome.php
+Creating /var/www/example/core/components/com_awesome/site/assets/css/awesome.css
+Creating /var/www/example/core/components/com_awesome/site/assets/js/awesome.js
+Creating /var/www/example/core/components/com_awesome/site/controllers/awesome.php
+Creating /var/www/example/core/components/com_awesome/site/language/en-GB/en-GB.com_awesome.ini
+Creating /var/www/example/core/components/com_awesome/site/router.php
+Creating /var/www/example/core/components/com_awesome/site/views/awesomes/tmpl/display.php
+Creating /var/www/example/core/components/com_awesome/site/views/awesomes/tmpl/edit.php
+</code></pre>
+<p>As you can see, this automatically generates all of the core files and views you're likely to need. It also names them appropriately, as well as using the provided component name to even tweak the contents of these files.</p>
+<h3 id="test">Test</h3>
+<p>Testing is critical to both deploying a new extension, and updating existing extensions without too much heartache. To facilitate testing, muse offers a framework and wrapper around the popular PHP Unit testing infrustucture.</p>
+<p>To see the current extensions with tests, run:</p>
+<pre><code>me@me.org:~# php core/bin/muse test show
+lib_database
+</code></pre>
+<p>Then, to run a specific extensions tests, you can use the run command.</p>
+<pre><code>me@me.org:~# php core/bin/muse test run lib_database
+PHPUnit 4.6.2 by Sebastian Bergmann and contributors.
+
+...................................................
+
+Time: 2.26 seconds, Memory: 17.5Mb
+
+OK (51 tests, 73 assertions)
+</code></pre>
+<h3 id="user">User</h3>
+<p>The final command available at this time is the user command. It offers some advances administrative functionality for merging and unmerging users.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> This command is experimental!</p>
+</aside>
+<p>Occasionally, on a hub, one person will create two accounts and not realize it. They later ask you to merge the accounts and move the contributions from one to the other. This isn't a simple task, and involves updating many, many references in the database. Fortunately for you, we've been working on a solution.</p>
+<pre><code>me@me.org:~# php core/bin/muse user merge 1042 into 1003
+Updating (1) item(s) in jos_collections.object_id
+Updating (1) item(s) in jos_collections.created_by
+Updating (1) item(s) in jos_collections_items.created_by
+Updating (8) item(s) in jos_courses_asset_groups.created_by
+Updating (15) item(s) in jos_courses_assets.created_by
+Updating (1) item(s) in jos_courses_members.user_id
+Updating (2) item(s) in jos_courses_offering_section_dates.created_by
+Updating (2) item(s) in jos_courses_units.created_by
+Updating (76) item(s) in jos_developer_access_tokens.uidNumber
+Updating (1) item(s) in jos_developer_applications.created_by
+Updating (1) item(s) in jos_developer_rate_limit.uidNumber
+Updating (9) item(s) in jos_users_log_auth.user_id
+Ignoring jos_users_password.user_id due to integrity constraint violation
+Updating (1) item(s) in jos_users_points.uid
+Ignoring jos_xprofiles_bio.uidNumber due to integrity constraint violation
+Updating (3) item(s) in jos_xprofiles_tokens.user_id
+</code></pre>
+<p>Then, if needed, you can reverse the merge.</p>
+<pre><code>me@me.org:~# php core/bin/muse user unmerge 1042 from 1003
+Unmerged (122/122) records successfully!
+</code></pre>
+<h3 id="commands-not-covered-above">Commands not covered above</h3>
+<p><code>app</code> and its <code>package</code> and <code>repository</code> sub-commands manage Composer
+packages for a hub. <code>install</code> performs a fresh installation, step by step.
+<code>htmx</code> and <code>inertia</code> scaffold and lint front-end integrations. <code>resources</code>
+exports the resource catalogue and reports git statistics. <code>searchmigration</code>
+rebuilds the search index. Each is listed with its tasks in the
+<a href="../../reference/muse/index.html">muse reference</a>.</p>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ a668500422</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templates/accessibility/index.html" rel="prev"><span>Previous</span>Accessibility</a><a class="pager__next" href="commands/index.html" rel="next"><span>Next</span>Common tasks</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../templates/accessibility/index.html" rel="prev"><span>Previous</span>Accessibility</a><a class="pager__next" href="../supergroups/index.html" rel="next"><span>Next</span>Super Groups</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/12-muse/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/12-muse.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

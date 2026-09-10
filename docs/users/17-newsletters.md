@@ -99,4 +99,4 @@ any topics the hub has defined. Set each one and press **Submit**.
 
 These links expire. If yours has, the hub says the code has expired and sends
 you to the front page; ask for a new message, or set the same preferences
-from your [profile](profile.md).
+from your [profile](15-profile.md).

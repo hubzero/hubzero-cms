@@ -918,16 +918,21 @@ def main() -> int:
     redirect_lines = []
     if redirects_path.exists():
         for old, new in read_json(redirects_path).items():
-            if new not in outputs_seen:
+            # A target may carry a fragment, so a page that was merged into a
+            # section of another can still send its old URL to the right place.
+            page_part, _, fragment = new.partition("#")
+            if page_part not in outputs_seen:
                 warn(f"redirect target missing: {old} -> {new}")
                 continue
+            sep = "#" if fragment else ""
             stub_path = output_dir / old.strip("/") / "index.html"
-            target = relative_href(stub_path, output_dir / new)
+            target = relative_href(stub_path, output_dir / page_part) + sep + fragment
+            pretty = f"{site_url}/{page_part.replace('index.html', '')}{sep}{fragment}"
             write_text(stub_path, render_template(SOURCE_DIR / "templates" / "redirect.html", {
                 "target": escape(target),
-                "canonical": escape(f"{site_url}/{new.replace('index.html', '')}") if site_url else escape(target),
+                "canonical": escape(pretty) if site_url else escape(target),
             }))
-            redirect_lines.append(f"/{old.strip('/')} {site_url}/{new.replace('index.html', '')}")
+            redirect_lines.append(f"/{old.strip('/')} {pretty}")
     write_text(output_dir / "redirects.txt", "\n".join(redirect_lines) + ("\n" if redirect_lines else ""))
 
     if site_url:

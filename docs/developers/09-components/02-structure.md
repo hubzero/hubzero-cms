@@ -176,4 +176,4 @@ with `enabled` set to 1, so the component executes.
 What a missing row costs you is everything stored against it: the component
 does not appear in the administrator's list of components, `Component::params()`
 returns an empty registry, and there is no asset row for its permissions. A
-[migration](migrations.md) creates that row.
+[migration](01-migrations.md) creates that row.

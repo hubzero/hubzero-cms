@@ -28,16 +28,16 @@ resource page.
 
 | Page | What it covers |
 |---|---|
-| [Prerequisites](prerequisites/README.md) | What a tool session is and the environment your tool runs in |
+| [Prerequisites](prerequisites.md) | What a tool session is and the environment your tool runs in |
 | [The contribution process](process.md) | The nine states a tool passes through, from the developer's side |
 | [What you can publish as a tool](02-overview.md) | The kinds of program a hub can run: Linux GUI, Jupyter, Sim2L, R/Shiny, Dash, web application |
 | [Tool repository structure](01-toolrepostructure.md) | The directory layout the hub expects, and starter invoke scripts |
 | [Launching tools with invoke scripts](03-invoke.md) | The invoke script, its options, and what the CMS hands it |
 | [Combining tools in one session](04-nanowhim.md) | Running several applications on one session desktop |
 | [Accessing outside computing resources](05-grid/README.md) | Sending work from a session to a cluster with `submit` |
-| [Accessing your home directory](06-accesshomedir/README.md) | `sftp`, WebDAV, and `filexfer` |
+| [Accessing your home directory](06-accesshomedir.md) | `sftp`, WebDAV, and `filexfer` |
 | [Tool paths](07-toolpaths/README.md) | Environment variables and where a tool reads and writes files |
-| [Importing and exporting user files](08-fileinout/README.md) | `importfile` and `exportfile` |
+| [Importing and exporting user files](08-fileinout.md) | `importfile` and `exportfile` |
 | [Large data paths](09-largedatapaths.md) | Storage for data too big for a home directory |
 | [Jupyter notebooks](10-jupyter-notebooks/README.md) | Publishing a notebook as a tool |
 
@@ -49,7 +49,7 @@ resource page.
 - Hub members run the result: [Tools](../../users/22-tools.md) describes a
   tool session as the user sees it.
 - Hub administrators configure the platform:
-  [Tool administrators](../administrators/README.md).
+  [Tool administrators](../administrators.md).
 
 ## Background material
 

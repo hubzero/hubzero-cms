@@ -41,11 +41,7 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/howitfits/index.html">How a hub fits together</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/index.html">Getting started</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -65,9 +61,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
@@ -110,7 +104,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Projects</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Projects</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-projects-list">The Projects list</a></li>
 <li class="toc__item toc__item--l2"><a href="#editing-a-project">Editing a project</a></li>
 <li class="toc__item toc__item--l2"><a href="#team">Team</a></li>
@@ -122,12 +116,13 @@
 <li class="toc__item toc__item--l3"><a href="#restricting-a-feature-to-named-projects">Restricting a feature to named projects</a></li>
 <li class="toc__item toc__item--l2"><a href="#files-on-disk">Files on disk</a></li>
 <li class="toc__item toc__item--l2"><a href="#external-file-connections">External file connections</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="projectfileconnect/index.html">Project file connectors</a></li>
-</ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#project-file-connectors">Project file connectors</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-ships">What ships</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-oauth-callback">The OAuth callback</a></li>
+<li class="toc__item toc__item--l3"><a href="#setting-up-a-connector">Setting up a connector</a></li>
+<li class="toc__item toc__item--l3"><a href="#registering-the-application">Registering the application</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
@@ -157,13 +152,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
-</ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/index.html">Security considerations</a></li>
 </ul>
         </nav>
       </details>
@@ -440,14 +429,215 @@ the defaults here.</p>
 <p>A project's Files tab can point at storage the hub does not own — Google
 Drive, Dropbox, GitHub, an S3 bucket — instead of, or alongside, the hub's own
 repository. Setting that up needs an application registered with the provider
-and a plugin configured on the hub; see <a href="projectfileconnect/index.html">Project file
+and a plugin configured on the hub; see <a href="#project-file-connectors">Project file
 connectors</a>.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="projectfileconnect/index.html">Project file connectors</a></li></ul></section>
+<h2 id="project-file-connectors">Project file connectors</h2>
+<p>A project's Files tab normally shows the hub's own storage: a git repository
+under <code>/srv/projects</code>, listed under a name built from the Projects - Files
+plugin's <strong>Default Connection Name</strong> pattern, <code>%s Master Repository</code>. A <strong>file
+connector</strong> lets a project point at storage the hub does not own — a Google
+Drive folder, a Dropbox account, a GitHub repository, an S3 bucket — and
+browse it in the same interface. The files stay with the provider. The hub
+stores only a name, a provider, and a credential.</p>
+<p>Setting one up takes two people. You, as hub manager, register an application
+with the provider and put its credentials into the hub. A project manager then
+creates the connection inside their own project and authorises it with their
+own account.</p>
+<h3 id="what-ships">What ships</h3>
+<p>Four external providers ship in Hubzero 2.4, each as a plugin in the
+<code>filesystem</code> group. A fifth, <strong>Filesystem - Local</strong>, backs the hub's own
+repository; it has no parameters and nothing to configure.</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Plugin</th>
+<th>Credentials you set on the hub</th>
+<th>Fields the project manager fills in</th>
+<th>How it authorises</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Drive</td>
+<td>Filesystem - Google Drive</td>
+<td><strong>Client ID</strong>, <strong>Client Secret</strong></td>
+<td>—</td>
+<td>Redirects to Google the first time the connection is opened</td>
+</tr>
+<tr>
+<td>Dropbox</td>
+<td>Filesystem - Dropbox</td>
+<td><strong>App key</strong>, <strong>App secret</strong></td>
+<td>—</td>
+<td>Redirects to Dropbox the first time the connection is opened</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td>Filesystem - GitHub</td>
+<td><strong>Client ID</strong>, <strong>Client Secret</strong></td>
+<td><strong>Repository</strong> (<code>vendor/repository</code>)</td>
+<td>Public repositories are read anonymously; a private one needs an explicit, manager-initiated OAuth step</td>
+</tr>
+<tr>
+<td>AWS S3</td>
+<td>Filesystem - AWS S3</td>
+<td>—</td>
+<td><strong>Access Key ID</strong>, <strong>Secret Access Key</strong>, <strong>Endpoint Region</strong>, <strong>Bucket Name</strong>, <strong>Directory to connect</strong></td>
+<td>No OAuth; the IAM key is entered per connection</td>
+</tr>
+</tbody>
+</table>
+<p>All four work: the client libraries they need are installed with the CMS. The
+parameters are also in the generated
+<a href="../../../reference/configuration/plugins/filesystem/index.html">filesystem plugin reference</a>.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The GitHub connector is read-only, and it deliberately does
+not start an OAuth handshake just to read a public repository. Only a
+private repository triggers one, and only when a project manager asks for it
+— because the token GitHub mints covers the authorising user's whole
+account, including write access.</p>
+</aside>
+<h3 id="the-oauth-callback">The OAuth callback</h3>
+<p>Google Drive, Dropbox and GitHub each need a redirect URI registered with the
+provider. The hub answers them at:</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Redirect URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Drive</td>
+<td><code>https://yourhub.org/developer/callback/googledriveAuthorize</code></td>
+</tr>
+<tr>
+<td>Dropbox</td>
+<td><code>https://yourhub.org/developer/callback/dropboxAuthorize</code></td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td><code>https://yourhub.org/developer/callback/githubAuthorize</code></td>
+</tr>
+</tbody>
+</table>
+<p>Substitute the hub's own hostname, and use <code>https</code>. The hub builds these from
+its own base URL, so a provider that rejects the callback is almost always a
+sign that the registered URI and the hub's actual address disagree.</p>
+<h3 id="setting-up-a-connector">Setting up a connector</h3>
+<ol>
+<li><strong>Register an application with the provider.</strong> See the per-provider notes
+below. Register the callback URI from the table above. You end up with a
+pair of values, called a client ID and secret, an app key and secret, or an
+access key and secret depending on the provider.</li>
+<li><strong>Configure the plugin.</strong> Go to <strong>Extensions → Plug-in Manager</strong>, search
+for the plugin — for example <code>Filesystem - Google Drive</code> — and open it. Set
+<strong>Status</strong> to <strong>Enabled</strong>, put the two values in the credentials panel —
+labelled <strong>Credentials</strong>, or <strong>Google Drive Web Application Credentials</strong> on
+that plugin — and select <strong>Save &amp; Close</strong>. The AWS S3 plugin has nothing to
+set at this level; enabling it is enough.</li>
+<li><strong>Optionally make Files open on the connections view.</strong> Open the **Projects
+<ul>
+<li>Files** plugin and set <strong>Default Action</strong> to <strong>Connections (view
+available connections)</strong>. The Files tab then lists the connections instead
+of opening the local repository straight away. Leave it on <strong>Browse (browse
+local files)</strong> if you would rather members reach connections through the
+file browser.</li>
+</ul>
+</li>
+<li><strong>Create the connection in a project.</strong> This part is done by a project
+manager, on the front end, in the project's <strong>Files</strong> tab: pick the
+provider from the <strong>New Connection</strong> drop-down, give the connection a name,
+fill in any per-connection fields, decide whether to share it with the
+project, and save. Opening it for the first time sends them to the provider
+to grant access.</li>
+</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>New Connection</strong> drop-down lists every provider the hub
+knows about, whether or not that provider's plugin is enabled and
+configured. A connection to a provider you have not set up is created
+happily and then fails when someone opens it. If you do not intend to offer
+a provider, say so to your project managers.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Only a genuine project manager can authorise a connection. A hub
+administrator viewing the project cannot do it for them, by design — the
+handshake attaches the authorising person's own provider account to a
+connection the whole project may use.</p>
+</aside>
+<p>Each connection is either private to the member who created it or shared with
+everyone in the project; the checkbox is on the connection form, and shared
+connections are the ones without the private marker in the connections list.
+The connections list also has <strong>Refresh Connection Credentials</strong>, for when a
+stored token has expired, and <strong>Refresh Connection Path</strong>.</p>
+<h3 id="registering-the-application">Registering the application</h3>
+<p>The providers change their developer consoles regularly. What follows is
+accurate in outline; if a screen has moved, the values you need have not.</p>
+<h4 id="dropbox">Dropbox</h4>
+<ol>
+<li>Go to <a href="https://www.dropbox.com/developers">https://www.dropbox.com/developers</a> and sign in as the account that
+should own the application — usually one belonging to the group or
+institution, not to a person.</li>
+<li>Select <strong>My Apps</strong>, then <strong>Create app</strong>.</li>
+<li>Choose the access level to grant, and give the application a name. That
+name is what users see when they are asked to authorise it.</li>
+<li>Add <code>https://yourhub.org/developer/callback/dropboxAuthorize</code> under
+<strong>Redirect URIs</strong>.</li>
+<li>Select <strong>Enable additional users</strong>.</li>
+<li>Copy the <strong>App key</strong>, reveal and copy the <strong>App secret</strong>.</li>
+<li>Optionally use the branding tab to add your hub's icon and links; they
+appear on the authorisation screen.</li>
+</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Dropbox caps development applications at a small number of linked
+users. Apply for production status with Dropbox before you reach it, or
+members will start being refused.</p>
+</aside>
+<h4 id="google-drive">Google Drive</h4>
+<ol>
+<li>Sign in to the <a href="https://console.cloud.google.com/">Google Cloud console</a>
+and select or create a project.</li>
+<li>Enable the <strong>Google Drive API</strong> for it.</li>
+<li>Under <strong>APIs &amp; Services → Credentials</strong>, select <strong>Create credentials →
+OAuth client ID</strong>, and choose <strong>Web application</strong>.</li>
+<li>Set <strong>Authorized JavaScript origins</strong> to <code>https://yourhub.org</code>, and
+<strong>Authorized redirect URIs</strong> to
+<code>https://yourhub.org/developer/callback/googledriveAuthorize</code>.</li>
+<li>Select <strong>Create</strong>, and copy the <strong>Client ID</strong> and <strong>Client Secret</strong>.</li>
+</ol>
+<h4 id="github">GitHub</h4>
+<ol>
+<li>In GitHub, go to <strong>Settings → Developer settings → OAuth Apps</strong> for the
+account or organisation that should own the application, and select <strong>New
+OAuth App</strong>.</li>
+<li>Set the homepage URL to the hub, and the authorization callback URL to
+<code>https://yourhub.org/developer/callback/githubAuthorize</code>.</li>
+<li>Copy the <strong>Client ID</strong>, generate and copy a <strong>Client Secret</strong>.</li>
+</ol>
+<p>The hub asks GitHub for the <code>repo</code> scope, which is the only classic OAuth
+scope that grants read access to private repositories. Tell members that, so
+they understand what they are agreeing to. Public repositories never reach
+this step.</p>
+<h4 id="aws-s3">AWS S3</h4>
+<p>There is no application to register and nothing to configure on the plugin.
+Create an IAM user with read access to the bucket, generate an access key for
+it, and give the key, the secret, the bucket's region code and the bucket name
+to the project manager, who enters them on the connection form. <strong>Directory to
+connect</strong> confines the connection to one prefix inside the bucket; leave it
+empty for the whole bucket.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Those S3 credentials are stored with the connection and are
+usable by everyone the connection is shared with. Issue a key that is scoped
+to the one bucket, or the one prefix, and nothing else.</p>
+</aside>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../poll/index.html" rel="prev"><span>Previous</span>Poll</a><a class="pager__next" href="projectfileconnect/index.html" rel="next"><span>Next</span>Project file connectors</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../poll/index.html" rel="prev"><span>Previous</span>Poll</a><a class="pager__next" href="../publications/index.html" rel="next"><span>Next</span>Publications</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/26-projects/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/26-projects.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

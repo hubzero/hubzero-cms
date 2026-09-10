@@ -15,34 +15,34 @@ interface.
 
 ## Getting started
 
-- [Getting started](gettingstarted.md) — registering, your profile, and
+- [Getting started](30-gettingstarted.md) — registering, your profile, and
   the dashboard.
-- [Member dashboard](dashboard.md) and [Member profile](profile.md).
-- [Registration](registration.md).
+- [Member dashboard](14-dashboard.md) and [Member profile](15-profile.md).
+- [Registration](20-registration.md).
 
 ## Working together
 
-- [Groups](groups/README.md) — creating a group, membership and roles,
+- [Groups](11-groups/README.md) — creating a group, membership and roles,
   group pages, the group forum, and group citations.
-- [Projects](projects/README.md) — project files and databases.
-- [Publications](publications/README.md) — managing publications and the
+- [Projects](16-projects.md) — project files and databases.
+- [Publications](18-publications.md) — managing publications and the
   curation process.
-- [Collections](collections.md), [Citations](citations/README.md),
-  [Resources](resources.md), [Tools](tools.md), and
-  [Usage](usage.md).
+- [Collections](01-collections.md), [Citations](06-citations.md),
+  [Resources](21-resources.md), [Tools](22-tools.md), and
+  [Usage](28-usage.md).
 
 ## Talking and learning
 
-- [Forum](forum.md), [Questions and answers](questions.md),
-  [Blog](blog.md), [Wiki](wiki.md), [Knowledge base](knowledgebase.md),
-  [Events](events.md), [Newsletters](newsletters.md), and
-  [Courses](courses/README.md).
+- [Forum](09-forum.md), [Questions and answers](19-questions.md),
+  [Blog](05-blog.md), [Wiki](23-wiki.md), [Knowledge base](13-knowledgebase.md),
+  [Events](07-events.md), [Newsletters](17-newsletters.md), and
+  [Courses](02-courses.md).
 
 ## Everything else
 
-- [Search](search.md), [Tags](tags.md), [Wishlist](wishlist.md),
-  [Storefront](storefront.md), [Support](support.md), and the
-  [frequently asked questions](faq.md).
+- [Search](24-search.md), [Tags](27-tags.md), [Wishlist](29-wishlist.md),
+  [Storefront](26-storefront.md), [Support](12-support.md), and the
+  [frequently asked questions](03-faq.md).
 
 The [Tools](../tools/README.md) book covers running simulation tools in
 more depth.

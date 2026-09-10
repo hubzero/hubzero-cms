@@ -16,7 +16,7 @@ translation table, plus what to do about the database when you upgrade a
 hub.
 
 For the Hubzero 1.x names that changed at the same time, see
-[Release notes](releasenotes.md#the-2-0-namespacing).
+[Release notes](01-releasenotes.md#the-2-0-namespacing).
 
 ## Directory structure
 
@@ -255,9 +255,9 @@ $other = User::getInstance(1234);  // JFactory::getUser(1234)
 ## The database
 
 An upgrade is not finished when the files are in place. Schema and data
-changes ship as [migrations](../06-database/02-migrations.md) — small PHP
+changes ship as [migrations](../06-database.md#migrations) — small PHP
 classes under a `migrations` directory with an `up()` and a `down()` —
-and [muse](../12-muse/README.md) runs the ones a hub has not seen,
+and [muse](../12-muse.md) runs the ones a hub has not seen,
 recording each in `#__migrations` so it never runs twice.
 
 ```bash
@@ -268,7 +268,7 @@ php core/bin/muse migration -f   # actually run them
 The dry run is the default, which is the safest thing about the command
 and the easiest to miss. `-e com_example` limits the run to one extension,
 `-d down` reverses, and the full option list is in the
-[muse migration reference](../../reference/muse/migration.md).
+[muse migration reference](../../reference/muse.md#muse-migration).
 
 > **Warning:** Reversing a schema change is often impossible without data
 > loss, whatever `down()` claims. Take a database dump before an upgrade:

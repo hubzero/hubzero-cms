@@ -7,7 +7,7 @@ source: https://help.hubzero.org/documentation/240/users/questions
 # Questions and answers
 
 Questions and answers is where you ask the hub's members something the
-[knowledge base](knowledgebase.md) does not cover, and where you answer
+[knowledge base](13-knowledgebase.md) does not cover, and where you answer
 what other people have asked. It is at `/answers` on the hub, and most hubs
 link it from their support or help menu.
 
@@ -126,7 +126,7 @@ delete any question.
 
 **Report abuse** appears on questions, answers, and comments. It files a
 report with the hub's support staff and hides the content behind a notice
-until they have reviewed it. See [Support](support.md).
+until they have reviewed it. See [Support](12-support.md).
 
 ## Earning points
 

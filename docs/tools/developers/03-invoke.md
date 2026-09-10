@@ -76,7 +76,7 @@ them itself, and it has to agree with the whitelist about what those resolve
 to. The parameters stored with a session are re-sent when the session is
 resumed, without being checked again.
 
-[Directory parameter whitelist](../administrators/whitelistdirectories.md)
+[Directory parameter whitelist](../administrators.md#directory-parameter-whitelist)
 documents the validation rule by rule and how an administrator sets the list.
 
 ### What the middleware is asked for
@@ -374,5 +374,5 @@ Pass arguments to the tool, either through `-A` or inside `-C`:
   getting `@tool` and other paths through to the tool.
 - [Invoke scripts for Jupyter notebooks](10-jupyter-notebooks/05-invoke-jupyter.md) —
   `start_jupyter` and the notebook, App, and Tool display modes.
-- [Directory parameter whitelist](../administrators/whitelistdirectories.md) —
+- [Directory parameter whitelist](../administrators.md#directory-parameter-whitelist) —
   what the CMS accepts in `params`.

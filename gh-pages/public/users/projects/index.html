@@ -42,10 +42,7 @@
         <nav aria-label="Hub users contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../courses/index.html">Courses</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../courses/course-manager-features/index.html">Course manager features</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../courses/student-features/index.html">Student features</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog</a></li>
@@ -63,7 +60,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../knowledgebase/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../dashboard/index.html">Member dashboard</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../profile/index.html">Member profile</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Projects</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Projects</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#finding-your-projects">Finding your projects</a></li>
 <li class="toc__item toc__item--l2"><a href="#starting-a-project">Starting a project</a></li>
 <li class="toc__item toc__item--l3"><a href="#step-1-describe-your-project">Step 1: describe your project</a></li>
@@ -78,14 +75,24 @@
 <li class="toc__item toc__item--l2"><a href="#following-what-happens">Following what happens</a></li>
 <li class="toc__item toc__item--l2"><a href="#deleting-a-project">Deleting a project</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-administrators-control">What administrators control</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="projectfiles/index.html">Project files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="databases/index.html">Databases</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#project-files">Project files</a></li>
+<li class="toc__item toc__item--l3"><a href="#browsing">Browsing</a></li>
+<li class="toc__item toc__item--l3"><a href="#adding-and-managing-files">Adding and managing files</a></li>
+<li class="toc__item toc__item--l3"><a href="#file-history">File history</a></li>
+<li class="toc__item toc__item--l3"><a href="#disk-usage-and-quota">Disk usage and quota</a></li>
+<li class="toc__item toc__item--l3"><a href="#connecting-external-storage">Connecting external storage</a></li>
+<li class="toc__item toc__item--l2"><a href="#databases">Databases</a></li>
+<li class="toc__item toc__item--l3"><a href="#if-there-is-no-databases-tab">If there is no Databases tab</a></li>
+<li class="toc__item toc__item--l3"><a href="#preparing-the-spreadsheet">Preparing the spreadsheet</a></li>
+<li class="toc__item toc__item--l3"><a href="#creating-a-database">Creating a database</a></li>
+<li class="toc__item toc__item--l3"><a href="#using-a-database">Using a database</a></li>
+<li class="toc__item toc__item--l3"><a href="#updating-a-database">Updating a database</a></li>
+<li class="toc__item toc__item--l3"><a href="#deleting-a-database">Deleting a database</a></li>
+<li class="toc__item toc__item--l3"><a href="#quota">Quota</a></li>
+<li class="toc__item toc__item--l3"><a href="#publishing-a-database">Publishing a database</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../publications/curation/index.html">Curation</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../questions/index.html">Questions and answers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
@@ -247,11 +254,11 @@ plugins the hub has enabled and configured:</p>
 </tr>
 <tr>
 <td>Files</td>
-<td>The project's file area. See <a href="projectfiles/index.html">Project files</a></td>
+<td>The project's file area. See <a href="#project-files">Project files</a></td>
 </tr>
 <tr>
 <td>Databases</td>
-<td>Searchable tables built from a spreadsheet. See <a href="databases/index.html">Databases</a></td>
+<td>Searchable tables built from a spreadsheet. See <a href="#databases">Databases</a></td>
 </tr>
 <tr>
 <td>Notes</td>
@@ -387,15 +394,422 @@ exist, how much disk space a project gets, whether the setup wizard asks
 about sensitive data or grants, and which external storage providers a
 project can connect to. Those settings are described in
 <a href="../../managers/components/projects/index.html">Projects</a> and
-<a href="../../managers/components/projects/projectfileconnect/index.html">Project file connectors</a>
+<a href="../../managers/components/projects/index.html#project-file-connectors">Project file connectors</a>
 in the managers book.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="projectfiles/index.html">Project files</a></li>
-<li><a href="databases/index.html">Databases</a></li></ul></section>
+<h2 id="project-files">Project files</h2>
+<p>The <strong>Files</strong> tab is the project's file area. Everyone on the team sees the
+same files; managers and collaborators can change them, reviewers can only
+read them. This chapter covers browsing and managing those files, the disk
+quota they count against, and connecting a project to storage the hub does
+not own.</p>
+<h3 id="browsing">Browsing</h3>
+<p>The Files tab opens a plain file list: <strong>Name</strong>, size, and <strong>Modified</strong>.
+Select a folder name to go into it, and use the breadcrumb trail at the top
+of the list to come back out. Sort by name, size, or modified date by
+selecting a column heading.</p>
+<p>Selecting a file name opens it — an image or a PDF previews in the page,
+anything else downloads. Where the hub has set up tool handlers for a file
+type, extra entries appear beside the name to open the file in that tool.</p>
+<p>A file whose modified time shows as <code>N/A</code> has no timestamp the hub could
+read. A file marked <code>-- untracked --</code> is in the project directory but not
+recorded in its repository.</p>
+<h3 id="adding-and-managing-files">Adding and managing files</h3>
+<p>The row of controls above the list appears for managers and collaborators:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Upload</strong></td>
+<td>Add files to the folder you are in</td>
+</tr>
+<tr>
+<td><strong>New Folder</strong></td>
+<td>Create a folder</td>
+</tr>
+<tr>
+<td><strong>Download</strong></td>
+<td>Download the ticked files and folders</td>
+</tr>
+<tr>
+<td><strong>Move</strong></td>
+<td>Move the ticked items to another folder</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Delete the ticked items</td>
+</tr>
+<tr>
+<td><strong>Rename</strong></td>
+<td>Rename the ticked item</td>
+</tr>
+<tr>
+<td><strong>Preview</strong></td>
+<td>Compile a LaTeX document to PDF, if the hub has LaTeX enabled</td>
+</tr>
+</tbody>
+</table>
+<p>Tick the box at the left of each row to choose what <strong>Download</strong>, <strong>Move</strong>,
+<strong>Delete</strong>, and <strong>Rename</strong> act on.</p>
+<h4 id="uploading">Uploading</h4>
+<ol>
+<li>Open the folder you want the files to land in.</li>
+<li>Select <strong>Upload</strong>.</li>
+<li>Drag files onto the drop area, or select it and pick files from your
+computer. Hold Ctrl (Cmd on a Mac) to pick more than one.</li>
+<li>To have <code>.zip</code> and <code>.tar</code> archives unpacked as they arrive, tick
+<em>Uploading archive files (.zip, .tar)? Check the box to expand uploaded
+archive(s)</em>.</li>
+<li>Select <strong>Upload now!</strong>.</li>
+</ol>
+<p>The maximum size for one file is shown under the drop area; it is a hub-wide
+setting and 100 MB by default. If the drag-and-drop uploader gives you
+trouble, the <strong>basic upload</strong> link below the button falls back to a plain
+form.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> A browser upload is the wrong tool for very large data. Some hubs
+offer SFTP into the project directory instead. Ask the hub's support staff
+whether yours does.</p>
+</aside>
+<h3 id="file-history">File history</h3>
+<p>Where a project's file repository tracks versions, the date in the
+<strong>Modified</strong> column is a link. Select it to open <strong>File History</strong> for that
+file: every revision with its time and author, a <strong>Change</strong> column, a
+<strong>Download</strong> link for each old version, and — for text files — <strong>Diff
+Revisions</strong> to compare two of them. A <strong>By</strong> column in the file list shows
+who last touched each file.</p>
+<p>Version tracking is a per-project setting, and in Hubzero 2.4 new projects
+are created with it switched off. In a project without it:</p>
+<ul>
+<li>The <strong>Modified</strong> date is plain text, not a link, and there is no file
+history, no diff, and no restore.</li>
+<li>Deleted files are gone; there is no <strong>Show Deleted Files</strong> view.</li>
+<li>The file list has no <strong>By</strong> column.</li>
+</ul>
+<p>Nothing in the front end turns version tracking on. If your project needs
+it, ask the hub's support staff.</p>
+<h3 id="disk-usage-and-quota">Disk usage and quota</h3>
+<p>Every project has a disk quota. At the bottom left of the file list is a
+<strong>Disk usage:</strong> bar and the project's <strong>Project Quota</strong>. The bar turns to a
+warning colour as you approach the limit.</p>
+<p>Select the bar to open the <strong>Disk Usage</strong> page. It shows the quota, the
+percentage used, and a breakdown:</p>
+<ul>
+<li><strong>Files</strong> — the size of the files currently in the project.</li>
+<li><strong>Version History</strong> — space taken by earlier revisions, on projects that
+track versions. Revision history counts against the quota.</li>
+<li><strong>Unused space</strong> — what is left.</li>
+</ul>
+<p>The default quota is set hub-wide; an administrator can raise it for one
+project. To ask for more space, open a support ticket at
+<code>/support/tickets</code> (see <a href="../support/index.html">Support</a>) and say what the
+project is, roughly how much space you need, and why. Hubs that run
+grant-funded work usually also want the grant title, PI, agency, and award
+number.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Project databases do not come out of this quota. They are stored
+in the hub's database server, not in the project's file area. See
+<a href="#databases">Databases</a>.</p>
+</aside>
+<h3 id="connecting-external-storage">Connecting external storage</h3>
+<p>A project can browse storage the hub does not own — a Google Drive folder,
+a Dropbox account, a GitHub repository, an S3 bucket — in the same file
+interface. The files stay with the provider; the hub keeps only a name, a
+provider, and a credential.</p>
+<p>Four providers ship with Hubzero 2.4:</p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>What you supply</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Drive</td>
+<td>Nothing on the form. You sign in to Google the first time the connection is opened</td>
+</tr>
+<tr>
+<td>Dropbox</td>
+<td>Nothing on the form. You sign in to Dropbox the first time the connection is opened</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td><strong>Repository</strong>, as <code>vendor/repository</code>. Public repositories are read without signing in</td>
+</tr>
+<tr>
+<td>AWS S3</td>
+<td><strong>Access Key ID</strong>, <strong>Secret Access Key</strong>, <strong>Endpoint Region</strong>, <strong>Bucket Name</strong>, and optionally <strong>Directory to connect</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="creating-a-connection">Creating a connection</h4>
+<p>You need to be a manager of the project.</p>
+<ol>
+<li>Open the project's <strong>Files</strong> tab. Where the hub is set up for it, the tab
+opens on the connections view: the project's own repository, then one
+card for each connection, then a <strong>New Connection</strong> drop-down.</li>
+<li>Choose the provider from <strong>New Connection</strong>.</li>
+<li>Give the connection a <strong>Name</strong>.</li>
+<li>Fill in any per-connection fields from the table above.</li>
+<li>Tick <em>Share connection with everyone in the project?</em> to let the whole
+team use it, or leave it clear to keep it to yourself.</li>
+<li>Select <strong>Save</strong>.</li>
+<li>Open the connection. For Google Drive, Dropbox, and private GitHub
+repositories the hub sends you to the provider to grant access, then
+brings you back.</li>
+</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Coming back from Google or Dropbox lands you on a broken address
+in Hubzero 2.4 — the hub builds the return link wrongly. The connection
+itself is saved before the redirect, so go to the project's <strong>Files</strong> tab
+again and the new connection is there.</p>
+</aside>
+<p>Each connection card carries <strong>Refresh Connection Credentials</strong>, for when a
+stored token has expired, <strong>Refresh Connection Path</strong>, <strong>Edit</strong>, and
+<strong>Delete</strong>. Connections that are not shared are marked as private.</p>
+<p>Once connected, browse, upload, download, move, rename, and delete work much
+as they do in the project's own file area.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>New Connection</strong> drop-down lists every provider the hub
+knows about, whether or not an administrator has configured it. A
+connection to a provider the hub has not set up saves happily and then
+fails when you open it. If a connection will not authorise, ask the hub's
+support staff whether that provider is configured.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If your Files tab opens straight into the file browser and you
+never see a connections view or a <strong>New Connection</strong> drop-down, the hub has
+not enabled it. An administrator controls that with the Projects - Files
+plugin's <strong>Default Action</strong> setting; see
+<a href="../../managers/components/projects/index.html#project-file-connectors">Project file connectors</a>.</p>
+</aside>
+<p>Only a project manager can authorise a connection, and only with their own
+provider account. A hub administrator cannot do it for you: the handshake
+attaches the authorising person's account to a connection the whole project
+may use.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The AWS S3 keys you type into a connection form are stored
+with it and are usable by everyone the connection is shared with. Ask for a
+key scoped to the one bucket, or the one prefix, and nothing else.</p>
+</aside>
+<h2 id="databases">Databases</h2>
+<p>A project database — DataStore Lite — turns a spreadsheet in your project's
+files into a searchable, sortable table anyone on the team can browse. You
+upload a <code>.csv</code> file, tell the hub what each column holds, and the hub builds
+a real database table from it and opens it in the hub's DataViewer.</p>
+<p>You need to be a manager or a collaborator on the project. Reviewers can see
+the databases a project has but cannot create, update, or delete them.</p>
+<h3 id="if-there-is-no-databases-tab">If there is no Databases tab</h3>
+<p>The Databases tab is not a standard part of a project. It comes from the
+<strong>Projects - Databases</strong> plugin, which needs two MySQL accounts that only a
+hub administrator can set: a read/write account that builds the tables and a
+read-only account that the DataViewer uses to read them.</p>
+<p>If either account is missing or wrong, the plugin hides the tab entirely.
+There is no error message and no explanation — the tab simply is not there:</p>
+<pre><code class="language-php">		// Hide section completely if not configured
+		if ($this-&gt;_checkConfig() == false)
+		{
+			return $area;
+		}
+</code></pre>
+<p>So if your project has no <strong>Databases</strong> tab, one of three things is true:
+the plugin is disabled, the hub has restricted it to a list of projects that
+does not include yours, or its database accounts are not configured. All
+three are for an administrator to fix; see
+<a href="../../managers/components/projects/index.html#enabling-a-project-feature">Projects</a>
+in the managers book, and ask the hub's support staff.</p>
+<p>A configured tab can still fail at the last step. If the databases list
+loads but selecting a database's title gives you an error rather than a
+table, the read-only account exists but cannot read what the read/write
+account created. That is also one for the administrator.</p>
+<h3 id="preparing-the-spreadsheet">Preparing the spreadsheet</h3>
+<p>The source has to be a <code>.csv</code> file — comma-separated values, which every
+spreadsheet program can save.</p>
+<ul>
+<li>The first row holds the column labels.</li>
+<li>Every row below it is one record.</li>
+<li>To link a database row to a file in the project, put the file's name and
+extension in a column, spelled exactly as the file is — <code>projectstep1.png</code>,
+not <code>ProjectStep1.PNG</code>. The file has to be in the same folder as the <code>.csv</code>
+or in a folder below it.</li>
+</ul>
+<h3 id="creating-a-database">Creating a database</h3>
+<h4 id="upload-the-file">Upload the file</h4>
+<ol>
+<li>Open the project and select <strong>Files</strong>.</li>
+<li>Select <strong>Upload</strong>.</li>
+<li>Drag the <code>.csv</code> file onto the drop area, along with any images or
+documents the database will link to. Select <strong>Upload now!</strong>.</li>
+</ol>
+<p>See <a href="#project-files">Project files</a> for more on uploading.</p>
+<h4 id="step-1-select-the-file">Step 1: select the file</h4>
+<ol>
+<li>Select <strong>Databases</strong>.</li>
+<li>Select <strong>Create a database</strong>.</li>
+<li>Pick the <code>.csv</code> file from the drop-down. It lists every <code>.csv</code> file in the
+project, grouped by folder.</li>
+<li>Select <strong>Next »</strong>.</li>
+</ol>
+<p>If the drop-down is empty, the project has no <code>.csv</code> files, or the only ones
+it has are already used by a database. The screen offers links back to the
+databases list and to the file area.</p>
+<h4 id="step-2-verify-data">Step 2: verify data</h4>
+<p>The hub reads the file, guesses a type for each column, and shows a preview.
+The heading tells you how many records the file holds and how many are shown
+— the preview loads the first hundred rows, but the database is built from
+all of them.</p>
+<p>Select the edit control in a column heading to open <strong>Column Properties</strong>,
+which has three tabs.</p>
+<p><strong>General</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Label</strong></td>
+<td>The column heading. Required</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Shown when a reader selects the column title</td>
+</tr>
+<tr>
+<td><strong>Width</strong></td>
+<td>A pixel value. The column is held to that width</td>
+</tr>
+<tr>
+<td><strong>Truncate text at width</strong></td>
+<td>Cuts the text off at that width</td>
+</tr>
+<tr>
+<td><strong>Units</strong></td>
+<td>A unit of measure — inches, meters, liters — shown under the heading</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Column Type</strong></p>
+<p>Choose one of: <strong>Text [small]</strong>, <strong>Text [large]</strong>, <strong>Link</strong>, <strong>Image</strong>,
+<strong>Email</strong>, <strong>Integer</strong>, <strong>Floating Point</strong>, <strong>Numeric [4 decimal places]</strong>,
+<strong>Date [yyyy-mm-dd]</strong>, or <strong>Date &amp; Time [yyyy-mm-dd HH:MM:SS]</strong>.</p>
+<ul>
+<li>Use <strong>Text [small]</strong> for a title or a short label, <strong>Text [large]</strong> for
+anything longer than a sentence. Either can be set to <strong>Limit text to a
+single line</strong>, which hides the overflow; a reader sees the whole value by
+hovering over it or selecting it.</li>
+<li><strong>Image</strong> shows a preview in the cell. <strong>Link</strong> makes the value a
+hyperlink. Both accept a full URL, or the name of a file in the project.
+For a file in the project, tick <strong>Repository Files?</strong> and choose the
+<strong>Repository Path</strong> — only the folder holding the <code>.csv</code> and folders below
+it are offered, and the <code>.csv</code> must give the bare file name.</li>
+</ul>
+<p><strong>Other</strong></p>
+<p>Set the column's <strong>Alignment</strong>, <strong>Text Color</strong>, and <strong>Background Color</strong>.</p>
+<p>Select <strong>Update Column</strong> to keep the changes, or <strong>Cancel</strong> to drop them.
+When every column looks right, select <strong>Next »</strong>. <strong>« Back</strong> returns to the
+file selection.</p>
+<h4 id="step-3-title-and-description">Step 3: title and description</h4>
+<ol>
+<li>Type a <strong>Title</strong> and a <strong>Description</strong>.</li>
+<li>Select <strong>Finish</strong>.</li>
+</ol>
+<p>The hub creates the table and returns you to the databases list.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> Creating a database rewrites the source <code>.csv</code> in your
+project files. The hub writes three header rows into it — the column
+labels, the column properties, and a row reading <code>DATASTART</code> — followed by
+the data. That is how the database remembers its column setup. Keep those
+three rows when you edit the file later, and change only the rows below
+<code>DATASTART</code>.</p>
+</aside>
+<h3 id="using-a-database">Using a database</h3>
+<p>The databases list shows one row per database:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Opens the database in the hub's DataViewer, in a new tab</td>
+</tr>
+<tr>
+<td><strong>Source File</strong></td>
+<td>Downloads the <code>.csv</code> the database was built from</td>
+</tr>
+<tr>
+<td><strong>Created On</strong>, <strong>Created By</strong></td>
+<td>Who built it and when</td>
+</tr>
+<tr>
+<td><strong>Update Database</strong></td>
+<td>Rebuilds it from the current <code>.csv</code></td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Removes the database</td>
+</tr>
+</tbody>
+</table>
+<p>The last two appear only for managers and collaborators.</p>
+<p>A source file the hub can no longer find is greyed out, and <strong>Update
+Database</strong> is disabled until the file is restored. A source file that has
+changed since the database was built is flagged, which is your cue to update.</p>
+<p>Until the database is attached to a published publication, only members of
+the project can open it in the DataViewer.</p>
+<p>To change a database's title or description without rebuilding it, select
+the small edit control next to its title in the list, change the values in
+the <strong>Update Title &amp; Description</strong> box, and save.</p>
+<h3 id="updating-a-database">Updating a database</h3>
+<p>Do this whenever the data changes, or when you want to change how a column
+is displayed. If you only want to change the display, skip to step 6.</p>
+<ol>
+<li>Select <strong>Databases</strong>, then the database's <strong>Source File</strong> to download
+the <code>.csv</code>.</li>
+<li>Open it in a spreadsheet program or a text editor. The first three rows
+are the DataStore header; the data starts after the <code>DATASTART</code> row.</li>
+<li>Add, remove, or change rows <em>below</em> <code>DATASTART</code> only. Keep the values
+consistent with the column types, which the second row lists.</li>
+<li>Save it in the same <code>.csv</code> format, under the same name.</li>
+<li>Go to <strong>Files</strong>, select <strong>Upload</strong>, and upload the file back into the same
+folder, replacing the old one.</li>
+<li>Go back to <strong>Databases</strong> and select <strong>Update Database</strong> on the row.</li>
+<li>Check the columns in step 2, adjusting any column properties you want to
+change, and select <strong>Next »</strong>.</li>
+<li>Confirm the title and description and select <strong>Finish</strong>.</li>
+</ol>
+<p>The old table is dropped and rebuilt, so anything the DataViewer showed
+before is replaced by the new data.</p>
+<h3 id="deleting-a-database">Deleting a database</h3>
+<p>Select <strong>Delete</strong> on the database's row and confirm. This drops the table
+and removes the database from the project. The source <code>.csv</code> stays in the
+project's files, so you can build the database again from it.</p>
+<h3 id="quota">Quota</h3>
+<p>Project databases are stored on the hub's database server, not in the
+project's file area, so they do not count against the project's disk quota.
+The source <code>.csv</code> in the file area does.</p>
+<h3 id="publishing-a-database">Publishing a database</h3>
+<p>A database can be attached to a publication, which is how you make it
+readable outside the project. The publication's editor offers a <strong>Select a
+Database</strong> picker listing the project's databases. See
+<a href="../publications/index.html">Publications</a>.</p>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../profile/index.html" rel="prev"><span>Previous</span>Member profile</a><a class="pager__next" href="projectfiles/index.html" rel="next"><span>Next</span>Project files</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../profile/index.html" rel="prev"><span>Previous</span>Member profile</a><a class="pager__next" href="../newsletters/index.html" rel="next"><span>Next</span>Newsletters</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/16-projects/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/16-projects.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

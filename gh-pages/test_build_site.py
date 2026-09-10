@@ -238,3 +238,12 @@ def test_tree_opens_the_active_path_only(tmp_path, monkeypatch):
     assert '<details open><summary><a class="tree__link" href="../index.html">Advanced</a>' in html
     assert 'aria-current="page">Topic</a>' in html
     assert html.count("<details open>") == 1
+
+
+def test_redirect_target_may_carry_a_fragment(tmp_path):
+    """A page merged into a section of another keeps its old URL working."""
+    import build_site
+    assert build_site.slugify("Accessing a home directory") == "accessing-a-home-directory"
+    page, _, fragment = "tools/developers/index.html#accessing-a-home-directory".partition("#")
+    assert page == "tools/developers/index.html"
+    assert fragment == "accessing-a-home-directory"

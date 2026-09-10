@@ -48,5 +48,5 @@ A tool can also be launched with file and directory names in the URL, through
 the `params` argument on `/tools/<alias>/invoke`. Those values are checked by
 `com_tools` before a session starts: each one has to be an absolute path under a
 directory the hub has whitelisted, and one bad value rejects the whole launch.
-See [Directory parameter whitelist](../../administrators/whitelistdirectories.md)
+See [Directory parameter whitelist](../../administrators.md#directory-parameter-whitelist)
 for what is accepted and what the member sees when it is not.

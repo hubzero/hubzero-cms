@@ -84,8 +84,8 @@ Two ship, and both are enabled on a new hub:
 
 | Plugin | Supplies | Sets it declares |
 |---|---|---|
-| **OAIPMH - Publications** | Published versions of [publications](16-publications/README.md) | `publications:{category alias}` |
-| **OAIPMH - Resources** | Published, standalone [resources](17-resources.md) | `resources:{type alias}` |
+| **OAIPMH - Publications** | Published versions of [publications](27-publications.md) | `publications:{category alias}` |
+| **OAIPMH - Resources** | Published, standalone [resources](29-resources.md) | `resources:{type alias}` |
 
 Each has a filter parameter. **Publication Category** on the publications
 plugin and **Resource Type** on the resources plugin narrow the component to

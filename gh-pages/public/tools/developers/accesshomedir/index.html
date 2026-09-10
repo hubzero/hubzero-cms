@@ -41,11 +41,7 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
@@ -57,25 +53,30 @@
 <li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Accessing your home directory</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Accessing your home directory</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#where-the-files-are">Where the files are</a></li>
 <li class="toc__item toc__item--l2"><a href="#ways-in">Ways in</a></li>
 <li class="toc__item toc__item--l2"><a href="#managing-what-is-there">Managing what is there</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="sftp/index.html">sFTP</a></li>
-<li class="tree__leaf"><a class="tree__link" href="webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="filexfer/index.html">filexfer</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#sftp">sFTP</a></li>
+<li class="toc__item toc__item--l3"><a href="#before-you-connect">Before you connect</a></li>
+<li class="toc__item toc__item--l3"><a href="#graphical-clients">Graphical clients</a></li>
+<li class="toc__item toc__item--l3"><a href="#command-line">Command line</a></li>
+<li class="toc__item toc__item--l2"><a href="#webdav">WebDAV</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-address">The address</a></li>
+<li class="toc__item toc__item--l3"><a href="#linux">Linux</a></li>
+<li class="toc__item toc__item--l3"><a href="#macos">macOS</a></li>
+<li class="toc__item toc__item--l3"><a href="#windows">Windows</a></li>
+<li class="toc__item toc__item--l2"><a href="#filexfer">filexfer</a></li>
+<li class="toc__item toc__item--l3"><a href="#using-it">Using it</a></li>
+<li class="toc__item toc__item--l3"><a href="#from-inside-a-tool">From inside a tool</a></li>
+</ol></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
@@ -84,9 +85,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
@@ -141,15 +140,15 @@ will not.</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="sftp/index.html">sFTP</a></td>
+<td><a href="#sftp">sFTP</a></td>
 <td>Everyday transfers from a desktop client or the command line. The most common choice.</td>
 </tr>
 <tr>
-<td><a href="webdav/index.html">WebDAV</a></td>
+<td><a href="#webdav">WebDAV</a></td>
 <td>Mounting your hub storage as a drive or network location.</td>
 </tr>
 <tr>
-<td><a href="filexfer/index.html">filexfer</a></td>
+<td><a href="#filexfer">filexfer</a></td>
 <td>Moving a file in or out while a tool session is running.</td>
 </tr>
 </tbody>
@@ -169,14 +168,242 @@ option is on.</p>
 <p><strong>Note:</strong> Your home directory is separate from group and project file areas.
 Uploading a file here does not put it in a group or a project.</p>
 </aside>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="sftp/index.html">sFTP</a></li>
-<li><a href="webdav/index.html">WebDAV</a></li>
-<li><a href="filexfer/index.html">filexfer</a></li></ul></section>
+<h2 id="sftp">sFTP</h2>
+<p>sFTP transfers files over SSH. It encrypts commands and data, so passwords and
+file contents never cross the network in the clear. It is not FTP: an FTP client
+cannot talk to an sFTP server, and an sFTP client cannot talk to an FTP server.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The sFTP server is part of the tool platform, which is separate
+software and is not in this repository, so the connection details below could
+not be checked. The two things the CMS itself does — accepting your SSH public
+key and setting a local password — were checked against the code and are
+marked as verified.</p>
+</aside>
+<h3 id="before-you-connect">Before you connect</h3>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Accounts do not get SSH and sFTP access automatically. A hub
+administrator has to grant it before any of this works.</p>
+</aside>
+<p>Two things on the hub decide whether you can authenticate.</p>
+<p><strong>Your local services password.</strong> If you signed in through an external provider
+— an institutional login, a social account — you have no password the SSH server
+can check. Open your profile's <strong>Account</strong> tab and use <strong>Request token</strong> to set
+a local password for SSH, sFTP and tool development access. <em>Verified against
+<code>core/plugins/members/account/account.php</code>.</em></p>
+<p><strong>Your SSH public key.</strong> The same <strong>Account</strong> tab shows a <strong>Local services
+account</strong> section with your local services username and a <strong>Manage Public SSH
+keys</strong> box. Paste your public key there and submit; the hub writes it to
+<code>.ssh/authorized_keys</code> in your home directory. The section only appears when the
+hub has turned on the plugin's <strong>Show local services details</strong> option, so if you
+do not see it, ask an administrator. <em>Verified against
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/members/account/account.php"><code>core/plugins/members/account/account.php</code></a>.</em></p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If <code>.ssh</code> or <code>.ssh/authorized_keys</code> in your home directory is a
+symbolic link, the hub refuses to read or write the key and says so. Replace
+the link with a real directory or file.</p>
+</aside>
+<h3 id="graphical-clients">Graphical clients</h3>
+<p>A graphical client lets you drag files between windows. Give it the host name of
+your hub — <code>yourhub.org</code> — and your hub username, then your password or your key.</p>
+<p><strong>Linux.</strong> Most file managers speak sFTP directly. In GNOME Files, KDE Dolphin
+or Nemo, open the location bar (Ctrl+L in GNOME) and enter
+<code>sftp://username@yourhub.org</code>. Your files then behave like local ones.</p>
+<p><strong>Windows.</strong> <a href="https://winscp.net/">WinSCP</a>,
+<a href="https://filezilla-project.org/">FileZilla</a>, and
+<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</a>, whose <code>psftp</code>
+command is its sFTP client.</p>
+<p><strong>macOS.</strong> <a href="https://panic.com/transmit/">Transmit</a>,
+<a href="https://fetchsoftworks.com/">Fetch</a>,
+<a href="https://cyberduck.io/">Cyberduck</a>, and
+<a href="https://binarynights.com/">ForkLift</a>.</p>
+<h3 id="command-line">Command line</h3>
+<p><code>sftp</code> ships with OpenSSH and is available on Linux and in the macOS terminal.</p>
+<pre><code class="language-bash">sftp username@yourhub.org
+</code></pre>
+<p>Once connected you get an <code>sftp&gt;</code> prompt.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd</code></td>
+<td>Change the directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>chmod</code></td>
+<td>Change the permissions of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>chown</code></td>
+<td>Change the owner of files on the remote computer</td>
+</tr>
+<tr>
+<td><code>dir</code> (or <code>ls</code>)</td>
+<td>List the files in the current directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>exit</code> (or <code>quit</code>)</td>
+<td>Close the connection and leave sFTP</td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>Copy a file from the remote computer to the local computer</td>
+</tr>
+<tr>
+<td><code>help</code> (or <code>?</code>)</td>
+<td>Get help on the use of sFTP commands</td>
+</tr>
+<tr>
+<td><code>lcd</code></td>
+<td>Change the directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lls</code></td>
+<td>List the files in the current directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lmkdir</code></td>
+<td>Create a directory on the local computer</td>
+</tr>
+<tr>
+<td><code>ln</code> (or <code>symlink</code>)</td>
+<td>Create a symbolic link for a file on the remote computer</td>
+</tr>
+<tr>
+<td><code>lpwd</code></td>
+<td>Show the current directory on the local computer</td>
+</tr>
+<tr>
+<td><code>lumask</code></td>
+<td>Change the local umask value</td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>Create a directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td>Copy a file from the local computer to the remote computer</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>Show the current directory on the remote computer</td>
+</tr>
+<tr>
+<td><code>rename</code></td>
+<td>Rename a file on the remote host</td>
+</tr>
+<tr>
+<td><code>rm</code></td>
+<td>Delete files from the remote computer</td>
+</tr>
+<tr>
+<td><code>rmdir</code></td>
+<td>Remove a directory on the remote host, which usually has to be empty</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Display the sFTP protocol version</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>Drop to a local shell. Follow it with a command, as in <code>!pwd</code>, to run just that command.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="webdav">WebDAV</h2>
+<p>WebDAV is the Distributed Authoring and Versioning extension to HTTP. It lets a
+client browse a remote filesystem, usually in a graphical browser that makes
+your hub files look like files on your desktop. Hubs offer WebDAV over HTTPS
+only; plain HTTP is not supported.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The WebDAV server is part of the tool platform, which is separate
+software and is not in this repository, so none of the client procedures below
+could be checked. What the CMS knows is only the mount the web server writes
+through, <code>/webdav/home/&lt;username&gt;</code>, which is not the address you connect to.</p>
+</aside>
+<h3 id="the-address">The address</h3>
+<p>On a standard installation the endpoint is:</p>
+<pre><code class="language-text">https://yourhub.org/webdav/
+</code></pre>
+<p>Some hubs put it on a host of its own, <code>https://webdav.yourhub.org/</code>. If neither
+works, ask your hub administrator which one it uses. You authenticate with your
+hub login and password.</p>
+<h3 id="linux">Linux</h3>
+<p>Most desktop file managers speak WebDAV. In the location bar of GNOME Files, KDE
+Dolphin or Nemo, enter:</p>
+<pre><code class="language-text">davs://username@yourhub.org/webdav
+</code></pre>
+<p>Some file managers offer a <strong>Connect to Server</strong> entry instead. Choose <strong>Secure
+WebDAV (HTTPS)</strong> and give <code>/webdav</code> as the folder.</p>
+<p><img src="../../media/webdav-connect-menu-linux.png" alt="The Connect to Server menu entry in a Linux file manager" /><img src="../../media/webdav-connect-dialog-linux.png" alt="The Connect to Server dialog, with Secure WebDAV selected" /></p>
+<p>To mount your hub storage as a filesystem rather than browse it, use
+<a href="https://savannah.nongnu.org/projects/davfs2">davfs2</a>. For a text-mode client,
+<code>cadaver</code> behaves much like FTP; run it against the address above and it prompts
+for your login.</p>
+<h3 id="macos">macOS</h3>
+<ol>
+<li>In the Finder, choose <strong>Go → Connect to Server</strong>.</li>
+<li>Enter the address for your hub and select <strong>Connect</strong>.</li>
+<li>Enter your hub login and password when prompted.</li>
+</ol>
+<p>The hub then appears in the Finder and you can drag files and folders to and
+from it.</p>
+<h3 id="windows">Windows</h3>
+<p>Windows connects through the <strong>WebClient</strong> service, which is not always running.
+Turn it on first:</p>
+<ol>
+<li>Open <strong>Services</strong>.</li>
+<li>Find <strong>WebClient</strong>, set its startup type to <strong>Automatic</strong>, and select
+<strong>Apply</strong>.</li>
+<li>If it is not running, select <strong>Start</strong>.</li>
+</ol>
+<p>Then map the hub as a network location:</p>
+<ol>
+<li>Open <strong>File Explorer</strong> and select <strong>This PC</strong>.</li>
+<li>Select <strong>Map network drive → Connect to a Web site that you can use to store
+your documents and pictures</strong>.</li>
+<li>Select <strong>Next</strong>, then <strong>Choose another network location</strong>, then <strong>Next</strong>.</li>
+<li>Enter the address for your hub and select <strong>Next</strong>.</li>
+<li>Enter your hub credentials.</li>
+<li>Name the location and finish the wizard.</li>
+</ol>
+<p>The new network location appears under <strong>This PC</strong>. Open it and drag files and
+folders between it and your computer.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> If dragging does not work, right-click the file or folder and choose
+<strong>Copy</strong>, then right-click the destination and choose <strong>Paste</strong>.</p>
+</aside>
+<h2 id="filexfer">filexfer</h2>
+<p><code>filexfer</code> moves a file between your computer and a running tool session,
+without going through sFTP or WebDAV first.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <code>filexfer</code> belongs to the tool platform, which is separate software
+and is not in this repository. Searching <code>com_tools</code> and the rest of the CMS
+finds no trace of it, so the CMS neither provides nor configures it and
+nothing below could be checked here.</p>
+</aside>
+<h3 id="using-it">Using it</h3>
+<p>Start the Workspace tool and type <code>filexfer</code> at the terminal prompt. The
+interface offers <strong>Upload</strong> and <strong>Download</strong>. Choosing either opens a browser
+window for the transfer, so your browser must allow pop-ups from the hub.</p>
+<p><img src="../../media/filexfer-2014-02-28-05-49-22-pm.jpg" alt="The filexfer window, offering Upload and Download" /></p>
+<p>Other tools can include <code>filexfer</code> as a secondary application, which gives their
+users the same way of exchanging files with a session.</p>
+<h3 id="from-inside-a-tool">From inside a tool</h3>
+<p>A tool does not call <code>filexfer</code> itself. It calls the two commands that ship with
+it, <code>importfile</code> and <code>exportfile</code>. See
+<a href="../fileinout/index.html">Importing and exporting user files</a>.</p>
+
         </div>
         <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../grid/jupyter-submit/index.html" rel="prev"><span>Previous</span>Submitting from a Jupyter notebook</a><a class="pager__next" href="sftp/index.html" rel="next"><span>Next</span>sFTP</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../grid/jupyter-submit/index.html" rel="prev"><span>Previous</span>Submitting from a Jupyter notebook</a><a class="pager__next" href="../toolpaths/index.html" rel="next"><span>Next</span>Tool paths</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/06-accesshomedir/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/06-accesshomedir.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

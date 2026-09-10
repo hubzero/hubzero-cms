@@ -35,7 +35,7 @@ Whichever directory it finds owns the component outright. Putting
 `app/components/com_kb/` beside the shipped `core/components/com_kb/` replaces
 it wholesale; the two trees are never merged, so a partial copy is a broken
 copy. The same rule governs class loading — see
-[Structure](structure.md).
+[Structure](02-structure.md).
 
 ## The three clients
 
@@ -63,7 +63,7 @@ identified by the `option` query variable, then call
 directory), loads the component's language files, and executes the entry
 point. The entry point picks a controller class, constructs it, and calls
 `execute()`. The controller runs a task, hands data to a view, and the view
-renders a layout. See [Controllers](controllers.md) and [Views](views.md).
+renders a layout. See [Controllers](03-controllers.md) and [Views](07-views.md).
 
 The API application takes a different path through
 [`Hubzero\Api\Component\Loader`](../../../core/libraries/Hubzero/Api/Component/Loader.php),
@@ -80,23 +80,23 @@ applies to `{ControllerName}`, `{ViewName}`, and `{ModelName}`.
 
 ## In this section
 
-- [Migrations](migrations.md) — registering the component and creating its
+- [Migrations](01-migrations.md) — registering the component and creating its
   tables.
-- [Structure](structure.md) — the directory layout, the namespaces, and the
+- [Structure](02-structure.md) — the directory layout, the namespaces, and the
   entry point.
-- [Controllers](controllers.md) — tasks, the task map, and the site,
+- [Controllers](03-controllers.md) — tasks, the task map, and the site,
   administrator, and API base classes.
-- [Helpers](helpers.md) — shared static classes, and helpers callable from a
+- [Helpers](04-helpers.md) — shared static classes, and helpers callable from a
   view.
-- [Models](models.md) — the ORM models and plain classes that hold a
+- [Models](05-models.md) — the ORM models and plain classes that hold a
   component's data and rules.
-- [Views](views.md) — view objects, layouts, the search order, and template
+- [Views](07-views.md) — view objects, layouts, the search order, and template
   overrides.
-- [Languages](languages.md) — the `.ini` files, where each is loaded from, and
+- [Languages](06-languages.md) — the `.ini` files, where each is loaded from, and
   `Lang::txt()`.
-- [Assets](assets.md) — pushing CSS and JavaScript, and building image paths.
-- [Routing](routing.md) — `router.php`, `build()`, and `parse()`.
-- [Configuration](configuration.md) — `config.xml`, `access.xml`, and reading
+- [Assets](08-assets.md) — pushing CSS and JavaScript, and building image paths.
+- [Routing](09-routing.md) — `router.php`, `build()`, and `parse()`.
+- [Configuration](10-configuration.md) — `config.xml`, `access.xml`, and reading
   parameters back.
-- [Packaging](packaging.md) — `composer.json`, the manifest, and what a
+- [Packaging](11-packaging.md) — `composer.json`, the manifest, and what a
   distributable component contains.

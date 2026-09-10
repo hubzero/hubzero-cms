@@ -10,7 +10,7 @@ imported: 2026-09-09
 -->
 # Simulation usage definitions
 
-The **Simulation** half of the hub's [`/usage`](usage.md) page reports ten
+The **Simulation** half of the hub's [`/usage`](28-usage.md) page reports ten
 figures about the tools members have run. This chapter says what each one
 means.
 

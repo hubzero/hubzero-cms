@@ -13,7 +13,7 @@ builds its list from that table, not from the filesystem, so an unregistered
 plugin is never required, never constructed, and never bound to an event.
 
 Registration is done by a migration in the plugin's own `migrations`
-directory, run by [`muse migration`](../12-muse/README.md).
+directory, run by [`muse migration`](../12-muse.md).
 
 ## Where migrations live
 
@@ -28,7 +28,7 @@ named after the class. Migrations run in timestamp order across every
 extension on the hub, so give a plugin that depends on a component's tables a
 later timestamp than the migration that creates them.
 
-> **Note:** See [Migrations](../06-database/02-migrations.md) for naming
+> **Note:** See [Migrations](../06-database.md#migrations) for naming
 > conventions, the `muse` commands, and the schema helpers on `$this->db`.
 
 ## The registration migration

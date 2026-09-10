@@ -212,7 +212,7 @@ php core/bin/muse migration -f
 `-f` is the full run. Older instructions pair `-f` with `-i`. That flag is
 deprecated: it now behaves as `-a`, which only widens what is listed.
 
-[muse](../developers/12-muse/README.md) is the CMS command line; it does a
+[muse](../developers/12-muse.md) is the CMS command line; it does a
 great deal more than migrations.
 
 > **Tip:** Break your development environment freely. Snapshot the virtual

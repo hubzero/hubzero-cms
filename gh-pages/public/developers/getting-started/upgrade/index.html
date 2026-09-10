@@ -89,11 +89,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/index.html">Database</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
@@ -150,9 +146,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/accessibility/index.html">Accessibility</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/index.html">Muse</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
@@ -162,11 +156,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
@@ -479,7 +469,7 @@ $other = User::getInstance(1234);  // JFactory::getUser(1234)
 </code></pre>
 <h2 id="the-database">The database</h2>
 <p>An upgrade is not finished when the files are in place. Schema and data
-changes ship as <a href="../../database/migrations/index.html">migrations</a> — small PHP
+changes ship as <a href="../../database/index.html#migrations">migrations</a> — small PHP
 classes under a <code>migrations</code> directory with an <code>up()</code> and a <code>down()</code> —
 and <a href="../../muse/index.html">muse</a> runs the ones a hub has not seen,
 recording each in <code>#__migrations</code> so it never runs twice.</p>
@@ -489,7 +479,7 @@ php core/bin/muse migration -f   # actually run them
 <p>The dry run is the default, which is the safest thing about the command
 and the easiest to miss. <code>-e com_example</code> limits the run to one extension,
 <code>-d down</code> reverses, and the full option list is in the
-<a href="../../../reference/muse/migration/index.html">muse migration reference</a>.</p>
+<a href="../../../reference/muse/index.html#muse-migration">muse migration reference</a>.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Reversing a schema change is often impossible without data
 loss, whatever <code>down()</code> claims. Take a database dump before an upgrade:

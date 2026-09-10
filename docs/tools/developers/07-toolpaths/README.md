@@ -19,7 +19,7 @@ This section answers those questions.
 > repository, so they could not be checked against code. The one part that is
 > CMS-side — the whitelist that decides which directories a launch URL may name
 > — is covered in
-> [Directory parameter whitelist](../../administrators/whitelistdirectories.md)
+> [Directory parameter whitelist](../../administrators.md#directory-parameter-whitelist)
 > and was checked.
 
 - [Environment variables](01-toolenvvars.md) — what a session tells the tool

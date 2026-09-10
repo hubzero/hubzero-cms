@@ -92,6 +92,6 @@ statistics database that nothing in this repository writes, and most of its
 maps use a Google Maps API retired in 2013. A hub without metrics collection
 shows missing-table errors there rather than an empty report. The terms it
 uses are defined in
-[Simulation usage definitions](simusagedefinitions.md); the administrator's
+[Simulation usage definitions](25-simusagedefinitions.md); the administrator's
 view of the same problem is in
 [Usage](../managers/09-components/37-usage.md) in the Hub managers book.

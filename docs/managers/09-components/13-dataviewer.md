@@ -33,8 +33,8 @@ plugin, not on this component:
    DataViewer reads them with. The read-only user defaults to `dataviewer`.
 3. Set **Status** to **Enabled** and select **Save & Close**.
 
-See [Projects](15-projects/README.md#enabling-a-project-feature) for the rest
-of that plugin, and [Databases](../../users/16-projects/05-databases.md) in
+See [Projects](26-projects.md#enabling-a-project-feature) for the rest
+of that plugin, and [Databases](../../users/16-projects.md#databases) in
 the users book for what a project team does with the result.
 
 > **Note:** If a project's databases list loads but opening a database's
@@ -50,7 +50,7 @@ Nothing on the hub links to `/dataviewer` on its own. Two things link into it:
 | Link comes from | URL it builds |
 |---|---|
 | A project's **Databases** tab | `/dataviewer/view/<project alias>:dsl/<database name>/` |
-| A data attachment on a [publication](16-publications/README.md) | `/dataviewer/view/publication:dsl/<database name>/?v=<version>` |
+| A data attachment on a [publication](27-publications.md) | `/dataviewer/view/publication:dsl/<database name>/?v=<version>` |
 
 The segment after the colon is the mode. Three modes exist in the code:
 

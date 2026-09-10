@@ -131,12 +131,12 @@ core/bin/muse cache clear
 
 It reports each path it removes. Use it after a template or LESS change, and
 when a hub's cache has grown large enough that walking it in the browser times
-out. The [muse reference](../../reference/muse/cache.md) lists the command's
+out. The [muse reference](../../reference/muse.md#muse-cache) lists the command's
 tasks.
 
 Purging can also be scheduled. The **Cron - Cache Handler** plugin offers
 **Trash expired cache data**, which is the Purge Expired button as a cron job;
-schedule it from [Cron](08-cron.md) on a hub whose cache needs regular
+schedule it from [Cron](12-cron.md) on a hub whose cache needs regular
 trimming. Its sibling job, **Remove old system CSS files**, looks for files
 named `system-*.css` directly in `app/cache/` — a name the CMS no longer
 writes — so it finds nothing to delete.
@@ -155,5 +155,5 @@ Both screens also have REST equivalents — `GET /api/cache/list`,
   is a database table refreshed from
   [Language Manager](20-languages.md).
 - The Solr index, which has its own rebuild in
-  [Search](18-search/README.md).
+  [Search](31-search/README.md).
 - Anything the web server or a CDN is caching in front of the hub.

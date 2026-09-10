@@ -139,6 +139,6 @@ be made private, and a list's built-in owner group cannot be removed.
 
 ## Related
 
-- [Support](support.md) — report a problem rather than ask for a feature.
-- [Questions and answers](questions.md) — ask the community.
-- [Knowledge base](knowledgebase.md) — check whether it already exists.
+- [Support](12-support.md) — report a problem rather than ask for a feature.
+- [Questions and answers](19-questions.md) — ask the community.
+- [Knowledge base](13-knowledgebase.md) — check whether it already exists.

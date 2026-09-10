@@ -6,7 +6,7 @@
 its docblock's ``@museDescription`` line is the help text muse prints, and
 ``@museArgument`` lines describe options. Commands in a subdirectory are
 sub-commands (``muse user:group``). This script reads those docblocks and
-writes one page per command under ``docs/reference/muse/``.
+writes them all onto ``docs/reference/muse.md``, one section per command.
 
 Usage:
     python3 tools/docs/gen_muse_reference.py
@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 COMMANDS = ROOT / "core" / "libraries" / "Hubzero" / "Console" / "Command"
-OUT = ROOT / "docs" / "reference" / "muse"
+OUT = ROOT / "docs" / "reference" / "muse.md"
 SKIP_FILES = {"Base.php", "CommandInterface.php"}
 
 HEADER = "<!--\nstatus: generated\nsource: {source}\n-->\n"
@@ -92,8 +92,8 @@ def main() -> int:
     if OUT.exists():
         for old in OUT.rglob("*.md"):
             old.unlink()
-    OUT.mkdir(parents=True, exist_ok=True)
-    index = []
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    index, sections = [], []
     for path in sorted(COMMANDS.rglob("*.php")):
         if path.name in SKIP_FILES or "Tests" in path.parts:
             continue
@@ -109,38 +109,27 @@ def main() -> int:
         default = next((t for t in tasks if t["name"] == "execute"), None)
         named = [t for t in tasks if t["name"] != "execute"]
         rel = path.relative_to(ROOT).as_posix()
-        lines = [
-            HEADER.format(source=rel),
-            f"# muse {name}",
-            "",
-        ]
+        anchor = "muse-" + name.replace(":", "-")
+        body = [f"## `muse {name}`", ""]
         if overview:
-            lines += [overview[0].upper() + overview[1:] + ("" if overview.endswith(".") else "."), ""]
-        lines += [f"Implemented in [`{path.name}`](../../../{rel}).", ""]
+            body += [overview[0].upper() + overview[1:] + ("" if overview.endswith(".") else "."), ""]
+        body += [f"Implemented in [`{path.name}`](../../{rel}).", ""]
         if default and default["description"]:
-            lines += ["## Running the command alone", "", f"`muse {name}` — {default['description']}", ""]
-        if named:
-            lines += ["## Tasks", ""]
-            for task in named:
-                lines.append(f"### `muse {name} {task['name']}`")
-                lines.append("")
-                if task["description"]:
-                    lines.append(str(task["description"]))
-                    lines.append("")
-                if task.get("hidden"):
-                    lines.append("> **Note:** This task carries `@museIgnoreHelp`. Nothing acts on that "
-                                 "tag, so muse lists the task anyway.")
-                    lines.append("")
-                if task["arguments"]:
-                    lines.append("Arguments:")
-                    lines.append("")
-                    lines += [f"- {arg}" for arg in task["arguments"]]  # type: ignore[union-attr]
-                    lines.append("")
-        else:
-            lines += ["This command has no documented tasks; run `muse " + name + " help` for its built-in help.", ""]
-        page = OUT / (name.replace(":", "-") + ".md")
-        page.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
-        index.append((name, overview, len(named)))
+            body += [f"Run alone, `muse {name}` {default['description'][0].lower()}{default['description'][1:]}", ""]
+        for task in named:
+            body.append(f"### `muse {name} {task['name']}`")
+            body.append("")
+            if task["description"]:
+                body += [str(task["description"]), ""]
+            if task.get("hidden"):
+                body += ["> **Note:** This task carries `@museIgnoreHelp`. Nothing acts on that "
+                         "tag, so muse lists the task anyway.", ""]
+            if task["arguments"]:
+                body += ["Arguments:", ""] + [f"- {arg}" for arg in task["arguments"]] + [""]
+        if not named and not (default and default["description"]):
+            body += [f"No documented tasks; run `muse {name} help` for its built-in help.", ""]
+        sections.append("\n".join(body).rstrip())
+        index.append((name, overview, len(named), anchor))
 
     lines = [
         HEADER.format(source="core/libraries/Hubzero/Console/Command/"),
@@ -148,16 +137,17 @@ def main() -> int:
         "",
         "`muse` is the Hubzero command-line tool, at `core/bin/muse`. Run it from the hub's root directory as a user "
         "that can read the configuration. `muse help` lists the commands; `muse <command> help` describes one. "
-        "This reference is generated from the command classes' docblocks.",
+        "This page is generated from the command classes' docblocks, so it says what the code says rather than what "
+        "the built-in help prints.",
         "",
         "| Command | Tasks | Purpose |",
         "|---|---|---|",
     ]
-    for name, overview, count in index:
-        lines.append(f"| [`muse {name}`]({name.replace(':', '-')}.md) | {count} | {overview.replace('|', ' ')} |")
-    lines.append("")
-    (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
-    print(f"{len(index)} command pages -> {OUT.relative_to(ROOT)}")
+    for name, overview, count, anchor in index:
+        lines.append(f"| [`muse {name}`](#{anchor}) | {count} | {overview.replace('|', ' ')} |")
+    lines += ["", *[s + "\n" for s in sections]]
+    OUT.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    print(f"{len(index)} commands on one page -> {OUT.relative_to(ROOT)}")
     return 0
 
 

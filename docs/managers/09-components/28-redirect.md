@@ -120,9 +120,9 @@ rewrites links that point off the hub so that they go through
 a countdown page — *Redirecting Soon…* — before forwarding.
 
 Four places pass member-supplied text through the rewriter: the body of an
-[Answers](01-answers.md) question and of its comments, the **About** text on
+[Answers](02-answers.md) question and of its comments, the **About** text on
 a project's public page and in the project info panel, and the handoff when a
-[tool](25-tools.md) session opens at an external proxy URL.
+[tool](36-tools.md) session opens at an external proxy URL.
 
 The rewrite happens whether or not the delay is switched on; what the options
 control is what the `/redirect/` address then does. In every case the

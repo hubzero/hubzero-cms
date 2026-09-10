@@ -104,7 +104,7 @@ has marked contributable appear.
 
 > **Note:** Choosing **Tools** does not open this wizard. Simulation tools
 > are registered through the tool pipeline instead; see
-> [Tools](tools.md).
+> [Tools](22-tools.md).
 
 Then work through five steps.
 
@@ -183,12 +183,12 @@ This cannot be undone.
 > **Note:** You cannot delete a resource that has already been published —
 > others may be citing it. It is marked as deleted and disappears from the
 > site. To have one retired or removed entirely, ask the hub's support team;
-> see [Support](support.md).
+> see [Support](12-support.md).
 
 ## Where to go next
 
 Tags connect your resource to everything else on the hub — see
-[Tags](tags.md). To gather resources into a personal reading list, see
-[Collections](collections.md). To ask about a resource or request a
-feature, see [Questions and answers](questions.md) and
-[Wishlist](wishlist.md).
+[Tags](27-tags.md). To gather resources into a personal reading list, see
+[Collections](01-collections.md). To ask about a resource or request a
+feature, see [Questions and answers](19-questions.md) and
+[Wishlist](29-wishlist.md).

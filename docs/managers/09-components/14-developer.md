@@ -117,7 +117,7 @@ setting on, which disables the cache entirely.
 points at it. It shows two panels:
 
 - **API Development**, linking to `/developer/api`.
-- **Tool Development**, linking to the [Tools](25-tools.md) component.
+- **Tool Development**, linking to the [Tools](36-tools.md) component.
 
 A third panel, **Web Development**, is commented out of the template. Its
 controller and view still exist at `/developer/web`, and render the literal
@@ -198,7 +198,7 @@ callbacks on their behalf, at `/developer/callback/<name>`:
 | `/developer/callback/globusAuthorize` | Authentication - Globus |
 
 The first three are the redirect URIs you register with the providers when you
-set up [project file connectors](15-projects/projectfileconnect.md#the-oauth-callback);
+set up [project file connectors](26-projects.md#the-oauth-callback);
 that chapter has the registration steps. These paths are fixed — they are not
 configurable and they do not depend on a menu item.
 

@@ -21,7 +21,7 @@ and nothing in the group's own web space can be edited from the site either:
 the group file browser reaches the group's `uploads` folder and nothing else,
 for every group, super or not. You edit a super group's template on the
 server, or through the repository workflow in
-[Super Groups with GitLab](../14-supergroups-gitlab/README.md).
+[Super Groups with GitLab](../14-supergroups-gitlab.md).
 
 For what the status gives a group and how an administrator creates one, see
 [Super Groups](../../managers/06-users/08-supergroups.md) in the managers

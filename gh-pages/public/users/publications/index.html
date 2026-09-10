@@ -42,10 +42,7 @@
         <nav aria-label="Hub users contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../courses/index.html">Courses</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../courses/course-manager-features/index.html">Course manager features</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../courses/student-features/index.html">Student features</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog</a></li>
@@ -63,12 +60,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../knowledgebase/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../dashboard/index.html">Member dashboard</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../profile/index.html">Member profile</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../projects/projectfiles/index.html">Project files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../projects/databases/index.html">Databases</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Publications</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Publications</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#finding-a-publication">Finding a publication</a></li>
 <li class="toc__item toc__item--l2"><a href="#reading-a-publication">Reading a publication</a></li>
 <li class="toc__item toc__item--l2"><a href="#downloading">Downloading</a></li>
@@ -77,9 +71,13 @@
 <li class="toc__item toc__item--l3"><a href="#working-through-the-panels">Working through the panels</a></li>
 <li class="toc__item toc__item--l3"><a href="#review-and-submit">Review and submit</a></li>
 <li class="toc__item toc__item--l2"><a href="#forking">Forking</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="curation/index.html">Curation</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#curation">Curation</a></li>
+<li class="toc__item toc__item--l3"><a href="#who-can-curate">Who can curate</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-curation-list">The curation list</a></li>
+<li class="toc__item toc__item--l3"><a href="#reviewing-a-publication">Reviewing a publication</a></li>
+<li class="toc__item toc__item--l3"><a href="#answering-a-review-as-an-author">Answering a review as an author</a></li>
+<li class="toc__item toc__item--l3"><a href="#skipping-review">Skipping review</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../questions/index.html">Questions and answers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
@@ -268,7 +266,7 @@ publication authors have read and agree to</em> the hub's <strong>Terms of Depos
 </ul>
 <p>Press <strong>Submit draft</strong>. The publication goes to <em>pending approval</em>, curators
 are notified, and you get an email when they respond. If they ask for
-changes, see <a href="curation/index.html">Curation</a>.</p>
+changes, see <a href="#curation">Curation</a>.</p>
 <p>Once a version is published you cannot change most of it — that is what the
 DOI guarantees. To correct or extend the work, start a new version from the
 <strong>Versions</strong> panel; it keeps the same publication page and adds a new release
@@ -281,12 +279,158 @@ in a new one — so you can build on the work and publish the result. The fork
 records where it came from, and the original's page lists it. The <strong>Diff</strong>
 button on the Forks tab compares two versions side by side, section by
 section.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="curation/index.html">Curation</a></li></ul></section>
+<h2 id="curation">Curation</h2>
+<p>Curation is the review a publication goes through between the moment its
+authors submit it and the moment it goes live. A curator reads every part of
+the draft, marks each one as acceptable or as needing work, and either
+approves the publication or sends it back. This chapter covers both sides:
+reviewing as a curator, and answering a review as an author. Submitting a
+draft in the first place is covered in <a href="../index.html">Publications</a>.</p>
+<h3 id="who-can-curate">Who can curate</h3>
+<p>Curation is open to members of the hub's curators group and to site
+administrators. Where a publication type names a curators group of its own,
+its members see only publications of that type. Anyone else can still be
+<strong>assigned</strong> to a single publication, and then sees only that one.</p>
+<p>You have to be logged in. Visiting the curation pages as a guest gives you
+<em>Please login to access publication curation</em>; a logged-in member with no
+curation rights gets <em>We are sorry. You are not authorized for publication
+curation.</em></p>
+<h3 id="the-curation-list">The curation list</h3>
+<p>Go to <code>/publications/curation</code>. The page opens with <em>Below is a list of
+publications you are authorized to curate.</em> and two filters, <strong>All</strong> and
+<strong>Assigned to me</strong>.</p>
+<p>The table lists every submission waiting on someone, with columns <strong>ID</strong>, a
+thumbnail, <strong>Title</strong>, the version label, <strong>Content</strong> (the publication type),
+<strong>Submitted</strong>, and <strong>Status</strong>. Click any heading to sort by it; the default
+is newest submission first. <strong>Status</strong> is either <em>pending curator review</em> or
+<em>pending author changes</em>, and the submitted column says <em>Submitted</em> or
+<em>Re-submitted</em>, with the date and the name of the person who sent it.</p>
+<p>Each row ends with up to three controls:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Assign</strong></td>
+<td>Opens <strong>Assign a Curator</strong>. Type a name and pick the member from the drop-down, then <strong>Save</strong>. Once someone is assigned the cell reads <em>Assigned to <name></em>; clicking the name reopens the box to <strong>Change assignment</strong>.</td>
+</tr>
+<tr>
+<td><strong>Review</strong></td>
+<td>Opens the review screen. It appears only while the publication is pending curator review.</td>
+</tr>
+<tr>
+<td><strong>History</strong></td>
+<td>Opens <strong>Curation History</strong>, a dated log of every review action and author reply, each entry marked <em>curator</em> or <em>author</em>.</td>
+</tr>
+</tbody>
+</table>
+<p>A small icon beside those opens the publication's public page in a new view.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Only one curator is assigned at a time, and assigning someone
+emails them a request to review. Assignment is not required — anyone with
+curation rights can review anything they can see — but a member who is
+only assigned, and is in no curators group, sees nothing else.</p>
+</aside>
+<h3 id="reviewing-a-publication">Reviewing a publication</h3>
+<p>The review screen shows the publication's type, title and version, when it
+was submitted and by whom, who it is assigned to, and any <strong>Submitter
+comment(s)</strong> the authors left. Under that: <em>Review all items below and check
+them off as complete or requiring changes.</em></p>
+<p>Each part of the draft — content, description, authors, license, tags,
+citations, notes — appears as its own block, with the curator instructions
+the administrator wrote for that block beside it, and a checker with four
+states:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>not reviewed yet</td>
+<td>You have not judged this item.</td>
+</tr>
+<tr>
+<td>looks good</td>
+<td>You have accepted it.</td>
+</tr>
+<tr>
+<td>changes required</td>
+<td>You have asked for a change.</td>
+</tr>
+<tr>
+<td>item updated, needs review</td>
+<td>The authors changed it after your review; look again.</td>
+</tr>
+</tbody>
+</table>
+<p>Choose <strong>looks good</strong> to accept an item. Choose <strong>changes required</strong> and a
+<strong>Request changes</strong> box opens: <em>Explain to authors what needs to change</em>.
+Write the explanation and press <strong>Request changes</strong>. Where the authors have
+already answered an earlier request, their reply appears on the item as
+<em>Author comment:</em>, and an item they were let off shows <em>Requirement
+skipped</em>.</p>
+<p>Two buttons at the top act on the whole submission:</p>
+<ul>
+<li><strong>Approve publication</strong> publishes the version. The hub stamps the accepted
+date, freezes the type's manifest onto the version so the record cannot
+drift, updates or registers the DOI with the identifier service, adds the
+publication to the authors' ORCID records where they have connected one,
+and — where the hub archives to a trusted repository and no grace period is
+set — copies the version into archival storage. You get <em>Publication has
+been approved to be published</em>, and the authors are emailed <em>Your
+publication has been approved. You can view it live at …</em></li>
+<li><strong>Kick back to authors</strong> sets the version to <em>pending author changes</em> and
+returns it to them. You get <em>Publication sent back to authors for changes</em>,
+and they are emailed <em>Administrator has reviewed your submitted publication
+and requested changes.</em></li>
+</ul>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Both buttons stay greyed out until every item carries a mark,
+and only one of them lights up: <strong>Approve publication</strong> when everything
+passed, <strong>Kick back to authors</strong> when at least one item still needs work.
+An item the authors have changed since you looked reverts to <em>item
+updated, needs review</em> and locks the buttons again until you re-check it.</p>
+</aside>
+<h3 id="answering-a-review-as-an-author">Answering a review as an author</h3>
+<p>When a publication comes back, its version status is <em>Changes required</em>.
+Open it from the project's <strong>Publications</strong> area, or follow the link in the
+email, and press <strong>Make changes</strong>.</p>
+<p>The panel bar shows which parts need work. Open one and you see the curator's
+explanation. You have two ways to clear it:</p>
+<ul>
+<li>Make the change the curator asked for.</li>
+<li>Press <strong>Dispute this</strong> under <em>Don't agree with curator?</em> This opens
+<strong>Dispute curator's request for changes</strong>, where you explain why you do not
+wish to make the change. Where the curator asked you to meet a requirement
+you cannot, <strong>Request to skip requirement</strong> does the same thing for that.</li>
+</ul>
+<p>Every flagged item has to be either changed or disputed before you can
+re-submit. Once they all are, <strong>OK to submit</strong> appears in the version bar.
+Follow it to the review panel, check the publishing settings and the Terms of
+Deposit box again, and press <strong>Re-submit draft to be published</strong>.</p>
+<p>The publication goes back to <em>pending curator review</em>, marked as
+re-submitted, and the curator sees which items you changed and which you
+disputed. Your changes and their comments both land in the <strong>History</strong>, so
+either side can read the whole exchange later.</p>
+<h3 id="skipping-review">Skipping review</h3>
+<p>Some hubs approve some submissions automatically: a publication type can be
+set to auto-approve, and the hub can name particular members whose
+submissions never wait. In those cases the review panel offers the tick box
+<em>I would like for this publication to be reviewed instead of automatically
+being published</em>, so you can ask for a curator anyway.</p>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="curation/index.html" rel="next"><span>Next</span>Curation</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="../questions/index.html" rel="next"><span>Next</span>Questions and answers</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/18-publications/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/18-publications.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

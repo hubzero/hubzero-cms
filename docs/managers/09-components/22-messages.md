@@ -32,7 +32,7 @@ Nothing in this chapter touches that system. It is configured through:
   carries the rate limits (**time_limit**, **daily_limit**) that stop a
   runaway component from flooding a mailbox.
 - The **Messaging** tab on a member's record; see
-  [Members](../06-users/01-members/README.md).
+  [Members](../06-users/01-members.md).
 
 **The Messages component**, documented below, is a separate, administrator-only
 private-message inbox using the `#__messages` table. It exists so that one
@@ -124,5 +124,5 @@ what admits you to the screens.
 Nothing. Leave the component installed — removing it is not supported and
 nothing gains from it — and do member communication through the systems that
 members can actually see: the notification settings described at the top of
-this chapter, and [Newsletters](newsletters.md) for anything sent to many
+this chapter, and [Newsletters](23-newsletters.md) for anything sent to many
 people at once.

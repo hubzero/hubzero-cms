@@ -138,7 +138,7 @@ levels deep. These comments live in the hub's shared item-comment table and
 have no administrator screen of their own. A comment reported as abusive
 becomes a support ticket and is hidden behind a notice on the site until
 the ticket is resolved; the same is true of a reported question or answer.
-See [Support](support.md).
+See [Support](34-support.md).
 
 ## Options
 

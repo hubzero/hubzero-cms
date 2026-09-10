@@ -52,7 +52,7 @@ a `weber-auth-<hub domain>` cookie — secure, HttpOnly, thirty days.
 
 Everything else — which Anaconda environments exist, which kernels a notebook
 can pick, how the notebook is served — is decided on the execution hosts. See
-[Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the tool
+[Jupyter notebooks](../../administrators.md#jupyter-notebooks) in the tool
 administrators book for the administrator's side of that.
 
 ## Getting a notebook published

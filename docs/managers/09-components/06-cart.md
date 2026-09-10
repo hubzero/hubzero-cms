@@ -12,7 +12,7 @@ imported: 2026-09-09
 
 The Cart component is the transaction half of the hub's online store. It holds
 the shopper's basket, the checkout, and the order record; the catalogue of
-products and SKUs lives in the [Storefront](19-storefront.md) component. In the
+products and SKUs lives in the [Storefront](33-storefront.md) component. In the
 administrator interface Cart is a set of reports: what has been ordered, and
 what has been downloaded.
 

@@ -120,11 +120,11 @@ expect it to show the same quote each time rather than a random one.
 `/feedback` is a landing page with up to four cards:
 
 - **Write a Success Story** — the form above.
-- **Report a Problem** — a new support ticket. See [Support](support.md).
+- **Report a Problem** — a new support ticket. See [Support](34-support.md).
 - **Add to the Wish List** — shown only if the Wishlist component is enabled.
-  See [Wishlist](wishlist.md).
+  See [Wishlist](40-wishlist.md).
 - **Take a Poll** — shown only if the Poll component is enabled; it opens
-  `/feedback/poll`, which renders the **Poll** module. See [Poll](poll.md).
+  `/feedback/poll`, which renders the **Poll** module. See [Poll](25-poll.md).
 
 Two paths under `/feedback` are redirects rather than pages of their own:
 `/feedback/report_problems` opens the new-ticket form, and

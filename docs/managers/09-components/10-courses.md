@@ -340,7 +340,7 @@ Numbers** to **Yes** on the **Basic** tab and save.
 
 The old version of this page ended with a section on HUB Presenter, the
 slide-and-video presentation format. That belongs to
-[Resources](17-resources.md), not to Courses: a presentation is a resource of
+[Resources](29-resources.md), not to Courses: a presentation is a resource of
 an online-presentation type, whose files are assembled on the hub's file
 system and described by a `presentation.json` manifest. Nothing about it is
 configured in the Courses component.

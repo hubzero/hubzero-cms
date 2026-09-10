@@ -98,4 +98,4 @@ Download links stay live here, so you can fetch a file again later.
 > the hub's support staff.
 
 You have to be logged in to see your orders. See
-[Support](support.md) if an order or a download does not behave as it should.
+[Support](12-support.md) if an order or a download does not behave as it should.

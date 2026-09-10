@@ -125,7 +125,7 @@ web server's time limit:
 muse searchmigration run --all -url='https://yourhub.org'
 ```
 
-See [`muse searchmigration`](../../../reference/muse/searchmigration.md) for
+See [`muse searchmigration`](../../../reference/muse.md#muse-searchmigration) for
 its options: `-components` indexes a named list instead of `--all`, and
 `--rebuild` includes components that have already been indexed once.
 

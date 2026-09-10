@@ -37,7 +37,7 @@ take part. With one you can:
   own machines and appear in your browser — where the hub offers them;
 - **ask and answer questions**, file support tickets, and comment.
 
-Registering is described in [Registration](registration.md). What the hub asks
+Registering is described in [Registration](20-registration.md). What the hub asks
 you for varies: the form is assembled from the fields the hub's administrators
 chose, so two hubs rarely ask exactly the same questions.
 
@@ -50,19 +50,19 @@ Three things are worth knowing before you start clicking.
 profile is at `/members/<their id>`. Down the left of that page is a list of
 tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. Each
 tab is a separate plugin, and the hub decides which ones exist. The two you
-will use first are described in [Member dashboard](dashboard.md) and
-[Member profile](profile.md).
+will use first are described in [Member dashboard](14-dashboard.md) and
+[Member profile](15-profile.md).
 
 **Shared spaces.** Groups and projects are the places where several people
-work on the same thing. A [group](groups/README.md) is a community space with
+work on the same thing. A [group](11-groups/README.md) is a community space with
 its own pages, forum, calendar, blog, and file area. A
-[project](projects/README.md) is a workspace for a piece of research, with
+[project](16-projects.md) is a workspace for a piece of research, with
 files, notes, to-dos, and a path to publishing what comes out of it.
 
 **Published content.** Resources, publications, wiki pages, knowledge base
 articles, courses, and collections are the hub's library. They are public by
 default, they carry their authors' names, and the good ones acquire citations
-and a DOI. [Publications](publications/README.md) covers the guided route from
+and a DOI. [Publications](18-publications.md) covers the guided route from
 a project to a citable release.
 
 ## Finding things
@@ -70,10 +70,10 @@ a project to a citable release.
 There are three different ways to look, and they do not overlap as much as you
 might expect:
 
-- [Search](search.md) searches the hub's content. What it can reach depends on
+- [Search](24-search.md) searches the hub's content. What it can reach depends on
   which search engine the hub runs; the chapter says plainly what is and is not
   covered.
-- [Tags](tags.md) collect items of any type that were labelled the same way.
+- [Tags](27-tags.md) collect items of any type that were labelled the same way.
 - **What's New** (`/whatsnew`) lists recently added items by category, with an
   RSS feed for each one.
 
@@ -87,7 +87,7 @@ introductory videos.
 
 ## Where to go next
 
-[Getting started](gettingstarted.md) walks through the first hour: creating an
+[Getting started](30-gettingstarted.md) walks through the first hour: creating an
 account, confirming it, filling in a profile, and arranging a dashboard. After
 that, the rest of this book is organised by feature — see the
 [book's contents](README.md).

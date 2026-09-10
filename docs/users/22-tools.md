@@ -155,7 +155,7 @@ hub.
 The published tool page counts the people who have used it, and collects
 questions and suggestions from them. Answering those and publishing improved
 versions is what grows a tool's user base. Your own contribution figures are
-gathered on the **Usage** tab of your member area — see [Usage](usage.md),
+gathered on the **Usage** tab of your member area — see [Usage](28-usage.md),
 which explains why that tab is often empty.
 
 The [Tools](../tools/README.md) book covers the developer side in depth:

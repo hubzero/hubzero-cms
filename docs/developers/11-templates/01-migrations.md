@@ -37,7 +37,7 @@ app/templates/mytemplate/
 scans every directory under `core/templates` and `app/templates` for a
 `migrations` subdirectory, alongside the component, module and plugin trees.
 
-> **Note:** See the [migrations chapter](../06-database/02-migrations.md) for
+> **Note:** See the [migrations chapter](../06-database.md#migrations) for
 > the file naming rules, the `up()`/`down()` contract and how to run them.
 
 ## Registering the template

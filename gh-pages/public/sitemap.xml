@@ -28,9 +28,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/installation/el8/optional-services/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/newhub/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/howitfits/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/administrator/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/advancedsetup/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/approvingcontent/</loc></url>
@@ -49,7 +46,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/configuring/extauth/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/members/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/members/removemembertnotes/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/registration/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/memberimport/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/users/memberimportarchive/</loc></url>
@@ -91,9 +87,7 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/oaipmh/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/poll/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/projects/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/projects/projectfileconnect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/publications/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/publications/datacite/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/redirect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/resources/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/components/saml/</loc></url>
@@ -121,15 +115,9 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/extensions/extension-manager/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/spam/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/faqs/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/hardencms/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/hardencms/cmscontrolled-fail2ban-jail/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/hardeningguide/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/collections/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/course-manager-features/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/student-features/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/faq/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/introduction/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/blog/</loc></url>
@@ -147,11 +135,8 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/users/dashboard/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/profile/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/projectfiles/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/databases/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/newsletters/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/publications/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/users/publications/curation/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/questions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/registration/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/resources/</loc></url>
@@ -166,9 +151,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/users/gettingstarted/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/administrators/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/administrators/installing-tool-dependencies/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/administrators/jupyter-notebooks/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/administrators/whitelistdirectories/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolrepostructure/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/overview/</loc></url>
@@ -180,17 +162,12 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/grid/rappture-submit/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/grid/jupyter-submit/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/sftp/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/webdav/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/accesshomedir/filexfer/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolpaths/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolpaths/toolenvvars/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolpaths/toolpathsinvoke/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolpaths/toolpathexamples/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/toolpaths/toolpathsresults/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/fileinout/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/fileinout/importfile/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/fileinout/exportfile/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/largedatapaths/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/jupyter-deployment-styles/</loc></url>
@@ -199,7 +176,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/environment-variables/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/jupyter-notebooks/invoke-jupyter/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/prerequisites/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/prerequisites/environment/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/developers/process/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/users/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/tools/users/introduction/</loc></url>
@@ -240,9 +216,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/basics/dates/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/basics/redirect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/queries/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/migrations/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/orm/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/extreqs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/parameters/</loc></url>
@@ -295,7 +268,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/elements/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/templates/accessibility/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/muse/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/muse/commands/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/templating-system/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/page-templates/</loc></url>
@@ -305,9 +277,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/migrations/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups/components/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/why-gitlab/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/setup/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/developing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/testing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/api/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/aws/</loc></url>
@@ -474,36 +443,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/events/wishlist/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/events/xmessage/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/app-package/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/app-repository/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/app/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/cache-css/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/cache/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/configuration-aliases/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/configuration-hooks/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/configuration/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/database/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/environment/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/extension/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/group/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/help/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/htmx/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/inertia/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/install/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/log-post/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/log-profile/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/log-sql/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/log/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/migration/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/repository-flavor/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/repository-package/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/repository/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/resources/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/scaffolding/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/searchmigration/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/test/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/user-terms/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/reference/muse/user/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/releases/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/docs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/style/</loc></url>

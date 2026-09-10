@@ -15,7 +15,7 @@ Pages workflow fails if the committed pages differ from a fresh run.
 - [REST API](api/README.md) — every endpoint under `/api/`, from the
   `@apiMethod`, `@apiUri`, and `@apiParameter` docblock tags the API
   explorer in `com_developer` also reads.
-- [Muse](muse/README.md) — the console commands and their tasks, from the
+- [Muse](muse.md) — the console commands and their tasks, from the
   `@museDescription` docblocks.
 - [Events](events/README.md) — every event the CMS fires through
   `Event::trigger()`, with its call sites, arguments, and the plugins that

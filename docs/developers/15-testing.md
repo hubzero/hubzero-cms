@@ -68,7 +68,7 @@ production classes that happen to be named `Test.php`. `components` globs
 
 ### Through muse
 
-[Muse](muse/README.md) wraps the runner for one extension at a time.
+[Muse](12-muse.md) wraps the runner for one extension at a time.
 `muse test show` lists what can be run:
 
 ```

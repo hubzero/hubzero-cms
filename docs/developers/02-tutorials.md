@@ -26,5 +26,5 @@ What the presentation covered is written down here instead:
   a release line, and opening a pull request.
 - [Commit messages](../contributing/conventions/05-commits.md) — how a commit is
   written.
-- [Development environment](getting-started/devenvironment.md) — getting a
+- [Development environment](01-getting-started/06-devenvironment.md) — getting a
   hub running to develop against.

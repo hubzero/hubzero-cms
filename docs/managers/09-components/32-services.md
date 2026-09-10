@@ -16,7 +16,7 @@ the job board's own screens; this component is where an administrator sees
 the result, takes a payment that arrived some other way, and switches a
 subscription on.
 
-It is unrelated to [Storefront](19-storefront.md) and [Cart](04-cart.md),
+It is unrelated to [Storefront](33-storefront.md) and [Cart](06-cart.md),
 which are the hub's actual shop. Services predates them and shares no code,
 no tables, and no checkout. If a hub does not run a job board, this component
 has nothing in it.

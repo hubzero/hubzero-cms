@@ -28,7 +28,7 @@ All of them sit directly in `template/`, beside `index.php`. Subdirectories
 are not searched.
 
 Put them there on the server, or through the group's
-[repository](../14-supergroups-gitlab/README.md). The group's file browser
+[repository](../14-supergroups-gitlab.md). The group's file browser
 reaches only `uploads`, for every group, so there is no way to upload a
 template file from the site.
 

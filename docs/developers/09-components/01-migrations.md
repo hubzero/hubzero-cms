@@ -13,7 +13,7 @@ the component changes.
 
 This page covers what a component's migrations do. The mechanics — naming,
 the runner, logging, hooks, and the full macro list — are in
-[Migrations](../06-database/02-migrations.md) under Database.
+[Migrations](../06-database.md#migrations) under Database.
 
 ## Where they go
 
@@ -72,7 +72,7 @@ the driver expands to the hub's configured prefix.
 Name tables after the component: `#__kb_articles`, `#__blog_entries`. The ORM
 depends on it — a `Relational` model with `protected $namespace = 'kb'` and
 the class name `Article` resolves to `#__kb_articles` without being told. See
-[Models](models.md).
+[Models](05-models.md).
 
 ### Seeding data
 

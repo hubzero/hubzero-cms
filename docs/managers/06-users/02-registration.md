@@ -45,7 +45,7 @@ administrators when an account is created, and only applies under **None** or
 Accounts waiting at either gate are held on a holding page by the **System -
 Unconfirmed** and **System - Unapproved** plugins. Find them by filtering the
 Members list on **- Email confirmed -** or **- Approved -**; see
-[Account states](01-members/README.md#account-states) for how to clear each
+[Account states](01-members.md#account-states) for how to clear each
 gate.
 
 ## The registration fields table
@@ -81,7 +81,7 @@ The rows are the nine account-level fields: **Username**, **Password**,
 **OptIn**, **CAPTCHA** and **TOU** (the terms of use). Everything else the form
 asks for comes from the profile builder, where each field carries its own
 required flag and access level; see
-[Building the profile form](01-members/README.md#building-the-profile-form).
+[Building the profile form](01-members.md#building-the-profile-form).
 
 **Update on Next Login** is what makes an existing account fill in a gap. On
 every login the session is flagged as incomplete, the **Members - Profile**

@@ -41,11 +41,7 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/newhub/index.html">The first week with a new hub</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/howitfits/index.html">How a hub fits together</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/index.html">Getting started</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -65,7 +61,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Users</a></summary><ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Members</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Members</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-sub-menu">The sub-menu</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-account-list">The account list</a></li>
 <li class="toc__item toc__item--l3"><a href="#filters">Filters</a></li>
@@ -89,9 +85,8 @@
 <li class="toc__item toc__item--l2"><a href="#import">Import</a></li>
 <li class="toc__item toc__item--l2"><a href="#exporting-accounts">Exporting accounts</a></li>
 <li class="toc__item toc__item--l2"><a href="#plugins">Plugins</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="removemembertnotes/index.html">Members removal tech notes</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#members-removal-tech-notes">Members removal tech notes</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../memberimport/index.html">Member import</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../memberimportarchive/index.html">Member import (archive)</a></li>
@@ -134,12 +129,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/oaipmh/index.html">OAI-PMH</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/poll/index.html">Poll</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
-</ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/index.html">Projects</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/redirect/index.html">Redirect</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/saml/index.html">SAML</a></li>
@@ -169,13 +160,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
-</ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/index.html">Security considerations</a></li>
 </ul>
         </nav>
       </details>
@@ -567,7 +552,7 @@ manages home directories on the hub.</p>
 <p>Deleting an account with the toolbar's <strong>Delete</strong> button is not the same as
 de-identifying it. Delete removes the account row and cascades through
 everything hung off it. This section replaces the older
-<a href="removemembertnotes/index.html">Members removal tech notes</a> page.</p>
+<a href="#members-removal-tech-notes">Members removal tech notes</a> page.</p>
 <p>Deleting needs <code>core.delete</code> on <code>com_members</code>, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls <code>destroy()</code>
 on the member model:</p>
@@ -947,12 +932,27 @@ rearranged their own dashboard.</p>
 <p><strong>Warning:</strong> Pushing a module writes to every member's dashboard. The screen
 says so itself: it is resource-intensive and should not be done often.</p>
 </aside>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="removemembertnotes/index.html">Members removal tech notes</a><p>Where member deletion is now documented.</p></li></ul></section>
+<h2 id="members-removal-tech-notes">Members removal tech notes</h2>
+<p>This page used to hold pasted excerpts of the code that runs when a member is
+deleted. That material now lives in the Members manager chapter, checked
+against the current source and with the plugin cascade written out:</p>
+<ul>
+<li><a href="#what-deleting-a-member-removes">What deleting a member removes</a></li>
+</ul>
+<p>Two neighbouring sections cover the operations people usually mean when they
+ask about removing a member:</p>
+<ul>
+<li><a href="#blocking-an-account">Blocking an account</a> — take an account out
+of service without losing anything.</li>
+<li><a href="#de-identifying-members">De-identifying members</a> — strip personally
+identifiable information but keep the account row.</li>
+</ul>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 123ea53b14</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Users</a><a class="pager__next" href="removemembertnotes/index.html" rel="next"><span>Next</span>Members removal tech notes</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Users</a><a class="pager__next" href="../registration/index.html" rel="next"><span>Next</span>Registration</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/01-members/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/06-users/01-members.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

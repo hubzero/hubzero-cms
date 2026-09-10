@@ -122,7 +122,7 @@ emailed a summary of their feed: never, daily, weekly or monthly. The choice
 is stored in `#__activity_digests`.
 
 Nothing is sent until the **Cron - Activity** plugin's job is scheduled. Add a
-job under [Cron](cron.md) using the event **Email member activity digest**.
+job under [Cron](12-cron.md) using the event **Email member activity digest**.
 It behaves like this:
 
 - Daily digests go every run; weekly digests only on a Monday; monthly

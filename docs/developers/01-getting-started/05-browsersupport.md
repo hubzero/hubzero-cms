@@ -176,5 +176,5 @@ Since nothing enforces a target, the burden is on what you write:
 
 ## Next
 
-[Development environment](devenvironment.md) covers getting a hub to develop
+[Development environment](06-devenvironment.md) covers getting a hub to develop
 against.

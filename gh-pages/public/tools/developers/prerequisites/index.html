@@ -41,11 +41,7 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
@@ -57,21 +53,14 @@
 <li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/importfile/index.html">Import file</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../fileinout/exportfile/index.html">Export file</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../fileinout/index.html">Getting files in and out of a tool session</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
@@ -80,9 +69,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Prerequisites</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="environment/index.html">Environment</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Prerequisites</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#environment">Environment</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-tool-session">The tool session</a></li>
+<li class="toc__item toc__item--l3"><a href="#environment-variables">Environment variables</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
@@ -116,7 +107,7 @@ checked here. The pipeline that publishes a tool is CMS-side and is
 documented from the code.</p>
 </aside>
 <ul>
-<li><a href="environment/index.html">Environment</a> — the container a tool session runs in and
+<li><a href="#environment">Environment</a> — the container a tool session runs in and
 the environment variables your tool can rely on.</li>
 </ul>
 <p>Two pages outside this section are worth reading first:</p>
@@ -131,12 +122,110 @@ same pipeline from the developer's side.</li>
 <p>You also need an account on the hub you are publishing to, and that account
 has to be allowed to register a tool. Hubs are normally configured to let any
 member register one.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="environment/index.html">Environment</a></li></ul></section>
+<h2 id="environment">Environment</h2>
+<p>The container a tool session runs in, and the environment variables a tool
+can rely on inside it.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The container, the variables, and the file system layout
+below belong to the tool platform, which is separate software from the CMS
+in this repository. They could not be verified here, and a hub can be built
+differently. Run <code>env</code> in a session on your own hub to see what it actually
+sets. The two CMS-side facts on this page are marked.</p>
+</aside>
+<h3 id="the-tool-session">The tool session</h3>
+<p>A tool session runs in a container on one of the hub's execution hosts. The
+container runs as the member who launched the tool, with that member's
+permissions, so the tool can read and write that member's files and nothing
+else. Other members' sessions are not visible from inside it.</p>
+<p>Because the tool runs as the member, anything it writes lands in their home
+directory and counts against their disk quota.</p>
+<p>If your hub gives you a workspace or <code>ssh</code> access, open a terminal in a
+session and look around:</p>
+<pre><code class="language-console">$ pwd
+/home/yourhub/yourname
+
+$ echo $SESSION
+19245
+
+$ echo $SESSIONDIR
+/home/yourhub/yourname/data/sessions/19245
+</code></pre>
+<p>The number in <code>$SESSION</code> is the session number the CMS shows in the session
+URL, <code>/tools/&lt;alias&gt;/session/&lt;number&gt;</code>. The CMS gets it back from the
+middleware when it starts the session and stores it; it is the handle both
+sides use for the same session. <em>(CMS-side: <code>com_tools</code> session controller.)</em></p>
+<h3 id="environment-variables">Environment variables</h3>
+<p>A tool session sets a number of variables. The ones a tool normally cares
+about:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+<th>What it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SESSION</code></td>
+<td>The session number</td>
+<td>Identifies the running session</td>
+</tr>
+<tr>
+<td><code>SESSIONDIR</code></td>
+<td><code>$HOME/data/sessions/$SESSION</code></td>
+<td>A per-session directory, readable and writable by the tool and the member. The right place for temporary files. Delete them when the tool is done with them</td>
+</tr>
+<tr>
+<td><code>RESULTSDIR</code></td>
+<td><code>$HOME/data/results/$SESSION</code></td>
+<td>Where simulation results go so the member can find them later. Rappture writes its XML output here</td>
+</tr>
+<tr>
+<td><code>USER</code></td>
+<td>The member's username</td>
+<td></td>
+</tr>
+<tr>
+<td><code>HOME</code></td>
+<td><code>/home/&lt;hub hostname&gt;/&lt;username&gt;</code></td>
+<td>The member's home directory on the hub</td>
+</tr>
+<tr>
+<td><code>PWD</code></td>
+<td>The working directory the tool started in</td>
+<td><code>SESSIONDIR</code> unless the invoke script's <code>-d</code> option says otherwise</td>
+</tr>
+</tbody>
+</table>
+<p>Run <code>env</code> in a session terminal for the full list; it varies by hub and by
+the environment packages an invoke script loads.</p>
+<p>Two conventions worth following:</p>
+<ul>
+<li>Write temporary files to <code>$SESSIONDIR</code> and results to <code>$RESULTSDIR</code>, not to
+the home directory itself. Members are prompted to clear these directories
+when they run low on disk space, so files left there are not permanent, but
+they are also not in the member's way.</li>
+<li>If your tool saves work the member is meant to keep, give it a directory of
+its own — <code>$HOME/data/&lt;toolname&gt;</code> — rather than dropping files at the top of
+the home directory. Watch the member's quota while you do it.</li>
+</ul>
+<p>The CMS holds each member's home directory in their profile and uses it in two
+places: it expands a leading <code>~/</code> in a launch parameter against it before
+checking the parameter against the
+<a href="../../administrators/index.html#directory-parameter-whitelist">directory parameter whitelist</a>,
+and it reads the member's files for the session storage screens through the
+component's <code>storagepath</code> setting, which defaults to <code>/webdav/home</code>.
+<em>(CMS-side: <code>com_tools</code> session and storage controllers.)</em></p>
+<p><a href="../toolpaths/index.html">Tool paths</a> covers the same variables in more
+detail, along with how a tool finds its own installed directory and its
+example data.</p>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jupyter-notebooks/invoke-jupyter/index.html" rel="prev"><span>Previous</span>Invoke scripts for Jupyter notebooks</a><a class="pager__next" href="environment/index.html" rel="next"><span>Next</span>Environment</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../jupyter-notebooks/invoke-jupyter/index.html" rel="prev"><span>Previous</span>Invoke scripts for Jupyter notebooks</a><a class="pager__next" href="../process/index.html" rel="next"><span>Next</span>The contribution process</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/prerequisites/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/prerequisites.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

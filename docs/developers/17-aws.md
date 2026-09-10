@@ -52,7 +52,7 @@ created mode `0770` by
 [`Hubzero\Console\Command\Install\AppDirectory`](../../core/libraries/Hubzero/Console/Command/Install/AppDirectory.php)
 and must stay unreadable to anyone but the web user and its group.
 
-See [Configuration](basics/config.md) for how the files are loaded and
+See [Configuration](05-basics/03-config.md) for how the files are loaded and
 overridden per client.
 
 ## Installing a hub

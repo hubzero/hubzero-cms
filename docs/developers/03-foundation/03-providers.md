@@ -59,7 +59,7 @@ on every request.
 
 Register the service under the same key a facade resolves, and the facade
 reaches it. `Route` resolves `router`, so the provider above is what
-`Route::url()` ends up calling. See [Facades](facades.md).
+`Route::url()` ends up calling. See [Facades](04-facades.md).
 
 ## Booting
 

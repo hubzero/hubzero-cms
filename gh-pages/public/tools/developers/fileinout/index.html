@@ -41,11 +41,7 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/jupyter-notebooks/index.html">Jupyter notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../administrators/whitelistdirectories/index.html">Directory parameter whitelist</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../administrators/index.html">Tool administrators</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolrepostructure/index.html">Tool repository structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../overview/index.html">What you can publish as a tool</a></li>
@@ -57,25 +53,28 @@
 <li class="tree__leaf"><a class="tree__link" href="../grid/rappture-submit/index.html">Submitting from a Rappture tool</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../grid/jupyter-submit/index.html">Submitting from a Jupyter notebook</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/sftp/index.html">sFTP</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/webdav/index.html">WebDAV</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/filexfer/index.html">filexfer</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../accesshomedir/index.html">Accessing your home directory</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../toolpaths/index.html">Tool paths</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolenvvars/index.html">Environment variables</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsinvoke/index.html">Passing path variables with the invoke script</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathexamples/index.html">Example files</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../toolpaths/toolpathsresults/index.html">Tool generated files</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting files in and out of a tool session</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Getting files in and out of a tool session</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-two-commands">The two commands</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-filexfer-comes-from">Where filexfer comes from</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-cms-contributes">What the CMS contributes</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="importfile/index.html">Import file</a></li>
-<li class="tree__leaf"><a class="tree__link" href="exportfile/index.html">Export file</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#import-file">Import file</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-it-does">What it does</a></li>
+<li class="toc__item toc__item--l3"><a href="#using-it-from-a-tool">Using it from a tool</a></li>
+<li class="toc__item toc__item--l3"><a href="#help-text">Help text</a></li>
+<li class="toc__item toc__item--l3"><a href="#see-also">See also</a></li>
+<li class="toc__item toc__item--l2"><a href="#export-file">Export file</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-it-does-2">What it does</a></li>
+<li class="toc__item toc__item--l3"><a href="#using-it-from-a-tool-2">Using it from a tool</a></li>
+<li class="toc__item toc__item--l3"><a href="#help-text-2">Help text</a></li>
+<li class="toc__item toc__item--l3"><a href="#see-also-2">See also</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../largedatapaths/index.html">Large data paths</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../jupyter-notebooks/index.html">Jupyter notebooks</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/jupyter-deployment-styles/index.html">Deployment styles</a></li>
@@ -84,9 +83,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/environment-variables/index.html">Environment variables in a notebook</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jupyter-notebooks/invoke-jupyter/index.html">Invoke scripts for Jupyter notebooks</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../prerequisites/environment/index.html">Environment</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../prerequisites/index.html">Prerequisites</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../process/index.html">The contribution process</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Tool users</a></summary><ul class="tree">
@@ -137,12 +134,12 @@ against <code>com_tools</code>.</p>
 <tr>
 <td><code>importfile</code></td>
 <td>Desktop into the session</td>
-<td><a href="importfile/index.html">Import file</a></td>
+<td><a href="#import-file">Import file</a></td>
 </tr>
 <tr>
 <td><code>exportfile</code></td>
 <td>Session out to the desktop</td>
-<td><a href="exportfile/index.html">Export file</a></td>
+<td><a href="#export-file">Export file</a></td>
 </tr>
 </tbody>
 </table>
@@ -155,7 +152,7 @@ that runs a command in the background before the tool starts:</p>
 <pre><code class="language-sh">/usr/bin/invoke_app &quot;$@&quot; -t toolname -C toolname -c filexfer
 </code></pre>
 <p>See <a href="../invoke/index.html">Launching tools with invoke scripts</a> for the rest of the
-invoke_app options, and <a href="../accesshomedir/filexfer/index.html">filexfer</a> for the
+invoke_app options, and <a href="../accesshomedir/index.html#filexfer">filexfer</a> for the
 graphical front end members can run themselves inside a workspace.</p>
 <p>A tool that never needs a file from the member does not need filexfer, and
 leaving it out of the invoke script is the normal thing to do.</p>
@@ -187,13 +184,180 @@ the same name in the template and the transfer pages pick it up. The older
 <code>/tools/site_css.css</code> route works the same way and has no shipped file behind
 it at all.</p>
 <p>Nothing else about file transfer is decided in the CMS.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="importfile/index.html">Import file</a></li>
-<li><a href="exportfile/index.html">Export file</a></li></ul></section>
+<h2 id="import-file">Import file</h2>
+<p><code>importfile</code> moves one or more files from the member's desktop into a running
+tool session.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <code>importfile</code> is part of the filexfer package on the tool
+execution platform. That platform is separate software and is <strong>not in this
+repository</strong>, so nothing on this page could be verified against code here.
+It is the record carried over from the 2.4 documentation, with the help text
+quoted as it stood. Check the command's own <code>--help</code> output on your hub
+before relying on an option.</p>
+</aside>
+<h3 id="what-it-does">What it does</h3>
+<p>Run <code>importfile</code> inside a tool session and it opens a page in the member's
+browser asking them to choose files from their computer. They pick the files
+and submit the form; the files arrive in the session under the names given on
+the command line. The command prints the names of the files it actually
+received.</p>
+<p>The browser must allow pop-ups from the hub, or the page never appears.</p>
+<p>When a filename is given for the imported file, the same page also accepts
+text pasted from the clipboard. That is the usual way to get text into a
+workspace tool, since a terminal or an application inside the session does not
+share the desktop clipboard.</p>
+<h3 id="using-it-from-a-tool">Using it from a tool</h3>
+<p>Do not call <code>importfile</code> on the tool's main thread. It waits for the upload
+and it waits indefinitely, so a tool that blocks on it stops responding to the
+member who is meant to be answering the prompt.</p>
+<p>Run it as a background process instead — typically through a pipe — and have
+the tool watch that pipe for the result. Handle the case where the reply never
+comes.</p>
+<p>A Rappture tool does not need this command; Rappture's own user interface has
+upload built in. Neither does a Jupyter notebook tool, which has Jupyter's
+file browser.</p>
+<h3 id="help-text">Help text</h3>
+<pre><code class="language-text">USAGE: /usr/bin/importfile [-f|--for text] [-l|--label text] file file ...
+
+  options:
+    -h or --help
+      Prints this help message.
+
+    -f or --for &lt;text&gt;
+      Short explanation of what the data will be used for; for
+      example, &quot;for CNTBands 2.0&quot;.  If given, this text is inserted
+      into the upload form to help explain what it will be used for.
+
+    -l or --label &lt;text&gt;
+      Prompt for subsequent file arguments using this label string.
+      The default label just uses the file name.
+
+    -m or --mode acsii|binary|auto
+      In &quot;binary&quot; mode, files are transferred exactly as-is.  In
+      &quot;ascii&quot; mode, control-M characters are removed, which helps
+      when loading Windows files into the Linux environment.  The
+      default is &quot;auto&quot;, which removes control-M from text files
+      but leaves binary files intact.
+
+    -p or --provenance
+      Print more verbose results showing the provenance information
+      for all files uploaded.  Instead of a series of space-separated
+      file names, this produces one line for each file showing the
+      final file name and where it came from, which is either the
+      file name on the user's desktop or @CLIPBOARD meaning that the
+      user pasted information into the text entry area.  For example:
+         foo.tgz &lt;= gui15.tar.gz
+         bar.txt &lt;= @CLIPBOARD
+
+    --
+      Remaining arguments are treated as file names, even if they
+      start with a -.
+
+    file
+      Uploaded file will be saved in this file name within your
+      tool session. If file is @@ then the file is given the same
+      name it had before it was uploaded. If no file arguments
+      are included, the default is &quot;@@&quot;, meaning upload a single
+      file and use the name it had on the desktop.
+
+You can use this command to transfer one or more files from your
+desktop to your tool session via a web browser.  This command causes
+a web page to pop up prompting you for various files on your desktop.
+Choose one or more files and submit the form.  The files will be
+uploaded to your tool session and saved in the file names specified
+on the command line.
+
+This command returns a list of names for files actually uploaded.
+</code></pre>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The usage line is quoted as it stands, misspelling included. The
+descriptions below it name the three modes as <code>ascii</code>, <code>binary</code> and <code>auto</code>.</p>
+</aside>
+<h3 id="see-also">See also</h3>
+<ul>
+<li><a href="#export-file">Export file</a>, for the other direction.</li>
+<li><a href="../index.html">Getting files in and out of a tool session</a>, for how filexfer is
+started and what the CMS serves.</li>
+</ul>
+<h2 id="export-file">Export file</h2>
+<p><code>exportfile</code> sends one or more files from a running tool session out to the
+member's desktop.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> <code>exportfile</code> is part of the filexfer package on the tool
+execution platform. That platform is separate software and is <strong>not in this
+repository</strong>, so nothing on this page could be verified against code here.
+It is the record carried over from the 2.4 documentation, with the help text
+quoted as it stood. Check the command's own <code>--help</code> output on your hub
+before relying on an option.</p>
+</aside>
+<h3 id="what-it-does-2">What it does</h3>
+<p>Run <code>exportfile</code> with one or more file names and the hub opens a browser page
+for each file, from which the member downloads it. The browser must allow
+pop-ups from the hub, or the pages never appear.</p>
+<p>The file stays available for a timeout, one day by default, after which the
+hub forgets it. <code>--delete</code> also removes the file itself, at the timeout or
+when the tool session shuts down, which is what you want for a temporary file
+the tool generated only to hand over.</p>
+<p>Two options change the page the member sees. <code>--message</code> puts a fragment of
+HTML above the download — a citation request, for instance. <code>--format html</code>
+makes the server rewrite links inside an HTML file, so that a page exported
+with its images and companion pages still works.</p>
+<h3 id="using-it-from-a-tool-2">Using it from a tool</h3>
+<p><code>exportfile</code> can be run in the background, through a pipe off the tool's main
+process, so the member keeps using the tool while the download proceeds. This
+is optional: unlike <a href="#import-file"><code>importfile</code></a>, which blocks until the
+member answers, <code>exportfile</code> hands the file over and does not wait for the
+member to save it.</p>
+<p>A Rappture tool does not need this command; Rappture's own user interface has
+download built in. Neither does a Jupyter notebook tool, which has Jupyter's
+file browser.</p>
+<h3 id="help-text-2">Help text</h3>
+<pre><code class="language-text">USAGE: /usr/bin/exportfile [-t|--timeout secs] [-d|--delete] [-m|--message file] [-f|--format raw|html] file file...
+
+  options:
+    -h or --help
+      Prints this help message.
+
+    -t or --timeout &lt;seconds&gt;
+      Forget about the file after this timeout.  Default is 86,400
+      seconds (1 day).
+
+    -d or --delete
+      Delete the file after the timeout or when the tool is shut
+      down.  Should be used only with temporary files.
+
+     -m or --message
+       File containing a fragment of HTML text that will be displayed
+       above the download.  It might say &quot;Here is your data,&quot; or
+       &quot;If you use this data, please cite this source.&quot;
+
+     -f or --format &lt;type&gt;
+       Choices are &quot;raw&quot; and &quot;html&quot;.  Default is &quot;raw&quot;.  The &quot;html&quot;
+       format causes the server to rewrite links embedded within
+       the HTML, so that images can be displayed and links can be
+       traversed properly.
+
+    --
+      Remaining arguments are treated as file names, even if they
+      start with a -.
+
+You can use this command to transfer one or more files from your
+tool session to your desktop via a web browser.  A separate web
+browser page is opened for each file.  You must have popups enabled
+for this to work properly.
+</code></pre>
+<h3 id="see-also-2">See also</h3>
+<ul>
+<li><a href="#import-file">Import file</a>, for the other direction.</li>
+<li><a href="../index.html">Getting files in and out of a tool session</a>, for how filexfer is
+started and what the CMS serves.</li>
+</ul>
+
         </div>
         <p class="stamp">Reviewed against <code>2.4-main @ e097e0236d</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../toolpaths/toolpathsresults/index.html" rel="prev"><span>Previous</span>Tool generated files</a><a class="pager__next" href="importfile/index.html" rel="next"><span>Next</span>Import file</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../toolpaths/toolpathsresults/index.html" rel="prev"><span>Previous</span>Tool generated files</a><a class="pager__next" href="../largedatapaths/index.html" rel="next"><span>Next</span>Large data paths</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/08-fileinout/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/developers/08-fileinout.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

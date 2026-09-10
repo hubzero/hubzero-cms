@@ -21,7 +21,7 @@ the tool's invoke script, and it applies to everyone who launches the tool.
 > CMS-side fact — that a tool has to be registered with the **Web application
 > (Jupyter, Rstudio, ...)** publishing option before any of this applies — was
 > checked against `com_tools`; see
-> [Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the
+> [Jupyter notebooks](../../administrators.md#jupyter-notebooks) in the
 > administrators section.
 
 ## The three styles
