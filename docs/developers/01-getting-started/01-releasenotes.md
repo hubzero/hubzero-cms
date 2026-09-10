@@ -14,11 +14,14 @@ still explains most of what you read in the framework.
 
 ## Where release notes live
 
-This page is not a changelog. Release notes for a Hubzero version are in
-the [Releases](../../getting-started/03-releases.md) chapter, and the authoritative record
-of what changed is the repository itself: the tags and commit history on
+This page is not a changelog, and no changelog is published yet. The
+authoritative record of what changed is the repository itself: the tags
+and commit history on
 [hubzero/hubzero-cms](https://github.com/hubzero/hubzero-cms). Each release
-line has its own `X.Y-main` branch; `2.4-main` is the current one.
+line has its own `X.Y-main` branch; `2.4-main` is the current one, and a
+release is cut from it. Upgrade steps for a running hub are being
+rewritten alongside the new web installer; see
+[Installing a hub](../../managers/00-installing.md).
 
 The running version is the `HVERSION` constant, defined in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php) and shown in

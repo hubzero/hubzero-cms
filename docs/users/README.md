@@ -13,6 +13,22 @@ be switched off or named differently on yours. Where a page refers to a
 menu or tab, it means the one on the hub's site, not the administrator
 interface.
 
+## The words this book uses
+
+A **hub** is one Hubzero site, with its own members, content and settings.
+You are a **member** once you register.
+
+Members work together in **groups**, which are collaboration spaces with
+their own pages, files, forum and membership roles, and in **projects**,
+which are private workspaces where a team prepares files and data before
+releasing any of it.
+
+What a hub publishes is a **resource**: a tool, a dataset, a presentation,
+a course. A **publication** is a versioned, citable resource that has been
+through a curation workflow and carries a DOI. A **tool** is a program
+that runs on the hub's own machines and appears in your browser, without
+you installing anything.
+
 ## Getting started
 
 - [Introduction](04-introduction.md) — what an account gives you and how the
