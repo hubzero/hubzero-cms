@@ -304,15 +304,6 @@ class Loader
             }
         }
 
-        // The database could not answer (unreachable, or no styles yet):
-        // fall back to the template the config file names, which the
-        // template save action keeps current
-        if (empty($templates)) {
-            if ($configured = $this->getConfiguredTemplate($client_id)) {
-                $templates = array(0 => $configured);
-            }
-        }
-
         $tmpl = null;
 
         if (isset($templates[$id])) {
@@ -321,6 +312,16 @@ class Loader
 
         if ($tmpl && file_exists($tmpl->path . DIRECTORY_SEPARATOR . 'index.php')) {
             return $tmpl;
+        }
+
+        // Nothing usable came back for the default style: the database could
+        // not answer, no style is marked as the default, or the one that is
+        // names a template that is not installed. Fall back to the template
+        // the config file records, which the template save action keeps
+        // current. A request for one specific style is a narrower question
+        // and still goes to the system template when it cannot be answered.
+        if (!$id && ($configured = $this->getConfiguredTemplate($client_id))) {
+            return $configured;
         }
 
         return $this->getSystemTemplate();
