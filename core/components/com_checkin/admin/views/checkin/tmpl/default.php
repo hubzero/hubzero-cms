@@ -44,12 +44,14 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($this->items as $table => $count): $i=0; ?>
+			<?php $i = 0; ?>
+			<?php foreach ($this->items as $table => $count): ?>
 				<tr class="row<?php echo $i%2; ?>">
 					<td><?php echo Html::grid('id', $i, $table); ?></td>
 					<td><?php echo Lang::txt('COM_CHECKIN_TABLE', $table); ?></td>
 					<td><?php echo $count; ?></td>
 				</tr>
+				<?php $i++; ?>
 			<?php endforeach; ?>
 		</tbody>
 		<tfoot>
@@ -58,8 +60,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php 
 					$pagination = $this->pagination(
 						$this->total,
-						$this->state->get('list.limit'),
-						$this->state->get('list.start')
+						$this->state->get('list.start'),
+						$this->state->get('list.limit')
 					);
 					echo $pagination->render();
 					?>
