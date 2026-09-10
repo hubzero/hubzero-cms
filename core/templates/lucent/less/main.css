@@ -6949,6 +6949,318 @@ template {
   color: #00548A;
   text-decoration: underline;
 }
+.page-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.page-trail {
+  border-bottom: 1px solid #e7e7e7;
+  font-size: 0.85rem;
+  color: #767676;
+}
+.page-trail > .inner {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-trail > .inner {
+    padding-left: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-trail > .inner {
+    padding-right: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-trail > .inner {
+    padding-left: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-trail > .inner {
+    padding-right: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-trail > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-trail > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-trail > .inner {
+    padding-right: 12rem !important;
+  }
+}
+.page-trail ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.page-trail ul li {
+  margin: 0;
+}
+.page-intro > .inner {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-top: 1.5rem;
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-intro > .inner {
+    padding-left: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-intro > .inner {
+    padding-right: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-intro > .inner {
+    padding-left: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-left: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-left: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-left: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .page-intro > .inner {
+    padding-right: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-right: 12rem !important;
+  }
+}
+@media (min-width: 600px) {
+  .page-intro > .inner {
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .page-intro > .inner {
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .page-intro > .inner {
+    padding-right: 12rem !important;
+  }
+}
 body {
   display: flex;
   flex-direction: column;
