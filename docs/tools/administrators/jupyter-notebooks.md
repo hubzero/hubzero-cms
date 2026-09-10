@@ -1,93 +1,176 @@
 <!--
-status: imported
+status: reviewed
+reviewed-against: 2.4-main @ be0bd4c772
+reviewed: 2026-09-10
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/tool-administrators/jupyter-notebooks
 source-id: 3565
 modified: 2018-09-06
 imported: 2026-09-09
 -->
-# Jupyter Notebooks
+# Jupyter notebooks
 
-## Adding additional packages to Jupyter Notebooks
+Administering the Anaconda environments that Jupyter tools run in, and the
+one setting on the CMS side that lets a tool be published as one.
 
-Google the desired package (python, R packages, not OS packages) and review the installation instructions. They might recommend a different conda repository than the default.
-Be careful if conda says it wants to downgrade packages. If it is a minor downgrade, it is probably OK. Do not proceed if many packages must be downgraded or critical packages are to be downgraded. Remember that changes to the Ananconda environment will affect all tools using the environment and a downgrade could cause tools not to function (if a feature is no longer available, for example).
+The first section below was checked against `com_tools` in this repository.
+Everything after it happens on the tool execution platform, which is separate
+software and is **not in this repository**; those procedures are kept as the
+written record but could not be verified.
 
-- Start a workspace tool. If your HUB supports multiple operating system (vendor or version) based tool containers choose the workspace tool for the appropriate container.
-- As an alternative, start the Jupyter Notebook tool based on the Anaconda environment that you want to modify and start a new terminal.
-- From the open terminal switch to the apps user (your account must be a member of the apps group).
-  - ```
-    sudo su - apps
-    ```
-- Load the Anaconda environment that you wish to modify (there may be multiple Anaconda environments available. The list of Anaconda environments can be listed with the command
-  - ```
-    use |& grep anaconda
-    ```
-- Execute the command "use", choosing the appropriate Anaconda (X represents the particular version choice) environment.
-  - ```
-    use -e -r anaconda-X
-    ```
-- Install the desired package via conda or mamba if it is installed. mamba is typically much more efficient and provides more useful information should it fail. Another option is to use pip. Extra care must be taken when mixing conda and pip package installations in the same environment. Typical installation command like The installation may take a few minutes
-  - ```
-    conda install -c conda-forge -c defaults <pkgname>
-    ```
-  - ```
-    pip install -U --upgrade-strategy only-if-needed <pkgname>
-    ```
-- **Important! Fix any world writable files by doing:**
-  - ```
-    chmod -R o-w /apps/share64/<OS>/anaconda/anaconda-X
-    ```
+## The CMS side
 
-## Creating a separate anaconda environment.
+`com_tools` has an **Enable Jupyter** option, on by default. While it is on,
+the tool registration form offers a third publishing choice, **Web
+application (Jupyter, Rstudio, ...)**, alongside the Rappture or Linux-GUI
+default and Sim2L. Turning the option off removes the choice from the form;
+tools already registered with it keep their setting.
 
-In some circumstances it is beneficial to spawn a new named environment from the standard base environment. The named environments are referred to as kernels in Jupyter notebooks. Once a Jupyter notebook is running the developer or user has the opportunity to change to a different kernel. The kernel used to run the notebook is embedded within the notebook metadata therefore only has to be changed once. This works well for developers and means the administrator does not have to create a Jupyter Notebook tool for each kernel.
+The choice is stored on the tool version as `publishType`, with the value
+`jupyter`. Hubs upgraded from older releases may still hold the historical
+value `weber=`; the component translates that to `jupyter` when it reads it,
+so both behave the same. `publishType` is passed straight through to the
+platform's install and publish scripts as `--publishOption`.
 
-- Set base Anaconda environment
-  - ```
-    use -e -r anaconda-X
-    ```
-- Create new named environment
-  - ```
-    conda create -n <name>
-    ```
-- Activate named environment
-  - ```
-    source activate <name>
-    ```
-- Do package installation as before
-  - ```
-    conda install -c conda-forge -c defaults <pkgname>
-    ```
-  - ```
-    pip install -U --upgrade-strategy only-if-needed <pkgname>
-    ```
-- Register named environment as kernel in base environment
-  - ```
-    python -m ipykernel install --sys-prefix --name <name> --display-name "Python3 (<name>)"
-    ```
-  - ```
-    python -m ipykernel install --prefix /apps/share64/<OS>/anaconda/anaconda-X --name <name> --display-name "Python3 (<name>)"
-    ```
-- Deactivate named environment
-  - ```
-    conda deactivate
-    ```
+At launch the difference shows up in what the middleware returns. A standard
+tool comes back as a VNC session that the `novnc` plugin renders in the page.
+A Jupyter tool comes back with a proxy URL, and the CMS redirects the browser
+to it instead. If the middleware also returns an authentication token, the
+CMS sets a `weber-auth-<hub domain>` cookie — secure, HttpOnly, thirty days —
+before redirecting.
 
-References:
+For the option itself see the
+[generated `com_tools` parameter reference](../../reference/configuration/components/tools.md);
+for the pipeline the tool travels through, see
+[Tools](../../managers/03-maintenance/02-tools.md) in the hub managers book.
 
-[conda user guide](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+Nothing else about Jupyter is configured in the CMS. Which Anaconda
+environments exist, which packages they carry, and which kernels a notebook
+can select are all decided on the execution hosts, by the procedures below.
 
-[Ipython kernel instalation](https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments)
+## Adding packages to an Anaconda environment
+
+> **Warning:** An Anaconda environment is shared by every tool that uses it.
+> Adding a package can force other packages to be downgraded, and a downgrade
+> can break a tool that depends on a feature the older version lacks. Read
+> what conda proposes before agreeing to it. A minor downgrade is usually
+> safe; a long list of downgrades, or a downgrade of anything central, is
+> not — stop and create a separate environment instead.
+
+Check the package's own installation instructions first. Many recommend a
+channel other than the default.
+
+1. Start a workspace tool. If the hub offers workspaces on more than one
+   container image, pick the one matching the environment you are changing.
+   Starting the Jupyter tool that uses the environment and opening a terminal
+   in it works too.
+
+2. Become the `apps` user. Your account has to be in the host's `apps` group.
+
+   ```bash
+   sudo su - apps
+   ```
+
+3. List the Anaconda environments available.
+
+   ```bash
+   use |& grep anaconda
+   ```
+
+4. Load the one you want, where `X` is the version.
+
+   ```bash
+   use -e -r anaconda-X
+   ```
+
+5. Install the package. Use `mamba` in place of `conda` if it is present — it
+   is faster and says more when it fails. `pip` is the third option; mixing
+   pip and conda installations in one environment needs care. Installation
+   can take several minutes.
+
+   ```bash
+   conda install -c conda-forge -c defaults <pkgname>
+   ```
+
+   ```bash
+   pip install -U --upgrade-strategy only-if-needed <pkgname>
+   ```
+
+6. Remove any world-writable bits the installer left behind. Do not skip
+   this.
+
+   ```bash
+   chmod -R o-w /apps/share64/<os>/anaconda/anaconda-X
+   ```
+
+## Creating a separate Anaconda environment
+
+Sometimes it is better to spawn a new named environment from the base one
+than to disturb the base. Jupyter calls named environments *kernels*. A
+notebook records its kernel in its own metadata, so a developer picks it once
+and it sticks — which means the administrator does not have to create a
+separate Jupyter tool for every kernel.
+
+1. Load the base environment.
+
+   ```bash
+   use -e -r anaconda-X
+   ```
+
+2. Create the named environment.
+
+   ```bash
+   conda create -n <name>
+   ```
+
+3. Activate it. On current conda this is `conda activate <name>`; older
+   installations need `source activate <name>`.
+
+   ```bash
+   conda activate <name>
+   ```
+
+4. Install packages as above.
+
+   ```bash
+   conda install -c conda-forge -c defaults <pkgname>
+   ```
+
+   ```bash
+   pip install -U --upgrade-strategy only-if-needed <pkgname>
+   ```
+
+5. Register it as a kernel, either into the active environment's prefix or
+   explicitly into the base environment's.
+
+   ```bash
+   python -m ipykernel install --sys-prefix --name <name> --display-name "Python3 (<name>)"
+   ```
+
+   ```bash
+   python -m ipykernel install --prefix /apps/share64/<os>/anaconda/anaconda-X --name <name> --display-name "Python3 (<name>)"
+   ```
+
+6. Deactivate.
+
+   ```bash
+   conda deactivate
+   ```
+
+Fix world-writable files here too, as in the previous section.
+
+Further reading:
+
+- [Managing conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+- [Installing the IPython kernel](https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments)
 
 ## Updating hublib
 
-The HUBzero utility library should be installed in every base Anaconda environment and in each named environment as well. The hublib package is available only through pip.
+`hublib` is the Hubzero utility library for notebooks. It belongs in every
+base Anaconda environment and in every named environment spawned from one. It
+is distributed through pip only.
 
-- Set Anaconda base environment
-  - ```
-    use -e -r anaconda-X
-    ```
-- Install hublib
-  - ```
-    pip install -U hublib
-    ```
+```bash
+use -e -r anaconda-X
+pip install -U hublib
+```

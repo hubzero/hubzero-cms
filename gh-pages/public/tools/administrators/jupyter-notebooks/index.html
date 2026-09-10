@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jupyter Notebooks · Tools · Hubzero Documentation</title>
-  <meta name="description" content="Adding additional packages to Jupyter Notebooks Google the desired package (python, R packages, not OS packages) and review the installation instructions. They…">
+  <title>Jupyter notebooks · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Administering the Anaconda environments that Jupyter tools run in, and the one setting on the CMS side that lets a tool be published as one. The first section…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/administrators/jupyter-notebooks/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,14 +41,15 @@
         <a class="rail__book" href="../../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool Administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Jupyter Notebooks</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#adding-additional-packages-to-jupyter-notebooks">Adding additional packages to Jupyter Notebooks</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-a-separate-anaconda-environment">Creating a separate anaconda environment.</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Tool administrators</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Jupyter notebooks</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-cms-side">The CMS side</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-packages-to-an-anaconda-environment">Adding packages to an Anaconda environment</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-separate-anaconda-environment">Creating a separate Anaconda environment</a></li>
 <li class="toc__item toc__item--l2"><a href="#updating-hublib">Updating hublib</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../developers/index.html">Tool Developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
@@ -103,152 +104,155 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool Administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Jupyter Notebooks</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tool administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Jupyter notebooks</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Jupyter Notebooks</h1>
+          <h1>Jupyter notebooks</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tool-administrators/jupyter-notebooks">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2018.</aside>
+        
         <div class="prose">
-<h2 id="adding-additional-packages-to-jupyter-notebooks">Adding additional packages to Jupyter Notebooks</h2>
-<p>Google the desired package (python, R packages, not OS packages) and review the installation instructions. They might recommend a different conda repository than the default.
-Be careful if conda says it wants to downgrade packages. If it is a minor downgrade, it is probably OK. Do not proceed if many packages must be downgraded or critical packages are to be downgraded. Remember that changes to the Ananconda environment will affect all tools using the environment and a downgrade could cause tools not to function (if a feature is no longer available, for example).</p>
+<p>Administering the Anaconda environments that Jupyter tools run in, and the
+one setting on the CMS side that lets a tool be published as one.</p>
+<p>The first section below was checked against <code>com_tools</code> in this repository.
+Everything after it happens on the tool execution platform, which is separate
+software and is <strong>not in this repository</strong>; those procedures are kept as the
+written record but could not be verified.</p>
+<h2 id="the-cms-side">The CMS side</h2>
+<p><code>com_tools</code> has an <strong>Enable Jupyter</strong> option, on by default. While it is on,
+the tool registration form offers a third publishing choice, <strong>Web
+application (Jupyter, Rstudio, ...)</strong>, alongside the Rappture or Linux-GUI
+default and Sim2L. Turning the option off removes the choice from the form;
+tools already registered with it keep their setting.</p>
+<p>The choice is stored on the tool version as <code>publishType</code>, with the value
+<code>jupyter</code>. Hubs upgraded from older releases may still hold the historical
+value <code>weber=</code>; the component translates that to <code>jupyter</code> when it reads it,
+so both behave the same. <code>publishType</code> is passed straight through to the
+platform's install and publish scripts as <code>--publishOption</code>.</p>
+<p>At launch the difference shows up in what the middleware returns. A standard
+tool comes back as a VNC session that the <code>novnc</code> plugin renders in the page.
+A Jupyter tool comes back with a proxy URL, and the CMS redirects the browser
+to it instead. If the middleware also returns an authentication token, the
+CMS sets a <code>weber-auth-&lt;hub domain&gt;</code> cookie — secure, HttpOnly, thirty days —
+before redirecting.</p>
+<p>For the option itself see the
+<a href="../../../reference/configuration/components/tools/index.html">generated <code>com_tools</code> parameter reference</a>;
+for the pipeline the tool travels through, see
+<a href="../../../managers/maintenance/tools/index.html">Tools</a> in the hub managers book.</p>
+<p>Nothing else about Jupyter is configured in the CMS. Which Anaconda
+environments exist, which packages they carry, and which kernels a notebook
+can select are all decided on the execution hosts, by the procedures below.</p>
+<h2 id="adding-packages-to-an-anaconda-environment">Adding packages to an Anaconda environment</h2>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> An Anaconda environment is shared by every tool that uses it.
+Adding a package can force other packages to be downgraded, and a downgrade
+can break a tool that depends on a feature the older version lacks. Read
+what conda proposes before agreeing to it. A minor downgrade is usually
+safe; a long list of downgrades, or a downgrade of anything central, is
+not — stop and create a separate environment instead.</p>
+</aside>
+<p>Check the package's own installation instructions first. Many recommend a
+channel other than the default.</p>
+<ol>
+<li>
+<p>Start a workspace tool. If the hub offers workspaces on more than one
+container image, pick the one matching the environment you are changing.
+Starting the Jupyter tool that uses the environment and opening a terminal
+in it works too.</p>
+</li>
+<li>
+<p>Become the <code>apps</code> user. Your account has to be in the host's <code>apps</code> group.</p>
+<pre><code class="language-bash">sudo su - apps
+</code></pre>
+</li>
+<li>
+<p>List the Anaconda environments available.</p>
+<pre><code class="language-bash">use |&amp; grep anaconda
+</code></pre>
+</li>
+<li>
+<p>Load the one you want, where <code>X</code> is the version.</p>
+<pre><code class="language-bash">use -e -r anaconda-X
+</code></pre>
+</li>
+<li>
+<p>Install the package. Use <code>mamba</code> in place of <code>conda</code> if it is present — it
+is faster and says more when it fails. <code>pip</code> is the third option; mixing
+pip and conda installations in one environment needs care. Installation
+can take several minutes.</p>
+<pre><code class="language-bash">conda install -c conda-forge -c defaults &lt;pkgname&gt;
+</code></pre>
+<pre><code class="language-bash">pip install -U --upgrade-strategy only-if-needed &lt;pkgname&gt;
+</code></pre>
+</li>
+<li>
+<p>Remove any world-writable bits the installer left behind. Do not skip
+this.</p>
+<pre><code class="language-bash">chmod -R o-w /apps/share64/&lt;os&gt;/anaconda/anaconda-X
+</code></pre>
+</li>
+</ol>
+<h2 id="creating-a-separate-anaconda-environment">Creating a separate Anaconda environment</h2>
+<p>Sometimes it is better to spawn a new named environment from the base one
+than to disturb the base. Jupyter calls named environments <em>kernels</em>. A
+notebook records its kernel in its own metadata, so a developer picks it once
+and it sticks — which means the administrator does not have to create a
+separate Jupyter tool for every kernel.</p>
+<ol>
+<li>
+<p>Load the base environment.</p>
+<pre><code class="language-bash">use -e -r anaconda-X
+</code></pre>
+</li>
+<li>
+<p>Create the named environment.</p>
+<pre><code class="language-bash">conda create -n &lt;name&gt;
+</code></pre>
+</li>
+<li>
+<p>Activate it. On current conda this is <code>conda activate &lt;name&gt;</code>; older
+installations need <code>source activate &lt;name&gt;</code>.</p>
+<pre><code class="language-bash">conda activate &lt;name&gt;
+</code></pre>
+</li>
+<li>
+<p>Install packages as above.</p>
+<pre><code class="language-bash">conda install -c conda-forge -c defaults &lt;pkgname&gt;
+</code></pre>
+<pre><code class="language-bash">pip install -U --upgrade-strategy only-if-needed &lt;pkgname&gt;
+</code></pre>
+</li>
+<li>
+<p>Register it as a kernel, either into the active environment's prefix or
+explicitly into the base environment's.</p>
+<pre><code class="language-bash">python -m ipykernel install --sys-prefix --name &lt;name&gt; --display-name &quot;Python3 (&lt;name&gt;)&quot;
+</code></pre>
+<pre><code class="language-bash">python -m ipykernel install --prefix /apps/share64/&lt;os&gt;/anaconda/anaconda-X --name &lt;name&gt; --display-name &quot;Python3 (&lt;name&gt;)&quot;
+</code></pre>
+</li>
+<li>
+<p>Deactivate.</p>
+<pre><code class="language-bash">conda deactivate
+</code></pre>
+</li>
+</ol>
+<p>Fix world-writable files here too, as in the previous section.</p>
+<p>Further reading:</p>
 <ul>
-<li>Start a workspace tool. If your HUB supports multiple operating system (vendor or version) based tool containers choose the workspace tool for the appropriate container.</li>
-<li>As an alternative, start the Jupyter Notebook tool based on the Anaconda environment that you want to modify and start a new terminal.</li>
-<li>From the open terminal switch to the apps user (your account must be a member of the apps group).
-<ul>
-<li>
-<pre><code>sudo su - apps
-</code></pre>
-</li>
+<li><a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Managing conda environments</a></li>
+<li><a href="https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments">Installing the IPython kernel</a></li>
 </ul>
-</li>
-<li>Load the Anaconda environment that you wish to modify (there may be multiple Anaconda environments available. The list of Anaconda environments can be listed with the command
-<ul>
-<li>
-<pre><code>use |&amp; grep anaconda
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Execute the command &quot;use&quot;, choosing the appropriate Anaconda (X represents the particular version choice) environment.
-<ul>
-<li>
-<pre><code>use -e -r anaconda-X
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Install the desired package via conda or mamba if it is installed. mamba is typically much more efficient and provides more useful information should it fail. Another option is to use pip. Extra care must be taken when mixing conda and pip package installations in the same environment. Typical installation command like The installation may take a few minutes
-<ul>
-<li>
-<pre><code>conda install -c conda-forge -c defaults &lt;pkgname&gt;
-</code></pre>
-</li>
-<li>
-<pre><code>pip install -U --upgrade-strategy only-if-needed &lt;pkgname&gt;
-</code></pre>
-</li>
-</ul>
-</li>
-<li><strong>Important! Fix any world writable files by doing:</strong>
-<ul>
-<li>
-<pre><code>chmod -R o-w /apps/share64/&lt;OS&gt;/anaconda/anaconda-X
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="creating-a-separate-anaconda-environment">Creating a separate anaconda environment.</h2>
-<p>In some circumstances it is beneficial to spawn a new named environment from the standard base environment. The named environments are referred to as kernels in Jupyter notebooks. Once a Jupyter notebook is running the developer or user has the opportunity to change to a different kernel. The kernel used to run the notebook is embedded within the notebook metadata therefore only has to be changed once. This works well for developers and means the administrator does not have to create a Jupyter Notebook tool for each kernel.</p>
-<ul>
-<li>Set base Anaconda environment
-<ul>
-<li>
-<pre><code>use -e -r anaconda-X
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Create new named environment
-<ul>
-<li>
-<pre><code>conda create -n &lt;name&gt;
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Activate named environment
-<ul>
-<li>
-<pre><code>source activate &lt;name&gt;
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Do package installation as before
-<ul>
-<li>
-<pre><code>conda install -c conda-forge -c defaults &lt;pkgname&gt;
-</code></pre>
-</li>
-<li>
-<pre><code>pip install -U --upgrade-strategy only-if-needed &lt;pkgname&gt;
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Register named environment as kernel in base environment
-<ul>
-<li>
-<pre><code>python -m ipykernel install --sys-prefix --name &lt;name&gt; --display-name &quot;Python3 (&lt;name&gt;)&quot;
-</code></pre>
-</li>
-<li>
-<pre><code>python -m ipykernel install --prefix /apps/share64/&lt;OS&gt;/anaconda/anaconda-X --name &lt;name&gt; --display-name &quot;Python3 (&lt;name&gt;)&quot;
-</code></pre>
-</li>
-</ul>
-</li>
-<li>Deactivate named environment
-<ul>
-<li>
-<pre><code>conda deactivate
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<p>References:</p>
-<p><a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda user guide</a></p>
-<p><a href="https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments">Ipython kernel instalation</a></p>
 <h2 id="updating-hublib">Updating hublib</h2>
-<p>The HUBzero utility library should be installed in every base Anaconda environment and in each named environment as well. The hublib package is available only through pip.</p>
-<ul>
-<li>Set Anaconda base environment
-<ul>
-<li>
-<pre><code>use -e -r anaconda-X
+<p><code>hublib</code> is the Hubzero utility library for notebooks. It belongs in every
+base Anaconda environment and in every named environment spawned from one. It
+is distributed through pip only.</p>
+<pre><code class="language-bash">use -e -r anaconda-X
+pip install -U hublib
 </code></pre>
-</li>
-</ul>
-</li>
-<li>Install hublib
-<ul>
-<li>
-<pre><code>pip install -U hublib
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../installing-tool-dependencies/index.html" rel="prev"><span>Previous</span>Installing Tool Dependencies</a><a class="pager__next" href="../whitelistdirectories/index.html" rel="next"><span>Next</span>White list of directories through the CMS</a></nav>
+        <p class="stamp">Reviewed against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../installing-tool-dependencies/index.html" rel="prev"><span>Previous</span>Installing tool dependencies</a><a class="pager__next" href="../whitelistdirectories/index.html" rel="next"><span>Next</span>Directory parameter whitelist</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/administrators/jupyter-notebooks.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language Manager · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The Language Manager is where you choose which installed language the hub speaks and where you change individual pieces of wording without editing a file. It…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/languages/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Language Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#installed-languages">Installed languages</a></li>
+<li class="toc__item toc__item--l2"><a href="#content-languages">Content languages</a></li>
+<li class="toc__item toc__item--l2"><a href="#overrides">Overrides</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Language Manager</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Language Manager</h1>
+        </header>
+        
+        <div class="prose">
+<p>The Language Manager is where you choose which installed language the hub
+speaks and where you change individual pieces of wording without editing a
+file. It is reached from <strong>Extensions → Language Manager</strong> and has three
+screens, listed across the top of each of them:</p>
+<table>
+<thead>
+<tr>
+<th>Sub-navigation</th>
+<th>What it is for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Installed - Site</strong> and <strong>Installed - Administrator</strong></td>
+<td>The languages installed for each half of the hub, and which one is the default.</td>
+</tr>
+<tr>
+<td><strong>Content</strong></td>
+<td>Content languages, which only matter on a hub running more than one language at once.</td>
+</tr>
+<tr>
+<td><strong>Overrides</strong></td>
+<td>Changing the text behind any language key, per language and per half of the hub.</td>
+</tr>
+</tbody>
+</table>
+<p>On most hubs only the third screen ever gets used. Hubzero ships one language,
+<code>en-GB</code>, so there is nothing to choose on the first screen and nothing to
+declare on the second; but every hub has wording it wants to change, and the
+override editor is the supported way to change it.</p>
+<p><a href="../../../developers/extensions/languages/index.html">Languages</a> in the developers
+book covers the other half of the subject: where an extension's INI files
+live, how keys are named, and when they are loaded. Read it if you are about
+to write an override — you need the key, and that page explains how keys are
+built.</p>
+<h2 id="installed-languages">Installed languages</h2>
+<p><strong>Installed - Site</strong> and <strong>Installed - Administrator</strong> are the same screen with
+the client switched. Each lists the language packs installed for that half of
+the hub, one row each, read from the extensions table and from the language's
+own <code>&lt;tag&gt;.xml</code> metafile:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Num</strong></td>
+<td>Row number.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>The language's name, from its metafile.</td>
+</tr>
+<tr>
+<td><strong>Language Tag</strong></td>
+<td>The tag, such as <code>en-GB</code>. This is also the directory name.</td>
+</tr>
+<tr>
+<td><strong>Location</strong></td>
+<td>Site or Administrator, matching the screen you are on.</td>
+</tr>
+<tr>
+<td><strong>Default</strong></td>
+<td>Whether this is the language that half of the hub uses.</td>
+</tr>
+<tr>
+<td><strong>Version</strong>, <strong>Date</strong>, <strong>Author</strong>, <strong>Author Email</strong></td>
+<td>From the metafile.</td>
+</tr>
+</tbody>
+</table>
+<p>Only enabled language packs are listed. A pack whose metafile is missing or
+unreadable is still shown — greyed as archived, with the tag repeated in place
+of the name and the metafile columns empty — but it offers no radio button, so
+it cannot be made the default. That state means the extensions table has a row
+for a language whose files are not on disk.</p>
+<p>To change the default, select the radio button on a row and press <strong>Default</strong>
+in the toolbar. The setting is stored on the component itself, one value for
+each client, so the site and the administrator interface can differ.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Changing the default does not move members who have chosen a
+language on their own profile, or a visitor who arrived on a
+language-specific URL.</p>
+</aside>
+<p>The toolbar's <strong>Install Language</strong> button links to <code>com_installer</code>, which has
+no language-specific screen; it lands on the Extension Manager's <strong>Manage</strong>
+list. Install a language pack the same way as any other extension, through
+<a href="../../extensions/extension-manager/index.html">Extension Manager</a>.</p>
+<h2 id="content-languages">Content languages</h2>
+<p>A content language is a row in a table saying &quot;this hub publishes content in
+this language, under this URL code&quot;. It exists for the multilingual setup: the
+<strong>System - Language Filter</strong> plugin reads content languages to decide which
+URL prefixes are valid, and a language switcher module offers the published
+ones to visitors. On a single-language hub the screen has no effect on
+anything and can be left alone.</p>
+<p>The list shows title, native title, language tag, URL language code, image
+prefix, status, ordering, access level, whether the language has a home page,
+and the row ID. The edit form takes:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>The name shown in lists.</td>
+</tr>
+<tr>
+<td><strong>Title Native</strong></td>
+<td>The name in the language itself.</td>
+</tr>
+<tr>
+<td><strong>URL Language Code</strong></td>
+<td>Appended to the site URL — <code>/en/</code> with SEF on, <code>&amp;lang=en</code> with it off. Must be unique.</td>
+</tr>
+<tr>
+<td><strong>Language Tag</strong></td>
+<td>The exact tag of the installed language pack this row stands for.</td>
+</tr>
+<tr>
+<td><strong>Image Prefix</strong></td>
+<td>Prefix of the flag image the language switcher uses.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, unpublished, or trashed.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The viewing level the language is offered to.</td>
+</tr>
+<tr>
+<td><strong>Description</strong>, <strong>Metadata Options</strong>, <strong>Custom Site Name</strong></td>
+<td>Per-language metadata, and a site name that replaces the global one for this language.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The toolbar on this list does not work. <strong>Publish</strong>,
+<strong>Unpublish</strong>, <strong>Trash</strong> and <strong>Edit</strong> post the selection under one name and
+the controller reads another, so they act on an empty selection and report
+nothing done; <strong>Empty Trash</strong> posts a task the controller does not
+implement. The only working routes into a content language are the title
+link, which opens the edit form, and the <strong>Status</strong> field inside that form.
+Both faults are recorded in the project record, which is not
+published to this site.</p>
+</aside>
+<p>The component also carries a multilingual status panel, listing whether the
+language filter plugin is on, how many switcher modules are published, and
+whether each published content language has a home page. It is reached from
+<code>mod_multilangstatus</code>, an administrator module, but that module's link is
+wrong and the panel's own layout reads variables the controller never sets, so
+it does not render usefully. Treat the feature as unfinished.</p>
+<h2 id="overrides">Overrides</h2>
+<p>This is the screen worth knowing. An override replaces the text behind one
+language key, for one language and one half of the hub, without touching a
+shipped file — so it survives an upgrade, where editing
+<code>core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini</code> would not.</p>
+<p>Open <strong>Extensions → Language Manager → Overrides</strong>. The drop-down at the top
+right picks which file you are editing, as a language and location pair —
+<em>English (United Kingdom) - Site</em>, <em>English (United Kingdom) - Administrator</em>,
+and so on for every installed language. The list below shows the overrides
+already in that file, by <strong>Constant</strong> and <strong>Text</strong>, with a search box that
+matches either.</p>
+<p>To add one, press <strong>New</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What to put in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Language Constant</strong></td>
+<td>The key whose text you are replacing, such as <code>COM_BLOG_BROWSE</code>.</td>
+</tr>
+<tr>
+<td><strong>Text</strong></td>
+<td>The replacement. Keep any <code>%s</code>, <code>%d</code> or <code>%1$s</code> placeholders — the hub substitutes values into them, and dropping one changes what the sentence says.</td>
+</tr>
+<tr>
+<td><strong>For both locations</strong></td>
+<td>Only offered when editing an administrator override. Writes the same override into the site file as well, which some plugins need because their strings are loaded on both sides. The two copies are independent afterwards.</td>
+</tr>
+<tr>
+<td><strong>Language</strong>, <strong>Location</strong>, <strong>File</strong></td>
+<td>Read-only. They tell you which file is about to be written.</td>
+</tr>
+</tbody>
+</table>
+<p>The right-hand panel searches for a key when you do not know it. Type the text
+you can see on the page, choose whether you are searching <strong>Constant</strong> names or
+<strong>Value</strong> text, press <strong>Search</strong>, and click a result to drop its constant into
+the form. That search runs against a database table the screen fills the first
+time you use it, by reading every INI file under <code>core/</code> and <code>app/</code> for the
+selected language — expect a pause, and a <em>Please wait while the cache is
+recreated</em> notice, on the first search after a change of language or location.</p>
+<p>Overrides are written to a plain INI file per language and client:</p>
+<pre><code class="language-text">app/bootstrap/site/language/overrides/en-GB.override.ini
+app/bootstrap/administrator/language/overrides/en-GB.override.ini
+</code></pre>
+<p>The translator merges that file over the shipped strings on every request, so
+an override takes effect immediately. Deleting an override rewrites the file
+without it and clears the cache.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Because the file is plain INI in <code>app/</code>, it is the right place for
+a hub's wording changes and it belongs in whatever the hub keeps under
+version control. Editing that file by hand and editing it through this
+screen are the same operation.</p>
+</aside>
+<h2 id="permissions">Permissions</h2>
+<p>The <strong>Options</strong> button opens the component's permissions grid — Configure,
+Access Administration Interface, Create, Delete, Edit, Edit State — and
+nothing else. There are no other settings. The screens themselves check those
+rules: the override editor's <strong>Save</strong> needs Edit or Create, <strong>Delete</strong> needs
+Delete, and the <strong>Default</strong> button on the installed list needs Edit State.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../kb/index.html" rel="prev"><span>Previous</span>Knowledge base</a><a class="pager__next" href="../mailto/index.html" rel="next"><span>Next</span>Mailto</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/20-languages.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

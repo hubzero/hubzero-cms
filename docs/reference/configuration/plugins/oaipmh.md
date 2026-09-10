@@ -9,7 +9,7 @@ Parameters of every plugin in the `oaipmh` group, from each plugin's manifest. S
 
 ## OAIPMH - Publications (`plg_oaipmh_publications`)
 
-OAIPMH - Publications
+OAIPMH data provider for publications
 
 ### Basic
 
@@ -19,7 +19,7 @@ OAIPMH - Publications
 
 ## OAIPMH - Resources (`plg_oaipmh_resources`)
 
-PLG_OAIPMH_XML_DESCRIPTION
+OAIPMH data provider for resources
 
 ### Basic
 

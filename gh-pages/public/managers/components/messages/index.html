@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Messages · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Two unrelated things on a hub are called messaging, and this chapter is about the smaller and less useful of them. Read the next section before you go looking…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/messages/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Messages</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-messaging-is-which">Which messaging is which</a></li>
+<li class="toc__item toc__item--l2"><a href="#whether-you-can-reach-it">Whether you can reach it</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
+<li class="toc__item toc__item--l3"><a href="#messages-2">Messages</a></li>
+<li class="toc__item toc__item--l3"><a href="#writing-a-message">Writing a message</a></li>
+<li class="toc__item toc__item--l3"><a href="#my-settings">My Settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-manager-should-do">What a manager should do</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Messages</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Messages</h1>
+        </header>
+        
+        <div class="prose">
+<p>Two unrelated things on a hub are called messaging, and this chapter is about
+the smaller and less useful of them. Read the next section before you go
+looking for a screen.</p>
+<h2 id="which-messaging-is-which">Which messaging is which</h2>
+<p><strong>Hub notifications and member-to-member messages</strong> are handled by the
+framework's message system, which writes to the <code>#__xmessage*</code> tables. This is
+what members mean by &quot;messages&quot;: the <strong>Messages</strong> tab on a member's profile,
+with its Inbox, Archive, Trash, Sent and Settings, and everything the hub
+sends them — a reply on a support ticket, a group invitation, a wish list
+change, a project notice. Components send those by firing
+<code>xmessage.onSendMessage</code>, and the <strong>XMessage</strong> plugins (<strong>Email</strong>,
+<strong>Internal</strong>, <strong>Handler</strong>) decide how each one is delivered. What the member
+does not want by email, they can switch to on-site delivery only, per
+notification type, from that tab's <strong>Settings</strong>.</p>
+<p>Nothing in this chapter touches that system. It is configured through:</p>
+<ul>
+<li><strong>Extensions &gt; Plugins</strong>, <code>members</code> folder, <strong>Members - Messages</strong>, which
+puts the tab on the profile and sets the <strong>Default Method</strong> for a member who
+has never chosen — Email or Internal.</li>
+<li><strong>Extensions &gt; Plugins</strong>, <code>xmessage</code> folder, where <strong>XMessage - Handler</strong>
+carries the rate limits (<strong>time_limit</strong>, <strong>daily_limit</strong>) that stop a
+runaway component from flooding a mailbox.</li>
+<li>The <strong>Messaging</strong> tab on a member's record; see
+<a href="../../users/members/index.html">Members</a>.</li>
+</ul>
+<p><strong>The Messages component</strong>, documented below, is a separate, administrator-only
+private-message inbox using the <code>#__messages</code> table. It exists so that one
+administrator can send another a note inside the administrator interface. It
+has nothing to do with member messaging, sends nothing to the site, and is
+inherited from the upstream CMS rather than written for Hubzero.</p>
+<h2 id="whether-you-can-reach-it">Whether you can reach it</h2>
+<p>Probably not. The component's install migration deliberately creates no entry
+in the administrator's <strong>Components</strong> menu, and nothing else in the tree links
+to it: it is reachable only by typing</p>
+<pre><code>/administrator/index.php?option=com_messages
+</code></pre>
+<p>Given that, treat this component as dormant. It is not a supported way to
+communicate with hub members, and nothing in the site depends on it.</p>
+<h2 id="the-screens">The screens</h2>
+<p>If you do open it, there are two.</p>
+<h3 id="messages-2">Messages</h3>
+<p>A list of the messages sent to <em>you</em> — the list is filtered to the logged-in
+administrator, so two administrators never see the same rows. Columns are
+<strong>Subject</strong>, which opens the message, <strong>Read</strong>, <strong>From</strong>, and the date. The
+state icon in the <strong>Read</strong> column toggles a message between read and unread.</p>
+<p>Above the list, a search box matching the subject or body, and a select
+filtering by <strong>Read</strong>, <strong>Unread</strong> or <strong>Trashed</strong>.</p>
+<p>The toolbar offers <strong>New Private Message</strong>, <strong>Mark As Read</strong>, <strong>Mark as
+Unread</strong>, <strong>Trash</strong>, <strong>My Settings</strong>, <strong>Options</strong> and <strong>Help</strong>. Two of these
+do nothing:</p>
+<ul>
+<li><strong>Trash</strong> posts a task the controller does not implement, so it silently
+redraws the list. There is no trash state and no way to reach one; the
+<strong>Trashed</strong> filter therefore never matches anything.</li>
+<li><strong>Empty Trash</strong>, which replaces <strong>Trash</strong> when the <strong>Trashed</strong> filter is
+selected, does delete, but as the filter cannot select any rows it never has
+anything to delete. <strong>Delete</strong> is permanent when it does run.</li>
+</ul>
+<p>Selecting <strong>Unread</strong> in the filter shows both read and unread messages: the
+controller treats the value 0 as &quot;no filter&quot;.</p>
+<h3 id="writing-a-message">Writing a message</h3>
+<p><strong>New Private Message</strong> opens a form with a <strong>Recipient</strong> picker, a
+<strong>Subject</strong> and a <strong>Message</strong> body, and a <strong>Send</strong> button. The recipient
+picker is the standard member autocompleter.</p>
+<p>Sending stores the message and, if the sender's mail setting says so, emails
+the recipient a note telling them to log in and read it. Only administrators
+who can reach the administrator interface can be sent one, because only they
+can read it.</p>
+<p>Reading a message opens it in a read-only view with a <strong>Reply</strong> button, which
+opens a blank compose form — it does not quote or address the original.</p>
+<h3 id="my-settings">My Settings</h3>
+<p>The <strong>My Settings</strong> toolbar button opens a small pop-up with three
+per-administrator settings, stored in <code>#__messages_cfg</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it is meant to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lock Inbox</td>
+<td>Refuse new messages.</td>
+</tr>
+<tr>
+<td>Email New Messages</td>
+<td>Email you when a message arrives.</td>
+</tr>
+<tr>
+<td>Auto-purge Messages (days)</td>
+<td>Delete messages after this many days.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> None of the three has any effect. <strong>Lock Inbox</strong> and
+<strong>Auto-purge Messages</strong> are stored and never read by anything. <strong>Email New
+Messages</strong> is read, but from the component's own options rather than from
+your saved setting, and the component has no such option — so the check
+always passes and the notification email is always sent.</p>
+</aside>
+<h2 id="options">Options</h2>
+<p>The component's configuration has only a <strong>Permissions</strong> tab; there are no
+settings. <code>config/access.xml</code> declares Configure, Access Administration
+Interface, Create, Delete and Edit State. Access Administration Interface is
+what admits you to the screens.</p>
+<h2 id="what-a-manager-should-do">What a manager should do</h2>
+<p>Nothing. Leave the component installed — removing it is not supported and
+nothing gains from it — and do member communication through the systems that
+members can actually see: the notification settings described at the top of
+this chapter, and <a href="../newsletters/index.html">Newsletters</a> for anything sent to many
+people at once.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../mailto/index.html" rel="prev"><span>Previous</span>Mailto</a><a class="pager__next" href="../newsletters/index.html" rel="next"><span>Next</span>Newsletters</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/22-messages.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

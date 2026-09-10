@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAML · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The SAML component makes the hub a SAML identity provider . Other services — a wiki, a survey tool, a departmental application — can be registered with it and…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/saml/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">SAML</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-a-manager-sets-up">What a manager sets up</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
+<li class="toc__item toc__item--l3"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l3"><a href="#service-providers">Service Providers</a></li>
+<li class="toc__item toc__item--l3"><a href="#sessions">Sessions</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-endpoints-do">What the endpoints do</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">SAML</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>SAML</h1>
+        </header>
+        
+        <div class="prose">
+<p>The SAML component makes the hub a SAML <strong>identity provider</strong>. Other
+services — a wiki, a survey tool, a departmental application — can be
+registered with it and then let people sign in using their hub account,
+without ever seeing a hub password. It is single sign-on pointing outward
+from the hub.</p>
+<p>It is not how members sign in to the hub. Signing people in from an outside
+identity is an authentication plugin's job; see
+<a href="../../configuring/authentication/index.html">Authentication</a> and
+<a href="../../configuring/extauth/index.html">External authenticators</a>. Those chapters
+cover CILogon, Shibboleth, Globus and the rest, and a hub that wants campus
+logins configures one of them, not this component. The two are independent:
+a hub can do both, either, or neither.</p>
+<p>Do not enable this component because a service says it wants &quot;SAML login&quot;.
+That phrase usually means the service wants to <em>be</em> an SP against your
+campus IdP, which has nothing to do with the hub. This component is only for
+the case where the hub itself is the account authority.</p>
+<h2 id="what-a-manager-sets-up">What a manager sets up</h2>
+<ol>
+<li>Put an X.509 signing certificate and private key on the web server and
+point <strong>Options</strong> at them.</li>
+<li>Register each service that will use hub accounts, either by hand or by
+importing its metadata.</li>
+<li>Give the service the hub's metadata URL so it can trust the hub back.</li>
+</ol>
+<h2 id="the-screens">The screens</h2>
+<p><strong>Components → SAML</strong>, gated on <code>core.manage</code> for <code>com_saml</code>. Three
+sub-navigation entries.</p>
+<h3 id="overview">Overview</h3>
+<p>A status page, with nothing to edit. It reports:</p>
+<ul>
+<li><strong>Identity Provider</strong> — whether the IdP is <strong>Enabled</strong>, the <strong>Entity ID</strong>
+the hub asserts as, and the three published endpoint URLs: <strong>Single
+sign-on URL</strong>, <strong>Single logout URL</strong>, and <strong>Metadata</strong>. The metadata URL
+is a link; open it to see exactly what a service provider will fetch. If
+the endpoint is switched off, the row says <em>Metadata endpoint is
+disabled</em> instead.</li>
+<li><strong>Signing certificate</strong> — the certificate and key file paths, whether the
+web server can read them, the certificate's subject, and when it expires.
+It warns thirty days ahead and shouts once the certificate has expired.
+This is the row worth checking on a schedule; an expired signing
+certificate breaks every registered service at once.</li>
+<li><strong>Trust store</strong> — a count of enabled and registered service providers, and
+a count of active SSO sessions. Both are links into the other two screens.</li>
+</ul>
+<p>If neither the <strong>IdP Entity ID</strong> option nor the hub's <strong>Site URL</strong> is set,
+the Entity ID row carries a warning: the identity is being derived from the
+request's <code>Host</code> header, so it can vary per request. Set one of them.</p>
+<h3 id="service-providers">Service Providers</h3>
+<p>The trust store: the list of services allowed to ask the hub for an
+assertion. Search matches the name and entity ID; the status filter is
+<strong>All States</strong>, <strong>Enabled</strong>, or <strong>Disabled</strong>. The list shows <strong>Name</strong>,
+<strong>Entity ID</strong>, <strong>ACS host</strong>, and <strong>Cert expires</strong>, with the certificate
+column flagging one that has expired or is close to it.</p>
+<p>Toolbar: <strong>Enable</strong>, <strong>Disable</strong>, <strong>New</strong>, <strong>Import from metadata</strong>,
+<strong>Edit</strong>, <strong>Delete</strong>, and <strong>Options</strong>. Deleting asks for confirmation,
+because SSO for that service stops immediately.</p>
+<p>The edit form has four fieldsets.</p>
+<p><strong>Details</strong> — <strong>Name</strong>, <strong>Entity ID</strong> (the Issuer value the service sends),
+<strong>Description</strong>, <strong>Assertion Consumer Service URL</strong> (where signed responses
+are posted), and <strong>Single Logout URL</strong>. Both URLs must be <code>https</code>; the form
+refuses plain <code>http</code>, because an assertion is a bearer credential. The
+registered ACS URL is authoritative — a request that asks for delivery
+somewhere else is refused.</p>
+<p><strong>Trust</strong> — <strong>Require signed requests</strong>, <strong>Sign the assertion</strong>, and the
+service's <strong>Signing certificate (PEM)</strong>. The response signature already
+covers the assertion, so only turn on assertion-level signing for a service
+that asks for it. A certificate is mandatory when signed requests are
+required.</p>
+<p><strong>NameID &amp; attribute policy</strong> — <strong>NameID value</strong> picks what identifies the
+member to that service: <strong>Username</strong>, <strong>Email address</strong>, or <strong>Numeric user
+ID</strong>. <strong>NameID format</strong> declares which of those it is. <strong>Attribute map
+(JSON)</strong> overrides the attributes released; leaving it blank releases the
+default set (email, common name, given name, surname) and entering <code>[]</code>
+releases none. <strong>Allowed groups</strong> takes a comma-separated list of group
+<code>cn</code>s; leave it empty to let every hub member in.</p>
+<p><strong>Publishing</strong> — the enabled/disabled state, plus the ID, creation date, and
+the metadata URL an imported registration came from.</p>
+<p><strong>Import from metadata</strong> takes the service's <code>EntityDescriptor</code> XML, pasted
+in or fetched from an <code>https</code> URL, and prefills the edit form with the entity
+ID, endpoints and signing certificate it finds. Nothing is saved until you
+save the form, so it is safe to use just to see what a service is claiming.
+If a registration with that entity ID already exists, the import opens it for
+editing rather than creating a second one.</p>
+<h3 id="sessions">Sessions</h3>
+<p>The audit trail: one row per sign-on the hub has issued, filterable by
+service provider and by <strong>Active</strong> or <strong>Ended</strong>. It shows the member, the
+service, the state, and when the session started and ended.</p>
+<p><strong>Delete expired</strong> clears the rows that can never resolve — those marked
+ended, plus those still marked active whose hub session no longer exists.
+Sessions backed by a live hub session are left alone. On a hub that does not
+keep sessions in the database, the screen says so and <strong>Delete expired</strong>
+falls back to removing only the rows already marked ended.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> A session row is also what records that a particular sign-on
+request has already been answered. Deleting rows removes that replay
+protection along with the audit entry. Use <strong>Delete expired</strong> rather than
+selecting rows by hand.</p>
+</aside>
+<h2 id="what-the-endpoints-do">What the endpoints do</h2>
+<p>Three site addresses, all under <code>/saml/idp/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/saml/idp/metadata</code></td>
+<td>The IdP metadata document. This is the URL you give a service provider.</td>
+</tr>
+<tr>
+<td><code>/saml/idp/login</code></td>
+<td>SP-initiated single sign-on.</td>
+</tr>
+<tr>
+<td><code>/saml/idp/logout</code></td>
+<td>SP-initiated single logout.</td>
+</tr>
+</tbody>
+</table>
+<p>There is nothing at <code>/saml</code> itself; it returns a 404, as does every endpoint
+when <strong>Enable IdP</strong> is off or the signing certificate and key are unreadable.</p>
+<p>A sign-on runs like this. The service posts or redirects a request to
+<code>/saml/idp/login</code>. The hub checks the whole request first — that the issuer
+is a registered, enabled service provider, that the signature verifies, that
+the request has not already been answered, and that it asks for delivery to
+the registered ACS URL — and rejects anything that fails with a plain error
+page. Only then, if the visitor is a guest, are they sent to the hub's login
+form and returned here afterwards. If the service has <strong>Allowed groups</strong> set
+and the member is not in one, the hub shows its own <em>Access not available</em>
+page rather than a protocol error. Otherwise it records the session and posts
+a signed response back to the ACS URL.</p>
+<p>The errors a member might see, all rendered on the hub's ordinary error page,
+are listed in
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_saml/site/language/en-GB/en-GB.com_saml.ini"><code>site/language/en-GB/en-GB.com_saml.ini</code></a>.</p>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> on any of the three screens; visible with <code>core.admin</code>. Full
+parameter list in the
+<a href="../../../reference/configuration/components/saml/index.html">generated reference</a>.</p>
+<p><strong>Enable IdP</strong> is the master switch for all three endpoints. <strong>IdP Entity
+ID</strong> is what the hub asserts as, defaulting to the hub root URL. <strong>Enable
+metadata endpoint</strong> serves the metadata document; turn it off only if you
+intend to hand service providers a metadata file out of band.</p>
+<p><strong>Signing certificate file</strong> and <strong>Private key file</strong> are absolute paths on
+the web server — <code>/etc/saml/cert/saml.crt</code> and <code>/etc/saml/cert/saml.pem</code> by
+default — with <strong>Private key passphrase</strong> if the key has one. The web server
+user must be able to read both, and only it.</p>
+<p><strong>Assertion lifetime (seconds)</strong> and <strong>Clock skew (seconds)</strong> set how long an
+issued assertion is valid and how much clock difference is tolerated;
+180 and 60 by default. <strong>Signature algorithm</strong> offers RSA-SHA256, RSA-SHA384,
+and RSA-SHA512.</p>
+<h2 id="permissions">Permissions</h2>
+<p>The component's <code>access.xml</code> declares <code>core.admin</code>, <code>core.manage</code>,
+<code>core.create</code>, <code>core.delete</code>, <code>core.edit</code>, and <code>core.edit.state</code>, and all six
+are genuinely used — <code>core.manage</code> to open the component, <code>core.create</code> to
+add or import a service provider, <code>core.edit</code> and <code>core.edit.state</code> to change
+one, <code>core.delete</code> to remove one or to clear sessions, <code>core.admin</code> for
+<strong>Options</strong>.</p>
+<p>What is missing is anywhere to set them. <code>config.xml</code> has no permissions
+fieldset, so <strong>Options</strong> shows no <strong>Permissions</strong> tab, and none of the six
+can be granted or denied on this component. They fall back to whatever the
+group inherits from the global configuration, which in practice means the
+screens are open to any group with global <code>core.manage</code> and closed to
+everyone else. <code>com_system</code> and <code>com_search</code> have the same gap; it is
+recorded in the project record.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../resources/index.html" rel="prev"><span>Previous</span>Resources</a><a class="pager__next" href="../search/index.html" rel="next"><span>Next</span>Search</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/30-saml.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

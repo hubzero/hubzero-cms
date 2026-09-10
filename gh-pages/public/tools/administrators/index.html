@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tool Administrators · Tools · Hubzero Documentation</title>
-  <meta name="description" content="The procedures for maintaining and updating tool execution environments are presented in this section. Anaconda (Jupyter Notebook) changes require membership…">
+  <title>Tool administrators · Tools · Hubzero Documentation</title>
+  <meta name="description" content="Maintaining and updating the environments that tools run in. Three of these jobs are done in three different places, and each needs its own access. Task Where…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/administrators/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,13 @@
         <a class="rail__book" href="../index.html">Tools</a>
         <nav aria-label="Tools contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Tool Administrators</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
-<li class="tree__leaf"><a class="tree__link" href="jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="whitelistdirectories/index.html">White list of directories through the CMS</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Tool administrators</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-these-pages-can-be-relied-on-for">What these pages can be relied on for</a></li>
+<li class="toc__item toc__item--l2"><a href="#two-things-called-apps">Two things called apps</a></li>
+</ol><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
+<li class="tree__leaf"><a class="tree__link" href="jupyter-notebooks/index.html">Jupyter notebooks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="whitelistdirectories/index.html">Directory parameter whitelist</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../developers/index.html">Tool Developers</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../developers/toolrepostructure/index.html">Tool Repository Structure</a></li>
@@ -99,21 +102,77 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Tool Administrators</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Tools</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Tool administrators</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Tools</p>
-          <h1>Tool Administrators</h1>
+          <h1>Tool administrators</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/platform_2_4/tool-administrators">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025.</aside>
-        <div class="prose">
-<p>The procedures for maintaining and updating tool execution environments are presented in this section. Anaconda (Jupyter Notebook) changes require membership in the apps group. Container changes described in the Installing Tool Dependecies section requires login access to execution hosts and membership in the docker group. Tool Administrator responsibilities and procedures. CMS changes described in the White list section require access to the administrator website.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="installing-tool-dependencies/index.html">Installing Tool Dependencies</a></li>
-<li><a href="jupyter-notebooks/index.html">Jupyter Notebooks</a></li>
-<li><a href="whitelistdirectories/index.html">White list of directories through the CMS</a></li></ul></section>
-        </div>
         
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="installing-tool-dependencies/index.html" rel="next"><span>Next</span>Installing Tool Dependencies</a></nav>
+        <div class="prose">
+<p>Maintaining and updating the environments that tools run in. Three of these
+jobs are done in three different places, and each needs its own access.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Where it is done</th>
+<th>What you need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="whitelistdirectories/index.html">Directory parameter whitelist</a></td>
+<td>The hub's <code>/administrator</code> interface</td>
+<td><code>core.manage</code> on <code>com_tools</code></td>
+</tr>
+<tr>
+<td><a href="installing-tool-dependencies/index.html">Installing tool dependencies</a></td>
+<td>A workspace session, as the <code>apps</code> account</td>
+<td>Membership of the host's <code>apps</code> group; the Docker parts also need a login on an execution host and membership of its <code>docker</code> group</td>
+</tr>
+<tr>
+<td><a href="jupyter-notebooks/index.html">Jupyter notebooks</a></td>
+<td>A workspace or Jupyter session, as the <code>apps</code> account</td>
+<td>Membership of the host's <code>apps</code> group</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-these-pages-can-be-relied-on-for">What these pages can be relied on for</h2>
+<p>The tool execution platform — the execution hosts, the middleware, the
+container images, the shared <code>/apps</code> filesystem, and the scripts the pipeline
+runs — is separate software and is <strong>not in this repository</strong>. Only the CMS
+side is: <code>com_tools</code>, <code>com_developer</code>, and the <code>novnc</code> tool plugin.</p>
+<p>So the pages in this section are two different kinds of material:</p>
+<ul>
+<li><strong>Checked against the code.</strong> The directory parameter whitelist, and the
+CMS-side notes marked as such on the Jupyter page. These describe options
+and behaviour in <code>com_tools</code> and were verified.</li>
+<li><strong>Platform material, not verifiable here.</strong> Everything about Docker images,
+the <code>use</code> infrastructure, Hapi scripts, <code>/apps/share64</code>, and Anaconda
+environments. It is kept because it is the only written record of these
+procedures, but nothing in it could be confirmed against this repository.
+Each page says which of its sections are in this category.</li>
+</ul>
+<h2 id="two-things-called-apps">Two things called <code>apps</code></h2>
+<p>The name turns up on both sides of the split and means something different on
+each.</p>
+<ul>
+<li>On the hub, <code>com_tools</code>' <strong>Admin Group</strong> option names a Hubzero group whose
+members get the pipeline's administrator controls. It defaults to <code>apps</code>.
+See <a href="../../managers/maintenance/tools/index.html">Tools</a> in the hub managers
+book.</li>
+<li>On an execution host, <code>apps</code> is the operating system account that owns
+installed tool dependencies, and the <code>apps</code> group is what lets you become
+it with <code>sudo su - apps</code>.</li>
+</ul>
+<p>Being in one does not put you in the other.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="installing-tool-dependencies/index.html">Installing tool dependencies</a></li>
+<li><a href="jupyter-notebooks/index.html">Jupyter notebooks</a></li>
+<li><a href="whitelistdirectories/index.html">Directory parameter whitelist</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Tools</a><a class="pager__next" href="installing-tool-dependencies/index.html" rel="next"><span>Next</span>Installing tool dependencies</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/tools/administrators/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

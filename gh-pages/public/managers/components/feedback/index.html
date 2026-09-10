@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Feedback collects success stories: short testimonials that members write about what the hub did for their work, which the hub then quotes on its front page and…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/feedback/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Feedback</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#collecting-a-story">Collecting a story</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-quotes-list">The Quotes list</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-story">Editing a story</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-publishing-means">What publishing means</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-feedback-page">The /feedback page</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../poll/index.html">Poll</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Feedback</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Feedback</h1>
+        </header>
+        
+        <div class="prose">
+<p>Feedback collects success stories: short testimonials that members write about
+what the hub did for their work, which the hub then quotes on its front page
+and on a &quot;Notable Quotes&quot; page. It is not a survey tool and it does not gather
+structured responses. One member writes one story about themselves, an editor
+reads it, and the editor decides whether it is good enough to quote.</p>
+<p>The component also owns <code>/feedback</code>, a signpost page that points visitors at
+the several different ways of telling the hub something — a success story, a
+support ticket, a wish list entry, a poll — without owning any of them but the
+first.</p>
+<h2 id="collecting-a-story">Collecting a story</h2>
+<p>A logged-in member reaches the form at <code>/feedback/success_story</code>, from the
+<strong>Write a Success Story</strong> button on <code>/feedback</code>. Guests are sent to the login
+screen first. The form asks for:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Prefilled from the member's profile. Required.</td>
+</tr>
+<tr>
+<td>School / Organization</td>
+<td>Prefilled from the member's profile. Required.</td>
+</tr>
+<tr>
+<td>Pictures</td>
+<td>Drag-and-drop upload, any number. Held in a temporary directory until the story is saved. Extensions and size limit come from the Media component's settings, and each file is virus-scanned.</td>
+</tr>
+<tr>
+<td>Describe your experience</td>
+<td>The story itself. Required. Scripts, images and all other tags are stripped on save; line breaks become <code>&lt;br /&gt;</code>.</td>
+</tr>
+<tr>
+<td><em>I authorize … to use my quote on the … website.</em></td>
+<td>Consent to publish. A checkbox.</td>
+</tr>
+<tr>
+<td><em>I authorize … to contact me for further information.</em></td>
+<td>Consent to be contacted. A checkbox.</td>
+</tr>
+</tbody>
+</table>
+<p>Saving stores a row in <code>#__feedback</code> and moves the pictures into
+<code>&lt;upload path&gt;/&lt;id&gt;/</code>. The member gets a thank-you page. Nothing is published
+and nobody is notified; the story simply waits in the administrator's list.</p>
+<p>The two consent checkboxes are the reason this component exists, and they are
+the only record of what the author agreed to. They are shown but disabled on
+the administrator's form once a story has been saved, so an editor cannot
+change them afterwards.</p>
+<h2 id="the-quotes-list">The Quotes list</h2>
+<p>Open the component under <strong>Components &gt; Feedback</strong>. The list shows every story
+that has been submitted, newest first.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>The record's number. Sortable.</td>
+</tr>
+<tr>
+<td>Submitted</td>
+<td>The date the story was sent. Sortable.</td>
+</tr>
+<tr>
+<td>Author</td>
+<td>The author's name; a link to the edit form. Sortable.</td>
+</tr>
+<tr>
+<td>Organization</td>
+<td>The author's affiliation. Sortable.</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>The first hundred characters of the full quote, falling back to the short quote, then to the mini quote, then to <em>(blank)</em>. A link to the edit form.</td>
+</tr>
+<tr>
+<td>Notable Quotes</td>
+<td><strong>Yes</strong> when the story is selected for the Notable Quotes page.</td>
+</tr>
+<tr>
+<td>OK to Publish</td>
+<td><strong>Yes</strong> when the author consented to publication.</td>
+</tr>
+</tbody>
+</table>
+<p>Above the list, type a name into the search box and press <strong>Go</strong>; <strong>Clear</strong>
+restores the full list. The search matches the author's name only, not the
+text of the quote.</p>
+<p>The toolbar offers <strong>Options</strong>, <strong>New</strong>, <strong>Edit</strong>, <strong>Delete</strong> and <strong>Help</strong>,
+each shown only if you hold the matching permission. <strong>Delete</strong> removes the
+record and its whole picture directory, without a confirmation step and
+without a trash state.</p>
+<h2 id="editing-a-story">Editing a story</h2>
+<p>The form is in two columns. The left column is the story:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Select for Notable Quotes page.</td>
+<td>The publish switch. See <a href="#what-publishing-means">What publishing means</a>.</td>
+</tr>
+<tr>
+<td>Author full name</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Organization</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>User id</td>
+<td>The <code>uidNumber</code> of the member who sent the story. Read-only once set. Leave it blank for a quote from someone with no account.</td>
+</tr>
+<tr>
+<td>Author consents</td>
+<td>Two disabled checkboxes recording what the author agreed to on the front-end form: consent to publish, and consent to be contacted. Editable only while creating a record by hand.</td>
+</tr>
+<tr>
+<td>Short Quote</td>
+<td>An editor's trim of the story, for places with limited room. 270 characters. If you leave it blank, the first 270 characters of the full quote are used.</td>
+</tr>
+<tr>
+<td>Mini Quote</td>
+<td>A 150-character version, for the front-page quote module. Defaults to the first 150 characters of the short quote.</td>
+</tr>
+<tr>
+<td>Full Quote</td>
+<td>The story as submitted. Required.</td>
+</tr>
+<tr>
+<td>Quote submitted</td>
+<td>The date, editable as plain text.</td>
+</tr>
+<tr>
+<td>Editor notes</td>
+<td>Private working notes: where the quote came from, how to reach the author. Never shown on the site.</td>
+</tr>
+</tbody>
+</table>
+<p>The right column uploads and removes pictures. Each existing picture has a
+<strong>Delete</strong> button, which marks it for removal on the next save; the file input
+below adds more. A new record must be saved before pictures can be attached.</p>
+<p>Creating a record from the toolbar's <strong>New</strong> button first asks for a
+<strong>Username</strong>, so that a quote typed in by an editor can be attached to the
+right member; leave it blank for someone with no account.</p>
+<h2 id="what-publishing-means">What publishing means</h2>
+<p>Only one thing decides whether a story appears anywhere on the site: the
+<strong>Select for Notable Quotes page.</strong> checkbox. With it ticked, the story is
+shown by:</p>
+<ul>
+<li><code>/feedback/quotes</code>, the list of notable quotes.</li>
+<li>The <strong>Quotes</strong> module (<code>mod_quotes</code>), which lists notable quotes and can
+cycle through them.</li>
+<li>The <strong>Random Quote</strong> module (<code>mod_randomquote</code>), which shows one at a time
+and is the usual front-page fixture.</li>
+</ul>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The consent checkbox is not enforced. <code>OK to Publish</code> is
+recorded and displayed, but nothing in the front end or the modules checks
+it. Ticking <strong>Select for Notable Quotes page.</strong> on a story whose author did
+not consent will publish it. Read the <strong>OK to Publish</strong> column before you
+tick anything.</p>
+</aside>
+<p>The <strong>Random Quote</strong> module's <strong>Quote pool</strong> parameter offers <em>Flash
+rotation</em>, <em>Notable quotes</em> and <em>All</em>, but only <em>Notable quotes</em> selects
+anything sensible: the other two ask for stories that are <strong>not</strong> marked
+notable. Its second filter, on the mini quote, compares a text column against
+1 or 0 and matches almost nothing. Leave that module on <em>Notable quotes</em> and
+expect it to show the same quote each time rather than a random one.</p>
+<h2 id="the-feedback-page">The /feedback page</h2>
+<p><code>/feedback</code> is a landing page with up to four cards:</p>
+<ul>
+<li><strong>Write a Success Story</strong> — the form above.</li>
+<li><strong>Report a Problem</strong> — a new support ticket. See <a href="../support/index.html">Support</a>.</li>
+<li><strong>Add to the Wish List</strong> — shown only if the Wishlist component is enabled.
+See <a href="../wishlist/index.html">Wishlist</a>.</li>
+<li><strong>Take a Poll</strong> — shown only if the Poll component is enabled; it opens
+<code>/feedback/poll</code>, which renders the <strong>Poll</strong> module. See <a href="../poll/index.html">Poll</a>.</li>
+</ul>
+<p>Two paths under <code>/feedback</code> are redirects rather than pages of their own:
+<code>/feedback/report_problems</code> opens the new-ticket form, and
+<code>/feedback/suggestions</code> goes to the wish list.</p>
+<p>The page's introduction text, and the sentence pointing at <em>Notable Quotes</em>,
+come from the language file <code>en-GB.com_feedback.ini</code>. That sentence links to
+<code>/about/quotes/</code> as a fixed path, so it only works on a hub that has a menu
+item there; the component's own quotes page is at <code>/feedback/quotes</code>.</p>
+<p>There are five site layouts, so a menu item of type <strong>Feedback</strong> can be
+pointed at the landing page, the success story form, the list of quotes, the
+poll page or the thank-you page.</p>
+<h2 id="options">Options</h2>
+<p>The component has two settings, both about pictures: <strong>Default picture</strong>, the
+placeholder shown for an author with no photograph, and <strong>Upload path</strong>, the
+directory under the hub's application root where the picture folders are
+created — <code>/site/quotes</code> by default. Both are listed in the
+<a href="../../../reference/configuration/components/feedback/index.html">configuration reference</a>.</p>
+<p>The <strong>Permissions</strong> tab sets, per user group, who may configure the component,
+reach its screens, and create, delete, edit or change the state of a quote.
+Reaching the screens at all requires Access Administration Interface.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../forum/index.html" rel="next"><span>Next</span>Forum</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/16-feedback.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>

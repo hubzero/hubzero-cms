@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poll · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Poll runs single-question, multiple-choice polls: one question, up to twelve answers, one vote per browser per poll. It is the oldest component in the hub — it…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/poll/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=f51137af">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">All books</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Hub managers</a>
+        <nav aria-label="Hub managers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/components/index.html">Components</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/modules/index.html">Modules</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/authentication/index.html">Authentication</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuring/extauth/index.html">External authenticators</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/index.html">Users</a></summary><ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../users/members/index.html">Members</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/supergroups/index.html">Super Groups</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/user-notes/index.html">User notes</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../content/index.html">Content</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../content/articlemanager/index.html">Article Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../content/urls/index.html">URLs</a></li>
+</ul></details></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../activity/index.html">Activity</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../billboards/index.html">Billboards</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../checkin/index.html">Check-in</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../citations/index.html">Citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../courses/index.html">Courses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../developer/index.html">Developer</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../feedback/index.html">Feedback</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../forum/index.html">Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Language Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../oaipmh/index.html">OAI-PMH</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Poll</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-works-and-what-does-not">What works and what does not</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-polls-list">The Polls list</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-poll">Creating or editing a poll</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-voting-is-counted">How voting is counted</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-results-page">The results page</a></li>
+<li class="toc__item toc__item--l2"><a href="#modules">Modules</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#whether-to-use-it">Whether to use it</a></li>
+</ol></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../redirect/index.html">Redirect</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../tools/index.html">Tools</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/modules/index.html">Module Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/templates/index.html">Template Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/plugins/index.html">Plug-in Manager</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Poll</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Hub managers</p>
+          <h1>Poll</h1>
+        </header>
+        
+        <div class="prose">
+<p>Poll runs single-question, multiple-choice polls: one question, up to twelve
+answers, one vote per browser per poll. It is the oldest component in the
+hub — it predates most of the rest and has been carried forward largely
+untouched — and while it does work, several of the routes into it are broken.
+Read <a href="#what-works-and-what-does-not">What works and what does not</a> before you
+plan anything around it.</p>
+<h2 id="what-works-and-what-does-not">What works and what does not</h2>
+<p>Polls are reachable. There is an administrator screen under <strong>Components &gt;
+Poll</strong>, three menu item types, two site modules, and a <code>/poll</code> page. What
+fails is the plumbing that connects them:</p>
+<table>
+<thead>
+<tr>
+<th>Route in</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Components &gt; Poll</strong> in the administrator interface</td>
+<td>Works.</td>
+</tr>
+<tr>
+<td><code>/poll</code> — the list of published polls, each with its voting form</td>
+<td>Works. Voting from it works.</td>
+</tr>
+<tr>
+<td>A <strong>Poll</strong> menu item, layout <em>View latest poll</em></td>
+<td>Works. Shows the newest open, published poll.</td>
+</tr>
+<tr>
+<td>A <strong>Poll</strong> menu item, layout <em>Poll Layout</em> (the results page)</td>
+<td>Renders, but the poll it should show cannot be chosen — see below.</td>
+</tr>
+<tr>
+<td>The <strong>Poll</strong> module (<code>mod_poll</code>)</td>
+<td>Renders the newest open, published poll. It cannot be pointed at a particular poll — see below.</td>
+</tr>
+<tr>
+<td>The <strong>Take the latest poll</strong> button and the <strong>Results…</strong> links on <code>/poll</code></td>
+<td>Dead. Both build a <code>view=</code> parameter that the controller ignores, so both land back on <code>/poll</code>.</td>
+</tr>
+<tr>
+<td><code>/feedback</code> → <strong>Take a Poll</strong></td>
+<td>Works: it renders the <strong>Poll</strong> module, so it shows whatever that module shows. See <a href="../feedback/index.html">Feedback</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>The reason two of those rows say &quot;cannot be chosen&quot; is that both the menu item
+type and the module declare a form field of type <code>poll</code> for picking one, and
+no such field type exists anywhere in the source tree. The field simply does
+not render. Whatever the module or the results menu item was supposed to point
+at, it ends up showing the newest open, published poll instead.</p>
+<p>The practical consequence: <strong>you can run one poll at a time.</strong> Publish it,
+mark it open, and it becomes the poll every module and menu item shows. To
+change polls, close the old one and publish a new one.</p>
+<h2 id="the-polls-list">The Polls list</h2>
+<p>Open it under <strong>Components &gt; Poll</strong>. The list shows every poll with its
+<strong>Title</strong>, <strong>Published</strong> and <strong>Open</strong> states, the number of <strong>Votes</strong>, how
+many <strong>Options</strong> it has, and its <strong>Lag</strong>. All are sortable except the option
+count.</p>
+<p>Above the list, a search box matching the title — type and press <strong>Go</strong> — and
+a state filter offering published and unpublished.</p>
+<p>The toolbar offers <strong>Options</strong>, <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Delete</strong>,
+<strong>Edit</strong>, <strong>New</strong> and <strong>Help</strong>, each shown only if you hold the matching
+permission. <strong>Delete</strong> asks for confirmation and removes the poll, its
+options and its recorded votes.</p>
+<p><strong>Published</strong> and <strong>Open</strong> are two separate switches and both matter:</p>
+<ul>
+<li><strong>Published</strong> decides whether the poll exists as far as the site is
+concerned. An unpublished poll is invisible and cannot be voted in.</li>
+<li><strong>Open</strong> decides whether it is still taking votes. A published, closed poll
+still appears, but shows its results instead of a voting form.</li>
+</ul>
+<h2 id="creating-or-editing-a-poll">Creating or editing a poll</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td>Required.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>The URL segment. Generated from the title if you leave it blank.</td>
+</tr>
+<tr>
+<td>Lag</td>
+<td>Required, and must be greater than zero. Seconds before the same browser may vote again — see <a href="#how-voting-is-counted">How voting is counted</a>. The form offers 86400, one day.</td>
+</tr>
+<tr>
+<td>Published</td>
+<td><strong>Unpublished</strong>, <strong>Published</strong> or <strong>Trashed</strong>.</td>
+</tr>
+<tr>
+<td>Access Level</td>
+<td>Which viewing level may see the poll.</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>Yes or No.</td>
+</tr>
+<tr>
+<td>Option 1 … 12</td>
+<td>The answers. Blank boxes are ignored on the site; only options with text are shown or counted.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Preview</strong> opens the poll as a visitor would see it. <strong>Save</strong> and <strong>Apply</strong>
+save; <strong>Close</strong> returns to the list and checks the record back in.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Do not save an existing poll unless you mean to. Saving writes
+every option box back, including the blank ones, using the position of the
+box as a database row number. Those numbers are not confined to this poll,
+so saving a poll that has fewer than twelve options can overwrite options
+belonging to <em>other</em> polls with empty text, silently removing answers from
+them. Check your other polls after editing one. There is no fix for this in
+2.4; the safe course is to get a poll right before you publish it, and to
+keep only one poll in the system.</p>
+</aside>
+<h2 id="how-voting-is-counted">How voting is counted</h2>
+<p>A vote increments the chosen option's hit count, increments the poll's voter
+count, and stores a timestamped row so the results page can report when the
+first and last votes were cast.</p>
+<p>Voting is <strong>not</strong> restricted to logged-in members, and it is not tracked per
+account. What stops repeat voting is a cookie, named from the poll's id and
+set to expire after <strong>Lag</strong> seconds. Clearing cookies, using a different
+browser, or using a private window lets the same person vote again. Treat the
+numbers as indicative, never as a count of distinct people.</p>
+<h2 id="the-results-page">The results page</h2>
+<p>The results layout lists each option with its vote count, its share of the
+total as a percentage, and a bar; below it, the number of voters and the dates
+of the first and last vote, and a drop-down for jumping to another published
+poll.</p>
+<p>Because the poll it shows cannot be set from the menu item, the only reliable
+way to reach a specific poll's results is by URL, using the poll's id and
+alias: <code>/poll/12:staff-survey</code>.</p>
+<h2 id="modules">Modules</h2>
+<p>Two site modules use the component, both installed by default and both
+unpublished until you place them:</p>
+<ul>
+<li><strong>Poll</strong> (<code>mod_poll</code>) — the voting form for the newest open, published poll.
+Its <strong>Poll</strong> parameter does not render, as described above; its <strong>Module
+Class Suffix</strong> and caching parameters do.</li>
+<li><strong>Poll title</strong> (<code>mod_polltitle</code>) — a one-line invitation, <strong>Tell us what you
+think.</strong> by default, meant to sit above the poll module.</li>
+</ul>
+<p>Place them under <strong>Extensions &gt; Modules</strong>; see
+<a href="../../extensions/modules/index.html">Modules</a>.</p>
+<h2 id="options">Options</h2>
+<p>The component has no settings. Its configuration screen has only a
+<strong>Permissions</strong> tab, setting per user group who may configure it, reach its
+screens, and create, delete, edit or change the state of a poll. Access
+Administration Interface is what admits you to the screens at all.</p>
+<h2 id="whether-to-use-it">Whether to use it</h2>
+<p>If you want a quick opinion poll on the front page and one at a time is
+enough, it works. If you want several polls at once, per-member voting, or
+anything you intend to report on, this component will not give it to you — use
+a survey tool outside the hub and link to it.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../oaipmh/index.html" rel="prev"><span>Previous</span>OAI-PMH</a><a class="pager__next" href="../projects/index.html" rel="next"><span>Next</span>Projects</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/25-poll.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=f51137af" defer></script>
+</body>
+</html>
