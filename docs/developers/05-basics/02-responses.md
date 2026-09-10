@@ -123,7 +123,7 @@ App::redirect(
 );
 ```
 
-See [redirect](redirect.md) for the details, including the message types
+See [redirect](11-redirect.md) for the details, including the message types
 and what happens to the code after the call.
 
 ## Status codes and errors

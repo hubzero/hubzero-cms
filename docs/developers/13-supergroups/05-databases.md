@@ -109,7 +109,7 @@ which older documentation used for the hub connection, no longer exists.
 ## Using it
 
 The driver is the same one the rest of the CMS uses, so everything in
-[Database](../06-database/README.md) applies:
+[Database](../06-database.md) applies:
 
 ```php
 $database = \Hubzero\User\Group\Helper::getDbo();

@@ -198,38 +198,105 @@
 <li class="tree__leaf"><a class="tree__link" href="../events/wishlist/index.html">Wishlist events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../events/xmessage/index.html">Xmessage events</a></li>
 </ul></details></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Muse console reference</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="app-package/index.html">muse app:package</a></li>
-<li class="tree__leaf"><a class="tree__link" href="app-repository/index.html">muse app:repository</a></li>
-<li class="tree__leaf"><a class="tree__link" href="app/index.html">muse app</a></li>
-<li class="tree__leaf"><a class="tree__link" href="cache-css/index.html">muse cache:css</a></li>
-<li class="tree__leaf"><a class="tree__link" href="cache/index.html">muse cache</a></li>
-<li class="tree__leaf"><a class="tree__link" href="configuration-aliases/index.html">muse configuration:aliases</a></li>
-<li class="tree__leaf"><a class="tree__link" href="configuration-hooks/index.html">muse configuration:hooks</a></li>
-<li class="tree__leaf"><a class="tree__link" href="configuration/index.html">muse configuration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="database/index.html">muse database</a></li>
-<li class="tree__leaf"><a class="tree__link" href="environment/index.html">muse environment</a></li>
-<li class="tree__leaf"><a class="tree__link" href="extension/index.html">muse extension</a></li>
-<li class="tree__leaf"><a class="tree__link" href="group/index.html">muse group</a></li>
-<li class="tree__leaf"><a class="tree__link" href="help/index.html">muse help</a></li>
-<li class="tree__leaf"><a class="tree__link" href="htmx/index.html">muse htmx</a></li>
-<li class="tree__leaf"><a class="tree__link" href="inertia/index.html">muse inertia</a></li>
-<li class="tree__leaf"><a class="tree__link" href="install/index.html">muse install</a></li>
-<li class="tree__leaf"><a class="tree__link" href="log-post/index.html">muse log:post</a></li>
-<li class="tree__leaf"><a class="tree__link" href="log-profile/index.html">muse log:profile</a></li>
-<li class="tree__leaf"><a class="tree__link" href="log-sql/index.html">muse log:sql</a></li>
-<li class="tree__leaf"><a class="tree__link" href="log/index.html">muse log</a></li>
-<li class="tree__leaf"><a class="tree__link" href="migration/index.html">muse migration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="repository-flavor/index.html">muse repository:flavor</a></li>
-<li class="tree__leaf"><a class="tree__link" href="repository-package/index.html">muse repository:package</a></li>
-<li class="tree__leaf"><a class="tree__link" href="repository/index.html">muse repository</a></li>
-<li class="tree__leaf"><a class="tree__link" href="resources/index.html">muse resources</a></li>
-<li class="tree__leaf"><a class="tree__link" href="scaffolding/index.html">muse scaffolding</a></li>
-<li class="tree__leaf"><a class="tree__link" href="searchmigration/index.html">muse searchmigration</a></li>
-<li class="tree__leaf"><a class="tree__link" href="test/index.html">muse test</a></li>
-<li class="tree__leaf"><a class="tree__link" href="user-terms/index.html">muse user:terms</a></li>
-<li class="tree__leaf"><a class="tree__link" href="user/index.html">muse user</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Muse console reference</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#muse-app-package">muse app:package</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-package-show">muse app:package show</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-package-available">muse app:package available</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-package-install">muse app:package install</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-package-update">muse app:package update</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-package-remove">muse app:package remove</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-app-repository">muse app:repository</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-repository-show">muse app:repository show</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-repository-add">muse app:repository add</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-app-repository-remove">muse app:repository remove</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-app">muse app</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-cache-css">muse cache:css</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-cache-css-clear">muse cache:css clear</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-cache">muse cache</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-cache-clear">muse cache clear</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-configuration-aliases">muse configuration:aliases</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-configuration-aliases-add">muse configuration:aliases add</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-configuration-hooks">muse configuration:hooks</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-configuration-hooks-add">muse configuration:hooks add</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-configuration">muse configuration</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-configuration-set">muse configuration set</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-database">muse database</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-dump">muse database dump</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-database-load">muse database load</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-environment">muse environment</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-extension">muse extension</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-extension-add">muse extension add</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-extension-delete">muse extension delete</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-extension-install">muse extension install</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-extension-enable">muse extension enable</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-extension-disable">muse extension disable</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-group">muse group</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-group-scaffolding">muse group scaffolding</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-group-migrate">muse group migrate</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-group-update">muse group update</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-help">muse help</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-htmx">muse htmx</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-htmx-scaffold">muse htmx scaffold</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-htmx-lint">muse htmx lint</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-inertia">muse inertia</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-inertia-scaffold">muse inertia scaffold</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-inertia-lint">muse inertia lint</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-install">muse install</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-vendor">muse install vendor</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-check">muse install check</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-appdir">muse install appdir</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-database">muse install database</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-schema">muse install schema</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-settings">muse install settings</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-sample">muse install sample</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-migrations">muse install migrations</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-install-admin">muse install admin</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-log-post">muse log:post</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-log-profile">muse log:profile</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-log-sql">muse log:sql</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-log">muse log</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-log-follow">muse log follow</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-migration">muse migration</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-run">muse migration run</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-migration-history">muse migration history</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-repository-flavor">muse repository:flavor</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-flavor-set">muse repository:flavor set</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-repository-package">muse repository:package</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-package-install">muse repository:package install</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-package-configure">muse repository:package configure</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-repository">muse repository</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-status">muse repository status</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-log">muse repository log</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-update">muse repository update</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-rollback">muse repository rollback</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-clean">muse repository clean</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-syntax">muse repository syntax</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-clonerepo">muse repository cloneRepo</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-updategiturlconf">muse repository updateGitURLconf</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-checkoutrepobranch">muse repository checkoutRepoBranch</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-removerepo">muse repository removeRepo</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-renamerepo">muse repository renameRepo</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-repository-updaterepo">muse repository updateRepo</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-resources">muse resources</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-resources-gitstats">muse resources gitstats</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-resources-exportcsv">muse resources exportcsv</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-resources-exportxml">muse resources exportxml</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-scaffolding">muse scaffolding</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-scaffolding-create">muse scaffolding create</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-scaffolding-copy">muse scaffolding copy</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-searchmigration">muse searchmigration</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-searchmigration-run">muse searchmigration run</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-test">muse test</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-test-run">muse test run</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-test-show">muse test show</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-user-terms">muse user:terms</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-user-terms-clear">muse user:terms clear</a></li>
+<li class="toc__item toc__item--l2"><a href="#muse-user">muse user</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-user-merge">muse user merge</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-user-unmerge">muse user unmerge</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-user-disable">muse user disable</a></li>
+<li class="toc__item toc__item--l3"><a href="#muse-user-password">muse user password</a></li>
+</ol></li>
 </ul>
         </nav>
       </details>
@@ -245,7 +312,7 @@
         </header>
         
         <div class="prose">
-<p><code>muse</code> is the Hubzero command-line tool, at <code>core/bin/muse</code>. Run it from the hub's root directory as a user that can read the configuration. <code>muse help</code> lists the commands; <code>muse &lt;command&gt; help</code> describes one. This reference is generated from the command classes' docblocks.</p>
+<p><code>muse</code> is the Hubzero command-line tool, at <code>core/bin/muse</code>. Run it from the hub's root directory as a user that can read the configuration. <code>muse help</code> lists the commands; <code>muse &lt;command&gt; help</code> describes one. This page is generated from the command classes' docblocks, so it says what the code says rather than what the built-in help prints.</p>
 <table>
 <thead>
 <tr>
@@ -256,192 +323,424 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="app-package/index.html"><code>muse app:package</code></a></td>
+<td><a href="#muse-app-package"><code>muse app:package</code></a></td>
 <td>5</td>
 <td>Repository class for adding and removing composer packages</td>
 </tr>
 <tr>
-<td><a href="app-repository/index.html"><code>muse app:repository</code></a></td>
+<td><a href="#muse-app-repository"><code>muse app:repository</code></a></td>
 <td>3</td>
 <td>Repository class for adding and removing composer package repositories</td>
 </tr>
 <tr>
-<td><a href="app/index.html"><code>muse app</code></a></td>
+<td><a href="#muse-app"><code>muse app</code></a></td>
 <td>0</td>
 <td>Migration class</td>
 </tr>
 <tr>
-<td><a href="cache-css/index.html"><code>muse cache:css</code></a></td>
+<td><a href="#muse-cache-css"><code>muse cache:css</code></a></td>
 <td>1</td>
 <td>Cache</td>
 </tr>
 <tr>
-<td><a href="cache/index.html"><code>muse cache</code></a></td>
+<td><a href="#muse-cache"><code>muse cache</code></a></td>
 <td>1</td>
 <td>Cache</td>
 </tr>
 <tr>
-<td><a href="configuration-aliases/index.html"><code>muse configuration:aliases</code></a></td>
+<td><a href="#muse-configuration-aliases"><code>muse configuration:aliases</code></a></td>
 <td>1</td>
 <td>Aliases configuration class for adding command aliases</td>
 </tr>
 <tr>
-<td><a href="configuration-hooks/index.html"><code>muse configuration:hooks</code></a></td>
+<td><a href="#muse-configuration-hooks"><code>muse configuration:hooks</code></a></td>
 <td>1</td>
 <td>Hooks configuration class for adding a new hook</td>
 </tr>
 <tr>
-<td><a href="configuration/index.html"><code>muse configuration</code></a></td>
+<td><a href="#muse-configuration"><code>muse configuration</code></a></td>
 <td>1</td>
 <td>Help class for rendering utility-wide help documentation</td>
 </tr>
 <tr>
-<td><a href="database/index.html"><code>muse database</code></a></td>
+<td><a href="#muse-database"><code>muse database</code></a></td>
 <td>2</td>
 <td>Database class</td>
 </tr>
 <tr>
-<td><a href="environment/index.html"><code>muse environment</code></a></td>
+<td><a href="#muse-environment"><code>muse environment</code></a></td>
 <td>0</td>
 <td>Environment class</td>
 </tr>
 <tr>
-<td><a href="extension/index.html"><code>muse extension</code></a></td>
+<td><a href="#muse-extension"><code>muse extension</code></a></td>
 <td>5</td>
 <td>Extension class</td>
 </tr>
 <tr>
-<td><a href="group/index.html"><code>muse group</code></a></td>
+<td><a href="#muse-group"><code>muse group</code></a></td>
 <td>3</td>
 <td>Group</td>
 </tr>
 <tr>
-<td><a href="help/index.html"><code>muse help</code></a></td>
+<td><a href="#muse-help"><code>muse help</code></a></td>
 <td>0</td>
 <td>Help class for rendering utility-wide help documentation</td>
 </tr>
 <tr>
-<td><a href="htmx/index.html"><code>muse htmx</code></a></td>
+<td><a href="#muse-htmx"><code>muse htmx</code></a></td>
 <td>2</td>
 <td>HTMX developer tooling command.</td>
 </tr>
 <tr>
-<td><a href="inertia/index.html"><code>muse inertia</code></a></td>
+<td><a href="#muse-inertia"><code>muse inertia</code></a></td>
 <td>2</td>
 <td>Inertia developer tooling command.</td>
 </tr>
 <tr>
-<td><a href="install/index.html"><code>muse install</code></a></td>
+<td><a href="#muse-install"><code>muse install</code></a></td>
 <td>9</td>
 <td>Install  - fresh HUBzero installation</td>
 </tr>
 <tr>
-<td><a href="log-post/index.html"><code>muse log:post</code></a></td>
+<td><a href="#muse-log-post"><code>muse log:post</code></a></td>
 <td>0</td>
 <td>Post log class</td>
 </tr>
 <tr>
-<td><a href="log-profile/index.html"><code>muse log:profile</code></a></td>
+<td><a href="#muse-log-profile"><code>muse log:profile</code></a></td>
 <td>0</td>
 <td>Profile log class</td>
 </tr>
 <tr>
-<td><a href="log-sql/index.html"><code>muse log:sql</code></a></td>
+<td><a href="#muse-log-sql"><code>muse log:sql</code></a></td>
 <td>0</td>
 <td>Sql log class</td>
 </tr>
 <tr>
-<td><a href="log/index.html"><code>muse log</code></a></td>
+<td><a href="#muse-log"><code>muse log</code></a></td>
 <td>1</td>
 <td>Log class</td>
 </tr>
 <tr>
-<td><a href="migration/index.html"><code>muse migration</code></a></td>
+<td><a href="#muse-migration"><code>muse migration</code></a></td>
 <td>2</td>
 <td>Migration class</td>
 </tr>
 <tr>
-<td><a href="repository-flavor/index.html"><code>muse repository:flavor</code></a></td>
+<td><a href="#muse-repository-flavor"><code>muse repository:flavor</code></a></td>
 <td>1</td>
 <td>Repository flavor class</td>
 </tr>
 <tr>
-<td><a href="repository-package/index.html"><code>muse repository:package</code></a></td>
+<td><a href="#muse-repository-package"><code>muse repository:package</code></a></td>
 <td>2</td>
 <td>Repository class</td>
 </tr>
 <tr>
-<td><a href="repository/index.html"><code>muse repository</code></a></td>
+<td><a href="#muse-repository"><code>muse repository</code></a></td>
 <td>12</td>
 <td>Repository class</td>
 </tr>
 <tr>
-<td><a href="resources/index.html"><code>muse resources</code></a></td>
+<td><a href="#muse-resources"><code>muse resources</code></a></td>
 <td>3</td>
 <td>Resources</td>
 </tr>
 <tr>
-<td><a href="scaffolding/index.html"><code>muse scaffolding</code></a></td>
+<td><a href="#muse-scaffolding"><code>muse scaffolding</code></a></td>
 <td>2</td>
 <td>Scaffolding class for generating template extensions</td>
 </tr>
 <tr>
-<td><a href="searchmigration/index.html"><code>muse searchmigration</code></a></td>
+<td><a href="#muse-searchmigration"><code>muse searchmigration</code></a></td>
 <td>1</td>
 <td>Migration class</td>
 </tr>
 <tr>
-<td><a href="test/index.html"><code>muse test</code></a></td>
+<td><a href="#muse-test"><code>muse test</code></a></td>
 <td>2</td>
 <td>Test class</td>
 </tr>
 <tr>
-<td><a href="user-terms/index.html"><code>muse user:terms</code></a></td>
+<td><a href="#muse-user-terms"><code>muse user:terms</code></a></td>
 <td>1</td>
 <td>User class for terms of use functions</td>
 </tr>
 <tr>
-<td><a href="user/index.html"><code>muse user</code></a></td>
+<td><a href="#muse-user"><code>muse user</code></a></td>
 <td>4</td>
 <td>User class for general user functions</td>
 </tr>
 </tbody>
 </table>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="app-package/index.html">muse app:package</a></li>
-<li><a href="app-repository/index.html">muse app:repository</a></li>
-<li><a href="app/index.html">muse app</a></li>
-<li><a href="cache-css/index.html">muse cache:css</a></li>
-<li><a href="cache/index.html">muse cache</a></li>
-<li><a href="configuration-aliases/index.html">muse configuration:aliases</a></li>
-<li><a href="configuration-hooks/index.html">muse configuration:hooks</a></li>
-<li><a href="configuration/index.html">muse configuration</a></li>
-<li><a href="database/index.html">muse database</a></li>
-<li><a href="environment/index.html">muse environment</a></li>
-<li><a href="extension/index.html">muse extension</a></li>
-<li><a href="group/index.html">muse group</a></li>
-<li><a href="help/index.html">muse help</a></li>
-<li><a href="htmx/index.html">muse htmx</a></li>
-<li><a href="inertia/index.html">muse inertia</a></li>
-<li><a href="install/index.html">muse install</a></li>
-<li><a href="log-post/index.html">muse log:post</a></li>
-<li><a href="log-profile/index.html">muse log:profile</a></li>
-<li><a href="log-sql/index.html">muse log:sql</a></li>
-<li><a href="log/index.html">muse log</a></li>
-<li><a href="migration/index.html">muse migration</a></li>
-<li><a href="repository-flavor/index.html">muse repository:flavor</a></li>
-<li><a href="repository-package/index.html">muse repository:package</a></li>
-<li><a href="repository/index.html">muse repository</a></li>
-<li><a href="resources/index.html">muse resources</a></li>
-<li><a href="scaffolding/index.html">muse scaffolding</a></li>
-<li><a href="searchmigration/index.html">muse searchmigration</a></li>
-<li><a href="test/index.html">muse test</a></li>
-<li><a href="user-terms/index.html">muse user:terms</a></li>
-<li><a href="user/index.html">muse user</a></li></ul></section>
+<h2 id="muse-app-package"><code>muse app:package</code></h2>
+<p>Repository class for adding and removing composer packages.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/App/Package.php"><code>Package.php</code></a>.</p>
+<p>Run alone, <code>muse app:package</code> default (required) command - just call help</p>
+<h3 id="muse-app-package-show"><code>muse app:package show</code></h3>
+<p>Shows a list of active packages</p>
+<h3 id="muse-app-package-available"><code>muse app:package available</code></h3>
+<p>Shows a list of available remote packages</p>
+<h3 id="muse-app-package-install"><code>muse app:package install</code></h3>
+<p>Installs a package</p>
+<h3 id="muse-app-package-update"><code>muse app:package update</code></h3>
+<p>Updates a package according to version constraints</p>
+<h3 id="muse-app-package-remove"><code>muse app:package remove</code></h3>
+<p>Removes a package</p>
+<h2 id="muse-app-repository"><code>muse app:repository</code></h2>
+<p>Repository class for adding and removing composer package repositories.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/App/Repository.php"><code>Repository.php</code></a>.</p>
+<p>Run alone, <code>muse app:repository</code> default (required) command - just call help</p>
+<h3 id="muse-app-repository-show"><code>muse app:repository show</code></h3>
+<p>Shows a list of active repositories</p>
+<h3 id="muse-app-repository-add"><code>muse app:repository add</code></h3>
+<p>Adds a repository</p>
+<h3 id="muse-app-repository-remove"><code>muse app:repository remove</code></h3>
+<p>Removes a repository</p>
+<h2 id="muse-app"><code>muse app</code></h2>
+<p>Migration class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/App.php"><code>App.php</code></a>.</p>
+<p>Run alone, <code>muse app</code> default (required) command - just executes run</p>
+<h2 id="muse-cache-css"><code>muse cache:css</code></h2>
+<p>Cache.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Cache/Css.php"><code>Css.php</code></a>.</p>
+<p>Run alone, <code>muse cache:css</code> default (required) command - just executes run</p>
+<h3 id="muse-cache-css-clear"><code>muse cache:css clear</code></h3>
+<p>No description available.</p>
+<h2 id="muse-cache"><code>muse cache</code></h2>
+<p>Cache.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Cache.php"><code>Cache.php</code></a>.</p>
+<p>Run alone, <code>muse cache</code> default (required) command - just executes run</p>
+<h3 id="muse-cache-clear"><code>muse cache clear</code></h3>
+<p>Clears all cached items in document root cache directory</p>
+<h2 id="muse-configuration-aliases"><code>muse configuration:aliases</code></h2>
+<p>Aliases configuration class for adding command aliases.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Configuration/Aliases.php"><code>Aliases.php</code></a>.</p>
+<p>Run alone, <code>muse configuration:aliases</code> default (required) command - just call help</p>
+<h3 id="muse-configuration-aliases-add"><code>muse configuration:aliases add</code></h3>
+<p>No description available.</p>
+<h2 id="muse-configuration-hooks"><code>muse configuration:hooks</code></h2>
+<p>Hooks configuration class for adding a new hook.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Configuration/Hooks.php"><code>Hooks.php</code></a>.</p>
+<p>Run alone, <code>muse configuration:hooks</code> default (required) command - just call help</p>
+<h3 id="muse-configuration-hooks-add"><code>muse configuration:hooks add</code></h3>
+<p>No description available.</p>
+<h2 id="muse-configuration"><code>muse configuration</code></h2>
+<p>Help class for rendering utility-wide help documentation.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Configuration.php"><code>Configuration.php</code></a>.</p>
+<p>Run alone, <code>muse configuration</code> default (required) command</p>
+<h3 id="muse-configuration-set"><code>muse configuration set</code></h3>
+<p>Sets the defined key/value pair and saves it into the user's configuration</p>
+<h2 id="muse-database"><code>muse database</code></h2>
+<p>Database class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Database.php"><code>Database.php</code></a>.</p>
+<p>Run alone, <code>muse database</code> default (required) command - just executes run</p>
+<h3 id="muse-database-dump"><code>muse database dump</code></h3>
+<p>Dumps the current site database into a file in the users home directory</p>
+<h3 id="muse-database-load"><code>muse database load</code></h3>
+<p>Loads the provided database into the hubs currently configured database</p>
+<h2 id="muse-environment"><code>muse environment</code></h2>
+<p>Environment class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Environment.php"><code>Environment.php</code></a>.</p>
+<p>Run alone, <code>muse environment</code> default (required) command</p>
+<h2 id="muse-extension"><code>muse extension</code></h2>
+<p>Extension class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Extension.php"><code>Extension.php</code></a>.</p>
+<p>Run alone, <code>muse extension</code> default (required) command - just executes run</p>
+<h3 id="muse-extension-add"><code>muse extension add</code></h3>
+<p>Adds a new extension to the extensions table</p>
+<h3 id="muse-extension-delete"><code>muse extension delete</code></h3>
+<p>Deletes an existing entry from the extensions table</p>
+<h3 id="muse-extension-install"><code>muse extension install</code></h3>
+<p>Installs an extension, adding it if it hasn't been already</p>
+<h3 id="muse-extension-enable"><code>muse extension enable</code></h3>
+<p>Enables an existing extension</p>
+<h3 id="muse-extension-disable"><code>muse extension disable</code></h3>
+<p>Disables an existing extension</p>
+<h2 id="muse-group"><code>muse group</code></h2>
+<p>Group.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Group.php"><code>Group.php</code></a>.</p>
+<p>Run alone, <code>muse group</code> default (required) command - just executes run</p>
+<h3 id="muse-group-scaffolding"><code>muse group scaffolding</code></h3>
+<p>No description available.</p>
+<h3 id="muse-group-migrate"><code>muse group migrate</code></h3>
+<p>No description available.</p>
+<h3 id="muse-group-update"><code>muse group update</code></h3>
+<p>No description available.</p>
+<h2 id="muse-help"><code>muse help</code></h2>
+<p>Help class for rendering utility-wide help documentation.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Help.php"><code>Help.php</code></a>.</p>
+<p>Run alone, <code>muse help</code> default (required) command</p>
+<h2 id="muse-htmx"><code>muse htmx</code></h2>
+<p>HTMX developer tooling command.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Htmx.php"><code>Htmx.php</code></a>.</p>
+<h3 id="muse-htmx-scaffold"><code>muse htmx scaffold</code></h3>
+<p>No description available.</p>
+<h3 id="muse-htmx-lint"><code>muse htmx lint</code></h3>
+<p>No description available.</p>
+<h2 id="muse-inertia"><code>muse inertia</code></h2>
+<p>Inertia developer tooling command.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Inertia.php"><code>Inertia.php</code></a>.</p>
+<h3 id="muse-inertia-scaffold"><code>muse inertia scaffold</code></h3>
+<p>No description available.</p>
+<h3 id="muse-inertia-lint"><code>muse inertia lint</code></h3>
+<p>No description available.</p>
+<h2 id="muse-install"><code>muse install</code></h2>
+<p>Install  - fresh HUBzero installation.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Install.php"><code>Install.php</code></a>.</p>
+<p>Run alone, <code>muse install</code> run the full HUBzero installation process</p>
+<h3 id="muse-install-vendor"><code>muse install vendor</code></h3>
+<p>Install composer dependencies only</p>
+<h3 id="muse-install-check"><code>muse install check</code></h3>
+<p>Run pre-flight checks without installing</p>
+<h3 id="muse-install-appdir"><code>muse install appdir</code></h3>
+<p>Create the app directory structure only</p>
+<h3 id="muse-install-database"><code>muse install database</code></h3>
+<p>Configure database connection only</p>
+<h3 id="muse-install-schema"><code>muse install schema</code></h3>
+<p>Load database schema and essential data</p>
+<h3 id="muse-install-settings"><code>muse install settings</code></h3>
+<p>Configure site settings and generate config files</p>
+<h3 id="muse-install-sample"><code>muse install sample</code></h3>
+<p>Load sample/demo data into database</p>
+<h3 id="muse-install-migrations"><code>muse install migrations</code></h3>
+<p>Run database migrations to update schema</p>
+<h3 id="muse-install-admin"><code>muse install admin</code></h3>
+<p>Create the initial admin user account</p>
+<h2 id="muse-log-post"><code>muse log:post</code></h2>
+<p>Post log class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Log/Post.php"><code>Post.php</code></a>.</p>
+<p>No documented tasks; run <code>muse log:post help</code> for its built-in help.</p>
+<h2 id="muse-log-profile"><code>muse log:profile</code></h2>
+<p>Profile log class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Log/Profile.php"><code>Profile.php</code></a>.</p>
+<p>No documented tasks; run <code>muse log:profile help</code> for its built-in help.</p>
+<h2 id="muse-log-sql"><code>muse log:sql</code></h2>
+<p>Sql log class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Log/Sql.php"><code>Sql.php</code></a>.</p>
+<p>No documented tasks; run <code>muse log:sql help</code> for its built-in help.</p>
+<h2 id="muse-log"><code>muse log</code></h2>
+<p>Log class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Log.php"><code>Log.php</code></a>.</p>
+<p>Run alone, <code>muse log</code> default (required) command</p>
+<h3 id="muse-log-follow"><code>muse log follow</code></h3>
+<p>No description available.</p>
+<h2 id="muse-migration"><code>muse migration</code></h2>
+<p>Migration class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Migration.php"><code>Migration.php</code></a>.</p>
+<p>Run alone, <code>muse migration</code> default (required) command - just executes run</p>
+<h3 id="muse-migration-run"><code>muse migration run</code></h3>
+<p>Runs pending migrations according to options provided</p>
+<h3 id="muse-migration-history"><code>muse migration history</code></h3>
+<p>Shows a history of previously run migrations</p>
+<h2 id="muse-repository-flavor"><code>muse repository:flavor</code></h2>
+<p>Repository flavor class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Repository/Flavor.php"><code>Flavor.php</code></a>.</p>
+<p>Run alone, <code>muse repository:flavor</code> default (required) command</p>
+<h3 id="muse-repository-flavor-set"><code>muse repository:flavor set</code></h3>
+<p>No description available.</p>
+<h2 id="muse-repository-package"><code>muse repository:package</code></h2>
+<p>Repository class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Repository/Package.php"><code>Package.php</code></a>.</p>
+<p>Run alone, <code>muse repository:package</code> default (required) command - just run check command</p>
+<h3 id="muse-repository-package-install"><code>muse repository:package install</code></h3>
+<p>Installs and/or updates packages required by the composer.lock file</p>
+<p>Arguments:</p>
+<ul>
+<li>3            The installation environment [development|production]</li>
+<li>github-user  The GitHub username to use when configuring the development environment</li>
+</ul>
+<h3 id="muse-repository-package-configure"><code>muse repository:package configure</code></h3>
+<p>Configures the package repository for use in a given environment</p>
+<p>Arguments:</p>
+<ul>
+<li>github-user  The GitHub username to use when configuring the development environment</li>
+</ul>
+<h2 id="muse-repository"><code>muse repository</code></h2>
+<p>Repository class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Repository.php"><code>Repository.php</code></a>.</p>
+<p>Run alone, <code>muse repository</code> default (required) command - just run check command</p>
+<h3 id="muse-repository-status"><code>muse repository status</code></h3>
+<p>Checks the current status of the repository for upgrade eligibility</p>
+<h3 id="muse-repository-log"><code>muse repository log</code></h3>
+<p>Shows the past and pending changelog for the repository</p>
+<h3 id="muse-repository-update"><code>muse repository update</code></h3>
+<p>Updates the repository, by default performing a dry run</p>
+<h3 id="muse-repository-rollback"><code>muse repository rollback</code></h3>
+<p>Rolls the repository back to the last checkpoint</p>
+<h3 id="muse-repository-clean"><code>muse repository clean</code></h3>
+<p>Performs cleanup operations including deleting automatic tags and stashes (if applicable)</p>
+<h3 id="muse-repository-syntax"><code>muse repository syntax</code></h3>
+<p>Verifies the validity of the syntax of any pending changes</p>
+<h3 id="muse-repository-clonerepo"><code>muse repository cloneRepo</code></h3>
+<p>Clones the specified repository.</p>
+<h3 id="muse-repository-updategiturlconf"><code>muse repository updateGitURLconf</code></h3>
+<p>Updates the specified remote origin of the specified repository.</p>
+<h3 id="muse-repository-checkoutrepobranch"><code>muse repository checkoutRepoBranch</code></h3>
+<p>Checks out the specified branch of the specified repository.</p>
+<h3 id="muse-repository-removerepo"><code>muse repository removeRepo</code></h3>
+<p>Removes the specified Custom Extension repository directory.</p>
+<h3 id="muse-repository-renamerepo"><code>muse repository renameRepo</code></h3>
+<p>Renames the specified Custom Extension repository directory.</p>
+<h3 id="muse-repository-updaterepo"><code>muse repository updateRepo</code></h3>
+<p>Updates the specified Custom Extension repository directory.</p>
+<h2 id="muse-resources"><code>muse resources</code></h2>
+<p>Resources.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Resources.php"><code>Resources.php</code></a>.</p>
+<p>Run alone, <code>muse resources</code> default (required) command - just executes run</p>
+<h3 id="muse-resources-gitstats"><code>muse resources gitstats</code></h3>
+<p>No description available.</p>
+<h3 id="muse-resources-exportcsv"><code>muse resources exportcsv</code></h3>
+<p>No description available.</p>
+<h3 id="muse-resources-exportxml"><code>muse resources exportxml</code></h3>
+<p>No description available.</p>
+<h2 id="muse-scaffolding"><code>muse scaffolding</code></h2>
+<p>Scaffolding class for generating template extensions.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Scaffolding.php"><code>Scaffolding.php</code></a>.</p>
+<p>Run alone, <code>muse scaffolding</code> default (required) command</p>
+<h3 id="muse-scaffolding-create"><code>muse scaffolding create</code></h3>
+<p>No description available.</p>
+<h3 id="muse-scaffolding-copy"><code>muse scaffolding copy</code></h3>
+<p>No description available.</p>
+<h2 id="muse-searchmigration"><code>muse searchmigration</code></h2>
+<p>Migration class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/SearchMigration.php"><code>SearchMigration.php</code></a>.</p>
+<p>Run alone, <code>muse searchmigration</code> default (required) command - just executes run</p>
+<h3 id="muse-searchmigration-run"><code>muse searchmigration run</code></h3>
+<p>Adds components to solr index</p>
+<h2 id="muse-test"><code>muse test</code></h2>
+<p>Test class.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Test.php"><code>Test.php</code></a>.</p>
+<p>Run alone, <code>muse test</code> default execute method</p>
+<h3 id="muse-test-run"><code>muse test run</code></h3>
+<p>Runs available tests for the given extension</p>
+<h3 id="muse-test-show"><code>muse test show</code></h3>
+<p>Shows a list of extensions with available tests</p>
+<h2 id="muse-user-terms"><code>muse user:terms</code></h2>
+<p>User class for terms of use functions.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/User/Terms.php"><code>Terms.php</code></a>.</p>
+<p>Run alone, <code>muse user:terms</code> default (required) command</p>
+<h3 id="muse-user-terms-clear"><code>muse user:terms clear</code></h3>
+<p>No description available.</p>
+<h2 id="muse-user"><code>muse user</code></h2>
+<p>User class for general user functions.</p>
+<p>Implemented in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/User.php"><code>User.php</code></a>.</p>
+<p>Run alone, <code>muse user</code> default (required) command</p>
+<h3 id="muse-user-merge"><code>muse user merge</code></h3>
+<p>Merges two users together, disabling the source user</p>
+<h3 id="muse-user-unmerge"><code>muse user unmerge</code></h3>
+<p>Unmerges a previous merge, reenabling the source user</p>
+<h3 id="muse-user-disable"><code>muse user disable</code></h3>
+<p>Disables a user completely, without deleting</p>
+<h3 id="muse-user-password"><code>muse user password</code></h3>
+<p>Sets a new password for a user, by username or ID (root only)</p>
+
         </div>
         <p class="stamp">Generated from the source tree.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/xmessage/index.html" rel="prev"><span>Previous</span>Xmessage events</a><a class="pager__next" href="app-package/index.html" rel="next"><span>Next</span>muse app:package</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/xmessage/index.html" rel="prev"><span>Previous</span>Xmessage events</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/muse/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/reference/muse.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

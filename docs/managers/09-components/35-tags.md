@@ -151,7 +151,7 @@ optional, multiple-selection box.
 
 The **Options** button opens the component configuration. Ten **Focus
 Area** fields name tags used by the tool contribution workflow in
-[Tools](tools.md), and two cache settings control whether the tag clouds
+[Tools](36-tools.md), and two cache settings control whether the tag clouds
 on `/tags` are cached and for how long. Every option is listed with its
 values in the
 [configuration reference](../../reference/configuration/components/tags.md).

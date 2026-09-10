@@ -12,12 +12,12 @@ uses constantly.
 
 ## In this section
 
-- [Structure](structure.md) — the directory layout, and what belongs in
+- [Structure](01-structure.md) — the directory layout, and what belongs in
   `core/` against `app/`.
-- [Constants](constants.md) — the paths, the version, and the entry guard.
-- [Service providers](providers.md) — how services are registered and
+- [Constants](02-constants.md) — the paths, the version, and the entry guard.
+- [Service providers](03-providers.md) — how services are registered and
   resolved.
-- [Facades](facades.md) — the short names for those services, and the
+- [Facades](04-facades.md) — the short names for those services, and the
   import rule that makes them work.
-- [Extensions](extensions.md) — what a component, plugin, module, and
+- [Extensions](05-extensions.md) — what a component, plugin, module, and
   template are, and how the platform finds them.

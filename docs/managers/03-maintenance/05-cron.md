@@ -49,7 +49,7 @@ The `cron:jobs` command has four other tasks:
 | `unpublish` | Unpublish a job |
 
 `cron:jobs` is a component command, so it does not appear in `muse help` or in
-the [generated muse reference](../../reference/muse/README.md), which covers
+the [generated muse reference](../../reference/muse.md), which covers
 only the commands under `core/libraries/Hubzero/Console/Command/`. Run
 `muse cron:jobs help` for its own documentation.
 

@@ -19,7 +19,7 @@ app/site/groups/<gidNumber>/macros/
 
 The directory is created with the rest of the group's skeleton, and is filled
 from the server or through the group's
-[repository](../14-supergroups-gitlab/README.md) — the group file browser
+[repository](../14-supergroups-gitlab.md) — the group file browser
 reaches only `uploads`.
 
 ## Where group macros apply

@@ -275,7 +275,7 @@ $this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this-
 
 Quote every value through `$db->quote()` or bind it. Prefer the query builder
 over hand-written SQL in new code; see
-[Database](../../developers/06-database/README.md).
+[Database](../../developers/06-database.md).
 
 ## Checking your work
 

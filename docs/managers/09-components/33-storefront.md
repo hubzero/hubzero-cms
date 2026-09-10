@@ -9,7 +9,7 @@ source: https://help.hubzero.org/documentation/240/managers/components/storefron
 The storefront is the hub's catalogue: the products people browse, the
 purchasable variants of each product, and the collections that group them. It
 holds no cart and no orders — a shopper's basket, checkout and order history
-belong to the [Cart](cart.md) component, which the storefront hands off to.
+belong to the [Cart](06-cart.md) component, which the storefront hands off to.
 This chapter covers the administrator's side; the
 [Hub users](../../users/26-storefront.md) book covers shopping.
 

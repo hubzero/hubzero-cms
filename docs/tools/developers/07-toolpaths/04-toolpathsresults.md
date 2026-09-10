@@ -35,5 +35,5 @@ tool can also read it back and offer the member a list of earlier results.
 
 Both directories count against the member's storage quota. See
 [Environment variables](01-toolenvvars.md) for the paths themselves, and
-[Accessing your home directory](../06-accesshomedir/README.md) for the storage
+[Accessing your home directory](../06-accesshomedir.md) for the storage
 manager and the ways a member reaches these files from their own computer.

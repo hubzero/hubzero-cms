@@ -79,7 +79,7 @@ work. The built-in set lives in
 
 | Call | Does |
 |---|---|
-| `css()`, `js()`, `img()` | attach or locate an asset — see [Assets](assets.md) |
+| `css()`, `js()`, `img()` | attach or locate an asset — see [Assets](08-assets.md) |
 | `pagination()` | render a pager |
 | `grid()` | administrator list-table controls |
 | `editor()` | render the configured WYSIWYG editor |

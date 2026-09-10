@@ -88,8 +88,8 @@ ago. Do not copy them into a new component:
 | Old block | What to use instead |
 |---|---|
 | `<files>` | nothing; the directory is the manifest of itself |
-| `<install><sql>` | a [migration](migrations.md) |
-| `<params>` | [`config/config.xml`](configuration.md) |
+| `<install><sql>` | a [migration](01-migrations.md) |
+| `<params>` | [`config/config.xml`](10-configuration.md) |
 | `<languages>` | nothing; language files are found by path |
 
 > **Note:** `com_installer` looks for a component's manifest at
@@ -112,7 +112,7 @@ php core/bin/muse migration -f -e=com_example
 
 Ship the migrations with the component and installation is one command that
 works the same on every hub, is idempotent, and can be rolled back. See
-[Migrations](migrations.md).
+[Migrations](01-migrations.md).
 
 ## Where it goes
 

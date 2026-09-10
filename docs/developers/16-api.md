@@ -25,7 +25,7 @@ about how the API works and how to add to it.
 segment and selects the API client, which loads its own service providers
 and facade aliases from `core/bootstrap/Api/` — a different response object,
 a different authentication provider, no template, no document. See
-[Structure](foundation/structure.md#boot).
+[Structure](03-foundation/01-structure.md#boot).
 
 ## Routing
 

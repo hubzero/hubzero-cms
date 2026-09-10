@@ -7,7 +7,7 @@ source: https://help.hubzero.org/documentation/240/webdevs/conventions/databases
 -->
 # Database Schema Conventions
 
-Schema changes reach a hub through a [migration](../../developers/06-database/02-migrations.md),
+Schema changes reach a hub through a [migration](../../developers/06-database.md#migrations),
 never through a `.sql` file someone runs by hand. This chapter covers the names
 a migration should use.
 

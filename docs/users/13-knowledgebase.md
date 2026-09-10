@@ -60,5 +60,5 @@ the thread gives you an RSS feed of that article's comments.
 The knowledge base home page links to the other ways to get help on a hub:
 ask the community in **Questions and answers**, report a problem to the
 support team, or suggest a feature on the **Wishlist**. See
-[Questions and answers](questions.md), [Support](support.md), and
-[Wishlist](wishlist.md).
+[Questions and answers](19-questions.md), [Support](12-support.md), and
+[Wishlist](29-wishlist.md).

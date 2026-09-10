@@ -75,7 +75,7 @@ into place yourself.
    php core/bin/muse migration -e=com_example -f   # actually run it
    ```
 
-   That runs the extension's own [migrations](../06-database/02-migrations.md),
+   That runs the extension's own [migrations](../06-database.md#migrations),
    creating its tables and its `#__extensions` row. Without `-f` the runner
    only reports; `-e` restricts it to the one extension.
 
@@ -131,5 +131,5 @@ line:
 php core/bin/muse migration -f
 ```
 
-See [Migrations](../06-database/02-migrations.md) for what a migration can do and
+See [Migrations](../06-database.md#migrations) for what a migration can do and
 how the runner decides what is pending.

@@ -38,17 +38,17 @@ The platform targets PHP 8.2; `core/composer.json` pins the platform to
 
 ## In this section
 
-- [Release notes](releasenotes.md) — where release notes live, and the one
+- [Release notes](01-releasenotes.md) — where release notes live, and the one
   historic change that still shapes the code you read.
-- [Accessing files](fileaccess.md) — reaching a hub's files on the server,
+- [Accessing files](02-fileaccess.md) — reaching a hub's files on the server,
   and reading and writing files from code.
-- [Direct database access](databaseaccess.md) — the hub's credentials, the
+- [Direct database access](03-databaseaccess.md) — the hub's credentials, the
   shell, and the `#__` table prefix.
 - [Upgrade guide](04-upgrade.md) — the legacy class names an older extension
   uses and what replaced them.
-- [Browser support](browsersupport.md) — what the code actually targets,
+- [Browser support](05-browsersupport.md) — what the code actually targets,
   which is less than you might expect.
-- [Development environment](devenvironment.md) — getting a hub to develop
+- [Development environment](06-devenvironment.md) — getting a hub to develop
   against, and what this repository does and does not provide.
 
 ## Next

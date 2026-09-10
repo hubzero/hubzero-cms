@@ -92,7 +92,7 @@ $one = Article::oneOrFail($id);      // or throw
 sort column, direction, and page from the request, and remember them in model
 state — which is why an administrator list controller passes
 `'filter_order'` and `'limitstart'` rather than values. Full details are in the
-[ORM](../06-database/03-orm.md) chapter.
+[ORM](../06-database.md#orm) chapter.
 
 ## Plain model classes
 

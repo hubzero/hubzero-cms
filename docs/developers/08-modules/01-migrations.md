@@ -9,7 +9,7 @@ source: https://help.hubzero.org/documentation/240/webdevs/modules/migrations
 A module has to be registered in the `#__extensions` table before the CMS will
 list it or let an administrator create an instance of it. That registration is
 done by a migration: a small PHP class in the module's `migrations` directory
-that the [`muse migration`](../12-muse/README.md) command runs.
+that the [`muse migration`](../12-muse.md) command runs.
 
 ## Where migrations live
 
@@ -24,7 +24,7 @@ after the class. Migrations are run in timestamp order across every extension
 on the hub, so a module that depends on a component's tables should carry a
 later timestamp than the migration that creates them.
 
-> **Note:** See [Migrations](../06-database/02-migrations.md) for naming
+> **Note:** See [Migrations](../06-database.md#migrations) for naming
 > conventions, the `muse` commands, and the helpers available on `$this->db`.
 
 ## The registration migration
@@ -79,7 +79,7 @@ instance to all menu items, `false` restricts it to the ids in `$menus`.
 
 A module that needs its own tables creates them in the same migration, using
 the raw query helpers described in the
-[database migrations](../06-database/02-migrations.md) chapter:
+[database migrations](../06-database.md#migrations) chapter:
 
 ```php
 public function up()

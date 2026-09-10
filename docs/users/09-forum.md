@@ -10,7 +10,7 @@ The forum is the hub's message board, at `/forum`. Discussions are grouped
 into **sections**, each section holds **categories**, and each category holds
 **discussions** — a thread made up of an opening post and the replies to it.
 Groups have their own forums, described in
-[Group forum](groups/groupforum.md).
+[Group forum](11-groups/05-groupforum.md).
 
 You can read the forum without an account if the hub allows it. Posting
 always requires you to log in.
@@ -141,6 +141,6 @@ offers to generate an example section and category for you to start from.
 A group's forum works the same way but is reached from the group's **Forum**
 tab, is limited to the group's members, and can email you new posts —
 individually or as a daily, weekly, or monthly digest. See
-[Group forum](groups/groupforum.md). For questions that want a single answer
-rather than a discussion, use [Questions and answers](questions.md); to reach
-the hub's staff, use [Support](support.md).
+[Group forum](11-groups/05-groupforum.md). For questions that want a single answer
+rather than a discussion, use [Questions and answers](19-questions.md); to reach
+the hub's staff, use [Support](12-support.md).

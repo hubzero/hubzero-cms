@@ -93,7 +93,7 @@ User::authorise('core.edit', 'com_kb.article.42'); // one article
 ```
 
 `com_kb` wraps the component-level checks in a helper so its views can ask
-once and reuse the answer — see [Helpers](helpers.md).
+once and reuse the answer — see [Helpers](04-helpers.md).
 
 ## Reading settings back
 

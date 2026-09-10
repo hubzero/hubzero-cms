@@ -124,7 +124,7 @@ names a default controller and reads a numeric first segment as a record id:
 `/api/kb/list` reaches `listTask()`; `/api/kb/42` reaches `readTask()` with
 `id=42` on a GET. The controller name it produces — `entries` — is what the
 API loader turns into `entriesv1_0.php`. See
-[Controllers](controllers.md#api-controllers).
+[Controllers](03-controllers.md#api-controllers).
 
 ## Building URLs
 

@@ -41,15 +41,39 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting started</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Getting started</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#what-a-hub-manager-does">What a hub manager does</a></li>
 <li class="toc__item toc__item--l2"><a href="#read-this-first">Read this first</a></li>
 <li class="toc__item toc__item--l2"><a href="#then">Then</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="newhub/index.html">The first week with a new hub</a></li>
-<li class="tree__leaf"><a class="tree__link" href="howitfits/index.html">How a hub fits together</a></li>
-<li class="tree__leaf"><a class="tree__link" href="administrator/index.html">The administrator interface</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#the-first-week-with-a-new-hub">The first week with a new hub</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-order">The order</a></li>
+<li class="toc__item toc__item--l3"><a href="#1-take-the-site-offline">1. Take the site offline</a></li>
+<li class="toc__item toc__item--l3"><a href="#2-set-the-site-identity">2. Set the site identity</a></li>
+<li class="toc__item toc__item--l3"><a href="#3-make-mail-work">3. Make mail work</a></li>
+<li class="toc__item toc__item--l3"><a href="#4-decide-how-people-register">4. Decide how people register</a></li>
+<li class="toc__item toc__item--l3"><a href="#5-decide-who-can-do-what">5. Decide who can do what</a></li>
+<li class="toc__item toc__item--l3"><a href="#6-turn-off-what-the-hub-does-not-need">6. Turn off what the hub does not need</a></li>
+<li class="toc__item toc__item--l3"><a href="#7-give-the-site-a-front-page-and-a-menu">7. Give the site a front page and a menu</a></li>
+<li class="toc__item toc__item--l3"><a href="#8-schedule-the-recurring-jobs">8. Schedule the recurring jobs</a></li>
+<li class="toc__item toc__item--l3"><a href="#9-bring-the-site-back-online">9. Bring the site back online</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-to-go-next">Where to go next</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-a-hub-fits-together">How a hub fits together</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-two-halves">The two halves</a></li>
+<li class="toc__item toc__item--l3"><a href="#how-a-page-gets-built">How a page gets built</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-things-live">Where things live</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-four-kinds-of-extension">The four kinds of extension</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-table-prefix">The table prefix</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-you-can-break-and-what-you-cannot">What you can break, and what you cannot</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-to-go-next-2">Where to go next</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-administrator-interface">The administrator interface</a></li>
+<li class="toc__item toc__item--l3"><a href="#reaching-it">Reaching it</a></li>
+<li class="toc__item toc__item--l3"><a href="#logging-in">Logging in</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-layout">The layout</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-control-panel">The Control Panel</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-menus">The menus</a></li>
+<li class="toc__item toc__item--l3"><a href="#logging-out">Logging out</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-to-go-next-3">Where to go next</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -69,9 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member import</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member import (archive)</a></li>
@@ -114,12 +136,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/oaipmh/index.html">OAI-PMH</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/poll/index.html">Poll</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
-</ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/index.html">Projects</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/redirect/index.html">Redirect</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/saml/index.html">SAML</a></li>
@@ -149,13 +167,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Security questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
-</ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating system hardening</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/index.html">Security considerations</a></li>
 </ul>
         </nav>
       </details>
@@ -192,16 +204,16 @@ templates.</li>
 spam filters.</li>
 </ul>
 <h2 id="read-this-first">Read this first</h2>
-<p><a href="administrator/index.html">The administrator interface</a> explains how to reach the back
+<p><a href="#the-administrator-interface">The administrator interface</a> explains how to reach the back
 end, who is allowed in, and what each of its menus contains. Read it before
 anything else in this book; every other chapter assumes you can find your way
 around those screens.</p>
 <p>Then, if the hub was installed this week, work through
-<a href="newhub/index.html">The first week with a new hub</a>. It puts the decisions a new hub
+<a href="#the-first-week-with-a-new-hub">The first week with a new hub</a>. It puts the decisions a new hub
 needs — the site name, mail, registration, access, which components to keep,
 the front page and menu, and the scheduled jobs — into the order that works,
 and links to the chapter covering each one.</p>
-<p><a href="howitfits/index.html">How a hub fits together</a> is the short chapter that explains
+<p><a href="#how-a-hub-fits-together">How a hub fits together</a> is the short chapter that explains
 what the hub is doing underneath those screens: the two halves of the
 application, how a page is assembled out of a component, a template and its
 modules, where the platform ends and your hub's own material begins, and what
@@ -224,14 +236,903 @@ the <strong>Components</strong> and <strong>Extensions</strong> menus are.</li>
 <p>Every setting the interface offers is also listed, component by component, in
 the generated
 <a href="../../reference/configuration/index.html">configuration reference</a>.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="newhub/index.html">The first week with a new hub</a></li>
-<li><a href="howitfits/index.html">How a hub fits together</a></li>
-<li><a href="administrator/index.html">The administrator interface</a></li></ul></section>
+<h2 id="the-first-week-with-a-new-hub">The first week with a new hub</h2>
+<p>What to do first with a hub that has just been installed, in the order that
+works. The software is running, the site answers, and you can sign in to the
+back end — and now several dozen screens are asking for decisions, some of them
+painful to change once members have accounts and content. This chapter puts
+those decisions in order, links to the chapter that covers each one in full,
+and says which shipped defaults surprise people.</p>
+<p>It is for the person who has just been handed a new hub. It does not repeat
+what the linked chapters say; read it beside them. If you are taking over a
+hub that already has members, this is the wrong chapter — go to
+<a href="../maintenance/index.html">Daily maintenance</a> and
+<a href="../users/index.html">Users</a> instead.</p>
+<p>Before anything else, read <a href="#the-administrator-interface">The administrator interface</a>.
+Everything below happens in the back end, and every step names a menu path
+through it.</p>
+<h3 id="the-order">The order</h3>
+<ol>
+<li><a href="#1-take-the-site-offline">Take the site offline</a> while you work.</li>
+<li><a href="#2-set-the-site-identity">Set the site identity</a> — name, address, time
+zone, environment.</li>
+<li><a href="#3-make-mail-work">Make mail work</a>, before anything that sends any.</li>
+<li><a href="#4-decide-how-people-register">Decide how people register</a>.</li>
+<li><a href="#5-decide-who-can-do-what">Decide who can do what</a>.</li>
+<li><a href="#6-turn-off-what-the-hub-does-not-need">Turn off what the hub does not need</a>.</li>
+<li><a href="#7-give-the-site-a-front-page-and-a-menu">Give the site a front page and a menu</a>.</li>
+<li><a href="#8-schedule-the-recurring-jobs">Schedule the recurring jobs</a>.</li>
+<li><a href="#9-bring-the-site-back-online">Bring the site back online</a>.</li>
+</ol>
+<p>Steps 3, 4 and 5 are the ones that are hard to undo. A hub that opens
+registration before its mail works collects accounts that can never confirm
+themselves.</p>
+<h3 id="1-take-the-site-offline">1. Take the site offline</h3>
+<p><strong>Site &gt; Global Configuration</strong>, <strong>Site</strong> tab, <strong>Offline Settings</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site Offline</strong></td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Offline Message</strong></td>
+<td>Use Custom Message</td>
+</tr>
+<tr>
+<td><strong>Custom Message</strong></td>
+<td><em>This site is down for maintenance. Please check back again soon.</em></td>
+</tr>
+<tr>
+<td><strong>Offline Image</strong></td>
+<td>empty</td>
+</tr>
+</tbody>
+</table>
+<p>A new hub is online. Set <strong>Site Offline</strong> to <strong>Yes</strong> and the public front end
+returns the template's offline page with a <code>503 Service Temporarily Unavailable</code> status:</p>
+<pre><code class="language-php">			if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline'))
+			{
+				$file = 'offline';
+
+				$response-&gt;headers-&gt;set('Status', '503 Service Temporarily Unavailable', 'true');
+			}
+</code></pre>
+<p>Anyone holding <code>core.login.offline</code> still sees the real site. On a new hub
+that permission is granted to the <strong>Manager</strong> access group and inherited by
+<strong>Administrator</strong> below it; <strong>Super Users</strong> hold <code>core.admin</code> and are allowed
+everything. So you keep browsing while visitors get the notice. The
+administrator interface is not affected either way.</p>
+<p>This step is optional, and it is worth the two clicks only if the hub is
+already reachable from outside. Undo it in step 9.</p>
+<h3 id="2-set-the-site-identity">2. Set the site identity</h3>
+<p><strong>Site &gt; Global Configuration</strong>, <strong>Site</strong> and <strong>Server</strong> tabs. See
+<a href="../configuring/hub/index.html">Global configuration</a> for the whole screen.</p>
+<p>The installer already asked for a site name, a time zone and an address, so
+this is a check rather than a first entry. Four fields matter now:</p>
+<ul>
+<li><strong>Site Name</strong> — used in page titles, in mail subjects, and by any component
+that asks the hub what it is called.</li>
+<li><strong>FQDN</strong> — the hub's fully qualified domain name.</li>
+<li><strong>Server Time Zone</strong>, on the <strong>Server</strong> tab. Cron recurrences and every
+displayed date are read against it.</li>
+<li><strong>Application Environment</strong>, which decides how much detail an error page
+shows. Set it to <strong>Production</strong> before anyone outside sees the site.</li>
+</ul>
+<p>Global Configuration writes plain PHP files under <code>app/config/</code>. If the save
+reports that it could not write, fix the directory's permissions rather than
+hunting for the setting elsewhere.</p>
+<h3 id="3-make-mail-work">3. Make mail work</h3>
+<p><strong>Site &gt; Global Configuration</strong>, <strong>Server</strong> tab, <strong>Mail Settings</strong>.</p>
+<p>Almost nothing on a hub notifies anyone until this is right: account
+confirmation, password resets, group announcements, support tickets, every
+digest. There is no test-mail button anywhere in the interface, so the only
+way to know is to trigger something that sends — registering a throwaway
+account is the usual test, which is why this comes before step 4.</p>
+<p><strong>Mailer</strong> offers three choices: <strong>Sendmail</strong>, <strong>SMTP</strong> and <strong>Mandrill
+(SMTP)</strong>. Set the <strong>Sendmail Path</strong>, or the SMTP host, port, security and
+credentials, to match the machine.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The option stores the value
+<code>mandrill</code>, but the transport builder only recognises <code>mandrill+smtp</code>, so
+the hub builds no transport and every send throws. Recorded in
+the project record.</p>
+</aside>
+<pre><code class="language-php">					case 'sendmail':
+					case 'mail':
+					case 'native':
+						$dsn = &quot;sendmail://default&quot;;
+						break;
+
+					case 'mandrill+smtp':
+</code></pre>
+<p>The value the installer writes into <code>app/config/mail.php</code> is <code>mail</code>, which is
+not one of the three options the drop-down offers. It behaves as <strong>Sendmail</strong>,
+as the code above shows, so the hub does send mail — but the field renders
+without a matching selection, and the first time you save Global
+Configuration it becomes a real <strong>Sendmail</strong>. Nothing breaks; do not be
+alarmed by the change.</p>
+<p><strong>From email</strong> does more than name the sender. It is also the address the hub
+notifies when an account is created — the new-account mail is addressed to the
+same address it is sent from. Point it at a mailbox somebody reads, not at a
+no-reply address.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> <strong>DSN (overrides other mail settings)</strong> on the same panel takes a
+single connection string and ignores the fields above it. Use it when the
+hub's mail relay needs something the individual fields cannot express.</p>
+</aside>
+<h3 id="4-decide-how-people-register">4. Decide how people register</h3>
+<p>Two screens, both in the Members component. Read
+<a href="../configuring/registration/index.html">Registration</a> for both in full.</p>
+<p><strong>Users &gt; Members</strong>, then <strong>Options</strong> in the toolbar, holds the decisions:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What the default means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Allow User Registration</strong></td>
+<td>Yes</td>
+<td>Anyone can create an account.</td>
+</tr>
+<tr>
+<td><strong>New User Account Activation</strong></td>
+<td>Self</td>
+<td>The member gets a link by mail and activates the account themselves. Nobody reviews it.</td>
+</tr>
+<tr>
+<td><strong>New User Registration Group</strong></td>
+<td>Registered</td>
+<td>New accounts land in the Registered access group.</td>
+</tr>
+<tr>
+<td><strong>Guest Access Group</strong></td>
+<td>Public</td>
+<td>Visitors who are not signed in count as Public.</td>
+</tr>
+<tr>
+<td><strong>Notification Mail to Administrators</strong></td>
+<td>Yes</td>
+<td>Nothing here. See the note below.</td>
+</tr>
+<tr>
+<td><strong>Send Password</strong></td>
+<td>Yes</td>
+<td>Nothing. No code reads it.</td>
+</tr>
+<tr>
+<td><strong>Simple Registration</strong></td>
+<td>No</td>
+<td>Nothing. No code reads it.</td>
+</tr>
+</tbody>
+</table>
+<p>Three of those options do not do what the screen implies, and all three are
+recorded in the project record:</p>
+<ul>
+<li><strong>Send Password</strong> and <strong>Simple Registration</strong> are declared on the form and
+described in the help text, but nothing in the tree reads either value.
+Setting them changes nothing.</li>
+<li><strong>Notification Mail to Administrators</strong> is read from the <strong>User - Hubzero</strong>
+plugin, not from the Members component, so the copy on this screen has no
+effect. The one that works is <strong>Notification Mail to Administrator</strong> under
+<strong>Extensions &gt; Plug-in Manager</strong>, on the <strong>User - Hubzero</strong> plugin, and it
+also defaults to Yes. The mail it sends goes to the global <strong>From email</strong> —
+the same address it is sent from.</li>
+</ul>
+<p>The default that surprises people is <strong>New User Account Activation</strong>. A new
+hub is open, and confirming an email address is all it takes to get an
+account — there is no approval queue. If your hub is for a named group of
+people, set it to <strong>Admin</strong>, which adds a review step before the account
+works, and set <strong>Email On Account Activation</strong> to <strong>Yes</strong> so the member is
+told when you approve them. If the hub is closed entirely, set <strong>Allow User
+Registration</strong> to <strong>No</strong> and create accounts yourself under <strong>Users &gt;
+Members</strong>.</p>
+<p><strong>Users &gt; Members &gt; Registration</strong> is the second screen: a grid of fields
+against the four moments a member's details are collected, each cell
+<strong>Required</strong>, <strong>Optional</strong>, <strong>Hide</strong> or <strong>Read only</strong>. Decide here whether you
+are asking for an organisation, a phone number, a reason for joining. It is
+easier to relax a required field later than to collect one you did not ask for
+at the start — the <strong>Update on Next Login</strong> column exists for exactly that
+repair, but it costs every existing member an interruption.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Nothing in the shipped site template links to the registration
+form. The template's <strong>Register Link</strong> option is read only by the older
+layout, and the current one renders no such link at all. Visitors reach the
+form through a menu item, so add one in step 7 if the hub takes public
+registrations.</p>
+</aside>
+<h3 id="5-decide-who-can-do-what">5. Decide who can do what</h3>
+<p>The single most useful thing to know about this section is that <em>group</em> means
+two unrelated things, and the screens for them sit next to each other on the
+<strong>Users</strong> menu. <a href="../users/index.html">Users</a> explains the split; read that
+before touching either screen.</p>
+<p>A <strong>hub group</strong> is a community with pages, a forum, a wiki and an address at
+<code>/groups/&lt;alias&gt;</code>. Members join it. See <a href="../users/groups/index.html">Groups</a>.</p>
+<p>An <strong>access group</strong> is a permission bucket with no pages and no address.
+Nobody joins one; you put accounts in it. See
+<a href="../users/accessgroups/index.html">Access Groups</a>.</p>
+<p>Eight access groups ship, nested:</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Parent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Public</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Manager</strong></td>
+<td>Public</td>
+</tr>
+<tr>
+<td><strong>Administrator</strong></td>
+<td>Manager</td>
+</tr>
+<tr>
+<td><strong>Registered</strong></td>
+<td>Public</td>
+</tr>
+<tr>
+<td><strong>Author</strong></td>
+<td>Registered</td>
+</tr>
+<tr>
+<td><strong>Editor</strong></td>
+<td>Author</td>
+</tr>
+<tr>
+<td><strong>Publisher</strong></td>
+<td>Editor</td>
+</tr>
+<tr>
+<td><strong>Super Users</strong></td>
+<td>Public</td>
+</tr>
+</tbody>
+</table>
+<p>The names carry no meaning of their own; what each may do is decided by the
+permission rules set against it in Global Configuration's <strong>Permissions</strong> tab
+and on each component's <strong>Options</strong>. The exceptions are <strong>Super Users</strong>, which
+holds <code>core.admin</code> and is therefore allowed everything, and <strong>Manager</strong>, which
+is where <code>core.login.admin</code> — the permission that lets an account into the
+back end at all — is granted on a new hub.</p>
+<p>Three viewing levels ship as well: <strong>Public</strong>, <strong>Registered</strong> and <strong>Special</strong>.
+They answer &quot;who may see this&quot;, and every content item carries one. See
+<a href="../users/accesslevels/index.html">Access Levels</a>.</p>
+<p>For the first week:</p>
+<ol>
+<li>Know where your own account sits. The one the installer created is in
+<strong>Super Users</strong>.</li>
+<li>Put the people who will run the hub with you in <strong>Manager</strong> or
+<strong>Administrator</strong>, not in <strong>Super Users</strong>. Both reach the back end, and
+neither holds <code>core.admin</code>, so neither can open Global Configuration and
+rewrite the permission rules.</li>
+<li>Leave the eight shipped groups in place. Deleting <strong>Public</strong> or
+<strong>Registered</strong> breaks the default viewing levels and the registration
+options. Add your own groups alongside them.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The permission check honours a <code>root_user</code> key in
+<code>app/config/app.php</code>: an account whose username, or numeric id, matches it
+is treated as a Super User whatever its access groups say. It is a lock-out
+failsafe, and the installer does not write it — but installations carry it
+from older configurations. Look for it, and make sure the account it names
+is one you control.</p>
+</aside>
+<h3 id="6-turn-off-what-the-hub-does-not-need">6. Turn off what the hub does not need</h3>
+<p><strong>Extensions &gt; Extension Manager</strong>, <strong>Hubzero Core</strong> tab. See
+<a href="../extensions/extension-manager/index.html">Extension Manager</a>.</p>
+<p>A hub ships with nearly every component enabled — around sixty of them, from
+Answers to Wishlist — because the platform cannot know which ones a given hub
+is for. Every enabled component adds an entry to the <strong>Components</strong> menu, and
+most of them add something a visitor can reach. A hub that will never run
+courses, sell anything, or publish a newsletter is easier to administer, and
+easier to explain to its members, with those switched off.</p>
+<p>To see the real state, filter the list by <strong>Type</strong> = Component and sort or
+filter on <strong>Status</strong>; do not go by what a fresh database happens to contain,
+since installing with the optional sample content switches several extensions
+off that a plain install leaves on.</p>
+<ol>
+<li>Filter to <strong>Component</strong>.</li>
+<li>Tick the ones this hub will not use.</li>
+<li>Select <strong>Disable</strong>.</li>
+</ol>
+<p>Disabling a component removes it from the administrator menu as well as from
+the site. Nothing is deleted, and <strong>Enable</strong> puts it back.</p>
+<p>Then set the options of the ones you kept:
+<a href="../configuring/components/index.html">Components</a> explains the <strong>Options</strong>
+pop-up and its <strong>Permissions</strong> tab, and every parameter of every component is
+listed in the generated
+<a href="../../reference/configuration/index.html">configuration reference</a>. Some
+components do nothing useful until their options are filled in.</p>
+<h3 id="7-give-the-site-a-front-page-and-a-menu">7. Give the site a front page and a menu</h3>
+<p>Two separate jobs, and the second one catches everybody.</p>
+<h4 id="the-front-page">The front page</h4>
+<p>The site's home page is whichever menu item is marked <strong>Home</strong>. On a plain
+install that is a single item in <strong>Main Menu</strong>, of type <strong>Featured Articles</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Nothing in the administrator interface can put an article on
+that page. The <strong>Featured</strong> field on an article writes to the article's own
+column, while the Featured Articles view reads a separate table that no
+administrator screen writes to. A hub left on the shipped home page has an
+empty front page for ever. See
+<a href="../content/articlemanager/index.html">Article Manager</a>.</p>
+</aside>
+<p>So the first-week job is to replace it:</p>
+<ol>
+<li>Write the page you want as an article — <strong>Content &gt; Article Manager</strong>,
+<strong>New</strong>. See <a href="../content/index.html">Content</a>.</li>
+<li><strong>Menus &gt; Main Menu</strong>, then <strong>New</strong>.</li>
+<li>Set <strong>Menu Item Type</strong> to <strong>Articles &gt; Single Article</strong> and pick the
+article.</li>
+<li>Save it, then tick it in the list and select <strong>Home</strong>.</li>
+</ol>
+<p>There must always be exactly one item marked <strong>Home</strong>; giving the flag to the
+new item takes it from the old one.</p>
+<h4 id="the-menu">The menu</h4>
+<p>A menu is not displayed anywhere until a <strong>Menu</strong> module is pointed at it and
+given a template position. Creating the menu and creating the module that
+shows it are two separate steps, and the shipped module is in the wrong place:</p>
+<ul>
+<li>The site templates in this tree render the main navigation from the
+<code>user3</code> position.</li>
+<li>The <strong>Main Menu</strong> module a plain install creates is assigned to
+<code>position-7</code>, which no template here declares or renders.</li>
+</ul>
+<p>The result is a hub with a menu that appears nowhere. Installing the optional
+sample content moves the module to <code>user3</code>; a plain install does not, so check
+it yourself:</p>
+<ol>
+<li><strong>Extensions &gt; Module Manager</strong>, open <strong>Main Menu</strong>.</li>
+<li>Set <strong>Position</strong> to <code>user3</code>.</li>
+<li>Confirm <strong>Status</strong> is <strong>Published</strong>, and <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>Then build the menu out. <a href="../menus/index.html">Menus</a> covers the Menu Manager, the
+item types, and how to group items into sections; <a href="../extensions/modules/index.html">Modules</a>
+covers the module side. The positions the site template offers are <code>footer</code>,
+<code>banner</code>, <code>welcome</code>, <code>left</code>, <code>right</code>, <code>helppane</code>, <code>user3</code>, <code>notices</code>,
+<code>search</code>, <code>breadcrumbs</code> and <code>endpage</code>.</p>
+<h3 id="8-schedule-the-recurring-jobs">8. Schedule the recurring jobs</h3>
+<p>Several features do nothing at all until a job runs: digests, group
+announcements, membership expiry, search indexing, DOI registration, cache
+cleanup. Read <a href="../maintenance/cron/index.html">Scheduled tasks</a> first — it
+explains the tick, the <code>muse cron:jobs</code> command and the IP whitelist — and use
+<a href="../components/cron/index.html">Cron</a> as the catalogue of what each job does.</p>
+<p>Two things have to be true.</p>
+<p><strong>The tick has to be installed.</strong> Unix cron does not run the hub's jobs; it
+calls the hub once a minute and the hub runs whatever is due. Until that entry
+exists in the system crontab, every job in the list sits there with a next-run
+time in the past.</p>
+<p><strong>The jobs have to exist.</strong> A new hub has three, and only one of them runs:</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>Event</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group Announcements</strong></td>
+<td><code>groups</code> / <code>sendGroupAnnouncements</code>, every 5 minutes</td>
+<td>Published</td>
+</tr>
+<tr>
+<td><strong>Process Newsletter Mailings</strong></td>
+<td><code>newsletter</code> / <code>processMailings</code></td>
+<td>Unpublished</td>
+</tr>
+<tr>
+<td><strong>Process Newsletter Opens &amp; Click IP Addresses</strong></td>
+<td><code>newsletter</code> / <code>processIps</code></td>
+<td>Unpublished</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else you create yourself, at <strong>Components &gt; Cron &gt; New</strong>. The
+<strong>Event</strong> drop-down is built from the enabled cron plugins, so an event you
+expect and cannot find usually means its plugin is disabled under
+<strong>Extensions &gt; Plug-in Manager</strong>. Add the jobs for the features you kept in
+step 6 — there is no point scheduling a publications job on a hub that does
+not publish.</p>
+<aside class="admonition admonition--caution">
+<p><strong>Caution:</strong> Leave <strong>Run in a detached process</strong> alone unless a job is a
+long archival batch. A detached job cannot build correct absolute URLs, so
+never enable it for anything that sends mail.</p>
+</aside>
+<h3 id="9-bring-the-site-back-online">9. Bring the site back online</h3>
+<p><strong>Site &gt; Global Configuration</strong>, <strong>Site</strong> tab, <strong>Offline Settings</strong>. Set
+<strong>Site Offline</strong> back to <strong>No</strong>.</p>
+<p>Then sign out and look at the front page the way a visitor will: the home page
+you built in step 7, the menu in a position the template renders, and — if the
+hub takes registrations — a way to reach the registration form. Checking this
+signed out matters, because signed in as a Super User you see the site whether
+it is offline or not.</p>
+<h3 id="where-to-go-next">Where to go next</h3>
+<ul>
+<li><a href="../advancedsetup/index.html">Integrations</a> — analytics, Google Drive, the rich
+text editor, and CAPTCHA.</li>
+<li><a href="../configuring/index.html">Configuring</a> — the rest of the global
+configuration, and the per-extension options.</li>
+<li><a href="../maintenance/index.html">Daily maintenance</a> — the work the hub needs
+once people are using it.</li>
+<li><a href="../spam/index.html">Spam</a> — worth reading before the hub is public, not after.</li>
+</ul>
+<h2 id="how-a-hub-fits-together">How a hub fits together</h2>
+<p>The mental model the rest of this book assumes. Every other chapter tells you
+which screen to open and which field to set; none of them tells you what the
+hub is doing underneath, so the first time a change you made in one screen
+appears — or fails to appear — somewhere else entirely, there is nothing to
+reason from. This chapter supplies that. It is short, and it is worth reading
+once before the screen-by-screen chapters rather than after.</p>
+<p>It is for the person who has just been given a hub to run and has no
+background in the software. If you write code for a hub, read
+<a href="../../developers/foundation/structure/index.html">Application structure</a>
+instead; it covers the same ground with the detail a developer needs.</p>
+<h3 id="the-two-halves">The two halves</h3>
+<p>A hub is one application with two faces.</p>
+<p>The <strong>front end</strong> is the site people visit: the home page, the groups, the
+resources, the search box. The <strong>administrator interface</strong>, or back end, is
+at <code>/administrator</code> and is where you configure all of that.</p>
+<p>They are not two programs. They are the same installation, running the same
+components against the same database, with one difference: the first path
+segment of the URL. <code>/administrator/…</code> selects the administrator <em>client</em>,
+<code>/api/…</code> selects the REST API, and anything else is the site. The choice is
+made by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/ClientDetector.php"><code>ClientDetector</code></a>
+on every request, and it decides which set of controllers, views, template
+and configuration the request runs against — <code>admin/</code> instead of <code>site/</code>
+inside each component.</p>
+<p>That is why a component you disable vanishes from both the <strong>Components</strong>
+menu and the public site at once, and why there is no separate back-end
+address, host or port to remember.</p>
+<p><a href="#the-administrator-interface">The administrator interface</a> covers reaching it, who is
+allowed in, and what each of its menus holds. Read that chapter for the back
+end itself; this one is about what the back end is editing.</p>
+<h3 id="how-a-page-gets-built">How a page gets built</h3>
+<p>This is the single most useful thing to understand, because almost every
+&quot;why did that happen?&quot; question on a hub is answered by it.</p>
+<p>A page is assembled in four stages:</p>
+<ol>
+<li><strong>The request arrives.</strong> One file, <code>index.php</code>, handles every URL on the
+hub. Nothing else is ever reached directly.</li>
+<li><strong>The router picks a component.</strong> It looks at the URL and decides which
+component owns it, and it sets two things: <code>option</code>, the component's name,
+and <code>Itemid</code>, the id of the menu item that matched. Remember <code>Itemid</code>; it
+matters in a moment.</li>
+<li><strong>The component produces the main content.</strong> Exactly one component runs
+per page. It reads the database, applies its own permissions, and returns
+the block of HTML that is the actual subject of the page — the article,
+the group's forum, the list of resources.</li>
+<li><strong>The template wraps it, and the modules fill in around it.</strong> The
+template is a page skeleton with named holes in it. One hole takes the
+component's output. The rest are <strong>positions</strong>, and each position renders
+whichever modules are published there.</li>
+</ol>
+<p>Here is the middle of the shipped site template, which is the whole idea in
+one screenful — an optional column of modules, the component, another
+optional column of modules:</p>
+<pre><code class="language-php">					&lt;?php if ($this-&gt;countModules('left')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;div class=&quot;subject&quot;&gt;
+					&lt;?php endif; ?&gt;
+
+								&lt;!-- start component output --&gt;
+								&lt;jdoc:include type=&quot;component&quot; /&gt;
+								&lt;!-- end component output --&gt;
+
+					&lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+							&lt;/div&gt;&lt;!-- / .subject --&gt;
+					&lt;?php endif; ?&gt;
+					&lt;?php if ($this-&gt;countModules('right')) : ?&gt;
+							&lt;aside class=&quot;aside&quot;&gt;
+								&lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
+							&lt;/aside&gt;&lt;!-- / .aside --&gt;
+					&lt;?php endif; ?&gt;
+</code></pre>
+<p>Two consequences follow from that order, and between them they explain most
+of the surprises.</p>
+<p><strong>The component does not know about the modules, and the modules do not know
+about the component.</strong> They are chosen independently: the component by the
+router, the modules by their position and their page assignment. A page can
+therefore have perfect content and no navigation, which is exactly the
+failure described in step 7 of
+<a href="#the-first-week-with-a-new-hub">The first week with a new hub</a> — a menu that exists, in a
+position no template renders, on a site whose pages are otherwise fine.</p>
+<p><strong>Modules are assigned to pages by menu item id.</strong> A module is shown if it is
+published, if its position is in the template, if the viewer's access level
+allows it, and if its page assignment includes the current <code>Itemid</code>. Modules
+set to appear on all pages carry no id at all and always render. So:</p>
+<ul>
+<li>A page reached without a menu item — a component URL a visitor typed, a
+deep link into a group — has no <code>Itemid</code>, and shows only the all-pages
+modules.</li>
+<li>Deleting a menu item and creating a replacement gives you a <em>new</em> id.
+Modules assigned to the old one are now assigned to a page that does not
+exist, and quietly stop appearing. If a sidebar disappears after a menu
+tidy-up, this is why. Edit menu items rather than replacing them.</li>
+</ul>
+<p><a href="../menus/index.html">Menus</a> covers the menu side and
+<a href="../extensions/modules/index.html">Modules</a> the module side; the point here is
+only that they are two halves of one decision.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Of everything the template asks for, the modules are rendered
+first — before even the page's <code>&lt;head&gt;</code> is written. That is deliberate: it
+lets a module add a stylesheet or a script and still have it appear in the
+head of the finished page. The component's output was produced a step
+earlier still, before the template was opened at all.</p>
+</aside>
+<h4 id="a-worked-page">A worked page</h4>
+<p>Take the front page a new hub gets in step 7 of
+<a href="#the-first-week-with-a-new-hub">The first week with a new hub</a>: an article, shown by a menu
+item of type <strong>Articles &gt; Single Article</strong>, marked <strong>Home</strong>.</p>
+<p>A visitor asks for <code>https://example.com/</code>. The path is empty, so the router
+takes the menu item marked <strong>Home</strong>, and from it sets <code>option=com_content</code>
+and the article's id, plus that item's <code>Itemid</code>. The Content component loads
+the article, checks its state and its access level, and renders it. The
+template then puts that HTML in the component hole, renders the <strong>Main Menu</strong>
+module into <code>user3</code>, the breadcrumb module into <code>breadcrumbs</code>, and whatever
+else is published into <code>footer</code> and the rest, and sends the finished page.</p>
+<p>Change the article's text and only stage 3 changes. Change which menu item is
+<strong>Home</strong> and stage 2 changes, which changes the <code>Itemid</code>, which changes which
+modules stage 4 renders. That is the whole mechanism.</p>
+<h3 id="where-things-live">Where things live</h3>
+<p>Two trees on disk, and one database.</p>
+<table>
+<thead>
+<tr>
+<th>Tree</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core/</code></td>
+<td>The platform: the framework, and every component, module, plugin and template the release ships. An upgrade replaces this tree wholesale.</td>
+</tr>
+<tr>
+<td><code>app/</code></td>
+<td>This one hub: its configuration, its uploads, its cache and logs, and any extension it adds or replaces.</td>
+</tr>
+</tbody>
+</table>
+<p><code>app/</code> wins. When the hub looks for a component, a module, a plugin or a
+template, it checks <code>app/</code> first and uses <code>core/</code> only if it finds nothing —
+so a hub customises itself by adding files under <code>app/</code>, never by editing
+<code>core/</code>. A change made in <code>core/</code> works until the next upgrade and then
+disappears.</p>
+<p>The database holds everything the administrator interface edits as records:
+articles, menu items, modules and their positions, members, access groups and
+levels, categories, component options, cron jobs, forum posts, group
+memberships. Almost every screen in this book writes there.</p>
+<p>Files on disk hold everything else: uploaded and generated content under
+<code>app/site/</code> — group files, media, member files, publications — plus the
+configuration in <code>app/config/</code>, and the cache and logs. The Media Manager
+writes into <code>app/site/media</code>. Global Configuration writes plain PHP files
+into <code>app/config/</code>.</p>
+<p>Which of the two your actions touch is not academic, because it decides what
+a backup has to include:</p>
+<ul>
+<li><strong>The database alone is not a backup.</strong> Restore it without <code>app/site/</code> and
+every record survives pointing at a file that is gone.</li>
+<li><strong><code>app/</code> alone is not a backup either.</strong> It has the uploads and the
+configuration but none of the content.</li>
+<li><strong><code>core/</code> need not be backed up at all.</strong> It is the release, and you can
+fetch it again. It should also not have been modified; if it has, that is
+the thing to find out about before an upgrade, not after.</li>
+</ul>
+<p>So: back up the database and <code>app/</code>, together, at the same moment.
+<a href="../maintenance/index.html">Daily maintenance</a> covers the rest of the
+running-hub routine.</p>
+<h3 id="the-four-kinds-of-extension">The four kinds of extension</h3>
+<p>Everything the hub puts on a page comes from an extension, and there are four
+kinds. <a href="../extensions/index.html">Extensions</a> explains each one properly,
+including where they live and which screen manages them; one line each here
+so the words mean something in the meantime:</p>
+<ul>
+<li>A <strong>component</strong> is an application. It owns the main body of the page, and
+exactly one runs per request.</li>
+<li>A <strong>module</strong> is a small block placed around the component, in a named
+position the template offers.</li>
+<li>A <strong>plugin</strong> answers events — a login, a save, a page about to render — and
+also supplies the tabbed sections of groups, member profiles and projects.</li>
+<li>A <strong>template</strong> is the page skeleton: the layout, the stylesheets, and the
+list of positions modules can go in.</li>
+</ul>
+<h3 id="the-table-prefix">The table prefix</h3>
+<p>Sooner or later something technical — a migration, a support answer, a
+configuration field, this documentation — shows you a table name written
+like this:</p>
+<pre><code class="language-text">#__resources
+</code></pre>
+<p><code>#__</code> is not part of the name. It is a placeholder that the database layer
+rewrites into the hub's real table prefix on the way to the server, every
+time a query runs. On this tree the default prefix is <code>jos_</code>, so <code>#__users</code>
+becomes <code>jos_users</code>.</p>
+<p>The prefix exists so that several hubs can share one database server, or one
+database, without their tables colliding. Because it is chosen per
+installation, no code may assume it. Extensions that need a table name build
+it from the configured value rather than typing it — the <strong>My Points</strong> module
+does exactly that, joining <code>Config::get('dbprefix')</code> to <code>users_points</code>. Code
+that hardcodes a literal prefix works on the hub it was written for and
+breaks on every hub that chose a different one, which is why you will see
+<code>#__</code> and never a real prefix in anything shipped.</p>
+<p>There is a <strong>Database Tables Prefix</strong> field in Global Configuration, on the
+<strong>Server</strong> tab. It is not a rename tool.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Changing <strong>Database Tables Prefix</strong> does not rename anything.
+It only changes which tables the hub looks for, so the next request finds
+none of them and the hub stops working. The field exists for the case where
+the database itself has been moved or restored under different table names.
+Leave it alone otherwise. See
+<a href="../configuring/hub/index.html">Global configuration</a>.</p>
+</aside>
+<h3 id="what-you-can-break-and-what-you-cannot">What you can break, and what you cannot</h3>
+<p>Most of what a new manager is nervous about is reversible, and a few things
+that look harmless are not. Worth knowing which is which before you start
+clicking.</p>
+<h4 id="hard-to-break">Hard to break</h4>
+<ul>
+<li><strong>Disabling and unpublishing.</strong> Disabling a component or unpublishing a
+module deletes nothing. <strong>Enable</strong> and <strong>Publish</strong> put it back exactly as
+it was, options and all.</li>
+<li><strong>Uninstalling a shipped extension.</strong> You cannot. There is no <strong>Uninstall</strong>
+button in the Extension Manager — it is commented out of the view. See
+<a href="../extensions/extension-manager/index.html">Extension Manager</a>.</li>
+<li><strong>Changing an item's state.</strong> Publishing, unpublishing and the rest write a
+number into a column; the row stays where it is. Read
+<a href="../content/states/index.html">States, deleting and check-out</a> before assuming
+which number a given label means, because the labels and the stored values
+do not line up as neatly as the screens suggest.</li>
+<li><strong>A record that will not open because it is &quot;checked out&quot;.</strong> Nothing is
+wrong with it. <strong>Site → Maintenance → Global Check-in</strong> releases every
+locked record on the hub.</li>
+<li><strong>Moving modules between positions.</strong> Free, and the fastest way to learn
+what a template's positions actually are: put a module somewhere and look.</li>
+<li><strong>Categories.</strong> Creating them costs nothing, and they are scoped per
+component, so a category made for articles cannot disturb the knowledge
+base. See <a href="../content/categories/index.html">Categories</a>.</li>
+</ul>
+<h4 id="easy-to-break">Easy to break</h4>
+<ul>
+<li><strong>Editing anything under <code>core/</code>.</strong> It works until the next upgrade, then
+vanishes without warning. Put the change under <code>app/</code> instead.</li>
+<li><strong>Changing the table prefix</strong>, as above.</li>
+<li><strong>Deleting the shipped access groups.</strong> <strong>Public</strong> and <strong>Registered</strong> are
+referenced by the default viewing levels and the registration options.
+Delete your own groups freely; leave the eight shipped ones in place. See
+<a href="../users/accessgroups/index.html">Access groups</a>.</li>
+<li><strong>Deleting menu items.</strong> Cheap to do, and it silently strips the module
+assignments that pointed at them, as above.</li>
+<li><strong>Leaving the hub with no item marked Home.</strong> There must be exactly one,
+because it is what the router falls back to for the bare address.</li>
+<li><strong>Real deletions.</strong> Removing a member, a group or a file is not a state
+change. It is gone, and only the backup you took in the section above will
+bring it back.</li>
+</ul>
+<p>The honest summary: you can explore the administrator interface freely as
+long as you are toggling states and positions, and you should slow down the
+moment a screen offers to delete something or to change where the hub looks
+for its data.</p>
+<h3 id="where-to-go-next-2">Where to go next</h3>
+<ul>
+<li><a href="#the-administrator-interface">The administrator interface</a> — the back end itself, menu
+by menu.</li>
+<li><a href="#the-first-week-with-a-new-hub">The first week with a new hub</a> — the ordered path through the
+decisions a new hub needs.</li>
+<li><a href="../extensions/index.html">Extensions</a> — the four kinds, in full.</li>
+<li><a href="../../developers/foundation/structure/index.html">Application structure</a> —
+the same picture with the code paths, for readers who want the detail.</li>
+</ul>
+<h2 id="the-administrator-interface">The administrator interface</h2>
+<p>The administrator interface, or back end, is where you set up, configure and
+maintain a hub. It runs on the same site as the public front end but under a
+separate URL, uses a different template, and is closed to anyone without an
+explicit permission to enter it.</p>
+<h3 id="reaching-it">Reaching it</h3>
+<p>Add <code>/administrator</code> to the hub's address. If the hub is at
+<code>https://example.com</code>, the back end is at:</p>
+<pre><code>https://example.com/administrator
+</code></pre>
+<p>That first path segment is what selects the administrator application; there
+is no separate hostname or port. Everything after it is an ordinary
+<code>index.php?option=com_…</code> request handled by the same components as the front
+end, only with their <code>admin/</code> controllers and views instead of their <code>site/</code>
+ones.</p>
+<h3 id="logging-in">Logging in</h3>
+<p>Every administrator URL is rewritten to the login component until you are both
+logged in and authorised, so it does not matter which back-end page you ask
+for first — you always land on the login screen:</p>
+<pre><code class="language-php">	if (\User::isGuest() || !\User::authorise('core.login.admin'))
+	{
+		$option = 'com_login';
+	}
+
+	if (empty($option))
+	{
+		if (strtoupper(\App::get('request')-&gt;method()) == 'POST')
+		{
+			$option = \App::get('request')-&gt;getCmd('option', '', 'post');
+		}
+	}
+
+	if (empty($option))
+	{
+		$option = 'com_cpanel';
+	}
+</code></pre>
+<p>The check is the <code>core.login.admin</code> permission, not simply &quot;is logged in&quot;. A
+member who is signed in to the front end and browses to <code>/administrator</code> is
+still sent to the login screen if their access groups do not carry that
+permission. On a fresh install <code>core.login.admin</code> is granted to the
+<strong>Manager</strong> group and inherited by <strong>Administrator</strong> beneath it; <strong>Super
+Users</strong> hold <code>core.admin</code>, which grants everything. See
+<a href="../users/accessgroups/index.html">Access groups</a> for how to change that.</p>
+<p>The login screen itself is <code>com_login</code>, rendered through the admin template's
+<code>login.php</code> layout with the <strong>Login Form</strong> module (<code>mod_adminlogin</code>) in it.
+What you see depends on which authentication plugins the hub has enabled with
+their <strong>Admin login</strong> option turned on:</p>
+<ul>
+<li>With no such plugin, you get a plain form: <strong>Username</strong>, <strong>Password</strong>, and a
+<strong>Log in</strong> button.</li>
+<li>With one or more, you get a <strong>Sign in with …</strong> button for each, plus a link
+back to the plain form for hub-local accounts.</li>
+</ul>
+<p>A successful login lands you on the <strong>Control Panel</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Failing to log in here is not always a wrong password. If the
+account is valid but lacks <code>core.login.admin</code>, the login is refused in the
+same way. Check the member's access groups before resetting anything.</p>
+</aside>
+<h3 id="the-layout">The layout</h3>
+<p>Every back-end page is built from the same pieces, in this order down the
+page:</p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td>The hub's name, linking to the front end, and the <strong>Log out</strong> link on the right</td>
+</tr>
+<tr>
+<td>Main navigation</td>
+<td>The top-level menus, rendered by the admin menu module in the <code>menu</code> position</td>
+</tr>
+<tr>
+<td>Toolbar box</td>
+<td>The page title on the left and its action buttons — <strong>New</strong>, <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Close</strong>, <strong>Options</strong>, <strong>Help</strong> — on the right</td>
+</tr>
+<tr>
+<td>Sub-navigation</td>
+<td>The current component's own screens, when it registers any</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>The component itself</td>
+</tr>
+</tbody>
+</table>
+<p>The toolbar is where the verbs live. A list screen puts <strong>New</strong>, <strong>Edit</strong>,
+<strong>Delete</strong> and the status buttons there; an edit screen replaces them with
+<strong>Save</strong>, <strong>Save &amp; Close</strong> and <strong>Close</strong>. A component's <strong>Options</strong> button
+opens its configuration in a modal, and the <strong>Permissions</strong> tab inside that
+modal is where you say which access groups may use it.</p>
+<h3 id="the-control-panel">The Control Panel</h3>
+<p>The Control Panel is the component <code>com_cpanel</code>, and it is the default screen
+for any administrator URL that names no component. It has no content of its
+own: it renders every administrator module published in the <code>cpanel</code> position,
+one collapsible panel per module. What your dashboard shows therefore depends
+entirely on which modules the hub publishes there. <a href="../maintenance/index.html">Daily
+maintenance</a> describes the panels a working hub
+usually adds.</p>
+<h3 id="the-menus">The menus</h3>
+<p>The main navigation is assembled by the admin menu module. Most of it is
+hardcoded, and each entry is shown only if you hold the permission it needs,
+so a Manager sees fewer entries than a Super User.</p>
+<table>
+<thead>
+<tr>
+<th>Menu</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site</strong></td>
+<td><strong>Control Panel</strong>, <strong>Global Configuration</strong>, a <strong>Maintenance</strong> submenu (<strong>Global Check-in</strong>, <strong>Clear Cache</strong>, <strong>Purge Expired Cache</strong>, <strong>LDAP</strong>, <strong>Geo DB</strong>, <strong>APC</strong>, <strong>Routes</strong>), <strong>System Information</strong>, and <strong>Logout</strong></td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td><strong>Members</strong>, <strong>Groups</strong>, <strong>Access Groups</strong>, <strong>Access Levels</strong>, <strong>User Notes</strong> and their categories, and <strong>Mass Mail Users</strong></td>
+</tr>
+<tr>
+<td><strong>Menus</strong></td>
+<td><strong>Menu Manager</strong>, then one entry per menu defined on the hub</td>
+</tr>
+<tr>
+<td><strong>Content</strong></td>
+<td><strong>Article Manager</strong>, <strong>Category Manager</strong>, and <strong>Media Manager</strong></td>
+</tr>
+<tr>
+<td><strong>Components</strong></td>
+<td>One entry per installed, enabled component, with a submenu where the component defines one</td>
+</tr>
+<tr>
+<td><strong>Extensions</strong></td>
+<td><strong>Extension Manager</strong>, <strong>Module Manager</strong>, <strong>Plug-in Manager</strong>, <strong>Template Manager</strong>, <strong>Language Manager</strong></td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td><strong>Help Articles</strong> and links out to hubzero.org; the menu module's <strong>Help Menu</strong> option, on by default, hides it</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Components</strong> menu is the one that grows. Unlike the rest, it is built
+from the database — the administrator menu rows installed with each component
+— rather than from the module's own code, which is why installing a component
+adds it to that menu without any further step. Members, Groups and System are
+deliberately left out of it because they already appear under <strong>Site</strong> and
+<strong>Users</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Global Configuration</strong> and <strong>System Information</strong> appear only
+for accounts holding <code>core.admin</code>. The <strong>Maintenance</strong> submenu needs
+<code>core.admin</code> on the check-in component or <code>core.manage</code> on the cache
+component; without either, the whole submenu is left out.</p>
+</aside>
+<h3 id="logging-out">Logging out</h3>
+<p>Click <strong>Log out</strong> in the top-right corner of the header, or use <strong>Site →
+Logout</strong>. Either returns you to the login screen.</p>
+<p>While you have an item open for editing, the whole main navigation and the
+<strong>Log out</strong> link are disabled: the record is checked out to you, and the
+interface hides the links so you cannot navigate away and leave it locked.
+Finish with <strong>Save &amp; Close</strong> or <strong>Close</strong> to release it, and the links come
+back.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> If a record stays locked — a browser crash, a lost session — clear
+it with <strong>Site → Maintenance → Global Check-in</strong>, which releases every
+record checked out across the hub.</p>
+</aside>
+<h3 id="where-to-go-next-3">Where to go next</h3>
+<ul>
+<li><a href="../advancedsetup/index.html">Advanced setup</a> — the site template, menus and
+modules.</li>
+<li><a href="../configuring/index.html">Configuring</a> — the global configuration and the
+per-extension options.</li>
+<li><a href="../users/index.html">Users</a> — members, access groups, and access levels.</li>
+<li><a href="../maintenance/index.html">Daily maintenance</a> — the work a running hub
+needs every day.</li>
+</ul>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hub managers</a><a class="pager__next" href="newhub/index.html" rel="next"><span>Next</span>The first week with a new hub</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hub managers</a><a class="pager__next" href="../advancedsetup/index.html" rel="next"><span>Next</span>Integrations</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/01-getting-started/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/01-getting-started.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

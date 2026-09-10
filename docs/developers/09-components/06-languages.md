@@ -105,7 +105,7 @@ offers.
 to when a view offers no layout metadata: `{COMPONENT}_{VIEW}_VIEW_DEFAULT_TITLE`.
 When the layout does have an `.xml` file beside it, its `title` attribute is
 used instead — and that attribute is itself passed through `Lang::txt()`, so it
-may be a key. See [Views](views.md).
+may be a key. See [Views](07-views.md).
 
 > **Note:** `{tag}.com_kb.menu.ini` is a leftover. Nothing in the codebase
 > loads a `.menu.ini` file; the administrator menu takes its labels from

@@ -115,4 +115,4 @@ the session yourself.
 > **Warning:** With the `database` handler every value you store is
 > serialised into a row that is written on each request. Keep what you put
 > there small — an id, a flag, a short array. Rendered output belongs in the
-> [cache](cache.md), and anything that must survive belongs in a table.
+> [cache](01-cache.md), and anything that must survive belongs in a table.

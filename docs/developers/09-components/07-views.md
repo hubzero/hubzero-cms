@@ -64,7 +64,7 @@ Four variables are already set for you: `option`, `controller`, `task`, and
 
 Anything that came from a person goes through `$this->escape()`. Content that
 is meant to carry markup goes through the content parser instead — see
-[Models](models.md).
+[Models](05-models.md).
 
 > **Note:** A layout file declares no namespace, and `include` does not
 > inherit one, so a layout runs in the global namespace. That is why

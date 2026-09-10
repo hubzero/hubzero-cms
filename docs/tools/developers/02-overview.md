@@ -55,8 +55,8 @@ Two caveats come with that:
   *File > Open* dialog inside a tool lists the member's home directory on the
   hub. Files from their own machine have to get there first, by `sftp`,
   WebDAV, or the hub's `importfile` command. See
-  [Accessing your home directory](06-accesshomedir/README.md) and
-  [Importing and exporting user files](08-fileinout/README.md).
+  [Accessing your home directory](06-accesshomedir.md) and
+  [Importing and exporting user files](08-fileinout.md).
 
 ## Rappture
 

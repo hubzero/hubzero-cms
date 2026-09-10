@@ -23,7 +23,7 @@ and every entry is served by `com_members` except **Groups**, which is
 
 | Menu entry | Component | Covered in |
 |---|---|---|
-| **Members** | `com_members` | [Members](01-members/README.md) |
+| **Members** | `com_members` | [Members](01-members.md) |
 | **Groups** | `com_groups` | [Groups](05-groups.md), [Super Groups](08-supergroups.md) |
 | **Access Groups** | `com_members` | [Access Groups](06-accessgroups.md) |
 | **Access Levels** | `com_members` | [Access Levels](07-accesslevels.md) |

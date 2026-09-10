@@ -154,6 +154,6 @@ Worth saying plainly, because it is the first thing that trips people up: a
 directory on disk is not an extension. Every loader above reads a database
 table. Copy a component into `app/components/` and visit its URL and you get
 a 404, because there is no `#__extensions` row; copy a plugin in and no
-event ever reaches it. A [migration](../06-database/02-migrations.md) writes that
+event ever reaches it. A [migration](../06-database.md#migrations) writes that
 row, which is why every extension ships one. See
 [Deploying extensions](../07-extensions/04-deployext.md).

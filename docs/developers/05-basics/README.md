@@ -36,22 +36,22 @@ namespace standing in for an object in the application container.
 
 ## In this section
 
-- [Requests](requests.md) — reading input safely, and what the request
+- [Requests](01-requests.md) — reading input safely, and what the request
   knows about itself.
-- [Responses](responses.md) — headers, content, and sending.
-- [Redirect](redirect.md) — `App::redirect()`, and what it does to the
+- [Responses](02-responses.md) — headers, content, and sending.
+- [Redirect](11-redirect.md) — `App::redirect()`, and what it does to the
   rest of your method.
-- [Config](config.md) — global, component, plugin and module
+- [Config](03-config.md) — global, component, plugin and module
   configuration.
-- [Languages](languages.md) — INI files, key naming, `Lang::txt()`, and
+- [Languages](04-languages.md) — INI files, key naming, `Lang::txt()`, and
   overrides.
-- [Users & profiles](user.md) — the current user, other users, extended
+- [Users & profiles](05-user.md) — the current user, other users, extended
   profile fields, and group membership.
-- [Tags](tags.md) — attaching tags to your component's objects.
-- [Debugging](debugging.md) — debug mode, dumping variables, and the
+- [Tags](06-tags.md) — attaching tags to your component's objects.
+- [Debugging](08-debugging.md) — debug mode, dumping variables, and the
   logs.
-- [Scheduled tasks](cron.md) — registering work for the cron runner.
-- [Dates](dates.md) — the one subject where getting it wrong is silent:
+- [Scheduled tasks](09-cron.md) — registering work for the cron runner.
+- [Dates](10-dates.md) — the one subject where getting it wrong is silent:
   the platform stores and compares in UTC and converts only for display.
 
 ## A worked shape

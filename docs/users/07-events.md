@@ -64,7 +64,7 @@ while registration is still open.
 
 > **Note:** Events belonging to a group are not shown here. Opening one
 > sends you to that group's calendar instead; see
-> [Group customization](groups/groupcustom.md).
+> [Group customization](11-groups/03-groupcustom.md).
 
 ## Registering for an event
 

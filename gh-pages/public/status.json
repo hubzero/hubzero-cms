@@ -22,35 +22,35 @@
   {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 99,
+   "pages": 89,
    "counts": {
-    "rewritten": 99
+    "rewritten": 89
    }
   },
   {
    "slug": "users",
    "title": "Hub users",
-   "pages": 39,
+   "pages": 34,
    "counts": {
-    "rewritten": 39
+    "rewritten": 34
    }
   },
   {
    "slug": "tools",
    "title": "Tools",
-   "pages": 43,
+   "pages": 34,
    "counts": {
     "draft": 1,
-    "rewritten": 11,
-    "reviewed": 31
+    "rewritten": 10,
+    "reviewed": 23
    }
   },
   {
    "slug": "developers",
    "title": "Developers",
-   "pages": 104,
+   "pages": 97,
    "counts": {
-    "rewritten": 104
+    "rewritten": 97
    }
   },
   {
@@ -65,10 +65,10 @@
   {
    "slug": "reference",
    "title": "Reference",
-   "pages": 184,
+   "pages": 154,
    "counts": {
     "rewritten": 1,
-    "generated": 183
+    "generated": 153
    }
   },
   {
@@ -82,10 +82,10 @@
  ],
  "totals": {
   "draft": 5,
-  "reviewed": 32,
-  "rewritten": 263,
+  "reviewed": 24,
+  "rewritten": 240,
   "merged": 2,
   "imported": 19,
-  "generated": 183
+  "generated": 153
  }
 }

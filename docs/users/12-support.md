@@ -15,9 +15,9 @@ form in place.
 ## The Support Center
 
 `/support` is the Support Center. It points you at the other places an
-answer might already be waiting — the [knowledge base](knowledgebase.md),
-[questions and answers](questions.md), the [wiki](wiki.md),
-[resources](resources.md), [tags](tags.md), and [search](search.md) — and
+answer might already be waiting — the [knowledge base](13-knowledgebase.md),
+[questions and answers](19-questions.md), the [wiki](23-wiki.md),
+[resources](21-resources.md), [tags](27-tags.md), and [search](24-search.md) — and
 at the two things you can do here: **Report Problems** and
 **Track Tickets**. A **Quick Links** panel repeats those, plus the
 **Support FAQ's** popup.

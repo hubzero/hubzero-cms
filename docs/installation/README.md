@@ -19,8 +19,8 @@ your hub needs them.
 - [Enterprise Linux 8](el8/README.md) — the installation walk-through:
   operating system, web server, PHP, database, CMS, mail, and then the
   optional services and add-ons.
-- [Upgrading from EL7 to EL8](el8/upgrade7to8.md) and
-  [Updates](el8/updates.md) — moving an existing hub forward.
+- [Upgrading from EL7 to EL8](el8/13-upgrade7to8.md) and
+  [Updates](el8/14-updates.md) — moving an existing hub forward.
 - [Autohub](autohub.md) — the scripted installer.
 
 ## Before you start

@@ -15,38 +15,38 @@ sessions, language, and the view layer; extensions live under
 
 ## Where to start
 
-New to the codebase? Read [Getting started](getting-started/README.md)
+New to the codebase? Read [Getting started](01-getting-started/README.md)
 for the development environment and the contribution process, then
-[Foundation](foundation/README.md) for how a request is served.
+[Foundation](03-foundation/README.md) for how a request is served.
 Building something? Go straight to the chapter for that kind of
 extension.
 
 ## In this book
 
-- [Getting started](getting-started/README.md) — development
+- [Getting started](01-getting-started/README.md) — development
   environment, browser support, file and database access, release notes.
-- [Foundation](foundation/README.md) — structure, constants, facades,
+- [Foundation](03-foundation/README.md) — structure, constants, facades,
   service providers, and extensions.
-- [Services](services/README.md) — cache, events, filesystem, language,
+- [Services](04-services/README.md) — cache, events, filesystem, language,
   server, and session.
-- [The basics](basics/README.md) — configuration, requests and
+- [The basics](05-basics/README.md) — configuration, requests and
   responses, redirects, dates, users, tags, cron, debugging, search.
-- [Database](database/README.md) — queries, the ORM, and migrations.
-- [Extensions](extensions/README.md) — what every extension shares:
+- [Database](06-database.md) — queries, the ORM, and migrations.
+- [Extensions](07-extensions/README.md) — what every extension shares:
   requirements, parameters, languages, deployment.
-- [Modules](modules/README.md), [Components](components/README.md),
-  [Plugins](plugins/README.md), and [Templates](templates/README.md) —
+- [Modules](08-modules/README.md), [Components](09-components/README.md),
+  [Plugins](10-plugins/README.md), and [Templates](11-templates/README.md) —
   one chapter set per kind of extension: structure, controllers, models,
   views, assets, languages, migrations, packaging.
-- [Muse](muse/README.md) — the command-line tool.
-- [Super groups](supergroups/README.md) and
-  [Super groups with GitLab](supergroups-gitlab/README.md).
-- [Testing](testing.md) and [Video tutorials](tutorials.md).
+- [Muse](12-muse.md) — the command-line tool.
+- [Super groups](13-supergroups/README.md) and
+  [Super groups with GitLab](14-supergroups-gitlab.md).
+- [Testing](15-testing.md) and [Video tutorials](02-tutorials.md).
 
 ## Reference
 
 The generated [configuration](../reference/configuration/README.md),
-[REST API](../reference/api/README.md), [muse](../reference/muse/README.md),
+[REST API](../reference/api/README.md), [muse](../reference/muse.md),
 and [events](../reference/events/README.md) references list what the code
 declares today. Coding conventions and the contribution process are in the
 [Contributing](../contributing/README.md) book.

@@ -16,7 +16,7 @@ connect to the live database by hand, and means the schema travels with the
 code — the admin screen that pulls a group's code runs its migrations
 straight afterwards.
 
-Everything in [Migrations](../06-database/02-migrations.md) applies. This
+Everything in [Migrations](../06-database.md#migrations) applies. This
 chapter is only what a group does differently.
 
 ## Where they live
@@ -161,7 +161,7 @@ its migrations have run. Use `--force` with `--file=` to re-run one, or
 ## Running them automatically
 
 You only run migrations by hand in a development environment. On a hub whose
-groups are managed through [GitLab](../14-supergroups-gitlab/README.md), an
+groups are managed through [GitLab](../14-supergroups-gitlab.md), an
 administrator selecting **Merge Groups Code** runs, for each group,
 `muse group update -f` followed by `muse group migrate -f`. New migrations
 that arrive with a merge are applied as part of the merge.

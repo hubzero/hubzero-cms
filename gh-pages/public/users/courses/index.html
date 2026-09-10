@@ -42,15 +42,29 @@
         <nav aria-label="Hub users contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../collections/index.html">Collections</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Courses</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Courses</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#how-a-course-is-put-together">How a course is put together</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-two-views-of-a-course">The two views of a course</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-a-course">Finding a course</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-to-read-next">What to read next</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="course-manager-features/index.html">Course manager features</a></li>
-<li class="tree__leaf"><a class="tree__link" href="student-features/index.html">Student features</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#course-manager-features">Course manager features</a></li>
+<li class="toc__item toc__item--l3"><a href="#what-is-on-the-site-and-what-is-not">What is on the site and what is not</a></li>
+<li class="toc__item toc__item--l3"><a href="#creating-a-course">Creating a course</a></li>
+<li class="toc__item toc__item--l3"><a href="#editing-the-course-overview-page">Editing the course overview page</a></li>
+<li class="toc__item toc__item--l3"><a href="#building-the-outline">Building the outline</a></li>
+<li class="toc__item toc__item--l3"><a href="#quizzes-and-exams">Quizzes and exams</a></li>
+<li class="toc__item toc__item--l3"><a href="#prerequisites">Prerequisites</a></li>
+<li class="toc__item toc__item--l3"><a href="#restoring-deleted-material">Restoring deleted material</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-gradebook">The gradebook</a></li>
+<li class="toc__item toc__item--l3"><a href="#putting-an-image-in-a-page">Putting an image in a page</a></li>
+<li class="toc__item toc__item--l2"><a href="#student-features">Student features</a></li>
+<li class="toc__item toc__item--l3"><a href="#finding-a-course-2">Finding a course</a></li>
+<li class="toc__item toc__item--l3"><a href="#enrolling">Enrolling</a></li>
+<li class="toc__item toc__item--l3"><a href="#inside-the-course">Inside the course</a></li>
+<li class="toc__item toc__item--l3"><a href="#tracking-your-progress">Tracking your progress</a></li>
+<li class="toc__item toc__item--l3"><a href="#certificates">Certificates</a></li>
+<li class="toc__item toc__item--l3"><a href="#badges">Badges</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog</a></li>
@@ -68,14 +82,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../knowledgebase/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../dashboard/index.html">Member dashboard</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../profile/index.html">Member profile</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../projects/projectfiles/index.html">Project files</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../projects/databases/index.html">Databases</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/index.html">Projects</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../publications/curation/index.html">Curation</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../questions/index.html">Questions and answers</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
@@ -154,21 +163,601 @@ at <code>/courses/browse</code> lists published courses with their instructors, 
 by tag, and sorts by <strong>Title</strong>, <strong>Alias</strong> or <strong>Popularity</strong>.</p>
 <h2 id="what-to-read-next">What to read next</h2>
 <ul>
-<li><a href="student-features/index.html">Student features</a> — enrolling, working through the
+<li><a href="#student-features">Student features</a> — enrolling, working through the
 outline, tracking your progress, and claiming a certificate or badge.</li>
-<li><a href="course-manager-features/index.html">Course manager features</a> — what an
+<li><a href="#course-manager-features">Course manager features</a> — what an
 instructor can do from the course pages themselves.</li>
 <li>The <a href="../../managers/components/courses/index.html">Courses chapter</a> in the
 Hub managers book covers everything an administrator does in the back end,
 including sections, coupon codes, certificates and roles.</li>
 </ul>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="course-manager-features/index.html">Course manager features</a></li>
-<li><a href="student-features/index.html">Student features</a></li></ul></section>
+<h2 id="course-manager-features">Course manager features</h2>
+<p>What an instructor does from the course pages themselves, without going near
+the administrator interface. Everything on this page happens on the site.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> You need a privileged role in the course — Instructor, Manager, or
+whatever extra roles the hub has defined. Courses keep their own membership
+and roles; they have nothing to do with hub groups, and belonging to the
+group a course is tied to does not make you a course manager.</p>
+</aside>
+<h3 id="what-is-on-the-site-and-what-is-not">What is on the site and what is not</h3>
+<p>The front end is where you write the course and build its material. The
+back end is where the hub's shape is set: sections, who may enrol, when
+material becomes available, certificates, badges, coupon codes and roles.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Course title, short description, tags</td>
+<td>Course overview page</td>
+</tr>
+<tr>
+<td>Long description</td>
+<td><strong>Overview</strong> tab</td>
+</tr>
+<tr>
+<td>Extra overview pages</td>
+<td>Course overview page and the <strong>Pages</strong> tab</td>
+</tr>
+<tr>
+<td>Instructors and managers</td>
+<td>Course overview page</td>
+</tr>
+<tr>
+<td>Creating an offering</td>
+<td>Course overview page and the <strong>Offerings</strong> tab</td>
+</tr>
+<tr>
+<td>Publishing a draft course</td>
+<td>Course overview page</td>
+</tr>
+<tr>
+<td>Building the outline: units, asset groups, assets</td>
+<td><strong>Outline</strong> tab</td>
+</tr>
+<tr>
+<td>Quizzes and exams, and their deployment settings</td>
+<td><strong>Outline</strong> tab</td>
+</tr>
+<tr>
+<td>Prerequisites</td>
+<td><strong>Outline</strong> tab</td>
+</tr>
+<tr>
+<td>Gradebook and grading policy</td>
+<td><strong>Progress</strong> tab</td>
+</tr>
+<tr>
+<td>Editing an offering's title, dates or state</td>
+<td>Administrator only</td>
+</tr>
+<tr>
+<td>Sections, enrolment setting, coupon codes</td>
+<td>Administrator only</td>
+</tr>
+<tr>
+<td>Availability dates for units and assets</td>
+<td>Administrator only</td>
+</tr>
+<tr>
+<td>Certificates and badges</td>
+<td>Administrator only</td>
+</tr>
+<tr>
+<td>Course roles</td>
+<td>Administrator only</td>
+</tr>
+</tbody>
+</table>
+<p>The administrator side is covered in the
+<a href="../../managers/components/courses/index.html">Courses chapter</a> of the Hub
+managers book.</p>
+<h3 id="creating-a-course">Creating a course</h3>
+<p>If the hub lets you create courses, a <strong>Create Course</strong> button appears at
+the top right of <code>/courses</code> and <code>/courses/browse</code>.</p>
+<ol>
+<li>Select <strong>Create Course</strong>.</li>
+<li>Fill in <strong>Alias</strong> — alphanumeric, and it becomes part of the course URL.
+The field checks as you type whether the alias is free.</li>
+<li>Fill in <strong>Title</strong>.</li>
+<li>Add a <strong>Short description</strong>. This is the text that appears in the course
+catalog.</li>
+<li>Add <strong>Categories (tags)</strong>, separated by commas.</li>
+<li>Decide whether to tick <strong>Allow forks (derivatives) of this course?</strong>. When
+ticked, another hub user may copy your course as a starting point for
+their own, and their copy keeps a link back to yours.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>A new course is created in <strong>Draft</strong> state and you become its manager. Only
+course managers can see a draft course, so you can build it before anyone
+arrives. When it is ready, select <strong>Publish</strong> in the banner at the top of the
+course overview.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The component has an <strong>Auto Approve Courses?</strong> option, but nothing
+in the code reads it. Every course you create is yours to publish.</p>
+</aside>
+<h3 id="editing-the-course-overview-page">Editing the course overview page</h3>
+<p>Go to <code>/courses/{alias}</code>. Where you can change something, a small <strong>Edit</strong>
+button appears next to a label saying what it changes.</p>
+<p><strong>Title &amp; Short description</strong> — opens a form with <strong>Title</strong>,
+<strong>Short description</strong>, <strong>Categories (tags)</strong> and the <strong>Allow forks</strong>
+checkbox. Select <strong>Save</strong>.</p>
+<p><strong>Time &amp; Effort</strong> — the panel on the right. Opens <strong>Course length</strong> and
+<strong>Estimated Effort</strong>, both free text (<code>4 weeks</code>, <code>5 - 8 hours per week</code>).
+Whatever you type appears in the summary table beside the enrolment button.</p>
+<p><strong>Long description</strong> — on the <strong>Overview</strong> tab. Opens the rich-text editor on
+the course's long description.</p>
+<p><strong>Page contents</strong> — on each extra page tab you have added. Gives you <strong>Edit</strong>
+and <strong>Delete</strong> for that page.</p>
+<p><strong>Logo</strong> — drop an image onto the panel on the right, or use the file field
+beneath it. It appears beside the course title.</p>
+<h4 id="adding-an-overview-page">Adding an overview page</h4>
+<p>An overview page is an extra tab on the course overview.</p>
+<ol>
+<li>Select the <strong>Add page</strong> tab at the end of the tab strip.</li>
+<li>Fill in <strong>Title</strong>, and an <strong>Alias</strong> if you want to control the URL.
+Leave the alias empty and it is made from the title.</li>
+<li>Write the page in the editor.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<h4 id="instructors-and-managers">Instructors and managers</h4>
+<p>The <strong>Manage</strong> button beside <strong>Instructors/Managers</strong> in the right-hand
+column opens a pop-up.</p>
+<ol>
+<li>In <strong>Enter comma-separated usernames or IDs</strong>, type the people to add.
+The field takes several at once.</li>
+<li>Pick a role from <strong>Select role</strong>. Roles that belong to a single offering
+are grouped under that offering's name.</li>
+<li>Select <strong>Add</strong>. <strong>Changes saved</strong> appears and the person is listed below.</li>
+<li>To change somebody's role, pick a different one from the drop-down beside
+their name. It saves as soon as you change it.</li>
+<li>To remove somebody, tick the box beside their name and select <strong>Remove</strong>.</li>
+</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A course must keep at least one manager. Removing the last one
+fails with an error.</p>
+</aside>
+<h4 id="creating-an-offering">Creating an offering</h4>
+<p>An offering is one run of the course. Create a new offering when the material
+changes significantly, rather than editing the old one.</p>
+<ul>
+<li>On a course with no offerings, a panel says <em>This course needs an
+offering!</em> with a <strong>Create an offering</strong> button.</li>
+<li>On a course that has one, use the <strong>New</strong> button on the <strong>Offerings</strong> tab.</li>
+</ul>
+<p>Either way the form asks for an <strong>Alias</strong> and a <strong>Title</strong>; only the title is
+required. Select <strong>Save</strong>.</p>
+<p>The <strong>Offerings</strong> tab lists each offering with the number <strong>Enrolled</strong> and its
+<strong>Enrollment</strong> status — <strong>Accepting</strong>, <strong>Restricted</strong> or <strong>Closed</strong> — and a
+button reading <strong>Access Course</strong> or <strong>Enroll in Course</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Once an offering exists you cannot edit its title, dates or
+state from the site. The offering controller has <code>edit</code>, <code>save</code> and
+<code>delete</code> tasks, but <code>edit</code> has no template and the other two only redirect.
+Use the administrator interface.</p>
+</aside>
+<h4 id="copying-and-forking">Copying and forking</h4>
+<p><strong>Copy</strong> appears at the top right for a manager of the course, and makes a
+duplicate you own. <strong>Fork</strong> appears instead for anyone else when the course
+has <strong>Allow forks</strong> turned on, and makes a copy that keeps an attribution
+back to the original. Both ask you for a new alias.</p>
+<h3 id="building-the-outline">Building the outline</h3>
+<ol>
+<li>Select <strong>Go to Course</strong> on the course overview to enter the offering.</li>
+<li>Open the <strong>Outline</strong> tab and select <strong>Edit outline</strong>.</li>
+</ol>
+<p>The builder is a single page that saves as you go. <strong>Done</strong> at the top right
+returns to the outline; <strong>Deleted Assets</strong> opens the tray of removed items.</p>
+<h4 id="units">Units</h4>
+<p>Select <strong>Add a new unit</strong> at the bottom of the list. To rename one, select
+<strong>edit</strong> beside its title, change <strong>Title:</strong>, and select <strong>Save</strong>.</p>
+<p>Each new unit comes with the hub's default asset groups, which an
+administrator sets under the component's <strong>Default Asset Groups</strong> option —
+normally <strong>Lectures</strong>, <strong>Homework</strong> and <strong>Exam</strong>.</p>
+<h4 id="asset-groups">Asset groups</h4>
+<p>Select <strong>edit</strong> on an asset group's title to open its form:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title:</strong></td>
+<td>What the group is called</td>
+</tr>
+<tr>
+<td><strong>Published:</strong></td>
+<td><strong>Yes</strong> or <strong>No</strong></td>
+</tr>
+<tr>
+<td><strong>Short Description:</strong></td>
+<td>One or two sentences</td>
+</tr>
+</tbody>
+</table>
+<p>Inside each group, <strong>Add a new lecture</strong> (or homework, or exam — the label is
+the group's title in the singular) creates a place to put material.</p>
+<h4 id="adding-material">Adding material</h4>
+<p>Each place you have added carries a drop zone reading <em>Drag files here to
+upload</em>, and beneath it a row of buttons:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Attach a link</strong></td>
+<td>Paste one or more URLs into the box and select <strong>Add</strong></td>
+</tr>
+<tr>
+<td><strong>Embed a Kaltura or YouTube Video</strong></td>
+<td>Paste the video's embed code</td>
+</tr>
+<tr>
+<td><strong>Include a wiki page</strong></td>
+<td>Write a wiki page in place, with references</td>
+</tr>
+<tr>
+<td><strong>Include a tool</strong></td>
+<td>Attach one of your hub tools. Only appears when the hub has a tool directory configured</td>
+</tr>
+<tr>
+<td><strong>Browse for files</strong></td>
+<td>Pick files from your computer</td>
+</tr>
+</tbody>
+</table>
+<p>All of them take several items at once. Once a file lands, the hub works out
+what kind of asset it is from the extension. Where more than one kind is
+possible you are asked <strong>What do you want to do with these files?</strong> and given
+the choice — a PDF, for example, can become <strong>Post notes or slides (i.e. a
+downloadable file)</strong> or <strong>Create a quiz/exam</strong>.</p>
+<p>Each asset in the list carries icons for <strong>preview</strong>, <strong>edit</strong> and <strong>delete</strong>,
+and a checkbox reading <strong>Mark as reviewed and publish?</strong>. Tick it and the
+label changes to <strong>Published</strong>. Selecting the asset's title lets you rename it
+in place.</p>
+<h4 id="the-edit-asset-dialog">The Edit Asset dialog</h4>
+<p>The <strong>edit</strong> icon opens a dialog with:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title:</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>URL:</strong></td>
+<td>Hidden for quizzes and exams</td>
+</tr>
+<tr>
+<td><strong>Type:</strong></td>
+<td>Video, File, Form, Text, URL</td>
+</tr>
+<tr>
+<td><strong>Subtype:</strong></td>
+<td>Video, Embedded, File, Exam, Quiz, Homework, Note, Wiki, Link, Tool</td>
+</tr>
+<tr>
+<td><strong>Attach to:</strong></td>
+<td>Move the asset to a different asset group</td>
+</tr>
+<tr>
+<td><strong>Create a gradebook entry for this item?</strong></td>
+<td>Makes it gradable</td>
+</tr>
+<tr>
+<td><strong>Include this item in the progress calculation?</strong></td>
+<td>Counts it towards the student's progress bar</td>
+</tr>
+<tr>
+<td><strong>Launch a tool with this file?</strong></td>
+<td>Only when the hub has tools and the asset is a file or a tool URL</td>
+</tr>
+<tr>
+<td><strong>Prerequisites:</strong></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<p>Select <strong>Submit</strong> to save, <strong>Cancel</strong> to close.</p>
+<h3 id="quizzes-and-exams">Quizzes and exams</h3>
+<p>Only a PDF can become a quiz or exam the hub marks for itself. Any asset can
+be given a gradebook column with <strong>Create a gradebook entry for this item?</strong>
+in the <strong>Edit Asset</strong> dialog, but you enter those scores by hand from the
+<strong>Progress</strong> tab.</p>
+<ol>
+<li>Drop the PDF onto an asset group.</li>
+<li>Answer <strong>What do you want to do with these files?</strong> with
+<strong>Create a quiz/exam</strong>.</li>
+<li>Fill in <strong>Title:</strong>.</li>
+<li>For each question, drag a box around the question and all of its answers.
+A pale yellow marker appears around it.</li>
+<li>Click beside each possible answer to drop a radio button there.</li>
+<li>Select the radio button next to the correct answer.</li>
+<li>Repeat for every question, then select <strong>Save and Close</strong>.</li>
+</ol>
+<h4 id="deployment-settings">Deployment settings</h4>
+<p>Tick the publish checkbox on the finished quiz and the deployment form opens.</p>
+<p><strong>Times</strong></p>
+<ul>
+<li><strong>Time limit:</strong> in minutes. A timed form shows the student a landing page
+first, so the countdown does not start before they are ready.</li>
+<li><strong>Attempts:</strong> how many tries are allowed. The default is 1.</li>
+</ul>
+<p><strong>Results</strong></p>
+<p>Two sets of radio buttons, one for <em>While the form is open, show users:</em> and
+one for <em>After the form is closed, show users:</em>. Both offer:</p>
+<ul>
+<li><strong>only confirmation that their submission was accepted</strong></li>
+<li><strong>their score</strong></li>
+<li><strong>a complete comparison of their answers to the correct answers</strong></li>
+</ul>
+<p>Select <strong>Create deployment</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> There are no dates on this form. When a quiz or exam becomes
+available is set per section, on the <strong>Dates/Times</strong> tab of the section in
+the administrator interface.</p>
+</aside>
+<p>You can reopen the deployment later with the <em>edit deployment</em> icon beside the
+asset, and the question layout with the <em>edit layout</em> icon.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>A prerequisite must be completed before the item that requires it can be
+opened. Units require units; assets require assets.</p>
+<p><strong>On a unit:</strong> in the outline builder, select <strong>edit</strong> beside the unit title.
+Under <strong>Prerequisites:</strong>, pick a unit from the <em>add prerequisite…</em> drop-down.</p>
+<p><strong>On an asset:</strong> open the asset's <strong>Edit Asset</strong> dialog and use the
+<strong>Prerequisites:</strong> section the same way.</p>
+<p>Either way the prerequisite is saved as soon as you pick it, and appears in a
+list above the drop-down with an <strong>x</strong> to take it off again. You can set more
+than one. Only published assets are offered as asset prerequisites.</p>
+<h3 id="restoring-deleted-material">Restoring deleted material</h3>
+<p>Deleting an asset in the builder moves it to a tray rather than destroying it.</p>
+<ol>
+<li>In the outline builder, select <strong>Deleted Assets</strong> at the top.</li>
+<li>Find the item and select <strong>Restore</strong>.</li>
+</ol>
+<p>The button is hidden when the tray is empty.</p>
+<h3 id="the-gradebook">The gradebook</h3>
+<p>The <strong>Progress</strong> tab shows students their own progress. For an instructor it
+shows the whole class, with three views selected from the buttons at the top
+left: <em>progress view</em>, <em>gradebook view</em> and <em>reports view</em>. Alongside them:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>edit grade policy</em></td>
+<td>Set how the course grade is worked out. Hidden when the hub has turned off <strong>Can section owners edit grading policy?</strong> and you are not a course manager</td>
+</tr>
+<tr>
+<td><em>add a new entry</em></td>
+<td>Add a gradebook column by hand. Course managers only</td>
+</tr>
+<tr>
+<td><em>export to csv</em></td>
+<td>Download the gradebook</td>
+</tr>
+<tr>
+<td><em>refresh gradebook view</em></td>
+<td>Reload the grid</td>
+</tr>
+<tr>
+<td><em>download selected detailed results</em></td>
+<td>Download the individual responses to a form</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>Search students</strong> box and a pager sit below.</p>
+<h3 id="putting-an-image-in-a-page">Putting an image in a page</h3>
+<p>The <strong>Pages</strong> tab inside a course offering — not the overview pages on the
+course — has a file uploader beside the editor, so an image can be uploaded
+and then referenced from the page body.</p>
+<ol>
+<li>Open the <strong>Pages</strong> tab and select <strong>Add page</strong>, or the <strong>Edit</strong> icon on an
+existing page.</li>
+<li>Drop an image onto the <strong>Click or drop file</strong> area on the right.</li>
+<li>Copy the URL that appears under the uploaded file.</li>
+<li>Put the cursor where the image should go, then use your editor's image
+button and paste the URL into its URL field. In CKEditor that is the
+<strong>Image</strong> button and the <strong>Image Info</strong> tab; other editors differ, because
+the hub chooses which editor to load.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>The page form also has <strong>Page appears for section:</strong>, which restricts the page
+to one section of the offering, or <strong>- All sections -</strong>.</p>
+<h2 id="student-features">Student features</h2>
+<p>Finding a course, enrolling in it, working through it, and seeing how far you
+have got.</p>
+<h3 id="finding-a-course-2">Finding a course</h3>
+<ol>
+<li>Go to <code>https://yourhub.org/courses</code>.</li>
+<li>Search from the box on that page, or select <strong>Browse the catalog</strong> for the
+full list.</li>
+<li>The catalog sorts by <strong>Title</strong>, <strong>Alias</strong> or <strong>Popularity</strong>, and narrows to
+one tag at a time. Each entry shows the course number, its short
+description and its instructors.</li>
+<li>Select a course title to open its overview.</li>
+</ol>
+<h3 id="enrolling">Enrolling</h3>
+<p>The course overview is public. The long description, the instructors, the
+course length and the estimated effort are all readable before you enrol.
+Everything under <strong>Go to Course</strong> — the outline, discussions, your progress —
+needs enrolment.</p>
+<p>To enrol, select <strong>Go to Course</strong> on the course overview. What happens next
+depends on how the section is set up:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What you see</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open</strong></td>
+<td>You are enrolled straight away. <em>Congratulations! You are now enrolled in the course.</em></td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td>A <strong>Redeem coupon code</strong> form. Type the code you were given and select <strong>Redeem</strong></td>
+</tr>
+<tr>
+<td><strong>Closed</strong></td>
+<td><em>Course enrollment is closed.</em> with links to the support form and the course catalog</td>
+</tr>
+</tbody>
+</table>
+<p>A course may also be sold through the hub's store. When an offering has a
+price, <strong>Go to Course</strong> takes you to the cart instead of enrolling you.</p>
+<p>Where a course runs more than one offering, or you belong to more than one
+section, the button opens a list so you can pick which one to enter.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Enrolment errors are specific. A coupon code can be reported as
+invalid, already redeemed, or expired. A code issued for a different
+section moves you to that section before redeeming.</p>
+</aside>
+<h4 id="looking-before-you-enrol">Looking before you enrol</h4>
+<p>An instructor can turn on a preview, so the outline can be read without
+enrolling. There are two kinds: a full preview, and a preview of the first
+unit only. While previewing, a banner reads <em>You're currently viewing this
+course in preview mode. Some features may be disabled.</em></p>
+<p>Quizzes and exams can never be previewed. Opening one without being enrolled
+gives <em>You must be enrolled to utilize this asset.</em></p>
+<h3 id="inside-the-course">Inside the course</h3>
+<p>Tabs run across the top. Which ones appear depends on the plugins the hub has
+enabled:</p>
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Getting Started</strong></td>
+<td>How the course works</td>
+</tr>
+<tr>
+<td><strong>Outline</strong></td>
+<td>The units, lectures, files, videos, wiki pages, homework, quizzes and exams. This is where most of the work happens</td>
+</tr>
+<tr>
+<td><strong>Progress</strong></td>
+<td>Your own progress and grades</td>
+</tr>
+<tr>
+<td><strong>Announcements</strong></td>
+<td>Notices from the instructor</td>
+</tr>
+<tr>
+<td><strong>Discussions</strong></td>
+<td>Threads for the course. Depending on the section, you see threads from your own section only or from all of them; sticky threads always show everywhere</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Your own notes, taken against the material</td>
+</tr>
+<tr>
+<td><strong>Pages</strong></td>
+<td>Syllabus, errata, and anything else the instructor has written</td>
+</tr>
+</tbody>
+</table>
+<p>Material becomes available on the dates set for your section, and an item with
+a prerequisite stays shut until you have finished the item it requires.</p>
+<h3 id="tracking-your-progress">Tracking your progress</h3>
+<p>Open the <strong>Progress</strong> tab.</p>
+<p><strong>The timeline</strong> runs across the top: a walking figure moves along a bar
+divided into one segment per unit, from a start marker to a finish marker. A
+segment fills in as you work through that unit's material. The heading above
+says whether the course has started, is in progress, or has ended, and the
+line beneath says which unit you are on — <em>Unit 3 of 8</em>.</p>
+<p><strong>Three tiles</strong> sit below it:</p>
+<table>
+<thead>
+<tr>
+<th>Tile</th>
+<th>What it counts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Your current score</strong></td>
+<td>Your grade as a percentage, marked passing or failing</td>
+</tr>
+<tr>
+<td><strong>Quizzes taken</strong></td>
+<td>Out of the total number in the course</td>
+</tr>
+<tr>
+<td><strong>Homeworks submitted</strong></td>
+<td>Out of the total number in the course</td>
+</tr>
+<tr>
+<td><strong>Exams taken</strong></td>
+<td>Out of the total number in the course</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>grading policy</strong> link beside the score explains how it is worked out, and
+the policy's own description is printed under the tiles. The grading policy is
+set per section, by the course's instructors rather than by the hub
+administrators.</p>
+<p><strong>The breakdown</strong> below lists every unit with its percentage. Open a unit and
+you get a table of <strong>Assignment</strong>, <strong>Score</strong> and <strong>Date taken</strong> for each
+graded item in it.</p>
+<p><img src="../media/student-features-210courses.png" alt="The Progress tab" /></p>
+<h3 id="certificates">Certificates</h3>
+<p>A course can hand out a certificate: a PDF carrying your name, login, email
+address, the course, the offering, the section and the date.</p>
+<p>Three things all have to be true before you can claim one. The course has a
+certificate, your section offers it, and you are eligible: you have taken
+every graded exam, quiz and homework that the grading policy gives a weight
+to, and your score is a pass. When they are, a panel appears at the top of
+your <strong>Progress</strong> tab with a <strong>Download your certificate!</strong> link. The PDF is
+generated the first time you ask for it and downloaded as an attachment.</p>
+<p>Where the course has a certificate that some section offers, the course
+overview's summary table says <strong>Certificate: Available</strong> before you enrol.</p>
+<h3 id="badges">Badges</h3>
+<p>A section can also offer a badge, issued through the hub's badge provider. It
+uses the same eligibility test as the certificate. When you qualify, a panel
+appears on your <strong>Progress</strong> tab:</p>
+<ul>
+<li><em>Congratulations! You've earned the badge...and you deserve it!</em> with a
+<strong>Claim your badge!</strong> link — or, where the provider gives no claim URL, a
+note to watch your email.</li>
+<li>After claiming: <em>Congratulations! You've got the badge!</em> with
+<strong>View your badges!</strong></li>
+<li>If you turned it down: <em>Congratulations! You earned the badge!</em> with
+<strong>View denied badges</strong>, and you can go back and claim it later.</li>
+</ul>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../collections/index.html" rel="prev"><span>Previous</span>Collections</a><a class="pager__next" href="course-manager-features/index.html" rel="next"><span>Next</span>Course manager features</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../collections/index.html" rel="prev"><span>Previous</span>Collections</a><a class="pager__next" href="../faq/index.html" rel="next"><span>Next</span>Frequently asked questions</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/02-courses/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/02-courses.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

@@ -69,7 +69,7 @@ and prints a long URL under the hub's session proxy, of the form
 > after setting the session's authentication cookie. That much is CMS-side and
 > was checked in
 > [`sessions.php`](../../../../core/components/com_tools/site/controllers/sessions.php);
-> [Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the
+> [Jupyter notebooks](../../administrators.md#jupyter-notebooks) in the
 > administrators section describes it.
 
 ## 3. Open the notebook

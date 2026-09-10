@@ -10,7 +10,7 @@ The wiki is a set of community-editable pages. Anyone can read them; logged-in
 members can create pages, edit them, attach files, and comment. Every save
 keeps the old text, so nothing is ever lost. The hub's wiki is at
 `https://<your hub>/wiki`, and each group has its own wiki under the group's
-**Wiki** tab; see [Groups](groups/README.md).
+**Wiki** tab; see [Groups](11-groups/README.md).
 
 ## Finding your way around
 
@@ -52,7 +52,7 @@ The form has these fields:
 | Allow other users to submit suggested changes | Others may save revisions, but they stay unapproved until an author approves them. |
 | Allow other users to post comments | Turns the comment thread on. |
 | Lock page. Only administrators may make changes. | Freezes the page against further editing. |
-| Tags | Comma-separated keywords; see [Tags](tags.md). Editing tags alone does not create a new revision. |
+| Tags | Comma-separated keywords; see [Tags](27-tags.md). Editing tags alone does not create a new revision. |
 | Edit summary | A short description of what you changed. |
 
 Press **Preview** to see the rendered result without saving, or **Save** to

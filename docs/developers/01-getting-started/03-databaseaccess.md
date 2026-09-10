@@ -29,7 +29,7 @@ return array(
 ```
 
 The file is written by the installer and is not in the repository. Read it
-over [SSH](fileaccess.md#reaching-the-server); it is only readable by the
+over [SSH](02-fileaccess.md#reaching-the-server); it is only readable by the
 web server user and root.
 
 ```bash
@@ -68,7 +68,7 @@ php core/bin/muse database load <file>
 ```
 
 `dump` writes to your home directory. See the
-[muse database reference](../../reference/muse/database.md).
+[muse database reference](../../reference/muse.md#muse-database).
 
 ## From code
 
@@ -83,9 +83,9 @@ $rows = Post::all()
 	->rows();
 ```
 
-The [Database](../06-database/README.md) book covers all three layers: the
-[query builder](../06-database/01-queries.md), the
-[ORM](../06-database/03-orm.md), and
-[migrations](../06-database/02-migrations.md) for schema changes. Schema
+The [Database](../06-database.md) book covers all three layers: the
+[query builder](../06-database.md#query-builder), the
+[ORM](../06-database.md#orm), and
+[migrations](../06-database.md#migrations) for schema changes. Schema
 changes belong in a migration, not in a `mysql` prompt — a change made by
 hand is a change the next hub to run the migrations will not have.

@@ -109,7 +109,7 @@ receives an event. The row also holds the extension's parameters, in its
 `params` column.
 
 An extension creates its own row from a
-[migration](../06-database/02-migrations.md).
+[migration](../06-database.md#migrations).
 [Extensions](../03-foundation/05-extensions.md) in the Foundation section covers
 each loader in detail; [Requirements](01-extreqs.md) covers what else a
 package must carry.

@@ -58,15 +58,15 @@ list is its own `aliases.php`.
 
 ## In this section
 
-- [Cache](cache.md) — the cache store, its drivers, and the group
+- [Cache](01-cache.md) — the cache store, its drivers, and the group
   convention that makes `Cache::clean()` selective.
-- [Filesystem](filesystem.md) — reading, writing, and listing files
+- [Filesystem](02-filesystem.md) — reading, writing, and listing files
   through an adapter, and the macros that extend it.
-- [Session](session.md) — per-visitor storage, namespaces, and the form
+- [Session](04-session.md) — per-visitor storage, namespaces, and the form
   token that guards every write.
-- [Events](events.md) — the dispatcher, how a plugin group becomes a
+- [Events](05-events.md) — the dispatcher, how a plugin group becomes a
   listener, and what `Event::trigger()` gives back.
-- [Server](server.md) — serving a file off disk as a download.
+- [Server](06-server.md) — serving a file off disk as a download.
 
 Configuration, requests, responses, language, dates and users are covered in
 [the basics](../05-basics/README.md).

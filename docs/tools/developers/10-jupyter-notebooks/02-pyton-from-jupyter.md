@@ -32,14 +32,14 @@ it is an administrator's job, done on the execution hosts. If the packages you
 need are not in any kernel, open a support ticket on your hub and ask for
 them. Say which packages, which versions if it matters, and what you are
 building. The procedure the administrator follows is
-[Jupyter notebooks](../../administrators/jupyter-notebooks.md) in the
+[Jupyter notebooks](../../administrators.md#jupyter-notebooks) in the
 administrators section; reading it tells you what you are asking for, and why
 adding a package to a shared environment is not always the answer.
 
 > **Note:** A kernel is not a substitute for declaring your tool's
 > dependencies. A tool that will be installed on the hub still needs its
 > requirements agreed with the hub's staff — see
-> [Installing tool dependencies](../../administrators/installing-tool-dependencies.md).
+> [Installing tool dependencies](../../administrators.md#installing-tool-dependencies).
 
 ## Selecting a kernel
 

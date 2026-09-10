@@ -41,11 +41,7 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/newhub/index.html">The first week with a new hub</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/howitfits/index.html">How a hub fits together</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">The administrator interface</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/index.html">Getting started</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -65,9 +61,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../configuring/extauth/index.html">External authenticators</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../users/index.html">Users</a></summary><ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../users/members/index.html">Members</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../users/members/removemembertnotes/index.html">Members removal tech notes</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../users/members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/memberimport/index.html">Member import</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../users/memberimportarchive/index.html">Member import (archive)</a></li>
@@ -110,12 +104,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/oaipmh/index.html">OAI-PMH</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/poll/index.html">Poll</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
-</ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/index.html">Projects</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/publications/index.html">Publications</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/redirect/index.html">Redirect</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/saml/index.html">SAML</a></li>
@@ -145,17 +135,38 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Security considerations</a></summary><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Security considerations</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-cms-gives-you">What the CMS gives you</a></li>
 <li class="toc__item toc__item--l2"><a href="#reporting-a-vulnerability">Reporting a vulnerability</a></li>
-</ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="faqs/index.html">Security questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
-</ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="hardeningguide/index.html">Operating system hardening</a></li>
-</ul></details></li>
+<li class="toc__item toc__item--l2"><a href="#security-questions">Security questions</a></li>
+<li class="toc__item toc__item--l3"><a href="#does-an-advisory-for-another-content-management-system-apply-here">Does an advisory for another content management system apply here?</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</a></li>
+<li class="toc__item toc__item--l3"><a href="#does-the-cms-scan-uploads-for-viruses">Does the CMS scan uploads for viruses?</a></li>
+<li class="toc__item toc__item--l3"><a href="#does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</a></li>
+<li class="toc__item toc__item--l3"><a href="#a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</a></li>
+<li class="toc__item toc__item--l3"><a href="#can-i-stop-a-specific-address-from-reaching-the-hub">Can I stop a specific address from reaching the hub?</a></li>
+<li class="toc__item toc__item--l2"><a href="#operating-system-hardening">Operating system hardening</a></li>
+<li class="toc__item toc__item--l3"><a href="#keep-packages-patched">Keep packages patched</a></li>
+<li class="toc__item toc__item--l3"><a href="#web-server">Web server</a></li>
+<li class="toc__item toc__item--l3"><a href="#fail2ban">Fail2Ban</a></li>
+<li class="toc__item toc__item--l3"><a href="#antivirus">Antivirus</a></li>
+<li class="toc__item toc__item--l3"><a href="#host-monitoring">Host monitoring</a></li>
+<li class="toc__item toc__item--l3"><a href="#file-system-permissions">File system permissions</a></li>
+<li class="toc__item toc__item--l3"><a href="#php-configuration">PHP configuration</a></li>
+<li class="toc__item toc__item--l2"><a href="#hardening-the-cms">Hardening the CMS</a></li>
+<li class="toc__item toc__item--l3"><a href="#force-https">Force HTTPS</a></li>
+<li class="toc__item toc__item--l3"><a href="#sessions-and-cookies">Sessions and cookies</a></li>
+<li class="toc__item toc__item--l3"><a href="#text-filters">Text filters</a></li>
+<li class="toc__item toc__item--l3"><a href="#login-thresholds">Login thresholds</a></li>
+<li class="toc__item toc__item--l3"><a href="#password-rules">Password rules</a></li>
+<li class="toc__item toc__item--l3"><a href="#second-authentication-factors">Second authentication factors</a></li>
+<li class="toc__item toc__item--l3"><a href="#security-headers">Security headers</a></li>
+<li class="toc__item toc__item--l3"><a href="#spam">Spam</a></li>
+<li class="toc__item toc__item--l3"><a href="#rate-limiting">Rate limiting</a></li>
+<li class="toc__item toc__item--l3"><a href="#scan-what-you-add">Scan what you add</a></li>
+<li class="toc__item toc__item--l3"><a href="#cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</a></li>
+</ol></li>
 </ul>
         </nav>
       </details>
@@ -180,12 +191,12 @@ attempt is throttled, and how spam is caught. This section covers both, and
 says plainly which is which.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
-<li><a href="hardeningguide/index.html">Operating system hardening</a> — what the people who run
+<li><a href="#operating-system-hardening">Operating system hardening</a> — what the people who run
 the Purdue hubs do to the host underneath a hub. All of it is external to
 the CMS.</li>
-<li><a href="hardencms/index.html">Hardening the CMS</a> — the settings and extensions in
+<li><a href="#hardening-the-cms">Hardening the CMS</a> — the settings and extensions in
 the administrator interface that affect the hub's own security posture.</li>
-<li><a href="hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a> —
+<li><a href="#cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</a> —
 how the login thresholds under <strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Options</strong> work,
 and how the CMS hands an address to Fail2Ban.</li>
 </ul>
@@ -246,14 +257,618 @@ and how the CMS hands an address to Fail2Ban.</li>
 <h2 id="reporting-a-vulnerability">Reporting a vulnerability</h2>
 <p>If you find a vulnerability in the Hubzero release itself, report it to the
 project rather than filing it in a public tracker.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="faqs/index.html">Security questions</a></li>
-<li><a href="hardencms/index.html">Hardening the CMS</a></li>
-<li><a href="hardeningguide/index.html">Operating system hardening</a></li></ul></section>
+<h2 id="security-questions">Security questions</h2>
+<p>Answers to the questions hub managers ask most often about the CMS side of
+security. Questions about the host underneath the hub belong in
+<a href="#operating-system-hardening">Operating system hardening</a>.</p>
+<h3 id="does-an-advisory-for-another-content-management-system-apply-here">Does an advisory for another content management system apply here?</h3>
+<p>Usually not, but check each one rather than assuming.</p>
+<p>Some naming in this tree is shared with other PHP content management
+systems: language keys beginning <code>J</code>, the <code>#__</code> table-prefix placeholder,
+and <code>com_</code> component directories. The running code is Hubzero's own. The
+application object, the request and response objects, the session handler,
+the user object, the registration flow, the router, the database layer, and
+the plugin and module systems are all in
+<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero"><code>core/libraries/Hubzero</code></a>, and the
+components under <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components"><code>core/components</code></a> are written
+against them.</p>
+<p>So an advisory for another project rarely names code a hub actually runs.
+It also means you cannot dismiss one on the strength of a version number:
+read what the advisory describes and look for the same pattern here.
+Hubzero tracks no other project's releases and receives no other project's
+security patches, so nothing arrives automatically.</p>
+<h3 id="where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</h3>
+<p>Two places, and they hold different things.</p>
+<p><code>/var/log/hubzero/cmsauth.log</code> is a text log. Every line is a timestamp in
+<code>Y-m-d H:i:s</code> followed by a message, with nothing between them but a space.</p>
+<p><strong>System - HUBzero</strong> writes the line most people mean by &quot;a failed login&quot;.
+It is the submitted username (stripped to <code>A-Z 0-9 _ . -</code>, or <code>[unknown]</code>),
+the remote address, and the word <code>invalid</code>:</p>
+<pre><code>2026-09-09 14:22:31 jdoe 203.0.113.7 invalid
+</code></pre>
+<p>The same plugin writes <code>&lt;username&gt; &lt;address&gt; detect</code> when it recognises its
+tracking cookie. <strong>System - Log</strong> writes a second, differently shaped line
+for the same failure — the authentication type, the word <code>FAILURE</code>, and the
+plugin's error message, with the username appended in quotes only when its
+<strong>Log user names</strong> parameter is on. It carries no address.</p>
+<p>The log directory is <code>/var/log/hubzero</code> when that directory exists, and the
+<code>log_path</code> from <strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>System</strong> otherwise.
+See
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/LogServiceProvider.php"><code>LogServiceProvider</code></a>
+for the three loggers the CMS registers: <code>debug</code> (<code>cmsdebug.log</code>), <code>auth</code>
+(<code>cmsauth.log</code>), and <code>spam</code> (<code>cmsspam.log</code>). Only the <code>auth</code> logger uses the
+bare <code>%datetime% %message%</code> format; the other two use Monolog's default
+line format.</p>
+<p>The <code>#__users_log_auth</code> database table holds a structured record per attempt, with
+<code>username</code>, <code>ip</code>, <code>status</code> and <code>logged</code> columns. The CMS reads that table,
+not the text log, when it decides whether an account or an address has
+crossed a threshold. See
+<a href="#cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</a>.</p>
+<h3 id="does-the-cms-scan-uploads-for-viruses">Does the CMS scan uploads for viruses?</h3>
+<p>Yes, wherever a component calls <code>Filesystem::isSafe()</code> — support ticket
+attachments, group and project files, wiki and blog media, storefront
+images, and course media among them. The scan shells out to the command in
+the <code>virus_scanner</code> configuration key, which defaults to:</p>
+<pre><code>clamscan -i --no-summary --block-encrypted
+</code></pre>
+<p><code>virus_scanner</code> has no field in <strong>Global Configuration</strong>; set it in
+<code>configuration.php</code> if you want a different command, for example <code>clamdscan</code>
+against a running daemon. A non-zero exit from the scanner rejects the file,
+so a scanner that is missing or whose daemon is down fails closed and logs
+the reason.</p>
+<p>Installing and updating ClamAV itself is the system administrator's job.</p>
+<h3 id="does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</h3>
+<p>Only if you enable <strong>System - Content Security Policy</strong>. It ships disabled.
+The plugin can run in report-only mode, enforcing mode, or both at once, and
+it sets <code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
+<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
+<code>style-src</code> from its own parameters. Start in report-only mode; the shipped
+<code>script-src</code> default already includes <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
+which much of the interface still needs.</p>
+<p>The parameters are listed in the
+<a href="../../reference/configuration/plugins/system/index.html">system plugin reference</a>.</p>
+<h3 id="a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</h3>
+<p>That is the <strong>System - Spamjail</strong> plugin. Clear the counter from <strong>Users</strong> &gt;
+<strong>Members</strong>, open the member, and use <strong>Reset</strong> beside <strong>Lifetime Spam
+Incidents</strong>. The full procedure, including the per-session counter that
+clears itself, is in <a href="../spam/index.html">Spam</a>.</p>
+<h3 id="can-i-stop-a-specific-address-from-reaching-the-hub">Can I stop a specific address from reaching the hub?</h3>
+<p>Not from the CMS. The only address-level action Hubzero takes is handing an
+address to a Fail2Ban jail after too many accounts have been blocked from
+it, and even that only happens when you turn it on. Blocking, rate limiting
+at the network edge, and reputation-based blocklists are all the system
+administrator's tools.</p>
+<h2 id="operating-system-hardening">Operating system hardening</h2>
+<p>Everything on this page is <strong>external to the CMS</strong>. None of it is configured
+from the administrator interface, none of it ships in this repository, and
+none of it could be verified against the source tree. It is the practice the
+team that runs the Purdue hubs follows on the hosts underneath them,
+generalised where the original advice named a distribution or a package that
+no longer exists.</p>
+<p>Treat it as a starting checklist for whoever administers the server, not as
+a specification. Package names, repository URLs, and version numbers below
+were correct for Debian a decade ago and should be checked against your own
+distribution before you type them.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The CMS-side settings — HTTPS enforcement, sessions, cookies,
+text filters, login thresholds, spam — are covered in
+<a href="#hardening-the-cms">Hardening the CMS</a>.</p>
+</aside>
+<h3 id="keep-packages-patched">Keep packages patched</h3>
+<p>Apply security updates daily, and check that they actually applied. A hub at
+Purdue was once compromised through a package update that failed halfway;
+the check below would have caught it, and has run every day since.</p>
+<pre><code class="language-bash">apt update &amp;&amp; apt upgrade
+</code></pre>
+<pre><code class="language-bash">dpkg --audit
+</code></pre>
+<pre><code class="language-bash">debsums | grep FAILED
+</code></pre>
+<p>Run the first two daily and the third at least weekly.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The original version of this page told administrators to add
+a Hubzero package repository that also carried patches for a third-party
+content management system. That has not been true for many releases.
+Hubzero maintains its own code and carries no other project's patches; see
+<a href="#does-an-advisory-for-another-content-management-system-apply-here">the security questions</a>.</p>
+</aside>
+<h3 id="web-server">Web server</h3>
+<ul>
+<li>
+<p><strong>Put an application firewall in front of PHP.</strong> ModSecurity is the option
+still maintained. It can block attempts against a vulnerability nobody has
+disclosed yet, and its log lines make a good basis for a Fail2Ban jail.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Earlier versions of this page recommended Suhosin
+(<code>php5-suhosin</code>). Suhosin targets PHP 5, which Hubzero 2.4 does not run
+on. Do not install it.</p>
+</aside>
+</li>
+<li>
+<p><strong>Redirect every plain HTTP request to HTTPS</strong> at the web server. This
+stops mixed-content pages and stops a login form ever being served over
+plain HTTP. Do it here as well as in the CMS — the CMS's own <strong>Force SSL</strong>
+setting (<strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Server</strong>) redirects
+within the application, which is later than you want.</p>
+</li>
+<li>
+<p><strong>Consider a DNS blocklist module</strong> such as <code>mod_spamhaus</code>
+(<code>libapache2-mod-spamhaus</code> on Debian) to stop known spam-sending addresses
+submitting content while still letting them read. Spamhaus requires a paid
+data feed for commercial use. If you deploy one, say why the request was
+refused; the wording Purdue uses is:</p>
+<pre><code>Access Denied! Your address is blacklisted. It could be because your
+computer is infected and participates in a spam botnet. If you're using a
+shared access point (e.g., wireless), it's possible that the IP address of
+that access point has been banned because someone else's computer is
+infected.
+</code></pre>
+</li>
+<li>
+<p><strong>Aim for an A rating</strong> from the Qualys SSL Labs server test at
+<a href="https://www.ssllabs.com/ssltest/">https://www.ssllabs.com/ssltest/</a>.</p>
+</li>
+</ul>
+<h3 id="fail2ban">Fail2Ban</h3>
+<p>Install Fail2Ban and give it jails for SSH, WebDAV, the web server's error
+log, your application firewall's log, exim, SpamAssassin, and the hub's own
+authentication log at <code>/var/log/hubzero/cmsauth.log</code>.</p>
+<p>The CMS writes that log itself, so a jail over it is the one item here you
+can verify from the source tree. A failed login appears as a timestamp, the
+attempted username, the remote address, and the word <code>invalid</code>:</p>
+<pre><code>2026-09-09 14:22:31 jdoe 203.0.113.7 invalid
+</code></pre>
+<p>Purdue bans permanently on any attempt to log in as <code>root</code> or another key
+account. SSH is configured to refuse root password logins anyway; the
+attempt is still allowed to happen so the address can be caught.</p>
+<p>Hubzero can also hand an address to a Fail2Ban jail directly, without a log
+line for Fail2Ban to match. That is a separate mechanism with its own
+setup: see
+<a href="#cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The original page argued for blocking all non-local IPv6 because
+the blocking tools of the day could not scale a ban from one address to a
+network. Fail2Ban has handled IPv6 since 0.10, and modern firewalls block
+prefixes as easily as addresses. Weigh the cost of turning IPv6 off
+against the users you exclude; the old blanket recommendation no longer
+holds.</p>
+</aside>
+<h3 id="antivirus">Antivirus</h3>
+<p>Install ClamAV, keep <code>freshclam</code> running so definitions stay current, and
+scan the whole document root at least weekly.</p>
+<p>The CMS calls a scanner on uploaded files by itself. The command it runs
+comes from the <code>virus_scanner</code> key in <code>configuration.php</code> and defaults to
+<code>clamscan -i --no-summary --block-encrypted</code>. A non-zero exit rejects the
+upload, so a broken or unreachable scanner blocks uploads rather than
+silently passing them.</p>
+<p>Verify the whole path with the EICAR test file from
+<a href="https://www.eicar.org/download-anti-malware-testfile/">https://www.eicar.org/download-anti-malware-testfile/</a> — try to upload it
+to a support ticket or a group, and confirm the CMS refuses it.</p>
+<h3 id="host-monitoring">Host monitoring</h3>
+<ul>
+<li><strong>Detect unauthorised configuration changes.</strong> Purdue runs a tool called
+Ogre hourly; its engine is open source but the metadata and templates that
+make it useful are not. Any configuration management system that reports
+drift will do.</li>
+<li><strong>Run <code>rkhunter</code> daily</strong> to catch suspicious changes.</li>
+<li><strong>Run an auditing tool</strong> such as <code>lynis</code> and track the hardening score.
+Purdue targets 72 or better.</li>
+<li><strong>Install a firewall blocklist.</strong> Purdue feeds DShield's list into
+iptables. It is published at <a href="https://www.dshield.org/block.txt">https://www.dshield.org/block.txt</a> with a
+detached signature at <a href="https://www.dshield.org/block.txt.asc">https://www.dshield.org/block.txt.asc</a>; verify the
+signature before you load it.</li>
+<li><strong>Scan the network periodically.</strong> Note that Debian does not bump version
+numbers in service banners when it backports a security patch, so a
+scanner like Nessus reports a great many false positives on a
+fully-patched host. The scans are still worth running to spot newly open
+ports and configuration mistakes.</li>
+</ul>
+<h3 id="file-system-permissions">File system permissions</h3>
+<p>Own the Hubzero code with a user other than the one the web server runs as
+(<code>www-data</code> on Debian), so a compromise of PHP cannot rewrite the
+application. Directories the CMS genuinely writes to — uploads, the log
+path, the cache and temporary paths — need to stay writable.</p>
+<h3 id="php-configuration">PHP configuration</h3>
+<p>Hardening guides for <code>php.ini</code> are worth reading, but apply them one setting
+at a time. Several of the settings such guides recommend break hub
+functionality outright — the CMS shells out to a virus scanner and to
+<code>fail2ban-client</code>, so disabling <code>exec()</code> disables both. Test each change on
+a staging hub.</p>
+<h2 id="hardening-the-cms">Hardening the CMS</h2>
+<p>The settings and extensions inside the administrator interface that decide
+how strict the hub is. Everything on this page is part of Hubzero and can be
+checked in the source tree. The host underneath is covered separately in
+<a href="#operating-system-hardening">Operating system hardening</a>.</p>
+<h3 id="force-https">Force HTTPS</h3>
+<p><strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Server</strong> &gt; <strong>Force SSL</strong> takes three
+values: <strong>None</strong>, <strong>Administrator Only</strong>, and <strong>Entire Site</strong>. Set it to
+<strong>Entire Site</strong>.</p>
+<p>This is a redirect inside the application, so the request has already
+reached PHP by the time it fires. Redirect at the web server as well.</p>
+<h3 id="sessions-and-cookies">Sessions and cookies</h3>
+<p><strong>Session Settings</strong> are on the <strong>System</strong> tab of <strong>Global Configuration</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Session Lifetime</strong></td>
+<td>15</td>
+<td>Minutes of inactivity before a session expires. Shorter is safer; too short annoys people mid-form.</td>
+</tr>
+<tr>
+<td><strong>Session Handler</strong></td>
+<td><code>none</code></td>
+<td>Where sessions are stored. The list offers whatever backends the server supports — <code>database</code>, <code>file</code>, <code>memcached</code>, <code>redis</code>, <code>apc</code> and so on. <code>database</code> is the usual choice.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cookie Settings</strong> are on the <strong>Site</strong> tab, and hold <strong>Cookie Domain</strong> and
+<strong>Cookie Path</strong>. Leave both empty unless the hub genuinely shares a session
+with a sibling host — widening the cookie domain widens who receives the
+session cookie.</p>
+<h3 id="text-filters">Text filters</h3>
+<p><strong>Global Configuration</strong> &gt; <strong>Text Filters</strong> sets, per access group, what
+HTML a member may submit through an editor field. Each group gets one of:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default Black List</strong></td>
+<td>Strips the tags and attributes commonly used in attacks. This is the shipped behaviour.</td>
+</tr>
+<tr>
+<td><strong>Custom Black List</strong></td>
+<td>Strips the tags and attributes you list, instead of the default set.</td>
+</tr>
+<tr>
+<td><strong>White List</strong></td>
+<td>Strips everything except the tags and attributes you list.</td>
+</tr>
+<tr>
+<td><strong>No HTML</strong></td>
+<td>Strips all HTML.</td>
+</tr>
+<tr>
+<td><strong>No Filtering</strong></td>
+<td>Submits the markup untouched.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>No Filtering</strong> should be reserved for groups whose members you would trust
+with shell access, because it is equivalent. The filter applies to editor
+fields; it is not a substitute for a component escaping its own output.</p>
+<h3 id="login-thresholds">Login thresholds</h3>
+<p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Options</strong> &gt; <strong>Login Settings</strong> limits how often
+one account may fail to log in, how often one account may request a
+password reset, and how many accounts may be blocked from one address before
+the hub asks Fail2Ban to ban it.</p>
+<p>The fields, their defaults, and what the code actually counts are described
+in <a href="#cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</a>. The
+parameters themselves are listed in the
+<a href="../../reference/configuration/components/members/index.html#login">Members configuration reference</a>.</p>
+<h3 id="password-rules">Password rules</h3>
+<p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Passwords</strong> holds two screens.</p>
+<p><strong>Password Rules</strong> is an ordered list. The list shows <strong>Id</strong>, <strong>Rule</strong>,
+<strong>Description</strong>, <strong>Ordering</strong> and <strong>Enabled</strong>; opening a rule adds
+<strong>Value</strong>, <strong>Failure message</strong>, <strong>Group</strong> and <strong>Class</strong>. The <strong>Group</strong> field
+scopes a rule to one access group, so you can demand more of administrators
+than of ordinary members. The toolbar carries <strong>Restore Defaults</strong>, which
+replaces the whole list with the shipped set.</p>
+<p><strong>Password Blacklist</strong> is a list of words a password may not contain.</p>
+<p>Enable <strong>System - Password</strong> as well. It watches every request from a signed
+in member and, if their stored password no longer satisfies the rules or has
+expired, diverts them to the change-password screen until they fix it. A
+short list of tasks — logging out, submitting a support ticket, saving the
+new password — is exempt so the member is not trapped.</p>
+<p>The hashing mechanism itself is set under <strong>Options</strong> &gt; <strong>Password</strong> and
+defaults to <code>sha512</code>.</p>
+<h3 id="second-authentication-factors">Second authentication factors</h3>
+<p>Two plugins in the <code>authfactors</code> group ship with 2.4:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Second factor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authfactors - Certificate</strong></td>
+<td>A client-side SSL certificate.</td>
+</tr>
+<tr>
+<td><strong>Authfactors - Google</strong></td>
+<td>A time-based one-time code from an authenticator app.</td>
+</tr>
+</tbody>
+</table>
+<p>Neither has any parameters of its own. Which interfaces demand a second
+factor is set on <strong>System - Authfactors</strong>, whose <strong>Clients</strong> parameter is a
+pair of checkboxes for the site and the administrator interface; only the
+administrator interface is ticked by default. If <strong>System - Authfactors</strong> is
+disabled, no second factor is ever asked for however the <code>authfactors</code>
+plugins are set.</p>
+<h3 id="security-headers">Security headers</h3>
+<p>Two system plugins add response headers. Both ship disabled.</p>
+<p><strong>System - Content Security Policy</strong> sets <code>Content-Security-Policy</code>,
+<code>Content-Security-Policy-Report-Only</code>, or both, depending on its <strong>Mode</strong>
+parameter. It writes eleven directives from its own parameters:
+<code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
+<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
+<code>style-src</code>. The token <code>{host}</code> in any value is replaced with the request's
+host name, and a <code>report-uri</code> is appended when one is set. Start in
+<strong>Report Only</strong> and read the reports before you enforce: the shipped
+<code>script-src</code> default still allows <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
+and tightening it will break screens until they are cleaned up.</p>
+<p><strong>System - Referrer Policy</strong> sets <code>Referrer-Policy</code>. Its default is
+<code>same-origin</code>.</p>
+<p>Other headers — HSTS, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code> — are not
+set by the CMS. Add them at the web server.</p>
+<h3 id="spam">Spam</h3>
+<p>The <code>antispam</code> plugin group and the <strong>Content - Antispam</strong> plugin that
+drives it have their own chapter: <a href="../spam/index.html">Spam</a>.</p>
+<h3 id="rate-limiting">Rate limiting</h3>
+<p>Hubzero rate-limits the <strong>API only</strong>, per application token, over a short
+and a long window. The limits live in the application's own
+<code>rate_limit</code> configuration and have no field in <strong>Global Configuration</strong> —
+the manifest declares one, but no screen renders it. Site page requests are
+not rate limited by the CMS; do that at the web server.</p>
+<h3 id="scan-what-you-add">Scan what you add</h3>
+<p>A web application scanner looks for the mistakes PHP applications make:
+cross-site scripting, cross-site request forgery, SQL injection, and the
+rest. Scan any component you write yourself, any third-party component, and
+any component from the Hubzero release that you have modified — a local
+change can introduce a hole the release does not have. Free scanners are
+adequate for this; Purdue uses AppScan.</p>
+<p>If you find a vulnerability in the Hubzero release itself, report it to the
+project rather than filing it publicly.</p>
+<h3 id="cms-controlled-fail2ban-jail">CMS-controlled Fail2Ban jail</h3>
+<p>Hubzero throttles brute-force attempts in three stages, all configured on
+one screen. The first two stages are entirely inside the CMS. The third
+hands the offending address to Fail2Ban, which is server software outside
+this repository and has to be set up by the system administrator first.</p>
+<h4 id="the-settings">The settings</h4>
+<p>Go to <strong>Users</strong> &gt; <strong>Members</strong>, then <strong>Options</strong> in the toolbar. The
+<strong>Members Configuration</strong> window opens; the fields below are on the <strong>Login
+Settings</strong> tab.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Parameter</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Maximum Reset Count</strong></td>
+<td><code>reset_count</code></td>
+<td>10</td>
+<td>Password reset requests allowed per account per window.</td>
+</tr>
+<tr>
+<td><strong>Time in Hours</strong></td>
+<td><code>reset_time</code></td>
+<td>1</td>
+<td>The reset window.</td>
+</tr>
+<tr>
+<td><strong>Maximum Failed Login Attempts</strong></td>
+<td><code>login_attempts_limit</code></td>
+<td>10</td>
+<td>Failed logins allowed per account per window.</td>
+</tr>
+<tr>
+<td><strong>Time in Hours</strong></td>
+<td><code>login_attempts_timeframe</code></td>
+<td>1</td>
+<td>The failed-login window.</td>
+</tr>
+<tr>
+<td><strong>Purge Log After</strong></td>
+<td><code>login_log_timeframe</code></td>
+<td>Never</td>
+<td>How long attempts stay in the log table.</td>
+</tr>
+<tr>
+<td><strong>Fail2Ban</strong></td>
+<td><code>fail2ban</code></td>
+<td>Off</td>
+<td>Whether stage three runs at all.</td>
+</tr>
+<tr>
+<td><strong>Maximum Number Blocked Accounts</strong></td>
+<td><code>blocked_accounts_limit</code></td>
+<td>10</td>
+<td>Blocked accounts allowed per address per window.</td>
+</tr>
+<tr>
+<td><strong>Time in Hours</strong></td>
+<td><code>blocked_accounts_timeframe</code></td>
+<td>1</td>
+<td>The blocked-accounts window.</td>
+</tr>
+<tr>
+<td><strong>Fail2Ban Jail</strong></td>
+<td><code>fail2ban-jail</code></td>
+<td><code>hub-login</code></td>
+<td>Name of the jail to ban into.</td>
+</tr>
+</tbody>
+</table>
+<p>The same list, generated from the manifest, is in the
+<a href="../../reference/configuration/components/members/index.html#login">Members configuration reference</a>.</p>
+<p><img src="../media/cmscontrolled-fail2ban-jail-fail2ban1.png" alt="The Login Settings tab of the Members Configuration window" /></p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This screenshot predates 2.4. It shows six fields with older
+labels and is missing <strong>Purge Log After</strong>, <strong>Fail2Ban</strong>, and <strong>Fail2Ban
+Jail</strong>. Read the table above, not the picture.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Setting any of the three limits to <code>0</code> does <strong>not</strong> mean
+&quot;no limit&quot;, whatever the field's help text says — it makes the check fail
+for everyone immediately. Leave them at one or more.</p>
+</aside>
+<h4 id="where-the-counting-happens">Where the counting happens</h4>
+<p>All three stages read <code>#__users_log_auth</code>, the table
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/user/xusers/xusers.php"><code>plg_user_xusers</code></a> writes to
+after every login attempt. Each row holds a username, the remote address, a
+status of <code>success</code>, <code>failure</code> or <code>blocked</code>, and a timestamp.</p>
+<p><strong>Purge Log After</strong> trims that table. It is checked on each authentication
+attempt, and rows older than the chosen period are deleted. Leaving it at
+<strong>Never</strong> lets the table grow without bound, which eventually slows the
+login page down.</p>
+<h4 id="stage-one-password-reset-requests">Stage one: password reset requests</h4>
+<p>Counted per account by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/site/controllers/credentials.php"><code>com_members</code>'s credentials controller</a>.
+It counts the member's outstanding reset tokens created inside
+<strong>Time in Hours</strong>, and once that reaches <strong>Maximum Reset Count</strong> it refuses
+the request:</p>
+<blockquote>
+<p>Sorry, you have exceeded your reset request limit. Please wait and try
+again later.</p>
+</blockquote>
+<p><img src="../media/cmscontrolled-fail2ban-jail-fail2ban2.png" alt="The reset request limit message on the Reset Password page" /></p>
+<p>Nothing is blocked and nothing is logged as blocked; the member simply has
+to wait for the window to pass.</p>
+<h4 id="stage-two-failed-logins">Stage two: failed logins</h4>
+<p>Counted per account by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/authentication/hubzero/hubzero.php"><code>plg_authentication_hubzero</code></a>.
+It counts rows for that username with status <code>failure</code> inside <strong>Time in
+Hours</strong>. Once the table already holds one fewer than <strong>Maximum Failed Login
+Attempts</strong>, the plugin writes a <code>blocked</code> row for the account and refuses
+the login:</p>
+<blockquote>
+<p>Your account has been temporarily disabled due to an excessive number of
+failed login attempts.</p>
+</blockquote>
+<p><img src="../media/cmscontrolled-fail2ban-jail-fail2ban3.png" alt="The account temporarily disabled message on the sign-in form" /></p>
+<p>With the default of 10, the tenth attempt inside the hour is the one that is
+refused. The account frees itself as the window slides forward; there is no
+administrator action to take.</p>
+<p><strong>Authentication - Email Token</strong> applies the same two thresholds to its own
+one-time codes, using the same parameters.</p>
+<h4 id="stage-three-too-many-blocked-accounts-from-one-address">Stage three: too many blocked accounts from one address</h4>
+<p>This stage only runs when <strong>Fail2Ban</strong> is <strong>On</strong>. With it <strong>Off</strong>,
+<strong>Maximum Number Blocked Accounts</strong> has no effect at all.</p>
+<p>When it is on, the plugin counts the <em>distinct</em> usernames that have a
+<code>blocked</code> row from the current address inside <strong>Time in Hours</strong>. Once that
+count reaches <strong>Maximum Number Blocked Accounts</strong>, the CMS locates
+<code>fail2ban-client</code> on <code>PATH</code> and runs, as the web server user:</p>
+<pre><code class="language-bash">sudo /usr/bin/fail2ban-client set hub-login banip &lt;address&gt;
+</code></pre>
+<p>The jail name is whatever <strong>Fail2Ban Jail</strong> holds. The login is refused with
+the same &quot;temporarily disabled&quot; message.</p>
+<p>If <code>fail2ban-client</code> cannot be found, the CMS logs <code>fail2ban-client not found.</code> and lets the login proceed to the account-level checks.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The CMS bans the address; it never unbans it. How long the
+ban lasts is entirely Fail2Ban's <code>bantime</code>. Nothing in the CMS calls
+<code>unbanip</code>.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This mechanism does <strong>not</strong> work by writing log lines for
+Fail2Ban to match. The CMS calls <code>fail2ban-client</code> directly. The jail
+therefore needs a filter that matches nothing, and exists only as a
+container for addresses the CMS pushes into it. The CMS does also write
+<code>/var/log/hubzero/cmsauth.log</code>, and you can point an ordinary
+log-scanning jail at that file, but that is a separate jail from this one.</p>
+</aside>
+<h4 id="what-the-system-administrator-has-to-set-up">What the system administrator has to set up</h4>
+<p>Everything from here down is external to Hubzero. It could not be verified
+against this repository; the samples are illustrations, not a supported
+configuration, and any competent administrator will write better rules.
+Fail2Ban's own documentation is the authority.</p>
+<h5 id="sudo">sudo</h5>
+<p>The web server user needs to run exactly one command as root, with no
+password:</p>
+<pre><code>www-data ALL=(root) NOPASSWD: /usr/bin/fail2ban-client set hub-login banip *
+</code></pre>
+<p>Put it in a file under <code>/etc/sudoers.d/</code> and check it with <code>visudo -c</code>.
+Confirm the path with <code>which fail2ban-client</code> — the CMS resolves the path
+itself, so the sudoers rule has to name the same one. Keep the rule as
+narrow as this: it grants root, and a wildcard in the wrong place grants a
+great deal more than a ban.</p>
+<h5 id="the-jail">The jail</h5>
+<pre><code class="language-ini"># /etc/fail2ban/jail.local
+[hub-login]
+enabled   = true
+port      = http,https
+filter    = hub-login
+logpath   = /var/log/hubzero/cmsauth.log
+banaction = hublogin-failure
+bantime   = 600
+findtime  = 1
+maxretry  = 1
+</code></pre>
+<h5 id="the-filter">The filter</h5>
+<p>The filter has to match nothing, because the CMS supplies the addresses:</p>
+<pre><code class="language-ini"># /etc/fail2ban/filter.d/hub-login.conf
+[Definition]
+# The CMS bans into this jail directly, so this pattern is never meant to fire.
+failregex = ^&lt;HOST&gt; this-filter-never-matches
+ignoreregex =
+</code></pre>
+<h5 id="the-action">The action</h5>
+<pre><code class="language-ini"># /etc/fail2ban/action.d/hublogin-failure.conf
+[INCLUDES]
+before = iptables-common.conf
+
+[Definition]
+actionstart = iptables -N fail2ban-hublogin
+              iptables -I INPUT -p tcp -j fail2ban-hublogin
+
+actionstop  = iptables -D INPUT -p tcp -j fail2ban-hublogin
+              iptables -F fail2ban-hublogin
+              iptables -X fail2ban-hublogin
+
+actioncheck = iptables -n -L fail2ban-hublogin | grep -q fail2ban-hublogin
+
+actionban   = iptables -I fail2ban-hublogin -p tcp --dport 443 -s &lt;ip&gt; -j DROP
+              iptables -I fail2ban-hublogin -p tcp --dport 80 -s &lt;ip&gt; -j DROP
+
+actionunban = iptables -D fail2ban-hublogin -p tcp --dport 443 -s &lt;ip&gt; -j DROP
+              iptables -D fail2ban-hublogin -p tcp --dport 80 -s &lt;ip&gt; -j DROP
+
+[Init]
+name     = DEFAULT
+protocol = tcp
+chain    = INPUT
+</code></pre>
+<h5 id="check-it">Check it</h5>
+<pre><code class="language-bash">fail2ban-client status hub-login
+</code></pre>
+<p>The output names the jail's filter, its log file, and the addresses
+currently banned. <code>iptables -L fail2ban-hublogin</code> shows the rules the action
+inserted.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The imported version of this page pinned Fail2Ban to 0.9.5 from
+a NeuroDebian repository for Debian wheezy. That advice is a decade out of
+date; use your distribution's current package.</p>
+</aside>
+<h4 id="turning-it-off-for-an-event">Turning it off for an event</h4>
+<p>Consider setting <strong>Fail2Ban</strong> to <strong>Off</strong> during a conference, a class, or a
+workshop. A room of people typing the same wrong password produces exactly
+the pattern stage three is looking for, and one banned address takes out
+everyone behind that NAT. Stages one and two stay in effect and act per
+account, which is the behaviour you want in a crowd.</p>
+
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../spam/index.html" rel="prev"><span>Previous</span>Spam</a><a class="pager__next" href="faqs/index.html" rel="next"><span>Next</span>Security questions</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../spam/index.html" rel="prev"><span>Previous</span>Spam</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security/README.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

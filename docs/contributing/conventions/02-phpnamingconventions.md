@@ -249,7 +249,7 @@ Migration20260129000000Core
 The file is the class name plus `.php`, in `core/migrations/` for a core
 migration or in the extension's own `migrations/` directory. It extends
 [`Hubzero\Content\Migration\Base`](../../../core/libraries/Hubzero/Content/Migration/Base.php).
-See [Migrations](../../developers/06-database/02-migrations.md).
+See [Migrations](../../developers/06-database.md#migrations).
 
 ## Files
 

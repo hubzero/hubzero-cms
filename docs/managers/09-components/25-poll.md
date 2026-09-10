@@ -27,7 +27,7 @@ fails is the plumbing that connects them:
 | A **Poll** menu item, layout *Poll Layout* (the results page) | Renders, but the poll it should show cannot be chosen — see below. |
 | The **Poll** module (`mod_poll`) | Renders the newest open, published poll. It cannot be pointed at a particular poll — see below. |
 | The **Take the latest poll** button and the **Results…** links on `/poll` | Dead. Both build a `view=` parameter that the controller ignores, so both land back on `/poll`. |
-| `/feedback` → **Take a Poll** | Works: it renders the **Poll** module, so it shows whatever that module shows. See [Feedback](feedback.md). |
+| `/feedback` → **Take a Poll** | Works: it renders the **Poll** module, so it shows whatever that module shows. See [Feedback](16-feedback.md). |
 
 The reason two of those rows say "cannot be chosen" is that both the menu item
 type and the module declare a form field of type `poll` for picking one, and

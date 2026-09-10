@@ -24,7 +24,7 @@ Writing the template itself is a developer task. See
 [Super Groups](../../developers/13-supergroups/README.md) in the developer
 book for the templating system, page templates, macros, PHP pages, databases,
 migrations and components, and
-[Super Groups with GitLab](../../developers/14-supergroups-gitlab/README.md)
+[Super Groups with GitLab](../../developers/14-supergroups-gitlab.md)
 for the repository workflow.
 
 ## Creating a super group

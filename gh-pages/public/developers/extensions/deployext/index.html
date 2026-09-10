@@ -76,11 +76,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../database/queries/index.html">Query builder</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/index.html">Database</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../parameters/index.html">Parameters</a></li>
@@ -143,9 +139,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../templates/accessibility/index.html">Accessibility</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../muse/index.html">Muse</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../muse/commands/index.html">Common tasks</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/index.html">Muse</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
@@ -155,11 +149,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
 </ul></details></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/why-gitlab/index.html">Why GitLab</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/setup/index.html">Setup</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/developing/index.html">Developing</a></li>
-</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
@@ -266,7 +256,7 @@ of <code>app/</code>, or the web server will not read it.</p>
 <pre><code class="language-bash">php core/bin/muse migration -e=com_example      # dry run: what would happen
 php core/bin/muse migration -e=com_example -f   # actually run it
 </code></pre>
-<p>That runs the extension's own <a href="../../database/migrations/index.html">migrations</a>,
+<p>That runs the extension's own <a href="../../database/index.html#migrations">migrations</a>,
 creating its tables and its <code>#__extensions</code> row. Without <code>-f</code> the runner
 only reports; <code>-e</code> restricts it to the one extension.</p>
 </li>
@@ -313,7 +303,7 @@ from the Extension Manager's <strong>Core Migrations</strong> screen, or on the 
 line:</p>
 <pre><code class="language-bash">php core/bin/muse migration -f
 </code></pre>
-<p>See <a href="../../database/migrations/index.html">Migrations</a> for what a migration can do and
+<p>See <a href="../../database/index.html#migrations">Migrations</a> for what a migration can do and
 how the runner decides what is pending.</p>
 
         </div>
