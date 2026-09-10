@@ -629,9 +629,11 @@ class AdminUser
      **/
     private static function hashPassword($password)
     {
-        $salt = self::generateSalt(16);
-        $encrypted = crypt($password, '$6$' . $salt . '$');
-        return '{CRYPT}' . $encrypted;
+        // Eight hex characters between the markers, which is the shape the
+        // hub's own password code writes and the only one it reads back
+        $salt = self::generateSalt(8);
+
+        return '{CRYPT}' . crypt($password, '$6$' . $salt . '$');
     }
 
     /**
@@ -642,21 +644,7 @@ class AdminUser
      **/
     private static function generateSalt($length)
     {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./';
-        $salt = '';
-
-        if (function_exists('random_bytes')) {
-            $bytes = random_bytes($length);
-            for ($i = 0; $i < $length; $i++) {
-                $salt .= $chars[ord($bytes[$i]) % strlen($chars)];
-            }
-        } else {
-            for ($i = 0; $i < $length; $i++) {
-                $salt .= $chars[mt_rand(0, strlen($chars) - 1)];
-            }
-        }
-
-        return $salt;
+        return substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
     /**
