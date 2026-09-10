@@ -114,6 +114,10 @@ class SiteSettings
             $existing = self::loadExistingConfig($appPath);
         }
 
+        if (Answers::isUnattended()) {
+            return self::configureUnattended($ansi, $appPath, $existing);
+        }
+
         self::output("\n", $ansi);
         self::output("\e[33mSite Settings\e[39m\n", $ansi);
         self::output("-------------\n", $ansi);
@@ -210,6 +214,64 @@ class SiteSettings
         }
 
         // Write other config files
+        if (!AppDirectory::writeDefaultConfigs($ansi, $appPath, $settings)) {
+            return null;
+        }
+
+        self::output("\n", $ansi);
+        self::output("\e[32mSite settings saved successfully!\e[39m\n", $ansi);
+
+        return $settings;
+    }
+
+    /**
+     * Take the site settings from the answers given up front
+     *
+     * @param   bool    $ansi      Whether to use ANSI color output
+     * @param   string  $appPath   Path to the app directory
+     * @param   array   $existing  Existing configuration to fall back on
+     * @return  array|null  Configuration array, or null if an answer was unusable
+     */
+    private static function configureUnattended($ansi, $appPath, array $existing)
+    {
+        // Anything else the answers carry, such as a template or the
+        // environment name, is passed on to the config writers as given.
+        $settings = array_merge($existing, Answers::section('site'));
+        $sitename = $settings['sitename'] ?? 'myhub';
+
+        $settings['sitename']  = $sitename;
+        $settings['mailfrom']  = $settings['mailfrom'] ?? 'admin@localhost';
+        $settings['live_site'] = $settings['live_site'] ?? '';
+        $settings['offset']    = $settings['offset'] ?? 'UTC';
+        $settings['MetaDesc']  = $settings['MetaDesc']
+            ?? ($sitename . ' - A HUBzero-powered hub for research and collaboration.');
+
+        self::output("\n", $ansi);
+        self::output("\e[33mSite Settings\e[39m\n", $ansi);
+        self::output("-------------\n", $ansi);
+        self::output("\n", $ansi);
+
+        if (!self::isValidEmail($settings['mailfrom'])) {
+            self::output("\e[31mNot a valid admin email address: {$settings['mailfrom']}\e[39m\n", $ansi, true);
+            return null;
+        }
+
+        if (!in_array($settings['offset'], \DateTimeZone::listIdentifiers(), true)) {
+            self::output("\e[31mNot a recognized timezone: {$settings['offset']}\e[39m\n", $ansi, true);
+            return null;
+        }
+
+        self::output("  Site name:    " . $settings['sitename'] . "\n", $ansi);
+        self::output("  Admin email:  " . $settings['mailfrom'] . "\n", $ansi);
+        self::output("  Site URL:     " . ($settings['live_site'] ?: '(auto-detect)') . "\n", $ansi);
+        self::output("  Timezone:     " . $settings['offset'] . "\n", $ansi);
+        self::output("  Description:  " . self::truncate($settings['MetaDesc'], 50) . "\n", $ansi);
+        self::output("\n", $ansi);
+
+        if (!AppDirectory::writeAppConfig($ansi, $appPath, $settings)) {
+            return null;
+        }
+
         if (!AppDirectory::writeDefaultConfigs($ansi, $appPath, $settings)) {
             return null;
         }
