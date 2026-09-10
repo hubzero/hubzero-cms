@@ -87,6 +87,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../cache/index.html">Cache</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Check-in</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#clearing-a-stuck-record-in-a-hurry">Clearing a stuck record in a hurry</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-being-checked-out-means">What being checked out means</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-screen">The screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#doing-it-without-the-screen">Doing it without the screen</a></li>
@@ -161,6 +163,34 @@ under <strong>Site → Maintenance → Global Check-in</strong>, and on a health
 empty. You open it when someone reports that they cannot edit a record because
 the interface says it is already being edited by somebody who is no longer
 editing it.</p>
+<p>The report arrives in a hurry, and it is always the same shape. A staff member
+opens the front-page article on Friday afternoon to fix a date, shuts the
+laptop, and goes home. On Monday the communications officer needs that article
+and cannot have it: the list draws a padlock beside the row and refuses the
+edit form. Nothing on the hub clears that by itself. This screen is how you
+clear it.</p>
+<h2 id="clearing-a-stuck-record-in-a-hurry">Clearing a stuck record in a hurry</h2>
+<p>If you already know the record is stuck and you only want it back:</p>
+<ol>
+<li>Go to <strong>Site → Maintenance → Global Check-in</strong>.</li>
+<li>Find the table the record lives in. Articles and categories are
+<code>#__content</code> and <code>#__categories</code>, menu items <code>#__menu</code>, modules
+<code>#__modules</code>, resources <code>#__resources</code>, publications <code>#__publications</code>.
+The search box filters the list on the table name.</li>
+<li>Tick that table and press <strong>Check-in</strong>.</li>
+<li>Tell whoever was editing that the form they left open is now worthless.
+Anything they had typed and not saved is gone, and if they go back to that
+tab and press <strong>Save</strong>, they will overwrite whatever anyone else does in
+the meantime.</li>
+</ol>
+<p>That is the whole task. The rest of this chapter explains what it did, and the
+one case where you should ask before doing it.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>Check-in is not a save, a publish, or a permissions setting. It does not
+recover a draft, it does not change who may edit a record, and it has nothing
+to do with the cache. If a record refuses to open and there is no padlock on
+its row, this screen is not the answer — look at the member's group
+permissions or at the record's own <strong>Access</strong> setting instead.</p>
 <h2 id="what-being-checked-out-means">What being checked out means</h2>
 <p>Several of the hub's tables carry a pair of columns, <code>checked_out</code> and
 <code>checked_out_time</code>. When an administrator opens a record for editing, the
@@ -207,14 +237,21 @@ name — it is a plain substring match against the name, so <code>content</code>
 <code>#__content</code> and <code>#__content_frontpage</code>.</p>
 <p>Tick the tables you want released and press <strong>Check-in</strong>. Every checked-out
 row in each ticked table is released at once: <code>checked_out</code> goes back to <code>0</code>
-and <code>checked_out_time</code> to the column's default. This screen has no way to
-release one record and leave another in the same table locked.</p>
+and <code>checked_out_time</code> to the column's default, and nothing else in the row is
+touched. This screen has no way to release one record and leave another in the
+same table locked.</p>
+<p>That bluntness is the reason to look at the count first. Ticking <code>#__content</code>
+on a hub where one article is stuck releases one lock. Doing it at eleven in
+the morning on a hub where six people are mid-edit releases all six, and none
+of them will be told. If the count is higher than the number of complaints you
+have received, release the single record from its own component instead.</p>
 <p>For one record, go to the component that owns it instead. The older
-administrator lists — articles, categories, menu items, plugins — draw a
-padlock on a locked row, naming who has it and since when, and clicking the
-padlock checks in that one record. The padlock is only clickable for someone
-who holds <em>Access Administration Interface</em> on <code>com_checkin</code>, so this
-component's permissions decide who can break a lock anywhere on the hub.</p>
+administrator lists — articles, categories, menu items, modules, plugins, and
+the Extension Manager — draw a padlock on a locked row, naming who has it and
+since when, and clicking the padlock checks in that one record. The padlock is
+only clickable for someone who holds <em>Access Administration Interface</em> on
+<code>com_checkin</code>, so this component's permissions decide who can break a lock
+anywhere on the hub.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Checking in a record does not save anything. Whatever the
 original editor had typed into the form is gone; the lock is simply
@@ -223,7 +260,18 @@ sitting on the form and then presses <strong>Save</strong>, their version wins o
 anything saved in between.</p>
 </aside>
 <p>The toolbar carries <strong>Check-in</strong>, <strong>Options</strong> and <strong>Help</strong>. <strong>Options</strong> opens
-the component's permissions grid, which is the only setting it has.</p>
+the component's permissions grid, which is the only setting it has. There is
+nothing to tune: the component ships no configuration, and the grid's default —
+everything inherited — is the right setting on almost every hub.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The check-in resets the two lock columns and nothing else. The
+model carries a third branch, meant to blank an <code>editor</code> column at the same
+time, whose test can never be true, so it never runs. It should be deleted
+rather than repaired: the only <code>editor</code> column on a stock schema belongs to
+<code>#__citations</code> and holds a citation's bibliographic editor, which is not a
+lock and must not be erased by a check-in. Recorded in
+the project record, which is not published to this site.</p>
+</aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The screen itself is available to anyone with <em>Access
 Administration Interface</em> on the component, but the <strong>Check-in</strong> and
@@ -242,7 +290,7 @@ WHERE checked_out &gt; 0;
 <p>That is exactly what the screen does, one table at a time.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cart/index.html" rel="prev"><span>Previous</span>Cart</a><a class="pager__next" href="../citations/index.html" rel="next"><span>Next</span>Citations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/07-checkin.md">Edit this page on GitHub</a>

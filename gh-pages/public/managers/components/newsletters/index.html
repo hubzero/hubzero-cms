@@ -103,10 +103,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../messages/index.html">Messages</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Newsletters</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#before-you-write-anything-switch-the-sender-on">Before you write anything: switch the sender on</a></li>
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#newsletters-2">Newsletters</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-newsletter">Creating or editing a newsletter</a></li>
 <li class="toc__item toc__item--l3"><a href="#stories">Stories</a></li>
 <li class="toc__item toc__item--l2"><a href="#sending">Sending</a></li>
+<li class="toc__item toc__item--l3"><a href="#sending-the-first-issue">Sending the first issue</a></li>
 <li class="toc__item toc__item--l2"><a href="#mailings">Mailings</a></li>
 <li class="toc__item toc__item--l2"><a href="#lists">Lists</a></li>
 <li class="toc__item toc__item--l2"><a href="#templates">Templates</a></li>
@@ -169,16 +172,58 @@ to a list of addresses, and tracks what recipients do with them. Newsletters
 you mark public are also readable on the site at <code>/newsletter</code>. This chapter
 covers the administrator's side; the
 <a href="../../../users/newsletters/index.html">Hub users</a> book covers reading and subscribing.</p>
+<h2 id="before-you-write-anything-switch-the-sender-on">Before you write anything: switch the sender on</h2>
+<p>A newsletter is not sent by the browser request that presses <strong>Send</strong>. The
+component only queues one row per recipient; the actual mail goes out from
+the <code>newsletter</code> cron plugin's <strong>Process Newsletter Mailings</strong>
+(<code>processMailings</code>) job, in batches, on the hub's schedule.</p>
+<p>That job is created for you during installation and <strong>it ships
+unpublished</strong>, along with its companion <strong>Process Newsletter Opens &amp; Click
+IP Addresses</strong> (<code>processIps</code>). The install seeds no jobs of its own; these two
+arrive from the cron plugin's migration with a state of 0. So on a new hub
+nothing sends. You can compose an issue, test it, send it to a thousand
+addresses and watch the Mailings screen sit at 0% forever, because there is
+nothing on the other end of the queue.</p>
+<p>Do this first, before you write a word:</p>
+<ol>
+<li>Go to <strong>Components &gt; Cron</strong>.</li>
+<li>Find <strong>Process Newsletter Mailings</strong>. Its <strong>State</strong> reads <strong>Unpublished</strong>
+and its <strong>Last Run</strong> is empty.</li>
+<li>Tick it and press <strong>Publish</strong>.</li>
+<li>Wait for a tick — the job runs every five minutes — and reload. <strong>Last
+Run</strong> should carry a timestamp. If it does not, the hub's scheduler is not
+running at all, and no scheduled feature on the hub works; see
+<a href="../../maintenance/cron/index.html">Scheduled tasks</a>.</li>
+<li>Publish <strong>Process Newsletter Opens &amp; Click IP Addresses</strong> too if you want
+the location figures on the tracking report. It is not needed to send
+mail.</li>
+</ol>
+<p>Publishing a job is reversible: unpublish it and sending stops, with the
+queue left where it is. The Newsletters screen tells you when the job is
+missing or unpublished — it shows a warning and a <strong>Check HUB cron jobs</strong>
+link — but only that one check runs, so a hub with <code>processMailings</code>
+published and a broken scheduler shows no warning at all and still sends
+nothing.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>Newsletters is for the announcement that has to reach people who are not
+looking at the hub. Members who visit weekly will see a
+<a href="../blogs/index.html">blog</a> post; the ones you actually need to reach are the ones
+who registered eighteen months ago and have not been back. If your hub has
+no such audience — a hub of thirty people who all sit in the same building —
+a mailing list you already have will do the same job with less machinery.</p>
+<p>The typical case: a hub runs a training workshop twice a year and needs to
+tell every registered member it is open, including the ones who no longer
+visit. That is one issue, one mailing to the default list, twice a year.</p>
+<p><strong>What it is not:</strong> it is not the hub's transactional mail. Account
+activation, group invitations, ticket replies and the like are sent by their
+own components and none of them come through here. It is also not a
+discussion list: recipients cannot reply to each other, and a reply to a
+newsletter goes to whatever <strong>Reply-To Email</strong> you set.</p>
+<p>The rest of this chapter is a reference. It is a large component with six
+screens and most hubs use two of them.</p>
 <p>Open it under <strong>Components &gt; Newsletters</strong>. Six sub-menu links run across the
 top: <strong>Newsletters</strong>, <strong>Mailings</strong>, <strong>Lists</strong>, <strong>Templates</strong>, <strong>Tools</strong>, and
 <strong>Campaigns</strong>.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> Mail is not sent by the browser request that starts it. The
-component queues recipients and the <code>newsletter</code> cron plugin's
-<strong>processMailings</strong> job sends them in batches. If that job is missing or
-disabled, the Newsletters screen shows a warning and a link to the Cron
-component; nothing you send will ever leave the hub.</p>
-</aside>
 <h2 id="newsletters-2">Newsletters</h2>
 <p>The list shows <strong>Name</strong>, <strong>Format</strong>, <strong>Template</strong>, <strong>Public</strong>, <strong>Sent</strong>, and
 <strong>Tracking</strong>. Click a heading to sort. Filter by a search term matched
@@ -270,6 +315,53 @@ sign-up list. The count of recipients appears under the menu as you choose.</p>
 <p>Pressing <strong>Send</strong> in the toolbar creates the mailing, queues one recipient
 row per address in batches of 10,000, and marks the newsletter as sent. The
 cron job takes it from there.</p>
+<h3 id="sending-the-first-issue">Sending the first issue</h3>
+<p>The workshop announcement from the example above, end to end, assuming
+<strong>Process Newsletter Mailings</strong> is published.</p>
+<ol>
+<li><strong>Components &gt; Newsletters &gt; Newsletters</strong>, press <strong>New</strong>. Fill in
+<strong>Name</strong> — it becomes the subject line, so write it as one — pick a
+<strong>Format</strong> and a <strong>Template</strong>, and <strong>Save</strong>. Nothing else is offered until
+the newsletter has an ID.</li>
+<li>Fill in <strong>Mailing Details</strong>: <strong>From Name</strong>, <strong>From Email</strong>,
+<strong>Reply-To Name</strong>, <strong>Reply-To Email</strong>. Left blank they fall back to the
+component options, and those fall back to the site name and the request
+host — which produces a from-address at whatever hostname the request came
+in on, and is worth not leaving to chance on mail you are about to send to
+a thousand people.</li>
+<li>Add the content: <strong>Add Primary Story</strong> for each item, with a <strong>Title</strong>, a
+<strong>Story</strong> body, and a <strong>Read More Link</strong> back to the page on the hub.
+Save.</li>
+<li>Check one newsletter in the list and press <strong>Send Test</strong>. Put in your own
+address and one colleague's. Test mail goes out immediately, with
+<code>[SENDING TEST] - </code> in front of the subject, and it does not go through
+the queue — so a test arriving is not proof the cron job is running.</li>
+<li>Read the test in a real mail client. This is the last point at which a
+mistake costs nothing.</li>
+<li>Press <strong>Send</strong>. Choose <strong>Send Now</strong> or <strong>Send Later</strong>, pick the
+<strong>Mailing List</strong>, and check the recipient count that appears under the
+menu — it is the number of people who will get this. Press <strong>Send</strong> in the
+toolbar.</li>
+<li>Go to <strong>Mailings</strong> and watch <strong>% Complete</strong> climb as the cron job works
+through the queue. If it stays at 0% past two ticks, go back to
+<a href="#before-you-write-anything-switch-the-sender-on">switching the sender on</a>.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Step 6 is the point of no return. Once the mailing is created
+the recipient rows are queued and the newsletter is marked as sent. The
+only way to stop it is <strong>Stop/Cancel</strong> on the Mailings screen, which drops
+the rows still waiting — anything the cron job has already sent has gone,
+and cannot be recalled. On a five-minute schedule with a batch limit, a
+mistake caught quickly costs you a few hundred addresses rather than all of
+them, but do not count on it.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Default List</strong> is every hub member with an email preference set
+who is not blocked, is approved and is activated, plus the guest sign-up
+list. On a hub of any size that is the largest audience you can address and
+the one people are least expecting mail from. Read the count in step 6
+before pressing the button.</p>
+</aside>
 <h2 id="mailings">Mailings</h2>
 <p>The Mailings screen lists every mailing by newsletter name, <strong>Date
 Sent/Scheduled</strong>, <strong>% Complete</strong> (sent versus queued), and <strong>Re-occur</strong>
@@ -369,7 +461,7 @@ no per-list or per-template permissions.</p>
 <a href="../../../reference/api/newsletter/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../messages/index.html" rel="prev"><span>Previous</span>Messages</a><a class="pager__next" href="../oaipmh/index.html" rel="next"><span>Next</span>OAI-PMH</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/23-newsletters.md">Edit this page on GitHub</a>

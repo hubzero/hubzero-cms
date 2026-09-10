@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/citations
 -->
 # Citations
@@ -14,11 +14,30 @@ choose, and offers it for download in BibTeX or EndNote. The catalogue is
 on the site at `/citations`; the [Hub users](../../users/06-citations.md)
 book covers browsing, submitting, and importing.
 
+The reason to run it is evidence. A hub funded by a grant is asked, once a
+year, what came of the money, and "412 downloads" is a weaker answer than a
+list of papers whose methods section names a dataset the hub holds. Citations
+is where that list lives, and the **Stats** screen turns it into the table
+that goes in the report. A hub that is never asked that question can leave
+the component alone: nothing else on the hub depends on it, and an empty
+`/citations` page does no harm.
+
+It is not a bibliography of what your members have written — that is
+[Publications](27-publications.md), which produces the work. Citations
+records other people's works that point *back* at the hub. It is also not a
+reference manager: it stores one flat record per work with a formatted
+string, and it has no notion of a personal library.
+
 Open it in the administrator interface under **Components > Citations**.
 Five sub-menu links sit at the top left: **Citations**, the list below,
 **Stats**, **Types**, **Sponsors**, and **Format**.
 
 ## Citations
+
+The list is the whole catalogue, and it is where you go to fix what someone
+else entered — a member submits a citation from the site, an import run
+brings in a `.bib` file, and both land here unpublished or wrong as often as
+not.
 
 The list shows every citation on the hub, whatever its scope. Columns are
 **ID**, **Type**, **Title** / **Author(s)**, the published state, **Year**,
@@ -51,6 +70,29 @@ column to toggle those flags.
 > strings are not defined in the component's language file.
 
 ## Creating or editing a citation
+
+Most citations arrive by import or from the site. You create one by hand
+when a colleague forwards a paper that cites a dataset the hub holds and you
+want it counted in this year's figures.
+
+To record that paper:
+
+1. Go to **Components > Citations** and press **New**.
+2. Fill in **Title/Chapter** — it is the only required field — then the
+   **Author(s)**, **Journal**, **Year**, **Volume**, **Pages** and **DOI**.
+   Leave everything that does not apply blank.
+3. Set **Type** to `article`, so the site shows it with the right fields.
+4. In the **Citation for** panel on the right, add a row: **Type**
+   *Publication*, the publication's numeric **ID**, and **Context**
+   *References this citation*.
+5. In the **Affiliation** panel, tick **Affiliated with your organization**.
+   That flag, and nothing else, is what puts the citation in the
+   **Affiliated** column of the [Stats](#stats) table.
+6. Select **Save & Close**.
+
+The citation is published straight away. If you were wrong about the
+affiliation, click the icon in the **Affiliated** column of the list to turn
+it off again; nothing about that is hard to undo.
 
 The edit screen has two columns. **Save & Close** stores the citation and
 returns to the list, **Cancel** discards changes.
@@ -97,11 +139,18 @@ The right column holds four panels.
 
 ## Stats
 
+This is the screen the annual report is copied from.
+
 **Stats** is a read-only table of citations per **Year**, split into
 **Affiliated** and **Non-affiliated** counts with a **Total** column. The
 same figures appear on the public `/citations` page.
 
 ## Types
+
+A type decides which boxes a member sees when they submit a citation from
+the site, so it is worth trimming rather than extending: a type with forty
+fields gets forty fields' worth of blanks. Leave the shipped types alone
+unless your field cites something they do not cover.
 
 A type is a kind of cited work — article, book, thesis. The list shows
 **ID**, **Alias**, and **Title**; the toolbar has **New**, **Edit**,
@@ -131,7 +180,8 @@ carries **Edit** and **Delete** links. The toolbar has only **New** and
 | Image | A URL to the sponsor's logo. |
 
 Sponsors appear on a citation only while the **Citations Sponsors** option
-is on.
+is on, which it is on a stock hub. If you have defined no sponsors the
+option costs nothing, so there is no reason to turn it off.
 
 ## Format
 
@@ -146,7 +196,11 @@ clicking a row inserts it. **Save & Close** stores the edited template.
 > creates or overwrites the single style named **Hub Custom**.
 
 Which style citations actually use is set by the **Default Format** option,
-which takes a style name.
+which takes a style name. The shipped install leaves it empty, and an empty
+value falls back to **IEEE**. That is a reasonable default for an
+engineering hub and the wrong one for most others, so if your field cites in
+APA, set it — the option is on the **Basic** tab of [Options](#options), and
+changing it restyles every citation on the site at once.
 
 ## Options
 

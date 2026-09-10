@@ -127,9 +127,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../usage/index.html">Usage</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../whatsnew/index.html">What&#x27;s New</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Wiki</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#whether-your-hub-needs-it">Whether your hub needs it</a></li>
 <li class="toc__item toc__item--l2"><a href="#wiki-pages">Wiki Pages</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-page">Creating or editing a page</a></li>
 <li class="toc__item toc__item--l2"><a href="#revisions">Revisions</a></li>
+<li class="toc__item toc__item--l2"><a href="#putting-back-a-page-somebody-broke">Putting back a page somebody broke</a></li>
 <li class="toc__item toc__item--l2"><a href="#comments">Comments</a></li>
 <li class="toc__item toc__item--l2"><a href="#plugins">Plugins</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -166,6 +168,38 @@ page keeps a full revision history, can carry comments and file attachments,
 and can be tagged. The site wiki lives at <code>/wiki</code>; groups get their own wiki
 under <code>/groups/&lt;group&gt;/wiki</code>. This chapter covers the administrator's side;
 the <a href="../../../users/wiki/index.html">Hub users</a> book covers writing and editing pages.</p>
+<h2 id="whether-your-hub-needs-it">Whether your hub needs it</h2>
+<p>The wiki is for the document that several people maintain and nobody owns —
+a protocol, a parameter table, a page of conventions that drifts as the work
+drifts. Its distinguishing feature is the revision history: every save is
+kept, you can see who changed what, and you can put back the version from
+before somebody's well-meant rewrite. Nothing else in this section can do
+that.</p>
+<p>The typical case: a lab on the hub runs an instrument and keeps a page of
+settings that three postdocs edit between them. Any one of them can fix a
+number; if one of them fixes it wrongly, the history says so and the
+previous revision is one click away.</p>
+<p>Against its siblings:</p>
+<ul>
+<li>Better than the <a href="../kb/index.html">Knowledge base</a> at anything more than one
+person keeps up to date, because members edit it without an administrator
+account and every edit is recoverable. Worse at policy: a page any logged-in
+member may edit is not where the hub's rules should live, and there is no
+approval step on an ordinary wiki page — a save is live immediately.</li>
+<li>Better than the <a href="../forum/index.html">Forum</a> at conclusions; worse at reaching
+them. A wiki page shows the current state and hides the argument that got
+there.</li>
+<li>The group wikis are where most hubs' wiki activity happens. The site wiki
+at <code>/wiki</code> is a public space any member may edit; a group wiki is bounded
+by the group's membership, which is what most people actually want.</li>
+</ul>
+<p><strong>What it is not:</strong> it is not a plain editor. Pages are written in wiki
+markup, which members have to learn, and a hub that switches on the Markdown
+parser instead changes the syntax for every page on the hub at once — see
+the note under <a href="#plugins">Plugins</a>.</p>
+<p>If nobody has asked for a wiki, the site wiki is worth leaving off and the
+group wikis worth leaving to the groups that want them. An unwatched
+public-edit wiki is the component on a hub most likely to fill with spam.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Wiki</strong>. Two
 sub-menu links sit at the top left: <strong>Wiki Pages</strong>, the list below, and
 <strong>Plugins</strong>, which opens the Plugins manager filtered to the <code>wiki</code> folder.
@@ -297,6 +331,33 @@ and created date are shown for reference and submitted unchanged.</p>
 <p><strong>Note:</strong> A page's only approved revision cannot be deleted; the screen
 refuses with &quot;Can not remove only available revision&quot;.</p>
 </aside>
+<h2 id="putting-back-a-page-somebody-broke">Putting back a page somebody broke</h2>
+<p>Following the instrument-settings example: a postdoc has overwritten the
+page with something wrong and the lab wants yesterday's version back. This is
+the job the wiki exists for, and the whole of it happens on the revisions
+screen.</p>
+<ol>
+<li>Go to <strong>Components &gt; Wiki</strong>. Filter <strong>Scope</strong> to the group's
+<code>group:&lt;id&gt;</code> if it is a group page, and find the page by title.</li>
+<li>Click the number in the page's <strong>Revisions</strong> column.</li>
+<li>Read down the list. <strong>Created</strong> and <strong>Creator</strong> say who saved what and
+when; <strong>Edit Summary</strong> says why, when the editor bothered to write one.
+The revision currently carrying the <strong>Approved</strong> mark is the one readers
+see.</li>
+<li>Click the <strong>Approved</strong> icon on the revision you want back. That revision
+becomes the page's current version and the one that held the place before
+it is un-approved.</li>
+<li>Reload the page on the site to confirm.</li>
+</ol>
+<p>Nothing is destroyed by this. The bad revision is still in the list,
+un-approved, and you can approve it again if you have picked the wrong one.
+That makes step 4 one of the safest things in this book.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> on the revisions screen is a different matter — it
+removes the revision permanently, and with it the ability to go back to it.
+Un-approving is almost always what you want instead. The screen does refuse
+to delete a page's only approved revision.</p>
+</aside>
 <h2 id="comments">Comments</h2>
 <p>The comments screen opens from a page's <strong>Comments</strong> link. It lists <strong>ID</strong>,
 <strong>Comment</strong> (truncated to 90 characters and linked to the edit form),
@@ -337,6 +398,14 @@ lifetime. Every option is listed with its values in the
 <p>A group manager can override the automatic table-of-contents mode and
 heading threshold for that group's wiki from <strong>Wiki Settings</strong> in the group's
 wiki area.</p>
+<p>Most of these are set-and-forget and the shipped values are reasonable. Two
+deserve a look. The <strong>upload paths</strong> for attachments, maths images, and
+temporary files should be left alone unless you are moving storage: changing
+one does not move the files already there, so existing attachments stop
+resolving. And <strong>page caching</strong> trades freshness for speed — with it on, an
+edit does not appear until the cached copy expires, which on a wiki people
+are actively editing looks like the save failing. It ships off, and on a
+small hub it should stay off.</p>
 <h2 id="permissions">Permissions</h2>
 <p>The <strong>Permissions</strong> tab sets who may configure, manage, create, delete,
 edit, change the state of, and edit their own wiki content, both for the
@@ -356,7 +425,7 @@ them.</p>
 <code>/api/wiki</code>; see the <a href="../../../reference/api/wiki/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ ddeb90135f</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../whatsnew/index.html" rel="prev"><span>Previous</span>What&#x27;s New</a><a class="pager__next" href="../wishlist/index.html" rel="next"><span>Next</span>Wish lists</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/39-wiki.md">Edit this page on GitHub</a>

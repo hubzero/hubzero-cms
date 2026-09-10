@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -20,6 +20,19 @@ It is unrelated to [Storefront](33-storefront.md) and [Cart](06-cart.md),
 which are the hub's actual shop. Services predates them and shares no code,
 no tables, and no checkout. If a hub does not run a job board, this component
 has nothing in it.
+
+So the decision is not made here. It is made in [Jobs](18-jobs.md), by the
+**Allow user subscriptions?** setting: turn that on and members can become
+employers, employers need subscriptions, and subscriptions land on this
+screen for someone to activate. Turn it off, or never link to the job board
+at all — which is what most hubs do — and nothing ever appears here.
+
+> **Warning:** Before you turn subscriptions on, read the rest of this
+> chapter. Cancelling a subscription never works out what is owed, and it
+> clears the pending payment as it goes, which removes the only route to
+> **Process refund** afterwards. If your hub is going to take real money from
+> employers, you will be working refunds out and reconciling them by hand,
+> outside this component.
 
 ## The screens
 
@@ -93,6 +106,39 @@ are appended to the notes with a timestamp and mailed to the member.
 > never appears afterwards. The job board's own cancel screen has the same
 > fault. Work refunds out by hand. Recorded in
 > It is recorded with the project.
+### Activating a subscription somebody has paid for
+
+An employer has chosen the Premium service and sent the department a cheque
+for three months. This is the sequence.
+
+1. **Components → Services → Subscriptions**. Set **Filter by** to
+   **Pending**. That filter does work; **Active** does not.
+2. Open the subscription. Check the service, its unit price and unit size
+   against what was actually paid — nothing here validates the amount, and
+   nothing reconciles it against a payment system.
+3. Choose **Activate / Extend this subscription**.
+4. Enter the amount in **New payment received** and the number of units.
+   Units × the service's unit size gives the number of months. On a first
+   activation those months are counted from today; on a renewal they are
+   added to the existing expiry date, so an employer renewing late does not
+   lose the time they already had. Pressing **Activate / Extend** twice adds
+   the months twice.
+5. Type an explanation into **Send user a message** if you want one. Whatever
+   you write is appended to the notes with a timestamp *and* mailed to the
+   member, so write it for them, not for your colleagues. The
+   **Administrator Notes** box is the place for anything internal.
+6. Save. The status becomes active and the employer's postings can be
+   published against their quota.
+
+> **Warning:** Step 4 is not reversible from this screen. There is no
+> "undo payment" and no way to shorten an expiry date except by editing the
+> record in the database. Check the figure before you save it.
+
+If the employer later wants out, be aware of what cancelling does before you
+press it: read the warning above, work out the refund yourself, and record it
+in **Administrator Notes** — because after the cancellation the component
+will show nothing owed and offer you no way to say otherwise.
+
 ## Options
 
 One setting, plus the usual **Permissions** tab. Both are listed in the

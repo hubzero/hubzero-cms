@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/search/breadth
 source-id: 3393
@@ -12,6 +12,11 @@ modified: 2019-09-11
 "What can I search for?" The answer is: anything you have permission to see,
 of a content type whose component is in the **Indexed** state on the
 **Searchable Components** screen.
+
+Read this page before you move a hub to Solr, and read it again the first
+time a member says search cannot find something. It is the page that says
+what is not in the index, and most of the search complaints a manager fields
+come from that list rather than from anything being broken.
 
 ## What can be indexed
 
@@ -37,6 +42,19 @@ Nothing else is in the Solr index. In particular there is no Solr indexer for
 forum posts, wiki pages, questions and answers, wishlists, events, or support
 tickets — those types have search plugins, but the plugins only serve the
 Basic engine. See [Plugins](06-plugins.md).
+
+> **Warning:** That gap is the single most common surprise on a Solr hub, and
+> nothing on any screen announces it. A hub whose members live in the group
+> forums and the wiki loses search over both the day it switches engines.
+> Nobody files a bug, because search still works — it just never returns a
+> forum post again. If you inherit a hub where "search misses half the site",
+> check **Engine** first; the fix is often to go back to
+> **Basic (default)**, not to rebuild anything.
+
+Turning a component's row off has the same effect for that type, so a
+half-configured hub can be missing resources or publications too. The list
+below the search box is the honest answer to "what is searchable here": if a
+type has no category on the results page, it is not in the index.
 
 A discovered component is not indexed until someone activates it, and an
 activated one can be emptied again, so the working list on any given hub is
@@ -70,9 +88,22 @@ The `^` values are relative weights: a hit in the URL counts ten times a hit
 in the full text, a hit in the title five times. **Phrase Fields** does the
 same for multi-word phrases, and **Phrase Slop** (default `10`) says how many
 words may sit between the terms of a phrase and still count as a match.
-Changing these changes the ranking of every result on the hub; they are in
-the [configuration reference](../../../reference/configuration/components/search.md)
+The defaults are sensible and there is no reason to touch them on a new hub.
+Changing them changes the ranking of every result on the hub at once, with no
+preview and no way to compare before and after, so if you do change them,
+change one weight, note what it was, and search for a handful of things you
+know the right answer to. They are in the
+[configuration reference](../../../reference/configuration/components/search.md)
 with the rest.
+
+> **Warning:** **Query Fields**, **Phrase Fields**, **Phrase Slop** and every
+> boost are applied in one block of code that is skipped entirely when the
+> **Tag Search Box** option is on. Turn tag search on and the hub stops
+> weighting titles and URLs above body text, as well as ignoring the
+> [boosts](04-boosting.md) — results come back in Solr's own default order.
+> **Tag Search Box** defaults to off, and that is the sensible setting unless
+> you specifically want the tag filter and are willing to give up ranking
+> control for it.
 
 > **Note:** The site search box is not a Solr query box. Lucene's special
 > characters — including `*`, `?`, `:`, `+`, `-`, quotes, and the words AND,

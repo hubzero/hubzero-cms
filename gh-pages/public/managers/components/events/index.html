@@ -166,6 +166,17 @@ registration that collects respondent details. Events appear on the site
 at <code>/events</code>. This chapter covers the administrator's side; the
 <a href="../../../users/events/index.html">Hub users</a> book covers browsing, submitting, and
 registering.</p>
+<p>A hub needs this if it runs things people turn up to: a weekly seminar, a
+summer school, a user meeting. The part that earns its keep is registration
+— set a <strong>Register by</strong> date and the event grows a form, the form collects
+whatever details you switch on, and you can download the list as a
+spreadsheet the week before. A hub whose events are announced in a mailing
+list and nowhere else does not need the component at all; leave it alone and
+<code>/events</code> simply shows an empty calendar.</p>
+<p>It is not the group calendar, and it is not a room booking system.
+<strong>Where</strong> is free text, there is no capacity limit on registration, and
+nothing checks for a clash: two events in the same room at the same hour
+both save without complaint.</p>
 <p>Open it in the administrator interface under <strong>Components &gt; Events</strong>.
 Three sub-menu links sit at the top left: <strong>Events</strong>, the list below;
 <strong>Categories</strong>, which opens the shared Categories component filtered to
@@ -178,6 +189,9 @@ with their group name), and opening one on the site redirects to the
 group's calendar.</p>
 </aside>
 <h2 id="events-2">Events</h2>
+<p>The list is the whole calendar, past and future. Its most useful filter is
+the group drop-down, because a busy hub's calendar is mostly group events
+you did not create and cannot usefully edit here.</p>
 <p>The <strong>Events Manager</strong> screen lists every event. Above the list, filter
 by a search term (matched against titles), a category, or a group, then
 press <strong>Go</strong>. The columns are:</p>
@@ -235,6 +249,31 @@ deletes their pages, their respondents, and their tags.</li>
 <li><strong>Help</strong> — the built-in help screen.</li>
 </ul>
 <h2 id="creating-or-editing-an-event">Creating or editing an event</h2>
+<p>Say the hub is starting a seminar series and you need next month's talk on
+the calendar, with sign-up, so the organiser knows how much coffee to order.</p>
+<ol>
+<li>Go to <strong>Components &gt; Events</strong> and press <strong>New</strong>.</li>
+<li>Fill in <strong>Title</strong>, pick a <strong>Category</strong>, and write the talk description
+into <strong>Activity</strong>.</li>
+<li>Put the room in <strong>Where</strong> and the organiser's address in <strong>Contact</strong>.
+The contact text is shown above the registration form as well as on the
+event page, so make it the address a registrant should write to.</li>
+<li>Under <strong>Publishing</strong>, set the <strong>Start date</strong> and <strong>End date</strong>, and set
+<strong>Time Zone</strong> to the zone the talk is actually held in. Times are stored
+in UTC and redisplayed in this zone, so a talk entered in the wrong zone
+is shown at the wrong hour to everyone.</li>
+<li>Under <strong>Registration</strong>, set <strong>Register by</strong> to the Friday before. This is
+the switch: leave it empty and the event has no Register tab at all.</li>
+<li>In <strong>Registration Fields</strong> on the right, turn on <strong>Dietary needs</strong> and
+turn off everything the organiser will not read. Every field you leave on
+is a field every attendee has to get past.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>The event is live the moment you save it — there is no draft state on this
+form, and a new event is published immediately. If it is not ready, save it
+and then press <strong>Unpublish</strong> in the list.</p>
+<p>The week before, tick the event in the list and press <strong>View Respondents</strong>,
+then <strong>Download CSV</strong> to hand the organiser <code>eventrsvp.csv</code>.</p>
 <p>The edit screen is titled <strong>Event: New</strong> or <strong>Event: Edit</strong>, with
 <strong>Save</strong>, <strong>Cancel</strong> and <strong>Help</strong> in the toolbar. There is no Save &amp;
 Close; <strong>Save</strong> returns to the list.</p>
@@ -342,6 +381,9 @@ field is always shown regardless of the toggle — saving forces it back
 on.</p>
 </aside>
 <h2 id="pages">Pages</h2>
+<p>Pages are for the events that need more than a paragraph — a two-day
+workshop with an agenda, a directions page, and a list of speakers. A single
+seminar does not need any.</p>
 <p>An event can carry extra pages — an agenda, directions, a speaker list —
 which appear as tabs beside <strong>Overview</strong> on the event's page on the site.
 Reach them with <strong>Add Page</strong>, or by clicking the &quot;<em>n</em> Page(s)&quot; link in
@@ -352,6 +394,9 @@ page form asks for a <strong>Title</strong> (required), an <strong>Alias</strong
 alphanumeric, no spaces) and <strong>Page text</strong> (required, in the editor), and
 shows the ordering and creation details beside it.</p>
 <h2 id="respondents">Respondents</h2>
+<p>This is the attendee list, and the CSV download is the point of it — see
+the seminar walkthrough under <a href="#creating-or-editing-an-event">Creating or editing an
+event</a>.</p>
 <p><strong>View Respondents</strong> opens the registrations for the checked event. The
 list shows each respondent's <strong>Name</strong> (linking to the full submission),
 <strong>Email</strong>, <strong>Registered</strong> date, <strong>Special needs</strong> (dietary text and a
@@ -361,6 +406,19 @@ name with the box above the list.</p>
 columns Name, Email, Telephone, Affiliation, Arrival, Departure,
 Disability, Dietary, Dinner and Registered; <strong>Delete</strong>, which permanently
 removes the checked registrations; and <strong>Cancel</strong>.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> here is permanent and there is no undo. It also
+destroys the only record you have that someone signed up. Download the CSV
+before you tidy a list.</p>
+</aside>
+<aside class="admonition admonition--caution">
+<p><strong>Caution:</strong> The CSV and the per-respondent view carry dietary
+requirements, disability contact requests, gender and racial background,
+because those are fields the registration form can be told to collect.
+That is personal data about identifiable people. Turn off the fields the
+organiser will not use, and treat the download the way your institution
+requires you to treat any other file of that kind.</p>
+</aside>
 <p>Clicking a name shows every field the respondent submitted, including
 affiliation, position, location, phone and fax, website, racial
 background, gender, arrival and departure, disability and dietary needs,
@@ -372,6 +430,10 @@ rendered as sort links, but the respondents table has no such columns
 and sorting on them fails. Sort on <strong>Email</strong> or <strong>Registered</strong> instead.</p>
 </aside>
 <h2 id="configuration">Configuration</h2>
+<p>This is the screen that actually works. Set anything you want to take effect
+here, not in <a href="#options">Options</a>. Half of its settings do nothing either,
+which the table below marks; the ones that do matter on a hub with a real
+calendar are <strong>Start Page ?</strong> and <strong>First day</strong>.</p>
 <p>The <strong>Configuration</strong> sub-menu link opens the component's own settings,
 stored separately from the Options form:</p>
 <table>
@@ -450,7 +512,7 @@ and a single event by ID. Both are documented in the
 <a href="../../../reference/api/events/index.html">API reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../developer/index.html" rel="prev"><span>Previous</span>Developer</a><a class="pager__next" href="../feedback/index.html" rel="next"><span>Next</span>Feedback</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/15-events.md">Edit this page on GitHub</a>

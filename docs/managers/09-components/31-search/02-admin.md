@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/search/admin
 source-id: 3392
@@ -12,6 +12,19 @@ modified: 2019-09-11
 **Components > Search** has four tabs when the engine is Solr: **Overview**,
 **Searchable Components**, **Index Blacklist**, and **Boosts**. Every tab
 carries an **Options** button that opens the same component configuration.
+
+You come here for one of three reasons: search is missing something and you
+want to know whether it is in the index, a new content type needs indexing,
+or the whole index needs rebuilding after a bulk import. Nothing on these
+screens has to be visited on a routine. A Solr hub that is behaving needs no
+attention here from one month to the next.
+
+> **Note:** These screens are not the search settings. Everything that
+> changes how a query behaves — the engine, the Solr connection, the field
+> weights, the batch size, the commit window, tag search — is behind the
+> **Options** button, listed in the
+> [configuration reference](../../../reference/configuration/components/search.md).
+> These four tabs only manage the contents of the index.
 
 ## Overview
 
@@ -27,6 +40,11 @@ carries an **Options** button that opens the same component configuration.
 The toolbar has one action beyond **Options**: **Optimize Index**, which asks
 Solr to defragment its index and reports success or failure. It is safe to
 run at any time and is not needed on a schedule.
+
+**Last Document Insert** is the number to read. On a working hub it moves
+whenever anyone saves anything. If it reads *3 months ago* on a busy hub, the
+index has stopped being updated — go to the **Search - Solr** plugin first,
+as described in [Maintaining the index](05-index.md).
 
 > **Note:** The status panel calls Solr on every page load. If Solr is down,
 > the screen still renders, with the failure message in place of the check.
@@ -51,6 +69,14 @@ In the list itself, the **Active?** icon toggles the component between
 **Not Indexed** and **Indexed** — selecting it on a **Not Indexed** row starts
 the batch index. An **Indexed** row also carries a **Rebuild Index** button
 that runs the same batch pass again over existing documents.
+
+Of the four toolbar buttons, only **Discover Searchable Components** is
+harmless. **Delete component(s) results** and **Remove component(s)** both
+take a content type out of site search the moment you press them, with no
+confirmation, and both are recoverable only by indexing that type again from
+scratch — which on a large hub is an hour's work, not a click. Read the two
+rows above carefully before ticking anything; they sound alike and do
+different things.
 
 Selecting a component's title opens *Solr Search: Edit Searchable Component*,
 which has a **Title** (the label used in the site's category list), a
@@ -83,9 +109,16 @@ or reports it as not responding. No hub-side action is needed afterwards.
 
 ## Cron events
 
+Indexing on a Solr hub is immediate, not scheduled, so a healthy hub needs no
+cron job for search at all. The one worth adding is a periodic full re-index,
+as a safety net against records that were saved while Solr was down.
+
 **Cron - Search** (`plg_cron_search`) contributes two events to
-[Cron](../12-cron.md). Add either from **Components > Cron > New**, choosing
-it under **Event**:
+[Cron](../12-cron.md). A cron job is a row you create; enabling the plugin
+does not create one, and nothing runs at all unless the hub is being ticked —
+both explained in
+[Scheduled tasks](../../03-maintenance/05-cron.md). Add either event from
+**Components > Cron > New**, choosing it under **Event**:
 
 | Event | What it does |
 |---|---|
@@ -102,3 +135,13 @@ hub that is nightly or weekly, not by the minute.
 > to `#__search_queue`, so the event runs, finds an empty queue, and returns.
 > Scheduling it does nothing. Indexing is now immediate — see
 > [Maintaining the index](05-index.md).
+
+That dead queue is worth understanding, because it is the reason a plausible
+piece of the hub does nothing. Working the queue is the only thing in the
+tree that raises `search.onIndex`, and seventeen search plugins — including
+the forum, wiki, questions and wishlist ones — still implement a handler for
+it. Because the queue is never filled, none of those handlers is ever called.
+They look like Solr indexers in the plugin manager and in the source, and
+they are not: they are the remains of the old design. What actually indexes
+content is the pair of plugins described in
+[Maintaining the index](05-index.md#how-a-change-reaches-the-index).

@@ -111,6 +111,8 @@
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../saml/index.html">SAML</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Search</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#which-hubs-need-this-section">Which hubs need this section</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-solr-on-is-not-one-switch">Turning Solr on is not one switch</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-solr-search-is-made-of">What Solr search is made of</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 </ol><ul class="tree">
@@ -174,6 +176,42 @@ the Solr engine. A hub running Basic search has no index to manage:
 <strong>Components &gt; Search</strong> shows a single <strong>Site Map</strong> screen, contributed by
 the <strong>Search - Sitemap</strong> plugin, where you can add hand-written entries for
 queries about the hub's structure rather than its content.</p>
+<h2 id="which-hubs-need-this-section">Which hubs need this section</h2>
+<p>Most do not. Basic search is the default, needs no other software, no index,
+and no scheduled job, and it covers sixteen content types — including forum
+posts, wiki pages, questions and wishlist items — plus a hand-written site
+map. A hub of a few hundred resources will not outgrow it.</p>
+<p>Read the rest of this section if you are considering Solr, or if you have
+inherited a hub that already runs it. The usual reason to move is ranking and
+faceting: a hub with several thousand resources and publications, where
+members complain that the right result is on the third page and there is no
+way to narrow by content type. That hub is the running example through these
+chapters.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Moving to Solr <strong>narrows</strong> what search covers. Only eleven
+components put documents in the Solr index. Forum posts, wiki pages,
+questions and answers, wishlists, calendar events and support tickets have
+Basic search plugins but no Solr indexer, so on a Solr hub they stop being
+findable altogether. If your members search the forum, that alone is a
+reason to stay on Basic. See <a href="breadth/index.html">Breadth</a>.</p>
+</aside>
+<h2 id="turning-solr-on-is-not-one-switch">Turning Solr on is not one switch</h2>
+<p>This is the part managers get wrong, because the <strong>Overview</strong> screen reports a
+healthy connection long before search actually works. Setting <strong>Engine</strong> to
+<strong>Apache Solr</strong> changes which controller answers <code>/search</code> and nothing else.
+All of these have to be true as well:</p>
+<ol>
+<li>A Solr service is installed, running, and reachable at the configured host
+and port.</li>
+<li>The <strong>Search - Solr</strong> plugin (<code>plg_search_solr</code>) is enabled. <strong>It ships
+disabled.</strong> Without it, nothing a member saves ever reaches the index.</li>
+<li>Each content type has been discovered and set to <strong>Indexed</strong>, and its first
+full index has finished.</li>
+<li>You accept that the types listed in the warning above are now unsearchable.</li>
+</ol>
+<p>A hub that has done step 1 and stopped has a search box that returns nothing
+and an administrator screen with a green tick on it. <a href="install/index.html">Installation and
+first-time configuration</a> walks the whole sequence.</p>
 <h2 id="what-solr-search-is-made-of">What Solr search is made of</h2>
 <p>The <strong>index</strong> holds one document for each searchable record on the hub. What
 goes into it is decided by the models that implement
@@ -229,7 +267,7 @@ and phrase field weights, is listed in the
 <a href="../../../reference/configuration/components/search/index.html">configuration reference</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../saml/index.html" rel="prev"><span>Previous</span>SAML</a><a class="pager__next" href="install/index.html" rel="next"><span>Next</span>Installation and first-time configuration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/31-search/README.md">Edit this page on GitHub</a>

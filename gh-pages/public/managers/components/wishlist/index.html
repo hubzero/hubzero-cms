@@ -132,6 +132,7 @@
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-list">Creating or editing a list</a></li>
 <li class="toc__item toc__item--l2"><a href="#wishes">Wishes</a></li>
 <li class="toc__item toc__item--l2"><a href="#creating-or-editing-a-wish">Creating or editing a wish</a></li>
+<li class="toc__item toc__item--l3"><a href="#dealing-with-one-wish">Dealing with one wish</a></li>
 <li class="toc__item toc__item--l2"><a href="#comments">Comments</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-wish-lists-appear-on-the-site">Where wish lists appear on the site</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -168,6 +169,25 @@ and write an implementation plan. The hub has one general list at
 <code>/wishlist</code>, and a resource, a group, or a member profile can each have a
 list of its own. This chapter covers the administrator interface; the
 <a href="../../../users/wishlist/index.html">Hub users</a> book covers posting and voting.</p>
+<p>The reason to run one is that members will ask for things whether or not you
+give them somewhere to ask. A wish list turns &quot;can you add a bigger memory
+option to the solver tool&quot; — which otherwise arrives as a support ticket, an
+email, or nothing at all — into a public item other members can vote on, so
+you can see which requests have twenty people behind them and which have one.
+A hub that already knows what it is building next does not need one.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This is not <a href="../support/index.html">Support</a>. A wish is something that
+does not exist yet and might never; a ticket is something that is broken
+and someone is responsible for. They are separate queues with separate
+permissions, and the confusion runs both ways — members file feature
+requests as tickets and bug reports as wishes. The <strong>Support - Wishlist</strong>
+plugin exists precisely so a wish can be moved to the ticket queue when it
+turns out to be the other kind.</p>
+</aside>
+<p>Most of the day-to-day work happens on the site, not here: list owners rank,
+accept and plan wishes from the list's own pages. These administrator screens
+are for the things the site cannot do — creating a list in the first place,
+moving a wish between lists, and clearing up.</p>
 <p>Open it under <strong>Components &gt; Wishlists</strong>. Three sub-menu links sit at the
 top left: <strong>Lists</strong>, <strong>Wishes</strong>, and <strong>Comments</strong>. You need the
 <strong>Manage</strong> permission on the component to open any of them.</p>
@@ -242,6 +262,13 @@ and return, or <strong>Cancel</strong> to discard.</p>
 with <em>user</em>. Member profile lists are created by the site when a member
 first uses one, not from this form.</p>
 </aside>
+<p>In practice you will rarely create a list here. Nothing is seeded at install,
+but the first visit to <code>/wishlist</code> creates the site-wide list itself, public,
+with the title <code>general #1</code>; a group's or a resource's list is created the
+same way the first time its tab is opened. So the usual first job on this
+screen is not <strong>New</strong> — it is opening that auto-created list and giving it a
+title and description that read like something a member would want to post
+to.</p>
 <h2 id="wishes">Wishes</h2>
 <p>The Wishes screen lists wishes across every list, or the wishes of one
 list when you arrive from a list's Wishes count. Columns are <strong>ID</strong>,
@@ -326,6 +353,35 @@ wish.</p>
 <strong>Created</strong>, its <strong>Creator</strong>, and its computed <strong>Ranking</strong>. Press <strong>Save</strong>
 to save and stay on the form, <strong>Save &amp; Close</strong> to return to the list, or
 <strong>Cancel</strong>.</p>
+<h3 id="dealing-with-one-wish">Dealing with one wish</h3>
+<p>A member asks for a bigger memory option on the solver tool. Twelve people
+have voted it up and it has been sitting <strong>Pending</strong> for a month. What you do
+with it from here:</p>
+<ol>
+<li><strong>Components &gt; Wishlists &gt; Wishes</strong>. Leave <strong>Filter status</strong> at
+<strong>- Status -</strong> and search for the wish, or arrive through the
+<strong>Wishes</strong> count on its list.</li>
+<li>Open it. The panel beside the form shows the computed <strong>Ranking</strong> — the
+number the site sorts by, made up of the votes and the owners' importance
+and effort rankings. That is the evidence for whether this is worth
+doing.</li>
+<li>If you are going to do it, tick <strong>Accepted</strong>, set <strong>Assigned to</strong> to one
+of the list's owners, and give <strong>Due</strong> a date. Write what you intend to
+do into the plan's <strong>Description</strong>.</li>
+<li>If you are not going to do it, set <strong>Status</strong> to <strong>Rejected</strong> and say why
+in the plan. Rejecting is not deleting: the wish stays visible with its
+votes, which is the point — the next person to ask can see it was
+considered.</li>
+<li>When the work ships, set <strong>Status</strong> to <strong>Granted</strong>.</li>
+</ol>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Editing a plan that already exists overwrites it unless you tick
+<strong>New revision</strong>, which keeps the old text as a revision instead. On a wish
+several people have worked on, tick it.</p>
+</aside>
+<p>Do not use <strong>Delete</strong> for a wish you have turned down. It is permanent, it
+takes the votes and comments with it, and it makes the list look as though
+nobody ever asked.</p>
 <h2 id="comments">Comments</h2>
 <p>The Comments screen lists the comments on one wish, replies indented
 beneath the comment they answer. Columns are <strong>ID</strong>, <strong>Comment</strong> (the
@@ -381,7 +437,7 @@ that list regardless of these settings, and a member may always edit a
 wish they submitted.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 6efbbe32ed</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../wiki/index.html" rel="prev"><span>Previous</span>Wiki</a><a class="pager__next" href="../../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/40-wishlist.md">Edit this page on GitHub</a>

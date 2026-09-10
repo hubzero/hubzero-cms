@@ -94,7 +94,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../dataviewer/index.html">DataViewer</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Developer</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-administrator-screen">The administrator screen</a></li>
+<li class="toc__item toc__item--l3"><a href="#invalidating-a-leaked-token">Invalidating a leaked token</a></li>
 <li class="toc__item toc__item--l3"><a href="#the-application-form">The application form</a></li>
 <li class="toc__item toc__item--l3"><a href="#the-hub-account-record">The Hub Account record</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
@@ -176,6 +178,20 @@ applications members have registered, to revoke an application's tokens or
 reset its secret when something goes wrong, and to keep the one automatic
 record it creates for itself from being deleted. It creates no content and
 has no front-page presence.</p>
+<p>The thing that brings a manager here is almost always a credential. A student
+writes a script that pulls their group's resources over the API, registers an
+application for it, and later pastes the token into a repository that turns
+out to be public. Somebody has to invalidate that token, and this is the only
+screen that can.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>This is not how members sign in to the hub, and it is not connected to the
+hub's own authentication. The applications listed here are programs, not
+people; deleting one removes nobody's account. It is also not documentation
+you maintain — the API documentation the component serves is generated from
+the source tree on every rebuild, so there is nothing to write and nothing to
+keep current.</p>
+<p>Nothing here needs configuring on a new hub. The component ships with one
+setting and one automatically created record, and both defaults are right.</p>
 <h2 id="the-administrator-screen">The administrator screen</h2>
 <p><strong>Components → Developer</strong> has a single screen, <strong>Developer: Applications</strong>.
 It lists every registered application with <strong>ID</strong>, <strong>Name</strong>, <strong>State</strong>,
@@ -238,6 +254,31 @@ them, on one click. Unpublish first if you are not certain.</p>
 <p>Reaching the screen needs <code>core.manage</code> on <code>com_developer</code>. Editing, deleting
 and changing state check <code>core.edit</code>, <code>core.delete</code> and <code>core.edit.state</code>
 respectively.</p>
+<h3 id="invalidating-a-leaked-token">Invalidating a leaked token</h3>
+<p>Following the example above — a member reports that a token of theirs is
+public:</p>
+<ol>
+<li>Open <strong>Components → Developer</strong>.</li>
+<li>Find the application the token was issued against. <strong>Created By</strong> names the
+member who registered it; there is no search box, so sort on that column
+or on <strong>Name</strong>.</li>
+<li>Check who else uses it. An application registered by one student for one
+script has one user; an application several groups authorised has many, and
+the next step signs all of them out.</li>
+<li>Tick it and press <strong>Revoke Application Tokens</strong>, then confirm. Every access
+token, refresh token and authorization code the application holds is
+deleted, and the leaked one stops working immediately.</li>
+<li>If the application's <strong>Client Secret</strong> was in the same leak, press <strong>Reset
+Client Secret</strong> as well, and tell the member to copy the new client ID and
+secret out of the form. Until they do, the application cannot authorise
+anyone.</li>
+<li>If the application should not exist at all, <strong>Unpublish</strong> it. Do not reach
+for <strong>Delete</strong> in a hurry; see the warning above.</li>
+</ol>
+<p>Steps 4 and 5 cannot be undone and take effect at once, on a live hub. Neither
+is destructive in the sense that anything is lost — the member re-authorises,
+the script gets a new token — but people who were using the application will
+notice within seconds.</p>
 <h3 id="the-application-form">The application form</h3>
 <p><strong>New</strong> and <strong>Edit</strong> open the same form.</p>
 <table>
@@ -420,6 +461,9 @@ per-application rather than hub-wide, and delete
 <code>app/cache/api/documentation.json</code> to force the documentation to regenerate.
 Recorded in the project record.</p>
 <h2 id="what-does-not-work">What does not work</h2>
+<p>Five screens in this component are placeholders. They render a line of text
+saying what they were meant to be, and nothing in the interface links to any
+of them.</p>
 <ul>
 <li><code>/developer/web</code> and <code>/developer/tools</code> render <em>TODO: Web Development</em> and
 <em>TODO: Tool Development</em>. Nothing links to either: the Web Development panel
@@ -435,7 +479,7 @@ commented out of the tab list.</li>
 promise anyone an API console or a status page.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../dataviewer/index.html" rel="prev"><span>Previous</span>DataViewer</a><a class="pager__next" href="../events/index.html" rel="next"><span>Next</span>Events</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/14-developer.md">Edit this page on GitHub</a>

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -18,6 +18,24 @@ applications members have registered, to revoke an application's tokens or
 reset its secret when something goes wrong, and to keep the one automatic
 record it creates for itself from being deleted. It creates no content and
 has no front-page presence.
+
+The thing that brings a manager here is almost always a credential. A student
+writes a script that pulls their group's resources over the API, registers an
+application for it, and later pastes the token into a repository that turns
+out to be public. Somebody has to invalidate that token, and this is the only
+screen that can.
+
+## What it is not
+
+This is not how members sign in to the hub, and it is not connected to the
+hub's own authentication. The applications listed here are programs, not
+people; deleting one removes nobody's account. It is also not documentation
+you maintain — the API documentation the component serves is generated from
+the source tree on every rebuild, so there is nothing to write and nothing to
+keep current.
+
+Nothing here needs configuring on a new hub. The component ships with one
+setting and one automatically created record, and both defaults are right.
 
 ## The administrator screen
 
@@ -58,6 +76,33 @@ Neither can be undone.
 Reaching the screen needs `core.manage` on `com_developer`. Editing, deleting
 and changing state check `core.edit`, `core.delete` and `core.edit.state`
 respectively.
+
+### Invalidating a leaked token
+
+Following the example above — a member reports that a token of theirs is
+public:
+
+1. Open **Components → Developer**.
+2. Find the application the token was issued against. **Created By** names the
+   member who registered it; there is no search box, so sort on that column
+   or on **Name**.
+3. Check who else uses it. An application registered by one student for one
+   script has one user; an application several groups authorised has many, and
+   the next step signs all of them out.
+4. Tick it and press **Revoke Application Tokens**, then confirm. Every access
+   token, refresh token and authorization code the application holds is
+   deleted, and the leaked one stops working immediately.
+5. If the application's **Client Secret** was in the same leak, press **Reset
+   Client Secret** as well, and tell the member to copy the new client ID and
+   secret out of the form. Until they do, the application cannot authorise
+   anyone.
+6. If the application should not exist at all, **Unpublish** it. Do not reach
+   for **Delete** in a hurry; see the warning above.
+
+Steps 4 and 5 cannot be undone and take effect at once, on a live hub. Neither
+is destructive in the sense that anything is lost — the member re-authorises,
+the script gets a new token — but people who were using the application will
+notice within seconds.
 
 ### The application form
 
@@ -224,6 +269,10 @@ per-application rather than hub-wide, and delete
 Recorded with the project.
 
 ## What does not work
+
+Five screens in this component are placeholders. They render a line of text
+saying what they were meant to be, and nothing in the interface links to any
+of them.
 
 - `/developer/web` and `/developer/tools` render *TODO: Web Development* and
   *TODO: Tool Development*. Nothing links to either: the Web Development panel

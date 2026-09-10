@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -18,6 +18,20 @@ no admin views, and its install migration deliberately removes it from the
 **Components** menu. Everything a manager decides about it is decided
 somewhere else — in the Plugin Manager, in a menu item, or in a module — and
 those three places are what this chapter covers.
+
+Almost every hub wants it, and it takes about five minutes: enable the
+plugins for the content types you publish, put a **What's New** menu item in
+the main menu, and optionally drop the module on the front page. A hub that
+publishes a handful of resources a month gets a page members and outside
+readers can subscribe to, without anybody writing a newsletter. If your hub
+publishes nothing on a regular cadence, skip it — an empty What's New page is
+worse than none.
+
+> **Note:** What's New is not an activity feed and not a news section. It
+> lists only items *created* in the period, from six components, using each
+> component's own publish state and access rules. It says nothing about
+> edits, comments, sign-ups, forum replies or anything else a member did, and
+> it is not somewhere you write announcements.
 
 ## What it aggregates
 
@@ -84,13 +98,17 @@ active menu item's setting, then from the built-in default of `month`.
 
 ## What a manager configures
 
-Three things, none of them in this component's own screens.
+Three things, none of them in this component's own screens. All three are
+reversible in a click, and none of them touches content: disabling a plugin
+hides a category, deleting the menu item hides the page, removing the module
+empties a template position. Nothing here can damage anything.
 
 **Which plugins run.** **Extensions > Plugins**, filtered to the `whatsnew`
 folder. See [Plugins](../10-extensions/03-plugins.md).
 
 **A menu item.** Create one of type **What's New > Display results**; see
-[Menus](../07-menus.md). Its **Cat/Period** field takes exactly the string
+[Menus](../07-menus.md). Without one the page still answers at `/whatsnew`,
+but nothing on the hub links to it and nobody finds it. Its **Cat/Period** field takes exactly the string
 described above — `month`, `year`, `c_2023`, or a category prefix such as
 `resources:quarter` — and becomes the page's starting period. Leave it blank
 for the past month across all categories.
@@ -107,8 +125,28 @@ a template position. Its parameters:
 | Tags | Show or hide each item's tags. |
 | Cache, Cache time | Off by default; cache time is in minutes. |
 
-Place it under **Extensions > Modules**; see
+Place it under **Extensions** > **Module Manager**; see
 [Modules](../10-extensions/01-modules.md).
+
+### Setting it up
+
+Say the hub publishes resources and the occasional knowledge base article,
+and you want a *What's New* entry in the main menu covering the past month.
+
+1. Go to **Extensions > Plugins** and filter the folder to `whatsnew`.
+   Disable the plugins for content types this hub does not publish — on this
+   hub, Events and Wiki. Their categories and feeds disappear at once.
+2. Go to **Menus** and open the main menu.
+3. Select **New**, and for the type choose **What's New > Display results**.
+4. Leave **Cat/Period** blank. That gives the past month across every enabled
+   category, which is what you want; fill it in only to pin the page to one
+   category or a fixed year.
+5. Save, then open `/whatsnew` on the site and check that the **Category**
+   list holds only the types you left enabled, with sensible counts.
+
+If a category shows a count of zero, that component has published nothing in
+the period — try **Time period** set to a year before concluding anything is
+wrong.
 
 ## Feeds
 

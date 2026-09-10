@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6efbbe32ed
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/wishlist
 -->
 # Wish lists
@@ -13,6 +13,26 @@ and write an implementation plan. The hub has one general list at
 `/wishlist`, and a resource, a group, or a member profile can each have a
 list of its own. This chapter covers the administrator interface; the
 [Hub users](../../users/29-wishlist.md) book covers posting and voting.
+
+The reason to run one is that members will ask for things whether or not you
+give them somewhere to ask. A wish list turns "can you add a bigger memory
+option to the solver tool" — which otherwise arrives as a support ticket, an
+email, or nothing at all — into a public item other members can vote on, so
+you can see which requests have twenty people behind them and which have one.
+A hub that already knows what it is building next does not need one.
+
+> **Note:** This is not [Support](34-support.md). A wish is something that
+> does not exist yet and might never; a ticket is something that is broken
+> and someone is responsible for. They are separate queues with separate
+> permissions, and the confusion runs both ways — members file feature
+> requests as tickets and bug reports as wishes. The **Support - Wishlist**
+> plugin exists precisely so a wish can be moved to the ticket queue when it
+> turns out to be the other kind.
+
+Most of the day-to-day work happens on the site, not here: list owners rank,
+accept and plan wishes from the list's own pages. These administrator screens
+are for the things the site cannot do — creating a list in the first place,
+moving a wish between lists, and clearing up.
 
 Open it under **Components > Wishlists**. Three sub-menu links sit at the
 top left: **Lists**, **Wishes**, and **Comments**. You need the
@@ -68,6 +88,14 @@ and return, or **Cancel** to discard.
 > with *user*. Member profile lists are created by the site when a member
 > first uses one, not from this form.
 
+In practice you will rarely create a list here. Nothing is seeded at install,
+but the first visit to `/wishlist` creates the site-wide list itself, public,
+with the title `general #1`; a group's or a resource's list is created the
+same way the first time its tab is opened. So the usual first job on this
+screen is not **New** — it is opening that auto-created list and giving it a
+title and description that read like something a member would want to post
+to.
+
 ## Wishes
 
 The Wishes screen lists wishes across every list, or the wishes of one
@@ -111,6 +139,36 @@ The panel beside the form shows the wish's **ID**, when it was
 **Created**, its **Creator**, and its computed **Ranking**. Press **Save**
 to save and stay on the form, **Save & Close** to return to the list, or
 **Cancel**.
+
+### Dealing with one wish
+
+A member asks for a bigger memory option on the solver tool. Twelve people
+have voted it up and it has been sitting **Pending** for a month. What you do
+with it from here:
+
+1. **Components > Wishlists > Wishes**. Leave **Filter status** at
+   **- Status -** and search for the wish, or arrive through the
+   **Wishes** count on its list.
+2. Open it. The panel beside the form shows the computed **Ranking** — the
+   number the site sorts by, made up of the votes and the owners' importance
+   and effort rankings. That is the evidence for whether this is worth
+   doing.
+3. If you are going to do it, tick **Accepted**, set **Assigned to** to one
+   of the list's owners, and give **Due** a date. Write what you intend to
+   do into the plan's **Description**.
+4. If you are not going to do it, set **Status** to **Rejected** and say why
+   in the plan. Rejecting is not deleting: the wish stays visible with its
+   votes, which is the point — the next person to ask can see it was
+   considered.
+5. When the work ships, set **Status** to **Granted**.
+
+> **Note:** Editing a plan that already exists overwrites it unless you tick
+> **New revision**, which keeps the old text as a revision instead. On a wish
+> several people have worked on, tick it.
+
+Do not use **Delete** for a wish you have turned down. It is permanent, it
+takes the votes and comments with it, and it makes the list look as though
+nobody ever asked.
 
 ## Comments
 

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/cron
 source-id: 3378
@@ -16,7 +16,22 @@ of the jobs a hub can schedule and the settings each one takes.
 How the scheduler works — the tick, the `muse cron:jobs` command, the job
 list, the edit form, and the IP whitelist — is covered in
 [Scheduled tasks](../03-maintenance/05-cron.md). Read that first. Nothing in
-this chapter is a substitute for it.
+this chapter is a substitute for it, and in particular that chapter carries
+the fact that makes this one matter: **a new hub has three jobs and only one
+of them is published**, so every feature listed below is doing nothing until
+somebody adds a job for it.
+
+Use this chapter the other way round from most of the book. You do not read
+it through. You arrive at it having noticed that something on the hub never
+happens — the digest email nobody gets, the group membership that never
+expires, the DOI that is never issued — find the event in the tables below,
+check that its plugin is enabled, and then go to
+[Scheduled tasks](../03-maintenance/05-cron.md) to create the job.
+
+> **Note:** Adding a job is reversible and cheap: unpublish it and it stops.
+> The button to be careful with is **Run**, which fires the selected job
+> immediately — on any of the mail-sending events below, that means real
+> messages to real addresses the moment you press it.
 
 ## Where the jobs come from
 
@@ -46,7 +61,7 @@ with the plugins that listen for it.
 
 ## The jobs
 
-Fourteen cron plugins ship with the CMS. The **Event** column gives the name
+Fourteen cron plugins ship with the hub. The **Event** column gives the name
 as it appears in the drop-down; the identifier in parentheses is what is
 stored on the job.
 
@@ -74,6 +89,10 @@ delivered.
 | Email instructor digest (`emailInstructorDigest`) | Mails course instructors a digest | **Select course to receive emails** — a course, or *All* |
 
 ### Cron - Forum
+
+**Ships disabled.** Its event is not on the **Event** menu until you enable
+the plugin at **Extensions → Plugins**. It is the only cron plugin in this
+state; the other thirteen are enabled on a new hub.
 
 | Event | What it does | Parameters |
 |---|---|---|
@@ -135,10 +154,25 @@ archived on approval and the job is unnecessary.
 
 ### Cron - Search
 
+Both events matter only on a hub whose **Engine** is **Apache Solr**. On a
+Basic hub there is no index, and neither event does anything.
+
 | Event | What it does | Parameters |
 |---|---|---|
-| Process Queue (`processQueue`) | Indexes the content queued since the last run | none |
-| Run Full Index (`runFullIndex`) | Rebuilds the whole search index | none |
+| Process Queue (`processQueue`) | Nothing. See the warning below | none |
+| Run Full Index (`runFullIndex`) | Re-indexes every component in the **Indexed** state, in batches | none |
+
+**Run Full Index** is the one worth scheduling, and only as a safety net:
+indexing on a Solr hub is immediate, so a healthy hub does not need it.
+Nightly or weekly is right; anything more frequent will not finish before it
+starts again.
+
+> **Warning:** **Process Queue** does nothing on any hub. It reads
+> `#__search_queue`, and nothing in this tree ever writes to that table, so
+> the event finds an empty queue and returns. It is the last live piece of a
+> retired design in which saves were queued and indexed later. Scheduling it
+> is harmless and pointless. See
+> [Maintaining the index](31-search/05-index.md).
 
 ### Cron - Storefront
 

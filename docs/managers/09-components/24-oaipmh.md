@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -16,6 +16,47 @@ harvester complains.
 The protocol it speaks is the Open Archives Initiative Protocol for Metadata
 Harvesting, version 2.0. A harvester asks the endpoint for a list of records
 and comes back later for whatever has changed; the hub answers in XML.
+
+The hubs that care are the ones whose work is meant to be found from outside.
+A group publishes datasets on the hub and the university library wants them in
+the institutional discovery service alongside everything else the department
+produces; the librarian asks for "an OAI endpoint" and a base URL. That is
+this component, and the answer is one URL and a few settings. A hub that
+publishes nothing, or whose publications are for its own members, can leave it
+alone.
+
+## What it is already doing
+
+It is not something you switch on. A fresh install enables the component and
+both of its content plugins, so the endpoint answers from the first day the
+hub is up, and anything that reaches it sees:
+
+- every **published** version of every [publication](27-publications.md), and
+- every **published**, standalone [resource](29-resources.md),
+
+as Dublin Core metadata — title, authors, description, date, subject tags,
+type, publisher and an identifier that resolves back to the record. No files
+are served: a harvester gets the catalogue entry and a link, and following the
+link puts it back in front of the hub's own access rules.
+
+> **Warning:** *Published* is the only test either plugin applies. Neither
+> looks at a record's **Access** setting, so the metadata of a publication or
+> resource that is published but restricted to registered members, or to one
+> group, is served to any anonymous harvester: title, authors, abstract, tags
+> and the record's address. The files behind it stay protected, but the
+> catalogue entry does not. If the hub has restricted publications whose
+> existence is itself sensitive, disable the plugins below. Recorded in
+> a record kept with the project.
+
+If that is not wanted, disable the two `oaipmh` plugins under **Extensions →
+Plugins**. The endpoint keeps answering, but with nothing in it.
+
+## What it is not
+
+This is not a search engine feed and not a sitemap; ordinary web crawlers do
+not read it. It is not a backup or an export of the hub's content either — it
+carries metadata, not files, and it has no import side. And it is not where
+DOIs are minted; the component reports the DOI a publication already has.
 
 ## The administrator screens
 
@@ -67,9 +108,11 @@ https://yourhub.org/oaipmh?verb=ListRecords&metadataPrefix=oai_dc&set=publicatio
 https://yourhub.org/oaipmh?verb=GetRecord&metadataPrefix=oai_dc&identifier=https://yourhub.org/publications/42/1
 ```
 
-A record's identifier is its own URL — `/publications/{id}/{version}` or
-`/resources/{id}` — and `GetRecord` also accepts the record's DOI, with or
-without the resolver prefix in front of it.
+A record's identifier is a resolvable address. Where the record has a DOI, it
+is the DOI with the resolver in front of it; where it does not, it is the
+record's own URL on the hub — `/publications/{id}/{version}` or
+`/resources/{id}`. `GetRecord` accepts either form, and accepts a DOI with or
+without the resolver prefix.
 
 Opening any of these in a browser shows a readable page rather than raw XML:
 the response carries an XSL stylesheet, served from `/oaipmh/stylesheet`,
@@ -113,18 +156,24 @@ hostname.
 
 **Earliest Datestamp** is the date the repository claims nothing predates.
 It ships as `2012-02-12 00:00:00`, which is a placeholder, not a fact about
-your hub. Set it to something true; harvesters use it to decide how far back
-to ask.
+your hub, and it is the one setting on this screen that is wrong by default on
+every hub. Set it to something true — the date of the hub's oldest published
+record will do. Harvesters use it to decide how far back to ask, and a date
+earlier than the truth only wastes their time.
 
 **Deleted Record** declares whether the repository reports withdrawn records
 — `No`, `Transient`, or `Persistent`. The component never emits a deleted
 record, so the honest answer is `No`.
 
 **Harvesting Granularity** picks the finest date resolution the endpoint
-accepts, either whole days or seconds.
+accepts, either whole days or seconds. It ships on seconds, which is the more
+permissive of the two; leave it there unless a harvester asks otherwise.
 
 **Result Limit** is how many records go into one page of a response before a
-`resumptionToken` is issued. The default is 50.
+`resumptionToken` is issued. The default is 50, which is a sensible starting
+point: raising it makes each response slower to build and larger to send, and
+harvesters follow resumption tokens without help. Raise it only if one
+complains about the number of round trips.
 
 > **Note:** **Allow ORE** does nothing. It is stored and passed to the
 > response builder, which never reads it, and no ORE schema ships with the
@@ -137,4 +186,6 @@ accepts, either whole days or seconds.
 tab in **Options**, but only `core.manage` and `core.admin` are ever tested:
 `core.manage` to open the component at all, `core.admin` to see the
 **Options** button. The endpoint itself is public and does no access check —
-it publishes what its plugins select, which is published content only.
+it publishes whatever its plugins select, which is every published record
+whatever that record's own **Access** setting says. See the warning under
+**What it is already doing**, above.

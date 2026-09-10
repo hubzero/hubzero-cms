@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -16,6 +16,35 @@ The component also owns `/feedback`, a signpost page that points visitors at
 the several different ways of telling the hub something — a success story, a
 support ticket, a wish list entry, a poll — without owning any of them but the
 first.
+
+## Whether your hub needs it
+
+Almost every hub is funded by somebody who wants to know it was worth it.
+Feedback exists for that: a stock of members' own words about what the hub
+did for their work, which you can put on the front page, quote in a renewal,
+or hand to a communications office. If your hub does not have to justify
+itself to anyone, you can leave this component alone — it does nothing until
+someone submits a story.
+
+The typical case: an annual report is due in six weeks and you need three
+sentences from three different members saying the hub mattered. Mail the
+`/feedback/success_story` link to a handful of people whose work you know,
+and the stories arrive over the following fortnight.
+
+There is one thing to understand before you use it at all: **the consent
+checkbox is recorded but never enforced.** The author's answer to *"I
+authorize … to use my quote"* is stored on the row and shown in the list, and
+nothing in the site or the modules ever looks at it. Publishing is entirely
+in your hands, which means the check is yours to make. See
+[What publishing means](#what-publishing-means).
+
+**What it is not:** it is not a survey and it does not collect structured
+answers — there is one free-text box and no questions. It is also not the
+place members complain: the **Report a Problem** card on `/feedback` goes to
+[Support](34-support.md), and this component never sees it. And nothing here
+notifies anyone. A story sits in the list until a person opens the screen and
+reads it, so put a note in your calendar rather than expecting the hub to
+tell you.
 
 ## Collecting a story
 
@@ -107,6 +136,33 @@ shown by:
 > it. Ticking **Select for Notable Quotes page.** on a story whose author did
 > not consent will publish it. Read the **OK to Publish** column before you
 > tick anything.
+
+Which makes selecting a quote a two-step job rather than one. Following the
+annual-report example:
+
+1. Go to **Components > Feedback**. The stories are listed newest first.
+2. Read the **OK to Publish** column *first*. A story marked anything but
+   **Yes** is not publishable, whatever it says — the author read the same
+   sentence you did and declined. Ignore it or write to the author and ask.
+3. Open a story whose column reads **Yes** and read the **Full Quote**.
+4. Write a **Short Quote** and a **Mini Quote** by hand. Left blank they are
+   cut from the full quote at 270 and 150 characters, which usually stops
+   mid-sentence. This is an edit of somebody's words for publication, so make
+   it one they would recognise.
+5. Tick **Select for Notable Quotes page.** and save.
+6. Check `/feedback/quotes` and, if you run the modules, the front page.
+
+Step 5 is reversible — untick it and the quote comes off every page it was
+on. Step 2 is the one that is not, in the sense that matters: a quote
+published without consent has been published, and taking it down afterwards
+does not undo that. **Delete** is worse still, since it removes the record
+and its whole picture directory with no confirmation and no trash state, so
+the consent record goes with it.
+
+> **Note:** The author's two consent checkboxes are shown but disabled on the
+> administrator's form once a story has been saved, so nobody can quietly
+> flip a No to a Yes. That is deliberate and it is the only protection the
+> flag has.
 
 The **Random Quote** module's **Quote pool** parameter offers *Flash
 rotation*, *Notable quotes* and *All*, but only *Notable quotes* selects

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ be0bd4c772
+reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
 -->
@@ -18,6 +18,30 @@ item; if you do not, leave it alone — it costs nothing and creates nothing on
 its own. The one setting that has an effect either way is **Enable this
 component?**, which controls whether members see a **Résumé** tab on their
 profile.
+
+The realistic case for turning it on is a hub whose community is also a
+labour market — a domain hub where the groups posting research are also the
+groups hiring postdocs. A hub of a hundred members whose institution already
+has a jobs page does not need a second one.
+
+Whichever way you go, decide it in one sitting, because the board comes in
+two quite different shapes and the choice pulls in another component:
+
+- **A noticeboard.** Leave **Allow user subscriptions?** off. You and the
+  **Admin group** post the openings; no member becomes an employer, no money
+  changes hands, and [Services](32-services.md) stays empty. This is the
+  simple version and most hubs that run a board at all want this one.
+- **An employer marketplace.** Turn **Allow user subscriptions?** on.
+  Members can now become employers, which means taking out a paid
+  subscription, which means you are also running
+  [Services](32-services.md) — the component that holds those subscriptions
+  and the only thing that reads it. It also opens résumé browsing and bulk
+  résumé download to those employers. Read the warnings under
+  [For an employer](#for-an-employer) and in
+  [Services](32-services.md) before you choose this.
+
+Neither shape has anything to do with [Storefront](33-storefront.md) or
+[Cart](06-cart.md); the job board does not use the hub's store.
 
 ## The administrator screens
 
@@ -96,6 +120,31 @@ Publishing checks the employer's quota and refuses if they are over it, with
 *Failed to publish this ad because user is over the limit according to the
 terms of his/her subscription*. Postings the hub itself owns are allowed one
 active advertisement.
+
+### Approving a posting that is waiting
+
+With **Auto approve job postings** off, an employer's posting sits at
+**Pending approval** until you look at it. That is the routine task on this
+component.
+
+1. **Components → Jobs**. The list opens on **Jobs**; look down the
+   **Status** column for **Pending approval**. There is no status filter, so
+   on a busy board sort by **Status** to bring them together.
+2. Click the title to open the posting. Read the description and check the
+   dates — **Applications Due** and **Posting Expires** are what the front
+   end enforces, and an expiry already in the past publishes to nothing.
+3. If it needs changing, change it. You are editing the employer's advert,
+   and they are not told what you altered.
+4. In **Manage this Job**, set **Change Status / Take Action** to **Publish
+   Ad**. Add a line in **Message to author** if you want them to know why —
+   whatever you type is mailed to them along with the status change.
+5. Save. If the employer is over their subscription quota the publish is
+   refused with the message above; the fix is in
+   [Services](32-services.md), on their subscription, not here.
+
+To turn a posting down, use **Unpublish Ad** with a message, or **Delete
+Ad** if it should never have been submitted. Both keep the record. Do not
+use the toolbar's **Delete** for this — see the warning above.
 
 ### Categories
 

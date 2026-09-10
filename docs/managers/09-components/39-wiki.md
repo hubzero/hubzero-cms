@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ ddeb90135f
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 source: https://help.hubzero.org/documentation/240/managers/components/wiki
 -->
 # Wiki
@@ -11,6 +11,43 @@ page keeps a full revision history, can carry comments and file attachments,
 and can be tagged. The site wiki lives at `/wiki`; groups get their own wiki
 under `/groups/<group>/wiki`. This chapter covers the administrator's side;
 the [Hub users](../../users/23-wiki.md) book covers writing and editing pages.
+
+## Whether your hub needs it
+
+The wiki is for the document that several people maintain and nobody owns —
+a protocol, a parameter table, a page of conventions that drifts as the work
+drifts. Its distinguishing feature is the revision history: every save is
+kept, you can see who changed what, and you can put back the version from
+before somebody's well-meant rewrite. Nothing else in this section can do
+that.
+
+The typical case: a lab on the hub runs an instrument and keeps a page of
+settings that three postdocs edit between them. Any one of them can fix a
+number; if one of them fixes it wrongly, the history says so and the
+previous revision is one click away.
+
+Against its siblings:
+
+- Better than the [Knowledge base](19-kb.md) at anything more than one
+  person keeps up to date, because members edit it without an administrator
+  account and every edit is recoverable. Worse at policy: a page any logged-in
+  member may edit is not where the hub's rules should live, and there is no
+  approval step on an ordinary wiki page — a save is live immediately.
+- Better than the [Forum](17-forum.md) at conclusions; worse at reaching
+  them. A wiki page shows the current state and hides the argument that got
+  there.
+- The group wikis are where most hubs' wiki activity happens. The site wiki
+  at `/wiki` is a public space any member may edit; a group wiki is bounded
+  by the group's membership, which is what most people actually want.
+
+**What it is not:** it is not a plain editor. Pages are written in wiki
+markup, which members have to learn, and a hub that switches on the Markdown
+parser instead changes the syntax for every page on the hub at once — see
+the note under [Plugins](#plugins).
+
+If nobody has asked for a wiki, the site wiki is worth leaving off and the
+group wikis worth leaving to the groups that want them. An unwatched
+public-edit wiki is the component on a hub most likely to fill with spam.
 
 Open it in the administrator interface under **Components > Wiki**. Two
 sub-menu links sit at the top left: **Wiki Pages**, the list below, and
@@ -103,6 +140,34 @@ and created date are shown for reference and submitted unchanged.
 > **Note:** A page's only approved revision cannot be deleted; the screen
 > refuses with "Can not remove only available revision".
 
+## Putting back a page somebody broke
+
+Following the instrument-settings example: a postdoc has overwritten the
+page with something wrong and the lab wants yesterday's version back. This is
+the job the wiki exists for, and the whole of it happens on the revisions
+screen.
+
+1. Go to **Components > Wiki**. Filter **Scope** to the group's
+   `group:<id>` if it is a group page, and find the page by title.
+2. Click the number in the page's **Revisions** column.
+3. Read down the list. **Created** and **Creator** say who saved what and
+   when; **Edit Summary** says why, when the editor bothered to write one.
+   The revision currently carrying the **Approved** mark is the one readers
+   see.
+4. Click the **Approved** icon on the revision you want back. That revision
+   becomes the page's current version and the one that held the place before
+   it is un-approved.
+5. Reload the page on the site to confirm.
+
+Nothing is destroyed by this. The bad revision is still in the list,
+un-approved, and you can approve it again if you have picked the wrong one.
+That makes step 4 one of the safest things in this book.
+
+> **Warning:** **Delete** on the revisions screen is a different matter — it
+> removes the revision permanently, and with it the ability to go back to it.
+> Un-approving is almost always what you want instead. The screen does refuse
+> to delete a page's only approved revision.
+
 ## Comments
 
 The comments screen opens from a page's **Comments** link. It lists **ID**,
@@ -147,6 +212,15 @@ lifetime. Every option is listed with its values in the
 A group manager can override the automatic table-of-contents mode and
 heading threshold for that group's wiki from **Wiki Settings** in the group's
 wiki area.
+
+Most of these are set-and-forget and the shipped values are reasonable. Two
+deserve a look. The **upload paths** for attachments, maths images, and
+temporary files should be left alone unless you are moving storage: changing
+one does not move the files already there, so existing attachments stop
+resolving. And **page caching** trades freshness for speed — with it on, an
+edit does not appear until the cached copy expires, which on a wiki people
+are actively editing looks like the save failing. It ships off, and on a
+small hub it should stay off.
 
 ## Permissions
 

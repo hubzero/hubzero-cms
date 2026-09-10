@@ -124,6 +124,9 @@
 <li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tools</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#half-a-system">Half a system</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-tool-pipeline-lives-elsewhere">The tool pipeline lives elsewhere</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-find-it">Where to find it</a></li>
 <li class="toc__item toc__item--l2"><a href="#pipeline">Pipeline</a></li>
 <li class="toc__item toc__item--l3"><a href="#versions">Versions</a></li>
 <li class="toc__item toc__item--l2"><a href="#hosts">Hosts</a></li>
@@ -169,11 +172,60 @@ the site, at <code>/tools/pipeline</code>, and is where a tool moves from regist
 publication. The half described here lives in the administrator interface and
 manages the machinery around it: execution hosts, session zones, running
 sessions, per-user session limits, and file handlers.</p>
+<h2 id="half-a-system">Half a system</h2>
+<p>This is the part of the chapter to read before any of the rest.</p>
+<p>The Tools component is the CMS half of a system whose other half is not in
+this repository. What lives here is a catalogue of tool contributions, a set
+of records describing execution hosts and zones, and the screens that read
+and write them. What runs a tool — the middleware that starts a session,
+allocates it to a host, keeps a container alive and streams its display back
+to a browser — is separate software, installed separately, with its own
+database.</p>
+<p>That has two consequences for a manager.</p>
+<p><strong>Most of these screens are a view onto a database this repository does not
+create.</strong> Hosts, provisions, host status, container statuses and running
+sessions are read from the middleware database, configured under <strong>Options →
+Middleware</strong> as <strong>Middleware DB Host</strong>, <strong>Middleware Database</strong>, <strong>Middleware
+DB Username</strong> and <strong>Middleware DB Password</strong>. The shipped install leaves
+every one of those blank. Until a middleware installation exists and those
+credentials point at it, the Hosts, Sessions and status screens are empty or
+error, and there is nothing you can do about that from inside the CMS.</p>
+<p><strong>Several statements in this chapter could not be verified against this
+repository, and are marked where they appear.</strong> The behaviour of the
+middleware itself — what a provisions bit means to the scheduler, what
+happens on the host when a session is terminated, how a zone's VNC proxy is
+used, what provisions an <code>SSH Key Path</code> — is decided by code that is not
+here. This chapter describes what the CMS screens store and send. It does
+not describe what the other half does with it, because that could not be
+checked.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Middleware</strong> on the Options screen is declared <strong>OFF</strong> in the
+component manifest and set to <strong>ON</strong> by the shipped install row, and the
+stored row is what runs. So a hub installed from this release says the
+middleware is on while holding no credentials for it. The setting is not a
+statement of fact about your hub; treat it as a switch you have not
+configured yet.</p>
+</aside>
+<h2 id="the-tool-pipeline-lives-elsewhere">The tool pipeline lives elsewhere</h2>
 <p>For the pipeline itself — the nine tool states, the administrator controls,
 the install and publish steps, and the group membership those controls
 require — see <a href="../../maintenance/tools/index.html">Tools</a> in the maintenance
 section. That chapter is the one to read before touching a tool
 contribution.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The pipeline's own controls are granted by membership of the
+group named in the <strong>Admin Group</strong> option, which the shipped install sets
+to <code>apps</code>. The install creates no groups at all, so that group does not
+exist until somebody makes it — and while the option names a group, a Super
+User who is <em>not</em> in it has no pipeline controls either. The code says so
+in as many words: &quot;if no admin group is defined, allow superadmin to act as
+admin, otherwise superadmins can only act if they are also a member of the
+component admin group&quot;
+(<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/site/controllers/pipeline.php"><code>pipeline.php:2523</code></a>).
+Create the <code>apps</code> group and put yourself in it, or clear the option, before
+you try to move a contribution along.</p>
+</aside>
+<h2 id="where-to-find-it">Where to find it</h2>
 <p>Go to <strong>Components → Tools</strong>. The submenu holds:</p>
 <table>
 <thead>
@@ -251,6 +303,11 @@ It processes <code>limit</code> records — two by default — and prints its re
 plain text.</p>
 </aside>
 <h2 id="hosts">Hosts</h2>
+<p>A host is a machine the middleware may start sessions on. You do not add one
+here because you have bought a server; you add one here because the
+middleware already knows about it and the CMS needs a matching record. Which
+way round the two are meant to be kept in step could not be determined from
+this repository.</p>
 <p>The execution hosts that run tool sessions. Columns: <strong>Name</strong>, <strong>Service
 Host</strong>, <strong>Provisions</strong>, <strong>Status</strong>, <strong>Uses</strong>, <strong>Zone</strong>, and <strong>Broken
 Containers</strong>.</p>
@@ -264,7 +321,8 @@ to a live status page for the host.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Hosts, provisions, status and container information live in the
 middleware database, not the CMS database. When the middleware is
-unreachable these screens are empty or error.</p>
+unreachable these screens are empty or error. What the middleware does
+with a changed provision bit, and how quickly, could not be verified here.</p>
 </aside>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The provisions toggle is a plain GET link with no CSRF token
@@ -272,6 +330,11 @@ and no permission check beyond <code>core.manage</code>. Treat a link to it in a
 email the way you would treat any other unguarded admin action.</p>
 </aside>
 <h2 id="host-types">Host Types</h2>
+<p>A host type is a label two sides agree on: a host says it provides type <em>n</em>,
+a tool version says it requires type <em>n</em>, and the middleware matches them.
+The meanings are entirely a local convention — nothing in this repository
+defines what any bit means — so a hub inherits whatever its middleware
+installation was set up with.</p>
 <p>The capability bits a host advertises and a tool requires. Columns:
 <strong>Name</strong>, <strong>Bit#</strong>, <strong>Description</strong>, and <strong>References</strong> — the number of hosts
 using the type.</p>
@@ -279,8 +342,12 @@ using the type.</p>
 A tool's <strong>Required Host</strong> field is matched against these.</p>
 <h2 id="zones">Zones</h2>
 <p>Zones group hosts into pools — a local cluster, a remote site — so a tool
-version can be pinned to one. The screen appears only when the <strong>Zones</strong>
-option is turned on.</p>
+version can be pinned to one. Only a hub whose middleware spans more than
+one site needs them.</p>
+<p>The screen appears only when the <strong>Zones</strong> option is turned on. It ships
+off, so on a stock hub the submenu entry is absent. Turning it on adds the
+screen; whether the middleware honours zone assignment, and how, could not
+be verified here.</p>
 <p>Columns: <strong>Zone</strong>, <strong>Type</strong>, <strong>State</strong>, <strong>Default</strong>, <strong>Master</strong>, <strong>SSH Key
 Path</strong>, and <strong>Locations</strong>. Type is <strong>Local</strong> or <strong>Remote</strong>; state is <strong>up</strong>
 or <strong>down</strong>; one zone is the <strong>Default</strong> and the toolbar's <strong>Make default</strong>
@@ -304,6 +371,9 @@ zone. A zone must be saved before locations or an image can be added.</p>
 form. Set it in the database, or through whatever provisions the zone.</p>
 </aside>
 <h2 id="sessions">Sessions</h2>
+<p>A running tool session holds a container on a host, so the two questions a
+manager has are <em>what is running now</em> and <em>how many may one person run at
+once</em>. <strong>Active</strong> answers the first, <strong>Session classes</strong> the second.</p>
 <p>Two screens, reached from the sub-navigation: <strong>Active</strong> and <strong>Session
 classes</strong>.</p>
 <h3 id="active">Active</h3>
@@ -313,6 +383,13 @@ classes</strong>.</p>
 <p>The <strong>Stop</strong> cell terminates one session. Ticking rows and pressing
 <strong>Delete</strong> terminates several. Terminating is immediate and the user is not
 warned.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Stopping a session takes a running program away from someone
+who is using it. Whether their unsaved work survives depends on the tool
+and on the middleware, and could not be determined from this repository —
+assume it does not. Stop a session when a host has to come down or a
+session is stuck, not to tidy the list.</p>
+</aside>
 <h3 id="session-classes">Session classes</h3>
 <p>A session class is a named session allowance. Columns: <strong>ID</strong>, <strong>Alias</strong>, and
 <strong>Jobs Allowed</strong>.</p>
@@ -328,6 +405,10 @@ added to one of these groups is given this class automatically.</li>
 <p>Deleting a class moves everyone in it back to the <code>default</code> class. The
 <code>default</code> class itself cannot be deleted.</p>
 <h2 id="user-preferences">User Preferences</h2>
+<p>This is how you give one person more sessions than everyone else: a course
+instructor who needs several tools open at once, or a developer testing a
+contribution. For a whole class of people, add a session class and attach an
+access group to it instead — that scales, and this does not.</p>
 <p>The per-user override of the session allowance. This is the screen the old
 version of this page described.</p>
 <p><img src="../../media/tools-tools-userpreferences.png" alt="The User Preferences list" /></p>
@@ -363,6 +444,10 @@ deleted. Do not rename it.</p>
 are on.</p>
 </aside>
 <h2 id="file-handlers">File Handlers</h2>
+<p>A file handler is the &quot;open with&quot; list: a user looking at a <code>.dat</code> file in
+their storage is offered the tool you name here. Worth setting up on a hub
+whose users work with a handful of well-known file types, and not worth it
+otherwise.</p>
 <p>A file handler tells the hub which tool opens a given file from a user's
 storage. Columns: <strong>Tool alias</strong>, <strong>Prompt</strong>, and <strong>Rules</strong>.</p>
 <p>A handler is a <strong>Tool alias</strong> chosen from the installed tools, a <strong>Prompt</strong>
@@ -373,14 +458,16 @@ rule</strong> and <strong>Delete rule</strong> build the list.</p>
 <strong>Installed</strong> state yet.</p>
 <h2 id="windows">Windows</h2>
 <p>Present only when the component's <strong>Access Key ID</strong> option holds an Amazon
-Web Services key. It manages Windows tool instances on AWS: <strong>ID</strong>, <strong>Name</strong>,
+Web Services key. The AWS side of this — what the instances are, how they
+are built and what the CMS expects to find running on them — is outside this
+repository and could not be verified. It manages Windows tool instances on AWS: <strong>ID</strong>, <strong>Name</strong>,
 <strong>Title</strong>, <strong>UUID</strong>, in-use and available session counts, and <strong>State</strong>, with
 per-instance session and usage views and a <strong>Terminate</strong> action.</p>
 <p>Leave the option empty on a hub with no Windows tools and the screen never
 appears.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tags/index.html" rel="prev"><span>Previous</span>Tags</a><a class="pager__next" href="../usage/index.html" rel="next"><span>Next</span>Usage</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/36-tools.md">Edit this page on GitHub</a>

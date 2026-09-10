@@ -121,12 +121,14 @@
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../services/index.html">Services</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Storefront</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#how-these-four-components-relate">How these four components relate</a></li>
 <li class="toc__item toc__item--l2"><a href="#products">Products</a></li>
 <li class="toc__item toc__item--l3"><a href="#creating-or-editing-a-product">Creating or editing a product</a></li>
 <li class="toc__item toc__item--l3"><a href="#access">Access</a></li>
 <li class="toc__item toc__item--l2"><a href="#skus">SKUs</a></li>
 <li class="toc__item toc__item--l3"><a href="#serial-numbers">Serial numbers</a></li>
 <li class="toc__item toc__item--l3"><a href="#restrictions-and-whitelist">Restrictions and whitelist</a></li>
+<li class="toc__item toc__item--l2"><a href="#putting-one-product-on-sale">Putting one product on sale</a></li>
 <li class="toc__item toc__item--l2"><a href="#collections">Collections</a></li>
 <li class="toc__item toc__item--l2"><a href="#option-groups-and-options">Option groups and options</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-store-on-the-site">The store on the site</a></li>
@@ -169,10 +171,49 @@ holds no cart and no orders — a shopper's basket, checkout and order history
 belong to the <a href="../cart/index.html">Cart</a> component, which the storefront hands off to.
 This chapter covers the administrator's side; the
 <a href="../../../users/storefront/index.html">Hub users</a> book covers shopping.</p>
+<p>Most hubs never open this component. It is off out of the box — the row
+written at install time leaves both Storefront and Cart disabled — and a hub
+that publishes datasets, runs tools and hosts groups has no use for either.
+Turn it on only when the hub genuinely sells something: a licensed code that
+members download after paying, a paid workshop place, a piece of hardware.
+If you are here because you want to <em>give</em> members a file, that is
+<a href="../resources/index.html">Resources</a> or <a href="../publications/index.html">Publications</a>, not this.</p>
+<h2 id="how-these-four-components-relate">How these four components relate</h2>
+<p>Four components in this book deal with money, and they are two unrelated
+pairs. Knowing which is which saves an afternoon.</p>
+<table>
+<thead>
+<tr>
+<th>If you want</th>
+<th>You need</th>
+<th>And also</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>To sell products to members</td>
+<td><strong>Storefront</strong> — the catalogue</td>
+<td><strong><a href="../cart/index.html">Cart</a></strong> — the basket, the checkout and the order record. Neither works alone; the storefront's product page calls into Cart to add an item, and Cart's screens read the catalogue back out of Storefront. Enable both or neither.</td>
+</tr>
+<tr>
+<td>To run a job board where employers pay</td>
+<td><strong><a href="../jobs/index.html">Jobs</a></strong> — the board</td>
+<td><strong><a href="../services/index.html">Services</a></strong> — the employer subscriptions the board sells. Services exists only for Jobs; nothing else reads it.</td>
+</tr>
+</tbody>
+</table>
+<p>The two pairs share no code, no tables and no checkout. Storefront and Cart
+do not sell a job-board subscription, and Services cannot sell a product.
+Enabling the store does not give you the job board, and vice versa.</p>
 <p>Open it under <strong>Components &gt; Storefront</strong>. Three sub-menu links sit at the
 top: <strong>Products</strong>, <strong>Collections</strong>, and <strong>Option Groups</strong>. Four more
 screens — SKUs, options, restrictions and serial numbers — are reached from
 inside those.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> If <strong>Storefront</strong> is not in the <strong>Components</strong> menu, it is still
+disabled. Enable it — and Cart — under <strong>Extensions &gt; Extension Manager &gt;
+Manage</strong> before anything on this page applies.</p>
+</aside>
 <p>Some vocabulary. A <strong>product</strong> is the thing you sell, with a description and
 an image. An <strong>option group</strong> is a choice a buyer makes (Platform, License
 term); an <strong>option</strong> is one answer (Windows, Linux). A <strong>SKU</strong> is one
@@ -357,6 +398,46 @@ does not yet exist on the hub is stored anyway and attached to the account
 the first time that person logs in.</p>
 <p><strong>Manage whitelist</strong> is the opposite: an address on it gets the SKU
 regardless of every other access control or restriction.</p>
+<h2 id="putting-one-product-on-sale">Putting one product on sale</h2>
+<p>A lab wants to sell a licensed analysis code as a download, one price, no
+options. That is the smallest useful thing the store does, and it takes both
+halves of the component.</p>
+<ol>
+<li>Put the file on the server, in the download folder named in <strong>Options</strong>.
+It is not uploaded through this interface, and a SKU that names a file
+which is not there saves happily and fails at the download.</li>
+<li><strong>Components &gt; Storefront &gt; Products</strong>, then <strong>New</strong>. Fill in <strong>Title</strong>,
+<strong>Tagline</strong> and <strong>Description</strong> — all three are required — set <strong>Type</strong>
+to <em>Software Download</em>, and press <strong>Save</strong>. Leave <strong>State</strong> at
+<em>Unpublished</em> for now.</li>
+<li>Reopen the product. The image uploader and the type-related settings only
+appear once the record exists. Add the picture, and open <strong>Edit
+type-related options</strong> to set the EULA if the licence needs one.</li>
+<li>Set <strong>Access Level</strong>, or the group trees if the hub is in access-group
+mode. This decides who can buy it, so get it right before publishing;
+see <a href="#access">Access</a>.</li>
+<li>Tick the <strong>Collections</strong> the product belongs to. A product in no
+collection is reachable by its URL and by search, but appears on no
+browse page.</li>
+<li>Save, then follow the <strong>SKUs (published)</strong> link and create one SKU: a
+<strong>Title</strong>, the <strong>Price</strong>, and under the software block the <strong>Download
+file</strong> name. With no option groups on the product, this SKU is the only
+one it can have.</li>
+<li>Publish the SKU, then publish the product. Then check the store page from
+a test account or a private window rather than from your own session:
+the catalogue is filtered by the viewer's access levels, and yours are
+almost certainly wider than a member's.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Publishing is the moment the product becomes buyable, and
+money is the one thing on a hub you cannot quietly undo. Do the access
+level, the price and the EULA before step 7, not after. Unpublishing later
+stops new sales but does not touch orders already placed, which live in
+<a href="../cart/index.html">Cart</a> and cannot be reversed from there either.</p>
+</aside>
+<p>Adding options later — a platform choice, a licence term — means adding an
+option group, ticking it on the product, and giving every combination its own
+SKU. Existing orders are unaffected; the catalogue changes underneath them.</p>
 <h2 id="collections">Collections</h2>
 <p>Collections are the categories on the store's front page. The list shows
 <strong>Title</strong>, <strong>Alias</strong>, <strong>Type</strong>, and <strong>Published</strong>. A collection has only a
@@ -399,7 +480,7 @@ per-product, per-SKU, per-collection, per-option-group and per-option
 sections, but the screens all evaluate permissions at the component level.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d48e29db14</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../services/index.html" rel="prev"><span>Previous</span>Services</a><a class="pager__next" href="../support/index.html" rel="next"><span>Next</span>Support</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/33-storefront.md">Edit this page on GitHub</a>

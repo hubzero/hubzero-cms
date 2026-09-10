@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: stale
 source: https://help.hubzero.org/documentation/240/managers/components/tools
 source-id: 3404
@@ -16,11 +16,66 @@ publication. The half described here lives in the administrator interface and
 manages the machinery around it: execution hosts, session zones, running
 sessions, per-user session limits, and file handlers.
 
+## Half a system
+
+This is the part of the chapter to read before any of the rest.
+
+The Tools component is the CMS half of a system whose other half is not in
+this repository. What lives here is a catalogue of tool contributions, a set
+of records describing execution hosts and zones, and the screens that read
+and write them. What runs a tool — the middleware that starts a session,
+allocates it to a host, keeps a container alive and streams its display back
+to a browser — is separate software, installed separately, with its own
+database.
+
+That has two consequences for a manager.
+
+**Most of these screens are a view onto a database this repository does not
+create.** Hosts, provisions, host status, container statuses and running
+sessions are read from the middleware database, configured under **Options →
+Middleware** as **Middleware DB Host**, **Middleware Database**, **Middleware
+DB Username** and **Middleware DB Password**. The shipped install leaves
+every one of those blank. Until a middleware installation exists and those
+credentials point at it, the Hosts, Sessions and status screens are empty or
+error, and there is nothing you can do about that from inside the CMS.
+
+**Several statements in this chapter could not be verified against this
+repository, and are marked where they appear.** The behaviour of the
+middleware itself — what a provisions bit means to the scheduler, what
+happens on the host when a session is terminated, how a zone's VNC proxy is
+used, what provisions an `SSH Key Path` — is decided by code that is not
+here. This chapter describes what the CMS screens store and send. It does
+not describe what the other half does with it, because that could not be
+checked.
+
+> **Note:** **Middleware** on the Options screen is declared **OFF** in the
+> component manifest and set to **ON** by the shipped install row, and the
+> stored row is what runs. So a hub installed from this release says the
+> middleware is on while holding no credentials for it. The setting is not a
+> statement of fact about your hub; treat it as a switch you have not
+> configured yet.
+
+## The tool pipeline lives elsewhere
+
 For the pipeline itself — the nine tool states, the administrator controls,
 the install and publish steps, and the group membership those controls
 require — see [Tools](../03-maintenance/02-tools.md) in the maintenance
 section. That chapter is the one to read before touching a tool
 contribution.
+
+> **Warning:** The pipeline's own controls are granted by membership of the
+> group named in the **Admin Group** option, which the shipped install sets
+> to `apps`. The install creates no groups at all, so that group does not
+> exist until somebody makes it — and while the option names a group, a Super
+> User who is *not* in it has no pipeline controls either. The code says so
+> in as many words: "if no admin group is defined, allow superadmin to act as
+> admin, otherwise superadmins can only act if they are also a member of the
+> component admin group"
+> ([`pipeline.php:2523`](../../../core/components/com_tools/site/controllers/pipeline.php)).
+> Create the `apps` group and put yourself in it, or clear the option, before
+> you try to move a contribution along.
+
+## Where to find it
 
 Go to **Components → Tools**. The submenu holds:
 
@@ -78,6 +133,12 @@ The **DOI** column appears only when the **Enable DOI service?** option is on.
 
 ## Hosts
 
+A host is a machine the middleware may start sessions on. You do not add one
+here because you have bought a server; you add one here because the
+middleware already knows about it and the CMS needs a matching record. Which
+way round the two are meant to be kept in step could not be determined from
+this repository.
+
 The execution hosts that run tool sessions. Columns: **Name**, **Service
 Host**, **Provisions**, **Status**, **Uses**, **Zone**, and **Broken
 Containers**.
@@ -93,13 +154,20 @@ to a live status page for the host.
 
 > **Note:** Hosts, provisions, status and container information live in the
 > middleware database, not the CMS database. When the middleware is
-> unreachable these screens are empty or error.
+> unreachable these screens are empty or error. What the middleware does
+> with a changed provision bit, and how quickly, could not be verified here.
 
 > **Warning:** The provisions toggle is a plain GET link with no CSRF token
 > and no permission check beyond `core.manage`. Treat a link to it in an
 > email the way you would treat any other unguarded admin action.
 
 ## Host Types
+
+A host type is a label two sides agree on: a host says it provides type *n*,
+a tool version says it requires type *n*, and the middleware matches them.
+The meanings are entirely a local convention — nothing in this repository
+defines what any bit means — so a hub inherits whatever its middleware
+installation was set up with.
 
 The capability bits a host advertises and a tool requires. Columns:
 **Name**, **Bit#**, **Description**, and **References** — the number of hosts
@@ -111,8 +179,13 @@ A tool's **Required Host** field is matched against these.
 ## Zones
 
 Zones group hosts into pools — a local cluster, a remote site — so a tool
-version can be pinned to one. The screen appears only when the **Zones**
-option is turned on.
+version can be pinned to one. Only a hub whose middleware spans more than
+one site needs them.
+
+The screen appears only when the **Zones** option is turned on. It ships
+off, so on a stock hub the submenu entry is absent. Turning it on adds the
+screen; whether the middleware honours zone assignment, and how, could not
+be verified here.
 
 Columns: **Zone**, **Type**, **State**, **Default**, **Master**, **SSH Key
 Path**, and **Locations**. Type is **Local** or **Remote**; state is **up**
@@ -139,6 +212,10 @@ zone. A zone must be saved before locations or an image can be added.
 
 ## Sessions
 
+A running tool session holds a container on a host, so the two questions a
+manager has are *what is running now* and *how many may one person run at
+once*. **Active** answers the first, **Session classes** the second.
+
 Two screens, reached from the sub-navigation: **Active** and **Session
 classes**.
 
@@ -151,6 +228,12 @@ Every tool session currently running. Columns: **Session**, **Owner**,
 The **Stop** cell terminates one session. Ticking rows and pressing
 **Delete** terminates several. Terminating is immediate and the user is not
 warned.
+
+> **Warning:** Stopping a session takes a running program away from someone
+> who is using it. Whether their unsaved work survives depends on the tool
+> and on the middleware, and could not be determined from this repository —
+> assume it does not. Stop a session when a host has to come down or a
+> session is stuck, not to tidy the list.
 
 ### Session classes
 
@@ -171,6 +254,11 @@ Deleting a class moves everyone in it back to the `default` class. The
 `default` class itself cannot be deleted.
 
 ## User Preferences
+
+This is how you give one person more sessions than everyone else: a course
+instructor who needs several tools open at once, or a developer testing a
+contribution. For a whole class of people, add a session class and attach an
+access group to it instead — that scales, and this does not.
 
 The per-user override of the session allowance. This is the screen the old
 version of this page described.
@@ -211,6 +299,11 @@ the `default` class.
 
 ## File Handlers
 
+A file handler is the "open with" list: a user looking at a `.dat` file in
+their storage is offered the tool you name here. Worth setting up on a hub
+whose users work with a handful of well-known file types, and not worth it
+otherwise.
+
 A file handler tells the hub which tool opens a given file from a user's
 storage. Columns: **Tool alias**, **Prompt**, and **Rules**.
 
@@ -225,7 +318,9 @@ If the drop-down says *No tools installed*, no tool has reached the
 ## Windows
 
 Present only when the component's **Access Key ID** option holds an Amazon
-Web Services key. It manages Windows tool instances on AWS: **ID**, **Name**,
+Web Services key. The AWS side of this — what the instances are, how they
+are built and what the CMS expects to find running on them — is outside this
+repository and could not be verified. It manages Windows tool instances on AWS: **ID**, **Name**,
 **Title**, **UUID**, in-use and available session counts, and **State**, with
 per-instance session and usage views and a **Terminate** action.
 

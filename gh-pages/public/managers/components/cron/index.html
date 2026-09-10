@@ -175,7 +175,22 @@ of the jobs a hub can schedule and the settings each one takes.</p>
 <p>How the scheduler works — the tick, the <code>muse cron:jobs</code> command, the job
 list, the edit form, and the IP whitelist — is covered in
 <a href="../../maintenance/cron/index.html">Scheduled tasks</a>. Read that first. Nothing in
-this chapter is a substitute for it.</p>
+this chapter is a substitute for it, and in particular that chapter carries
+the fact that makes this one matter: <strong>a new hub has three jobs and only one
+of them is published</strong>, so every feature listed below is doing nothing until
+somebody adds a job for it.</p>
+<p>Use this chapter the other way round from most of the book. You do not read
+it through. You arrive at it having noticed that something on the hub never
+happens — the digest email nobody gets, the group membership that never
+expires, the DOI that is never issued — find the event in the tables below,
+check that its plugin is enabled, and then go to
+<a href="../../maintenance/cron/index.html">Scheduled tasks</a> to create the job.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Adding a job is reversible and cheap: unpublish it and it stops.
+The button to be careful with is <strong>Run</strong>, which fires the selected job
+immediately — on any of the mail-sending events below, that means real
+messages to real addresses the moment you press it.</p>
+</aside>
 <h2 id="where-the-jobs-come-from">Where the jobs come from</h2>
 <p>The component owns no work of its own. Every job is a plugin event.</p>
 <p>When you open a job's edit form, the component fires <code>cron.onCronEvents</code> and
@@ -198,7 +213,7 @@ appears only for someone who can manage plugins.</p>
 <p>The <a href="../../../reference/events/cron/index.html">cron events reference</a> lists every event
 with the plugins that listen for it.</p>
 <h2 id="the-jobs">The jobs</h2>
-<p>Fourteen cron plugins ship with the CMS. The <strong>Event</strong> column gives the name
+<p>Fourteen cron plugins ship with the hub. The <strong>Event</strong> column gives the name
 as it appears in the drop-down; the identifier in parentheses is what is
 stored on the job.</p>
 <h3 id="cron-activity">Cron - Activity</h3>
@@ -265,6 +280,9 @@ delivered.</p>
 </tbody>
 </table>
 <h3 id="cron-forum">Cron - Forum</h3>
+<p><strong>Ships disabled.</strong> Its event is not on the <strong>Event</strong> menu until you enable
+the plugin at <strong>Extensions → Plugins</strong>. It is the only cron plugin in this
+state; the other thirteen are enabled on a new hub.</p>
 <table>
 <thead>
 <tr>
@@ -457,6 +475,8 @@ archived on approval and the job is unnecessary.</p>
 </tbody>
 </table>
 <h3 id="cron-search">Cron - Search</h3>
+<p>Both events matter only on a hub whose <strong>Engine</strong> is <strong>Apache Solr</strong>. On a
+Basic hub there is no index, and neither event does anything.</p>
 <table>
 <thead>
 <tr>
@@ -468,16 +488,28 @@ archived on approval and the job is unnecessary.</p>
 <tbody>
 <tr>
 <td>Process Queue (<code>processQueue</code>)</td>
-<td>Indexes the content queued since the last run</td>
+<td>Nothing. See the warning below</td>
 <td>none</td>
 </tr>
 <tr>
 <td>Run Full Index (<code>runFullIndex</code>)</td>
-<td>Rebuilds the whole search index</td>
+<td>Re-indexes every component in the <strong>Indexed</strong> state, in batches</td>
 <td>none</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Run Full Index</strong> is the one worth scheduling, and only as a safety net:
+indexing on a Solr hub is immediate, so a healthy hub does not need it.
+Nightly or weekly is right; anything more frequent will not finish before it
+starts again.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Process Queue</strong> does nothing on any hub. It reads
+<code>#__search_queue</code>, and nothing in this tree ever writes to that table, so
+the event finds an empty queue and returns. It is the last live piece of a
+retired design in which saves were queued and indexed later. Scheduling it
+is harmless and pointless. See
+<a href="../search/index/index.html">Maintaining the index</a>.</p>
+</aside>
 <h3 id="cron-storefront">Cron - Storefront</h3>
 <table>
 <thead>
@@ -565,7 +597,7 @@ unpublish it rather than delete it.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cpanel/index.html" rel="prev"><span>Previous</span>Control Panel</a><a class="pager__next" href="../dataviewer/index.html" rel="next"><span>Next</span>DataViewer</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/12-cron.md">Edit this page on GitHub</a>

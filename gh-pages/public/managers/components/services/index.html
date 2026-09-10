@@ -123,6 +123,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-screens">The screens</a></li>
 <li class="toc__item toc__item--l3"><a href="#services-2">Services</a></li>
 <li class="toc__item toc__item--l3"><a href="#subscriptions">Subscriptions</a></li>
+<li class="toc__item toc__item--l3"><a href="#activating-a-subscription-somebody-has-paid-for">Activating a subscription somebody has paid for</a></li>
 <li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../storefront/index.html">Storefront</a></li>
@@ -169,6 +170,19 @@ subscription on.</p>
 which are the hub's actual shop. Services predates them and shares no code,
 no tables, and no checkout. If a hub does not run a job board, this component
 has nothing in it.</p>
+<p>So the decision is not made here. It is made in <a href="../jobs/index.html">Jobs</a>, by the
+<strong>Allow user subscriptions?</strong> setting: turn that on and members can become
+employers, employers need subscriptions, and subscriptions land on this
+screen for someone to activate. Turn it off, or never link to the job board
+at all — which is what most hubs do — and nothing ever appears here.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Before you turn subscriptions on, read the rest of this
+chapter. Cancelling a subscription never works out what is owed, and it
+clears the pending payment as it goes, which removes the only route to
+<strong>Process refund</strong> afterwards. If your hub is going to take real money from
+employers, you will be working refunds out and reconciling them by hand,
+outside this component.</p>
+</aside>
 <h2 id="the-screens">The screens</h2>
 <p><strong>Components → Services</strong>, gated on <code>core.manage</code> for <code>com_services</code>. Two
 sub-navigation entries.</p>
@@ -298,6 +312,38 @@ never appears afterwards. The job board's own cancel screen has the same
 fault. Work refunds out by hand. Recorded in
 the project record.</p>
 </aside>
+<h3 id="activating-a-subscription-somebody-has-paid-for">Activating a subscription somebody has paid for</h3>
+<p>An employer has chosen the Premium service and sent the department a cheque
+for three months. This is the sequence.</p>
+<ol>
+<li><strong>Components → Services → Subscriptions</strong>. Set <strong>Filter by</strong> to
+<strong>Pending</strong>. That filter does work; <strong>Active</strong> does not.</li>
+<li>Open the subscription. Check the service, its unit price and unit size
+against what was actually paid — nothing here validates the amount, and
+nothing reconciles it against a payment system.</li>
+<li>Choose <strong>Activate / Extend this subscription</strong>.</li>
+<li>Enter the amount in <strong>New payment received</strong> and the number of units.
+Units × the service's unit size gives the number of months. On a first
+activation those months are counted from today; on a renewal they are
+added to the existing expiry date, so an employer renewing late does not
+lose the time they already had. Pressing <strong>Activate / Extend</strong> twice adds
+the months twice.</li>
+<li>Type an explanation into <strong>Send user a message</strong> if you want one. Whatever
+you write is appended to the notes with a timestamp <em>and</em> mailed to the
+member, so write it for them, not for your colleagues. The
+<strong>Administrator Notes</strong> box is the place for anything internal.</li>
+<li>Save. The status becomes active and the employer's postings can be
+published against their quota.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Step 4 is not reversible from this screen. There is no
+&quot;undo payment&quot; and no way to shorten an expiry date except by editing the
+record in the database. Check the figure before you save it.</p>
+</aside>
+<p>If the employer later wants out, be aware of what cancelling does before you
+press it: read the warning above, work out the refund yourself, and record it
+in <strong>Administrator Notes</strong> — because after the cancellation the component
+will show nothing owed and offer you no way to say otherwise.</p>
 <h2 id="options">Options</h2>
 <p>One setting, plus the usual <strong>Permissions</strong> tab. Both are listed in the
 <a href="../../../reference/configuration/components/services/index.html">generated reference</a>.</p>
@@ -309,7 +355,7 @@ open it here and press <strong>Activate / Extend</strong>.</p>
 <p>The setting is read by the job board, not by this component.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../search/blacklist/index.html" rel="prev"><span>Previous</span>Blacklist</a><a class="pager__next" href="../storefront/index.html" rel="next"><span>Next</span>Storefront</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/32-services.md">Edit this page on GitHub</a>

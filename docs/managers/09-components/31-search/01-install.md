@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/search/install
 source-id: 3391
@@ -13,6 +13,22 @@ Switching a hub from Basic search to Solr takes three things: an Apache Solr
 service running somewhere the hub can reach, the connection settings that
 point the hub at it, and a first pass over the hub's content to fill the
 index.
+
+Do this on a hub that has outgrown Basic search — several thousand resources
+and publications, members complaining about ranking, a wish for counts by
+content type down the side of the results page. Do not do it because it
+sounds better. The whole sequence takes a server administrator, an hour or
+more of indexing, and it removes forum, wiki, questions, wishlist, event and
+ticket results from search permanently. If none of that is worth it, close
+this chapter and stay on Basic.
+
+> **Warning:** There is no dry run. The moment you set **Engine** to
+> **Apache Solr** and save, the site's search box starts answering from an
+> empty Solr index — every member sees no results for everything — and it
+> keeps doing so until the first index finishes. The change is reversible in
+> one field, so if you are caught out, set **Engine** back to
+> **Basic (default)** and members get working search back on the next
+> request. Prefer to do the switch out of hours, or on a staging copy first.
 
 > **Note:** Solr itself is not part of this repository. The hub ships only
 > the client side — the Solarium 6.2 library from Composer and the two
@@ -97,6 +113,18 @@ If instead you see *The search engine is not responding*, the hub could not
 open the endpoint. Check the host, port, core, path, and context on the
 **Solr** tab, and check that the Solr service is running.
 
+> **Important:** A green check means the hub opened a connection to Solr. It
+> does not mean the index has anything in it, and it does not mean saved
+> content is reaching it. Those are the next two sections. Managers stop
+> here, see the tick, and report search as working.
+
+> **Note:** The site's search entry point can fall back to the Basic engine,
+> but nothing in this tree ever sets the session flag that triggers it, so a
+> hub whose Solr service dies does not quietly revert — its search page
+> breaks. You can force Basic for one request by adding `?engine=basic` to
+> the search URL, which is useful for checking whether a bad result is Solr's
+> doing or the content's.
+
 ## Build the first index
 
 A fresh Solr core is empty; nothing is findable until the hub has pushed its
@@ -137,3 +165,18 @@ its options: `-components` indexes a named list instead of `--all`, and
 Once a component reads **Indexed**, saving a record of that type updates Solr
 without further action. [Maintaining the index](05-index.md) covers what
 happens after that.
+
+## You are done when
+
+Check all five before telling anyone search is working:
+
+1. **Overview** reads *The search engine is responding*.
+2. **Search - Solr** shows as enabled in the plugin manager.
+3. Every content type you care about reads **Indexed** on **Searchable
+   Components**, with a non-zero record count beside it.
+4. A search on the site for something you know exists returns it.
+5. You edit that record's title, wait out the **CommitWithin** window — five
+   minutes by default — and search finds it under the new title.
+
+Step 5 is the one that catches a missing **Search - Solr** plugin, and it is
+the only check that proves the hub will keep the index current on its own.

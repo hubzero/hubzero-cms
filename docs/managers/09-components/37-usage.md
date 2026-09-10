@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ f22290e4e4
-reviewed: 2026-09-09
+reviewed-against: 2.4-main @ 009ec973b7
+reviewed: 2026-09-10
 screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/usage
 source-id: 3401
@@ -15,8 +15,33 @@ reporting front end and nothing else: it collects no data, computes no
 totals, and stores nothing. Every figure it draws comes from tables filled in
 by the hub's metrics tooling, which is not part of this repository.
 
-Read this chapter before promising anyone a usage page. On a CMS installed
+Read this chapter before promising anyone a usage page. On a hub installed
 from this repository and nothing else, most of `/usage` has nothing to show.
+
+This is the chapter to have open when somebody — a principal investigator, a
+funder's annual report, a departmental review — asks for the hub's numbers.
+The honest answer for a plain installation is that the hub is not collecting
+them. That is not a fault you can fix from the administrator interface, and
+the page will not tell you so: it will show zeros, empty tables, or a missing
+table error, all three of which look like a hub nobody uses rather than a hub
+nobody is measuring.
+
+> **Important:** A zero on `/usage` is not evidence of no activity. It is
+> evidence of no collection. Do not report these figures to anyone until you
+> have established that the metrics tooling is installed and writing to the
+> database the component is pointed at.
+
+## What it is not
+
+Usage is not the hub's analytics, and it is not the per-member statistics a
+member sees on their own profile. It is a public page of institution-level
+totals — visits, downloads, simulation sessions, top tools, top countries —
+intended for a hub's own reporting. Two things people ask for are elsewhere:
+
+- Traffic analytics for the site as a whole are not in this repository at
+  all; hubs use an external analytics service for that.
+- A member's own figures come from the **Members - Usage** plugin, covered at
+  the end of this chapter.
 
 ## The administrator screen
 
@@ -38,7 +63,7 @@ The options fall into three groups. The complete list is in the
 point the component at the database holding the collected metrics.
 
 > **Important:** When **Username**, **Password**, and **Database** are all
-> empty, the component silently falls back to the CMS's own database. The
+> empty, the component silently falls back to the hub's own database. The
 > tables it wants are not there, so every screen that needs them reports
 > *Missing table usage `tops`* or similar. An empty configuration does not
 > disable the page; it produces a broken one.
@@ -91,7 +116,7 @@ All of this reads `summary_user_vals`, `summary_simusage` and
 ### Tools
 
 A ranked table, chosen from a **Show data for** drop-down and a time period.
-The nine rankings shipped with the CMS are:
+The nine rankings that ship with the hub are:
 
 - Top Tools by Ranking
 - Top Tools by Simulation Users
@@ -103,7 +128,7 @@ The nine rankings shipped with the CMS are:
 - Top Tools by Simulation Interaction Time
 - Top Tools by Citations
 
-Unlike the other tabs, this one reads the CMS's own database —
+Unlike the other tabs, this one reads the hub's own database —
 `#__stats_tops` for the list of rankings and `#__stats_topvals` for the
 figures. `#__stats_tops` is seeded at install; `#__stats_topvals` is not, and
 no code in this repository writes to it. Until the metrics tooling fills it,
@@ -116,7 +141,7 @@ read `tops`, `topvals`, `classes`, `classvals`, `regions`, `regionvals` and
 `totalvals` in the statistics database, and each reports a missing table by
 name when it is not there.
 
-### <a id="maps"></a>Maps
+### Maps
 
 The Maps tab embeds a pre-rendered map in an iframe. The `type` parameter
 picks which: `online`, `us-maps`, `tools`, `web_all`, `web_gradient`,
@@ -135,7 +160,7 @@ that table at all.
 
 ## Is any of it wired up?
 
-Short answer: not by the CMS.
+Short answer: not by anything in this repository.
 
 - Nothing in this repository writes `summary_user_vals`,
   `summary_simusage`, `summary_simusage_vals`, `tops`, `topvals`, `classes`,
@@ -143,9 +168,9 @@ Short answer: not by the CMS.
   They belong to a separate statistics database maintained by the hub's
   metrics tooling.
 - Nothing in this repository writes `#__stats_topvals` or `#__xsession`
-  either, even though both tables are part of the CMS schema.
+  either, even though both tables are part of the hub's own schema.
 - The pre-rendered maps, plots and charts under the configured paths are
-  produced outside the CMS as well.
+  produced outside the hub as well.
 
 So a hub gets a working `/usage` only when the metrics collection is
 installed and running alongside it, and the component's options point at the
@@ -157,5 +182,5 @@ Per-user figures are a different feature, served by the **Members - Usage**
 plugin on a member's profile and described in the
 [Usage chapter](../../users/28-usage.md) of the Hub users book. That plugin
 reads `#__resource_stats_tools`, `#__author_stats` and
-`#__metrics_author_cluster` in the CMS database — tables the CMS reads but
+`#__metrics_author_cluster` in the hub's own database — tables the hub reads but
 does not fill, so it has the same prerequisite.

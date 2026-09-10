@@ -93,6 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../cpanel/index.html">Control Panel</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Cron</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">DataViewer</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-a-manager-has-to-configure">What a manager has to configure</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-the-dataviewer-appears">Where the DataViewer appears</a></li>
 <li class="toc__item toc__item--l2"><a href="#who-can-see-a-data-view">Who can see a data view</a></li>
@@ -174,7 +175,22 @@ nothing on it to do. What the DataViewer actually needs from you is set
 elsewhere: the read-only MySQL account on the <strong>Projects - Databases</strong>
 plugin. Without it the DataViewer cannot read anything, and the Databases tab
 does not appear in projects at all.</p>
+<p>So the question this chapter answers is narrow. A project team asks to keep a
+few thousand rows of measurements on the hub and have people browse them
+rather than download a spreadsheet. That is what the DataViewer is for, and
+what it costs you is two MySQL accounts and one plugin. A hub whose projects
+only ever exchange files needs none of it, and can stop reading here.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>The DataViewer is not a database manager, and it is not somewhere you put
+data. It never creates a table, has no import screen, and holds no rows of its
+own; a project team creates the data through the project's own Databases tab.
+It is also not a chart tool for arbitrary content — it draws exactly the
+tables another component hands it, and on this hub that means project
+databases and the publications built from them.</p>
 <h2 id="what-a-manager-has-to-configure">What a manager has to configure</h2>
+<p>Do this once, before the first project team asks. Both accounts go on one
+plugin, and getting the read-only one wrong is the fault you will spend an
+afternoon on, because the symptom appears in a project rather than here.</p>
 <p>Everything that makes the DataViewer work is on the Projects - Databases
 plugin, not on this component:</p>
 <ol>
@@ -384,7 +400,7 @@ matters and why a mistake in it produces a raw connection error on the page
 rather than a Hubzero error message.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../cron/index.html" rel="prev"><span>Previous</span>Cron</a><a class="pager__next" href="../developer/index.html" rel="next"><span>Next</span>Developer</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/13-dataviewer.md">Edit this page on GitHub</a>

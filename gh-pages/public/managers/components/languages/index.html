@@ -100,9 +100,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Language Manager</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-it-is-not">What it is not</a></li>
 <li class="toc__item toc__item--l2"><a href="#installed-languages">Installed languages</a></li>
 <li class="toc__item toc__item--l2"><a href="#content-languages">Content languages</a></li>
 <li class="toc__item toc__item--l2"><a href="#overrides">Overrides</a></li>
+<li class="toc__item toc__item--l3"><a href="#changing-a-piece-of-wording-start-to-finish">Changing a piece of wording, start to finish</a></li>
 <li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../mailto/index.html">Mailto</a></li>
@@ -187,6 +189,24 @@ screens, listed across the top of each of them:</p>
 <code>en-GB</code>, so there is nothing to choose on the first screen and nothing to
 declare on the second; but every hub has wording it wants to change, and the
 override editor is the supported way to change it.</p>
+<p>That is the reason to remember this component exists. Somebody points at a
+label on the site — a heading that says <em>Knowledge Base</em> when the lab has
+always called it the user guide, a button whose wording confuses new members,
+a message that names a feature the hub does not use — and asks you to change
+it. The text is not in an article and not in a menu item. It is a string in a
+language file, and <strong>Overrides</strong> is where you replace it without editing a
+file the next upgrade will overwrite.</p>
+<h2 id="what-it-is-not">What it is not</h2>
+<p>This is not a translation tool and not a content editor. An override replaces
+one string for one language; it does not translate anything, and it has no
+effect on articles, resources, group pages, or anything else a member typed.
+If the words you want to change appear inside a page a person wrote, edit that
+page. If they appear in the furniture around it — headings, buttons, notices,
+error messages — they come from a language file and belong here.</p>
+<p>The install ships <code>en-GB</code> as the default for both the site and the
+administrator interface, which is the only sensible setting on a hub with one
+language installed. Nothing on the first two screens needs your attention
+until a second language pack arrives.</p>
 <p><a href="../../../developers/extensions/languages/index.html">Languages</a> in the developers
 book covers the other half of the subject: where an extension's INI files
 live, how keys are named, and when they are loaded. Read it if you are about
@@ -321,6 +341,10 @@ it does not render usefully. Treat the feature as unfinished.</p>
 language key, for one language and one half of the hub, without touching a
 shipped file — so it survives an upgrade, where editing
 <code>core/components/com_blog/site/language/en-GB/en-GB.com_blog.ini</code> would not.</p>
+<p>Overrides are as safe as an administrative change gets. Each one is a line in
+a text file, it takes effect on the next page load, and deleting it puts the
+shipped wording straight back. Nothing is lost and nothing needs a rebuild, so
+this is a screen you can try things on.</p>
 <p>Open <strong>Extensions → Language Manager → Overrides</strong>. The drop-down at the top
 right picks which file you are editing, as a language and location pair —
 <em>English (United Kingdom) - Site</em>, <em>English (United Kingdom) - Administrator</em>,
@@ -361,6 +385,40 @@ the form. That search runs against a database table the screen fills the first
 time you use it, by reading every INI file under <code>core/</code> and <code>app/</code> for the
 selected language — expect a pause, and a <em>Please wait while the cache is
 recreated</em> notice, on the first search after a change of language or location.</p>
+<h3 id="changing-a-piece-of-wording-start-to-finish">Changing a piece of wording, start to finish</h3>
+<p>The hub's knowledge base is headed <em>Knowledge Base</em>, and the group that runs
+the hub has called the same thing the user guide since before there was a hub.
+You do not know the key, only the words on the screen.</p>
+<ol>
+<li>Open <strong>Extensions → Language Manager → Overrides</strong>.</li>
+<li>Set the drop-down at the top right to <em>English (United Kingdom) - Site</em>.
+The wording is on the public site, so it is the site file you want; the
+administrator file is a different file and changing it would do nothing
+here.</li>
+<li>Press <strong>New</strong>.</li>
+<li>In the search panel on the right, choose <strong>Value</strong>, type <code>Knowledge Base</code>,
+and press <strong>Search</strong>. Wait through the <em>Please wait while the cache is
+recreated</em> notice the first time.</li>
+<li>Look down the results for the constant whose value is exactly the words you
+are replacing — <code>COM_KB</code> — and click it. The constant drops into
+<strong>Language Constant</strong>.</li>
+<li>Type <code>User Guide</code> into <strong>Text</strong>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+<li>Load the knowledge base on the site and check the heading. It changes
+immediately; there is no cache to clear.</li>
+</ol>
+<p>If it did not change, the words you saw came from a different constant. The
+value search often returns several near-identical strings, because the same
+phrase is defined by more than one extension. Go back, look for another
+candidate, and add a second override; a wrong override changes nothing you can
+see, and you can delete it.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Search on <strong>Value</strong> and you will find keys belonging to
+extensions all over the hub. An override applies wherever its key is used,
+not only on the page you were looking at. A word like <em>Delete</em> or <em>Groups</em>
+is used in dozens of places, so overriding it changes all of them. Prefer
+the most specific constant you can find.</p>
+</aside>
 <p>Overrides are written to a plain INI file per language and client:</p>
 <pre><code class="language-text">app/bootstrap/site/language/overrides/en-GB.override.ini
 app/bootstrap/administrator/language/overrides/en-GB.override.ini
@@ -382,7 +440,7 @@ rules: the override editor's <strong>Save</strong> needs Edit or Create, <strong
 Delete, and the <strong>Default</strong> button on the installed list needs Edit State.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ be0bd4c772</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 009ec973b7</code> on 2026-09-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../kb/index.html" rel="prev"><span>Previous</span>Knowledge base</a><a class="pager__next" href="../mailto/index.html" rel="next"><span>Next</span>Mailto</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/20-languages.md">Edit this page on GitHub</a>
