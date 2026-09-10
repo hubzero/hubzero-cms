@@ -375,6 +375,62 @@ class LoaderTest extends TestCase
     }
 
     /**
+     * Test that a site whose styles name no default still gets a template
+     *
+     * The styles query answers, so the earlier fallback never ran, and the
+     * site rendered with the bare system template instead of its own.
+     *
+     * @return  void
+     */
+    public function testConfigFallbackWhenNoStyleIsHome()
+    {
+        $driver = $this->getMockDriver($this->fixture);
+        $this->clearHomeStyles();
+
+        $app = new Application();
+        $app['client'] = new \Hubzero\Base\Client\Site();
+        $app['db']     = $driver;
+        $app['config'] = new Registry(['site_template' => 'sitefoo']);
+
+        $loader = new Loader($app, [
+            'path_app'  => __DIR__ . '/Mock/app',
+            'path_core' => __DIR__ . '/Mock/core'
+        ]);
+
+        $template = $loader->load();
+
+        $this->assertEquals('sitefoo', $template->template);
+        $this->assertEquals(1, $template->home);
+
+        // With nothing named in config there is still only the system template
+        $bare = new Application();
+        $bare['client'] = new \Hubzero\Base\Client\Site();
+        $bare['db']     = $this->getMockDriver($this->fixture);
+        $bare['config'] = new Registry();
+        $this->clearHomeStyles();
+
+        $loader = new Loader($bare, [
+            'path_app'  => __DIR__ . '/Mock/app',
+            'path_core' => __DIR__ . '/Mock/core'
+        ]);
+
+        $this->assertEquals('system', $loader->load()->template);
+    }
+
+    /**
+     * Take the default flag off every site style in the fixture
+     *
+     * @return  void
+     */
+    private function clearHomeStyles(): void
+    {
+        $pdo = new \PDO('sqlite:' . __DIR__ . '/Fixtures/' . $this->fixture);
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        // The seeded columns carry no type, so SQLite stores these as text
+        $pdo->exec("UPDATE template_styles SET home = '0' WHERE client_id = '0'");
+    }
+
+    /**
      * Gets a mock SQLite database driver using the requested fixture database
      *
      * @param   string  $fixture
@@ -386,6 +442,12 @@ class LoaderTest extends TestCase
         $pdo = new \PDO('sqlite:' . $dbPath);
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
+        // The seeded fixture is not kept in the repository, so build it from
+        // the dataset every run; testBad.sqlite3 is left as it is on purpose
+        if ($fixture === $this->fixture) {
+            $this->seed($pdo);
+        }
+
         /** @var SqliteDriver $driver */
         $driver = $this->getMockBuilder(SqliteDriver::class)
             ->disableOriginalConstructor()
@@ -396,5 +458,40 @@ class LoaderTest extends TestCase
             ->setPrefix('');
 
         return $driver;
+    }
+
+    /**
+     * Build the fixture tables and rows from the dataset
+     *
+     * @param   \PDO  $pdo
+     * @return  void
+     */
+    private function seed(\PDO $pdo): void
+    {
+        $dataset = simplexml_load_file(__DIR__ . '/Fixtures/seed.xml');
+
+        foreach ($dataset->table as $table) {
+            $name = (string) $table['name'];
+            $columns = array();
+            foreach ($table->column as $column) {
+                $columns[] = (string) $column;
+            }
+
+            $pdo->exec('DROP TABLE IF EXISTS "' . $name . '"');
+            $pdo->exec('CREATE TABLE "' . $name . '" ("' . implode('", "', $columns) . '")');
+
+            $insert = $pdo->prepare(
+                'INSERT INTO "' . $name . '" VALUES ('
+                . implode(', ', array_fill(0, count($columns), '?')) . ')'
+            );
+
+            foreach ($table->row as $row) {
+                $values = array();
+                foreach ($row->value as $value) {
+                    $values[] = (string) $value;
+                }
+                $insert->execute($values);
+            }
+        }
     }
 }
