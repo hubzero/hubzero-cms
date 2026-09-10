@@ -247,3 +247,12 @@ def test_redirect_target_may_carry_a_fragment(tmp_path):
     page, _, fragment = "tools/developers/index.html#accessing-a-home-directory".partition("#")
     assert page == "tools/developers/index.html"
     assert fragment == "accessing-a-home-directory"
+
+
+def test_a_page_that_writes_its_own_contents_list_suppresses_the_automatic_one():
+    """Otherwise a landing page says "In this section" twice."""
+    import build_site
+    page = build_site.Page.__new__(build_site.Page)
+    page.children = [object()]
+    own = '<h2 id="in-this-section">In this section</h2>'
+    assert build_site.build_children_list(page, Path("x"), Path("y"), own) == ""

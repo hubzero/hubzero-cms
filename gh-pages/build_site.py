@@ -648,8 +648,16 @@ def build_pager(page: Page, ordered: list[Page], output_path: Path, output_dir: 
     return '<nav class="pager" aria-label="Chapter navigation">' + "".join(parts) + "</nav>"
 
 
-def build_children_list(page: Page, output_path: Path, output_dir: Path) -> str:
+def build_children_list(page: Page, output_path: Path, output_dir: Path,
+                        content_html: str = "") -> str:
+    """The automatic contents list for a section.
+
+    A landing page that writes its own contents list, with its own wording,
+    wins: emitting both leaves the page saying "In this section" twice.
+    """
     if not page.children:
+        return ""
+    if 'id="in-this-section"' in content_html:
         return ""
     items = []
     for child in page.children:
@@ -840,7 +848,8 @@ def main() -> int:
             if not page.summary:
                 page.summary = excerpt_of(content_html, 160)
             toc_html = build_toc(rendered["toc"])  # type: ignore[arg-type]
-            children_html = build_children_list(page, output_path, output_dir) if page.is_section else ""
+            children_html = (build_children_list(page, output_path, output_dir, content_html)
+                             if page.is_section else "")
             context = common_context(output_path)
             context.update({
                 "page_title": escape(page.title),
