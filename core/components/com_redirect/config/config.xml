@@ -8,13 +8,13 @@
 
 <config>
         <fieldset name="delay" label="COM_REDIRECT_DELAY_LABEL" description="COM_REDIRECT_DELAY_LABEL">
-        <field name="delay_enabled" type="list" default="COM_REDIRECT_DELAY_ENABLED" label="COM_REDIRECT_IS_DELAY_ENABLED" description="COM_REDIRECT_IS_DELAY_ENABLED">
+        <field name="delay_enabled" type="list" default="DISABLED" label="COM_REDIRECT_IS_DELAY_ENABLED" description="COM_REDIRECT_IS_DELAY_ENABLED">
             <option value="ENABLED">COM_REDIRECT_DELAY_ENABLED</option>
             <option value="DISABLED">COM_REDIRECT_DELAY_DISABLED</option>
         </field>
         <field name="delay_seconds" type="text" default="10" label="COM_REDIRECT_DELAY_SECONDS" description="COM_REDIRECT_DELAY_SECONDS" size="80" />
         <field name="delay_whitelist" type="text" default="" label="COM_REDIRECT_DELAY_WHITELIST" description="COM_REDIRECT_DELAY_WHITELIST" size="80" />
-        <field name="delay_blacklist" type="text" default="" label="COM_REDIRECT_DELAY_BLACKLKIST" description="COM_REDIRECT_DELAY_BLACKLKIST" size="80" />
+        <field name="delay_blacklist" type="text" default="" label="COM_REDIRECT_DELAY_BLACKLIST" description="COM_REDIRECT_DELAY_BLACKLIST" size="80" />
         <field type="spacer" />
         </fieldset>
 
