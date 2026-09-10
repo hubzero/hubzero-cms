@@ -56,7 +56,7 @@
 /documentation/240/installation/el8/install/workspace https://hubzero.github.io/hubzero-cms/managers/installing/
 /documentation/240/installation/el8/updates https://hubzero.github.io/hubzero-cms/managers/installing/
 /documentation/240/installation/el8/upgrade7to8 https://hubzero.github.io/hubzero-cms/managers/installing/
-/documentation/240/introduction https://hubzero.github.io/hubzero-cms/getting-started/introduction/
+/documentation/240/introduction https://hubzero.github.io/hubzero-cms/docs/
 /documentation/240/managers https://hubzero.github.io/hubzero-cms/managers/
 /documentation/240/managers/advancedsetup https://hubzero.github.io/hubzero-cms/managers/advancedsetup/
 /documentation/240/managers/components https://hubzero.github.io/hubzero-cms/managers/components/
@@ -326,7 +326,7 @@
 /documentation/current/installation/el8/install/workspace https://hubzero.github.io/hubzero-cms/managers/installing/
 /documentation/current/installation/el8/updates https://hubzero.github.io/hubzero-cms/managers/installing/
 /documentation/current/installation/el8/upgrade7to8 https://hubzero.github.io/hubzero-cms/managers/installing/
-/documentation/current/introduction https://hubzero.github.io/hubzero-cms/getting-started/introduction/
+/documentation/current/introduction https://hubzero.github.io/hubzero-cms/docs/
 /documentation/current/managers https://hubzero.github.io/hubzero-cms/managers/
 /documentation/current/managers/advancedsetup https://hubzero.github.io/hubzero-cms/managers/advancedsetup/
 /documentation/current/managers/components https://hubzero.github.io/hubzero-cms/managers/components/
@@ -603,6 +603,10 @@
 /documentation/platform_2_4/users/simusagedefinitions https://hubzero.github.io/hubzero-cms/tools/users/simusagedefinitions/
 /documentation/platform_2_4/users/tools https://hubzero.github.io/hubzero-cms/tools/users/tools/
 /documentation/platform_2_4/users/usage https://hubzero.github.io/hubzero-cms/tools/users/usage/
+/getting-started https://hubzero.github.io/hubzero-cms/docs/
+/getting-started/concepts https://hubzero.github.io/hubzero-cms/docs/
+/getting-started/introduction https://hubzero.github.io/hubzero-cms/docs/
+/getting-started/releases https://hubzero.github.io/hubzero-cms/developers/getting-started/releasenotes/
 /installation https://hubzero.github.io/hubzero-cms/managers/installing/
 /managers/components/projects/projectfileconnect https://hubzero.github.io/hubzero-cms/managers/components/projects/#project-file-connectors
 /managers/components/publications/datacite https://hubzero.github.io/hubzero-cms/managers/components/publications/#doi-registration
@@ -645,7 +649,7 @@
 /reference/muse/test https://hubzero.github.io/hubzero-cms/reference/muse/#muse-test
 /reference/muse/user https://hubzero.github.io/hubzero-cms/reference/muse/#muse-user
 /reference/muse/user-terms https://hubzero.github.io/hubzero-cms/reference/muse/#muse-user-terms
-/releases https://hubzero.github.io/hubzero-cms/getting-started/releases/
+/releases https://hubzero.github.io/hubzero-cms/developers/getting-started/releasenotes/
 /tools/administrators/installing-tool-dependencies https://hubzero.github.io/hubzero-cms/tools/administrators/#installing-tool-dependencies
 /tools/administrators/jupyter-notebooks https://hubzero.github.io/hubzero-cms/tools/administrators/#jupyter-notebooks
 /tools/administrators/whitelistdirectories https://hubzero.github.io/hubzero-cms/tools/administrators/#directory-parameter-whitelist

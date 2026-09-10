@@ -3,8 +3,12 @@ status: draft
 -->
 # Tools
 
-The tool platform lets a hub run simulation and analysis programs in a
-session on its execution hosts and show them in the member's browser.
+A **tool** is a simulation or analysis program that runs in a session on
+the hub's execution hosts and is displayed in the member's browser, so a
+member runs it without installing anything. Tools are developed in a
+repository, built and tested through the contribution pipeline, and
+published as resources alongside datasets and presentations.
+
 This book covers the three sides of that platform.
 
 - [Tool developers](developers/README.md) — structuring a tool repository,

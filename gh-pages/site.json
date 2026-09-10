@@ -10,13 +10,6 @@
  "copyright": "Purdue University",
  "books": [
   {
-   "slug": "getting-started",
-   "title": "Getting started",
-   "dir": "docs/getting-started",
-   "audience": "Start here",
-   "summary": "What a hub is, the vocabulary the rest of the documentation uses, how releases work, and where to go next."
-  },
-  {
    "slug": "managers",
    "title": "Hub managers",
    "dir": "docs/managers",
@@ -56,7 +49,7 @@
   {
    "slug": "docs",
    "source": "docs/README.md",
-   "title": "All books",
+   "title": "About Hubzero",
    "index": true
   },
   {

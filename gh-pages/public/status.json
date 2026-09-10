@@ -1,15 +1,6 @@
 {
  "books": [
   {
-   "slug": "getting-started",
-   "title": "Getting started",
-   "pages": 4,
-   "counts": {
-    "draft": 3,
-    "reviewed": 1
-   }
-  },
-  {
    "slug": "managers",
    "title": "Hub managers",
    "pages": 90,
@@ -55,9 +46,9 @@
   }
  ],
  "totals": {
-  "draft": 5,
-  "reviewed": 24,
   "rewritten": 233,
+  "draft": 2,
+  "reviewed": 23,
   "generated": 153
  }
 }
