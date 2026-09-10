@@ -82,15 +82,15 @@ class Manager
                     // Return the error.
                     switch ($authorisation->status) {
                         case Status::EXPIRED:
-                            return new \Exception($this->app['language']->txt('JLIB_LOGIN_EXPIRED'), 102002, E_WARNING);
+                            return new \Exception($this->app['language']->txt('JLIB_LOGIN_EXPIRED'), 102002);
                             break;
                         case Status::DENIED:
-                            return new \Exception($this->app['language']->txt('JLIB_LOGIN_DENIED'), 102003, E_WARNING);
+                            return new \Exception($this->app['language']->txt('JLIB_LOGIN_DENIED'), 102003);
                             break;
                         default:
                             return new \Exception($this->
                                 app['language']->
-                                txt('JLIB_LOGIN_AUTHORISATION'), 102004, E_WARNING);
+                                txt('JLIB_LOGIN_AUTHORISATION'), 102004);
                             break;
                     }
                 }
@@ -142,7 +142,7 @@ class Manager
 
         // If status is success, any error will have been raised by the user plugin
         if ($response->status !== Status::SUCCESS) {
-            return new \Exception($response->error_message, 102001, E_WARNING);
+            return new \Exception($response->error_message, 102001);
         }
 
         return false;
