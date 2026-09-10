@@ -163,6 +163,13 @@ abstract class Driver implements LoggerAwareInterface
     protected $statement;
 
     /**
+     * The query the statement was last prepared from
+     *
+     * @public string|null
+     */
+    protected $preparedSql;
+
+    /**
      * The prepared statement bindings
      *
      * @public array
@@ -2717,7 +2724,8 @@ abstract class Driver implements LoggerAwareInterface
     {
         $sql = $this->replacePrefix($statement);
 
-        $this->bindings = [];
+        $this->preparedSql = $statement;
+        $this->bindings    = [];
 
         // Close previous statement to avoid cursor issues
         if ($this->statement) {
@@ -3086,6 +3094,19 @@ abstract class Driver implements LoggerAwareInterface
     public function execute()
     {
         $this->hasConnectionOrFail();
+
+        // Freeing a result leaves nothing prepared. Asking the same query
+        // twice off one setQuery() has always been allowed, so put the last
+        // one back rather than failing on a statement that is no longer here.
+        if (!$this->statement && $this->preparedSql !== null) {
+            $bindings = $this->bindings;
+
+            $this->prepare($this->preparedSql);
+
+            if ($bindings) {
+                $this->bind($bindings);
+            }
+        }
 
         $start = microtime(true);
 
