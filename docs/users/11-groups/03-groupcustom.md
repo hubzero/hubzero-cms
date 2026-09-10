@@ -1,149 +1,222 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/groups/groupcustom
 source-id: 3306
 modified: 2011-11-04
-imported: 2026-09-09
 -->
 # Customization
 
-## Customizing a Group's Look
+What a group manager can change about a group from the site: its logo and
+settings, the pages that make up its content, the categories those pages are
+filed under, and — on a super group — the modules around them.
 
-![groupmanagersettings](../media/groupcustom-groupmanagersettings.png)
+Two entries in the **Group Manager** menu do all of it: **Edit Group
+Settings** and **Manage Group Pages**.
 
-![addingalogo](../media/groupcustom-addingalogo.png)
+![The Group Manager menu, open](../media/groupcustom-groupmanagersettings.png)
 
-1. On your main group, click on **Group Manager** and click on **Edit Group Settings**
-2. Use the box on the right side of the page to upload a photo. Choose that photo from the drop-down box in the **Group Logo** section
-3. Specify access to individual tabs within the group in the **Group Access** section by selecting the desired option to the right of item in the list
-4. Click **Save Group** to save your changes
-5. To customize all the group pages at once, click on **Manage Group Pages** in the **Group** **Custom Content** section. This will take you different interface away from the group customization area, please save all other changes before making this customization
+Members holding a role can reach them too: **Edit Group Settings** needs the
+role permission of the same name, **Manage Group Pages** needs
+**Create/Edit Group Pages & Categories**. See
+[Member functions](02-groupmembers.md#roles).
 
-## Customizing a Group's Calendar
+## Group settings
 
-Users can subscribe to a group calendar two separate ways:
+**Group Manager** → **Edit Group Settings** opens the same form used to
+create the group, with everything filled in. The sections are described in
+[Creating and deleting a group](01-createdeleteagroup.md#creating-a-group).
+The two that shape how the group looks are **Logo** and, under **Privacy
+Settings**, **Access Permissions**.
 
-1. **[Download:](https://qa210.aws.hubzero.org/help/groups/calendar/subscriptions#download)** They can download a group calendar of events and import that into their calendar off the HUB.
-2. **[Subscribe:](https://qa210.aws.hubzero.org/help/groups/calendar/subscriptions#subscribe)** They use a calendar application such as iCal or Outlook to subscribe to the group calendar.
+Select **Save Group** when you are done. Saving emails the group's managers a
+summary of what changed.
 
-<a id="download"></a>
+### The group logo
 
-### Downloading the Group Calendar
+The **Logo** section only exists once the group has been saved at least once.
 
-To download a group calendar, navigate to a group's calendar tab. If you scroll down, under the calendar of events you should see a box titled "Subscribe", which looks like the image below
+1. Open **Edit Group Settings**.
+2. In the file browser on the right of the page, select **Upload a file** —
+   or drop a file onto it — to put the image in the group's `uploads` folder.
+3. Choose it from the **Logo** drop-down. A preview appears below.
+4. Select **Save Group**.
 
-![Subscribe](https://qa210.aws.hubzero.org/core/plugins/groups/calendar/help/en-GB/subscribe.png)
+![Choosing a logo, with the group file browser beside it](../media/groupcustom-addingalogo.png)
 
-Here you can pick which of the group calendar's you want to download. After you have made your choices simply click the *Download* button. A iCalendar file (.ics) will be downloaded by your browser, which you can then import into any calendar application with iCalendar support.
+> **Note:** On a super group the logo set here does *not* change the logo in
+> the group's own template. It is used for branding elsewhere on the hub —
+> in resources, courses and the like.
 
-[Here is a list of applications with support for iCalendar files (.ics) →](http://en.wikipedia.org/wiki/List_of_applications_with_iCalendar_support)
+### Which tabs appear
 
-<a id="subscribe"></a>
+**Access Permissions**, in the **Privacy Settings** section, lists every tab
+groups can have on this hub. Each one takes a value:
 
-### Subscribing to the Group Calendar
+| Value | Who reaches the tab |
+|---|---|
+| **Any HUB Visitor** | Everyone, signed in or not |
+| **Registered HUB Users** | Anyone with a hub account |
+| **Group Members Only** | Members of this group |
+| **Disabled/Off** | Nobody. The tab is removed from the menu |
 
-Subscribing to a group calendar has 1 major benefit over downloading a group calendar; changes made to the group events on the HUB are reflected in the subscribers calendar.
+**Overview** cannot be turned off. Whatever is preselected is the hub's own
+default for that tab until you change it.
 
-To subscribe to group calendar follow the same steps described above to download a calendar but instead click the *Subscribe* button. This will open the default calendar application on your calendar with a dialog box asking if you would like to subscribe to this calendar. If the groups calendar access setting is restricted to Registered HUB Users or Group Members, you will also be prompted for you HUB login and password.
+## Group pages
 
-<a id="faqs"></a>
+The group's content pages live behind **Group Manager** → **Manage Group
+Pages**. The screen has two tabs, or three on a super group:
 
-### Subscription FAQs
+- **Manage Pages**
+- **Manage Page Categories**
+- **Manage Modules** — on a super group, or when the hub has switched
+  modules on for ordinary groups
 
-- [Can I subscribe with Google Calendar?](https://qa210.aws.hubzero.org/help/groups/calendar/subscriptions#faqs-google-calendar)
+**Upload Images/Files** in the header opens the group's file browser, the
+same one used for the logo. **Back to Group** returns to the group.
 
-<a id="faqs-google-calendar"></a>
+> **Note:** Group pages are separate from the group's wiki. The wiki is its
+> own tab, for content the members write together; pages are the group's own
+> site.
 
-\1. Can I subscribe with Google Calendar?
+### Creating a page
 
-Currently Google Calendar doesn't support private or authenticated calendar subscriptions, which is good for the security of your data, but bad if you like having all you calendars in one place. Only if a group's calendar access setting is set to *Any HUB Visitor* will users be able to subscribe with their Google Calendar. This setting can be changed at anytime by any group manager, in the group customize interface.
+1. Open **Manage Group Pages** and select **New Page**.
+2. Fill in **Title**. It is required.
+3. Fill in **Alias** if you want to choose the segment the page gets in the
+   URL. Aliases take lowercase letters, digits, underscores and dashes;
+   spaces are removed.
+4. Write the page in the **Content** editor. It is required.
+5. On the right, set **Status** — **Published** or **Unpublished** — and
+   **Privacy**, which is either **Inherits overview tab's privacy setting**
+   or **Private Page (Accessible to members only)**.
+6. Under **Settings**, optionally pick a **Category**, a **Parent** page and
+   an **Order**, and choose whether the page shows **Comments**. Comments
+   default to **Use Group Setting**, from the group's own **Page Settings**.
+7. Select **Save Page**, or **Apply Changes** from the drop-down beside it
+   to save and stay on the form.
 
-An alternative for Google Calendar users is that they download and import a group calendar following the steps described above.
+An unpublished page stays off the group's menu, but managers can still open
+and edit it. A private page is restricted to group members even when the
+**Overview** tab is open to everyone; the page list marks it with a padlock.
 
-## Customizing Group Pages
+### Editing a page
 
-**Managing Group Pages:**
+From the **Manage Pages** list, select the page's title, or **Manage Page**
+on its row. The row's drop-down also offers **Edit Page**, **Preview Page**,
+**Publish Page**/**Unpublish Page**, **Version History** and **Delete
+Page**.
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow, next to the **Group Manager** button
-3. Select from the drop-down the **Manage Group Pages** button
-4. From there you can manage all of the pages inside of the Group
+The list itself shows each page's URL, a padlock on private pages, a coloured
+stripe for its category, and who has it open if someone is editing it.
+Filter the list by category, or search it by title.
 
-**Creating a Group Page:**
+You can also edit a page from the group itself, if the group's **Author
+Details** page setting is on: the edit control sits in the byline at the foot
+of the page. With **Author Details** off there is no byline and no control,
+so go through **Manage Group Pages** instead.
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow next to the Group Manager button
-3. Select from the drop-down the Manage Group Pages button
-4. On the Manage Pages tab, click on the New Page button
-5. Fill in the title into the title field and alias into the alias field for the new page
-   1. Note: Page alias' can only contain alphanumeric characters and underscores. Spaces will be removed.
-6. Then, fill in the content of the new page in the content text box
-7. Select the publishing settings status from the drop-down:
-   1. Published- the page is available on the Hub’s frontend
-   2. Unpublished- the page is unavailable to the Hub’s frontend but can be accessed still by the creator and on the backend of the Hub
-8. Select the privacy settings from the drop-down:
-   1. Inherits overview tab’s privacy setting- The previous setting of the overview tab also is enabled for this page
-   2. Private Page- Accessible to only members of the Hub
-9. Underneath the Settings, select a category from the Category drop-down, and the settings you want for Comments from the drop down
-10. Click Save Page to save the new page and the newly added content
+### Reordering and nesting pages
 
-**Embedding PHP or Javascript Code in a Group Page (advanced feature):**
+Drag a page by the handle at the right of its row in **Manage Pages**. Drop
+it on another page to make it a child. The hub sets how deep the nesting may
+go — five levels by default.
 
-It is possible to insert PHP or Javascript Code into a Group page to allow more flexibility when constructing a page. This is a feature meant for developers to provide advanced capabilities the page. Due to security considerations, a page approver must be assigned on the administrator Group interface under "Options". This is a textbox that is expecting a comma separated list of usernames who will be messaged when a page containing PHP or Javascript code is submitted. Until the page is approved, the previous version will be displayed or a message indicating the page needs to be approved, if there exists no previous version.
+### Version history
 
-**Editing a Group Page:**
+Every save that changes a page's content creates a new version.
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the group management button
-3. Select from the drop-down the **Manage Group Pages** button
-4. Inside of Manage Group Pages, select the **Manage Pages** tab and then locate the page that needs editing
-5. Click on the arrow next to the page’s **Manage Page** button
-6. From the drop-down select **Edit Page** to begin editing the page’s content
-7. Edit the content inside of the group page and then click **Save Page** to save the newly edited content
+1. Open the page's **Version History**.
+2. Step through the versions with **Previous** and **Next**, jump straight to
+   a version number with the menu between them, and use **View Source Diff**
+   to see what changed in the markup.
+3. **Restore This Version** copies the version you are looking at back to the
+   top of the history as a new version. Nothing is thrown away.
 
-**Deleting a Group Page:**
+### Deleting a page
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow next to the **Group Manager** button
-3. Select from the drop-down the **Manage Group Pages** button
-4. Inside of Manage Group Pages, select the **Manage Pages** tab and then locate the page that needs deleting
-5. Click on the arrow next to the page’s **Manage Page** button
-6. From the drop-down select **Delete Page** and the page will automatically be removed from the group and the Hub
+Select **Delete Page** from a page's drop-down in **Manage Pages**. The
+group's home page cannot be deleted, published or unpublished.
 
-**Creating a New Page Category:**
+### Page categories
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow next to the **Group Manager** button
-3. Select from the drop-down the **Manage Group Pages** button
-4. Navigate to the **Manage Page Categories** tab
-5. Click on the **New Page Category** button and then fill in the title and select the color for the new category
-6. Click **Save Category** to create a new category
+Categories group pages together and give each one a colour, used as a stripe
+in the page list and as a filter.
 
-**Editing a Page Category:**
+1. Open **Manage Group Pages** and select the **Manage Page Categories** tab.
+2. Select **New Page Category**.
+3. Give it a **Title**, and a **Color** if you want one.
+4. Select **Save Category**.
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow, next to the **Group Manager** button
-3. Select from the drop-down the **Manage Group Pages** button
-4. Navigate to the **Manage Page Categories** tab
-5. Locate the category that needs editing and by the **Manage Page Category** button click the arrow
-6. From the drop-down select **Edit Page Category** and then edit the content inside of the page category
-7. Click **Save Category** once finished to save the newly edited content
+Each row's **Manage Category** drop-down offers **Edit Category** and
+**Delete Category**, and shows how many pages the category holds.
 
-**Deleting a Page Category:**
+You can also make a category while editing a page: choose **Other** in the
+page's **Category** menu.
 
-1. Log in to the frontend of the Hub and access a Group that allows users access to managing pages in the Group
-2. Hover over the down-arrow, next to the **Group Manager** button
-3. Select from the drop-down the **Manage Group Pages** button
-4. Navigate to the **Manage Page Categories** tab
-5. Locate the category that needs to be deleted and by the **Manage Page Category** button click the arrow
-6. From the drop-down select **Delete Page Category** and the page category will be automatically removed from the group and from the Hub
+### Modules
 
-## Group Forum: Digest Emails
+The **Manage Modules** tab puts blocks of content in the positions around a
+group's pages. It is present for every super group; for an ordinary group it
+appears only when the hub's administrators have switched group modules on.
+The screen is described in
+[Super Groups](../../managers/06-users/08-supergroups.md#managing-modules-from-the-site).
 
-Group members have the ability to receive emails from the group forum. The group member can be emailed every time another member creates a new post in a forum. Each group member can manage their own settings so they receive new posts in the group.
+## PHP and JavaScript in a page
 
-1. Navigate to the main Group page then click on the **Forum** tab
-2. Inside of the Group Forum, locate *Email Settings* and click on **Change your settings**
-3. In the pop-up determine the preferred email setting by clicking the check box next to *Email me about new posts in this group*
-4. Then, select the radio button next to the preferred emailing time frame of receiving group forum emails **Individually as new posts are made** or **As part of a (Daily, Weekly, Monthly) digest email**
-5. Click **Save** to save the email setting changes
+An ordinary group's page content is filtered: `<script>` blocks and PHP tags
+are stripped out before the page is stored. Nothing you can do from the site
+changes that.
+
+There are two ways round it, and both need an administrator:
+
+- The group is made a **super group**. Its pages may then contain PHP and
+  JavaScript, and it gets a template, modules and a web space of its own.
+- Or the group is left an ordinary group and its **Trusted content** page
+  setting is turned on, which lifts the filtering for that one group without
+  making it a super group.
+
+In either case content that contains `<?`, `<?php` or `<script` is saved
+**unapproved** and mailed to the hub's page approvers. Until one of them
+approves it, visitors see the previously approved version, or a placeholder
+saying the page is awaiting approval. The page shows **Pending Approval** in
+**Manage Pages** meanwhile.
+
+> **Note:** A group cannot make itself a super group, turn on trusted
+> content, override its site template, or edit its template files and CSS
+> from the site. The group file browser reaches only the group's `uploads`
+> folder, for every group, super or not. Super group templates are edited on
+> the server. See
+> [Super Groups](../../managers/06-users/08-supergroups.md) for what the
+> status gives a group and
+> [Super Groups](../../developers/13-supergroups/README.md) in the developer
+> book for the templating itself.
+
+## The group calendar
+
+Members can take a group's events away with them, in two ways. Both live in
+the **Subscribe** box below the calendar on the group's **Calendar** tab.
+
+Tick the calendars you want — the group may have several, each with its own
+colour, plus **Uncategorized Events** — then:
+
+- **Download** saves an iCalendar file (`.ics`) you import into your own
+  calendar application. It is a snapshot: later changes on the hub are not
+  reflected.
+- **Subscribe** hands the calendar to your default calendar application as a
+  live subscription, so changes made on the hub show up in your calendar.
+
+The box also shows the subscription address, so you can copy it into an
+application yourself.
+
+If the group's **Calendar** tab is restricted to registered users or to group
+members, you are asked for your hub username and password when you subscribe.
+
+> **Note:** Google Calendar does not support authenticated calendar
+> subscriptions, so it can only subscribe to a group whose **Calendar** tab
+> is set to **Any HUB Visitor**. Otherwise, download the file and import it.
+
+A calendar that is not publishing events is listed but cannot be ticked.

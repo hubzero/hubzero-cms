@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Creating/Deleting Groups · Hub users · Hubzero Documentation</title>
-  <meta name="description" content="Creating a Group ***All registered users can create a group on the hub.*** Log in to the Hub Navigate to https://yourhub.org/groups, then click the Create a…">
+  <title>Creating and deleting a group · Hub users · Hubzero Documentation</title>
+  <meta name="description" content="Any signed-in user may create a group, unless the hub&#x27;s administrators have taken the privilege away from your access group. Deleting one needs a group…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/users/groups/createdeleteagroup/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,31 +43,37 @@
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../collections/index.html">Collections</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../courses/index.html">Courses</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../courses/course-manager-features/index.html">Course Manager Features</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../courses/student-features/index.html">Student Features</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../courses/course-manager-features/index.html">Course manager features</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../courses/student-features/index.html">Student features</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../introduction/index.html">Video Tutorials</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../introduction/index.html">Introduction</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../blog/index.html">Blog</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../citations/index.html">Citations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../events/index.html">Events</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../forum/index.html">Forum</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Groups</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Creating/Deleting Groups</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#creating-a-group">Creating a Group</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Creating and deleting a group</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#creating-a-group">Creating a group</a></li>
+<li class="toc__item toc__item--l3"><a href="#group-details">Group Details</a></li>
+<li class="toc__item toc__item--l3"><a href="#membership-settings-join-policy">Membership Settings/Join Policy</a></li>
+<li class="toc__item toc__item--l3"><a href="#privacy-settings">Privacy Settings</a></li>
+<li class="toc__item toc__item--l3"><a href="#group-email-settings">Group Email Settings</a></li>
+<li class="toc__item toc__item--l3"><a href="#page-settings">Page Settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#after-you-save">After you save</a></li>
 <li class="toc__item toc__item--l2"><a href="#deleting-a-group">Deleting a group</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../groupmembers/index.html">Member Functions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groupmembers/index.html">Member functions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../groupcustom/index.html">Customization</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../groupcitations/index.html">Group Citations</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../groupforum/index.html">Group Forum</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groupcitations/index.html">Group citations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../groupforum/index.html">Group forum</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../support/index.html">Support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../knowledgebase/index.html">Knowledge base</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../dashboard/index.html">Member Dashboard</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../profile/index.html">Member Profile</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../dashboard/index.html">Member dashboard</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../profile/index.html">Member profile</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfiles/index.html">Project Files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfiles/index.html">Project files</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../projects/databases/index.html">Databases</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
@@ -80,12 +86,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../tools/index.html">Tools</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../wiki/index.html">Wiki</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../search/index.html">Search</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../simusagedefinitions/index.html">Simulation Usage Definitions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../simusagedefinitions/index.html">Simulation usage definitions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../storefront/index.html">Storefront</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../usage/index.html">Usage</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../wishlist/index.html">Wish list</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../gettingstarted/index.html">Getting Started</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../gettingstarted/index.html">Getting started</a></li>
 </ul>
         </nav>
       </details>
@@ -93,55 +99,180 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub users</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Creating/Deleting Groups</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub users</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Groups</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Creating and deleting a group</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub users</p>
-          <h1>Creating/Deleting Groups</h1>
+          <h1>Creating and deleting a group</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/users/groups/createdeleteagroup">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2011.</aside>
+        
         <div class="prose">
-<h2 id="creating-a-group">Creating a Group</h2>
-<p><strong>***All registered users can create a group on the hub.***</strong></p>
+<p>Any signed-in user may create a group, unless the hub's administrators have
+taken the privilege away from your access group. Deleting one needs a group
+manager.</p>
+<h2 id="creating-a-group">Creating a group</h2>
 <ol>
-<li>Log in to the Hub</li>
-<li>Navigate to https://yourhub.org/groups, then click the <strong>Create a New Group</strong> button</li>
-<li>On the <strong>Create a New Group Page</strong>, first fill in the <strong>Group ID</strong> which is the group’s name that is in the URL</li>
-<li>Fill in the group’s title or the name of the group that user’s will see</li>
-<li>Fill in tags to connect your group with words to make it easier to find using Hub searches. A tag is like a subject, keyword, or category</li>
-<li>Create the public and private group descriptions. The public description will allow any users of the Hub view a brief overview of the group. The private description will allow group members understand any group goals or concepts</li>
-<li>Under <strong>Membership Settings Join Policy</strong>, select the button next to the access level you would like to give to members:
-<img src="../../media/createdeleteagroup-groupmembershipmanagement.png" alt="groupmembershipmanagement" />
-<ol>
-<li><strong>Public:</strong> Any user on the Hub can join the group.</li>
-<li><strong>Restricted:</strong> Qualifications are given that predetermines who can join. These restrictions have to be added into the credentials. The group manager must approve these group members.</li>
-<li><strong>Invite Only:</strong> A group manager has to send an invite any new group members to the group.</li>
-<li><strong>Closed:</strong> No one can join the group unless they are added from the back-end of the Hub.</li>
+<li>Sign in and go to <code>/groups</code>.</li>
+<li>Select <strong>Create New Group</strong>.</li>
+<li>Fill in the form and select <strong>Save Group</strong>.</li>
 </ol>
-</li>
-<li>Under <strong>Privacy Settings</strong>, select a discoverability setting for the group:
-<ol>
-<li><strong>Hidden:</strong> A hidden group is not listed on the front-end of the Hub, and any content is unavailable to any user that is not a member of the group.</li>
-<li><strong>Visible:</strong> A visible group can be found on the Hub through regular searches.</li>
-</ol>
-</li>
-<li>Set access permissions for each tab by using the drop-down to select who can access or control each component in the group</li>
-<li>For the <strong>Group Email Settings</strong>, check the box to automatically subscribe new group members to the group email thread or discussion thread</li>
-<li>Once all the group’s content has been filled in, then save the new group by clicking <strong>Save</strong> <strong>Group</strong>. Once the initial group has been saved, pictures and files can be uploaded to the group</li>
-</ol>
+<p>The form is one page, in these sections.</p>
+<h3 id="group-details">Group Details</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Group ID</strong></td>
+<td>Required. The group's address: <code>/groups/&lt;Group ID&gt;</code>. Lowercase letters, digits and underscores only, no spaces, and not digits alone. A handful of names are reserved. It cannot be changed afterwards</td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Required. The name people see</td>
+</tr>
+<tr>
+<td><strong>Interests (tags)</strong></td>
+<td>Optional. Comma-separated tags. They make the group findable by search and put it in front of members whose profile interests match</td>
+</tr>
+</tbody>
+</table>
+<p>Your hub may add fields of its own beneath these — the hub's administrators
+define them, and their answers are what the group's <strong>Overview</strong> tab shows
+under <strong>About the Group</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <strong>Logo</strong> section only appears once the group exists. Save the
+group first, then edit it to add a logo. See
+<a href="../groupcustom/index.html#the-group-logo">Customization</a>.</p>
+</aside>
+<h3 id="membership-settings-join-policy">Membership Settings/Join Policy</h3>
+<p>Pick one, under <strong>Who can join?</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open/Anyone</strong></td>
+<td>Membership requests are automatically accepted</td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td>Membership requests are pending and must be approved or denied by a manager</td>
+</tr>
+<tr>
+<td><strong>Invite Only</strong></td>
+<td>Membership can only be gained through an invite</td>
+</tr>
+<tr>
+<td><strong>Closed</strong></td>
+<td>Membership cannot be requested</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Credentials</strong> is an optional block of text shown to anyone requesting
+membership. Use it on a restricted group to say what an applicant should
+tell you — a project number, a principal investigator, and so on.</p>
+<p><img src="../../media/createdeleteagroup-groupmembershipmanagement.png" alt="The Membership Settings/Join Policy section of the group form" /></p>
+<p>If the hub allows time-limited memberships, a <strong>Membership length</strong> section
+follows, where you set a default number of days after which new members are
+removed automatically. Leave it at 0 for memberships that never end. Changing
+it does not affect anyone who has already joined.</p>
+<h3 id="privacy-settings">Privacy Settings</h3>
+<p><strong>Discoverability</strong> is one of two values:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visible</strong></td>
+<td>The group can be found in searches and by browsing groups</td>
+</tr>
+<tr>
+<td><strong>Hidden</strong></td>
+<td>The group cannot be found through searches and is only viewable by group members</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Access Permissions</strong> below it lists every tab available to groups on this
+hub. Set each one to <strong>Any HUB Visitor</strong>, <strong>Registered HUB Users</strong>, <strong>Group
+Members Only</strong> or <strong>Disabled/Off</strong>. <strong>Overview</strong> cannot be set to
+Disabled/Off. Anything already selected is the hub's default until you
+override it.</p>
+<h3 id="group-email-settings">Group Email Settings</h3>
+<p>One checkbox, <strong>Auto subscribe new group users to discussion email</strong>. Tick it
+and new members start subscribed to the group's forum email; each of them can
+change it afterwards. See <a href="../groupforum/index.html">Group forum</a>.</p>
+<h3 id="page-settings">Page Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Comments</strong></td>
+<td>Whether group pages show comments: <strong>No</strong>, <strong>Yes</strong>, or <strong>Lock</strong> (existing comments stay, no new ones). Each page can override it</td>
+</tr>
+<tr>
+<td><strong>Author Details</strong></td>
+<td>Whether each group page ends with a line naming its creator, its last editor and the date</td>
+</tr>
+</tbody>
+</table>
+<h2 id="after-you-save">After you save</h2>
+<p>The group is created, you become its first member and its first manager, and
+you land on the group's page.</p>
+<p>Whether the group is visible to anyone else depends on the hub. Most hubs
+approve new groups automatically. If yours does not, the group is saved
+unapproved: only its managers, members and invitees can reach it, everyone
+else gets a &quot;not found&quot;, and the group's page carries a warning until an
+administrator approves it. Nobody but a manager can open any tab other than
+<strong>Overview</strong> in the meantime.</p>
 <h2 id="deleting-a-group">Deleting a group</h2>
-<p><strong>***To delete a group you must be the manager of the group and the sole member.***</strong></p>
+<p>You must be a manager of the group. You do not have to be its only member —
+every member is notified, and you can write the message they get.</p>
 <ol>
-<li>Log in to the frontend of the Hub and locate the group that is to be deleted and click the group title to open into the home page</li>
-<li>On the group home page, hover over the <strong>Group Manager controls</strong></li>
-<li>In the drop-down, select <strong>Delete Group</strong></li>
-<li>You will be taken to a page to confirm all items in the group that will be lost</li>
-<li>The group will be permanently deleted from the Hub</li>
+<li>Open the group.</li>
+<li>Open the <strong>Group Manager</strong> menu and select <strong>Delete Group</strong>.</li>
+<li>The confirmation page lists what will be lost: the number of members who
+will be notified, and a line from each of the group's plugins counting the
+blog entries, forum posts, wiki pages and other content that go with it.</li>
+<li>Type the group's <strong>Group ID</strong> in the confirmation box.</li>
+<li>Optionally edit the message sent to the members.</li>
+<li>Select <strong>Delete</strong>.</li>
 </ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This is permanent. The group and everything its plugins hold
+are removed, and there is no undo.</p>
+</aside>
+<p>The confirmation page offers an alternative worth reading first: set the join
+policy to <strong>Closed</strong> and the discoverability to <strong>Hidden</strong>. The group then
+takes no new members and is invisible to everyone else, but it is still there
+if you want it later.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Delete Group</strong> does not appear when the group's membership is
+managed outside the hub — some groups are driven by an external system.
+Neither does <strong>Join Group</strong> or <strong>Cancel Group Membership</strong>.</p>
+</aside>
+<p>An administrator can also delete a group from the administrator interface;
+see <a href="../../../managers/users/groups/index.html#deleting-a-group">Groups</a>.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Groups</a><a class="pager__next" href="../groupmembers/index.html" rel="next"><span>Next</span>Member Functions</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Groups</a><a class="pager__next" href="../groupmembers/index.html" rel="next"><span>Next</span>Member functions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/users/11-groups/01-createdeleteagroup.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

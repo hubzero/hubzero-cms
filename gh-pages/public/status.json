@@ -32,8 +32,7 @@
    "title": "Hub users",
    "pages": 39,
    "counts": {
-    "rewritten": 16,
-    "imported": 23
+    "rewritten": 39
    }
   },
   {
@@ -42,8 +41,9 @@
    "pages": 43,
    "counts": {
     "draft": 1,
-    "imported": 34,
-    "merged": 8
+    "imported": 29,
+    "merged": 8,
+    "rewritten": 5
    }
   },
   {
@@ -61,8 +61,7 @@
    "pages": 9,
    "counts": {
     "draft": 1,
-    "imported": 7,
-    "rewritten": 1
+    "rewritten": 8
    }
   },
   {
@@ -85,8 +84,8 @@
  ],
  "totals": {
   "draft": 5,
-  "imported": 127,
-  "rewritten": 157,
+  "imported": 92,
+  "rewritten": 192,
   "merged": 10,
   "generated": 183
  }

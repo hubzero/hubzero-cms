@@ -1,33 +1,99 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/profile
 source-id: 3312
 modified: 2013-02-15
 imported: 2026-09-09
 -->
-# Member Profile
+# Member profile
 
-Once a member signs into their account, they enter their dashboard, the individual customizable space within the Hub. Your member profile contains many sections including your dashboard, your profile, a wiki, a blog, and many more. Each member has the ability to use or not use each of these sections how they want. Some of the more important sections will be discussed in more detail below.
+Your profile is what other members see when they look you up. It is one tab of
+your member area at `/members/myaccount`; the others — Dashboard, Account,
+Groups, Projects, Usage and so on — are listed down the left-hand side, and
+which of them exist depends on which Members plugins your hub has enabled.
 
-## Editing Your Profile
+## Editing your profile
 
-![CurationWorkflow3](media/profile-member-profile-1.png)
+![The profile fields, each with an Edit link](media/profile-member-profile-1.png)
 
-The Member Profile has a new **edit in place** feature to help users edit their profile easier and faster. To edit your profile, first navigate to your Member Profile. Your should see a screen similar to the picture above. Simply click on the edit link along the right side of any profile field to start editing that field. A hidden pane should slide down and you should see fields to edit that specific field of your profile. This is also where you can set the privacy level for that specific field. When your done editing click the Save Button and your profile will be updated. Clicking the Cancel Button will disregard your changes.
+The profile is a list of rows, one per field, each showing a label and its
+current value. Editing happens in place:
 
-## Profile Privacy
+1. Open the **Profile** tab of your member area.
+2. Select **Edit** at the right of the row you want to change. The row opens
+   to reveal the field's inputs and, beside them, a **Privacy** menu.
+3. Change the value.
+4. Select **Save**. **Cancel** closes the row and discards the change.
 
-All Member accounts on the HUB are created with a default privacy setting of **Public**. Users can make their profiles more private my editing their profiles. Under each section of their profile that they don't wish to publicize, they can click the **Edit** and change the **Privacy** to **Public**, **Registered**, or **Private** from the drop-down.
+Errors come back into the same row: a missing required value or a rejected one
+is reported above the inputs.
 
-- Privacy settings:
-  - **Public**: All visitors to the Hub who are logged in or not logged in can see this information
-  - **Registered**: Only registered users who are logged into accounts can see this information
-  - **Private**: Only the owner of the profile can view this information
+Which rows exist is up to your hub. Name, username and email are always there;
+everything else — organisation, telephone, address, biography, interests,
+ORCID, web site — comes from the profile form the hub's administrators built.
 
-## Uploading/Updating your Profile Picture
+Two rows behave differently:
 
-All Member accounts on the HUB will be created with a default Profile Picture that is a silhouette. To edit your Profile Picture, first navigate to your Member Profile. You should see a semi-transparent black button over your current Profile Picture that says **Change Picture**. Clicking that link will bring up a popup to upload a new photo or remove your current one (if its not set to the default silhouette).
+- A field an administrator has marked read-only shows a notice instead of
+  inputs: *The "…" profile field has been marked as read-only by a HUB
+  administrator.* Ask support if it is wrong.
+- Passwords are not edited here. Use the **Account** tab, which also lists the
+  external services linked to your account and lets you set a local password
+  and manage an SSH public key.
 
-To Upload a new picture click on the black button that says **Upload an Image**. Your computer should display a file browser to select an image. After you select an image the file will be automatically uploaded and once complete should be displayed in the preview area within the popup. If you are happy with the newly uploaded image click the **Save Changes** Button and your profile should refresh with the new profile picture set.
+Above the rows is a **Profile Completeness** meter. On hubs that run
+incremental registration, filling in fields can earn points.
 
-*\*\*Note: You will see your profile picture on every section of your Member area, but you must navigate to the Profile section with your Member area first in order to upload, update, or remove your profile picture.*
+> **Note:** If your hub has since made a field compulsory that was optional
+> when you registered, the profile opens with those fields listed under
+> *You must update your profile before continuing* and holds you there until
+> they are answered.
+
+## Privacy
+
+Privacy works at two levels, and the outer one wins.
+
+**The whole profile.** At the top of the Profile tab is a toggle reading
+*Public Profile :: Click here to set your profile private.* or *Private
+Profile :: Click here to set your profile public.* Selecting it flips the
+state immediately. A private profile cannot be opened by other members at all.
+
+**Individual fields.** While the profile is public, each field's **Privacy**
+menu offers three settings:
+
+| Setting | Who can see the value |
+|---|---|
+| **Public (anyone can see)** | Everyone, including visitors who are not logged in. |
+| **Registered users (only logged in members can see)** | Anyone logged in to the hub. |
+| **Private (only you can see)** | Only you. |
+
+While the profile as a whole is private, those menus are replaced by the
+message *Account must be public to set access on individual profile fields.*
+Set the profile public first if you want per-field control.
+
+The state a new account starts in comes from the hub's **Default Privacy**
+setting, not from a fixed default in the software, so it differs between hubs.
+Check the toggle after you register rather than assuming.
+
+> **Note:** Declining a new version of the Terms of Use sets your profile
+> private and logs you out. Agreeing again does not put it back; you have to
+> set it public yourself.
+
+## Your profile picture
+
+New accounts get a default silhouette. To replace it:
+
+1. Open the **Profile** tab. The picture control only appears there, even
+   though the picture itself is shown on every tab.
+2. Move the pointer over your picture and select the **Change Picture** band
+   that appears over it. A pop-up opens with the current picture on the left
+   and an upload area on the right.
+3. Select **Upload an Image**, or drag a file onto the area. The file uploads
+   as soon as it is chosen — there is no separate save step. When it finishes,
+   the preview and every copy of your picture on the page are replaced and the
+   pop-up closes.
+4. To go back to the silhouette, select **[Remove Picture]**. The link only
+   appears when you have a picture of your own.

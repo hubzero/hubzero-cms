@@ -1,23 +1,21 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/platform_2_4/users/introduction
-source-id: 3757
-modified: 2011-11-04
-imported: 2026-09-09
-source-state: unpublished
 -->
-# Video Tutorials
+# Introduction
 
-## Overview
+What a hub account gives you, how the member area is laid out, and the
+three different ways to look for things.
 
-Video tutorials provide step-by-step instructions and walkthroughs of various tools and components that hub users may find useful.
+This chapter lives in the users book, which is written for everyone on a
+hub rather than for tool authors. Read it there:
 
-## How-To Videos
+- [Introduction](../../users/04-introduction.md) — introduction to the hub.
 
-The HUBzero team is proud to present a growing series of How-to videos hosted on YouTube.
-
----
-
-First, if you are new to our site and would like to know exactly what a Hub is and how Hubzero fits into the scientific community, watch this video produced by Michael McLennan, the former Director of HUBzero Platform for Scientific Collaboration.
-
-In order to start using Hubzero or any other Hub, learn how to create an account and use your user dashboard by watching this short tutorial.
+The copy that used to sit here was an import of the same page from a
+parallel source tree. It was left behind when the two trees were merged
+and is gone now, so that there is one reviewed version rather than two
+that disagree.

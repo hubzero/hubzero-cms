@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ 1924c22171
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/240/users/collections
 source-id: 3292
 modified: 2014-11-20
@@ -7,229 +10,255 @@ imported: 2026-09-09
 -->
 # Collections
 
-## Overview
+Collections are a scrapbook. You make a collection, then pin images, files
+and links into it as posts. You can follow other people's collections, collect
+their posts into your own, like them and comment on them. Administrators
+manage the same content from the
+[Collections chapter](../managers/09-components/06-collections.md) of the Hub
+managers book.
 
-Collections are a quick and easy way to share, favorite, and organize information on a Hub.
+> **Note:** You must be logged in to do anything but browse public
+> collections.
 
-> **Note:** You must be logged in on the Hub in order to perform Collections functions other than looking through public collections.
+## Where collections live
 
-## Collection Tabs
+There are three places collections appear, and they show the same content:
 
-**Recent Posts**: anything that a user follows such as a collection or another user is placed here. Whenever the collection or user posts a new post, the new post will appear on the feed. The feed is the first tab bar at the top the page.
+| Place | What it is |
+|---|---|
+| `https://yourhub.org/collections` | The hub-wide view. Every published collection and post you are allowed to see |
+| `https://yourhub.org/members/{your ID}/collections` | Your own **Collections** tab, where you create and manage your collections |
+| A group's **Collections** tab | Collections owned by a group rather than a person |
 
-![CollectionTabs1](media/collections-tabs1.png)
+The hub-wide page has two tabs, **N collections** and **N posts**. Its **New
+collection** and **New post** buttons take you to your own Collections tab,
+because a collection always belongs to a member or a group.
 
-**Collections**: where all of the collections that have been created by the user are stored. Here collections can be managed and created.
+## Posts, collections and items
 
-![CollectionTabs2](media/collections-tabs2.png)
+A **post** is one piece of content placed in one collection. A post carries a
+title, a description, tags, and one or more attachments — an uploaded file or
+a link.
 
-**Posts**: where all the posts from every collection are stored. Here posts can be managed and created.
+A **collection** is a named board that holds posts. A collection has a
+privacy setting, a layout and a sort order. You must have a collection before
+you can post into one; if you have none, the hub creates a private collection
+called **Favorites** for you the first time you need one.
 
-![CollectionTabs3](media/collections-tabs3.png)
+![A post with its Like, Comment and Collect buttons](media/collections-210collections.png)
 
-**Followers**: this tab displays all of the users on the Hub that are following your account.
+![A collection of posts](media/collections-210collections2.png)
 
-![CollectionTabs4](media/collections-tabs4.png)
+Behind both sits an **item**: the content itself. The same item can be posted
+to many collections. The first post of an item is the *original*; the rest
+are reposts. That is what happens when you **Collect** something — the item is
+re-posted into a collection of yours, and the original is untouched.
 
-**Following**: this tab displays all of the collections and users that are being followed by you. In the tab, links are provided back to each followed item by clicking on the blue title.
+Collecting a *collection* works the same way, but the new post is a link back
+to the collection you collected.
 
-![CollectionTabs5](media/collections-tabs5.png)
+## Your Collections tab
 
-## Posts vs. Collections
+Go to your profile and open the **Collections** tab. Five tabs run across the
+top:
 
-**What is the difference between a post and a collection?**
+**Recent Posts** — a live feed of posts from the members and collections you
+follow. This tab only appears on your own profile.
 
-**Post:** A post is a singular piece of content that can be posted in a collection. A post can house a link or file with a description added to it. Posts can be collected or followed by other users on the Hub.
+![The Recent Posts tab](media/collections-tabs1.png)
 
-![210collections](media/collections-210collections.png)
+**N collections** — every collection you own. Create, edit and delete them
+here.
 
-**Collection:** A collection houses all posts in one file. A collection must be produced before uploading content into the collection. The relationship of a collection and a post is similar to a filing system. The collection is the file and the posts are the documents or content that is placed in the file. Both posts and collections can be reposted or collected by users of the Hub. The privacy settings of a collection determine who can view the collection and it’s posts.
+![The collections tab](media/collections-tabs2.png)
 
-![210collections2](media/collections-210collections2.png)
+**N posts** — every post you have made, across all your collections.
 
-**What happens when you collect a post/collection?**
+![The posts tab](media/collections-tabs3.png)
 
-When a user collects a collection or post on the Hub, the user is saving the information into his or her collections. When collecting a post, the content of the post is resubmitted as a new post in a collection owned by the user. When a collection is collected, the user is saving the collections URL as a new post in a collection owned by the user. Then the user can simply revisit the collected collection by clicking on the new post in the collection.
+**N followers** — the members who follow you or one of your collections.
+Followers never see your private collections.
 
-## Creating a Collection
+![The followers tab](media/collections-tabs4.png)
 
-1. Navigate to **https://yourhub.org/collections**
-2. Select the **Co****llections** tab at the top of the Collections dashboard
-3. Click on **New Collection** to create a new collection
-4. Select the privacy of the new collection from the drop-down:
-   - **Private**: A lock appears on private collections after creation. This just informs you that this collection is only viewable through your account.
-   - **Public**: All hub users can view the new collection and the collection will appear in search engines on the hub.​
-5. Input the title and description of the new collection
-6. Click the **Save** button at the bottom of the page to save the new collection
+**N following** — the members and collections you follow, each with an
+**Unfollow** button.
 
-![CurationWorkflow3](media/collections-collections-1.png)
+![The following tab](media/collections-tabs5.png)
 
-## Editing a Collection
+A **Getting started** button at the top right of each tab opens a short
+explanation of what the tab is for.
 
-1. Navigate to **https://yourhub.org/members/**
-2. Locate your profile and navigate to your collections tab
-3. Select the **Collections** tab at the top of the Collections landing page
-4. Hover over the collection that you would like to edit
-5. Click the **Edit** button and make the changes on the details of the Collection
+## Creating a collection
 
-![EditCollection](media/collections-editcollection.png)​
+1. Open the **Collections** tab on your profile.
+2. Select the collections tab, then **New collection**.
+3. Set **Privacy**. There are three settings, not two:
+   - **Public (anyone can see this collection)**
+   - **Registered (logged-in users can see this collection)**
+   - **Private (only I can see this collection)** — private collections show
+     a padlock on the card.
+4. Fill in **Title**. It is the only required field.
+5. Add a **Description** and **Tags** if you want them.
+6. Choose **Layout of posts** — **Grid** or **List** — and **How posts are
+   sorted** — **Created date (newest to oldest)** or **Defined ordering**.
+7. Select **Save**.
 
-6. Click **Save** to save the newly edited Collection
+![The New Collection form](media/collections-collections-1.png)
 
-## Deleting a Collection
+The screenshot above predates the **Tags** field, which now sits between
+**Description** and the layout and sort drop-downs; nothing else on that
+screen has changed.
 
-1. Navigate to **https://yourhub.org/members/**
-2. Locate your profile and navigate to your collections tab
-3. Hover over the collection that you would like to delete
-4. Click the **Delete** button
+> **Note:** Posts can only be dragged into a new order while the collection is
+> in **List** layout with a **Defined ordering** sort. The form says so under
+> the two drop-downs.
 
-![DeleteCollection](media/collections-deletecollection.png)​
+## Editing and deleting a collection
 
-5. Confirm that you would like to delete the post and your post will be successfully deleted
+Hover over a collection on your collections tab. **Edit** and **Delete**
+appear on the card.
 
-## Creating a Post
+![Edit and Delete on a collection card](media/collections-editcollection.png)
 
-1. Navigate to **https://yourhub.org/members/**
-2. Locate your profile and navigate to your collections tab
-3. On the collections Click on the **New Post** to add a new post to a collection
-4. Add a link or upload an image by dragging the media into the directed boxes then fill in your title and description
-5. Select the collection you would like to add the post to
-6. Add tags to allow searches to find your post
-7. Click **Save** at the bottom of the page, and your post will be added to the collection you chose
+**Edit** opens the same form as **New collection**. **Delete** asks you to
+confirm — tick *Yes, I want to delete this collection.* and select **Delete**.
+Deleting a collection deletes its posts.
 
-## Editing a Post
+![Deleting a collection](media/collections-deletecollection.png)
 
-> **Note:** You may only edit your own posts.
+## Creating a post
 
-1. Navigate to the Collections area from your Dashboard (**https://yourhub.org/members/yourmembernumber/collections**)
-2. Select the **Posts** tab at the top of the Collections landing page
-3. Click the **Edit** button and make your changes to the post
-4. Click **Save** to apply your changes
+1. Open a collection, or the posts tab, and select **New post**.
+2. Add the content. The form has two drop targets side by side: **Click or
+   drop file** on the left uploads a file, and **Click to add link** on the
+   right takes a URL. You can add more than one of either.
+3. Fill in **Title** and **Description**. A post with no description is
+   refused with *Please provide some content.*
+4. Pick the collection under **Select collection**. If you have no
+   collections yet, the field is replaced by **Create collection**, which
+   makes one from the title you type.
+5. Add **Tags**, separated by commas.
+6. Select **Save**.
 
-## Deleting a Post
+## Editing and deleting a post
 
-1. Navigate to **https://yourhub.org/members/**
-2. Locate your profile and navigate to your collections tab
-3. Open up a collection and hover over the post you would like to delete
-4. Click the **Delete** button
-5. Confirm that you would like to delete the post and your post will be successfully deleted
+> **Note:** You can only edit a post you made.
 
-## Collection Feed/Recent Posts
+Hover over the post. If it is yours, an **Edit** button appears; if it is
+somebody else's, you get **Like** instead. **Edit** opens the post form again.
 
-**Collection Feed:**
+The last button on a post you own is either **Delete** or **Remove**:
 
-Anything that a user follows, such as a collection or another user, is placed on a Collection Feed. Whenever the collection or user posts a new post, the new post will appear on the feed. The feed is the page you land on when you go to the Collections area from your Dashboard (https://yourhub.org/members/yourmembernumber/collections), labeled "Recent Posts".
+- **Delete** appears on an original post and destroys the item along with
+  every repost of it.
+- **Remove** appears on a repost and takes it off your collection, leaving
+  the original alone.
 
-**How do I add to my Feed?**
+Both ask you to confirm before anything happens.
 
-To add to the Collection feed, find a collection or user that posts information that is relevant to a study or research. Click **Follow** on a collection or **Follow All** to follow a user and all of their collections. To view all the users and collections that are currently being followed, click the **Following** tab, which is the last tab, at the top of the page.
+## Collecting a post
 
-## Collecting a Post
+1. Find a post anywhere on the hub — the hub-wide page, a member's profile, a
+   group.
+2. Hover over it and select **Collect**.
 
-1. Navigate to **https://yourhub.org/collections/**
-2. Navigate to a post or a collection and find a post that you would like to save or **Collect**
-3. To collect a post, hover over the post and click the **Collect** button. This will re-post the original post into a different collection
+   ![The Collect button on a post](media/collections-collectpost.png)
 
-![CollectPost](media/collections-collectpost.png)​
+3. Choose a collection from **Select collection**, or type a name in the
+   **Create collection** field beside it to make a new one.
+4. Add a description, then select **Save**.
 
-4. Select the collection or create a new collection for the post to be saved into. Add a description for the new post, then click **Save**
-5. The post will now be re-posted into a new collection
+The post is re-posted into your collection. Your own collections and the
+collections of every group you belong to are listed, grouped by owner.
 
-## Collecting a Collection
+## Collecting a collection
 
-1. Navigate to **https://yourhub.org/collections/**
-2. To collect a collection, hover over the collection
-3. Click the **Collect** button. This will add a new post to your collection with a link back to the original collection
+1. Hover over the collection.
+2. Select **Collect**.
 
-![CollectCollection](media/collections-collectcollection.png)​
+   ![The Collect button on a collection](media/collections-collectcollection.png)
 
-4. Select the collection or create a new collection for the post to be saved into
-5. Add a description for the new post
-6. Click **Save** and the collection will now be re-posted into a new collection
+3. Pick or create the collection to save it into, add a description, and
+   select **Save**.
 
-## Commenting on a Post
+You get a new post whose content is a link back to the original collection.
 
-1. Navigate to **https://yourhub.org/collections/**
-2. Navigate to a post or a collection and locate a post
-3. Hover over the post and click the **Comment** button
+## Liking a post
 
-![CommentPost](media/collections-commentpost.png)​
+Hover over a post you did not make. A **Like** button appears; select it and
+the post's like count goes up. The button changes to **Unlike**, which takes
+the like back.
 
-4. Type your comment into the text box
-5. If you do not want your name to appear as the person who posted the comment, click the box for **Anonymous**
-6. Click **Save** and your comment will be posted
+![The Like button](media/collections-likepost.png)
 
-## Liking a Post
+![The Unlike button](media/collections-unlikepost.png)
 
-1. Navigate to **https://yourhub.org/collections/**
-2. Navigate to a post or a collection and locate a post
-3. Hover over the post and a **Like** button will appear
-4. Click the **Like** button and the post will count up for your like
+> **Note:** You cannot like your own post. Where other people see **Like**,
+> you see **Edit**.
 
-![LikePost](media/collections-likepost.png)
+## Commenting on a post
 
-## Unliking a Post
+1. Hover over a post and select **Comment**.
+2. Type into the box and select **Post comment**.
 
-> **Note:** Only a post you have previously **Liked** may be unliked.
+![The Comment button](media/collections-commentpost.png)
 
-1. Navigate to **https://yourhub.org/collections**/
-2. Navigate to a post or a collection and locate a post
-3. Hover over the post you have previously liked and the **Unlike** button will appear
-4. Click the **Unlike** button and the post will be removed from your **Likes** section
+There is no anonymous option on collection comments. Your name and profile
+picture are shown against whatever you write.
 
-![UnlikePost](media/collections-unlikepost.png)
+> **Note:** Comments are switched off hub-wide when an administrator sets
+> **Allow comments** to *No* in the component options. When that happens, the
+> **Comment** button and the comment counts disappear.
 
-## Following a User
+## Following
 
-1. Navigate to **https://yourhub.org/collections**
-2. Find a collector or user of the hub that has collected information using Collections, whose posts and Collections you would like to follow. Click on the user's name
-3. Click the **Follow All** button located on the right under the **Getting Started** button
-4. Now all new posts and collections shall appear in your **Recent Posts** tab and the collector will appear under the **Following** tab on the Collections area from your Dashboard
+Following a member puts every new post they make, and every collection they
+create, on your **Recent Posts** feed. Following a single collection follows
+just that collection.
 
-## Unfollowing a User
+To follow a member, open their Collections tab and select **Follow All**. The
+button sits at the top right, next to **Getting started**.
 
-1. Navigate to **https://yourhub.org/**
-2. Navigate to your members dashboard and click on the **Collection** tab
-3. Inside your member collection page, locate the **Following** tab
-4. Click on the **Following** tab at the top of the Collections landing page
-5. Click the **Unfollow** button for the user you would like to stop following, and the user's posts and collections will no longer appear on your **Recent Posts** tab. The user will also be removed from the list of users you follow.
+To follow a collection, open it and select **Follow**, or use the **Follow**
+button on the collection's card in a list.
 
-## Following a Collection
+![Following a collection](media/collections-followcollection.png)
 
-1. Navigate to **https://yourhub.org/collections**
-2. Click on the **Collections** tab
-3. Find a collection by browsing through the collections listed, or use the search bar to find collections by keywords or tags. Once a collection has been located click on the title of the collection to view the posts
-4. Inside the collection, click the **Follow** button to follow the collection
+To stop following either one, open your **N following** tab and select
+**Unfollow** on the row.
 
-![FollowCollection](media/collections-followcollection.png)​
-
-5. Once the collection has been followed, all of the posts will appear on your **Recent Posts** tab
-
-## Unfollowing a Collection
+![The Unfollow button](media/collections-unfollowcollection.png)
 
 <a id="unfollowingauser"></a>
 
-1. Navigate to **https://yourhub.org/collections/**
-2. Navigate to a collection that you are currently following
-3. Click on the **Following** tab at the top of the Collections landing page
-4. Click the **Unfollow** button for the collection you would like to stop following, the collection’s content will no longer appear on your **Recent Posts** tab
+**Unfollow All** on a member's Collections tab drops that member and all of
+their collections at once.
 
-![UnfollowCollection](media/collections-unfollowcollection.png)
+## Changing the layout and the order
 
-## Changing the Layout
+Open a collection. Four icons sit above the posts, to the right of the tabs:
 
-> **Note:** You have to be logged into your hub in order to complete the following tasks
+| Icon | What it does |
+|---|---|
+| **Sort by created date** | Newest post first |
+| **Sort by defined ordering** | The order you dragged the posts into |
+| **View as a grid** | Posts tiled |
+| **View as a list** | Posts stacked one per row |
 
-1. Navigate to **https://yourhub.org/collections**
-2. Locate a collection and click on the blue title to open up the collection
-3. To the right of the tabs there are two icons that change the layout of the collection’s posts
-4. To change the layout, click the **View as a list** button or the **View as a grid** button
-   1. **View as a list** will sort the posts inside the collection from newest proceeding to oldest; posts will be stacked horizontally.
-   2. **View as a grid** will sort the posts inside the collection from newest proceeding to oldest; posts will be formatted into a grid.
+These change what you are looking at now. To change what everybody sees by
+default, edit the collection and set **Layout of posts** and **How posts are
+sorted**.
 
-## Sorting Posts
+To reorder posts by hand, switch to **View as a list** and **Sort by defined
+ordering**, then drag a post by the handle on its left edge.
 
-1. Navigate to a **Collection** that you wish to change the ordering
-2. Click the **Edit** button and then from the *How posts are sorted* drop-down select **Created date** or **Defined ordering**
-3. Click **Save** to save the new sorting method
-   1. **Note:** You can sort the posts from the inside the collection by clicking on the different sorting buttons.
+## The Collect button on other pages
+
+Collections are not only filled from the collections pages. If an
+administrator has published the `mod_collect` module, a **Collect** button
+appears on content pages across the hub and posts that page straight into one
+of your collections. It works on blog entries, articles, courses, forum
+threads, knowledge base articles, publications, resources, wiki pages and
+wishes — the nine content types listed in the
+[managers' Collections chapter](../managers/09-components/06-collections.md#the-collect-button).

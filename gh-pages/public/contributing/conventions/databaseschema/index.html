@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Database Schema Conventions · Contributing · Hubzero Documentation</title>
-  <meta name="description" content="Table Names Table names have all lowercase letters and underscores between words, also all table names need to be plural, e.g. invoice_items, orders. If the…">
+  <meta name="description" content="Schema changes reach a hub through a migration , never through a file someone runs by hand. This chapter covers the names a migration should use. The table…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/contributing/conventions/databaseschema/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,19 +41,17 @@
         <a class="rail__book" href="../../index.html">Contributing</a>
         <nav aria-label="Contributing contents">
 <ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../contributions/index.html">Contribution Guide</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Style Guide</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../phpcodingstyles/index.html">PHP Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../contributions/index.html">Contributions</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../phpcodingstyles/index.html">PHP Coding Style</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../phpnamingconventions/index.html">PHP Naming Conventions</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../csscodingstyles/index.html">CSS Coding Styles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../csscodingstyles/index.html">CSS Coding Style</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Database Schema Conventions</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#table-names">Table Names</a></li>
-<li class="toc__item toc__item--l2"><a href="#field-names">Field Names</a></li>
-<li class="toc__item toc__item--l2"><a href="#foreign-keys">Foreign Keys</a></li>
-<li class="toc__item toc__item--l2"><a href="#many-to-many-link-tables">Many-To-Many Link Tables</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-table-prefix-placeholder">The table prefix placeholder</a></li>
+<li class="toc__item toc__item--l2"><a href="#table-names">Table names</a></li>
+<li class="toc__item toc__item--l2"><a href="#column-names">Column names</a></li>
 <li class="toc__item toc__item--l2"><a href="#indexes">Indexes</a></li>
-<li class="toc__item toc__item--l3"><a href="#unique-indexes">Unique Indexes</a></li>
-<li class="toc__item toc__item--l3"><a href="#fulltext-indexes">Fulltext Indexes</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-table-in-a-migration">A table in a migration</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../commits/index.html">Commit Messages</a></li>
 </ul></details></li>
@@ -65,46 +63,180 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Style Guide</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Database Schema Conventions</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Contributing</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Conventions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Database Schema Conventions</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Contributing</p>
           <h1>Database Schema Conventions</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/webdevs/conventions/databaseschema">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="table-names">Table Names</h2>
-<p>Table names have all lowercase letters and underscores between words, also all table names need to be plural, e.g. invoice_items, orders.</p>
-<p>If the table name contains serveral words, only the last one should be plural:</p>
-<pre><code>applications
-application_functions
-application_function_roles
+<p>Schema changes reach a hub through a <a href="../../../developers/database/migrations/index.html">migration</a>,
+never through a <code>.sql</code> file someone runs by hand. This chapter covers the names
+a migration should use.</p>
+<h2 id="the-table-prefix-placeholder">The table prefix placeholder</h2>
+<p>Every table name is written with <code>#__</code> where the hub's prefix belongs:</p>
+<pre><code class="language-sql">SELECT `id` FROM `#__blog_entries`
 </code></pre>
-<h2 id="field-names">Field Names</h2>
-<p>Field names will be lowercase, generally singular case, and words are separated by underscores, e.g. <code>order_amount</code>, <code>first_name</code></p>
-<h2 id="foreign-keys">Foreign Keys</h2>
-<p>The foreign key is named with the singular version of the target table name with _id appended to it, e.g. <code>order_id</code> in the items table where we have items linked to the orders table.</p>
-<h2 id="many-to-many-link-tables">Many-To-Many Link Tables</h2>
-<p>Tables used to join two tables in a many to many relationship is named using the model names they link, with the table names in alphabetical order, for example <code>item_order</code>.</p>
+<p><code>Hubzero\Database\Driver::replacePrefix()</code> rewrites <code>#__</code> to the prefix from the
+hub's configuration before the statement is sent. The default prefix is <code>jos_</code>,
+which is why a hardcoded <code>jos_</code> appears to work on most hubs and fails on any
+hub installed with a different one.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Never write a literal prefix in a query. It is a live bug class
+in this codebase — four commits on this branch replaced hardcoded prefixes in
+<code>com_config</code>, <code>com_installer</code>, <code>plg_groups_forum</code> and <code>plg_groups_resources</code>.
+The only <code>jos_</code> strings left in core are in comments and log messages.</p>
+</aside>
+<p><code>#__</code> works in raw SQL passed to <code>$db-&gt;setQuery()</code>, in the query builder's
+<code>from()</code> and <code>join()</code>, and in a <code>Relational</code> model's <code>$table</code> property.</p>
+<h2 id="table-names">Table names</h2>
+<p>Lowercase, words separated by underscores, prefixed with the extension that
+owns the table, and the last word plural:</p>
+<pre><code>#__blog_entries
+#__blog_comments
+#__answers_questions
+#__answers_responses
+#__citations_authors
+#__courses_grade_policies
+</code></pre>
+<p>The prefix keeps 438 core tables from colliding and makes it obvious which
+extension to look in when a query goes wrong. The oldest tables predate the
+convention — <code>#__users</code>, <code>#__categories</code>, <code>#__assets</code>, <code>#__content</code> — and are
+not renamed.</p>
+<p>The rule is not only a convention: a <code>Hubzero\Database\Relational</code> model that
+does not set <code>$table</code> builds one from its own name.</p>
+<pre><code class="language-php">$namespace   = (!$this-&gt;namespace ? '' : $this-&gt;namespace . '_');
+$plural      = \Hubzero\Utility\Inflector::pluralize(strtolower($this-&gt;getModelName()));
+$this-&gt;table = $this-&gt;table ?: '#__' . $namespace . $plural;
+</code></pre>
+<p><code>Components\Blog\Models\Entry</code> with <code>protected $namespace = 'blog';</code> therefore
+reads <code>#__blog_entries</code>. Name the table to match the model and you write no
+<code>$table</code> property at all.</p>
+<p>Where the name is several words, only the last is plural: <code>application_functions</code>,
+<code>application_function_roles</code>. Core is not uniform here; <code>#__answers_questions</code>
+and <code>#__cart_carts</code> pluralise more than the last word. Follow the rule in new
+tables and leave the existing names alone.</p>
+<p>A table that links two others carries the <code>_assoc</code> suffix on the owning
+extension's name: <code>#__citations_assoc</code>, <code>#__citations_sponsors_assoc</code>,
+<code>#__author_assoc</code>.</p>
+<h2 id="column-names">Column names</h2>
+<p>Lowercase, singular, words separated by underscores: <code>first_name</code>,
+<code>order_amount</code>, <code>created_by</code>.</p>
+<p>A set of column names recurs across core and carries the same meaning
+everywhere. Use them rather than inventing a synonym:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>surrogate primary key, <code>int unsigned AUTO_INCREMENT</code></td>
+</tr>
+<tr>
+<td><code>created</code>, <code>created_by</code></td>
+<td>creation timestamp and the user id behind it</td>
+</tr>
+<tr>
+<td><code>modified</code>, <code>modified_by</code></td>
+<td>last change and who made it</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>publication state; <code>Relational</code> defines 0 unpublished, 1 published, 2 deleted, and a model may add its own above those</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>the viewing level id the row requires</td>
+</tr>
+<tr>
+<td><code>ordering</code></td>
+<td>manual sort position</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td>the row's own settings, JSON</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>the URL-safe form of the title</td>
+</tr>
+<tr>
+<td><code>publish_up</code>, <code>publish_down</code></td>
+<td>the window the row is visible in</td>
+</tr>
+<tr>
+<td><code>checked_out</code>, <code>checked_out_time</code></td>
+<td>edit lock</td>
+</tr>
+</tbody>
+</table>
+<p>A foreign key is the singular of the table it points at plus <code>_id</code>: <code>entry_id</code>
+in <code>#__blog_comments</code> points at <code>#__blog_entries</code>, <code>created_by</code> at <code>#__users</code>.</p>
 <h2 id="indexes">Indexes</h2>
-<p>Indexes should follow the naming pattern of <code>idx_{column name}</code>. For example, an index for the column <code>created_by</code> on a table would have an indexed named <code>idx_created_by</code>.</p>
+<p>An index is named <code>idx_</code> plus the columns it covers:</p>
 <pre><code class="language-sql">ALTER TABLE `#__my_table` ADD INDEX `idx_created_by` (`created_by`);
 </code></pre>
-<p>For indexes that use multiple columns, list each column by order of cardinality.</p>
-<pre><code class="language-sql">ALTER TABLE `#__my_table` ADD INDEX `idx_category_referenceid` (`category`, `referenced`);
+<p>For a multi-column index, list the columns in order of cardinality and join
+their names:</p>
+<pre><code class="language-sql">ALTER TABLE `#__my_table` ADD INDEX `idx_category_referenceid` (`category`, `reference_id`);
 </code></pre>
-<h3 id="unique-indexes">Unique Indexes</h3>
-<p>Unique indexes follow the same pattern as above but should start with <code>uidx_</code>.</p>
+<p>A unique index is <code>uidx_</code>; a fulltext index is <code>ftidx_</code>:</p>
 <pre><code class="language-sql">ALTER TABLE `#__my_table` ADD UNIQUE `uidx_alias` (`alias`);
+ALTER TABLE `#__my_table` ADD FULLTEXT `ftidx_content` (`content`);
 </code></pre>
-<h3 id="fulltext-indexes">Fulltext Indexes</h3>
-<p>Fulltext indexes follow the same pattern as above but should start with <code>ftidx_</code>.</p>
-<pre><code class="language-sql">ALTER TABLE `#__my_table` ADD FULLTEXT `ftidx_content` (`content`);
+<p>Core holds 1,162 <code>idx_</code>, 53 <code>ftidx_</code> and 25 <code>uidx_</code> index names, so this one is
+followed closely.</p>
+<h2 id="a-table-in-a-migration">A table in a migration</h2>
+<p>Put the whole definition in one <code>CREATE TABLE</code>, guarded by <code>tableExists()</code> so
+the migration is safe to re-run:</p>
+<pre><code class="language-php">		if (!$this-&gt;db-&gt;tableExists('#__blog_entries'))
+		{
+			$query = &quot;CREATE TABLE `#__blog_entries` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `title` varchar(255) NOT NULL DEFAULT '',
+			  `alias` varchar(255) NOT NULL DEFAULT '',
+			  `content` text NOT NULL,
+			  `created` datetime DEFAULT NULL,
+			  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+			  `state` tinyint(2) NOT NULL DEFAULT '0',
+			  `publish_up` datetime DEFAULT NULL,
+			  `publish_down` datetime DEFAULT NULL,
+			  `params` tinytext NOT NULL,
+			  `scope_id` int(11) NOT NULL DEFAULT '0',
+			  `hits` int(11) unsigned NOT NULL DEFAULT '0',
+			  `allow_comments` tinyint(2) NOT NULL DEFAULT '0',
+			  `scope` varchar(100) NOT NULL DEFAULT '',
+			  `access` tinyint(3) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`id`),
+			  KEY `idx_created_by` (`created_by`),
+			  KEY `idx_alias` (`alias`),
+			  KEY `idx_scope_id` (`scope_id`),
+			  FULLTEXT KEY `ftidx_title` (`title`),
+			  FULLTEXT KEY `ftidx_content` (`content`),
+			  FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;&quot;;
+
+			$this-&gt;db-&gt;setQuery($query);
+			$this-&gt;db-&gt;query();
+		}
 </code></pre>
+<p>Give every column an explicit <code>DEFAULT</code>. A <code>NOT NULL</code> column with no default
+makes an insert that omits it fail; <code>Migration20260129000000Core</code> exists only to
+undo three of those in <code>#__xprofiles</code>.</p>
+<p>Older migrations write <code>ENGINE=MyISAM</code>; new tables should use <code>ENGINE=InnoDB</code>
+for foreign keys and transactions, unless the table needs a <code>FULLTEXT</code> index on
+a MySQL old enough not to support one on InnoDB.</p>
+<p>The <code>down()</code> method reverses what <code>up()</code> did. Where reversing would destroy
+data, say so in <code>down()</code> and do nothing rather than dropping the column.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../csscodingstyles/index.html" rel="prev"><span>Previous</span>CSS Coding Styles</a><a class="pager__next" href="../commits/index.html" rel="next"><span>Next</span>Commit Messages</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 1924c22171</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../csscodingstyles/index.html" rel="prev"><span>Previous</span>CSS Coding Style</a><a class="pager__next" href="../commits/index.html" rel="next"><span>Next</span>Commit Messages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/contributing/conventions/04-databaseschema.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
