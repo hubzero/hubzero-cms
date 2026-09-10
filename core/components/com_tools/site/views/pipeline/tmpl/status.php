@@ -481,6 +481,7 @@ $this->css('pipeline.css')
 						<li class="incomplete">
 							<?php echo Lang::txt('COM_TOOLS_WHATSNEXT_PUBLISH'); ?> <?php echo $hubShortURL; ?>
 						</li>
+					</ul>
 				<?php
 					break;
 
