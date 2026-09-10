@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Frequently Asked Questions · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Open-source Security Patch for Dirty Cow Apply the kernel update from OpenVZ using your normal package tools (yum on RHEL or CentOS and apt on Debian) and…">
+  <title>Security questions · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Answers to the questions hub managers ask most often about the CMS side of security. Questions about the host underneath the hub belong in Operating system…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/security/faqs/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,15 +124,19 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Frequently Asked Questions</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#open-source-security-patch-for-dirty-cow">Open-source Security Patch for &quot;Dirty Cow&quot;</a></li>
-<li class="toc__item toc__item--l2"><a href="#joomla-exploits-privilege-vulnerability-not-an-issue-for-hubzero">Joomla! Exploits Privilege Vulnerability - Not an issue for Hubzero</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Security questions</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#is-a-joomla-vulnerability-a-hubzero-vulnerability">Is a Joomla vulnerability a Hubzero vulnerability?</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</a></li>
+<li class="toc__item toc__item--l2"><a href="#does-the-cms-scan-uploads-for-viruses">Does the CMS scan uploads for viruses?</a></li>
+<li class="toc__item toc__item--l2"><a href="#does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</a></li>
+<li class="toc__item toc__item--l2"><a href="#a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</a></li>
+<li class="toc__item toc__item--l2"><a href="#can-i-stop-a-specific-address-from-reaching-the-hub">Can I stop a specific address from reaching the hub?</a></li>
 </ol></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -141,24 +145,97 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Security Considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Frequently Asked Questions</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Security considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Security questions</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Frequently Asked Questions</h1>
+          <h1>Security questions</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/22/security_considerations/faqs">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025. It was never published there, so read it as a draft. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        
         <div class="prose">
-<h2 id="open-source-security-patch-for-dirty-cow">Open-source Security Patch for &quot;Dirty Cow&quot;</h2>
-<p>Apply the kernel update from OpenVZ using your normal package tools (yum on RHEL or CentOS and apt on Debian) and reboot ASAP. Don't forget to shut down tool sessions before rebooting; if you forgot, clean up the database &quot;session&quot; and &quot;display&quot; table.</p>
-<p>2.6.32-openvz-042stab120.5-amd64 (from the output of &quot;uname -a&quot;).</p>
-<p>Get it by placing this in /etc/apt/sources.list: deb <a href="http://download.openvz.org/debian">http://download.openvz.org/debian</a> wheezy main</p>
-<h2 id="joomla-exploits-privilege-vulnerability-not-an-issue-for-hubzero">Joomla! Exploits Privilege Vulnerability - Not an issue for Hubzero</h2>
-<p>Joomla! code is not executed anymore in HUBzero, although some definitions remain. The main application object has been altered to return Hubzero objects; Joomla components have been rewritten or replaced, and all plugins &amp; modules were rewritten. We do not use Joomla’s main application, request objects, user registration system, user object, or related component.</p>
+<p>Answers to the questions hub managers ask most often about the CMS side of
+security. Questions about the host underneath the hub belong in
+<a href="../hardeningguide/index.html">Operating system hardening</a>.</p>
+<h2 id="is-a-joomla-vulnerability-a-hubzero-vulnerability">Is a Joomla vulnerability a Hubzero vulnerability?</h2>
+<p>Usually not, but check each one.</p>
+<p>Hubzero began as a Joomla 1.5 distribution and the source tree still carries
+the inheritance in its naming: language keys beginning <code>J</code>, the <code>#__</code>
+table-prefix placeholder, <code>com_</code> component directories, and a handful of
+class names. The running code is Hubzero's own. The application object, the
+request and response objects, the session handler, the user object, the
+registration flow, the router, the database layer, and the plugin and module
+systems are all in <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero"><code>core/libraries/Hubzero</code></a>,
+and the components under <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/components"><code>core/components</code></a> were
+rewritten against them.</p>
+<p>That means a Joomla advisory rarely names code a hub actually runs. It also
+means you cannot dismiss one on the strength of the version number: read
+what the advisory describes and look for the same pattern here. Hubzero
+does not track Joomla releases and does not receive Joomla security patches.</p>
+<h2 id="where-does-the-cms-record-failed-logins">Where does the CMS record failed logins?</h2>
+<p>Two places, and they hold different things.</p>
+<p><code>/var/log/hubzero/cmsauth.log</code> is a text log. Every line is a timestamp in
+<code>Y-m-d H:i:s</code> followed by a message, with nothing between them but a space.</p>
+<p><strong>System - HUBzero</strong> writes the line most people mean by &quot;a failed login&quot;.
+It is the submitted username (stripped to <code>A-Z 0-9 _ . -</code>, or <code>[unknown]</code>),
+the remote address, and the word <code>invalid</code>:</p>
+<pre><code>2026-09-09 14:22:31 jdoe 203.0.113.7 invalid
+</code></pre>
+<p>The same plugin writes <code>&lt;username&gt; &lt;address&gt; detect</code> when it recognises its
+tracking cookie. <strong>System - Log</strong> writes a second, differently shaped line
+for the same failure — the authentication type, the word <code>FAILURE</code>, and the
+plugin's error message, with the username appended in quotes only when its
+<strong>Log user names</strong> parameter is on. It carries no address.</p>
+<p>The log directory is <code>/var/log/hubzero</code> when that directory exists, and the
+<code>log_path</code> from <strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>System</strong> otherwise.
+See
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/LogServiceProvider.php"><code>LogServiceProvider</code></a>
+for the three loggers the CMS registers: <code>debug</code> (<code>cmsdebug.log</code>), <code>auth</code>
+(<code>cmsauth.log</code>), and <code>spam</code> (<code>cmsspam.log</code>). Only the <code>auth</code> logger uses the
+bare <code>%datetime% %message%</code> format; the other two use Monolog's default
+line format.</p>
+<p>The <code>#__users_log_auth</code> database table holds a structured record per attempt, with
+<code>username</code>, <code>ip</code>, <code>status</code> and <code>logged</code> columns. The CMS reads that table,
+not the text log, when it decides whether an account or an address has
+crossed a threshold. See
+<a href="../hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a>.</p>
+<h2 id="does-the-cms-scan-uploads-for-viruses">Does the CMS scan uploads for viruses?</h2>
+<p>Yes, wherever a component calls <code>Filesystem::isSafe()</code> — support ticket
+attachments, group and project files, wiki and blog media, storefront
+images, and course media among them. The scan shells out to the command in
+the <code>virus_scanner</code> configuration key, which defaults to:</p>
+<pre><code>clamscan -i --no-summary --block-encrypted
+</code></pre>
+<p><code>virus_scanner</code> has no field in <strong>Global Configuration</strong>; set it in
+<code>configuration.php</code> if you want a different command, for example <code>clamdscan</code>
+against a running daemon. A non-zero exit from the scanner rejects the file,
+so a scanner that is missing or whose daemon is down fails closed and logs
+the reason.</p>
+<p>Installing and updating ClamAV itself is the system administrator's job.</p>
+<h2 id="does-the-cms-set-a-content-security-policy-header">Does the CMS set a Content-Security-Policy header?</h2>
+<p>Only if you enable <strong>System - Content Security Policy</strong>. It ships disabled.
+The plugin can run in report-only mode, enforcing mode, or both at once, and
+it sets <code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
+<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
+<code>style-src</code> from its own parameters. Start in report-only mode; the shipped
+<code>script-src</code> default already includes <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
+which much of the interface still needs.</p>
+<p>The parameters are listed in the
+<a href="../../../reference/configuration/plugins/system/index.html">system plugin reference</a>.</p>
+<h2 id="a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</h2>
+<p>That is the <strong>System - Spamjail</strong> plugin. Clear the counter from <strong>Users</strong> &gt;
+<strong>Members</strong>, open the member, and use <strong>Reset</strong> beside <strong>Lifetime Spam
+Incidents</strong>. The full procedure, including the per-session counter that
+clears itself, is in <a href="../../spam/index.html">Spam</a>.</p>
+<h2 id="can-i-stop-a-specific-address-from-reaching-the-hub">Can I stop a specific address from reaching the hub?</h2>
+<p>Not from the CMS. The only address-level action Hubzero takes is handing an
+address to a Fail2Ban jail after too many accounts have been blocked from
+it, and even that only happens when you turn it on. Blocking, rate limiting
+at the network edge, and reputation-based blocklists are all the system
+administrator's tools.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Security Considerations</a><a class="pager__next" href="../hardencms/index.html" rel="next"><span>Next</span>Hardening the Content Management System</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Security considerations</a><a class="pager__next" href="../hardencms/index.html" rel="next"><span>Next</span>Hardening the CMS</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security/faqs.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

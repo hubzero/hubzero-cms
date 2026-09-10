@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Getting Started: Advanced Setup · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Your Hub&#x27;s Getting Started Page Your hub should have a getting started page at lt;your hub url /gettingstarted. Most of the items addressed on this page are…">
+  <title>Integrations · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Connecting a hub to the outside services it commonly uses — analytics, Google Drive, the rich text editor, and CAPTCHA — and where the sign-in providers are covered instead.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/advancedsetup/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,39 +41,16 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Getting Started: Advanced Setup</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#your-hub-s-getting-started-page">Your Hub&#x27;s Getting Started Page</a></li>
-<li class="toc__item toc__item--l2"><a href="#editing-about-you-how-to-contact-terms-of-use-pages">Editing &quot;About You&quot;, &quot;How to Contact&quot;, &amp; &quot;Terms of Use&quot; Pages</a></li>
-<li class="toc__item toc__item--l2"><a href="#facebook-authentication">Facebook Authentication</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-setting-up-facebook">Step 1: Setting Up Facebook</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-facebook">Step 2: Enabling Facebook</a></li>
-<li class="toc__item toc__item--l2"><a href="#linkedin-authentication">LinkedIn Authentication</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-setting-up-linkedin">Step 1: Setting Up LinkedIn</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-linkedin">Step 2: Enabling LinkedIn</a></li>
-<li class="toc__item toc__item--l2"><a href="#google-authentication">Google Authentication</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-enable-the-google-api">Step 1: Enable the Google+ API</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enable-the-authentication-google-plug-in">Step 2: Enable the Authentication-Google Plug-in</a></li>
-<li class="toc__item toc__item--l2"><a href="#orcid-authentication">ORCID Authentication</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-set-up-orcid-authentication-on-orcid">Step 1: Set Up ORCID Authentication on ORCID</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-orcid">Step 2: Enabling ORCID</a></li>
-<li class="toc__item toc__item--l2"><a href="#ci-logon">CI Logon</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-set-up-ci-logon">Step 1: Set Up CI Logon</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-ci-logon">Step 2: Enabling CI Logon</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Integrations</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#sign-in-providers">Sign-in providers</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-hub-s-own-pages">The hub&#x27;s own pages</a></li>
 <li class="toc__item toc__item--l2"><a href="#google-analytics">Google Analytics</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-set-up-google-analytics-on-google">Step 1: Set Up Google Analytics on Google</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-google-analytics">Step 2: Enabling Google Analytics</a></li>
-<li class="toc__item toc__item--l2"><a href="#google-drive">Google Drive</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-configuring-google-drive-in-projects-on-a-hub">Step 1: Configuring Google Drive in Projects on a hub</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-turning-on-google-drive-in-projects">Step 2: Turning on Google Drive in Projects</a></li>
-<li class="toc__item toc__item--l2"><a href="#ckeditor">CKEditor</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-global-configuration">Step 1: Global Configuration</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-html-format-handler-plug-in">Step 2: HTML Format Handler Plug-in</a></li>
-<li class="toc__item toc__item--l2"><a href="#recaptcha">ReCAPTCHA</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-1-set-up-recaptcha-on-google">Step 1: Set Up ReCAPTCHA on Google</a></li>
-<li class="toc__item toc__item--l2"><a href="#step-2-enabling-recaptcha">Step 2: Enabling ReCAPTCHA</a></li>
+<li class="toc__item toc__item--l2"><a href="#google-drive-in-projects">Google Drive in projects</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-rich-text-editor">The rich text editor</a></li>
+<li class="toc__item toc__item--l2"><a href="#recaptcha">reCAPTCHA</a></li>
 </ol></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -82,7 +59,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
@@ -124,18 +101,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -154,12 +131,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -168,269 +145,203 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Getting Started: Advanced Setup</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Integrations</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Getting Started: Advanced Setup</h1>
+          <h1>Integrations</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/advancedsetup">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2015.</aside>
+        
         <div class="prose">
-<h2 id="your-hub-s-getting-started-page">Your Hub's Getting Started Page</h2>
-<p>Your hub should have a getting started page at &amp;lt;your hub url&gt;/gettingstarted. Most of the items addressed on this page are discussed in further detail below.</p>
-<h2 id="editing-about-you-how-to-contact-terms-of-use-pages">Editing &quot;About You&quot;, &quot;How to Contact&quot;, &amp; &quot;Terms of Use&quot; Pages</h2>
-<ol>
-<li>First login to the administrative interface of your hub</li>
-<li>Once logged in, find <strong>Content</strong> in the main menu bar located toward the top of the page</li>
-<li>Click on the <strong>Article Manager</strong> link</li>
-<li>You should now be presented with a list of all the content articles. There are a few methods to find the specific entry you want to edit. You can filter by state, category, author, etc. or search for the title of the article page. A third option would be to look through the list manually, if you really want</li>
-<li>Please find the <strong>About Us</strong> page as we will use that as an example. Once found, click the article title to edit it</li>
-<li>You now should be presented with a page where you can edit the text, title and other page parameters similar to the image below</li>
-<li>When your edits are complete, click the <strong>Save &amp; Close</strong> toolbar button to save your changes and return you to the Article Manager screen</li>
-<li>Alternatively, you may click the <strong>Save</strong> toolbar button to save your article but leave it open for editing</li>
-</ol>
-<h2 id="facebook-authentication">Facebook Authentication</h2>
-<h2 id="step-1-setting-up-facebook">Step 1: Setting Up Facebook</h2>
-<ol>
-<li>Navigate to (https://developers.facebook.com)</li>
-<li>Begin by logging into a Facebook account or creating a new Facebook account for your hub</li>
-<li>After successfully logging into Facebook, click the <strong>My Apps</strong> tab, then in the drop-down select <strong>Register as a developer</strong></li>
-<li>Read through the Facebook policies and accept the policies by changing the answer from <strong>No</strong> to <strong>Yes</strong> with the switch button, and then click <strong>Register</strong></li>
-<li>Select the <strong>My Apps</strong> tab again and from the drop-down click <strong>Add a New App</strong></li>
-<li>Select the platform of the new app by clicking the <strong>WWW</strong> or &quot;Website&quot; icon</li>
-<li>In the upper right corner of the page, select the <strong>Skip and Create App ID</strong> button</li>
-<li>Fill in the <strong>Display Name</strong> in the name field and select the category of the application depending on your field</li>
-<li>Fill in the rest of the <strong>New App ID</strong> information or leave it blank depending on your preference, then click <strong>Create App ID</strong></li>
-<li>On the application dashboard, copy the App ID and App Secret. In order to copy the App Secret you will have to click <strong>Show</strong> in order to access the full secret code</li>
-</ol>
-<h2 id="step-2-enabling-facebook">Step 2: Enabling Facebook</h2>
-<ol>
-<li>Navigate to your hub, and access the /administrator interface</li>
-<li>Click the <strong>Extensions</strong> tab and then from the drop-down select <strong>Plug-in Manager</strong></li>
-<li>Locate the <strong>Authentication-Facebook</strong> plug-in and open the plug-in by clicking the plug-in name</li>
-<li>Inside the plug-in, change the status of the plug-in from <strong>Disabled</strong> to <strong>Enabled</strong></li>
-<li>Insert the App ID and Consumer Secret into the corresponding fields and click <strong>Save &amp; Close</strong></li>
-<li>The Facebook Authentication will be available for users to use in order to login into the hub</li>
-</ol>
-<h2 id="linkedin-authentication">LinkedIn Authentication</h2>
-<h2 id="step-1-setting-up-linkedin">Step 1: Setting Up LinkedIn</h2>
-<ol>
-<li>Navigate to (https://www.linkedin.com/secure/developer)</li>
-<li>Begin by logging into a LinkedIn account or creating a new LinkedIn account for your hub</li>
-<li>After successfully logging into LinkedIn, under the list of applications click <strong>Add New Application</strong></li>
-<li>Fill out the form to register a new application
-<ul>
-<li>Under <em>Default Application Permissions</em>, check &quot;<strong>r_basicprofile</strong>&quot; and &quot;<strong>r_emailaddress</strong>&quot;.</li>
-<li>Under <em>OAuth 2.0</em>, add your hub's URL (e.g., https://yourhub.org) as an <strong>Authorized Redirect URLs</strong>.</li>
-</ul>
-</li>
-<li>Click <strong>Add Application</strong> once you have finished filling out all the required fields in the application form</li>
-<li>Once you receive a message stating, <strong>Your application was successfully created</strong>, copy the API key and the Secret key</li>
-</ol>
-<h2 id="step-2-enabling-linkedin">Step 2: Enabling LinkedIn</h2>
-<ol>
-<li>Navigate to the /administrative interface of your hub</li>
-<li>Under the <strong>Extensions</strong> tab select from the drop-down <strong>Plug-in Manager</strong></li>
-<li>Inside the Plug-in Manager, locate the <strong>Authentication-LinkedIn</strong> plug-in</li>
-<li>Select the title of the plug-in, then inside the plug-in fill in the API key and the Secret key</li>
-<li>Enable the plug-in by selecting from the Status drop-down, then click <strong>Save &amp; Close</strong> to save the changes that were made</li>
-<li>The LinkedIn plug-in will be successfully enabled and available for users to use as another option to log in to your hub</li>
-</ol>
-<h2 id="google-authentication">Google Authentication</h2>
-<h2 id="step-1-enable-the-google-api">Step 1: Enable the Google+ API</h2>
-<ol>
-<li>Navigate to the Google Developers Console (https://console.developers.google.com/) and log into a Google Account or create a new Google account for your hub</li>
-<li>Select <strong>Credentials</strong> and click <strong>Create Credentials</strong> and then click <strong>OAuth Client ID</strong></li>
-<li>Add the following URLs as redirects
-<ol>
-<li>https://yourhub.org/index.php?option=com_users&amp;task=user.login&amp;authenticator=google</li>
-<li>https://yourhub.org/index.php?option=com_users&amp;task=user.link&amp;authenticator=google</li>
-</ol>
-</li>
-<li>Save and collect your <strong>Client ID</strong> and <strong>Client secret</strong></li>
-</ol>
-<h2 id="step-2-enable-the-authentication-google-plug-in">Step 2: Enable the Authentication-Google Plug-in</h2>
-<ol>
-<li>Once you have collected your <strong>Client ID</strong> and <strong>Client secret</strong>, log into the /administrator interface for your hub</li>
-<li>Select the <strong>Extensions</strong> tab and then from the drop down select the <strong>Plug-in Manager</strong> button</li>
-<li>Locate the <strong>Authentication-Google</strong> plug-in and select the plug-in's title</li>
-<li>Inside the plug-in, locate the <strong>Status</strong> section and select <strong>Enable</strong> from the drop-down</li>
-<li>Fill in the <strong>Client ID</strong> and <strong>Client Secret</strong> into the appropriate fields</li>
-<li>Save all the changes by clicking <strong>Save &amp; Close</strong></li>
-<li>Your users will be able to log into your instance with Google authentication</li>
-</ol>
-<h2 id="orcid-authentication">ORCID Authentication</h2>
-<h2 id="step-1-set-up-orcid-authentication-on-orcid">Step 1: Set Up ORCID Authentication on ORCID</h2>
-<ol>
-<li>Navigate and sign-in to ORCID</li>
-<li>Once signed-in, navigate to <a href="https://orcid.org/developer-tools">https://orcid.org/developer-tools</a></li>
-<li>Complete the developer form:
-<ol>
-<li>Name of application</li>
-<li>Website URL</li>
-<li>Description</li>
-<li>Redirect URLs
-<ol>
-<li><strong>https://yourhub.org/index.php?option=com_users&amp;task=user.link&amp;authenticator=orcid</strong></li>
-<li><strong>https://yourhub.org/index.php?option=com_users&amp;task=user.login&amp;authenticator=orcid</strong></li>
-</ol>
-</li>
-</ol>
-</li>
-<li>Click the “Save” icon on the right side</li>
-<li>Copy Client ID and Client secret</li>
-</ol>
-<h2 id="step-2-enabling-orcid">Step 2: Enabling ORCID</h2>
-<ol>
-<li>Navigate back to your hub and log into the /administrative interface</li>
-<li>Click on the <strong>Extensions</strong> tab and the and select from the drop-down the <strong>Module Manager</strong></li>
-<li>On the <strong>Plugin Manager</strong> page and locate <strong>ORCID</strong> from the new module list</li>
-<li>Fill in the <strong>Client ID</strong> and <strong>Client Secret</strong> into the appropriate fields</li>
-<li>Save all the changes by clicking <strong>Save &amp; Close</strong></li>
-</ol>
-<h2 id="ci-logon">CI Logon</h2>
-<h2 id="step-1-set-up-ci-logon">Step 1: Set Up CI Logon</h2>
-<ol>
-<li>Navigate to cilogon.org/oauth2/register and begin filling out the form:
-<ol>
-<li>Client Name: Name of the Hub</li>
-<li>Contact Email: Main email to receive information; best if we use our mailman set-up for the support contact list (<strong>support@hubname.org</strong>)</li>
-<li>Callback URLs:
-<ol>
-<li><strong>https://hubname.org/index.php?option=com_users&amp;task=user.login&amp;authenticator=cilogon</strong></li>
-<li><strong>https://hubname.org/users?authenticator=cilogon</strong></li>
-<li><strong>https://hubname.org/administrator/index.php?option=com_login&amp;task=login&amp;authenticator=cilogon</strong></li>
-<li><strong>https://hubname.org/index.php?option=com_users&amp;task=user.link&amp;authenticator=cilogon</strong></li>
-</ol>
-</li>
-<li>Client type: Confidential</li>
-<li>Scopes: Select all in the list</li>
-<li>Refresh Token: No</li>
-</ol>
-</li>
-<li>Click “<strong>Register Client</strong>”</li>
-<li>You will receive on the next page the client ID and client secret; save both</li>
-</ol>
-<h2 id="step-2-enabling-ci-logon">Step 2: Enabling CI Logon</h2>
-<ol>
-<li>Navigate to hubname.org/administrator and sign in as an administrator</li>
-<li>Once signed in, navigate to “<strong>Extensions</strong>” and then “<strong>Plugin Manager</strong>”</li>
-<li>Search and click on the “<strong>CI Logon Authentication</strong>” plugin</li>
-<li>Add in the client ID and client secret and set-up the plugin to use the site login and optionally also allow administrator login</li>
-<li>Click “<strong>Save &amp; Close</strong>”</li>
-<li>CI Logon will email the contact once they have confirmed the request and you can now use CILogon to sign into the hub</li>
-</ol>
+<p>Everything a hub connects to that is not part of the hub. Each of these is a
+plugin or a module you enable and hand a pair of credentials to, after
+registering the hub with the service.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This page was imported as &quot;Getting Started: Advanced Setup&quot; and
+was mostly a set of step-by-step instructions for registering the hub with
+Facebook, LinkedIn, Google, ORCID, and CILogon. Those instructions were
+stale, and they duplicated
+<a href="../configuring/authentication/index.html">Authentication</a> and
+<a href="../configuring/extauth/index.html">External authenticators</a>, which cover the
+same ground against the current plugins. They have been removed rather than
+maintained in two places. What is left is the material that has nowhere
+else to live.</p>
+</aside>
+<h2 id="sign-in-providers">Sign-in providers</h2>
+<p>Every way of signing in — Google, Facebook, LinkedIn, ORCID, CILogon,
+Shibboleth, Globus, and the hub's own accounts — is an authentication plugin.
+Registering the hub with the provider, the redirect URIs each one needs, and
+the plugin parameters are all in
+<a href="../configuring/authentication/index.html">Authentication</a>, with the federated
+providers in <a href="../configuring/extauth/index.html">External authenticators</a>.</p>
+<h2 id="the-hub-s-own-pages">The hub's own pages</h2>
+<p>A new hub ships with a <strong>Getting Started</strong> article at <code>/gettingstarted</code>, and
+with <strong>About Us</strong>, <strong>Contact Us</strong>, and <strong>Terms of Use</strong> among the other
+sample articles. They are ordinary articles: edit them at <strong>Content →
+Article Manager</strong>, as described in
+<a href="../content/articlemanager/index.html">Article Manager</a>. Rewrite them before the hub
+opens to the public — the sample text describes a hub in general, not yours.</p>
 <h2 id="google-analytics">Google Analytics</h2>
-<h2 id="step-1-set-up-google-analytics-on-google">Step 1: Set Up Google Analytics on Google</h2>
+<p>Two modules can carry a Google tag. Both are site modules with a single
+parameter, and both need a position that appears on every page — <code>footer</code> in
+the templates that ship.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Parameter</th>
+<th>What it loads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google Gtag</strong></td>
+<td><strong>Tracking ID</strong></td>
+<td><code>gtag.js</code> from <code>googletagmanager.com</code>. This is the one to use.</td>
+</tr>
+<tr>
+<td><strong>Google Analytics</strong></td>
+<td><strong>API Key</strong></td>
+<td><code>analytics.js</code>, the Universal Analytics tag. Google retired that property type in 2023, so it collects nothing.</td>
+</tr>
+</tbody>
+</table>
+<p>To add one:</p>
 <ol>
-<li>Navigate to (google.com/analytics) and select <strong>Access Google Analytics</strong></li>
-<li>You will be required to login to a Google account.
+<li>Get a measurement ID from Google Analytics for the hub's property.</li>
+<li>Go to <strong>Extensions → Module Manager</strong> and select <strong>New</strong>.</li>
+<li>Choose <strong>Google Gtag</strong> from the list of module types.</li>
+<li>Give it a <strong>Title</strong>, set <strong>Position</strong> to <code>footer</code>, set <strong>Status</strong> to
+<strong>Published</strong>, and leave <strong>Module Assignment</strong> at <strong>On all pages</strong>.</li>
+<li>Paste the measurement ID into <strong>Tracking ID</strong>.</li>
+<li><strong>Save &amp; Close</strong>.</li>
+</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Both modules write the tag into the page unconditionally, with
+no consent gate. If your hub is subject to a cookie consent regime, deal
+with that before you publish the module.</p>
+</aside>
+<h2 id="google-drive-in-projects">Google Drive in projects</h2>
+<p>Projects can mount a Google Drive folder alongside the project's own file
+repository. There are two paths through the code, and which one a hub uses
+depends on how its projects were set up.</p>
+<p>The <strong>Projects - Files</strong> plugin (<strong>Extensions → Plug-in Manager</strong>, search for
+<code>projects</code>) carries the older, project-wide connection:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google Connection Enabled</strong></td>
+<td>Off by default.</td>
+</tr>
+<tr>
+<td><strong>Google Client ID</strong>, <strong>Google Client Secret</strong>, <strong>Google API Key</strong></td>
+<td>From a Google Cloud project with the Drive API enabled.</td>
+</tr>
+<tr>
+<td><strong>Auto Sync</strong></td>
+<td>No auto sync, or every 10 minutes, half hour, hour, 2 hours, or 6 hours.</td>
+</tr>
+<tr>
+<td><strong>Connected Projects</strong></td>
+<td>Comma-separated project aliases allowed to connect. Empty means all of them.</td>
+</tr>
+</tbody>
+</table>
+<p>Register the hub as a web application in the Google Cloud console, with
+<code>https://&lt;yourhub&gt;/projects/auth</code> as the authorized redirect URI, and
+<code>https://&lt;yourhub&gt;</code> as the authorized JavaScript origin.</p>
+<p>The newer path is the <strong>Filesystem - Google Drive</strong> plugin, which takes an
+<strong>App ID</strong> and an <strong>App Secret</strong> and appears in a project's <strong>Files</strong> tab
+under <strong>New Connection</strong>. Its redirect URI is
+<code>https://&lt;yourhub&gt;/developer/callback/googledriveAuthorize</code>.</p>
+<p>Whichever you use, the person who creates a connection authorizes it with
+their own Google account, and the project's other members work through that
+connection.</p>
+<h2 id="the-rich-text-editor">The rich text editor</h2>
+<p>The editor used across the administrator interface and the site is set in
+<strong>Site → Global Configuration</strong>, on the <strong>Site</strong> tab, under <strong>Site
+Settings</strong>, in <strong>Default Editor</strong>. The choices are the enabled editor
+plugins:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Editor - TinyMCE</strong></td>
+<td>The default.</td>
+</tr>
+<tr>
+<td><strong>Editor - CKEditor</strong></td>
+<td>CKEditor 4.</td>
+</tr>
+<tr>
+<td><strong>Editor - CKEditor 5</strong></td>
+<td>CKEditor 5.</td>
+</tr>
+<tr>
+<td><strong>Editor - CodeMirror</strong></td>
+<td>A source editor with syntax highlighting.</td>
+</tr>
+<tr>
+<td><strong>Editor - PageDown</strong></td>
+<td>Markdown.</td>
+</tr>
+<tr>
+<td><strong>Editor - Wikiwyg</strong>, <strong>Editor - Wikitoolbar</strong></td>
+<td>For the hub's wiki markup.</td>
+</tr>
+<tr>
+<td><strong>Editor - None</strong></td>
+<td>A plain textarea.</td>
+</tr>
+</tbody>
+</table>
+<p>Enable the plugin in <strong>Extensions → Plug-in Manager</strong> first; the <strong>Default
+Editor</strong> list only offers plugins that are enabled.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Older documentation told you to enable <strong>Content - HTML Format
+Handler</strong> as well when switching to CKEditor. That is not needed. Both of
+that plugin's hooks return immediately for the <code>com_content.article</code>
+context, so it does nothing at all to articles; it handles HTML in the
+components that also accept wiki markup.</p>
+</aside>
+<h2 id="recaptcha">reCAPTCHA</h2>
+<p>The <strong>Captcha - ReCaptcha</strong> plugin puts Google reCAPTCHA v2 on the
+registration form and anywhere else that asks for a CAPTCHA.</p>
 <ol>
-<li>We suggest creating a Google Account for your hub</li>
+<li>Register the hub's domain at
+<a href="https://www.google.com/recaptcha/admin">https://www.google.com/recaptcha/admin</a> and copy the site key and the
+secret.</li>
+<li>Go to <strong>Extensions → Plug-in Manager</strong>, open <strong>Captcha - ReCaptcha</strong>, and
+set <strong>Status</strong> to <strong>Enabled</strong>.</li>
+<li>Put the site key in <strong>Public Key</strong> and the secret in <strong>Private Key</strong>.</li>
+<li>Optionally set <strong>Theme</strong> (Light or Dark), <strong>Type</strong> (Image or Audio), and
+<strong>Language Code</strong>.</li>
+<li><strong>Save &amp; Close</strong>.</li>
 </ol>
-</li>
-<li>Click <strong>Sign Up</strong> and begin filling in the required fields in the analytics form</li>
-<li>Select <strong>Get tracking ID,</strong> and then read and accept the terms of Google Anayltics by clicking <strong>I accept</strong></li>
-<li>You will receive a tracking ID. This ID will be used on the hub in order to finish the set up process</li>
-</ol>
-<h2 id="step-2-enabling-google-analytics">Step 2: Enabling Google Analytics</h2>
-<ol>
-<li>Navigate back to your hub and log into the /administrative interface</li>
-<li>Click on the <strong>Extensions</strong> tab and the and select from the drop-down the <strong>Module Manager</strong></li>
-<li>On the <strong>Module Manager</strong> page click the New button and locate <strong>Google Analytics</strong> from the new module list</li>
-<li>Open the new module by clicking on it's title then fill in the tracking ID, title, and the position of the module to be in the footer (typically, this module should be in a position present on every page--for HUBzero-built templates, that tends to be position <strong>footer</strong>)</li>
-<li>Click <strong>Save &amp; Close</strong> and Google Analytics will be installed in your hub</li>
-</ol>
-<h2 id="google-drive">Google Drive</h2>
-<h2 id="step-1-configuring-google-drive-in-projects-on-a-hub">Step 1: Configuring Google Drive in Projects on a hub</h2>
-<ol>
-<li>Navigate to console.developers.google.com and log in with your hub Gmail account</li>
-<li>Click <strong>Create Project</strong> to create a new project for your hub
-<ol>
-<li>Enter the Project Name. We suggest using your hub name</li>
-<li>Enter the Project ID. The Project ID is a globally unique identifier that cannot be renamed. Use the ID given, or specify a new one in the field</li>
-<li>Click <strong>Create</strong></li>
-</ol>
-</li>
-<li>Once created, click the link to your project to open it</li>
-<li>From the Dashboard, click “Enable an API” to select services for the project. From this list, find and turn on Drive API and Drive SDK services by clicking <strong>Off</strong> next to each to switch them to <strong>On</strong>. Be sure to accept Terms of Service if asked</li>
-<li>Next, navigate to the left hand menu to find APIs &amp; auth. Click <strong>Consent Screen</strong> to set up the branding information. Fill in all required fields
-<ol>
-<li>Choose the hub email account from the Choose your email dropdown</li>
-<li>In Product name, type <em><strong>Project Files to Google Drive Connector</strong></em></li>
-<li>Click <strong>Save</strong></li>
-</ol>
-</li>
-<li>Next, click <strong>Credentials</strong> under APIs &amp; auth</li>
-<li>Click <strong>Create new Client ID</strong></li>
-<li>On the Create Client ID screen, choose <strong>Web Application</strong> under Application Type</li>
-<li>In the Authorize Javascript orgins field, type your hub URL (i.e. <strong>https://yourhub.org</strong>)</li>
-<li>In the Authorized Redirect URIS field, type your hub URL and add /projects/auth (i.e. https://www.yourhub.org/projects/auth)</li>
-<li>Click <strong>Create Client ID</strong></li>
-<li>Under Client ID for web application, note the Client ID and Client Secret, as these will be needed</li>
-<li>Under Public API Access, click Create New Key</li>
-<li>Choose <strong>Browser key</strong> from the Create a new key pop-up</li>
-<li>In the HTTP Referrers field, type in your hub name followed by/*
-<ul>
-<li>Example: yourhub.org/*</li>
-</ul>
-</li>
-<li>Click Create. Note the API Key: After this step, you will navigate back to the hub to configure</li>
-</ol>
-<h2 id="step-2-turning-on-google-drive-in-projects">Step 2: Turning on Google Drive in Projects</h2>
-<ol>
-<li>Navigate the /administrator interface for your hub and log in</li>
-<li>Navigate to the <strong>Extensions</strong> menu, and click <strong>Plug-in Manager</strong></li>
-<li>In the search, type <strong>Projects</strong>, and click <strong>Search</strong></li>
-<li>In the results, find the Projects – Files plugin. Click the title to edit</li>
-<li>Scroll down until you see the Google Connection Enabled option</li>
-<li>Choose Y<strong>es</strong> from the drop-down</li>
-<li>Fill in the Google Client ID, Client Secret, and API Key fields with the information from your account</li>
-<li>Choose when to auto-sync</li>
-<li>If you would like to only make Google Drive available to certain projects, type the alias of the project into the Connected Projects</li>
-<li>Click <strong>Save &amp; Close</strong></li>
-</ol>
-<h2 id="ckeditor">CKEditor</h2>
-<p>CKEditor is a HTML text editor designed to simplify web content creation. It’s a WYSIWYG editor that brings common word processing features directly into the web pages being built. After a hub has been updated to R1.3.0 various settings need to be adjusted on the administrator backend of the hub to allow CKEditor for all users.</p>
-<h2 id="step-1-global-configuration">Step 1: Global Configuration</h2>
-<ol>
-<li>Navigate to the /administrator interface for your hub, and log in</li>
-<li>Select the <strong>Site</strong> tab from the top menu</li>
-<li>Click on the <strong>Global Configuration</strong> from the drop-down to open up the global configuration settings</li>
-<li>Under the <strong>Site</strong> tab navigate to <strong>Site Settings</strong> and then locate <strong>Default Editor</strong></li>
-<li>Select <strong>Editor-CKEditor</strong> from the drop-down</li>
-<li>Click <strong>Save &amp; Close</strong> to save the newly changed settings</li>
-</ol>
-<p>­­</p>
-<h2 id="step-2-html-format-handler-plug-in">Step 2: HTML Format Handler Plug-in</h2>
-<ol>
-<li>Navigate to the /administrator interface for your hub, and log in</li>
-<li>Select the <strong>Extensions</strong> tab from the top menu</li>
-<li>Click on the <strong>Plug-in Manager</strong> from the drop-down</li>
-<li>Enter <strong>Content – HTML Format Handler</strong> into the search box and click <strong>Search</strong></li>
-<li>Click on the <strong>Content – HTML Format Handler</strong> title to open up the plug-in</li>
-<li>In <strong>Details</strong> change the status to <strong>Enabled</strong> and then click <strong>Save &amp; Close</strong></li>
-</ol>
-<h2 id="recaptcha">ReCAPTCHA</h2>
-<h2 id="step-1-set-up-recaptcha-on-google">Step 1: Set Up ReCAPTCHA on Google</h2>
-<ol>
-<li>Navigate to (https://www.google.com/recaptcha/intro/index.html) and select <strong>Get reCAPTCHA</strong></li>
-<li>You will be required to log in to a Google account, at this point consider creating a new account for your hub or use a previously created account</li>
-<li>Fill in the <strong>Label</strong> field and <strong>Domain</strong> field with the appropriate information</li>
-<li>Copy the <strong>Site key</strong> and <strong>Secret key</strong></li>
-</ol>
-<h2 id="step-2-enabling-recaptcha">Step 2: Enabling ReCAPTCHA</h2>
-<ol>
-<li>Navigate to the /administrator interface for your hub, and log in</li>
-<li>Select the <strong>Extensions</strong> tab and from the drop-down select <strong>Plug-in Manager</strong></li>
-<li>Locate the <strong>CAPTCHA-ReCAPTCHA</strong> plug-in and click on the title</li>
-<li>Change the status of the plug-in from <strong>Disabled</strong> to <strong>Enabled</strong>, then fill in the <strong>Public key</strong> and the <strong>Secret key</strong></li>
-<li>Save the changes by clicking <strong>Save &amp; Close</strong>, then ReCAPTCHA will be activated on your hub</li>
-</ol>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Every <em>enabled</em> captcha plugin renders on the registration
+form, so disable <strong>Captcha - Image</strong> and <strong>Captcha - Math</strong> if you want
+only reCAPTCHA. <strong>Global Configuration → Site → Default Captcha</strong> looks
+like it chooses between them, but no code reads that setting.</p>
+</aside>
+<p>The form only asks for a CAPTCHA if the <strong>CAPTCHA</strong> field in the Members
+component's registration options is not set to hidden. See
+<a href="../configuring/registration/index.html">Registration</a>.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../getting-started/administrator/index.html" rel="prev"><span>Previous</span>Administrator Area</a><a class="pager__next" href="../maintenance/index.html" rel="next"><span>Next</span>Daily Maintenance</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../getting-started/administrator/index.html" rel="prev"><span>Previous</span>The administrator interface</a><a class="pager__next" href="../maintenance/index.html" rel="next"><span>Next</span>Daily Maintenance</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/02-advancedsetup.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

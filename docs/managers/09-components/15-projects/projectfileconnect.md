@@ -1,71 +1,167 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/projects/projectfileconnect
 source-id: 3386
 modified: 2017-11-03
 imported: 2026-09-09
 -->
-# Project File Connectors
+# Project file connectors
 
-## Project File Connectors
+A project's Files tab normally shows the hub's own storage: a git repository
+under `/srv/projects`, listed under a name built from the Projects - Files
+plugin's **Default Connection Name** pattern, `%s Master Repository`. A **file
+connector** lets a project point at storage the hub does not own — a Google
+Drive folder, a Dropbox account, a GitHub repository, an S3 bucket — and
+browse it in the same interface. The files stay with the provider. The hub
+stores only a name, a provider, and a credential.
 
-HUBzero allows for files to be shared either on a repository owned by the Hub or connect to other file management platforms. Project File Connectors allow for these third-party file management systems to enable files uploaded on the Hub yet stored in their system. Follow these instructions to set-up and provide Project File Connectors to your users:
+Setting one up takes two people. You, as hub manager, register an application
+with the provider and put its credentials into the hub. A project manager then
+creates the connection inside their own project and authorises it with their
+own account.
 
-1. Navigate to the third party file management system of your choosing, such as **Google Drive** or **Dropbox**
-2. Set-up either a new project or application and fill in information about the Hub in order to obtain an **API key** and **API secret** upon saving
-3. Make sure you set the callback address to your Hub and indicate the appropriate file system
-   1. **Example:** When setting up a Google Drive API connector to redirect to YourHub, the following callback should be used - *https://yourhub.org/*developer/callback/googledriveAuthorize
-4. Once the **API key** and **API secret** have been created successfully, navigate back to the **/administrator** interface and **login**
-5. Hover over **Extensions** and select from the dropdown **Plug-in Manager**
-6. Search or locate the appropriate plugin connected to the file system
-   1. **Example:** If the file system chosen is Google Drive, one would select the **Filesystem - Google Drive** plugin
-7. Click on the title of the plugin and change the status to **Enabled**
-8. Insert the **API Key** in the **Client ID** and the **API Secret** in the **Client Secret**
-9. Fill in an further information as necessary then click **Save & Close**
-10. While still at the **Plug-in Manager**, search for and click the **Projects - Files** plugin.
-11. Scroll down until you see an option for **Default Action**, and set it to **Connections (view available connections)**.
-12. Navigate to a **Project** you would like to setup a new file system
-    1. **Note:** You must be a manager of the Project in order for you to set-up the File System
-13. Click on **Files** and then click on **New Connection** and choose the file system from the dropdown
-14. Choose to bypass the secondary step of connecting to the same API.....
+## What ships
 
-## Setting up an External Application (Dropbox, Google Drive, AWS S3)
+Four external providers ship in Hubzero 2.4, each as a plugin in the
+`filesystem` group. A fifth, **Filesystem - Local**, backs the hub's own
+repository; it has no parameters and nothing to configure.
 
-For using external services via OAuth2 the Hub needs a client identifier and secret for use with that service. The methods of obtaining these values vary from service to service and are subject to change at the provider's discretion. Below are the instructions for setting up a developer application on some services (adapting the instructions with some searching should yield similar results for other services or services that have changed their process in the future).
+| Provider | Plugin | Credentials you set on the hub | Fields the project manager fills in | How it authorises |
+|---|---|---|---|---|
+| Google Drive | Filesystem - Google Drive | **Client ID**, **Client Secret** | — | Redirects to Google the first time the connection is opened |
+| Dropbox | Filesystem - Dropbox | **App key**, **App secret** | — | Redirects to Dropbox the first time the connection is opened |
+| GitHub | Filesystem - GitHub | **Client ID**, **Client Secret** | **Repository** (`vendor/repository`) | Public repositories are read anonymously; a private one needs an explicit, manager-initiated OAuth step |
+| AWS S3 | Filesystem - AWS S3 | — | **Access Key ID**, **Secret Access Key**, **Endpoint Region**, **Bucket Name**, **Directory to connect** | No OAuth; the IAM key is entered per connection |
 
-### [Creating an application on Dropbox]
+All four work: the client libraries they need are installed with the CMS. The
+parameters are also in the generated
+[filesystem plugin reference](../../../reference/configuration/plugins/filesystem.md).
 
-1. Navigate to https://www.dropbox.com/developers
-2. Sign in using the Dropbox credentials that you would like your Hub (the server itself) to authenticate against, this is usually an account owned by the group or organization.
-3. On the left menu, click "My Apps".
-4. On the top right, click "Create App".
-5. Select the access level you would like to grant your Hub to your users Dropbox accounts.
-6. Give the application a name (this name will be displayed to users when they authorize access to their Dropbox account).
-7. Read and agree (or disagree) to Dropbox's terms.
-8. Click "Enable additional users".
-9. In the redirect URIs section, add the URI of "https://&amp;lt;yourhub.org>/developer/callback/dropboxAuthorize".
-10. At this point you should save the "App key" and show and save your "App secret", you will need to input these on cdmHUB in a later step.
-11. You can now click on the branding tab and brand the application to your Hub's needs (adding icons, links to the website, etc.). These are all used when a user is asked to enter their Dropbox credentials on behalf of your Hub.
+> **Important:** The GitHub connector is read-only, and it deliberately does
+> not start an OAuth handshake just to read a public repository. Only a
+> private repository triggers one, and only when a project manager asks for it
+> — because the token GitHub mints covers the authorising user's whole
+> account, including write access.
 
-**Dropbox currently limits development accounts to 500 users per id/key, this can be raised by contacting Dropbox support and applying for a production key once that limit has been reached.**
+## The OAuth callback
 
-**[Creating an application on Dropbox]**
+Google Drive, Dropbox and GitHub each need a redirect URI registered with the
+provider. The hub answers them at:
 
-1. Log in to your Google account and go to the APIs & services
-2. Navigate to "Credentials" using the left-hand menu
-3. On the "Credentials" page, click "Create credentials" and choose "OAuth client ID"
-4. Create "New Credentials"
-5. On the "Create client id" page, select "Web application". In the new fields that display, set the following parameters:
-   1. Field: Description
-   2. Name: The name of your web app
-   3. Authorized JavaScript origins:
-      1. https://yourhub.org
-   4. Authorized redirect URIs:
-      1. https://yourhub.org/projects/auth
-      2. https://yourhub.org/developer/callback/googledriveAuthorize
-   5. Web App Credentials: Configuration
-6. Click "Create" to proceed
-   1. Your "Client Id" and "Client Secret" will be displayed
-7. Save your Client Id and Client Secret to enter into the Connection settings into "Filesystems - Google Drive" plugin
-   1. Additional documentation can be found here:
-      1. https://cloud.google.com/docs/authentication/api-keys
+| Provider | Redirect URI |
+|---|---|
+| Google Drive | `https://yourhub.org/developer/callback/googledriveAuthorize` |
+| Dropbox | `https://yourhub.org/developer/callback/dropboxAuthorize` |
+| GitHub | `https://yourhub.org/developer/callback/githubAuthorize` |
+
+Substitute the hub's own hostname, and use `https`. The hub builds these from
+its own base URL, so a provider that rejects the callback is almost always a
+sign that the registered URI and the hub's actual address disagree.
+
+## Setting up a connector
+
+1. **Register an application with the provider.** See the per-provider notes
+   below. Register the callback URI from the table above. You end up with a
+   pair of values, called a client ID and secret, an app key and secret, or an
+   access key and secret depending on the provider.
+2. **Configure the plugin.** Go to **Extensions → Plug-in Manager**, search
+   for the plugin — for example `Filesystem - Google Drive` — and open it. Set
+   **Status** to **Enabled**, put the two values in the credentials panel —
+   labelled **Credentials**, or **Google Drive Web Application Credentials** on
+   that plugin — and select **Save & Close**. The AWS S3 plugin has nothing to
+   set at this level; enabling it is enough.
+3. **Optionally make Files open on the connections view.** Open the **Projects
+   - Files** plugin and set **Default Action** to **Connections (view
+   available connections)**. The Files tab then lists the connections instead
+   of opening the local repository straight away. Leave it on **Browse (browse
+   local files)** if you would rather members reach connections through the
+   file browser.
+4. **Create the connection in a project.** This part is done by a project
+   manager, on the front end, in the project's **Files** tab: pick the
+   provider from the **New Connection** drop-down, give the connection a name,
+   fill in any per-connection fields, decide whether to share it with the
+   project, and save. Opening it for the first time sends them to the provider
+   to grant access.
+
+> **Note:** The **New Connection** drop-down lists every provider the hub
+> knows about, whether or not that provider's plugin is enabled and
+> configured. A connection to a provider you have not set up is created
+> happily and then fails when someone opens it. If you do not intend to offer
+> a provider, say so to your project managers.
+
+> **Note:** Only a genuine project manager can authorise a connection. A hub
+> administrator viewing the project cannot do it for them, by design — the
+> handshake attaches the authorising person's own provider account to a
+> connection the whole project may use.
+
+Each connection is either private to the member who created it or shared with
+everyone in the project; the checkbox is on the connection form, and shared
+connections are the ones without the private marker in the connections list.
+The connections list also has **Refresh Connection Credentials**, for when a
+stored token has expired, and **Refresh Connection Path**.
+
+## Registering the application
+
+The providers change their developer consoles regularly. What follows is
+accurate in outline; if a screen has moved, the values you need have not.
+
+### Dropbox
+
+1. Go to <https://www.dropbox.com/developers> and sign in as the account that
+   should own the application — usually one belonging to the group or
+   institution, not to a person.
+2. Select **My Apps**, then **Create app**.
+3. Choose the access level to grant, and give the application a name. That
+   name is what users see when they are asked to authorise it.
+4. Add `https://yourhub.org/developer/callback/dropboxAuthorize` under
+   **Redirect URIs**.
+5. Select **Enable additional users**.
+6. Copy the **App key**, reveal and copy the **App secret**.
+7. Optionally use the branding tab to add your hub's icon and links; they
+   appear on the authorisation screen.
+
+> **Note:** Dropbox caps development applications at a small number of linked
+> users. Apply for production status with Dropbox before you reach it, or
+> members will start being refused.
+
+### Google Drive
+
+1. Sign in to the [Google Cloud console](https://console.cloud.google.com/)
+   and select or create a project.
+2. Enable the **Google Drive API** for it.
+3. Under **APIs & Services → Credentials**, select **Create credentials →
+   OAuth client ID**, and choose **Web application**.
+4. Set **Authorized JavaScript origins** to `https://yourhub.org`, and
+   **Authorized redirect URIs** to
+   `https://yourhub.org/developer/callback/googledriveAuthorize`.
+5. Select **Create**, and copy the **Client ID** and **Client Secret**.
+
+### GitHub
+
+1. In GitHub, go to **Settings → Developer settings → OAuth Apps** for the
+   account or organisation that should own the application, and select **New
+   OAuth App**.
+2. Set the homepage URL to the hub, and the authorization callback URL to
+   `https://yourhub.org/developer/callback/githubAuthorize`.
+3. Copy the **Client ID**, generate and copy a **Client Secret**.
+
+The hub asks GitHub for the `repo` scope, which is the only classic OAuth
+scope that grants read access to private repositories. Tell members that, so
+they understand what they are agreeing to. Public repositories never reach
+this step.
+
+### AWS S3
+
+There is no application to register and nothing to configure on the plugin.
+Create an IAM user with read access to the bucket, generate an access key for
+it, and give the key, the secret, the bucket's region code and the bucket name
+to the project manager, who enters them on the connection form. **Directory to
+connect** confines the connection to one prefix inside the bucket; leave it
+empty for the whole bucket.
+
+> **Warning:** Those S3 credentials are stored with the connection and are
+> usable by everyone the connection is shared with. Issue a key that is scoped
+> to the one bucket, or the one prefix, and nothing else.

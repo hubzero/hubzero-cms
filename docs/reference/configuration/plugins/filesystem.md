@@ -57,8 +57,8 @@ Google Drive connectivity plugin
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
-| `app_id` | Client ID | text | — | PLG_FILESYSTEM_GOOGLEDRIVE_APP_ID_DESC |
-| `app_secret` | Client Secret | text | — | PLG_FILESYSTEM_GOOGLEDRIVE_APP_SECRET_DESC |
+| `app_id` | Client ID | text | — | The Google API OAuth client ID to use for connections to Google Drive |
+| `app_secret` | Client Secret | text | — | The Google API OAuth client secret to use for connections to Google Drive |
 
 ## Filesystem - Local (`plg_filesystem_local`)
 

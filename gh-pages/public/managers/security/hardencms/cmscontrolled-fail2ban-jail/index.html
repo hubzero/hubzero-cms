@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CMS-Controlled Fail2Ban Jail · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Configuration and Details Objective To have the CMS handle user login banning in an attempt to deter brute force attacks. CMS Configuration Page The following…">
+  <title>CMS-controlled Fail2Ban jail · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Hubzero throttles brute-force attempts in three stages, all configured on one screen. The first two stages are entirely inside the CMS. The third hands the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/security/hardencms/cmscontrolled-fail2ban-jail/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,24 +124,25 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">CMS-Controlled Fail2Ban Jail</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#configuration-and-details">Configuration and Details</a></li>
-<li class="toc__item toc__item--l2"><a href="#objective">Objective</a></li>
-<li class="toc__item toc__item--l2"><a href="#cms-configuration-page">CMS Configuration Page</a></li>
-<li class="toc__item toc__item--l2"><a href="#user-password-reset-limit">User Password Reset Limit</a></li>
-<li class="toc__item toc__item--l2"><a href="#user-failed-login-limit">User Failed Login Limit</a></li>
-<li class="toc__item toc__item--l2"><a href="#ipbased-blocked-user-limit">IP­based Blocked User Limit</a></li>
-<li class="toc__item toc__item--l2"><a href="#assumptions">Assumptions</a></li>
-<li class="toc__item toc__item--l2"><a href="#setup-configuration">Setup &amp; Configuration</a></li>
-<li class="toc__item toc__item--l2"><a href="#sudo-configuration">sudo Configuration</a></li>
-<li class="toc__item toc__item--l2"><a href="#fail2ban-configuration">Fail2Ban Configuration</a></li>
-<li class="toc__item toc__item--l2"><a href="#user-impact">User Impact</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../../index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../faqs/index.html">Security questions</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">CMS-controlled Fail2Ban jail</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-settings">The settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-the-counting-happens">Where the counting happens</a></li>
+<li class="toc__item toc__item--l2"><a href="#stage-one-password-reset-requests">Stage one: password reset requests</a></li>
+<li class="toc__item toc__item--l2"><a href="#stage-two-failed-logins">Stage two: failed logins</a></li>
+<li class="toc__item toc__item--l2"><a href="#stage-three-too-many-blocked-accounts-from-one-address">Stage three: too many blocked accounts from one address</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-system-administrator-has-to-set-up">What the system administrator has to set up</a></li>
+<li class="toc__item toc__item--l3"><a href="#sudo">sudo</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-jail">The jail</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-filter">The filter</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-action">The action</a></li>
+<li class="toc__item toc__item--l3"><a href="#check-it">Check it</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-it-off-for-an-event">Turning it off for an event</a></li>
 </ol></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -150,459 +151,247 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Security Considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hardening the Content Management System</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">CMS-Controlled Fail2Ban Jail</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Security considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hardening the CMS</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">CMS-controlled Fail2Ban jail</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>CMS-Controlled Fail2Ban Jail</h1>
+          <h1>CMS-controlled Fail2Ban jail</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/22/security_considerations/hardencms/cmscontrolled_fail2ban_jail">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025. It was never published there, so read it as a draft. It exists only in the 2.2 documentation and was merged in from there.</aside>
+        
         <div class="prose">
-<h2 id="configuration-and-details">Configuration and Details</h2>
-<h2 id="objective">Objective</h2>
-<p>To have the CMS handle user login banning in an attempt to deter brute force attacks.</p>
-<h2 id="cms-configuration-page">CMS Configuration Page</h2>
-<p>The following settings are accessible from the CMS administrative backend.</p>
-<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban1.png" alt="fail2ban1" /></p>
-<p>These options are accessible by going to the User Menu ­ Members and Member Options.</p>
-<h2 id="user-password-reset-limit">User Password Reset Limit</h2>
-<p>The number of password resets per time period is limited. If the user attempts to reset their password at a threshold deemed by the HUB administrator as excessive, the following message is displayed.</p>
-<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban2.png" alt="fail2ban2" /></p>
-<h2 id="user-failed-login-limit">User Failed Login Limit</h2>
-<p>The number of failed logins per time period is limited. If the user attempts to reset their password at a threshold deemed by the HUB administrator as excessive, the following message is displayed. This means that an individual's account is temporarily blocked until the time period expires.</p>
-<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban3.png" alt="fail2ban3" /></p>
-<h2 id="ipbased-blocked-user-limit">IP­based Blocked User Limit</h2>
-<p>When the threshold of blocked user accounts per IP network is met, the CMS will trigger a Fail2Ban rule which will block incoming requests from an IP address for a period of time. This is the last line of defense as blocking an IP address may have unintended consequences ­ such as blocking a NAT­ed IP address which several valid users are using to access the hub.</p>
-<h2 id="assumptions">Assumptions</h2>
-<p>This approach assumes that the system administrator has configured a jail and a system user account to execute (with sudo) Fail2Ban via the fail2ban­client utility.</p>
-<p>On Debian Hosts, Fail2Ban should be version 0.9.5.</p>
-<p>0.9.5­1~nd70+1 from <a href="http://neuro.debian.net/debian/">http://neuro.debian.net/debian/</a>wheezy/main amd64 Packages</p>
-<h2 id="setup-configuration">Setup &amp; Configuration</h2>
-<p>There are a number of subsystems which need to be configured for this scheme to work properly.</p>
-<h2 id="sudo-configuration">sudo Configuration</h2>
-<p>A privileged user which can execute:</p>
-<p>(root) NOPASSWD: /usr/bin/fail2ban­client set hub­login banip [0­9.]* (root) NOPASSWD: /usr/bin/fail2ban­client set hub­login unbanip [0­9.]*</p>
-<p>This can be accomplished by adding a sudoers rule in /etc/sudoers.d/ that looks like:</p>
-<p>www­data ALL=(root)NOPASSWD: /usr/bin/fail2ban­client set hub­login banip [0­9.]*</p>
-<h2 id="fail2ban-configuration">Fail2Ban Configuration</h2>
-<p>The system administrator should configure Fail2Ban to create jails which the CMS can add offending IP address into. The amount of time that the ban is valid is configured in Fail2Ban.</p>
-<p>The CMS will simply add IP addresses to the Fail2Ban jail which will trigger the Ban Action as specified in the rule set.</p>
-<p>The following configuration are more of an example than anything. A seasoned system administrator will have crafted better rules.</p>
-<p><em>[Sample] Jail Configuration</em></p>
-<h1></h1>
-<p># JAILS</p>
-<p># /etc/fail2ban/jail.local</p>
-<h1></h1>
-<p>[hub­login] enabled = true</p>
-<p>port = http,https filter = hub­login</p>
-<p>logpath = /var/log/messages banaction = hublogin­failure bantime = 600</p>
-<p>findtime = 1</p>
-<p>maxretry = 1</p>
-<p><em>[Sample] Filter Configuration</em></p>
-<p>/etc/fail2ban/filter.d/hub­login.conf</p>
-<p># Fail2Ban configuration file</p>
-<h1></h1>
-<p>[Definition]</p>
-<p># Option: failregex</p>
-<p># Notes.: Regexp to catch known spambots and software alike. Please verify</p>
-<p># that it is your intent to block IPs which were driven by</p>
-<p># abovementioned bots.</p>
-<p># Values: TEXT</p>
-<h1></h1>
-<p>#We choose something that will never happen</p>
-<p># Since the CMS will control IP’s placed in the jails failregex = ^&amp;lt;HOST&gt;thisfilterwillneverbefound</p>
-<p># Option: ignoreregex</p>
-<p># Notes.: regex to ignore. If this regex matches, the line is ignored.</p>
-<p># Values: TEXT</p>
-<h1></h1>
-<p>ignoreregex =</p>
-<p><em>[Sample] Action Configuration</em></p>
-<p># Fail2Ban configuration file</p>
-<p># cat /etc/fail2ban/action.d/hublogin­failure.conf [INCLUDES]</p>
-<p>before = iptables­common.conf</p>
-<p>[Definition]</p>
-<p># Option: actionstart</p>
-<p># Notes.: command executed once at the start of Fail2Ban.</p>
-<p># Values: CMD</p>
-<h1></h1>
-<p>actionstart = iptables ­N fail2ban­hublogin</p>
-<p>iptables ­A INPUT ­j DROP</p>
-<p>iptables ­I INPUT ­p tcp ­j fail2ban­hublogin</p>
-<p># Option: actionstop</p>
-<p># Notes.: command executed once at the end of Fail2Ban</p>
-<p># Values: CMD</p>
-<h1></h1>
-<p>actionstop = iptables ­D fail2ban­hublogin ­p tcp ­j fail2ban­hublogin iptables ­F fail2ban­hublogin</p>
-<p>iptables ­X fail2ban­hublogin</p>
-<p># Option: actioncheck</p>
-<p># Notes.: command executed once before each actionban command</p>
-<p># Values: CMD</p>
-<h1></h1>
-<p>actioncheck = iptables ­n ­L fail2ban­hublogin | grep ­q fail2ban­hublogin</p>
-<p># Option: actionban</p>
-<p># Notes.: command executed when banning an IP. Take care that the</p>
-<p># command is executed with Fail2Ban user rights.</p>
-<p># Tags: &amp;lt;ip&gt; IP address</p>
-<p># &amp;lt;failures&gt; number of failures</p>
-<p># &amp;lt;time&gt; unix timestamp of the ban time</p>
-<p># Values: CMD</p>
-<h1></h1>
-<p>actionban = iptables ­I fail2ban­hublogin ­p tcp ­­dport 443 ­s &amp;lt;ip&gt; ­j DROP</p>
-<p>iptables ­I fail2ban­hublogin ­p tcp ­­dport</p>
-<p>80 ­s &amp;lt;ip&gt; ­j DROP</p>
-<p># Option: actionunban</p>
-<p># Notes.: command executed when unbanning an IP. Take care that the</p>
-<p># command is executed with Fail2Ban user rights.</p>
-<p># Tags: &amp;lt;ip&gt; IP address</p>
-<p># &amp;lt;failures&gt; number of failures</p>
-<p># &amp;lt;time&gt; unix timestamp of the ban time</p>
-<p># Values: CMD</p>
-<h1></h1>
-<p>actionunban = iptables ­D fail2ban­hublogin ­p tcp ­­dport 443 ­s &amp;lt;ip&gt; ­j DROP iptables ­D fail2ban­hublogin ­p tcp ­­dport 80 ­s &amp;lt;ip&gt; ­j DROP</p>
-<p>[Init]</p>
-<p># Defaut name of the chain</p>
-<h1></h1>
-<p>name = DEFAULT</p>
-<p># Option: protocol</p>
-<p># Notes.: internally used by config reader for interpolations.</p>
-<p># Values: [ tcp | udp | icmp | all ] Default: tcp</p>
-<h1></h1>
-<p>protocol = tcp</p>
-<p># Option: chain</p>
-<p># Notes specifies the iptables chain to which the fail2ban rules should be</p>
-<p># added</p>
-<p># Values: STRING Default: INPUT chain = INPUT</p>
-<p><em>[Sample] Banned IP address results</em> root@example:/var/www/example# fail2ban­client status hub­login Status for the jail: hub­login</p>
-<p>|­ Filter</p>
-<p>| |­ Currently failed: 0</p>
-<p>| |­ Total failed: 4</p>
-<p>| `­ File list: /var/log/messages</p>
-<p>`­ Actions</p>
-<p>|­ Currently banned: 1</p>
-<p>|­ Total banned: 4</p>
-<p>`­ Banned IP list: 192.168.226.1</p>
-<p>root@example:/var/www/example# iptables ­L Chain INPUT (policy DROP)</p>
-<p>target prot opt source destination fail2ban­hublogin tcp ­­ anywhere anywhere ACCEPT all ­­ anywhere anywhere</p>
-<p>ACCEPT all ­­ anywhere anywhere state RELATED,ESTABLISHED</p>
+<p>Hubzero throttles brute-force attempts in three stages, all configured on
+one screen. The first two stages are entirely inside the CMS. The third
+hands the offending address to Fail2Ban, which is server software outside
+this repository and has to be set up by the system administrator first.</p>
+<h2 id="the-settings">The settings</h2>
+<p>Go to <strong>Users</strong> &gt; <strong>Members</strong>, then <strong>Options</strong> in the toolbar. The
+<strong>Members Configuration</strong> window opens; the fields below are on the <strong>Login
+Settings</strong> tab.</p>
 <table>
 <thead>
 <tr>
-<th>ACCEPT</th>
-<th>tcp</th>
-<th>­­</th>
-<th>anywhere</th>
-<th>anywhere</th>
-<th>tcp</th>
-<th>dpt:ssh</th>
+<th>Field</th>
+<th>Parameter</th>
+<th>Default</th>
+<th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:smtp</td>
+<td><strong>Maximum Reset Count</strong></td>
+<td><code>reset_count</code></td>
+<td>10</td>
+<td>Password reset requests allowed per account per window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:mysql</td>
+<td><strong>Time in Hours</strong></td>
+<td><code>reset_time</code></td>
+<td>1</td>
+<td>The reset window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:ldap</td>
+<td><strong>Maximum Failed Login Attempts</strong></td>
+<td><code>login_attempts_limit</code></td>
+<td>10</td>
+<td>Failed logins allowed per account per window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:http</td>
+<td><strong>Time in Hours</strong></td>
+<td><code>login_attempts_timeframe</code></td>
+<td>1</td>
+<td>The failed-login window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:https</td>
+<td><strong>Purge Log After</strong></td>
+<td><code>login_log_timeframe</code></td>
+<td>Never</td>
+<td>How long attempts stay in the log table.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:http­alt</td>
+<td><strong>Fail2Ban</strong></td>
+<td><code>fail2ban</code></td>
+<td>Off</td>
+<td>Whether stage three runs at all.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpts:830:831</td>
+<td><strong>Maximum Number Blocked Accounts</strong></td>
+<td><code>blocked_accounts_limit</code></td>
+<td>10</td>
+<td>Blocked accounts allowed per address per window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:http</td>
+<td><strong>Time in Hours</strong></td>
+<td><code>blocked_accounts_timeframe</code></td>
+<td>1</td>
+<td>The blocked-accounts window.</td>
 </tr>
 <tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:https</td>
-</tr>
-<tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:http­alt</td>
-</tr>
-<tr>
-<td>ACCEPT</td>
-<td>tcp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td>tcp</td>
-<td>dpt:1170</td>
-</tr>
-<tr>
-<td>ACCEPT</td>
-<td>icmp</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>DROP</td>
-<td>all</td>
-<td>­­</td>
-<td>anywhere</td>
-<td>anywhere</td>
-<td></td>
-<td></td>
+<td><strong>Fail2Ban Jail</strong></td>
+<td><code>fail2ban-jail</code></td>
+<td><code>hub-login</code></td>
+<td>Name of the jail to ban into.</td>
 </tr>
 </tbody>
 </table>
-<p>Chain FORWARD (policy DROP)</p>
-<table>
-<tbody>
-<tr>
-<td>
-<p>target ACCEPT ACCEPT</p>
-</td>
-<td>
-<p>prot all all</p>
-</td>
-<td>
-<p>opt</p>
-<p>­­</p>
-<p>­­</p>
-</td>
-<td>
-<p>source 10.0.0.0/8</p>
-<p>anywhere</p>
-</td>
-<td>
-<p>destination anywhere anywhere</p>
-</td>
-<td colspan="2">
-<p> </p>
-<p> </p>
-<p>ctstate</p>
-</td>
-</tr>
-<tr>
-<td colspan="7">
-<p>RELATED,ESTABLISHED,DNAT</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpts:830:831</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:http</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:https</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>udp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>udp</p>
-</td>
-<td>
-<p>dpt:domain</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Chain OUTPUT (policy ACCEPT)</p>
-<p>target prot opt source destination</p>
-<table>
-<tbody>
-<tr>
-<td>
-<p>Chain fail2ban­hublogin (1 references)</p>
-</td>
-<td>
-<p> </p>
-</td>
-<td colspan="2" rowspan="2">
-<p> </p>
-</td>
-</tr>
-<tr>
-<td>
-<p>target      prot opt source</p>
-</td>
-<td>
-<p>destination</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>DROP        tcp  ­­  container.localhost</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:http</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>DROP        tcp  ­­  container.localhost</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:https</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>root@example:/var/www/example#</p>
-<h2 id="user-impact">User Impact</h2>
-<p>When a large number of people intend on using the CMS, it may be wise to temporarily disable this feature (e.g. conference, class activity, etc). In the past, many conference goers have mistyped their password in a short period of time creating a false positive for normal Fail2Ban operation. This risk is mitigated by the fact that the number of blocked users is observed before triggering Fail2Ban.</p>
+<p>The same list, generated from the manifest, is in the
+<a href="../../../../reference/configuration/components/members/index.html#login">Members configuration reference</a>.</p>
+<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban1.png" alt="The Login Settings tab of the Members Configuration window" /></p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> This screenshot predates 2.4. It shows six fields with older
+labels and is missing <strong>Purge Log After</strong>, <strong>Fail2Ban</strong>, and <strong>Fail2Ban
+Jail</strong>. Read the table above, not the picture.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Setting any of the three limits to <code>0</code> does <strong>not</strong> mean
+&quot;no limit&quot;, whatever the field's help text says — it makes the check fail
+for everyone immediately. Leave them at one or more.</p>
+</aside>
+<h2 id="where-the-counting-happens">Where the counting happens</h2>
+<p>All three stages read <code>#__users_log_auth</code>, the table
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/user/xusers/xusers.php"><code>plg_user_xusers</code></a> writes to
+after every login attempt. Each row holds a username, the remote address, a
+status of <code>success</code>, <code>failure</code> or <code>blocked</code>, and a timestamp.</p>
+<p><strong>Purge Log After</strong> trims that table. It is checked on each authentication
+attempt, and rows older than the chosen period are deleted. Leaving it at
+<strong>Never</strong> lets the table grow without bound, which eventually slows the
+login page down.</p>
+<h2 id="stage-one-password-reset-requests">Stage one: password reset requests</h2>
+<p>Counted per account by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/site/controllers/credentials.php"><code>com_members</code>'s credentials controller</a>.
+It counts the member's outstanding reset tokens created inside
+<strong>Time in Hours</strong>, and once that reaches <strong>Maximum Reset Count</strong> it refuses
+the request:</p>
+<blockquote>
+<p>Sorry, you have exceeded your reset request limit. Please wait and try
+again later.</p>
+</blockquote>
+<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban2.png" alt="The reset request limit message on the Reset Password page" /></p>
+<p>Nothing is blocked and nothing is logged as blocked; the member simply has
+to wait for the window to pass.</p>
+<h2 id="stage-two-failed-logins">Stage two: failed logins</h2>
+<p>Counted per account by
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/authentication/hubzero/hubzero.php"><code>plg_authentication_hubzero</code></a>.
+It counts rows for that username with status <code>failure</code> inside <strong>Time in
+Hours</strong>. Once the table already holds one fewer than <strong>Maximum Failed Login
+Attempts</strong>, the plugin writes a <code>blocked</code> row for the account and refuses
+the login:</p>
+<blockquote>
+<p>Your account has been temporarily disabled due to an excessive number of
+failed login attempts.</p>
+</blockquote>
+<p><img src="../../../media/cmscontrolled-fail2ban-jail-fail2ban3.png" alt="The account temporarily disabled message on the sign-in form" /></p>
+<p>With the default of 10, the tenth attempt inside the hour is the one that is
+refused. The account frees itself as the window slides forward; there is no
+administrator action to take.</p>
+<p><strong>Authentication - Email Token</strong> applies the same two thresholds to its own
+one-time codes, using the same parameters.</p>
+<h2 id="stage-three-too-many-blocked-accounts-from-one-address">Stage three: too many blocked accounts from one address</h2>
+<p>This stage only runs when <strong>Fail2Ban</strong> is <strong>On</strong>. With it <strong>Off</strong>,
+<strong>Maximum Number Blocked Accounts</strong> has no effect at all.</p>
+<p>When it is on, the plugin counts the <em>distinct</em> usernames that have a
+<code>blocked</code> row from the current address inside <strong>Time in Hours</strong>. Once that
+count reaches <strong>Maximum Number Blocked Accounts</strong>, the CMS locates
+<code>fail2ban-client</code> on <code>PATH</code> and runs, as the web server user:</p>
+<pre><code class="language-bash">sudo /usr/bin/fail2ban-client set hub-login banip &lt;address&gt;
+</code></pre>
+<p>The jail name is whatever <strong>Fail2Ban Jail</strong> holds. The login is refused with
+the same &quot;temporarily disabled&quot; message.</p>
+<p>If <code>fail2ban-client</code> cannot be found, the CMS logs <code>fail2ban-client not found.</code> and lets the login proceed to the account-level checks.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> The CMS bans the address; it never unbans it. How long the
+ban lasts is entirely Fail2Ban's <code>bantime</code>. Nothing in the CMS calls
+<code>unbanip</code>.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> This mechanism does <strong>not</strong> work by writing log lines for
+Fail2Ban to match. The CMS calls <code>fail2ban-client</code> directly. The jail
+therefore needs a filter that matches nothing, and exists only as a
+container for addresses the CMS pushes into it. The CMS does also write
+<code>/var/log/hubzero/cmsauth.log</code>, and you can point an ordinary
+log-scanning jail at that file, but that is a separate jail from this one.</p>
+</aside>
+<h2 id="what-the-system-administrator-has-to-set-up">What the system administrator has to set up</h2>
+<p>Everything from here down is external to Hubzero. It could not be verified
+against this repository; the samples are illustrations, not a supported
+configuration, and any competent administrator will write better rules.
+Fail2Ban's own documentation is the authority.</p>
+<h3 id="sudo">sudo</h3>
+<p>The web server user needs to run exactly one command as root, with no
+password:</p>
+<pre><code>www-data ALL=(root) NOPASSWD: /usr/bin/fail2ban-client set hub-login banip *
+</code></pre>
+<p>Put it in a file under <code>/etc/sudoers.d/</code> and check it with <code>visudo -c</code>.
+Confirm the path with <code>which fail2ban-client</code> — the CMS resolves the path
+itself, so the sudoers rule has to name the same one. Keep the rule as
+narrow as this: it grants root, and a wildcard in the wrong place grants a
+great deal more than a ban.</p>
+<h3 id="the-jail">The jail</h3>
+<pre><code class="language-ini"># /etc/fail2ban/jail.local
+[hub-login]
+enabled   = true
+port      = http,https
+filter    = hub-login
+logpath   = /var/log/hubzero/cmsauth.log
+banaction = hublogin-failure
+bantime   = 600
+findtime  = 1
+maxretry  = 1
+</code></pre>
+<h3 id="the-filter">The filter</h3>
+<p>The filter has to match nothing, because the CMS supplies the addresses:</p>
+<pre><code class="language-ini"># /etc/fail2ban/filter.d/hub-login.conf
+[Definition]
+# The CMS bans into this jail directly, so this pattern is never meant to fire.
+failregex = ^&lt;HOST&gt; this-filter-never-matches
+ignoreregex =
+</code></pre>
+<h3 id="the-action">The action</h3>
+<pre><code class="language-ini"># /etc/fail2ban/action.d/hublogin-failure.conf
+[INCLUDES]
+before = iptables-common.conf
+
+[Definition]
+actionstart = iptables -N fail2ban-hublogin
+              iptables -I INPUT -p tcp -j fail2ban-hublogin
+
+actionstop  = iptables -D INPUT -p tcp -j fail2ban-hublogin
+              iptables -F fail2ban-hublogin
+              iptables -X fail2ban-hublogin
+
+actioncheck = iptables -n -L fail2ban-hublogin | grep -q fail2ban-hublogin
+
+actionban   = iptables -I fail2ban-hublogin -p tcp --dport 443 -s &lt;ip&gt; -j DROP
+              iptables -I fail2ban-hublogin -p tcp --dport 80 -s &lt;ip&gt; -j DROP
+
+actionunban = iptables -D fail2ban-hublogin -p tcp --dport 443 -s &lt;ip&gt; -j DROP
+              iptables -D fail2ban-hublogin -p tcp --dport 80 -s &lt;ip&gt; -j DROP
+
+[Init]
+name     = DEFAULT
+protocol = tcp
+chain    = INPUT
+</code></pre>
+<h3 id="check-it">Check it</h3>
+<pre><code class="language-bash">fail2ban-client status hub-login
+</code></pre>
+<p>The output names the jail's filter, its log file, and the addresses
+currently banned. <code>iptables -L fail2ban-hublogin</code> shows the rules the action
+inserted.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The imported version of this page pinned Fail2Ban to 0.9.5 from
+a NeuroDebian repository for Debian wheezy. That advice is a decade out of
+date; use your distribution's current package.</p>
+</aside>
+<h2 id="turning-it-off-for-an-event">Turning it off for an event</h2>
+<p>Consider setting <strong>Fail2Ban</strong> to <strong>Off</strong> during a conference, a class, or a
+workshop. A room of people typing the same wrong password produces exactly
+the pattern stage three is looking for, and one banned address takes out
+everyone behind that NAT. Stages one and two stay in effect and act per
+account, which is the behaviour you want in a crowd.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hardening the Content Management System</a><a class="pager__next" href="../../hardeningguide/index.html" rel="next"><span>Next</span>Operating System Hardening Guide</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hardening the CMS</a><a class="pager__next" href="../../hardeningguide/index.html" rel="next"><span>Next</span>Operating system hardening</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security/hardencms/cmscontrolled_fail2ban_jail.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

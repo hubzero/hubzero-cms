@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Administrator Area · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Logging In The Administrator Interface ( or back-end ) of the HUB is where you do most of the work to set up, configure and maintain your website. As such it…">
+  <title>The administrator interface · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The administrator interface, or back end, is where you set up, configure and maintain a hub. It runs on the same site as the public front end but under a…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/getting-started/administrator/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +41,18 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Administrator Area</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#logging-in">Logging In</a></li>
-<li class="toc__item toc__item--l2"><a href="#logging-out">Logging Out</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">The administrator interface</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#reaching-it">Reaching it</a></li>
+<li class="toc__item toc__item--l2"><a href="#logging-in">Logging in</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-layout">The layout</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-control-panel">The Control Panel</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-menus">The menus</a></li>
+<li class="toc__item toc__item--l2"><a href="#logging-out">Logging out</a></li>
+<li class="toc__item toc__item--l2"><a href="#where-to-go-next">Where to go next</a></li>
 </ol></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -55,7 +60,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -97,18 +102,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -127,12 +132,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -141,24 +146,200 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Introduction</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Administrator Area</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Getting started</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">The administrator interface</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Administrator Area</h1>
+          <h1>The administrator interface</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/index/administrator">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="logging-in">Logging In</h2>
-<p>The Administrator Interface ( or <strong>back-end</strong>) of the HUB is where you do most of the work to set up, configure and maintain your website. As such it must be protected from access by casual visitors and will request a valid username and password before access to the Administrator Interface is granted.</p>
-<p>Access the Administrator Interface of the HUB by entering a special URL into the address bar of your web browser. If the HUB is located at https://www.example.com then you will enter the address <a href="https://www.example.com/administrator">https://www.example.com/administrator</a> will be shown the Administrator Interface login.</p>
-<p>Enter your username and password into the relevant fields. Click the <strong>Login</strong> button. If you login successfully, you will see the Administrator control panel.</p>
-<h2 id="logging-out">Logging Out</h2>
-<p>To log out of the Administrator Interface, locate the <strong>Logout</strong> link in the top-right corner of the Administrator Interface and click on it. Logging out will return you to the Administrator Interface login screen. If the <strong>Logout</strong> link is grayed out and nothing happens when you click on it, then you are probably in a screen where you have a page locked for your exclusive use. Please close out of the page by clicking <strong>Save and Close</strong> or <strong>Close</strong> to release the page, then click on the <strong>Logout</strong> link.</p>
+<p>The administrator interface, or back end, is where you set up, configure and
+maintain a hub. It runs on the same site as the public front end but under a
+separate URL, uses a different template, and is closed to anyone without an
+explicit permission to enter it.</p>
+<h2 id="reaching-it">Reaching it</h2>
+<p>Add <code>/administrator</code> to the hub's address. If the hub is at
+<code>https://example.com</code>, the back end is at:</p>
+<pre><code>https://example.com/administrator
+</code></pre>
+<p>That first path segment is what selects the administrator application; there
+is no separate hostname or port. Everything after it is an ordinary
+<code>index.php?option=com_…</code> request handled by the same components as the front
+end, only with their <code>admin/</code> controllers and views instead of their <code>site/</code>
+ones.</p>
+<h2 id="logging-in">Logging in</h2>
+<p>Every administrator URL is rewritten to the login component until you are both
+logged in and authorised, so it does not matter which back-end page you ask
+for first — you always land on the login screen:</p>
+<pre><code class="language-php">	if (\User::isGuest() || !\User::authorise('core.login.admin'))
+	{
+		$option = 'com_login';
+	}
+
+	if (empty($option))
+	{
+		if (strtoupper(\App::get('request')-&gt;method()) == 'POST')
+		{
+			$option = \App::get('request')-&gt;getCmd('option', '', 'post');
+		}
+	}
+
+	if (empty($option))
+	{
+		$option = 'com_cpanel';
+	}
+</code></pre>
+<p>The check is the <code>core.login.admin</code> permission, not simply &quot;is logged in&quot;. A
+member who is signed in to the front end and browses to <code>/administrator</code> is
+still sent to the login screen if their access groups do not carry that
+permission. On a fresh install <code>core.login.admin</code> is granted to the
+<strong>Manager</strong> group and inherited by <strong>Administrator</strong> beneath it; <strong>Super
+Users</strong> hold <code>core.admin</code>, which grants everything. See
+<a href="../../users/accessgroups/index.html">Access groups</a> for how to change that.</p>
+<p>The login screen itself is <code>com_login</code>, rendered through the admin template's
+<code>login.php</code> layout with the <strong>Login Form</strong> module (<code>mod_adminlogin</code>) in it.
+What you see depends on which authentication plugins the hub has enabled with
+their <strong>Admin login</strong> option turned on:</p>
+<ul>
+<li>With no such plugin, you get a plain form: <strong>Username</strong>, <strong>Password</strong>, and a
+<strong>Log in</strong> button.</li>
+<li>With one or more, you get a <strong>Sign in with …</strong> button for each, plus a link
+back to the plain form for hub-local accounts.</li>
+</ul>
+<p>A successful login lands you on the <strong>Control Panel</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Failing to log in here is not always a wrong password. If the
+account is valid but lacks <code>core.login.admin</code>, the login is refused in the
+same way. Check the member's access groups before resetting anything.</p>
+</aside>
+<h2 id="the-layout">The layout</h2>
+<p>Every back-end page is built from the same pieces, in this order down the
+page:</p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td>The hub's name, linking to the front end, and the <strong>Log out</strong> link on the right</td>
+</tr>
+<tr>
+<td>Main navigation</td>
+<td>The top-level menus, rendered by the admin menu module in the <code>menu</code> position</td>
+</tr>
+<tr>
+<td>Toolbar box</td>
+<td>The page title on the left and its action buttons — <strong>New</strong>, <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Close</strong>, <strong>Options</strong>, <strong>Help</strong> — on the right</td>
+</tr>
+<tr>
+<td>Sub-navigation</td>
+<td>The current component's own screens, when it registers any</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>The component itself</td>
+</tr>
+</tbody>
+</table>
+<p>The toolbar is where the verbs live. A list screen puts <strong>New</strong>, <strong>Edit</strong>,
+<strong>Delete</strong> and the status buttons there; an edit screen replaces them with
+<strong>Save</strong>, <strong>Save &amp; Close</strong> and <strong>Close</strong>. A component's <strong>Options</strong> button
+opens its configuration in a modal, and the <strong>Permissions</strong> tab inside that
+modal is where you say which access groups may use it.</p>
+<h2 id="the-control-panel">The Control Panel</h2>
+<p>The Control Panel is the component <code>com_cpanel</code>, and it is the default screen
+for any administrator URL that names no component. It has no content of its
+own: it renders every administrator module published in the <code>cpanel</code> position,
+one collapsible panel per module. What your dashboard shows therefore depends
+entirely on which modules the hub publishes there. <a href="../../maintenance/index.html">Daily
+maintenance</a> describes the panels a working hub
+usually adds.</p>
+<h2 id="the-menus">The menus</h2>
+<p>The main navigation is assembled by the admin menu module. Most of it is
+hardcoded, and each entry is shown only if you hold the permission it needs,
+so a Manager sees fewer entries than a Super User.</p>
+<table>
+<thead>
+<tr>
+<th>Menu</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site</strong></td>
+<td><strong>Control Panel</strong>, <strong>Global Configuration</strong>, a <strong>Maintenance</strong> submenu (<strong>Global Check-in</strong>, <strong>Clear Cache</strong>, <strong>Purge Expired Cache</strong>, <strong>LDAP</strong>, <strong>Geo DB</strong>, <strong>APC</strong>, <strong>Routes</strong>), <strong>System Information</strong>, and <strong>Logout</strong></td>
+</tr>
+<tr>
+<td><strong>Users</strong></td>
+<td><strong>Members</strong>, <strong>Groups</strong>, <strong>Access Groups</strong>, <strong>Access Levels</strong>, <strong>User Notes</strong> and their categories, and <strong>Mass Mail Users</strong></td>
+</tr>
+<tr>
+<td><strong>Menus</strong></td>
+<td><strong>Menu Manager</strong>, then one entry per menu defined on the hub</td>
+</tr>
+<tr>
+<td><strong>Content</strong></td>
+<td><strong>Article Manager</strong>, <strong>Category Manager</strong>, and <strong>Media Manager</strong></td>
+</tr>
+<tr>
+<td><strong>Components</strong></td>
+<td>One entry per installed, enabled component, with a submenu where the component defines one</td>
+</tr>
+<tr>
+<td><strong>Extensions</strong></td>
+<td><strong>Extension Manager</strong>, <strong>Module Manager</strong>, <strong>Plug-in Manager</strong>, <strong>Template Manager</strong>, <strong>Language Manager</strong></td>
+</tr>
+<tr>
+<td><strong>Help</strong></td>
+<td><strong>Help Articles</strong> and links out to hubzero.org; the menu module's <strong>Help Menu</strong> option, on by default, hides it</td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Components</strong> menu is the one that grows. Unlike the rest, it is built
+from the database — the administrator menu rows installed with each component
+— rather than from the module's own code, which is why installing a component
+adds it to that menu without any further step. Members, Groups and System are
+deliberately left out of it because they already appear under <strong>Site</strong> and
+<strong>Users</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Global Configuration</strong> and <strong>System Information</strong> appear only
+for accounts holding <code>core.admin</code>. The <strong>Maintenance</strong> submenu needs
+<code>core.admin</code> on the check-in component or <code>core.manage</code> on the cache
+component; without either, the whole submenu is left out.</p>
+</aside>
+<h2 id="logging-out">Logging out</h2>
+<p>Click <strong>Log out</strong> in the top-right corner of the header, or use <strong>Site →
+Logout</strong>. Either returns you to the login screen.</p>
+<p>While you have an item open for editing, the whole main navigation and the
+<strong>Log out</strong> link are disabled: the record is checked out to you, and the
+interface hides the links so you cannot navigate away and leave it locked.
+Finish with <strong>Save &amp; Close</strong> or <strong>Close</strong> to release it, and the links come
+back.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> If a record stays locked — a browser crash, a lost session — clear
+it with <strong>Site → Maintenance → Global Check-in</strong>, which releases every
+record checked out across the hub.</p>
+</aside>
+<h2 id="where-to-go-next">Where to go next</h2>
+<ul>
+<li><a href="../../advancedsetup/index.html">Advanced setup</a> — the site template, menus and
+modules.</li>
+<li><a href="../../configuring/index.html">Configuring</a> — the global configuration and the
+per-extension options.</li>
+<li><a href="../../users/index.html">Users</a> — members, access groups, and access levels.</li>
+<li><a href="../../maintenance/index.html">Daily maintenance</a> — the work a running hub
+needs every day.</li>
+</ul>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Introduction</a><a class="pager__next" href="../../advancedsetup/index.html" rel="next"><span>Next</span>Getting Started: Advanced Setup</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Getting started</a><a class="pager__next" href="../../advancedsetup/index.html" rel="next"><span>Next</span>Integrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/01-getting-started/administrator.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

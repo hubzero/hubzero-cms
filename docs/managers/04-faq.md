@@ -1,87 +1,141 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/fqas
 source-id: 3345
 modified: 2014-11-07
 imported: 2026-09-09
 -->
-# Frequently Asked Questions
+# Frequently asked questions
 
-## Article Pages: How do you set parameters for articles and other content items?
+Short answers to things hub managers ask, each checked against Hubzero 2.4.
+Every answer points at the chapter that covers the screen properly.
 
-Many Article parameters, such as **Show Title**, **Show Author**, and so on, can be set form the backend of the Hub. This can be done by logging in to the backend, navigating to the **Article Manager: Articles** page **(Content-> Article Manager)**, and then selecting the article you would like to adjust the parameter for. By clicking the box beside the title of the article, and then clicking the **Edit** button to open up the article for editing.
+## Articles
 
-Typically, parameters at the individual article and menu item levels can be set to a specific value or to a value of **Use Global**. If the individual article's parameter is set, then that value controls the setting. If this is set to **Use Global** then the menu item parameter is checked.
+### How do I set an option for one article rather than the whole site?
 
-## Courses: How can I view the outline a student would see in a course?
+Open the article at **Content → Article Manager** and use the **Article
+Options** panel down the right-hand side. It repeats every option from the
+component's **Articles** settings — **Show Title**, **Show Author**, **Show
+Hits**, and the rest — and every one of them defaults to **Use Global**.
 
-If you wish to view and check any prerequisites that have been set as an instructor you have to enroll in the course as a student. Currently the instructor’s view of the course outline and the outline students see are not the same. An instructor or a manager of a course will be able to view all of the content and see that it is published or unpublished. For students, the outline they view depends on the prerequisites for the parts of the course and what is available to them during the course.
+**Use Global** means "look one level up". On a single-article page the order
+is article, then menu item, then the component's global setting. Blog and
+featured layouts reverse the first two: the menu item wins, and the article's
+value is used only where the menu item's setting is **Use Article**.
 
-The best way for an administrator of a course to view what a student can see, would be to create a testing account and enroll as a student in the course.
+See [Article Manager](08-content/articlemanager.md#the-editor).
 
-## Groups: How do you send a group message?
+### Can one article be in two categories?
 
-Group messaging allows you to send out a message as an email to all the group members. A Group Manager is the only one with the permissions to send out messages from the group to all group members. To send out group messages follow these steps:
+No. An article belongs to exactly one category. If a page has to appear in
+two places, point two menu items at the same article rather than making a
+second copy of it. See
+[Categories](08-content/articlemanager.md#categories).
 
-1. Navigate to **https://yourhub.org/groups** and log into the Hub
-2. Navigate to the group page and click on the **Members** tab
-3. Click on the email icon to send a message to all of the group members
-   1. To email only a specific group member, select the same icon next to the individual’s name.
-4. Compose the message by:
-   1. Selecting whom the message is for from the drop-down.
-   2. Fill in the subject title.
-   3. Write up the message.
-5. Click the **Send** button to send the message to the group
+### Why does the **Featured** switch do nothing?
 
-## Projects: How do you connect Google Drive in a Project?
+Because it writes to a column the site does not read. The site's **Featured
+Articles** page reads a separate table that nothing in the administrator
+interface writes to, and the administrator's own Featured Articles screen is
+unreachable. This is a defect and is recorded with the project.
 
-> **Note:** Managers and Collaborators of a Project can connect their Google Drives, but the creator of the Project must connect their Google Drive account prior to others adding on their accounts to the project.
+## URLs and menus
 
-1. Navigate to **https://yourhub.org/projects** and log into the Hub
-2. Access the project that you wish to add your Google Drive to
-3. Inside of the project access the **Files** tab and locate the **Connect** button
-4. Click the **Connect** button and then click the second **Connect** button
-5. Then choose the account or login to your Google account
-6. You will be relocated to a new page where you will accept the project files to Google Drive for various access levels. Click **Accept** to confirm the last step
-7. Then you will be relocated back to the project confirming your Google Drive connection to the project
+### How do I point one URL at another?
 
-## Support: How do I add other attachment file extensions for tickets?
+Use the **Redirect Manager** at **Site → Maintenance → Routes**: a **Source
+URL**, a **Destination URL**, and a response code. It also records every 404
+the site serves, so it doubles as a list of the addresses people are asking
+for and not finding.
 
-1. Navigate to **https://yourhub.org/administrator** and login to the as an administrative user
-2. Click on the **Components** tab and then click on **Support**
-3. On the **Support: Tickets** page, click on the **Options** button
-4. Inside of **Support Configuration** click on the **Files** tab
-5. Under **Extensions**, add the new file extension that can be uploaded to a ticket
-6. Click **Save & Close** to save the changes and to exit out of the **Support Configuration** pop-up
+A menu item of type **External URL** does the same job for a path that
+belongs to a component rather than to an article — redirecting
+`/groups/mainclass` to `/groups/spring2016class`, say. Both are covered in
+[URLs](08-content/urls.md#redirects).
 
-## Wishlist: How do I change the status of a wish?
+## Groups
 
-The status of a wish serves to indicate to the general site users whether the wish was accepted/rejected for implementation and when to expect the proposed feature online. Once a wish is submitted, an administrator of the Hub can change the status of the wish. To change the status simply open up the wish and then click **Change status** which is located under the wish. From the drop-down box select the new status of the wish:
+### How do we email everybody in a group?
 
-- **Pending**: The wish is pending a response.
-- **Accepted**: The wish had been accepted and is currently being worked on.
-- **Rejected**: The wish has been rejected due to other contributing factors that disallow the ability to create the wish. Example: Practicality or User use case
-- **Granted**: The wish has come true and is now available to the Hub.
+Through the group's **Messages** tab, which is the **Groups - Messages**
+plugin. Only a group manager or a site administrator can compose one.
 
-Once the status has been selected, click **Change Status** to save the new status and inform the user who submitted the wish what stage their wish is in right now.
+1. Open the group and select **Messages**, then **Send New Message**.
+2. Pick the recipients: **All Group Members**, **All Group Managers**, **All
+   Group Invitees**, **All Group Applicants**, one of the group's member
+   roles, or one named member.
+3. Fill in the subject and the message, and select **Send**.
 
-## How do I redirect a URL to point to another existing Hub component?
+The group's **Members** tab has a **Message** link beside each member and
+each role that opens the same form with the recipient already chosen. Sent
+messages stay on the **Messages** tab.
 
-**Scenario:** A professor has a group called "mainclass" and wants sutdents to use another group called "spring2016class"
+## Projects
 
-1. Navigate to **/administrator** and hover over the **Menu** tab and select **Menu Manager** from the drop-down
-2. Locate the **Default** menu and click on the title to enter the menu interface
-3. Locate the **Parent** group, in this case, locate the **Groups** menu
-   1. If you can not find the parent "Groups", it might have not been created. Follow these additional steps to create the new group:
-      1. Click the **New** button
-      2. Click **Select** and from the list select **External URL** from the **System Links** section
-      3. Fill in the form:
-         1. **Menu Title**: Groups
-         2. **Link**: groups
-      4. Click Save & Close to save the new menu item
-4. Create the redirect portion, repeat steps 1-9 *except* fill out the **Menu Title** as **Mainclass** and the link as **spring2016class**
-   1. This will redirect users from **/groups/mainclass** to **/groups/spring2016class**
-5. Nest the Mainclass under Groups to create the redirect
-   1. This is done in the **Menu Item Details** under **Parent**
-   2. Set the Parent for Mainclass as **Groups**
-   3. Click **Save & Close**
+### How does a project connect to Google Drive?
+
+The person who created the project has to connect their own Google account
+before anyone else can connect theirs.
+
+1. Open the project and select the **Files** tab.
+2. Select **Connect** against Google, then **Connect** again.
+3. Sign in to Google and accept the permissions the hub asks for.
+4. Google returns you to the project, which now shows the connection and how
+   many of the team have connected.
+
+The same tab disconnects and re-authorizes a connection. The service does not
+appear at all until an administrator has turned it on and supplied
+credentials — see [Integrations](02-advancedsetup.md#google-drive-in-projects).
+
+## Support
+
+### How do I allow another attachment type on support tickets?
+
+1. Go to **Components → Support**.
+2. On **Support: Tickets**, select **Options**.
+3. Open the **Files** tab.
+4. Add the extension to **Extensions**.
+5. **Save & Close**.
+
+## Wishlist
+
+### How do I change the status of a wish?
+
+Open the wish on the site and select **Change status** beneath it. The
+statuses are radio buttons, not a drop-down:
+
+| Status | Meaning |
+|---|---|
+| **Pending** | Awaiting a decision from the list owners. |
+| **Accepted** | The list owners have agreed to implement it. |
+| **Rejected** | The list owners have declined it. |
+| **Granted** | It is done and available on the hub. |
+
+Choose one and select **change status**. The member who made the wish is
+told. A wish on a resource wish list can only be marked **Granted** by the
+person it is assigned to.
+
+## Courses
+
+### How do I see the outline a student sees?
+
+Enrol in your own course as a student, from a test account. An instructor or
+course manager sees the whole outline, published and unpublished, and sees it
+regardless of prerequisites. A student sees only what the prerequisites and
+the availability dates have released to them, so the instructor's view is not
+a preview of the student's.
+
+## What was removed from this page
+
+The imported version of this page had one further answer, a second
+step-by-step for redirecting `/groups/mainclass` to another group, duplicating
+the one above it. Both have been replaced by the single entry under
+[URLs and menus](#urls-and-menus). Nothing else was dropped; the remaining
+answers were corrected rather than removed — most visibly the group message
+answer, which described an email icon on the **Members** tab as the only way
+in, and the wishlist answer, which described a drop-down where the interface
+has radio buttons.

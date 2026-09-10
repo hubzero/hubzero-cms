@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maintaining the Index · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="There should be very little effort needed to maintain the index. Solr maintains the index and the HUBzero CMS will instruct Solr to add, remove, or update…">
+  <title>Maintaining the index · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="Once the first index is built there is very little to do. Solr stores the index on the server&#x27;s filesystem, so it survives a reboot or a crash of the Solr…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/index/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,20 @@
 <li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Maintaining the index</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#how-a-change-reaches-the-index">How a change reaches the index</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,12 +126,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -138,20 +140,113 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Search</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Maintaining the Index</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Components</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Search</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Maintaining the index</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Maintaining the Index</h1>
+          <h1>Maintaining the index</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/search/index">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        
         <div class="prose">
-<p>There should be very little effort needed to maintain the index. Solr maintains the index and the HUBzero CMS will instruct Solr to add, remove, or update records inside of its index.</p>
-<p>Solr saves its index on the filesystem of the server which allows the retention of data if the server needs to reboot or the Solr process crashes. This prevents having to rebuild the index from scratch in such events.</p>
-<p>IMPORTANT NOTE: Due to the large amount of processing power needed to convert database content into a searchable document and the need to communicate with a system outside of the CMS, changes to the index WILL NOT be reflected immediately. The queue will be worked on a first-in-first-out basis. This means that the oldest item in the work queue will be processed first. The amount of time it takes to perform indexing operations depends on the amount of data contained on the hub. If there is a large amount of content, the time to perform a full index will be greater. Once the full index is built, indexing operations should be noticeably quicker</p>
+<p>Once the first index is built there is very little to do. Solr stores the
+index on the server's filesystem, so it survives a reboot or a crash of the
+Solr process and does not have to be rebuilt after either.</p>
+<h2 id="how-a-change-reaches-the-index">How a change reaches the index</h2>
+<p>Indexing is immediate, not queued. Saving a record raises a content event,
+and two plugins carry it to Solr:</p>
+<ol>
+<li>
+<p><strong>System - HUBzero</strong> (<code>plg_system_content</code>) listens for <code>onContentSave</code>
+and <code>onContentDestroy</code> on any model built on the hub's ORM, and raises
+<code>search.onAddIndex</code> or <code>search.onRemoveIndex</code>.</p>
+<pre><code class="language-php"> public function onContentSave($table, $model)
+ {
+ 	//@TODO: Add check for isIndexable
+ 	Event::trigger('search.onAddIndex', array($table, $model));
+ }
+
+ /**
+  * Hook for after parsing route
+  *
+  * @param   object  $table
+  * @param   object  $model
+  * @return  void
+  */
+ public function onContentDestroy($table, $model)
+ {
+ 	//@TODO: Add check for isIndexable
+ 	Event::trigger('search.onRemoveIndex', array($table, $model));
+ }
+</code></pre>
+</li>
+</ol>
+<pre><code>
+2. **Search - Solr** (`plg_search_solr`) picks that up, checks that the
+   record's component is in the **Indexed** state and that the document is not
+   on the blacklist, converts the record to a Solr document, and sends it.
+
+Both plugins must be enabled under **Extensions &gt; Plug-ins**. **Search -
+Solr** ships disabled, so a hub that has switched engines but never enabled
+it will index nothing new, however healthy the Overview screen looks.
+
+Documents are sent with a `commitWithin` deadline rather than an immediate
+commit, taken from the **CommitWithin** option (default `300000`, five
+minutes in milliseconds). A saved record is therefore visible to search
+within that window, not on the next page load. Lowering it makes changes
+appear sooner at the cost of more work in Solr.
+
+## Rebuilding
+
+Three things do a full pass over a component's records, all of them the same
+batch operation:
+
+- The **Active?** toggle and the **Rebuild Index** button on
+  [Searchable Components](02-admin.md#searchable-components).
+- The **Run Full Index** event of **Cron - Search**, which does it for every
+  component in the **Indexed** state.
+- [`muse searchmigration run`](../../../reference/muse/searchmigration.md) on
+  the command line, with `--all` or `-components`, and `--rebuild` to include
+  components already indexed.
+
+Each pass reads records in blocks of the **Batch Size** option (default
+`2000`) and pushes each block to Solr before reading the next. A full index of
+a large hub takes a long time; it is the reason the batch size and the commit
+deadline are configurable at all. Later passes are much quicker, because Solr
+is replacing documents rather than creating them.
+
+Prefer the command line for anything big. The screen version runs inside a
+web request and is bounded by the web server's time limit.
+
+## Removing documents
+
+- **Delete component(s) results** on the Searchable Components screen deletes
+  every document of the checked types from Solr and sets them back to
+  **Not Indexed**.
+- The [blacklist](07-blacklist.md) removes one document and keeps it out.
+
+Neither touches the hub's own data. Both are reversible by re-indexing —
+except a blacklisted document, which is skipped until its blacklist entry is
+removed.
+
+## Optimizing
+
+**Optimize Index** on the Overview screen asks Solr to defragment its index.
+Solr manages this itself in normal operation; running it by hand after a
+large delete or a full rebuild is reasonable, on a schedule it is not.
+
+## When something looks wrong
+
+| Symptom | Where to look |
+|---|---|
+| *The search engine is not responding* | The connection settings on the **Solr** tab, and whether the Solr service is running. |
+| New content never appears | **Search - Solr** and **System - HUBzero** in the plugin manager. |
+| A whole type is missing | Its state on **Searchable Components**. A **Not Indexed** or trashed component contributes nothing. |
+| One record is missing | The [Index Blacklist](07-blacklist.md). |
+| Counts look stale | **Last Document Insert** on the Overview screen, against the **CommitWithin** window. |
+</code></pre>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../boosting/index.html" rel="prev"><span>Previous</span>Boosting</a><a class="pager__next" href="../plugins/index.html" rel="next"><span>Next</span>Plugins</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-search/05-index.md">Edit this page on GitHub</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Administration · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Restarting Solr If Solr needs to be restarted, a system administrator can issues the following commands: sudo service hubzero-solr restart sudo…">
+  <meta name="description" content="Components Search has four tabs when the engine is Solr: Overview , Searchable Components , Index Blacklist , and Boosts . Every tab carries an Options button…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/admin/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,21 +94,25 @@
 <li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Administration</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l2"><a href="#searchable-components">Searchable Components</a></li>
+<li class="toc__item toc__item--l2"><a href="#index-blacklist">Index Blacklist</a></li>
+<li class="toc__item toc__item--l2"><a href="#boosts">Boosts</a></li>
 <li class="toc__item toc__item--l2"><a href="#restarting-solr">Restarting Solr</a></li>
-<li class="toc__item toc__item--l2"><a href="#solr-index-cron-updater">Solr Index CRON Updater</a></li>
+<li class="toc__item toc__item--l2"><a href="#cron-events">Cron events</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -127,12 +131,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -147,35 +151,122 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Administration</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/search/admin">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        
         <div class="prose">
+<p><strong>Components &gt; Search</strong> has four tabs when the engine is Solr: <strong>Overview</strong>,
+<strong>Searchable Components</strong>, <strong>Index Blacklist</strong>, and <strong>Boosts</strong>. Every tab
+carries an <strong>Options</strong> button that opens the same component configuration.</p>
+<h2 id="overview">Overview</h2>
+<p><em>Solr Search: Overview</em> is the landing screen. It reports:</p>
+<ul>
+<li><strong>Last Document Insert</strong> — how long ago Solr accepted a document, as a
+relative time.</li>
+<li><strong>Mechanism</strong> — the engine the hub is configured to use.</li>
+<li>Whether the engine answered: <em>The search engine is responding</em>, or
+<em>The search engine is not responding</em> with the advice to check the
+component configuration and the <code>hubzero-solr</code> service.</li>
+</ul>
+<p>The toolbar has one action beyond <strong>Options</strong>: <strong>Optimize Index</strong>, which asks
+Solr to defragment its index and reports success or failure. It is safe to
+run at any time and is not needed on a schedule.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The status panel calls Solr on every page load. If Solr is down,
+the screen still renders, with the failure message in place of the check.</p>
+</aside>
+<h2 id="searchable-components">Searchable Components</h2>
+<p><em>Solr Search: Components</em> lists every content type the hub knows how to
+index, with its <strong>ID</strong>, <strong>Title</strong>, <strong>Active?</strong> state, and the number of
+<strong>Records</strong> currently in Solr. The record count is a link into the document
+listing for that type.</p>
+<p>Toolbar actions:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong></td>
+<td>Adds a component row by hand. Rarely needed; use <strong>Discover</strong> instead.</td>
+</tr>
+<tr>
+<td><strong>Delete component(s) results</strong></td>
+<td>Removes every document of the checked components from Solr and returns them to <strong>Not Indexed</strong>. The rows stay.</td>
+</tr>
+<tr>
+<td><strong>Remove component(s)</strong></td>
+<td>Trashes the checked component rows, so they no longer appear in this list or in the site's category sidebar. The documents stay in Solr.</td>
+</tr>
+<tr>
+<td><strong>Discover Searchable Components</strong></td>
+<td>Scans the component directories for models that implement <code>Hubzero\Search\Searchable</code> and adds a row for each one not already listed.</td>
+</tr>
+</tbody>
+</table>
+<p>In the list itself, the <strong>Active?</strong> icon toggles the component between
+<strong>Not Indexed</strong> and <strong>Indexed</strong> — selecting it on a <strong>Not Indexed</strong> row starts
+the batch index. An <strong>Indexed</strong> row also carries a <strong>Rebuild Index</strong> button
+that runs the same batch pass again over existing documents.</p>
+<p>Selecting a component's title opens <em>Solr Search: Edit Searchable Component</em>,
+which has a <strong>Title</strong> (the label used in the site's category list), a
+<strong>Custom Query</strong> that replaces the default <code>hubtype:&lt;name&gt;</code> when this type's
+documents need a different Solr query, and a <strong>Filters</strong> builder for the
+facet controls shown beside that type's results.</p>
+<h2 id="index-blacklist">Index Blacklist</h2>
+<p><em>Solr Search: Index Blacklist</em> lists the documents struck from the index,
+who struck them, and when, each with a <strong>Remove entry</strong> button. It reads
+<em>There are no entries on the blacklist</em> when empty. See
+<a href="../blacklist/index.html">Blacklist</a>.</p>
+<h2 id="boosts">Boosts</h2>
+<p><em>Solr Search: Boosts</em> lists the ranking adjustments in force. See
+<a href="../boosting/index.html">Boosting</a>.</p>
 <h2 id="restarting-solr">Restarting Solr</h2>
-<p>If Solr needs to be restarted, a system administrator can issues the following commands:</p>
-<ol>
-<li>sudo service hubzero-solr restart</li>
-<li>sudo /etc/init.d/hubzero-solr restart</li>
-</ol>
-<h2 id="solr-index-cron-updater">Solr Index CRON Updater</h2>
-<p>In order to keep the Solr index up-to-date, the CMS will periodically call a routine to process the queue. Although CRON is not the best tool for the job, it will dutifully process the queue every minute if configured. There are plans to develop a background process which will make this process more efficient.</p>
-<p>To configure the CRON Task, follow these steps:</p>
-<ol>
-<li>
-<p>Navigate to <strong>/administrator</strong></p>
-</li>
-<li>
-<p>Hover over <strong>Components</strong> and click <strong>Cron</strong> from the drop-down</p>
-</li>
-<li>
-<p>Click <strong>Add a New Task</strong> and set the &quot;Event:&quot; to <strong>Process Queue</strong></p>
-</li>
-<li>
-<p>The <strong>New Cron Task</strong> should be configured to run every minute</p>
-</li>
-</ol>
+<p>Solr runs as a system service outside the hub, so restarting it is a shell
+task on the server, not something the administrator interface can do. On a
+<code>hubzero-solr</code> install that is a <code>service hubzero-solr restart</code>. Nothing in
+this repository starts, stops, or supervises Solr, so the exact command
+depends on your platform packaging.</p>
+<p>The hub notices a restart on its own — the next request either reaches Solr
+or reports it as not responding. No hub-side action is needed afterwards.</p>
+<h2 id="cron-events">Cron events</h2>
+<p><strong>Cron - Search</strong> (<code>plg_cron_search</code>) contributes two events to
+<a href="../../cron/index.html">Cron</a>. Add either from <strong>Components &gt; Cron &gt; New</strong>, choosing
+it under <strong>Event</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Run Full Index</strong></td>
+<td>Re-indexes every component currently in the <strong>Indexed</strong> state, in batches.</td>
+</tr>
+<tr>
+<td><strong>Process Queue</strong></td>
+<td>Works the <code>#__search_queue</code> table. Legacy — see below.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Run Full Index</strong> is the useful one. It is the same batch pass as the
+<strong>Rebuild Index</strong> button, run for every indexed component without anyone
+watching. Schedule it no more often than the hub can finish it; on a large
+hub that is nightly or weekly, not by the minute.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Process Queue</strong> is left over from an earlier design in which
+content changes were enqueued and indexed later. Nothing in this tree writes
+to <code>#__search_queue</code>, so the event runs, finds an empty queue, and returns.
+Scheduling it does nothing. Indexing is now immediate — see
+<a href="../index/index.html">Maintaining the index</a>.</p>
+</aside>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../install/index.html" rel="prev"><span>Previous</span>Installation &amp; First Time Configuration</a><a class="pager__next" href="../breadth/index.html" rel="next"><span>Next</span>Breadth</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../install/index.html" rel="prev"><span>Previous</span>Installation and first-time configuration</a><a class="pager__next" href="../breadth/index.html" rel="next"><span>Next</span>Breadth</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-search/02-admin.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

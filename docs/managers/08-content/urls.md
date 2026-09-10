@@ -1,39 +1,142 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/content/urls
 source-id: 3369
 imported: 2026-09-09
 -->
 # URLs
 
-## Understanding URLs for Sections, Categories, and Articles
+How the hub turns an address into an article, and how to point an old address
+at a new one.
 
-When SEF URLs are being used, it can become tricky at times to discover which article a URL path leads to. HUBs try to simplify some of this and make the association(s) of the path to sections, categories, and articles a little more obvious.
+## The SEO settings
 
-For the purposes of this explanation, we assume every section, category, and article has an alias. In its simplest form, a URL will map to a path of `http://yourhub.org/{SectionAlias}/{CategoryAlias}/{ArticleAlias}`. So, a URL of `http://yourhub.org/about/this/site` would map to a section with an alias of **about**, a category with an alias of **this**, and an article with an alias of **site**.
+Search engine friendly URLs are configured in **Site → Global
+Configuration**, on the **Site** tab, under **SEO Settings**.
 
-The resulting URL will start to collapse, or shorten, when sections, categories, and articles have the same alias. For instance, if you have a section with alias **about**, a category with an alias of **this**, and an article with an alias of **this**– notice it is the same as the category–the resulting URL will be `http://yourhub.org/about/this`.
+| Setting | Default | What it does |
+|---|---|---|
+| **Search Engine Friendly URLs** | Yes | Builds path-style URLs instead of query strings. |
+| **Search Engine Friendly Group URLs** | No | Nothing. The setting is stored but no code reads it. |
+| **Use URL rewriting** | No | Drops `index.php` from the path. Needs the web server's rewrite rules in place first. |
+| **Adds Suffix to URL** | No | Appends the document format, so a page ends in `.html`. |
+| **Unicode Aliases** | No | Lets aliases hold non-ASCII characters instead of transliterating them. |
 
-If all three portions have the same alias, the `http://yourhub.org/about/this/site` shortens further. A section alias of **about**, category alias of **about** and article alias of **about** will simply produce `http://yourhub.org/about`.
+These are also listed in the
+[global configuration reference](../../reference/configuration/README.md).
 
-| Section | Category | Article | URL |
-|---|---|---|---|
-| about | this | site | http://yourhub.org/about/this/site |
-| about | this | this | http://yourhub.org/about/this |
-| this | this | site | http://yourhub.org/this/site |
-| about | this | about | http://yourhub.org/about/this/about |
-| about | about | about | http://yourhub.org/about |
+## How an article's address is decided
 
-## URL Redirects
+Two things can give an article a URL, and the first one wins.
 
-If you find yourself wanting to redirect a certain URL to another page, then *Joomla!* has a solution for you. And fortunately, the solution is as simple as creating a menu.
+### A menu item
 
-1. Navigate to **Menus -> Menu Manager** on the Joomla! backend
-2. At this point, you can either create a new Menu or use an existing one. If you prefer the former, click **New** in the upper right-hand corner, and give your new Menu a name such as **Redirects**. Alternatively, you could use the **Default** menu. The only thing to remember is that you should use a menu that is not displayed on the site (e.g. the **Main Menu** and **About** menus or displayed on the standard hub)
-3. Irrelevant of which option you chose, select the icon in the **Menu Item(s)** row to add a new **Menu Item** to your **Menu** to handle the redirect
-4. Next, fill in the necessary fields
-   - Add a **Title**
-   - The **Alias** will be the address that a user would enter into the address bar of their browser
-   - The **Link** will be the page where the actual content exists
-     - **Example:** According to the image below, if a user types `http://myhub.org/example`, though that page does not exist, they will get the content found at `http://myhub.org/example/examplearticle1`
-5. Select **Save**
+If any menu item points at the article, the article's URL is that menu item's
+route: its own alias, with the aliases of its parent menu items in front of
+it. This is how the pages that ship with a hub are addressed. The sample
+**Terms of Use** article is reached at `/about/terms` because a menu item
+with alias `terms`, nested under a menu item with alias `about`, points at
+it. The article's own alias, `terms`, and its category, `about`, play no part
+— they happen to match here, and often will not.
+
+Menu item routes are the addresses to publish and to link to. See
+[Menus](../07-menus.md).
+
+### The category path
+
+An article with no menu item is matched by its category path and its own
+alias:
+
+```
+/{category-path}/{article-alias}
+```
+
+The category path is the nested path of the category the article is in, so an
+article with alias `site` in a category `this` nested under a category
+`about` answers at `/about/this/site`. Only **published** articles are found
+this way.
+
+Two shorthands exist for a single-segment address, `/{alias}`:
+
+- The article is in the **Uncategorised** category. This is the ordinary case
+  for a page you want at the top level: file it under Uncategorised and it
+  answers at `/{alias}`.
+- Every segment of the article's category path is the same word as the
+  article's alias. An article `about` in category `about` answers at
+  `/about`. The code calls this out as supported for legacy reasons; do not
+  build anything new on it.
+
+| Category path | Article alias | URL |
+|---|---|---|
+| *(Uncategorised)* | `terms` | `/terms` |
+| `about` | `site` | `/about/site` |
+| `about/this` | `site` | `/about/this/site` |
+| `about` | `about` | `/about` |
+
+> **Note:** Older Hubzero documentation described URLs as built from a
+> **section**, a category, and an article, with segments collapsing when they
+> shared an alias. Sections have not existed since Joomla 1.6, and Hubzero
+> 2.4 has none. Categories nest instead, to any depth, and the path above is
+> what the router matches.
+
+If nothing matches, the hub falls back to the component router, which
+addresses an article as `/content/article/{category-path}/{article-alias}`
+and a category as `/content/category/{path}`. Those addresses work, but they
+are ugly and no one should be given them.
+
+## Redirects
+
+The **Redirect Manager** is the supported way to send one address to another.
+Open it at **Site → Maintenance → Routes**.
+
+The manager depends on the **System - Redirect** plugin, and says at the top
+of the screen whether that plugin is enabled. With it on, every 404 the site
+serves is recorded as a link with no destination, so the manager doubles as a
+list of the broken addresses people are actually asking for.
+
+A link has:
+
+| Field | Meaning |
+|---|---|
+| **Source URL** | The address to catch. Required, and must be unique. The plugin matches the full URL, then the server-relative path with and without a leading slash. |
+| **Destination URL** | Where to send them. Required to enable the link. |
+| **Response Code** | **404 Not Found**, **301 Moved Permanently**, or **302 Found**. A new link with a destination defaults to 302. |
+| **Comment** | A note for whoever reads the list next. |
+
+Enable a link and the redirect takes effect; disable it and the address goes
+back to a 404. The toolbar also archives, trashes, and — once you filter to
+**Trashed** — permanently deletes links. Checking several recorded 404s and
+using **Update selected links to the following new URL** sets the same
+destination on all of them at once.
+
+Its parameters are in the
+[Redirect configuration reference](../../reference/configuration/components/redirect.md).
+
+## Redirecting with a menu item
+
+A menu item of type **External URL** also acts as a redirect. When the
+requested path matches the menu item's own route exactly, the hub redirects
+to the item's **Link**, which may be another page on the hub.
+
+This is worth knowing because it works for paths that belong to a component
+rather than to an article. To move a group's audience from `/groups/mainclass`
+to `/groups/spring2016class`:
+
+1. Go to **Menus → Menu Manager** and open a menu that is not displayed
+   anywhere — the **Default** menu on a stock hub.
+2. If the menu has no **Groups** item, add one: **New**, then **Select** next
+   to **Menu Item Type**, then **External URL** under **System Links**. Set
+   **Menu Title** to `Groups` and **Link** to `groups`. **Save & Close**.
+3. Add a second **External URL** item with **Menu Title** `Mainclass` and
+   **Link** `/groups/spring2016class`.
+4. Set its **Parent Item** to **Groups**, so its route becomes
+   `groups/mainclass`. **Save & Close**.
+
+Requests for `/groups/mainclass` now land on `/groups/spring2016class`.
+
+> **Tip:** Prefer the Redirect Manager. It records the redirect where the
+> next administrator will look for it, gives you the response code, and does
+> not put an entry into a menu that someone may later publish by accident.

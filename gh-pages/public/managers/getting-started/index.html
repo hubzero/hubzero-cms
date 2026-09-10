@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Introduction · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview The Managers&#x27; Guide is a user manual for managing the web content and functionality of a HUB. It progresses step-by-step through various common tasks…">
+  <title>Getting started · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="This book is for the person who runs a hub. It covers the administrator interface — the back end at — and the settings, screens and extensions you reach from…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/getting-started/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,12 +41,14 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Introduction</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting started</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-a-hub-manager-does">What a hub manager does</a></li>
+<li class="toc__item toc__item--l2"><a href="#read-this-first">Read this first</a></li>
+<li class="toc__item toc__item--l2"><a href="#then">Then</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="administrator/index.html">Administrator Area</a></li>
+<li class="tree__leaf"><a class="tree__link" href="administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/tools/index.html">Tools</a></li>
@@ -54,7 +56,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
@@ -96,18 +98,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -126,12 +128,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -140,28 +142,60 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Introduction</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Getting started</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Introduction</h1>
+          <h1>Getting started</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/index">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
-        <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>The Managers' Guide is a user manual for managing the web content and functionality of a HUB. It progresses step-by-step through various common tasks and familiarizes the manager with the administrative back-end interface. Managers will learn how to accomplish tasks such as:</p>
-<ul>
-<li>Manage (add/edit/delete) site members</li>
-<li>Manage site settings</li>
-<li>Handle support tickets</li>
-<li>And more ...</li>
-</ul>
-<hr />
-<p>Community development does not end with support tickets. Check out our tutorial about how to engage with your community.</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="administrator/index.html">Administrator Area</a></li></ul></section>
-        </div>
         
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hub managers</a><a class="pager__next" href="administrator/index.html" rel="next"><span>Next</span>Administrator Area</a></nav>
+        <div class="prose">
+<p>This book is for the person who runs a hub. It covers the administrator
+interface — the back end at <code>/administrator</code> — and the settings, screens and
+extensions you reach from it. It does not cover installing the software; that
+is the <a href="../../installation/index.html">installation guide</a>.</p>
+<h2 id="what-a-hub-manager-does">What a hub manager does</h2>
+<p>A hub is a Hubzero site: a public front end that members browse, and a private
+back end where you configure it. Almost everything in this book happens in the
+back end. The recurring jobs are:</p>
+<ul>
+<li>Configure the site: its name, its template, its menus, and the components
+that provide its features.</li>
+<li>Manage members: their accounts, the access groups they belong to, and what
+each group is allowed to do.</li>
+<li>Curate content: articles, resources, publications, and whatever the hub's
+members submit for approval.</li>
+<li>Install and configure extensions: components, modules, plugins, and
+templates.</li>
+<li>Keep the site healthy: support tickets, cron jobs, site notices, and the
+spam filters.</li>
+</ul>
+<h2 id="read-this-first">Read this first</h2>
+<p><a href="administrator/index.html">The administrator interface</a> explains how to reach the back
+end, who is allowed in, and what each of its menus contains. Read it before
+anything else in this book; every other chapter assumes you can find your way
+around those screens.</p>
+<h2 id="then">Then</h2>
+<ul>
+<li>If the hub is new, go on to <a href="../advancedsetup/index.html">Advanced setup</a> and
+<a href="../configuring/index.html">Configuring</a>. Between them they cover the global
+configuration, the site template, the menus, and registration — the choices
+that are hardest to change once members have started using the hub.</li>
+<li>If you are taking over a hub that is already running, go to
+<a href="../maintenance/index.html">Daily maintenance</a> and
+<a href="../users/index.html">Users</a>.</li>
+<li>If you are looking for one particular screen, the
+<a href="../components/index.html">Components</a> and
+<a href="../extensions/index.html">Extensions</a> chapters are organised the same way
+the <strong>Components</strong> and <strong>Extensions</strong> menus are.</li>
+</ul>
+<p>Every setting the interface offers is also listed, component by component, in
+the generated
+<a href="../../reference/configuration/index.html">configuration reference</a>.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="administrator/index.html">The administrator interface</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Hub managers</a><a class="pager__next" href="administrator/index.html" rel="next"><span>Next</span>The administrator interface</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/01-getting-started/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

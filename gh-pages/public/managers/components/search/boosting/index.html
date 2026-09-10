@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Boosting · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Search boosting allows hub administrators to move categories of matching results higher or lower in Solr search results. Note: your hub must have Solr…">
+  <meta name="description" content="A boost moves one kind of matching result up or down the ranking. It does not change which results are found, only their order. Note: Boosting is a Solr…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/boosting/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../breadth/index.html">Breadth</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Boosting</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-can-be-boosted">What can be boosted</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-boost">Creating a boost</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-and-removing">Editing and removing</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-boosts-are-ignored">When boosts are ignored</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,12 +129,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -144,45 +149,72 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Boosting</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/search/boosting">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        
         <div class="prose">
-<p>Search boosting allows hub administrators to move categories of matching results higher or lower in Solr search results.</p>
-<p>Note: your hub must have Solr installed and enabled as boosting only affects Solr search results.</p>
-<p>To create a boost follow the steps below:</p>
+<p>A boost moves one kind of matching result up or down the ranking. It does not
+change which results are found, only their order.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Boosting is a Solr feature. On a hub running Basic search the
+<strong>Boosts</strong> tab is not reachable and the stored boosts have no effect.</p>
+</aside>
+<h2 id="what-can-be-boosted">What can be boosted</h2>
+<p>The <strong>Type</strong> menu offers one entry for each resource type defined under
+<strong>Components &gt; Resources</strong>, plus <strong>Citations</strong>. Those are the only choices;
+there is no boost for blog entries, groups, members, or the other indexed
+types.</p>
+<p>Behind the menu, a resource type becomes the Solr clause
+<code>type:&lt;the type&gt;^&lt;strength&gt;</code> and <strong>Citations</strong> becomes
+<code>hubtype:citation^&lt;strength&gt;</code>. Every boost is added to the query as a Solr
+boost query, so the effect is cumulative with the field weights in
+<strong>Query Fields</strong>.</p>
+<h2 id="creating-a-boost">Creating a boost</h2>
 <ol>
-<li>Access your hub's administrator portal</li>
-<li>Click on Search under the Components drop-down menu</li>
-<li>Click on the Boosts tab under the component title bar
-<ol>
-<li><img src="../../../media/boosting-boost-tab.png" alt="admin boost tab" /></li>
-</ol>
+<li>
+<p>Go to <strong>Components &gt; Search</strong>.</p>
 </li>
-<li>Click on the plus in the upper right hand corner
-<ol>
-<li><img src="../../../media/boosting-new-boost.png" alt="new boost" /></li>
-</ol>
+<li>
+<p>Select the <strong>Boosts</strong> tab.</p>
+<p><img src="../../../media/boosting-boost-tab.png" alt="The Boosts tab in the Search component's sub-navigation" /></p>
 </li>
-<li>Select a category from the Type drop-down
-<ol>
-<li><img src="../../../media/boosting-new-boost-form.png" alt="new boost form" /></li>
-</ol>
+<li>
+<p>Select the <strong>+</strong> button in the toolbar.</p>
+<p><img src="../../../media/boosting-new-boost.png" alt="The Boosts list with the new-boost button highlighted" /></p>
 </li>
-<li>Enter a number for the boost strength
-<ol>
-<li>Positive value moves matching results higher</li>
-<li>Negative value moves matching results lower</li>
-</ol>
+<li>
+<p>Choose a <strong>Type</strong>.</p>
+<p><img src="../../../media/boosting-new-boost-form.png" alt="The new boost form, with a Type menu and a Strength field" /></p>
 </li>
-<li>Save the boost
-<ol>
-<li><img src="../../../media/boosting-finalize-new-boost.png" alt="save boost" /></li>
-</ol>
+<li>
+<p>Enter a whole number for <strong>Strength</strong>.</p>
+<ul>
+<li>A positive value moves matching results higher.</li>
+<li>A negative value moves them lower.</li>
+<li>Zero has no effect.</li>
+</ul>
+</li>
+<li>
+<p>Save the boost with the tick button in the toolbar.</p>
+<p><img src="../../../media/boosting-finalize-new-boost.png" alt="The completed new boost form before saving" /></p>
 </li>
 </ol>
+<p>The new boost applies to the next search; nothing has to be re-indexed.</p>
+<h2 id="editing-and-removing">Editing and removing</h2>
+<p>Selecting a row on the <strong>Boosts</strong> list opens it for editing. <strong>Strength</strong> can
+be changed; <strong>Type</strong> is shown as a disabled field, because a boost is
+identified by its type. To boost a different type, delete this boost and
+create another. The edit screen's trash button deletes the boost outright —
+there is no trashed state to recover it from.</p>
+<p>Only one boost may exist per type. Saving a second one for a type that
+already has a boost fails with <em>A boost already exists for …</em>.</p>
+<h2 id="when-boosts-are-ignored">When boosts are ignored</h2>
+<p>Turning the <strong>Tag Search Box</strong> option on disables boosting altogether: the
+query is built without any boost queries, and the <strong>Boosts</strong> screen shows the
+notice <em>Query boosts are currently omitted because tag search is enabled</em>.
+The boosts stay stored and take effect again when the option is turned off.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../breadth/index.html" rel="prev"><span>Previous</span>Breadth</a><a class="pager__next" href="../index/index.html" rel="next"><span>Next</span>Maintaining the Index</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../breadth/index.html" rel="prev"><span>Previous</span>Breadth</a><a class="pager__next" href="../index/index.html" rel="next"><span>Next</span>Maintaining the index</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-search/04-boosting.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

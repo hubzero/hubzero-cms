@@ -1,5 +1,8 @@
 <!--
-status: merged
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: stale
 source: https://help.hubzero.org/documentation/22/security_considerations/hardencms/cmscontrolled_fail2ban_jail
 source-id: 2829
 modified: 2025-01-31
@@ -7,463 +10,220 @@ imported: 2026-09-09
 merged-from: 2.2
 source-state: unpublished
 -->
-# CMS-Controlled Fail2Ban Jail
+# CMS-controlled Fail2Ban jail
 
-## Configuration and Details
+Hubzero throttles brute-force attempts in three stages, all configured on
+one screen. The first two stages are entirely inside the CMS. The third
+hands the offending address to Fail2Ban, which is server software outside
+this repository and has to be set up by the system administrator first.
 
-## Objective
+## The settings
 
-To have the CMS handle user login banning in an attempt to deter brute force attacks.
+Go to **Users** > **Members**, then **Options** in the toolbar. The
+**Members Configuration** window opens; the fields below are on the **Login
+Settings** tab.
 
-## CMS Configuration Page
+| Field | Parameter | Default | What it does |
+|---|---|---|---|
+| **Maximum Reset Count** | `reset_count` | 10 | Password reset requests allowed per account per window. |
+| **Time in Hours** | `reset_time` | 1 | The reset window. |
+| **Maximum Failed Login Attempts** | `login_attempts_limit` | 10 | Failed logins allowed per account per window. |
+| **Time in Hours** | `login_attempts_timeframe` | 1 | The failed-login window. |
+| **Purge Log After** | `login_log_timeframe` | Never | How long attempts stay in the log table. |
+| **Fail2Ban** | `fail2ban` | Off | Whether stage three runs at all. |
+| **Maximum Number Blocked Accounts** | `blocked_accounts_limit` | 10 | Blocked accounts allowed per address per window. |
+| **Time in Hours** | `blocked_accounts_timeframe` | 1 | The blocked-accounts window. |
+| **Fail2Ban Jail** | `fail2ban-jail` | `hub-login` | Name of the jail to ban into. |
 
-The following settings are accessible from the CMS administrative backend.
+The same list, generated from the manifest, is in the
+[Members configuration reference](../../../reference/configuration/components/members.md#login).
 
-![fail2ban1](../../media/cmscontrolled-fail2ban-jail-fail2ban1.png)
+![The Login Settings tab of the Members Configuration window](../../media/cmscontrolled-fail2ban-jail-fail2ban1.png)
 
-These options are accessible by going to the User Menu ­ Members and Member Options.
+> **Warning:** This screenshot predates 2.4. It shows six fields with older
+> labels and is missing **Purge Log After**, **Fail2Ban**, and **Fail2Ban
+> Jail**. Read the table above, not the picture.
 
-## User Password Reset Limit
+> **Warning:** Setting any of the three limits to `0` does **not** mean
+> "no limit", whatever the field's help text says — it makes the check fail
+> for everyone immediately. Leave them at one or more.
 
-The number of password resets per time period is limited. If the user attempts to reset their password at a threshold deemed by the HUB administrator as excessive, the following message is displayed.
+## Where the counting happens
 
-![fail2ban2](../../media/cmscontrolled-fail2ban-jail-fail2ban2.png)
+All three stages read `#__users_log_auth`, the table
+[`plg_user_xusers`](../../../../core/plugins/user/xusers/xusers.php) writes to
+after every login attempt. Each row holds a username, the remote address, a
+status of `success`, `failure` or `blocked`, and a timestamp.
 
-## User Failed Login Limit
+**Purge Log After** trims that table. It is checked on each authentication
+attempt, and rows older than the chosen period are deleted. Leaving it at
+**Never** lets the table grow without bound, which eventually slows the
+login page down.
 
-The number of failed logins per time period is limited. If the user attempts to reset their password at a threshold deemed by the HUB administrator as excessive, the following message is displayed. This means that an individual's account is temporarily blocked until the time period expires.
+## Stage one: password reset requests
 
-![fail2ban3](../../media/cmscontrolled-fail2ban-jail-fail2ban3.png)
+Counted per account by
+[`com_members`'s credentials controller](../../../../core/components/com_members/site/controllers/credentials.php).
+It counts the member's outstanding reset tokens created inside
+**Time in Hours**, and once that reaches **Maximum Reset Count** it refuses
+the request:
 
-## IP­based Blocked User Limit
+> Sorry, you have exceeded your reset request limit. Please wait and try
+> again later.
 
-When the threshold of blocked user accounts per IP network is met, the CMS will trigger a Fail2Ban rule which will block incoming requests from an IP address for a period of time. This is the last line of defense as blocking an IP address may have unintended consequences ­ such as blocking a NAT­ed IP address which several valid users are using to access the hub.
+![The reset request limit message on the Reset Password page](../../media/cmscontrolled-fail2ban-jail-fail2ban2.png)
 
-## Assumptions
+Nothing is blocked and nothing is logged as blocked; the member simply has
+to wait for the window to pass.
 
-This approach assumes that the system administrator has configured a jail and a system user account to execute (with sudo) Fail2Ban via the fail2ban­client utility.
+## Stage two: failed logins
 
-On Debian Hosts, Fail2Ban should be version 0.9.5.
+Counted per account by
+[`plg_authentication_hubzero`](../../../../core/plugins/authentication/hubzero/hubzero.php).
+It counts rows for that username with status `failure` inside **Time in
+Hours**. Once the table already holds one fewer than **Maximum Failed Login
+Attempts**, the plugin writes a `blocked` row for the account and refuses
+the login:
 
-0.9.5­1~nd70+1 from <http://neuro.debian.net/debian/>wheezy/main amd64 Packages
+> Your account has been temporarily disabled due to an excessive number of
+> failed login attempts.
 
-## Setup & Configuration
+![The account temporarily disabled message on the sign-in form](../../media/cmscontrolled-fail2ban-jail-fail2ban3.png)
 
-There are a number of subsystems which need to be configured for this scheme to work properly.
+With the default of 10, the tenth attempt inside the hour is the one that is
+refused. The account frees itself as the window slides forward; there is no
+administrator action to take.
 
-## sudo Configuration
+**Authentication - Email Token** applies the same two thresholds to its own
+one-time codes, using the same parameters.
 
-A privileged user which can execute:
+## Stage three: too many blocked accounts from one address
 
-(root) NOPASSWD: /usr/bin/fail2ban­client set hub­login banip [0­9.]\* (root) NOPASSWD: /usr/bin/fail2ban­client set hub­login unbanip [0­9.]\*
+This stage only runs when **Fail2Ban** is **On**. With it **Off**,
+**Maximum Number Blocked Accounts** has no effect at all.
 
-This can be accomplished by adding a sudoers rule in /etc/sudoers.d/ that looks like:
+When it is on, the plugin counts the *distinct* usernames that have a
+`blocked` row from the current address inside **Time in Hours**. Once that
+count reaches **Maximum Number Blocked Accounts**, the CMS locates
+`fail2ban-client` on `PATH` and runs, as the web server user:
 
-www­data ALL=(root)NOPASSWD: /usr/bin/fail2ban­client set hub­login banip [0­9.]\*
+```bash
+sudo /usr/bin/fail2ban-client set hub-login banip <address>
+```
 
-## Fail2Ban Configuration
+The jail name is whatever **Fail2Ban Jail** holds. The login is refused with
+the same "temporarily disabled" message.
 
-The system administrator should configure Fail2Ban to create jails which the CMS can add offending IP address into. The amount of time that the ban is valid is configured in Fail2Ban.
+If `fail2ban-client` cannot be found, the CMS logs `fail2ban-client not
+found.` and lets the login proceed to the account-level checks.
 
-The CMS will simply add IP addresses to the Fail2Ban jail which will trigger the Ban Action as specified in the rule set.
+> **Important:** The CMS bans the address; it never unbans it. How long the
+> ban lasts is entirely Fail2Ban's `bantime`. Nothing in the CMS calls
+> `unbanip`.
 
-The following configuration are more of an example than anything. A seasoned system administrator will have crafted better rules.
+> **Note:** This mechanism does **not** work by writing log lines for
+> Fail2Ban to match. The CMS calls `fail2ban-client` directly. The jail
+> therefore needs a filter that matches nothing, and exists only as a
+> container for addresses the CMS pushes into it. The CMS does also write
+> `/var/log/hubzero/cmsauth.log`, and you can point an ordinary
+> log-scanning jail at that file, but that is a separate jail from this one.
 
-*[Sample] Jail Configuration*
+## What the system administrator has to set up
 
-#
+Everything from here down is external to Hubzero. It could not be verified
+against this repository; the samples are illustrations, not a supported
+configuration, and any competent administrator will write better rules.
+Fail2Ban's own documentation is the authority.
 
-\# JAILS
+### sudo
 
-\# /etc/fail2ban/jail.local
+The web server user needs to run exactly one command as root, with no
+password:
 
-#
+```
+www-data ALL=(root) NOPASSWD: /usr/bin/fail2ban-client set hub-login banip *
+```
 
-[hub­login] enabled = true
+Put it in a file under `/etc/sudoers.d/` and check it with `visudo -c`.
+Confirm the path with `which fail2ban-client` — the CMS resolves the path
+itself, so the sudoers rule has to name the same one. Keep the rule as
+narrow as this: it grants root, and a wildcard in the wrong place grants a
+great deal more than a ban.
 
-port = http,https filter = hub­login
+### The jail
 
-logpath = /var/log/messages banaction = hublogin­failure bantime = 600
+```ini
+# /etc/fail2ban/jail.local
+[hub-login]
+enabled   = true
+port      = http,https
+filter    = hub-login
+logpath   = /var/log/hubzero/cmsauth.log
+banaction = hublogin-failure
+bantime   = 600
+findtime  = 1
+maxretry  = 1
+```
 
-findtime = 1
+### The filter
 
-maxretry = 1
+The filter has to match nothing, because the CMS supplies the addresses:
 
-*[Sample] Filter Configuration*
-
-/etc/fail2ban/filter.d/hub­login.conf
-
-\# Fail2Ban configuration file
-
-#
-
+```ini
+# /etc/fail2ban/filter.d/hub-login.conf
 [Definition]
-
-\# Option: failregex
-
-\# Notes.: Regexp to catch known spambots and software alike. Please verify
-
-\# that it is your intent to block IPs which were driven by
-
-\# abovementioned bots.
-
-\# Values: TEXT
-
-#
-
-#We choose something that will never happen
-
-\# Since the CMS will control IP’s placed in the jails failregex = ^&amp;lt;HOST>thisfilterwillneverbefound
-
-\# Option: ignoreregex
-
-\# Notes.: regex to ignore. If this regex matches, the line is ignored.
-
-\# Values: TEXT
-
-#
-
+# The CMS bans into this jail directly, so this pattern is never meant to fire.
+failregex = ^<HOST> this-filter-never-matches
 ignoreregex =
+```
 
-*[Sample] Action Configuration*
+### The action
 
-\# Fail2Ban configuration file
-
-\# cat /etc/fail2ban/action.d/hublogin­failure.conf [INCLUDES]
-
-before = iptables­common.conf
+```ini
+# /etc/fail2ban/action.d/hublogin-failure.conf
+[INCLUDES]
+before = iptables-common.conf
 
 [Definition]
+actionstart = iptables -N fail2ban-hublogin
+              iptables -I INPUT -p tcp -j fail2ban-hublogin
 
-\# Option: actionstart
+actionstop  = iptables -D INPUT -p tcp -j fail2ban-hublogin
+              iptables -F fail2ban-hublogin
+              iptables -X fail2ban-hublogin
 
-\# Notes.: command executed once at the start of Fail2Ban.
+actioncheck = iptables -n -L fail2ban-hublogin | grep -q fail2ban-hublogin
 
-\# Values: CMD
+actionban   = iptables -I fail2ban-hublogin -p tcp --dport 443 -s <ip> -j DROP
+              iptables -I fail2ban-hublogin -p tcp --dport 80 -s <ip> -j DROP
 
-#
-
-actionstart = iptables ­N fail2ban­hublogin
-
-iptables ­A INPUT ­j DROP
-
-iptables ­I INPUT ­p tcp ­j fail2ban­hublogin
-
-\# Option: actionstop
-
-\# Notes.: command executed once at the end of Fail2Ban
-
-\# Values: CMD
-
-#
-
-actionstop = iptables ­D fail2ban­hublogin ­p tcp ­j fail2ban­hublogin iptables ­F fail2ban­hublogin
-
-iptables ­X fail2ban­hublogin
-
-\# Option: actioncheck
-
-\# Notes.: command executed once before each actionban command
-
-\# Values: CMD
-
-#
-
-actioncheck = iptables ­n ­L fail2ban­hublogin | grep ­q fail2ban­hublogin
-
-\# Option: actionban
-
-\# Notes.: command executed when banning an IP. Take care that the
-
-\# command is executed with Fail2Ban user rights.
-
-\# Tags: &amp;lt;ip> IP address
-
-\# &amp;lt;failures> number of failures
-
-\# &amp;lt;time> unix timestamp of the ban time
-
-\# Values: CMD
-
-#
-
-actionban = iptables ­I fail2ban­hublogin ­p tcp ­­dport 443 ­s &amp;lt;ip> ­j DROP
-
-iptables ­I fail2ban­hublogin ­p tcp ­­dport
-
-80 ­s &amp;lt;ip> ­j DROP
-
-\# Option: actionunban
-
-\# Notes.: command executed when unbanning an IP. Take care that the
-
-\# command is executed with Fail2Ban user rights.
-
-\# Tags: &amp;lt;ip> IP address
-
-\# &amp;lt;failures> number of failures
-
-\# &amp;lt;time> unix timestamp of the ban time
-
-\# Values: CMD
-
-#
-
-actionunban = iptables ­D fail2ban­hublogin ­p tcp ­­dport 443 ­s &amp;lt;ip> ­j DROP iptables ­D fail2ban­hublogin ­p tcp ­­dport 80 ­s &amp;lt;ip> ­j DROP
+actionunban = iptables -D fail2ban-hublogin -p tcp --dport 443 -s <ip> -j DROP
+              iptables -D fail2ban-hublogin -p tcp --dport 80 -s <ip> -j DROP
 
 [Init]
-
-\# Defaut name of the chain
-
-#
-
-name = DEFAULT
-
-\# Option: protocol
-
-\# Notes.: internally used by config reader for interpolations.
-
-\# Values: [ tcp | udp | icmp | all ] Default: tcp
-
-#
-
+name     = DEFAULT
 protocol = tcp
+chain    = INPUT
+```
 
-\# Option: chain
+### Check it
 
-\# Notes specifies the iptables chain to which the fail2ban rules should be
+```bash
+fail2ban-client status hub-login
+```
 
-\# added
+The output names the jail's filter, its log file, and the addresses
+currently banned. `iptables -L fail2ban-hublogin` shows the rules the action
+inserted.
 
-\# Values: STRING Default: INPUT chain = INPUT
+> **Note:** The imported version of this page pinned Fail2Ban to 0.9.5 from
+> a NeuroDebian repository for Debian wheezy. That advice is a decade out of
+> date; use your distribution's current package.
 
-*[Sample] Banned IP address results* root@example:/var/www/example# fail2ban­client status hub­login Status for the jail: hub­login
+## Turning it off for an event
 
-|­ Filter
-
-| |­ Currently failed: 0
-
-| |­ Total failed: 4
-
-| `­ File list: /var/log/messages
-
-`­ Actions
-
-|­ Currently banned: 1
-
-|­ Total banned: 4
-
-`­ Banned IP list: 192.168.226.1
-
-root@example:/var/www/example# iptables ­L Chain INPUT (policy DROP)
-
-target prot opt source destination fail2ban­hublogin tcp ­­ anywhere anywhere ACCEPT all ­­ anywhere anywhere
-
-ACCEPT all ­­ anywhere anywhere state RELATED,ESTABLISHED
-
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:ssh |
-|---|---|---|---|---|---|---|
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:smtp |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:mysql |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:ldap |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:http |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:https |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:http­alt |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpts:830:831 |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:http |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:https |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:http­alt |
-| ACCEPT | tcp | ­­ | anywhere | anywhere | tcp | dpt:1170 |
-| ACCEPT | icmp | ­­ | anywhere | anywhere |  |  |
-| DROP | all | ­­ | anywhere | anywhere |  |  |
-
-Chain FORWARD (policy DROP)
-
-<table>
-<tbody>
-<tr>
-<td>
-<p>target ACCEPT ACCEPT</p>
-</td>
-<td>
-<p>prot all all</p>
-</td>
-<td>
-<p>opt</p>
-<p>­­</p>
-<p>­­</p>
-</td>
-<td>
-<p>source 10.0.0.0/8</p>
-<p>anywhere</p>
-</td>
-<td>
-<p>destination anywhere anywhere</p>
-</td>
-<td colspan="2">
-<p> </p>
-<p> </p>
-<p>ctstate</p>
-</td>
-</tr>
-<tr>
-<td colspan="7">
-<p>RELATED,ESTABLISHED,DNAT</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpts:830:831</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:http</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:https</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>ACCEPT</p>
-</td>
-<td>
-<p>udp</p>
-</td>
-<td>
-<p>­­</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>udp</p>
-</td>
-<td>
-<p>dpt:domain</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-Chain OUTPUT (policy ACCEPT)
-
-target prot opt source destination
-
-<table>
-<tbody>
-<tr>
-<td>
-<p>Chain fail2ban­hublogin (1 references)</p>
-</td>
-<td>
-<p> </p>
-</td>
-<td colspan="2" rowspan="2">
-<p> </p>
-</td>
-</tr>
-<tr>
-<td>
-<p>target      prot opt source</p>
-</td>
-<td>
-<p>destination</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>DROP        tcp  ­­  container.localhost</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:http</p>
-</td>
-</tr>
-<tr>
-<td>
-<p>DROP        tcp  ­­  container.localhost</p>
-</td>
-<td>
-<p>anywhere</p>
-</td>
-<td>
-<p>tcp</p>
-</td>
-<td>
-<p>dpt:https</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-root@example:/var/www/example#
-
-## User Impact
-
-When a large number of people intend on using the CMS, it may be wise to temporarily disable this feature (e.g. conference, class activity, etc). In the past, many conference goers have mistyped their password in a short period of time creating a false positive for normal Fail2Ban operation. This risk is mitigated by the fact that the number of blocked users is observed before triggering Fail2Ban.
+Consider setting **Fail2Ban** to **Off** during a conference, a class, or a
+workshop. A room of people typing the same wrong password produces exactly
+the pattern stage three is looking for, and one banned address takes out
+everyone behind that NAT. Stages one and two stay in effect and act per
+account, which is the behaviour you want in a crowd.

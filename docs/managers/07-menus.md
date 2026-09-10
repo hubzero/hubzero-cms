@@ -1,5 +1,8 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/menus
 source-id: 3366
 modified: 2014-10-10
@@ -7,83 +10,173 @@ imported: 2026-09-09
 -->
 # Menus
 
-## Overview
+A menu is a named list of links. It does two jobs on a hub: it gives visitors
+a way to move around, and it gives the pages it points at their URLs. A page
+no menu item points at is reachable but hard to find, and often has an
+address nobody would guess.
 
-A Hub menu is a website navigation menu where users go to navigate around the Hub. The Main Menu is the first navigation path that users interact with from your landing page and usually lives in your template header. Additional menus can be added to content pages on the Hub in order to link like pages together for easier navigation. The general rule of thumb is that if a content page is not linked to a menu, the likelihood of the page being discovered by users is diminished.
+Menus are managed at **Menus → Menu Manager**. The **Menus** menu also lists
+every menu defined on the hub, with **Add New Menu Item** under each.
 
-## Organizing Your Articles Using Menus
+Two things are easy to confuse:
 
-If you have a set of articles that you would like to group together, you can use menus to organize those articles in an easy-to-navigate fashion.
+- A **menu** is the container. It has a system name (its *menu type*), a
+  title, and a description.
+- A **menu item** is one link inside it.
 
-An example of this can be found on the default hub under the About section (see also below).
+A menu is not displayed anywhere until a **Menu** module is pointed at it and
+given a template position. Creating a menu and creating the module that shows
+it are two separate steps.
 
-1. To begin, find the URLs of the articles that you're interested in grouping together
-   1. **Note:** If you can't find, or don't know the URL, it comes from the article alias, the section, and the category (see below and view these documentation pages: [Categories](08-content/articlemanager.md), [URLs](08-content/urls.md)).
-2. With your article pages created, you'll need to make the menu structure
-3. Navigate to **Menus -> Menu Manager** on the *Joomla!* backend and select **New**
-4. Give your new menu a unique name and title, then click **Save**
-5. Now you will see your new menu in the list
-6. Click the icon indicated below to start adding menu items to your new menu
-   - **Note:** It is important to realize, for clarity's sake, that there is a difference between **Menu** and **Menu Item**.
-     1. **Menu Item:** represents an instance, or individual menu link
-     2. **Menu:** represents the entity as a whole
-7. Now click the **New** button to add new menu items to your menu
-8. After clicking **New**, scroll down and select **Link**
-9. Next, fill in the necessary information:
-   - This is where you'll need to remember the URLs for the articles that you've created (you'll add the URL to the **Link** field)
-   - After creating this menu item, you'll be able to access this article page via the URL for the article, or the Alias of the menu item
-     - **For example:** according the screenshot below, both `http://yourhub.org/example/examplearticle1` & `http://yourhub.org/article1` will work when trying to access this page via the browser (See [URL Redirects](08-content/urls.md) for more details). For the navigational menus to display properly, though, you'll want to use the menu item alias when trying to access your article page.
-10. Click **Save** in the upper right-hand corner
-11. If you switch over to the front-end and navigate to your article page (via the menu item URL), you should see a page similar to this one:
-12. At this point, simply repeat the previous steps to create menu items for all of the articles that you want to use together
-13. The final step in this process is to assign the menu items that you've created to display on the article pages
-14. To do this, navigate to **Extensions -> Module Manager** on the backend *Joomla!* interface
-15. Next, select **New**
-16. Scroll down and select **Menu** from the list (either click on the link, or select the radio button then scroll back up and click **Next**)
+## Menu Manager
 
-Now fill in the correct information...make sure to:​​
+**Menus → Menu Manager** opens **Menu Manager: Menus**. Each row shows the
+menu's title, its menu type beneath, the number of published, unpublished and
+trashed items in it, and the modules linked to it.
 
-- Give it a **Title**
-- Be sure **Enabled** is set to **Yes**
-- Give it the position **Left**
-- Set it to display on the correct pages
-  - Under menu assignment, **control click** the menus items that we made in the preceding steps. This is what tells *Joomla!* which pages to display our new menu on.
-- Under **Module Parameters**, **Menu Name** should be the title of the menu that we created earlier (**example** in this case)
-- **Menu Style** should be **List** ​
+- The **title** opens the menu's items.
+- The **menu type** opens the menu itself for editing.
+- Under **Modules Linked to the Menu**, each module is a link to its
+  settings. Where there is no module, the cell offers **Add a module for this
+  menu type**.
 
-17. When all of this has been done, click **Save**
+The toolbar is **New**, **Edit**, **Delete**, **Rebuild**, **Options**, and
+**Help**. **Delete** asks for confirmation first, and it means it: deleting a
+menu deletes all of its menu items and the menu modules attached to it.
+**Rebuild** repairs the nested-set bookkeeping behind the menu tree, which is
+worth doing if items start appearing at the wrong depth.
 
-## Redirecting a URL to Another Existing Hub Component
+### Creating a menu
 
-Redirecting a URL to Another Existing Hub Component Previously created groups and other components can have URL redirects added to other components instead of transferring all the files and data that live in the previous area to a new section. For example, a professor can redirect a group called **Mainclass** to another group called **Springclass**. In order to set up a redirect, follow these steps:
+1. **Menus → Menu Manager**, then **New**.
+2. Fill in **Menu type**, the system name. It is what modules and menu items
+   refer to, it must be unique, and it cannot sensibly be changed later.
+   Whatever you type is lowercased and stripped of anything that is not a
+   letter, a digit, or a hyphen, up to 24 characters; leave it blank and it
+   is derived from the title.
+3. Fill in **Title**, which is what the administrator interface shows, and
+   optionally a **Description**.
+4. **Save & Close**.
+5. Back on the list, follow **Add a module for this menu type** to create the
+   module that displays it. See [Modules](10-extensions/01-modules.md).
 
-1. Navigate to **/administrator**, locate the tab **Menus** and select **Menu Manager** from the drop-down
-2. Locate the **Default** menu group
-3. Click on the **Default** group to enter its menu interface
-4. Try and locate the **Parent** group
-5. In this case we want groups, however, this is not listed, so let’s create it by clicking the **New** in the top right corner
-6. Create the “groups” part of the URL **/groups/****mainclass**
-7. Click the **Select** button next to the field *Menu Item Type Select External URL*
-8. To create the groups part of the URL, fill in the form as follows:
-   1. *Menu Item Type: External URL Menu Title: Groups Link: groups*
-9. Click **Save & Close** from the top right corner
-10. To create the redirect portion, follow step 5 again except fill out the Menu Title as mainclass and the link as spring2016class
-11. This will redirect users from */groups/**mainclass* *to /groups/springdefaultclass*
-12. Nest mainclass under groups to create the end result from the redirect
-13. This is done in the **Menu Item Details** under **Parent**
-14. Set the **Parent** to **Groups**
-15. Click **Save & Close**
+## Menu items
 
-## Creating a New Menu
+**Menu Manager: Menu Items** lists the items of one menu — pick the menu from
+the first drop-down above the list, or open it from the Menu Manager. The
+other filters are **Select Max Levels**, status, access level, and language,
+and the search box matches the title or the alias.
 
-1. Navigate to **/administrator**
-2. Hover over **Menus** -> **Menu Manager** and click on **Add New Menu**
-3. Fill out the new menu information
-4. Click **Save & Close**
-5. From **Menu Manager: Menus**, locate your new menu and click on **Add a module for this menu type** under *Modules linked to the menu*
-6. Create the new module for your menu by filling in the module configuration information
-   1. **Note:** Most menu modules are left aligned
-7. Click **Save & Close**
-8. Create new menu items, either linked to articles you have created or linked to various components, by navigating to **Menus** and clicking on your new menu
-9. Click on the **Menu Items** tab and click the **New** button to create menu items
-   1. **Note:** Once you have linked menu items to your new menu, navigate back to "**Extensions**" -> **Module Manage**r -> Click on your new menu module -> Confirm the **Menu Assignment** for your module is affiliated with the new menu items you created
+The columns are **Title**, **Status**, **Ordering**, **Access**, **Menu Item
+Type**, **Home**, **Language**, and **ID**. Sort by **Ordering** ascending to
+reorder items; the list is a tree, so an item's indent is its depth.
+
+The toolbar is **New**, **Edit**, **Publish**, **Unpublish**, **Check In**
+(administrators only), **Trash**, **Home**, **Rebuild** (administrators
+only), and **Help**. Filtering to **Trashed** replaces **Trash** with **Empty
+trash**, which deletes for good. **Home** makes the selected item the site's
+default page; there must always be exactly one.
+
+### Adding a menu item
+
+1. Open the menu and select **New**.
+2. Next to **Menu Item Type**, select **Select**. A picker opens listing
+   every type available on this hub, grouped by the extension that provides
+   it, plus a **System Links** group at the end.
+3. Choose a type. The form reloads with the fields that type needs.
+4. Fill in **Menu Title**. Everything else has a usable default.
+5. **Save & Close**.
+
+The details are:
+
+| Field | Notes |
+|---|---|
+| **Menu Item Type** | Set through the picker. Changing it changes the rest of the form. |
+| **Menu Title** | Required. The text shown in the menu. |
+| **Link** | Read-only for a component item — the picker fills it in. Editable for an **External URL** item. |
+| **Alias** | This item's own path segment. Together with its parents' aliases it is the page's URL. Leave it blank and it is generated from the title. |
+| **Note** | A private note, shown only in the administrator interface. |
+| **Access** | Which viewing level sees the item. |
+| **Status** | Published, Unpublished, or Trashed. |
+| **Menu Location** | Which menu the item belongs to. Change it to move the item between menus. |
+| **Parent Item** | **Menu Item Root**, or another item in the same menu. This is what nests items, and what builds the URL. |
+| **Ordering** | Position among its siblings. Available once the item has been saved. |
+| **Target Window** | **Parent**, **New Window With Navigation**, or **New Without Navigation**. |
+| **Default Page** | Component items only. Makes this the site's home page. |
+| **Language** | **All**, or one content language. |
+| **Template Style** | A specific template style for this page, or the site default. |
+
+Down the right-hand side are collapsible panels: the request fields the
+chosen type declares (for **Single Article**, a **Select Article** picker),
+**Link Type Options** (link title attribute, link CSS class, link image, and
+whether to show the title next to the image), any layout options the type
+declares, and **Module Assignment for this Menu Item**, which lists the
+modules that will and will not show on this page.
+
+> **Note:** A menu item's options are the ones its layout declares, in the
+> component's `site/views/<view>/tmpl/<layout>.xml`. The component's own
+> global options are *not* merged into the menu item form: the code that
+> would load them is disabled behind an always-false condition, with a `TODO`
+> saying that fixing it breaks the form. Recorded in
+> It is recorded with the project.
+### Where the types come from
+
+The picker is built from every enabled component. For each one the hub looks
+for a `<menu>` block in the component's `site/metadata.xml`. If there is
+none — as for Articles — it scans `site/views/`, taking each view that is not
+prefixed with an underscore and each layout XML file inside it, and uses the
+title declared there. That is why Articles offers **Single Article**,
+**Category Blog**, **Category List**, **List All Categories**, **Featured
+Articles**, **Archived Articles**, and **Create Article**: one entry per
+layout under `core/components/com_content/site/views`.
+
+The **System Links** group at the end is fixed, and holds three types that
+belong to no component:
+
+| Type | What it does |
+|---|---|
+| **External URL** | Links to any address, on this hub or elsewhere. Also acts as a redirect — see [URLs](08-content/urls.md#redirecting-with-a-menu-item). |
+| **Menu Item Alias** | Points at another menu item, so one page can appear in two menus. Leave the **Alias** field empty when the two items share a parent. |
+| **Text Separator** | A label with no link, for breaking a long menu into groups. |
+
+## Grouping articles under a menu
+
+To give a set of articles a section of their own — an About section, say —
+build the menu first and then show it:
+
+1. Create the articles. See [Article Manager](08-content/articlemanager.md).
+2. **Menus → Menu Manager → New**. Give the menu a **Menu type** of `about`
+   and a **Title** of `About`. **Save & Close**.
+3. Open the new menu and add one item per article, each of type **Articles →
+   Single Article**, choosing the article in the **Select Article** field.
+4. Give the section a parent: add one more item, set the other items'
+   **Parent Item** to it, and their URLs become `/about/<alias>`.
+5. Back on the Menu Manager, follow **Add a module for this menu type**.
+6. In the module, set a **Title**, set **Status** to **Published**, choose a
+   **Position** — `left` and `footer` exist in the templates that ship — and
+   under **Select Menu** choose the menu you just made.
+7. Under **Menu Assignment**, set **Module Assignment** to **Only on the
+   pages selected** and tick, in **Menu Selection**, the menu items the
+   module should appear on.
+8. **Save & Close**.
+
+The module's other options are **Start Level**, **End Level**, **Show
+Sub-menu Items**, **Show as Disclosure Menu**, and **Show Top Level Items as
+Links**; the advanced tab adds a menu tag ID, a menu class suffix, a layout,
+and caching. There is no "Menu Style" option — that was a Joomla 1.5 setting
+and it is long gone.
+
+## Redirecting a URL
+
+A menu item of type **External URL** whose route matches the requested path
+redirects to its link, which is how one hub address is pointed at another
+without moving any content. The Redirect Manager is usually the better tool;
+both are covered in [URLs](08-content/urls.md#redirects).
+
+## Options
+
+**Options** on the Menu Manager sets the **Page Display Options** every menu
+item inherits — browser page title, whether to show the page heading, the
+page heading text, and a page class suffix — and the component permissions.
+They are listed in the
+[Menus configuration reference](../reference/configuration/components/menus.md).

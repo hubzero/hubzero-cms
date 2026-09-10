@@ -13,7 +13,7 @@ screen by screen.
 ## Where to start
 
 If the hub is new, read [Getting started](getting-started/README.md) and
-then [Advanced setup](advancedsetup.md). They cover the first login, the
+then [Configuring](configuring/README.md). They cover the first login, the
 global configuration, and the choices that are hard to change later.
 
 If you are taking over a running hub, start with
@@ -23,8 +23,8 @@ If you are taking over a running hub, start with
 
 - [Getting started](getting-started/README.md) — the administrator
   interface and the first configuration.
-- [Advanced setup](advancedsetup.md) — templates, menus, modules, and
-  the site's structure.
+- [Integrations](advancedsetup.md) — connecting the hub to analytics,
+  Google Drive, the rich text editor, and CAPTCHA.
 - [Daily maintenance](maintenance/README.md) — approving content,
   support tickets, cron jobs, notices, and tools.
 - [Frequently asked questions](faq.md)

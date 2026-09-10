@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hardening the Content Management System · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Application Scanning A web application scanner will look for typical mistakes made in PHP applications: XSS, CSRF and SQL injections, and more. We use AppScan,…">
+  <title>Hardening the CMS · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="The settings and extensions inside the administrator interface that decide how strict the hub is. Everything on this page is part of Hubzero and can be checked…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/security/hardencms/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,14 +124,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Hardening the Content Management System</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#application-scanning">Application Scanning</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../faqs/index.html">Security questions</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Hardening the CMS</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#force-https">Force HTTPS</a></li>
+<li class="toc__item toc__item--l2"><a href="#sessions-and-cookies">Sessions and cookies</a></li>
+<li class="toc__item toc__item--l2"><a href="#text-filters">Text filters</a></li>
+<li class="toc__item toc__item--l2"><a href="#login-thresholds">Login thresholds</a></li>
+<li class="toc__item toc__item--l2"><a href="#password-rules">Password rules</a></li>
+<li class="toc__item toc__item--l2"><a href="#second-authentication-factors">Second authentication factors</a></li>
+<li class="toc__item toc__item--l2"><a href="#security-headers">Security headers</a></li>
+<li class="toc__item toc__item--l2"><a href="#spam">Spam</a></li>
+<li class="toc__item toc__item--l2"><a href="#rate-limiting">Rate limiting</a></li>
+<li class="toc__item toc__item--l2"><a href="#scan-what-you-add">Scan what you add</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__leaf"><a class="tree__link" href="cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -140,20 +149,176 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Security Considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Hardening the Content Management System</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Security considerations</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Hardening the CMS</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Hardening the Content Management System</h1>
+          <h1>Hardening the CMS</h1>
         </header>
-        <aside class="banner banner--merged" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/22/security_considerations/hardencms">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2025. It was never published there, so read it as a draft. It exists only in the 2.2 documentation and was merged in from there.</aside>
-        <div class="prose">
-<h2 id="application-scanning">Application Scanning</h2>
-<p>A web application scanner will look for typical mistakes made in PHP applications: XSS, CSRF and SQL injections, and more. We use AppScan, but many free application scanners are available. You should scan any component you code yourself, or 3rd party component, that is not part of the HUBzero release. Also, if you modify a component in a HUBzero release, you should scan it for vulnerabilities the change may have introduced. If you find a vulnerability in the HUBzero release itself, please file a ticket at hubzero.org!</p>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li></ul></section>
-        </div>
         
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../faqs/index.html" rel="prev"><span>Previous</span>Frequently Asked Questions</a><a class="pager__next" href="cmscontrolled-fail2ban-jail/index.html" rel="next"><span>Next</span>CMS-Controlled Fail2Ban Jail</a></nav>
+        <div class="prose">
+<p>The settings and extensions inside the administrator interface that decide
+how strict the hub is. Everything on this page is part of Hubzero and can be
+checked in the source tree. The host underneath is covered separately in
+<a href="../hardeningguide/index.html">Operating system hardening</a>.</p>
+<h2 id="force-https">Force HTTPS</h2>
+<p><strong>Site</strong> &gt; <strong>Global Configuration</strong> &gt; <strong>Server</strong> &gt; <strong>Force SSL</strong> takes three
+values: <strong>None</strong>, <strong>Administrator Only</strong>, and <strong>Entire Site</strong>. Set it to
+<strong>Entire Site</strong>.</p>
+<p>This is a redirect inside the application, so the request has already
+reached PHP by the time it fires. Redirect at the web server as well.</p>
+<h2 id="sessions-and-cookies">Sessions and cookies</h2>
+<p><strong>Session Settings</strong> are on the <strong>System</strong> tab of <strong>Global Configuration</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Session Lifetime</strong></td>
+<td>15</td>
+<td>Minutes of inactivity before a session expires. Shorter is safer; too short annoys people mid-form.</td>
+</tr>
+<tr>
+<td><strong>Session Handler</strong></td>
+<td><code>none</code></td>
+<td>Where sessions are stored. The list offers whatever backends the server supports — <code>database</code>, <code>file</code>, <code>memcached</code>, <code>redis</code>, <code>apc</code> and so on. <code>database</code> is the usual choice.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cookie Settings</strong> are on the <strong>Site</strong> tab, and hold <strong>Cookie Domain</strong> and
+<strong>Cookie Path</strong>. Leave both empty unless the hub genuinely shares a session
+with a sibling host — widening the cookie domain widens who receives the
+session cookie.</p>
+<h2 id="text-filters">Text filters</h2>
+<p><strong>Global Configuration</strong> &gt; <strong>Text Filters</strong> sets, per access group, what
+HTML a member may submit through an editor field. Each group gets one of:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default Black List</strong></td>
+<td>Strips the tags and attributes commonly used in attacks. This is the shipped behaviour.</td>
+</tr>
+<tr>
+<td><strong>Custom Black List</strong></td>
+<td>Strips the tags and attributes you list, instead of the default set.</td>
+</tr>
+<tr>
+<td><strong>White List</strong></td>
+<td>Strips everything except the tags and attributes you list.</td>
+</tr>
+<tr>
+<td><strong>No HTML</strong></td>
+<td>Strips all HTML.</td>
+</tr>
+<tr>
+<td><strong>No Filtering</strong></td>
+<td>Submits the markup untouched.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>No Filtering</strong> should be reserved for groups whose members you would trust
+with shell access, because it is equivalent. The filter applies to editor
+fields; it is not a substitute for a component escaping its own output.</p>
+<h2 id="login-thresholds">Login thresholds</h2>
+<p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Options</strong> &gt; <strong>Login Settings</strong> limits how often
+one account may fail to log in, how often one account may request a
+password reset, and how many accounts may be blocked from one address before
+the hub asks Fail2Ban to ban it.</p>
+<p>The fields, their defaults, and what the code actually counts are described
+in <a href="cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a>. The
+parameters themselves are listed in the
+<a href="../../../reference/configuration/components/members/index.html#login">Members configuration reference</a>.</p>
+<h2 id="password-rules">Password rules</h2>
+<p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Passwords</strong> holds two screens.</p>
+<p><strong>Password Rules</strong> is an ordered list. The list shows <strong>Id</strong>, <strong>Rule</strong>,
+<strong>Description</strong>, <strong>Ordering</strong> and <strong>Enabled</strong>; opening a rule adds
+<strong>Value</strong>, <strong>Failure message</strong>, <strong>Group</strong> and <strong>Class</strong>. The <strong>Group</strong> field
+scopes a rule to one access group, so you can demand more of administrators
+than of ordinary members. The toolbar carries <strong>Restore Defaults</strong>, which
+replaces the whole list with the shipped set.</p>
+<p><strong>Password Blacklist</strong> is a list of words a password may not contain.</p>
+<p>Enable <strong>System - Password</strong> as well. It watches every request from a signed
+in member and, if their stored password no longer satisfies the rules or has
+expired, diverts them to the change-password screen until they fix it. A
+short list of tasks — logging out, submitting a support ticket, saving the
+new password — is exempt so the member is not trapped.</p>
+<p>The hashing mechanism itself is set under <strong>Options</strong> &gt; <strong>Password</strong> and
+defaults to <code>sha512</code>.</p>
+<h2 id="second-authentication-factors">Second authentication factors</h2>
+<p>Two plugins in the <code>authfactors</code> group ship with 2.4:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Second factor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authfactors - Certificate</strong></td>
+<td>A client-side SSL certificate.</td>
+</tr>
+<tr>
+<td><strong>Authfactors - Google</strong></td>
+<td>A time-based one-time code from an authenticator app.</td>
+</tr>
+</tbody>
+</table>
+<p>Neither has any parameters of its own. Which interfaces demand a second
+factor is set on <strong>System - Authfactors</strong>, whose <strong>Clients</strong> parameter is a
+pair of checkboxes for the site and the administrator interface; only the
+administrator interface is ticked by default. If <strong>System - Authfactors</strong> is
+disabled, no second factor is ever asked for however the <code>authfactors</code>
+plugins are set.</p>
+<h2 id="security-headers">Security headers</h2>
+<p>Two system plugins add response headers. Both ship disabled.</p>
+<p><strong>System - Content Security Policy</strong> sets <code>Content-Security-Policy</code>,
+<code>Content-Security-Policy-Report-Only</code>, or both, depending on its <strong>Mode</strong>
+parameter. It writes eleven directives from its own parameters:
+<code>base-uri</code>, <code>object-src</code>, <code>child-src</code>, <code>connect-src</code>, <code>default-src</code>,
+<code>font-src</code>, <code>form-action</code>, <code>frame-src</code>, <code>img-src</code>, <code>script-src</code> and
+<code>style-src</code>. The token <code>{host}</code> in any value is replaced with the request's
+host name, and a <code>report-uri</code> is appended when one is set. Start in
+<strong>Report Only</strong> and read the reports before you enforce: the shipped
+<code>script-src</code> default still allows <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code>,
+and tightening it will break screens until they are cleaned up.</p>
+<p><strong>System - Referrer Policy</strong> sets <code>Referrer-Policy</code>. Its default is
+<code>same-origin</code>.</p>
+<p>Other headers — HSTS, <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code> — are not
+set by the CMS. Add them at the web server.</p>
+<h2 id="spam">Spam</h2>
+<p>The <code>antispam</code> plugin group and the <strong>Content - Antispam</strong> plugin that
+drives it have their own chapter: <a href="../../spam/index.html">Spam</a>.</p>
+<h2 id="rate-limiting">Rate limiting</h2>
+<p>Hubzero rate-limits the <strong>API only</strong>, per application token, over a short
+and a long window. The limits live in the application's own
+<code>rate_limit</code> configuration and have no field in <strong>Global Configuration</strong> —
+the manifest declares one, but no screen renders it. Site page requests are
+not rate limited by the CMS; do that at the web server.</p>
+<h2 id="scan-what-you-add">Scan what you add</h2>
+<p>A web application scanner looks for the mistakes PHP applications make:
+cross-site scripting, cross-site request forgery, SQL injection, and the
+rest. Scan any component you write yourself, any third-party component, and
+any component from the Hubzero release that you have modified — a local
+change can introduce a hole the release does not have. Free scanners are
+adequate for this; Purdue uses AppScan.</p>
+<p>If you find a vulnerability in the Hubzero release itself, report it to the
+project rather than filing it publicly.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li></ul></section>
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../faqs/index.html" rel="prev"><span>Previous</span>Security questions</a><a class="pager__next" href="cmscontrolled-fail2ban-jail/index.html" rel="next"><span>Next</span>CMS-controlled Fail2Ban jail</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/security/hardencms/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
