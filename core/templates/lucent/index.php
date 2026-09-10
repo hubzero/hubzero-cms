@@ -244,6 +244,29 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
         </div>
     </div>
 
+    <?php if ($this->countModules('banner')) : ?>
+        <div class="page-banner">
+            <jdoc:include type="modules" name="banner" />
+        </div>
+    <?php endif; ?>
+
+    <?php if (!$isFrontPage && $this->countModules('breadcrumbs')) : ?>
+        <div class="page-trail">
+            <div class="inner">
+                <jdoc:include type="modules" name="breadcrumbs" />
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($this->countModules('welcome or introblock')) : ?>
+        <div class="page-intro">
+            <div class="inner">
+                <jdoc:include type="modules" name="welcome" />
+                <jdoc:include type="modules" name="introblock" />
+            </div>
+        </div>
+    <?php endif; ?>
+
     <main id="maincontent" class="page">
         <div class="inner<?php if ($this->countModules('left or right')) {
             echo ' withmenu';

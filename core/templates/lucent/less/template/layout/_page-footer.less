@@ -54,3 +54,48 @@
 		}
 	}
 }
+
+// Banner, breadcrumb trail and intro
+//
+// Three positions the manifest declares that sit between the header and the
+// content. Each is only in the page when a module is in it.
+
+.page-banner {
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.page-trail {
+	border-bottom: 1px solid @colorSeparatorLight;
+	font-size: 0.85rem;
+	color: @colorTextMuted;
+
+	& > .inner {
+		.outerPadding();
+		padding-top: 0.6rem;
+		padding-bottom: 0.6rem;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+
+		li {
+			margin: 0;
+		}
+	}
+}
+
+.page-intro {
+	& > .inner {
+		.outerPadding();
+		padding-top: 1.5rem;
+	}
+}
