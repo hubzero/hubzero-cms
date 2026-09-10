@@ -2,6 +2,21 @@
 @import "_navigation_sub";
 @import "_navigation_mobile";
 
+// Which way the main navigation sits in the header, from the template's
+// config. Written as a mixin rather than a guarded ruleset so that the LESS
+// compiler this repository ships can read it.
+.navMainAlignment(@position) {
+}
+
+.navMainAlignment(@position) when (@position = 'left') {
+	justify-content: flex-start;
+}
+
+.navMainAlignment(@position) when (@position = 'right') {
+	justify-content: flex-end;
+}
+
+
 .page-head {
 
 	nav.nav {
@@ -31,13 +46,7 @@
 			flex-grow: 1;
 			justify-content: center;
 
-			& when (@confNavMainPosition = 'left') {
-				justify-content: flex-start;
-			}
-
-			& when (@confNavMainPosition = 'right') {
-				justify-content: flex-end;
-			}
+			.navMainAlignment(@confNavMainPosition);
 		}
 	}
 
