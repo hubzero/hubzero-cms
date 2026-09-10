@@ -103,7 +103,7 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
 		<div class="grid">
 			<div class="col span8">
 				<label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
-				<input type="text" name="search" id="filter_search" ckass="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
+				<input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>" />
 
 				<label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
 				<select name="status" id="filter-status" class="filter filter-submit">

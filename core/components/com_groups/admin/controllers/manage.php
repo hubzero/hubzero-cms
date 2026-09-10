@@ -531,7 +531,7 @@ class Manage extends AdminController
 		// make sure folder is writable
 		if (!is_writable($uploadPath))
 		{
-			Notify::error(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadpath));
+			Notify::error(Lang::txt('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadPath));
 			return;
 		}
 
