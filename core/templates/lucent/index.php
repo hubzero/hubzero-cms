@@ -96,8 +96,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             <header>
                 <div class="inner">
                     <div class="logo">
-                        <a href="<?php echo Request::root(); ?>" title="<?php echo Config::get('sitename'); ?>">
-                            Lucent
+                        <a href="<?php echo Request::root(); ?>"
+                           title="<?php echo Config::get('sitename'); ?>">
+                            <?php echo Config::get('sitename'); ?>
                         </a>
                     </div>
 
@@ -285,6 +286,14 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
         </div><!-- / .inner -->
     </main>
 </div>
+
+<?php if ($this->countModules('footer')) : ?>
+    <footer class="page-footer">
+        <div class="inner">
+            <jdoc:include type="modules" name="footer" />
+        </div>
+    </footer>
+<?php endif; ?>
 
 <section class="dialog-backdrop">
     <div id="big-search" class="template-panel" aria-label="search popup"
