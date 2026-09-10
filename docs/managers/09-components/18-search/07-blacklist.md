@@ -1,21 +1,58 @@
 <!--
-status: imported
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/240/managers/components/search/blacklist
 source-id: 3397
 modified: 2019-09-11
-imported: 2026-09-09
 -->
 # Blacklist
 
-The blacklist allows Hub administrators to “strike” things from the search index. This may be necessary to override If Solr indexes something, it will be reindexed unless it is on the blacklist.
+The blacklist strikes an individual document from the search index and keeps
+it out. Without it, a document deleted from Solr comes straight back the next
+time its record is saved or its component re-indexed.
 
-To remove an item from the seach index, go to the Administrative Backend > Component > Search > Search Index and Click on the name of the type of record you would like to remove. Let’s say, for example, you needed to remove a Resource.
+The record itself is untouched. Blacklisting a resource does not unpublish it,
+does not hide its page, and does not stop anyone reaching it by link — it only
+removes it from search results.
 
-1. Click **Resource**
+## Blacklisting a document
 
-2. You will then see all resources indexed by Solr
-3. You may use the search box to locate the record
-4. Once you locate the record, click **Add to Blacklist**
+1. Go to **Components > Search > Searchable Components**.
+2. Select the record count beside the type you want, for example
+   **Resources**. That opens *Solr Search Indexed Documents* for that type.
+3. Find the document. The **Filter** box takes a Solr query, so
+   `title:microscope` narrows the list; leaving it empty lists everything.
+4. Select **Add to blacklist** in that row.
 
-5. Once the button is pressed, the request to remove the record will be placed into the queue
-6. Once the worker processes the record, it will no longer be searchable by anyone
+The document is deleted from Solr as the button is pressed, and the row's
+button changes to **Marked for Removal**. There is no queue and no waiting
+period: the next search will not find it.
+
+> **Note:** The screen reports *Successfully marked … for removal* whether or
+> not Solr accepted the delete — the helper that sends it does not check the
+> response. If a document is still turning up in search afterwards, check the
+> Overview screen for the connection, then re-open the document listing.
+
+## Reviewing and undoing
+
+**Components > Search > Index Blacklist** lists every entry, showing the
+document id, who added it, and when, each with a **Remove entry** button.
+The screen reads *There are no entries on the blacklist* when it is empty.
+
+Removing an entry only lifts the block; it does not put the document back.
+The document returns the next time its record is saved, or the next time its
+component is re-indexed from
+[Searchable Components](02-admin.md#searchable-components) or **Run Full
+Index**.
+
+## What the block covers
+
+Every route into the index checks the blacklist before writing:
+
+- the live path, when **Search - Solr** handles a saved record;
+- the batch path, when a component is indexed or rebuilt.
+
+The check is by document id, and the id is unique to one record of one type,
+so blacklisting a resource has no effect on any other document.

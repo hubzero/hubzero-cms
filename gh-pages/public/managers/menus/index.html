@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Menus · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview A Hub menu is a website navigation menu where users go to navigate around the Hub. The Main Menu is the first navigation path that users interact with…">
+  <meta name="description" content="A menu is a named list of links. It does two jobs on a hub: it gives visitors a way to move around, and it gives the pages it points at their URLs. A page no…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/menus/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
@@ -76,10 +76,14 @@
 <li class="tree__leaf"><a class="tree__link" href="../users/user-notes/index.html">User notes</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Menus</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#organizing-your-articles-using-menus">Organizing Your Articles Using Menus</a></li>
-<li class="toc__item toc__item--l2"><a href="#redirecting-a-url-to-another-existing-hub-component">Redirecting a URL to Another Existing Hub Component</a></li>
-<li class="toc__item toc__item--l2"><a href="#creating-a-new-menu">Creating a New Menu</a></li>
+<li class="toc__item toc__item--l2"><a href="#menu-manager">Menu Manager</a></li>
+<li class="toc__item toc__item--l3"><a href="#creating-a-menu">Creating a menu</a></li>
+<li class="toc__item toc__item--l2"><a href="#menu-items">Menu items</a></li>
+<li class="toc__item toc__item--l3"><a href="#adding-a-menu-item">Adding a menu item</a></li>
+<li class="toc__item toc__item--l3"><a href="#where-the-types-come-from">Where the types come from</a></li>
+<li class="toc__item toc__item--l2"><a href="#grouping-articles-under-a-menu">Grouping articles under a menu</a></li>
+<li class="toc__item toc__item--l2"><a href="#redirecting-a-url">Redirecting a URL</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 </ol></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../content/index.html">Content</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../content/articlemanager/index.html">Article Manager</a></li>
@@ -99,18 +103,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -129,12 +133,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -149,115 +153,229 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Menus</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/menus">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>A Hub menu is a website navigation menu where users go to navigate around the Hub. The Main Menu is the first navigation path that users interact with from your landing page and usually lives in your template header. Additional menus can be added to content pages on the Hub in order to link like pages together for easier navigation. The general rule of thumb is that if a content page is not linked to a menu, the likelihood of the page being discovered by users is diminished.</p>
-<h2 id="organizing-your-articles-using-menus">Organizing Your Articles Using Menus</h2>
-<p>If you have a set of articles that you would like to group together, you can use menus to organize those articles in an easy-to-navigate fashion.</p>
-<p>An example of this can be found on the default hub under the About section (see also below).</p>
-<ol>
-<li>To begin, find the URLs of the articles that you're interested in grouping together
-<ol>
-<li><strong>Note:</strong> If you can't find, or don't know the URL, it comes from the article alias, the section, and the category (see below and view these documentation pages: <a href="../content/articlemanager/index.html">Categories</a>, <a href="../content/urls/index.html">URLs</a>).</li>
-</ol>
-</li>
-<li>With your article pages created, you'll need to make the menu structure</li>
-<li>Navigate to <strong>Menus -&gt; Menu Manager</strong> on the <em>Joomla!</em> backend and select <strong>New</strong></li>
-<li>Give your new menu a unique name and title, then click <strong>Save</strong></li>
-<li>Now you will see your new menu in the list</li>
-<li>Click the icon indicated below to start adding menu items to your new menu
+<p>A menu is a named list of links. It does two jobs on a hub: it gives visitors
+a way to move around, and it gives the pages it points at their URLs. A page
+no menu item points at is reachable but hard to find, and often has an
+address nobody would guess.</p>
+<p>Menus are managed at <strong>Menus → Menu Manager</strong>. The <strong>Menus</strong> menu also lists
+every menu defined on the hub, with <strong>Add New Menu Item</strong> under each.</p>
+<p>Two things are easy to confuse:</p>
 <ul>
-<li><strong>Note:</strong> It is important to realize, for clarity's sake, that there is a difference between <strong>Menu</strong> and <strong>Menu Item</strong>.
-<ol>
-<li><strong>Menu Item:</strong> represents an instance, or individual menu link</li>
-<li><strong>Menu:</strong> represents the entity as a whole</li>
-</ol>
-</li>
+<li>A <strong>menu</strong> is the container. It has a system name (its <em>menu type</em>), a
+title, and a description.</li>
+<li>A <strong>menu item</strong> is one link inside it.</li>
 </ul>
-</li>
-<li>Now click the <strong>New</strong> button to add new menu items to your menu</li>
-<li>After clicking <strong>New</strong>, scroll down and select <strong>Link</strong></li>
-<li>Next, fill in the necessary information:
+<p>A menu is not displayed anywhere until a <strong>Menu</strong> module is pointed at it and
+given a template position. Creating a menu and creating the module that shows
+it are two separate steps.</p>
+<h2 id="menu-manager">Menu Manager</h2>
+<p><strong>Menus → Menu Manager</strong> opens <strong>Menu Manager: Menus</strong>. Each row shows the
+menu's title, its menu type beneath, the number of published, unpublished and
+trashed items in it, and the modules linked to it.</p>
 <ul>
-<li>This is where you'll need to remember the URLs for the articles that you've created (you'll add the URL to the <strong>Link</strong> field)</li>
-<li>After creating this menu item, you'll be able to access this article page via the URL for the article, or the Alias of the menu item
-<ul>
-<li><strong>For example:</strong> according the screenshot below, both <code>http://yourhub.org/example/examplearticle1</code> &amp; <code>http://yourhub.org/article1</code> will work when trying to access this page via the browser (See <a href="../content/urls/index.html">URL Redirects</a> for more details). For the navigational menus to display properly, though, you'll want to use the menu item alias when trying to access your article page.</li>
+<li>The <strong>title</strong> opens the menu's items.</li>
+<li>The <strong>menu type</strong> opens the menu itself for editing.</li>
+<li>Under <strong>Modules Linked to the Menu</strong>, each module is a link to its
+settings. Where there is no module, the cell offers <strong>Add a module for this
+menu type</strong>.</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>Click <strong>Save</strong> in the upper right-hand corner</li>
-<li>If you switch over to the front-end and navigate to your article page (via the menu item URL), you should see a page similar to this one:</li>
-<li>At this point, simply repeat the previous steps to create menu items for all of the articles that you want to use together</li>
-<li>The final step in this process is to assign the menu items that you've created to display on the article pages</li>
-<li>To do this, navigate to <strong>Extensions -&gt; Module Manager</strong> on the backend <em>Joomla!</em> interface</li>
-<li>Next, select <strong>New</strong></li>
-<li>Scroll down and select <strong>Menu</strong> from the list (either click on the link, or select the radio button then scroll back up and click <strong>Next</strong>)</li>
-</ol>
-<p>Now fill in the correct information...make sure to:​​</p>
-<ul>
-<li>Give it a <strong>Title</strong></li>
-<li>Be sure <strong>Enabled</strong> is set to <strong>Yes</strong></li>
-<li>Give it the position <strong>Left</strong></li>
-<li>Set it to display on the correct pages
-<ul>
-<li>Under menu assignment, <strong>control click</strong> the menus items that we made in the preceding steps. This is what tells <em>Joomla!</em> which pages to display our new menu on.</li>
-</ul>
-</li>
-<li>Under <strong>Module Parameters</strong>, <strong>Menu Name</strong> should be the title of the menu that we created earlier (<strong>example</strong> in this case)</li>
-<li><strong>Menu Style</strong> should be <strong>List</strong> ​</li>
-</ul>
-<ol start="17">
-<li>When all of this has been done, click <strong>Save</strong></li>
-</ol>
-<h2 id="redirecting-a-url-to-another-existing-hub-component">Redirecting a URL to Another Existing Hub Component</h2>
-<p>Redirecting a URL to Another Existing Hub Component Previously created groups and other components can have URL redirects added to other components instead of transferring all the files and data that live in the previous area to a new section. For example, a professor can redirect a group called <strong>Mainclass</strong> to another group called <strong>Springclass</strong>. In order to set up a redirect, follow these steps:</p>
+<p>The toolbar is <strong>New</strong>, <strong>Edit</strong>, <strong>Delete</strong>, <strong>Rebuild</strong>, <strong>Options</strong>, and
+<strong>Help</strong>. <strong>Delete</strong> asks for confirmation first, and it means it: deleting a
+menu deletes all of its menu items and the menu modules attached to it.
+<strong>Rebuild</strong> repairs the nested-set bookkeeping behind the menu tree, which is
+worth doing if items start appearing at the wrong depth.</p>
+<h3 id="creating-a-menu">Creating a menu</h3>
 <ol>
-<li>Navigate to <strong>/administrator</strong>, locate the tab <strong>Menus</strong> and select <strong>Menu Manager</strong> from the drop-down</li>
-<li>Locate the <strong>Default</strong> menu group</li>
-<li>Click on the <strong>Default</strong> group to enter its menu interface</li>
-<li>Try and locate the <strong>Parent</strong> group</li>
-<li>In this case we want groups, however, this is not listed, so let’s create it by clicking the <strong>New</strong> in the top right corner</li>
-<li>Create the “groups” part of the URL **/groups/**<strong>mainclass</strong></li>
-<li>Click the <strong>Select</strong> button next to the field <em>Menu Item Type Select External URL</em></li>
-<li>To create the groups part of the URL, fill in the form as follows:
+<li><strong>Menus → Menu Manager</strong>, then <strong>New</strong>.</li>
+<li>Fill in <strong>Menu type</strong>, the system name. It is what modules and menu items
+refer to, it must be unique, and it cannot sensibly be changed later.
+Whatever you type is lowercased and stripped of anything that is not a
+letter, a digit, or a hyphen, up to 24 characters; leave it blank and it
+is derived from the title.</li>
+<li>Fill in <strong>Title</strong>, which is what the administrator interface shows, and
+optionally a <strong>Description</strong>.</li>
+<li><strong>Save &amp; Close</strong>.</li>
+<li>Back on the list, follow <strong>Add a module for this menu type</strong> to create the
+module that displays it. See <a href="../extensions/modules/index.html">Modules</a>.</li>
+</ol>
+<h2 id="menu-items">Menu items</h2>
+<p><strong>Menu Manager: Menu Items</strong> lists the items of one menu — pick the menu from
+the first drop-down above the list, or open it from the Menu Manager. The
+other filters are <strong>Select Max Levels</strong>, status, access level, and language,
+and the search box matches the title or the alias.</p>
+<p>The columns are <strong>Title</strong>, <strong>Status</strong>, <strong>Ordering</strong>, <strong>Access</strong>, <strong>Menu Item
+Type</strong>, <strong>Home</strong>, <strong>Language</strong>, and <strong>ID</strong>. Sort by <strong>Ordering</strong> ascending to
+reorder items; the list is a tree, so an item's indent is its depth.</p>
+<p>The toolbar is <strong>New</strong>, <strong>Edit</strong>, <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Check In</strong>
+(administrators only), <strong>Trash</strong>, <strong>Home</strong>, <strong>Rebuild</strong> (administrators
+only), and <strong>Help</strong>. Filtering to <strong>Trashed</strong> replaces <strong>Trash</strong> with <strong>Empty
+trash</strong>, which deletes for good. <strong>Home</strong> makes the selected item the site's
+default page; there must always be exactly one.</p>
+<h3 id="adding-a-menu-item">Adding a menu item</h3>
 <ol>
-<li><em>Menu Item Type: External URL Menu Title: Groups Link: groups</em></li>
+<li>Open the menu and select <strong>New</strong>.</li>
+<li>Next to <strong>Menu Item Type</strong>, select <strong>Select</strong>. A picker opens listing
+every type available on this hub, grouped by the extension that provides
+it, plus a <strong>System Links</strong> group at the end.</li>
+<li>Choose a type. The form reloads with the fields that type needs.</li>
+<li>Fill in <strong>Menu Title</strong>. Everything else has a usable default.</li>
+<li><strong>Save &amp; Close</strong>.</li>
 </ol>
-</li>
-<li>Click <strong>Save &amp; Close</strong> from the top right corner</li>
-<li>To create the redirect portion, follow step 5 again except fill out the Menu Title as mainclass and the link as spring2016class</li>
-<li>This will redirect users from */groups/*<em>mainclass</em> <em>to /groups/springdefaultclass</em></li>
-<li>Nest mainclass under groups to create the end result from the redirect</li>
-<li>This is done in the <strong>Menu Item Details</strong> under <strong>Parent</strong></li>
-<li>Set the <strong>Parent</strong> to <strong>Groups</strong></li>
-<li>Click <strong>Save &amp; Close</strong></li>
-</ol>
-<h2 id="creating-a-new-menu">Creating a New Menu</h2>
+<p>The details are:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Menu Item Type</strong></td>
+<td>Set through the picker. Changing it changes the rest of the form.</td>
+</tr>
+<tr>
+<td><strong>Menu Title</strong></td>
+<td>Required. The text shown in the menu.</td>
+</tr>
+<tr>
+<td><strong>Link</strong></td>
+<td>Read-only for a component item — the picker fills it in. Editable for an <strong>External URL</strong> item.</td>
+</tr>
+<tr>
+<td><strong>Alias</strong></td>
+<td>This item's own path segment. Together with its parents' aliases it is the page's URL. Leave it blank and it is generated from the title.</td>
+</tr>
+<tr>
+<td><strong>Note</strong></td>
+<td>A private note, shown only in the administrator interface.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>Which viewing level sees the item.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, Unpublished, or Trashed.</td>
+</tr>
+<tr>
+<td><strong>Menu Location</strong></td>
+<td>Which menu the item belongs to. Change it to move the item between menus.</td>
+</tr>
+<tr>
+<td><strong>Parent Item</strong></td>
+<td><strong>Menu Item Root</strong>, or another item in the same menu. This is what nests items, and what builds the URL.</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Position among its siblings. Available once the item has been saved.</td>
+</tr>
+<tr>
+<td><strong>Target Window</strong></td>
+<td><strong>Parent</strong>, <strong>New Window With Navigation</strong>, or <strong>New Without Navigation</strong>.</td>
+</tr>
+<tr>
+<td><strong>Default Page</strong></td>
+<td>Component items only. Makes this the site's home page.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td><strong>All</strong>, or one content language.</td>
+</tr>
+<tr>
+<td><strong>Template Style</strong></td>
+<td>A specific template style for this page, or the site default.</td>
+</tr>
+</tbody>
+</table>
+<p>Down the right-hand side are collapsible panels: the request fields the
+chosen type declares (for <strong>Single Article</strong>, a <strong>Select Article</strong> picker),
+<strong>Link Type Options</strong> (link title attribute, link CSS class, link image, and
+whether to show the title next to the image), any layout options the type
+declares, and <strong>Module Assignment for this Menu Item</strong>, which lists the
+modules that will and will not show on this page.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> A menu item's options are the ones its layout declares, in the
+component's <code>site/views/&lt;view&gt;/tmpl/&lt;layout&gt;.xml</code>. The component's own
+global options are <em>not</em> merged into the menu item form: the code that
+would load them is disabled behind an always-false condition, with a <code>TODO</code>
+saying that fixing it breaks the form. Recorded in
+the project record.</p>
+</aside>
+<h3 id="where-the-types-come-from">Where the types come from</h3>
+<p>The picker is built from every enabled component. For each one the hub looks
+for a <code>&lt;menu&gt;</code> block in the component's <code>site/metadata.xml</code>. If there is
+none — as for Articles — it scans <code>site/views/</code>, taking each view that is not
+prefixed with an underscore and each layout XML file inside it, and uses the
+title declared there. That is why Articles offers <strong>Single Article</strong>,
+<strong>Category Blog</strong>, <strong>Category List</strong>, <strong>List All Categories</strong>, <strong>Featured
+Articles</strong>, <strong>Archived Articles</strong>, and <strong>Create Article</strong>: one entry per
+layout under <code>core/components/com_content/site/views</code>.</p>
+<p>The <strong>System Links</strong> group at the end is fixed, and holds three types that
+belong to no component:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>External URL</strong></td>
+<td>Links to any address, on this hub or elsewhere. Also acts as a redirect — see <a href="../content/urls/index.html#redirecting-with-a-menu-item">URLs</a>.</td>
+</tr>
+<tr>
+<td><strong>Menu Item Alias</strong></td>
+<td>Points at another menu item, so one page can appear in two menus. Leave the <strong>Alias</strong> field empty when the two items share a parent.</td>
+</tr>
+<tr>
+<td><strong>Text Separator</strong></td>
+<td>A label with no link, for breaking a long menu into groups.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="grouping-articles-under-a-menu">Grouping articles under a menu</h2>
+<p>To give a set of articles a section of their own — an About section, say —
+build the menu first and then show it:</p>
 <ol>
-<li>Navigate to <strong>/administrator</strong></li>
-<li>Hover over <strong>Menus</strong> -&gt; <strong>Menu Manager</strong> and click on <strong>Add New Menu</strong></li>
-<li>Fill out the new menu information</li>
-<li>Click <strong>Save &amp; Close</strong></li>
-<li>From <strong>Menu Manager: Menus</strong>, locate your new menu and click on <strong>Add a module for this menu type</strong> under <em>Modules linked to the menu</em></li>
-<li>Create the new module for your menu by filling in the module configuration information
-<ol>
-<li><strong>Note:</strong> Most menu modules are left aligned</li>
+<li>Create the articles. See <a href="../content/articlemanager/index.html">Article Manager</a>.</li>
+<li><strong>Menus → Menu Manager → New</strong>. Give the menu a <strong>Menu type</strong> of <code>about</code>
+and a <strong>Title</strong> of <code>About</code>. <strong>Save &amp; Close</strong>.</li>
+<li>Open the new menu and add one item per article, each of type <strong>Articles →
+Single Article</strong>, choosing the article in the <strong>Select Article</strong> field.</li>
+<li>Give the section a parent: add one more item, set the other items'
+<strong>Parent Item</strong> to it, and their URLs become <code>/about/&lt;alias&gt;</code>.</li>
+<li>Back on the Menu Manager, follow <strong>Add a module for this menu type</strong>.</li>
+<li>In the module, set a <strong>Title</strong>, set <strong>Status</strong> to <strong>Published</strong>, choose a
+<strong>Position</strong> — <code>left</code> and <code>footer</code> exist in the templates that ship — and
+under <strong>Select Menu</strong> choose the menu you just made.</li>
+<li>Under <strong>Menu Assignment</strong>, set <strong>Module Assignment</strong> to <strong>Only on the
+pages selected</strong> and tick, in <strong>Menu Selection</strong>, the menu items the
+module should appear on.</li>
+<li><strong>Save &amp; Close</strong>.</li>
 </ol>
-</li>
-<li>Click <strong>Save &amp; Close</strong></li>
-<li>Create new menu items, either linked to articles you have created or linked to various components, by navigating to <strong>Menus</strong> and clicking on your new menu</li>
-<li>Click on the <strong>Menu Items</strong> tab and click the <strong>New</strong> button to create menu items
-<ol>
-<li><strong>Note:</strong> Once you have linked menu items to your new menu, navigate back to &quot;<strong>Extensions</strong>&quot; -&gt; <strong>Module Manage</strong>r -&gt; Click on your new menu module -&gt; Confirm the <strong>Menu Assignment</strong> for your module is affiliated with the new menu items you created</li>
-</ol>
-</li>
-</ol>
+<p>The module's other options are <strong>Start Level</strong>, <strong>End Level</strong>, <strong>Show
+Sub-menu Items</strong>, <strong>Show as Disclosure Menu</strong>, and <strong>Show Top Level Items as
+Links</strong>; the advanced tab adds a menu tag ID, a menu class suffix, a layout,
+and caching. There is no &quot;Menu Style&quot; option — that was a Joomla 1.5 setting
+and it is long gone.</p>
+<h2 id="redirecting-a-url">Redirecting a URL</h2>
+<p>A menu item of type <strong>External URL</strong> whose route matches the requested path
+redirects to its link, which is how one hub address is pointed at another
+without moving any content. The Redirect Manager is usually the better tool;
+both are covered in <a href="../content/urls/index.html#redirects">URLs</a>.</p>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> on the Menu Manager sets the <strong>Page Display Options</strong> every menu
+item inherits — browser page title, whether to show the page heading, the
+page heading text, and a page class suffix — and the component permissions.
+They are listed in the
+<a href="../../reference/configuration/components/menus/index.html">Menus configuration reference</a>.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../users/user-notes/index.html" rel="prev"><span>Previous</span>User notes</a><a class="pager__next" href="../content/index.html" rel="next"><span>Next</span>Content</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/07-menus.md">Edit this page on GitHub</a>

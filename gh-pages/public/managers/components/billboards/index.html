@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Billboards · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Billboards is a component that allows you to create a carousel effect on your home page. Slides can be designed with an image in the background and a…">
+  <meta name="description" content="Billboards are the rotating slides a hub shows on its front page. Each slide carries a background image, a heading, a block of text, and an optional learn more…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/billboards/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -83,8 +83,14 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Components</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../answers/index.html">Answers</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Billboards</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#uploading-an-image">Uploading an Image</a></li>
+<li class="toc__item toc__item--l2"><a href="#collections">Collections</a></li>
+<li class="toc__item toc__item--l2"><a href="#creating-a-billboard">Creating a billboard</a></li>
+<li class="toc__item toc__item--l3"><a href="#content">Content</a></li>
+<li class="toc__item toc__item--l3"><a href="#learn-more-link">Learn More Link</a></li>
+<li class="toc__item toc__item--l3"><a href="#styling">Styling</a></li>
+<li class="toc__item toc__item--l2"><a href="#adding-a-background-image">Adding a background image</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-billboard-list">The billboard list</a></li>
+<li class="toc__item toc__item--l2"><a href="#displaying-a-carousel">Displaying a carousel</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../blogs/index.html">Blogs</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cart/index.html">Cart</a></li>
@@ -97,18 +103,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -127,12 +133,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -147,24 +153,209 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Billboards</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/billboards">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Billboards is a component that allows you to create a carousel effect on your home page. Slides can be designed with an image in the background and a short piece of text that goes over the image. Many use this feature to promote <a href="../../users/supergroups/index.html">Super Groups</a> or popular <a href="../../../tools/developers/index.html">Tools</a>.</p>
-<h2 id="uploading-an-image">Uploading an Image</h2>
-<p><img src="../../media/billboards-billboards.png" alt="billboards" /></p>
-<p><img src="../../media/billboards-billboards2.png" alt="billboards2" /></p>
-<p><img src="../../media/billboards-billboards3.png" alt="billboards3" /></p>
+<p>Billboards are the rotating slides a hub shows on its front page. Each slide
+carries a background image, a heading, a block of text, and an optional
+&quot;learn more&quot; link. Slides belong to a collection, and the <code>mod_billboards</code>
+module displays one collection as a carousel. Go to <strong>Components →
+Billboards</strong>.</p>
+<p>The component has two screens, reached from the submenu:</p>
+<ul>
+<li><strong>Billboards</strong> — the slides.</li>
+<li><strong>Collections</strong> — the named groups a module points at.</li>
+</ul>
+<h2 id="collections">Collections</h2>
+<p>A collection is a name and nothing else. It exists so that a hub can run more
+than one carousel — a front-page set and a landing-page set, say — and point
+each module instance at a different one.</p>
+<p>Press <strong>New</strong> on the <strong>Collections</strong> screen, fill in <strong>Collection Name</strong>, and
+<strong>Save &amp; Close</strong>. The list shows each collection's ID and name, and the
+toolbar carries <strong>New</strong>, <strong>Edit</strong>, and <strong>Delete</strong>.</p>
+<p>Every billboard needs a collection. If you save a billboard without picking
+one, the component creates a collection called <em>Default Collection</em> and puts
+the slide in it.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Deleting a collection does not delete the billboards in it. They
+stay in the database, out of every carousel, until you edit each one and
+give it a collection that exists.</p>
+</aside>
+<h2 id="creating-a-billboard">Creating a billboard</h2>
 <ol>
-<li>To upload an image, open the <strong>Billboard</strong> you would like to edit</li>
-<li>Click <strong>Upload Image</strong>, located underneath the <strong>Background Image</strong> field</li>
-<li>Click the <strong>Browse</strong> button located on the bottom of the <strong>Media Manager</strong> pop-up, and locate and select the picture you would like to upload</li>
-<li>Click <strong>Start Upload</strong>. You should then see your picture appear as an option</li>
-<li>Copy the file name and paste it into the <strong>Background Image</strong> field</li>
+<li>Go to <strong>Components → Billboards</strong> and press <strong>New</strong>.</li>
+<li>Fill in the fields below.</li>
+<li>Press <strong>Save &amp; Close</strong>.</li>
 </ol>
+<p>The edit form has three fieldsets.</p>
+<h3 id="content">Content</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Required. What the slide is called in the list</td>
+</tr>
+<tr>
+<td><strong>Collection</strong></td>
+<td>The collection this slide belongs to</td>
+</tr>
+<tr>
+<td><strong>Ordering</strong></td>
+<td>Position within the collection. On a new billboard this reads <em>New Items Last</em>; it becomes a drop-down once the slide is saved</td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td>The heading drawn over the image</td>
+</tr>
+<tr>
+<td><strong>Background image</strong></td>
+<td>A file picker. See below</td>
+</tr>
+<tr>
+<td><strong>Text</strong></td>
+<td>The body text, edited in the rich-text editor</td>
+</tr>
+</tbody>
+</table>
+<h3 id="learn-more-link">Learn More Link</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Learn more text</strong></td>
+<td>The link's label. Leave empty for no link</td>
+</tr>
+<tr>
+<td><strong>Learn more target</strong></td>
+<td>Where the link goes</td>
+</tr>
+<tr>
+<td><strong>Learn more class</strong></td>
+<td>An extra CSS class for the link</td>
+</tr>
+<tr>
+<td><strong>Learn more location</strong></td>
+<td><strong>Top left</strong>, <strong>Top right</strong>, <strong>Bottom left</strong>, <strong>Bottom right</strong>, or <strong>Relative</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="styling">Styling</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alias</strong></td>
+<td>The slide's HTML <code>id</code>. The module writes the slide's CSS against it, so give each billboard a distinct alias</td>
+</tr>
+<tr>
+<td><strong>Text padding</strong></td>
+<td>A CSS <code>padding</code> value applied to the slide's text</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>Free-form CSS added to the page for this slide</td>
+</tr>
+</tbody>
+</table>
+<h2 id="adding-a-background-image">Adding a background image</h2>
+<p>The <strong>Background image</strong> field is an ordinary file input on the edit form.
+There is no media browser and no separate upload step.</p>
+<ol>
+<li>Open the billboard you want to edit.</li>
+<li>Press the button beside <strong>Background image</strong> and choose a file from your
+computer.</li>
+<li>Press <strong>Save</strong> or <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>The file is scanned for viruses and moved into the directory named by the
+component's <strong>Image Location</strong> option, which defaults to
+<code>/site/media/images/billboards/</code>. See the
+<a href="../../../reference/configuration/components/billboards/index.html">generated parameter list</a>.
+Uploading a new image deletes the one it replaces.</p>
+<p>Once a billboard has an image, the edit form shows it under <strong>Current Image</strong>,
+scaled to 500 pixels wide.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The screenshots on this page show an older interface in which the
+image was chosen through a <strong>Media Manager</strong> pop-up with <strong>Browse</strong> and
+<strong>Start Upload</strong> buttons, and the filename was then pasted into a text
+field. That flow no longer exists. Ignore the pop-up in the second and third
+images.</p>
+</aside>
+<p><img src="../../media/billboards-billboards.png" alt="The Components menu with Billboards selected" /></p>
+<p><img src="../../media/billboards-billboards2.png" alt="The old Media Manager pop-up, no longer used" /></p>
+<p><img src="../../media/billboards-billboards3.png" alt="The old background image field, no longer used" /></p>
+<h2 id="the-billboard-list">The billboard list</h2>
+<p>The list shows each slide's ID, name, collection, ordering, and published
+state. Click a name to edit it. Click the icon in the <strong>Published</strong> column to
+toggle the slide on or off. Reorder slides by typing new numbers in the
+<strong>Ordering</strong> column and pressing the column's sort arrows.</p>
+<p>The toolbar carries <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>New</strong>, <strong>Edit</strong>,
+<strong>Delete</strong>, and — for users with <code>core.admin</code> — <strong>Options</strong>.</p>
+<p>Only published billboards appear in a carousel.</p>
+<h2 id="displaying-a-carousel">Displaying a carousel</h2>
+<p>Slides are not shown by the component. They are shown by the
+<code>mod_billboards</code> module, which you publish to a template position from
+<strong>Extensions → Modules</strong>. Its options are:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Billboard Collection</strong></td>
+<td>collection <code>1</code></td>
+<td>Which collection to display</td>
+</tr>
+<tr>
+<td><strong>Slide Transition Style</strong></td>
+<td>Scroll Horizontal</td>
+<td>Scroll Horizontal, Scroll Vertical, Fade, Shuffle, Zoom, or Turn left</td>
+</tr>
+<tr>
+<td><strong>Random</strong></td>
+<td>No</td>
+<td>Show the slides in random order</td>
+</tr>
+<tr>
+<td><strong>Slide Time</strong></td>
+<td>5</td>
+<td>Seconds each slide stays on screen</td>
+</tr>
+<tr>
+<td><strong>Transition Speed</strong></td>
+<td>1</td>
+<td>Seconds a transition takes</td>
+</tr>
+<tr>
+<td><strong>Display Pager</strong></td>
+<td>Yes</td>
+<td>Show the dots that let a visitor jump between slides</td>
+</tr>
+</tbody>
+</table>
+<p>Several instances of the module can run at once, each on its own collection
+and its own timing.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../answers/index.html" rel="prev"><span>Previous</span>Answers</a><a class="pager__next" href="../blogs/index.html" rel="next"><span>Next</span>Blogs</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/02-billboards.md">Edit this page on GitHub</a>

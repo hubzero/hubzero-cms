@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tools · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Managing Tools While Tools can only be managed through the tool pipeline, tool sessions can be managed on the backend in the /administrator interface. Managing…">
+  <meta name="description" content="The Tools component has two halves. The half a tool contributor sees lives on the site, at , and is where a tool moves from registration to publication. The…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/tools/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -116,8 +116,17 @@
 <li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Tools</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#managing-tools">Managing Tools</a></li>
-<li class="toc__item toc__item--l2"><a href="#managing-the-maximum-open-tool-sessions-per-user">Managing the Maximum Open Tool Sessions per User</a></li>
+<li class="toc__item toc__item--l2"><a href="#pipeline">Pipeline</a></li>
+<li class="toc__item toc__item--l3"><a href="#versions">Versions</a></li>
+<li class="toc__item toc__item--l2"><a href="#hosts">Hosts</a></li>
+<li class="toc__item toc__item--l2"><a href="#host-types">Host Types</a></li>
+<li class="toc__item toc__item--l2"><a href="#zones">Zones</a></li>
+<li class="toc__item toc__item--l2"><a href="#sessions">Sessions</a></li>
+<li class="toc__item toc__item--l3"><a href="#active">Active</a></li>
+<li class="toc__item toc__item--l3"><a href="#session-classes">Session classes</a></li>
+<li class="toc__item toc__item--l2"><a href="#user-preferences">User Preferences</a></li>
+<li class="toc__item toc__item--l2"><a href="#file-handlers">File Handlers</a></li>
+<li class="toc__item toc__item--l2"><a href="#windows">Windows</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
@@ -127,12 +136,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -147,31 +156,225 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Tools</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/tools">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="managing-tools">Managing Tools</h2>
-<p>While Tools can only be managed through the tool pipeline, tool sessions can be managed on the backend in the /administrator interface.</p>
-<h2 id="managing-the-maximum-open-tool-sessions-per-user">Managing the Maximum Open Tool Sessions per User</h2>
-<p>User session limits (and tool preferences) can be found by following these steps:</p>
+<p>The Tools component has two halves. The half a tool contributor sees lives on
+the site, at <code>/tools/pipeline</code>, and is where a tool moves from registration to
+publication. The half described here lives in the administrator interface and
+manages the machinery around it: execution hosts, session zones, running
+sessions, per-user session limits, and file handlers.</p>
+<p>For the pipeline itself — the nine tool states, the administrator controls,
+the install and publish steps, and the group membership those controls
+require — see <a href="../../maintenance/tools/index.html">Tools</a> in the maintenance
+section. That chapter is the one to read before touching a tool
+contribution.</p>
+<p>Go to <strong>Components → Tools</strong>. The submenu holds:</p>
+<table>
+<thead>
+<tr>
+<th>Screen</th>
+<th>Shown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pipeline</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>Hosts</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>Host Types</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>Zones</strong></td>
+<td>only when the <strong>Zones</strong> option is on</td>
+</tr>
+<tr>
+<td><strong>Sessions</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>User Preferences</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>File Handlers</strong></td>
+<td>always</td>
+</tr>
+<tr>
+<td><strong>Windows</strong></td>
+<td>only when the <strong>Access Key ID</strong> option is set</td>
+</tr>
+</tbody>
+</table>
+<p>Every screen needs <code>core.manage</code> on <code>com_tools</code>. That is separate from the
+pipeline's own controls, which are granted by membership of the group named
+in the <strong>Admin Group</strong> option.</p>
+<h2 id="pipeline">Pipeline</h2>
+<p>A list of every tool contribution: <strong>ID</strong>, <strong>Name</strong>, <strong>Title</strong>, <strong>State</strong>,
+<strong>Registered</strong>, <strong>Changed</strong>, and <strong>Versions</strong>. Above it are a <strong>Search</strong> box
+and a <strong>State</strong> drop-down. The toolbar carries only <strong>Options</strong> and <strong>Help</strong> —
+tools are not created or deleted here.</p>
+<p>Clicking a tool's name or title opens a small edit form carrying only <strong>Title</strong>,
+<strong>Ticket ID</strong>, and <strong>State</strong>. <strong>State</strong> offers all ten values — Unpublished,
+Registered, Created, Uploaded, Installed, Updated, Approved, Published,
+Retired, Abandoned. Setting it here writes the state
+directly and skips everything the pipeline would otherwise do, so use the
+site-side <strong>Flip Status</strong> control instead unless you are repairing a stuck
+contribution.</p>
+<p><strong>Options</strong> in the toolbar opens the component's configuration; the full
+parameter list is in the
+<a href="../../../reference/configuration/components/tools/index.html">generated reference</a>.</p>
+<h3 id="versions">Versions</h3>
+<p>The number in the <strong>Versions</strong> column links to the tool's version list —
+<strong>ID</strong>, <strong>Name</strong>, <strong>Version</strong>, <strong>Revision</strong>, <strong>State</strong>, and, when DOI
+registration is configured, <strong>DOI</strong>.</p>
+<p>A version's edit form has a <strong>Details</strong> tab with <strong>Command</strong>, <strong>Timeout</strong>,
+<strong>Required Host</strong>, <strong>Middleware</strong> and <strong>Parameters</strong>, a DOI panel, and a
+<strong>Zones</strong> tab listing the zones the version may run in.</p>
+<p>The <strong>DOI</strong> column appears only when the <strong>Enable DOI service?</strong> option is on.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The component has a <code>batchdoi</code> task that registers DOIs for tool
+versions that lack one, but no screen links to it. Reach it by hand at
+<code>index.php?option=com_tools&amp;controller=pipeline&amp;task=batchdoi&amp;limit=25</code>.
+It processes <code>limit</code> records — two by default — and prints its results as
+plain text.</p>
+</aside>
+<h2 id="hosts">Hosts</h2>
+<p>The execution hosts that run tool sessions. Columns: <strong>Name</strong>, <strong>Service
+Host</strong>, <strong>Provisions</strong>, <strong>Status</strong>, <strong>Uses</strong>, <strong>Zone</strong>, and <strong>Broken
+Containers</strong>.</p>
+<p>A host's edit form asks for <strong>Name</strong> (a valid hostname), <strong>Service Host</strong>,
+the <strong>Types</strong> it provides, and its <strong>Zone</strong>. The right-hand side shows the
+host's live status, its <strong>Tool Sessions</strong>, and its <strong>Container Statuses</strong>.</p>
+<p>The <strong>Provisions</strong> cell lists every host type; the ones the host provides are
+bold. Each is a link that flips that capability bit on the host, so you can
+take one capability away without touching the rest. The <strong>Status</strong> cell links
+to a live status page for the host.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Hosts, provisions, status and container information live in the
+middleware database, not the CMS database. When the middleware is
+unreachable these screens are empty or error.</p>
+</aside>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The provisions toggle is a plain GET link with no CSRF token
+and no permission check beyond <code>core.manage</code>. Treat a link to it in an
+email the way you would treat any other unguarded admin action.</p>
+</aside>
+<h2 id="host-types">Host Types</h2>
+<p>The capability bits a host advertises and a tool requires. Columns:
+<strong>Name</strong>, <strong>Bit#</strong>, <strong>Description</strong>, and <strong>References</strong> — the number of hosts
+using the type.</p>
+<p>An entry is a <strong>Name</strong>, a <strong>Value</strong> (the bit number), and a <strong>Description</strong>.
+A tool's <strong>Required Host</strong> field is matched against these.</p>
+<h2 id="zones">Zones</h2>
+<p>Zones group hosts into pools — a local cluster, a remote site — so a tool
+version can be pinned to one. The screen appears only when the <strong>Zones</strong>
+option is turned on.</p>
+<p>Columns: <strong>Zone</strong>, <strong>Type</strong>, <strong>State</strong>, <strong>Default</strong>, <strong>Master</strong>, <strong>SSH Key
+Path</strong>, and <strong>Locations</strong>. Type is <strong>Local</strong> or <strong>Remote</strong>; state is <strong>up</strong>
+or <strong>down</strong>; one zone is the <strong>Default</strong> and the toolbar's <strong>Make default</strong>
+sets it.</p>
+<p>A zone's edit form has a <strong>Details</strong> tab and a <strong>Locations</strong> tab. Details
+takes the <strong>Zone</strong> name (letters, numbers, dashes and underscores), a
+<strong>Title</strong>, a <strong>Description</strong>, a <strong>Master</strong>, a <strong>Type</strong>, and a <strong>State</strong>, plus
+an <strong>Image</strong> panel and a <strong>Parameters</strong> fieldset holding the VNC and
+websocket proxy settings:</p>
+<ul>
+<li><strong>Websocket VNC Proxy Server Enabled</strong>, <strong>Websocket VNC Proxy Server</strong>,
+<strong>Secure Websocket VNC Proxy Server</strong></li>
+<li><strong>VNC Proxy Server Configuration Enabled</strong>, <strong>VNC Proxy Server</strong>,
+<strong>Secure VNC Proxy Server</strong></li>
+</ul>
+<p><strong>Locations</strong> are IP ranges — <strong>IP from</strong>, <strong>IP to</strong>, <strong>Continent</strong>,
+<strong>Country</strong>, <strong>Region</strong>, <strong>City</strong> — used to send a visitor to the nearest
+zone. A zone must be saved before locations or an image can be added.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>SSH Key Path</strong> is a column on the list but has no field on the
+form. Set it in the database, or through whatever provisions the zone.</p>
+</aside>
+<h2 id="sessions">Sessions</h2>
+<p>Two screens, reached from the sub-navigation: <strong>Active</strong> and <strong>Session
+classes</strong>.</p>
+<h3 id="active">Active</h3>
+<p>Every tool session currently running. Columns: <strong>Session</strong>, <strong>Owner</strong>,
+<strong>Viewer</strong>, <strong>Started</strong>, <strong>Last accessed</strong>, <strong>Tool</strong>, <strong>Exec host</strong>, and
+<strong>Stop</strong>. Drop-downs filter by <strong>Tool</strong>, <strong>Execution Host</strong>, and <strong>Viewer</strong>.</p>
+<p>The <strong>Stop</strong> cell terminates one session. Ticking rows and pressing
+<strong>Delete</strong> terminates several. Terminating is immediate and the user is not
+warned.</p>
+<h3 id="session-classes">Session classes</h3>
+<p>A session class is a named session allowance. Columns: <strong>ID</strong>, <strong>Alias</strong>, and
+<strong>Jobs Allowed</strong>.</p>
+<p>The install creates one class, <code>default</code>, allowing <strong>3</strong> concurrent sessions.
+That is the number every user gets unless something overrides it.</p>
+<p>A class's edit form has:</p>
+<ul>
+<li><strong>Alias</strong> — must be unique, and cannot be <code>custom</code>, which is reserved.</li>
+<li><strong>Jobs Allowed</strong> — the number of concurrent sessions.</li>
+<li><strong>User Access Groups</strong> — the access groups this class applies to. A user
+added to one of these groups is given this class automatically.</li>
+</ul>
+<p>Deleting a class moves everyone in it back to the <code>default</code> class. The
+<code>default</code> class itself cannot be deleted.</p>
+<h2 id="user-preferences">User Preferences</h2>
+<p>The per-user override of the session allowance. This is the screen the old
+version of this page described.</p>
+<p><img src="../../media/tools-tools-userpreferences.png" alt="The User Preferences list" /></p>
+<p>The list shows <strong>User ID</strong>, <strong>Username</strong>, <strong>Name</strong>, <strong>Session class</strong>, and
+<strong>Sessions</strong>, all sortable. Above it, a <strong>Search by</strong> drop-down (<strong>Username</strong>
+or <strong>Name</strong>) with a search box and <strong>Go</strong>, and a <strong>- Session Class -</strong> filter.</p>
+<p>Only users with an explicit entry appear. Everyone else runs on the class
+their access groups give them, or on <code>default</code>.</p>
+<p>To change a user's limit:</p>
 <ol>
-<li>Navigate to /administrator interface</li>
-<li>Hover over Components and from the drop-down select Tools</li>
-<li>Click on User Preferences</li>
-<li>Number of sessions is dictated by the session class
-<ol>
-<li>Default Class = 3
-<ol>
-<li>Add another class by clicking &quot;Custom&quot; class, then enter the number for the user</li>
+<li>Go to <strong>Components → Tools → User Preferences</strong>.</li>
+<li>If the user is listed, tick the row and press <strong>Edit</strong>. If not, press
+<strong>New</strong> and find them with the <strong>User</strong> field — search by name, or type a
+username or user ID.</li>
+<li>Set <strong>Session class</strong>. Picking a named class fills <strong>Sessions</strong> from that
+class and makes it read-only. Picking <strong>custom</strong> leaves <strong>Sessions</strong>
+editable, so you can give one person a number no class offers.</li>
+<li>Fill in <strong>Sessions</strong> if you chose <strong>custom</strong>. It must be numeric.</li>
+<li><strong>Preferences</strong> takes free-form extra settings for the session.</li>
+<li>Press <strong>Save &amp; Close</strong>.</li>
 </ol>
-</li>
-</ol>
-</li>
-<li>If a user doesn't have an entry, you can create one for them</li>
-</ol>
-<p><img src="../../media/tools-tools-userpreferences.png" alt="tools_userpreferences" /></p>
+<p>Ticking rows and pressing <strong>Default</strong> in the toolbar puts those users back on
+the <code>default</code> class.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>Default</strong> action fails with <em>Could not find class with
+name 'default'!</em> if the <code>default</code> session class has been renamed or
+deleted. Do not rename it.</p>
+</aside>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The screenshot above predates two changes: the <strong>Search by</strong> and
+<strong>for</strong> labels beside the filter, which were missing strings, and the
+<strong>Zones</strong> and <strong>Windows</strong> submenu entries, which appear when those options
+are on.</p>
+</aside>
+<h2 id="file-handlers">File Handlers</h2>
+<p>A file handler tells the hub which tool opens a given file from a user's
+storage. Columns: <strong>Tool alias</strong>, <strong>Prompt</strong>, and <strong>Rules</strong>.</p>
+<p>A handler is a <strong>Tool alias</strong> chosen from the installed tools, a <strong>Prompt</strong>
+shown to the user, and a list of rules. Each rule is an <strong>Extension</strong> and a
+<strong>Quantity</strong> — how many files of that extension the tool accepts. <strong>Add
+rule</strong> and <strong>Delete rule</strong> build the list.</p>
+<p>If the drop-down says <em>No tools installed</em>, no tool has reached the
+<strong>Installed</strong> state yet.</p>
+<h2 id="windows">Windows</h2>
+<p>Present only when the component's <strong>Access Key ID</strong> option holds an Amazon
+Web Services key. It manages Windows tool instances on AWS: <strong>ID</strong>, <strong>Name</strong>,
+<strong>Title</strong>, <strong>UUID</strong>, in-use and available session counts, and <strong>State</strong>, with
+per-instance session and usage views and a <strong>Terminate</strong> action.</p>
+<p>Leave the option empty on a hub with no Windows tools and the screen never
+appears.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../wishlist/index.html" rel="prev"><span>Previous</span>Wish lists</a><a class="pager__next" href="../../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/25-tools.md">Edit this page on GitHub</a>

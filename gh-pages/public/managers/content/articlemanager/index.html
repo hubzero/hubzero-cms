@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Article Manager · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Creating an Article First login to the administrative Interface Once logged in, find Content in the main menu bar located toward the top of the page. You…">
+  <meta name="description" content="The Article Manager lists every article on the hub and opens the editor for one. Reach it at Content → Article Manager , or directly at . The screen is titled…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/articlemanager/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -78,10 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../menus/index.html">Menus</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Content</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Article Manager</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#creating-an-article">Creating an Article</a></li>
-<li class="toc__item toc__item--l2"><a href="#editing-an-article">Editing an Article</a></li>
-<li class="toc__item toc__item--l2"><a href="#deleting-an-article">Deleting an Article</a></li>
-<li class="toc__item toc__item--l2"><a href="#article-pages-can-articles-be-assigned-to-multiple-categories-or-sections">Article Pages: Can articles be assigned to multiple categories or sections?</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-article-list">The article list</a></li>
+<li class="toc__item toc__item--l3"><a href="#batch-processing">Batch processing</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-editor">The editor</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-publishing-workflow">The publishing workflow</a></li>
+<li class="toc__item toc__item--l2"><a href="#categories">Categories</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../urls/index.html">URLs</a></li>
 </ul></details></li>
@@ -99,18 +101,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -129,12 +131,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -149,82 +151,298 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Article Manager</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/content/articlemanager">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="creating-an-article">Creating an Article</h2>
-<ol>
-<li>First login to the administrative Interface</li>
-<li>Once logged in, find <strong>Content</strong> in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing items such as <strong>Article Manager</strong>, <strong>Category Manager</strong>, and <strong>Media Manager</strong></li>
-<li>Click on <strong>Article Manager</strong></li>
-<li>Click the <strong>+</strong> sign to add a new article page. The New Article screen contains options for categorizing and naming the article, editing content and selecting parameters</li>
-<li>Enter a title in the <strong>Title</strong> field. This is used when the article title is displayed</li>
-<li>Enter an alias in the <strong>Alias</strong> field. This is the alias that will appear in the URL. For example, choosing hubzero as the alias will result in <strong>https://yourhub.org/hubzero</strong></li>
-<li>Select a <strong>Category</strong> using the appropriate drop down menu
-<ul>
-<li>If no category applies, choose <strong>Uncategorized</strong>.</li>
-</ul>
-</li>
-<li>Select the status of the article. If you would like to see it on the frontend immediately, choose <strong>Published</strong></li>
-<li>Select Access level:
-<ul>
-<li><strong>Public</strong>: All hub visitors can access the article page.</li>
-<li><strong>Registered</strong>: Users must be registered and logged in to see the page.</li>
-<li><strong>Special</strong></li>
-<li><strong>Protected</strong></li>
-<li><strong>Private</strong></li>
-</ul>
-</li>
-<li>In the <strong>Article Text</strong> field, enter the content of the article</li>
-<li>Click the <strong>Save and Close</strong> (star) toolbar button to save your changes and to return to the Article Manager screen
-<ul>
-<li>Alternatively, you may click the <strong>Save</strong> (check in a circle) toolbar button to save your article but leave it open for editing.</li>
-</ul>
-</li>
-<li>To find view your article on the frontend, navigate to yourhub.org/alias. If you chose a category, this alias might be slightly different. See URL documentation under Content for more information</li>
-</ol>
-<h2 id="editing-an-article">Editing an Article</h2>
-<ol>
-<li>First login to the administrative Interface</li>
-<li>Once logged in, find <strong>Content</strong> in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing items such as <strong>Article Manager</strong>, <strong>Category Manager</strong>, and <strong>Media Manager</strong></li>
-<li>Click on the <strong>Article Manager</strong> link</li>
-<li>You should now be presented with a list of all the content articles. There are a few methods to find the specific entry you want to edit. You can filter by state, category, author, etc., or search for the title of the article page. A third option would be to look through the list manually, if you really want</li>
-<li>Please find the <strong>About Us</strong> page as we will use that as an example. Once found, click the article title to edit it</li>
-<li>You now should be presented with a page where you can edit the text, title and other page parameters similar to the image below</li>
-<li>When your edits are complete, click the <strong>Save and Close</strong> (star) toolbar button to save your changes to return to the Article Manager screen</li>
-<li>Alternatively, you may click the <strong>Save</strong> (check in a circle) toolbar button to save your article but leave it open for editing</li>
-</ol>
-<h2 id="deleting-an-article">Deleting an Article</h2>
-<p>Moving to the Trash:</p>
-<ol>
-<li>First login to the administrative Interface</li>
-<li>Once logged in, find <strong>Content</strong> in the main menu bar located toward the top of the page. You should be presented with a drop-down menu containing items such as <strong>Article Manager</strong>, <strong>Category Manager</strong>, and <strong>Media Manager</strong></li>
-<li>Click on the <strong>Article Manager</strong> link</li>
-<li>Check the box next to the article you want to trash</li>
-<li>Then click <strong>Trash</strong> (trashcan) toolbar button. This will move the article to a trash bin so that it can be retrieved later if needed. It does not permanently delete the article</li>
-</ol>
-<p>To retrieve the trashed article, select the status filter of the article list to <strong>trashed</strong>. This will show all the articles with a status of <strong>trashed</strong>. Click on the article’s title and choose the status that you require – typically <strong>published</strong>.</p>
-<p>Permanently Deleting:</p>
-<ol>
-<li>If you want to make sure the Article is completely gone from the system (so no further roll back is available), select the status filter of the article list to <strong>trashed</strong>. This will show all the articles with a status of <strong>trashed</strong></li>
-<li>Check the box next to the article you want to delete</li>
-<li>Click the <strong>Empty Trash</strong> (trashcan) toolbar button to remove the article permanently. Recovery is not possible after this action
-<ul>
-<li><strong>Note:</strong> Articles in the Trash Manager are not the same as Archived Articles.</li>
-</ul>
-</li>
-<li>Check the box next to the article you want to unarchive</li>
-</ol>
-<h2 id="article-pages-can-articles-be-assigned-to-multiple-categories-or-sections">Article Pages: Can articles be assigned to multiple categories or sections?</h2>
-<p>No, articles and other content items cannot be assigned to multiple categories or sections. Possible work-arounds include:</p>
-<ul>
-<li>Creating duplicate articles in multiple categories.</li>
-<li>Using menus rather than dynamic lists of content items.</li>
-<li>Using various third party extensions that simulate assignment to multiple categories.</li>
-<li>Using key words to simulate categories and sections.</li>
-</ul>
+<p>The Article Manager lists every article on the hub and opens the editor for
+one. Reach it at <strong>Content → Article Manager</strong>, or directly at
+<code>/administrator/index.php?option=com_content</code>. The screen is titled <strong>Article
+Manager: Articles</strong>, and carries a submenu with two entries, <strong>Articles</strong> and
+<strong>Categories</strong>.</p>
+<h2 id="the-article-list">The article list</h2>
+<p>Seven filters sit above the list, and a search box.</p>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Filter:</strong></td>
+<td>Matches the search text against the article title or alias.</td>
+</tr>
+<tr>
+<td><strong>- Select Status -</strong></td>
+<td>Published, Unpublished, Archived, Trashed, or All.</td>
+</tr>
+<tr>
+<td><strong>- Select Category -</strong></td>
+<td>One category. Articles in its children are not included.</td>
+</tr>
+<tr>
+<td><strong>- Select Access -</strong></td>
+<td>One access level.</td>
+</tr>
+<tr>
+<td><strong>- Select Max Levels -</strong></td>
+<td>Nothing. See the warning below.</td>
+</tr>
+<tr>
+<td><strong>- Select Author -</strong></td>
+<td>Nothing.</td>
+</tr>
+<tr>
+<td><strong>- Select Language -</strong></td>
+<td>Nothing.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Only the search box and the Status, Category, and Access
+filters work. The controller reads <strong>Max Levels</strong>, <strong>Author</strong>, and
+<strong>Language</strong> from the request and stores them, but never applies them to
+the query; the Author and Max Levels menus are also handed empty option
+lists, so they have nothing in them to pick. The search box's placeholder
+offers an <code>ID:</code> prefix that the list does not implement either.</p>
+</aside>
+<p>With no status filter set, the list shows everything except trashed
+articles. To see trashed articles, set <strong>- Select Status -</strong> to <strong>Trashed</strong>.</p>
+<p>The columns are <strong>Title</strong> (with the alias beneath it), <strong>Status</strong>,
+<strong>Category</strong>, <strong>Ordering</strong>, <strong>Access</strong>, <strong>Created by</strong>, <strong>Date</strong>,
+<strong>Language</strong>, and <strong>ID</strong>. Every column heading except Ordering sorts. Sort by
+<strong>Ordering</strong> to enable the up and down arrows and the ordering boxes;
+ordering is kept per category, so the list is grouped by category while you
+reorder it.</p>
+<p>Selecting the checkboxes of one or more articles enables the toolbar
+buttons:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New</strong></td>
+<td>Opens an empty article.</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Opens the selected article. Clicking the title does the same.</td>
+</tr>
+<tr>
+<td><strong>Publish</strong> / <strong>Unpublish</strong></td>
+<td>Sets the state to Published or Unpublished.</td>
+</tr>
+<tr>
+<td><strong>Archive</strong></td>
+<td>Sets the state to Archived.</td>
+</tr>
+<tr>
+<td><strong>Check In</strong></td>
+<td>Releases an article left checked out by someone else.</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Sets the state to Trashed. It does not delete anything.</td>
+</tr>
+<tr>
+<td><strong>Options</strong></td>
+<td>The component's configuration.</td>
+</tr>
+</tbody>
+</table>
+<p>Each button skips articles you lack <code>core.edit.state</code> on and reports the ones
+it skipped.</p>
+<h3 id="batch-processing">Batch processing</h3>
+<p>Below the list, administrators who hold <strong>Create</strong>, <strong>Edit</strong>, and <strong>Edit
+State</strong> on <code>com_content</code> get a <strong>Batch process the selected articles</strong>
+panel. It sets the access level and the language of the checked articles,
+and moves or copies them into another category. Choosing a target category
+is mandatory — the batch is refused without one, even if all you wanted to
+change was the access level. Copying leaves the originals alone and applies
+the other changes to the copies.</p>
+<h2 id="the-editor">The editor</h2>
+<p><strong>New</strong> or <strong>Edit</strong> opens <strong>Article Manager: Add New Article</strong> or <strong>Article
+Manager: Edit Article</strong>. The toolbar is <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Save as
+Copy</strong>, <strong>Save &amp; New</strong>, <strong>Cancel</strong>, and <strong>Help</strong>. <strong>Save as Copy</strong> and
+<strong>Save &amp; New</strong> both blank the alias, reset the created and start-publishing
+dates to now, and clear the finish-publishing date.</p>
+<p>The main column holds:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Required.</td>
+</tr>
+<tr>
+<td><strong>Alias</strong></td>
+<td>The article's own slug. Leave it blank and it is generated from the title.</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Required. Lists only the categories you may create in. A new article defaults to <strong>Uncategorised</strong>.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Published, Unpublished, Archived, or Trashed. Read-only without <code>core.edit.state</code>.</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>The viewing level. A stock hub ships three: <strong>Public</strong>, <strong>Registered</strong>, and <strong>Special</strong>. See <a href="../../users/accesslevels/index.html">Access levels</a>.</td>
+</tr>
+<tr>
+<td><strong>Featured</strong></td>
+<td>Yes or No. See the warning below.</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td><strong>All</strong>, or one installed content language.</td>
+</tr>
+<tr>
+<td><strong>Article Text</strong></td>
+<td>The body, in the site's default editor.</td>
+</tr>
+</tbody>
+</table>
+<p>The right column shows the article's ID, who created it and when, and who
+last modified it and when, above a stack of collapsible panels:</p>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>Holds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Publishing Options</strong></td>
+<td><strong>Start Publishing</strong> and <strong>Finish Publishing</strong>, plus <strong>Revision</strong> and <strong>Hits</strong> once the article has them. Both dates are shown in your own time zone, and the abbreviation is printed next to the label.</td>
+</tr>
+<tr>
+<td><strong>Article Options</strong></td>
+<td>Per-article overrides for everything on the component's <strong>Articles</strong> options — Show Title, Show Author, Show Hits, and the rest. Each defaults to <strong>Use Global</strong>.</td>
+</tr>
+<tr>
+<td><strong>Key Reference</strong></td>
+<td>A free-text field for tying the article to a record in another system.</td>
+</tr>
+<tr>
+<td><strong>Configure Edit Screen</strong></td>
+<td>Only for administrators. Turns the Publishing Options and Article Options panels on or off for everyone, and turns on the <strong>Images and links</strong> panel.</td>
+</tr>
+<tr>
+<td><strong>Images and links</strong></td>
+<td>Intro and full-article images with alt text, captions and float, and three arbitrary links. Hidden unless <strong>Configure Edit Screen</strong> turns it on.</td>
+</tr>
+<tr>
+<td><strong>Metadata Options</strong></td>
+<td>Meta description, keywords, robots, author, and content rights.</td>
+</tr>
+</tbody>
+</table>
+<p>Administrators also get a <strong>Permissions</strong> block across the foot of the form,
+setting Delete, Edit, and Edit State for this one article.</p>
+<p>Opening an article checks it out to you. Leaving with <strong>Save &amp; Close</strong> or
+<strong>Cancel</strong> checks it back in; closing the browser tab does not, which is what
+<strong>Check In</strong> on the list is for.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> The <strong>Featured</strong> field writes to the article's <code>featured</code>
+column, but the site's <strong>Featured Articles</strong> page reads a separate
+<code>#__content_frontpage</code> table that nothing in the administrator interface
+writes to. Setting <strong>Featured</strong> to <strong>Yes</strong> therefore has no visible effect.
+The administrator's own Featured Articles screen is unreachable — its menu
+entry is commented out, and the code behind it refers to a model class that
+does not exist. Both are recorded in the project record.</p>
+</aside>
+<h2 id="the-publishing-workflow">The publishing workflow</h2>
+<p>An article has one of four states.</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Published</strong></td>
+<td>Visible on the site, subject to the access level and the publishing dates.</td>
+</tr>
+<tr>
+<td><strong>Unpublished</strong></td>
+<td>Not visible.</td>
+</tr>
+<tr>
+<td><strong>Archived</strong></td>
+<td>Not in ordinary listings; reachable through an <strong>Archived Articles</strong> menu item.</td>
+</tr>
+<tr>
+<td><strong>Trashed</strong></td>
+<td>Not visible, and hidden from the article list until you filter for it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Start Publishing</strong> and <strong>Finish Publishing</strong> narrow a published article to
+a window. An article published with a start date in the future stays hidden
+until then.</p>
+<p>To recover a trashed article, filter the list by <strong>Trashed</strong>, open the
+article, and set <strong>Status</strong> back to <strong>Published</strong>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Hubzero 2.4 has no permanent delete for articles. The toolbar
+button reads <strong>Delete</strong> but runs the trash task, and no controller task
+removes the row. An article set to Trashed stays in the database until
+someone removes it outside the interface.</p>
+</aside>
+<h2 id="categories">Categories</h2>
+<p>Articles are filed in categories, and categories are what the URL of an
+article without a menu item is built from. They are managed by a separate
+component, <code>com_categories</code>, which serves every extension that has
+categories; the Article Manager's <strong>Categories</strong> submenu entry and
+<strong>Content → Category Manager</strong> both open it filtered to <code>com_content</code>.</p>
+<p>The list is titled <strong>Category Manager: Articles</strong> and behaves like the
+article list: a search box over the title and description, and filters for
+<strong>Max Levels</strong>, <strong>Status</strong>, <strong>Access</strong>, and <strong>Language</strong> — all four of which
+work here. Categories nest, so the list is a tree ordered by position, and
+the same <strong>New</strong>, <strong>Edit</strong>, <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Archive</strong>, <strong>Check
+In</strong>, <strong>Delete</strong>, and <strong>Options</strong> toolbar applies. As with articles,
+<strong>Delete</strong> trashes rather than deletes.</p>
+<p>A category has a <strong>Title</strong>, an <strong>Alias</strong>, a <strong>Parent Item</strong>, a <strong>Status</strong>, an
+<strong>Access</strong> level, a <strong>Language</strong>, and a <strong>Description</strong>, plus panels for
+options, metadata, and — for administrators — permissions. The permissions
+you set on a category are inherited by the articles in it.</p>
+<p>A stock hub installs an <strong>Uncategorised</strong> category, which new articles
+default to. An article in <strong>Uncategorised</strong> is reachable at
+<code>/{article-alias}</code> with nothing in front of it; see <a href="../urls/index.html">URLs</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> An article belongs to exactly one category. There is no way to
+file one under two. If a page needs to appear in two places, point two menu
+items at the same article rather than duplicating it.</p>
+</aside>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> on either list opens the <code>com_content</code> configuration: the site
+defaults for article, category, blog, and list layouts, the integration
+settings, and the component-wide permissions. Every parameter is listed in
+the
+<a href="../../../reference/configuration/components/content/index.html">Content configuration reference</a>.</p>
+<p>On a single-article layout the precedence is straightforward: a setting on
+the article wins over the same setting on the menu item, which wins over the
+global here. A setting left at <strong>Use Global</strong> falls through to the next level
+up.</p>
+<p>Blog and featured layouts invert that. There the menu item's setting wins,
+and the article's value is used only where the menu item's setting is
+<strong>Use Article</strong>; if the article has nothing set, the global is used.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Content</a><a class="pager__next" href="../urls/index.html" rel="next"><span>Next</span>URLs</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/articlemanager.md">Edit this page on GitHub</a>

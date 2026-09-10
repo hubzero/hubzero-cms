@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Breadth · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="The question is “What can I search for?”. The answer is “anything you have access to contained within the list in Search Categories. To see all content within…">
+  <meta name="description" content="What can I search for? The answer is: anything you have permission to see, of a content type whose component is in the Indexed state on the Searchable…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/breadth/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../admin/index.html">Administration</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Breadth</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Breadth</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-can-be-indexed">What can be indexed</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-member-sees">What a member sees</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-wide-a-query-reaches">How wide a query reaches</a></li>
+<li class="toc__item toc__item--l2"><a href="#seeing-what-is-actually-in-the-index">Seeing what is actually in the index</a></li>
+</ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,12 +129,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -144,15 +149,120 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Breadth</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/search/breadth">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        
         <div class="prose">
-<p>The question is “What can I search for?”. The answer is “anything you have access to contained within the list in Search Categories. To see all content within these categories perform a simple query using the wildcard character “*” as shown below.</p>
-<p>A better of what is currently inside Solr’s index can be viewed on the administrative backend by going to Components &gt;&gt; Search &gt;&gt; Search Index Tab. The number of index items is located next to each type. Clicking on the name of the hub type will perform a search on that type, displaying all items that are within the index of that type.</p>
-<p>For instance, clicking “Resources” shows the following screen:</p>
-<p>One can perform additional searching using the “Filter” bar on top of the results listing.</p>
+<p>&quot;What can I search for?&quot; The answer is: anything you have permission to see,
+of a content type whose component is in the <strong>Indexed</strong> state on the
+<strong>Searchable Components</strong> screen.</p>
+<h2 id="what-can-be-indexed">What can be indexed</h2>
+<p>A content type reaches the Solr index only if one of its models implements
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Search/Searchable.php"><code>Hubzero\Search\Searchable</code></a>.
+Eleven components do in this tree:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it contributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blog</td>
+<td>Blog entries</td>
+</tr>
+<tr>
+<td>Citations</td>
+<td>Citation records</td>
+</tr>
+<tr>
+<td>Collections</td>
+<td>Collection posts</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>Articles</td>
+</tr>
+<tr>
+<td>Courses</td>
+<td>Courses</td>
+</tr>
+<tr>
+<td>Groups</td>
+<td>Groups</td>
+</tr>
+<tr>
+<td>Knowledge base</td>
+<td>Articles</td>
+</tr>
+<tr>
+<td>Members</td>
+<td>Member profiles</td>
+</tr>
+<tr>
+<td>Projects</td>
+<td>Projects</td>
+</tr>
+<tr>
+<td>Publications</td>
+<td>Publication versions</td>
+</tr>
+<tr>
+<td>Resources</td>
+<td>Resources, including tools</td>
+</tr>
+</tbody>
+</table>
+<p>Nothing else is in the Solr index. In particular there is no Solr indexer for
+forum posts, wiki pages, questions and answers, wishlists, events, or support
+tickets — those types have search plugins, but the plugins only serve the
+Basic engine. See <a href="../plugins/index.html">Plugins</a>.</p>
+<p>A discovered component is not indexed until someone activates it, and an
+activated one can be emptied again, so the working list on any given hub is
+whatever <strong>Searchable Components</strong> shows in the <strong>Indexed</strong> state.</p>
+<h2 id="what-a-member-sees">What a member sees</h2>
+<p>The search results page lists the indexed types down the side under
+<strong>Category</strong>, each with the number of matches in that type, and
+<strong>All Categories</strong> at the top. The list is built from the component rows,
+using each one's <strong>Title</strong>. Selecting a category restricts the results to
+that type; where an
+administrator has configured filters for the type, its filter controls appear
+underneath.</p>
+<p>Results are filtered by access level for every visitor except a Super User,
+so two members searching the same words can get different counts. That
+filtering happens in the Solr query, not after it, so the category counts are
+accurate for the person reading them.</p>
+<h2 id="how-wide-a-query-reaches">How wide a query reaches</h2>
+<p>Terms are matched against the fields named in the <strong>Query Fields</strong> option,
+which defaults to:</p>
+<pre><code class="language-text">url^10 title^5 description fulltext author
+</code></pre>
+<p>The <code>^</code> values are relative weights: a hit in the URL counts ten times a hit
+in the full text, a hit in the title five times. <strong>Phrase Fields</strong> does the
+same for multi-word phrases, and <strong>Phrase Slop</strong> (default <code>10</code>) says how many
+words may sit between the terms of a phrase and still count as a match.
+Changing these changes the ranking of every result on the hub; they are in
+the <a href="../../../../reference/configuration/components/search/index.html">configuration reference</a>
+with the rest.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The site search box is not a Solr query box. Lucene's special
+characters — including <code>*</code>, <code>?</code>, <code>:</code>, <code>+</code>, <code>-</code>, quotes, and the words AND,
+OR, and NOT — are escaped before the query is sent, so they are searched for
+literally. Searching <code>*</code> finds documents containing an asterisk, not every
+document.</p>
+</aside>
+<h2 id="seeing-what-is-actually-in-the-index">Seeing what is actually in the index</h2>
+<p>To look at the index itself, use <strong>Components &gt; Search &gt; Searchable
+Components</strong> and select a component's record count. That opens <em>Solr Search
+Indexed Documents</em>, a paged list of that type's documents showing <strong>ID</strong>,
+<strong>Type</strong>, <strong>Title</strong>, <strong>Access</strong>, and <strong>Owner</strong>.</p>
+<p>The <strong>Filter</strong> box on that screen is passed to Solr as a raw query, without
+the escaping the site search applies, so Lucene syntax works there: it starts
+at <code>*:*</code> for everything, and <code>title:microscope</code> or <code>access_level:public</code>
+narrow it. That is the one place on the hub where a wildcard search is
+possible.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../admin/index.html" rel="prev"><span>Previous</span>Administration</a><a class="pager__next" href="../boosting/index.html" rel="next"><span>Next</span>Boosting</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-search/03-breadth.md">Edit this page on GitHub</a>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Spam · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Things to look for: Unprofessional profile pictures Non-Hub related information in the Bio Unprofessional URLs/links to outside websites Inappropriate…">
+  <meta name="description" content="Hubzero screens content as it is submitted. One plugin, Content - Antispam , hooks the save and hands the text to every enabled plugin in the group; each of…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/spam/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -124,20 +124,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Spam</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#disable-accounts-for-spam">Disable Accounts for Spam</a></li>
-<li class="toc__item toc__item--l2"><a href="#antispam-plugins">Antispam Plugins</a></li>
-<li class="toc__item toc__item--l3"><a href="#how-it-works">How It Works</a></li>
-<li class="toc__item toc__item--l3"><a href="#enabling">Enabling</a></li>
-<li class="toc__item toc__item--l3"><a href="#available-antispam-plugins">Available Antispam Plugins:</a></li>
-<li class="toc__item toc__item--l3"><a href="#testing-content">Testing Content</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-spam-looks-like">What spam looks like</a></li>
+<li class="toc__item toc__item--l2"><a href="#turning-the-filters-on">Turning the filters on</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-the-check-runs">How the check runs</a></li>
+<li class="toc__item toc__item--l3"><a href="#content-antispam-parameters">Content - Antispam parameters</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-detectors-that-ship">The detectors that ship</a></li>
+<li class="toc__item toc__item--l2"><a href="#testing-a-sample">Testing a sample</a></li>
+<li class="toc__item toc__item--l2"><a href="#spam-jail">Spam jail</a></li>
+<li class="toc__item toc__item--l3"><a href="#releasing-a-member">Releasing a member</a></li>
+<li class="toc__item toc__item--l2"><a href="#dealing-with-a-spam-account">Dealing with a spam account</a></li>
+<li class="toc__item toc__item--l2"><a href="#honeypots">Honeypots</a></li>
 </ol></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -152,108 +155,245 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Spam</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/spam">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2014.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Things to look for:</p>
+<p>Hubzero screens content as it is submitted. One plugin, <strong>Content -
+Antispam</strong>, hooks the save and hands the text to every enabled plugin in the
+<code>antispam</code> group; each of those decides for itself whether the text looks
+like spam. A separate plugin, <strong>System - Spamjail</strong>, stops a member who
+trips the check too often. Neither is enabled on a fresh install.</p>
+<h2 id="what-spam-looks-like">What spam looks like</h2>
+<p>Signs a member account exists only to post spam:</p>
 <ul>
-<li>Unprofessional profile pictures</li>
-<li>Non-Hub related information in the Bio</li>
-<li>Unprofessional URLs/links to outside websites</li>
-<li>Inappropriate language</li>
-<li>Selling ads or promotional information</li>
-<li>Non-Hub related content</li>
-<li>Components on the Hub with links in the text box</li>
+<li>A profile picture that has nothing to do with the hub.</li>
+<li>A biography unrelated to the hub's subject.</li>
+<li>Links to unrelated commercial sites, in the profile URL or in posts.</li>
+<li>Advertising, promotional copy, or contact details for a business.</li>
+<li>Text stuffed with links in a field that rarely needs one.</li>
 </ul>
-<h2 id="disable-accounts-for-spam">Disable Accounts for Spam</h2>
+<h2 id="turning-the-filters-on">Turning the filters on</h2>
 <ol>
-<li>Find the account that created the Spam, and then on the backend of the Hub navigate to <strong>Users</strong> and then click on <strong>Members</strong>. Click on the name to open up account details
+<li>Go to <strong>Extensions</strong> &gt; <strong>Plug-in Manager</strong>.</li>
+<li>Enable <strong>Content - Antispam</strong>. Nothing is checked without it, however
+many detectors you enable.</li>
+<li>Enable one or more plugins from the <code>antispam</code> group and fill in
+whatever credentials or thresholds they need.</li>
+<li>Enable <strong>System - Spamjail</strong> if you want repeat offenders stopped rather
+than merely refused.</li>
+</ol>
+<h2 id="how-the-check-runs">How the check runs</h2>
+<p>When a member saves content — a blog post, a forum reply, a wish, an answer
+— the component fires an <code>onContentBeforeSave</code> event before writing to the
+database. <strong>Content - Antispam</strong> listens for it and:</p>
 <ol>
-<li><strong>Note:</strong> You can usually be sure that the account is a spammer if they have a Hub nonrelated website link in the URL and an unprofessional profile picture.</li>
+<li>Does nothing at all in the administrator interface. The check runs on
+the site only.</li>
+<li>Skips Super Users, then anyone the whitelist covers.</li>
+<li>Collects every enabled <code>antispam</code> plugin's detector and runs the text
+through <strong>all of them</strong>. It does not stop at the first hit — every
+detector reports, and the content is spam if any one of them says so.</li>
+<li>On a hit, shows the <strong>Message</strong> from the plugin's own parameters, adds
+one to the member's session and lifetime spam counters, and refuses the
+save.</li>
 </ol>
-</li>
-<li>If the <strong>Public Profile</strong> box is checked, uncheck it. It is important to make the profile not available to the public incase they have Spam links in their account</li>
-<li>Uncheck the <strong>Confirmed</strong> box if the user had confirmed their account. If it is not checked leave it unchecked</li>
-<li>Change the <strong>Contact me</strong> drop-down to the <strong>Receive email updates?</strong> option</li>
-<li>Change the spam account password by typing into the <strong>New Password</strong> field a long and random password that the spammer could not figure out</li>
-<li>Check the box beside the user’s name and then click <strong>Block</strong> to block the user from the Hub</li>
-<li>Click <strong>save and close</strong></li>
-<li>After disabling the spammer’s account, find the spam that the individual has put on the Hub and delete it</li>
-<li>Make sure that they account has been deactivated prior to deleting the Spam. This way the spammers will not receive emails about their content being deleted</li>
-</ol>
-<h2 id="antispam-plugins">Antispam Plugins</h2>
-<p>To keep your Hub from being abused by spammers, enable these antispam plugins to give your site the fighting edge.</p>
-<h3 id="how-it-works">How It Works</h3>
-<p>For most content on the site, when a user presses <strong>save</strong> to submit a new entry—be it a blog post, forum comment, wish, etc.— a <strong>before save</strong> event is triggered. That event allows the system to validate and run any desired pre-processing or checks on the content before it is stored within the database. When any anti-spam plugins are enabled, the content is handed off to each plugin, in their defined order (see the <strong>Plugins Manager</strong>), where the plugin in turn has a chance to evaluate the content for likelihood of being spam. If a plugin flags the content as being spam, the process stops (i.e., the content is not passed along to the next plugin), an error is raised, and the content fails to be stored to the database.</p>
-<h3 id="enabling">Enabling</h3>
-<p>To enable these plugins, follow these steps:</p>
+<p>Order in the <strong>Plug-in Manager</strong> therefore does not decide which detector
+wins; there is no winner. It only decides the order of the rows on the
+<strong>Spam Check</strong> report.</p>
+<h3 id="content-antispam-parameters">Content - Antispam parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Message</strong></td>
+<td>&quot;The submitted text was detected as possible spam or containing inappropriate content.&quot;</td>
+<td>Shown to the member when their content is refused.</td>
+</tr>
+<tr>
+<td><strong>Learn Spam</strong></td>
+<td>Yes</td>
+<td>Feed refused content back to the detectors that can be trained.</td>
+</tr>
+<tr>
+<td><strong>Learn Ham</strong></td>
+<td>Yes in the manifest</td>
+<td>Feed accepted content back as known-good.</td>
+</tr>
+<tr>
+<td><strong>Log spam</strong></td>
+<td>No</td>
+<td>Append a line to <code>cmsspam.log</code> for each hit.</td>
+</tr>
+<tr>
+<td><strong>Access Groups</strong> (Whitelist tab)</td>
+<td>Disabled/Off</td>
+<td>The only other choice is <strong>Administrators</strong>, which exempts anyone with <code>core.manage</code>.</td>
+</tr>
+<tr>
+<td><strong>Usernames</strong> (Whitelist tab)</td>
+<td>empty</td>
+<td>Comma-separated usernames that are never checked.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Learn Ham</strong> defaults to Yes in the manifest but the code reads
+it with a fallback of No, so a hub that has never saved this plugin's
+parameters does not learn from accepted content. Save the plugin once to
+make the setting take effect either way.</p>
+</aside>
+<p>A logged line records whether the verdict was <code>spam</code> or <code>ham</code>, the address,
+the member id and username, an MD5 of the text, and the request URI. The
+text itself is not written to the log.</p>
+<h2 id="the-detectors-that-ship">The detectors that ship</h2>
+<p>Six plugins in the <code>antispam</code> group. Their parameters are listed in the
+<a href="../../reference/configuration/plugins/antispam/index.html">antispam plugin reference</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>How it decides</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Antispam - Akismet</strong></td>
+<td>Sends the text, the author's name, email and address to the Akismet web service.</td>
+<td>An Akismet API key. Without one the plugin registers no detector and is silently inert.</td>
+</tr>
+<tr>
+<td><strong>Antispam - Baba Ji Spam Detector</strong></td>
+<td>Scores the text against patterns from one specific mass spammer: long international phone numbers, variants of the name &quot;Babaji&quot; in the text, the email address, or the username.</td>
+<td>Nothing.</td>
+</tr>
+<tr>
+<td><strong>Antispam - Bayesian Filter</strong></td>
+<td>A Bayesian classifier trained from content the hub has taken down. <strong>Threshold</strong> is the probability above which text is spam; the default is <code>0.95</code>. <strong>Train</strong> controls whether it learns.</td>
+<td>Nothing, but it is useless until trained.</td>
+</tr>
+<tr>
+<td><strong>Antispam - Black List</strong></td>
+<td>Matches a list of words. <strong>Bad words</strong> ships with a list of pharmacy spam and profanity; edit it to suit.</td>
+<td>Nothing.</td>
+</tr>
+<tr>
+<td><strong>Antispam - Link Rife</strong></td>
+<td>Counts links. <strong>Link Frequency</strong> (default 10) is the number of links that is spam outright. <strong>Link to Text Ratio</strong> (default 40) is the percentage of links to words at or above which the text is a &quot;link overflow&quot;. <strong>Link validation</strong> (default No) additionally resolves each link's host against <code>zen.spamhaus.org</code>, <code>multi.surbl.org</code> and <code>black.uribl.com</code>.</td>
+<td>DNS lookups, if you enable link validation.</td>
+</tr>
+<tr>
+<td><strong>Antispam - SpamAssassin</strong></td>
+<td>Hands the text to SpamAssassin. <strong>Client</strong> chooses <strong>local</strong> — a <code>spamd</code> on <strong>Hostname</strong> and <strong>Port</strong>, default <code>localhost:783</code>, or a Unix socket — or <strong>remote</strong>, an HTTP filter service, default Postmark's.</td>
+<td>A reachable SpamAssassin.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Enabling <strong>Link validation</strong> puts a DNS round trip in the
+path of every save. The blocklists it queries are free only for low
+volumes.</p>
+</aside>
+<p>The Mollom plugin described in older documentation is gone. The Mollom
+service shut down in 2018 and the plugin is not in 2.4.</p>
+<h2 id="testing-a-sample">Testing a sample</h2>
+<p>You can run text through the enabled detectors without posting it.</p>
 <ol>
-<li>Navigate to the backend of the Hub and locate the <strong>Extensions</strong> tab</li>
-<li>Click on <strong>Plug-in Manager</strong> from the drop-down</li>
-<li>Inside of the <strong>Plug-in Manager</strong>, locate a plugin through search and click on the title</li>
-<li>Inside the plugin, change the status to <strong>Enabled</strong> and provide any API keys or change the settings then click <strong>Save &amp; Close</strong></li>
+<li>Go to <strong>Components</strong> &gt; <strong>Support</strong>.</li>
+<li>Choose <strong>Abuse</strong> in the sub-navigation.</li>
+<li>Choose <strong>Spam Check</strong> in the sub-sub-navigation.</li>
+<li>Paste the text into <strong>Sample Content</strong> and press <strong>Check</strong> in the toolbar.</li>
 </ol>
-<h3 id="available-antispam-plugins">Available Antispam Plugins:</h3>
-<ul>
-<li>
-<p><strong>Antispam-Akismet</strong>: This plugin uses the remote Akismet service to scan posted content and determine if the content has a high probability of being spam. Akismet digests massive amounts of data from hundreds of sites a day to learn about how to protect sites from spammers. Learn more at: <a href="http://akismet.com">http://akismet.com</a>.</p>
-<p>Usage of this plugin requires API credentials provided by having an Akismet account.</p>
-</li>
-<li>
-<p><strong>Antispam-Baba Ji Spam Detector</strong>: This plugin provides content spam section of the mass spammer Baba Ji.</p>
-</li>
-<li>
-<p><strong>Antispam-Bayesian Filter</strong>: This is a spam detector that employs a basic Bayesian filter which looks for spam headers and character strings.</p>
-</li>
-<li>
-<p><strong>Antispam-Black List</strong>: This is a spam detector that detects black-listed words; inside the plugin words can be added to a list to build the black list inventory.</p>
-</li>
-<li>
-<p><strong>Antispam-Link Rife</strong>: This is a spam detector that detects link frequency in a body of text. This spam detector has three configuration options for determining if submitted content is likely spam:</p>
+<p>The right-hand panel lists every detector that ran, whether it called the
+text spam or ham, and the message it gave. This is the quickest way to find
+out which detector is refusing a member's post.</p>
+<h2 id="spam-jail">Spam jail</h2>
+<p><strong>System - Spamjail</strong> watches every request from a signed-in member on the
+site. If the member is jailed, it redirects them to a &quot;spam detected&quot; page
+whatever they asked for, letting through only logging out, submitting a
+support ticket, and fetching profile pictures.</p>
+<p>A member is jailed when either counter is over its limit:</p>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Parameter</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spam hits this session</td>
+<td><strong>Session count</strong></td>
+<td>5</td>
+</tr>
+<tr>
+<td>Spam hits over the lifetime of the account</td>
+<td><strong>User count</strong></td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>Both are strict comparisons, so the defaults mean a sixth hit in one
+session, or an eleventh over the account's life, puts the member in jail.
+The session counter clears when the session ends. The lifetime counter does
+not.</p>
+<p><strong>Jail video</strong> takes a YouTube video id; when set, the page embeds it below the
+message. Use it for a short explanation of why the hub filters content.</p>
+<h3 id="releasing-a-member">Releasing a member</h3>
+<p>The lifetime counter is the one an administrator has to clear.</p>
 <ol>
-<li><strong>Link Frequency</strong> - Maximum number of links allowed in a text before it is considered spam.</li>
-<li><strong>Link to Text Ratio</strong> - Ratio (In Percentage) of the number of links to the number of words in the string. If the percentage ratio is greater than the specified ratio, it is considered a <strong>Link Overflow</strong>.</li>
-<li><strong>Link validation</strong> - Check found links against known blacklists.</li>
+<li>Go to <strong>Users</strong> &gt; <strong>Members</strong> and open the member.</li>
+<li>On the <strong>Account</strong> tab find <strong>Lifetime Spam Incidents</strong>.</li>
+<li>Press <strong>Reset</strong> beside it. That sets the field to zero and applies the
+change immediately.</li>
+<li>Tell the member they can post again.</li>
 </ol>
-</li>
-<li>
-<p><strong>Antispam-Mollom</strong>: This plugin uses the remote Mollom service to scan posted content and protect a Hub from users who post abusive content like profanity and will learn as it grows. Learn more at: <a href="https://www.mollom.com">https://www.mollom.com</a>.</p>
-<p>Usage of this plugin requires API credentials provided by having a Mollom account.</p>
-</li>
-<li>
-<p><strong>Antispam-SpamAssassin</strong>: This plugin scans posted content with SpamAssassin to determine if the content has a high probability of being spam. SpamAssassin is an Open Source antispam platform which allows administrators to filter and classify bulk spam. Learn more at: <a href="http://spamassassin.apache.org">http://spamassassin.apache.org</a>.</p>
-</li>
-</ul>
-<h3 id="testing-content">Testing Content</h3>
-<p>Sample content may be tested against enabled plugins to further examine which plugin may have flagged content as potential spam and why. The testing interface may be found by:</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> <strong>Lifetime Spam Incidents</strong> is only rendered when <strong>System -
+Spamjail</strong> is enabled. If you cannot find the field, that is why.</p>
+</aside>
+<p>If a member keeps being caught, whitelist them on <strong>Content - Antispam</strong>
+instead of resetting the counter every week: add their username to
+<strong>Usernames</strong> on the <strong>Whitelist</strong> tab, or set <strong>Access Groups</strong> to
+<strong>Administrators</strong> to exempt everyone who can reach the administrator
+interface.</p>
+<h2 id="dealing-with-a-spam-account">Dealing with a spam account</h2>
+<p>Disable the account before you delete what it posted, so the owner is not
+emailed about each deletion.</p>
 <ol>
-<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Components</strong> tab</li>
-<li>Click on <strong>Support</strong> from the drop-down</li>
-<li>Inside of the <strong>Support Manager</strong>, locate the sub-menu item for <strong>Abuse</strong></li>
-<li>Inside of the <strong>Support Manager &gt; Abuse</strong> panel, locate the sub-sub-menu item for <strong>Spam Check</strong></li>
+<li>Go to <strong>Users</strong> &gt; <strong>Members</strong> and open the account.</li>
+<li>On the <strong>Account</strong> tab, set <strong>Visibility</strong> to a level the public cannot
+see. This hides a profile whose fields are themselves the spam.</li>
+<li>Set <strong>Receive email updates?</strong> to <strong>No</strong>.</li>
+<li>If <strong>Email confirmed</strong> is ticked, untick it.</li>
+<li>On the <strong>Password</strong> tab, enter a long random string in <strong>New Password</strong>.
+Anything typed there resets the account's password.</li>
+<li><strong>Save &amp; Close</strong>.</li>
+<li>Back on the members list, tick the row and press <strong>Block</strong>.</li>
+<li>Now find and delete the content the account posted.</li>
 </ol>
-<p>A form with a single text box will be present. Paste content into the box and click the <strong>Check</strong> button in the toolbar. The interface should update to display a list of all anti-spam plugins the content was passed through and the results of said plugins.</p>
-<p>Not a spammer but a normal user what was flagged as one?</p>
-<p>Sometimes when a user repeats actions on a Hub in a rapid function or tries to submit a flagged item multiple times, they end up in Spam jail. In order to reset the Spam jail count and free them, follow these steps:</p>
-<ol>
-<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Users</strong> tab</li>
-<li>Click on <strong>Members</strong> from the drop-down</li>
-<li>Locate the user and click on their name</li>
-<li>Locate the <strong>Lifetime Spam Incidents</strong> and click <strong>Reset</strong></li>
-<li>Click <strong>Save &amp; Close</strong> and notify the user that they are out of Spam jail</li>
-</ol>
-<p>If this user is a habitual offender and you are tired of bailing them out of Spam Jail or you would like to whitelist the Administrator user group, you can Whitelist a user group or a specific user by completing these steps:</p>
-<ol>
-<li>Navigate to the <strong>/administrator</strong> interface of the Hub and locate the <strong>Extensions</strong> tab</li>
-<li>Click on <strong>Plug-in Manager</strong> from the drop-down</li>
-<li>Inside of the <strong>Plug-in Manager</strong>, locate the <strong>Content - Antispam</strong> plugin and click on the plugin's title</li>
-<li>Click on the <strong>Whitelist</strong> section and change the access group or add the user's username to the list in order to Whitelist all users in that access group or that specific user</li>
-<li>Click <strong>Save &amp; Close</strong></li>
-</ol>
+<p>Content members have reported is listed under <strong>Components</strong> &gt;
+<strong>Support</strong> &gt; <strong>Abuse</strong>. Opening a report offers three actions: <strong>Release
+item</strong>, <strong>Remove as Spam</strong>, and <strong>Delete item</strong>. <strong>Remove as Spam</strong> deletes
+the item <em>and</em> feeds its text back to the trainable detectors as known
+spam; <strong>Delete item</strong> only deletes it. Use the first one on real spam so
+the Bayesian filter and the remote services learn from it.</p>
+<h2 id="honeypots">Honeypots</h2>
+<p>A few forms — new questions in Answers, project setup, event submission —
+carry a hidden honeypot field and an encrypted timestamp. A submission is
+rejected if the hidden field comes back filled in, or if the form was
+submitted faster than a human could have typed it. This runs whether or not
+any antispam plugin is enabled, and has nothing to configure.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/extension-manager/index.html" rel="prev"><span>Previous</span>Extension Manager</a><a class="pager__next" href="../security/index.html" rel="next"><span>Next</span>Security Considerations</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../extensions/extension-manager/index.html" rel="prev"><span>Previous</span>Extension Manager</a><a class="pager__next" href="../security/index.html" rel="next"><span>Next</span>Security considerations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/11-spam.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

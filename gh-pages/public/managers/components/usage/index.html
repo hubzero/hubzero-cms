@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Usage · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Overview Hub usage statistics can be found on the /usage page. On this page the amount of user visits, which calculates unique IP address visits identified by…">
+  <meta name="description" content="The Usage component publishes the hub&#x27;s statistics page at . It is a reporting front end and nothing else: it collects no data, computes no totals, and stores…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/usage/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -94,18 +94,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -113,9 +113,14 @@
 <li class="tree__leaf"><a class="tree__link" href="../support/index.html">Support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../tags/index.html">Tags</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Usage</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#overview">Overview</a></li>
-<li class="toc__item toc__item--l2"><a href="#usage-breakdown">Usage Breakdown</a></li>
-<li class="toc__item toc__item--l2"><a href="#usage-maps">Usage Maps</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-administrator-screen">The administrator screen</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-is-on-usage">What is on /usage</a></li>
+<li class="toc__item toc__item--l3"><a href="#overview">Overview</a></li>
+<li class="toc__item toc__item--l3"><a href="#tools">Tools</a></li>
+<li class="toc__item toc__item--l3"><a href="#org-type-domains-country-and-partners">Org. Type, Domains, Country, and Partners</a></li>
+<li class="toc__item toc__item--l3"><a href="#maps">Maps</a></li>
+<li class="toc__item toc__item--l2"><a href="#is-any-of-it-wired-up">Is any of it wired up?</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../wiki/index.html">Wiki</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../wishlist/index.html">Wish lists</a></li>
@@ -128,12 +133,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -148,34 +153,174 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Usage</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/usage">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="overview">Overview</h2>
-<p>Hub usage statistics can be found on the <strong>/usage</strong> page. On this page the amount of user visits, which calculates unique IP address visits identified by residence and organization as a graphic along with downloads, also identified by IP address residence and organization. Tool simulation users and jobs can be collected along with the total wall time, interaction time and CPU time. Usage is collected each month and is a great resource to show community growth.</p>
-<h2 id="usage-breakdown">Usage Breakdown</h2>
-<p>Usage is a feature that gathers statistics about user registration, tool run, files downloaded and more.</p>
-<p>The Usage breakdown can be divided up by these statistics:</p>
+<p>The Usage component publishes the hub's statistics page at <code>/usage</code>. It is a
+reporting front end and nothing else: it collects no data, computes no
+totals, and stores nothing. Every figure it draws comes from tables filled in
+by the hub's metrics tooling, which is not part of this repository.</p>
+<p>Read this chapter before promising anyone a usage page. On a CMS installed
+from this repository and nothing else, most of <code>/usage</code> has nothing to show.</p>
+<h2 id="the-administrator-screen">The administrator screen</h2>
+<p><strong>Components → Usage</strong> has one screen and it says so:</p>
+<blockquote>
+<p>There are currently no administrative capabilities for this component.
+Configuration may be done via the <strong>options</strong> button in the toolbar.</p>
+</blockquote>
+<p>That is the whole screen. <strong>Options</strong> is the only control on it. Reaching the
+screen at all needs <code>core.manage</code> on <code>com_usage</code>.</p>
+<h2 id="options">Options</h2>
+<p>The options fall into three groups. The complete list is in the
+<a href="../../../reference/configuration/components/usage/index.html">generated parameter reference</a>.</p>
+<p><strong>The statistics database.</strong> <strong>Stats DB Driver</strong>, <strong>Host</strong>, <strong>Port</strong>,
+<strong>Username</strong>, <strong>Password</strong>, <strong>Database</strong>, <strong>Prefix</strong>, and <strong>SSL CA Path</strong>
+point the component at the database holding the collected metrics.</p>
+<aside class="admonition admonition--important">
+<p><strong>Important:</strong> When <strong>Username</strong>, <strong>Password</strong>, and <strong>Database</strong> are all
+empty, the component silently falls back to the CMS's own database. The
+tables it wants are not there, so every screen that needs them reports
+<em>Missing table usage <code>tops</code></em> or similar. An empty configuration does not
+disable the page; it produces a broken one.</p>
+</aside>
+<p><strong>Maps API Key.</strong> A Google Maps API key. See the warning under
+<a href="#maps">Maps</a>.</p>
+<p><strong>Paths.</strong> <strong>Path</strong> (<code>/site/usage</code>), <strong>Maps</strong> (<code>/site/usage/maps</code>), <strong>Plots</strong>
+(<code>/site/usage/plots</code>), and <strong>Charts</strong> (<code>/site/usage/charts</code>) say where the
+pre-rendered map and chart images live. The metrics tooling writes them; the
+component only serves them.</p>
+<h2 id="what-is-on-usage">What is on <code>/usage</code></h2>
+<p>The page's tabs are supplied by the plugins in the <code>usage</code> group, one tab per
+enabled plugin. Manage them under <strong>Extensions → Plugins</strong>, filtering on
+<code>usage</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Tab</th>
+<th>Enabled on a new hub</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Usage - Overview</td>
+<td>Overview</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Usage - Maps</td>
+<td>Maps</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Usage - Tools</td>
+<td>Tools</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Usage - Domain Class</td>
+<td>Org. Type</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Usage - Domains</td>
+<td>Domains</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Usage - Region</td>
+<td>Country</td>
+<td>no</td>
+</tr>
+<tr>
+<td>Usage - Partners</td>
+<td>Partners</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>The first enabled plugin's tab is the default view.</p>
+<h3 id="overview">Overview</h3>
+<p>Charts and tables covering the whole hub, over one of five periods —
+<strong>Prior 12 Months</strong>, <strong>By Month</strong>, <strong>By Quarter</strong>, <strong>By Calendar Year</strong>, and
+<strong>By Fiscal Year</strong>.</p>
+<p>The tab has two halves:</p>
 <ul>
-<li>Users - Visits: Amount of visits to the Hub and page hits by public visitors</li>
-<li>Users - Downloads: Files downloaded by the user from Publications, Resources, Project Files, etc.</li>
-<li>Users - Residence: Location defined by a user's profile</li>
-<li>Users - Organization: Organization defined by a user's profile</li>
-<li>Simulation - Users: Total tool users running jobs on the Hub</li>
-<li>Simulation - Simulation Jobs: Total tool jobs run on the Hub</li>
-<li>Simulation - Total CPU Time: Total CPU time used</li>
-<li>Simulation - Total Wall Time: Total wall time</li>
-<li>Simulation - Total Interaction Time: Total time a tool jobs were interacted with</li>
-<li>Simulation - Users with &gt; 10 minutes of CPU Time: Users running more than 10 minutes of CPU time</li>
-<li>Simulation - Avg. Number of Simulation Jobs/User: Adverage number of simulation jobs per user</li>
-<li>Simulation - Avg. Time between First and Last Simulation: Adverage time between simulations</li>
-<li>Simulation - Repeat Users with &gt; 10 Simulation Jobs: Users running more than 10 jobs</li>
-<li>Simulation - Repeat Users with &gt; 3 months: Users running jobs for more than 3 months</li>
+<li><strong>Users</strong> — <strong>Visits</strong> and <strong>Downloads</strong>, each with a chart over time and a
+breakdown <strong>Identified by Residence</strong> and <strong>Identified by Organization</strong>.</li>
+<li><strong>Simulation</strong> — <strong>Simulation Users</strong> and <strong>Simulation Jobs</strong>, each as a
+chart over time.</li>
 </ul>
-<h2 id="usage-maps">Usage Maps</h2>
-<p>The Usage Map provides an outlook on who is currently active and online through out the world. This world view will add a location flag at the GPS location of that user. This location is defined by the address and location the user gives in their profile. By clicking on the location flag, one can view the user's profile and location details.</p>
+<p>Its plugin settings are <strong>End Year</strong>, <strong>End Month</strong> (both blank meaning
+&quot;now&quot;), and a <strong>Message</strong> shown to readers.</p>
+<p>All of this reads <code>summary_user_vals</code>, <code>summary_simusage</code> and
+<code>summary_simusage_vals</code> in the statistics database.</p>
+<h3 id="tools">Tools</h3>
+<p>A ranked table, chosen from a <strong>Show data for</strong> drop-down and a time period.
+The nine rankings shipped with the CMS are:</p>
+<ul>
+<li>Top Tools by Ranking</li>
+<li>Top Tools by Simulation Users</li>
+<li>Top Tools by Interactive Sessions</li>
+<li>Top Tools by Simulation Sessions</li>
+<li>Top Tools by Simulation Runs</li>
+<li>Top Tools by Simulation Wall Time</li>
+<li>Top Tools by Simulation CPU Time</li>
+<li>Top Tools by Simulation Interaction Time</li>
+<li>Top Tools by Citations</li>
+</ul>
+<p>Unlike the other tabs, this one reads the CMS's own database —
+<code>#__stats_tops</code> for the list of rankings and <code>#__stats_topvals</code> for the
+figures. <code>#__stats_tops</code> is seeded at install; <code>#__stats_topvals</code> is not, and
+no code in this repository writes to it. Until the metrics tooling fills it,
+the tab renders its drop-down and an empty table.</p>
+<h3 id="org-type-domains-country-and-partners">Org. Type, Domains, Country, and Partners</h3>
+<p>Four &quot;top list&quot; tabs, each a table of the leading entries for a period. They
+read <code>tops</code>, <code>topvals</code>, <code>classes</code>, <code>classvals</code>, <code>regions</code>, <code>regionvals</code> and
+<code>totalvals</code> in the statistics database, and each reports a missing table by
+name when it is not there.</p>
+<h3 id="maps"><a id="maps"></a>Maps</h3>
+<p>The Maps tab embeds a pre-rendered map in an iframe. The <code>type</code> parameter
+picks which: <code>online</code>, <code>us-maps</code>, <code>tools</code>, <code>web_all</code>, <code>web_gradient</code>,
+<code>animation</code>, and <code>whoisonline</code>. The default is <code>online</code>, a live map of
+sessions in <code>#__xsession</code> with users, guests and bots counted per location.
+A location comes from the <code>ipLATITUDE</code> and <code>ipLONGITUDE</code> columns on
+<code>#__xsession</code>, not from the user's profile — so a user who fills in an
+address does not appear on the map, and no code in this repository writes
+that table at all.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Every map template except <code>online</code> loads Google Maps
+JavaScript API <strong>v2</strong>, which Google retired in 2013. Those maps do not
+render, whatever key you supply. <code>online</code> uses the current Maps JavaScript
+API, which needs a key with billing enabled on the Google account. Treat
+the Maps tab as unmaintained.</p>
+</aside>
+<h2 id="is-any-of-it-wired-up">Is any of it wired up?</h2>
+<p>Short answer: not by the CMS.</p>
+<ul>
+<li>Nothing in this repository writes <code>summary_user_vals</code>,
+<code>summary_simusage</code>, <code>summary_simusage_vals</code>, <code>tops</code>, <code>topvals</code>, <code>classes</code>,
+<code>classvals</code>, <code>regions</code>, <code>regionvals</code>, <code>totalvals</code>, <code>ipmap</code>, or <code>location</code>.
+They belong to a separate statistics database maintained by the hub's
+metrics tooling.</li>
+<li>Nothing in this repository writes <code>#__stats_topvals</code> or <code>#__xsession</code>
+either, even though both tables are part of the CMS schema.</li>
+<li>The pre-rendered maps, plots and charts under the configured paths are
+produced outside the CMS as well.</li>
+</ul>
+<p>So a hub gets a working <code>/usage</code> only when the metrics collection is
+installed and running alongside it, and the component's options point at the
+database it fills. Without that, publish no menu item to <code>/usage</code>: the page
+is public, and a visitor reaching it sees missing-table errors rather than an
+empty report.</p>
+<p>Per-user figures are a different feature, served by the <strong>Members - Usage</strong>
+plugin on a member's profile and described in the
+<a href="../../../users/usage/index.html">Usage chapter</a> of the Hub users book. That plugin
+reads <code>#__resource_stats_tools</code>, <code>#__author_stats</code> and
+<code>#__metrics_author_cluster</code> in the CMS database — tables the CMS reads but
+does not fill, so it has the same prerequisite.</p>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../tags/index.html" rel="prev"><span>Previous</span>Tags</a><a class="pager__next" href="../wiki/index.html" rel="next"><span>Next</span>Wiki</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/22-usage.md">Edit this page on GitHub</a>

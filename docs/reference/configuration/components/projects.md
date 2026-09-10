@@ -43,7 +43,7 @@ Parameters from [`core/components/com_projects/config/config.xml`](../../../../c
 | `sync_behavior` | Members - Group syncing | list | `1 (Sync with group)` | This determines if group-owned projects default to auto-syncing all membership with the group or default to selective membership. Options: `0` Selective membership, `1` Sync with group. |
 | `privacylink` | URL to Privacy Terms | text | `/legal/privacy` | URL to Privacy Terms |
 | `HIPAAlink` | URL to HIPAA information | text | `/legal/privacy` | URL to HIPAA information |
-| `FERPAlink` | URL to FERPA information | text | `/legal/privacy` | COM_PROJECTS_CONFIG_FERPALINK_DESC |
+| `FERPAlink` | URL to FERPA information | text | `/legal/privacy` | URL to FERPA information |
 
 ## Admingroups
 

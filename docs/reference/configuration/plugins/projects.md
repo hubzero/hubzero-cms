@@ -101,7 +101,7 @@ Manage project publications and contribution process
 | `image_types` | Gallery image formats | text | `jpg, jpeg, gif, png` | Allowable image types for gallery |
 | `video_types` | Gallery video formats | text | `avi, mpeg, mov, mpg, wmv, rm, mp4` | Allowable video types for gallery |
 | `googleview` | Use google viewer | radio | `0 (No)` | Allow certain types of docs to be served inline via Google Docs viewer. Options: `0` No, `1` Yes. |
-| `restricted` | Restricted to projects | text | — | Comma-separated aliases of projects that have databases plugin enabled (empty field means NO RESTRICTIONS) |
+| `restricted` | Restricted to projects | text | — | Comma-separated aliases of projects that have publications plugin enabled (empty field means NO RESTRICTIONS) |
 | `new_pubs` | New publications | radio | `0 (No)` | Enable new publications UI elements. Options: `0` No, `1` Yes. |
 
 ## Projects - Team (`plg_projects_team`)

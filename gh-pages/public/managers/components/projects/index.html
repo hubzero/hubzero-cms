@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Projects · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Enabling Plug-in to Projects Login to the backend of the Hub and click on the Extensions tab Click on the Plug-in Manager under the Extensions tab Search…">
+  <meta name="description" content="A project is a private workspace for a small team: a versioned file repository, plus whatever other features the hub enables for it — notes, a to-do list,…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/projects/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -94,23 +94,30 @@
 <li class="tree__leaf"><a class="tree__link" href="../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Projects</a></summary><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#enabling-plug-in-to-projects">Enabling Plug-in to Projects</a></li>
-<li class="toc__item toc__item--l2"><a href="#restricting-plug-in-to-specific-projects">Restricting Plug-in to Specific Projects</a></li>
-<li class="toc__item toc__item--l2"><a href="#uploading-large-files-using-sftp-clients">Uploading Large Files Using SFTP Clients</a></li>
-<li class="toc__item toc__item--l2"><a href="#enable-grant-collection-information">Enable Grant Collection Information</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-projects-list">The Projects list</a></li>
+<li class="toc__item toc__item--l2"><a href="#editing-a-project">Editing a project</a></li>
+<li class="toc__item toc__item--l2"><a href="#team">Team</a></li>
+<li class="toc__item toc__item--l2"><a href="#activity">Activity</a></li>
+<li class="toc__item toc__item--l2"><a href="#options">Options</a></li>
+<li class="toc__item toc__item--l3"><a href="#collecting-grant-information">Collecting grant information</a></li>
+<li class="toc__item toc__item--l2"><a href="#project-features">Project features</a></li>
+<li class="toc__item toc__item--l3"><a href="#enabling-a-project-feature">Enabling a project feature</a></li>
+<li class="toc__item toc__item--l3"><a href="#restricting-a-feature-to-named-projects">Restricting a feature to named projects</a></li>
+<li class="toc__item toc__item--l2"><a href="#files-on-disk">Files on disk</a></li>
+<li class="toc__item toc__item--l2"><a href="#external-file-connections">External file connections</a></li>
 </ol><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -129,12 +136,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -149,68 +156,275 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Projects</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/projects">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2016.</aside>
+        
         <div class="prose">
-<h2 id="enabling-plug-in-to-projects">Enabling Plug-in to Projects</h2>
+<p>A project is a private workspace for a small team: a versioned file
+repository, plus whatever other features the hub enables for it — notes, a
+to-do list, publications, databases, activity. Members create and run their
+own projects on the front end. In the administrator interface you set the
+policy every project follows, and you intervene in individual projects when
+something needs an administrator: a quota raised, a project archived, a
+member added, an activity entry removed.</p>
+<p>The component is <code>com_projects</code>, reached from <strong>Components → Projects</strong>. Its
+sub-navigation has two screens:</p>
+<pre><code class="language-php">\Submenu::addEntry(
+	\Lang::txt('COM_PROJECTS'),
+	\Route::url('index.php?option=com_projects'),
+	($controllerName == 'projects' || $controllerName == 'team')
+);
+\Submenu::addEntry(
+	\Lang::txt('COM_PROJECTS_ACTIVITY'),
+	\Route::url('index.php?option=com_projects&amp;controller=activity&amp;project=0'),
+	$controllerName == 'activity'
+);
+</code></pre>
+<h2 id="the-projects-list">The Projects list</h2>
+<p>The default screen lists every project on the hub. The filter bar has a
+<strong>Search</strong> box and four drop-downs — <strong>Status</strong>, <strong>Privacy</strong>, <strong>Access</strong>
+and <strong>Quotas</strong> — and the columns sort on ID, <strong>Title</strong>, <strong>Owner</strong>,
+<strong>Featured</strong>, <strong>Status</strong> and <strong>Privacy</strong>.</p>
+<p><strong>Status</strong> is the project's lifecycle state, and it is the filter you will use
+most:</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setting up in progress</td>
+<td>Created but the setup wizard was never finished</td>
+</tr>
+<tr>
+<td>Pending approval</td>
+<td>Waiting on an administrator, when the sensitive-data question is configured to require approval</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>In normal use</td>
+</tr>
+<tr>
+<td>Archived</td>
+<td>Read-only; files kept</td>
+</tr>
+<tr>
+<td>Rejected</td>
+<td>Refused at approval</td>
+</tr>
+<tr>
+<td>Deleted</td>
+<td>Removed by its owner or by an administrator</td>
+</tr>
+</tbody>
+</table>
+<p>The toolbar carries <strong>Archive</strong> (with <code>core.edit.state</code>), <strong>Edit</strong> (with
+<code>core.edit</code>), and <strong>Options</strong> (with <code>core.admin</code>). A <strong>Custom Description</strong>
+button appears alongside them only when the component's <strong>Use custom profile
+description template?</strong> option is set to <code>custom</code>; it opens the form builder
+for the project description fields.</p>
+<h2 id="editing-a-project">Editing a project</h2>
+<p>Select a project's title to open it. The screen has two tabs, <strong>Details</strong> and
+<strong>Image</strong>, and the Details tab is divided into panels:</p>
+<ul>
+<li><strong>Basic Info</strong> — title, alias, description, tags, project type, owner or
+lead, and the system group provisioned for the project (named with the
+component's <strong>Project group prefix</strong>, <code>pr-</code> by default).</li>
+<li><strong>Parameters</strong> — access level, whether the team and the publications show
+on the public project page, the page layout, the sensitive-data answer, and
+the grant fields when grant collection is on.</li>
+<li><strong>Files</strong> — the project's <strong>Files Quota</strong> and <strong>Publications Quota</strong>, both
+in gigabytes, its current disk usage, and its external connections. Raising
+a quota here is the normal way to give one project more space than the
+hub-wide default.</li>
+<li><strong>Status</strong> — a free-text message plus the administrative actions: <strong>Send
+Message</strong>, <strong>Suspend</strong>, <strong>Activate</strong> or <strong>Reinstate</strong>, <strong>Delete</strong>,
+<strong>Archive</strong>, <strong>Unarchive</strong>. The message you type is included in the mail the
+action sends.</li>
+<li><strong>Team</strong> — the counts of managers, collaborators, authors and reviewers,
+and an <strong>Add member</strong> box that takes a username.</li>
+</ul>
+<p>The Files panel also exposes two repository maintenance links: <code>git gc --aggressive</code>, which repacks the project's git repository and takes minutes to
+run, and <strong>download sync log</strong>, which also clears a stalled sync.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> <strong>Delete</strong> and <strong>Archive</strong> act on the project's files as well
+as its record. Neither is reversible from the front end.</p>
+</aside>
+<h2 id="team">Team</h2>
+<p>Opening a project's team from the list gives its own screen, with <strong>New</strong> to
+add a member and <strong>Delete</strong> to remove one. The table shows each member's role,
+when they joined, when they last visited, and whether they were added
+individually or through a group.</p>
+<h2 id="activity">Activity</h2>
+<p><strong>Components → Projects → Activity</strong> lists project activity entries across the
+hub. Filter by search text, by action, by starred, and by state (published,
+unpublished, trashed). The toolbar has <strong>Delete</strong>. This is where you remove an
+activity entry that should not have been recorded — it does not undo the thing
+that was recorded.</p>
+<h2 id="options">Options</h2>
+<p><strong>Options</strong> opens the component configuration, in five tabs:</p>
+<table>
+<thead>
+<tr>
+<th>Tab</th>
+<th>What it sets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic</td>
+<td>Naming rules, image paths, activity logging, messaging, the default access level and page layout, and the <code>pr-</code> group prefix</td>
+</tr>
+<tr>
+<td>Setup</td>
+<td>What the project creation wizard asks for: terms agreement, sensitive-data question and whether it needs approval, grant information, who is made a manager, and group syncing</td>
+</tr>
+<tr>
+<td>Administrative Groups</td>
+<td>Group aliases that gate project creation, administration, sensitive-data review and reporting</td>
+</tr>
+<tr>
+<td>File Repository and Quotas</td>
+<td><strong>Files Git repo path</strong>, whether it sits outside the web root, <strong>Git path</strong>, and the default and premium quotas for files and publications</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Which access groups hold each <code>com_projects</code> action</td>
+</tr>
+</tbody>
+</table>
+<p>Every parameter, with its default, is in the
+<a href="../../../reference/configuration/components/projects/index.html">configuration reference</a>.</p>
+<h3 id="collecting-grant-information">Collecting grant information</h3>
+<p>If the hub runs grant-funded projects, the setup wizard can collect the grant
+details, so that quotas can be justified against a budget and the hub can
+report on funded work.</p>
 <ol>
-<li>Login to the backend of the Hub and click on the <strong>Extensions</strong> tab</li>
-<li>Click on the <strong>Plug-in Manager</strong> under the <strong>Extensions</strong> tab</li>
-<li>Search <strong>Projects- Databases</strong> in the search field to locate the Data Store plug-in</li>
-<li>After locating the correct plug-in, check the box beside the <strong>Plug-in Name</strong></li>
-<li>Click the <strong>Enabled</strong> button to allow the plug-in to be used on the frontend of the Hub</li>
+<li>Go to <strong>Components → Projects</strong>.</li>
+<li>Select <strong>Options</strong>.</li>
+<li>Open the <strong>Setup</strong> tab.</li>
+<li>Set <strong>Collect grant info at setup?</strong> to <strong>Yes</strong>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
+</ol>
+<p>The wizard then asks the creator for a grant title, PI, award number, agency
+and budget. Those fields appear afterwards in the Parameters panel of the
+project's edit screen.</p>
+<h2 id="project-features">Project features</h2>
+<p>Each feature a project offers is a plugin in the <code>projects</code> group, and it is a
+tab on the project's front-end page. They ship enabled or disabled according
+to the hub's install; check <strong>Extensions → Plug-in Manager</strong> and filter the
+type to <code>projects</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>What it adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Projects - Files</td>
+<td>The file repository, the browse view, uploads, and external connections</td>
+</tr>
+<tr>
+<td>Projects - Publications</td>
+<td>The publication pipeline: drafts, versions, and the contribution process</td>
+</tr>
+<tr>
+<td>Projects - Notes</td>
+<td>Wiki-style project notes</td>
+</tr>
+<tr>
+<td>Projects - Todo</td>
+<td>The to-do list</td>
+</tr>
+<tr>
+<td>Projects - Team</td>
+<td>Team membership and roles</td>
+</tr>
+<tr>
+<td>Projects - Databases</td>
+<td>Project data stores, backed by MySQL, browsed with the DataViewer</td>
+</tr>
+<tr>
+<td>Projects - Links</td>
+<td>External content that publications can cite</td>
+</tr>
+<tr>
+<td>Projects - Feed</td>
+<td>The project's activity feed</td>
+</tr>
+<tr>
+<td>Projects - Info</td>
+<td>The project description panel</td>
+</tr>
+<tr>
+<td>Projects - Watch</td>
+<td>Per-member subscriptions to project activity</td>
+</tr>
+<tr>
+<td>Projects - HIPAA Compliant</td>
+<td>A HIPAA compliance checkbox on the project</td>
+</tr>
+</tbody>
+</table>
+<p>Their parameters are in the
+<a href="../../../reference/configuration/plugins/projects/index.html">plugin reference</a>.</p>
+<h3 id="enabling-a-project-feature">Enabling a project feature</h3>
+<ol>
+<li>Go to <strong>Extensions → Plug-in Manager</strong>.</li>
+<li>Type part of the plugin's name in the search box — for example
+<code>Projects - Databases</code> — or set <strong>- Select Type -</strong> to <code>projects</code> to list
+them all.</li>
+<li>Tick the box beside the plugin in the <strong>Plug-in Name</strong> column.</li>
+<li>Select <strong>Enable</strong>.</li>
 </ol>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> If the Menu Item for Databases does not display, the MySQL Configuration may not be correct for DataViewer.</p>
+<p><strong>Warning:</strong> The Databases plugin needs its own MySQL accounts before it
+works. Open the plugin and fill in <strong>Database Host</strong>, the read/write account
+(<strong>Database User [rw]</strong>, <strong>Database Password [rw]</strong>) and the read-only
+account used by the DataViewer (<strong>Database User [ro]</strong>, <strong>Database Password
+[ro]</strong>). Without the read-only account the Databases tab appears but the
+DataViewer cannot read anything.</p>
 </aside>
-<h2 id="restricting-plug-in-to-specific-projects">Restricting Plug-in to Specific Projects</h2>
+<h3 id="restricting-a-feature-to-named-projects">Restricting a feature to named projects</h3>
+<p>Two plugins — <strong>Projects - Databases</strong> and <strong>Projects - Publications</strong> — take
+a <strong>Restricted to projects</strong> parameter. Fill it with a comma-separated list of
+project <em>aliases</em>, not titles, and the feature appears only in those projects.
+Leaving it empty means no restriction, so every project gets the feature.</p>
 <ol>
-<li>Login to the backend of the Hub and click on the <strong>Extensions</strong> tab</li>
-<li>Click on the <strong>Plug-in Manager</strong> under the <strong>Extensions</strong> tab</li>
-<li>Search <strong>Projects- Databases</strong> in the search field to locate the Data Store plug-in</li>
-<li>After locating the correct plug-in, click on the title of the plug-in under the <strong>Plug-in Name</strong> column</li>
-<li>Inside the plug-in details, type in the names of the Projects in the <strong>Restricted to projects</strong> field</li>
-<li>Save the changes by click the <strong>Save &amp; Close</strong> button</li>
+<li>Go to <strong>Extensions → Plug-in Manager</strong> and open the plugin.</li>
+<li>Put the project aliases in <strong>Restricted to projects</strong>.</li>
+<li>Select <strong>Save &amp; Close</strong>.</li>
 </ol>
-<h2 id="uploading-large-files-using-sftp-clients">Uploading Large Files Using SFTP Clients</h2>
-<p>Create a Local Password</p>
-<ol>
-<li>If you use a non-Hub related account, then you must first create a local password</li>
-<li>Login to the HUB</li>
-<li>On the <strong>Dashboard</strong>, click <strong>Account</strong> on the left menu</li>
-<li>Under <strong>Local Password</strong>, type in the password in the <strong>New Password</strong> and <strong>Confirm password</strong> text boxes</li>
-<li>Click <strong>Save</strong></li>
-</ol>
-<p>Setup SFTP Client</p>
-<ol>
-<li>Download an SFTP client like Cyberduck or Filezila</li>
-<li>Add a new site by either clicking the <strong>Plus sign icon (+)</strong> or <strong>File</strong> <strong>-&gt; Site Manager -&gt;</strong>
-<strong>New Site</strong></li>
-<li>Provide the following information
-<ol>
-<li>Host: hubname.org</li>
-<li>Protocol: Change to <strong>SFTP</strong></li>
-<li>User: Provide the same username used to login to the Hub</li>
-</ol>
-</li>
-<li>Click <strong>Connect</strong></li>
-<li>When prompted for password, provide the local password that was created above</li>
-<li>Once connected, open up the <strong>Data</strong> file and then the <strong>Projects</strong> file and double click on the project that you would like to upload the files to</li>
-<li>Drag and drop the files into this folder and then check inside of the site and confirm that these files are uploaded to the right project</li>
-</ol>
-<h2 id="enable-grant-collection-information">Enable Grant Collection Information</h2>
-<p>If you are working on a Hub that will be creating projects based on grants, then you can enable a new step to be added in the Project creation to collect grant information. By collecting grant information for grant funded projects, project quotas can be increase based on the project budget and this information can help support annual reviews of the Hub. To enable this feature, follow these steps:</p>
-<ol>
-<li>Navigate to the backend of the Hub</li>
-<li>Hover over <strong>Components</strong> and from the drop-down click <strong>Projects</strong></li>
-<li>Click the <strong>Options</strong> button in the upper right corner of the screen</li>
-<li>Inside of Options, click the <strong>Setup</strong> tab</li>
-<li>Find the <em>Collect grant info at Setup</em> and change the drop-down to <strong>Yes</strong></li>
-<li>Click <strong>Save &amp; Close</strong></li>
-</ol>
-<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="projectfileconnect/index.html">Project File Connectors</a></li></ul></section>
+<p>No other project plugin has this parameter; the rest are on for every project
+once enabled.</p>
+<h2 id="files-on-disk">Files on disk</h2>
+<p>Project files live outside the web root, under the path set by <strong>File
+Repository and Quotas → Files Git repo path</strong> — <code>/srv/projects</code> by default —
+as <code>/srv/projects/&lt;alias&gt;/files</code>. Each project is a git repository, which is
+what gives the front end its file history and version restore.</p>
+<p>Because the files are a real directory on a real filesystem, a hub can also
+offer SFTP into them, which is the practical way to move data too large for a
+browser upload. That access is granted through the per-project system group
+(<code>pr-&lt;alias&gt;</code>) rather than through anything in this component: the hub's
+directory service has to publish those groups and the file server has to
+honour them. Files arriving that way are committed to the project's repository
+by the sync and show up in the file history with an <code>SFTP</code> origin. If SFTP is
+available on your hub, the connection details and the local password a member
+needs are hub-specific; document them for your own users rather than assuming
+the defaults here.</p>
+<h2 id="external-file-connections">External file connections</h2>
+<p>A project's Files tab can point at storage the hub does not own — Google
+Drive, Dropbox, GitHub, an S3 bucket — instead of, or alongside, the hub's own
+repository. Setting that up needs an application registered with the provider
+and a plugin configured on the hub; see <a href="projectfileconnect/index.html">Project file
+connectors</a>.</p>
+<section class="contents"><h2 id="in-this-section">In this section</h2><ul class="contents__list"><li><a href="projectfileconnect/index.html">Project file connectors</a></li></ul></section>
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="projectfileconnect/index.html" rel="next"><span>Next</span>Project File Connectors</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../newsletters/index.html" rel="prev"><span>Previous</span>Newsletters</a><a class="pager__next" href="projectfileconnect/index.html" rel="next"><span>Next</span>Project file connectors</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/15-projects/README.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

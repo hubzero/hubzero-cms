@@ -1,5 +1,8 @@
 <!--
-status: merged
+status: rewritten
+reviewed-against: 2.4-main @ f22290e4e4
+reviewed: 2026-09-09
+screenshots: none
 source: https://help.hubzero.org/documentation/22/security_considerations/hardeningguide
 source-id: 2827
 modified: 2025-01-31
@@ -7,52 +10,158 @@ imported: 2026-09-09
 merged-from: 2.2
 source-state: unpublished
 -->
-# Operating System Hardening Guide
+# Operating system hardening
 
-## Host Configuration
+Everything on this page is **external to the CMS**. None of it is configured
+from the administrator interface, none of it ships in this repository, and
+none of it could be verified against the source tree. It is the practice the
+team that runs the Purdue hubs follows on the hosts underneath them,
+generalised where the original advice named a distribution or a package that
+no longer exists.
 
-HUBzero software needs to be installed on a secured base: hardened OS and services. The following is a description of most of what we do at Purdue to harden the HUBs we manage.
+Treat it as a starting checklist for whoever administers the server, not as
+a specification. Package names, repository URLs, and version numbers below
+were correct for Debian a decade ago and should be checked against your own
+distribution before you type them.
 
-- Software updates. Debian 6 will have security updates until May 2014. Look for patches and apply them daily: Check for failed or incomplete package updates in a cron job running daily. We once have had a compromise due to a failed package security update which would have been detected by this check. Since then we've run it every day: Check for any deviations from packages in a cron job running at least weekly: Make sure that the HUBzero repository is configured as a source of updates. Our updates also modify and fix issues with Joomla! itself. We provide support for Joomla! 1.5 through this repository. Even though it was EOL by the original authors, we effectively forked it and are maintaining it until the next HUBzero release.
-  ```
-  aptitude update;  aptitude upgrade
-  ```
-  ```
-  dpkg --audit
-  ```
-  ```
-  debsums | grep FAILED
-  ```
-- Configure Apache with the suhosin application firewall (package php5-suhosin), or mod-security. An application firewall is to PHP and the HUBzero CMS what a network firewall is to an operating system. They can block attacks targetting an existing code vulnerability, even if only the attacker is aware of the vulnerability. They can also limit or mitigate abuse. Suhosin is known to have protected against so-called "0-day" attacks. In addition, log messages from suhosin can be used as a basis for a fail2ban jail (see fail2ban paragraph)
-- Configure Apache with mod-spamhaus (package libapache2-mod-spamhaus). The Spamhaus organization is very effective in finding IP addresses used for spamming. Blocking those from submitting content to the web site, while still allowing affected users to browse, will decrease spam questions and other forms of spam. In addition, it alerts users effectively that their machine is likely compromised. This is the message we show when someone is blocked: Note that commercial users need to obtain a datafeed from Spamhaus.
-  ```
-   Access Denied! Your address is blacklisted. It could be because your computer is infected and participates in a spam botnet. If you're using a shared access point (e.g., wireless), it's possible that the IP address of that access point has been banned because someone else's computer is infected.  You can find the IP address of that device by going to http://whatismyipaddress.com/ .  You can find the reason for blacklisting the address by going to http://www.spamhaus.org/lookup/  You will regain full access after correcting the situation and removing the IP address from the blacklist.
-  ```
-- Configure Apache to redirect all plain HTTP connections to HTTPS. This will mitigate issues such as pages presenting mixed HTTP and HTTPS content, or accepting plain HTTP connections to areas that require a login.
-- Install Dshield's blocklist in the firewall iptables. dshield.org's blacklist is available at: and the signature used to verify its integrity is at:
-  ```
-   http://dshield.org/block.txt
-  ```
-  ```
-  http://dshield.org/block.txt.asc
-  ```
-- Install spamassassin and tune it.
-- Install an antivirus like ClamAV and make sure that HUBzero is configured to use it to scan all uploads on the fly. Use the EICAR test file to verify that it is operating properly: and keep a copy on the web site. Scan the entire web site with ClamAV at least weekly. Make sure the "fresh-clam" daemon is running all the time and restart it as necessary (we do it every day to make sure) to get the most up-to-date malware definitions.
-  ```
-  http://www.eicar.org/86-0-Intended-use.html
-  ```
-- Install fail2ban and configure it with jails for WebDAV, SSH, Apache errors, Apache suhosin messages, HUBzero CMS logins (in /var/log/hubzero/cmsauth.log), exim4, and spamassassin logs. We permanently ban anyone trying to login as root and some other key accounts. SSH is configured to deny root logins with passwords, but we let them try anyway so we can better ban attackers.
-- Run a configuration management software that will automatically detect and report any unauthorized configuration changes. We run something called "Ogre" every hour. The Ogre core engine itself is open-source, but it needs meta-data and file templates to be useful. Those are not open-source at this time.
-- Configure file system permissions such that the Apache user (www-data) can't modify the HUBzero and Joomla! code directories, by setting ownership to a different user. We're currently testing and deploying this.
-- Run the auditing tool "Lynis" (package "lynis") and obtain a hardening score of at least 72.
-- Run "rkhunter" at least every day to detect suspicious changes.
-- Add firewall rules to block IPv6 on all interfaces but local, unless you also deploy an IPv6 equivalent for fail2ban and dshield. Due to the large address space of IPv6 and its privacy extension, blocking individual IPs is pointless. Any blocking tool worth using must have the capability to block networks. Blocking networks may also block innocent users, so it is important that the tool scales the size of the block, from individual IPs to large networks, depending on the number of failures. We do not accept IPv6 traffic due to this connundrum; blocking misbehaving IP addresses is too useful a security measure to consider offering service without that capability. Tools that offer IPv6 address blocking capabilities all seem to be attempting to block individual IPs or fixed network sizes at this time; we believe that they are not useful.
-- Consider recommendations from the PHP auditor to change php.ini settings. It's very easy to install, but some recommendations aren't practical and are incompatible with HUBzero functionality. You can get it, and see screenshots, from https://www.idontplaydarts.com/2011/02/hardening-and-securing-php-on-linux/
+> **Note:** The CMS-side settings — HTTPS enforcement, sessions, cookies,
+> text filters, login thresholds, spam — are covered in
+> [Hardening the CMS](hardencms/README.md).
 
-## External Hardening Tools
+## Keep packages patched
 
-- Run network-based vulnerability scans periodically. Note that Debian doesn't increase the version numbers in banners when applying security patches. This makes it very difficult to draw any conclusions from a vulnerability scanning engine like Nessus, using default settings. Most results are false positives. However, the scan can be useful to detect new open ports and some configuration issues.
-- Make sure that the site is rated "A" by the Qualys SSL Labs server test at:
+Apply security updates daily, and check that they actually applied. A hub at
+Purdue was once compromised through a package update that failed halfway;
+the check below would have caught it, and has run every day since.
+
+```bash
+apt update && apt upgrade
+```
+
+```bash
+dpkg --audit
+```
+
+```bash
+debsums | grep FAILED
+```
+
+Run the first two daily and the third at least weekly.
+
+> **Warning:** The original version of this page told administrators to add
+> a Hubzero package repository that also shipped patches for Joomla 1.5.
+> That has not been true for many releases. Hubzero maintains its own code
+> and does not carry Joomla patches; see
+> [the security questions](faqs.md#is-a-joomla-vulnerability-a-hubzero-vulnerability).
+
+## Web server
+
+- **Put an application firewall in front of PHP.** ModSecurity is the option
+  still maintained. It can block attempts against a vulnerability nobody has
+  disclosed yet, and its log lines make a good basis for a Fail2Ban jail.
+
+  > **Warning:** Earlier versions of this page recommended Suhosin
+  > (`php5-suhosin`). Suhosin targets PHP 5, which Hubzero 2.4 does not run
+  > on. Do not install it.
+
+- **Redirect every plain HTTP request to HTTPS** at the web server. This
+  stops mixed-content pages and stops a login form ever being served over
+  plain HTTP. Do it here as well as in the CMS — the CMS's own **Force SSL**
+  setting (**Site** > **Global Configuration** > **Server**) redirects
+  within the application, which is later than you want.
+
+- **Consider a DNS blocklist module** such as `mod_spamhaus`
+  (`libapache2-mod-spamhaus` on Debian) to stop known spam-sending addresses
+  submitting content while still letting them read. Spamhaus requires a paid
+  data feed for commercial use. If you deploy one, say why the request was
+  refused; the wording Purdue uses is:
+
   ```
-  https://www.ssllabs.com/ssltest/index.html
+  Access Denied! Your address is blacklisted. It could be because your
+  computer is infected and participates in a spam botnet. If you're using a
+  shared access point (e.g., wireless), it's possible that the IP address of
+  that access point has been banned because someone else's computer is
+  infected.
   ```
+
+- **Aim for an A rating** from the Qualys SSL Labs server test at
+  <https://www.ssllabs.com/ssltest/>.
+
+## Fail2Ban
+
+Install Fail2Ban and give it jails for SSH, WebDAV, the web server's error
+log, your application firewall's log, exim, SpamAssassin, and the hub's own
+authentication log at `/var/log/hubzero/cmsauth.log`.
+
+The CMS writes that log itself, so a jail over it is the one item here you
+can verify from the source tree. A failed login appears as a timestamp, the
+attempted username, the remote address, and the word `invalid`:
+
+```
+2026-09-09 14:22:31 jdoe 203.0.113.7 invalid
+```
+
+Purdue bans permanently on any attempt to log in as `root` or another key
+account. SSH is configured to refuse root password logins anyway; the
+attempt is still allowed to happen so the address can be caught.
+
+Hubzero can also hand an address to a Fail2Ban jail directly, without a log
+line for Fail2Ban to match. That is a separate mechanism with its own
+setup: see
+[CMS-controlled Fail2Ban jail](hardencms/cmscontrolled_fail2ban_jail.md).
+
+> **Note:** The original page argued for blocking all non-local IPv6 because
+> the blocking tools of the day could not scale a ban from one address to a
+> network. Fail2Ban has handled IPv6 since 0.10, and modern firewalls block
+> prefixes as easily as addresses. Weigh the cost of turning IPv6 off
+> against the users you exclude; the old blanket recommendation no longer
+> holds.
+
+## Antivirus
+
+Install ClamAV, keep `freshclam` running so definitions stay current, and
+scan the whole document root at least weekly.
+
+The CMS calls a scanner on uploaded files by itself. The command it runs
+comes from the `virus_scanner` key in `configuration.php` and defaults to
+`clamscan -i --no-summary --block-encrypted`. A non-zero exit rejects the
+upload, so a broken or unreachable scanner blocks uploads rather than
+silently passing them.
+
+Verify the whole path with the EICAR test file from
+<https://www.eicar.org/download-anti-malware-testfile/> — try to upload it
+to a support ticket or a group, and confirm the CMS refuses it.
+
+## Host monitoring
+
+- **Detect unauthorised configuration changes.** Purdue runs a tool called
+  Ogre hourly; its engine is open source but the metadata and templates that
+  make it useful are not. Any configuration management system that reports
+  drift will do.
+- **Run `rkhunter` daily** to catch suspicious changes.
+- **Run an auditing tool** such as `lynis` and track the hardening score.
+  Purdue targets 72 or better.
+- **Install a firewall blocklist.** Purdue feeds DShield's list into
+  iptables. It is published at <https://www.dshield.org/block.txt> with a
+  detached signature at <https://www.dshield.org/block.txt.asc>; verify the
+  signature before you load it.
+- **Scan the network periodically.** Note that Debian does not bump version
+  numbers in service banners when it backports a security patch, so a
+  scanner like Nessus reports a great many false positives on a
+  fully-patched host. The scans are still worth running to spot newly open
+  ports and configuration mistakes.
+
+## File system permissions
+
+Own the Hubzero code with a user other than the one the web server runs as
+(`www-data` on Debian), so a compromise of PHP cannot rewrite the
+application. Directories the CMS genuinely writes to — uploads, the log
+path, the cache and temporary paths — need to stay writable.
+
+## PHP configuration
+
+Hardening guides for `php.ini` are worth reading, but apply them one setting
+at a time. Several of the settings such guides recommend break hub
+functionality outright — the CMS shells out to a virus scanner and to
+`fail2ban-client`, so disabling `exec()` disables both. Test each change on
+a staging hub.

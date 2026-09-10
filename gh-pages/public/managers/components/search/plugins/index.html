@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Plugins · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Search plugins allow developers to add support for different component data in the hub. In order to appear in the search index, the plugin must be enabled.…">
+  <meta name="description" content="Twenty-six plugins ship in the search group, listed under Extensions Plug-ins with the filter Type: search . They do not all do the same thing, and which ones…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/components/search/plugins/">
   <link rel="icon" href="../../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../configuring/registration/index.html">Registration</a></li>
@@ -94,20 +94,23 @@
 <li class="tree__leaf"><a class="tree__link" href="../../kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../resources/index.html">Resources</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Plugins</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#system-search-plugins">System Search Plugins</a></li>
+<li class="toc__item toc__item--l2"><a href="#plugins-for-the-basic-engine">Plugins for the Basic engine</a></li>
+<li class="toc__item toc__item--l2"><a href="#plugins-that-shape-basic-ranking">Plugins that shape Basic ranking</a></li>
+<li class="toc__item toc__item--l2"><a href="#plugins-for-the-solr-engine">Plugins for the Solr engine</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-system-plugin">The system plugin</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -126,12 +129,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -146,16 +149,182 @@
           <p class="eyebrow">Hub managers</p>
           <h1>Plugins</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/components/search/plugins">help.hubzero.org</a> and has not been checked against Hubzero 2.4. It was last edited there in 2019.</aside>
+        
         <div class="prose">
-<p>Search plugins allow developers to add support for different component data in the hub. In order to appear in the search index, the plugin must be enabled. This can be accomplished by going to the Administrative backend &gt; Plug-in Manager &gt; [Filter by Type: Search] &gt; and ensuring that the types are enabled. For example Solr will index wiki pages when the “Search Wiki” plugin is enabled.</p>
-<p>The plugin provides some necessary information for indexing and other search-related operation. By default, the categories in the search interface correspond with these plugins.</p>
-<h2 id="system-search-plugins">System Search Plugins</h2>
-<p>In order to keep the search index “fresh”, a couple of new system Events have been made that capture when items using the Relational Class / ORM are created, edited, or deleted. Once the system event fires, it calls an event in the Search - Index plugin which handles placing the newly-updated data into the processing queue. A migration has been written to ensure that the System - Content plugin and the Search - Solr plugin have been enabled. If you notice that the index is not being refreshed with new content, check that both of these plugins are enabled.</p>
+<p>Twenty-six plugins ship in the <strong>search</strong> group, listed under <strong>Extensions &gt;
+Plug-ins</strong> with the filter <strong>Type: search</strong>. They do not all do the same
+thing, and which ones matter depends on the engine the hub is running.</p>
+<h2 id="plugins-for-the-basic-engine">Plugins for the Basic engine</h2>
+<p>These turn a query into results by searching the hub's own database. Each one
+is a content type; disabling one drops that type out of Basic search results.
+All of them are enabled on a new hub.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Searches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search - Blogs</strong></td>
+<td>Blog entries</td>
+</tr>
+<tr>
+<td><strong>Search - Citations</strong></td>
+<td>Citations</td>
+</tr>
+<tr>
+<td><strong>Search - Collections</strong></td>
+<td>Collection posts</td>
+</tr>
+<tr>
+<td><strong>Search - Content</strong></td>
+<td>Articles</td>
+</tr>
+<tr>
+<td><strong>Search - Courses</strong></td>
+<td>Courses</td>
+</tr>
+<tr>
+<td><strong>Search - Events</strong></td>
+<td>Calendar events</td>
+</tr>
+<tr>
+<td><strong>Search - Forum</strong></td>
+<td>Forum posts</td>
+</tr>
+<tr>
+<td><strong>Search - Groups</strong></td>
+<td>Groups</td>
+</tr>
+<tr>
+<td><strong>Search - Kb</strong></td>
+<td>Knowledge base articles</td>
+</tr>
+<tr>
+<td><strong>Search - Members</strong></td>
+<td>Member profiles</td>
+</tr>
+<tr>
+<td><strong>Search - Projects</strong></td>
+<td>Projects</td>
+</tr>
+<tr>
+<td><strong>Search - Publications</strong></td>
+<td>Publications</td>
+</tr>
+<tr>
+<td><strong>Search - Questions</strong></td>
+<td>Questions and answers</td>
+</tr>
+<tr>
+<td><strong>Search - Resources</strong></td>
+<td>Resources</td>
+</tr>
+<tr>
+<td><strong>Search - Sitemap</strong></td>
+<td>Hand-written site map entries</td>
+</tr>
+<tr>
+<td><strong>Search - Wiki</strong></td>
+<td>Wiki pages</td>
+</tr>
+<tr>
+<td><strong>Search - Wishlists</strong></td>
+<td>Wishlist items</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Search - Sitemap</strong> is the odd one. As well as contributing results, it
+supplies the whole administrative screen the Basic engine shows at
+<strong>Components &gt; Search</strong>: a small editor for site map entries, so that a query
+about the structure of the hub — rather than its content — can be answered
+with a hand-written link.</p>
+<h2 id="plugins-that-shape-basic-ranking">Plugins that shape Basic ranking</h2>
+<p>These contribute no results of their own. They adjust the terms or reorder
+what the content plugins returned, and are enabled by default.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search - Suffixes</strong></td>
+<td>Expands query terms with common word endings.</td>
+</tr>
+<tr>
+<td><strong>Search - Weighttitle</strong></td>
+<td>Raises results whose title matches the query.</td>
+</tr>
+<tr>
+<td><strong>Search - Weightcontributor</strong></td>
+<td>Raises results whose contributors match.</td>
+</tr>
+<tr>
+<td><strong>Search - Weighttools</strong></td>
+<td>Weights resources of the tool type.</td>
+</tr>
+<tr>
+<td><strong>Search - Sortcourses</strong></td>
+<td>Groups near-identical course resources together.</td>
+</tr>
+<tr>
+<td><strong>Search - Sortevents</strong></td>
+<td>Orders event results.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="plugins-for-the-solr-engine">Plugins for the Solr engine</h2>
+<p>Solr indexing does not go through the content plugins above. It goes through
+the models that implement <code>Hubzero\Search\Searchable</code>, driven by two plugins,
+both of which ship <strong>disabled</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Directory</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search - Solr</strong></td>
+<td><code>core/plugins/search/solr</code></td>
+<td>Handles <code>search.onAddIndex</code> and <code>search.onRemoveIndex</code>, converts the saved record to a Solr document, and writes it. This is the plugin that keeps the index current; a hub using Solr must enable it.</td>
+</tr>
+<tr>
+<td><strong>Search - Solr</strong></td>
+<td><code>core/plugins/search/remote</code></td>
+<td>Posts documents to a separate indexing service over HTTP, for a Solr instance shared by several hubs. It hears only the batch operations — a component index, rebuild, or clear — not individual saves. Its <strong>Connection Info</strong> parameters take that service's URL and access token. Leave it disabled unless the hub is part of such an arrangement.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> Both of those plugins declare <code>Search - Solr</code> as their name, so
+the plugin manager shows that name twice. The one to enable for ordinary
+Solr indexing is the one whose element is <code>solr</code>; the duplicate is
+<code>remote</code>. The support-ticket plugin described below has the same problem
+— its manifest names it <code>Search - Resources</code>, so that name appears twice
+as well. Go by the element, not by the displayed name.</p>
+</aside>
+<p>The remaining plugin is the one in <code>core/plugins/search/tickets</code>. It
+contributes no Basic search results and no Solr documents; it only answers
+the type-list event used by the search API. Support tickets are not
+searchable from the site.</p>
+<h2 id="the-system-plugin">The system plugin</h2>
+<p>Indexing also depends on one plugin outside the search group: <strong>System -
+HUBzero</strong> (<code>plg_system_content</code>) under <strong>Type: system</strong>, which raises the
+event that <strong>Search - Solr</strong> listens for. It is enabled by default. If new
+content stops appearing in search, check that plugin and <strong>Search - Solr</strong>
+before anything else.</p>
 
         </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index/index.html" rel="prev"><span>Previous</span>Maintaining the Index</a><a class="pager__next" href="../blacklist/index.html" rel="next"><span>Next</span>Blacklist</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index/index.html" rel="prev"><span>Previous</span>Maintaining the index</a><a class="pager__next" href="../blacklist/index.html" rel="next"><span>Next</span>Blacklist</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/09-components/18-search/06-plugins.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>URLs · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Understanding URLs for Sections, Categories, and Articles When SEF URLs are being used, it can become tricky at times to discover which article a URL path…">
+  <meta name="description" content="How the hub turns an address into an article, and how to point an old address at a new one. The SEO settings Search engine friendly URLs are configured in Site…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/content/urls/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,10 +41,10 @@
         <a class="rail__book" href="../../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Introduction</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">Administrator Area</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/administrator/index.html">The administrator interface</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Getting Started: Advanced Setup</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/approvingcontent/index.html">Approving Content</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tools/index.html">Tools</a></li>
@@ -52,7 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently Asked Questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/hub/index.html">Global configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuring/registration/index.html">Registration</a></li>
@@ -79,8 +79,12 @@
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Content</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../articlemanager/index.html">Article Manager</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">URLs</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#understanding-urls-for-sections-categories-and-articles">Understanding URLs for Sections, Categories, and Articles</a></li>
-<li class="toc__item toc__item--l2"><a href="#url-redirects">URL Redirects</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-seo-settings">The SEO settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-an-article-s-address-is-decided">How an article&#x27;s address is decided</a></li>
+<li class="toc__item toc__item--l3"><a href="#a-menu-item">A menu item</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-category-path">The category path</a></li>
+<li class="toc__item toc__item--l2"><a href="#redirects">Redirects</a></li>
+<li class="toc__item toc__item--l2"><a href="#redirecting-with-a-menu-item">Redirecting with a menu item</a></li>
 </ol></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
@@ -97,18 +101,18 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Knowledge base</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/newsletters/index.html">Newsletters</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/projects/index.html">Projects</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project File Connectors</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/projects/projectfileconnect/index.html">Project file connectors</a></li>
 </ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/publications/index.html">Publications</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../components/publications/datacite/index.html">DOI registration</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/resources/index.html">Resources</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../components/search/index.html">Search</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation &amp; First Time Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/install/index.html">Installation and first-time configuration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/admin/index.html">Administration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/breadth/index.html">Breadth</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/boosting/index.html">Boosting</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the Index</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/search/index/index.html">Maintaining the index</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/search/blacklist/index.html">Blacklist</a></li>
 </ul></details></li>
@@ -127,12 +131,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../spam/index.html">Spam</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security Considerations</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Frequently Asked Questions</a></li>
-<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the Content Management System</a></summary><ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-Controlled Fail2Ban Jail</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/faqs/index.html">Security questions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../security/hardencms/index.html">Hardening the CMS</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardencms/cmscontrolled-fail2ban-jail/index.html">CMS-controlled Fail2Ban jail</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating System Hardening Guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../security/hardeningguide/index.html">Operating system hardening</a></li>
 </ul></details></li>
 </ul>
         </nav>
@@ -147,77 +151,192 @@
           <p class="eyebrow">Hub managers</p>
           <h1>URLs</h1>
         </header>
-        <aside class="banner banner--imported" role="note"><strong>Not yet reviewed.</strong> This page was imported from <a href="https://help.hubzero.org/documentation/240/managers/content/urls">help.hubzero.org</a> and has not been checked against Hubzero 2.4.</aside>
+        
         <div class="prose">
-<h2 id="understanding-urls-for-sections-categories-and-articles">Understanding URLs for Sections, Categories, and Articles</h2>
-<p>When SEF URLs are being used, it can become tricky at times to discover which article a URL path leads to. HUBs try to simplify some of this and make the association(s) of the path to sections, categories, and articles a little more obvious.</p>
-<p>For the purposes of this explanation, we assume every section, category, and article has an alias. In its simplest form, a URL will map to a path of <code>http://yourhub.org/{SectionAlias}/{CategoryAlias}/{ArticleAlias}</code>. So, a URL of <code>http://yourhub.org/about/this/site</code> would map to a section with an alias of <strong>about</strong>, a category with an alias of <strong>this</strong>, and an article with an alias of <strong>site</strong>.</p>
-<p>The resulting URL will start to collapse, or shorten, when sections, categories, and articles have the same alias. For instance, if you have a section with alias <strong>about</strong>, a category with an alias of <strong>this</strong>, and an article with an alias of <strong>this</strong>– notice it is the same as the category–the resulting URL will be <code>http://yourhub.org/about/this</code>.</p>
-<p>If all three portions have the same alias, the <code>http://yourhub.org/about/this/site</code> shortens further. A section alias of <strong>about</strong>, category alias of <strong>about</strong> and article alias of <strong>about</strong> will simply produce <code>http://yourhub.org/about</code>.</p>
+<p>How the hub turns an address into an article, and how to point an old address
+at a new one.</p>
+<h2 id="the-seo-settings">The SEO settings</h2>
+<p>Search engine friendly URLs are configured in <strong>Site → Global
+Configuration</strong>, on the <strong>Site</strong> tab, under <strong>SEO Settings</strong>.</p>
 <table>
 <thead>
 <tr>
-<th>Section</th>
-<th>Category</th>
-<th>Article</th>
+<th>Setting</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Search Engine Friendly URLs</strong></td>
+<td>Yes</td>
+<td>Builds path-style URLs instead of query strings.</td>
+</tr>
+<tr>
+<td><strong>Search Engine Friendly Group URLs</strong></td>
+<td>No</td>
+<td>Nothing. The setting is stored but no code reads it.</td>
+</tr>
+<tr>
+<td><strong>Use URL rewriting</strong></td>
+<td>No</td>
+<td>Drops <code>index.php</code> from the path. Needs the web server's rewrite rules in place first.</td>
+</tr>
+<tr>
+<td><strong>Adds Suffix to URL</strong></td>
+<td>No</td>
+<td>Appends the document format, so a page ends in <code>.html</code>.</td>
+</tr>
+<tr>
+<td><strong>Unicode Aliases</strong></td>
+<td>No</td>
+<td>Lets aliases hold non-ASCII characters instead of transliterating them.</td>
+</tr>
+</tbody>
+</table>
+<p>These are also listed in the
+<a href="../../../reference/configuration/index.html">global configuration reference</a>.</p>
+<h2 id="how-an-article-s-address-is-decided">How an article's address is decided</h2>
+<p>Two things can give an article a URL, and the first one wins.</p>
+<h3 id="a-menu-item">A menu item</h3>
+<p>If any menu item points at the article, the article's URL is that menu item's
+route: its own alias, with the aliases of its parent menu items in front of
+it. This is how the pages that ship with a hub are addressed. The sample
+<strong>Terms of Use</strong> article is reached at <code>/about/terms</code> because a menu item
+with alias <code>terms</code>, nested under a menu item with alias <code>about</code>, points at
+it. The article's own alias, <code>terms</code>, and its category, <code>about</code>, play no part
+— they happen to match here, and often will not.</p>
+<p>Menu item routes are the addresses to publish and to link to. See
+<a href="../../menus/index.html">Menus</a>.</p>
+<h3 id="the-category-path">The category path</h3>
+<p>An article with no menu item is matched by its category path and its own
+alias:</p>
+<pre><code>/{category-path}/{article-alias}
+</code></pre>
+<p>The category path is the nested path of the category the article is in, so an
+article with alias <code>site</code> in a category <code>this</code> nested under a category
+<code>about</code> answers at <code>/about/this/site</code>. Only <strong>published</strong> articles are found
+this way.</p>
+<p>Two shorthands exist for a single-segment address, <code>/{alias}</code>:</p>
+<ul>
+<li>The article is in the <strong>Uncategorised</strong> category. This is the ordinary case
+for a page you want at the top level: file it under Uncategorised and it
+answers at <code>/{alias}</code>.</li>
+<li>Every segment of the article's category path is the same word as the
+article's alias. An article <code>about</code> in category <code>about</code> answers at
+<code>/about</code>. The code calls this out as supported for legacy reasons; do not
+build anything new on it.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Category path</th>
+<th>Article alias</th>
 <th>URL</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>about</td>
-<td>this</td>
-<td>site</td>
-<td>http://yourhub.org/about/this/site</td>
+<td><em>(Uncategorised)</em></td>
+<td><code>terms</code></td>
+<td><code>/terms</code></td>
 </tr>
 <tr>
-<td>about</td>
-<td>this</td>
-<td>this</td>
-<td>http://yourhub.org/about/this</td>
+<td><code>about</code></td>
+<td><code>site</code></td>
+<td><code>/about/site</code></td>
 </tr>
 <tr>
-<td>this</td>
-<td>this</td>
-<td>site</td>
-<td>http://yourhub.org/this/site</td>
+<td><code>about/this</code></td>
+<td><code>site</code></td>
+<td><code>/about/this/site</code></td>
 </tr>
 <tr>
-<td>about</td>
-<td>this</td>
-<td>about</td>
-<td>http://yourhub.org/about/this/about</td>
-</tr>
-<tr>
-<td>about</td>
-<td>about</td>
-<td>about</td>
-<td>http://yourhub.org/about</td>
+<td><code>about</code></td>
+<td><code>about</code></td>
+<td><code>/about</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="url-redirects">URL Redirects</h2>
-<p>If you find yourself wanting to redirect a certain URL to another page, then <em>Joomla!</em> has a solution for you. And fortunately, the solution is as simple as creating a menu.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> Older Hubzero documentation described URLs as built from a
+<strong>section</strong>, a category, and an article, with segments collapsing when they
+shared an alias. Sections have not existed since Joomla 1.6, and Hubzero
+2.4 has none. Categories nest instead, to any depth, and the path above is
+what the router matches.</p>
+</aside>
+<p>If nothing matches, the hub falls back to the component router, which
+addresses an article as <code>/content/article/{category-path}/{article-alias}</code>
+and a category as <code>/content/category/{path}</code>. Those addresses work, but they
+are ugly and no one should be given them.</p>
+<h2 id="redirects">Redirects</h2>
+<p>The <strong>Redirect Manager</strong> is the supported way to send one address to another.
+Open it at <strong>Site → Maintenance → Routes</strong>.</p>
+<p>The manager depends on the <strong>System - Redirect</strong> plugin, and says at the top
+of the screen whether that plugin is enabled. With it on, every 404 the site
+serves is recorded as a link with no destination, so the manager doubles as a
+list of the broken addresses people are actually asking for.</p>
+<p>A link has:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Source URL</strong></td>
+<td>The address to catch. Required, and must be unique. The plugin matches the full URL, then the server-relative path with and without a leading slash.</td>
+</tr>
+<tr>
+<td><strong>Destination URL</strong></td>
+<td>Where to send them. Required to enable the link.</td>
+</tr>
+<tr>
+<td><strong>Response Code</strong></td>
+<td><strong>404 Not Found</strong>, <strong>301 Moved Permanently</strong>, or <strong>302 Found</strong>. A new link with a destination defaults to 302.</td>
+</tr>
+<tr>
+<td><strong>Comment</strong></td>
+<td>A note for whoever reads the list next.</td>
+</tr>
+</tbody>
+</table>
+<p>Enable a link and the redirect takes effect; disable it and the address goes
+back to a 404. The toolbar also archives, trashes, and — once you filter to
+<strong>Trashed</strong> — permanently deletes links. Checking several recorded 404s and
+using <strong>Update selected links to the following new URL</strong> sets the same
+destination on all of them at once.</p>
+<p>Its parameters are in the
+<a href="../../../reference/configuration/components/redirect/index.html">Redirect configuration reference</a>.</p>
+<h2 id="redirecting-with-a-menu-item">Redirecting with a menu item</h2>
+<p>A menu item of type <strong>External URL</strong> also acts as a redirect. When the
+requested path matches the menu item's own route exactly, the hub redirects
+to the item's <strong>Link</strong>, which may be another page on the hub.</p>
+<p>This is worth knowing because it works for paths that belong to a component
+rather than to an article. To move a group's audience from <code>/groups/mainclass</code>
+to <code>/groups/spring2016class</code>:</p>
 <ol>
-<li>Navigate to <strong>Menus -&gt; Menu Manager</strong> on the Joomla! backend</li>
-<li>At this point, you can either create a new Menu or use an existing one. If you prefer the former, click <strong>New</strong> in the upper right-hand corner, and give your new Menu a name such as <strong>Redirects</strong>. Alternatively, you could use the <strong>Default</strong> menu. The only thing to remember is that you should use a menu that is not displayed on the site (e.g. the <strong>Main Menu</strong> and <strong>About</strong> menus or displayed on the standard hub)</li>
-<li>Irrelevant of which option you chose, select the icon in the <strong>Menu Item(s)</strong> row to add a new <strong>Menu Item</strong> to your <strong>Menu</strong> to handle the redirect</li>
-<li>Next, fill in the necessary fields
-<ul>
-<li>Add a <strong>Title</strong></li>
-<li>The <strong>Alias</strong> will be the address that a user would enter into the address bar of their browser</li>
-<li>The <strong>Link</strong> will be the page where the actual content exists
-<ul>
-<li><strong>Example:</strong> According to the image below, if a user types <code>http://myhub.org/example</code>, though that page does not exist, they will get the content found at <code>http://myhub.org/example/examplearticle1</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Select <strong>Save</strong></li>
+<li>Go to <strong>Menus → Menu Manager</strong> and open a menu that is not displayed
+anywhere — the <strong>Default</strong> menu on a stock hub.</li>
+<li>If the menu has no <strong>Groups</strong> item, add one: <strong>New</strong>, then <strong>Select</strong> next
+to <strong>Menu Item Type</strong>, then <strong>External URL</strong> under <strong>System Links</strong>. Set
+<strong>Menu Title</strong> to <code>Groups</code> and <strong>Link</strong> to <code>groups</code>. <strong>Save &amp; Close</strong>.</li>
+<li>Add a second <strong>External URL</strong> item with <strong>Menu Title</strong> <code>Mainclass</code> and
+<strong>Link</strong> <code>/groups/spring2016class</code>.</li>
+<li>Set its <strong>Parent Item</strong> to <strong>Groups</strong>, so its route becomes
+<code>groups/mainclass</code>. <strong>Save &amp; Close</strong>.</li>
 </ol>
+<p>Requests for <code>/groups/mainclass</code> now land on <code>/groups/spring2016class</code>.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> Prefer the Redirect Manager. It records the redirect where the
+next administrator will look for it, gives you the response code, and does
+not put an entry into a menu that someone may later publish by accident.</p>
+</aside>
 
         </div>
-        
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ f22290e4e4</code> on 2026-09-09.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../articlemanager/index.html" rel="prev"><span>Previous</span>Article Manager</a><a class="pager__next" href="../../components/index.html" rel="next"><span>Next</span>Components</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/08-content/urls.md">Edit this page on GitHub</a>
