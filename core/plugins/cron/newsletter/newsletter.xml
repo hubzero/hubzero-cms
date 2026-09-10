@@ -27,6 +27,6 @@
 		<param type="text" name="newsletter_queue_limit" default="25" label="PLG_CRON_NEWSLETTER_QUEUE_LIMIT_LABEL" description="PLG_CRON_NEWSLETTER_QUEUE_LIMIT_DESC" />
 	</params>
 	<params group="processips">
-		<param type="text" name="newsletter_ips_limit" default="100" label="PLG_CRON_NEWSLETTER_QUEUE_IPS_LABEL" description="PLG_CRON_NEWSLETTER_IPS_LIMIT_DESC" />
+		<param type="text" name="newsletter_ips_limit" default="100" label="PLG_CRON_NEWSLETTER_IPS_LIMIT_LABEL" description="PLG_CRON_NEWSLETTER_IPS_LIMIT_DESC" />
 	</params>
 </extension>

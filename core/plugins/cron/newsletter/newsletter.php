@@ -33,7 +33,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
 			array(
 				'name'   => 'processIps',
 				'label'  => Lang::txt('PLG_CRON_NEWSLETTER_IP_ADDRESSES_TO_LOCATION'),
-				'params' => ''
+				'params' => 'processips'
 			)
 		);
 
