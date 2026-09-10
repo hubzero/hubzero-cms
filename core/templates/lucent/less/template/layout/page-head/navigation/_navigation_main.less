@@ -30,6 +30,12 @@
 				display: block;
 				margin: 0;
 				padding: 0.5em 1em;
+				color: @colorNavLink;
+
+				&:hover,
+				&:focus {
+					color: @colorNavLinkHover;
+				}
 			}
 
 			.separator {
@@ -48,7 +54,13 @@
 			border: 0;
 			height: 100%;
 			cursor: pointer;
+			color: @colorNavLink;
 			font-size: @navigation-main-font-size;
+
+			&:hover,
+			&:focus {
+				color: @colorNavLinkHover;
+			}
 		}
 
 		& > li {
