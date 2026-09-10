@@ -64,7 +64,7 @@ Three routes, none of them in this repository:
 **Install from packages.** The supported path. Enterprise Linux 8 or a
 compatible rebuild, the Hubzero packages, and the `hzcms` command. That
 process is being replaced by a web installer and is not documented here at
-present; see [Installation](../../installation/README.md).
+present; see [Installing a hub](../../managers/00-installing.md).
 
 **Autohub.** A script that provisions a hub in a virtual machine using
 VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a

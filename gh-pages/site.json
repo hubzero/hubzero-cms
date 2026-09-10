@@ -17,18 +17,11 @@
    "summary": "What a hub is, the vocabulary the rest of the documentation uses, how releases work, and where to go next."
   },
   {
-   "slug": "installation",
-   "title": "Installation",
-   "dir": "docs/installation",
-   "audience": "Run a hub",
-   "summary": "Being rewritten for the new web installer."
-  },
-  {
    "slug": "managers",
    "title": "Hub managers",
    "dir": "docs/managers",
    "audience": "Run a hub",
-   "summary": "Administering a hub: configuration, users and access, content, extensions, maintenance, and each component's administrative side."
+   "summary": "Installing a hub, then administering it: configuration, members and access, content, extensions, and day-to-day maintenance."
   },
   {
    "slug": "users",

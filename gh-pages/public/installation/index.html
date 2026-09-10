@@ -2,111 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Installation · Installation · Hubzero Documentation</title>
-  <meta name="description" content="Installation documentation is being rewritten for the new web installer.">
-  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/installation/">
-  <link rel="icon" href="../assets/hubzero-mark.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../assets/site.css?v=3ffa751e">
+  <meta http-equiv="refresh" content="0; url=../managers/installing/index.html">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/installing/">
+  <meta name="robots" content="noindex">
+  <title>Moved</title>
 </head>
-<body class="site-doc">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-
-  <header class="site-header">
-    <a class="brand" href="../index.html">
-      <img class="brand__mark" src="../assets/hubzero-mark.svg" alt="" aria-hidden="true">
-      <span class="brand__name">Hubzero</span>
-      <span class="brand__version">2.4</span>
-    </a>
-    <form class="search" role="search" data-index="../search-index.json" data-base="../">
-      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <label class="visually-hidden" for="search-input">Search the documentation</label>
-      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
-      <ul class="search__results" hidden></ul>
-    </form>
-    <nav class="site-nav" aria-label="Site">
-      <a href="../docs/index.html">All books</a>
-      <a href="../status/index.html">Status</a>
-      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
-    </nav>
-  </header>
-
-  <div class="doc">
-    <aside class="rail">
-      <details class="rail__fold">
-        <summary class="rail__summary">In this book</summary>
-        <a class="rail__book" href="index.html">Installation</a>
-        <nav aria-label="Installation contents">
-<ul class="tree">
-
-</ul>
-        </nav>
-      </details>
-      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
-    </aside>
-
-    <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Installation</span></nav>
-      <article class="article">
-        <header class="article__header">
-          <p class="eyebrow">Installation</p>
-          <h1>Installation</h1>
-        </header>
-        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
-        <div class="prose">
-<p><strong>Coming soon.</strong></p>
-<p>Hubzero is gaining a web installer that sets a hub up from the browser,
-without the package repositories and hand-run configuration steps the old
-process needed. This book will be rewritten for it.</p>
-<p>The previous version documented installing from packages onto Enterprise
-Linux 8. It described a process the web installer replaces, so it has been
-withdrawn rather than left to mislead.</p>
-<h2 id="what-is-documented-in-the-meantime">What is documented in the meantime</h2>
-<p>Everything after a hub is running is covered and current:</p>
-<ul>
-<li><a href="../managers/index.html">Hub managers</a> — the administrator's guide,
-screen by screen. Start with
-<a href="../managers/getting-started/index.html">The first week with a new hub</a>, which
-assumes a hub that is installed and answering, and walks the decisions
-that come next in order.</li>
-<li><a href="../managers/components/search/index.html">Search</a> — connecting a hub
-to Apache Solr, which is a separate service a hub adds and not part of
-installing the CMS.</li>
-<li><a href="../managers/configuring/authentication/index.html">Authentication</a> and
-<a href="../managers/configuring/extauth/index.html">External authentication</a> —
-the sign-in providers, including the Apache configuration a federated
-provider needs in front of it.</li>
-<li><a href="../developers/index.html">Developers</a> — for working on the code rather
-than running a hub, including
-<a href="../developers/getting-started/devenvironment/index.html">the development environment</a>,
-which sets out what this repository provides and what it does not.</li>
-</ul>
-<h2 id="requirements">Requirements</h2>
-<p>These have not changed and are read from the installer's own preflight
-check:</p>
-<pre><code class="language-php">    private const MIN_PHP_VERSION = '8.2.0';
-</code></pre>
-<p>The PHP extensions it requires are <code>pdo</code>, <code>pdo_mysql</code>, <code>json</code>, <code>mbstring</code>,
-<code>openssl</code>, <code>curl</code>, <code>gd</code>, <code>fileinfo</code> and <code>zip</code>.</p>
-
-        </div>
-        
-        <nav class="pager" aria-label="Chapter navigation"><span></span></nav>
-        <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/installation/README.md">Edit this page on GitHub</a>
-          <span>Hubzero 2.4 documentation</span>
-        </footer>
-      </article>
-    </main>
-  </div>
-
-  <footer class="site-footer">
-    <p>© 2026 Purdue University. The documentation is <a href="../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
-  </footer>
-
-  <script src="../assets/search.js?v=3ffa751e" defer></script>
+<body>
+  <p>This page has moved to <a href="../managers/installing/index.html">../managers/installing/index.html</a>.</p>
 </body>
 </html>

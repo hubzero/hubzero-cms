@@ -10,19 +10,12 @@
    }
   },
   {
-   "slug": "installation",
-   "title": "Installation",
-   "pages": 1,
-   "counts": {
-    "draft": 1
-   }
-  },
-  {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 89,
+   "pages": 90,
    "counts": {
-    "rewritten": 89
+    "rewritten": 89,
+    "draft": 1
    }
   },
   {
