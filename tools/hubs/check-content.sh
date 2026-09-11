@@ -49,6 +49,38 @@ expect() {
     fi
 }
 
+# downloads <name> <page> <type> <minimum bytes> [extension]
+#
+# Finds the download link on a page, follows it, and looks at what comes back.
+# The link carries an id that changes between builds, so it is read off the
+# page rather than written down here; and only the bytes tell a download that
+# works from one that answers 200 with an error page in it.
+downloads() {
+    local name="$1" page="$2" want="$3" least="$4" ext="${5:-}"
+    local link code type size
+
+    link="$(curl -sk --max-time 30 "${BASE}${page}" \
+        | grep -oE "/resources/[0-9]+/download/[^\"]*${ext}" | head -1)"
+
+    if [ -z "$link" ]; then
+        bad "$name: ${page} offers nothing to download"
+        return
+    fi
+
+    IFS='|' read -r code type size <<< "$(curl -sk -o /dev/null \
+        -w '%{http_code}|%{content_type}|%{size_download}' --max-time 30 "${BASE}${link}")"
+
+    if [ "$code" != "200" ]; then
+        bad "$name: ${link} answered ${code}"
+    elif [ "${type%%;*}" != "$want" ]; then
+        bad "$name: ${link} came back as ${type%%;*}, wanted ${want}"
+    elif [ "$size" -lt "$least" ]; then
+        bad "$name: ${link} is ${size} bytes, wanted at least ${least}"
+    else
+        ok "$name: ${size} bytes of ${want}"
+    fi
+}
+
 say "Checking the content on ${BASE}"
 
 expect "front page"  "/"                    'home-[0-9]'                        2
@@ -97,6 +129,16 @@ expect "group pages"    "/groups/fossil-ct"          'class="page" href="[^"]+"'
 expect "group wiki"     "/groups/fossil-ct/wiki"     'href="[^"]*/wiki/[A-Za-z]{6,}"'     2
 expect "group forum"    "/groups/fossil-ct/forum"    'forum/discussion/[a-z-]{5,}'        2
 expect "group calendar" "/groups/fossil-ct/calendar" 'calendar/details/[0-9]+'            2
+
+# A hub is a repository, so something has to come back when the button is
+# pressed. A file written to the wrong directory leaves a page that renders
+# perfectly and a download that answers 404
+downloads "a data table" "/resources/calder-basin-measured-sections" text/csv         1200
+# The figure and the note are behind the supporting documents tab rather than
+# on the record itself, which is where the hub puts everything but the primary
+downloads "a figure"     "/resources/calder-quarry-map-2025/supportingdocs" image/png   4000  '\.png'
+downloads "a note"       "/resources/calder-quarry-map-2025/supportingdocs" text/plain   300  'README.txt'
+downloads "a document"   "/resources/preparation-standards"            application/pdf  4000
 
 if [ "$fail" -eq 0 ]; then
     echo
