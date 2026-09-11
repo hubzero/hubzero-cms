@@ -12,27 +12,62 @@
 	}
 }
 
-.page > .inner > .content-header,
-.page > .inner > #content-header,
-.contentpane > .content-header,
-.contentpane > #content-header,
 .page > .upperpane,
 .page > section.section.upperpane {
 	border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
+// The title of a page, and whatever it can be done with
+//
+// The default puts the title on one line and its actions underneath, which
+// reads as two unrelated things and leaves the actions looking like the first
+// item of the content. They belong on the same line: the page says what it is
+// on the left, and what you can do about it on the right.
+//
+// A panel with a rule down its inner edge, because the title is the one place
+// a page can carry the hub's own colour without competing with the content.
+//
+// All of this is the markup every component already emits - a header with an
+// h2 and, where there is anything to do, a div beside it - so no component
+// needs a view of its own to take part.
 .page > .inner > .content-header,
 .page > .inner > #content-header,
 .contentpane > .content-header,
 .contentpane > #content-header {
 	.outerPadding();
 
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1rem 2rem;
+
+	margin-bottom: 2.5rem;
+	padding-top: 1.75rem;
+	padding-bottom: 1.75rem;
+
+	// A band rather than an inset panel.
+	//
+	// A panel was tried first and could not be aligned: the gutter the header
+	// keeps and the gutter the content keeps are the same at some widths and
+	// not at others, and a landing page uses a different scale again, so the
+	// panel's edge sat inside the content's edge at 1280 and level with it at
+	// 1600. A band takes the whole width and the title keeps the gutter the
+	// content keeps, which is the one thing that holds at every width.
+	background: @colorHeaderBg;
+	border-top: 1px solid @colorHeaderBorder;
+	border-bottom: 3px solid @colorBrand;
+
 	h2 {
 		margin-top: 0;
-		padding-top: 2rem;
-		padding-bottom: 2rem;
-		line-height: 1.3em;
+		padding-top: 0;
+		padding-bottom: 0;
+		line-height: 1.2em;
 		margin-bottom: 0;
+
+		// Takes the room it needs and no more, so the actions keep their
+		// place on a wide screen and drop below on a narrow one
+		flex: 1 1 18rem;
+		min-width: 0;
 	}
 
 	// complex content-headers publications/1/1
@@ -49,7 +84,9 @@
 	// Extra options
 	#content-header-extra,
 	.content-header-extra {
-		padding-bottom: 2rem;
+		padding-bottom: 0;
+		margin-left: auto;
+		flex: 0 1 auto;
 
 		a {
 			margin-right: @space-1;

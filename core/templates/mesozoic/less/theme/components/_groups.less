@@ -1,0 +1,26 @@
+// Groups
+//
+// Adjustments to what com_groups draws, from the template rather than from the
+// component: its stylesheet is shared by every hub and every template, and
+// what is wrong here is only wrong against this design.
+
+// The roster and the description each carry a decorative badge - a grey disc
+// with a glyph in it - drawn in the component's own pseudo-elements, with a
+// hundred pixels of padding reserved for it. It belongs to a visual language
+// this template does not speak, so it reads as a stray circle beside the first
+// member. Taken away, and the padding with it.
+// body, because the template's stylesheet is loaded before a component's and
+// loses a tie: an id and a pseudo-element in groups.css beats an id and a
+// pseudo-element here simply by arriving later.
+body {
+
+	#member_browser,
+	#description {
+		padding-left: 0;
+
+		&:before,
+		&:after {
+			content: none;
+		}
+	}
+}
