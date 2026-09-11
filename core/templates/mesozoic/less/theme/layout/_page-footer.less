@@ -1,0 +1,27 @@
+// Page footer
+//
+// A band of animals along the top of it, on the same horizon the front page
+// uses, so that every page ends on the hub's own subject rather than on a rule.
+//
+// It is a template asset rather than something the sample data draws, because
+// a template has to work on a hub that has never run a sample pack. Drawn from
+// the same shapes all the same, so the two friezes are recognisably one hand.
+.page-footer {
+	position: relative;
+	padding-top: 5rem;
+	border-top: 0;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 5rem;
+		background: url("../images/frieze.svg") repeat-x bottom center;
+		background-size: auto 100%;
+
+		// Behind whatever the footer holds, and not in the way of a pointer
+		pointer-events: none;
+	}
+}
