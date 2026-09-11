@@ -1,6 +1,7 @@
 <?php
 
 use Hubzero\Facades\App;
+use Hubzero\Facades\Component;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -10,8 +11,11 @@ use Hubzero\Facades\User;
 // No Direct Access stuff, whatever, just keep it there
 defined('_HZEXEC_') or die();
 
-// Some config
-$tplSettingDisplayHelp = false;
+// What the hub has chosen for this style in the admin. Both off by default:
+// a help pane needs a module in the position before it shows anything, and a
+// register link needs registration to be open.
+$tplSettingDisplayHelp = (bool) $this->params->get('helpPane', 0);
+$tplSettingRegisterLink = (bool) $this->params->get('registerLink', 0);
 
 $menu = App::get('menu');
 Html::behavior('framework', true);
@@ -227,6 +231,21 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                                             <?php echo Lang::txt('TPL_LOGIN'); ?>
                                         </a>
                                     </li>
+                                    <?php
+                                    $allowReg = Component::params('com_members')
+                                        ->get('allowUserRegistration');
+                                    ?>
+                                    <?php if ($tplSettingRegisterLink && $allowReg) : ?>
+                                        <li>
+                                            <a href="<?php
+                                                echo Route::url('index.php?option=com_register');
+                                            ?>"
+                                               title="<?php echo Lang::txt('TPL_SIGNUP'); ?>"
+                                               class="user-account-link loggedout">
+                                                <?php echo Lang::txt('TPL_SIGNUP'); ?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
                                 <?php } ?>
                                 <?php if ($this->countModules('helppane') && $tplSettingDisplayHelp) : ?>
                                     <?php
