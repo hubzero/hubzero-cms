@@ -21,6 +21,10 @@
 		<position>breadcrumbs</position>
 		<position>banner</position>
 		<position>hero</position>
+		<position>home-1</position>
+		<position>home-2</position>
+		<position>home-3</position>
+		<position>home-4</position>
 		<position>welcome</position>
 		<position>left</position>
 		<position>right</position>
