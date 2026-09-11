@@ -675,7 +675,12 @@ class Articles extends SiteController
         }
 
         // Filter by categories
-        if (is_array($featuredCategories = $filters['frontpage.categories'])) {
+        //
+        // Only set above when the menu item names some, which a hub that
+        // has not been configured yet has not.
+        $featuredCategories = $filters['frontpage.categories'] ?? null;
+
+        if (is_array($featuredCategories)) {
             $query->whereIn('a.catid', $featuredCategories);
         }
 
