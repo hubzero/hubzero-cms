@@ -80,17 +80,18 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             $icon = 'icon-lock';
             $privacyTxt = Lang::txt('COM_PROJECTS_PRIVATE');
 
-            // Open project
-            /*if ($this->row->get('private') < 0):
+            // Open, and public. Read from the access level rather than from
+            // the private column, which the listing stopped consulting when
+            // it moved to access levels; the two branches here were left
+            // commented out at that point and every project, public or not,
+            // has said "private" to everyone who is not a member since.
+            if ($this->row->get('access') == 1) :
                 $privacyTxt = Lang::txt('COM_PROJECTS_OPEN');
                 $icon = 'icon-unlock';
+            elseif ($this->row->get('access') == 4) :
+                $privacyTxt = Lang::txt('COM_PROJECTS_PUBLIC');
             endif;
 
-            // Public
-            if ($this->row->get('private') == 0):
-                $privacyTxt = Lang::txt('COM_PROJECTS_PUBLIC');
-                $icon = 'icon-lock';
-            endif;*/
             if ($this->row->access('member')) :
                 $icon = 'icon-unlock';
             endif;
