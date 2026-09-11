@@ -12,6 +12,7 @@ use Hubzero\Database\Relational;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\User;
 use Hubzero\Facades\Component;
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Event;
 
 /**
@@ -413,6 +414,9 @@ class Newsletter extends Relational
         //replace placeholders in template
         $campaignParsed = str_replace("{{LINK}}", $link, $campaignTemplate ? $campaignTemplate : '');
         $campaignParsed = str_replace("{{ALIAS}}", $campaign->alias ? $campaign->alias : '', $campaignParsed);
+        // The hub's own name, so that a template shipped with a placeholder
+        // heading does not send every issue out under it
+        $campaignParsed = str_replace("{{SITENAME}}", Config::get('sitename', ''), $campaignParsed);
         $campaignParsed = str_replace("{{TITLE}}", $campaign->name ? $campaign->name : '', $campaignParsed);
         $campaignParsed = str_replace("{{ISSUE}}", $campaign->issue ? $campaign->issue : '', $campaignParsed);
 
