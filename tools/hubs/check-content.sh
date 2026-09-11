@@ -73,6 +73,16 @@ expect "polls"       "/poll"                'name="id" value="[0-9]+"'          
 expect "jobs"        "/jobs"                'href="/jobs/job/[0-9]+"'            5
 expect "newsletters" "/newsletter"          'href="/newsletter/[0-9]{4}-[a-z]+"' 4
 
+# Pictures, which are files rather than rows: a hub whose members and groups
+# all fall back to the same grey placeholder looks unbuilt, and the way that
+# happens is a picture written to the wrong directory, where nothing errors
+expect "group logos" "/groups/browse"     'src="/files/[A-Za-z0-9+/=]{40,}"'   8
+# No listing of people is public, so this asks one member's own page. The id is
+# the first account the pack makes on an otherwise empty hub. The profile finds
+# the picture on disk rather than through the column, so this fails when the
+# file is written somewhere the hub does not look
+expect "member picture" "/members/1001"   'src="/files/[A-Za-z0-9+/=]{40,}"'   1
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
