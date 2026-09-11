@@ -1,0 +1,117 @@
+/* Content header */
+
+.content-header,
+#content-header {
+
+	h2 {
+		font-size: @font-size-9;
+
+		@media (min-width: @breakpoint-l) {
+			font-size: @font-size-11;
+		}
+	}
+}
+
+.page > .inner > .content-header,
+.page > .inner > #content-header,
+.contentpane > .content-header,
+.contentpane > #content-header,
+.page > .upperpane,
+.page > section.section.upperpane {
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.page > .inner > .content-header,
+.page > .inner > #content-header,
+.contentpane > .content-header,
+.contentpane > #content-header {
+	.outerPadding();
+
+	h2 {
+		margin-top: 0;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		line-height: 1.3em;
+		margin-bottom: 0;
+	}
+
+	// complex content-headers publications/1/1
+	section.main {
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+
+		h2 {
+			padding-top: 0;
+		}
+	}
+
+
+	// Extra options
+	#content-header-extra,
+	.content-header-extra {
+		padding-bottom: 2rem;
+
+		a {
+			margin-right: @space-1;
+			
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
+
+		ul,
+		li,
+		p {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+.hz-layout-with-aside .contentpane > .content-header {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+// more complex content-headers /resources/1
+.page .overviewcontainer.grid #content-header {
+
+	h2 {
+		margin-top: 0;
+	}
+}
+
+.contentpaneopen .contentpane > .content-header,
+.contentpaneopen .contentpane > #content-header {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+.page > section.section.upperpane {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+section.section .aside + .subject .content-header {
+	border-bottom: none;
+
+	h2 {
+		position: static;
+		padding-top: 0;
+		font-size: 2.2rem;
+		padding-bottom: 1rem;
+
+		&:before {
+			display: none;
+		}
+	}
+}
+
+#content-header-extra ul li {
+	margin-left: 1em;
+}
+
+.subject .content-header {
+	background: none;
+	padding: 0;
+}

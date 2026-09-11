@@ -1,0 +1,147 @@
+@import "_navigation_main";
+@import "_navigation_sub";
+@import "_navigation_mobile";
+
+// Which way the main navigation sits in the header, from the template's
+// config. Written as a mixin rather than a guarded ruleset so that the LESS
+// compiler this repository ships can read it.
+.navMainAlignment(@position) {
+}
+
+.navMainAlignment(@position) when (@position = 'left') {
+	justify-content: flex-start;
+}
+
+.navMainAlignment(@position) when (@position = 'right') {
+	justify-content: flex-end;
+}
+
+
+.page-head {
+
+	nav.nav {
+		display: flex;
+		flex-grow: 1;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			a {
+				display: block;
+			}
+
+			li {
+				list-style: none;
+			}
+		}
+
+		nav.main-nav {
+			display: flex;
+			flex-grow: 1;
+			justify-content: center;
+
+			.navMainAlignment(@confNavMainPosition);
+		}
+	}
+
+	// Mobile menu button
+	nav.mobile-menu {
+
+		button {
+			position: absolute;
+			// Align it with the logo
+			top: 50%;
+			right: 0;
+			.translate(0, -50%);
+
+			display: block;
+			overflow: hidden;
+			margin: 0;
+			padding: 0;
+			font-size: 0;
+			text-indent: -9999px;
+			box-shadow: none;
+			border-radius: 0;
+			border: none;
+			cursor: pointer;
+			background: none;
+			width: @navigationMobileMenuIconHeight;
+			height: @navigationMobileMenuIconHeight;
+
+			@media (min-width: @sizeS) {
+				right: 0;
+			}
+
+			span {
+				display: block;
+				position: absolute;
+				left: 0;
+				right: 0;
+				width: 100%;
+				top: @navigationMobileMenuIconHeight / 2;
+				transform: translate(0, -@navigationMobileMenuLineHeight / 2);
+				height: @navigationMobileMenuLineHeight;
+				background: @navigationMobileMenuColor;
+
+				&:before,
+				&:after {
+					position: absolute;
+					display: block;
+					left: 0;
+					width: 100%;
+					content: "";
+					height: @navigationMobileMenuLineHeight;
+					background-color: @navigationMobileMenuColor;
+				}
+
+				&:before {
+					top: -(@navigationMobileMenuLineHeight * 5);
+					transform: translate(0, @navigationMobileMenuLineHeight / 2);
+				}
+
+				&:after {
+					bottom: -(@navigationMobileMenuLineHeight * 5);
+					transform: translate(0, -@navigationMobileMenuLineHeight / 2);
+				}
+
+			}
+		}
+	}
+
+	&.mobile {
+
+		nav.nav {
+			height: 0;
+			visibility: hidden;
+
+			& > ul {
+
+				& > li {
+
+					& > a {
+						.transition(none);
+					}
+				}
+			}
+		}
+	}
+
+	@media (min-width: 100px) {
+		// JS can override the desktop styles application by adding the '.mobile' class to the <header>
+		&:not(.mobile) {
+			nav.nav {
+				visibility: visible;
+			}
+
+			nav.mobile-menu {
+				display: none;
+			}
+		}
+	}
+}

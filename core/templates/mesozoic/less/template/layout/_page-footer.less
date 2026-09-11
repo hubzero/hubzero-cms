@@ -1,0 +1,101 @@
+// Page footer
+//
+// The manifest has always declared a footer position; this is what carries it.
+// Modules in it lay out in a row on a wide screen and stack on a narrow one.
+
+.page-footer {
+	margin-top: auto;
+	background: @colorFooterBg;
+	color: @colorFooterText;
+	border-top: 1px solid @colorFooterBorder;
+
+	& > .inner {
+		.outerPadding();
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		padding-top: 2.5rem;
+		padding-bottom: 2.5rem;
+	}
+
+	// Whatever a module wraps itself in, it takes a share of the row
+	& > .inner > * {
+		flex: 1 1 20rem;
+		min-width: 0;
+	}
+
+	h3,
+	.module-title {
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin: 0 0 0.75rem;
+		color: @colorFooterHeading;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			margin: 0.35em 0;
+		}
+	}
+
+	a {
+		color: @colorFooterLink;
+
+		&:hover,
+		&:focus {
+			color: @colorFooterLinkHover;
+			text-decoration: underline;
+		}
+	}
+}
+
+// Banner, breadcrumb trail and intro
+//
+// Three positions the manifest declares that sit between the header and the
+// content. Each is only in the page when a module is in it.
+
+.page-banner {
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.page-trail {
+	border-bottom: 1px solid @colorSeparatorLight;
+	font-size: 0.85rem;
+	color: @colorTextMuted;
+
+	& > .inner {
+		.outerPadding();
+		padding-top: 0.6rem;
+		padding-bottom: 0.6rem;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+
+		li {
+			margin: 0;
+		}
+	}
+}
+
+.page-intro {
+	& > .inner {
+		.outerPadding();
+		padding-top: 1.5rem;
+	}
+}

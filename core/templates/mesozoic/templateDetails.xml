@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<install type="template">
+	<name>Mesozoic</name>
+	<author>HUBzero</author>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Mesozoic, for a hub about deep time</description>
+	<files>
+
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_mesozoic.ini</language>
+	</languages>
+	<administration>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.tpl_mesozoic.ini</language>
+		</languages>
+	</administration>
+	<positions>
+		<position>footer</position>
+		<position>breadcrumbs</position>
+		<position>banner</position>
+		<position>hero</position>
+		<position>home-1</position>
+		<position>home-2</position>
+		<position>home-3</position>
+		<position>home-4</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<params>
+	</params>
+</install>
