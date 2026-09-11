@@ -187,6 +187,39 @@ class File extends Entity
     }
 
     /**
+     * Sets the contents the file will be saved with
+     *
+     * save() writes what is here, and there is otherwise no way to give a file
+     * its contents before it exists: read() reaches for the adapter, and the
+     * property itself is not the caller's to set.
+     *
+     * @param   mixed  $contents  A string, or a stream to be copied
+     * @return  $this
+     **/
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
+
+        return $this;
+    }
+
+    /**
+     * Sets the size the file reports
+     *
+     * For a file that does not exist yet, whose size the caller knows and the
+     * adapter cannot yet be asked for.
+     *
+     * @param   int  $size  In bytes
+     * @return  $this
+     **/
+    public function setSize($size)
+    {
+        $this->size = (int) $size;
+
+        return $this;
+    }
+
+    /**
      * Writes contents to the file
      *
      * @param   string  $contents  The contents to write to the file

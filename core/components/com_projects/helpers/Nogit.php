@@ -154,7 +154,7 @@ class Nogit extends Obj
         $files = $this->adapter->listContents($subdir, $recursive);
         $out = array();
         foreach ($files as $file) {
-            $out[] = $file->path;
+            $out[] = $file->getPath();
         }
         return $out;
     }
@@ -171,7 +171,7 @@ class Nogit extends Obj
         $out = array();
         foreach ($files as $file) {
             if ($file->isDir()) {
-                $out[] = $file->path;
+                $out[] = $file->getPath();
             }
         }
         return $out;
