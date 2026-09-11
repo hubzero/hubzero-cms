@@ -36,4 +36,22 @@
 	</positions>
 	<params>
 	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="helpPane" type="list" default="0"
+					label="TPL_LUCENT_FIELD_HELPPANE_LABEL"
+					description="TPL_LUCENT_FIELD_HELPPANE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="registerLink" type="list" default="0"
+					label="TPL_LUCENT_FIELD_REGISTER_LABEL"
+					description="TPL_LUCENT_FIELD_REGISTER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
 </install>
