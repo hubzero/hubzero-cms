@@ -67,6 +67,7 @@ expect "collections" "/collections/posts"   'href="/members/[0-9]+/collections/[
 expect "courses"     "/courses/browse"      'href="/courses/[a-z-]{6,}"'         3
 expect "citations"   "/citations/browse"    'citations/download/[0-9]+'         12
 expect "projects"    "/projects/browse"     'href="/projects/[a-z0-9-]{6,}"'     4
+expect "wish list"   "/wishlist"            'wishlist/general/1/wish/[0-9]+'    10
 
 if [ "$fail" -eq 0 ]; then
     echo
