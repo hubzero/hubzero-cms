@@ -37,7 +37,9 @@ TABLES="users xprofiles xgroups xgroups_members wiki_pages wiki_versions
         events support_tickets support_comments collections collections_items
         collections_posts courses courses_units courses_assets citations
         citations_authors citations_assoc projects project_owners project_todo
-        wishlist_item wishlist_vote vote_log tags tags_object modules"
+        wishlist_item wishlist_vote vote_log tags tags_object modules
+        publications publication_versions publication_authors
+        polls poll_options jobs_openings jobs_employers menu"
 
 snapshot() {
     for t in $TABLES; do
