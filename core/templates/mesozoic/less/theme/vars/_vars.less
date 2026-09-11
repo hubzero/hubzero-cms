@@ -1,32 +1,40 @@
 // Theme
 //
-// The palette a hub can change without touching anything else. It is set here
-// toward the deep blue of the sites lucent was drawn for.
+// The palette a hub can change without touching anything else. Lucent sets it
+// toward the deep blue of the sites it was drawn for; this is a hub about rock
+// and what is in it, so the colours are taken from the same places the pack's
+// own figures are: ironstone for the brand, a warm near-black for text, and a
+// page the colour of weathered sandstone rather than of paper.
+//
+// Contrast is checked rather than assumed. Ironstone on white is 5.9:1 and
+// white on ironstone the same, so it carries body text and buttons alike; the
+// muted text is warmed to #6B6259 because the usual grey falls to 4.3:1 on a
+// ground this warm, which is under AA.
 
-@colorText: rgba(37, 37, 37, 1);
-@colorTextMuted: #767676;
+@colorText: #2B2622;
+@colorTextMuted: #6B6259;
 
-@colorBrand: #00548A;
-@colorBrandDarker: #003F68;
-@colorBrandLighter: #0A6FAE;
+@colorBrand: #8A5A2B;
+@colorBrandDarker: #6B4420;
+@colorBrandLighter: #A87038;
 
-@colorLink: #083D94;
+@colorLink: @colorBrandDarker;
 @colorLinkHover: @colorBrand;
 
 @colorBtn: @colorBrandDarker;
 @colorBtnHover: @colorBrand;
 @colorBtnText: #fff;
 
-@colorSeparatorLight: #e7e7e7;
+@colorSeparatorLight: #E6DFD4;
 
 // Page head
-@colorHeaderBg: #fbfbfb;
-@colorHeaderBorder: #e2e2e2;
+@colorHeaderBg: #FAF7F2;
+@colorHeaderBorder: #E6DFD4;
 @colorNavLink: @colorText;
 @colorNavLinkHover: @colorBrand;
 
 // Page footer
-@colorFooterBg: #f4f6f8;
+@colorFooterBg: #F2EDE4;
 @colorFooterBorder: @colorHeaderBorder;
 @colorFooterText: @colorTextMuted;
 @colorFooterHeading: @colorText;
