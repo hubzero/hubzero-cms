@@ -140,6 +140,13 @@ downloads "a figure"     "/resources/calder-quarry-map-2025/supportingdocs" imag
 downloads "a note"       "/resources/calder-quarry-map-2025/supportingdocs" text/plain   300  'README.txt'
 downloads "a document"   "/resources/preparation-standards"            application/pdf  4000
 
+# A course offering is reached by its alias, and the hub reads a numeric alias
+# as a row id, so an offering named for its year is looked for at that id and
+# never found. Two live offerings, because an offering that has ended is
+# deliberately not shown to a visitor
+expect "course offering" "/courses/field-stratigraphy/summer-2026" 'summer-2026/enroll' 1
+expect "open offering"   "/courses/fossil-imaging/open"            'open/enroll'        1
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
