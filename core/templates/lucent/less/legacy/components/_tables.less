@@ -1,3 +1,30 @@
+// Narrow screens
+//
+// A table is the one thing in a component view with a width of its own: it
+// cannot be made narrower without losing a column, and several of them - the
+// job board, a wiki page's revision list - are twice the width of a phone. The
+// page wrapper hides what runs past it, so those columns were not merely
+// awkward to read, they were unreachable.
+//
+// Below the width where they stop fitting, the table scrolls inside the page
+// instead. display: block is what makes the box scrollable at all; the rows
+// are unaffected, and above the breakpoint nothing changes.
+@media (max-width: (@sizeM - 1)) {
+
+	main table {
+		display: block;
+		overflow-x: auto;
+		max-width: 100%;
+	}
+
+	// A fieldset defaults to min-width: min-content and will not shrink below
+	// what is inside it, so a wide table in one takes the fieldset with it and
+	// the scrolling above never gets a chance.
+	main fieldset {
+		min-width: 0;
+	}
+}
+
 table {
 	clear: left;
 	width: 100%;
