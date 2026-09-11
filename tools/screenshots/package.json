@@ -1,0 +1,9 @@
+{
+  "name": "hubzero-screenshots",
+  "private": true,
+  "type": "module",
+  "description": "Tools that look at a running hub: layout measurement now, the capture runner to come.",
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}
