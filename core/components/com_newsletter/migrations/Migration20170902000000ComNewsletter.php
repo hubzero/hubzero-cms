@@ -36,7 +36,7 @@ class Migration20170902000000ComNewsletter extends Base
                     . '<a href=\"{{LINK}}\">View in a Web Browser</a>\n'
                     . '              </td>\n           </tr>\n           <tr>\n'
                     . '              <td colspan=\"2\" style=\"background:#000000;\">\n'
-                    . '                <h1 style=\"color:#FFFFFF;\">HUB Campaign Template</h1>\n'
+                    . '                <h1 style=\"color:#FFFFFF;\">{{SITENAME}}</h1>\n'
                     . '               <h3 style=\"color:#888888;\">{{TITLE}}</h3>\n'
                     . '             </td>\n           <tr>\n'
                     . '              <td width=\"500\" valign=\"top\" '
