@@ -2,8 +2,8 @@
 #
 # Compile every template's LESS with the compiler this repository ships.
 #
-#   tools/templates/build-css.sh              every template
-#   tools/templates/build-css.sh lucent       one of them
+#   tools/templates/build-css.sh              every template it maintains
+#   tools/templates/build-css.sh lucent       one of them, named
 #   tools/templates/build-css.sh --check      compile, but only report drift
 #   tools/templates/build-css.sh --compress   minify everything it writes
 #
@@ -11,12 +11,23 @@
 # ones whose names begin with an underscore) becomes a stylesheet. Where it
 # lands follows what the template already does: lucent keeps main.css beside
 # its source, the others write into css/.
+#
+# Kimera's and kameleon's checked-in stylesheets have parted company with the
+# LESS they were made from, in both directions: kimera/css/index.css carries
+# the comment permalink styling and scopes attachments at ol.comments, neither
+# of which its LESS produces any more, and the LESS has a couple of layout
+# helpers that never reached the CSS. A rebuild would take the first away from
+# every hub running kimera. So they are left alone unless they are named, and
+# naming them means having read the diff.
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 LESSC="$REPO/core/bin/lessc"
 TEMPLATES="$REPO/core/templates"
+
+# Templates whose stylesheets this does not touch of its own accord
+DIVERGED=(kimera kameleon)
 
 CHECK=0
 COMPRESS=0
@@ -82,11 +93,19 @@ drifted=0
 for dir in "$TEMPLATES"/*/; do
     template="$(basename "$dir")"
 
-    if [ ${#WANTED[@]} -gt 0 ] && [[ ! " ${WANTED[*]} " =~ " $template " ]]; then
+    named=0
+    [ ${#WANTED[@]} -gt 0 ] && [[ " ${WANTED[*]} " =~ " $template " ]] && named=1
+
+    if [ ${#WANTED[@]} -gt 0 ] && [ "$named" = "0" ]; then
         continue
     fi
 
     [ -d "$dir/less" ] || continue
+
+    if [ "$named" = "0" ] && [[ " ${DIVERGED[*]} " =~ " $template " ]]; then
+        echo "skipped $template - its stylesheets and its LESS have diverged; name it to build it"
+        continue
+    fi
 
     for entry in "$dir"less/*.less; do
         [ -f "$entry" ] || continue
