@@ -129,6 +129,20 @@ class Migrations
 
         Relational::setDefaultConnection($driver);
 
+        // Migrations that open a second connection of their own, to the
+        // metrics database among others, build it from the configuration
+        // rather than from the container, so put the values there too.
+        if ($app->has('config')) {
+            foreach ($config as $key => $value) {
+                try {
+                    $app->get('config')->set('database.' . $key, $value);
+                } catch (\Exception $e) {
+                    // A configuration that will not take them is one this
+                    // cannot help; the migrations that need them will say so
+                }
+            }
+        }
+
         return true;
     }
 
