@@ -62,6 +62,8 @@ expect "knowledge base" "/kb"               'href="/kb/[a-z]+/[a-z0-9-]+"'      
 expect "forum"       "/forum"               'href="/forum/[a-z]+/[a-z-]{5,}"'    5
 # The calendar only shows the month it is asked for, so this checks the year
 expect "events"      "/events/2026"         'href="/events/details/[0-9]+"'      6
+# Counted from the posts stream, which names the collection each item is in
+expect "collections" "/collections/posts"   'href="/members/[0-9]+/collections/[a-z-]+"' 5
 
 if [ "$fail" -eq 0 ]; then
     echo
