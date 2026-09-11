@@ -514,6 +514,20 @@ class Tickets extends SiteController
                 ->whereEquals('iscore', 2)
                 ->order('ordering', 'asc')
                 ->rows();
+
+            // The core folders are built on first use, and until now that
+            // only happened for somebody with read permission. On a hub where
+            // no such person has opened this page yet, everyone else got a
+            // list with no query behind it and therefore no tickets.
+            if (!count($folders)) {
+                QueryFolder::cloneCore(User::get('id'));
+
+                $folders = QueryFolder::all()
+                    ->whereEquals('user_id', 0)
+                    ->whereEquals('iscore', 2)
+                    ->order('ordering', 'asc')
+                    ->rows();
+            }
         } else {
             $folders = QueryFolder::all()
                 ->whereEquals('user_id', User::get('id'))
@@ -593,6 +607,14 @@ class Tickets extends SiteController
         }
 
         if (!$filters['show'] || ($filters['show'] > 0 && !$matchQuery)) {
+            // Stand in for the query that is about to be looked for. A hub
+            // with no query folders at all never enters the loop below, and
+            // everything after it reads $query.
+            $query = Query::blank();
+            $query->set('count', 0);
+            $query->set('sort', 'created');
+            $query->set('sort_dir', 'desc');
+
             // Jump back to the beginning of the folders list
             // and try to find the first query available
             // to make it the current "active" query
@@ -601,12 +623,6 @@ class Tickets extends SiteController
                     $query = $folder->queries->first();
                     $filters['show'] = $query->get('id');
                     break;
-                } else {   // for no custom queries.
-                    // TODO - not sure this works, pretty edge case though
-                    $query = Query::blank();
-                    $query->set('count', 0);
-                    $query->set('sort', 'created');
-                    $query->set('sort_dir', 'desc');
                 }
             }
 

@@ -27,6 +27,11 @@ class AdminUser
     private const SUPER_USERS_GROUP_ID = 8;
 
     /**
+     * The primary group number an ordinary hub profile carries
+     **/
+    private const PROFILE_GROUP_ID = 100;
+
+    /**
      * Minimum password length
      *
      * @var int
@@ -529,6 +534,12 @@ class AdminUser
                 'sendEmail'    => 1,
                 'registerDate' => date('Y-m-d H:i:s'),
                 'params'       => '',
+                // Answered, not left unset. A hub holds a member at the
+                // registration form until every required answer is there, and
+                // an unanswered question and an answer of "no" look the same
+                // to it, so an administrator created without these cannot use
+                // the site they have just installed.
+                'activation'   => 1,
             ];
 
             // A hub keeps the parts of a name as well as the whole of it, and
@@ -536,13 +547,18 @@ class AdminUser
             // them the table has depends on how far the migrations have run.
             $parts = preg_split('/\s+/', trim($userData['name']), -1, PREG_SPLIT_NO_EMPTY) ?: [];
 
+            $given  = array_shift($parts) ?? '';
+            $family = array_pop($parts) ?? '';
+
             $optional = [
-                'givenName'     => array_shift($parts) ?? '',
-                'surname'       => array_pop($parts) ?? '',
-                'middleName'    => implode(' ', $parts),
-                'homeDirectory' => '',
-                'loginShell'    => '',
-                'ftpShell'      => '',
+                'givenName'      => $given,
+                'surname'        => $family,
+                'middleName'     => implode(' ', $parts),
+                'homeDirectory'  => '',
+                'loginShell'     => '',
+                'ftpShell'       => '',
+                'usageAgreement' => 1,
+                'access'         => 1,
             ];
 
             $present = self::getColumns($pdo, $prefix . 'users');
@@ -594,6 +610,8 @@ class AdminUser
                 'group_id' => self::SUPER_USERS_GROUP_ID,
             ]);
 
+            self::createProfile($pdo, $prefix, $userId, $userData);
+
             $pdo->commit();
 
             return $userId;
@@ -601,6 +619,63 @@ class AdminUser
             $pdo->rollBack();
             return null;
         }
+    }
+
+    /**
+     * The hub profile behind the account
+     *
+     * A hub keeps its own record of a member alongside the Joomla one, and
+     * treats an account with no such record as a registration that was never
+     * finished. Without it the administrator is redirected to the completion
+     * form on every page of the site.
+     *
+     * @param   \PDO    $pdo       PDO connection
+     * @param   string  $prefix    Table prefix
+     * @param   int     $userId    The account just created
+     * @param   array   $userData  What was asked for
+     * @return  void
+     **/
+    private static function createProfile($pdo, $prefix, $userId, $userData)
+    {
+        $columns = self::getColumns($pdo, $prefix . 'xprofiles');
+
+        if (empty($columns)) {
+            return;
+        }
+
+        $values = [
+            'uidNumber'      => $userId,
+            'name'           => $userData['name'],
+            'username'       => $userData['username'],
+            'email'          => $userData['email'],
+            'emailConfirmed' => 1,
+            'usageAgreement' => 1,
+            'public'         => 1,
+            'gidNumber'      => self::PROFILE_GROUP_ID,
+        ];
+
+        foreach (array_keys($values) as $column) {
+            if (!in_array($column, $columns, true)) {
+                unset($values[$column]);
+            }
+        }
+
+        if (!isset($values['uidNumber'])) {
+            return;
+        }
+
+        $names        = array_keys($values);
+        $placeholders = [];
+
+        foreach ($names as $name) {
+            $placeholders[] = ':' . $name;
+        }
+
+        $stmt = $pdo->prepare(
+            "INSERT INTO `{$prefix}xprofiles` (`" . implode('`, `', $names) . '`)'
+            . ' VALUES (' . implode(', ', $placeholders) . ')'
+        );
+        $stmt->execute($values);
     }
 
     /**
