@@ -1,0 +1,25 @@
+/**
+ * Members
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a contrast correction: the
+ * greys the component reaches for when it wants something quieter than the
+ * text fall short of WCAG 2.2 1.4.3 on this template's grounds, and the
+ * component's stylesheet is shared by every hub and so is not the place to
+ * change them.
+ */
+@import url("../../../../../core/components/com_members/site/assets/css/members.css");
+
+/*
+ * The count in a grey pill beside a profile tab. #888 on that pill is 2.3:1,
+ * and the pill is not white, so this needs a darker grey than the rest.
+ */
+#page_menu li .meta .count {
+	color: #555555;
+}
+
+/* The name of the section being shown: #999 on white is 2.9:1 */
+#page_header h3 {
+	color: #6B6259;
+}

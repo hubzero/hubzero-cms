@@ -1,0 +1,21 @@
+/**
+ * Wish list
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a contrast correction: the
+ * greys the component reaches for when it wants something quieter than the
+ * text fall short of WCAG 2.2 1.4.3 on this template's grounds, and the
+ * component's stylesheet is shared by every hub and so is not the place to
+ * change them.
+ */
+@import url("../../../../../core/components/com_wishlist/site/assets/css/wishlist.css");
+
+/* Both status colours were under 3:1 on white */
+.ideas .ranking .granted {
+	color: #4F7A3F;
+}
+
+.ideas .ranking .withdrawn {
+	color: #6B6259;
+}

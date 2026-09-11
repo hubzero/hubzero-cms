@@ -1,0 +1,32 @@
+/**
+ * Groups
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a contrast correction: the
+ * greys the component reaches for when it wants something quieter than the
+ * text fall short of WCAG 2.2 1.4.3 on this template's grounds, and the
+ * component's stylesheet is shared by every hub and so is not the place to
+ * change them.
+ */
+@import url("../../../../../core/components/com_groups/site/assets/css/groups.css");
+
+/* #aaa on white is 2.3:1 */
+.groups-container .group-alias {
+	color: #6B6259;
+}
+
+/* And the metadata panel, which its contents inherit from */
+.group-meta {
+	color: #6B6259;
+}
+
+/* A link, so it is coloured like one */
+.group-content-header-extra a {
+	color: #6B4420;
+}
+
+/* #777 is 4.48:1 - short of 4.5 by enough to fail and not enough to see */
+#page_menu li .alrt span {
+	color: #6B6259;
+}

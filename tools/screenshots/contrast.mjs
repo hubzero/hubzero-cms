@@ -11,6 +11,11 @@
  * are checked here. What it cannot check is whether a link is distinguishable
  * from its surrounding text by more than colour (1.4.1); that needs reading.
  *
+ * Each finding also names the rule that chose the colour, and the stylesheet
+ * it is in. Without that the report is only the beginning of the search: the
+ * selector that reaches an element is rarely the one you would have guessed,
+ * and half of these colours are inherited from an ancestor several levels up.
+ *
  *   node tools/screenshots/contrast.mjs [hub] [port]
  */
 import { chromium } from 'playwright';
@@ -58,6 +63,65 @@ const paths = [
 const browser = await chromium.launch({ executablePath: chromiumPath() });
 const context = await browser.newContext({ ignoreHTTPSErrors: true });
 const page    = await context.newPage();
+
+// Which rule set a colour is a question only the browser can answer, and only
+// over the devtools protocol - a stylesheet loaded from another origin, or
+// through an @import, is not readable from the page itself.
+const cdp    = await context.newCDPSession(page);
+const sheets = new Map();
+
+cdp.on('CSS.styleSheetAdded', ({ header }) => sheets.set(header.styleSheetId, header.sourceURL));
+
+await cdp.send('DOM.enable');
+await cdp.send('CSS.enable');
+
+/**
+ * The rule that gave an element its colour, as a line of text
+ *
+ * The last matching rule that mentions colour wins, so the list is read from
+ * the end. When nothing matches the element itself the colour came from an
+ * ancestor, and the nearest of those that names one is the answer.
+ *
+ * @param   integer  nodeId  The element, as the protocol knows it
+ * @return  string
+ */
+async function rule(nodeId) {
+    const matched = await cdp.send('CSS.getMatchedStylesForNode', { nodeId });
+
+    const said = (entries) => {
+        for (const entry of [...(entries || [])].reverse()) {
+            const declared = entry.rule.style.cssProperties.find(p => p.name === 'color');
+
+            if (!declared || entry.rule.origin !== 'regular') {
+                continue;
+            }
+
+            const sheet = sheets.get(entry.rule.styleSheetId) || '';
+            const line  = entry.rule.style.range ? ':' + (entry.rule.style.range.startLine + 1) : '';
+
+            return `${entry.rule.selectorList.text} { color: ${declared.value} }`
+                + `  ${sheet.replace(/^https?:\/\/[^/]+/, '').replace(/\?v=\d+$/, '')}${line}`;
+        }
+
+        return null;
+    };
+
+    const own = said(matched.matchedCSSRules);
+
+    if (own) {
+        return own;
+    }
+
+    for (const from of matched.inherited || []) {
+        const up = said(from.matchedCSSRules);
+
+        if (up) {
+            return 'inherited from  ' + up;
+        }
+    }
+
+    return 'no rule names a colour';
+}
 
 await page.setViewportSize({ width: 1280, height: 900 });
 
@@ -151,6 +215,7 @@ for (const path of paths) {
 
         const out = [];
         const seen = new Set();
+        let mark = 0;
 
         for (const el of document.querySelectorAll('body *')) {
             const style = getComputedStyle(el);
@@ -203,7 +268,10 @@ for (const path of paths) {
 
             seen.add(key);
 
+            el.setAttribute('data-contrast', ++mark);
+
             out.push({
+                mark,
                 what: `${name}: ${got.toFixed(1)}:1, wants ${need}:1`
                     + `  (${style.color} on rgb(${bg.slice(0, 3).join(', ')}), ${size}px)`,
                 sample: own.slice(0, 40),
@@ -213,11 +281,21 @@ for (const path of paths) {
         return out;
     });
 
+    const { root } = await cdp.send('DOM.getDocument');
+
     for (const f of found) {
         const seen = findings.get(f.what) || { where: [], sample: f.sample };
 
         if (!seen.where.includes(path)) {
             seen.where.push(path);
+        }
+
+        if (!seen.rule) {
+            const { nodeId } = await cdp.send('DOM.querySelector', {
+                nodeId: root.nodeId, selector: `[data-contrast="${f.mark}"]`,
+            });
+
+            seen.rule = nodeId ? await rule(nodeId) : 'the element went away';
         }
 
         findings.set(f.what, seen);
@@ -228,13 +306,14 @@ console.log(`Looked at ${looked} pages at 1280px.\n`);
 
 const ranked = [...findings.entries()].sort((a, b) => b[1].where.length - a[1].where.length);
 
-for (const [what, { where, sample }] of ranked) {
+for (const [what, { where, sample, rule }] of ranked) {
     const scope = where.length === looked
         ? 'every page'
         : (where.length > 3 ? `${where.length} pages` : where.join(', '));
 
     console.log(`  ${scope}: ${what}`);
     console.log(`      e.g. "${sample}"`);
+    console.log(`      ${rule}`);
 }
 
 if (!ranked.length) {
