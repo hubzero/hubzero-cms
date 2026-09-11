@@ -37,6 +37,13 @@ class Dispatcher implements DispatcherInterface
     protected $loaders = array();
 
     /**
+     * Names of the listener groups that have already been loaded.
+     *
+     * @var  array
+     */
+    protected $loadedGroups = array();
+
+    /**
      * Count the number of registered event.
      *
      * @return  integer  The numer of registered events.
@@ -93,6 +100,16 @@ class Dispatcher implements DispatcherInterface
     public function addListeners($listeners, array $events = array())
     {
         if (is_string($listeners)) {
+            // A group is loaded at most once. The loaders build a fresh set of
+            // objects every time they run, so loading a group twice would leave
+            // two instances of every listener in it registered for the same
+            // events and each of them would answer.
+            if (isset($this->loadedGroups[$listeners])) {
+                return $this;
+            }
+
+            $this->loadedGroups[$listeners] = true;
+
             $loaded = array();
             foreach ($this->getListenerLoaders() as $loader) {
                 $loaded += $loader->loadListeners($listeners);

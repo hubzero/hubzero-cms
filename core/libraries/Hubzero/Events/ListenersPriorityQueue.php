@@ -86,7 +86,9 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      */
     public function remove($listener)
     {
-        if ($this->storage->contains($listener)) {
+        $listener = $this->resolve($listener);
+
+        if ($listener !== null) {
             $this->storage->detach($listener);
             $this->storage->rewind();
 
@@ -109,7 +111,68 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      */
     public function has($listener)
     {
-        return $this->storage->contains($listener);
+        return $this->resolve($listener) !== null;
+    }
+
+    /**
+     * Find the entry in the queue standing for the given listener.
+     *
+     * Listeners are wrapped before they are added, so the object the queue
+     * holds is rarely the object callers have a reference to. Look past one
+     * layer of wrapping in both directions so that a caller holding the plain
+     * listener can still find, test and remove it.
+     *
+     * @param   object  $listener  The listener.
+     * @return  object|null  The entry in the queue, or null if it isn't there.
+     */
+    protected function resolve($listener)
+    {
+        if (!is_object($listener)) {
+            return null;
+        }
+
+        if ($this->storage->contains($listener)) {
+            return $listener;
+        }
+
+        $needle = $this->unwrap($listener);
+
+        foreach ($this->storage as $stored) {
+            if ($this->unwrap($stored) === $needle) {
+                $this->storage->rewind();
+
+                return $stored;
+            }
+        }
+
+        $this->storage->rewind();
+
+        return null;
+    }
+
+    /**
+     * Get the listener a wrapper stands for, or the listener itself.
+     *
+     * Wrappers nest: while an event is being dispatched a debug listener
+     * wraps the wrapper the dispatcher added, so unwrap until we reach
+     * something that isn't standing in for anything else.
+     *
+     * @param   object  $listener  The listener.
+     * @return  object
+     */
+    protected function unwrap($listener)
+    {
+        $depth = 0;
+
+        while (
+            is_object($listener)
+            && method_exists($listener, 'getWrappedListener')
+            && $depth++ < 10
+        ) {
+            $listener = $listener->getWrappedListener();
+        }
+
+        return $listener;
     }
 
     /**
@@ -121,7 +184,9 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
      */
     public function getPriority($listener, $default = null)
     {
-        if ($this->storage->contains($listener)) {
+        $listener = $this->resolve($listener);
+
+        if ($listener !== null) {
             return $this->storage[$listener][0];
         }
 
