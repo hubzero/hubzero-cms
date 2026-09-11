@@ -687,16 +687,16 @@ class Connections
             $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_FILES['qqfile']['name']));
             $file = Entity::fromPath($path, $this->connection->adapter());
 
-            $file->contents = file_get_contents($_FILES['qqfile']['tmp_name']);
-            $file->size     = (int) $_FILES['qqfile']['size'];
+            $file->setContents(file_get_contents($_FILES['qqfile']['tmp_name']));
+            $file->setSize((int) $_FILES['qqfile']['size']);
 
             $files[] = $file;
         } elseif (isset($_GET['qqfile'])) {
             $path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_GET['qqfile']));
             $file = Entity::fromPath($path, $this->connection->adapter());
 
-            $file->contents = fopen('php://input', 'r');
-            $file->size     = (int) $_SERVER["CONTENT_LENGTH"];
+            $file->setContents(fopen('php://input', 'r'));
+            $file->setSize((int) $_SERVER["CONTENT_LENGTH"]);
 
             $files[] = $file;
         } else {
@@ -712,8 +712,8 @@ class Connections
                 $path = trim($this->subdir, '/') . '/' . $upload['name'][$i];
                 $file = Entity::fromPath($path, $this->connection->adapter());
 
-                $file->contents = file_get_contents($upload['tmp_name'][$i]);
-                $file->size     = (int) $upload['size'][$i];
+                $file->setContents(file_get_contents($upload['tmp_name'][$i]));
+                $file->setSize((int) $upload['size'][$i]);
 
                 $files[] = $file;
             }
@@ -813,8 +813,8 @@ class Connections
             // Final destination file
             $file = Entity::fromPath($path, $this->connection->adapter());
 
-            $file->contents = $fp;
-            $file->size     = $totalSize;
+            $file->setContents($fp);
+            $file->setSize($totalSize);
 
             if ($file->save()) {
                 $results['uploaded'][] = $file->getPath();
@@ -992,8 +992,8 @@ class Connections
                 $path = trim($this->subdir, '/') . '/' . $upload['name'][$i];
                 $file = Entity::fromPath($path, $this->connection->adapter());
 
-                $file->contents = file_get_contents($upload['tmp_name'][$i]);
-                $file->size     = (int) $upload['size'][$i];
+                $file->setContents(file_get_contents($upload['tmp_name'][$i]));
+                $file->setSize((int) $upload['size'][$i]);
 
                 $files[] = $file;
             }
