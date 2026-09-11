@@ -36,7 +36,10 @@
 		display: block;
 	}
 	.com_jobs #content-header-extra {
-		width: 500px !important;
+		/* A ceiling rather than a width: at 500px exactly it was wider than
+		   the page on a phone, and !important meant no template could say so */
+		max-width: 500px;
+		margin-left: auto;
 		text-align: right;
 	}
 	.why {
