@@ -201,7 +201,7 @@ $rows = $this->archive->entries($this->filters)
                                             <a href="<?php echo Route::url($row->link('comments')); ?>">
                                                 <?php
                                                 $commentCount = $row->comments->count();
-                                                echo Lang::txt('COM_BLOG_NUM_COMMENTS', $commentCount);
+                                                echo Lang::txts('COM_BLOG_NUM_COMMENTS', $commentCount);
                                                 ?>
                                             </a>
                                         </dd>
