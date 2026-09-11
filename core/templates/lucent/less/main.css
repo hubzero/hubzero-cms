@@ -2981,6 +2981,16 @@ form.search fieldset p input[type="submit"] {
   background-color: #888;
   background-color: rgba(255,255,255,0.2);
 }
+@media (max-width: 899px) {
+  main table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  main fieldset {
+    min-width: 0;
+  }
+}
 table {
   clear: left;
   width: 100%;
