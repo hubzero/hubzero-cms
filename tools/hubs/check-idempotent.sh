@@ -32,7 +32,7 @@ counts() {
 # information_schema row counts are estimates for InnoDB, so count for real on
 # the tables a pack actually writes to.
 TABLES="users xprofiles xgroups xgroups_members wiki_pages wiki_versions
-        wiki_comments wiki_authors
+        wiki_comments wiki_authors xgroups_pages xgroups_pages_versions
         resources author_assoc answers_questions answers_responses
         blog_entries blog_comments kb_articles forum_categories forum_posts
         events support_tickets support_comments collections collections_items
