@@ -52,7 +52,9 @@ class Project extends Model
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tblComment;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblOwner;
+    // Read and written from outside the class: the projects controller
+    // reconciles groups, matches invitations and loads the team through it.
+    public $_tblOwner;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tblTodo;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -63,7 +65,10 @@ class Project extends Model
     protected $_type;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_userGroups;
-    protected $params;
+
+    // Read from outside the class throughout the setup and project views,
+    // as $this->model->params->get(...).
+    public $params;
 
     /**
      * Table class name
