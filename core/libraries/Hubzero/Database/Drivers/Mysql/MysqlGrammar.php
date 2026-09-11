@@ -150,6 +150,31 @@ class MysqlGrammar extends BaseSchemaGrammar
      * @param  array   $columns  Column names
      * @return string|null
      */
+    /**
+     * Convert an array of column names to a comma-separated string
+     *
+     * MySQL can index the first so many characters of a column, which is
+     * written here as the column name and that number together.
+     *
+     * @param  array  $columns
+     * @return string
+     */
+    protected function columnize(array $columns): string
+    {
+        $names = [];
+
+        foreach ($columns as $column) {
+            if (is_array($column) && isset($column[1])) {
+                $names[] = $this->wrap((string) $column[0]) . '(' . (int) $column[1] . ')';
+                continue;
+            }
+
+            $names[] = $this->wrap(is_array($column) ? (string) $column[0] : (string) $column);
+        }
+
+        return implode(', ', $names);
+    }
+
     public function compileInlineIndex(string $name, array $columns): ?string
     {
         $columnList = $this->columnize($columns);

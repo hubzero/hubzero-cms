@@ -7182,6 +7182,10 @@ template {
     font-size: 1.25rem;
   }
 }
+.home-head .hero .hero-copy {
+  position: relative;
+  z-index: 1;
+}
 .home-head .hero .eyebrow {
   font-size: 0.8rem;
   font-weight: 600;

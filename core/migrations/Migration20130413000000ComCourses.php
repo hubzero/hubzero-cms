@@ -23,7 +23,26 @@ class Migration20130413000000ComCourses extends Base
         $runExtra = false;
 
         // Add a unique index on grade book
-        $schema->addUniqueIndex('#__courses_grade_book', 'alternate_key', ['user_id', 'scope', 'scope_id']);
+        //
+        // The column naming the member has been called both things over the
+        // life of this table, and on a schema built from today's snapshot it
+        // is already the later name.
+        $member = null;
+
+        foreach (['user_id', 'member_id'] as $column) {
+            if ($schema->hasColumn('#__courses_grade_book', $column)) {
+                $member = $column;
+                break;
+            }
+        }
+
+        if ($member && !$schema->hasKey('#__courses_grade_book', 'alternate_key')) {
+            $schema->addUniqueIndex(
+                '#__courses_grade_book',
+                'alternate_key',
+                [$member, 'scope', 'scope_id']
+            );
+        }
 
         // Add asset_id field to forms table
         if (!$schema->hasColumn('#__courses_forms', 'asset_id')) {

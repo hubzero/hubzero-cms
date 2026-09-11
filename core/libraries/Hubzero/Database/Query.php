@@ -543,6 +543,10 @@ class Query
         // Right now, select('a', 'b') is treated as column + alias for BC with existing code.
         // If we add variadic support, it must not break alias usage.
         if (is_array($column)) {
+            // Only the first of them takes the place of a bare *; the rest
+            // join what it started, including a * the caller asked for
+            $first = true;
+
             foreach ($column as $key => $value) {
                 if (is_array($value)) {
                     $col = $value[0] ?? null;
@@ -551,12 +555,14 @@ class Query
                     }
                     $alias = $value[1] ?? null;
                     $cnt = $value[2] ?? false;
-                    $this->syntax->setSelect($col, $alias, $cnt);
+                    $this->syntax->setSelect($col, $alias, $cnt, $first);
                 } elseif (is_string($key)) {
-                    $this->syntax->setSelect($key, $value);
+                    $this->syntax->setSelect($key, $value, false, $first);
                 } else {
-                    $this->syntax->setSelect($value);
+                    $this->syntax->setSelect($value, null, false, $first);
                 }
+
+                $first = false;
             }
 
             $this->type = 'select';
@@ -1185,6 +1191,13 @@ class Query
             }
         }
 
+        // Only and or or joins one condition to the next. Anything else was
+        // meant for an older signature, and letting it through would put it
+        // in the statement.
+        if (!is_string($logical) || !in_array(strtolower($logical), ['and', 'or'], true)) {
+            $logical = 'and';
+        }
+
         // Use effective depth (from group stack if no explicit depth)
         $effectiveDepth = $this->getEffectiveDepth($depth);
 
@@ -1320,7 +1333,7 @@ class Query
      **/
     public function whereIn($column, $values, $depth = 0)
     {
-        if ($values instanceof \Closure) {
+        if ($values instanceof \Closure || $values instanceof self) {
             return $this->whereInSub($column, $values, 'and', false, $depth);
         }
 
@@ -1340,7 +1353,7 @@ class Query
      **/
     public function orWhereIn($column, $values, $depth = 0)
     {
-        if ($values instanceof \Closure) {
+        if ($values instanceof \Closure || $values instanceof self) {
             return $this->whereInSub($column, $values, 'or', false, $depth);
         }
 
@@ -1365,7 +1378,7 @@ class Query
      **/
     public function whereNotIn($column, $values, $depth = 0)
     {
-        if ($values instanceof \Closure) {
+        if ($values instanceof \Closure || $values instanceof self) {
             return $this->whereInSub($column, $values, 'and', true, $depth);
         }
 
@@ -1385,7 +1398,7 @@ class Query
      **/
     public function orWhereNotIn($column, $values, $depth = 0)
     {
-        if ($values instanceof \Closure) {
+        if ($values instanceof \Closure || $values instanceof self) {
             return $this->whereInSub($column, $values, 'or', true, $depth);
         }
 
@@ -1403,9 +1416,15 @@ class Query
      * @param   int       $depth     The depth level of the clause
      * @return  $this
      **/
-    protected function whereInSub($column, callable $callback, $logical = 'and', $not = false, $depth = 0)
+    protected function whereInSub($column, $source, $logical = 'and', $not = false, $depth = 0)
     {
-        list($sql, $bindings) = $this->buildSubquery($callback);
+        // A query already built says the same thing a closure would
+        if ($source instanceof self) {
+            $sql      = $source->buildQuery('select');
+            $bindings = $source->syntax->getBindings();
+        } else {
+            list($sql, $bindings) = $this->buildSubquery($source);
+        }
 
         $operator = $not ? 'NOT IN' : 'IN';
         $raw = $column . ' ' . $operator . ' (' . $sql . ')';

@@ -105,17 +105,22 @@ if ! "${MYSQL_ADMIN[@]}" -e "SELECT 1" >/dev/null 2>&1; then
 fi
 
 if [ "$RESET" = "1" ]; then
-    say "Dropping $DATABASE"
+    say "Dropping $DATABASE and ${DATABASE}_metrics"
     "${MYSQL_ADMIN[@]}" -e "DROP DATABASE IF EXISTS \`$DATABASE\`;"
+    "${MYSQL_ADMIN[@]}" -e "DROP DATABASE IF EXISTS \`${DATABASE}_metrics\`;"
     rm -rf "$DOCROOT/app"
 fi
 
-say "Creating $DATABASE and its user"
+# A hub keeps its usage statistics in a second database named after the first,
+# which the migrations create tables in.
+say "Creating $DATABASE, ${DATABASE}_metrics and their user"
 "${MYSQL_ADMIN[@]}" <<SQL
 CREATE DATABASE IF NOT EXISTS \`$DATABASE\` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS \`${DATABASE}_metrics\` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '$DBUSER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';
 ALTER USER '$DBUSER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON \`$DATABASE\`.* TO '$DBUSER'@'localhost';
+GRANT ALL PRIVILEGES ON \`${DATABASE}_metrics\`.* TO '$DBUSER'@'localhost';
 FLUSH PRIVILEGES;
 SQL
 
