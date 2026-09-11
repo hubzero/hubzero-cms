@@ -112,23 +112,23 @@ class Categories extends SiteController
         $filters['sortby'] = Request::getWord('sortby', 'activity');
         switch ($filters['sortby']) {
             case 'title':
-                $filters['sort'] = 'sticky` DESC, `title';
+                $filters['sort'] = 'title';
                 $filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'ASC'));
                 break;
 
             case 'replies':
-                $filters['sort'] = 'sticky` DESC, `rgt';
+                $filters['sort'] = 'rgt';
                 $filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
                 break;
 
             case 'created':
-                $filters['sort'] = 'sticky` DESC, `created';
+                $filters['sort'] = 'created';
                 $filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
                 break;
 
             case 'activity':
             default:
-                $filters['sort'] = 'sticky` DESC, `activity';
+                $filters['sort'] = 'activity';
                 $filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
                 break;
         }
@@ -181,6 +181,7 @@ class Categories extends SiteController
             ->select("*, (CASE WHEN last_activity IS NOT NULL THEN last_activity ELSE created END)", 'activity')
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access'])
+            ->order('sticky', 'desc')
             ->order($filters['sort'], $filters['sort_Dir'])
             ->paginated()
             ->rows();
