@@ -1442,6 +1442,10 @@ class Profiles extends SiteController
         $oldemail = $member->get('email');
         $email = Request::getVar('email', null, 'post');
 
+        // Only set when the address actually changes, and read again further
+        // down whether it changed or not
+        $confirm = null;
+
         if (!is_null($email)) {
             $member->set('email', (string)$email);
 
@@ -1593,9 +1597,14 @@ class Profiles extends SiteController
             // Update session if email is changing
             if ($member->get('email') != $user->get('email')) {
                 $user->set('email', $member->get('email'));
-                if (isset($confirm)) {
-                    $user->set('activation', $confirm);
-                }
+                // The session has to agree with the record. A code is only
+                // generated when the posted address differs from the stored
+                // one, and this branch compares the record with the session
+                // instead, so there is not always a new one to use.
+                $user->set(
+                    'activation',
+                    isset($confirm) ? $confirm : $member->get('activation')
+                );
 
                 // Add item to session to mark that the user changed emails
                 // this way we can serve profile images for these users but not all

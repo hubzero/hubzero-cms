@@ -219,6 +219,11 @@ class Offering extends SiteController
                 $this->course->offering(),
                 true
             ));
+
+            // A hub with no course plugins answering never enters the loop,
+            // and the check below reads the list either way
+            $available = array();
+
             foreach ($plugins as $plugin) {
                 $available[] = $plugin->get('name');
             }
