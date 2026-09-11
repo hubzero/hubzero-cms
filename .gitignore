@@ -1,5 +1,8 @@
 app/**
 core/vendor/**
+# An accessibility testing library some of us keep locally to drop into a
+# page while working. Nothing in the tree loads it.
+core/assets/js/axe.min.js
 administrator/cache/**
 logs/**
 js_apps/**
