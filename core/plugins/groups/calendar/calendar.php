@@ -323,7 +323,11 @@ class Calendar extends Plugin
         $view->filters = array(
             'scope'    => 'group',
             'scope_id' => $this->group->get('gidNumber'),
-            'orderby'  => 'publish_up DESC'
+            'orderby'  => 'publish_up DESC',
+            // Deleting a group event sets its state to 0 rather than removing
+            // the row, so a list that does not ask for published events lists
+            // the deleted ones too
+            'state'    => array(1)
         );
 
         // get events count
