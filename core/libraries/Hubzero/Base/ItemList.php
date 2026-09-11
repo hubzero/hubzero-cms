@@ -331,7 +331,11 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function filter(Closure $callback)
     {
-        return new static(array_filter($this->_data, $callback));
+        // Reindexed, because this list walks itself by position: it reads
+        // $_data[$_pos] from zero, so a filtered list that kept the keys it
+        // matched on counts what it holds but iterates as though it were
+        // empty, unless the first match happened to be the first item.
+        return new static(array_values(array_filter($this->_data, $callback)));
     }
 
     /**
