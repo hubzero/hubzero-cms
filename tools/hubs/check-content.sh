@@ -59,6 +59,7 @@ expect "groups"      "/groups/browse"       'href="/groups/[a-z-]{5,}"'         
 expect "questions"   "/answers"             'href="/answers/question/[0-9]+'    20
 expect "blog"        "/blog"                'href="/blog/[0-9]{4}/[0-9]{2}/[a-z0-9-]+"' 10
 expect "knowledge base" "/kb"               'href="/kb/[a-z]+/[a-z0-9-]+"'      20
+expect "forum"       "/forum"               'href="/forum/[a-z]+/[a-z-]{5,}"'    5
 
 if [ "$fail" -eq 0 ]; then
     echo
