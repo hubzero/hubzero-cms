@@ -153,12 +153,18 @@ class Style extends Relational
             $this->set('params', $params);
         }
 
+        // Take the default away from whichever style has it - but not from
+        // this one. Saving the style that is already the default used to clear
+        // its own home here, and the write that follows only touches columns
+        // that changed, so home stayed 0 and the client was left without a
+        // default style at all.
         if ($this->get('home')) {
             $query = self::$connection->getQuery();
             $query->update($this->getTableName());
             $query->set(array('home' => '0'));
             $query->whereEquals('client_id', (int)$this->get('client_id'));
             $query->whereEquals('home', 1);
+            $query->where('id', '!=', (int)$this->get('id'));
             $query->execute();
         }
 
