@@ -25,17 +25,22 @@ const INK = '#5C4A3A';
 /**
  * One shape, placed on a band
  *
- * @param   string  $name     Which animal or plant
- * @param   float   $x        Where its box starts
- * @param   float   $scale    How large
- * @param   float   $opacity  How near it looks
- * @param   float   $ground   The line it stands on
- * @param   bool    $flip     Facing the other way
- * @param   float   $y        Its own line, for anything not on the ground
+ * Takes its placement as a row - name, x, scale, opacity, and optionally a
+ * flip and a line of its own - so that the placements can be written as a
+ * table and read down a column. Which is the whole job: a band is arranged by
+ * comparing one shape's numbers against its neighbours'.
+ *
+ * @param   array  $shape   name, x, scale, opacity, [flip], [y]
+ * @param   float  $ground  The line the shapes stand on
  * @return  string
  */
-function put($name, $x, $scale, $opacity, $ground, $flip = false, $y = null)
+function put(array $shape, $ground)
 {
+    list($name, $x, $scale, $opacity) = $shape;
+
+    $flip = isset($shape[4]) ? $shape[4] : false;
+    $y    = isset($shape[5]) ? $shape[5] : null;
+
     $top = ($y === null) ? $ground - (Silhouettes::GROUND * $scale) : $y;
     $sx  = $flip ? -$scale : $scale;
     $ox  = $flip ? $x + (Silhouettes::WIDTH * $scale) : $x;
@@ -57,18 +62,25 @@ function put($name, $x, $scale, $opacity, $ground, $flip = false, $y = null)
  * @param   string  $file    What to call it
  * @param   int     $width   How wide the tile is
  * @param   int     $height  How tall
- * @param   array   $shapes  What is on it
+ * @param   float   $ground  The line the shapes stand on
+ * @param   array   $shapes  What is on it, a row each
  * @return  void
  */
-function band($file, $width, $height, array $shapes)
+function band($file, $width, $height, $ground, array $shapes)
 {
+    $drawn = array();
+
+    foreach ($shapes as $shape) {
+        $drawn[] = put($shape, $ground);
+    }
+
     file_put_contents(
         __DIR__ . '/' . $file,
         '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $width . ' ' . $height . '"'
         . ' preserveAspectRatio="xMidYMax slice" role="presentation">' . "\n"
         . '  <g fill="' . INK . '">' . "\n    "
-        . implode("\n    ", $shapes) . "\n"
+        . implode("\n    ", $drawn) . "\n"
         . '  </g>' . "\n</svg>\n"
     );
 
@@ -78,23 +90,24 @@ function band($file, $width, $height, array $shapes)
 // The footer: a horizon with animals on it and plants among them. No ground
 // under them - a filled horizon reads as a shelf at this height, and the
 // footer's own edge is a better line to stand on.
-band('frieze.svg', 1600, 150, [
-    put('fern',            10, 0.30, 0.11, 126, true),
-    put('stegosaur',       84, 0.34, 0.16, 126),
-    put('horsetail',      196, 0.26, 0.10, 126),
-    put('pterosaur',      248, 0.26, 0.11, 126, true, 18),
-    put('ankylosaur',     332, 0.31, 0.14, 126, true),
-    put('cycad',          452, 0.30, 0.12, 126),
-    put('sauropod',       566, 0.40, 0.18, 126),
-    put('conifer',        722, 0.40, 0.11, 126),
-    put('hadrosaur',      826, 0.33, 0.15, 126, true),
-    put('pterosaur',      984, 0.22, 0.10, 126, false, 30),
-    put('ceratopsian',   1064, 0.32, 0.16, 126),
-    put('fern',          1204, 0.26, 0.10, 126),
-    put('raptor',        1276, 0.28, 0.13, 126, true),
-    put('cycad',         1372, 0.24, 0.11, 126),
-    put('theropod',      1436, 0.36, 0.17, 126),
-]);
+band('frieze.svg', 1600, 150, 126, array(
+    // name            x   scale  opacity  flip   own line
+    array('fern',            10,  0.30,    0.11,  true),
+    array('stegosaur',       84,  0.34,    0.16),
+    array('horsetail',      196,  0.26,    0.10),
+    array('pterosaur',      248,  0.26,    0.11,  true,  18),
+    array('ankylosaur',     332,  0.31,    0.14,  true),
+    array('cycad',          452,  0.30,    0.12),
+    array('sauropod',       566,  0.40,    0.18),
+    array('conifer',        722,  0.40,    0.11),
+    array('hadrosaur',      826,  0.33,    0.15,  true),
+    array('pterosaur',      984,  0.22,    0.10,  false, 30),
+    array('ceratopsian',   1064,  0.32,    0.16),
+    array('fern',          1204,  0.26,    0.10),
+    array('raptor',        1276,  0.28,    0.13,  true),
+    array('cycad',         1372,  0.24,    0.11),
+    array('theropod',      1436,  0.36,    0.17),
+));
 
 // The header: plants only, and fainter. The navigation sits over this, so
 // nothing here may compete with it - no animal, because an animal is a shape
@@ -103,17 +116,18 @@ band('frieze.svg', 1600, 150, [
 // A short tile rather than a tall one: the band is scaled to its own height,
 // so a 96-tall drawing in a 56px band renders everything at little more than
 // half size and the plants come out as specks.
-band('canopy.svg', 1600, 64, [
-    put('fern',            16, 0.36, 0.10, 60, true),
-    put('horsetail',      150, 0.32, 0.09, 60),
-    put('conifer',        272, 0.42, 0.09, 60),
-    put('fern',           412, 0.30, 0.10, 60),
-    put('cycad',          548, 0.32, 0.09, 60),
-    put('horsetail',      690, 0.36, 0.09, 60, true),
-    put('fern',           818, 0.32, 0.10, 60),
-    put('conifer',        948, 0.38, 0.09, 60),
-    put('cycad',         1086, 0.30, 0.09, 60, true),
-    put('fern',          1216, 0.34, 0.10, 60, true),
-    put('horsetail',     1348, 0.32, 0.09, 60),
-    put('conifer',       1470, 0.40, 0.09, 60),
-]);
+band('canopy.svg', 1600, 64, 60, array(
+    // name            x   scale  opacity  flip
+    array('fern',            16,  0.36,    0.10,  true),
+    array('horsetail',      150,  0.32,    0.09),
+    array('conifer',        272,  0.42,    0.09),
+    array('fern',           412,  0.30,    0.10),
+    array('cycad',          548,  0.32,    0.09),
+    array('horsetail',      690,  0.36,    0.09,  true),
+    array('fern',           818,  0.32,    0.10),
+    array('conifer',        948,  0.38,    0.09),
+    array('cycad',         1086,  0.30,    0.09,  true),
+    array('fern',          1216,  0.34,    0.10,  true),
+    array('horsetail',     1348,  0.32,    0.09),
+    array('conifer',       1470,  0.40,    0.09),
+));
