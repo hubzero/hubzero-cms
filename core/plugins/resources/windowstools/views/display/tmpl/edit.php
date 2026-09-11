@@ -48,7 +48,7 @@ $this->css();
                 </p>
             </fieldset>
 
-            <input type="hidden" name="fields[plugin]" value="<?php echo $this->_name; ?>" />
+            <input type="hidden" name="fields[plugin]" value="<?php echo $this->name; ?>" />
             <input type="hidden" name="fields[title]" value="<?php echo $this->page->get('title'); ?>" />
             <input type="hidden" name="fields[alias]" value="<?php echo $this->page->get('alias'); ?>" />
             <input type="hidden" name="fields[state]" value="<?php echo $this->page->get('state'); ?>" />
@@ -59,7 +59,7 @@ $this->css();
 
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="id" value="<?php echo $this->resource->id; ?>" />
-            <input type="hidden" name="active" value="<?php echo $this->_name; ?>" />
+            <input type="hidden" name="active" value="<?php echo $this->name; ?>" />
             <input type="hidden" name="action" value="save" />
         </form>
 
