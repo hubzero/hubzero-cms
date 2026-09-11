@@ -55,7 +55,14 @@ class Sanitize
      */
     public static function stripWhitespace($str)
     {
-        return preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $str == null ? '' : $str));
+        // Line breaks and tabs become a space rather than nothing: text
+        // stored with its lines wrapped is normal, and deleting the breaks
+        // runs the word before each one into the word after it.
+        return trim(preg_replace(
+            '/\s{2,}/u',
+            ' ',
+            preg_replace('/[\n\r\t]+/', ' ', $str == null ? '' : $str)
+        ));
     }
 
     /**
