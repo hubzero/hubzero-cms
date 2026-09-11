@@ -3967,70 +3967,88 @@ section {
 section .inner {
   position: relative;
 }
-.page .hz-layout-with-aside {
+.page .hz-layout-with-aside,
+.page section.main:has(> .aside):has(> .subject) {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 @media (min-width: 900px) {
-  .page .hz-layout-with-aside {
+  .page .hz-layout-with-aside,
+  .page section.main:has(> .aside):has(> .subject) {
     flex-direction: row;
   }
 }
-.page .hz-layout-with-aside .subject {
+.page .hz-layout-with-aside .subject,
+.page section.main:has(> .aside):has(> .subject) .subject {
   flex-grow: 1;
+  order: 1;
 }
 @media (min-width: 900px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
+    order: 0;
     padding-right: 1rem;
   }
 }
 @media (min-width: 900px) and (min-width: 600px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 2rem;
   }
 }
 @media (min-width: 900px) and (min-width: 900px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1200px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1600px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 4rem;
   }
 }
 @media (min-width: 900px) and (min-width: 600px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 2rem;
   }
 }
 @media (min-width: 900px) and (min-width: 900px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1200px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1600px) {
-  .page .hz-layout-with-aside .subject {
+  .page .hz-layout-with-aside .subject,
+  .page section.main:has(> .aside):has(> .subject) .subject {
     padding-right: 4rem;
   }
 }
-.page .hz-layout-with-aside .aside {
+.page .hz-layout-with-aside .aside,
+.page section.main:has(> .aside):has(> .subject) .aside {
   position: relative;
   margin-top: 50px;
+  order: 2;
 }
 @media (min-width: 900px) {
-  .page .hz-layout-with-aside .aside {
+  .page .hz-layout-with-aside .aside,
+  .page section.main:has(> .aside):has(> .subject) .aside {
+    order: 0;
     max-width: 400px;
     width: 25%;
     margin-top: 0;
@@ -4038,67 +4056,84 @@ section .inner {
   }
 }
 .page .hz-layout-with-aside .aside h3,
-.page .hz-layout-with-aside .aside h4 {
+.page .hz-layout-with-aside .aside h4,
+.page section.main:has(> .aside):has(> .subject) .aside h3,
+.page section.main:has(> .aside):has(> .subject) .aside h4 {
   font-size: 1.2em;
 }
 .page .hz-layout-with-aside .aside h3:first-child,
-.page .hz-layout-with-aside .aside h4:first-child {
+.page .hz-layout-with-aside .aside h4:first-child,
+.page section.main:has(> .aside):has(> .subject) .aside h3:first-child,
+.page section.main:has(> .aside):has(> .subject) .aside h4:first-child {
   margin-top: 1rem;
 }
-.page .hz-layout-with-aside .aside .menu li {
+.page .hz-layout-with-aside .aside .menu li,
+.page section.main:has(> .aside):has(> .subject) .aside .menu li {
   line-height: 1.3em;
 }
 .page .hz-layout-with-aside .aside > .container:first-child h3:first-child,
-.page .hz-layout-with-aside .aside > .container:first-child h4:first-child {
+.page .hz-layout-with-aside .aside > .container:first-child h4:first-child,
+.page section.main:has(> .aside):has(> .subject) .aside > .container:first-child h3:first-child,
+.page section.main:has(> .aside):has(> .subject) .aside > .container:first-child h4:first-child {
   margin-top: 0;
 }
 @media (min-width: 900px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 1rem;
     padding-right: 0;
   }
 }
 @media (min-width: 900px) and (min-width: 600px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 2rem;
   }
 }
 @media (min-width: 900px) and (min-width: 900px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1200px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1600px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 4rem;
   }
 }
 @media (min-width: 900px) and (min-width: 600px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 2rem;
   }
 }
 @media (min-width: 900px) and (min-width: 900px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1200px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 3rem;
   }
 }
 @media (min-width: 900px) and (min-width: 1600px) {
-  .page .hz-layout-with-aside .aside + .subject {
+  .page .hz-layout-with-aside .aside + .subject,
+  .page section.main:has(> .aside):has(> .subject) .aside + .subject {
     padding-left: 4rem;
   }
 }
-.page .hz-layout-with-aside .contentpaneopen {
+.page .hz-layout-with-aside .contentpaneopen,
+.page section.main:has(> .aside):has(> .subject) .contentpaneopen {
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
