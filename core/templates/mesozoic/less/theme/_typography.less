@@ -13,7 +13,7 @@ body {
 
 	color: @colorText;
 	font-size: 0.95rem;
-	font-family: Arial, sans-serif;
+	font-family: @fontBody;
 	line-height: 1.6;
 }
 
@@ -43,8 +43,10 @@ h3,
 h4,
 h5,
 h6 {
+	font-family: @fontHeading;
 	font-weight: normal;
 	text-wrap: pretty;
+	letter-spacing: -0.01em;
 }
 
 h2 {
