@@ -202,7 +202,13 @@ class Course extends Base
     {
         // If the current offering isn't set
         //    OR the ID passed doesn't equal the current offering's ID or alias
+        //
+        // The isset test belongs in the mismatch too, not only in the
+        // condition below: this is computed before that condition is reached,
+        // so without it a course with no current offering is asked for the id
+        // of nothing.
         $idMismatch = $id !== null
+            && isset($this->_offering)
             && (int) $this->_offering->get('id') != $id
             && (string) $this->_offering->get('alias') != $id;
         if (!isset($this->_offering) || $idMismatch) {

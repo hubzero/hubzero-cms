@@ -88,19 +88,19 @@ switch ($avg) {
 
 $this->css('
     .review-bar-5star {
-        "width: ' . ($total ? round($distribution[5] / $total, 2) * 100 : 0) . '%;
+        width: ' . ($total ? round($distribution[5] / $total, 2) * 100 : 0) . '%;
     }
     .review-bar-4star {
-        "width: ' . ($total ? round($distribution[4] / $total, 2) * 100 : 0) . '%;
+        width: ' . ($total ? round($distribution[4] / $total, 2) * 100 : 0) . '%;
     }
     .review-bar-3star {
-        "width: ' . ($total ? round($distribution[3] / $total, 2) * 100 : 0) . '%;
+        width: ' . ($total ? round($distribution[3] / $total, 2) * 100 : 0) . '%;
     }
     .review-bar-2star {
-        "width: ' . ($total ? round($distribution[2] / $total, 2) * 100 : 0) . '%;
+        width: ' . ($total ? round($distribution[2] / $total, 2) * 100 : 0) . '%;
     }
     .review-bar-1star {
-        "width: ' . ($total ? round($distribution[1] / $total, 2) * 100 : 0) . '%;
+        width: ' . ($total ? round($distribution[1] / $total, 2) * 100 : 0) . '%;
     }
 ');
 ?>
