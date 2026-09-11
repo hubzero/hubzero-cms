@@ -187,7 +187,7 @@ class Pages
                 return $page;
             }
         });
-        $prevPage = $homePage = $temp[0];
+        $homePage = $temp->first();
 
         // if we dont have segments that means were on the
         // overview page
