@@ -60,6 +60,8 @@ expect "questions"   "/answers"             'href="/answers/question/[0-9]+'    
 expect "blog"        "/blog"                'href="/blog/[0-9]{4}/[0-9]{2}/[a-z0-9-]+"' 10
 expect "knowledge base" "/kb"               'href="/kb/[a-z]+/[a-z0-9-]+"'      20
 expect "forum"       "/forum"               'href="/forum/[a-z]+/[a-z-]{5,}"'    5
+# The calendar only shows the month it is asked for, so this checks the year
+expect "events"      "/events/2026"         'href="/events/details/[0-9]+"'      6
 
 if [ "$fail" -eq 0 ]; then
     echo
