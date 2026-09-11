@@ -395,7 +395,6 @@ class Auth extends SiteController
             if (!empty($authenticator)) {
                 $options['authenticator'] = $authenticator;
             }
-
         }
 
         // Make sure return values are internal to the hub
