@@ -1,0 +1,23 @@
+// Colours the shared variables get wrong for this palette
+//
+// core/assets/less/variables.less is imported by more than one template, so
+// the values that fail here are corrected here rather than there. They are
+// redefined before the components that use them, because this compiler
+// resolves a variable where it is used rather than hoisting it, so a later
+// definition is a definition that arrives too late.
+//
+// Measured against WCAG 1.4.3, which asks 4.5:1 of text and 3:1 of large
+// text, and 1.4.11, which asks 3:1 of the parts of a control that show where
+// it is. Every ratio below is against the ground it is actually drawn on.
+
+// An inactive tab carried white text on #b5b5b5, which is 2.1:1. This ground
+// takes it to 6.8:1, and the border with it to 3.6:1 against the page.
+@tabBackground: #635A50;
+@tabBorder: #4E463D;
+
+// The greys the listings use for dates, counts and bylines: #999 is 2.9:1 on
+// white and #aaa is 2.3:1. Both become the palette's own muted text, 6.0:1.
+@colorMuted: #6B6259;
+
+// A border has to be findable: #999 is 2.9:1, which is under 1.4.11.
+@colorBorderVisible: #8A8178;
