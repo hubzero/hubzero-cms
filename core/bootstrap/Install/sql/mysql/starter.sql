@@ -341,7 +341,11 @@ INSERT INTO `#__menu` VALUES (44,'mainmenu','Tags','tags','','discover/tags','in
 INSERT INTO `#__menu` VALUES (45,'mainmenu','Citations','citations','','discover/citations','index.php?Itemid=','alias',1,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"aliasoptions\":\"79\"}',126,127,0,'*',0);
 INSERT INTO `#__menu` VALUES (46,'mainmenu','&nbsp;','n','','discover/n','','separator',1,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"menu_image\":\"0\"}',120,121,0,'*',0);
 INSERT INTO `#__menu` VALUES (47,'mainmenu','Feedback','feedback','','discover/feedback','index.php?Itemid=','alias',-2,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"aliasoptions\":\"93\"}',134,135,0,'*',0);
-INSERT INTO `#__menu` VALUES (48,'mainmenu','Store','store','','discover/store','index.php?Itemid=','alias',1,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"aliasoptions\":\"90\"}',132,133,0,'*',0);
+-- Unpublished: this is an alias to menu item 90, which is itself
+-- unpublished because com_storefront is disabled in this data set. Published,
+-- it put a Store link in the primary navigation of every page that answered
+-- 404. A hub that turns the storefront on can publish both.
+INSERT INTO `#__menu` VALUES (48,'mainmenu','Store','store','','discover/store','index.php?Itemid=','alias',0,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"aliasoptions\":\"90\"}',132,133,0,'*',0);
 INSERT INTO `#__menu` VALUES (49,'mainmenu','&nbsp;','n','','discover/n','','separator',1,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"menu_image\":\"0\"}',130,131,0,'*',0);
 INSERT INTO `#__menu` VALUES (50,'mainmenu','Tool Forge','tools','','discover/tools','index.php?Itemid=','alias',-2,41,2,0,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"aliasoptions\":\"87\"}',118,119,0,'*',0);
 INSERT INTO `#__menu` VALUES (55,'default','Login','login','','login','index.php?option=com_users&view=login','component',1,1,1,25,0,0,'0000-00-00 00:00:00',0,1,'',0,'{\"show_login_title\":\"1\",\"header_login\":\"\",\"login_message\":\"0\",\"description_login\":\"1\",\"description_login_text\":\"Log in with your <br \\/> hub account.\",\"image_login\":\"\",\"image_login_align\":\"right\",\"show_logout_title\":\"1\",\"header_logout\":\"\",\"logout\":\"\",\"logout_message\":\"1\",\"description_logout\":\"1\",\"description_logout_text\":\"\",\"image_logout\":\"\",\"page_title\":\"\",\"show_page_title\":\"1\",\"pageclass_sfx\":\"\",\"menu_image\":\"0\",\"secure\":\"0\",\"login_redirect_url\":\"\\/members\\/myaccount\"}',151,156,0,'*',0);
