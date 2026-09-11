@@ -7675,25 +7675,27 @@ tt {
 .page > .inner > #content-header,
 .contentpane > .content-header,
 .contentpane > #content-header {
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
+  margin-left: 1rem;
+  margin-right: 1rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem 2rem;
-  margin-bottom: 2.5rem;
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem 1.75rem;
   background: #FAF7F2;
-  border-top: 1px solid #E6DFD4;
-  border-bottom: 3px solid #8A5A2B;
+  border: 1px solid #E6DFD4;
+  border-left: 4px solid #8A5A2B;
+  border-radius: 4px;
 }
 @media (min-width: 600px) {
   .page > .inner > .content-header,
   .page > .inner > #content-header,
   .contentpane > .content-header,
   .contentpane > #content-header {
-    padding-left: 2rem !important;
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
 }
 @media (min-width: 900px) {
@@ -7701,15 +7703,8 @@ tt {
   .page > .inner > #content-header,
   .contentpane > .content-header,
   .contentpane > #content-header {
-    padding-left: 3rem !important;
-  }
-}
-@media (min-width: 1200px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 6rem !important;
+    margin-left: 3rem;
+    margin-right: 3rem;
   }
 }
 @media (min-width: 1600px) {
@@ -7717,199 +7712,8 @@ tt {
   .page > .inner > #content-header,
   .contentpane > .content-header,
   .contentpane > #content-header {
-    padding-left: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 3rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 3rem !important;
-  }
-}
-@media (min-width: 1200px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 6rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 3rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 3rem !important;
-  }
-}
-@media (min-width: 1200px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 6rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 3rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-left: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 3rem !important;
-  }
-}
-@media (min-width: 1200px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 6rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 12rem !important;
-  }
-}
-@media (min-width: 600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 2rem !important;
-  }
-}
-@media (min-width: 900px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 3rem !important;
-  }
-}
-@media (min-width: 1600px) {
-  .page > .inner > .content-header,
-  .page > .inner > #content-header,
-  .contentpane > .content-header,
-  .contentpane > #content-header {
-    padding-right: 12rem !important;
+    margin-left: 12rem;
+    margin-right: 12rem;
   }
 }
 .page > .inner > .content-header h2,
@@ -7946,7 +7750,6 @@ tt {
 .contentpane > #content-header #content-header-extra,
 .contentpane > #content-header .content-header-extra {
   padding-bottom: 0;
-  margin-left: auto;
   flex: 0 1 auto;
 }
 .page > .inner > .content-header #content-header-extra a,
@@ -7996,9 +7799,25 @@ tt {
   margin: 0;
   padding: 0;
 }
-.hz-layout-with-aside .contentpane > .content-header {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
+.page > .inner > .content-header + section.section,
+.page > .inner > .content-header + form > section.section,
+.page > .inner > .content-header + .contentpane > .contentpaneopen,
+.page > .inner > #content-header + section.section,
+.page > .inner > #content-header + form > section.section,
+.page > .inner > #content-header + .contentpane > .contentpaneopen,
+.contentpane > .content-header + section.section,
+.contentpane > .content-header + form > section.section,
+.contentpane > .content-header + .contentpane > .contentpaneopen,
+.contentpane > #content-header + section.section,
+.contentpane > #content-header + form > section.section,
+.contentpane > #content-header + .contentpane > .contentpaneopen {
+  padding-top: 0;
+}
+.hz-layout-with-aside .contentpane > .content-header,
+.contentpaneopen .contentpane > .content-header,
+.contentpaneopen .contentpane > #content-header {
+  margin-left: 0;
+  margin-right: 0;
 }
 .page .overviewcontainer.grid #content-header h2 {
   margin-top: 0;
@@ -8029,7 +7848,11 @@ section.section .aside + .subject .content-header h2:before {
 }
 .subject .content-header {
   background: none;
+  border: none;
+  border-radius: 0;
   padding: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 #big-search {
   -moz-transition: all ease-in .3s;
