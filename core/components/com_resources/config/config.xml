@@ -8,6 +8,10 @@
 
 <config>
 	<fieldset name="basic">
+		<field name="allow_public_search" type="radio" default="1" label="COM_RESOURCES_ALLOW_PUBLIC_SEARCH_LABEL" description="COM_RESOURCES_ALLOW_PUBLIC_SEARCH_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_resources/site/assets/img/resource_thumb.gif" label="COM_RESOURCES_DEFAULTPIC_LABEL" description="COM_RESOURCES_DEFAULTPIC_DESC" />
 		<field name="tagstool" type="text" menu="hide" default="screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSTOOL_LABEL" description="COM_RESOURCES_TAGSTOOL_DESC" />
 		<field name="tagsothr" type="text" menu="hide" default="bio,credits,citations,sponsoredby,references,publications" label="COM_RESOURCES_TAGSOTHR_LABEL" description="COM_RESOURCES_TAGSOTHR_DESC" />
