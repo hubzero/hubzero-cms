@@ -83,6 +83,11 @@ expect "group logos" "/groups/browse"     'src="/files/[A-Za-z0-9+/=]{40,}"'   8
 # file is written somewhere the hub does not look
 expect "member picture" "/members/1001"   'src="/files/[A-Za-z0-9+/=]{40,}"'   1
 
+# A wiki nobody has edited twice has an empty history screen and a diff screen
+# with nothing on it, which are two of the more distinctive pages it has
+expect "wiki history"  "/wiki/CalderBasin?task=history"      'id="oldid-[0-9]+"'  3
+expect "wiki comments" "/wiki/FieldNumbering?task=comments" 'id="c[0-9]+"'       3
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
