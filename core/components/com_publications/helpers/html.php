@@ -1408,6 +1408,13 @@ class Html
             return false;
         }
 
+        // A publication may legitimately have nothing attached in this role,
+        // and the caller passes false rather than an empty array when it has
+        // no attachments at all.
+        if (!is_array($attachments) || !isset($attachments[$role])) {
+            return false;
+        }
+
         foreach ($attachments[$role] as $attachment) {
             $file = $path . DIRECTORY_SEPARATOR . ltrim($attachment->path, '/');
             if (file_exists($file)) {
