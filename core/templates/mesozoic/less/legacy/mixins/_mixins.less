@@ -1,0 +1,16 @@
+@import "_layout";
+@import "_elements";
+
+.transition(@transition: all ease-in .3s) {
+	-moz-transition: 	@transition;
+	-o-transition:      @transition;
+	-webkit-transition: @transition;
+	transition: 		@transition;
+}
+
+.translate(@x, @y:0) {
+	-webkit-transform:   translate(@x, @y);
+	-moz-transform: 	 translate(@x, @y);
+	-ms-transform: 		 translate(@x, @y);
+	-o-transform: 		 translate(@x, @y);
+}

@@ -1,0 +1,53 @@
+.accordion {
+
+	header {
+		display: flex;
+		border-top: 1px solid hsl(0deg 0% 52%);
+
+		a {
+			flex-grow: 1;
+		}
+	}
+
+	button::-moz-focus-inner {
+		border: 0;
+	}
+
+	.accordion-trigger {
+		cursor: pointer;
+		border-style: none;
+		background: none;
+		position: relative;
+		width: 3rem;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+
+		&:after {
+			content: '';
+			display: block;
+			border: solid currentcolor;
+			border-width: 0 2px 2px 0;
+			height: 0.5rem;
+			pointer-events: none;
+			transform: rotate(45deg);
+			width: 0.5rem;
+		}
+
+		&[aria-expanded="true"] {
+
+			&:after {
+				transform: rotate(-135deg);
+			}
+		}
+	}
+
+	/* For Edge bug https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/4806035/ */
+	.accordion-panel[hidden] {
+		display: none;
+	}
+
+	.accordion-panel {
+		margin: 0;
+	}
+}

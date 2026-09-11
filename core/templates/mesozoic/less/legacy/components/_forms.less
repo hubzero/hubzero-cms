@@ -1,0 +1,471 @@
+fieldset {
+	border: 0;
+}
+
+label {
+	display: inline;
+	cursor: auto;
+}
+
+legend {
+	width: auto;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+input[type="email"],
+textarea {
+	max-width: 100%;
+	padding: 0.4045084975em;
+	border: 1px solid #666;
+	background: #F0F0F0;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="file"]:focus {
+	background-color: #fff;
+}
+
+/* HUB Forms */
+#hubForm {
+	position: relative;
+}
+
+#hubForm.login .explaination small.explaination-after,
+#hubForm.login .explaination:first-child:after {
+	display: none;
+}
+
+#hubForm label {
+	display: block;
+}
+
+
+#hubForm input,
+#hubForm select,
+#hubForm textarea {
+	width: 100%;
+}
+
+#hubForm input[type='checkbox'] {
+	margin-top: 0;
+	width: auto;
+}
+
+#hubForm.full:before,
+#hubForm.full:after {
+	display: none;
+}
+
+#hubForm .options label,
+#hubForm .options input,
+#hubForm .option {
+	display: inline;
+	width: auto;
+}
+
+#hubForm .field-wrap,
+#hubForm p {
+	display: block;
+}
+
+#hubForm .grid .options label {
+	display: inline;
+	float: none;
+	width: auto;
+}
+
+#hubForm label em {
+	display: block;
+	font: inherit;
+}
+
+#hubForm .submit input {
+	display: inline;
+	width: auto;
+}
+
+#hubForm .explaination {
+	float: right;
+	min-height: 10px;
+	position: relative;
+}
+
+#hubForm .explaination h2 {
+	position: relative;
+	width: 100%;
+}
+
+#hubForm .explaination ul {
+	position: relative;
+	list-style: none;
+}
+
+#hubForm span.warning,
+#hubForm span.information,
+#hubForm span.help,
+#hubForm span.error {
+	display: inline-block;
+}
+
+#hubForm table input,
+#hubForm table select {
+	width: auto;
+}
+
+#hubForm table input,
+#hubForm table select {
+	width: auto;
+}
+
+/* Entries search */
+
+form.search {
+
+	fieldset {
+		padding: 0;
+
+		p {
+			display: flex;
+
+			label {
+				display: flex;
+				align-items: center;
+				margin-right: 0.5rem;
+			}
+
+			input[type="submit"] {
+				margin-left: 0.25rem;
+			}
+		}
+	}
+}
+
+.entry-search {
+
+	legend,
+	label {
+		display: none;
+	}
+	input[type="text"],
+	input {
+		width: 100%;
+		display: inline-block;
+	}
+}
+
+.placeholder-support {
+	color: #c53432;
+}
+
+/* HUB Forms */
+#hubForm {
+	position: relative;
+
+	label {
+		padding: 1.5em 2em 0 2em;
+	}
+}
+
+#hubForm fieldset {
+	padding: 0 0 1rem 0;
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	margin: 0.7em 0 1.7em 0;
+
+	.grid {
+		margin: 0 2em;
+	}
+}
+
+#hubForm legend {
+	font-weight: bold;
+	float: left;
+	width: 100%;
+	margin: 1rem 0 2rem;
+	padding: 0 2rem;
+}
+
+#hubForm label:last-child {
+	padding-bottom: 1.5em;
+}
+
+#hubForm input,
+#hubForm select,
+#hubForm textarea {
+	margin-top: 0.25em;
+}
+
+#hubForm .btn {
+	margin-top: 0.25em;
+}
+
+#hubForm.full fieldset {
+	margin: 0.7em 0 1.7em 0;
+}
+
+#hubForm.full fieldset fieldset,
+#hubForm fieldset fieldset {
+	margin: 1.5em 2em;
+}
+
+#hubForm fieldset fieldset label {
+	padding-top: 0.7em;
+}
+
+#hubForm.full fieldset fieldset fieldset,
+#hubForm fieldset fieldset fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+#hubForm fieldset fieldset fieldset label {
+	margin-left: 1.75em;
+}
+
+#hubForm fieldset fieldset fieldset legend label {
+	margin-left: 0;
+}
+
+#hubForm .options label,
+#hubForm .options input,
+#hubForm .option {
+	margin: 0 0.25em 0 0 !important;
+}
+
+#hubForm .indent {
+	margin-left: 1.75em;
+}
+
+#hubForm .field-wrap,
+#hubForm p {
+	margin: 1.5em 2em 0 2em;
+}
+
+#hubForm span.field-wrap,
+#hubForm label + .field-wrap {
+	margin: 0 2em 0 2em;
+}
+
+#hubForm .field-wrap label {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+#hubForm label + input {
+	margin-left: 2em;
+	margin-right: 2em;
+	width: 92.5%;
+}
+
+#hubForm .grid {
+	margin: 0 2em;
+}
+
+#hubForm .grid label {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#hubForm label em {
+	margin: -1.5em 0 0 10em;
+	text-align: right;
+	color: #aa9;
+}
+
+#hubForm .submit {
+	padding: 1em 0 0 0;
+	text-align: center;
+	margin-right: 30%;
+}
+
+#hubForm.full .submit {
+	margin-right: 0;
+}
+
+#hubForm .inactive {
+	color: #aa9;
+}
+
+#hubForm .explaination {
+	width: 210px;
+	margin: 0 0 0 30px;
+	border-top: 1px solid #ddd;
+	padding: 10px 0 0 0;
+	
+	@media (min-width: @sizeM) {
+		max-width: 400px;
+		width: 25%;
+		flex-shrink: 0;
+	}
+}
+
+#hubForm .explaination a:hover {
+	color: #222;
+}
+
+#hubForm .explaination p {
+	margin: 1em 0;
+}
+
+#hubForm .explaination h2 {
+	margin: 1.5em 0 0.5em;
+	padding: 0;
+	border: none;
+}
+
+#hubForm .explaination ul {
+	color: #57b;
+}
+
+#hubForm span.optional,
+#hubForm span.required {
+	text-transform: uppercase;
+	font-size: xx-small;
+}
+
+#hubForm span.required {
+	color: red;
+}
+
+#hubForm span.optional {
+	color: #999;
+}
+
+#hubForm .hint {
+	font-size: 90%;
+}
+
+#hubForm span.hint {
+	line-height: 2em;
+}
+
+#hubForm .warning,
+#hubForm .error {
+	margin-top: 0;
+}
+
+#hubForm fieldset .error,
+#hubForm fieldset .warning,
+#hubForm fieldset .information,
+#hubForm fieldset .help {
+	margin: 1em 2em;
+}
+
+#hubForm ul {
+	margin: 1em 2em;
+}
+
+#hubForm ul li {
+	margin-left: 2em;
+}
+
+#hubForm ul li.error {
+	margin-left: 0;
+}
+
+#hubForm span.warning,
+#hubForm span.information,
+#hubForm span.help,
+#hubForm span.error {
+	margin: 0.5em 0 0 0;
+}
+
+#hubForm .error p,
+#hubForm .warning p,
+#hubForm .information p,
+#hubForm .help p {
+	margin: 1em 0;
+}
+
+#hubForm table {
+	margin: 1em 0;
+	border-top: 2px solid #DEE4CD;
+	border-color: #DEE4CD;
+}
+
+#hubForm table td,
+#hubForm table th {
+	border-color: #DEE4CD;
+}
+
+#hubForm fieldset fieldset.fieldsWithErrors,
+#hubForm .fieldsWithErrors {
+	border: 1px solid #c00;
+}
+
+#hubForm fieldset fieldset.fieldsWithErrors legend,
+#hubForm .fieldWithErrors {
+	color: #c00;
+	font-weight: bold;
+}
+
+#hubForm .fieldWithErrors input,
+#hubForm .fieldWithErrors select,
+#hubForm .fieldWithErrors textarea {
+	background-color: #F8E5E5;
+}
+
+#hubForm .fieldWithErrors span.required,
+#hubForm .fieldWithErrors span.optional {
+	font-weight: normal;
+}
+
+.com_content .subject #hubForm fieldset {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+}
+
+.com_content .edit-form #hubForm {
+	border-color: #fff;
+}
+
+.subject #hubForm fieldset fieldset {
+	padding: 0 1em 1em 1em;
+	margin-top: 1em;
+}
+
+.subject #hubForm .submit {
+	margin-right: 0;
+}
+
+/* Entries search */
+.data-entry {
+	display: flex;
+	margin-bottom: 3rem;
+	padding: 1rem;
+	background: #efefef;
+
+	.entry-search-submit {
+		order: 2;
+	}
+
+	.entry-search {
+		flex-grow: 1;
+		border: none;
+		padding: 0;
+
+		input[type="text"],
+		input {
+			border: 1px solid #666;
+			background-color: #fff;
+			padding: 5px;
+			margin: 0;
+			font-size: 1em;
+			line-height: 1.61803399em;
+			padding: 7px 5px 8px 5px\9;
+		}
+	}
+}
+
+.data-entry .applied-tags {
+	margin-top: 0px;
+	padding: 0.5em 1em;
+	background-color: #888;
+	background-color: rgba(255, 255, 255, 0.2);
+}
