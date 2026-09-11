@@ -9,7 +9,15 @@ section {
 .page {
 
 	// Subject & Aside layout
-	.hz-layout-with-aside {
+	//
+	// Views written for this template wrap the pair in .hz-layout-with-aside.
+	// Older ones, of which the core has rather more, put the two straight into
+	// the section instead - the wiki is all of them - and those had no column
+	// layout at all: the aside stacked full width above the content, pushing
+	// it off the screen. There the section itself is the column container, so
+	// the same layout is asked of both shapes.
+	.hz-layout-with-aside,
+	section.main:has(> .aside):has(> .subject) {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -21,7 +29,13 @@ section {
 		.subject {
 			flex-grow: 1;
 
+			// Stacked, the content comes first whichever order the view wrote
+			// the two in. Side by side, the view's own order decides which
+			// side the aside is on.
+			order: 1;
+
 			@media (min-width: @sizeM) {
+				order: 0;
 				.innerPaddingRight();
 			}
 		}
@@ -29,8 +43,10 @@ section {
 		.aside {
 			position: relative;
 			margin-top: 50px;
+			order: 2;
 
 			@media (min-width: @sizeM) {
+				order: 0;
 				max-width: 400px;
 				width: 25%;
 				margin-top: 0;
