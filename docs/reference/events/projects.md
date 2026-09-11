@@ -44,7 +44,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_projects/api/controllers/filefsv1_0.php:869`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L869) with `$plugin_params`
-- [`core/components/com_projects/api/controllers/filesv1_0.php:1096`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1096) with `$plugin_params`
+- [`core/components/com_projects/api/controllers/filesv1_0.php:1098`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1098) with `$plugin_params`
 
 Listeners:
 

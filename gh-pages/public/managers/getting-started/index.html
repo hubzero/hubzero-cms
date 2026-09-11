@@ -403,7 +403,7 @@ credentials, to match the machine.</p>
 <p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The option stores the value
 <code>mandrill</code>, but the transport builder only recognises <code>mandrill+smtp</code>, so
 the hub builds no transport and every send throws. Recorded in
-the project record.</p>
+It is recorded with the project.</p>
 </aside>
 <pre><code class="language-php">					case 'sendmail':
 					case 'mail':
@@ -484,7 +484,7 @@ the decisions:</p>
 </tbody>
 </table>
 <p>Three of those options do not do what the screen implies, and all three are
-recorded in the project record:</p>
+Recorded with the project:</p>
 <ul>
 <li><strong>Send Password</strong> and <strong>Simple Registration</strong> are declared on the form and
 described in the help text, but nothing in the tree reads either value.
@@ -523,7 +523,7 @@ the shipped install data stores it as <strong>Public</strong>, and both places i
 <code>com_members/site/controllers/register.php</code> that apply it fall back to
 <strong>Public</strong> as well. So on a hub installed from that data, and on a hub whose
 Members options have never been saved, every account is created public
-whatever the manifest says. Recorded in the project record.
+whatever the manifest says. Recorded with the project.
 Open the tab, read the value, and save it deliberately — see
 <a href="#check-the-default-do-not-trust-it">Check the default, do not trust it</a>.</p>
 </aside>
@@ -674,8 +674,7 @@ shipped row stores <code>autoapprove=1</code>. When it is 1 a submitted version 
 live the moment it is submitted, with no curator involved, unless the author
 ticks the review box themselves — and where the type requires a DOI, that
 DOI is registered as public rather than reserved. A hub that believes it is
-curating its publications is not. Recorded in
-the project record. See
+curating its publications is not. See
 <a href="../components/publications/index.html">Publications</a>.</p>
 </aside>
 <p>That one has a second switch, which is easy to miss. Each publication type
@@ -1102,7 +1101,7 @@ not declare is dropped. Usually harmless, occasionally not — Media's <strong>P
 to Files Folder</strong> and <strong>Path to Images Folder</strong> default to <code>images</code> in the
 manifest while the code reads <code>site/media</code>, so opening that screen and
 saving it untouched points the Media Manager at a directory that does not
-exist. Recorded in the project record.</li>
+exist. Recorded with the project.</li>
 <li><strong>Mass Mail Users.</strong> <strong>Users &gt; Mass Mail Users</strong> sends to every account in
 the access group you pick, and the hub reports how many it reached. Nothing
 reverses that. Send to a group of one first.</li>

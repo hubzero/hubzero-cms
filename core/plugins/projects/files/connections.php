@@ -715,10 +715,15 @@ class connections
 		$files   = [];
 		$results = [];
 
-		// Grab files from one of three potential sources
+		// Grab files from one of three potential sources.
+		//
+		// The name is a name, not a path. The adapter refuses one that climbs
+		// out of the connection's root, but it does so by throwing, which is a
+		// 500 rather than an answer, so take the basename here and let the
+		// upload land where it was meant to.
 		if (isset($_FILES['qqfile']))
 		{
-			$path = trim($this->subdir, '/') . '/' . $_FILES['qqfile']['name'];
+			$path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_FILES['qqfile']['name']));
 			$file = Entity::fromPath($path, $this->connection->adapter());
 
 			$file->contents = file_get_contents($_FILES['qqfile']['tmp_name']);
@@ -728,7 +733,7 @@ class connections
 		}
 		elseif (isset($_GET['qqfile']))
 		{
-			$path = trim($this->subdir, '/') . '/' . $_GET['qqfile'];
+			$path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $_GET['qqfile']));
 			$file = Entity::fromPath($path, $this->connection->adapter());
 
 			$file->contents = fopen('php://input', 'r');
@@ -937,6 +942,41 @@ class connections
 
 		if ($ajaxUpload)
 		{
+			// The chunk parameters name a file on disk directly, without going
+			// through the filesystem adapter, so nothing downstream would catch
+			// a path in them. Reduce each to the shape it is supposed to have
+			// before it is used: a bare filename, an opaque token, a number.
+			foreach ([&$_GET, &$_POST] as &$source)
+			{
+				if (isset($source['flowFilename']))
+				{
+					// A name, never a path. basename() also drops any directory
+					// separator, so '../../x' becomes 'x'.
+					$source['flowFilename'] = basename(str_replace('\\', '/', $source['flowFilename']));
+
+					if ($source['flowFilename'] === '.' || $source['flowFilename'] === '..')
+					{
+						$source['flowFilename'] = '';
+					}
+				}
+
+				if (isset($source['flowIdentifier']))
+				{
+					// An opaque token from the uploader. Keep what cannot
+					// change the shape of a path.
+					$source['flowIdentifier'] = preg_replace('/[^A-Za-z0-9_-]/', '', $source['flowIdentifier']);
+				}
+
+				foreach (['flowChunkNumber', 'flowTotalChunks'] as $number)
+				{
+					if (isset($source[$number]))
+					{
+						$source[$number] = (string) (int) $source[$number];
+					}
+				}
+			}
+			unset($source);
+
 			// Check if request is GET and the requested chunk exists or not. this makes testChunks work
 			if ($_SERVER['REQUEST_METHOD'] === 'GET')
 			{

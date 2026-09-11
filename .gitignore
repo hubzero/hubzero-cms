@@ -27,3 +27,11 @@ hubconfiguration.php
 *.sqlite3
 /docs/_import/
 __pycache__/
+*.pyc
+
+# Working files that belong on a machine, not in the repository
+/docs/*.png
+/docs/*.html
+/docs/*.txt
+/docs/*.conf
+/docs/plan/review-findings.md

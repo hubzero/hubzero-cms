@@ -630,15 +630,15 @@ that reads them back is the same screen, redisplaying them. No component,
 plugin or library in this tree consults them when content is saved, so
 changing a group from <strong>Default Black List</strong> to <strong>No Filtering</strong> — or the
 other way — has no effect on what any member can submit. Recorded in
-the project record.</p>
-</aside>
-<p>Do not treat this screen as a control, and do not read a hub's row of
+It is recorded with the project.
+Do not treat this screen as a control, and do not read a hub's row of
 settings here as a description of what the hub does. If you have been asked
 to tighten what members may submit, the levers that do work are elsewhere:
 which access levels may post at all, which editor plugin is offered (see
 <a href="../advancedsetup/index.html#the-rich-text-editor">Integrations</a>), and
 <strong>System - Content Security Policy</strong> for what the browser will execute once
 the markup is on the page.</p>
+</aside>
 <h3 id="login-thresholds">Login thresholds</h3>
 <p><strong>Users</strong> &gt; <strong>Members</strong> &gt; <strong>Options</strong> &gt; <strong>Login Settings</strong> limits how often
 one account may fail to log in, how often one account may request a
@@ -714,10 +714,8 @@ whatever the comment in the source says. So enabling it on a client where
 the web server is not asking for client certificates locks out everyone
 with an account on that client, including you. Set it up on a staging hub,
 or with the web server configured first. Recorded in
-the project record.</p>
-</aside>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <strong>Authfactors - Google</strong> cannot enrol anyone on a hub built
+It is recorded with the project.
+<strong>Warning:</strong> <strong>Authfactors - Google</strong> cannot enrol anyone on a hub built
 from this repository alone. Its enrolment screen shells out to
 <code>/usr/share/adm/scripts/google-authenticator-setup.sh</code>, which is not in
 this repository, and then reads the secret that script is expected to have
@@ -726,7 +724,7 @@ row to that table, so without the external script the enrolment page errors
 and the member cannot get past it — and because the system plugin diverts
 them there on every request, they cannot get anywhere else either. Ask
 whoever built the host whether that script is installed before you enable
-this. Recorded in the project record.</p>
+this. Recorded with the project.</p>
 </aside>
 <p>In practice, then, second-factor authentication on a hub built from this
 repository means client certificates, or an authentication provider that does
