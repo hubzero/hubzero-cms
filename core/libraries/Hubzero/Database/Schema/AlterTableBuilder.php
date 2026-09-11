@@ -21,6 +21,17 @@ use Hubzero\Database\Driver;
 class AlterTableBuilder
 {
     /**
+     * An alteration says what a table should look like, not what to do to it.
+     *
+     * Adding a column that is already there, dropping an index that is
+     * already gone, modifying a column that no longer exists: each of those
+     * asks for a state the table is already in, so each is left out of the
+     * statement rather than sent to a server that has no IF EXISTS to offer.
+     * A table this builder cannot inspect, which is how a computed diff
+     * describes one that does not exist yet, is never second-guessed.
+     */
+
+    /**
      * Set the current column's default to an expression
      *
      * @param  \Hubzero\Database\Expression $expression The default expression
@@ -195,16 +206,19 @@ class AlterTableBuilder
      * @param  array  $modifiers Column modifiers
      * @return $this
      */
-    public function addColumn(string $name, ?string $type = null, array $modifiers = []): self
+    public function addColumn(string $name, $type = null, array $modifiers = []): self
     {
-        $this->addColumns[$name] = [
-            'type' => $type,
-            'modifiers' => $modifiers,
-        ];
+        if (!$this->tableExists() || !$this->columnExists($name)) {
+            $this->addColumns[$name] = [
+                'type' => is_string($type) ? $type : null,
+                'modifiers' => $modifiers,
+            ];
+        }
         $this->lastColumn = $name;
         $this->lastModifyColumn = null;
         $this->lastRenameColumn = null;
-        return $this;
+
+        return $this->describe($type);
     }
 
     /**
@@ -457,25 +471,32 @@ class AlterTableBuilder
     }
 
     /**
-     * Add a new column only if it doesn't already exist (skipped otherwise)
+     * Add a new column only if it doesn't already exist
      *
-     * Allows fluent chaining without breaking on existing columns.
+     * The type can be named here or built up afterwards, as with addColumn().
+     * When the column is already there the name still becomes the current one,
+     * so everything chained after it is written about a column this builder is
+     * not adding, and goes nowhere.
      *
      * @param  string $name      Column name
-     * @param  string $type      Column type
+     * @param  mixed  $type      Column type, or a closure describing the column
      * @param  array  $modifiers Column modifiers
      * @return $this
      */
-    public function addColumnIfNotExists(string $name, string $type, array $modifiers = []): self
+    public function addColumnIfNotExists(string $name, $type = null, array $modifiers = []): self
     {
         if (!$this->columnExists($name)) {
             $this->addColumns[$name] = [
-                'type' => $type,
+                'type' => is_string($type) ? $type : null,
                 'modifiers' => $modifiers,
             ];
-            $this->lastColumn = $name;
         }
-        return $this;
+
+        $this->lastColumn = $name;
+        $this->lastModifyColumn = null;
+        $this->lastRenameColumn = null;
+
+        return $this->describe($type);
     }
 
     /**
@@ -766,6 +787,112 @@ class AlterTableBuilder
     }
 
     /**
+     * Set the current column type to char
+     *
+     * @param  int $length
+     * @return $this
+     */
+    public function char(int $length = 1): self
+    {
+        return $this->setType('char')->length($length);
+    }
+
+    /**
+     * Set the current column type to an unsigned integer
+     *
+     * @param  int|null $length
+     * @return $this
+     */
+    public function unsignedInteger(int $length = null): self
+    {
+        return $this->integer($length)->unsigned(true);
+    }
+
+    /**
+     * Set the current column type to an unsigned big integer
+     *
+     * @param  int|null $length
+     * @return $this
+     */
+    public function unsignedBigInteger(int $length = null): self
+    {
+        return $this->bigInteger($length)->unsigned(true);
+    }
+
+    /**
+     * Set the current column type to an unsigned tiny integer
+     *
+     * @param  int|null $length
+     * @return $this
+     */
+    public function unsignedTinyInteger(int $length = null): self
+    {
+        return $this->tinyInteger($length)->unsigned(true);
+    }
+
+    /**
+     * Set the current column type to blob
+     *
+     * @return $this
+     */
+    public function blob(): self
+    {
+        return $this->setType('blob');
+    }
+
+    /**
+     * Set the current column type to medium blob
+     *
+     * @return $this
+     */
+    public function mediumBlob(): self
+    {
+        return $this->setType('mediumBlob');
+    }
+
+    /**
+     * Set the current column type to long blob
+     *
+     * @return $this
+     */
+    public function longBlob(): self
+    {
+        return $this->setType('longBlob');
+    }
+
+    /**
+     * Set the current column type to json
+     *
+     * @return $this
+     */
+    public function json(): self
+    {
+        return $this->setType('json');
+    }
+
+    /**
+     * Set the current column to one of a set of values
+     *
+     * @param  array $values The values it may take
+     * @return $this
+     */
+    public function enum(array $values): self
+    {
+        return $this->setType('enum')->setModifier('values', $values);
+    }
+
+    /**
+     * Set the current column to any number of a set of values
+     *
+     * @param  array $values The values it may take
+     * @return $this
+     */
+    public function set(array $values): self
+    {
+        return $this->setType('set')->setModifier('values', $values);
+    }
+
+    /**
      * Set the current column type to text
      *
      * @return $this
@@ -960,16 +1087,147 @@ class AlterTableBuilder
      * @param  array  $modifiers Column modifiers
      * @return $this
      */
-    public function modifyColumn(string $name, ?string $type = null, array $modifiers = []): self
+    public function modifyColumn(string $name, $type = null, array $modifiers = []): self
     {
-        $this->modifyColumns[$name] = [
-            'type' => $type,
-            'modifiers' => $modifiers,
-        ];
+        // Modifying says what a column should be, which can only be asked of
+        // a column that is there. Migrations replayed against a schema that
+        // has moved on name columns that were since renamed or dropped, and
+        // there is nothing to say about those.
+        if (!$this->tableExists() || $this->columnExists($name)) {
+            $this->modifyColumns[$name] = [
+                'type' => is_string($type) ? $type : null,
+                'modifiers' => $modifiers,
+            ];
+        }
+
         $this->lastModifyColumn = $name;
         $this->lastColumn = null;
         $this->lastRenameColumn = null;
+
+        return $this->describe($type);
+    }
+
+    /**
+     * Let a closure say what a column should be
+     *
+     * Describing a column in a closure keeps a long chain of alterations
+     * readable, because each column's own settings are enclosed rather than
+     * run together, and migrations are written that way.
+     *
+     * @param  mixed $describe Something callable, or anything else
+     * @return $this
+     */
+    protected function describe($describe): self
+    {
+        if (is_callable($describe)) {
+            $describe($this);
+        }
+
         return $this;
+    }
+
+    /**
+     * Modify a column only if it is there
+     *
+     * When it is not, the name still becomes the current one, so everything
+     * chained after it is written about a column this builder is not touching
+     * and goes nowhere.
+     *
+     * @param  string $name      Column name
+     * @param  mixed  $type      Column type, or a closure describing the column
+     * @param  array  $modifiers Column modifiers
+     * @return $this
+     */
+    public function modifyColumnIfExists(string $name, $type = null, array $modifiers = []): self
+    {
+        if ($this->columnExists($name)) {
+            return $this->modifyColumn($name, $type, $modifiers);
+        }
+
+        $this->lastModifyColumn = $name;
+        $this->lastColumn = null;
+        $this->lastRenameColumn = null;
+
+        return $this;
+    }
+
+    /**
+     * Modify a column to a string
+     *
+     * @param  string $name   Column name
+     * @param  int    $length How long
+     * @return $this
+     */
+    public function modifyString(string $name, int $length = 255): self
+    {
+        return $this->modifyColumn($name)->string($length);
+    }
+
+    /**
+     * Modify a column to text
+     *
+     * @param  string $name Column name
+     * @return $this
+     */
+    public function modifyText(string $name): self
+    {
+        return $this->modifyColumn($name)->text();
+    }
+
+    /**
+     * Modify a column to tiny text
+     *
+     * @param  string $name Column name
+     * @return $this
+     */
+    public function modifyTinyText(string $name): self
+    {
+        return $this->modifyColumn($name)->tinyText();
+    }
+
+    /**
+     * Modify a column to an integer
+     *
+     * @param  string $name   Column name
+     * @param  mixed  $length How wide, or true for unsigned
+     * @return $this
+     */
+    public function modifyInteger(string $name, $length = null): self
+    {
+        // Written both ways: a width, or a flag saying it is unsigned
+        if (is_bool($length)) {
+            return $this->modifyColumn($name)->integer()->unsigned($length);
+        }
+
+        return $this->modifyColumn($name)->integer($length);
+    }
+
+    /**
+     * Modify a column to a tiny integer
+     *
+     * @param  string $name   Column name
+     * @param  mixed  $length How wide, or true for unsigned
+     * @return $this
+     */
+    public function modifyTinyInteger(string $name, $length = null): self
+    {
+        // Written both ways: a width, or a flag saying it is unsigned
+        if (is_bool($length)) {
+            return $this->modifyColumn($name)->tinyInteger()->unsigned($length);
+        }
+
+        return $this->modifyColumn($name)->tinyInteger($length);
+    }
+
+    /**
+     * Modify a column to a datetime
+     *
+     * @param  string $name Column name
+     * @return $this
+     */
+    public function modifyDatetime(string $name): self
+    {
+        return $this->modifyColumn($name)->datetime();
     }
 
     /**
@@ -1014,6 +1272,10 @@ class AlterTableBuilder
      */
     public function addIndex(string $name, $columns): self
     {
+        if ($this->tableExists() && ($this->indexExists($name) || !$this->indexable($columns))) {
+            return $this;
+        }
+
         $this->addIndexes[$name] = [
             'columns' => is_array($columns) ? $columns : [$columns],
             'unique' => false,
@@ -1030,6 +1292,10 @@ class AlterTableBuilder
      */
     public function addUniqueIndex(string $name, $columns): self
     {
+        if ($this->tableExists() && ($this->indexExists($name) || !$this->indexable($columns))) {
+            return $this;
+        }
+
         $this->addIndexes[$name] = [
             'columns' => is_array($columns) ? $columns : [$columns],
             'unique' => true,
@@ -1046,6 +1312,10 @@ class AlterTableBuilder
      */
     public function addFulltextIndex(string $name, $columns): self
     {
+        if ($this->tableExists() && ($this->indexExists($name) || !$this->indexable($columns))) {
+            return $this;
+        }
+
         $this->addFulltextIndexes[$name] = is_array($columns) ? $columns : [$columns];
         return $this;
     }
@@ -1084,8 +1354,85 @@ class AlterTableBuilder
      */
     public function dropIndex(string $name): self
     {
-        $this->dropIndexes[] = $name;
+        // An index that is not there is already dropped. MySQL has no
+        // DROP INDEX IF EXISTS, and a migration replayed against a schema
+        // that has moved on asks for this constantly.
+        if (!$this->tableExists() || $this->indexExists($name)) {
+            $this->dropIndexes[] = $name;
+        }
+
         return $this;
+    }
+
+    /**
+     * Whether the table is there to be inspected
+     *
+     * The builder also serves a computed diff, which describes a change to a
+     * table that need not exist yet. Nothing is skipped on that ground: what
+     * cannot be checked is emitted and the server decides.
+     *
+     * @return bool
+     */
+    public function tableExists(): bool
+    {
+        try {
+            return (bool) $this->driver->tableExists($this->table);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Whether every column an index would be over is there to index
+     *
+     * @param  string|array $columns The columns, each a name or a name and a length
+     * @return bool
+     */
+    public function indexable($columns): bool
+    {
+        foreach ((array) $columns as $column) {
+            $name = is_array($column) ? ($column[0] ?? '') : $column;
+
+            if (!$this->columnExists((string) $name)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Whether the table already has an index by this name
+     *
+     * MySQL has neither ADD INDEX IF NOT EXISTS nor DROP INDEX IF EXISTS, and
+     * a migration replayed against a schema that has moved on asks for both
+     * constantly, so the builder answers the question itself.
+     *
+     * @param  string $name Index name
+     * @return bool
+     */
+    public function indexExists(string $name): bool
+    {
+        try {
+            foreach ($this->driver->getTableKeys($this->table) as $key => $value) {
+                if (is_string($key) && $key === $name) {
+                    return true;
+                }
+
+                $found = is_object($value)
+                    ? ($value->Key_name ?? $value->name ?? null)
+                    : (is_array($value) ? ($value['Key_name'] ?? $value['name'] ?? null) : null);
+
+                if ($found === $name) {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            // Cannot tell, so let the server be the one to say
+            return true;
+        }
+
+        return false;
     }
 
     /**

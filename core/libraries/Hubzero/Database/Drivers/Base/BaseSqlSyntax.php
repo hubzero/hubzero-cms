@@ -1092,11 +1092,12 @@ abstract class BaseSqlSyntax
      * @param   bool    $count   Whether or not to count column
      * @return  void
      */
-    public function setSelect($column, $as = null, $count = false)
+    public function setSelect($column, $as = null, $count = false, $replaceStar = true)
     {
-        // A default * is often added, get rid of it if anything else is added
-        // This wouldn't get rid of table.* as that is likely added intentionally
-        if (isset($this->select[0]) && $this->select[0]['column'] == '*') {
+        // A bare * is often there as a default, so naming a real column takes
+        // its place. Naming several at once does not: every one of them was
+        // asked for, the * among them.
+        if ($replaceStar && isset($this->select[0]) && $this->select[0]['column'] == '*') {
             $this->resetSelect();
         }
 
@@ -2502,6 +2503,11 @@ abstract class BaseSqlSyntax
                 }
             } elseif ($select['column'] instanceof \Hubzero\Database\Expression) {
                 $string = $this->buildExpression($select['column']);
+
+                // An expression can carry the name it is to be known by
+                if (empty($select['as']) && $select['column']->getAlias()) {
+                    $select['as'] = $select['column']->getAlias();
+                }
             } elseif (isset($select['count']) && $select['count'] === 'distinct') {
                 $string = "COUNT(DISTINCT({$select['column']}))";
             } elseif (!empty($select['count'])) {

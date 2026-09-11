@@ -31,6 +31,12 @@ class Migration20140305142845Core extends Base
             ->whereIn('alias', ['login', 'login2', 'login3'])
             ->loadObjectList();
 
+        // Nothing to judge by means nothing to convert: a hub with no content
+        // yet, or one whose content arrived already in UTC.
+        if (!$results || count($results) == 0) {
+            return;
+        }
+
         $need_to_run = false;
 
         if ($results && count($results) > 0) {

@@ -655,11 +655,22 @@ abstract class BaseSchemaGrammar
     /**
      * Convert an array of column names to a comma-separated string
      *
+     * A column may be named on its own, or as a name and the number of
+     * leading characters to index, which is how a prefix index is written.
+     * Only some dialects can index a prefix; here the length is dropped and
+     * the whole column is named.
+     *
      * @param  array  $columns
      * @return string
      */
     protected function columnize(array $columns): string
     {
-        return implode(', ', array_map([$this, 'wrap'], $columns));
+        $names = [];
+
+        foreach ($columns as $column) {
+            $names[] = $this->wrap(is_array($column) ? (string) $column[0] : (string) $column);
+        }
+
+        return implode(', ', $names);
     }
 }

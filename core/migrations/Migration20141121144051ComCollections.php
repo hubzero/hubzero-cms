@@ -27,14 +27,14 @@ class Migration20141121144051ComCollections extends Base
                 ->select(['id', 'url'])
                 ->from('#__collections_items')
                 ->where('type', '=', 'article')
-                ->where('url', 'LIKE', '%&', false); // false to prevent auto-escaping of %
+                ->where('url', 'LIKE', '%&');
 
             if ($articles = $query->loadObjectList()) {
                 foreach ($articles as $article) {
                     $article->url = rtrim($article->url, '&');
                     $this->db->getQuery(true)
                         ->update('#__collections_items')
-                        ->set(['url' => $this->db->quote($article->url)])
+                        ->set(['url' => $article->url])
                         ->where('id', '=', $article->id)
                         ->execute();
                 }

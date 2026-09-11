@@ -32,7 +32,7 @@ class Migration20160212200400ComTags extends Base
                 $subquery = $this->db->getQuery(true)
                     ->select(Expression::count())
                     ->from('#__tags_object', 'o')
-                    ->where('o.tagid', '=', 't.id', false);
+                    ->whereColumn('o.tagid', '=', 't.id');
 
                 $this->db->getQuery(true)
                     ->update('#__tags', 't')
@@ -47,7 +47,7 @@ class Migration20160212200400ComTags extends Base
                 $subquery = $this->db->getQuery(true)
                     ->select(Expression::count())
                     ->from('#__tags_substitute', 'o')
-                    ->where('o.tag_id', '=', 't.id', false);
+                    ->whereColumn('o.tag_id', '=', 't.id');
 
                 $this->db->getQuery(true)
                     ->update('#__tags', 't')

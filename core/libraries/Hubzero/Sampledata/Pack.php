@@ -49,12 +49,60 @@ class Pack
     public function __construct($name, $root = null, $fixtures = null)
     {
         $this->name = strtolower(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $name));
-        $this->root = $root ?: __DIR__ . DIRECTORY_SEPARATOR . 'Packs';
+        $this->root = $root ?: self::rootFor($this->name);
+        $this->fixtures = $fixtures;
+    }
 
-        $core = defined('PATH_CORE') ? PATH_CORE : dirname(dirname(dirname(__DIR__)));
+    /**
+     * Every place a pack might live
+     *
+     * A pack need not be part of this software. A hub keeps its own in its
+     * app directory, and a pack maintained elsewhere is named in the
+     * HUBZERO_SAMPLEDATA environment variable, one directory per entry,
+     * separated the way PATH is.
+     *
+     * @return  array
+     **/
+    public static function roots()
+    {
+        $roots = [__DIR__ . DIRECTORY_SEPARATOR . 'Packs'];
 
-        $this->fixtures = $fixtures
-            ?: $core . '/bootstrap/Install/sampledata/' . $this->name;
+        if (defined('PATH_APP')) {
+            $roots[] = PATH_APP . DIRECTORY_SEPARATOR . 'sampledata';
+        }
+
+        $named = getenv('HUBZERO_SAMPLEDATA');
+
+        if ($named) {
+            foreach (explode(PATH_SEPARATOR, $named) as $directory) {
+                $directory = trim($directory);
+
+                if ($directory !== '') {
+                    $roots[] = rtrim($directory, DIRECTORY_SEPARATOR);
+                }
+            }
+        }
+
+        return $roots;
+    }
+
+    /**
+     * Where a pack of this name is, if it is anywhere
+     *
+     * @param   string  $name  The pack to look for
+     * @return  string  The directory holding it, or the first place looked
+     **/
+    protected static function rootFor($name)
+    {
+        $roots = self::roots();
+
+        foreach ($roots as $root) {
+            if (is_dir($root . DIRECTORY_SEPARATOR . ucfirst($name))) {
+                return $root;
+            }
+        }
+
+        return $roots[0];
     }
 
     /**
@@ -94,7 +142,21 @@ class Pack
      */
     public function fixtures()
     {
-        return $this->fixtures;
+        if ($this->fixtures) {
+            return $this->fixtures;
+        }
+
+        // A pack keeps its fixtures with it; the ones that ship here kept
+        // theirs with the rest of the install files, so both are understood.
+        $beside = $this->directory() . DIRECTORY_SEPARATOR . 'fixtures';
+
+        if (is_dir($beside)) {
+            return $beside;
+        }
+
+        $core = defined('PATH_CORE') ? PATH_CORE : dirname(dirname(dirname(__DIR__)));
+
+        return $core . '/bootstrap/Install/sampledata/' . $this->name;
     }
 
     /**
@@ -135,17 +197,22 @@ class Pack
     /**
      * Every pack there is
      *
-     * @param   string  $root  Where the packs live
+     * @param   string  $root  Where to look, or everywhere if not given
      * @return  array   Pack objects, by name
      */
     public static function all($root = null)
     {
-        $root = $root ?: __DIR__ . DIRECTORY_SEPARATOR . 'Packs';
+        $roots = $root ? [$root] : self::roots();
         $packs = [];
 
-        foreach (glob($root . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR) ?: [] as $directory) {
-            $pack = new self(basename($directory), $root);
-            $packs[$pack->name()] = $pack;
+        foreach ($roots as $one) {
+            foreach (glob($one . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR) ?: [] as $directory) {
+                $pack = new self(basename($directory), $one);
+
+                if (!isset($packs[$pack->name()])) {
+                    $packs[$pack->name()] = $pack;
+                }
+            }
         }
 
         ksort($packs);

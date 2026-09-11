@@ -29,74 +29,66 @@ class InstallModule extends Macro
      **/
     public function __invoke($module, $position, $always = true, $params = '', $client = 0, $menus = 0)
     {
-        $title    = $this->db->quote(ucfirst($module));
-        $position = $this->db->quote($position);
-        $module   = $this->db->quote('mod_' . strtolower($module));
-        $client   = $this->db->quote((int)$client);
-        $access   = ($this->db->tableExists('#__extensions')) ? 1 : 0;
-
-        // Build params string
-        $params = json_encode($params);
+        // The query builder binds what it is given, so values go in plain.
+        // Quoting them here would put the quotes inside the value.
+        $title  = ucfirst($module);
+        $module = 'mod_' . strtolower($module);
+        $client = (int) $client;
+        $access = ($this->db->tableExists('#__extensions')) ? 1 : 0;
+        $params = is_string($params) ? $params : json_encode($params);
 
         if (!$always) {
-            $query = $this->db->getQuery()
+            $existing = $this->db->getQuery(true)
                 ->select('id')
                 ->from('#__modules')
                 ->whereEquals('module', $module)
-                ->toString();
-            $this->db->setQuery($query);
+                ->value('id');
 
-            if ($this->db->loadResult()) {
+            if ($existing) {
                 return true;
             }
         }
 
-        $query = $this->db->getQuery()
+        $last = $this->db->getQuery(true)
             ->select('ordering')
             ->from('#__modules')
             ->whereEquals('position', $position)
             ->order('ordering', 'desc')
             ->limit(1)
-            ->toString();
-        $this->db->setQuery($query);
-        $ordering = (int)(($this->db->loadResult()) ? $this->db->loadResult() + 1 : 0);
+            ->value('ordering');
 
-        $query = $this->db->getQuery()
+        $this->db->getQuery(true)
             ->insert('#__modules')
-            ->values(array(
+            ->set([
                 'title'     => $title,
                 'content'   => '',
-                'ordering'  => $ordering,
+                'ordering'  => $last ? ((int) $last) + 1 : 0,
                 'position'  => $position,
                 'published' => 1,
                 'module'    => $module,
                 'access'    => $access,
                 'showtitle' => 0,
                 'params'    => $params,
-                'client_id' => $client
-            ))
-            ->toString();
+                'client_id' => $client,
+                'language'  => '*',
+            ])
+            ->execute();
 
-        $this->db->setQuery($query);
-        $this->db->query();
-        $id = $this->db->quote($this->db->insertid());
+        $id = $this->db->insertid();
 
-        $menus = (array)$menus;
-        foreach ($menus as $menu) {
-            $menu  = $this->db->quote($menu);
-
-            $query = $this->db->getQuery()
+        foreach ((array) $menus as $menu) {
+            $this->db->getQuery(true)
                 ->insert('#__modules_menu')
-                ->values(array(
+                ->set([
                     'moduleid' => $id,
-                    'menuid'   => $menu
-                ))
-                ->toString();
-            $this->db->setQuery($query);
-            $this->db->query();
+                    'menuid'   => (int) $menu,
+                ])
+                ->execute();
 
             $this->log(sprintf('Added module_menu entry for module "%s" to menu "%s"', $module, $menu));
         }
+
+        $this->log(sprintf('Installed module "%s" in position "%s"', $module, $position));
 
         return true;
     }
