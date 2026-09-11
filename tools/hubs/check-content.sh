@@ -91,6 +91,13 @@ expect "wiki comments" "/wiki/FieldNumbering?task=comments" 'id="c[0-9]+"'      
 # at if the revisions differ, and which names who made each of them
 expect "wiki diff"     "/wiki/CalderBasin?task=compare&oldid=1&diff=4" 'by [A-Z][a-z]+ [A-Z][a-z]+' 2
 
+# A group whose every tab is empty is a worse advertisement for groups than no
+# group at all, and a page written to the wrong place still answers 200
+expect "group pages"    "/groups/fossil-ct"          'class="page" href="[^"]+"'          2
+expect "group wiki"     "/groups/fossil-ct/wiki"     'href="[^"]*/wiki/[A-Za-z]{6,}"'     2
+expect "group forum"    "/groups/fossil-ct/forum"    'forum/discussion/[a-z-]{5,}'        2
+expect "group calendar" "/groups/fossil-ct/calendar" 'calendar/details/[0-9]+'            2
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
