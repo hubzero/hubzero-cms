@@ -71,6 +71,7 @@ expect "wish list"   "/wishlist"            'wishlist/general/1/wish/[0-9]+'    
 expect "publications" "/publications"       'href="/publications/[0-9]+"'        8
 expect "polls"       "/poll"                'name="id" value="[0-9]+"'           3
 expect "jobs"        "/jobs"                'href="/jobs/job/[0-9]+"'            5
+expect "newsletters" "/newsletter"          'href="/newsletter/[0-9]{4}-[a-z]+"' 4
 
 if [ "$fail" -eq 0 ]; then
     echo
