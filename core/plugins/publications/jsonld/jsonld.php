@@ -71,8 +71,14 @@ class Jsonld extends Plugin
             $data['identifier'] = $doi;
             $data['@id'] = $doi;
         } else {
-            $data['identifier'] = Request::root() . Route::url($publication->link());
-            $data['@id'] = Request::root() . Route::url($publication->link());
+            // Joined the way the url above it is: the root carries a
+            // trailing slash and the route a leading one, so concatenating
+            // them puts two in the middle of every identifier.
+            $link = rtrim(Request::root(), '/') . '/'
+                  . ltrim(Route::url($publication->link()), '/');
+
+            $data['identifier'] = $link;
+            $data['@id'] = $link;
         }
 
         $license = $publication->license();
