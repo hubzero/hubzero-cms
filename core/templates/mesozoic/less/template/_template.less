@@ -1,0 +1,124 @@
+@import "_config/_config";
+@import "vars/_vars";
+@import "mixins/_mixins";
+
+@import "_reset";
+@import "core/_core";
+@import "layout/_layout";
+
+#system-message {
+	margin: 0;
+}
+
+img {
+	max-width: 100%;
+	border: 0;
+}
+
+.withmenu {
+	padding-top: 2rem;
+}
+
+.section .section {
+	padding: 20px 0;
+}
+
+body #page_content .main {
+	background: none;
+}
+
+body #page_header {
+	padding-bottom: 25px;
+}
+
+/* Prevents sub and sup affecting line-height in all browsers */
+sub,
+sup {
+	position: relative;
+	font-size: 75%;
+	line-height: 0;
+	vertical-align: baseline;
+}
+
+sup {
+	top: -0.5em;
+}
+
+sub {
+	bottom: -0.25em;
+}
+
+/* Lists */
+ul {
+	list-style: disc;
+	margin-left: 2rem;
+	padding: 0;
+
+	li {
+		margin: 0.5em 0;
+	}
+}
+
+ol {
+	list-style: decimal;
+	margin-left: 2rem;
+	padding: 0;
+
+	li {
+		margin: 0.5em 0;
+	}
+}
+
+iframe {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+hr {
+	clear: both;
+	height: 1px;
+	background: #ddd;
+	margin: 2em 0;
+	border: none;
+}
+
+dfn {
+	font-style: italic;
+}
+
+dl {
+	dt {
+		font-weight: bold;
+	}
+
+	dd {
+		margin-left: 2em;
+	}
+}
+
+blockquote {
+	color: #888;
+	position: relative;
+	background-color: #fff;
+}
+
+/* Pre, Code, TrueType. */
+pre {
+	font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+	color: #555;
+}
+
+body .wikipage pre,
+body .wikipage .pre,
+.pre {
+	background-color: #fff;
+}
+
+code,
+tt {
+	border: 1px solid #d7d7d7;
+	background-color: #fff;
+	font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
+	font-size: 0.91em;
+	padding: 0.2em 0.4em;
+}

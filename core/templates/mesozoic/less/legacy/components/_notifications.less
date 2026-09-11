@@ -1,0 +1,126 @@
+//
+// Alerts
+// --------------------------------------------------
+
+.notification(@border, @iconContent, @icon, @text) {
+	border-left: 4px solid @border;
+	border-color: @border;
+	color: @text;
+	
+	&:before {
+		content: @iconContent;
+		background: @icon;
+	}
+}
+
+// System messages
+#system-message {
+	margin: 0 0 1.61803399em 0;
+
+	ul,
+	li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	dt {
+		display: none;
+	}
+}
+
+.help,
+.info,
+.warning,
+.error,
+.passed,
+#system-message dd {
+	margin: 0;
+	padding: 1rem;
+	position: relative;
+	overflow: hidden;
+	zoom: 1;
+	background: rgba(246, 246, 247, 1);
+	padding-left: 4rem;
+}
+.help,
+.info,
+.warning,
+.error,
+.passed {
+	margin: 1em 0;
+	
+	h3,
+	h4 {
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+	a {
+		border-bottom: 1px dotted #eee !important;
+	}
+	a:hover {
+		border-bottom: 1px solid #fff !important;
+	}
+}
+
+span.help,
+span.info,
+span.warning,
+span.error,
+span.passed {
+	display: inline-block;
+	*display: inline;
+	margin: 0;
+}
+
+#system-message dd {
+	margin: 0;
+	display: flex;
+	align-items: center;
+}
+
+span.systemmessage-before,
+.help:before,
+.info:before,
+.warning:before,
+.error:before,
+.passed:before,
+#system-message dd:before {
+	width: 1em;
+	height: 1em;
+	font-size: 1em;
+	line-height: 1;
+	.fontcons(@iconSuccess);
+	padding: 1rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	margin-right: 1rem;
+	position: absolute;
+	left: 1rem;
+	top: 50%;
+	translate: 0 -50%;
+}
+
+.passed,
+#system-message dd.message {
+	.notification(@color-success-border, "\@{iconSuccess}", @color-success-icon, @color-success-text);
+}
+.info,
+#system-message dd.info {
+	.notification(@color-info-border, "\@{iconInfo}", @color-info-icon, @color-info-text);
+}
+.help,
+#system-message dd.help {
+	.notification(@color-info-border, "\@{iconHelp}", @color-info-icon, @color-info-text);
+}
+.warning,
+#system-message dd.warning {
+	.notification(@color-warning-border, "\@{iconWarning}", @color-warning-icon, @color-warning-text);
+}
+.error,
+#system-message dd.error {
+	.notification(@color-critical-border, "\@{iconError}", @color-critical-icon, @color-critical-text);
+}
