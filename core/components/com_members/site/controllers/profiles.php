@@ -1394,6 +1394,10 @@ class Profiles extends SiteController
         $oldemail = $member->get('email');
         $email = Request::getVar('email', null, 'post');
 
+        // Only set when the address actually changes, and read again further
+        // down whether it changed or not
+        $confirm = null;
+
         if (!is_null($email)) {
             $member->set('email', (string)$email);
 
@@ -1545,7 +1549,14 @@ class Profiles extends SiteController
             // Update session if email is changing
             if ($member->get('email') != $user->get('email')) {
                 $user->set('email', $member->get('email'));
-                $user->set('activation', $confirm);
+                // The session has to agree with the record. A code is only
+                // generated when the posted address differs from the stored
+                // one, and this branch compares the record with the session
+                // instead, so there is not always a new one to use.
+                $user->set(
+                    'activation',
+                    $confirm !== null ? $confirm : $member->get('activation')
+                );
 
                 // Add item to session to mark that the user changed emails
                 // this way we can serve profile images for these users but not all
@@ -1558,7 +1569,10 @@ class Profiles extends SiteController
 
         // Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
         if ($email != $oldemail) {
-                        $result = \Components\Members\Helpers\Utility::sendConfirmEmail($user, null, false);
+            // The member whose address changed, which is not always the
+            // person doing the changing: $user exists only when they are the
+            // same, and an administrator editing somebody else is not.
+            $result = \Components\Members\Helpers\Utility::sendConfirmEmail($member, null, false);
 
             if ($result) {
                 Notify::success('A confirmation email has been sent to "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '". You must click the link in that email to re-activate your account.');
