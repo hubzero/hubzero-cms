@@ -283,6 +283,18 @@ class Questions extends SiteController
         } elseif ($type == 'comment') {
             $row = Comment::oneOrFail($id);
             $scope = 'question.answer.comment';
+        } else {
+            // The category comes in off the request and only these three
+            // are known. Without this, anything else reached the next line
+            // with no record to vote on.
+            if (!$no_html) {
+                App::redirect(
+                    Route::url('index.php?option=' . $this->_option),
+                    Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
+                    'error'
+                );
+            }
+            return;
         }
 
         // Can't vote for your own comment

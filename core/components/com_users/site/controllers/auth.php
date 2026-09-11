@@ -396,10 +396,6 @@ class Auth extends SiteController
                 $options['authenticator'] = $authenticator;
             }
 
-            // Get the log in credentials.
-            $credentials = array();
-            $credentials['username'] = $data['username'];
-            $credentials['password'] = $data['password'];
         }
 
         // Make sure return values are internal to the hub
@@ -418,6 +414,15 @@ class Auth extends SiteController
 
         // Set the return URL in the user state to allow modification by plugins
         User::setState('login.form.return', $data['return']);
+
+        // Get the log in credentials. Built here rather than inside the
+        // default branch above: an authenticator plugin handles the login
+        // itself and takes that branch away, and the call below reads these
+        // either way.
+        $credentials = array(
+            'username' => $data['username'],
+            'password' => $data['password']
+        );
 
         try {
             $result = App::get('auth')->login($credentials, $options);
