@@ -64,6 +64,7 @@ expect "forum"       "/forum"               'href="/forum/[a-z]+/[a-z-]{5,}"'   
 expect "events"      "/events/2026"         'href="/events/details/[0-9]+"'      6
 # Counted from the posts stream, which names the collection each item is in
 expect "collections" "/collections/posts"   'href="/members/[0-9]+/collections/[a-z-]+"' 5
+expect "courses"     "/courses/browse"      'href="/courses/[a-z-]{6,}"'         3
 
 if [ "$fail" -eq 0 ]; then
     echo
