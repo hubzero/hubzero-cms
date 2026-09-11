@@ -2,8 +2,29 @@
 @import "navigation/_navigation";
 
 .page-head {
-	
+
+	// A band of plants along the foot of the header, to answer the animals at
+	// the foot of the page.
+	//
+	// Plants rather than animals, and fainter than the footer's band: the
+	// navigation sits over this, and an animal is a shape the eye goes to.
+	// Nothing in it reaches as high as the words.
+	position: relative;
+
+	&:before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 3.5rem;
+		background: url("../images/canopy.svg") repeat-x bottom center;
+		background-size: auto 100%;
+		pointer-events: none;
+	}
+
 	& > .inner {
+		position: relative;
 
 		& > header {
 

@@ -7850,6 +7850,23 @@ tt {
 .mobile-nav nav.nav nav.main-nav .main-nav-bar .accordion-panel {
   background: #f1f1f1;
 }
+.page-head {
+  position: relative;
+}
+.page-head:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3.5rem;
+  background: url("../images/canopy.svg") repeat-x bottom center;
+  background-size: auto 100%;
+  pointer-events: none;
+}
+.page-head > .inner {
+  position: relative;
+}
 .page-head > .inner > header .logo {
   font-size: 2.1875rem;
   line-height: 2.5rem;
