@@ -2,8 +2,10 @@
 .page > .inner > #content-header,
 .contentpane > .content-header,
 .contentpane > #content-header {
-	.outerPadding();
-
+	// No outer padding here. The theme makes this a panel inset by a margin
+	// and padded by itself, and the mixin's declarations are !important, so
+	// leaving the call in means the panel keeps the page's whole gutter as
+	// padding on top of its own.
 	strong {
 		display: inline-block;
 	}
