@@ -619,8 +619,8 @@ class Filesv1r0 extends ApiController
                 if ($file->exists()) {
                     $updateType = 'updated';
                 }
-                $file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
-                $file->size = (int) $_FILES["file"]["size"];
+                $file->setContents(file_get_contents($_FILES["file"]["tmp_name"]));
+                $file->setSize((int) $_FILES["file"]["size"]);
                 if ($file->save()) {
                     $parsedResults = array();
 
@@ -819,8 +819,8 @@ class Filesv1r0 extends ApiController
             if ($file->exists()) {
                 $updateType = 'updated';
             }
-            $file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
-            $file->size = (int) $_FILES["file"]["size"];
+            $file->setContents(file_get_contents($_FILES["file"]["tmp_name"]));
+            $file->setSize((int) $_FILES["file"]["size"]);
             if ($file->save()) {
                 $parsedResults = array();
 
@@ -1404,8 +1404,8 @@ class Filesv1r0 extends ApiController
             // Final destination file
             $file = Entity::fromPath($path, $this->ormconn->adapter());
 
-            $file->contents = $fp;
-            $file->size     = $totalSize;
+            $file->setContents($fp);
+            $file->setSize($totalSize);
 
             if ($file->save()) {
                 $result = true;
