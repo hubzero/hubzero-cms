@@ -85,7 +85,7 @@ class Migration20130716202127ComNewsletter extends Base
                 . '						</tr>\n'
                 . '						<tr>\n'
                 . '							<td colspan="2" style="background:#000000;">\n'
-                . '								<h1 style="color:#FFFFFF;">HUB Campaign Template</h1>\n'
+                . '								<h1 style="color:#FFFFFF;">{{SITENAME}}</h1>\n'
                 . '								<h3 style="color:#888888;">{{TITLE}}</h3>\n'
                 . '							</td>\n'
                 . '						<tr>\n'
