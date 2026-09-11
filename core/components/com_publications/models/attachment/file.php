@@ -116,7 +116,12 @@ class File extends Base
         // Set paths
         $configs->path    = $pub->_project->repo()->get('path');
         $configs->pubBase = $pub->path('base', true);
-        $configs->pubPath = $configs->pubBase . DS . $configs->dirPath;
+        // Trimmed, because an element with no directory of its own and a
+        // version with no secret leave dirPath empty: the path would then end
+        // in a separator, and the code that makes a name relative to it by
+        // string replacement would fail to match and put the server's own
+        // directory tree inside the downloadable archive.
+        $configs->pubPath = rtrim($configs->pubBase . DS . $configs->dirPath, DS);
         $configs->logPath = $pub->path('logs', true);
 
         // Get default title
