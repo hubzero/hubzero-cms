@@ -50,10 +50,18 @@ defined('_HZEXEC_') or die();
                 $item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} aria-label=\"Overview — {$_groupTitle}\">Overview</a>";
             }
 
-            // append pages html
-            // only pass in the children of the root node
-            // basically skip the overview page here
-            $item .= \Components\Groups\Helpers\View::buildRecursivePageMenu($this->group, $this->pages[0]->get('children'));
+            // Append the pages under Overview.
+            //
+            // A group that has overridden its overview has a page of its own
+            // standing as the root, and what belongs in the menu is that
+            // page's children. A group that has not gets an overview the
+            // component invents, which is in no tree, so its own pages are
+            // themselves the top level and all of them belong in the menu.
+            $beneath = $this->pages[0]->get('home')
+                ? $this->pages[0]->get('children')
+                : $this->pages;
+
+            $item .= \Components\Groups\Helpers\View::buildRecursivePageMenu($this->group, $beneath);
         } else {
             if ($access == 'nobody') {
                 $item = '';
