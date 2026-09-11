@@ -15,8 +15,9 @@ if (!$this->sub) {
     $this->css();
 }
 
-$orauthor = $this->or->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
-$drauthor = $this->dr->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+// creator() is the relationship; creator is the person it resolves to
+$orauthor = $this->or->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+$drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <h2><?php echo $this->escape($this->page->title); ?></h2>
