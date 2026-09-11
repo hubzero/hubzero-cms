@@ -1,0 +1,64 @@
+.list-footer {
+	margin: 5px 0;
+	padding: 0;
+	border-top: 1px solid #e2e2e2;
+	background-image: none;
+	list-style: none;
+	.cf();
+
+	li {
+		float: left;
+		margin: 0;
+		list-style: none;
+		
+		a,
+		strong {
+			display: inline-block;
+			padding: 0.5rem;
+			white-space: nowrap;
+			word-wrap: normal;
+		}
+		
+		// current page
+		strong {
+			font-weight: normal;
+			background: #777;
+			color: #fff;
+		}
+	}
+	
+	.limit,
+	.counter {
+		padding: 10px 0;
+	}
+	
+	.counter {
+		float: right;
+	}
+	
+	.limit {
+		padding-right: 1em;
+		float: right;
+	}
+	
+	.start {
+		margin-left: 0;
+		padding-left: 0;
+	}
+	
+	.next,
+	.prev {
+		display: none;
+	}
+	
+	input,
+	label {
+		display: inline;
+		width: auto;
+	}
+
+	// Disabled buttons
+	span {
+		display: none;
+	}
+}

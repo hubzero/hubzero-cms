@@ -1,0 +1,165 @@
+@items-spacing: @space-1;
+@root-links-size: @font-size-3;
+@separator-color: #dddddd;
+
+.mobile-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 300;
+	transform: translate(-100%, 0);
+	.transition(all ease .2s);
+	transition-delay: 0.3s;
+	max-width: 650px;
+	background: #f7f7f7;
+
+	@media (min-width: 650px) {
+		right: 25%;
+	}
+	@media (min-width: 750px) {
+		right: 50%;
+	}
+
+	.scroll {
+		.stretch();
+		top: @navigationMobileMenuIconHeight + 2rem;
+		overflow: scroll;
+
+		& > .inner {
+			position: relative;
+			display: flex;
+			padding-bottom: @space-8;
+		}
+	}
+
+	nav.nav {
+		width: 100%;
+
+		ul,
+		li {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		nav.main-nav {
+
+			.main-nav-bar {
+
+				header {
+					border-top: 1px solid @separator-color;
+
+					a {
+						font-size:@root-links-size;
+						padding: @items-spacing * 2 2rem;
+					}
+
+					.accordion-trigger {
+						width: auto;
+						padding: 0 2rem;
+					}
+				}
+
+				.accordion-panel {
+
+					& > ul {
+
+						& > li {
+
+							a {
+								font-size: 0.9rem;
+								display: block;
+								padding: @items-spacing 2rem @items-spacing 3rem;
+							}
+						}
+					}
+
+					.separator {
+						display: block;
+						overflow: hidden;
+						background: #f1f1f1;
+						height: 1px;
+						margin: 5px 0;
+					}
+				}
+			}
+		}
+
+		nav.subnav {
+			margin-top: 2.5rem;
+
+			& > ul {
+				font-size:@root-links-size;
+
+				& > li {
+
+					a {
+						display: block;
+						padding: @items-spacing * 2 2rem;
+					}
+
+					// Search is first
+					&:first-of-type {
+						border-bottom: 1px solid @separator-color;
+					}
+				}
+			}
+
+			.search-trigger {
+				display: flex;
+				align-items: center;
+
+				svg {
+					width: @space-5;
+					margin-right: @items-spacing;
+				}
+			}
+
+			.user-account {
+				padding: @items-spacing 0;
+
+				button {
+					background: none;
+					border: none;
+					padding: 0;
+				}
+
+				.user-image {
+
+					img {
+						height: 45px;
+						width: 45px;
+						.border-radius(50%);
+						object-fit: cover;
+					}
+				}
+
+				.account-details {
+					margin-top: @items-spacing;
+
+					li:first-of-type {
+						margin-bottom: @items-spacing;
+
+						span {
+							font-size: @font-size-2;
+							padding: @space-05 0;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	button.close {
+		.closeButton(@navigationMobileMenuIconHeight, #000);
+		top: 1rem;
+		right: 2rem;
+	}
+
+	&.show {
+		transform: translate(0, 0);
+		transition-delay: 0s;
+	}
+}
