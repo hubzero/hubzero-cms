@@ -130,10 +130,13 @@ if (!$this->sub) {
         </div>
 
         <?php
+        // Only the comments that start a thread. Each one renders its own
+        // replies below it, so a reply listed here as well appears twice.
         $model = $this->page->comments()
             ->including(['creator', function ($creator) {
                 $creator->select('*');
             }])
+            ->whereEquals('parent', 0)
             ->whereIn('state', array(
                 Components\Wiki\Models\Comment::STATE_PUBLISHED,
                 Components\Wiki\Models\Comment::STATE_FLAGGED
