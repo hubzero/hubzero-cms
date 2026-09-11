@@ -39,7 +39,7 @@ TABLES="users xprofiles xgroups xgroups_members wiki_pages wiki_versions
         collections_posts courses courses_units courses_assets citations
         citations_authors citations_assoc projects project_owners project_todo
         wishlist_item wishlist_vote vote_log tags tags_object modules
-        publications publication_versions publication_authors
+        publications publication_versions publication_authors publication_attachments
         courses_members courses_grade_book
         polls poll_options jobs_openings jobs_employers menu
         newsletters newsletter_primary_story newsletter_secondary_story"
