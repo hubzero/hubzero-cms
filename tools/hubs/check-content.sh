@@ -81,6 +81,28 @@ downloads() {
     fi
 }
 
+# serves <name> <path> <type> <minimum bytes>
+#
+# Follows a path and looks at what comes back rather than at the page that
+# offered it.
+serves() {
+    local name="$1" path="$2" want="$3" least="$4"
+    local code type size
+
+    IFS='|' read -r code type size <<< "$(curl -skL -o /dev/null \
+        -w '%{http_code}|%{content_type}|%{size_download}' --max-time 60 "${BASE}${path}")"
+
+    if [ "$code" != "200" ]; then
+        bad "$name: ${path} answered ${code}"
+    elif [ "${type%%;*}" != "$want" ]; then
+        bad "$name: ${path} came back as ${type%%;*}, wanted ${want}"
+    elif [ "$size" -lt "$least" ]; then
+        bad "$name: ${path} is ${size} bytes, wanted at least ${least}"
+    else
+        ok "$name: ${size} bytes of ${want}"
+    fi
+}
+
 say "Checking the content on ${BASE}"
 
 expect "front page"  "/"                    'home-[0-9]'                        2
@@ -152,6 +174,10 @@ expect "open offering"   "/courses/fossil-imaging/open"            'open/enroll'
 # correctly and says nothing
 expect "reposts"      "/collections/posts"     'members/[0-9]+/collections/[a-z-]+' 6
 expect "registration" "/events/details/2"      'details/[0-9]+/register'            1
+
+# A published record that cannot be downloaded is the emptiest record a hub
+# has, and the bundle is built on demand from what is attached
+serves "a publication bundle" "/publications/1/serve/1?render=archive" application/zip 2000
 
 if [ "$fail" -eq 0 ]; then
     echo
