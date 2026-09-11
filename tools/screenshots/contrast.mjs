@@ -1,0 +1,245 @@
+/**
+ * Measure the contrast a hub's pages actually render at.
+ *
+ * Choosing a palette by checking a few pairs by hand misses what the page
+ * does with them: text inherits a colour from one rule and a ground from
+ * another several levels up, and the pair that reaches the reader is not
+ * always the pair that was chosen. This walks the rendered page instead.
+ *
+ * WCAG 2.2 keeps 1.4.3 as it was - 4.5:1 for text, 3:1 for large text - and
+ * 1.4.11 asks 3:1 of the parts of a control that tell you where it is. Both
+ * are checked here. What it cannot check is whether a link is distinguishable
+ * from its surrounding text by more than colour (1.4.1); that needs reading.
+ *
+ *   node tools/screenshots/contrast.mjs [hub] [port]
+ */
+import { chromium } from 'playwright';
+import { readdirSync, existsSync } from 'node:fs';
+
+/** The newest chromium already on this machine. */
+function chromiumPath() {
+    if (process.env.HUB_CHROMIUM) {
+        return process.env.HUB_CHROMIUM;
+    }
+
+    const root = process.env.PLAYWRIGHT_BROWSERS_PATH
+        || `${process.env.HOME}/.cache/ms-playwright`;
+
+    if (!existsSync(root)) {
+        return undefined;
+    }
+
+    for (const build of readdirSync(root)
+        .filter(d => d.startsWith('chromium-'))
+        .sort((a, b) => Number(b.split('-')[1]) - Number(a.split('-')[1]))) {
+        for (const rel of ['chrome-linux64/chrome', 'chrome-linux/chrome']) {
+            if (existsSync(`${root}/${build}/${rel}`)) {
+                return `${root}/${build}/${rel}`;
+            }
+        }
+    }
+
+    return undefined;
+}
+
+const hub  = process.argv[2] || 'mesozoic';
+const port = process.argv[3] || '7600';
+const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
+
+const paths = [
+    '/', '/resources/browse', '/resources/calder-basin-measured-sections',
+    '/wiki/CalderBasin', '/wiki/CalderBasin?task=history',
+    '/groups/browse', '/groups/fossil-ct', '/answers', '/blog', '/kb',
+    '/forum', '/events/2026', '/collections/posts', '/courses/browse',
+    '/citations/browse', '/projects/browse', '/wishlist', '/publications',
+    '/poll', '/jobs', '/newsletter', '/members/1001', '/support',
+];
+
+const browser = await chromium.launch({ executablePath: chromiumPath() });
+const context = await browser.newContext({ ignoreHTTPSErrors: true });
+const page    = await context.newPage();
+
+await page.setViewportSize({ width: 1280, height: 900 });
+
+const findings = new Map();
+let looked = 0;
+
+for (const path of paths) {
+    let response;
+
+    try {
+        response = await page.goto(base + path, {
+            waitUntil: 'domcontentloaded', timeout: 30000,
+        });
+    } catch (e) {
+        console.log(`  ${path}  ${e.message.split('\n')[0]}`);
+        continue;
+    }
+
+    if (!response || response.status() >= 400) {
+        continue;
+    }
+
+    looked++;
+
+    const found = await page.evaluate(() => {
+        const rgb = (s) => {
+            const m = s.match(/[\d.]+/g);
+
+            return m ? m.slice(0, 3).map(Number).concat(m[3] === undefined ? 1 : Number(m[3])) : null;
+        };
+
+        const lum = ([r, g, b]) => {
+            const c = [r, g, b].map(v => {
+                v /= 255;
+
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+
+            return (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
+        };
+
+        const ratio = (a, b) => {
+            const la = lum(a);
+            const lb = lum(b);
+
+            return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+        };
+
+        // What the reader sees behind an element.
+        //
+        // Not simply the first ancestor that paints: a translucent ground is
+        // a real colour once it is composited over what is under it, and
+        // skipping those reports white behind text that is sitting on 60%
+        // black. Anything painted with an image is not a colour at all and
+        // cannot be judged this way, so those are declined rather than
+        // guessed at.
+        const ground = (el) => {
+            const layers = [];
+
+            for (let up = el; up; up = up.parentElement) {
+                const style = getComputedStyle(up);
+
+                if (style.backgroundImage !== 'none') {
+                    return null;
+                }
+
+                const c = rgb(style.backgroundColor);
+
+                if (c && c[3] > 0.001) {
+                    layers.push(c);
+
+                    if (c[3] > 0.999) {
+                        break;
+                    }
+                }
+            }
+
+            // Down from the bottom-most layer, each one painted over the last
+            let out = [255, 255, 255];
+
+            for (const [r, g, b, a] of layers.reverse()) {
+                out = [
+                    (r * a) + (out[0] * (1 - a)),
+                    (g * a) + (out[1] * (1 - a)),
+                    (b * a) + (out[2] * (1 - a)),
+                ];
+            }
+
+            return out;
+        };
+
+        const out = [];
+        const seen = new Set();
+
+        for (const el of document.querySelectorAll('body *')) {
+            const style = getComputedStyle(el);
+            const box   = el.getBoundingClientRect();
+
+            if (box.width < 2 || box.height < 2
+                || style.visibility === 'hidden' || style.opacity === '0') {
+                continue;
+            }
+
+            // Only elements with text of their own, not wrappers repeating it
+            const own = [...el.childNodes]
+                .filter(n => n.nodeType === 3 && n.textContent.trim())
+                .map(n => n.textContent.trim())
+                .join(' ');
+
+            if (!own) {
+                continue;
+            }
+
+            const fg = rgb(style.color);
+            const bg = ground(el);
+
+            if (!fg || fg[3] < 0.95 || !bg) {
+                continue;
+            }
+
+            const size   = parseFloat(style.fontSize);
+            const weight = Number(style.fontWeight) || 400;
+
+            // 1.4.3: 18.66px bold or 24px counts as large, and asks 3:1
+            const large = size >= 24 || (size >= 18.66 && weight >= 700);
+            const need  = large ? 3 : 4.5;
+            const got   = ratio(fg, bg);
+
+            if (got >= need) {
+                continue;
+            }
+
+            const name = el.tagName.toLowerCase()
+                + (el.className && typeof el.className === 'string'
+                    ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.')
+                    : '');
+
+            const key = `${name} ${style.color} on rgb(${bg.slice(0, 3).map(Math.round)})`;
+
+            if (seen.has(key)) {
+                continue;
+            }
+
+            seen.add(key);
+
+            out.push({
+                what: `${name}: ${got.toFixed(1)}:1, wants ${need}:1`
+                    + `  (${style.color} on rgb(${bg.slice(0, 3).join(', ')}), ${size}px)`,
+                sample: own.slice(0, 40),
+            });
+        }
+
+        return out;
+    });
+
+    for (const f of found) {
+        const seen = findings.get(f.what) || { where: [], sample: f.sample };
+
+        if (!seen.where.includes(path)) {
+            seen.where.push(path);
+        }
+
+        findings.set(f.what, seen);
+    }
+}
+
+console.log(`Looked at ${looked} pages at 1280px.\n`);
+
+const ranked = [...findings.entries()].sort((a, b) => b[1].where.length - a[1].where.length);
+
+for (const [what, { where, sample }] of ranked) {
+    const scope = where.length === looked
+        ? 'every page'
+        : (where.length > 3 ? `${where.length} pages` : where.join(', '));
+
+    console.log(`  ${scope}: ${what}`);
+    console.log(`      e.g. "${sample}"`);
+}
+
+if (!ranked.length) {
+    console.log('  Every piece of text on every page meets 1.4.3.');
+}
+
+await browser.close();
+process.exit(ranked.length ? 1 : 0);

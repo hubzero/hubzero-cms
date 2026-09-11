@@ -1,5 +1,10 @@
-// visually hidden
-.vh {
+// Visually hidden
+//
+// .vh is this template's name for it. The core uses .sr-only in a hundred and
+// fifty odd files, and a template that does not answer to that name shows
+// every one of those strings as ordinary text - "Projects - Members only"
+// beside a group's menu, and so on. Same rule, both names.
+.visuallyHidden() {
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
 	height: 1px;
@@ -8,4 +13,18 @@
 	overflow: hidden;
 	padding: 0;
 	position: absolute;
+}
+
+.vh,
+.sr-only {
+	.visuallyHidden();
+}
+
+// A group's menu styles every span inside it through an id, which beats a
+// class however the class is written, so the label inside a tab a visitor
+// cannot use has to be hidden again more loudly. Without this it reads
+// "Projects - Members only" down the side of every group.
+#page_menu li span.sr-only,
+#page_menu li span.vh {
+	.visuallyHidden();
 }
