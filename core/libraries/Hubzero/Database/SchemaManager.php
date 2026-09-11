@@ -137,6 +137,46 @@ class SchemaManager
     }
 
     /**
+     * Create a table
+     *
+     * The same as createTable(); migrations are written both ways.
+     *
+     * @param   string  $table  The table to create
+     * @return  TableBuilder
+     */
+    public function create(string $table): TableBuilder
+    {
+        return $this->createTable($table);
+    }
+
+    /**
+     * Change a table's storage engine
+     *
+     * The same as setTableEngine(); migrations are written both ways.
+     *
+     * @param   string  $table   The table to change
+     * @param   string  $engine  The engine to change it to
+     * @return  bool
+     */
+    public function changeEngine(string $table, string $engine = 'MYISAM'): bool
+    {
+        return $this->setTableEngine($table, $engine);
+    }
+
+    /**
+     * Whether a table exists
+     *
+     * The same as tableExists(); migrations are written both ways.
+     *
+     * @param   string  $table  The table to look for
+     * @return  bool
+     */
+    public function hasTable(string $table): bool
+    {
+        return $this->tableExists($table);
+    }
+
+    /**
      * Get a Table gateway for fluent table operations
      *
      * The Table class acts as a factory for builders and provides introspection:
