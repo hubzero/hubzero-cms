@@ -116,19 +116,18 @@ class Manager extends Obj
 		// Set options
 		$this->setOptions($options);
 
-		// Pass session id in query string when cookie not available.
-		// This is used, in particular, to allow QuickTime plugin in Safari on the Mac
-		// to view private mp4. QuickTime does not pass the browser's cookies to the site
-		if (!isset($_COOKIE[session_name()]) && isset($_GET['PHPSESSID']))
-		{
-			if ((strlen($_GET['PHPSESSID']) == 32) && ctype_alnum($_GET['PHPSESSID']))
-			{
-				if ($this->store->read($_GET['PHPSESSID']) != '')
-				{
-					session_id($_GET['PHPSESSID']);
-				}
-			}
-		}
+		// A session id is taken from the cookie and from nowhere else.
+		//
+		// This used to accept one from ?PHPSESSID= when no cookie was present,
+		// so the QuickTime plugin in Safari, which did not send cookies, could
+		// fetch a private mp4. That plugin is long gone and the behaviour let
+		// anyone fixate a victim's session: obtain a valid id by visiting the
+		// site, send the victim a link carrying it, and hold the id the victim
+		// then authenticates under. Reading it back from the store only proved
+		// the id existed, which is exactly what the attacker arranged.
+		//
+		// Do not reinstate this. If something needs to authenticate without
+		// cookies, give it a token of its own rather than the session id.
 
 		$this->setCookieParams();
 
@@ -522,17 +521,12 @@ class Manager extends Obj
 		{
 			$session_name = session_name();
 
+			// Only the cookie may name an existing session. Anything arriving
+			// in the query string or a form field is a fixation attempt, so a
+			// request without the cookie starts a session of our choosing.
 			if (!\Request::getVar($session_name, false, 'COOKIE'))
 			{
-				if ($id = \Request::getVar($session_name))
-				{
-					session_id($id);
-					setcookie($session_name, '', time() - 3600);
-				}
-				else
-				{
-					session_id($this->createId());
-				}
+				session_id($this->createId());
 			}
 		}
 
