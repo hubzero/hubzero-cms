@@ -489,13 +489,16 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function created($as = '')
     {
-        $as = strtolower($as);
+        // Only the two keywords are matched case-insensitively. Anything
+        // else is a date format and is passed through as written: lowercasing
+        // it turns 'Y' into 'y' and a four digit year into a two digit one.
+        $keyword = strtolower($as);
 
-        if ($as == 'date') {
+        if ($keyword == 'date') {
             return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
         }
 
-        if ($as == 'time') {
+        if ($keyword == 'time') {
             return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
         }
 
@@ -514,13 +517,16 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function published($as = '')
     {
-        $as = strtolower($as);
+        // Only the two keywords are matched case-insensitively. Anything
+        // else is a date format and is passed through as written: lowercasing
+        // it turns 'Y' into 'y' and a four digit year into a two digit one.
+        $keyword = strtolower($as);
 
-        if ($as == 'date') {
+        if ($keyword == 'date') {
             return Date::of($this->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
         }
 
-        if ($as == 'time') {
+        if ($keyword == 'time') {
             return Date::of($this->get('publish_up'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
         }
 
