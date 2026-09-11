@@ -7392,12 +7392,16 @@ template {
   padding-top: 0;
   margin-top: -6rem;
 }
+.home-section > .inner > .module > h3,
 .home-section h2 {
   position: relative;
   padding-bottom: 1.2rem;
   margin-bottom: 2rem;
   text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
 }
+.home-section > .inner > .module > h3::after,
 .home-section h2::after {
   display: block;
   content: '';
@@ -7408,6 +7412,26 @@ template {
   left: 50%;
   transform: translate(-50%,0);
   background: #00548A;
+}
+.band-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+.band-item {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+.band-item h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: #252525;
+}
+.band-item p {
+  margin: 0 0 0.6rem;
+  color: #767676;
 }
 body {
   display: flex;
