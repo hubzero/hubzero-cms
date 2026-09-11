@@ -40,6 +40,7 @@ TABLES="users xprofiles xgroups xgroups_members wiki_pages wiki_versions
         citations_authors citations_assoc projects project_owners project_todo
         wishlist_item wishlist_vote vote_log tags tags_object modules
         publications publication_versions publication_authors
+        courses_members courses_grade_book
         polls poll_options jobs_openings jobs_employers menu
         newsletters newsletter_primary_story newsletter_secondary_story"
 
@@ -62,7 +63,7 @@ after="$(snapshot)"
 
 fail=0
 while read -r t n; do
-    m=$(echo "$after" | awk -v k="$t" '$1 == k { print $2 }')
+    m=$(echo "$after" | awk -v k="$t" '$1 == k { print $2; exit }')
     if [ "$n" != "$m" ]; then
         bad "jos_$t went from $n to $m"
         fail=1
