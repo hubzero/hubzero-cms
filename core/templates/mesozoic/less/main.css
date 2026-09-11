@@ -8301,7 +8301,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2B2622;
   font-size: 0.95rem;
-  font-family: Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
 a {
@@ -8326,8 +8326,10 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "Times New Roman", serif;
   font-weight: normal;
   text-wrap: pretty;
+  letter-spacing: -0.01em;
 }
 h2 {
   font-size: 1.75rem;
