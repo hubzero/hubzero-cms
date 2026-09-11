@@ -87,6 +87,9 @@ expect "member picture" "/members/1001"   'src="/files/[A-Za-z0-9+/=]{40,}"'   1
 # with nothing on it, which are two of the more distinctive pages it has
 expect "wiki history"  "/wiki/CalderBasin?task=history"      'id="oldid-[0-9]+"'  3
 expect "wiki comments" "/wiki/FieldNumbering?task=comments" 'id="c[0-9]+"'       3
+# The diff of the first revision against the last, which is only worth looking
+# at if the revisions differ, and which names who made each of them
+expect "wiki diff"     "/wiki/CalderBasin?task=compare&oldid=1&diff=4" 'by [A-Z][a-z]+ [A-Z][a-z]+' 2
 
 if [ "$fail" -eq 0 ]; then
     echo
