@@ -377,7 +377,7 @@ messages you may see are:</p>
 <p><strong>Warning:</strong> That first warning appears on <strong>every</strong> super group save on a
 hub that has not configured GitLab, including hubs that never intend to.
 It is noise, not a fault with the group. Recorded in
-the project record.</p>
+It is recorded with the project.</p>
 </aside>
 <h3 id="what-the-hub-does-when-a-super-group-is-saved">What the hub does when a super group is saved</h3>
 <p>Everything below happens in <code>_handSuperGroupGitlab()</code> in
@@ -456,7 +456,7 @@ expose it elsewhere. Not verified against a live GitLab.</li>
 error page or an HTML 404 from the URL in <strong>Repo URL</strong> produces a fatal
 error rather than a message.</li>
 </ul>
-<p>All of these are recorded in the project record.</p>
+<p>All of these are recorded with the project.</p>
 <h2 id="developing">Developing</h2>
 <p>The cycle for a super group managed through GitLab is: work in a clone,
 propose the change as a merge request, and have an administrator pull the
@@ -562,7 +562,7 @@ against the group's own database.</li>
 <p><strong>Warning:</strong> The controller means to skip migrations when the update fails,
 but the test it uses never matches, so migrations run either way. Read the
 output of the merge instead of assuming it stopped. Recorded in
-the project record.</p>
+It is recorded with the project.</p>
 </aside>
 <h3 id="rolling-back">Rolling back</h3>
 <p>The rollback point the merge wrote is reachable from muse:</p>

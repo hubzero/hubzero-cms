@@ -464,8 +464,8 @@ committed; `docs/_import/` is deleted at the end of phase 2.
   wishlist, support, newsletters, storefront. Twenty-four chapters rewritten,
   plus the framework foundation chapters. The reviews turned up real faults
   in every component; those fixed are in the history under `[CORE] Fix
-  defects found while reviewing …`, and the ones needing a decision are in
-  [review-findings.md](review-findings.md). Two repo-wide bug classes came
+  defects found while reviewing …`, and the ones needing a decision are
+  recorded with the project. Two repo-wide bug classes came
   out of it: 730 unimported facade calls, each a fatal error when its line
   runs, and 488 language keys nothing defines. Both now have a linter and
   the first runs in CI.

@@ -232,7 +232,7 @@ API version 1.0, task `list` in [`publicationsv1_0.php`](../../../core/component
 
 Get a list of project files connections
 
-API version 1.0, task `connections` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1497).
+API version 1.0, task `connections` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1499).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -261,7 +261,7 @@ API version 1.0, task `chunkedUpload` in [`filesv1_0.php`](../../../core/compone
 
 Download file or folder from project (non-default connection providers only)
 
-API version 1.0, task `download` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L938).
+API version 1.0, task `download` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L940).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -275,7 +275,7 @@ API version 1.0, task `download` in [`filesv1_0.php`](../../../core/components/c
 
 Get file annotation
 
-API version 1.0, task `getmetadata` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1109).
+API version 1.0, task `getmetadata` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1111).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -289,7 +289,7 @@ API version 1.0, task `getmetadata` in [`filesv1_0.php`](../../../core/component
 
 Set file annotation
 
-API version 1.0, task `setmetadata` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1204).
+API version 1.0, task `setmetadata` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1206).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -404,7 +404,7 @@ API version 1.0, task `save` in [`filefsv1_0.php`](../../../core/components/com_
 
 Insert/update a project file
 
-API version 1.0, task `save` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1018).
+API version 1.0, task `save` in [`filesv1_0.php`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1020).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -807,9 +807,11 @@ class Filesv1_0 extends ApiController
 		// Check if request is GET and the requested chunk exists or not.
 		if (Request::getMethod() === 'GET')
 		{
-			$flowIdentifier = Request::getString('flowIdentifier', '', 'GET');
-			$flowFilename = Request::getString('flowFilename', '', 'GET');
-			$flowChunkNumber = Request::getString('flowChunkNumber', '', 'GET');
+			// These name a file on disk directly, so reduce each to the shape
+			// it is meant to have: an opaque token, a bare filename, a number.
+			$flowIdentifier = preg_replace('/[^A-Za-z0-9_-]/', '', Request::getString('flowIdentifier', '', 'GET'));
+			$flowFilename = self::chunkFilename(Request::getString('flowFilename', '', 'GET'));
+			$flowChunkNumber = (string) Request::getInt('flowChunkNumber', 0, 'GET');
 			$flowChunkHash = Request::getString('flowChunkHash', '', 'GET');
 			$subdir = Request::getString('subdir', '', 'GET');
 
@@ -855,7 +857,7 @@ class Filesv1_0 extends ApiController
 				// Init the destination file (format <filename.ext>.part<#chunk>)
 				// The file is stored in a temporary directory identified by the
 				// project ID, the base64 encoded destination and the filename
-				$flowIdentifier = Request::getString('flowIdentifier', '', 'POST');
+				$flowIdentifier = preg_replace('/[^A-Za-z0-9_-]/', '', Request::getString('flowIdentifier', '', 'POST'));
 				$subdir = Request::getString('subdir', '', 'POST');
 				if (trim($flowIdentifier) != '')
 				{
@@ -863,8 +865,8 @@ class Filesv1_0 extends ApiController
 					$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
 				}
 
-				$flowFilename = Request::getString('flowFilename', '', 'POST');
-				$flowChunkNumber = Request::getString('flowChunkNumber', '', 'POST');
+				$flowFilename = self::chunkFilename(Request::getString('flowFilename', '', 'POST'));
+				$flowChunkNumber = (string) Request::getInt('flowChunkNumber', 0, 'POST');
 				$flowChunkSize = Request::getString('flowChunkSize', '', 'POST');
 				$flowTotalChunks = Request::getString('flowTotalChunks', '', 'POST');
 				$flowTotalSize = Request::getString('flowTotalSize', '', 'POST');
@@ -1604,5 +1606,22 @@ class Filesv1_0 extends ApiController
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Reduce an uploaded chunk's filename to a bare name
+	 *
+	 * The chunk parameters are concatenated into a filesystem path without
+	 * going through a filesystem adapter, so a name carrying directory
+	 * separators would decide where the chunk lands.
+	 *
+	 * @param   string  $name  The name as it arrived
+	 * @return  string  The name with any path removed
+	 */
+	protected static function chunkFilename($name)
+	{
+		$name = basename(str_replace('\\', '/', (string) $name));
+
+		return ($name === '.' || $name === '..') ? '' : $name;
 	}
 }
