@@ -147,6 +147,12 @@ downloads "a document"   "/resources/preparation-standards"            applicati
 expect "course offering" "/courses/field-stratigraphy/summer-2026" 'summer-2026/enroll' 1
 expect "open offering"   "/courses/fossil-imaging/open"            'open/enroll'        1
 
+# A course with only an instructor in it, a collection of nobody else's finds,
+# and an event that cannot be registered for are each a screen that renders
+# correctly and says nothing
+expect "reposts"      "/collections/posts"     'members/[0-9]+/collections/[a-z-]+' 6
+expect "registration" "/events/details/2"      'details/[0-9]+/register'            1
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
