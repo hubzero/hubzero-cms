@@ -123,19 +123,23 @@ class AddComponentEntry extends Macro
         }
 
         if ($createMenuItem && $this->db->tableExists('#__menu')) {
-            // Check for an admin menu entry...if it's not there, create it
-            $query = $this->db->getQuery()
+            $alias = substr($option, 4);
+
+            // Check for an admin menu entry...if it's not there, create it.
+            // A menu item is unique on its alias within a client, parent and
+            // language, and that is what to look for: the same entry has been
+            // filed under more than one menutype and title over the years.
+            $existing = $this->db->getQuery(true)
                 ->select('id')
                 ->from('#__menu')
-                ->whereEquals('menutype', 'main')
-                ->whereEquals('title', $option)
-                ->toString();
-            $this->db->setQuery($query);
-            if ($this->db->loadResult()) {
+                ->whereEquals('client_id', 1)
+                ->whereEquals('parent_id', 1)
+                ->whereEquals('alias', $alias)
+                ->value('id');
+
+            if ($existing) {
                 return true;
             }
-
-            $alias = substr($option, 4);
 
             $query = $this->db->getQuery()
                 ->insert('#__menu')

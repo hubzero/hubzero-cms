@@ -29,6 +29,7 @@ class Sampledata extends Base implements CommandInterface
 
         if (empty($packs)) {
             $this->output->addLine('There are no sample data packs.');
+            $this->output->addLine('Looked in: ' . implode(', ', Pack::roots()));
             return;
         }
 
@@ -56,6 +57,7 @@ class Sampledata extends Base implements CommandInterface
      *
      * Pass --pack=<name> to say which. --again rebuilds steps that have
      * already run, which only makes sense for a step written to tolerate it.
+     * --path=<dir> looks for the pack in a directory of its own.
      *
      * @return  void
      **/
@@ -68,10 +70,11 @@ class Sampledata extends Base implements CommandInterface
             return;
         }
 
-        $pack = new Pack($name);
+        $pack = new Pack($name, $this->arguments->getOpt('path') ?: null);
 
         if (!$pack->exists()) {
             $this->output->error('There is no pack named ' . $name . '.');
+            $this->output->addLine('Looked in: ' . implode(', ', Pack::roots()));
             return;
         }
 
@@ -105,10 +108,11 @@ class Sampledata extends Base implements CommandInterface
             return;
         }
 
-        $pack = new Pack($name);
+        $pack = new Pack($name, $this->arguments->getOpt('path') ?: null);
 
         if (!$pack->exists()) {
             $this->output->error('There is no pack named ' . $name . '.');
+            $this->output->addLine('Looked in: ' . implode(', ', Pack::roots()));
             return;
         }
 
@@ -148,10 +152,11 @@ class Sampledata extends Base implements CommandInterface
             return;
         }
 
-        $pack = new Pack($name);
+        $pack = new Pack($name, $this->arguments->getOpt('path') ?: null);
 
         if (!$pack->exists()) {
             $this->output->error('There is no pack named ' . $name . '.');
+            $this->output->addLine('Looked in: ' . implode(', ', Pack::roots()));
             return;
         }
 
