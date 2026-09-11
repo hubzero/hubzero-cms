@@ -284,7 +284,12 @@ class Offering extends Base
             return $this->_section;
         }
 
+        // The isset test belongs in the mismatch too, not only in the
+        // condition below: this is computed before that condition is reached,
+        // so without it an offering with no current section is asked for the
+        // id of nothing.
         $idMismatch = $id !== null
+            && isset($this->_section)
             && (int) $this->_section->get('id') != $id
             && (string) $this->_section->get('alias') != $id;
         if (!isset($this->_section) || $idMismatch) {
