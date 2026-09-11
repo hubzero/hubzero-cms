@@ -21,12 +21,16 @@ use Hubzero\Facades\User;
  */
 class Helper extends \Hubzero\Base\Obj
 {
+    // Set and read from outside the class: the plugin hands the helper the
+    // resource and the option it is working on, and the views read the
+    // reviewer's own review back off it.
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
-    protected $isAuthor;
-    protected $loggedin;
-    protected $myreview;
-    protected $resource;
+    public $_option;
+    public $isAuthor;
+    public $loggedin;
+    public $myreview;
+    public $resource;
+    public $option;
 
     /**
      * Execute an action

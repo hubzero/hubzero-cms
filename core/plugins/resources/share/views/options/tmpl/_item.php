@@ -14,14 +14,14 @@ defined('_HZEXEC_') or die();
 $shareUrl = Route::url(
     'index.php?option=' . $this->option
     . '&id=' . $this->resource->id
-    . '&active=share&sharewith=' . strtolower($this->_name)
+    . '&active=share&sharewith=' . strtolower($this->name)
 );
 $shareTitle = Lang::txt(
     'PLG_RESOURCES_SHARE_ON',
-    Lang::txt('PLG_RESOURCES_SHARE_' . strtoupper($this->_name))
+    Lang::txt('PLG_RESOURCES_SHARE_' . strtoupper($this->name))
 );
-$shareClass = 'share_' . strtolower($this->_name);
-$shareLabel = Lang::txt('PLG_RESOURCES_SHARE_' . strtoupper($this->_name));
+$shareClass = 'share_' . strtolower($this->name);
+$shareLabel = Lang::txt('PLG_RESOURCES_SHARE_' . strtoupper($this->name));
 ?>
     <a href="<?php echo $shareUrl; ?>"
         title="<?php echo $shareTitle; ?>"
