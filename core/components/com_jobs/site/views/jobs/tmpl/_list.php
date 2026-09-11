@@ -50,7 +50,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         $jobClose = $this->jobs[$i]->closedate;
         $hasCloseDate = ($jobClose && $jobClose != '0000-00-00 00:00:00');
         $closedate = $hasCloseDate
-            ? Date::of($jobClose)->toLocal('d&\nb\sp;M&\nb\sp;y')
+            ? Date::of($jobClose)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y')
             : 'ASAP';
         if ($hasCloseDate && $jobClose < Date::toSql()) {
             $closedate = 'closed';
@@ -118,7 +118,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
             <td class="secondary"><?php echo $curcat; ?></td>
             <td class="secondary"><?php echo $curtype; ?></td>
             <td class="secondary">
-                <?php $addedDate = Date::of($this->jobs[$i]->added)->toLocal('d&\nb\sp;M,&\nb\sp;20y'); ?>
+                <?php $addedDate = Date::of($this->jobs[$i]->added)->toLocal('d&\n\b\s\p;M,&\n\b\s\p;20y'); ?>
                 <span class="datedisplay"><?php echo $addedDate; ?></span>
             </td>
             <td>
@@ -126,7 +126,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                     <span class="alreadyapplied">
                         <?php
                         $appliedTxt = Lang::txt('COM_JOBS_JOB_APPLIED_ON');
-                        $appliedDate = Date::of($this->jobs[$i]->applied)->toLocal('d&\nb\sp;M&\nb\sp;y');
+                        $appliedDate = Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y');
                         ?>
                         <?php echo $appliedTxt; ?> <span class="datedisplay"><?php echo $appliedDate; ?></span>
                     </span>
@@ -134,7 +134,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
                     <span class="withdrawn">
                         <?php
                         $withdrewTxt = Lang::txt('COM_JOBS_JOB_WITHDREW_ON');
-                        $withdrewDate = Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\nb\sp;M&\nb\sp;y');
+                        $withdrewDate = Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y');
                         ?>
                         <?php echo $withdrewTxt; ?> <span class="datedisplay"><?php echo $withdrewDate; ?></span>
                     </span>

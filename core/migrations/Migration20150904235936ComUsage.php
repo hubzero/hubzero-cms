@@ -28,6 +28,7 @@ class Migration20150904235936ComUsage extends Base
 
         $options['driver']   = $config->get('statsDBDriver');
         $options['host']     = $config->get('statsDBHost');
+        $options['port']     = $config->get('statsDBPort');
         $options['user']     = $config->get('statsDBUsername');
         $options['password'] = $config->get('statsDBPassword');
         $options['database'] = $config->get('statsDBDatabase');
@@ -37,6 +38,12 @@ class Migration20150904235936ComUsage extends Base
         }
         if (empty($options['host'])) {
             $options['host'] = Config::get('host');
+        }
+        // Carried through as well as the host. A hub reached on a port other
+        // than the default, or over TCP because its socket is not where PHP
+        // expects one, cannot reach its metrics database without it.
+        if (empty($options['port'])) {
+            $options['port'] = Config::get('port');
         }
         if (empty($options['user'])) {
             $options['user'] = Config::get('user');
@@ -103,6 +110,7 @@ class Migration20150904235936ComUsage extends Base
 
         $params['statsDBDriver']   = $originalDriver;
         $params['statsDBHost']     = $options['host'];
+        $params['statsDBPort']     = $options['port'];
         $params['statsDBUsername'] = $options['user'];
         $params['statsDBPassword'] = $options['password'];
         $params['statsDBDatabase'] = $options['database'];
