@@ -149,11 +149,17 @@
 		margin-top: -6rem;
 	}
 
+	// The heading of a band is the module's own title, which the module
+	// chrome writes as an h3; a band whose content brings its own h2 gets
+	// the same treatment.
+	& > .inner > .module > h3,
 	h2 {
 		position: relative;
 		padding-bottom: 1.2rem;
 		margin-bottom: 2rem;
 		text-align: center;
+		font-size: 1.6rem;
+		font-weight: 600;
 
 		&::after {
 			display: block;
@@ -166,5 +172,33 @@
 			transform: translate(-50%, 0);
 			background: @colorBrand;
 		}
+	}
+}
+
+// Items inside a band
+//
+// A row on a wide screen, a stack on a narrow one, whatever a band holds.
+
+.band-items {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	margin-top: 1.5rem;
+}
+
+.band-item {
+	flex: 1 1 18rem;
+	min-width: 0;
+
+	h4 {
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+		color: @colorText;
+	}
+
+	p {
+		margin: 0 0 0.6rem;
+		color: @colorTextMuted;
 	}
 }
