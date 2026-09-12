@@ -7322,6 +7322,7 @@ body > .wrap > main {
 }
 .page > .inner > section.section,
 .page > .inner > form > section.section,
+.page > .inner > .blog-featured,
 .page > .inner > .contentpane > .contentpaneopen {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -7332,6 +7333,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 2rem !important;
   }
@@ -7339,6 +7341,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 3rem !important;
   }
@@ -7346,6 +7349,7 @@ body > .wrap > main {
 @media (min-width: 1200px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 6rem !important;
   }
@@ -7353,6 +7357,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 12rem !important;
   }
@@ -7360,6 +7365,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 2rem !important;
   }
@@ -7367,6 +7373,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 3rem !important;
   }
@@ -7374,6 +7381,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 12rem !important;
   }
@@ -7381,6 +7389,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 2rem !important;
   }
@@ -7388,6 +7397,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 3rem !important;
   }
@@ -7395,6 +7405,7 @@ body > .wrap > main {
 @media (min-width: 1200px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 6rem !important;
   }
@@ -7402,6 +7413,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 12rem !important;
   }
@@ -7409,6 +7421,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 2rem !important;
   }
@@ -7416,6 +7429,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 3rem !important;
   }
@@ -7423,6 +7437,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 12rem !important;
   }
@@ -7430,6 +7445,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 2rem !important;
   }
@@ -7437,6 +7453,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 3rem !important;
   }
@@ -7444,6 +7461,7 @@ body > .wrap > main {
 @media (min-width: 1200px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 6rem !important;
   }
@@ -7451,6 +7469,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 12rem !important;
   }
@@ -7458,6 +7477,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 2rem !important;
   }
@@ -7465,6 +7485,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 3rem !important;
   }
@@ -7472,6 +7493,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-left: 12rem !important;
   }
@@ -7479,6 +7501,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 2rem !important;
   }
@@ -7486,6 +7509,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 3rem !important;
   }
@@ -7493,6 +7517,7 @@ body > .wrap > main {
 @media (min-width: 1200px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 6rem !important;
   }
@@ -7500,6 +7525,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 12rem !important;
   }
@@ -7507,6 +7533,7 @@ body > .wrap > main {
 @media (min-width: 600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 2rem !important;
   }
@@ -7514,6 +7541,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 3rem !important;
   }
@@ -7521,6 +7549,7 @@ body > .wrap > main {
 @media (min-width: 1600px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-right: 12rem !important;
   }
@@ -7528,6 +7557,7 @@ body > .wrap > main {
 @media (min-width: 900px) {
   .page > .inner > section.section,
   .page > .inner > form > section.section,
+  .page > .inner > .blog-featured,
   .page > .inner > .contentpane > .contentpaneopen {
     padding-top: 60px;
     padding-bottom: 60px;
@@ -7535,6 +7565,7 @@ body > .wrap > main {
 }
 .page > .inner > section.section .subject .contentpaneopen,
 .page > .inner > form > section.section .subject .contentpaneopen,
+.page > .inner > .blog-featured .subject .contentpaneopen,
 .page > .inner > .contentpane > .contentpaneopen .subject .contentpaneopen {
   padding: 0;
 }
