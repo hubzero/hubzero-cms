@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The two bands the template puts at the top and bottom of a page.
+ * The three bands the template puts behind a page.
  *
  * Drawn from the same shapes the sample data pack uses, and saved as template
  * assets, because a template has to work on a hub that has never run a pack.
@@ -9,9 +9,15 @@
  *
  *     php core/templates/mesozoic/images/frieze.php
  *
- * Both bands repeat across the page, so nothing may cross the edge of the box
- * and anything standing on the ground has to stand on the same line at both
- * ends, or every tile shows its seam.
+ * The head and foot bands repeat across the page, so nothing may cross the
+ * edge of the box and anything standing on the ground has to stand on the
+ * same line at both ends, or every tile shows its seam. The one behind a
+ * title card does not repeat and is free of that.
+ *
+ * How faint each band is decided by what has to be read through it: see
+ * tools/screenshots/veneer.mjs, which composites the band over the ground it
+ * sits on and reports the worst contrast a reader actually gets, overlapping
+ * shapes included.
  */
 
 require getenv('HUBZERO_SAMPLEDATA')
@@ -20,7 +26,12 @@ require getenv('HUBZERO_SAMPLEDATA')
 
 use Hubzero\Sampledata\Packs\Mesozoic\Silhouettes;
 
-const INK = '#5C4A3A';
+// The ink. Plants are a shade toward green and everything else is the brown
+// of the rock - which at these opacities is a difference of two or three
+// values per channel, so it registers as a change of temperature between
+// neighbours rather than as a colour anybody would name.
+const INK   = '#5C4A3A';
+const GREEN = '#4A5A30';
 
 /**
  * One shape, placed on a band
@@ -38,6 +49,8 @@ function put(array $shape, $ground)
 {
     list($name, $x, $scale, $opacity) = $shape;
 
+    $ink = in_array($name, Silhouettes::plants(), true) ? GREEN : INK;
+
     $flip = isset($shape[4]) ? $shape[4] : false;
     $y    = isset($shape[5]) ? $shape[5] : null;
 
@@ -46,7 +59,8 @@ function put(array $shape, $ground)
     $ox  = $flip ? $x + (Silhouettes::WIDTH * $scale) : $x;
 
     return sprintf(
-        '<g opacity="%.2f" transform="translate(%.1f %.1f) scale(%.3f %.3f)">%s</g>',
+        '<g fill="%s" opacity="%.2f" transform="translate(%.1f %.1f) scale(%.3f %.3f)">%s</g>',
+        $ink,
         $opacity,
         $ox,
         $top,
@@ -78,35 +92,34 @@ function band($file, $width, $height, $ground, array $shapes)
         __DIR__ . '/' . $file,
         '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
         . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $width . ' ' . $height . '"'
-        . ' preserveAspectRatio="xMidYMax slice" role="presentation">' . "\n"
-        . '  <g fill="' . INK . '">' . "\n    "
-        . implode("\n    ", $drawn) . "\n"
-        . '  </g>' . "\n</svg>\n"
+        . ' preserveAspectRatio="xMidYMax slice" role="presentation">' . "\n  "
+        . implode("\n  ", $drawn) . "\n"
+        . '</svg>' . "\n"
     );
 
     echo sprintf("  %-14s %4dKB\n", $file, round(filesize(__DIR__ . '/' . $file) / 1024));
 }
 
-// The footer: a horizon with animals on it and plants among them. No ground
-// under them - a filled horizon reads as a shelf at this height, and the
-// footer's own edge is a better line to stand on.
-band('frieze.svg', 1600, 150, 126, array(
+// The footer: a few large shapes standing along the bottom of it, behind the
+// footer's own text. Large rather than many, because the footer is 500px tall
+// and a thin strip of small animals across the top of it read as a rule with
+// decoration on it rather than as a place.
+//
+// Faint enough to read through: the opacities here are what veneer.mjs says
+// the footer's text can stand, overlaps included, and not a value more.
+band('frieze.svg', 1600, 260, 236, array(
     // name            x   scale  opacity  flip   own line
-    array('fern',            10,  0.30,    0.11,  true),
-    array('stegosaur',       84,  0.34,    0.16),
-    array('horsetail',      196,  0.26,    0.10),
-    array('pterosaur',      248,  0.26,    0.11,  true,  18),
-    array('ankylosaur',     332,  0.31,    0.14,  true),
-    array('cycad',          452,  0.30,    0.12),
-    array('sauropod',       566,  0.40,    0.18),
-    array('conifer',        722,  0.40,    0.11),
-    array('hadrosaur',      826,  0.33,    0.15,  true),
-    array('pterosaur',      984,  0.22,    0.10,  false, 30),
-    array('ceratopsian',   1064,  0.32,    0.16),
-    array('fern',          1204,  0.26,    0.10),
-    array('raptor',        1276,  0.28,    0.13,  true),
-    array('cycad',         1372,  0.24,    0.11),
-    array('theropod',      1436,  0.36,    0.17),
+    array('fern',            10,  0.95,    0.07,  true),
+    array('sauropod',       230,  1.25,    0.06),
+    array('egg',            470,  0.50,    0.08),
+    array('conifer',        560,  1.30,    0.06),
+    array('theropod',       830,  1.05,    0.06,  true),
+    array('footprint',     1050,  0.38,    0.08),
+    array('footprint',     1098,  0.38,    0.08),
+    array('footprint',     1146,  0.38,    0.08),
+    array('cycad',         1180,  0.95,    0.07),
+    array('ceratopsian',   1330,  1.00,    0.06),
+    array('horsetail',     1460,  0.55,    0.07),
 ));
 
 // The header: plants only, and fainter. The navigation sits over this, so
@@ -130,4 +143,22 @@ band('canopy.svg', 1600, 64, 60, array(
     array('fern',          1216,  0.34,    0.10,  true),
     array('horsetail',     1348,  0.32,    0.09),
     array('conifer',       1470,  0.40,    0.09),
+));
+
+// Behind a page's title card: one scene rather than a pattern, set at the far
+// end of it so that it falls where a title does not reach. What is in it is
+// what somebody looking at rock actually finds - a broken shell, a line of
+// tracks, and the plants that were standing there - rather than the animal
+// itself, which is the rarest thing in the ground.
+//
+// This one does not repeat, so nothing here has to meet at the edges.
+band('thicket.svg', 560, 150, 140, array(
+    // name            x   scale  opacity  flip
+    array('fern',            10,  0.55,    0.09,  true),
+    array('footprint',      120,  0.30,    0.12),
+    array('footprint',      164,  0.30,    0.12),
+    array('footprint',      208,  0.30,    0.12),
+    array('egg',            250,  0.38,    0.12),
+    array('cycad',          300,  0.50,    0.10),
+    array('conifer',        400,  0.62,    0.09),
 ));

@@ -6322,7 +6322,7 @@ template {
 .page-footer {
   margin-top: auto;
   background: #F2EDE4;
-  color: #6B6259;
+  color: #5C5349;
   border-top: 1px solid #E6DFD4;
 }
 .page-footer > .inner {
@@ -7684,7 +7684,8 @@ tt {
   margin-top: 2rem;
   margin-bottom: 2rem;
   padding: 1.5rem 1.75rem;
-  background: #FAF7F2;
+  background: #FAF7F2 url("../images/thicket.svg") no-repeat right bottom;
+  background-size: auto 4rem;
   border: 1px solid #E6DFD4;
   border-left: 4px solid #8A5A2B;
   border-radius: 4px;
@@ -7714,6 +7715,14 @@ tt {
   .contentpane > #content-header {
     margin-left: 12rem;
     margin-right: 12rem;
+  }
+}
+@media (min-width: 900px) {
+  .page > .inner > .content-header,
+  .page > .inner > #content-header,
+  .contentpane > .content-header,
+  .contentpane > #content-header {
+    background-size: auto 5.5rem;
   }
 }
 .page > .inner > .content-header h2,
@@ -7911,19 +7920,26 @@ section.section .aside + .subject .content-header h2:before {
 }
 .page-footer {
   position: relative;
-  padding-top: 5rem;
+  padding-top: 3rem;
   border-top: 0;
+  isolation: isolate;
 }
-.page-footer:before {
+.page-footer:after {
   content: "";
   position: absolute;
-  top: 0;
+  z-index: -1;
+  bottom: 0;
   left: 0;
   right: 0;
   height: 5rem;
   background: url("../images/frieze.svg") repeat-x bottom center;
   background-size: auto 100%;
   pointer-events: none;
+}
+@media (min-width: 900px) {
+  .page-footer:after {
+    height: 16rem;
+  }
 }
 input[type="button"],
 input[type="submit"],
