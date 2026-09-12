@@ -1,16 +1,4 @@
-/**
- * What to photograph, as whom, and what to call it.
- *
- * One entry a picture. `as` names a persona from shoot.mjs; leaving it out
- * means a signed-out visitor, which is what most of a hub is for. `at` limits
- * an entry to one viewport where the other would say nothing.
- *
- * The names are what the documentation will reference, so they are written
- * for a reader rather than derived from the URL: a file called
- * group-calendar.png is findable and one called groups-fossil-ct-calendar.png
- * is not.
- */
-export const pages = [
+const PAGES_MESOZOIC = [
     // The hub as a stranger finds it
     { name: 'home', url: '/' },
     { name: 'search', url: '/search?terms=calder' },
@@ -76,3 +64,102 @@ export const pages = [
     { name: 'admin-resources', url: '/administrator/index.php?option=com_resources', as: 'admin' },
     { name: 'admin-template-styles', url: '/administrator/index.php?option=com_templates&view=styles', as: 'admin' },
 ];
+
+/**
+ * What to photograph on each hub, as whom, and what to call it.
+ *
+ * One entry a picture. `as` names one of that hub's people; leaving it out
+ * means a signed-out visitor, which is what most of a hub is for. `at` limits
+ * an entry to one viewport where the other would say nothing.
+ *
+ * The names are what the documentation will reference, so they are written
+ * for a reader rather than derived from the URL: a file called
+ * group-calendar.png is findable and one called groups-fossil-ct-calendar.png
+ * is not.
+ *
+ * Who visits lives here too, beside what they visit, because the two only
+ * make sense together - a page listed as `as: manager` needs a hub that has a
+ * manager, and the welcome hub has one account and nothing else.
+ */
+
+const demoPassword = process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026';
+const adminPassword = process.env.HUB_ADMIN_PASSWORD || 'ClaudeDev2026';
+
+export const hubs = {
+
+    mesozoic: {
+        // A manager is also an instructor here, which keeps the count down
+        // without losing a view: every page either of them can reach, one of
+        // them can.
+        people: {
+            member:  { username: 'mokonkwo',  password: demoPassword },
+            manager: { username: 'sberglund', password: demoPassword },
+            admin:   { username: 'admin',     password: adminPassword },
+        },
+        pages: PAGES_MESOZOIC,
+    },
+
+    // The third hub: what somebody setting up a new one gets if they elect
+    // the sample data. Not an empty hub - it ships articles, a knowledge base
+    // and a few groups - and not a populated one either, so it is the state
+    // most hub owners actually see first and the one a template is least
+    // likely to have been designed against.
+    //
+    // One account, which is the administrator's. A page here is what a
+    // stranger sees.
+    welcome: {
+        people: {
+            admin: { username: 'admin', password: adminPassword },
+        },
+        pages: [
+            { name: 'home', url: '/' },
+            { name: 'about', url: '/about' },
+            { name: 'cyberinfrastructure', url: '/aboutus/hubzero' },
+            { name: 'contact', url: '/about/contact' },
+            { name: 'terms', url: '/legal/terms' },
+            { name: 'privacy', url: '/legal/privacy' },
+            { name: 'copyright', url: '/aboutus/dmcapolicy' },
+
+            // What the hub's own navigation offers, which is every area it
+            // ships whether or not the sample data put anything in it. An
+            // area with nothing in it should say so rather than look broken,
+            // and that is the half of a template nobody designs.
+            { name: 'resources', url: '/resources' },
+            { name: 'groups', url: '/groups' },
+            { name: 'events', url: '/events' },
+            { name: 'knowledge-base', url: '/kb' },
+            { name: 'answers', url: '/answers' },
+            { name: 'blog', url: '/blog' },
+            { name: 'forum', url: '/forum' },
+            { name: 'courses', url: '/courses' },
+            { name: 'citations', url: '/citations' },
+            { name: 'collections', url: '/collections' },
+            { name: 'whats-new', url: '/whatsnew' },
+            { name: 'tags', url: '/tags' },
+            { name: 'support', url: '/support' },
+            { name: 'feedback', url: '/feedback' },
+
+            { name: 'sign-in', url: '/login' },
+            { name: 'register', url: '/register' },
+            { name: 'search-empty', url: '/search?terms=nothing' },
+
+            // The error page is a page too, and the one a template is least
+            // likely to have been looked at on. 404 is the right answer here.
+            { name: 'not-found', url: '/this-page-does-not-exist', expect: 404 },
+
+            { name: 'admin-home', url: '/administrator/', as: 'admin' },
+            { name: 'admin-templates', url: '/administrator/index.php?option=com_templates&view=styles', as: 'admin' },
+        ],
+    },
+};
+
+/**
+ * One hub's catalogue, or nothing if it has none
+ *
+ * @param   string  hub  Which hub
+ * @return  object  Its people and its pages
+ */
+export function hubFor(hub) {
+    return hubs[hub] || null;
+}
+

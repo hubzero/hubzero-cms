@@ -1,0 +1,48 @@
+{
+    "hub": "mesozoic",
+    "base": "https://mesozoic.example.com:7600",
+    "taken": [
+        {
+            "name": "course",
+            "url": "/courses/field-stratigraphy",
+            "as": "guest",
+            "viewport": "desktop",
+            "status": 200
+        },
+        {
+            "name": "wish",
+            "url": "/wishlist/1",
+            "as": "guest",
+            "viewport": "desktop",
+            "status": 200
+        },
+        {
+            "name": "wish-list",
+            "url": "/wishlist",
+            "as": "guest",
+            "viewport": "desktop",
+            "status": 200
+        },
+        {
+            "name": "course",
+            "url": "/courses/field-stratigraphy",
+            "as": "guest",
+            "viewport": "phone",
+            "status": 200
+        },
+        {
+            "name": "wish",
+            "url": "/wishlist/1",
+            "as": "guest",
+            "viewport": "phone",
+            "status": 200
+        },
+        {
+            "name": "wish-list",
+            "url": "/wishlist",
+            "as": "guest",
+            "viewport": "phone",
+            "status": 200
+        }
+    ]
+}
