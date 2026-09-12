@@ -171,6 +171,23 @@ const LOOK = (palette) => {
     // Only leaves - an element whose text is its own - and only where the
     // boxes genuinely cross rather than merely touch, because a list of rows
     // that meet at the edge is a list and not a collision.
+    //
+    // The boxes the text is painted in, not the boxes of the elements.
+    //
+    // An element's box says almost nothing about where its words are. A
+    // heading that fills a row has a box the width of the row and its text at
+    // one end of it; an inline link that wraps has a box which is the union of
+    // its lines and covers everything on both. Between them those two
+    // accounted for nearly every collision the first version reported - 134 on
+    // a phone, 46 on a desktop, almost none of them anything a reader would
+    // see.
+    //
+    // A range over an element's own text nodes gives the line boxes actually
+    // drawn, which is the only geometry worth comparing - once each of them
+    // has been cut back to whatever clips it. A word inside a 26px box with
+    // overflow hidden has a line box the width of the word, and only the part
+    // inside the box is on the screen. overflow.mjs learned the same thing:
+    // the question is always what a reader can see, never what was laid out.
     const leaves = [];
 
     for (const el of document.querySelectorAll('body *')) {
@@ -183,13 +200,57 @@ const LOOK = (palette) => {
         }
 
         const own = [...el.childNodes]
-            .filter(n => n.nodeType === 3 && n.textContent.trim()).length;
+            .filter(n => n.nodeType === 3 && n.textContent.trim());
 
-        if (!own) {
+        if (!own.length) {
             continue;
         }
 
-        leaves.push({ el: el, box: box, name: el.tagName.toLowerCase()
+        // Whatever cuts this element's text off, if anything does
+        const clips = [];
+
+        for (let up = el; up && up !== document.body; up = up.parentElement) {
+            const s = getComputedStyle(up);
+
+            if (s.overflowX !== 'visible' || s.overflowY !== 'visible') {
+                clips.push(up.getBoundingClientRect());
+            }
+        }
+
+        const rects = [];
+
+        for (const node of own) {
+            const range = document.createRange();
+
+            range.selectNodeContents(node);
+
+            for (const rect of range.getClientRects()) {
+                let left = rect.left;
+                let right = rect.right;
+                let top = rect.top;
+                let bottom = rect.bottom;
+
+                for (const clip of clips) {
+                    left = Math.max(left, clip.left);
+                    right = Math.min(right, clip.right);
+                    top = Math.max(top, clip.top);
+                    bottom = Math.min(bottom, clip.bottom);
+                }
+
+                if ((right - left) > 4 && (bottom - top) > 4) {
+                    rects.push({
+                        left: left, right: right, top: top, bottom: bottom,
+                        width: right - left, height: bottom - top,
+                    });
+                }
+            }
+        }
+
+        if (!rects.length) {
+            continue;
+        }
+
+        leaves.push({ el: el, rects: rects, name: el.tagName.toLowerCase()
             + (el.className && typeof el.className === 'string'
                 ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '') });
     }
@@ -203,23 +264,37 @@ const LOOK = (palette) => {
                 continue;
             }
 
-            const across = Math.min(a.box.right, b.box.right) - Math.max(a.box.left, b.box.left);
-            const down   = Math.min(a.box.bottom, b.box.bottom) - Math.max(a.box.top, b.box.top);
+            let worst = null;
 
-            // More than a hairline in both directions, and enough of the
-            // smaller box to be seen
-            if (across < 4 || down < 4) {
-                continue;
+            for (const ra of a.rects) {
+                for (const rb of b.rects) {
+                    const across = Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left);
+                    const down   = Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top);
+
+                    // More than a hairline in both directions, and enough of
+                    // the smaller line box to be seen
+                    if (across < 4 || down < 4) {
+                        continue;
+                    }
+
+                    const smaller = Math.min(ra.width * ra.height, rb.width * rb.height);
+
+                    if (!smaller || ((across * down) / smaller) < 0.25) {
+                        continue;
+                    }
+
+                    if (!worst || (across * down) > worst.area) {
+                        worst = { across: across, down: down, area: across * down };
+                    }
+                }
             }
 
-            const smaller = Math.min(a.box.width * a.box.height, b.box.width * b.box.height);
-
-            if (!smaller || ((across * down) / smaller) < 0.25) {
+            if (!worst) {
                 continue;
             }
 
             out.overlap.push(a.name + ' over ' + b.name + '  '
-                + Math.round(across) + 'x' + Math.round(down));
+                + Math.round(worst.across) + 'x' + Math.round(worst.down));
         }
     }
 

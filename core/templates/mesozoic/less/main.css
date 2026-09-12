@@ -4626,6 +4626,7 @@ template {
 .sr-only {
   clip: rect(1px,1px,1px,1px);
   clip-path: inset(50%);
+  display: block;
   height: 1px;
   width: 1px;
   margin: -1px;
@@ -4637,6 +4638,7 @@ template {
 #page_menu li span.vh {
   clip: rect(1px,1px,1px,1px);
   clip-path: inset(50%);
+  display: block;
   height: 1px;
   width: 1px;
   margin: -1px;

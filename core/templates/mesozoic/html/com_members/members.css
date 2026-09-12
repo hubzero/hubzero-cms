@@ -33,3 +33,20 @@
 	background: #F8F4EE;
 	border-bottom: 1px solid #E2DACE;
 }
+
+/*
+ * The page's actions are pinned to the top right of the content, beside the
+ * heading. On a phone there is no beside: the panel lands on the heading and
+ * covers it - "Add Modules" sitting across a member's own name.
+ *
+ * Back into the flow below the breakpoint, under the heading rather than on
+ * it. Absolute positioning is right where there is room for it.
+ */
+@media (max-width: 899px) {
+
+	#page_options {
+		position: static;
+		margin: 0 0 1rem 0;
+		text-align: left;
+	}
+}

@@ -7,6 +7,13 @@
 .visuallyHidden() {
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
+
+	// A table box is never narrower than its content, whatever width says,
+	// and absolute positioning does not blockify one - so a <legend>, which
+	// the reset gives display: table, kept its full size and sat over the
+	// heading beside it. Invisible either way, because the clip does that
+	// work, but it is the one element the idiom did not actually collapse.
+	display: block;
 	height: 1px;
 	width: 1px;
 	margin: -1px;
