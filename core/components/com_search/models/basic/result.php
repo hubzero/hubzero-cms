@@ -60,7 +60,20 @@ abstract class Result
     protected $contributor_ids;
     protected $children = array();
     protected $weight_log = array();
-    protected $link;
+
+    /**
+     * Where the result points
+     *
+     * Public, and not for tidiness: the search plugins read and append to it
+     * directly on the result they are about to add - the forum's builds a
+     * thread's path onto it a segment at a time - and until it was declared
+     * here it was a dynamic property, which is public. Declaring it protected
+     * made both the wiki and the forum search plugins fatal on any term that
+     * matched, so the search page returned an empty document.
+     *
+     * @var  string
+     */
+    public $link;
     protected $description_highlighted;
     protected $title_highlighted;
     protected $author_highlighted;

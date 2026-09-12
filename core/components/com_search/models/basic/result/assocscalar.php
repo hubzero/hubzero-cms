@@ -85,6 +85,17 @@ class AssocScalar extends SearchResult
             }
         }
 
+        // A plugin that selects no weight, or one that comes back NULL - a
+        // wiki comment matched through a LEFT JOIN, say - does not leave null
+        // here. Every value from the row goes through strip_tags(), and
+        // strip_tags(null) is the empty string, which is neither null nor a
+        // number: the test below therefore read it as a weight the plugin had
+        // suggested, and the first thing to scale the result multiplied a
+        // string by a float and took the whole search page down with it.
+        if (!is_numeric($this->weight)) {
+            $this->weight = null;
+        }
+
         if ($this->weight === null) {
             if ($this->tag_count) {
                 $this->weight = $this->tag_count * (self::$tag_weight_modifier / 2);
