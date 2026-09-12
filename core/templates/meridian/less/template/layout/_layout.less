@@ -1,0 +1,83 @@
+@import "_generic_classes";
+@import "components/_components";
+@import "_ckeditor";
+@import "page-head/_page-head";
+@import "_content-header";
+@import "_big-search";
+@import "_page-footer";
+@import "_home";
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100Vh;
+	
+	&.panel-open,
+	&.has-dialog {
+		overflow: hidden;
+
+		// Page overlay
+		.page-overlay {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
+	// Page overlay
+	.page-overlay {
+		.stretch();
+		background: rgba(0,0,0,0.75);
+		z-index: 299;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity, 0.5s ease-in-out;
+	}
+
+	& > .wrap {
+		flex-grow: 1;
+		overflow: hidden;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+
+		& > main {
+			flex-grow: 1;
+		}
+	}
+
+	@media (max-width: @sizeM - 1px) {
+
+		.hub-overlay {
+			.translate(0);
+		}
+	}
+}
+
+.page {
+	position: relative;
+	z-index: 90;
+
+	.contentpaneopen {
+		position: relative;
+		margin-bottom: 4rem;
+	}
+
+	& > .inner > section.section,
+	& > .inner > form > section.section,
+	& > .inner > .contentpane > .contentpaneopen {
+		.outerPadding();
+		padding-top: 30px;
+		padding-bottom: 30px;
+		width: 100%;
+
+		@media (min-width: @sizeM) {
+			padding-top: 60px;
+			padding-bottom: 60px;
+		}
+
+		.subject .contentpaneopen {
+			padding: 0;
+		}
+	}
+}
+

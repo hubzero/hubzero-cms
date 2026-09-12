@@ -83,7 +83,11 @@ async function visit(page, url) {
 }
 
 const hub  = process.argv[2] || 'mesozoic';
-const port = process.argv[3] || '7600';
+
+// The port is the hub's own, from the catalogue: naming a hub and getting
+// another hub's port back is how a whole run of this once came back clean
+// against twenty-four blank pages. An argument still overrides it.
+const port = process.argv[3] || (hubFor(hub) || {}).port || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 // The hub's own catalogue, which is where the pages are described once. Only
@@ -165,6 +169,11 @@ await page.setViewportSize({ width: 1280, height: 900 });
 
 const findings = new Map();
 const unjudged = new Map();
+
+// Pages that turned out to have no text on them at all. A page with nothing to
+// measure passes every rule, so a run against the wrong port once reported a
+// hub as flawless on twenty-four blank responses. Say so instead.
+const empty = [];
 let looked = 0;
 
 for (const path of paths) {
@@ -183,7 +192,7 @@ for (const path of paths) {
 
     looked++;
 
-    const { found, declined } = await page.evaluate(() => {
+    const { found, declined, judged } = await page.evaluate(() => {
         const rgb = (s) => {
             const m = s.match(/[\d.]+/g);
 
@@ -300,6 +309,7 @@ for (const path of paths) {
         const seen = new Set();
         let mark = 0;
         let declined = 0;
+        let judged = 0;
 
         for (const el of document.querySelectorAll('body *')) {
             const style = getComputedStyle(el);
@@ -330,6 +340,8 @@ for (const path of paths) {
             if (!fg || fg[3] < 0.95 || !bg) {
                 continue;
             }
+
+            judged++;
 
             const size   = parseFloat(style.fontSize);
             const weight = Number(style.fontWeight) || 400;
@@ -366,11 +378,15 @@ for (const path of paths) {
             });
         }
 
-        return { found: out, declined };
+        return { found: out, declined, judged };
     });
 
     if (declined) {
         unjudged.set(path, declined);
+    }
+
+    if (!judged && !declined) {
+        empty.push(path);
     }
 
     const { root } = await cdp.send('DOM.getDocument');
@@ -410,6 +426,15 @@ for (const [what, { where, sample, rule }] of ranked) {
 
 if (!ranked.length) {
     console.log('  Every piece of text on every page meets 1.4.3.');
+}
+
+if (empty.length) {
+    console.log(`\n  ${empty.length} of those pages had no text on them at all,`
+        + ' so they were not a pass:');
+
+    for (const path of empty.slice(0, 8)) {
+        console.log(`      ${path}`);
+    }
 }
 
 if (unjudged.size) {

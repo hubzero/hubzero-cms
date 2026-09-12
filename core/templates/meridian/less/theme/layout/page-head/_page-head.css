@@ -1,0 +1,10 @@
+.page-head > .inner > header .logo {
+  font-size: 2.1875rem;
+  line-height: 2.5rem;
+  white-space: nowrap;
+}
+.page-head > .inner > header .logo a {
+  display: flex;
+  align-items: center;
+}
+/*# sourceMappingURL=_page-head.css.map */

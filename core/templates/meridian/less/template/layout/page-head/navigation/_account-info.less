@@ -1,0 +1,60 @@
+.page-head {
+	
+	.user-account {
+		margin: 0;
+
+		button {
+			display: inline-block;
+			position: relative;
+			background: none;
+			border: none;
+		}
+
+		[role="menu"] {
+			margin: 0;
+			padding: 7px 4px;
+			list-style: none;
+			display: none;
+			position: absolute;
+			top: 100%;
+			right: 0;
+			z-index: 900;
+		}
+
+		.user-image {
+
+			img {
+				height: 45px;
+				width: 45px;
+				.border-radius(50%);
+				object-fit: cover;
+			}
+		}
+		
+		&:hover,
+		&:focus {
+
+			& > a {
+			}
+		}
+
+		// User account dropdown
+		.account-details {
+			background: #fff;
+			margin-bottom: 0;
+			box-shadow: 0px -1px 3px rgba(0,0,0,0.1);
+			padding: 1.5rem;
+			max-width: 300px;
+			text-align: right;
+			
+			.user-name {
+				white-space: nowrap;
+			}
+
+			& > ul {
+				margin: 1rem 0 0 0;
+				text-align: center;
+			}
+		}
+	}
+}

@@ -1,0 +1,161 @@
+/* Content header */
+
+.content-header,
+#content-header {
+
+	h2 {
+		font-size: @font-size-9;
+
+		@media (min-width: @breakpoint-l) {
+			font-size: @font-size-11;
+		}
+	}
+}
+
+.page > .inner > .content-header,
+.page > .inner > #content-header,
+.contentpane > .content-header,
+.contentpane > #content-header,
+.page > .upperpane,
+.page > section.section.upperpane {
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.page > .inner > .content-header,
+.page > .inner > #content-header,
+.contentpane > .content-header,
+.contentpane > #content-header {
+	.outerPadding();
+
+	h2 {
+		margin-top: 0;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+		line-height: 1.3em;
+		margin-bottom: 0;
+	}
+
+	// complex content-headers publications/1/1
+	section.main {
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+
+		h2 {
+			padding-top: 0;
+		}
+	}
+
+
+	// Extra options
+	#content-header-extra,
+	.content-header-extra {
+		padding-bottom: 2rem;
+
+		a {
+			margin-right: @space-1;
+			
+			&:last-of-type {
+				margin-right: 0;
+			}
+		}
+
+		ul,
+		li,
+		p {
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
+.hz-layout-with-aside .contentpane > .content-header {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+// more complex content-headers /resources/1
+.page .overviewcontainer.grid #content-header {
+
+	h2 {
+		margin-top: 0;
+	}
+}
+
+.contentpaneopen .contentpane > .content-header,
+.contentpaneopen .contentpane > #content-header {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+.page > section.section.upperpane {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+section.section .aside + .subject .content-header {
+	border-bottom: none;
+
+	h2 {
+		position: static;
+		padding-top: 0;
+		font-size: 2.2rem;
+		padding-bottom: 1rem;
+
+		&:before {
+			display: none;
+		}
+	}
+}
+
+#content-header-extra ul li {
+	margin-left: 1em;
+}
+
+.subject .content-header {
+	background: none;
+	padding: 0;
+}
+
+// The band across the head of a component
+//
+// The default puts the component's title on white and its buttons on a line
+// underneath, which reads as two unrelated things and wastes the width. Here
+// the two share one band in a wash of the accent: the title on the left, the
+// buttons along the right, and the frame's own rounded corners cutting the top
+// of it, so the band is what makes the curve visible rather than the curve
+// being a detail of an empty white edge.
+.page > .inner > .content-header,
+.page > .inner > #content-header,
+.contentpane > .content-header,
+.contentpane > #content-header {
+	background: @colorAccentWash;
+	border-bottom: 1px solid @colorAccentEdge;
+}
+
+// Side by side only where there is something to put beside the title. A
+// component that has no buttons keeps the plain block, and the complex
+// headers - a publication's, which puts a whole section in here - are left
+// alone, because turning their wrapper into a flex row rearranges them.
+.page > .inner > .content-header:has(> h2 + .content-header-extra),
+.page > .inner > .content-header:has(> h2 + #content-header-extra),
+.page > .inner > #content-header:has(> h2 + .content-header-extra),
+.page > .inner > #content-header:has(> h2 + #content-header-extra),
+.contentpane > .content-header:has(> h2 + .content-header-extra),
+.contentpane > .content-header:has(> h2 + #content-header-extra) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0 2rem;
+
+	> h2 {
+		padding-bottom: 2rem;
+	}
+
+	> #content-header-extra,
+	> .content-header-extra {
+		padding-top: 2rem;
+		margin-left: auto;
+		text-align: right;
+	}
+}
