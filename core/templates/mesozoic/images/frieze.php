@@ -145,20 +145,22 @@ band('canopy.svg', 1600, 64, 60, array(
     array('conifer',       1470,  0.40,    0.09),
 ));
 
-// Behind a page's title card: one scene rather than a pattern, set at the far
-// end of it so that it falls where a title does not reach. What is in it is
-// what somebody looking at rock actually finds - a broken shell, a line of
-// tracks, and the plants that were standing there - rather than the animal
-// itself, which is the rarest thing in the ground.
+// Behind a page's title card: a band across it rather than a cluster at one
+// end, and drawn large enough to be seen through the title rather than only
+// beside it. One animal among them - the card is wide and mostly empty, and
+// at this weight an animal is an incident rather than a distraction.
 //
-// This one does not repeat, so nothing here has to meet at the edges.
-band('thicket.svg', 560, 150, 140, array(
-    // name            x   scale  opacity  flip
-    array('fern',            10,  0.55,    0.09,  true),
-    array('footprint',      120,  0.30,    0.12),
-    array('footprint',      164,  0.30,    0.12),
-    array('footprint',      208,  0.30,    0.12),
-    array('egg',            250,  0.38,    0.12),
-    array('cycad',          300,  0.50,    0.10),
-    array('conifer',        400,  0.62,    0.09),
+// This one repeats like the others, so the same rule applies: nothing may
+// cross the edge of the box.
+band('thicket.svg', 1200, 150, 140, array(
+    // name            x   scale  opacity  flip   own line
+    array('fern',            20,  0.85,    0.06,  true),
+    array('egg',            250,  0.55,    0.07),
+    array('cycad',          330,  0.90,    0.06),
+    array('hadrosaur',      430,  0.75,    0.05,  true),
+    array('footprint',      600,  0.42,    0.07),
+    array('footprint',      646,  0.42,    0.07),
+    array('footprint',      692,  0.42,    0.07),
+    array('conifer',        760,  1.05,    0.06),
+    array('horsetail',     1000,  0.80,    0.06),
 ));
