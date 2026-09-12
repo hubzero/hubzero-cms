@@ -50,3 +50,10 @@
 		text-align: left;
 	}
 }
+
+/* The prompt above the member directory's search */
+.members-search-prompt {
+	background: #F8F4EE;
+	border: 1px solid #E2DACE;
+	border-radius: 5px;
+}

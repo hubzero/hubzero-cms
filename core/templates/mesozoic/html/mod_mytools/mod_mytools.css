@@ -1,0 +1,23 @@
+/**
+ * The mytools module
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The three dashboard modules each ship the same
+ * tab strip in the same two neutral greys; each needs saying to separately,
+ * because each has its own stylesheet.
+ */
+@import url("../../../../../core/modules/mod_mytools/assets/css/mod_mytools.css");
+
+.mod_mytools .tab_titles {
+	background: #4E463D;
+}
+
+.mod_mytools .tab_titles li {
+	background: #635A50;
+}
+
+/* And a panel this one has that the others do not */
+.mod_mytools .tool-list {
+	background: #F8F4EE;
+}
