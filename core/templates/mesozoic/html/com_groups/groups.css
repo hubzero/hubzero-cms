@@ -73,3 +73,12 @@
 	background: #6B4420;
 	border-color: #6B4420;
 }
+
+/*
+ * The count beside the group area you are in. #555 on #aaa is 3.2:1, and it
+ * is the one badge on the page that is meant to stand out.
+ */
+#page_menu li.active .meta .count {
+	background: #6B4420;
+	color: #fff;
+}

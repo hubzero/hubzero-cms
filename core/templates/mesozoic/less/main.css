@@ -1896,11 +1896,11 @@ ol.comments .private {
   *zoom: expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class=private-after>&#xf023;&nbsp;</small>');
 }
 ol.comments span.comment-details {
-  color: #bfbfbf;
+  color: #6B6259;
 }
 ol.comments .permalink {
   border: none;
-  color: #bfbfbf;
+  color: #6B6259;
 }
 ol.comments .permalink:hover {
   color: #000;
@@ -3774,7 +3774,7 @@ table.entries {
 }
 .entry .permalink {
   border: none;
-  color: #bfbfbf;
+  color: #6B6259;
 }
 .entry .permalink:hover {
   color: #000;
@@ -8136,25 +8136,29 @@ span.count {
 #system-message dd.info,
 #system-message dd.message {
   background: #EAF3F4;
+  color: #25595F;
   border-color: rgba(47,113,120,0.25);
-  border-left: 4px solid #2f7178;
+  border-left: 4px solid #25595F;
 }
 .warning,
 #system-message dd.warning {
   background: #F9F2E3;
+  color: #7A5900;
   border-color: rgba(145,106,0,0.25);
-  border-left: 4px solid #916a00;
+  border-left: 4px solid #7A5900;
 }
 .error,
 #system-message dd.error {
   background: #FBEDEB;
+  color: #B32309;
   border-color: rgba(215,44,13,0.25);
-  border-left: 4px solid #d72c0d;
+  border-left: 4px solid #B32309;
 }
 .passed {
   background: #E9F4F0;
+  color: #006B4F;
   border-color: rgba(0,128,96,0.25);
-  border-left: 4px solid #008060;
+  border-left: 4px solid #006B4F;
 }
 ol.comments .figcaption {
   background: #F8F4EE;
