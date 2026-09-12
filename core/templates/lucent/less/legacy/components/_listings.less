@@ -28,12 +28,14 @@
 .entries .details,
 .results .details {
 	font-size: 90%;
-	color: #999;
+	color: @colorMuted;
 }
 
+// White on a white page: the separator between a date and a contributor was
+// invisible, and so was anything else the listing put in a span here.
 .entries .details span,
 .results .details span {
-	color: #fff;
+	color: @colorMuted;
 	margin: 0 0.5em;
 }
 
@@ -64,7 +66,7 @@
 
 .entries .metadata p,
 .results .metadata p {
-	color: #999;
+	color: @colorMuted;
 	font-size: 90%;
 	margin: 0 0 0.5em 0;
 	padding: 0;
@@ -145,7 +147,7 @@ table.entries {
 		}
 		a.active-index {
 			background-color: #eee;
-			color: #999;
+			color: @colorMuted;
 		}
 	}
 	// tbody
@@ -175,7 +177,7 @@ table.entries {
 		border-bottom: 1px solid #eee;
 	}
 	.activity {
-		color: #999;
+		color: @colorMuted;
 	}
 	// Entry icon
 	tbody th {
@@ -204,7 +206,7 @@ table.entries {
 		font-size: 1.2em;
 		line-height: 1;
 		margin-right: 1em;
-		color: #aaa;
+		color: @colorMuted;
 		font-weight: normal;
 	}
 	tbody tr.private {
@@ -224,14 +226,13 @@ table.entries {
 	margin-top: 1rem;
 }
 
-// #aaa is 2.3:1 on white. The palette's own muted text is 4.5:1.
 .container-block h4 span,
 .entries caption span {
-	color: @colorTextMuted;
+	color: @colorMuted;
 }
 .entry-details {
 	font-size: 85%;
-	color: #999;
+	color: @colorMuted;
 }
 .entry-details-divider {
 	margin-left: 0.5em;
@@ -274,7 +275,7 @@ table.entries {
 		border-bottom: 1px solid @bodyBackground;
 	}
 	span.nolink {
-		color: #999;
+		color: @colorMuted;
 	}
 	a.active,
 	span.nolink.active {
@@ -313,7 +314,7 @@ table.entries {
 	.entry-content {
 		margin: 0 0 1em 70px;
 		position: relative;
-		border: 1px solid #999;
+		border: 1px solid @colorBorderVisible;
 		padding: .61803399em 1.61803399em;
 		.box-shadow(0px 1px 2px rgba(0, 0, 0, 0.17));
 
@@ -325,7 +326,7 @@ table.entries {
 			left: -20px;
 			border-width: 10px;
 			border-style: solid;
-			border-color: transparent #999 transparent transparent;
+			border-color: transparent @colorBorderVisible transparent transparent;
 			display: block;
 			width: 0;
 		}
@@ -334,7 +335,7 @@ table.entries {
 			left: -20px;
 			bottom: auto;
 			border-width: 10px;
-			border-color: transparent #999 transparent transparent;
+			border-color: transparent @colorBorderVisible transparent transparent;
 		}
 		&:after {
 			top: 10px;
@@ -347,7 +348,7 @@ table.entries {
 	// Permalink
 	.permalink {
 		border: none;
-		color: #bfbfbf;
+		color: @colorTextMuted;
 
 		&:hover {
 			color: #000;
@@ -358,7 +359,7 @@ table.entries {
 	.entry-tags {
 		margin: 1.61803399em 0.61803399em;
 		padding: 0;
-		color: #aaa;
+		color: @colorMuted;
 
 		p {
 			display: none;

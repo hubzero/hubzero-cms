@@ -1,0 +1,12 @@
+/**
+ * A group wiki
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The line saying when a page was last changed, at #aaa: 2.3:1 on white.
+ */
+@import url("../../../../../core/plugins/groups/wiki/assets/css/wiki.css");
+
+.timestamp {
+	color: #5F6A72;
+}

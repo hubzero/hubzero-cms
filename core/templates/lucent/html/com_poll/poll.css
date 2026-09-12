@@ -1,0 +1,12 @@
+/**
+ * Polls
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The vote count beside each option, at #999.
+ */
+@import url("../../../../../core/components/com_poll/site/assets/css/poll.css");
+
+.opt {
+	color: #5F6A72;
+}

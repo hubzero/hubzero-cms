@@ -1,0 +1,12 @@
+/**
+ * Blog
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The date and byline under an entry, at #999.
+ */
+@import url("../../../../../core/components/com_blog/site/assets/css/blog.css");
+
+.blog-entries dl.entry-meta {
+	color: #5F6A72;
+}

@@ -16,3 +16,17 @@
 // palette rather than borrowing another template's warm one.
 @tabBackground: #5B646C;
 @tabBorder: #464E56;
+
+// The greys the listings use for dates, counts, bylines and separators: #999
+// is 2.9:1 on white, #aaa is 2.3:1, and a separator drawn in #fff is 1.0:1 -
+// invisible rather than merely faint. All of them become the palette's own
+// muted text.
+@colorMuted: @colorTextMuted;
+
+// A border has to be findable: #999 is 2.9:1 against the page, which is under
+// 1.4.11's 3:1. This is 3.7:1.
+@colorBorderVisible: #7F868C;
+
+// A comment's timestamp at #bfbfbf is 1.8:1 on white, on the line a reader
+// needs to place a remark in time.
+@commentPermalinkColor: @colorTextMuted;
