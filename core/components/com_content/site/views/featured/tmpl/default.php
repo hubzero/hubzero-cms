@@ -7,6 +7,7 @@
  */
 
 use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -73,6 +74,23 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
         <div class="items-more">
             <?php echo $this->loadTemplate('links'); ?>
         </div>
+    <?php endif; ?>
+
+    <?php
+    // Nothing featured at all.
+    //
+    // This view is the front page of a hub that has not been given one, so on
+    // a hub installed without the sample data it was what the owner saw first:
+    // an empty div, and a page with the site's name at the top and nothing
+    // under it. Say what is true instead.
+    $nothing = empty($this->lead_items)
+        && empty($this->intro_items)
+        && empty($this->link_items);
+    ?>
+    <?php if ($nothing) : ?>
+        <p class="no-results">
+            <?php echo Lang::txt('COM_CONTENT_NO_FEATURED_ARTICLES'); ?>
+        </p>
     <?php endif; ?>
 
     <?php
