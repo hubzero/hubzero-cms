@@ -85,7 +85,29 @@ $this->css('introduction.css', 'system')
     </div><!-- / .grid -->
 
 <?php
-if ($this->categories) {
+// Which categories this page will actually draw.
+//
+// Decided before the heading rather than inside the loop, because the two
+// tests below - unpublished, and a tools category on a hub without com_tools -
+// can reject every row in a list that is not itself empty. When they did, the
+// heading was printed over nothing: a hub that has declined the sample data
+// has no categories at all, and its resources page offered the word
+// "Categories" and then a blank half-screen.
+$categories = array();
+
+foreach ($this->categories as $category) {
+    if (!$category->state) {
+        continue;
+    }
+
+    if ($category->isForTools() && !Component::isEnabled('com_tools', true)) {
+        continue;
+    }
+
+    $categories[] = $category;
+}
+
+if ($categories) {
     ?>
     <div class="grid">
         <div class="col span3">
@@ -97,15 +119,7 @@ if ($this->categories) {
             $i = 0;
             $clm = '';
 
-            foreach ($this->categories as $category) {
-                if (!$category->state) {
-                    continue;
-                }
-
-                if ($category->isForTools() && !Component::isEnabled('com_tools', true)) {
-                    continue;
-                }
-
+            foreach ($categories as $category) {
                 $i++;
                 switch ($i) {
                     case 3:
