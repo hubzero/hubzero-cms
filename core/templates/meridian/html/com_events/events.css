@@ -1,0 +1,26 @@
+/**
+ * Events
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a neutral grey where the rest
+ * of the page has none.
+ */
+@import url("../../../../../core/components/com_events/site/assets/css/events.css");
+
+#event-categories,
+.calendarwrap {
+	background: #F6F8FA;
+	border-color: #E3E7EC;
+	border-radius: 10px;
+}
+
+/* The tab strip above an event, whose inactive tabs were a flat grey */
+#sub-sub-menu li a {
+	background: #E9EDF1;
+	border-radius: 4px 4px 0 0;
+}
+
+#sub-sub-menu li.active a {
+	background: #fff;
+}
