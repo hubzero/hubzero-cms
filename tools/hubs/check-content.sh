@@ -179,6 +179,42 @@ expect "registration" "/events/details/2"      'details/[0-9]+/register'        
 # has, and the bundle is built on demand from what is attached
 serves "a publication bundle" "/publications/1/serve/1?render=archive" application/zip 2000
 
+# The footer is on every page of the hub and is the pack's to write, so its
+# links are the pack's to get right. A dead one there is dead everywhere, and
+# it is the last place anybody looks
+footer_links() {
+    local body code n=0 bad=0 href
+
+    body="$(mktemp)"
+    curl -sk -o "$body" --max-time 30 "${BASE}/"
+
+    # Only the hub's own, and only the ones the footer's link block holds
+    while read -r href; do
+        n=$((n + 1))
+        code="$(curl -sk -o /dev/null -w '%{http_code}' --max-time 20 "${BASE}${href}")"
+
+        # 302 is the login form: a guest is meant to be sent there by some of
+        # these, and being sent somewhere is the thing being checked
+        if [ "$code" != "200" ] && [ "$code" != "302" ]; then
+            bad=$((bad + 1))
+            echo -e "\033[31mFAIL\033[0m   footer: ${href} answered ${code}"
+        fi
+    done < <(sed -n '/id="ancillary"/,/\/footer nav/p' "$body" \
+        | grep -oE 'href="/[^"#]*"' | sed 's/href="//; s/"$//' | sort -u)
+
+    rm -f "$body"
+
+    if [ "$n" -lt 15 ]; then
+        bad "footer links: found ${n}, expected at least 15"
+    elif [ "$bad" -eq 0 ]; then
+        ok "footer links: ${n} on every page, all of them answering"
+    else
+        fail=1
+    fi
+}
+
+footer_links
+
 if [ "$fail" -eq 0 ]; then
     echo
     say "Everything the pack builds is on a page."
