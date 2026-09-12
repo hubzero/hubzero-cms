@@ -1,0 +1,14 @@
+/**
+ * Sharing a resource
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a neutral grey that reads as
+ * a cold patch laid on a warm page.
+ */
+@import url("../../../../../core/plugins/resources/share/assets/css/share.css");
+
+.shareinfo dd {
+	background: #F8F4EE;
+	border-radius: 5px;
+}

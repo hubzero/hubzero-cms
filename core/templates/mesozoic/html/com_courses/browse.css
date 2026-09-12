@@ -18,3 +18,14 @@
 dl.entry-meta dd a {
 	color: #6B4420;
 }
+
+/* The strip carrying a course's name in the catalogue */
+p.course-identity {
+	background: #F8F4EE;
+}
+
+/* The strip carrying a course's name on its own page */
+.course-identity,
+.course-summary {
+	background: #F8F4EE;
+}

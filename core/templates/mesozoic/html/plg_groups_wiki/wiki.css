@@ -1,0 +1,17 @@
+/**
+ * A group's wiki
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a neutral grey that reads as
+ * a cold patch laid on a warm page.
+ */
+@import url("../../../../../core/plugins/groups/wiki/assets/css/wiki.css");
+
+/* Cut into the page, like every other field on the hub */
+.page-search-form input {
+	background: #FBF8F4;
+	border: 1px solid #D5CBBB;
+	border-radius: 5px;
+	box-shadow: inset 0 1px 2px rgba(74, 58, 42, 0.10);
+}

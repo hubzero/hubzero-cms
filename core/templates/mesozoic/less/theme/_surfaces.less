@@ -137,26 +137,39 @@ span.count {
 	box-shadow: @shadowRaised;
 }
 
-// Which kind it is, down the leading edge - the same device the page title
-// uses, so a notice and a title read as one family. The colours are the ones
-// the core already gives each kind's icon, so nothing new is invented.
+// Which kind it is, in a wash of its own colour and again down the leading
+// edge. A hub is warm all over and a notice is the one thing on the page that
+// should not be: if every panel is the same colour then the one saying
+// something has gone wrong looks like the one saying what the page is for.
+//
+// The colours are the ones the core already gives each kind, so nothing new is
+// invented - only the grounds, each a tint of its own text colour, light
+// enough that @colorText over it stays above 11:1.
 .info,
 #system-message dd.info,
 #system-message dd.message {
+	background: @colorNoticeInfo;
+	border-color: fade(@color-info-text, 25%);
 	border-left: 4px solid @color-info-text;
 }
 
 .warning,
 #system-message dd.warning {
+	background: @colorNoticeWarning;
+	border-color: fade(@color-warning-text, 25%);
 	border-left: 4px solid @color-warning-text;
 }
 
 .error,
 #system-message dd.error {
+	background: @colorNoticeError;
+	border-color: fade(@color-critical-text, 25%);
 	border-left: 4px solid @color-critical-text;
 }
 
 .passed {
+	background: @colorNoticeSuccess;
+	border-color: fade(@color-success-text, 25%);
 	border-left: 4px solid @color-success-text;
 }
 
