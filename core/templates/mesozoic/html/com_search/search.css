@@ -1,0 +1,41 @@
+/**
+ * Search results
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ *
+ * Every one of these is a grey the component reaches for when it wants
+ * something quieter than the text, and every one of them is under 4.5:1 on
+ * white. The page went unmeasured for as long as it did because a term that
+ * matched a wiki page or a forum post made the whole component fatal, so what
+ * came back was an empty document with nothing in it to fail a rule.
+ */
+@import url("../../../../../core/components/com_search/site/assets/css/search.css");
+
+/* "(page 1 of 1)" beside the heading, at #aaa: 2.3:1 */
+.container h3 span {
+	color: #6B6259;
+}
+
+/*
+ * The section, date and contributors under each result, at #999: 2.8:1.
+ *
+ * !important here only because the declaration being corrected carries one,
+ * and nothing at any specificity beats an !important without one. It is not
+ * reaching for weight it does not need.
+ */
+.results .summary .details span {
+	color: #6B6259 !important;
+}
+
+/* An event's year, which was white on #CCCCCC: 1.6:1 */
+.event-date .year {
+	background: #8A5A2B;
+	border-color: #8A5A2B;
+}
+
+/* The border round the results, at #e9e9e9 */
+.results {
+	border-color: #E2DACE;
+}
