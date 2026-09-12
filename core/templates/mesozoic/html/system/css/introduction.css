@@ -34,12 +34,15 @@
 }
 
 /*
- * A world behind the explanation, off the right-hand edge.
+ * The Late Cretaceous world behind the explanation, off the right-hand edge.
  *
- * A drawing of an invented world rather than anybody's palaeogeography -
- * everything this hub holds is invented, and its geography with it - but a
- * globe and a graticule read as "somewhere, long ago" at a glance and at any
- * opacity, which a picture of an animal cannot.
+ * The whole of it, on Mollweide, which is the projection palaeogeography is
+ * usually published on: North America in two pieces either side of the
+ * Western Interior Seaway, a South Atlantic newly open and still narrow,
+ * Europe an archipelago, India alone in the southern ocean and Australia
+ * still against Antarctica. Approximate rather than plotted from a dataset -
+ * see the drawing's own note in images/frieze.php - and shown at a tenth of
+ * an opacity, which is what it will bear.
  *
  * Here and not on every page: a landing page has an empty column to the right
  * of its explanation, and a motif that turns up everywhere stops being seen.
@@ -52,10 +55,10 @@
 	display: block;
 	position: absolute;
 	z-index: 0;
-	right: -5rem;
-	bottom: -7rem;
-	width: 24rem;
-	height: 24rem;
+	right: -1rem;
+	bottom: -1rem;
+	width: 27rem;
+	height: 13.5rem;
 	opacity: 0.10;
 	background: url("../../../images/world.svg") no-repeat center / contain;
 	pointer-events: none;
