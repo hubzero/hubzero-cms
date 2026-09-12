@@ -1,0 +1,13 @@
+/**
+ * The documents that come with a resource
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/resources/supportingdocs/assets/css/supportingdocs.css");
+
+/* The format beside a file's name: #999 on white is 2.8:1 */
+.supportingdocs .caption {
+	color: #6B6259;
+}
