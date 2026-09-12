@@ -15,7 +15,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync } from 'node:fs';
-import { hubFor } from './pages.mjs';
+import { hubFor, addressFor } from './pages.mjs';
 
 /** The newest chromium already on this machine. */
 function chromiumPath() {
@@ -67,8 +67,7 @@ const hub  = args[0] || 'mesozoic';
 // The port is the hub's own, from the catalogue: naming a hub and getting
 // another hub's port back is how a whole run of this once came back clean
 // against twenty-four blank pages. An argument still overrides it.
-const port = args[1] || (hubFor(hub) || {}).port || '7600';
-const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
+const { base, url } = addressFor(hub, args[1]);
 
 const only = process.argv.includes('--phone') ? 'phone'
     : (process.argv.includes('--desktop') ? 'desktop' : null);
@@ -322,7 +321,7 @@ for (const [label, size] of Object.entries(viewports)) {
         let response;
 
         try {
-            response = await page.goto(base + entry.url, { waitUntil: 'load', timeout: 45000 });
+            response = await page.goto(url(entry.url), { waitUntil: 'load', timeout: 45000 });
         } catch (e) {
             await page.close();
             continue;

@@ -10,7 +10,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync } from 'node:fs';
-import { hubFor } from './pages.mjs';
+import { hubFor, addressFor } from './pages.mjs';
 
 /**
  * The newest chromium already on this machine.
@@ -100,8 +100,7 @@ const hub  = process.argv[2] || 'mesozoic';
 // The port is the hub's own, from the catalogue: naming a hub and getting
 // another hub's port back is how a whole run of this once came back clean
 // against twenty-four blank pages. An argument still overrides it.
-const port = process.argv[3] || (hubFor(hub) || {}).port || '7600';
-const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
+const { base, url } = addressFor(hub, process.argv[3]);
 
 // The widths worth caring about: a phone, and a small laptop
 const widths = [
@@ -139,7 +138,7 @@ for (const size of widths) {
         let result;
 
         try {
-            const response = await visit(page, base + path);
+            const response = await visit(page, url(path));
 
             // Web fonts change the width of everything they touch, and a
             // page measured before they arrive reports overflow that is gone
