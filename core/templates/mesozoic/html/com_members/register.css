@@ -28,8 +28,15 @@
 	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
 }
 
-#hubForm .explaination a {
-	color: #6B4420;
+/*
+ * The link inside it. The component sets this to white for the blue panel it
+ * used to be, at a specificity this has to match - turning the panel light
+ * without turning the link dark leaves white on near-white at 1.1:1, which is
+ * a worse failure than the one it replaced.
+ */
+#hubForm .explaination a,
+#hubForm .explaination:first-of-type a {
+	color: #0C5169;
 }
 
 /* The one button on the page, which was the only green thing on the hub */

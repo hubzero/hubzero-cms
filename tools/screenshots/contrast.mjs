@@ -25,6 +25,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync } from 'node:fs';
+import { hubFor } from './pages.mjs';
 
 /** The newest chromium already on this machine. */
 function chromiumPath() {
@@ -85,15 +86,17 @@ const hub  = process.argv[2] || 'mesozoic';
 const port = process.argv[3] || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
-const paths = [
-    '/', '/resources', '/resources/datasets', '/resources/browse',
-    '/resources/calder-basin-measured-sections',
-    '/wiki/CalderBasin', '/wiki/CalderBasin?task=history',
-    '/groups/browse', '/groups/fossil-ct', '/answers', '/blog', '/kb',
-    '/forum', '/events/2026', '/collections/posts', '/courses/browse',
-    '/citations/browse', '/projects/browse', '/wishlist', '/publications',
-    '/poll', '/jobs', '/newsletter', '/members/1001', '/support',
-];
+// The hub's own catalogue, which is where the pages are described once. Only
+// the ones a stranger can reach: this walks a page as it is served and does
+// not sign in, and a page that redirects to a login form is a login form.
+const catalogue = hubFor(hub);
+
+if (!catalogue) {
+    console.error(`there is no catalogue for "${hub}" in pages.mjs`);
+    process.exit(2);
+}
+
+const paths = catalogue.pages.filter(p => !p.as && !p.expect).map(p => p.url);
 
 const browser = await chromium.launch({ executablePath: chromiumPath() });
 const context = await browser.newContext({ ignoreHTTPSErrors: true });
@@ -247,6 +250,52 @@ for (const path of paths) {
             return out;
         };
 
+        // Where the text actually lands, and whether any of it survives the
+        // boxes it is inside. A run can be pushed out of sight without being
+        // hidden: com_publications labels its ranking bar with real words and
+        // then sets text-indent: 55em on the bar, which has overflow: hidden.
+        // Measuring that text's colour is measuring something nobody sees, so
+        // clip its rectangles to every box that crops - the element's own
+        // included, since an element clips its own content - and require that
+        // something is left.
+        const painted = (el, nodes) => {
+            const clips = [];
+
+            for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+                const s = getComputedStyle(n);
+
+                if (s.overflowX !== 'visible' || s.overflowY !== 'visible') {
+                    clips.push(n.getBoundingClientRect());
+                }
+            }
+
+            if (!clips.length) {
+                return true;
+            }
+
+            const range = document.createRange();
+
+            for (const node of nodes) {
+                range.selectNodeContents(node);
+
+                for (const r of range.getClientRects()) {
+                    if (r.width < 1 || r.height < 1) {
+                        continue;
+                    }
+
+                    const lives = clips.every(c =>
+                        r.right > c.left + 1 && r.left < c.right - 1
+                        && r.bottom > c.top + 1 && r.top < c.bottom - 1);
+
+                    if (lives) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        };
+
         const out = [];
         const seen = new Set();
         let mark = 0;
@@ -262,12 +311,12 @@ for (const path of paths) {
             }
 
             // Only elements with text of their own, not wrappers repeating it
-            const own = [...el.childNodes]
-                .filter(n => n.nodeType === 3 && n.textContent.trim())
-                .map(n => n.textContent.trim())
-                .join(' ');
+            const nodes = [...el.childNodes]
+                .filter(n => n.nodeType === 3 && n.textContent.trim());
 
-            if (!own) {
+            const own = nodes.map(n => n.textContent.trim()).join(' ');
+
+            if (!own || !painted(el, nodes)) {
                 continue;
             }
 

@@ -93,3 +93,13 @@
 @colorNoticeWarning: #F9F2E3;
 @colorNoticeError: #FBEDEB;
 @colorNoticeSuccess: #E9F4F0;
+
+// The core's own text colour for each kind was picked to sit on white, where
+// it clears 4.5:1 with nothing to spare. On a tint of itself it no longer
+// does - warning fell to 4.4:1 and error and success to 4.3:1 - so each has a
+// darker shade of the same hue for use over its own ground. Still the same
+// colour at a glance, still amber and red and green; only deeper.
+@colorNoticeInfoText: #25595F;
+@colorNoticeWarningText: #7A5900;
+@colorNoticeErrorText: #B32309;
+@colorNoticeSuccessText: #006B4F;

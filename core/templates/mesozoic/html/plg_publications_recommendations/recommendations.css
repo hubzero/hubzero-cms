@@ -1,0 +1,13 @@
+/**
+ * Publication recommendations
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/publications/recommendations/assets/css/recommendations.css");
+
+/* The heading over the list, at #747b88: 4.3:1 on white, just short */
+#recommendations h3 {
+	color: #6B6259;
+}

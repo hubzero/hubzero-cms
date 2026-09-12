@@ -27,6 +27,13 @@
 	color: #2B2622;
 }
 
+/*
+ * A disabled control. 1.4.3 exempts an inactive component from its ratio, but
+ * an exemption is not a reason to be unreadable: the ground says it is
+ * unavailable and the text stays legible at 6:1.
+ */
 .fc-state-disabled {
-	color: #8A8178;
+	background: #EFE9DF;
+	border-color: #E2DACE;
+	color: #6B6259;
 }
