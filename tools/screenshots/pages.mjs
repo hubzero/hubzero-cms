@@ -152,6 +152,12 @@ const PALETTE_LUCENT = COMMON.concat([
     // The core's own quiet surfaces, which lucent does not correct
     'rgb(238, 238, 238)', 'rgb(249, 249, 249)', 'rgb(225, 225, 225)',
     'rgb(241, 241, 241)', 'rgb(247, 247, 247)', 'rgb(212, 212, 205)',
+    'rgb(245, 245, 245)', 'rgb(246, 246, 246)', 'rgb(242, 242, 242)',
+
+    // ...and the ones that arrive as composites rather than as a value
+    // anybody wrote: an input's ground is rgba(0,0,0,0.039), so what it
+    // actually paints depends on what is behind it.
+    'rgb(240, 240, 240)', 'rgb(239, 239, 239)', 'rgb(246, 246, 247)',
 ]);
 
 export const hubs = {
