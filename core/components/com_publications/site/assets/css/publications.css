@@ -891,19 +891,33 @@ div.sample p {
 	margin: -0.5em 0 0 0;
 	line-height: 1.5;
 }
-.opensource {
+/*
+ * The badge beside a licence, one per kind.
+ *
+ * Each is scoped to .license, which showLicense() always emits alongside the
+ * licence's own name, because the names on their own are words this platform
+ * uses elsewhere: .custom is the class mod_custom wraps every custom module
+ * in, so a hub's footer was having a licence badge painted behind it on every
+ * publications page - a strong orange under the footer headings, which is how
+ * it was found. .standard and .cc are no safer.
+ *
+ * The !important on four of the five is kept as it was: the rules differ only
+ * in scope.
+ */
+.license.opensource {
 	background: url("../img/logos/opensource.gif") 0 0 no-repeat !important;
 }
-.closedsource {
+.license.closedsource {
 	background: url("../img/logos/closedsource.gif") 0 0 no-repeat !important;
 }
-.cc {
+.license.cc {
 	background: url("../img/logos/cc.gif") -0.5em 0.5em no-repeat !important;
 }
-.com_publications .custom, .standard {
+.license.custom,
+.license.standard {
 	background: url("../img/logos/license.gif") -0.5em 0.5em no-repeat;
 }
-.gpl {
+.license.gpl {
 	background: url("../img/logos/gnu.gif") -0.5em 0.5em no-repeat !important;
 }
 .license-terms:before {
