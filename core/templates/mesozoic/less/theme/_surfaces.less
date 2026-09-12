@@ -1,0 +1,200 @@
+// Surfaces, edges and depth
+//
+// The page was flat: every quiet panel a square grey rectangle, every input a
+// square box, nothing sunk into the page and nothing standing on it. The
+// greys are warmed at token level in legacy/vars/_surfaces.less; this is the
+// shape of them.
+//
+// Two moves and no more. A thing you type into is cut into the page - a
+// slightly lighter well, a warm edge, and one inset hairline of shadow. A
+// thing you press or read off is standing on it - a hairline edge and one
+// soft shadow under it. Anything else stays flat, because depth everywhere is
+// the same as depth nowhere.
+//
+// The theme layer is the last one in, so these win a tie against the legacy
+// and template layers without a single !important.
+
+// A thing you type into
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+select,
+textarea {
+	background-color: @colorSurfaceSunk;
+	border: 1px solid @colorSurfaceEdge;
+	border-radius: @radius;
+	box-shadow: @shadowSunk;
+
+	&:focus {
+		border-color: @colorBrand;
+		outline: 2px solid @colorBrand;
+		outline-offset: 1px;
+	}
+}
+
+// A thing you press
+button,
+.btn,
+input[type="submit"],
+input[type="button"] {
+	border-radius: @radius;
+}
+
+// A button nobody styled. The paginator's "Go" and anything else the core
+// emits as a bare <button> fell through to the browser's own grey, which is
+// the one grey on the page nothing in the stylesheets is responsible for.
+button:not([class]),
+.pagination-go {
+	background: @colorSurfaceRaised;
+	border: 1px solid @colorSurfaceEdge;
+	border-radius: @radius;
+	box-shadow: @shadowRaised;
+	color: @colorText;
+	padding: 0.4em 0.9em;
+
+	&:hover,
+	&:focus {
+		background: #fff;
+		border-color: @colorBrand;
+	}
+}
+
+// Voting, which asks for its own radius of nothing at two classes deep
+.voting {
+
+	.vote-button,
+	a.vote-button,
+	.vote-button:hover,
+	a.vote-button:hover {
+		border-radius: 999px;
+		border-color: @colorSurfaceEdge;
+	}
+}
+
+// The panel a listing puts its search in. A slab of grey across the page,
+// square, with a square white box in it; now a panel standing on the page
+// with the field sunk into the panel.
+.data-entry {
+	background: @colorSurface;
+	border: 1px solid @colorSurfaceBorder;
+	border-radius: @radiusLarge;
+	box-shadow: @shadowRaised;
+	padding: 1rem 1.25rem;
+
+	.entry-search {
+
+		input[type="text"],
+		input {
+			border: 1px solid @colorSurfaceEdge;
+			background-color: #fff;
+			border-radius: @radius;
+			box-shadow: @shadowSunk;
+			padding: 0.5em 0.7em;
+		}
+	}
+}
+
+// Tabs, which were a grey strip of square grey boxes. The strip keeps its
+// ground so the row reads as one thing; the tabs round at the top, where a
+// tab is a page behind a page, and the one you are on comes forward.
+ul.sub-menu {
+	border-radius: @radiusLarge @radiusLarge 0 0;
+
+	li a {
+		border-radius: @radiusSmall @radiusSmall 0 0;
+	}
+
+	li.active a,
+	li a.active {
+		box-shadow: @shadowRaised;
+	}
+}
+
+// The counts and votes, which were square grey chips
+.item-count,
+.vote-button,
+span.count {
+	border-radius: 999px;
+}
+
+// Anything the hub says to you: a message, a warning, an error, a note. A
+// square grey box with the words in it, and now a panel with the colour of
+// what it is down its leading edge - the same shape the page title uses, so
+// the two read as one family.
+.help,
+.info,
+.warning,
+.error,
+.passed,
+#system-message dd {
+	border: 1px solid @colorSurfaceBorder;
+	border-radius: @radius;
+	box-shadow: @shadowRaised;
+}
+
+// Which kind it is, down the leading edge - the same device the page title
+// uses, so a notice and a title read as one family. The colours are the ones
+// the core already gives each kind's icon, so nothing new is invented.
+.info,
+#system-message dd.info,
+#system-message dd.message {
+	border-left: 4px solid @color-info-text;
+}
+
+.warning,
+#system-message dd.warning {
+	border-left: 4px solid @color-warning-text;
+}
+
+.error,
+#system-message dd.error {
+	border-left: 4px solid @color-critical-text;
+}
+
+.passed {
+	border-left: 4px solid @color-success-text;
+}
+
+// A comment's caption, and the wiki's reference table, which the core's own
+// stylesheet paints #efefef where nothing else on the page is grey any more
+ol.comments .figcaption {
+	background: @colorSurface;
+	border-radius: 0 0 @radiusSmall @radiusSmall;
+}
+
+table.wiki-reference tbody td {
+	border-top-color: @colorSurfaceBorder;
+	border-bottom-color: @colorSurfaceBorder;
+}
+
+// A timestamp on a wiki page, which was a grey bar
+p.timestamp {
+	background: @colorSurface;
+	border: 1px solid @colorSurfaceBorder;
+	border-radius: @radius;
+	box-shadow: @shadowRaised;
+}
+
+// The button that opens the search, and the accordion in the mobile menu
+.accordion-trigger {
+	border-radius: @radiusSmall;
+}
+
+// An entry in a listing lifts a little when the pointer is on it, which is
+// the only animation on the page and the cheapest way to say a row is one
+// thing rather than a heap of text
+.entries > li,
+.results > li {
+	border-radius: @radiusSmall;
+	transition: box-shadow 0.15s ease, background-color 0.15s ease;
+
+	&:hover {
+		background-color: @colorSurfaceRaised;
+		box-shadow: @shadowRaised;
+	}
+}

@@ -15,3 +15,10 @@
 .entries .entry-identifier {
 	color: #6B6259;
 }
+
+/* A comment beside a thread, which was a square grey block */
+.aside .entry-comment {
+	background: #F8F4EE;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
+}
