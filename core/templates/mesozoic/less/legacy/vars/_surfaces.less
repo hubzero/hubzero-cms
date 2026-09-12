@@ -1,0 +1,43 @@
+// The greys the shared variables reach for, warmed to this palette
+//
+// core/assets/less/variables.less is the core's, imported by every template,
+// and it paints every quiet surface a neutral grey - #eee, #f9f9f9, #e1e1e1,
+// #f1f1f1. Against a page the colour of weathered sandstone those read as
+// cold patches laid on top of it rather than as part of it, and there are
+// enough of them - a search panel, a tab strip, a comment reply, a table
+// stripe, a vote button - that the page ends up half one palette and half
+// another.
+//
+// Retinted rather than restyled: every one of these is a token the legacy
+// stylesheet already uses, so correcting them here reaches every rule that
+// asks for one, and nothing below has to know which rules those are.
+//
+// Redefined before anything that uses them, because this compiler resolves a
+// variable where it is used rather than hoisting it.
+
+// The quiet surfaces, from nearly the page's own colour down to a panel that
+// is plainly a panel
+@contentBackground:       #FAF7F2;
+@grayLighter:             #EFEAE1;
+@tableBackgroundAccent:   #F8F4EE;
+@commentReplyBackground:  #F4EFE7;
+@votingBackground:        #F4EFE7;
+@modalBackground:         #FAF7F2;
+@formActionsBackground:   #F4EFE7;
+@tabContainerBackground:  #EFE9DF;
+
+// A well: an input is cut into the page rather than laid on it
+@inputBackground:         #FBF8F4;
+@inputBorder:             #D5CBBB;
+@inputDisabledBackground: #EFEAE1;
+
+// Edges, warm and dark enough to be found. 1.4.11 asks 3:1 of anything that
+// shows where a control is: #D5CBBB on #FAF7F2 is 1.5:1, which is why the
+// border of a control uses @colorBorderVisible and only the edges of quiet
+// surfaces use these.
+@tableBorder:             #E2DACE;
+@btnBorder:               #D5CBBB;
+@btnBackground:           #FAF7F2;
+@containerBlockBorder:    #E2DACE;
+@paginationBorder:        #E2DACE;
+@tabActiveBorder:         #D8CFC0;
