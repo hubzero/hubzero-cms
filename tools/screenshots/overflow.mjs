@@ -215,10 +215,56 @@ for (const size of widths) {
                         continue;
                     }
 
-                    const edge = cutter.getBoundingClientRect().left + cutter.clientWidth;
+                    const cut = cutter.getBoundingClientRect();
+                    const edge = cut.left + cutter.clientWidth;
                     const lost = Math.round(box.right - edge);
 
                     if (lost < 24) {
+                        continue;
+                    }
+
+                    // Text put out of sight rather than text that did not fit.
+                    //
+                    // Two idioms do this on purpose: a label pushed off its
+                    // own box with text-indent so an icon can stand in for it,
+                    // and a button whose whole width is padding for that icon.
+                    // Neither leaves anything readable inside the box that
+                    // clips it, which is what tells them apart from truncation
+                    // - something truncated is still partly readable, and the
+                    // unreadable tail is the complaint.
+                    //
+                    // The element's own box does not answer this. The
+                    // publications ranking bar is positioned at the left edge
+                    // of its clipper and then indented 55em, so its box starts
+                    // inside and only its words are outside. Ask where the
+                    // words are.
+                    const own = [...el.childNodes]
+                        .filter(n => n.nodeType === 3 && n.textContent.trim());
+
+                    if (own.length) {
+                        const range = document.createRange();
+                        let readable = false;
+
+                        for (const node of own) {
+                            range.selectNodeContents(node);
+
+                            for (const r of range.getClientRects()) {
+                                if (r.width >= 1 && r.left < edge - 1
+                                    && r.right > cut.left + 1) {
+                                    readable = true;
+                                    break;
+                                }
+                            }
+
+                            if (readable) {
+                                break;
+                            }
+                        }
+
+                        if (!readable) {
+                            continue;
+                        }
+                    } else if (box.left >= edge - 1 || box.right <= cut.left + 1) {
                         continue;
                     }
 
