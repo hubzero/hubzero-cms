@@ -14,8 +14,23 @@
 // the same shapes all the same, so the three bands are recognisably one hand.
 .page-footer {
 	position: relative;
-	padding-top: 3rem;
+	padding-top: 2rem;
 	border-top: 0;
+
+	// The footer's own room above its links, in one place. The page's inner
+	// wrapper brings 40px of its own, which stacked on top of this one and
+	// left the links sitting a third of the way down.
+	> .inner {
+		padding-top: 0;
+	}
+
+	// "Helpful Links" over a block of links is the block saying what it
+	// plainly is. Hidden rather than deleted: it is the only name the footer's
+	// link block has, and somebody moving through a page by its headings
+	// would lose the footer altogether without it.
+	> .inner > .custom > h2 {
+		.visuallyHidden();
+	}
 
 	// A stacking context of its own, so that the band below can be given a
 	// negative index and land between this element's background and its text.
