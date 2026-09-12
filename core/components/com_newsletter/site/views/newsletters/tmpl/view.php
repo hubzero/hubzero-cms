@@ -68,22 +68,35 @@ $this->css()
             <?php endif; ?>
         </div><!-- /.subject -->
         <aside class="aside">
+        <?php
+        // The ones this list will actually carry. Settled before the heading,
+        // because an unpublished newsletter is skipped and on a hub that has
+        // never sent one that is all of them - which left a heading over an
+        // empty list rather than no list at all.
+        $past = array();
+
+        foreach ($this->newsletters as $newsletter) {
+            if ($newsletter->published) {
+                $past[] = $newsletter;
+            }
+        }
+        ?>
+        <?php if ($past) : ?>
         <div class="container">
             <h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_PAST_NEWSLETTERS'); ?></h3>
             <ul>
-                <?php foreach ($this->newsletters as $newsletter) : ?>
-                    <?php if ($newsletter->published) : ?>
-                        <?php $nlUrl = Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>
-                        <?php $activeClass = ($this->id == $newsletter->id) ? 'active' : ''; ?>
-                        <li>
-                            <a class="<?php echo $activeClass; ?>" href="<?php echo $nlUrl; ?>">
-                                <?php echo $newsletter->name; ?>
-                            </a>
-                        </li>
-                    <?php endif; ?>
+                <?php foreach ($past as $newsletter) : ?>
+                    <?php $nlUrl = Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>
+                    <?php $activeClass = ($this->id == $newsletter->id) ? 'active' : ''; ?>
+                    <li>
+                        <a class="<?php echo $activeClass; ?>" href="<?php echo $nlUrl; ?>">
+                            <?php echo $newsletter->name; ?>
+                        </a>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </div>
+        <?php endif; ?>
         <div class="container">
             <h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?></h3>
             <ul>

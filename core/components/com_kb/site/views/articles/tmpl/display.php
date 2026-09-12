@@ -106,10 +106,16 @@ Document::setTitle(Lang::txt('COM_KB'));
                             </div><!-- / .col span-half -->
                         </div><!-- / .grid -->
 
-                        <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
-                        <div class="grid">
                         <?php
-                        $i = 0;
+                        // Which categories this page will actually draw, and
+                        // the articles it will draw under each.
+                        //
+                        // Settled before the heading rather than inside the
+                        // loop: a category with no published article anybody
+                        // may read is skipped, and on a new knowledge base
+                        // that is every category - which left the word
+                        // "Categories" printed over nothing at all.
+                        $shown = array();
 
                         $categories = $this->archive->categories(array('state' => 1, 'access' => User::getAuthorisedViewLevels()));
 
@@ -126,16 +132,29 @@ Document::setTitle(Lang::txt('COM_KB'));
                                 continue;
                             }
 
-                            $i++;
-                            switch ($i) {
-                                case 1:
-                                    $cls = '';
-                                    break;
-                                case 2:
-                                    $cls = ' omega';
-                                    break;
-                            }
+                            $shown[] = array($row, $articles);
+                        }
+
+                        if ($shown) {
                             ?>
+                        <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
+                        <div class="grid">
+                            <?php
+                            $i = 0;
+
+                            foreach ($shown as $pair) {
+                                list($row, $articles) = $pair;
+
+                                $i++;
+                                switch ($i) {
+                                    case 1:
+                                        $cls = '';
+                                        break;
+                                    case 2:
+                                        $cls = ' omega';
+                                        break;
+                                }
+                                ?>
                             <div class="col span-half<?php echo $cls; ?>">
                                 <h4>
                                     <a href="<?php echo Route::url($row->link()); ?>">
@@ -158,15 +177,18 @@ Document::setTitle(Lang::txt('COM_KB'));
                                     <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
                                 <?php } ?>
                             </div><!-- / .col span-half <?php echo $cls; ?> -->
-                            <?php
-                            //echo ($i >= 2) ? '<div class="clearfix"></div>' : '';
+                                <?php
+                                //echo ($i >= 2) ? '<div class="clearfix"></div>' : '';
 
-                            if ($i >= 2) {
-                                $i = 0;
+                                if ($i >= 2) {
+                                    $i = 0;
+                                }
                             }
+                            ?>
+                        </div><!-- / .grid -->
+                            <?php
                         }
                         ?>
-                        </div><!-- / .grid -->
                     </div><!-- / .container-block -->
                 </div><!-- / .container -->
             </form>
