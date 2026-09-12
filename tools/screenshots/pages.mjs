@@ -136,6 +136,24 @@ const PALETTE_MERIDIAN = COMMON.concat([
     'rgb(236, 243, 246)', 'rgb(184, 210, 220)',
 ]);
 
+/**
+ * Lucent: the core's own neutrals, which this template keeps
+ *
+ * Lucent is a CSS-override-only template and does not retint the shared
+ * variables, so its greys are the core's greys and belong in the list. What
+ * this report can still say about it is whether a colour turns up that is not
+ * one of them; what is worth reading on a bare hub is the other two reports,
+ * which do not depend on a palette at all.
+ */
+const PALETTE_LUCENT = COMMON.concat([
+    'rgb(37, 37, 37)', 'rgb(118, 118, 118)', 'rgb(231, 231, 231)',
+    'rgb(251, 251, 251)', 'rgb(226, 226, 226)', 'rgb(244, 246, 248)',
+
+    // The core's own quiet surfaces, which lucent does not correct
+    'rgb(238, 238, 238)', 'rgb(249, 249, 249)', 'rgb(225, 225, 225)',
+    'rgb(241, 241, 241)', 'rgb(247, 247, 247)', 'rgb(212, 212, 205)',
+]);
+
 export const hubs = {
 
     mesozoic: {
@@ -161,6 +179,96 @@ export const hubs = {
     //
     // One account, which is the administrator's. A page here is what a
     // stranger sees.
+    // Lucent, judged where there is something to judge it on.
+    //
+    // The hub lucent is delivered on is bare on purpose, and a template shows
+    // almost nothing of itself against nothing: no listing rows, no tabs, no
+    // tables, no pagination, no comments. So the template is measured here
+    // instead, against mesozoic's content and mesozoic's whole page list, by
+    // asking that hub to render each page in lucent for the length of one
+    // request. Nothing about the mesozoic hub changes; its own default is
+    // still its own.
+    //
+    // Photographs land in docs/screenshots/lucent-on-mesozoic/, beside rather
+    // than on top of the bare hub's.
+    'lucent-on-mesozoic': {
+        host: 'mesozoic',
+        port: '7600',
+        style: 4,
+        palette: PALETTE_LUCENT,
+
+        people: {
+            member:  { username: 'mokonkwo',  password: demoPassword },
+            manager: { username: 'sberglund', password: demoPassword },
+            admin:   { username: 'admin',     password: adminPassword },
+        },
+        pages: PAGES_MESOZOIC,
+    },
+
+    // The fourth hub: one with nothing in it.
+    //
+    // Not the state a hub owner chooses - it is what the installer leaves when
+    // sample data is declined - but it is the state every area of every hub
+    // passes through, and the one a template is never designed against. A
+    // listing with no entries, a calendar with no events, a directory with one
+    // member: each of those should say so and still look like a page. That is
+    // the half of a template nobody looks at, so this catalogue is nearly all
+    // of it.
+    //
+    // Every page here is an empty one on purpose. Where a page is not empty
+    // the hub is telling us something too - /members has the administrator in
+    // it, and /tags has whatever the installer tagged.
+    lucent: {
+        port: '7700',
+        palette: PALETTE_LUCENT,
+
+        people: {
+            admin: { username: 'admin', password: adminPassword },
+        },
+
+        pages: [
+            { name: 'home', url: '/' },
+
+            // Every area the navigation offers, with nothing in any of them
+            { name: 'resources', url: '/resources' },
+            { name: 'groups', url: '/groups' },
+            { name: 'events', url: '/events' },
+            { name: 'knowledge-base', url: '/kb' },
+            { name: 'answers', url: '/answers' },
+            { name: 'blog', url: '/blog' },
+            { name: 'courses', url: '/courses' },
+            { name: 'citations', url: '/citations' },
+            { name: 'collections', url: '/collections' },
+            { name: 'publications', url: '/publications' },
+            { name: 'projects', url: '/projects' },
+            { name: 'wish-list', url: '/wishlist' },
+            { name: 'polls', url: '/poll' },
+            { name: 'jobs', url: '/jobs' },
+            { name: 'newsletters', url: '/newsletter' },
+            { name: 'wiki', url: '/wiki' },
+            { name: 'whats-new', url: '/whatsnew' },
+            { name: 'tags', url: '/tags' },
+            { name: 'members-directory', url: '/members' },
+            { name: 'support', url: '/support' },
+            { name: 'feedback', url: '/feedback' },
+
+            { name: 'sign-in', url: '/login' },
+            { name: 'search-empty', url: '/search?terms=nothing' },
+
+            // The error page is a page too, and the one a template is least
+            // likely to have been looked at on. 404 is the right answer here.
+            { name: 'not-found', url: '/this-page-does-not-exist', expect: 404 },
+
+            // A bare hub has no menu item for the registration form, so the
+            // SEF path a hub advertises everywhere answers 404. Recorded as
+            // what it is rather than left out, so that it stops being a 404
+            // the day somebody fixes it.
+            { name: 'register', url: '/register', expect: 404 },
+
+            { name: 'admin-home', url: '/administrator/', as: 'admin' },
+        ],
+    },
+
     welcome: {
         port: '7500',
         palette: PALETTE_MERIDIAN,
@@ -218,5 +326,46 @@ export const hubs = {
  */
 export function hubFor(hub) {
     return hubs[hub] || null;
+}
+
+/**
+ * Where a catalogue's pages actually are
+ *
+ * A catalogue is usually its own hub, and then this is the hub's own address.
+ * It need not be: a template has to be judged against a hub with something in
+ * it, and the hub a template is delivered on may have nothing. So an entry can
+ * name another hub's host and port and ask for a template by style id, and the
+ * site will render that one page in that template without the hub's own
+ * default changing - the switch lasts one request and is not remembered.
+ *
+ * @param   string  hub   Which catalogue
+ * @param   string  port  A port from the command line, which wins
+ * @return  object  Its base address, and a way to address one of its pages
+ */
+export function addressFor(hub, port) {
+    const catalogue = hubs[hub] || {};
+    const host = catalogue.host || hub;
+    const domain = process.env.HUB_DOMAIN || 'example.com';
+    const base = `https://${host}.${domain}:${port || catalogue.port || '7600'}`;
+    const style = catalogue.style;
+
+    return {
+        base,
+
+        /**
+         * One page's address, with the template asked for if there is one
+         *
+         * @param   string  path  A path, which may carry a query of its own
+         * @return  string
+         */
+        url(path) {
+            if (!style) {
+                return base + path;
+            }
+
+            return base + path + (path.includes('?') ? '&' : '?')
+                + 'templateStyle=' + style;
+        },
+    };
 }
 

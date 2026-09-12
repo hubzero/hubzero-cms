@@ -19,7 +19,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { hubFor } from './pages.mjs';
+import { hubFor, addressFor } from './pages.mjs';
 
 /** The newest chromium already on this machine. */
 function chromiumPath() {
@@ -73,8 +73,7 @@ const hub  = args[0] || 'mesozoic';
 // The port is the hub's own, from the catalogue: naming a hub and getting
 // another hub's port back is how a whole run of this once came back clean
 // against twenty-four blank pages. An argument still overrides it.
-const port = args[1] || (hubFor(hub) || {}).port || '7600';
-const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
+const { base, url } = addressFor(hub, args[1]);
 
 // Who the hub is photographed as. A manager is also an instructor here, which
 // keeps the count down without losing a view: every page either of them can
@@ -240,7 +239,7 @@ for (const [label, size] of Object.entries(viewports)) {
         let response;
 
         try {
-            response = await visit(page, base + entry.url);
+            response = await visit(page, url(entry.url));
         } catch (e) {
             console.log(`  FAILED  ${label}/${entry.name}  ${e.message.split('\n')[0]}`);
             failed++;
