@@ -107,128 +107,217 @@ function band($file, $width, $height, $ground, array $shapes)
 
 
 /**
- * The world the Calder Basin sat in
+ * The world in the Late Cretaceous, about ninety million years ago
  *
- * A drawing, not a reconstruction. Everything this hub holds is invented -
- * the basin, the quarries, the people - and its geography is invented with
- * it, so this is the shape of a world that never was rather than anybody's
- * palaeogeography. It is here because a map reads as a map: a graticule and a
- * few closed coastlines say "somewhere, long ago" at a glance and at any
- * opacity, which a picture of an animal cannot.
+ * Approximate, and coarse on purpose: the coastlines are a few dozen points
+ * each, taken from the general arrangement of the period rather than plotted
+ * from a dataset, and the whole thing is shown at a few hundred pixels and a
+ * tenth of an opacity. It is a schematic at the size it is used and would not
+ * survive being enlarged.
  *
- * Each landmass is a closed curve round a centre, its radius carrying a few
- * harmonics, which gives a coast that bays and juts without any of it being
- * drawn by hand. The shallow sea between them is the gap.
+ * What it gets right is what somebody who knows the period would look for:
+ * North America in two pieces either side of the Western Interior Seaway, the
+ * South Atlantic open but narrow, Europe an archipelago rather than a
+ * continent, India out on its own in the southern ocean, Australia still
+ * joined to Antarctica, and the Tethys open between Laurasia and Gondwana.
+ * The Cretaceous because it is the period most of this hub's content is
+ * about, rather than the Triassic or the Jurassic.
+ *
+ * Drawn on Mollweide, which is the projection palaeogeography is usually
+ * published on: it holds area, which is what a map of where the land was is
+ * for, and its ellipse reads as a map of a whole world rather than as a
+ * picture of part of one. A globe was tried first and had to leave half the
+ * continents round the back.
  *
  * @param   string  $file  What to call it
- * @param   int     $size  How big a square it is drawn in
+ * @param   int     $size  How wide it is drawn; the height is half of that
  * @return  void
  */
 function world($file, $size)
 {
-    $c = $size / 2;
-    $r = $size * 0.46;
+    // Longitude and latitude, degrees, round each coast
+    $land = [
+        // Laramidia: western North America, west of the seaway
+        [[-122, 66], [-114, 69], [-107, 67], [-103, 61], [-100, 54],
+         [-101, 47], [-103, 40], [-106, 35], [-111, 30], [-116, 32],
+         [-119, 40], [-121, 48], [-122, 57]],
 
-    // The land. Centre, radius, and the harmonics its coast carries. Kept
-    // well inside the limb and well apart: the sea between them is the point,
-    // and land that fills the disc reads as a stain rather than as a world.
-    $lands = [
-        [0.34, 0.34, 0.130, [[2, 0.30, 0.4], [3, 0.18, 2.1], [5, 0.10, 1.2]]],
-        [0.66, 0.31, 0.085, [[2, 0.34, 2.7], [4, 0.16, 0.9]]],
-        [0.41, 0.68, 0.110, [[2, 0.28, 1.6], [3, 0.20, 0.3], [6, 0.09, 2.9]]],
-        [0.70, 0.63, 0.070, [[3, 0.30, 1.9], [5, 0.14, 0.7]]],
-        [0.56, 0.48, 0.045, [[2, 0.26, 0.8], [4, 0.18, 2.2]]],
+        // Appalachia: the eastern half, an island for most of the period
+        [[-95, 50], [-88, 53], [-80, 52], [-72, 48], [-64, 42], [-66, 37],
+         [-70, 33], [-77, 31], [-84, 30], [-90, 34], [-93, 42]],
+
+        // Greenland, still against North America
+        [[-45, 78], [-25, 76], [-20, 68], [-30, 60], [-45, 62], [-52, 70]],
+
+        // Asia, with the Turgai Strait between it and Europe
+        [[60, 70], [78, 75], [100, 77], [124, 73], [148, 70], [162, 62],
+         [155, 52], [142, 45], [128, 38], [110, 34], [92, 36], [76, 41],
+         [66, 48], [58, 58]],
+
+        // Europe: what was above water, which was not much of it
+        [[-8, 40], [0, 42], [3, 37], [-6, 35]],
+        [[6, 50], [16, 51], [18, 46], [8, 45]],
+        [[12, 66], [28, 68], [32, 60], [18, 56], [10, 60]],
+
+        // Africa, across a South Atlantic that had only just opened
+        [[-16, 30], [-4, 33], [10, 34], [24, 33], [34, 28], [40, 18],
+         [46, 6], [43, -8], [36, -22], [28, -32], [18, -35], [8, -28],
+         [2, -14], [-4, 2], [-12, 14], [-17, 22]],
+
+        // South America
+        [[-78, 8], [-66, 11], [-54, 5], [-44, -3], [-38, -12], [-42, -24],
+         [-50, -34], [-58, -44], [-68, -48], [-75, -38], [-79, -24],
+         [-81, -10], [-80, 0]],
+
+        // India, out in the southern ocean and on its way north
+        [[62, -18], [70, -13], [77, -20], [79, -30], [72, -36], [65, -30]],
+
+        // Madagascar
+        [[44, -16], [50, -18], [51, -26], [45, -25]],
+
+        // Australia, not yet parted from Antarctica
+        [[108, -46], [124, -43], [140, -45], [152, -52], [148, -62],
+         [130, -65], [114, -60], [106, -53]],
+
+        // Antarctica: a cap, closed over the pole, where every meridian meets
+        [[-180, -64], [-140, -61], [-100, -66], [-60, -62], [-20, -65],
+         [20, -63], [60, -60], [100, -64], [140, -62], [180, -64],
+         [180, -90], [-180, -90]],
     ];
+
+    $lon0 = 0;
+
+    // Mollweide is an ellipse two wide and one tall, so the drawing is too
+    $w  = $size;
+    $h  = $size / 2;
+    $cx = $w / 2;
+    $cy = $h / 2;
+
+    /**
+     * One point of the world, on the page
+     *
+     * @param   float  $lon  Degrees
+     * @param   float  $lat  Degrees
+     * @return  array  x, y
+     */
+    $project = function ($lon, $lat) use ($cx, $cy, $lon0) {
+        $phi = deg2rad($lat);
+
+        // 2t + sin 2t = pi sin phi, which has no closed form, so Newton it.
+        // At the poles the equation is satisfied exactly and the derivative
+        // is zero, so they are taken as read rather than iterated toward.
+        if (abs($lat) >= 89.999) {
+            $theta = ($lat > 0 ? 1 : -1) * M_PI / 2;
+        } else {
+            $theta = $phi;
+
+            for ($i = 0; $i < 12; $i++) {
+                $d = (2 * $theta) + sin(2 * $theta) - (M_PI * sin($phi));
+
+                $theta -= $d / (2 + (2 * cos(2 * $theta)));
+            }
+        }
+
+        $x = (2 * M_SQRT2 / M_PI) * deg2rad($lon - $lon0) * cos($theta);
+        $y = M_SQRT2 * sin($theta);
+
+        // The ellipse is 2*sqrt(2) wide and sqrt(2) tall in those units
+        return [
+            $cx + ($x * $cx / (2 * M_SQRT2)),
+            $cy - ($y * $cy / M_SQRT2),
+        ];
+    };
 
     $coasts = [];
 
-    foreach ($lands as $land) {
-        list($lx, $ly, $lr, $waves) = $land;
-
+    foreach ($land as $coast) {
         $points = [];
+        $count  = count($coast);
 
-        for ($a = 0; $a < 120; $a++) {
-            $t   = 2 * M_PI * $a / 120;
-            $rad = $size * $lr;
+        // Sampled along each edge rather than corner to corner: a straight
+        // line between two points of a sphere is not straight on a map
+        for ($i = 0; $i < $count; $i++) {
+            $from = $coast[$i];
+            $to   = $coast[($i + 1) % $count];
 
-            foreach ($waves as $wave) {
-                list($n, $amp, $phase) = $wave;
+            for ($step = 0; $step < 8; $step++) {
+                $t = $step / 8;
 
-                $rad *= 1 + ($amp * sin(($n * $t) + $phase));
+                list($x, $y) = $project(
+                    $from[0] + (($to[0] - $from[0]) * $t),
+                    $from[1] + (($to[1] - $from[1]) * $t)
+                );
+
+                $points[] = sprintf('%.1f %.1f', $x, $y);
             }
-
-            $points[] = sprintf(
-                '%.1f %.1f',
-                ($size * $lx) + ($rad * cos($t)),
-                ($size * $ly) + ($rad * sin($t) * 0.82)
-            );
         }
 
         $coasts[] = '<path d="M ' . implode(' L ', $points) . ' Z"/>';
     }
 
-    // The graticule, drawn over the land so the whole reads as a map of it.
-    // Meridians are ellipses sharing the frame's height and narrowing toward
-    // the limb; parallels are chords of it.
+    // The graticule, every thirty degrees, drawn over the land so the whole
+    // reads as a map of it
     $lines = [];
 
-    // Meridians as fractions of the radius rather than as evenly spaced
-    // longitudes: spacing them evenly puts one at 90 degrees, whose ellipse
-    // has no width at all, and draws each of the others twice.
-    foreach ([0.30, 0.62, 0.87] as $fraction) {
-        $lines[] = sprintf(
-            '<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f"/>',
-            $c,
-            $c,
-            $r * $fraction,
-            $r
-        );
+    for ($lat = -60; $lat <= 60; $lat += 30) {
+        $lines[] = '<path d="' . graticule($project, $lat, null) . '"/>';
     }
 
-    $lines[] = sprintf(
-        '<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>',
-        $c,
-        $c - $r,
-        $c,
-        $c + $r
-    );
-
-    for ($i = 1; $i < 6; $i++) {
-        $y  = $c - ($r * cos(M_PI * $i / 6));
-        $hw = $r * sin(M_PI * $i / 6);
-
-        $lines[] = sprintf(
-            '<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>',
-            $c - $hw,
-            $y,
-            $c + $hw,
-            $y
-        );
+    for ($lon = -150; $lon <= 150; $lon += 30) {
+        $lines[] = '<path d="' . graticule($project, null, $lon) . '"/>';
     }
 
     file_put_contents(
         __DIR__ . '/' . $file,
         '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-        . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $size . ' ' . $size . '"'
+        . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $w . ' ' . $h . '"'
         . ' role="presentation">' . "\n"
-        . '  <defs><clipPath id="limb">'
-        . sprintf('<circle cx="%.1f" cy="%.1f" r="%.1f"/>', $c, $c, $r)
+        . '  <defs><clipPath id="edge">'
+        . sprintf('<ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f"/>', $cx, $cy, $cx, $cy)
         . '</clipPath></defs>' . "\n"
-        . '  <g clip-path="url(#limb)" fill="' . MAPINK . '" fill-opacity="0.5">' . "\n    "
+        . '  <g clip-path="url(#edge)" fill="' . MAPINK . '" fill-opacity="0.5">' . "\n    "
         . implode("\n    ", $coasts) . "\n  </g>" . "\n"
-        . '  <g clip-path="url(#limb)" fill="none" stroke="' . MAPINK . '" stroke-width="0.9">' . "\n    "
+        . '  <g clip-path="url(#edge)" fill="none" stroke="' . MAPINK . '"'
+        . ' stroke-width="0.9" stroke-opacity="0.8">' . "\n    "
         . implode("\n    ", $lines) . "\n  </g>" . "\n"
         . sprintf(
-            '  <circle cx="%.1f" cy="%.1f" r="%.1f" fill="none" stroke="%s" stroke-width="1.6"/>',
-            $c,
-            $c,
-            $r,
+            '  <ellipse cx="%.1f" cy="%.1f" rx="%.1f" ry="%.1f" fill="none"'
+            . ' stroke="%s" stroke-width="1.6"/>',
+            $cx,
+            $cy,
+            $cx - 0.8,
+            $cy - 0.8,
             MAPINK
         ) . "\n"
         . '</svg>' . "\n"
     );
 
     echo sprintf("  %-14s %4dKB\n", $file, max(1, round(filesize(__DIR__ . '/' . $file) / 1024)));
+}
+
+/**
+ * One line of the graticule
+ *
+ * @param   callable  $project  Turns a point of the world into a point on the page
+ * @param   float     $lat      Fixed, for a parallel
+ * @param   float     $lon      Fixed, for a meridian
+ * @return  string    Path data
+ */
+function graticule(callable $project, $lat = null, $lon = null)
+{
+    $parts = [];
+
+    for ($step = 0; $step <= 120; $step++) {
+        $t = $step / 120;
+
+        $point = ($lat === null)
+            ? $project($lon, -90 + (180 * $t))
+            : $project(-180 + (360 * $t), $lat);
+
+        $parts[] = sprintf('%s %.1f %.1f', $step ? 'L' : 'M', $point[0], $point[1]);
+    }
+
+    return implode(' ', $parts);
 }
 
 /**
@@ -360,5 +449,5 @@ band('thicket.svg', 1200, 150, 140, array(
 // the last 14 of it, so the line reads as weathering rather than as a rip.
 tear('tear.svg', 240, 14, 11);
 
-// The world, for the front page to stand its welcome on
-world('world.svg', 600);
+// The world the hub's content comes out of, for a landing page to stand on
+world('world.svg', 800);
