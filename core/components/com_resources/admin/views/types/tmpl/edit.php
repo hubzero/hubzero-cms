@@ -585,7 +585,7 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                                 'groups', 'coins', 'collections',
                                 'dublincore', 'findthistext',
                                 'googlescholar', 'opengraph', 'watch',
-                                'windowstools', 'citations', 'questions',
+                                'citations', 'questions',
                                 'recommendations', 'reviews', 'share',
                                 'sponsors', 'usage', 'versions',
                                 'wishlist'
