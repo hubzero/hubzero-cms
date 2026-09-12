@@ -101,27 +101,7 @@ HUB.TagBrowser = {
 
 			// Only move focus to the new column if explicitly requested (e.g. Right arrow)
 			if (moveFocusToResult) {
-				var firstLink = $('#level-'+level).find('ul a[data-level]').first();
-				if (firstLink.length > 0) {
-					firstLink.addClass('open');
-					firstLink.focus();
-
-					// Auto-activate: load the next column for the focused item
-					HUB.TagBrowser.nextLevel(
-						firstLink.data('type'),
-						firstLink.data('input'),
-						firstLink.data('input2'),
-						firstLink.data('level'),
-						firstLink.data('col'),
-						firstLink.data('rid')
-					);
-				} else {
-					// No drill-down links (e.g. column 3 info) — focus first link
-					var anyLink = $('#level-'+level).find('ul a').first();
-					if (anyLink.length > 0) {
-						anyLink.focus();
-					}
-				}
+				HUB.TagBrowser.enterColumn(level);
 			}
 
 			if ($('#rid').length > 0) {
@@ -203,18 +183,14 @@ HUB.TagBrowser = {
 			);
 		});
 
-		// Sync visual selection when any link receives focus (covers Tab, click, etc.)
-		container.find('ul a').off('focusin.tagbrowser').on('focusin.tagbrowser', function() {
-			var el = $(this),
-				levelDiv = el.closest('[id^="level-"]');
+		// Keep the keyboard's idea of where it is in step with the mouse, so
+		// that arrowing after a click carries on from what was clicked
+		container.find('[data-level]').off('click.tagbrowserkbd').on('click.tagbrowserkbd', function() {
+			var li = $(this).closest('li[role="option"]');
 
-			// Clear previous selection in this column
-			levelDiv.find('ul a.open').removeClass('open');
-			levelDiv.find('ul li[role="option"]').attr('aria-selected', 'false');
-
-			// Highlight the focused item
-			el.addClass('open');
-			el.closest('li[role="option"]').attr('aria-selected', 'true');
+			if (li.length) {
+				HUB.TagBrowser.setActive(li.closest('ul'), li, false);
+			}
 		});
 
 		// Bind sort select change event
@@ -228,120 +204,158 @@ HUB.TagBrowser = {
 		});
 	},
 
-	// Keyboard navigation within the tag browser
-	handleKeyboard: function(e) {
-		var $ = HUB.TagBrowser.jQuery,
-			target = $(e.target),
-			key = e.which || e.keyCode;
+	// Which option in a column the keyboard is on
+	//
+	// The options are spans inside li[role="option"], and a span cannot take
+	// focus - that is the whole reason they are spans, so that an option does
+	// not contain a focusable descendant. So focus stays on the ul[role=
+	// "listbox"] and the option it is on is named by aria-activedescendant,
+	// which is the pattern ARIA provides for exactly this.
+	//
+	// Everything here used to be written against focused <a> elements. When
+	// those became spans the handler kept testing for them, so from that day
+	// the arrow keys did nothing at all.
+	setActive: function(list, li, announce) {
+		var $ = this.jQuery;
 
-		// Only handle keys on links within the tag browser lists
-		if (!target.is('#tagbrowser ul a')) {
+		if (!list.length || !li.length) {
 			return;
 		}
 
-		var currentLi = target.closest('li'),
-			list = target.closest('ul'),
-			levelDiv = target.closest('[id^="level-"]'),
-			levelNum = parseInt(levelDiv.attr('id').replace('level-', ''), 10);
+		list.find('li[role="option"]').attr('aria-selected', 'false');
+		list.find('.hi').removeClass('hi');
 
-		// Helper: move focus, highlight, and auto-activate (load next column without moving to it)
-		var moveFocus = function(link) {
-			// Move .open class from previous item to the new one within this column
-			levelDiv.find('ul a.open').removeClass('open');
-			levelDiv.find('ul li[role="option"]').attr('aria-selected', 'false');
-			link.addClass('open');
-			link.closest('li[role="option"]').attr('aria-selected', 'true');
-			link.focus();
+		li.attr('aria-selected', 'true');
+		li.children('[data-level], span').addClass('hi');
 
-			// Auto-activate: load the next column for this item (without moving focus)
-			if (link.is('a[data-level]')) {
-				// Reset columns further downstream before loading the next one
-				if (levelNum === 1) {
-					HUB.TagBrowser.resetLevel3();
-				}
-				HUB.TagBrowser.nextLevel(
-					link.data('type'),
-					link.data('input'),
-					link.data('input2'),
-					link.data('level'),
-					link.data('col'),
-					link.data('rid')
-				);
+		if (li.attr('id')) {
+			list.attr('aria-activedescendant', li.attr('id'));
+		}
+
+		// Into view, but without dragging the page around it
+		if (li[0] && li[0].scrollIntoView) {
+			li[0].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+		}
+
+		if (announce) {
+			HUB.TagBrowser.announce($.trim(li.text()));
+		}
+	},
+
+	// The option the keyboard is on, or the chosen one, or the first
+	options: function(list) {
+		return list.find('li[role="option"]').not('[aria-disabled="true"]');
+	},
+
+	active: function(list) {
+		var $ = this.jQuery,
+			id = list.attr('aria-activedescendant'),
+			options = HUB.TagBrowser.options(list);
+
+		if (id) {
+			var named = options.filter('#' + id);
+
+			if (named.length) {
+				return named;
 			}
-		};
+		}
+
+		var open = options.has('.open');
+
+		return open.length ? open.first() : options.first();
+	},
+
+	// Move the keyboard to a column and pick up where it left off there
+	enterColumn: function(levelNum) {
+		var $ = this.jQuery,
+			list = $('#level-' + levelNum).find('ul[role="listbox"]').first();
+
+		if (!list.length) {
+			return false;
+		}
+
+		list.focus();
+		HUB.TagBrowser.setActive(list, HUB.TagBrowser.active(list), true);
+
+		return true;
+	},
+
+	// Keyboard navigation within the tag browser
+	handleKeyboard: function(e) {
+		var $ = HUB.TagBrowser.jQuery,
+			list = $(e.target),
+			key = e.which || e.keyCode;
+
+		// Only the lists themselves take focus
+		if (!list.is('#tagbrowser ul[role="listbox"]')) {
+			return;
+		}
+
+		var levelDiv = list.closest('[id^="level-"]'),
+			levelNum = parseInt(levelDiv.attr('id').replace('level-', ''), 10),
+			options = HUB.TagBrowser.options(list),
+			current = HUB.TagBrowser.active(list),
+			at = options.index(current);
+
+		if (!options.length) {
+			return;
+		}
+
+		var item = current.children('[data-level]').first();
 
 		switch (key) {
-			case 38: // Up arrow
+			case 38: // Up
 				e.preventDefault();
-				var prevLi = currentLi.prev('li');
-				if (prevLi.length > 0) {
-					var prevLink = prevLi.find('a').first();
-					if (prevLink.length > 0) {
-						moveFocus(prevLink);
-					}
-				}
+				HUB.TagBrowser.setActive(list, options.eq(Math.max(0, at - 1)), true);
 				break;
 
-			case 40: // Down arrow
+			case 40: // Down
 				e.preventDefault();
-				var nextLi = currentLi.next('li');
-				if (nextLi.length > 0) {
-					var nextLink = nextLi.find('a').first();
-					if (nextLink.length > 0) {
-						moveFocus(nextLink);
-					}
-				}
+				HUB.TagBrowser.setActive(
+					list,
+					options.eq(Math.min(options.length - 1, at < 0 ? 0 : at + 1)),
+					true
+				);
 				break;
 
-			case 39: // Right arrow - activate current item and move to next column
+			case 39: // Right - open this one and go to the column it fills
 				e.preventDefault();
-				if (levelNum <= 2 && target.is('a[data-level]')) {
+				if (levelNum <= 2 && item.length) {
 					HUB.TagBrowser.nextLevel(
-						target.data('type'),
-						target.data('input'),
-						target.data('input2'),
-						target.data('level'),
-						target.data('col'),
-						target.data('rid'),
-						true // move focus to the new column
+						item.data('type'),
+						item.data('input'),
+						item.data('input2'),
+						item.data('level'),
+						item.data('col'),
+						item.data('rid'),
+						true
 					);
 				}
 				break;
 
-			case 37: // Left arrow - move to previous column
+			case 37: // Left - back to the column that filled this one
 				e.preventDefault();
-				var prevLevel = levelNum - 1;
-				if (prevLevel >= 1) {
-					// Focus the currently active item in the previous column, or the first item
-					var prevCol = $('#level-' + prevLevel).find('ul a.open');
-					if (prevCol.length === 0) {
-						prevCol = $('#level-' + prevLevel).find('ul a').first();
-					}
-					if (prevCol.length > 0) {
-						prevCol.focus();
-					}
+				if (levelNum > 1) {
+					HUB.TagBrowser.enterColumn(levelNum - 1);
 				}
 				break;
 
-			case 32: // Space - activate link (Enter already works natively)
+			case 13: // Enter
+			case 32: // Space
 				e.preventDefault();
-				target.trigger('click');
-				break;
-
-			case 36: // Home - go to first item in list
-				e.preventDefault();
-				var firstLink = list.find('a').first();
-				if (firstLink.length > 0) {
-					moveFocus(firstLink);
+				if (item.length) {
+					item.trigger('click');
 				}
 				break;
 
-			case 35: // End - go to last item in list
+			case 36: // Home
 				e.preventDefault();
-				var lastLink = list.find('a').last();
-				if (lastLink.length > 0) {
-					moveFocus(lastLink);
-				}
+				HUB.TagBrowser.setActive(list, options.first(), true);
+				break;
+
+			case 35: // End
+				e.preventDefault();
+				HUB.TagBrowser.setActive(list, options.last(), true);
 				break;
 		}
 	},
@@ -381,6 +395,17 @@ HUB.TagBrowser = {
 
 		// Bind keyboard navigation
 		browser.on('keydown', HUB.TagBrowser.handleKeyboard);
+
+		// Arriving at a column by Tab, with nothing chosen in it yet: put the
+		// keyboard on something, or the first arrow press has nowhere to go
+		// from and the reader is told nothing about where it has landed.
+		browser.on('focusin', 'ul[role="listbox"]', function() {
+			var list = $(this);
+
+			if (!list.attr('aria-activedescendant')) {
+				HUB.TagBrowser.setActive(list, HUB.TagBrowser.active(list), true);
+			}
+		});
 
 		$.get(HUB.TagBrowser.baseURI+'&type='+type+'&level=1&input='+input+'&input2='+input2+'&id='+id, {}, function(data) {
 			$('#level-1').html(data);

@@ -89,3 +89,29 @@
 	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
 	color: #2B2622;
 }
+
+/* The list is what takes focus, so the ring goes there and in this palette */
+#tagbrowser ul[role="listbox"]:focus,
+#tagbrowser ul[role="listbox"]:focus-visible {
+	outline: 2px solid #8A5A2B;
+	outline-offset: -2px;
+}
+
+/*
+ * The option the keyboard is on, as distinct from the one that is chosen:
+ * an outline rather than a fill, so that both can be seen at once when they
+ * are different items.
+ */
+#level-1 ul :is(a, span).hi,
+#level-2 ul :is(a, span).hi {
+	background: #F0E6D8;
+	color: #2B2622;
+	outline: 2px solid #8A5A2B;
+	outline-offset: -2px;
+}
+
+#level-1 ul :is(a, span).hi.open,
+#level-2 ul :is(a, span).hi.open {
+	background: #6B4420;
+	color: #fff;
+}

@@ -32,7 +32,9 @@ switch ($this->level) {
 
         $html .= '<ul id="ultags" tabindex="0" role="listbox" aria-label="' . Lang::txt('COM_RESOURCES_TAG') . '">';
         if (!$tg2) {
-            $html .= '<li' . ($tg == '' ? ' class="selected"' : '') . '><span id="col1_all" class="';
+            $html .= '<li id="opt_col1_all" role="option" aria-selected="'
+                . ($tg == '' ? 'true' : 'false') . '"'
+                . ($tg == '' ? ' class="selected"' : '') . '><span id="col1_all" class="';
             if ($tg == '') {
                 $html .= 'open';
             }
@@ -44,7 +46,7 @@ switch ($this->level) {
             $i++;
             $isOpen = ($tg == $tag->tag);
 
-            $li  = '<li role="option" aria-selected="';
+            $li  = '<li id="opt_col1_' . $tag->tag . '" role="option" aria-selected="';
             $li .= $isOpen ? 'true' : 'false';
             $li .= '"';
             if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
@@ -104,14 +106,15 @@ switch ($this->level) {
                     }
                 }
 
-                $html .= '<li role="option" aria-selected="false" ';
+                $html .= '<li id="opt_col2_' . $tool->id . '" role="option" aria-selected="false" ';
                 if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported)) {
                     $html .= 'class="supported" ';
                 }
                 $html .= '><span id="col2_' . $tool->id . '" data-type="' . $type->get('id') . '" data-input="' . $tool->id . '" data-input2="" data-level="3" data-col="col2_' . $tool->id . '" data-rid="">' . stripslashes($tool->title) . '</span></li>';
             }
         } else {
-            $html .= '<li role="option" aria-selected="false"><span>' . Lang::txt('COM_RESOURCES_NO_RESULTS') . '</span></li>';
+            $html .= '<li role="option" aria-disabled="true" aria-selected="false"><span>'
+                . Lang::txt('COM_RESOURCES_NO_RESULTS') . '</span></li>';
         }
         $html .= '</ul>';
         if ($type->isForTools() && $params->get('show_ranking')) {
