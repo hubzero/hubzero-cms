@@ -1,0 +1,17 @@
+// Visually hidden
+//
+// .vh is this template's name for it. The core uses .sr-only in a hundred and
+// fifty odd files, and a template that does not answer to that name shows
+// every one of those strings as ordinary text - "Projects - Members only"
+// beside a group's menu, and so on. Same rule, both names.
+.vh,
+.sr-only {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+}

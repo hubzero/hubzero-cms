@@ -1,0 +1,47 @@
+/**
+ * The block of explanation a component puts at the top of its landing page
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ *
+ * The default is a full-bleed grey slab with 120px of left padding for an icon
+ * that is not there. Directly under the accent band it reads as a second,
+ * colder, wider band with nothing to say for itself, and it is the one grey
+ * left on a page that has none anywhere else.
+ *
+ * So the slab goes. One coloured object at the head of a page - the band - and
+ * the explanation under it is text on the page's own ground, at the same
+ * gutter, separated by a rule rather than by a colour.
+ */
+@import url("../../../../../../core/assets/css/introduction.css");
+
+#introduction {
+	margin: 0;
+
+	/* The gutter is already on this element - it is one of the page's own
+	   sections - so only the vertical rhythm is set here. */
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+
+	background: none;
+	border-bottom: 1px solid #E3E7EC;
+	color: #1F2328;
+}
+
+#introduction h3 {
+	color: #1F2328;
+	margin-bottom: 0.5rem;
+}
+
+/* The explanation reads as support for the page, not as the page */
+#introduction p {
+	color: #5B6471;
+	max-width: 34em;
+}
+
+/* The gap under it, decided here rather than by the next section's padding */
+#introduction + section.section,
+#introduction + form > section.section {
+	padding-top: 2.5rem;
+}

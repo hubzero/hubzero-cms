@@ -63,7 +63,11 @@ async function settled(page) {
 
 const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
 const hub  = args[0] || 'mesozoic';
-const port = args[1] || '7600';
+
+// The port is the hub's own, from the catalogue: naming a hub and getting
+// another hub's port back is how a whole run of this once came back clean
+// against twenty-four blank pages. An argument still overrides it.
+const port = args[1] || (hubFor(hub) || {}).port || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 const only = process.argv.includes('--phone') ? 'phone'

@@ -1,0 +1,69 @@
+html {
+	font-family: sans-serif;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	letter-spacing: normal;
+	font-style: normal;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	color: @colorText;
+	font-size: 0.95rem;
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+}
+
+a {
+	text-decoration: none;
+	color: @colorLink;
+
+	&:hover,
+	&:focus {
+		color: @colorLinkHover;
+	}
+}
+
+p > a,
+.contentpaneopen a:not(.btn) {
+	text-decoration: underline;
+}
+
+p {
+	margin: 1em 0;
+	text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: normal;
+	text-wrap: pretty;
+}
+
+h2 {
+	font-size: @font-size-7;
+	font-weight: 600;
+}
+
+h3 {
+	font-size: @font-size-6;
+}
+
+h4 {
+	font-size: @font-size-5;
+}
+
+h5 {
+	font-size: @font-size-4;
+}
+
+h6 {
+	font-size: @font-size-3;
+}

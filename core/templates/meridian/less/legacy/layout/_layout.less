@@ -1,0 +1,461 @@
+section {
+	position: relative;
+
+	.inner {
+		position: relative;
+	}
+}
+
+.page {
+
+	// Subject & Aside layout
+	//
+	// Views written for this template wrap the pair in .hz-layout-with-aside.
+	// Older ones, of which the core has rather more, put the two straight into
+	// the section instead - the wiki is all of them - and those had no column
+	// layout at all: the aside stacked full width above the content, pushing
+	// it off the screen. There the section itself is the column container, so
+	// the same layout is asked of both shapes.
+	.hz-layout-with-aside,
+	section.main:has(> .aside):has(> .subject) {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+
+		@media (min-width: @sizeM) {
+			flex-direction: row;
+		}
+
+		.subject {
+			flex-grow: 1;
+
+			// Stacked, the content comes first whichever order the view wrote
+			// the two in. Side by side, the view's own order decides which
+			// side the aside is on.
+			order: 1;
+
+			@media (min-width: @sizeM) {
+				order: 0;
+				.innerPaddingRight();
+			}
+		}
+
+		.aside {
+			position: relative;
+			margin-top: 50px;
+			order: 2;
+
+			@media (min-width: @sizeM) {
+				order: 0;
+				max-width: 400px;
+				width: 25%;
+				margin-top: 0;
+				flex-shrink: 0;
+			}
+
+			h3,
+			h4 {
+				font-size: 1.2em;
+
+				&:first-child {
+					margin-top: 1rem;
+				}
+			}
+
+			.menu {
+
+				li {
+					line-height: 1.3em;
+				}
+			}
+
+			& > .container:first-child h3:first-child,
+			& > .container:first-child h4:first-child {
+				margin-top: 0;
+			}
+		}
+
+		//section after aside
+		.aside + .subject {
+
+			@media (min-width: @sizeM) {
+				.innerPaddingLeft();
+				padding-right: 0;
+			}
+		}
+
+		.contentpaneopen {
+			padding-right: 0 !important;
+			padding-left: 0 !important;
+		}
+	}
+}
+
+/* Asides (right side) */
+
+.aside {
+
+	fieldset {
+		padding: 0;
+
+		& > fieldset {
+			//margin: 1em;
+			padding: 1rem;
+			border: 1px solid #DEE4CD;
+			margin: 1em 0 0 0;
+		}
+
+		&.search-filters {
+
+			legend {
+				display: block;
+			}
+
+			label {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				position: relative;
+			}
+
+			input[type='checkbox'] {
+				width: auto;
+			}
+		}
+
+		.submit {
+			margin: 0;
+			padding: 0.5em 0;
+		}
+
+		label {
+			display: block;
+			margin: 0;
+			//border-bottom: 1px solid #eee;
+			padding: 1em 0; // giving some space at /jobs/resumes
+
+			input,
+			select,
+			textarea {
+				width: 100%;
+			}
+
+			input.option {
+				width: auto;
+			}
+		}
+
+		legend {
+			display: none;
+		}
+	}
+
+	& > fieldset {
+		margin-top: 0;
+	}
+
+	h4 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+
+	p {
+		margin: 1em 0;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	> ul > li:first-child {
+		border-top: none;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+
+			a {
+				padding: 5px 0;
+			}
+		}
+	}
+
+	.container {
+		margin: 0 0 1em 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		box-shadow: none;
+
+		// Paragraphs
+		p {
+			margin: 1em 0 2em 0;
+		}
+
+		// Headers
+		h3 {
+			position: relative;
+		}
+
+		// Lists
+		ol,
+		ul {
+			margin: 0;
+			padding: 1em 0 1em 0;
+			list-style: none;
+
+			li {
+				margin: 0;
+				padding: 0;
+
+				&:first-child {
+					border-top: none;
+				}
+			}
+			ol,
+			ul {
+				padding: 0;
+				margin-left: 2em;
+			}
+		}
+
+		a {
+			position: relative;
+		}
+
+		.item-count {
+			display: inline-block;
+			background: #e1e1e1;
+			padding: 0.3em 0.4em;
+			line-height: 1;
+			font-size: 0.9em;
+			font-weight: normal;
+		}
+
+		li .item-count {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0.65em;
+		}
+
+		a:hover .item-count {
+			background: #aaa;
+			color: #555;
+		}
+
+		a.active {
+			color: #2C2C2C;
+			font-weight: bold;
+
+			&:before {
+				border-color: transparent transparent transparent #2C2C2C;
+			}
+		}
+	}
+}
+
+
+.aside > ul {
+	//margin: -@sidePageGap;
+	//font-size: 0.9em;
+}
+
+.aside ul ul {
+	padding: 0;
+	margin: 0;
+	background: none;
+	border-bottom: none;
+}
+
+.aside li.parent {
+	border-bottom: none;
+}
+
+.aside li li {
+	padding-left: 10px;
+}
+
+.aside li strong,
+.aside li a,
+.aside li span.member {
+	display: block;
+	text-decoration: none;
+	border: none;
+	font-weight: normal;
+	font-style: normal;
+	position: relative;
+}
+
+.aside .sub-nav li strong,
+.aside .sub-nav li.active > a,
+.aside li#current > a {
+	color: #2C2C2C;
+	font-weight: bold;
+}
+
+.aside .container {
+	border-top: 1px solid #e2e2e2;
+	position: relative;
+	border-radius: 0;
+
+	h3 + ul {
+		padding-top: 0;
+	}
+}
+
+.aside > .container:first-of-type {
+	padding-top: 0;
+
+	p:first-child {
+		margin-top: 0;
+	}
+}
+
+.aside > .container:first-child {
+	border-top: 0;
+}
+
+.aside .container ol,
+.aside .container ul {
+	padding: 1em 0 1.618em 0;
+
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.aside .container ol ol,
+.aside .container ul ul {
+	margin: 0;
+	padding: 0;
+	border-top: 1px solid #dadada;
+	border-bottom: none;
+
+	ul,
+	ol {
+		border-top: 0;
+	}
+}
+
+.aside .container ol ol li,
+.aside .container ul ul li {
+	padding-left: 1em;
+}
+
+.aside ul.textboxlist-holder li {
+	border: none;
+}
+
+.aside ul.textboxlist-holder li a:before {
+	display: none;
+}
+
+.aside ul.textboxlist-holder li.bit-box a.closebutton {
+	padding: 0;
+}
+
+.subject #hubForm fieldset fieldset {
+	padding: 0 1em 1em 1em;
+	margin-top: 1em;
+}
+
+.subject #hubForm .submit {
+	margin-right: 0;
+}
+
+.page-com_content {
+
+	.content-header + .contentpaneopen {
+		padding-top: 0;
+	}
+}
+
+.com_content .heading {
+	padding: 0;
+}
+
+#page_content section.section {
+	padding: 0;
+}
+
+.withmenu section.section .aside {
+	margin-top: 0px;
+	border-bottom: 2px #e2e2e2 solid;
+	padding: 20px 0;
+	margin-bottom: 20px;
+
+	@media (min-width: @sizeM) {
+		border: none;
+		padding: 0 0 0 0;
+		margin-bottom: 0;
+	}
+
+	@media (min-width: @sizeXL) {
+		width: 250px;
+	}
+}
+
+/* Metadata */
+.metadata p {
+	font-size: 90%;
+	margin: 0.2em 0;
+	padding: 0 0 0 20px;
+}
+
+.container-block h3 {
+	background: none !important;
+}
+
+.entry-search ul.textboxlist-holder,
+.entry-search ul.token-input-list-act {
+	padding-left: 23px;
+}
+
+.entry-search ul.token-input-list-act li input[type="text"],
+.entry-search ul.token-input-list-act li input,
+.entry-search ul.textboxlist-holder li input {
+	background: #fff;
+	border: none !important;
+	padding-bottom: 6px;
+}
+
+/* [!] Target Opera */
+html.opera .entry-search ul.token-input-list-act li input[type="text"],
+html.opera .entry-search ul.token-input-list-act li input,
+html.opera .entry-search ul.textboxlist-holder li input {
+	padding-bottom: 8px;
+}
+
+/* [!] Target Firefox */
+@-moz-document url-prefix() {
+	.entry-search ul.token-input-list-act li input[type="text"],
+	.entry-search ul.token-input-list-act li input,
+	.entry-search ul.textboxlist-holder li input {
+		padding-bottom: 8px;
+	}
+}
+
+ol.comments .addcomment {
+	background: #eee;
+}
+
+body .content form.search {
+	border: none;
+}
+
+#section-plan {
+	background: #f1f1f1;
+}
+
+#commentform input.option,
+#commentform select.option {
+	margin-top: 0;
+}

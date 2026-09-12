@@ -1,0 +1,36 @@
+#page_main {
+
+	// overrides /core/plugins/members/account/assets/css/account.css?v=1611291575
+	// and /core/components/com_members/site/assets/css/members.css?v=1611291574
+	// to match /app/templates/usp/less/legacy/components/_notifications.less
+	#members-account-section ul#passrules li,
+	.com_members ul#passrules li {
+		padding-left: 4rem;
+
+		&.passed,
+		&.error {
+			padding: 1rem;
+			padding-left: 4rem;
+		}
+	}
+
+	#members-account-section ul#passrules li:before,
+	.com_members ul#passrules li:before {
+		left: 1rem;
+		top: 50%;
+		translate: 0 -50%;
+	}
+}
+
+// match /app/templates/usp/less/legacy/components/_notifications.less (for the Members: Change Password page)
+.com_members #maincontent ul#passrules li.passed,
+.com_members #maincontent ul#passrules li.error {
+	padding: 1rem;
+	padding-left: 4rem;
+}
+
+.com_members #maincontent ul#passrules li.passed:before,
+.com_members #maincontent ul#passrules li.error:before {
+	left: 1rem;
+	top: 50%;
+}
