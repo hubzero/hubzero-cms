@@ -23,3 +23,13 @@
 #page_header h3 {
 	color: #6B6259;
 }
+
+/*
+ * The sidebar behind a profile, a flat grey slab across the page. A warm
+ * panel with an edge instead, so it sits in the same family as the search
+ * panels and the notices.
+ */
+#page_sidebar {
+	background: #F8F4EE;
+	border-bottom: 1px solid #E2DACE;
+}

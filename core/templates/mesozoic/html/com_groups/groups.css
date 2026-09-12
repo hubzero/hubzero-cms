@@ -30,3 +30,17 @@
 #page_menu li .alrt span {
 	color: #6B6259;
 }
+
+/*
+ * The slabs a group page lays across itself - the bar behind the group's name
+ * and the panel under it - which were flat greys where nothing else on the
+ * page is grey any more.
+ */
+#page_sidebar {
+	background: #F8F4EE;
+	border-bottom: 1px solid #E2DACE;
+}
+
+#page_info {
+	background: #F8F4EE;
+}
