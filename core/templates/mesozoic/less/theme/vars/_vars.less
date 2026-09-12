@@ -36,7 +36,10 @@
 // Page footer
 @colorFooterBg: #F2EDE4;
 @colorFooterBorder: @colorHeaderBorder;
-@colorFooterText: @colorTextMuted;
+// Darker than the muted text elsewhere, because the band of silhouettes is
+// behind it: over the darkest part of that, #6B6259 falls to 4.16:1 and this
+// holds 5.25:1. Measured with tools/screenshots/veneer.mjs.
+@colorFooterText: #5C5349;
 @colorFooterHeading: @colorText;
 @colorFooterLink: @colorLink;
 @colorFooterLinkHover: @colorBrand;
