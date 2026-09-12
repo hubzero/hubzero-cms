@@ -1,0 +1,44 @@
+// The greys the shared variables reach for, cooled to this palette
+//
+// core/assets/less/variables.less is the core's, imported by every template,
+// and it paints every quiet surface a neutral grey - #eee, #f9f9f9, #e1e1e1,
+// #f1f1f1. There are enough of them - a search panel, a tab strip, a comment
+// reply, a table stripe, a vote button - that a page ends up half one palette
+// and half another, and on a template whose whole subject is the edge between
+// the page and what is around it, a stray grey reads as another edge.
+//
+// Retinted rather than restyled: every one of these is a token the legacy
+// stylesheet already uses, so correcting them here reaches every rule that
+// asks for one, and nothing below has to know which rules those are. They are
+// named from the theme's own tokens rather than restated as hexes, so the two
+// cannot drift apart.
+//
+// Redefined before anything that uses them, because this compiler resolves a
+// variable where it is used rather than hoisting it.
+
+// The quiet surfaces, from nearly the page's own colour down to a panel that
+// is plainly a panel
+@contentBackground:       @colorSurfaceSunk;
+@grayLighter:             #E9EDF1;
+@tableBackgroundAccent:   @colorSurface;
+@commentReplyBackground:  #F1F4F7;
+@votingBackground:        #F1F4F7;
+@modalBackground:         @colorSurfaceSunk;
+@formActionsBackground:   #F1F4F7;
+@tabContainerBackground:  #E9EDF1;
+
+// A well: an input is cut into the page rather than laid on it
+@inputBackground:         @colorSurfaceSunk;
+@inputBorder:             @colorSurfaceEdge;
+@inputDisabledBackground: #E9EDF1;
+
+// Edges. 1.4.11 asks 3:1 of anything that shows where a control is, and
+// @colorSurfaceEdge on the page is well under that - which is why the border
+// of a control uses @colorBorderVisible and only the edges of quiet surfaces
+// use these.
+@tableBorder:             @colorSurfaceBorder;
+@btnBorder:               @colorSurfaceEdge;
+@btnBackground:           @colorSurfaceSunk;
+@containerBlockBorder:    @colorSurfaceBorder;
+@paginationBorder:        @colorSurfaceBorder;
+@tabActiveBorder:         #D2DAE2;
