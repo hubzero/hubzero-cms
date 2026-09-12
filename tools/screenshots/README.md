@@ -3,6 +3,31 @@
 Node with Playwright, driving the chromium that is already on the machine
 rather than downloading another. `npm install` once, in this directory.
 
+## pages.mjs
+
+The catalogue every other tool reads: for each hub, which port it answers on,
+who can sign in to it, which pages are worth looking at, and which colours are
+its own. Name a hub and the tools find the rest.
+
+Four are catalogued. `mesozoic` is a hub with content in it. `welcome` is what
+somebody setting up a new one gets if they elect the sample data. `lucent` is a
+hub with nothing in it, which is the state every area of every hub passes
+through and the one no template is designed against.
+
+`lucent-on-mesozoic` is not a hub. An entry can name another hub's `host` and
+`port` and ask for a template by `style` id, and the tools then put
+`templateStyle` on every address: the site renders that request in that
+template and the hub's own default does not change. It is there because lucent
+is delivered on the bare hub and a template shows almost nothing of itself
+against nothing - no listing rows, no tabs, no tables, no pagination, no
+comments. The first run of it found forty-four pieces of text under 4.5:1.
+
+Two things in here are load-bearing. The port belongs to the hub, because
+naming one hub and getting another's port once returned a whole clean run
+against twenty-four blank pages. And the palette belongs to the hub, because
+judging one template's neutrals against another's reported forty-seven colours
+that had all been chosen on purpose.
+
 ## overflow.mjs
 
 Asks every page on a list whether anything a reader can see is cut off by
@@ -12,11 +37,18 @@ part that does not fit is simply not in the picture.
 
     node tools/screenshots/overflow.mjs [hub] [port]
 
-It reports at two widths, says a finding once however many pages carry it, and
-ignores three things on purpose: anything under 24px, because an icon glyph
-sitting proud of its span is not a layout problem; anything the reader cannot
-see, because a nav standing aside for a hamburger is still laid out at its full
-width; and anything inside a box that scrolls, because the reader can reach it.
+It takes its pages from the catalogue, reports at two widths, and says a
+finding once however many pages carry it. Four things are not findings:
+anything under 24px, because an icon glyph sitting proud of its span is not a
+layout problem; anything the reader cannot see, because a nav standing aside
+for a hamburger is still laid out at its full width; anything inside a box that
+scrolls, because the reader can reach it; and text that is put out of sight
+rather than text that did not fit.
+
+That last one has to be asked of the words and not of the box. A ranking bar
+sits at the left edge of the thing that clips it and is then indented 55em, so
+its box starts inside and only its words are outside - which read as 817px of
+lost content at every width until the question was put properly.
 
 ## inspect.mjs
 
@@ -104,14 +136,42 @@ The exception is a component that is broken rather than merely different, and
 the difference is worth being honest about: a rule that contradicts the markup
 it is written for is broken everywhere and belongs in the component.
 
+## bare.mjs
+
+Asks whether anything is labelled that is not there.
+
+    node tools/screenshots/bare.mjs [hub] [port]
+
+A heading is a promise that something follows it. Several components kept that
+promise by guarding on the list they were handed and then rejecting every row
+inside the loop, which is the same as not guarding at all - so "Categories" sat
+over a blank half-screen. It only happens on a hub with nothing in it, which is
+why it survived for as long as nobody photographed one.
+
+Three things are deliberately not findings: a heading pair, where a name in an
+h2 is followed by a section name in an h3; content this document cannot read,
+which is an iframe or an image; and a row of controls, which is how a calendar
+puts icon-only buttons beside the month. Without those it reported six on a
+populated hub and every one was wrong.
+
 ## contrast.mjs, veneer.mjs, surfaces.mjs, edges.mjs
 
 `contrast.mjs` walks the rendered page for text that falls under WCAG 1.4.3 and
-names the rule and stylesheet behind each finding. It declines anything with an
-image behind it and says how much it declined.
+names the rule and stylesheet behind each finding.
 
-`veneer.mjs` answers those: it composites an image over the ground it sits on,
-finds the darkest pixel, and reports what text over it is left with.
+Where the ground is painted with an image the stylesheet cannot answer, so it
+asks the page: it hides the ink, photographs what is behind it, and takes the
+worst pixel under each run - the worst and not the average, because a frieze is
+mostly its ground with a few dark shapes in it, and a reader whose word falls
+across a dinosaur cannot read that word. The screenshot is decoded by the
+browser that took it, so this needs no image library.
+
+It also refuses to call a blank page a pass, and skips text that is painted
+nowhere: a label pushed off its own box with text-indent so an icon can stand
+in for it is not text anybody has to read.
+
+`veneer.mjs` asks the same question of a file rather than a page - useful
+before a band ships, when there is nothing to photograph yet.
 
     node tools/screenshots/veneer.mjs [--opacity=N] <image> <ground> <ink:px>
 
