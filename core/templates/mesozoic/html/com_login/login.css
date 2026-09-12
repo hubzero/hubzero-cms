@@ -1,0 +1,21 @@
+/**
+ * Signing in
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ *
+ * The panel was #F2F2F2 with a #DFDFDF edge - the last grey card on the hub.
+ */
+@import url("../../../../../core/components/com_login/site/assets/css/login.css");
+
+.auth,
+.auth:before {
+	background: #F8F4EE;
+}
+
+.auth {
+	border: 1px solid #E2DACE;
+	border-radius: 8px;
+	box-shadow: 0 2px 6px rgba(74, 58, 42, 0.10);
+}
