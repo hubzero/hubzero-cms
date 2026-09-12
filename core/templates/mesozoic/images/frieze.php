@@ -135,55 +135,194 @@ function band($file, $width, $height, $ground, array $shapes)
  */
 function world($file, $size)
 {
-    // Longitude and latitude, degrees, round each coast
-    $land = [
-        // Laramidia: western North America, west of the seaway
-        [[-122, 66], [-114, 69], [-107, 67], [-103, 61], [-100, 54],
-         [-101, 47], [-103, 40], [-106, 35], [-111, 30], [-116, 32],
-         [-119, 40], [-121, 48], [-122, 57]],
+    // Each plate as its coastline and where that coastline was.
+    //
+    // Written the way a palaeomap is made rather than by moving every point
+    // by hand: an outline detailed enough to be recognised, and one rotation
+    // and shift to carry it back. The outlines are modern coasts, which is
+    // the approximation - a continent's shape changes over ninety million
+    // years, mostly by flooding round its edges - and the rotations are
+    // rounded to whole degrees from the general direction each plate has
+    // travelled since. Good enough to recognise; not good enough to measure.
+    //
+    // 'turn' is degrees anticlockwise about the outline's own middle, 'move'
+    // is degrees of longitude and latitude after that.
+    $plates = [
+        // Laramidia: western North America, west of the Western Interior
+        // Seaway, which ran from the Arctic to the Gulf for most of the
+        // period and is the eastern coast of this piece
+        [
+            'turn' => -8,
+            'move' => [-6, -6],
+            'coast' => [
+                [-134, 62], [-130, 56], [-126, 51], [-124, 46], [-123, 40],
+                [-120, 35], [-116, 31], [-111, 26], [-106, 24], [-103, 27],
+                [-101, 32], [-100, 38], [-100, 44], [-102, 50], [-106, 55],
+                [-112, 59], [-120, 62], [-128, 64],
+            ],
+        ],
 
-        // Appalachia: the eastern half, an island for most of the period
-        [[-95, 50], [-88, 53], [-80, 52], [-72, 48], [-64, 42], [-66, 37],
-         [-70, 33], [-77, 31], [-84, 30], [-90, 34], [-93, 42]],
+        // Appalachia: the eastern half, an island through most of the period
+        [
+            'turn' => -8,
+            'move' => [-3, -7],
+            'coast' => [
+                [-97, 44], [-94, 49], [-88, 51], [-82, 49], [-76, 45],
+                [-70, 43], [-66, 44], [-68, 40], [-73, 38], [-77, 35],
+                [-80, 32], [-83, 29], [-87, 29], [-91, 30], [-95, 32],
+                [-97, 37],
+            ],
+        ],
 
-        // Greenland, still against North America
-        [[-45, 78], [-25, 76], [-20, 68], [-30, 60], [-45, 62], [-52, 70]],
+        // Greenland
+        [
+            'turn' => -10,
+            'move' => [-8, -5],
+            'coast' => [
+                [-45, 83], [-30, 82], [-22, 76], [-22, 70], [-28, 65],
+                [-38, 60], [-46, 60], [-53, 66], [-56, 72], [-54, 78],
+            ],
+        ],
 
-        // Asia, with the Turgai Strait between it and Europe
-        [[60, 70], [78, 75], [100, 77], [124, 73], [148, 70], [162, 62],
-         [155, 52], [142, 45], [128, 38], [110, 34], [92, 36], [76, 41],
-         [66, 48], [58, 58]],
+        // Asia. The Turgai Strait stood between it and Europe, so its western
+        // edge is a coast and not a border.
+        [
+            'turn' => -12,
+            'move' => [-6, -4],
+            'coast' => [
+                [66, 70], [80, 74], [96, 78], [112, 76], [130, 72],
+                [142, 70], [158, 68], [168, 62], [162, 56], [150, 50],
+                [142, 44], [134, 38], [122, 32], [110, 30], [102, 34],
+                [92, 34], [84, 38], [74, 40], [68, 46], [64, 54], [62, 62],
+            ],
+        ],
 
-        // Europe: what was above water, which was not much of it
-        [[-8, 40], [0, 42], [3, 37], [-6, 35]],
-        [[6, 50], [16, 51], [18, 46], [8, 45]],
-        [[12, 66], [28, 68], [32, 60], [18, 56], [10, 60]],
+        // Europe, which was a scatter of islands in a shallow sea: Iberia,
+        // the Rhenish and Bohemian massifs, and Fennoscandia
+        [
+            'turn' => -6,
+            'move' => [-4, -8],
+            'coast' => [
+                [-9, 43], [-2, 43], [3, 42], [2, 38], [-4, 36], [-9, 38],
+            ],
+        ],
+        [
+            'turn' => -6,
+            'move' => [-4, -8],
+            'coast' => [[5, 51], [12, 52], [17, 50], [18, 46], [12, 45], [6, 47]],
+        ],
+        [
+            'turn' => -6,
+            'move' => [-4, -8],
+            'coast' => [
+                [10, 63], [16, 69], [24, 71], [30, 66], [30, 60], [24, 57],
+                [16, 56], [11, 58],
+            ],
+        ],
 
-        // Africa, across a South Atlantic that had only just opened
-        [[-16, 30], [-4, 33], [10, 34], [24, 33], [34, 28], [40, 18],
-         [46, 6], [43, -8], [36, -22], [28, -32], [18, -35], [8, -28],
-         [2, -14], [-4, 2], [-12, 14], [-17, 22]],
+        // Africa, with Arabia still part of it - no Red Sea for another
+        // eighty million years - and its northern edge under the Tethys
+        [
+            'turn' => -14,
+            'move' => [-5, -13],
+            'coast' => [
+                [-17, 21], [-16, 15], [-14, 10], [-9, 6], [-3, 5], [3, 6],
+                [7, 4], [9, 2], [10, -2], [12, -6], [13, -11], [14, -17],
+                [16, -23], [17, -29], [19, -34], [25, -34], [30, -30],
+                [33, -26], [35, -21], [39, -16], [40, -11], [40, -5],
+                [42, 0], [45, 5], [51, 11], [45, 13], [48, 18], [55, 21],
+                [57, 24], [50, 28], [43, 29], [36, 28], [30, 28], [22, 29],
+                [14, 30], [6, 31], [-2, 31], [-9, 29], [-14, 25],
+            ],
+        ],
 
-        // South America
-        [[-78, 8], [-66, 11], [-54, 5], [-44, -3], [-38, -12], [-42, -24],
-         [-50, -34], [-58, -44], [-68, -48], [-75, -38], [-79, -24],
-         [-81, -10], [-80, 0]],
+        // South America, across a South Atlantic that had only just opened
+        [
+            'turn' => 10,
+            'move' => [4, -7],
+            'coast' => [
+                [-77, 8], [-71, 11], [-63, 10], [-55, 5], [-50, 0],
+                [-44, -2], [-38, -5], [-35, -7], [-37, -12], [-39, -17],
+                [-44, -23], [-48, -27], [-54, -34], [-58, -38], [-62, -41],
+                [-65, -47], [-68, -54], [-74, -52], [-75, -45], [-73, -38],
+                [-71, -30], [-70, -23], [-70, -18], [-75, -14], [-79, -6],
+                [-81, -2],
+            ],
+        ],
 
-        // India, out in the southern ocean and on its way north
-        [[62, -18], [70, -13], [77, -20], [79, -30], [72, -36], [65, -30]],
+        // India, out on its own in the southern ocean and on its way north
+        [
+            'turn' => -20,
+            'move' => [-6, -42],
+            'coast' => [
+                [70, 23], [75, 24], [80, 21], [83, 18], [80, 13], [77, 8],
+                [75, 12], [73, 16], [70, 20],
+            ],
+        ],
 
-        // Madagascar
-        [[44, -16], [50, -18], [51, -26], [45, -25]],
+        // Madagascar, newly separated from Africa
+        [
+            'turn' => -8,
+            'move' => [-2, -14],
+            'coast' => [[49, -12], [50, -16], [48, -22], [45, -25], [44, -20], [45, -15]],
+        ],
 
         // Australia, not yet parted from Antarctica
-        [[108, -46], [124, -43], [140, -45], [152, -52], [148, -62],
-         [130, -65], [114, -60], [106, -53]],
+        [
+            'turn' => -20,
+            'move' => [-4, -25],
+            'coast' => [
+                [114, -22], [122, -18], [130, -12], [137, -11], [142, -11],
+                [146, -18], [151, -24], [153, -29], [150, -37], [143, -39],
+                [136, -35], [129, -32], [123, -34], [115, -34], [113, -27],
+            ],
+        ],
 
-        // Antarctica: a cap, closed over the pole, where every meridian meets
-        [[-180, -64], [-140, -61], [-100, -66], [-60, -62], [-20, -65],
-         [20, -63], [60, -60], [100, -64], [140, -62], [180, -64],
-         [180, -90], [-180, -90]],
+        // Antarctica: a cap, closed over the pole, because a shape whose
+        // longitudes wrap does not project
+        [
+            'turn' => 0,
+            'move' => [0, 0],
+            'coast' => [
+                [-180, -64], [-155, -61], [-130, -65], [-105, -63],
+                [-80, -66], [-55, -62], [-30, -65], [-5, -63], [20, -62],
+                [45, -60], [70, -61], [95, -64], [120, -63], [145, -62],
+                [170, -64], [180, -64], [180, -90], [-180, -90],
+            ],
+        ],
     ];
+
+    // Carry each coast back to where it was
+    $land = [];
+
+    foreach ($plates as $plate) {
+        $coast = $plate['coast'];
+        $turn  = deg2rad($plate['turn']);
+
+        $lons = array_column($coast, 0);
+        $lats = array_column($coast, 1);
+        $mx   = (min($lons) + max($lons)) / 2;
+        $my   = (min($lats) + max($lats)) / 2;
+
+        $moved = [];
+
+        foreach ($coast as $point) {
+            // About the outline's own middle, in the flat, which at the size
+            // this is drawn is indistinguishable from doing it on the sphere
+            $dx = ($point[0] - $mx) * cos(deg2rad($my));
+            $dy = $point[1] - $my;
+
+            $rx = ($dx * cos($turn)) - ($dy * sin($turn));
+            $ry = ($dx * sin($turn)) + ($dy * cos($turn));
+
+            $moved[] = [
+                $mx + ($rx / cos(deg2rad($my))) + $plate['move'][0],
+                $my + $ry + $plate['move'][1],
+            ];
+        }
+
+        $land[] = $moved;
+    }
 
     $lon0 = 0;
 
@@ -240,8 +379,8 @@ function world($file, $size)
             $from = $coast[$i];
             $to   = $coast[($i + 1) % $count];
 
-            for ($step = 0; $step < 8; $step++) {
-                $t = $step / 8;
+            for ($step = 0; $step < 3; $step++) {
+                $t = $step / 3;
 
                 list($x, $y) = $project(
                     $from[0] + (($to[0] - $from[0]) * $t),
