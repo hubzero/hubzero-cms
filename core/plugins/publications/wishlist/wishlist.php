@@ -109,8 +109,13 @@ class Wishlist extends Plugin
         // Create a new list if necessary
         if (!$id) {
             if ($publication->title && $publication->state == 1) {
+                // COM_WISHLIST_NAME_RESOURCE is not a key anybody defined -
+                // the resources plugin has _RESOURCE_ID and _RESOURCE_TOOL,
+                // and this one has _PUB_ID - so a publication's wish list was
+                // named the literal string "COM_WISHLIST_NAME_RESOURCE" and
+                // its alias, and that name was then stored and shown.
                 $rtitle = isset($publication->alias) && $publication->alias
-                    ? Lang::txt('COM_WISHLIST_NAME_RESOURCE') . ' ' . $publication->alias
+                    ? Lang::txt('COM_WISHLIST_NAME_PUBLICATION') . ' ' . $publication->alias
                     : Lang::txt('COM_WISHLIST_NAME_PUB_ID') . ' ' . $publication->id;
 
                 $wishlist->set('category', $cat);

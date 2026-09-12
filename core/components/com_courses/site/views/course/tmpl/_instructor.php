@@ -37,9 +37,18 @@ $name = $this->escape(stripslashes($this->instructor->get('name')));
                 <?php echo $name; ?>
             <?php } ?>
         </h4>
-        <p class="course-instructor-org">
-            <?php echo $this->escape(stripslashes($this->instructor->get('organization', '--'))); ?>
-        </p>
+        <?php
+        // Not get('organization', '--'): a default only fires where the field
+        // is missing, so an instructor with no organisation recorded had a
+        // paragraph reading "--", which looks like data and is not. And one
+        // with the field present but empty got an empty paragraph instead.
+        $org = trim((string) $this->instructor->get('organization'));
+        ?>
+        <?php if ($org) { ?>
+            <p class="course-instructor-org">
+                <?php echo $this->escape(stripslashes($org)); ?>
+            </p>
+        <?php } ?>
     </div><!-- / .course-instructor-content cf -->
 
     <?php
