@@ -66,7 +66,10 @@ class Wishlists extends SiteController
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
 
-        if ($this->_list_title) {
+        // The site's own list is called "Wish list", and the component is
+        // called "Wish List", so the page called itself "Wish List - Wish
+        // list". A list whose name only repeats the component's adds nothing.
+        if ($this->_list_title && strcasecmp(trim($this->_list_title), trim($this->_title)) !== 0) {
             $this->_title .= ' - ' . $this->_list_title;
         }
         if ($this->_task && in_array($this->_task, array('settings', 'add'))) {
@@ -86,7 +89,10 @@ class Wishlists extends SiteController
         Pathway::clear();
 
         $comtitle  = Lang::txt(strtoupper($this->_option));
-        $comtitle .= $this->_list_title ? ' - ' . $this->_list_title : '';
+        $comtitle .= ($this->_list_title
+            && strcasecmp(trim($this->_list_title), trim($comtitle)) !== 0)
+            ? ' - ' . $this->_list_title
+            : '';
 
         $wishlist->pathway();
 
