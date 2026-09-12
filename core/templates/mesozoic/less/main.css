@@ -2842,6 +2842,13 @@ form.search fieldset p input[type="submit"] {
   border-top: 1px solid #ddd;
   padding: 10px 0 0 0;
 }
+@media (max-width: 899px) {
+  #hubForm .explaination {
+    float: none;
+    width: auto;
+    margin: 0 0 1.5rem 0;
+  }
+}
 @media (min-width: 900px) {
   #hubForm .explaination {
     max-width: 400px;
