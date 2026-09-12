@@ -57,7 +57,7 @@ const port = process.argv[3] || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 const paths = [
-    '/', '/resources', '/resources/browse',
+    '/', '/resources', '/resources/datasets', '/resources/browse',
     '/resources/calder-basin-measured-sections',
     '/wiki/CalderBasin', '/wiki/CalderBasin?task=history',
     '/groups/browse', '/groups/fossil-ct', '/answers', '/blog', '/kb',
