@@ -24,14 +24,6 @@
 		padding-top: 0;
 	}
 
-	// "Helpful Links" over a block of links is the block saying what it
-	// plainly is. Hidden rather than deleted: it is the only name the footer's
-	// link block has, and somebody moving through a page by its headings
-	// would lose the footer altogether without it.
-	> .inner > .custom > h2 {
-		.visuallyHidden();
-	}
-
 	// A stacking context of its own, so that the band below can be given a
 	// negative index and land between this element's background and its text.
 	// Without one the index is resolved against an ancestor and the band goes
