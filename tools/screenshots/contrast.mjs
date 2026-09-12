@@ -140,7 +140,7 @@ for (const path of paths) {
 
     try {
         response = await page.goto(base + path, {
-            waitUntil: 'domcontentloaded', timeout: 30000,
+            waitUntil: 'load', timeout: 30000,
         });
     } catch (e) {
         console.log(`  ${path}  ${e.message.split('\n')[0]}`);

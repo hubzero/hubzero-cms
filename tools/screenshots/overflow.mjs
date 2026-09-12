@@ -87,8 +87,14 @@ for (const size of widths) {
 
         try {
             const response = await page.goto(base + path, {
-                waitUntil: 'domcontentloaded', timeout: 30000,
+                waitUntil: 'load', timeout: 30000,
             });
+
+            // Web fonts change the width of everything they touch, and a
+            // page measured before they arrive reports overflow that is gone
+            // a moment later. Reported 5 findings on one run and 1 on the
+            // next until this was here.
+            await page.evaluate(() => document.fonts && document.fonts.ready);
 
             if (!response || response.status() >= 400) {
                 console.log(`  ${path}  answered ${response ? response.status() : 'nothing'}`);

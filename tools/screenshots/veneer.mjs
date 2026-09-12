@@ -18,7 +18,11 @@
  * sit behind text is the first case. A decoration in one corner is the
  * second, and wants looking at rather than believing.
  *
- *   node tools/screenshots/veneer.mjs <svg> <ground> <ink:px[:weight]> ...
+ *   node tools/screenshots/veneer.mjs [--opacity=N] <svg> <ground> <ink:px[:weight]> ...
+ *
+ * --opacity is what the page draws the band at, where that is set in CSS
+ * rather than baked into the file. Measuring a band at full strength when the
+ * page shows it at a tenth of that answers a question nobody asked.
  *
  *   node tools/screenshots/veneer.mjs \
  *       core/templates/mesozoic/images/frieze.svg '#F2EDE4' '#635A50:15.2'
@@ -53,7 +57,20 @@ function chromiumPath() {
     return undefined;
 }
 
-const [svgPath, ground, ...inks] = process.argv.slice(2);
+const argv = process.argv.slice(2);
+const alpha = (() => {
+    const at = argv.findIndex(a => a.startsWith('--opacity='));
+
+    if (at < 0) {
+        return 1;
+    }
+
+    const value = Number(argv.splice(at, 1)[0].split('=')[1]);
+
+    return (value > 0 && value <= 1) ? value : 1;
+})();
+
+const [svgPath, ground, ...inks] = argv;
 
 if (!svgPath || !ground || !inks.length) {
     console.error('usage: veneer.mjs <svg> <ground> <ink:px[:weight]> ...');
@@ -98,7 +115,7 @@ const browser = await chromium.launch({ executablePath: chromiumPath() });
 const context = await browser.newContext();
 const page    = await context.newPage();
 
-const result = await page.evaluate(async ([data, ground, size]) => {
+const result = await page.evaluate(async ([data, ground, size, alpha]) => {
     const hex = (s) => {
         const m = s.replace('#', '');
         const n = m.length === 3 ? m.split('').map(c => c + c).join('') : m;
@@ -125,7 +142,9 @@ const result = await page.evaluate(async ([data, ground, size]) => {
 
     ctx.fillStyle = `rgb(${bg.join(',')})`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = alpha;
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 1;
 
     const lum = ([r, g, b]) => {
         const c = [r, g, b].map(v => {
@@ -163,7 +182,7 @@ const result = await page.evaluate(async ([data, ground, size]) => {
         lowest,
         covered: painted / (px.length / 4),
     };
-}, [data, ground, size]);
+}, [data, ground, size, alpha]);
 
 const lum = ([r, g, b]) => {
     const c = [r, g, b].map(v => {
@@ -183,7 +202,8 @@ const hex = (s) => {
 };
 
 console.log(`${svgPath}  ${result.size[0]}x${result.size[1]}`);
-console.log(`  on ${ground}, ${(result.covered * 100).toFixed(1)}% of it is painted at all`);
+console.log(`  on ${ground}${alpha < 1 ? ` at ${alpha} opacity` : ''},`
+    + ` ${(result.covered * 100).toFixed(1)}% of it is painted at all`);
 console.log(`  darkest pixel rgb(${result.darkest.join(', ')})\n`);
 
 let failed = 0;

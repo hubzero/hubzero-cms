@@ -29,6 +29,42 @@
 	background: none;
 	border-bottom: 1px solid #E6DFD4;
 	color: #2B2622;
+	position: relative;
+	overflow: hidden;
+}
+
+/*
+ * A world behind the explanation, off the right-hand edge.
+ *
+ * A drawing of an invented world rather than anybody's palaeogeography -
+ * everything this hub holds is invented, and its geography with it - but a
+ * globe and a graticule read as "somewhere, long ago" at a glance and at any
+ * opacity, which a picture of an animal cannot.
+ *
+ * Here and not on every page: a landing page has an empty column to the right
+ * of its explanation, and a motif that turns up everywhere stops being seen.
+ *
+ * The core hides this pseudo-element; it is given back a job rather than a
+ * new element being invented for it.
+ */
+#introduction:after {
+	content: "";
+	display: block;
+	position: absolute;
+	z-index: 0;
+	right: -5rem;
+	bottom: -7rem;
+	width: 24rem;
+	height: 24rem;
+	opacity: 0.10;
+	background: url("../../../images/world.svg") no-repeat center / contain;
+	pointer-events: none;
+}
+
+/* Over it, so nothing the page says is competing with a map */
+#introduction > * {
+	position: relative;
+	z-index: 1;
 }
 
 #introduction h3 {
