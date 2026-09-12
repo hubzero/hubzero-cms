@@ -1,0 +1,19 @@
+/**
+ * Wish list
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. A wish that was granted is green on purpose, so it stays green and is only
+ * taken deep enough to read. The withdrawn state was a plain grey.
+ */
+@import url("../../../../../core/components/com_wishlist/site/assets/css/wishlist.css");
+
+/* #7AAB69 is 2.4:1 on white; this is 5.0:1 and the same hue */
+.ideas .ranking .granted {
+	color: #4F7043;
+}
+
+/* #bbb is 1.9:1 on white */
+.ideas .ranking .withdrawn {
+	color: #5F6A72;
+}

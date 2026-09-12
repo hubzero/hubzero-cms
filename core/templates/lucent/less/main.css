@@ -1896,11 +1896,11 @@ ol.comments .private {
   *zoom: expression(this.runtimeStyle['zoom']='1', this.innerHTML=this.innerHTML + '<small class=private-after>&#xf023;&nbsp;</small>');
 }
 ol.comments span.comment-details {
-  color: #bfbfbf;
+  color: #5F6A72;
 }
 ol.comments .permalink {
   border: none;
-  color: #bfbfbf;
+  color: #5F6A72;
 }
 ol.comments .permalink:hover {
   color: #000;
@@ -2871,7 +2871,7 @@ form.search fieldset p input[type="submit"] {
   color: red;
 }
 #hubForm span.optional {
-  color: #999;
+  color: #5F6A72;
 }
 #hubForm .hint {
   font-size: 90%;
@@ -3434,7 +3434,7 @@ ul.sub-menu li.active a:hover {
 }
 .list-footer li strong {
   font-weight: normal;
-  background: #777;
+  background: #5B646C;
   color: #fff;
 }
 .list-footer .limit,
@@ -3490,11 +3490,11 @@ ul.sub-menu li.active a:hover {
 .entries .details,
 .results .details {
   font-size: 90%;
-  color: #999;
+  color: #5F6A72;
 }
 .entries .details span,
 .results .details span {
-  color: #fff;
+  color: #5F6A72;
   margin: 0 0.5em;
 }
 .results .details span.highlight {
@@ -3520,7 +3520,7 @@ ul.sub-menu li.active a:hover {
 }
 .entries .metadata p,
 .results .metadata p {
-  color: #999;
+  color: #5F6A72;
   font-size: 90%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -3589,7 +3589,7 @@ table.entries {
 }
 .entries thead th a.active-index {
   background-color: #eee;
-  color: #999;
+  color: #5F6A72;
 }
 .entries tbody tr td {
   text-align: left;
@@ -3606,7 +3606,7 @@ table.entries {
   border-bottom: 1px solid #eee;
 }
 .entries .activity {
-  color: #999;
+  color: #5F6A72;
 }
 .entries tbody th {
   padding: 10px 0 5px 10px;
@@ -3636,7 +3636,7 @@ table.entries {
   font-size: 1.2em;
   line-height: 1;
   margin-right: 1em;
-  color: #aaa;
+  color: #5F6A72;
   font-weight: normal;
 }
 .entries tbody tr.private {
@@ -3654,11 +3654,11 @@ table.entries {
 }
 .container-block h4 span,
 .entries caption span {
-  color: #767676;
+  color: #5F6A72;
 }
 .entry-details {
   font-size: 85%;
-  color: #999;
+  color: #5F6A72;
 }
 .entry-details-divider {
   margin-left: 0.5em;
@@ -3704,7 +3704,7 @@ table.entries {
   border-bottom: 1px solid #fff;
 }
 .container .entries-menu span.nolink {
-  color: #999;
+  color: #5F6A72;
 }
 .container .entries-menu a.active,
 .container .entries-menu span.nolink.active {
@@ -3739,7 +3739,7 @@ table.entries {
 .entry .entry-content {
   margin: 0 0 1em 70px;
   position: relative;
-  border: 1px solid #999;
+  border: 1px solid #7F868C;
   padding: .61803399em 1.61803399em;
   -webkit-box-shadow: 0px 1px 2px rgba(0,0,0,0.17);
   -moz-box-shadow: 0px 1px 2px rgba(0,0,0,0.17);
@@ -3753,7 +3753,7 @@ table.entries {
   left: -20px;
   border-width: 10px;
   border-style: solid;
-  border-color: transparent #999 transparent transparent;
+  border-color: transparent #7F868C transparent transparent;
   display: block;
   width: 0;
 }
@@ -3762,7 +3762,7 @@ table.entries {
   left: -20px;
   bottom: auto;
   border-width: 10px;
-  border-color: transparent #999 transparent transparent;
+  border-color: transparent #7F868C transparent transparent;
 }
 .entry .entry-content:after {
   top: 10px;
@@ -3773,7 +3773,7 @@ table.entries {
 }
 .entry .permalink {
   border: none;
-  color: #bfbfbf;
+  color: #5F6A72;
 }
 .entry .permalink:hover {
   color: #000;
@@ -3782,7 +3782,7 @@ table.entries {
 .entry .entry-tags {
   margin: 1.61803399em 0.61803399em;
   padding: 0;
-  color: #aaa;
+  color: #5F6A72;
 }
 .entry .entry-tags p {
   display: none;
@@ -6555,7 +6555,7 @@ template {
 .page-footer {
   margin-top: auto;
   background: #f4f6f8;
-  color: #767676;
+  color: #5F6A72;
   border-top: 1px solid #e2e2e2;
 }
 .page-footer > .inner {
@@ -6744,7 +6744,7 @@ template {
 .page-trail {
   border-bottom: 1px solid #e7e7e7;
   font-size: 0.85rem;
-  color: #767676;
+  color: #5F6A72;
 }
 .page-trail > .inner {
   padding-left: 1rem !important;
@@ -7234,7 +7234,7 @@ template {
   line-height: 1.45;
   margin: 0;
   max-width: 46rem;
-  color: #767676;
+  color: #5F6A72;
 }
 @media (min-width: 900px) {
   .home-head .hero p {
@@ -7494,7 +7494,7 @@ template {
 }
 .band-item p {
   margin: 0 0 0.6rem;
-  color: #767676;
+  color: #5F6A72;
 }
 body {
   display: flex;

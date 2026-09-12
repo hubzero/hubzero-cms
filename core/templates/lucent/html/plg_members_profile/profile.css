@@ -1,0 +1,13 @@
+/**
+ * A member profile
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The label beside each field of the profile, at #777: 4.5:1 exactly, which
+ * rounds to a pass and measures as a failure.
+ */
+@import url("../../../../../core/plugins/members/profile/assets/css/profile.css");
+
+#profile li .section-content .key {
+	color: #5F6A72;
+}
