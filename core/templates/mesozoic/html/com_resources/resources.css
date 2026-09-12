@@ -1,0 +1,91 @@
+/**
+ * Resources
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_resources/site/assets/css/resources.css");
+
+/*
+ * The three-column tag browser, which is the only part of the hub still
+ * painted in neutral greys and picked out in a blue from another palette.
+ * Same surfaces as every other panel, and the hub's own colour for the item
+ * you are on.
+ */
+#tagbrowser.tagbrowser-ready {
+	background: #F8F4EE;
+	border: 1px solid #E2DACE;
+	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
+}
+
+#level-1,
+#level-2,
+#level-3 {
+	background-color: #F8F4EE;
+}
+
+#tagbrowser.tagbrowser-ready #level-1,
+#tagbrowser.tagbrowser-ready #level-2 {
+	border-right: 1px solid #E2DACE;
+}
+
+#tagbrowser.tagbrowser-ready h3 {
+	background: #EFE9DF;
+	border-bottom: 1px solid #E2DACE;
+	color: #2B2622;
+}
+
+/* The lists themselves stay white: they are what you are reading */
+#tagbrowser ul {
+	background: #fff;
+}
+
+/* The item you are pointing at, and the one you have chosen */
+#level-1 ul :is(a, span):hover,
+#level-2 ul :is(a, span):hover {
+	background: #F0E6D8;
+	color: #2B2622;
+}
+
+#level-1 ul :is(a, span):hover:after,
+#level-2 ul :is(a, span):hover:after {
+	color: #6B4420;
+}
+
+#level-1 ul :is(a, span).open,
+#level-2 ul :is(a, span).open,
+#level-1:focus-within ul :is(a, span).open,
+#level-2:focus-within ul :is(a, span).open,
+#level-1 ul :is(a, span).hi,
+#level-2 ul :is(a, span).hi {
+	background: #6B4420;
+	color: #fff;
+}
+
+#level-1 ul :is(a, span).open:after,
+#level-2 ul :is(a, span).open:after,
+#level-1:focus-within ul :is(a, span).open:after,
+#level-2:focus-within ul :is(a, span).open:after {
+	color: #fff;
+}
+
+/* The chevron at rest: #999 is 2.9:1, which 1.4.11 does not allow */
+#level-1 ul :is(a, span):after,
+#level-2 ul :is(a, span):after {
+	color: #8A8178;
+}
+
+/* The prompt in the third column before anything is chosen */
+#tagbrowser li#selecta {
+	color: #6B6259;
+}
+
+/* The note beside the top-rated list, the last cool-toned panel on the page */
+#tagBrowserForm .below .aside p {
+	background: #F8F4EE;
+	border: 1px solid #E2DACE;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
+	color: #2B2622;
+}
