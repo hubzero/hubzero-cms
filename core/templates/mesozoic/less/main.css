@@ -7689,7 +7689,15 @@ tt {
   background-size: auto 4.5rem;
   border: 1px solid #E6DFD4;
   border-left: 4px solid #8A5A2B;
-  border-radius: 4px;
+  border-radius: 5px 5px 0 0;
+  -webkit-mask-image: linear-gradient(#000 0 0), url("../images/tear.svg");
+  mask-image: linear-gradient(#000 0 0), url("../images/tear.svg");
+  -webkit-mask-size: 100% calc(100% - 14px), auto 14px;
+  mask-size: 100% calc(100% - 14px), auto 14px;
+  -webkit-mask-position: top left, bottom left;
+  mask-position: top left, bottom left;
+  -webkit-mask-repeat: no-repeat, repeat-x;
+  mask-repeat: no-repeat, repeat-x;
 }
 @media (min-width: 600px) {
   .page > .inner > .content-header,
