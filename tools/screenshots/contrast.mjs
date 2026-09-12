@@ -164,6 +164,171 @@ async function rule(nodeId) {
     return 'no rule names a colour';
 }
 
+/**
+ * What a picture actually leaves under the text laid over it
+ *
+ * The walk above declines any text whose ground is painted with an image,
+ * because an image is not a colour and guessing would be worse than saying so.
+ * This is the rest of that answer, asked of the rendered page rather than of
+ * the stylesheet: hide the text, photograph what is behind it, and take the
+ * worst pixel under each run.
+ *
+ * The worst pixel and not the average. A frieze is mostly its ground with a
+ * few dark shapes in it, so an average says the text is fine and a reader
+ * whose word falls across a dinosaur cannot read that word.
+ *
+ * The screenshot is decoded by the browser that took it - drawn to a canvas in
+ * a blank page - so this needs no image library.
+ *
+ * @param   object  page  The page, already on the right URL
+ * @param   array   over  The runs the walk declined
+ * @return  array   One finding per run that does not clear 1.4.3
+ */
+async function behind(page, over) {
+    if (!over.length) {
+        return [];
+    }
+
+    // Take the ink out, leaving the ground exactly as the reader sees it
+    await page.evaluate(() => {
+        for (const el of document.querySelectorAll('[data-veneer]')) {
+            el.style.setProperty('color', 'transparent', 'important');
+            el.style.setProperty('text-shadow', 'none', 'important');
+        }
+    });
+
+    const shot = await page.screenshot({ fullPage: true });
+
+    await page.evaluate(() => {
+        for (const el of document.querySelectorAll('[data-veneer]')) {
+            el.style.removeProperty('color');
+            el.style.removeProperty('text-shadow');
+        }
+    });
+
+    const worst = await canvas.evaluate(async ([png, runs]) => {
+        const img = new Image();
+
+        await new Promise((ok, no) => {
+            img.onload = ok;
+            img.onerror = no;
+            img.src = 'data:image/png;base64,' + png;
+        });
+
+        const board = document.createElement('canvas');
+        board.width = img.width;
+        board.height = img.height;
+
+        const ctx = board.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0);
+
+        const lum = (r, g, b) => {
+            const f = (v) => {
+                v /= 255;
+
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            };
+
+            return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+        };
+
+        const out = [];
+
+        for (const run of runs) {
+            let darkest = null;
+            let lightest = null;
+
+            for (const rect of run.rects) {
+                const x = Math.max(0, Math.floor(rect.x));
+                const y = Math.max(0, Math.floor(rect.y));
+                const w = Math.min(Math.ceil(rect.w), img.width - x);
+                const h = Math.min(Math.ceil(rect.h), img.height - y);
+
+                if (w <= 0 || h <= 0) {
+                    continue;
+                }
+
+                const data = ctx.getImageData(x, y, w, h).data;
+
+                for (let i = 0; i < data.length; i += 4) {
+                    const l = lum(data[i], data[i + 1], data[i + 2]);
+
+                    if (darkest === null || l < darkest[3]) {
+                        darkest = [data[i], data[i + 1], data[i + 2], l];
+                    }
+
+                    if (lightest === null || l > lightest[3]) {
+                        lightest = [data[i], data[i + 1], data[i + 2], l];
+                    }
+                }
+            }
+
+            if (darkest) {
+                out.push({ veneer: run.veneer, darkest, lightest });
+            }
+        }
+
+        return out;
+    }, [shot.toString('base64'), over]);
+
+    const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+    const luminance = (c) => {
+        const f = (v) => {
+            v /= 255;
+
+            return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        };
+
+        return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+    };
+
+    const out = [];
+
+    for (const run of over) {
+        const pixels = worst.find(w => w.veneer === run.veneer);
+
+        if (!pixels) {
+            continue;
+        }
+
+        const ink = luminance(run.fg);
+
+        // Both ends: dark text loses against the darkest pixel and light text
+        // against the lightest, and a frieze has both in it.
+        const got = Math.min(
+            ratio(ink, pixels.darkest[3]),
+            ratio(ink, pixels.lightest[3])
+        );
+
+        const large = run.size >= 24 || (run.size >= 18.66 && run.weight >= 700);
+        const need = large ? 3 : 4.5;
+
+        if (got >= need) {
+            continue;
+        }
+
+        const against = ratio(ink, pixels.darkest[3]) < ratio(ink, pixels.lightest[3])
+            ? pixels.darkest
+            : pixels.lightest;
+
+        out.push({
+            sample: run.sample,
+            what: `${run.name}: ${got.toFixed(1)}:1 over its picture, wants ${need}:1`
+                + `  (rgb(${run.fg.join(', ')}) on its worst pixel`
+                + ` rgb(${against.slice(0, 3).join(', ')}), ${run.size}px)`,
+        });
+    }
+
+    return out;
+}
+
+// A blank page, used only to decode the screenshots the other one takes: the
+// browser is already here and it knows how to read a PNG, so nothing has to be
+// added to package.json to find out what colour a pixel is.
+const canvas = await context.newPage();
+await canvas.setContent('<!doctype html><title>decoder</title>');
+
 await page.setViewportSize({ width: 1280, height: 900 });
 
 const findings = new Map();
@@ -173,6 +338,9 @@ const unjudged = new Map();
 // measure passes every rule, so a run against the wrong port once reported a
 // hub as flawless on twenty-four blank responses. Say so instead.
 const empty = [];
+
+// What the pictures turned out to leave under the words
+const veneer = new Map();
 let looked = 0;
 
 for (const path of paths) {
@@ -191,7 +359,7 @@ for (const path of paths) {
 
     looked++;
 
-    const { found, declined, judged } = await page.evaluate(() => {
+    const { found, declined, judged, over } = await page.evaluate(() => {
         const rgb = (s) => {
             const m = s.match(/[\d.]+/g);
 
@@ -309,6 +477,8 @@ for (const path of paths) {
         let mark = 0;
         let declined = 0;
         let judged = 0;
+        let veneered = 0;
+        const over = [];
 
         for (const el of document.querySelectorAll('body *')) {
             const style = getComputedStyle(el);
@@ -334,6 +504,45 @@ for (const path of paths) {
 
             if (!bg) {
                 declined++;
+
+                // Keep it for the second pass. A picture is not a colour, so
+                // this walk cannot judge it - but the rendered page can be
+                // asked what the picture actually leaves under the words.
+                if (fg && fg[3] >= 0.95) {
+                    const range = document.createRange();
+                    const rects = [];
+
+                    for (const node of nodes) {
+                        range.selectNodeContents(node);
+
+                        for (const r of range.getClientRects()) {
+                            if (r.width >= 1 && r.height >= 1) {
+                                rects.push({
+                                    x: r.left + scrollX,
+                                    y: r.top + scrollY,
+                                    w: r.width,
+                                    h: r.height,
+                                });
+                            }
+                        }
+                    }
+
+                    if (rects.length) {
+                        el.setAttribute('data-veneer', ++veneered);
+
+                        over.push({
+                            veneer: veneered,
+                            fg: fg.slice(0, 3),
+                            size: parseFloat(style.fontSize),
+                            weight: Number(style.fontWeight) || 400,
+                            name: el.tagName.toLowerCase()
+                                + (el.className && typeof el.className === 'string'
+                                    ? '.' + el.className.trim().split(/\s+/)[0] : ''),
+                            sample: own.slice(0, 40),
+                            rects,
+                        });
+                    }
+                }
             }
 
             if (!fg || fg[3] < 0.95 || !bg) {
@@ -377,11 +586,22 @@ for (const path of paths) {
             });
         }
 
-        return { found: out, declined, judged };
+        return { found: out, declined, judged, over };
     });
 
     if (declined) {
         unjudged.set(path, declined);
+    }
+
+    for (const finding of await behind(page, over)) {
+        const key = finding.what;
+        const seen = veneer.get(key) || { where: [], sample: finding.sample };
+
+        if (!seen.where.includes(path)) {
+            seen.where.push(path);
+        }
+
+        veneer.set(key, seen);
     }
 
     if (!judged && !declined) {
@@ -436,19 +656,27 @@ if (empty.length) {
     }
 }
 
+if (veneer.size) {
+    console.log(`\n  Text over a picture, judged on the picture's worst pixel:`);
+
+    for (const [what, { where, sample }] of [...veneer.entries()]
+        .sort((a, b) => b[1].where.length - a[1].where.length)) {
+        const scope = where.length > 3 ? `${where.length} pages` : where.join(', ');
+
+        console.log(`  ${scope}: ${what}`);
+        console.log(`      e.g. "${sample}"`);
+    }
+}
+
 if (unjudged.size) {
     const total = [...unjudged.values()].reduce((a, b) => a + b, 0);
 
-    console.log(`\n  ${total} pieces of text on ${unjudged.size} pages were not judged:`
-        + ' something behind them is painted with an image rather than a colour.');
-
-    for (const [path, n] of [...unjudged.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6)) {
-        console.log(`      ${path}  ${n}`);
-    }
-
-    console.log('      veneer.mjs answers these: it composites the image over its'
-        + ' ground and\n      reports what the darkest pixel in it leaves the text.');
+    console.log(`\n  ${total} pieces of text on ${unjudged.size} pages sit on a`
+        + ' picture rather than a colour. The stylesheet cannot say what that'
+        + ' leaves them,\n  so each was judged on the worst pixel actually'
+        + ` painted under it: ${veneer.size ? veneer.size + ' did not clear 1.4.3' : 'all of them cleared 1.4.3'}.`);
 }
+
 
 await browser.close();
 process.exit(ranked.length ? 1 : 0);

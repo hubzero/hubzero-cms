@@ -11,3 +11,8 @@
 .details span {
 	color: #5F6A72;
 }
+
+/* The licence line under a publication, at #999: 2.8:1 on white */
+.license {
+	color: #5F6A72;
+}
