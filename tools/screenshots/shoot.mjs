@@ -19,7 +19,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { pages } from './pages.mjs';
+import { hubFor } from './pages.mjs';
 
 /** The newest chromium already on this machine. */
 function chromiumPath() {
@@ -75,11 +75,18 @@ const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`
 // Who the hub is photographed as. A manager is also an instructor here, which
 // keeps the count down without losing a view: every page either of them can
 // reach, one of them can.
-const people = {
-    member:  { username: 'mokonkwo',  password: process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026' },
-    manager: { username: 'sberglund', password: process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026' },
-    admin:   { username: 'admin',     password: process.env.HUB_ADMIN_PASSWORD  || 'ClaudeDev2026' },
-};
+
+// The hub's own catalogue and its own people. A page listed as `as: manager`
+// needs a hub that has a manager, and not every hub does.
+const catalogue = hubFor(hub);
+
+if (!catalogue) {
+    console.error(`there is no catalogue for "${hub}" in pages.mjs`);
+    process.exit(2);
+}
+
+const people = catalogue.people;
+const pages = catalogue.pages;
 
 const viewports = {
     desktop: { width: 1440, height: 900 },
@@ -238,9 +245,13 @@ for (const [label, size] of Object.entries(viewports)) {
         }
 
         const status = response ? response.status() : 0;
+        const wanted = entry.expect || 200;
 
-        if (status >= 400) {
-            console.log(`  FAILED  ${label}/${entry.name}  answered ${status}`);
+        // An error page is a page, and photographing one means asking for a
+        // status that is not 200 on purpose
+        if (status !== wanted && !(wanted === 200 && status < 400)) {
+            console.log(`  FAILED  ${label}/${entry.name}  answered ${status},`
+                + ` expected ${wanted}`);
             failed++;
             await page.close();
             continue;
