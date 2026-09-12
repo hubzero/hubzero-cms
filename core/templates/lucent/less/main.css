@@ -3386,8 +3386,8 @@ ul.sub-menu li a {
   top: 1px;
   text-decoration: none;
   display: block;
-  background: #b5b5b5;
-  border: 1px solid #949494;
+  background: #5B646C;
+  border: 1px solid #464E56;
   border-bottom-width: 0;
   color: #fff;
   padding: 0.75em 1em;
@@ -3395,8 +3395,8 @@ ul.sub-menu li a {
   line-height: 1;
 }
 ul.sub-menu li a:hover {
-  border-color: #6e6e6e;
-  background: #8f8f8f;
+  border-color: #24282c;
+  background: #383e42;
   color: #fff;
 }
 ul.sub-menu li.active a,
@@ -3654,7 +3654,7 @@ table.entries {
 }
 .container-block h4 span,
 .entries caption span {
-  color: #aaa;
+  color: #767676;
 }
 .entry-details {
   font-size: 85%;
@@ -3931,7 +3931,7 @@ span.systemmessage-before,
 #system-message dd.info {
   border-left: 4px solid #449da7;
   border-color: #449da7;
-  color: #347c84;
+  color: #2f7178;
 }
 .info:before,
 #system-message dd.info:before {
@@ -3942,7 +3942,7 @@ span.systemmessage-before,
 #system-message dd.help {
   border-left: 4px solid #449da7;
   border-color: #449da7;
-  color: #347c84;
+  color: #2f7178;
 }
 .help:before,
 #system-message dd.help:before {
@@ -8299,6 +8299,16 @@ a.btn {
   -o-transition: all ease-in .3s;
   -webkit-transition: all ease-in .3s;
   transition: all ease-in .3s;
+}
+body #member_browser,
+body #description {
+  padding-left: 0;
+}
+body #member_browser:before,
+body #member_browser:after,
+body #description:before,
+body #description:after {
+  content: none;
 }
 html {
   font-family: sans-serif;
