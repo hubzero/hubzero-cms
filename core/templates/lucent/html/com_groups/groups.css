@@ -1,0 +1,24 @@
+/**
+ * Groups
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Four greys, one of which is a badge rather than text.
+ */
+@import url("../../../../../core/components/com_groups/site/assets/css/groups.css");
+
+/* A group's short name and the line of detail under it, at #aaa: 2.3:1 */
+.groups-container .group-alias,
+.group-meta,
+.group-content-header-extra a {
+	color: #5F6A72;
+}
+
+/*
+ * The count beside the group area you are in. #555 on #aaa is 3.2:1, and it
+ * is the one badge on the page that is meant to stand out.
+ */
+#page_menu li.active .meta .count {
+	background: #00548A;
+	color: #fff;
+}

@@ -1,0 +1,13 @@
+/**
+ * Publications
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The line of detail under a publication, at #999, and its separators at #CCC.
+ */
+@import url("../../../../../core/components/com_publications/site/assets/css/publications.css");
+
+.details,
+.details span {
+	color: #5F6A72;
+}

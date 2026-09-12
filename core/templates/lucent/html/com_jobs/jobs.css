@@ -1,0 +1,15 @@
+/**
+ * Jobs
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. A table's own headings should not be quieter than the rows under them, and
+ * at #999 they were also unreadable.
+ */
+@import url("../../../../../core/components/com_jobs/site/assets/css/jobs.css");
+
+table.postings th,
+table.postings th a,
+table.postings td.secondary {
+	color: #5F6A72;
+}

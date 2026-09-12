@@ -1,0 +1,14 @@
+/**
+ * Questions and answers
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The state a question is in is a colour on purpose - answered is not the
+ * same as open - so it stays purple and is only taken deep enough to read.
+ */
+@import url("../../../../../core/components/com_answers/site/assets/css/answers.css");
+
+/* #a284db is 2.8:1 on white; this is 5.0:1 and the same hue */
+.entries .answered .entry-state {
+	color: #75579F;
+}
