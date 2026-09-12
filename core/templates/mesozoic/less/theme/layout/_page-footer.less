@@ -1,25 +1,46 @@
 // Page footer
 //
-// A band of animals along the top of it, on the same horizon the front page
-// uses, so that every page ends on the hub's own subject rather than on a rule.
+// A few large shapes standing along the bottom of it, on the same horizon the
+// front page uses, so that every page ends on the hub's own subject rather
+// than on a rule.
+//
+// Along the bottom and behind the text, not in a strip above it. The footer is
+// 500px tall and a thin band of small animals across the top of it read as a
+// rule with decoration on it; the shapes are larger and fewer now, and there
+// is room for them because the foot of the footer was empty.
 //
 // It is a template asset rather than something the sample data draws, because
 // a template has to work on a hub that has never run a sample pack. Drawn from
-// the same shapes all the same, so the two friezes are recognisably one hand.
+// the same shapes all the same, so the three bands are recognisably one hand.
 .page-footer {
 	position: relative;
-	padding-top: 5rem;
+	padding-top: 3rem;
 	border-top: 0;
 
-	&:before {
+	// A stacking context of its own, so that the band below can be given a
+	// negative index and land between this element's background and its text.
+	// Without one the index is resolved against an ancestor and the band goes
+	// behind the footer's own ground, where nothing can see it.
+	isolation: isolate;
+
+	&:after {
 		content: "";
 		position: absolute;
-		top: 0;
+		z-index: -1;
+		bottom: 0;
 		left: 0;
 		right: 0;
+		// The tile is 1600 wide, and the band is scaled by its height, so a
+		// tall band on a narrow screen shows one animal's haunch and nothing
+		// that reads as a scene. Short on a phone, and only full height once
+		// there is width enough to see across a tile.
 		height: 5rem;
 		background: url("../images/frieze.svg") repeat-x bottom center;
 		background-size: auto 100%;
+
+		@media (min-width: @sizeM) {
+			height: 16rem;
+		}
 
 		// Behind whatever the footer holds, and not in the way of a pointer
 		pointer-events: none;

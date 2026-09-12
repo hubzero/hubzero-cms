@@ -80,7 +80,17 @@
 	margin-bottom: 2rem;
 	padding: 1.5rem 1.75rem;
 
-	background: @colorHeaderBg;
+	// A scene at the far end of it, where the title does not reach: a broken
+	// shell, a line of tracks and the plants that were standing there. Faint
+	// enough that a title at 4.5:1 on the ground is still 11.8:1 over the
+	// darkest part of it - measured, see tools/screenshots/veneer.mjs.
+	background: @colorHeaderBg url("../images/thicket.svg") no-repeat right bottom;
+	background-size: auto 4rem;
+
+	@media (min-width: @sizeM) {
+		background-size: auto 5.5rem;
+	}
+
 	border: 1px solid @colorHeaderBorder;
 	border-left: 4px solid @colorBrand;
 	border-radius: 4px;
