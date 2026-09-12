@@ -12,3 +12,18 @@
 .course-summary {
 	background: #F8F4EE;
 }
+
+/*
+ * com_courses reserves 300px to the right of the subject for an aside it
+ * positions itself - the same stylesheet gives that aside a fixed 270px and
+ * display: none, which is what a layout looked like before flexbox.
+ *
+ * This template lays the pair out as flex items, so the aside already takes
+ * its own column and the margin reserves the space a second time: 300px of
+ * nothing between the description and the panel beside it, at every width
+ * above the breakpoint.
+ */
+.hz-layout-with-aside .subject,
+section.course .hz-layout-with-aside .subject {
+	margin-right: 0;
+}
