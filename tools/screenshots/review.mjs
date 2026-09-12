@@ -1,0 +1,283 @@
+/**
+ * Walk the catalogue looking for the two things a picture shows that can also
+ * be measured: grey that is not in the palette, and things sitting on top of
+ * each other.
+ *
+ * The third thing - a design that is simply poor - is not in here, because it
+ * cannot be. That is what looking at the pictures is for, and
+ * tools/screenshots/README.md says what to look for.
+ *
+ * This covers every page in tools/screenshots/pages.mjs, as the person the
+ * catalogue says, which is more of the hub than surfaces.mjs or overflow.mjs
+ * reach on their own lists.
+ *
+ *   node tools/screenshots/review.mjs [hub] [port] [--desktop|--phone]
+ */
+import { chromium } from 'playwright';
+import { readdirSync, existsSync } from 'node:fs';
+import { pages } from './pages.mjs';
+
+/** The newest chromium already on this machine. */
+function chromiumPath() {
+    if (process.env.HUB_CHROMIUM) {
+        return process.env.HUB_CHROMIUM;
+    }
+
+    const root = process.env.PLAYWRIGHT_BROWSERS_PATH
+        || `${process.env.HOME}/.cache/ms-playwright`;
+
+    if (!existsSync(root)) {
+        return undefined;
+    }
+
+    for (const build of readdirSync(root)
+        .filter(d => d.startsWith('chromium-'))
+        .sort((a, b) => Number(b.split('-')[1]) - Number(a.split('-')[1]))) {
+        for (const rel of ['chrome-linux64/chrome', 'chrome-linux/chrome']) {
+            if (existsSync(`${root}/${build}/${rel}`)) {
+                return `${root}/${build}/${rel}`;
+            }
+        }
+    }
+
+    return undefined;
+}
+
+const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
+const hub  = args[0] || 'mesozoic';
+const port = args[1] || '7600';
+const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
+
+const only = process.argv.includes('--phone') ? 'phone'
+    : (process.argv.includes('--desktop') ? 'desktop' : null);
+
+const people = {
+    member:  { username: 'mokonkwo',  password: process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026' },
+    manager: { username: 'sberglund', password: process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026' },
+    admin:   { username: 'admin',     password: process.env.HUB_ADMIN_PASSWORD  || 'ClaudeDev2026' },
+};
+
+const viewports = {
+    desktop: { width: 1440, height: 900 },
+    phone:   { width: 390, height: 844 },
+};
+
+// The palette, and the greys that are meant to be grey
+const PALETTE = [
+    'rgb(250, 247, 242)', 'rgb(242, 237, 228)', 'rgb(255, 255, 255)',
+    'rgb(230, 223, 212)', 'rgb(248, 244, 238)', 'rgb(251, 248, 244)',
+    'rgb(253, 251, 248)', 'rgb(244, 239, 231)', 'rgb(239, 233, 223)',
+    'rgb(240, 230, 216)', 'rgb(138, 90, 43)', 'rgb(107, 68, 32)',
+    'rgb(168, 112, 56)', 'rgb(43, 38, 34)', 'rgb(92, 83, 73)',
+    'rgb(99, 90, 80)', 'rgb(0, 0, 0)',
+];
+
+const SPLIT = ' :: ';
+
+const browser = await chromium.launch({ executablePath: chromiumPath() });
+
+/**
+ * Sign in, or not
+ *
+ * @param   string  who  A key of people, or 'guest'
+ * @return  object  A context
+ */
+async function contextFor(who) {
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+
+    if (who === 'guest') {
+        return context;
+    }
+
+    const person = people[who];
+    const page = await context.newPage();
+    const door = (who === 'admin') ? `${base}/administrator/` : `${base}/login`;
+
+    await page.goto(door, { waitUntil: 'load' });
+    await page.fill('input[name="username"]', person.username);
+    await page.fill('input[name="passwd"]', person.password);
+    await page.click('input.login-submit, input[type="submit"], button[type="submit"]');
+    await page.waitForSelector('input[name="passwd"]', { state: 'detached', timeout: 20000 })
+        .catch(() => {});
+    await page.close();
+
+    return context;
+}
+
+const LOOK = (palette) => {
+    const out = { grey: [], overlap: [] };
+
+    // Grey that is not in the palette
+    for (const el of document.querySelectorAll('body *')) {
+        const style = getComputedStyle(el);
+        const box   = el.getBoundingClientRect();
+
+        if (box.width < 24 || box.height < 12 || style.visibility === 'hidden') {
+            continue;
+        }
+
+        const m = style.backgroundColor.match(/[\d.]+/g);
+
+        if (!m || (m[3] !== undefined && Number(m[3]) < 0.05)) {
+            continue;
+        }
+
+        const key = 'rgb(' + m[0] + ', ' + m[1] + ', ' + m[2] + ')';
+        const [r, g, b] = [Number(m[0]), Number(m[1]), Number(m[2])];
+
+        if (palette.includes(key) || (Math.max(r, g, b) - Math.min(r, g, b)) > 14) {
+            continue;
+        }
+
+        const name = el.tagName.toLowerCase() + (el.id ? '#' + el.id : '')
+            + (el.className && typeof el.className === 'string'
+                ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '');
+
+        out.grey.push(key + '  ' + name);
+    }
+
+    // Two pieces of text sharing a space
+    //
+    // Only leaves - an element whose text is its own - and only where the
+    // boxes genuinely cross rather than merely touch, because a list of rows
+    // that meet at the edge is a list and not a collision.
+    const leaves = [];
+
+    for (const el of document.querySelectorAll('body *')) {
+        const style = getComputedStyle(el);
+        const box = el.getBoundingClientRect();
+
+        if (box.width < 8 || box.height < 8 || style.visibility === 'hidden'
+            || style.opacity === '0' || style.position === 'fixed') {
+            continue;
+        }
+
+        const own = [...el.childNodes]
+            .filter(n => n.nodeType === 3 && n.textContent.trim()).length;
+
+        if (!own) {
+            continue;
+        }
+
+        leaves.push({ el: el, box: box, name: el.tagName.toLowerCase()
+            + (el.className && typeof el.className === 'string'
+                ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '') });
+    }
+
+    for (let i = 0; i < leaves.length; i++) {
+        for (let j = i + 1; j < leaves.length; j++) {
+            const a = leaves[i];
+            const b = leaves[j];
+
+            if (a.el.contains(b.el) || b.el.contains(a.el)) {
+                continue;
+            }
+
+            const across = Math.min(a.box.right, b.box.right) - Math.max(a.box.left, b.box.left);
+            const down   = Math.min(a.box.bottom, b.box.bottom) - Math.max(a.box.top, b.box.top);
+
+            // More than a hairline in both directions, and enough of the
+            // smaller box to be seen
+            if (across < 4 || down < 4) {
+                continue;
+            }
+
+            const smaller = Math.min(a.box.width * a.box.height, b.box.width * b.box.height);
+
+            if (!smaller || ((across * down) / smaller) < 0.25) {
+                continue;
+            }
+
+            out.overlap.push(a.name + ' over ' + b.name + '  '
+                + Math.round(across) + 'x' + Math.round(down));
+        }
+    }
+
+    return out;
+};
+
+const contexts = {};
+const findings = new Map();
+let looked = 0;
+
+for (const [label, size] of Object.entries(viewports)) {
+    if (only && only !== label) {
+        continue;
+    }
+
+    for (const entry of pages) {
+        if (entry.at && entry.at !== label) {
+            continue;
+        }
+
+        const who = entry.as || 'guest';
+
+        if (!contexts[who]) {
+            contexts[who] = await contextFor(who);
+        }
+
+        const page = await contexts[who].newPage();
+
+        await page.setViewportSize(size);
+
+        let response;
+
+        try {
+            response = await page.goto(base + entry.url, { waitUntil: 'load', timeout: 45000 });
+        } catch (e) {
+            await page.close();
+            continue;
+        }
+
+        if (!response || response.status() >= 400) {
+            await page.close();
+            continue;
+        }
+
+        await page.evaluate(() => document.fonts && document.fonts.ready);
+
+        const found = await page.evaluate(LOOK, PALETTE);
+
+        looked++;
+
+        for (const kind of ['grey', 'overlap']) {
+            for (const what of new Set(found[kind])) {
+                const key = kind + SPLIT + what;
+                const where = findings.get(key) || [];
+
+                where.push(label + '/' + entry.name);
+                findings.set(key, where);
+            }
+        }
+
+        await page.close();
+    }
+}
+
+for (const context of Object.values(contexts)) {
+    await context.close();
+}
+
+await browser.close();
+
+console.log('Looked at ' + looked + " pictures' worth of " + hub + '.\n');
+
+for (const kind of ['grey', 'overlap']) {
+    const mine = [...findings.entries()]
+        .filter(([k]) => k.indexOf(kind + SPLIT) === 0)
+        .sort((a, b) => b[1].length - a[1].length);
+
+    console.log(kind === 'grey'
+        ? 'Grey that is not in the palette: ' + mine.length
+        : '\nThings sitting on top of each other: ' + mine.length);
+
+    for (const [key, where] of mine.slice(0, 25)) {
+        const what = key.slice(kind.length + SPLIT.length);
+        const scope = where.length > 3 ? where.length + ' pages' : where.join(', ');
+
+        console.log('  ' + what + '\n      ' + scope);
+    }
+}
+
+console.log('\nWhat is left is what a picture shows and a measurement cannot:'
+    + '\nread tools/screenshots/README.md, then open the files.');
