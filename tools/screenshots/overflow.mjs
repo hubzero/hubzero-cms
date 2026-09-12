@@ -100,6 +100,13 @@ const hub  = process.argv[2] || 'mesozoic';
 // The port is the hub's own, from the catalogue: naming a hub and getting
 // another hub's port back is how a whole run of this once came back clean
 // against twenty-four blank pages. An argument still overrides it.
+const catalogue = hubFor(hub);
+
+if (!catalogue) {
+    console.error(`There is no catalogue for "${hub}".`);
+    process.exit(2);
+}
+
 const { base, url } = addressFor(hub, process.argv[3]);
 
 // The widths worth caring about: a phone, and a small laptop
@@ -108,19 +115,13 @@ const widths = [
     { name: 'laptop', width: 1280, height: 800 },
 ];
 
-const paths = [
-    '/', '/resources', '/resources/datasets', '/resources/browse',
-    '/wiki/Special:AllPages',
-    '/wiki/CalderBasin',
-    '/wiki/CalderBasin?task=history', '/wiki/FieldNumbering?task=comments',
-    '/groups/browse', '/groups/fossil-ct', '/groups/fossil-ct/wiki',
-    '/groups/fossil-ct/forum', '/groups/fossil-ct/calendar',
-    '/answers', '/blog', '/kb', '/forum', '/events/2026', '/collections/posts',
-    '/courses/browse', '/courses/field-stratigraphy',
-    '/citations/browse', '/projects/browse', '/wishlist', '/publications',
-    '/poll', '/jobs', '/newsletter', '/members/1001', '/support',
-    '/resources/calder-basin-measured-sections',
-];
+// The pages are the hub's own, from the catalogue. This list used to be
+// mesozoic's, written out here, which meant naming another hub asked that hub
+// for pages it has never had and reported thirty 404s as findings.
+const paths = catalogue.pages
+    .filter(p => !p.as && !p.expect)
+    .map(p => p.url);
+
 
 const browser = await chromium.launch({ executablePath: chromiumPath() });
 const context = await browser.newContext({ ignoreHTTPSErrors: true });
@@ -289,5 +290,9 @@ for (const size of widths) {
 
 await browser.close();
 
-console.log(`\n${bad} page/width combinations scroll sideways.`);
+// What this counts is findings, one per thing-cut-off per width - not pages
+// that scroll sideways, which is what it used to claim and never measured.
+console.log(bad
+    ? `\n${bad} ${bad === 1 ? 'thing is' : 'things are'} cut off across the two widths.`
+    : '\nNothing is cut off at either width.');
 process.exit(bad > 0 ? 1 : 0);

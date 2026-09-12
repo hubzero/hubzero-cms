@@ -265,11 +265,7 @@ export const hubs = {
             // likely to have been looked at on. 404 is the right answer here.
             { name: 'not-found', url: '/this-page-does-not-exist', expect: 404 },
 
-            // A bare hub has no menu item for the registration form, so the
-            // SEF path a hub advertises everywhere answers 404. Recorded as
-            // what it is rather than left out, so that it stops being a 404
-            // the day somebody fixes it.
-            { name: 'register', url: '/register', expect: 404 },
+            { name: 'register', url: '/register' },
 
             { name: 'admin-home', url: '/administrator/', as: 'admin' },
         ],
