@@ -297,7 +297,20 @@ form.search {
 	margin: 0 0 0 30px;
 	border-top: 1px solid #ddd;
 	padding: 10px 0 0 0;
-	
+
+	// Below the width at which this becomes a proportion of the page, it was
+	// a fixed 210px float with nothing to stop it. On a 390px screen that is
+	// more than half the width - and a fieldset always establishes a block
+	// formatting context, so it can never overlap a float and is left with
+	// whatever is beside it. The registration form got 118px to lay itself
+	// out in, one word to a line, which is the state every hub's sign-up
+	// page has been in on a phone.
+	@media (max-width: (@sizeM - 1px)) {
+		float: none;
+		width: auto;
+		margin: 0 0 1.5rem 0;
+	}
+
 	@media (min-width: @sizeM) {
 		max-width: 400px;
 		width: 25%;
