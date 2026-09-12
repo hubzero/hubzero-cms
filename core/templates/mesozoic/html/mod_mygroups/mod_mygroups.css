@@ -1,0 +1,21 @@
+/**
+ * The groups module
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/modules/mod_mygroups/assets/css/mod_mygroups.css");
+
+/*
+ * The tabs above a member's groups. Dark is the design and stays; the shade
+ * is the hub's own rather than #333 and #656565, which are the last neutral
+ * greys a signed-in member sees.
+ */
+.mod_mygroups .tab_titles {
+	background: #4E463D;
+}
+
+.mod_mygroups .tab_titles li {
+	background: #635A50;
+}

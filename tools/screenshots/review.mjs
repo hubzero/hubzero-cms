@@ -100,6 +100,9 @@ const PALETTE = [
 
     // A difference between two revisions
     'rgb(242, 255, 242)', 'rgb(255, 242, 242)',
+
+    // The tabs and controls that are dark on purpose
+    'rgb(78, 70, 61)', 'rgb(99, 90, 80)',
 ];
 
 const SPLIT = ' :: ';
