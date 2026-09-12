@@ -18,19 +18,27 @@ $this->css();
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_POLL'); ?></h2>
 
-    <div id="content-header-extra">
-        <p>
-            <a
-                class="icon-stats btn"
-                href="<?php echo Route::url('index.php?option=com_poll&view=latest'); ?>"
-            >
-                <?php echo Lang::txt('COM_POLL_TAKE_LATEST_POLL'); ?>
-            </a>
-        </p>
-    </div><!-- / #content-header-extra -->
+    <?php if (count($this->polls)) : ?>
+        <div id="content-header-extra">
+            <p>
+                <a
+                    class="icon-stats btn"
+                    href="<?php echo Route::url('index.php?option=com_poll&view=latest'); ?>"
+                >
+                    <?php echo Lang::txt('COM_POLL_TAKE_LATEST_POLL'); ?>
+                </a>
+            </p>
+        </div><!-- / #content-header-extra -->
+    <?php endif; ?>
 </header><!-- / #content-header -->
 
 <section class="main section polls">
+    <?php if (!count($this->polls)) : ?>
+        <p class="no-results">
+            <?php echo Lang::txt('COM_POLL_NO_RESULTS'); ?>
+        </p>
+    <?php endif; ?>
+
     <div class="grid">
     <?php
     $i = 0;
