@@ -1,0 +1,18 @@
+// Colours the shared variables get wrong for this palette
+//
+// core/assets/less/variables.less is imported by more than one template, so
+// the values that fail here are corrected here rather than there. They are
+// redefined before the components that use them, because this compiler
+// resolves a variable where it is used rather than hoisting it, so a later
+// definition is a definition that arrives too late.
+//
+// Measured against WCAG 1.4.3, which asks 4.5:1 of text, and 1.4.11, which
+// asks 3:1 of the parts of a control that show where it is. Every ratio below
+// is against the ground it is actually drawn on.
+
+// An inactive tab in the sub-menu strip carries white text, and the shared
+// variables paint it #b5b5b5, which is 2.05:1 - the worst pair on the hub.
+// This ground takes it to 6.0:1, and keeps the cool cast of the rest of the
+// palette rather than borrowing another template's warm one.
+@tabBackground: #5B646C;
+@tabBorder: #464E56;
