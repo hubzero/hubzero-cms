@@ -58,7 +58,8 @@ const widths = [
 ];
 
 const paths = [
-    '/', '/resources', '/resources/browse', '/wiki/Special:AllPages',
+    '/', '/resources', '/resources/datasets', '/resources/browse',
+    '/wiki/Special:AllPages',
     '/wiki/CalderBasin',
     '/wiki/CalderBasin?task=history', '/wiki/FieldNumbering?task=comments',
     '/groups/browse', '/groups/fossil-ct', '/groups/fossil-ct/wiki',

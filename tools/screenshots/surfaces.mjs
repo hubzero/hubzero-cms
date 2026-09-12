@@ -22,7 +22,7 @@ const port = process.argv[3] || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 const paths = [
- '/', '/resources', '/resources/browse', '/resources/calder-basin-measured-sections',
+ '/', '/resources', '/resources/datasets', '/resources/browse', '/resources/calder-basin-measured-sections',
  '/wiki/CalderBasin', '/wiki/Special:AllPages', '/wiki/CalderBasin?task=history',
  '/groups', '/groups/browse', '/groups/fossil-ct', '/groups/fossil-ct/wiki',
  '/groups/fossil-ct/forum', '/groups/fossil-ct/calendar', '/groups/fossil-ct/members',

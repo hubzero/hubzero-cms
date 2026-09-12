@@ -947,8 +947,15 @@
 	#level-1 ul li.ie a:hover {
 		color: blue;
 	}*/
-	#level-1 ul a,
-	#level-2 ul a {
+	/*
+	 * The items are spans rather than links - they were changed to spans so
+	 * that a li[role="option"] would not contain a focusable descendant - so
+	 * every rule below has to name both. Written for "a" alone, none of this
+	 * reached the markup: no hover, no selection, no chevron, no padding and
+	 * no pointer, which is the whole of the browser's feedback.
+	 */
+	#level-1 ul :is(a, span),
+	#level-2 ul :is(a, span) {
 		display: block;
 		padding: 0.2em 1.5em 0.2em 0.4em;
 		margin: 0;
@@ -957,9 +964,10 @@
 		color: #333;
 		position: relative;
 		border-radius: 0.25em;
+		cursor: pointer;
 	}
-	#level-1 ul a:after,
-	#level-2 ul a:after {
+	#level-1 ul :is(a, span):after,
+	#level-2 ul :is(a, span):after {
 		font-family: 'Fontcons';
 		content: "\203A";
 		font-size: 1em;
@@ -971,61 +979,64 @@
 		right: 0.3em;
 		color: #999;
 	}
-	#level-1 ul a.open,
-	#level-2 ul a.open {
+	#level-1 ul :is(a, span).open,
+	#level-2 ul :is(a, span).open {
 		background: #c0c0c0;
 		color: #333;
 	}
-	#level-1 ul a.open:after,
-	#level-2 ul a.open:after {
+	#level-1 ul :is(a, span).open:after,
+	#level-2 ul :is(a, span).open:after {
 		color: #333;
 	}
 	/* Active column: selected item is blue */
-	#level-1:focus-within ul a.open,
-	#level-2:focus-within ul a.open {
+	#level-1:focus-within ul :is(a, span).open,
+	#level-2:focus-within ul :is(a, span).open {
 		background: #3875D7;
 		color: #fff;
 	}
-	#level-1:focus-within ul a.open:after,
-	#level-2:focus-within ul a.open:after {
+	#level-1:focus-within ul :is(a, span).open:after,
+	#level-2:focus-within ul :is(a, span).open:after {
 		color: #fff;
 	}
-	#level-1 ul a.hi,
-	#level-2 ul a.hi {
+	#level-1 ul :is(a, span).hi,
+	#level-2 ul :is(a, span).hi {
 		background: #3875D7;
 		color: #fff;
 	}
-	#level-1 ul a:hover,
-	#level-2 ul a:hover {
+	#level-1 ul :is(a, span):hover,
+	#level-2 ul :is(a, span):hover {
 		background: #5088dd;
 		color: #fff;
 	}
-	#level-1 ul a:hover:after,
-	#level-2 ul a:hover:after {
+	#level-1 ul :is(a, span):hover:after,
+	#level-2 ul :is(a, span):hover:after {
 		color: #fff;
 	}
-	#level-1 ul a:focus,
-	#level-2 ul a:focus {
+	#level-1 ul :is(a, span):focus,
+	#level-2 ul :is(a, span):focus {
 		background: #3875D7;
 		color: #fff;
 		outline: 2px solid #1a56a8;
 		outline-offset: -2px;
 	}
-	#level-1 ul a:focus:after,
-	#level-2 ul a:focus:after {
+	#level-1 ul :is(a, span):focus:after,
+	#level-2 ul :is(a, span):focus:after {
 		color: #fff;
 	}
-	/* When keyboard focus is inside a column, suppress hover highlight on other items */
-	#level-1:focus-within ul a:hover:not(:focus),
-	#level-2:focus-within ul a:hover:not(:focus) {
-		background: transparent;
-		color: #333;
-		outline: none;
-	}
-	#level-1:focus-within ul a:hover:not(:focus):after,
-	#level-2:focus-within ul a:hover:not(:focus):after {
-		color: #999;
-	}
+	/*
+	 * There was a pair of rules here that suppressed the hover highlight on
+	 * other items while keyboard focus was inside a column, so that the mouse
+	 * would not compete with the focused item.
+	 *
+	 * They cannot do that any more. The items are spans, a span is not
+	 * focusable, and there is no focused item for them to protect - so the
+	 * only thing they did was blank whatever the pointer was over, from the
+	 * first click onward, which is when :focus-within became true. Feedback
+	 * on hover is worth more than the nicety, so they are gone; if the
+	 * columns are given real keyboard navigation through aria-activedescendant
+	 * then this can come back in a form that works.
+	 */
+
 	#level-3 h3 {
 		text-align: left;
 	}
