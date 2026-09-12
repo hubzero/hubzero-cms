@@ -1,0 +1,34 @@
+/**
+ * Publications
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_publications/site/assets/css/publications.css");
+
+/* The line of detail under a publication's title: #999 on white is 2.8:1 */
+.pubdate,
+.pubinfo {
+	color: #5B6471;
+}
+
+/* The list of a member's own publications, and the current-version flag */
+.mypubs {
+	background: #F6F8FA;
+}
+
+.curversion {
+	background: #E9F4F0;
+	border-left: 4px solid rgba(0, 128, 96, 1);
+}
+
+/* The label above a publication's ranking bar, at #999: 2.8:1 on white */
+.rankinfo dt {
+	color: #5B6471;
+}
+
+/* The counts beside a publication's title - reviews, questions, wishlist */
+.metadata p {
+	color: #5B6471;
+}

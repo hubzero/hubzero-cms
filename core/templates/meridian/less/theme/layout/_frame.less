@@ -1,0 +1,112 @@
+// The frame
+//
+// Header and footer run the full width of the window; everything between them
+// sits in one bounded column with a border all the way round, on a ground
+// that is plainly not the page.
+//
+// The reason is what a new hub looks like. A full-bleed template gives a page
+// with two paragraphs on it the same edges as a page with two hundred, so an
+// empty area reads as a broken one - and a hub on its first day is nearly all
+// empty areas. A frame draws the boundary whatever is inside it.
+
+body {
+	background: @colorCanvas;
+}
+
+.wrap {
+	background: none;
+}
+
+// The bounded column. The trail, the intro and the content are separate
+// elements in the markup, so each takes the same width and they are joined by
+// their borders rather than by being inside one box - which keeps the header
+// and footer free to run the full width between them.
+.page-trail,
+.page-intro,
+.page > .inner,
+.page-banner {
+	// width as well as max-width: .wrap is a flex column, and a flex item
+	// with only a max-width shrinks to its content - which left the
+	// breadcrumb trail as a 330px box floating above a 1180px page.
+	width: 100%;
+	max-width: @pageWidth;
+	margin-left: auto;
+	margin-right: auto;
+	background: @colorPage;
+	border-left: 1px solid @colorPageBorder;
+	border-right: 1px solid @colorPageBorder;
+}
+
+.page-trail {
+	border-top: 3px solid @colorBrand;
+	border-radius: @pageRadius @pageRadius 0 0;
+	margin-top: 2rem;
+}
+
+// The rounded corners only read as rounded if what is inside them is cut to
+// the same shape. A listing's own striped rows and panels run to the edge and
+// would otherwise square the frame off again at the top and bottom.
+.page-trail,
+.page > .inner {
+	overflow: hidden;
+}
+
+.page > .inner {
+	border-bottom: 1px solid @colorPageBorder;
+	border-radius: 0 0 @pageRadius @pageRadius;
+	margin-bottom: 3rem;
+	min-height: 24rem;
+	box-shadow: @shadowRaised;
+}
+
+// A page with no trail above it closes the top of the frame itself
+.page-trail + .page-intro,
+.page-trail + .page > .inner {
+	border-top: 0;
+	border-radius: 0;
+}
+
+// A page with no trail above it - the login form, a component that suppresses
+// the breadcrumbs - is the whole frame by itself, so it is rounded at both
+// ends rather than only at the top. Naming all four corners matters: this
+// selector outranks the one above, and giving it only the top pair squared the
+// bottom of every such page off again.
+.page:first-child > .inner {
+	border-top: 3px solid @colorBrand;
+	border-radius: @pageRadius;
+	margin-top: 2rem;
+}
+
+// Below the column's own width there is no frame to draw: the window is the
+// column, and a border down each side of the screen is a waste of eight
+// pixels and reads as a mistake.
+@media (max-width: @pageWidthRaw) {
+
+	.page-trail,
+	.page-intro,
+	.page > .inner,
+	.page-banner,
+	.page:first-child > .inner {
+		border-left: 0;
+		border-right: 0;
+		border-radius: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.page > .inner {
+		border-bottom: 0;
+		box-shadow: none;
+	}
+}
+
+// The front page is the one page that is a picture rather than a document,
+// and a frame round a hero is a frame round a photograph of a window.
+.home-head,
+.page-home .page > .inner {
+	max-width: none;
+	border: 0;
+	border-radius: 0;
+	margin: 0;
+	box-shadow: none;
+}

@@ -1,0 +1,33 @@
+// Big search visual enhancements
+
+#big-search {
+	.transition();
+	.transition-delay(0.1s);
+	.scale(0.9);
+	background: #0e0e0e;
+
+	.inner {
+		.transition(all ease .2s);
+		.transition-delay(0.3s);
+
+		label {
+			color: #fff;
+			font-size: 3vw;
+			line-height: 1em;
+			text-transform: uppercase;
+			opacity: 0.1;
+			text-align: left;
+		}
+
+		#searchword {
+			padding: 20px;
+			font-size: 1.2em;
+			.placeholder('#efefef');
+		}
+	}
+
+	&.open,
+	&.default_dialog {
+		.scale(1);
+	}
+}

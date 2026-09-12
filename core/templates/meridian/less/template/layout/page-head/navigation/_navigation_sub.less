@@ -1,0 +1,46 @@
+@import "_account-info";
+
+.page-head {
+
+	nav.subnav {
+		font-size: @navigationSubFontSize;
+		margin-left: 0.5rem;
+
+		& > ul {
+			display: flex;
+			flex-wrap: nowrap;
+			align-items: center;
+
+			& > li {
+				margin: 0 1rem 0 0;
+				display: inline-block;
+				position: relative;
+
+				&:last-child {
+					margin-right: 0;
+				}
+
+				& > a {
+					white-space: nowrap;
+
+					// Search icon
+					&.search-trigger {
+						padding: 0.8rem;
+						display: flex;
+
+						svg {
+							width: 1.4rem;
+						}
+					}
+				}
+			}
+		}
+
+		li {
+
+			a {
+				line-height: 1.4rem;
+			}
+		}
+	}
+}
