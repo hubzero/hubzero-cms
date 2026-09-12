@@ -1,0 +1,13 @@
+/**
+ * Citations
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. White on a white page: the separator between one piece of detail and the
+ * next was invisible rather than merely faint.
+ */
+@import url("../../../../../core/components/com_citations/site/assets/css/citations.css");
+
+.citation-details span {
+	color: #5F6A72;
+}
