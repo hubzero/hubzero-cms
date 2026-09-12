@@ -18,3 +18,8 @@
 .citation-details span {
 	color: #6B6259;
 }
+
+/* The heading row of the citation table, which was a flat grey */
+.citations thead th {
+	background: #EFE9DF;
+}

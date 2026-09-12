@@ -47,6 +47,35 @@ function chromiumPath() {
     return undefined;
 }
 
+/**
+ * Go somewhere, allowing for the network changing under the request
+ *
+ * A transient ERR_NETWORK_CHANGED or ERR_CERT_VERIFIER_CHANGED cancels the
+ * navigation, and every goto issued while one is unwinding is reported as
+ * "interrupted by another navigation" - so one blip takes the rest of the run
+ * with it and the report reads as a broken hub. The second attempt is always
+ * fine.
+ *
+ * @param   object  page  Where to do it
+ * @param   string  url   Where to go
+ * @return  object  The response
+ */
+async function visit(page, url) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            return await page.goto(url, { waitUntil: 'load', timeout: 30000 });
+        } catch (e) {
+            const transient = /ERR_NETWORK_CHANGED|ERR_CERT_VERIFIER_CHANGED|ERR_ABORTED|interrupted by another navigation/.test(e.message);
+
+            if (!transient || attempt === 2) {
+                throw e;
+            }
+
+            await page.waitForTimeout(500);
+        }
+    }
+}
+
 const hub  = process.argv[2] || 'mesozoic';
 const port = process.argv[3] || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
@@ -87,9 +116,7 @@ for (const size of widths) {
         let result;
 
         try {
-            const response = await page.goto(base + path, {
-                waitUntil: 'load', timeout: 30000,
-            });
+            const response = await visit(page, base + path);
 
             // Web fonts change the width of everything they touch, and a
             // page measured before they arrive reports overflow that is gone

@@ -62,7 +62,12 @@ const viewports = {
     phone:   { width: 390, height: 844 },
 };
 
-// The palette, and the greys that are meant to be grey
+// The palette, and the colours that are meant to be what they are.
+//
+// The notice tints are in here because they are nearly neutral by design - a
+// wash of a hue rather than the hue itself - and a diff marks an added line in
+// green because that is what a diff does. Both would otherwise be reported
+// every run, and a list with known entries in it stops being read.
 const PALETTE = [
     'rgb(250, 247, 242)', 'rgb(242, 237, 228)', 'rgb(255, 255, 255)',
     'rgb(230, 223, 212)', 'rgb(248, 244, 238)', 'rgb(251, 248, 244)',
@@ -70,6 +75,13 @@ const PALETTE = [
     'rgb(240, 230, 216)', 'rgb(138, 90, 43)', 'rgb(107, 68, 32)',
     'rgb(168, 112, 56)', 'rgb(43, 38, 34)', 'rgb(92, 83, 73)',
     'rgb(99, 90, 80)', 'rgb(0, 0, 0)',
+
+    // Notices, tinted by kind
+    'rgb(234, 243, 244)', 'rgb(249, 242, 227)',
+    'rgb(251, 237, 235)', 'rgb(233, 244, 240)',
+
+    // A difference between two revisions
+    'rgb(242, 255, 242)', 'rgb(255, 242, 242)',
 ];
 
 const SPLIT = ' :: ';

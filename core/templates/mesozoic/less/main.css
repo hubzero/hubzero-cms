@@ -8133,17 +8133,25 @@ span.count {
 .info,
 #system-message dd.info,
 #system-message dd.message {
+  background: #EAF3F4;
+  border-color: rgba(47,113,120,0.25);
   border-left: 4px solid #2f7178;
 }
 .warning,
 #system-message dd.warning {
+  background: #F9F2E3;
+  border-color: rgba(145,106,0,0.25);
   border-left: 4px solid #916a00;
 }
 .error,
 #system-message dd.error {
+  background: #FBEDEB;
+  border-color: rgba(215,44,13,0.25);
   border-left: 4px solid #d72c0d;
 }
 .passed {
+  background: #E9F4F0;
+  border-color: rgba(0,128,96,0.25);
   border-left: 4px solid #008060;
 }
 ol.comments .figcaption {

@@ -1,0 +1,45 @@
+/**
+ * Creating an account
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a neutral grey that reads as
+ * a cold patch laid on a warm page.
+ */
+@import url("../../../../../core/components/com_members/site/assets/css/register.css");
+
+/*
+ * The notes beside the form. The first was a saturated #2b6cb0 and the rest a
+ * flat grey - the only blue and one of the last greys on the hub, on the page
+ * a stranger is most likely to see first.
+ *
+ * Both become the same panel every other note on the hub uses: a wash of the
+ * hub's own info colour with that colour down the leading edge. Still plainly
+ * a note and still plainly cool against a warm page - which is the point of
+ * having an info colour - but the hub's rather than a blue from nowhere.
+ */
+#hubForm .explaination,
+#hubForm .explaination:first-of-type {
+	background: #EAF3F4;
+	border: 1px solid rgba(47, 113, 120, 0.25);
+	border-left: 4px solid #2F7178;
+	border-radius: 5px;
+	color: #2B2622;
+	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
+}
+
+#hubForm .explaination a {
+	color: #6B4420;
+}
+
+/* The one button on the page, which was the only green thing on the hub */
+#hubForm .btn-success {
+	background-color: #6B4420;
+	border-color: #6B4420;
+}
+
+#hubForm .btn-success:hover,
+#hubForm .btn-success:focus {
+	background-color: #8A5A2B;
+	border-color: #8A5A2B;
+}
