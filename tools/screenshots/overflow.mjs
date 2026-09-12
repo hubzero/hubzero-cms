@@ -48,6 +48,24 @@ function chromiumPath() {
 }
 
 /**
+ * Wait for the page to stop changing width under us, but not for ever
+ *
+ * document.fonts.ready is a promise, and evaluate() awaits a returned promise
+ * with no timeout of its own - so a font request that never settles hangs the
+ * whole run silently. One did: a shoot took every picture it was asked for and
+ * then sat for an hour without writing its manifest.
+ *
+ * @param   object  page  The page to wait on
+ * @return  void
+ */
+async function settled(page) {
+    await page.evaluate(() => Promise.race([
+        document.fonts ? document.fonts.ready : Promise.resolve(),
+        new Promise(resolve => setTimeout(resolve, 3000)),
+    ])).catch(() => {});
+}
+
+/**
  * Go somewhere, allowing for the network changing under the request
  *
  * A transient ERR_NETWORK_CHANGED or ERR_CERT_VERIFIER_CHANGED cancels the
@@ -122,7 +140,7 @@ for (const size of widths) {
             // page measured before they arrive reports overflow that is gone
             // a moment later. Reported 5 findings on one run and 1 on the
             // next until this was here.
-            await page.evaluate(() => document.fonts && document.fonts.ready);
+            await settled(page);
 
             if (!response || response.status() >= 400) {
                 console.log(`  ${path}  answered ${response ? response.status() : 'nothing'}`);

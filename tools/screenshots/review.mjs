@@ -43,6 +43,24 @@ function chromiumPath() {
     return undefined;
 }
 
+/**
+ * Wait for the page to stop changing width under us, but not for ever
+ *
+ * document.fonts.ready is a promise, and evaluate() awaits a returned promise
+ * with no timeout of its own - so a font request that never settles hangs the
+ * whole run silently. One did: a shoot took every picture it was asked for and
+ * then sat for an hour without writing its manifest.
+ *
+ * @param   object  page  The page to wait on
+ * @return  void
+ */
+async function settled(page) {
+    await page.evaluate(() => Promise.race([
+        document.fonts ? document.fonts.ready : Promise.resolve(),
+        new Promise(resolve => setTimeout(resolve, 3000)),
+    ])).catch(() => {});
+}
+
 const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
 const hub  = args[0] || 'mesozoic';
 const port = args[1] || '7600';
@@ -246,7 +264,7 @@ for (const [label, size] of Object.entries(viewports)) {
             continue;
         }
 
-        await page.evaluate(() => document.fonts && document.fonts.ready);
+        await settled(page);
 
         const found = await page.evaluate(LOOK, PALETTE);
 

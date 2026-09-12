@@ -18,7 +18,7 @@
  * tools/screenshots/README.md for what to look for.
  */
 import { chromium } from 'playwright';
-import { readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readdirSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { pages } from './pages.mjs';
 
 /** The newest chromium already on this machine. */
@@ -45,6 +45,24 @@ function chromiumPath() {
     }
 
     return undefined;
+}
+
+/**
+ * Wait for the page to stop changing width under us, but not for ever
+ *
+ * document.fonts.ready is a promise, and evaluate() awaits a returned promise
+ * with no timeout of its own - so a font request that never settles hangs the
+ * whole run silently. One did: a shoot took every picture it was asked for and
+ * then sat for an hour without writing its manifest.
+ *
+ * @param   object  page  The page to wait on
+ * @return  void
+ */
+async function settled(page) {
+    await page.evaluate(() => Promise.race([
+        document.fonts ? document.fonts.ready : Promise.resolve(),
+        new Promise(resolve => setTimeout(resolve, 3000)),
+    ])).catch(() => {});
 }
 
 const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
@@ -231,7 +249,7 @@ for (const [label, size] of Object.entries(viewports)) {
         // Animations are killed by a stylesheet the page has to have parsed,
         // and webfonts change the width of everything they touch
         await page.addStyleTag({ content: STILL }).catch(() => {});
-        await page.evaluate(() => document.fonts && document.fonts.ready);
+        await settled(page);
         await page.evaluate(() => window.scrollTo(0, 0));
 
         const file = `${out}/${entry.name}.png`;
@@ -245,10 +263,23 @@ for (const [label, size] of Object.entries(viewports)) {
     }
 }
 
-writeFileSync(
-    `docs/screenshots/${hub}/manifest.json`,
-    JSON.stringify({ hub, base, taken: manifest }, null, 4) + '\n'
-);
+// A partial run keeps the record of the full one. Writing the manifest from
+// what this run happened to take turns --only=home into a claim that the hub
+// is one page long, which is how the count came to disagree with the files on
+// disk the first time somebody checked.
+const where = `docs/screenshots/${hub}/manifest.json`;
+let record = manifest;
+
+if (only && existsSync(where)) {
+    const before = JSON.parse(readFileSync(where, 'utf8')).taken || [];
+    const fresh = new Set(manifest.map(m => `${m.viewport}/${m.name}`));
+
+    record = before.filter(m => !fresh.has(`${m.viewport}/${m.name}`)).concat(manifest);
+}
+
+record.sort((a, b) => (a.viewport + a.name).localeCompare(b.viewport + b.name));
+
+writeFileSync(where, JSON.stringify({ hub, base, taken: record }, null, 4) + '\n');
 
 for (const context of Object.values(contexts)) {
     await context.close();
