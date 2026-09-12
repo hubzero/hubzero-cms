@@ -3,13 +3,16 @@
 
 // Sub
 @navigationSubFontSize: 0.9rem;
-@color-navigation-dropdown-bg: #f1f1f1;
+// The theme's own surface rather than the core's grey. Set here and not in
+// theme/, because the rules that read it are compiled in this layer and this
+// compiler resolves a variable where it is used.
+@color-navigation-dropdown-bg: @colorSurface;
 @navigation-dropdown-shadow: none;
 
 // Mobile menu
 @navigationMobileMenuIconHeight: 2rem;
 @navigationMobileMenuLineHeight: 2px;
-@navigationMobileMenuColor: #000;
+@navigationMobileMenuColor: @colorText;
 
 @headerPaddingTop: 1rem;
 @headerPaddingBottom: 1rem;
