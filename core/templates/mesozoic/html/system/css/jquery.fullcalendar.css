@@ -1,0 +1,32 @@
+/**
+ * The calendar widget
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/assets/css/jquery.fullcalendar.css");
+
+/*
+ * fullcalendar ships its own grey buttons. They are the only controls on a
+ * group's calendar and the only grey ones left on the hub.
+ */
+.fc-state-default {
+	background: #FDFBF8;
+	border-color: #D5CBBB;
+	color: #2B2622;
+	text-shadow: none;
+	box-shadow: 0 1px 2px rgba(74, 58, 42, 0.07);
+}
+
+.fc-state-hover,
+.fc-state-down,
+.fc-state-active {
+	background: #EFE9DF;
+	border-color: #8A5A2B;
+	color: #2B2622;
+}
+
+.fc-state-disabled {
+	color: #8A8178;
+}

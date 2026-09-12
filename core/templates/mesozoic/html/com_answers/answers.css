@@ -21,3 +21,8 @@
 .entries .answered .entry-state {
 	color: #7C5BB8;
 }
+
+/* A closed question's flag beside the thread, which was a mid grey */
+.aside .entry-status.closed {
+	background: #635A50;
+}

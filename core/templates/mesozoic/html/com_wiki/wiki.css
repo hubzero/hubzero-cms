@@ -1,0 +1,14 @@
+/**
+ * The wiki
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. Everything below is a neutral grey that reads as
+ * a cold patch laid on a warm page.
+ */
+@import url("../../../../../core/components/com_wiki/site/assets/css/wiki.css");
+
+/* The heading row of a difference between two revisions */
+.diffs th {
+	background: #EFE9DF;
+}
