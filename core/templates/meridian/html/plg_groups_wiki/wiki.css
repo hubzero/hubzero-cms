@@ -1,0 +1,21 @@
+/**
+ * A group's wiki
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/groups/wiki/assets/css/wiki.css");
+
+/* When a page was made and last touched: #aaa is 2.1:1 on the panel */
+.timestamp {
+	color: #5B6471;
+}
+
+/* Cut into the page, like every other field */
+.page-search-form input {
+	background: #FBFCFD;
+	border: 1px solid #CDD5DE;
+	border-radius: 6px;
+	box-shadow: inset 0 1px 2px rgba(31, 35, 40, 0.07);
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<install type="template">
+	<name>Meridian</name>
+	<author>HUBzero</author>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<description>Meridian, a hub before it has a subject</description>
+	<files>
+
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_meridian.ini</language>
+	</languages>
+	<administration>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.tpl_meridian.ini</language>
+		</languages>
+	</administration>
+	<positions>
+		<position>footer</position>
+		<position>breadcrumbs</position>
+		<position>banner</position>
+		<position>hero</position>
+		<position>home-1</position>
+		<position>home-2</position>
+		<position>home-3</position>
+		<position>home-4</position>
+		<position>welcome</position>
+		<position>left</position>
+		<position>right</position>
+		<position>helppane</position>
+		<position>user3</position>
+		<position>introblock</position>
+		<position>notices</position>
+		<position>search</position>
+	</positions>
+	<params>
+	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="accentColor" type="color" default="#116A8B"
+					label="TPL_MERIDIAN_FIELD_ACCENT_LABEL"
+					description="TPL_MERIDIAN_FIELD_ACCENT_DESC" />
+				<field name="cornerStyle" type="list" default="18"
+					label="TPL_MERIDIAN_FIELD_CORNERS_LABEL"
+					description="TPL_MERIDIAN_FIELD_CORNERS_DESC">
+					<option value="18">TPL_MERIDIAN_FIELD_CORNERS_ROUND</option>
+					<option value="8">TPL_MERIDIAN_FIELD_CORNERS_SOFT</option>
+					<option value="0">TPL_MERIDIAN_FIELD_CORNERS_SQUARE</option>
+				</field>
+				<field name="helpPane" type="list" default="0"
+					label="TPL_MERIDIAN_FIELD_HELPPANE_LABEL"
+					description="TPL_MERIDIAN_FIELD_HELPPANE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="registerLink" type="list" default="0"
+					label="TPL_MERIDIAN_FIELD_REGISTER_LABEL"
+					description="TPL_MERIDIAN_FIELD_REGISTER_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</install>

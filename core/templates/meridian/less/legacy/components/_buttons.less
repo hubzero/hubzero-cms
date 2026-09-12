@@ -1,0 +1,181 @@
+.btn() {
+	display: inline-block;
+	background: none;
+	margin-bottom: 0;
+	white-space: nowrap;
+	word-wrap: normal;
+	vertical-align: middle;
+	cursor: pointer;
+	position: relative;
+	padding: 0.5rem 1rem;
+	text-align: center;
+	text-decoration: none;
+	line-height: 1em;
+	border: none;
+	color: @colorBtnText;
+	background-color: @colorBtn;
+
+	&:hover,
+	&:focus,
+	&:visited:hover {
+		background-color: @colorBtnHover;
+	}
+
+	&.active,
+	&:active {
+
+	}
+
+	&.disabled,
+	&[disabled] {
+		cursor: not-allowed;
+		pointer-events: none;
+		background-image: none;
+	}
+
+	&[class^="icon-"],
+	&[class*=" icon-"] {
+		display: inline-flex;
+		align-items: center;
+	}
+
+	&[class^="icon-"]:before,
+	&[class*=" icon-"]:before {
+		margin-right: 0.2em;
+		font-family: "Fontcons";
+		padding: 0 0.3em 0 0;
+		width: 1em;
+		text-align: center;
+		font-weight: normal;
+	}
+
+	&.opposite[class^="icon-"]:before,
+	&.opposite[class*=" icon-"]:before {
+		left: auto;
+		right: 0;
+	}
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn,
+a.btn {
+	.btn();
+}
+
+// Button group
+.btn-group {
+	position: relative;
+	display: inline-block;
+	font-size: 0; // remove as part 1 of font-size inline-block hack
+	vertical-align: middle; // match .btn alignment given font-size hack above
+	white-space: nowrap; // prevent buttons from wrapping when in tight spaces (e.g., the table on the tests page)
+}
+.btn-group + .btn-group {
+	margin-left: 0.2em;
+}
+.btn-group > .btn {
+	position: relative;
+}
+.btn-group > .btn + .btn {
+	margin-left: -2px;
+	border-left-color: transparent;
+}
+
+.btn-group > .btn,
+.btn-group > .dropdown-menu,
+.btn-group > .popover {
+	font-size: 13px; // redeclare as part 2 of font-size inline-block hack
+}
+
+.btn-group.btn-secondary > .btn,
+.btn-group.btn-secondary > .dropdown-menu,
+.btn-group.btn-secondary > .popover {
+	font-size: 13px * 0.85;
+}
+.btn-group.btn-secondary > .btn {
+	padding: 0.55em 0.66em 0.55em 0.66em;
+}
+
+.btn-group > .btn:first-child {
+	margin-left: 0;
+}
+
+.btn-group > .btn:hover,
+.btn-group > .btn:focus,
+.btn-group > .btn:active,
+.btn-group > .btn.active {
+	z-index: 2;
+}
+
+.btn-group .dropdown-toggle:active,
+.btn-group.open .dropdown-toggle {
+	outline: 0;
+}
+
+.btn-group > .btn + .dropdown-toggle {
+	padding-left: 0.75em;
+	padding-right: 0.75em;
+}
+
+.btn-group span.dropdown-toggle:before,
+.btn .caret {
+	margin-top: 0.4em;
+	margin-left: 0;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: top;
+	border-top: 4px solid;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: "";
+}
+
+.btn-group.dropup span.dropdown-toggle:before {
+	border-bottom: 4px solid #000000;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	border-top: none;
+}
+
+.btn-group .dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	display: none;
+	float: left;
+	text-align: left;
+	min-width: 160px;
+	padding: 0; //5px 0;
+	margin: 0 !important;
+	list-style: none;
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	background-clip: padding-box;
+}
+
+.dropup .dropdown-menu {
+	top: auto;
+	bottom: 100%;
+}
+
+.btn-group .dropdown-toggle:hover + .dropdown-menu,
+.btn-group:hover .dropdown-menu,
+.open > .dropdown-menu {
+	display: block;
+}
+.btn-group > .btn:first-child:hover .dropdown-menu,
+.btn-group:hover > .btn:first-child:hover + .dropdown-toggle + .dropdown-menu {
+	display: none;
+}
+.dropdown-menu .divider {
+	overflow: hidden;
+	height: 1px;
+	background-color: @colorSeparatorLight;
+}
+.dropdown-menu > li > a {
+	display: block;
+	clear: both;
+}

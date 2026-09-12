@@ -10,6 +10,7 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync } from 'node:fs';
+import { hubFor } from './pages.mjs';
 
 /**
  * The newest chromium already on this machine.
@@ -95,7 +96,11 @@ async function visit(page, url) {
 }
 
 const hub  = process.argv[2] || 'mesozoic';
-const port = process.argv[3] || '7600';
+
+// The port is the hub's own, from the catalogue: naming a hub and getting
+// another hub's port back is how a whole run of this once came back clean
+// against twenty-four blank pages. An argument still overrides it.
+const port = process.argv[3] || (hubFor(hub) || {}).port || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 // The widths worth caring about: a phone, and a small laptop

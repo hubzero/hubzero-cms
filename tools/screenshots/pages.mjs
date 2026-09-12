@@ -88,6 +88,8 @@ const adminPassword = process.env.HUB_ADMIN_PASSWORD || 'ClaudeDev2026';
 export const hubs = {
 
     mesozoic: {
+        port: '7600',
+
         // A manager is also an instructor here, which keeps the count down
         // without losing a view: every page either of them can reach, one of
         // them can.
@@ -108,6 +110,8 @@ export const hubs = {
     // One account, which is the administrator's. A page here is what a
     // stranger sees.
     welcome: {
+        port: '7500',
+
         people: {
             admin: { username: 'admin', password: adminPassword },
         },

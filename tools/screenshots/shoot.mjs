@@ -69,7 +69,11 @@ const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
 const only = (process.argv.find(a => a.startsWith('--only=')) || '').split('=')[1];
 
 const hub  = args[0] || 'mesozoic';
-const port = args[1] || '7600';
+
+// The port is the hub's own, from the catalogue: naming a hub and getting
+// another hub's port back is how a whole run of this once came back clean
+// against twenty-four blank pages. An argument still overrides it.
+const port = args[1] || (hubFor(hub) || {}).port || '7600';
 const base = `https://${hub}.${process.env.HUB_DOMAIN || 'example.com'}:${port}`;
 
 // Who the hub is photographed as. A manager is also an instructor here, which

@@ -1,0 +1,210 @@
+// Front page
+//
+// The header and the hero share one ground, so the navigation sits over the
+// introduction rather than above a band of its own. A hub that wants a
+// photograph behind it sets a background-image on .home-head; without one the
+// ground is a wash of the brand colour, which is meant to look deliberate
+// rather than unfinished.
+
+.home-head {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	padding-bottom: 6rem;
+	background-color: @colorHeaderBg;
+	background-image: linear-gradient(160deg, fade(@brandRaw, 12%), fade(@brandRaw, 0%) 70%);
+	background-position: top right;
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	// The header gives up its own ground inside here
+	.page-head {
+		background: none;
+		border-bottom: 0;
+	}
+
+	.hero {
+		flex-grow: 1;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		position: relative;
+
+		& > .inner {
+			.outerPadding();
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+		}
+
+		h2 {
+			font-size: 1.9rem;
+			font-weight: 600;
+			line-height: 1.15;
+			margin: 0 0 1rem;
+			color: @colorText;
+			max-width: 40rem;
+
+			@media (min-width: @sizeM) {
+				font-size: 2.4rem;
+			}
+		}
+
+		p {
+			font-size: 1.05rem;
+			line-height: 1.45;
+			margin: 0;
+			max-width: 46rem;
+			color: @colorTextMuted;
+
+			@media (min-width: @sizeM) {
+				font-size: 1.25rem;
+			}
+		}
+
+		// The copy sits over the picture, not under it
+		.hero-copy {
+			position: relative;
+			z-index: 1;
+		}
+
+		// An eyebrow says what kind of place this is before the heading
+		// says which one
+		.eyebrow {
+			font-size: 0.8rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			color: @colorBrand;
+			margin: 0 0 0.75rem;
+		}
+
+		.hero-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin-top: 1.75rem;
+		}
+
+		.btn,
+		.primary-button,
+		.outline-button {
+			display: inline-block;
+			padding: 0.65em 1.4em;
+			border-radius: 3px;
+			border: 1px solid @colorBrand;
+			font-weight: 600;
+			line-height: 1.2;
+		}
+
+		.btn,
+		.primary-button {
+			background: @colorBtn;
+			border-color: @colorBtn;
+			color: @colorBtnText;
+
+			&:hover,
+			&:focus {
+				background: @colorBtnHover;
+				border-color: @colorBtnHover;
+				color: @colorBtnText;
+			}
+		}
+
+		.outline-button {
+			background: transparent;
+			color: @colorBrand;
+
+			&:hover,
+			&:focus {
+				background: @colorBrand;
+				border-color: @colorBrand;
+				color: #fff;
+			}
+		}
+	}
+
+	// A picture behind the whole block, if the hub has one to put there
+	.hero-art {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: 100%;
+		object-fit: cover;
+		object-position: top right;
+		z-index: 0;
+		pointer-events: none;
+	}
+}
+
+// A band of front page content
+//
+// Content authored as sections gets a centred heading with a short brand rule
+// under it. The first one lifts into the hero's lower padding, so the two read
+// as one page rather than two stacked blocks.
+
+.home-section {
+	padding: 3rem 0;
+
+	& > .inner {
+		.outerPadding();
+	}
+
+	&:first-of-type {
+		padding-top: 0;
+		margin-top: -6rem;
+	}
+
+	// The heading of a band is the module's own title, which the module
+	// chrome writes as an h3; a band whose content brings its own h2 gets
+	// the same treatment.
+	& > .inner > .module > h3,
+	h2 {
+		position: relative;
+		padding-bottom: 1.2rem;
+		margin-bottom: 2rem;
+		text-align: center;
+		font-size: 1.6rem;
+		font-weight: 600;
+
+		&::after {
+			display: block;
+			content: '';
+			position: absolute;
+			height: 4px;
+			width: 2rem;
+			bottom: 0;
+			left: 50%;
+			transform: translate(-50%, 0);
+			background: @colorBrand;
+		}
+	}
+}
+
+// Items inside a band
+//
+// A row on a wide screen, a stack on a narrow one, whatever a band holds.
+
+.band-items {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	margin-top: 1.5rem;
+}
+
+.band-item {
+	flex: 1 1 18rem;
+	min-width: 0;
+
+	h4 {
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem;
+		color: @colorText;
+	}
+
+	p {
+		margin: 0 0 0.6rem;
+		color: @colorTextMuted;
+	}
+}

@@ -1,0 +1,10 @@
+// The palette and the tokens come first: everything below is written in terms
+// of them, and the compiler this repository ships resolves a variable where it
+// is used rather than hoisting it, so a definition that arrives later is a
+// definition that arrives too late.
+@import "tokens/_tokens";
+@import "theme/vars/_vars";
+
+@import "legacy/_legacy";
+@import "template/_template";
+@import "theme/_theme";

@@ -1,0 +1,136 @@
+// Theme
+//
+// Meridian is the template a hub wears before it has a subject of its own:
+// what somebody setting up a new hub sees on the first day, and the thing
+// they will change first. So it commits to a shape rather than to a mood -
+// the palette is quiet and nearly neutral, and the character is in the
+// layout.
+//
+// Teal rather than lucent's deep blue, and enough of it to be a choice: a hub
+// with no colours of its own should look unfinished in the sense of being new,
+// not in the sense of being grey. One hue, used where it means something -
+// the frame's own edge, a link, a button - and neutrals everywhere else.
+
+@colorText: #1F2328;
+@colorTextMuted: #5B6471;
+
+// The accent, and the one thing a hub is expected to change
+//
+// Every rule below reaches for it through a custom property, so a hub can
+// repoint the whole template from one field in the admin without a rebuild.
+// The hexes here are the fallbacks and the defaults both: teal at 6.1:1 on
+// white, so it carries a link and a button alike.
+//
+// index.php derives the darker and lighter shades, and the ink that goes over
+// the accent, from whatever colour the hub picked - it does not ask for three
+// colours and hope they agree, and it does not let a pale accent end up with
+// white text on it. @brandRaw and its pair are for the few places LESS has to
+// compute with the colour rather than print it.
+@brandRaw: #116A8B;
+@brandDarkRaw: #0C5169;
+@brandLightRaw: #1B87AE;
+
+@colorBrand: ~"var(--hub-accent, @{brandRaw})";
+@colorBrandDarker: ~"var(--hub-accent-dark, @{brandDarkRaw})";
+@colorBrandLighter: ~"var(--hub-accent-light, @{brandLightRaw})";
+
+// A wash of the accent and an edge drawn in it, for the band across the head
+// of every component. Mixed in PHP rather than here for the same reason as
+// the shades: LESS cannot compute with a custom property.
+@colorAccentWash: ~"var(--hub-accent-wash, #ECF3F6)";
+@colorAccentEdge: ~"var(--hub-accent-edge, #B8D2DC)";
+
+@colorLink: @colorBrandDarker;
+@colorLinkHover: @colorBrand;
+
+@colorBtn: @colorBrandDarker;
+@colorBtnHover: @colorBrand;
+@colorBtnText: ~"var(--hub-accent-ink, #fff)";
+
+@colorSeparatorLight: #E3E7EC;
+
+// Page head
+@colorHeaderBg: #FFFFFF;
+@colorHeaderBorder: #DDE2E8;
+@colorNavLink: @colorText;
+@colorNavLinkHover: @colorBrand;
+
+// Page footer
+//
+// The foot of the page is the largest field of the accent anywhere, so it
+// follows the accent too - and its text follows the accent's ink, because a
+// hub that picks a pale yellow should get a dark-on-yellow footer rather than
+// a white-on-yellow one nobody can read.
+@colorFooterBg: @colorBrandDarker;
+@colorFooterBorder: @colorBrandDarker;
+@colorFooterText: ~"var(--hub-footer-text, #CFE3EC)";
+@colorFooterHeading: ~"var(--hub-footer-ink, #FFFFFF)";
+@colorFooterLink: ~"var(--hub-footer-link, #EAF4F8)";
+@colorFooterLinkHover: ~"var(--hub-footer-ink, #FFFFFF)";
+
+// The frame
+//
+// The page sits in a bounded column with a visible edge, on a ground that is
+// plainly not the page. That is the whole design: a reader can see where the
+// content begins and ends without being told, and a hub with two paragraphs
+// in it looks deliberate rather than unfinished - which a full-bleed template
+// cannot manage, because an empty page is indistinguishable from a broken one.
+@colorCanvas: #E8EEF2;
+@colorPage: #FFFFFF;
+@colorPageBorder: #D7DDE4;
+
+@pageWidth: 1180px;
+
+// The same number again, for the media query that drops the frame: a media
+// query cannot read a custom property, so the width is not a knob.
+@pageWidthRaw: 1180px;
+// How round the frame is: the other thing worth a knob, because it is the
+// difference between a template that looks like a document and one that looks
+// like an application, and hubs disagree about which they want.
+@pageRadius: ~"var(--hub-radius, 18px)";
+@pageRadiusRaw: 18px;
+
+// Notices
+//
+// A tint of each kind's own colour, and the only colours on the page that do
+// not follow the accent. A hub that picks red for its accent must still get a
+// red error and a green success: what a notice means is not a matter of
+// taste, and a page where the warning is the same colour as the heading above
+// it has stopped warning anybody. So these are fixed, and they are the one
+// place a different hue is the point rather than a lapse.
+@colorNoticeInfo: #EAF3F4;
+@colorNoticeWarning: #F9F2E3;
+@colorNoticeError: #FBEDEB;
+@colorNoticeSuccess: #E9F4F0;
+
+// The core's own text colour for each kind was picked to sit on white, where
+// it clears 4.5:1 with nothing to spare. On a tint of itself it no longer
+// does - warning fell to 4.4:1 and error and success to 4.3:1 - so each has a
+// darker shade of the same hue for use over its own ground. Still the same
+// colour at a glance, still amber and red and green; only deeper.
+@colorNoticeInfoText: #25595F;
+@colorNoticeWarningText: #7A5900;
+@colorNoticeErrorText: #B32309;
+@colorNoticeSuccessText: #006B4F;
+
+// Surfaces
+@colorSurface: #F6F8FA;
+@colorSurfaceSunk: #FBFCFD;
+@colorSurfaceRaised: #FFFFFF;
+@colorSurfaceBorder: #E3E7EC;
+@colorSurfaceEdge: #CDD5DE;
+
+@radiusSmall: 4px;
+@radius: 6px;
+@radiusLarge: 10px;
+
+@shadowSunk: inset 0 1px 2px rgba(31, 35, 40, 0.07);
+@shadowRaised: 0 1px 2px rgba(31, 35, 40, 0.06);
+@shadowLifted: 0 2px 8px rgba(31, 35, 40, 0.09);
+
+// Type
+@fontHeading: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+	Arial, sans-serif;
+
+@fontBody: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+	Arial, sans-serif;
