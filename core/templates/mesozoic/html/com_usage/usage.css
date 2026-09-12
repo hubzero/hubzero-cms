@@ -1,0 +1,24 @@
+/**
+ * Usage statistics
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ *
+ * Only the stripe. The rest of this table's colours mean something - a figure
+ * that went up is green and one that went down is red, and a highlighted
+ * column is highlighted - and a template that flattened those into its own
+ * hue would be taking the information out of the table. What is corrected is
+ * the one colour that means nothing: the odd row's #f6f6f1 and the group's
+ * #f7f7f7, neither of which is this page's grey.
+ */
+@import url("../../../../../core/components/com_usage/site/assets/css/usage.css");
+
+#statistics .odd {
+	background-color: #F8F4EE;
+}
+
+#statistics .odd .group,
+#statistics .even .group {
+	background-color: #EFE9DF;
+}

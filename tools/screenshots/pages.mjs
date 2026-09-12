@@ -85,10 +85,62 @@ const PAGES_MESOZOIC = [
 const demoPassword = process.env.HUB_MEMBER_PASSWORD || 'MesozoicDemo2026';
 const adminPassword = process.env.HUB_ADMIN_PASSWORD || 'ClaudeDev2026';
 
+/**
+ * Colours every hub has, whatever its palette
+ *
+ * The notice tints are in here because they are nearly neutral by design - a
+ * wash of a hue rather than the hue itself - and a diff marks an added line in
+ * green because that is what a diff does. Both would otherwise be reported
+ * every run, and a list with known entries in it stops being read.
+ */
+const COMMON = [
+    'rgb(255, 255, 255)', 'rgb(0, 0, 0)',
+
+    // Notices, tinted by kind
+    'rgb(234, 243, 244)', 'rgb(249, 242, 227)',
+    'rgb(251, 237, 235)', 'rgb(233, 244, 240)',
+
+    // A difference between two revisions
+    'rgb(242, 255, 242)', 'rgb(255, 242, 242)',
+];
+
+/**
+ * Mesozoic: weathered sandstone, and the browns over it
+ */
+const PALETTE_MESOZOIC = COMMON.concat([
+    'rgb(250, 247, 242)', 'rgb(242, 237, 228)',
+    'rgb(230, 223, 212)', 'rgb(248, 244, 238)', 'rgb(251, 248, 244)',
+    'rgb(253, 251, 248)', 'rgb(244, 239, 231)', 'rgb(239, 233, 223)',
+    'rgb(240, 230, 216)', 'rgb(138, 90, 43)', 'rgb(107, 68, 32)',
+    'rgb(168, 112, 56)', 'rgb(43, 38, 34)', 'rgb(92, 83, 73)',
+    'rgb(99, 90, 80)',
+
+    // The tabs and controls that are dark on purpose
+    'rgb(78, 70, 61)',
+]);
+
+/**
+ * Meridian: cool neutrals, and the accent's own near-neutral washes
+ *
+ * The accent itself is not listed. It is a knob - a hub sets it in the admin -
+ * so there is no colour to list, and there does not need to be: anything with
+ * a hue is not what this report is looking for.
+ */
+const PALETTE_MERIDIAN = COMMON.concat([
+    'rgb(232, 238, 242)', 'rgb(246, 248, 250)', 'rgb(251, 252, 253)',
+    'rgb(227, 231, 236)', 'rgb(205, 213, 222)', 'rgb(233, 237, 241)',
+    'rgb(241, 244, 247)', 'rgb(215, 221, 228)', 'rgb(221, 226, 232)',
+    'rgb(210, 218, 226)', 'rgb(31, 35, 40)', 'rgb(91, 100, 113)',
+
+    // The band at the head of a component, and its edge, on the default teal
+    'rgb(236, 243, 246)', 'rgb(184, 210, 220)',
+]);
+
 export const hubs = {
 
     mesozoic: {
         port: '7600',
+        palette: PALETTE_MESOZOIC,
 
         // A manager is also an instructor here, which keeps the count down
         // without losing a view: every page either of them can reach, one of
@@ -111,6 +163,7 @@ export const hubs = {
     // stranger sees.
     welcome: {
         port: '7500',
+        palette: PALETTE_MERIDIAN,
 
         people: {
             admin: { username: 'admin', password: adminPassword },

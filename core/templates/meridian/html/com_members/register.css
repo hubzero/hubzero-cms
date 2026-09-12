@@ -1,0 +1,56 @@
+/**
+ * Creating an account
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_members/site/assets/css/register.css");
+
+/*
+ * The notes beside the form. The first was a saturated #2b6cb0 and the rest a
+ * flat grey - a blue from nowhere and one of the last greys on the hub, on the
+ * page a stranger is most likely to see first.
+ *
+ * Both become the panel every other note on the hub uses: a wash of the info
+ * colour with that colour down the leading edge. Fixed rather than following
+ * the accent, for the same reason the notices are: what a note is does not
+ * change when a hub picks a new colour.
+ */
+#hubForm .explaination,
+#hubForm .explaination:first-of-type {
+	background: #EAF3F4;
+	border: 1px solid rgba(47, 113, 120, 0.25);
+	border-left: 4px solid #25595F;
+	border-radius: 6px;
+	color: #1F2328;
+	box-shadow: 0 1px 2px rgba(31, 35, 40, 0.06);
+}
+
+/*
+ * The link inside it. The component sets this to white for the blue panel it
+ * used to be, at a specificity this has to match - turning the panel light
+ * without turning the link dark leaves white on near-white at 1.1:1, which is
+ * a worse failure than the one it replaced.
+ */
+#hubForm .explaination a,
+#hubForm .explaination:first-of-type a {
+	color: #25595F;
+}
+
+/*
+ * The one button on the page, which was the only green thing on the hub. It
+ * asks for the accent by the same custom property the stylesheet uses, so a
+ * hub that repaints the template repaints this too.
+ */
+#hubForm .btn-success {
+	background-color: var(--hub-accent-dark, #0C5169);
+	border-color: var(--hub-accent-dark, #0C5169);
+	color: var(--hub-accent-ink, #fff);
+}
+
+#hubForm .btn-success:hover,
+#hubForm .btn-success:focus {
+	background-color: var(--hub-accent, #116A8B);
+	border-color: var(--hub-accent, #116A8B);
+}
