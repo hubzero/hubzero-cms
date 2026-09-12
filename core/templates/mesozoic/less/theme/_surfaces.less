@@ -145,32 +145,41 @@ span.count {
 // The colours are the ones the core already gives each kind, so nothing new is
 // invented - only the grounds, each a tint of its own text colour, light
 // enough that @colorText over it stays above 11:1.
+//
+// The text is the one thing that does change: the core's colour for each kind
+// was chosen against white, and on a tint of itself it drops below 4.5:1. Each
+// block therefore names a deeper shade of its own hue, so a notice still reads
+// amber or red or green from across the room and reads at all up close.
 .info,
 #system-message dd.info,
 #system-message dd.message {
 	background: @colorNoticeInfo;
+	color: @colorNoticeInfoText;
 	border-color: fade(@color-info-text, 25%);
-	border-left: 4px solid @color-info-text;
+	border-left: 4px solid @colorNoticeInfoText;
 }
 
 .warning,
 #system-message dd.warning {
 	background: @colorNoticeWarning;
+	color: @colorNoticeWarningText;
 	border-color: fade(@color-warning-text, 25%);
-	border-left: 4px solid @color-warning-text;
+	border-left: 4px solid @colorNoticeWarningText;
 }
 
 .error,
 #system-message dd.error {
 	background: @colorNoticeError;
+	color: @colorNoticeErrorText;
 	border-color: fade(@color-critical-text, 25%);
-	border-left: 4px solid @color-critical-text;
+	border-left: 4px solid @colorNoticeErrorText;
 }
 
 .passed {
 	background: @colorNoticeSuccess;
+	color: @colorNoticeSuccessText;
 	border-color: fade(@color-success-text, 25%);
-	border-left: 4px solid @color-success-text;
+	border-left: 4px solid @colorNoticeSuccessText;
 }
 
 // A comment's caption, and the wiki's reference table, which the core's own

@@ -31,3 +31,19 @@
 	background: #E9F4F0;
 	border-left: 4px solid rgba(0, 128, 96, 1);
 }
+
+/* The line of detail under a publication's title: #999 on white is 2.8:1 */
+.pubdate,
+.pubinfo {
+	color: #6B6259;
+}
+
+/* The label above a publication's ranking bar, at #999: 2.8:1 on white */
+.rankinfo dt {
+	color: #6B6259;
+}
+
+/* The counts beside a publication's title - reviews, questions, wishlist */
+.metadata p {
+	color: #6B6259;
+}
