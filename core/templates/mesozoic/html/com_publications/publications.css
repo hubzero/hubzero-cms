@@ -16,3 +16,18 @@
 .details span {
 	color: #6B6259;
 }
+
+/* The list of a member's own publications, which was a flat grey */
+.mypubs {
+	background: #F8F4EE;
+}
+
+/*
+ * The flag saying which version is the current one. Green, and rightly so -
+ * it is an affirmative state and should read as one at a glance - but a green
+ * of its own rather than the hub's. This is the success tint the notices use.
+ */
+.curversion {
+	background: #E9F4F0;
+	border-left: 4px solid rgba(0, 128, 96, 1);
+}

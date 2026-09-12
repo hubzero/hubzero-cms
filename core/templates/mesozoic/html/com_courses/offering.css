@@ -1,0 +1,17 @@
+/**
+ * A course offering
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_courses/site/assets/css/offering.css");
+
+/*
+ * The sidebar down a course. Dark is the design and stays dark - it is how an
+ * offering tells you it is a place of its own rather than another listing -
+ * but in the hub's own near-black rather than #3a3a3a.
+ */
+#page_sidebar {
+	background: #2B2622;
+}
