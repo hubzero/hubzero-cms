@@ -62,8 +62,16 @@ body {
 		margin-bottom: 4rem;
 	}
 
+	// com_content's featured view is the one piece of component output that
+	// does not wrap itself in a section - it emits a bare div - so it was the
+	// one page on the hub with no gutter, its text starting at the very edge
+	// of the window. It is also the front page a hub gets before it has been
+	// given one, which is where anybody would see it. Corrected here rather
+	// than in the component, whose markup a dozen hubs' templates are built
+	// against.
 	& > .inner > section.section,
 	& > .inner > form > section.section,
+	& > .inner > .blog-featured,
 	& > .inner > .contentpane > .contentpaneopen {
 		.outerPadding();
 		padding-top: 30px;
