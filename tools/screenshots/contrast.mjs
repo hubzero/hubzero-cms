@@ -11,6 +11,11 @@
  * are checked here. What it cannot check is whether a link is distinguishable
  * from its surrounding text by more than colour (1.4.1); that needs reading.
  *
+ * Text over a background image is not judged - a picture is not a colour -
+ * and the count of what was declined is reported rather than left silent,
+ * because a frieze behind the footer would otherwise take the footer quietly
+ * out of the check. tools/screenshots/veneer.mjs answers those.
+ *
  * Each finding also names the rule that chose the colour, and the stylesheet
  * it is in. Without that the report is only the beginning of the search: the
  * selector that reaches an element is rarely the one you would have guessed,
@@ -127,6 +132,7 @@ async function rule(nodeId) {
 await page.setViewportSize({ width: 1280, height: 900 });
 
 const findings = new Map();
+const unjudged = new Map();
 let looked = 0;
 
 for (const path of paths) {
@@ -147,7 +153,7 @@ for (const path of paths) {
 
     looked++;
 
-    const found = await page.evaluate(() => {
+    const { found, declined } = await page.evaluate(() => {
         const rgb = (s) => {
             const m = s.match(/[\d.]+/g);
 
@@ -217,6 +223,7 @@ for (const path of paths) {
         const out = [];
         const seen = new Set();
         let mark = 0;
+        let declined = 0;
 
         for (const el of document.querySelectorAll('body *')) {
             const style = getComputedStyle(el);
@@ -239,6 +246,10 @@ for (const path of paths) {
 
             const fg = rgb(style.color);
             const bg = ground(el);
+
+            if (!bg) {
+                declined++;
+            }
 
             if (!fg || fg[3] < 0.95 || !bg) {
                 continue;
@@ -279,8 +290,12 @@ for (const path of paths) {
             });
         }
 
-        return out;
+        return { found: out, declined };
     });
+
+    if (declined) {
+        unjudged.set(path, declined);
+    }
 
     const { root } = await cdp.send('DOM.getDocument');
 
@@ -319,6 +334,20 @@ for (const [what, { where, sample, rule }] of ranked) {
 
 if (!ranked.length) {
     console.log('  Every piece of text on every page meets 1.4.3.');
+}
+
+if (unjudged.size) {
+    const total = [...unjudged.values()].reduce((a, b) => a + b, 0);
+
+    console.log(`\n  ${total} pieces of text on ${unjudged.size} pages were not judged:`
+        + ' something behind them is painted with an image rather than a colour.');
+
+    for (const [path, n] of [...unjudged.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6)) {
+        console.log(`      ${path}  ${n}`);
+    }
+
+    console.log('      veneer.mjs answers these: it composites the image over its'
+        + ' ground and\n      reports what the darkest pixel in it leaves the text.');
 }
 
 await browser.close();
