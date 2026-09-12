@@ -1,0 +1,17 @@
+/**
+ * Questions and answers
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_answers/site/assets/css/answers.css");
+
+/*
+ * A closed question's flag beside the thread. The component sets #f1f1f1 on
+ * #949494, which is 2.4:1 - and a flag is the one word on the page telling you
+ * the question is settled.
+ */
+.aside .entry-status.closed {
+	background: #525A62;
+}
