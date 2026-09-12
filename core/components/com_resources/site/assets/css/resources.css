@@ -1012,12 +1012,26 @@
 	#level-2 ul :is(a, span):hover:after {
 		color: #fff;
 	}
+	/*
+	 * The list is what takes focus - the options are spans and cannot - so
+	 * the ring goes there, and the option the keyboard is on is marked with
+	 * .hi rather than with :focus. An :focus rule on the options themselves
+	 * can never match.
+	 */
+	#tagbrowser ul[role="listbox"]:focus {
+		outline: 2px solid #1a56a8;
+		outline-offset: -2px;
+	}
+
+	#tagbrowser ul[role="listbox"]:focus-visible {
+		outline: 2px solid #1a56a8;
+		outline-offset: -2px;
+	}
+
 	#level-1 ul :is(a, span):focus,
 	#level-2 ul :is(a, span):focus {
 		background: #3875D7;
 		color: #fff;
-		outline: 2px solid #1a56a8;
-		outline-offset: -2px;
 	}
 	#level-1 ul :is(a, span):focus:after,
 	#level-2 ul :is(a, span):focus:after {
