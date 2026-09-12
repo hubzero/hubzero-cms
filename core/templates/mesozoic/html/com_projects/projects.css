@@ -15,3 +15,21 @@
 .project-alias {
 	color: #6B6259;
 }
+
+/*
+ * The file manager's toolbar. The strip and the buttons on it were three
+ * neutral greys - and a button that is unavailable has to look unavailable,
+ * so the inactive ones keep a plainly flatter surface, in the palette.
+ */
+.list-editing {
+	background: #F4EFE7;
+}
+
+#cbody .list-editing {
+	background: #EFE9DF;
+}
+
+a.fmanage.inactive {
+	background: #F4EFE7;
+	color: #8A8178;
+}

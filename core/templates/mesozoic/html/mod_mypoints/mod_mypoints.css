@@ -1,0 +1,13 @@
+/**
+ * The points module
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/modules/mod_mypoints/assets/css/mod_mypoints.css");
+
+/* Nearly warm already, but not the palette's own */
+.point-balance {
+	background: #F8F4EE;
+}

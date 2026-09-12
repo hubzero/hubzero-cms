@@ -1,0 +1,18 @@
+/**
+ * The mypublications module
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows. The three dashboard modules each ship the same
+ * tab strip in the same two neutral greys; each needs saying to separately,
+ * because each has its own stylesheet.
+ */
+@import url("../../../../../core/modules/mod_mypublications/assets/css/mod_mypublications.css");
+
+.mod_mypublications .tab_titles {
+	background: #4E463D;
+}
+
+.mod_mypublications .tab_titles li {
+	background: #635A50;
+}

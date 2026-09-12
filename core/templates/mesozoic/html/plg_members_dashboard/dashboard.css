@@ -1,0 +1,22 @@
+/**
+ * A member's dashboard
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/members/dashboard/assets/css/dashboard.css");
+
+/* The bar of controls on each module of the dashboard */
+.module-content .module-nav {
+	background: #EFE9DF;
+}
+
+.module-links {
+	background: #635A50;
+}
+
+/* The title bar on each module of the dashboard */
+.module-title h3 {
+	background: #635A50;
+}

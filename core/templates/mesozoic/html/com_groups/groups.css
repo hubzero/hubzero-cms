@@ -61,3 +61,15 @@
 		text-align: left;
 	}
 }
+
+/* The group's own actions, a dark neutral among warm ones */
+#group_options .btn-group > .btn {
+	background: #635A50;
+	border-color: #4E463D;
+}
+
+#group_options .btn-group > .btn:hover,
+#group_options .btn-group > .btn:focus {
+	background: #6B4420;
+	border-color: #6B4420;
+}
