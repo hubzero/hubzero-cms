@@ -7684,8 +7684,8 @@ tt {
   margin-top: 2rem;
   margin-bottom: 2rem;
   padding: 1.5rem 1.75rem;
-  background: #FAF7F2 url("../images/thicket.svg") no-repeat right bottom;
-  background-size: auto 4rem;
+  background: #FAF7F2 url("../images/thicket.svg") repeat-x bottom center;
+  background-size: auto 4.5rem;
   border: 1px solid #E6DFD4;
   border-left: 4px solid #8A5A2B;
   border-radius: 4px;
@@ -7722,7 +7722,7 @@ tt {
   .page > .inner > #content-header,
   .contentpane > .content-header,
   .contentpane > #content-header {
-    background-size: auto 5.5rem;
+    background-size: auto 100%;
   }
 }
 .page > .inner > .content-header h2,
@@ -7920,9 +7920,22 @@ section.section .aside + .subject .content-header h2:before {
 }
 .page-footer {
   position: relative;
-  padding-top: 3rem;
+  padding-top: 2rem;
   border-top: 0;
   isolation: isolate;
+}
+.page-footer > .inner {
+  padding-top: 0;
+}
+.page-footer > .inner > .custom > h2 {
+  clip: rect(1px,1px,1px,1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
 }
 .page-footer:after {
   content: "";
