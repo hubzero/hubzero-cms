@@ -32,11 +32,24 @@ class Mobile extends Plugin
         $session = App::get('session');
         $tmpl = Request::getCmd('tmpl', '');
 
-        if ($tmpl == 'mobile') {
+        // Only switch to a shell that exists.
+        //
+        // A shell no template provides is a 404, and this one is remembered in
+        // the session - so asking for a mobile template a hub does not have
+        // used to cost the visitor not that page but every page after it. A
+        // hub without one shows the site it does have.
+        $hasMobile = App::get('template.loader')->hasShell('mobile');
+
+        if ($tmpl == 'mobile' && $hasMobile) {
             $session->set('mobile', true);
-        } else {
-            if ($session->get('mobile')) {
+        } elseif ($tmpl == 'mobile') {
+            Request::setVar('tmpl', 'index');
+        } elseif ($session->get('mobile')) {
+            if ($hasMobile) {
                 Request::setVar('tmpl', 'mobile');
+            } else {
+                // Remembered from a hub, or a template, that had one
+                $session->set('mobile', false);
             }
         }
 
@@ -44,9 +57,12 @@ class Mobile extends Plugin
         if ($tmpl == 'fullsite') {
             $session->set('mobile', false);
 
-            Request::setVar('tmpl', '');
+            Request::setVar('tmpl', 'index');
 
-            App::redirect($_SERVER['SCRIPT_URI'] . '?' . str_replace('tmpl=fullsite', '', $_SERVER['QUERY_STRING']));
+            // SCRIPT_URI is Apache's, and not every server sets it
+            $url = preg_replace('/([?&])tmpl=fullsite(&|$)/', '$1', Request::current(true));
+
+            App::redirect(rtrim($url, '?&'));
         }
     }
 }
