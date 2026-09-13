@@ -243,4 +243,19 @@ class Sqlite extends PdoDriver
 
 		return $this->loadResult();
 	}
+
+	/**
+	 * Initializes a transaction
+	 *
+	 * The inherited implementation issues MySQL's "START TRANSACTION", which
+	 * SQLite rejects outright. COMMIT and ROLLBACK are spelled the same in
+	 * both and need no override.
+	 *
+	 * @return  void
+	 * @since   2.0.0
+	 */
+	public function transactionStart()
+	{
+		$this->setQuery('BEGIN TRANSACTION')->execute();
+	}
 }
