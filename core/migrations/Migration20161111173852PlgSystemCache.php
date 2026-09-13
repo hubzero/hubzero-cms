@@ -56,7 +56,7 @@ class Migration20161111173852PlgSystemCache extends Base
 		$params = json_decode($params);
 		if (json_last_error() !== JSON_ERROR_NONE)
 		{
-			$params = parse_ini_string($params, false, INI_PARSER_RAW);
+			$params = parse_ini_string($params, false, INI_SCANNER_RAW);
 		}
 		if (!isset($params) || !$params)
 		{
