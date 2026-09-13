@@ -1412,7 +1412,7 @@ The reduced FireHose, and the answer to the failure mode in
 A submission carries a `popularity` float:
 
 ```php
-$popularity = $base[$submission->state]          // pending 102, hold 93, …
+$popularity = $base[$submission->state]          // pending 100, hold 90, …
             + $submission->votes()->reduce(fn($v) => $v->vote * $this->weightOf($v->created_by));
 ```
 
@@ -1655,7 +1655,7 @@ every content type; these are re-derived for two:
 | `popularity_base` | `pending=100\|hold=90\|accepted=120\|rejected=0` | starting score by state |
 | `popularity_bands` | `200\|150\|110\|90\|60` | cut points for the display colour bands |
 | `popularity_halflife_hours` | 168 | decay toward the state base |
-| `vote_weight_by_karma` | `-1=0\|0=1\|12=2\|25=3` | a voter's clout, bounded at both ends |
+| `vote_weight_by_karma` | `-5=0\|0=1\|10=2\|30=3` | a voter's clout, bounded at both ends |
 | `editor_votes_separate` | on | keep `editor_popularity` out of the public ranking |
 | `attention_needed_auto` | off | let a rule set the flag, not just an editor |
 
