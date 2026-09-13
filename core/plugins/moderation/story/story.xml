@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="moderation" method="upgrade">
+	<name>plg_moderation_story</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Makes story comments moderatable, and tunes their credit economy.</description>
+	<files>
+		<filename plugin="story">story.php</filename>
+		<filename>adapter.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_moderation_story.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_moderation_story.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="credits_per_grant" type="text" default="5" label="PLG_MODERATION_STORY_CREDITS_LABEL" description="PLG_MODERATION_STORY_CREDITS_DESC" />
+				<field name="credit_lifetime_hours" type="text" default="96" label="PLG_MODERATION_STORY_LIFETIME_LABEL" description="PLG_MODERATION_STORY_LIFETIME_DESC" />
+				<field name="grant_interval_hours" type="text" default="72" label="PLG_MODERATION_STORY_INTERVAL_LABEL" description="PLG_MODERATION_STORY_INTERVAL_DESC" />
+				<field name="grant_fraction" type="text" default="0.15" label="PLG_MODERATION_STORY_FRACTION_LABEL" description="PLG_MODERATION_STORY_FRACTION_DESC" />
+				<field name="eligible_hitcount" type="text" default="3" label="PLG_MODERATION_STORY_HITCOUNT_LABEL" description="PLG_MODERATION_STORY_HITCOUNT_DESC" />
+				<field name="min_account_age_days" type="text" default="30" label="PLG_MODERATION_STORY_AGE_LABEL" description="PLG_MODERATION_STORY_AGE_DESC" />
+				<field name="min_karma" type="text" default="0" label="PLG_MODERATION_STORY_KARMA_LABEL" description="PLG_MODERATION_STORY_KARMA_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
