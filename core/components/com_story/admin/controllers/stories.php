@@ -18,6 +18,8 @@ use Request;
 use Notify;
 use Lang;
 use User;
+use Event;
+use Route;
 use App;
 
 /**
@@ -192,6 +194,26 @@ class Stories extends AdminController
 		if ($row->get('state') == Story::STATE_PUBLISHED && !$row->get('discussion_id'))
 		{
 			Discussion::forStory($row);
+		}
+
+		// The activity feed hears about a story when it goes out, not when an
+		// editor saves a draft. A feed full of somebody's unfinished work is
+		// noise, and it leaks the schedule besides.
+		if ($row->get('state') == Story::STATE_PUBLISHED)
+		{
+			Event::trigger('system.logActivity', array(
+				'activity' => array(
+					'action'      => 'created',
+					'scope'       => 'story.story',
+					'scope_id'    => $row->get('id'),
+					'description' => Lang::txt('COM_STORY_ACTIVITY_PUBLISHED', $row->get('title')),
+					'details'     => array(
+						'title' => $row->get('title'),
+						'url'   => Route::url($row->link())
+					)
+				),
+				'recipients' => array()
+			));
 		}
 
 		Notify::success(Lang::txt('COM_STORY_SAVED'));

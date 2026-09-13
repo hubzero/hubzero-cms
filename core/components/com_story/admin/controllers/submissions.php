@@ -184,6 +184,17 @@ class Submissions extends AdminController
 		// vote are both guarding against.
 		Event::trigger('karma.onStorySubmissionAccepted', array($row));
 
+		Event::trigger('system.logActivity', array(
+			'activity' => array(
+				'action'      => 'created',
+				'scope'       => 'story.submission',
+				'scope_id'    => $row->get('id'),
+				'description' => Lang::txt('COM_STORY_ACTIVITY_ACCEPTED', $row->get('subject')),
+				'details'     => array('title' => $row->get('subject'))
+			),
+			'recipients' => array((int) $row->get('created_by'))
+		));
+
 		Notify::success(Lang::txt('COM_STORY_ACCEPTED_INTO_DRAFT'));
 
 		App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=stories&task=edit&id[]=' . (int) $story->get('id'), false));

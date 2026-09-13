@@ -416,6 +416,24 @@ class Comments extends SiteController
 		// as moderating after taking part, and it is resolved the same way.
 		Event::trigger('moderation.onStoryCommentSaved', array($row));
 
+		if ($row->get('state') == Comment::STATE_PUBLISHED && !$row->get('anonymous'))
+		{
+			Event::trigger('system.logActivity', array(
+				'activity' => array(
+					'action'      => 'created',
+					'scope'       => 'story.comment',
+					'scope_id'    => $row->get('id'),
+					'anonymous'   => $row->get('anonymous', 0),
+					'description' => Lang::txt('COM_STORY_ACTIVITY_COMMENTED', $discussion->get('title')),
+					'details'     => array(
+						'discussion' => $discussion->get('id'),
+						'url'        => Route::url($this->discussionLink($discussion) . '#c' . $row->get('id'))
+					)
+				),
+				'recipients' => array()
+			));
+		}
+
 		Notify::success(Lang::txt('COM_STORY_COMMENT_SAVED'));
 
 		App::redirect(Route::url($this->discussionLink($discussion) . '#c' . $row->get('id')));
