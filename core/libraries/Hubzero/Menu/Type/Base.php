@@ -190,6 +190,32 @@ class Base extends Obj
     }
 
     /**
+     * Is an item the one marked home?
+     *
+     * Called with nothing, asks it of the active item - so a template can ask
+     * whether the page it is drawing is the hub's front page.
+     *
+     * An item carries its own `home` flag, which is what load() reads to find
+     * the default in the first place, so this asks the item rather than
+     * comparing it to getDefault(). That comparison is the tempting way to
+     * write it and it is a trap: getDefault() answers 0 rather than an item on
+     * a hub with nothing marked home, and comparing an item to 0 is a fatal in
+     * PHP 8.
+     *
+     * An address that matched no menu item has no active item, which is not
+     * the front page either.
+     *
+     * @param   object  $item  The item to ask about, or the active one
+     * @return  bool
+     */
+    public function isHome($item = null)
+    {
+        $item = $item ?: $this->getActive();
+
+        return is_object($item) && !empty($item->home);
+    }
+
+    /**
      * Gets menu items by attribute
      *
      * @param   mixed    $attributes  The field name(s).

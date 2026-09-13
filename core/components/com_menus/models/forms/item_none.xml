@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2025 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+
+An item that names no component.
+
+It is a page the template draws itself. The router still makes the item
+active, so the page keeps its Itemid - and with it the modules assigned to
+that page, its template style and its place in the menu - and only the
+component area is left empty. The menu module does not render it.
+
+Its use is a hub whose front page is the template's own: set this item as the
+default, and the template's home layout has the page to itself.
+-->
+
+<form>
+	<fields name="params">
+		<fieldset name="menu-options"
+			label="COM_MENUS_LINKTYPE_OPTIONS_LABEL"
+		>
+		</fieldset>
+	</fields>
+</form>

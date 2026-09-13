@@ -42,13 +42,17 @@ if ($styles) {
 // Get browser info to set some classes
 $menu = App::get('menu');
 $browser = new \Hubzero\Browser\Detector();
+
+// Figure out if this page is a home page
+$isFrontPage = $menu->isHome();
+
 $cls = array(
     'no-js',
     $browser->name(),
     $browser->name() . $browser->major(),
     $this->direction,
     $this->params->get('header', 'light'),
-    ($menu->getActive() == $menu->getDefault() ? 'home' : '')
+    ($isFrontPage ? 'home' : '')
 );
 
 // Prepend site name to document title
@@ -195,7 +199,7 @@ if ($this->getTitle() != Config::get('sitename')) {
                             <?php endif; ?>
 
                             <div id="trail">
-                                <?php if ($menu->getActive() == $menu->getDefault()) : ?>
+                                <?php if ($isFrontPage) : ?>
                                     <span class="pathway"><?php echo Lang::txt('TPL_KIMERA_TAGLINE'); ?></span>
                                 <?php else : ?>
                                     <jdoc:include type="modules" name="breadcrumbs" />

@@ -36,7 +36,14 @@ class Menu extends Module
         $list      = self::getList($params);
         $menu      = App::get('menu');
         $active    = $menu->getActive();
-        $active_id = isset($active) ? $active->id : $menu->getDefault()->id;
+        // A hub can have no item marked home, in which case getDefault()
+        // returns 0 rather than an item. With neither, no item is current and
+        // nothing is highlighted, which is the right answer for a page that
+        // belongs to no menu.
+        $default   = $menu->getDefault();
+        $active_id = isset($active)
+            ? $active->id
+            : (is_object($default) ? $default->id : 0);
         $path      = isset($active) ? $active->tree : array();
         $showAll   = $params->get('showAllChildren');
         $class_sfx = htmlspecialchars($params->get('class_sfx', ''));
@@ -58,20 +65,26 @@ class Menu extends Module
     {
         $menu = App::get('menu');
 
-        // If no active menu, use default
+        // If no active menu, use default. A hub with nothing marked home has
+        // neither, and getDefault() answers 0 rather than an item, so the menu
+        // is built without a branch to open.
         $active = ($menu->getActive()) ? $menu->getActive() : $menu->getDefault();
+
+        if (!is_object($active)) {
+            $active = null;
+        }
 
         $levels = User::getAuthorisedViewLevels();
         asort($levels);
 
-        $key = 'mod_menu.' . 'menu_items' . $params . implode(',', $levels) . '.' . $active->id;
+        $key = 'mod_menu.' . 'menu_items' . $params . implode(',', $levels) . '.' . ($active ? $active->id : 0);
 
         if (!($items = Cache::get($key))) {
             // Initialise variables.
             $list     = array();
             $db       = App::get('db');
 
-            $path     = $active->tree;
+            $path     = $active ? $active->tree : array();
             $start    = (int) $params->get('startLevel');
             $end      = (int) $params->get('endLevel');
             $showAll  = $params->get('showAllChildren');
@@ -81,6 +94,16 @@ class Menu extends Module
 
             if ($items) {
                 foreach ($items as $i => $item) {
+                    // An item that names no component is a page the template
+                    // draws itself. It is a real address - a hub's front page
+                    // is usually one - but there is nothing to link to, so it
+                    // is dropped here rather than in a layout, where a
+                    // template's own override would not know to skip it.
+                    if ($item->type == 'none') {
+                        unset($items[$i]);
+                        continue;
+                    }
+
                     if (
                         ($start && $start > $item->level)
                         || ($end && $item->level > $end)
@@ -123,6 +146,7 @@ class Menu extends Module
                             // No further action needed.
                             continue 2;
                             break;
+
 
                         case 'url':
                             $isInternalLink = (strpos($item->link, 'index.php?') === 0);

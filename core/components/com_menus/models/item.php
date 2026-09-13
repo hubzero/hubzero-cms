@@ -164,8 +164,13 @@ class Item extends Nested
                 return Lang::txt('JLIB_DATABASE_ERROR_MENU_UNPUBLISH_DEFAULT_HOME');
             }
 
-            // Verify that the home item a component.
-            if ($this->get('home') && $this->get('type') != 'component') {
+            // The home item names a component, or names nothing at all.
+            //
+            // Nothing at all is a hub that draws its own front page in the
+            // template. The router still makes the item active, so the page
+            // keeps its Itemid, its modules and its template style, and only
+            // the component area is left empty.
+            if ($this->get('home') && !in_array($this->get('type'), array('component', 'none'))) {
                 return Lang::txt('JLIB_DATABASE_ERROR_MENU_HOME_NOT_COMPONENT');
             }
 

@@ -35,7 +35,7 @@ if ($menu->getActive()) {
 $bodyClass = 'page-' . Request::getCmd('option', '') . ' ' . Request::getCmd('option', '') . $active;
 
 // Figure out if this page is a home page
-$isFrontPage = ($menu->getActive() == $menu->getDefault());
+$isFrontPage = $menu->isHome();
 
 // A hub can build a front page out of module positions rather than leaving it
 // to the menu item's component. It has one when it has put something in any of
