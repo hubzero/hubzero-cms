@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2020 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="COM_STORY_STORIES_VIEW_ARTICLE_TITLE" hidden="true">
+		<message>
+			<![CDATA[COM_STORY_STORIES_VIEW_ARTICLE_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_STORY_STORIES_VIEW_ARTICLE_TITLE</name>
+		<description>COM_STORY_STORIES_VIEW_ARTICLE_DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.5">
+	<name>Story</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Editor-curated news, fed by a community-ranked submissions queue.</description>
+	<files folder="config">
+		<filename>access.xml</filename>
+		<filename>config.xml</filename>
+	</files>
+	<files folder="helpers">
+		<filename>permissions.php</filename>
+	</files>
+	<files folder="models">
+		<filename>manager.php</filename>
+		<filename>section.php</filename>
+		<filename>story.php</filename>
+		<filename>text.php</filename>
+		<filename>topic.php</filename>
+		<filename>adapters/base.php</filename>
+		<filename>adapters/site.php</filename>
+	</files>
+	<files folder="site">
+		<filename>story.php</filename>
+		<filename>router.php</filename>
+		<filename>controllers/stories.php</filename>
+		<filename>controllers/sections.php</filename>
+		<filename>controllers/topics.php</filename>
+		<filename>controllers/archive.php</filename>
+		<filename>language/en-GB/en-GB.com_story.ini</filename>
+		<filename>views/stories/tmpl/display.php</filename>
+		<filename>views/stories/tmpl/display.xml</filename>
+		<filename>views/stories/tmpl/article.php</filename>
+		<filename>views/stories/tmpl/article.xml</filename>
+		<filename>views/sections/tmpl/display.php</filename>
+		<filename>views/sections/tmpl/display.xml</filename>
+		<filename>views/topics/tmpl/display.php</filename>
+		<filename>views/topics/tmpl/display.xml</filename>
+		<filename>views/archive/tmpl/display.php</filename>
+		<filename>views/archive/tmpl/display.xml</filename>
+	</files>
+	<languages folder="site">
+		<language tag="en-GB">en-GB.com_story.ini</language>
+	</languages>
+	<administration>
+		<menu>Stories</menu>
+		<files folder="admin">
+			<filename>story.php</filename>
+			<filename>controllers/stories.php</filename>
+			<filename>controllers/sections.php</filename>
+			<filename>controllers/topics.php</filename>
+			<filename>views/stories/tmpl/display.php</filename>
+			<filename>views/stories/tmpl/edit.php</filename>
+			<filename>views/sections/tmpl/display.php</filename>
+			<filename>views/sections/tmpl/edit.php</filename>
+			<filename>views/topics/tmpl/display.php</filename>
+			<filename>views/topics/tmpl/edit.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_story.ini</language>
+			<language tag="en-GB">en-GB.com_story.sys.ini</language>
+		</languages>
+	</administration>
+</extension>

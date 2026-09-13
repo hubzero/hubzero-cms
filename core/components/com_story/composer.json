@@ -1,0 +1,17 @@
+{
+	"name": "hubzero/com_story",
+	"description": "News component for the HUBzero CMS",
+	"type": "hubzero-component",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"require": {
+		"php": "^8.2"
+	}
+}
