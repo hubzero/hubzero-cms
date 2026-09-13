@@ -10,17 +10,35 @@
 defined('_HZEXEC_') or die();
 
 /**
- * The front page, when the hub has built one
+ * The front page
+ *
+ * index.php hands the whole of main to this file on the front page, so what a
+ * visitor sees there is laid out here rather than in the page's usual gutters.
  *
  * A band per section, each holding whatever modules the hub put in that
  * position. The heading of a band is the module's own title, so the sections,
  * their order and what they say are all set in the admin rather than here.
  *
- * A hub that puts nothing in any of them never reaches this file: index.php
- * renders the front page's component instead, the way every other page does.
+ * A hub that has put nothing in any of them gets its front page the way every
+ * other page gets one - from the menu item's component - which is also what a
+ * hub sees before anyone has built a front page at all.
  */
 
+$bands = $this->countModules('home-1 or home-2 or home-3 or home-4');
+
 ?>
+<?php if (!$bands) : ?>
+    <div class="inner">
+        <section class="main section">
+            <div class="section-inner">
+                <!-- start component output -->
+                <jdoc:include type="component" />
+                <!-- end component output -->
+            </div>
+        </section>
+    </div>
+<?php endif; ?>
+
 <?php if ($this->countModules('home-1')) : ?>
     <div class="home-section home-1">
         <div class="inner">

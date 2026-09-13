@@ -37,10 +37,13 @@ $bodyClass = 'page-' . Request::getCmd('option', '') . ' ' . Request::getCmd('op
 // Figure out if this page is a home page
 $isFrontPage = $menu->isHome();
 
-// A hub can build a front page out of module positions rather than leaving it
-// to the menu item's component. It has one when it has put something in any of
-// the positions home.php lays out.
-$hasHomePage = $isFrontPage && $this->countModules('home-1 or home-2 or home-3 or home-4');
+// This template draws the front page itself, in home.php, which replaces
+// everything inside main there - the gutters, the asides and the component
+// alike. What it draws is the hub's own: a band per module in the home
+// positions, and the front page's component where the hub has filled none.
+$homePage = ($isFrontPage && file_exists(__DIR__ . '/home.php'))
+    ? __DIR__ . '/home.php'
+    : null;
 
 // Current page (used in the login link)
 $url = Request::getString('REQUEST_URI', '', 'server');
@@ -306,6 +309,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     <?php endif; ?>
 
     <main id="maincontent" class="page">
+    <?php if ($homePage) : ?>
+        <?php require $homePage; ?>
+    <?php else : ?>
         <div class="inner<?php if ($this->countModules('left or right')) {
             echo ' withmenu';
                          } ?>">
@@ -327,11 +333,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                     <?php endif; ?>
 
                         <!-- start component output -->
-                        <?php if ($hasHomePage) : ?>
-                            <?php require __DIR__ . '/home.php'; ?>
-                        <?php else : ?>
-                            <jdoc:include type="component" />
-                        <?php endif; ?>
+                        <jdoc:include type="component" />
                         <!-- end component output -->
 
                         <?php if ($this->countModules('left or right')) : ?>
@@ -349,6 +351,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             </section><!-- / .main section -->
                     <?php endif; ?>
         </div><!-- / .inner -->
+    <?php endif; ?>
     </main>
 </div>
 

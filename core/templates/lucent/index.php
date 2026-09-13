@@ -37,6 +37,17 @@ $bodyClass = 'page-' . Request::getCmd('option', '') . ' ' . Request::getCmd('op
 // Figure out if this page is a home page
 $isFrontPage = $menu->isHome();
 
+// A template can draw the front page itself.
+//
+// Ship home.php beside this file and it replaces everything inside main on the
+// front page - the gutters, the asides and the component alike - so the page
+// is the template's own to lay out. A front page that still wants a component
+// on it includes one; a hub whose home menu item names no component has none
+// to include, and the page is whatever home.php draws.
+$homePage = ($isFrontPage && file_exists(__DIR__ . '/home.php'))
+    ? __DIR__ . '/home.php'
+    : null;
+
 // Current page (used in the login link)
 $url = Request::getString('REQUEST_URI', '', 'server');
 
@@ -301,6 +312,9 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     <?php endif; ?>
 
     <main id="maincontent" class="page">
+    <?php if ($homePage) : ?>
+        <?php require $homePage; ?>
+    <?php else : ?>
         <div class="inner<?php if ($this->countModules('left or right')) {
             echo ' withmenu';
                          } ?>">
@@ -340,6 +354,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             </section><!-- / .main section -->
                     <?php endif; ?>
         </div><!-- / .inner -->
+    <?php endif; ?>
     </main>
 </div>
 
