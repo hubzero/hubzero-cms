@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="1.5">
+	<name>Karma</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Site-wide reputation: scales, rules, gates, and the ledger behind them.</description>
+	<files folder="config">
+		<filename>access.xml</filename>
+		<filename>config.xml</filename>
+	</files>
+	<files folder="helpers">
+		<filename>permissions.php</filename>
+	</files>
+	<files folder="site">
+		<filename>karma.php</filename>
+		<filename>router.php</filename>
+		<filename>controllers/karma.php</filename>
+		<filename>language/en-GB/en-GB.com_karma.ini</filename>
+		<filename>views/karma/tmpl/display.php</filename>
+		<filename>views/karma/tmpl/display.xml</filename>
+		<filename>views/karma/tmpl/ledger.php</filename>
+		<filename>views/karma/tmpl/ledger.xml</filename>
+	</files>
+	<languages folder="site">
+		<language tag="en-GB">en-GB.com_karma.ini</language>
+	</languages>
+	<administration>
+		<menu>Karma</menu>
+		<files folder="admin">
+			<filename>karma.php</filename>
+			<filename>controllers/scales.php</filename>
+			<filename>controllers/rules.php</filename>
+			<filename>controllers/gates.php</filename>
+			<filename>controllers/ledger.php</filename>
+			<filename>views/scales/tmpl/display.php</filename>
+			<filename>views/scales/tmpl/edit.php</filename>
+			<filename>views/rules/tmpl/display.php</filename>
+			<filename>views/rules/tmpl/edit.php</filename>
+			<filename>views/gates/tmpl/display.php</filename>
+			<filename>views/gates/tmpl/edit.php</filename>
+			<filename>views/ledger/tmpl/display.php</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_karma.ini</language>
+			<language tag="en-GB">en-GB.com_karma.sys.ini</language>
+		</languages>
+	</administration>
+</extension>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright (c) 2005-2020 The Regents of the University of California.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="COM_KARMA_KARMA_VIEW_DISPLAY_TITLE">
+		<message>
+			<![CDATA[COM_KARMA_KARMA_VIEW_DISPLAY_DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>COM_KARMA_KARMA_VIEW_DISPLAY_TITLE</name>
+		<description>COM_KARMA_KARMA_VIEW_DISPLAY_DESC</description>
+		<params>
+		</params>
+	</state>
+</metadata>

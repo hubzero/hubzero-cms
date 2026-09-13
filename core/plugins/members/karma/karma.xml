@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="members" method="upgrade">
+	<name>plg_members_karma</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>A member's karma on their profile.</description>
+	<files>
+		<filename plugin="karma">karma.php</filename>
+		<folder>views</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_members_karma.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_members_karma.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="display_tab" type="radio" default="1" label="PLG_MEMBERS_KARMA_FIELD_TAB_LABEL" description="PLG_MEMBERS_KARMA_FIELD_TAB_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
