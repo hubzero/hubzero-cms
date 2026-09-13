@@ -44,6 +44,12 @@ class Overrides
 
         if (\App::has('template') && !empty(\App::get('template')->path)) {
             $roots[] = \App::get('template')->path;
+
+            // A child template overrides what it wants to and leaves the rest
+            // to its parent, so the parent is searched after the child
+            if (!empty(\App::get('template')->parentPath)) {
+                $roots[] = \App::get('template')->parentPath;
+            }
         }
 
         return $roots;
