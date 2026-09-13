@@ -36,7 +36,7 @@ What is being built:
 - `com_story` — stories, topics, sections, the submissions queue,
   discussions, scored threaded comments, and the front page.
 - A set of small integration extensions: cron jobs, search, activity, tags,
-  member profile tabs, and slashbox-style modules.
+  member profile tabs, and sidebar modules.
 
 What is not being built: see [Deliberate omissions](#deliberate-omissions).
 Where Slashdot's design had to be changed rather than merely ported, see
@@ -360,20 +360,20 @@ most deployments will run indefinitely. `TokenPoolGrantor` is Slashdot's mint,
 available to a site that outgrows the simple one. See
 [The credit economy](#the-credit-economy).
 
-### Metamoderation needs a crowd even more than moderation does
+### Moderation review needs a crowd even more than moderation does
 
-`m2_consensus` is nine votes per moderation before it reconciles, and the
-parts that make M2 mean anything are statistical: the eligibility reweighting
+`review_consensus` is nine votes per moderation before it reconciles, and the
+parts that make review mean anything are statistical: the eligibility reweighting
 will not compute a fairness ratio until a user has five judged moderations in
 each direction, and the consequences table interpolates across eleven fairness
-bands. Dropping the consensus to three does not scale M2 down; it replaces a
+bands. Dropping the consensus to three does not scale review down; it replaces a
 consensus mechanism with three people's opinions while keeping that
 mechanism's costs, which at the bottom of the table are a hundred tokens and a
 karma point.
 
-**Resolution.** M2 ships disabled. The columns and the code are built, because
+**Resolution.** review ships disabled. The columns and the code are built, because
 they cost nothing to carry and retrofitting them is painful, but a hub turns
-M2 on only once it has the volume to support it. This moves M2 to
+review on only once it has the volume to support it. This moves review to
 [phase 11](#delivery-phases), after the component is otherwise complete and
 shippable; it and the reweighting work in phase 12 may never ship on a given
 hub, and the plan says so rather than presenting them as inevitable.
@@ -433,10 +433,13 @@ thousand lines of plumbing behind Slashdot's version stay out. See
 
 ### Smaller adjustments
 
-- **Reason vocabulary.** Troll, Flamebait and Overrated are Slashdot-culture
-  artifacts. Reasons are per-`item_type` rows, so this is a seeding decision,
-  but make it deliberately. Funny keeps its reader-settable `-1` adjustment;
-  that mechanic is good and carries no baggage.
+- **Reason vocabulary.** The reference implementation's set labels people —
+  troll, flamebait, crank. Ours labels contributions, and is our own wording
+  throughout: see [Reasons and anonymity](#reasons-and-anonymity). Reasons are
+  per-`item_type` rows, so this is a seeding decision rather than an
+  architectural one, but it is one to make deliberately. The mechanic worth
+  keeping is a separable humour category with a reader-settable adjustment;
+  the word for it does not have to be theirs.
 - **Anonymous posting.** Karma needs stable identity, and anonymous comments
   correctly cannot move it. [`com_forum`](../../core/components/com_forum/site/controllers/threads.php)
   defaults `allow_anonymous` to 1; `com_story` makes it per-section and
@@ -545,7 +548,7 @@ Four consequences of taking no cherry-picks, each with what to do instead:
   value in a `Registry`, the way
   [`com_blog`'s `transformParams()`](../../core/components/com_blog/models/entry.php)
   does. Six columns need it: `params` on most tables, `reason_adjustments` on
-  preferences, `m2_consequences`, and the ledger's context blob.
+  preferences, `review_consequences`, and the ledger's context blob.
 - **No schema builders.** Migrations are hand-written `CREATE TABLE`
   heredocs, as every existing migration is. Roughly a dozen of them.
 - **No transactional migrations.** Mitigated by the house style — wrap every
@@ -572,16 +575,16 @@ its own. Recent practice already does this —
 
 ```text
 core/libraries/Hubzero/Karma/        reputation: scales, ledger, balances, gates
-core/libraries/Hubzero/Moderation/   credits, grantors, mod log, reasons, M2
+core/libraries/Hubzero/Moderation/   credits, grantors, mod log, reasons, review
 core/components/com_karma/           admin + member UI over both libraries
 core/components/com_story/           stories, topics, submissions, comments
 core/plugins/karma/*                 karma sources, one per contributing component
 core/plugins/cron/karma/             decay, recompute
-core/plugins/cron/moderation/        grant credits, expire, reconcile M2
+core/plugins/cron/moderation/        grant credits, expire, reconcile reviews
 core/plugins/cron/story/             publish queue, archive, freshen counts
 core/plugins/search/story/           indexing
 core/plugins/members/karma/          profile tab
-core/modules/mod_story_*             slashboxes
+core/modules/mod_story_*             sidebar modules
 ```
 
 The dependency direction is one-way: `com_story` depends on `Hubzero\Moderation`,
@@ -699,7 +702,7 @@ Karma::award($subjectId, 'comment.upmod', [
     'scale'  => 'story.comment',
     'actor'  => $moderatorId,
     'source' => $comment,               // anything with getType()/getId()
-    'params' => ['reason' => 'Insightful'],
+    'params' => ['reason' => 'substantive'],
 ]);
 
 // Undo, for when a moderation is reversed
@@ -827,7 +830,7 @@ Administration:
 - **Ledger** — filterable by subject, actor, rule, source, date. This is the
   abuse-investigation tool and it deserves real effort; the equivalent on
   Slashdot (`dispModCommentLog`) is what admins actually lived in.
-- **Reasons**, **Grants** and **Metamoderation** dashboards — see Part 2. The
+- **Reasons**, **Grants** and **Moderation review** dashboards — see Part 2. The
   Grants dashboard is the operational one: which grantor is running, how many
   users were eligible, how many credits were issued, and how many expired
   unspent.
@@ -839,8 +842,8 @@ Member-facing, under `/karma`:
 - your own karma per scale, at whatever granularity `visibility_self` allows,
   with the recent ledger entries that moved it
 - your unspent moderation credits and when they expire
-- your moderation record, and how it was metamoderated if M2 is on
-- the metamoderation queue, when M2 is on
+- your moderation record, and how it was reviewed if review is on
+- the moderation review queue, when review is on
 - a "show my karma on my profile" toggle, present only for scales set to
   `opt_in` and absent otherwise, so the control never implies a choice the
   hub has not offered
@@ -890,15 +893,15 @@ Namespace `moderation`.
 - `#__moderation_logs` — `item_type`, `item_id`, `container_id`, `user_id`
   (moderator), `author_id` (moderated), `reason_id`, `value`,
   `credits_spent`, `active`, `score_before`, `ip` (advisory only — see
-  [IP records](#ip-records)), `created`, plus the M2
-  columns `m2_count`, `m2_needed`, `m2_status`.
-- `#__moderation_metalogs` — `log_id`, `user_id`, `value` (+1 fair / −1
+  [IP records](#ip-records)), `created`, plus the review
+  columns `review_count`, `reviews_needed`, `review_status`.
+- `#__moderation_reviews` — `log_id`, `user_id`, `value` (+1 fair / −1
   unfair), `active`, `created`.
 - `#__moderation_wallets` — `user_id`, `item_type`, `credits`,
   `credits_expire`, `last_granted`, `total_mods`, `expired`, `up_mods`,
-  `down_mods`, `last_m2`, the M2 fairness counters (`m2_fair`, `m2_unfair`,
-  `up_fair`, `up_unfair`, `down_fair`, `down_unfair`, `m2_voted_majority`,
-  `m2_voted_lonedissent`), and `tokens` — used only by `TokenPoolGrantor` and
+  `down_mods`, `last_m2`, the review fairness counters (`reviews_fair`, `reviews_unfair`,
+  `up_fair`, `up_unfair`, `down_fair`, `down_unfair`, `reviews_voted_with`,
+  `reviews_voted_alone`), and `tokens` — used only by `TokenPoolGrantor` and
   never displayed.
 - `#__moderation_grants` — one row per grantor run per item type: how many
   users were eligible, how many were granted, how many credits were issued,
@@ -928,9 +931,9 @@ $moderator->undoIn($container);             // reverse everything this user did 
    `authors_unlimited`).
 2. Refuse a second moderation of the same item by the same user.
 3. Compute the target score. If it falls outside the item's bounds, write the
-   log row with `active = 0` — the moderation still counts for M2 — and stop.
+   log row with `active = 0` — the moderation still counts for review — and stop.
 4. Charge credits: 1 for a downmod, `credits_for_score[target]` for an upmod,
-   plus `unm2able_surcharge` for a reason that cannot be metamoderated.
+   plus `unm2able_surcharge` for a reason that cannot be reviewed.
 5. Apply the score through the adapter.
 6. Move the author's karma via `Karma::award()`, letting the karma library's
    caps and clamps do their work.
@@ -958,8 +961,8 @@ interface Grantor
 
 `plg_cron_moderation` runs three jobs: `grantCredits` (hourly, calls the
 configured grantor), `expireCredits` (hourly, takes back unspent credits older
-than `credit_lifetime_hours`), and `reconcileMetamoderation` (hourly, and a
-no-op while M2 is off). Every run writes a `#__moderation_grants` row.
+than `credit_lifetime_hours`), and `reconcileReviews` (hourly, and a
+no-op while review is off). Every run writes a `#__moderation_grants` row.
 
 **`IntervalGrantor` — the default.** Each pass, take the eligible users who
 have not been granted within `grant_interval_hours`, shuffle, and give
@@ -1006,38 +1009,38 @@ without a special mode or a null grantor. See
 [ACL, and the governance model](#acl-and-the-governance-model).
 
 The reweighting step (`factorEligibleModerators`) — biasing the eligible list
-by a user's M2 fairness ratios — is genuinely clever and genuinely hard to get
-right, and it is meaningless without M2 history. It is a late phase, behind a
-config flag defaulting off, and on a hub that never enables M2 it never turns
+by a user's review fairness ratios — is genuinely clever and genuinely hard to get
+right, and it is meaningless without review history. It is a late phase, behind a
+config flag defaulting off, and on a hub that never enables review it never turns
 on at all.
 
-### Metamoderation
+### Moderation review
 
-> **Important:** M2 ships disabled and stays that way until a hub has the
+> **Important:** review ships disabled and stays that way until a hub has the
 > volume for it. Nine votes per moderation, five judged moderations in each
 > direction before a fairness ratio means anything, and eleven interpolated
 > bands in the consequences table — none of that survives a site producing a
 > few moderations a week. The code and columns are built anyway, because
 > retrofitting them is painful and carrying them is free. See
-> [Metamoderation needs a crowd](#metamoderation-needs-a-crowd-even-more-than-moderation-does).
+> [Moderation review needs a crowd](#moderation-review-needs-a-crowd-even-more-than-moderation-does).
 
-`Hubzero\Moderation\Metamoderator`:
+`Hubzero\Moderation\Reviewer`:
 
 ```php
-$m2 = new Metamoderator($user);
+$m2 = new Reviewer($user);
 $m2->isEligible();                    // karma gate, frequency gate
 $m2->deal($count = 10);               // pick moderations to judge
 $m2->record($logId, +1);              // fair
 $m2->commit();                        // writes the batch
 ```
 
-Dealing follows Slashdot: pick M2-able moderations that have not yet reached
+Dealing follows Slashdot: pick reviewable moderations that have not yet reached
 consensus, excluding the user's own moderations, their own comments, and
 anything they have already judged; weight the pick by age using
-`m2_consensus_waitpow`.
+`review_pick_bias`.
 
 Reconciliation runs in cron, not inline. For each log row that has reached
-`m2_consensus` votes: compute the fairness fraction, look it up in the
+`review_consensus` votes: compute the fairness fraction, look it up in the
 consequences table, move credits for the fair voters, the unfair voters and
 the moderator, and move the moderator's karma through `Karma::award()`. Apply
 the early-moderation, thread-depth and starting-score multipliers, and the
@@ -1053,10 +1056,10 @@ zero. That is the correct outcome — those bands were a rounding artifact of a
 very large site — but it means the table must be reviewed rather than
 transcribed.
 
-The editor should also refuse to enable M2 when the last thirty days produced
-fewer than `m2_consensus × 10` M2-able moderations, and say why. A metamoderation
+The editor should also refuse to enable review when the last thirty days produced
+fewer than `review_consensus × 10` reviewable moderations, and say why. A moderation review
 system that cannot reach consensus is worse than none: moderations sit in
-`m2_status = 0` forever and the fairness counters never populate.
+`review_status = 0` forever and the fairness counters never populate.
 
 ## Part 3: `com_story`
 
@@ -1079,7 +1082,7 @@ a name the rest of the CMS already uses for the same idea. `id`, `title`, `alias
 |---|---|
 | `id`, `alias` | alias is the URL slug, unique within a day |
 | `section_id`, `topic_id` | primary section and topic |
-| `title`, `dept` | `dept` is the "from the department of" line, and it is not optional — it is half the voice of the thing |
+| `title`, `kicker` | the `kicker` is the wry one-line subtitle under the headline, and it is not optional — it is half the voice of the thing |
 | `state` | draft, queued, published, archived, trashed |
 | `publish_up`, `publish_down` | the queue runs on `publish_up` |
 | `created`, `created_by` | the editor |
@@ -1254,7 +1257,7 @@ to lean on it:
   is already answered, correctly, by a column we can trust.
 - **The real abuse instruments are behavioural and already in the plan.**
   Moderation collusion shows up in `#__moderation_logs` as repeated
-  (moderator, author) pairs, which `m2_consequences_repeats` already
+  (moderator, author) pairs, which `review_repeat_penalties` already
   penalises. Submission spam goes through
   [`Hubzero\User\Reputation`](../../core/libraries/Hubzero/User/Reputation.php)
   and the existing spam jail. Rate limiting is a karma gate. Ban evasion is an
@@ -1336,7 +1339,7 @@ And `com_karma`:
 | Menu item type | View and layout | Parameters |
 |---|---|---|
 | My karma | `karma` / `display` | optional scale alias |
-| Metamoderation queue | `metamoderate` / `display` | — |
+| Moderation review queue | `review` / `display` | — |
 
 Views reached only by a route — a single story, a discussion, a comment
 permalink, the edit forms — get `hidden="true"` on their layout node so they
@@ -1365,13 +1368,33 @@ tests both forms for every type in the table above.
 Two seeding decisions that shape how the component reads, made deliberately
 rather than inherited.
 
-**Reasons.** `com_story.comment` seeds with Insightful, Informative,
-Interesting, Helpful, Funny, Off-topic, Redundant, Needs citation and
-Incorrect — not Slashdot's Troll, Flamebait and Overrated, which are artifacts
-of a different culture. The positive four and Funny carry `+1`, the negative
-four `-1`, and all nine are M2-able. Funny keeps its reader-settable
-adjustment, conventionally `-1`: it is the one modifier that makes the
-per-reader stack obviously worth having, and it carries no baggage.
+**Reasons.** `com_story.comment` seeds with eight of our own, four either
+way:
+
+| Reason | Value | Says |
+|---|---|---|
+| Substantive | +1 | adds something, rather than agreeing at length |
+| Well-sourced | +1 | backed by something a reader can follow |
+| Clarifying | +1 | made an earlier point easier to understand |
+| Levity | +1 | funny, and welcome, and separable — see below |
+| Tangential | −1 | about something else |
+| Duplicative | −1 | already said, upthread |
+| Unsupported | −1 | asserts what it does not show |
+| Dismissive | −1 | argues with the person rather than the point |
+
+All eight are reviewable. **Levity is the one worth keeping separate.**
+A reader who wants only substance sets its per-reason adjustment to `−1` and
+never sees jokes again; a reader who enjoys them leaves it alone. That single
+option is what makes the per-reader modifier stack visibly worth having
+rather than a theoretical nicety, and it is the reason comedy gets a category
+of its own instead of being folded into Substantive.
+
+The negative four are deliberately about the *contribution*, not the
+contributor. Nothing here says troll, flamebait or crank. On a hub where
+comments carry real names and institutional affiliations, a moderation
+vocabulary that labels people rather than posts would be both unpleasant and
+a liability; "Dismissive" is as close to conduct as this set goes, and it
+still describes what the comment did.
 
 **Anonymity.** Karma needs stable identity, and an anonymous comment correctly
 cannot move anyone's. [`com_forum`](../../core/components/com_forum/site/controllers/threads.php)
@@ -1532,7 +1555,7 @@ Four extra component-level actions:
 | `story.publish` | turn a submission into a story; access the triage screen |
 | `story.moderate` | be eligible to earn moderation credits and spend them |
 | `story.moderate.unlimited` | moderate without spending credits |
-| `story.metamoderate` | access the M2 queue at all |
+| `story.review` | access the review queue at all |
 
 **This is the governance model.** There is no separate setting for it. Who
 holds `story.moderate` decides whether moderation is a crowd activity or a
@@ -1544,7 +1567,7 @@ staff one, and the usual arrangements are ACL recipes rather than modes:
 | Delegated moderators | nobody | a moderators group |
 | Metered crowd | registered users | — |
 | Editors plus metered crowd | registered users | editorial group |
-| Full Slashdot | registered users | — , with M2 on and the token pool grantor |
+| Full Slashdot | registered users | — , with review on and the token pool grantor |
 
 The fourth row is the one a mode enum could not express, and is probably what
 most deployments want: staff who moderate freely and readers who earn credits,
@@ -1555,7 +1578,7 @@ for a credit grant** — see [The credit economy](#the-credit-economy) — so
 withholding the permission empties the eligible pool, nothing is granted, and
 nobody can moderate. The off switch is a permission, not a config value, and
 no null grantor is needed. And what remains as actual configuration is two
-values: which grantor runs, and whether M2 is on.
+values: which grantor runs, and whether review is on.
 
 ### API
 
@@ -1575,7 +1598,7 @@ possible, which is how a small hub keeps a story queue full.
 | `plg_activity_story` | story published, submission accepted, comment posted |
 | `plg_members_karma` | karma and moderation record on the profile |
 | `plg_karma_story` | the rules that turn story events into karma |
-| `mod_story_latest` | the classic slashbox |
+| `mod_story_latest` | recent stories, for a sidebar |
 | `mod_story_submissions` | queue depth and the top pending submissions by `editor_popularity`, for editors |
 | `mod_karma_mine` | your karma and your unspent moderation credits |
 | `mod_story_poll` | the current story poll, via `com_poll` |
@@ -1615,7 +1638,7 @@ not for Slashdot:
 | `grant_interval_hours` | 72 | minimum between grants to one user |
 | `grant_fraction` | 0.15 | share of the eligible pool granted each pass |
 | `credits_for_score` | `1` at every target | raise for upmods to 4 and 5 if the top of the range is being overused |
-| `unm2able_surcharge` | 0 | 1 once M2 is on |
+| `unm2able_surcharge` | 0 | 1 once review is on |
 | `eligible_hitcount` | 3 | discussions read in the window |
 | `min_account_age_days` | 30 | |
 
@@ -1636,15 +1659,15 @@ every content type; these are re-derived for two:
 | `editor_votes_separate` | on | keep `editor_popularity` out of the public ranking |
 | `attention_needed_auto` | off | let a rule set the flag, not just an editor |
 
-Metamoderation, off by default:
+Moderation review, off by default:
 
 | Parameter | Default | Meaning |
 |---|---|---|
-| `m2` | off | |
-| `m2_consensus` | 9 | votes to resolve, forced odd |
-| `m2_comments` | 10 | per session |
-| `m2_frequency` | 86400 | seconds between sessions |
-| `m2_consequences` | the table above, rescaled to credits | |
+| `reviews_enabled` | off | |
+| `review_consensus` | 9 | votes to resolve, forced odd |
+| `reviews_per_session` | 10 | per session |
+| `review_frequency` | 86400 | seconds between sessions |
+| `review_consequences` | the table above, rescaled to credits | |
 
 > **Note:** `#__moderation_grants` is the instrument for all of this. If it
 > shows credits being issued and expiring unspent, the grant is too wide or
@@ -1704,7 +1727,7 @@ that depends on `com_story`.
 wallets, the moderator log, `Moderator::moderate()`, the `Grantor` interface
 with `IntervalGrantor` behind it, and `plg_cron_moderation`'s grant and expire
 jobs. The `Moderatable` interface, with a test-double adapter. No token pool,
-no M2.
+no review.
 *Done when* the cron job grants credits to a synthetic eligible pool, a test
 user spends them on a test item, karma moves, unspent credits expire on
 schedule, and `#__moderation_grants` records every pass.
@@ -1777,17 +1800,17 @@ a migration plus a UI rewrite later.
 **Phase 11 — integration.** Search, tags, activity, what's new, the modules,
 the API controllers, the member profile tab.
 *Done when* a story is findable in site search, appears in activity feeds, and
-the slashboxes render.
+the sidebar modules render.
 
 **Gate C is complete here**, and the component is shippable. The two phases
 below are scale-gated: a hub runs them when it has outgrown the simple grantor and
-has the volume to make metamoderation mean something. Many hubs never will,
+has the volume to make moderation review mean something. Many hubs never will,
 and that is a successful outcome, not an unfinished one.
 
-**Phase 12 — metamoderation.** `Metamoderator`, the dealing algorithm, the M2
-queue under `/karma/metamoderate`, cron reconciliation against the rescaled
+**Phase 12 — moderation review.** `Reviewer`, the dealing algorithm, the review
+queue under `/karma/review`, cron reconciliation against the rescaled
 consequences table, the fairness counters, and the admin guard that refuses to
-enable M2 below the volume threshold.
+enable review below the volume threshold.
 *Done when* nine users can judge one moderation, reconciliation fires, and the
 moderator's credits and karma move by the amounts the table specifies.
 
@@ -1830,7 +1853,7 @@ now.
   one grants *something*. That assertion is the regression test for the whole
   reason `IntervalGrantor` exists; if it ever passes trivially, the default
   has silently changed.
-- The M2 consequences table is a pure function from a fairness fraction to
+- The review consequences table is a pure function from a fairness fraction to
   four numbers. Test it exhaustively at every boundary in the table, against
   the credit-rescaled values rather than Slashdot's token values.
 - Comment scoring is also pure given a comment, a preference row and a
@@ -1866,7 +1889,7 @@ Recorded so they are decisions rather than oversights.
 | `karma_obfuscate` as one site-wide flag | Replaced by per-scale `visibility_self` and `visibility_public`, plus a standing view that is never hidden. See [Visibility](#visibility) |
 | Zoo (friends, foes, fans, freaks) | Out, and not deferred. See [Friends and foes do not belong here](#friends-and-foes-do-not-belong-here) |
 | The token pool as the only grantor | Replaced by a pluggable `Grantor`, with the pool as the opt-in option. See [The token economy does not survive a young site](#the-token-economy-does-not-survive-a-young-site) |
-| Metamoderation as a default | Built but shipped off, and guarded by a volume check |
+| Moderation review as a default | Built but shipped off, and guarded by a volume check |
 | Tokens as a user-visible quantity | Out. One currency, moderation credits; tokens survive only inside `TokenPoolGrantor` |
 | Unauthenticated posting (Anonymous Coward proper) | Out, and this one is settled by the reference implementation rather than by us — Slashdot dropped it. The 2009 tree shows what it already cost to sustain: `comments_perday_anon` (a per-IPID daily cap), `comments_portscan` (scanning the poster's IP for open proxy ports 80/8080/8000/3128), `comments_anon_speed_limit` with an escalating multiplier, `subnet_karma_post_limit_range` (blocking by *subnet* reputation), and a `nopostanon` ban class. A portscanner and a subnet reputation system in support of one feature, and it was abandoned anyway |
 | Anonymous Coward as a real uid | Replaced by the platform's `anonymous` flag plus `created_by` — display-only anonymity over a known account, which is where Slashdot itself landed. Off by default per section |
@@ -1886,7 +1909,7 @@ Recorded so they are not re-litigated, with what settled each.
 | Unauthenticated posting | Out — abandoned by the reference implementation after extensive scaffolding |
 | Branch | Fork `2.4-main` at `b2f01c4958`, no cherry-picks. See [Fork point and conventions](#fork-point-and-conventions) |
 | Granting policy | Pluggable; `IntervalGrantor` default, `TokenPoolGrantor` opt-in |
-| Metamoderation | Built, shipped off, volume-guarded |
+| Moderation review | Built, shipped off, volume-guarded |
 
 Two things remain genuinely undecided, and both are deployment-time rather
 than design-time:
@@ -1895,5 +1918,5 @@ than design-time:
    The mechanism is settled; the policy is per-hub and belongs to whoever runs
    it. Phase 2 ships the administration for it.
 2. **When to move from `IntervalGrantor` to the token pool, and whether to
-   enable M2 at all.** Both are answered by `#__moderation_grants` once there
+   enable review at all.** Both are answered by `#__moderation_grants` once there
    is traffic to read, not in advance.
