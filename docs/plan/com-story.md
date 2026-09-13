@@ -623,7 +623,7 @@ Namespace `karma`, so `protected $namespace = 'karma'` yields these names.
 | `decay_toward` | int | usually the initial value, not zero |
 | `visibility_self` | enum | `exact`, `adjective` — default `adjective` |
 | `visibility_public` | enum | `exact`, `adjective`, `opt_in`, `hidden` — default `hidden` |
-| `adjectives` | text | `-10=Terrible\|-1=Bad\|0=Neutral\|12=Positive\|25=Good\|99999=Excellent` |
+| `adjectives` | text | `-15=Restricted\|-5=Provisional\|0=Standing\|10=Established\|30=Trusted\|99999=Distinguished` |
 | `state`, `ordering`, `params` | | |
 
 `#__karma_ledgers` — append-only. Never updated, only inserted and pruned.
@@ -683,7 +683,7 @@ events.
 |---|---|---|
 | `id`, `scale_id` | int | |
 | `alias` | varchar(100) | `com_story.comments_per_day` |
-| `bands` | text | `-1=2\|25=25\|99999=50` |
+| `bands` | text | `-5=5\|10=30\|99999=60` |
 | `default_value` | varchar(100) | value for users with no balance row |
 
 ### API
@@ -1621,10 +1621,10 @@ Scoring and karma, unchanged from Slashdot:
 | `anonymous_default_score` | 0 | |
 | `allow_anonymous` | off | per section; see [Reasons and anonymity](#reasons-and-anonymity) |
 | `karma_floor` / `karma_ceiling` | −25 / 50 | |
-| `karma_good` | 25 | earns a `+1` bonus on posts |
-| `karma_bad` | −10 | costs a point on posts |
-| `karma_adjectives` | `-10=Terrible\|-1=Bad\|0=Neutral\|12=Positive\|25=Good\|99999=Excellent` | |
-| `comments_per_day_by_karma` | `-1=2\|25=25\|99999=50` | |
+| `karma_good` | 10 | earns a `+1` bonus on posts — the `Established` threshold |
+| `karma_bad` | −5 | costs a point on posts — below `Provisional` |
+| `karma_adjectives` | `-15=Restricted\|-5=Provisional\|0=Standing\|10=Established\|30=Trusted\|99999=Distinguished` | |
+| `comments_per_day_by_karma` | `-5=5\|10=30\|99999=60` | |
 | `karma_bonus_max_downmods` | 2 | downmods before the karma bonus is lost |
 
 The credit economy. The defaults describe `IntervalGrantor`, sized for a hub,
