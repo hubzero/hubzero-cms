@@ -58,6 +58,36 @@ class Router extends Base
 			return $segments;
 		}
 
+		if (!empty($query['view']) && $query['view'] == 'queue')
+		{
+			$segments[] = 'queue';
+			unset($query['view']);
+
+			if (!empty($query['task']) && $query['task'] != 'display')
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+
+			return $segments;
+		}
+
+		if (!empty($query['view']) && $query['view'] == 'submissions')
+		{
+			// The form is the address people are given, so it gets the short
+			// one; the list of what you have sent in sits under it.
+			$segments[] = 'submit';
+			unset($query['view']);
+
+			if (!empty($query['task']) && !in_array($query['task'], array('new', 'display')))
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+
+			return $segments;
+		}
+
 		if (!empty($query['view']) && in_array($query['view'], array('sections', 'topics')))
 		{
 			$segments[] = ($query['view'] == 'sections') ? 'section' : 'topic';
@@ -134,6 +164,28 @@ class Router extends Base
 			{
 				$vars['section'] = array_shift($segments);
 			}
+
+			return $vars;
+		}
+
+		if ($segments[0] === 'queue')
+		{
+			array_shift($segments);
+			$vars['view'] = 'queue';
+
+			if (!empty($segments[0]))
+			{
+				$vars['task'] = array_shift($segments);
+			}
+
+			return $vars;
+		}
+
+		if ($segments[0] === 'submit')
+		{
+			array_shift($segments);
+			$vars['view'] = 'submissions';
+			$vars['task'] = !empty($segments[0]) ? array_shift($segments) : 'new';
 
 			return $vars;
 		}

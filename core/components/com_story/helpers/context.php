@@ -99,7 +99,7 @@ class Context
 
 			$highest = (int) $db->loadResult();
 		}
-		catch (\Exception $e)
+		catch (\Throwable $e)
 		{
 			return 0;
 		}

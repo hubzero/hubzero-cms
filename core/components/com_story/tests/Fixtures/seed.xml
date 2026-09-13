@@ -88,4 +88,117 @@
 		<column>bonus_karma</column>
 		<column>reason_adjustments</column>
 	</table>
+	<table name="story_submissions">
+		<column>id</column>
+		<column>subject</column>
+		<column>body</column>
+		<column>url</column>
+		<column>topic_id</column>
+		<column>section_id</column>
+		<column>created</column>
+		<column>created_by</column>
+		<column>email</column>
+		<column>ip</column>
+		<column>state</column>
+		<column>note</column>
+		<column>popularity</column>
+		<column>editor_popularity</column>
+		<column>attention_needed</column>
+		<column>last_scored</column>
+		<column>decided_by</column>
+		<column>decided_at</column>
+		<column>story_id</column>
+		<column>scope</column>
+		<column>scope_id</column>
+		<column>params</column>
+	</table>
+	<table name="item_votes">
+		<column>id</column>
+		<column>item_id</column>
+		<column>item_type</column>
+		<column>ip</column>
+		<column>created</column>
+		<column>created_by</column>
+		<column>vote</column>
+	</table>
+	<table name="karma_scales">
+		<column>id</column>
+		<column>alias</column>
+		<column>title</column>
+		<column>description</column>
+		<column>floor</column>
+		<column>ceiling</column>
+		<column>initial</column>
+		<column>decay_per_day</column>
+		<column>decay_after_days</column>
+		<column>decay_toward</column>
+		<column>visibility_self</column>
+		<column>visibility_public</column>
+		<column>adjectives</column>
+		<column>state</column>
+		<column>ordering</column>
+		<column>params</column>
+		<row>
+			<value>1</value>
+			<value>global</value>
+			<value>Global</value>
+			<value>Site-wide standing.</value>
+			<value>-25</value>
+			<value>50</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>exact</value>
+			<value>hidden</value>
+			<value>-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished</value>
+			<value>1</value>
+			<value>0</value>
+			<value></value>
+		</row>
+	</table>
+	<table name="karma_balances">
+		<column>id</column>
+		<column>user_id</column>
+		<column>scale_id</column>
+		<column>karma</column>
+		<column>raw</column>
+		<column>positive_count</column>
+		<column>negative_count</column>
+		<column>last_event</column>
+		<column>last_recalculated</column>
+		<row>
+			<value>1</value>
+			<value>50</value>
+			<value>1</value>
+			<value>-8</value>
+			<value>-8</value>
+			<value>0</value>
+			<value>3</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>2026-09-13 12:00:00</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>51</value>
+			<value>1</value>
+			<value>2</value>
+			<value>2</value>
+			<value>2</value>
+			<value>0</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>2026-09-13 12:00:00</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>52</value>
+			<value>1</value>
+			<value>40</value>
+			<value>40</value>
+			<value>9</value>
+			<value>0</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>2026-09-13 12:00:00</value>
+		</row>
+	</table>
 </dataset>

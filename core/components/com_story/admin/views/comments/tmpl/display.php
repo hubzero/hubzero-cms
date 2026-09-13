@@ -22,6 +22,7 @@ Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_STORIES'), Route::url('index.php?
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SECTIONS'), Route::url('index.php?option=' . $this->option . '&controller=sections'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_TOPICS'), Route::url('index.php?option=' . $this->option . '&controller=topics'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_DISCUSSIONS'), Route::url('index.php?option=' . $this->option . '&controller=comments'), true);
+Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SUBMISSIONS'), Route::url('index.php?option=' . $this->option . '&controller=submissions'));
 
 ?>
 
@@ -44,7 +45,7 @@ Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_DISCUSSIONS'), Route::url('index.
 		<tbody>
 <?php if (!count($this->rows)) { ?>
 			<tr>
-				<td colspan="7"><?php echo Lang::txt('JGLOBAL_NO_MATCHING_RESULTS'); ?></td>
+				<td colspan="7"><?php echo Lang::txt('COM_STORY_NONE_FOUND'); ?></td>
 			</tr>
 <?php } else {
 	$i = 0;

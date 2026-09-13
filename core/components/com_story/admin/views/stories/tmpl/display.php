@@ -49,6 +49,7 @@ Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_STORIES'), Route::url('index.php?
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SECTIONS'), Route::url('index.php?option=' . $this->option . '&controller=sections'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_TOPICS'), Route::url('index.php?option=' . $this->option . '&controller=topics'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_DISCUSSIONS'), Route::url('index.php?option=' . $this->option . '&controller=comments'));
+Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SUBMISSIONS'), Route::url('index.php?option=' . $this->option . '&controller=submissions'));
 
 $sectionTitles = array();
 foreach ($this->sections as $section)
