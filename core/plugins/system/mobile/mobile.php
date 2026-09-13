@@ -32,28 +32,7 @@ class Mobile extends Plugin
         $session = App::get('session');
         $tmpl = Request::getCmd('tmpl', '');
 
-        // Only switch to a shell that exists.
-        //
-        // A shell no template provides is a 404, and this one is remembered in
-        // the session - so asking for a mobile template a hub does not have
-        // used to cost the visitor not that page but every page after it. A
-        // hub without one shows the site it does have.
-        $hasMobile = App::get('template.loader')->hasShell('mobile');
-
-        if ($tmpl == 'mobile' && $hasMobile) {
-            $session->set('mobile', true);
-        } elseif ($tmpl == 'mobile') {
-            Request::setVar('tmpl', 'index');
-        } elseif ($session->get('mobile')) {
-            if ($hasMobile) {
-                Request::setVar('tmpl', 'mobile');
-            } else {
-                // Remembered from a hub, or a template, that had one
-                $session->set('mobile', false);
-            }
-        }
-
-        // Are we requesting to view full site again?
+        // Asked for the full site again
         if ($tmpl == 'fullsite') {
             $session->set('mobile', false);
 
@@ -63,6 +42,37 @@ class Mobile extends Plugin
             $url = preg_replace('/([?&])tmpl=fullsite(&|$)/', '$1', Request::current(true));
 
             App::redirect(rtrim($url, '?&'));
+
+            return;
+        }
+
+        // Every other request is only this plugin's business if the mobile
+        // template has been asked for, now or earlier in the session.
+        if ($tmpl != 'mobile' && !$session->get('mobile')) {
+            return;
+        }
+
+        // Only switch to a shell that exists.
+        //
+        // A shell no template provides is a 404, and this one is remembered
+        // for the session - so asking for a mobile template a hub does not
+        // have used to cost the visitor not that page but every page after
+        // it. A hub without one forgets the request and shows the site it
+        // does have.
+        if (!App::get('template.loader')->hasShell('mobile')) {
+            $session->set('mobile', false);
+
+            if ($tmpl == 'mobile') {
+                Request::setVar('tmpl', 'index');
+            }
+
+            return;
+        }
+
+        if ($tmpl == 'mobile') {
+            $session->set('mobile', true);
+        } else {
+            Request::setVar('tmpl', 'mobile');
         }
     }
 }
