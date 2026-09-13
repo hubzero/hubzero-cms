@@ -104,14 +104,20 @@ you open them.
 | | `offline.php` | `css/general.css`, `css/offline.css` |
 | | `login.php` | `css/system.css` |
 | | `help.php` | `getSystemStylesheet()`, `css/help.css` |
-| | `group.php` | `getSystemStylesheet()`, and the **active** template's `css/main.css` and `css/group.css` |
+| | `group.php` | `getSystemStylesheet()`, `css/main.css`, `css/group.css` |
 
-`system/group.php` is the super group layout, and it is the one place a
-stylesheet is looked for in a template other than the one that owns the
-layout. It asks the active template for `css/main.css` and `css/group.css`.
-Kimera ships `css/group.css` but no `css/main.css`, so a super group page
-under Kimera requests one stylesheet that does not exist. If you write a site
-template that will be used with super groups, ship both files.
+`system/group.php` is the super group layout, and the stylesheets it asks for
+belong to **whichever template supplied the layout** — which, among the
+templates that ship with the CMS, is only ever `system` itself. No site
+template here carries a `group.php`, so a super group page falls through to
+`system/group.php` and takes `system`'s `css/main.css` and `css/group.css`
+with it. Both exist.
+
+A site template that ships its own `group.php` becomes the one that supplies
+the layout, and then its own `css/main.css` and `css/group.css` are what get
+asked for — so ship both if you write one. Kimera has `css/group.css` and no
+`css/main.css`, which would matter only if it grew a `group.php`; it has none,
+so nothing requests the missing file today.
 
 > **Note:** Kimera also carries `css/print.css`, `css/download.css`,
 > `css/upload.css` and `css/pages/*.css`. No layout links any of them and
