@@ -5,6 +5,10 @@
 	<author>HUBzero</author>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
 	<description>Lucent, the template that inspires</description>
+	<!-- A hub may make a child of this template: one that names lucent as its
+	     parent, ships only the files it wants to change, and inherits the
+	     rest. -->
+	<inheritable>1</inheritable>
 	<files>
 
 	</files>

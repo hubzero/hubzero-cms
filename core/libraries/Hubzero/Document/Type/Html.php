@@ -64,6 +64,30 @@ class Html extends Base
     public $templatePath = null;
 
     /**
+     * Name of the template the active one inherits from, where it does
+     *
+     * @var  string
+     */
+    public $templateParent = '';
+
+    /**
+     * Directory the parent template was found in
+     *
+     * @var  string
+     */
+    public $templateParentPath = '';
+
+    /**
+     * Base url of the parent template's root
+     *
+     * A child in app can inherit from a template in core, so the parent's
+     * files are not addressed under the child's base url.
+     *
+     * @var  string
+     */
+    public $templateParentBase = '';
+
+    /**
      * Array of template parameters
      *
      * @var  array
@@ -499,21 +523,40 @@ class Html extends Base
             '',
             $params['file']
         )     : 'index.php';
-        // The page shell is the active template's, or the system template's
-        // where the active one does not provide that name.
+        $parent    = isset($params['parent'])
+            ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['parent'])
+            : '';
+        $parentDir = isset($params['parentdirectory']) ? $params['parentdirectory'] : $directory;
+
+        // Where the shell being rendered comes from, which is not always the
+        // template whose name the page wears: a child template renders its
+        // parent's shells for everything it does not carry itself.
+        $renderDirectory = $directory;
+        $renderTemplate  = $template;
+
+        // The page shell is the active template's, then its parent's, then
+        // the system template's.
         //
-        // A name neither of them has is a page that does not exist, and says
-        // so. It used to render nothing at all - HTTP 200 and an empty body -
+        // A name none of them has is a page that does not exist, and says so.
+        // It used to render nothing at all - HTTP 200 and an empty body -
         // which is indistinguishable from a working page to a cache, a crawler
         // or a person watching uptime, and which hid every caller that asked
         // for a shell nobody had written.
         if (!file_exists($directory . DS . $template . DS . $file)) {
-            $directory = PATH_CORE . '/templates';
-            $template  = 'system';
-            $params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
+            if ($parent !== '' && file_exists($parentDir . DS . $parent . DS . $file)) {
+                $renderDirectory = $parentDir;
+                $renderTemplate  = $parent;
+            } else {
+                $directory = PATH_CORE . '/templates';
+                $template  = 'system';
+                $params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
 
-            if (!file_exists($directory . DS . $template . DS . $file)) {
-                App::abort(404, 'Page not found.');
+                $renderDirectory = $directory;
+                $renderTemplate  = $template;
+
+                if (!file_exists($directory . DS . $template . DS . $file)) {
+                    App::abort(404, 'Page not found.');
+                }
             }
         }
 
@@ -528,8 +571,15 @@ class Html extends Base
         $lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
         // Assign the variables
-        $this->template     = $template;
-        $this->templatePath = $directory . DS . $template;
+        //
+        // The page keeps wearing the child's name and base url - it is the
+        // template in use, whatever file happened to draw this shell - and
+        // carries the parent's alongside, so asset() can answer from either.
+        $this->template           = $template;
+        $this->templatePath       = $directory . DS . $template;
+        $this->templateParent     = ($template === 'system') ? '' : $parent;
+        $this->templateParentPath = $this->templateParent ? $parentDir . DS . $parent : '';
+        $this->templateParentBase = isset($params['parentbaseurl']) ? $params['parentbaseurl'] : '';
         // $this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) .
         // '/templates/'. $template;
         //$this->baseurl  = rtrim(\Request::root(true), '/');
@@ -537,9 +587,47 @@ class Html extends Base
         $this->params   = isset($params['params'])  ? $params['params']  : new Registry();
 
         // Load
-        $this->_template = $this->_loadTemplate($directory . DS . $template, $file);
+        $this->_template = $this->_loadTemplate($renderDirectory . DS . $renderTemplate, $file);
 
         return $this;
+    }
+
+    /**
+     * The path of a file inside the active template, or its parent
+     *
+     * The filesystem companion of asset(): the same child-then-parent search,
+     * answering where a file is rather than how to link to it.
+     *
+     * Templates reach for __DIR__ to find their own files, which is the same
+     * assumption asset() used to make about names - and it breaks in the same
+     * place. A child template's shells are rendered from its parent's
+     * directory, so __DIR__ there is the parent's, and a file the child
+     * shipped is invisible to it.
+     *
+     * @param   string  $file  Path within the template, eg home.php
+     * @return  string  The absolute path, or an empty string where there is none
+     */
+    public function templateFile($file)
+    {
+        $file = ltrim((string) $file, '/');
+
+        if ($file === '') {
+            return '';
+        }
+
+        foreach (array($this->templatePath, $this->templateParentPath) as $dir) {
+            if (!$dir) {
+                continue;
+            }
+
+            $path = $dir . DS . str_replace('/', DS, $file);
+
+            if (is_file($path)) {
+                return $path;
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -552,13 +640,14 @@ class Html extends Base
      * file, and throws when the file it names is not there, because this
      * platform promotes that warning to an exception.
      *
-     * Asking here instead puts the question in one place. Today it answers
-     * from the active template; it is also the seam a parent template would
-     * be searched through, without every template having to learn about it.
+     * Asking here instead puts the question in one place - which is also the
+     * place a child template's parent is searched. The active template is
+     * asked first and the parent second, so a child carries the files it
+     * wants to change and inherits the rest at their own addresses.
      *
-     * A file the template does not have still gets an address, unversioned,
-     * rather than stopping the page: a stylesheet that 404s is a worse page,
-     * not a broken one.
+     * A file neither has still gets an address, unversioned, rather than
+     * stopping the page: a stylesheet that 404s is a worse page, not a broken
+     * one.
      *
      * @param   string   $file     Path within the template, eg js/core.js
      * @param   boolean  $version  Append the file's modification time
@@ -569,17 +658,34 @@ class Html extends Base
         $file = ltrim((string) $file, '/');
         $url  = $this->baseurl . '/templates/' . $this->template . '/' . $file;
 
-        if ($file === '' || !$this->templatePath) {
+        if ($file === '') {
             return $url;
         }
 
-        $path = $this->templatePath . DS . str_replace('/', DS, $file);
+        $roots = array(
+            array($this->templatePath, $this->baseurl, $this->template),
+            array($this->templateParentPath, $this->templateParentBase, $this->templateParent),
+        );
 
-        if (!is_file($path)) {
-            return $url;
+        foreach ($roots as $root) {
+            list($dir, $base, $name) = $root;
+
+            if (!$dir || !$name) {
+                continue;
+            }
+
+            $path = $dir . DS . str_replace('/', DS, $file);
+
+            if (!is_file($path)) {
+                continue;
+            }
+
+            $found = $base . '/templates/' . $name . '/' . $file;
+
+            return $version ? $found . '?v=' . filemtime($path) : $found;
         }
 
-        return $version ? $url . '?v=' . filemtime($path) : $url;
+        return $url;
     }
 
     /**

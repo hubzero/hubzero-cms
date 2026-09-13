@@ -84,6 +84,7 @@ class DocumentServiceProvider extends Middleware
 
             $params = array(
                 'template'  => $this->app['template']->template,
+                'parent'    => isset($this->app['template']->parent) ? $this->app['template']->parent : '',
                 'file'      => $file . '.php',
                 'directory' => dirname($this->app['template']->path),
                 'params'    => $this->app['template']->params
@@ -96,6 +97,20 @@ class DocumentServiceProvider extends Middleware
             $path = substr(dirname($params['directory']), strlen($basepath));
 
             $params['baseurl'] = rtrim(\Request::root(true), '/') . rtrim($path, '/');
+
+            // A child template's parent is addressed separately: the two can
+            // sit in different roots, a hub's own template in app inheriting
+            // from one of the core templates, so the parent carries its own
+            // directory and its own base url rather than borrowing the
+            // child's.
+            if (!empty($this->app['template']->parentPath)) {
+                $params['parentdirectory'] = dirname($this->app['template']->parentPath);
+
+                $parentbase = dirname(dirname($params['parentdirectory']));
+                $parentpath = substr(dirname($params['parentdirectory']), strlen($parentbase));
+
+                $params['parentbaseurl'] = rtrim(\Request::root(true), '/') . rtrim($parentpath, '/');
+            }
         }
 
         if (!$document->getTitle()) {
