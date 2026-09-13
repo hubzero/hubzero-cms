@@ -36,7 +36,7 @@ loads ahead of anything an extension queues:
 
 ```php
 <link rel="stylesheet" type="text/css" media="all"
-      href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css?v=<?php echo filemtime(__DIR__ . '/css/index.css'); ?>" />
+      href="<?php echo $this->asset('css/index.css'); ?>" />
 ```
 
 Or through the document, in which case it lands *inside* the head block, after
@@ -52,17 +52,37 @@ what `northgate` does: brand styles load first, components layer on top, and
 the handful of component rules Northgate needs to beat are handled with
 [output overrides](09-overrides.md) rather than with a specificity war.
 
-Two details of the link are load-bearing:
+[`$this->asset()`](../../../core/libraries/Hubzero/Document/Type/Html.php) takes
+the path inside the template and returns the whole address. It is doing three
+things the old hand-written form did by hand, and getting two of them right
+that the hand-written form often did not:
 
-- `$this->baseurl` is the URL prefix for the templates directory — `/app` when
-  the template lives in `app/templates`, `/core` when it ships. Never hardcode
-  either. A `northgate` layout with `/core/templates/…` in it links `kimera`'s
-  stylesheet on every page and gives no error at all.
-- `?v=<?php echo filemtime(...); ?>` is the cache-busting convention used by
-  every shipped template and by
+- **The root.** `/app` when the template lives in `app/templates`, `/core` when
+  it ships. A `northgate` layout with `/core/templates/…` written into it links
+  `kimera`'s stylesheet on every page and gives no error at all.
+- **The cache-buster.** `?v={filemtime}`, the convention used by every shipped
+  template and by
   [`Hubzero\Document\Asset\File::link()`](../../../core/libraries/Hubzero/Document/Asset/File.php).
-  Use it. A stylesheet linked without it is cached by version-less URL and
-  will not refresh for returning visitors after a deployment.
+  A stylesheet linked without one is cached by version-less URL and will not
+  refresh for returning visitors after a deployment.
+- **The [parent](05-inheritance.md)**, where the template is a child of
+  another: the child is asked first, the parent second, and the address comes
+  back under whichever root has the file.
+
+It also does not throw. `filemtime()` on a file that has gone is a warning, and
+this platform promotes warnings to exceptions, so the hand-written form turns a
+missing asset into a blank page. `asset()` returns the address unversioned
+instead — a stylesheet that 404s is a worse page, not a broken one.
+
+Older layouts still spell the address out:
+
+```php
+href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/index.css?v=<?php echo filemtime(__DIR__ . '/css/index.css'); ?>"
+```
+
+`kimera`, `kameleon`, `welcome` and `system` are still written this way. It
+works for a template that is nobody's child, and it is what you will find when
+you open them.
 
 ### What each shipped template links
 

@@ -73,9 +73,13 @@ what you like. The rest the CMS looks for by name.
 
 Only two things:
 
-- **`index.php`.** If it is missing, `Hubzero\Document\Type\Html` silently
-  falls back to `core/templates/system` and renders that instead. The symptom
-  is a hub that looks unstyled rather than broken.
+- **`index.php`, unless the template inherits one.** `Hubzero\Document\Type\Html`
+  looks for a page in the template, then in its
+  [parent](05-inheritance.md) where it has one, then in
+  `core/templates/system`. A [child template](05-inheritance.md) that ships no
+  `index.php` is inheriting its parent's, which is the point of being a child;
+  a template with no parent and no `index.php` renders the system template's,
+  and the symptom is a hub that looks unstyled rather than broken.
 - **A row in `#__extensions`, and a style in `#__template_styles`.** The
   administrator's template list is a query against `#__extensions`, not a scan
   of the filesystem, so a directory nobody has registered is invisible — and,
@@ -92,7 +96,8 @@ parameters to edit and contributes no module positions. See
 | Path | What reads it |
 |---|---|
 | `index.php` | The document, for every normal page. See [Page layout](06-layouts.md). |
-| `{tmpl}.php` | The document, when the request carries `tmpl={name}`. `tmpl=component` gives modal windows and popups their bare frame; `com_help` sets `tmpl=help`, `com_cpanel` sets `tmpl=cpanel`, `com_login` sets `tmpl=login`, and `com_groups` sets `tmpl=group` for super group pages. |
+| `home.php` | `index.php`, on the front page, where the template ships one. It replaces everything inside `main` — the gutters, the asides and the component alike — so the front page is the template's to lay out. Optional, and the shipped templates other than `mesozoic` do not have one. |
+| `{tmpl}.php` | The document, when the request carries `tmpl={name}`. `tmpl=component` gives modal windows and popups their bare frame; `com_help` sets `tmpl=help`, `com_cpanel` sets `tmpl=cpanel`, `com_login` sets `tmpl=login`, and `com_groups` sets `tmpl=group` for super group pages. A name no template and no parent provides is a 404. |
 | `error.php` | The error document. |
 | `offline.php` | Rendered when the site is switched offline and the visitor lacks `core.login.offline`. |
 | `email.php` | [`Hubzero\Mail\Template`](../../../core/libraries/Hubzero/Mail/Template.php), for HTML mail. |

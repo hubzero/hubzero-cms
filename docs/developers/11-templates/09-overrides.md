@@ -78,8 +78,14 @@ Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:
 
 1. `{template}/html/{option}/{view}/`
-2. `{component}/{client}/views/{view}/tmpl/`
-3. `{component}/{client}/views/{view}/`
+2. `{parent template}/html/{option}/{view}/` — only where the template is a
+   [child](05-inheritance.md) of another
+3. `{component}/{client}/views/{view}/tmpl/`
+4. `{component}/{client}/views/{view}/`
+
+A child template's own overrides therefore win over its parent's, and both win
+over the component. A child that ships no `html/` at all inherits every
+override its parent has.
 
 So the override of
 

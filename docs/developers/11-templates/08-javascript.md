@@ -121,8 +121,22 @@ of what a click on that element means.
 
 `$this` in a template layout is the document, so `addScript()`,
 `addScriptDeclaration()`, `addStyleSheet()` and `addStyleDeclaration()` are all
-available. The `filemtime()` query string is the convention for busting caches
-after a deploy; copy it.
+available.
+
+Give `addScript()` an address from
+[`$this->asset()`](../../../core/libraries/Hubzero/Document/Type/Html.php)
+rather than building one:
+
+```php
+$this->addScript($this->asset('js/core.js'));
+```
+
+It works out the root, appends the file's modification time to bust caches
+after a deploy, and asks the [parent template](05-inheritance.md) where the
+active one is a child. `kimera` and `kameleon` still write the address out by
+hand, with `filemtime()` beside it; that form works, but it throws on a file
+that has been removed and it cannot see a parent. See
+[Stylesheets](07-css.md#the-templates-own-stylesheets).
 
 What ships in the templates' `js/` directories is thinner than the old
 documentation suggested:
