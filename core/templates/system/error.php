@@ -7,6 +7,7 @@
  */
 
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
@@ -27,9 +28,7 @@ if (!isset($this->error)) {
             echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8');
 ?></title>
         <link rel="stylesheet" type="text/css"
-            href="<?php echo $this->baseurl; ?>/templates/system/css/error.css?v=<?php
-                echo filemtime(__DIR__ . '/css/error.css');
-            ?>" />
+            href="<?php echo $this->asset('css/error.css'); ?>" />
     </head>
     <body id="error-body">
         <div class="container">
@@ -58,7 +57,15 @@ if (!isset($this->error)) {
                     <p><?php echo Lang::txt('JERROR_LAYOUT_PLEASE_TRY_ONE_OF_THE_FOLLOWING_PAGES'); ?></p>
                     <ul>
                         <li>
-                            <a href="<?php echo $this->baseurl; ?>/index.php"
+                            <?php
+                            // The site's root, not the template's. baseurl
+                            // addresses wherever the template was found -
+                            // /core when this page is the system template's
+                            // fallback - and /core/index.php is a 404, so the
+                            // one link on the last-resort error page led
+                            // nowhere.
+                            ?>
+                            <a href="<?php echo rtrim(Request::root(true), '/'); ?>/"
                                 title="<?php echo Lang::txt('JERROR_LAYOUT_GO_TO_THE_HOME_PAGE'); ?>"><?php
                                     echo Lang::txt('JERROR_LAYOUT_HOME_PAGE');
                                 ?></a>
