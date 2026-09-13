@@ -29,6 +29,29 @@ defined('_HZEXEC_') or die();
 
 	$userNameLikesArray = substr($userNameLikesArray,1);
 
+	// What, if anything, this reader may do to the post's standing. Absent
+	// the moderation library, or the permission, none of this renders.
+	$moderation = array('score' => (float) $this->comment->get('score', 0), 'reasons' => array(), 'credits' => 0);
+
+	if (class_exists('\\Hubzero\\Moderation\\Moderator') && !User::isGuest())
+	{
+		$unlimited = User::authorise('forum.moderate.unlimited', 'com_forum');
+
+		if ($unlimited || User::authorise('forum.moderate', 'com_forum'))
+		{
+			\Plugin::import('moderation');
+
+			$moderator = new \Hubzero\Moderation\Moderator(User::get('id'), $unlimited);
+			$item      = \ForumPostModeratable::forId($this->comment->get('id'));
+
+			if ($item && $moderator->canModerate($item))
+			{
+				$moderation['reasons'] = $moderator->reasonsFor($item);
+				$moderation['credits'] = $unlimited ? null : $moderator->credits('com_forum.post');
+			}
+		}
+	}
+
 	$this->comment->set('section', $this->filters['section']);
 	$this->comment->set('category', $this->category->get('alias'));
 
@@ -169,6 +192,28 @@ defined('_HZEXEC_') or die();
 				}
 				?>
 			</div><!-- / .comment-attachments -->
+			<?php if ($moderation['score'] || $moderation['reasons']) { ?>
+				<p class="comment-moderation">
+					<span class="moderation-score" title="<?php echo Lang::txt('COM_FORUM_MODERATE_SCORE'); ?>"><?php
+						echo ($moderation['score'] > 0 ? '+' : '') . $this->escape($moderation['score']);
+					?></span>
+<?php if ($moderation['reasons']) { ?>
+					<span class="moderation-reasons">
+<?php foreach ($moderation['reasons'] as $alias => $reason) { ?>
+						<a class="moderate moderate-<?php echo ($reason->isPositive() ? 'up' : 'down'); ?>"
+						   title="<?php echo $this->escape($reason->get('description')); ?>"
+						   href="<?php echo Route::url('index.php?option=com_forum&controller=threads&task=moderate&post=' . $this->comment->get('id') . '&reason=' . urlencode($alias) . '&return=' . base64_encode(Request::current(true)) . '&' . Session::getFormToken() . '=1'); ?>"><!--
+						--><?php echo $this->escape($reason->get('title')); ?><!--
+					--></a>
+<?php } ?>
+					</span>
+<?php if (!is_null($moderation['credits'])) { ?>
+					<span class="moderation-credits"><?php echo Lang::txt('COM_FORUM_MODERATE_CREDITS', $moderation['credits']); ?></span>
+<?php } ?>
+<?php } ?>
+				</p>
+			<?php } ?>
+
 			<?php if ($this->config->get('access-manage-thread')
 						||
 						(!$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id') &&

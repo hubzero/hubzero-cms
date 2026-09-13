@@ -40,6 +40,9 @@
 		<action name="core.edit.post" title="Comment :: Edit" description="JACTION_EDIT_COMPONENT_DESC" />
 		<action name="core.edit.state.post" title="Comment :: Edit State" description="JACTION_EDITSTATE_COMPONENT_DESC" />
 		<action name="core.edit.own.post" title="Comment :: Edit Own" description="JACTION_EDITOWN_COMPONENT_DESC" />
+
+		<action name="forum.moderate" title="COM_FORUM_ACCESS_MODERATE" description="COM_FORUM_ACCESS_MODERATE_DESC" />
+		<action name="forum.moderate.unlimited" title="COM_FORUM_ACCESS_MODERATE_UNLIMITED" description="COM_FORUM_ACCESS_MODERATE_UNLIMITED_DESC" />
 	</section>
 	<section name="section">
 		<action name="core.create" title="JACTION_CREATE" description="COM_FORUM_ACCESS_CREATE_DESC" />

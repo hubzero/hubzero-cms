@@ -197,6 +197,10 @@ class Threads extends SiteController
 		$db->setQuery($queryLikes);
 		$initialLikesList = $db->loadObjectList();
 
+		// Say that somebody read this. Anything deciding who is offered
+		// moderation needs to know who reads, and nothing else records it.
+		Event::trigger('moderation.onForumThreadViewed', array($thread));
+
 		// Output the view
 		$this->view
 			->set('config', $this->config)
@@ -421,6 +425,11 @@ class Threads extends SiteController
 			Notify::error($post->getError());
 			return $this->editTask($post);
 		}
+
+		// Taking part in a thread you had moderated undoes those moderations.
+		// It is the same conflict as moderating a thread you had taken part
+		// in, and it is resolved the same way round.
+		Event::trigger('moderation.onForumPostSaved', array($post));
 
 		// Upload files
 		if (!$this->uploadTask($post->get('thread', $post->get('id')), $post->get('id')))
@@ -850,6 +859,74 @@ class Threads extends SiteController
 	 * @param   integer  $assetId
 	 * @return  void
 	 */
+	/**
+	 * Moderate a post
+	 *
+	 * Spends one credit, moves the post's score, and moves the author's
+	 * standing by whatever the reason's karma rule is worth. Every refusal
+	 * says which one it was, because "you cannot do that" with no reason is
+	 * the thing that makes moderation feel arbitrary.
+	 *
+	 * @return  void
+	 */
+	public function moderateTask()
+	{
+		Request::checkToken(['get', 'post']);
+
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$id     = Request::getInt('post', 0);
+		$reason = Request::getString('reason', '');
+		$return = Request::getString('return', '');
+
+		if (!class_exists('\\Hubzero\\Moderation\\Moderator'))
+		{
+			App::abort(404, Lang::txt('COM_FORUM_MODERATION_UNAVAILABLE'));
+		}
+
+		\Plugin::import('moderation');
+
+		$items = Event::trigger('moderation.onModerationResolveItem', array('com_forum.post', $id));
+		$item  = null;
+
+		foreach ((array) $items as $candidate)
+		{
+			if ($candidate)
+			{
+				$item = $candidate;
+				break;
+			}
+		}
+
+		if (!$item)
+		{
+			App::abort(404, Lang::txt('COM_FORUM_MODERATION_NO_POST'));
+		}
+
+		$unlimited = User::authorise('forum.moderate.unlimited', $this->_option);
+
+		if (!$unlimited && !User::authorise('forum.moderate', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$moderator = new \Hubzero\Moderation\Moderator(User::get('id'), $unlimited);
+
+		if ($moderator->moderate($item, $reason))
+		{
+			Notify::success(Lang::txt('COM_FORUM_MODERATION_APPLIED'));
+		}
+		else
+		{
+			Notify::warning(Lang::txt('COM_FORUM_MODERATION_REFUSED_' . strtoupper($moderator->why() ?: 'FAILED')));
+		}
+
+		App::redirect($return ? base64_decode($return) : Route::url('index.php?option=' . $this->_option));
+	}
+
 	/**
 	 * Has this member posted as much as their standing allows today?
 	 *
