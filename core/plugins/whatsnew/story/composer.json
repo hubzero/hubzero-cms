@@ -1,0 +1,10 @@
+{
+	"name": "hubzero/plg_whatsnew_story",
+	"description": "Stories in the What's New listing",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [{ "name": "HUBzero", "email": "support@hubzero.org" }],
+	"require": { "php": "^8.2" }
+}

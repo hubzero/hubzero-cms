@@ -10,6 +10,7 @@ defined('_HZEXEC_') or die();
 
 use Hubzero\Karma\Karma;
 use Hubzero\Karma\Scale;
+use Hubzero\Moderation\Wallet;
 
 /**
  * Members plugin for karma
@@ -85,6 +86,39 @@ class plgMembersKarma extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * A member's moderation record
+	 *
+	 * Shown to the member themselves and to nobody else. Credits in hand are
+	 * the part that matters: knowing who is currently holding them is the
+	 * first thing anybody would want in order to lobby them, which is exactly
+	 * the pressure the whole arrangement exists to avoid.
+	 *
+	 * Empty when the moderation library is not installed — the karma tab does
+	 * not depend on it.
+	 *
+	 * @param   object  $member
+	 * @return  array
+	 */
+	protected function walletsFor($member)
+	{
+		if (!class_exists('\\Hubzero\\Moderation\\Wallet'))
+		{
+			return array();
+		}
+
+		try
+		{
+			return Wallet::all()
+				->whereEquals('user_id', (int) $member->get('id'))
+				->rows();
+		}
+		catch (\Throwable $e)
+		{
+			return array();
+		}
+	}
+
+	/**
 	 * Event call to return data for a specific member
 	 *
 	 * @param   object  $user    User
@@ -124,6 +158,7 @@ class plgMembersKarma extends \Hubzero\Plugin\Plugin
 		$view->scales   = $this->visibleScales($user, $member);
 		$view->isSelf   = ((int) $user->get('id') === (int) $member->get('id'));
 		$view->standing = $view->isSelf ? Karma::standing($member->get('id')) : array();
+		$view->wallets  = $view->isSelf ? $this->walletsFor($member) : array();
 
 		$arr['html'] = $view->loadTemplate();
 

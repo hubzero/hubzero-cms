@@ -1,0 +1,10 @@
+{
+	"name": "hubzero/plg_search_story",
+	"description": "Story search adapter for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [{ "name": "HUBzero", "email": "support@hubzero.org" }],
+	"require": { "php": "^8.2" }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="tags" method="upgrade">
+	<name>plg_tags_story</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Stories in tag listings.</description>
+	<files>
+		<filename plugin="story">story.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_tags_story.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_tags_story.sys.ini</language>
+	</languages>
+</extension>

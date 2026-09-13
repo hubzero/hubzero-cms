@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>mod_story_submissions</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>MOD_STORY_SUBMISSIONS_XML_DESCRIPTION</description>
+	<files>
+		<filename module="mod_story_submissions">mod_story_submissions.php</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.mod_story_submissions.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_story_submissions.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="limit" type="text" default="5" label="MOD_STORY_SUBMISSIONS_LIMIT_LABEL" description="MOD_STORY_SUBMISSIONS_LIMIT_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

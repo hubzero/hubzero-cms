@@ -1,0 +1,10 @@
+{
+	"name": "hubzero/mod_story_latest",
+	"description": "Recent stories, for a sidebar",
+	"type": "hubzero-module",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [{ "name": "HUBzero", "email": "support@hubzero.org" }],
+	"require": { "php": "^8.2" }
+}

@@ -35,6 +35,33 @@ defined('_HZEXEC_') or die();
 	</dl>
 	<?php } ?>
 
+	<?php if (!empty($this->wallets) && count($this->wallets)) { ?>
+	<h4><?php echo Lang::txt('PLG_MEMBERS_KARMA_MODERATION'); ?></h4>
+	<table class="karma-wallets">
+		<thead>
+			<tr>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_KARMA_WHERE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_KARMA_CREDITS'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_KARMA_DONE'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_KARMA_RAISED'); ?></th>
+				<th scope="col"><?php echo Lang::txt('PLG_MEMBERS_KARMA_LOWERED'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($this->wallets as $wallet) { ?>
+			<tr>
+				<td><?php echo $this->escape($wallet->get('item_type')); ?></td>
+				<td><?php echo (int) $wallet->get('credits'); ?></td>
+				<td><?php echo (int) $wallet->get('total_moderations'); ?></td>
+				<td><?php echo (int) $wallet->get('up_moderations'); ?></td>
+				<td><?php echo (int) $wallet->get('down_moderations'); ?></td>
+			</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+	<p class="hint"><?php echo Lang::txt('PLG_MEMBERS_KARMA_PRIVATE'); ?></p>
+	<?php } ?>
+
 	<p><a href="<?php echo Route::url('index.php?option=com_karma'); ?>"><?php echo Lang::txt('PLG_MEMBERS_KARMA_MANAGE'); ?></a></p>
 <?php } ?>
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="whatsnew" method="upgrade">
+	<name>plg_whatsnew_story</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Stories in the What's New listing.</description>
+	<files>
+		<filename plugin="story">story.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_whatsnew_story.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_whatsnew_story.sys.ini</language>
+	</languages>
+</extension>
