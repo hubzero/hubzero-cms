@@ -20,9 +20,21 @@
  * shapes included.
  */
 
-require getenv('HUBZERO_SAMPLEDATA')
-    ? getenv('HUBZERO_SAMPLEDATA') . '/Mesozoic/Silhouettes.php'
-    : '/home/su-nkisseberth/hubzero-mesozoic/Mesozoic/Silhouettes.php';
+// The shapes belong to the sample data repository, which this template draws
+// with but does not own. HUBZERO_SAMPLEDATA names it, the way it does for the
+// pack itself; failing that, look for it beside this checkout, which is where
+// it usually sits.
+$repository = getenv('HUBZERO_SAMPLEDATA') ?: dirname(__DIR__, 5) . '/hubzero-mesozoic';
+$silhouettes = rtrim($repository, '/') . '/Mesozoic/Silhouettes.php';
+
+if (!is_file($silhouettes)) {
+    fwrite(STDERR, "The silhouettes this draws with are not where it looked:\n"
+        . '  ' . $silhouettes . "\n"
+        . "Set HUBZERO_SAMPLEDATA to the directory holding the Mesozoic pack.\n");
+    exit(1);
+}
+
+require $silhouettes;
 
 use Hubzero\Sampledata\Packs\Mesozoic\Silhouettes;
 
