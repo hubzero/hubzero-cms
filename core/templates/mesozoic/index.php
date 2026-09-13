@@ -22,9 +22,8 @@ Html::behavior('framework', true);
 Html::behavior('modal');
 
 // Add js
-$jsBase = $this->baseurl . '/templates/' . $this->template;
-$this->addScript($jsBase . '/js/core.js?v=' . filemtime(__DIR__ . '/js/core.js'));
-$this->addScript($jsBase . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
+$this->addScript($this->asset('js/core.js'));
+$this->addScript($this->asset('js/hub.js'));
 
 $active = '';
 if ($menu->getActive()) {
@@ -77,7 +76,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" media="screen"
-          href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/less/main.css" />
+          href="<?php echo $this->asset('less/main.css'); ?>" />
 
     <jdoc:include type="head" />
 </head>
