@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+<dataset>
+	<table name="karma_scales">
+		<column>id</column>
+		<column>alias</column>
+		<column>title</column>
+		<column>description</column>
+		<column>floor</column>
+		<column>ceiling</column>
+		<column>initial</column>
+		<column>decay_per_day</column>
+		<column>decay_after_days</column>
+		<column>decay_toward</column>
+		<column>visibility_self</column>
+		<column>visibility_public</column>
+		<column>adjectives</column>
+		<column>state</column>
+		<column>ordering</column>
+		<column>params</column>
+		<row>
+			<value>1</value>
+			<value>global</value>
+			<value>Global</value>
+			<value>Site-wide standing.</value>
+			<value>-25</value>
+			<value>50</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>adjective</value>
+			<value>hidden</value>
+			<value>-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished</value>
+			<value>1</value>
+			<value>0</value>
+			<value></value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>tiny</value>
+			<value>Tiny</value>
+			<value>A deliberately narrow scale, for testing the bounds.</value>
+			<value>-2</value>
+			<value>3</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>exact</value>
+			<value>adjective</value>
+			<value>0=Low|99999=High</value>
+			<value>1</value>
+			<value>1</value>
+			<value></value>
+		</row>
+	</table>
+	<table name="karma_rules">
+		<column>id</column>
+		<column>scale_id</column>
+		<column>alias</column>
+		<column>title</column>
+		<column>description</column>
+		<column>delta</column>
+		<column>daily_cap</column>
+		<column>per_source_cap</column>
+		<column>requires_karma</column>
+		<column>state</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>comment.upmod</value>
+			<value>Comment upmodded</value>
+			<value></value>
+			<value>1</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>comment.downmod</value>
+			<value>Comment downmodded</value>
+			<value></value>
+			<value>-1</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>1</value>
+			<value>capped.daily</value>
+			<value>Capped at two a day</value>
+			<value></value>
+			<value>1</value>
+			<value>2</value>
+			<value>0</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>1</value>
+			<value>capped.source</value>
+			<value>Capped at one per source</value>
+			<value></value>
+			<value>1</value>
+			<value>0</value>
+			<value>1</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>7</value>
+			<value>1</value>
+			<value>forum.post.liked</value>
+			<value>Forum post was marked useful</value>
+			<value></value>
+			<value>1</value>
+			<value>10</value>
+			<value>1</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>5</value>
+			<value>2</value>
+			<value>tiny.up</value>
+			<value>A point on the tiny scale</value>
+			<value></value>
+			<value>1</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>6</value>
+			<value>1</value>
+			<value>retired.rule</value>
+			<value>No longer in use</value>
+			<value></value>
+			<value>5</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+			<value>0</value>
+		</row>
+	</table>
+	<table name="karma_gates">
+		<column>id</column>
+		<column>scale_id</column>
+		<column>alias</column>
+		<column>title</column>
+		<column>description</column>
+		<column>bands</column>
+		<column>default_value</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>com_story.comments_per_day</value>
+			<value>Comments per day</value>
+			<value></value>
+			<value>-5=3|10=20|99999=40</value>
+			<value>2</value>
+		</row>
+	</table>
+	<table name="karma_ledgers">
+		<column>id</column>
+		<column>scale_id</column>
+		<column>subject_id</column>
+		<column>actor_id</column>
+		<column>delta</column>
+		<column>applied</column>
+		<column>rule</column>
+		<column>source_type</column>
+		<column>source_id</column>
+		<column>expires</column>
+		<column>state</column>
+		<column>created</column>
+		<column>params</column>
+	</table>
+	<table name="karma_balances">
+		<column>id</column>
+		<column>user_id</column>
+		<column>scale_id</column>
+		<column>karma</column>
+		<column>raw</column>
+		<column>positive_count</column>
+		<column>negative_count</column>
+		<column>last_event</column>
+		<column>last_recalculated</column>
+	</table>
+</dataset>
