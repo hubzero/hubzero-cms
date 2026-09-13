@@ -43,9 +43,7 @@ $isFrontPage = $menu->isHome();
 // is the template's own to lay out. A front page that still wants a component
 // on it includes one; a hub whose home menu item names no component has none
 // to include, and the page is whatever home.php draws.
-$homePage = ($isFrontPage && file_exists(__DIR__ . '/home.php'))
-    ? __DIR__ . '/home.php'
-    : null;
+$homePage = $isFrontPage ? $this->templateFile('home.php') : '';
 
 // Current page (used in the login link)
 $url = Request::getString('REQUEST_URI', '', 'server');

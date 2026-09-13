@@ -40,9 +40,7 @@ $isFrontPage = $menu->isHome();
 // everything inside main there - the gutters, the asides and the component
 // alike. What it draws is the hub's own: a band per module in the home
 // positions, and the front page's component where the hub has filled none.
-$homePage = ($isFrontPage && file_exists(__DIR__ . '/home.php'))
-    ? __DIR__ . '/home.php'
-    : null;
+$homePage = $isFrontPage ? $this->templateFile('home.php') : '';
 
 // Current page (used in the login link)
 $url = Request::getString('REQUEST_URI', '', 'server');

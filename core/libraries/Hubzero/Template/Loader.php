@@ -105,6 +105,108 @@ class Loader
     }
 
     /**
+     * Where a template of this name lives, app overriding core
+     *
+     * @param   string  $name  Template name
+     * @return  string  The directory, or an empty string where there is none
+     */
+    public function pathFor($name)
+    {
+        $name = preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $name);
+
+        if ($name === '') {
+            return '';
+        }
+
+        foreach (array('app', 'core') as $key) {
+            $path = $this->getPath($key) . DIRECTORY_SEPARATOR . $name;
+
+            if (is_dir($path)) {
+                return $path;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Read a template's manifest without letting a bad one raise a warning
+     *
+     * @param   string  $path  The template's directory
+     * @return  object  SimpleXMLElement, or null
+     */
+    protected function manifest($path)
+    {
+        $file = $path . DIRECTORY_SEPARATOR . 'templateDetails.xml';
+
+        if (!is_file($file)) {
+            return null;
+        }
+
+        $previous = libxml_use_internal_errors(true);
+        $manifest = simplexml_load_file($file);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        return $manifest ?: null;
+    }
+
+    /**
+     * Work out whether a template inherits from another, and from where
+     *
+     * A child template names its parent in its own manifest:
+     *
+     *     <parent>lucent</parent>
+     *
+     * and the parent has to agree to it, with <inheritable>1</inheritable>.
+     * Everything the child does not carry - the page shells, the component
+     * overrides, the stylesheets and the scripts - is then looked for in the
+     * parent, so a hub that wants its own colours and its own front page
+     * ships those two files rather than a copy of the whole template.
+     *
+     * One generation only, as Joomla has it: a template that is itself a
+     * child cannot be a parent, so there is no chain to walk and no way to
+     * describe a loop.
+     *
+     * Sets parent and parentPath on the template, empty where there is none.
+     *
+     * @param   object  $template  The template to resolve
+     * @return  void
+     */
+    protected function resolveParent($template)
+    {
+        $template->parent     = '';
+        $template->parentPath = '';
+
+        if (!($manifest = $this->manifest($template->path))) {
+            return;
+        }
+
+        $parent = trim((string) $manifest->parent);
+
+        if ($parent === '' || $parent === $template->template) {
+            return;
+        }
+
+        if (!($path = $this->pathFor($parent))) {
+            return;
+        }
+
+        if (!($parentManifest = $this->manifest($path))) {
+            return;
+        }
+
+        // The parent must allow it, and must not be a child itself
+        if (!(int) $parentManifest->inheritable
+         || trim((string) $parentManifest->parent) !== '') {
+            return;
+        }
+
+        $template->parent     = $parent;
+        $template->parentPath = $path;
+    }
+
+    /**
      * Does a page shell of this name exist?
      *
      * The shell is the whole-page file that the tmpl request variable names -
@@ -131,12 +233,15 @@ class Loader
 
         $template = $template ?: $this->load();
 
-        if (
-            is_object($template)
-            && !empty($template->path)
-            && file_exists($template->path . DIRECTORY_SEPARATOR . $name . '.php')
-        ) {
-            return true;
+        if (is_object($template)) {
+            foreach (array('path', 'parentPath') as $key) {
+                if (
+                    !empty($template->$key)
+                    && file_exists($template->$key . DIRECTORY_SEPARATOR . $name . '.php')
+                ) {
+                    return true;
+                }
+            }
         }
 
         return file_exists(
@@ -330,6 +435,8 @@ class Loader
                         $template->path = $this->getPath('core') . DIRECTORY_SEPARATOR . $template->template;
                     }
 
+                    $this->resolveParent($template);
+
                     $templates[$i] = $template;
 
                     // Create home element
@@ -350,7 +457,14 @@ class Loader
             $tmpl = $templates[$id];
         }
 
-        if ($tmpl && file_exists($tmpl->path . DIRECTORY_SEPARATOR . 'index.php')) {
+        // A template is usable when it has a page to render. A child template
+        // need not carry one: inheriting index.php from its parent is the
+        // whole point of being a child.
+        if ($tmpl && (
+            file_exists($tmpl->path . DIRECTORY_SEPARATOR . 'index.php')
+            || (!empty($tmpl->parentPath)
+                && file_exists($tmpl->parentPath . DIRECTORY_SEPARATOR . 'index.php'))
+        )) {
             return $tmpl;
         }
 
