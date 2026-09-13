@@ -1,0 +1,17 @@
+{
+	"name": "hubzero/plg_karma_story",
+	"description": "Story karma source for the HUBzero CMS",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "HUBzero",
+			"email": "support@hubzero.org"
+		}
+	],
+	"require": {
+		"php": "^8.2"
+	}
+}

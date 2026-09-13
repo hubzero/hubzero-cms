@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="karma" method="upgrade">
+	<name>plg_karma_story</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Karma earned in story discussions and the submissions queue.</description>
+	<files>
+		<filename plugin="story">story.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_karma_story.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_karma_story.sys.ini</language>
+	</languages>
+</extension>
