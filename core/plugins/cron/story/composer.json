@@ -1,0 +1,10 @@
+{
+	"name": "hubzero/plg_cron_story",
+	"description": "Scheduled work for the news component",
+	"type": "hubzero-plugin",
+	"keywords": ["hubzero"],
+	"homepage": "https://hubzero.org",
+	"license": "MIT",
+	"authors": [{ "name": "HUBzero", "email": "support@hubzero.org" }],
+	"require": { "php": "^8.2" }
+}
