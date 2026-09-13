@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="cron" method="upgrade">
+	<name>plg_cron_moderation</name>
+	<author>HUBzero</author>
+	<authorUrl>hubzero.org</authorUrl>
+	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Keeps moderation credits circulating.</description>
+	<files>
+		<filename plugin="moderation">moderation.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_cron_moderation.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_cron_moderation.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="activity_window_days" type="text" default="2" label="PLG_CRON_MODERATION_FIELD_WINDOW_LABEL" description="PLG_CRON_MODERATION_FIELD_WINDOW_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
