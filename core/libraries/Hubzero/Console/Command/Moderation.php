@@ -143,6 +143,58 @@ class Moderation extends Base implements CommandInterface
     }
 
     /**
+     * Moderate one item
+     *
+     * muse moderation moderate --user=<id> --type=<item type> --item=<id> --reason=<alias> [--unlimited]
+     *
+     * @return  void
+     */
+    public function moderate()
+    {
+        $user   = (int) $this->arguments->getOpt('user', 0);
+        $type   = (string) $this->arguments->getOpt('type', '');
+        $item   = (int) $this->arguments->getOpt('item', 0);
+        $reason = (string) $this->arguments->getOpt('reason', '');
+
+        if (!$user || !$type || !$item || !$reason) {
+            $this->output->error('Please give --user, --type, --item and --reason');
+        }
+
+        \Plugin::import('moderation');
+
+        $resolved = null;
+
+        foreach ((array) \Event::trigger('moderation.onModerationResolveItem', array($type, $item)) as $candidate) {
+            if ($candidate) {
+                $resolved = $candidate;
+                break;
+            }
+        }
+
+        if (!$resolved) {
+            $this->output->error('Nothing registered can resolve ' . $type . ' #' . $item);
+        }
+
+        $moderator = new \Hubzero\Moderation\Moderator($user, (bool) $this->arguments->getOpt('unlimited', false));
+
+        $before = $resolved->currentScore();
+
+        if ($entry = $moderator->moderate($resolved, $reason)) {
+            $this->output->addLine(sprintf(
+                'Moderated %s #%s as "%s": score %s -> %s%s',
+                $type,
+                $item,
+                $reason,
+                $before,
+                $resolved->currentScore(),
+                $entry->isActive() ? '' : ' (recorded, but the score was already at its bound)'
+            ), 'success');
+        } else {
+            $this->output->error('Refused: ' . $moderator->why());
+        }
+    }
+
+    /**
      * Take back credits nobody spent in time
      *
      * muse moderation expire --type=<item type>
