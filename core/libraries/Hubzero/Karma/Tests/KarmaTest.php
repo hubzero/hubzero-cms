@@ -393,12 +393,14 @@ class KarmaTest extends Database
 	 */
 	public function testGateReadsTheBalance()
 	{
-		$this->assertEquals('25', Karma::gate('com_story.comments_per_day', self::SUBJECT));
+		$this->assertEquals('20', Karma::gate('com_story.comments_per_day', self::SUBJECT));
 
-		Karma::award(self::SUBJECT, 'comment.downmod');
-		Karma::award(self::SUBJECT, 'comment.downmod');
+		for ($i = 0; $i < 6; $i++)
+		{
+			Karma::award(self::SUBJECT, 'comment.downmod');
+		}
 
-		$this->assertEquals('2', Karma::gate('com_story.comments_per_day', self::SUBJECT));
+		$this->assertEquals('3', Karma::gate('com_story.comments_per_day', self::SUBJECT));
 	}
 
 	/**
@@ -421,7 +423,7 @@ class KarmaTest extends Database
 		$standing = Karma::standing(self::SUBJECT);
 
 		$this->assertArrayHasKey('com_story.comments_per_day', $standing);
-		$this->assertEquals('25', $standing['com_story.comments_per_day']);
+		$this->assertEquals('20', $standing['com_story.comments_per_day']);
 	}
 
 	/**

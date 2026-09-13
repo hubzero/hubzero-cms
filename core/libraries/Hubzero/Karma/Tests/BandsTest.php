@@ -17,18 +17,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class BandsTest extends Basic
 {
 	/**
-	 * Slashdot's karma_adj, which every band case here is drawn from
+	 * The adjective bands the global scale ships with
 	 *
 	 * @var  string
 	 */
-	const ADJECTIVES = '-10=Terrible|-1=Bad|0=Neutral|12=Positive|25=Good|99999=Excellent';
+	const ADJECTIVES = '-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished';
 
 	/**
-	 * Slashdot's comments_perday_bykarma
+	 * A posting rate limit, as a gate would express it
 	 *
 	 * @var  string
 	 */
-	const PER_DAY = '-1=2|25=25|99999=50';
+	const PER_DAY = '-5=3|10=20|99999=40';
 
 	/**
 	 * Tests that a band string parses into an ordered map
@@ -37,10 +37,10 @@ class BandsTest extends Basic
 	 */
 	public function testParseOrdersAscending()
 	{
-		$bands = Bands::parse('25=Good|-10=Terrible|0=Neutral');
+		$bands = Bands::parse('30=Trusted|-15=Restricted|0=Standing');
 
-		$this->assertEquals(array('-10', '0', '25'), array_keys($bands));
-		$this->assertEquals('Terrible', $bands['-10']);
+		$this->assertEquals(array('-15', '0', '30'), array_keys($bands));
+		$this->assertEquals('Restricted', $bands['-15']);
 	}
 
 	/**
@@ -53,9 +53,9 @@ class BandsTest extends Basic
 	 */
 	public function testParseSkipsMalformedSegments()
 	{
-		$bands = Bands::parse('0=Neutral|nonsense|=empty|abc=NotNumeric|25=Good');
+		$bands = Bands::parse('0=Standing|nonsense|=empty|abc=NotNumeric|30=Trusted');
 
-		$this->assertEquals(array('0', '25'), array_keys($bands));
+		$this->assertEquals(array('0', '30'), array_keys($bands));
 	}
 
 	/**
@@ -90,16 +90,16 @@ class BandsTest extends Basic
 	public static function adjectiveProvider()
 	{
 		return array(
-			'far below the lowest band' => array(-25, 'Terrible'),
-			'on the lowest boundary'    => array(-10, 'Terrible'),
-			'just above the lowest'     => array(-9, 'Bad'),
-			'on the next boundary'      => array(-1, 'Bad'),
-			'zero'                      => array(0, 'Neutral'),
-			'just above zero'           => array(1, 'Positive'),
-			'on the positive boundary'  => array(12, 'Positive'),
-			'just above positive'       => array(13, 'Good'),
-			'on the good boundary'      => array(25, 'Good'),
-			'above every named band'    => array(50, 'Excellent'),
+			'far below the lowest band'   => array(-25, 'Restricted'),
+			'on the lowest boundary'      => array(-15, 'Restricted'),
+			'just above the lowest'       => array(-14, 'Provisional'),
+			'on the next boundary'        => array(-5, 'Provisional'),
+			'zero'                        => array(0, 'Standing'),
+			'just above zero'             => array(1, 'Established'),
+			'on the established boundary' => array(10, 'Established'),
+			'just above established'      => array(11, 'Trusted'),
+			'on the trusted boundary'     => array(30, 'Trusted'),
+			'above every named band'      => array(50, 'Distinguished'),
 		);
 	}
 
@@ -110,11 +110,11 @@ class BandsTest extends Basic
 	 */
 	public function testLookupReturnsNonWordValues()
 	{
-		$this->assertEquals('2', Bands::lookup(self::PER_DAY, -5));
-		$this->assertEquals('2', Bands::lookup(self::PER_DAY, -1));
-		$this->assertEquals('25', Bands::lookup(self::PER_DAY, 0));
-		$this->assertEquals('25', Bands::lookup(self::PER_DAY, 25));
-		$this->assertEquals('50', Bands::lookup(self::PER_DAY, 26));
+		$this->assertEquals('3', Bands::lookup(self::PER_DAY, -10));
+		$this->assertEquals('3', Bands::lookup(self::PER_DAY, -5));
+		$this->assertEquals('20', Bands::lookup(self::PER_DAY, 0));
+		$this->assertEquals('20', Bands::lookup(self::PER_DAY, 10));
+		$this->assertEquals('40', Bands::lookup(self::PER_DAY, 11));
 	}
 
 	/**
@@ -124,8 +124,8 @@ class BandsTest extends Basic
 	 */
 	public function testLookupFallsThroughToDefault()
 	{
-		$this->assertEquals('unranked', Bands::lookup('0=Neutral|10=Good', 999, 'unranked'));
-		$this->assertNull(Bands::lookup('0=Neutral', 1));
+		$this->assertEquals('unranked', Bands::lookup('0=Standing|10=Trusted', 999, 'unranked'));
+		$this->assertNull(Bands::lookup('0=Standing', 1));
 	}
 
 	/**
@@ -137,9 +137,9 @@ class BandsTest extends Basic
 	 */
 	public function testLookupHandlesFractionalValues()
 	{
-		$this->assertEquals('Bad', Bands::lookup(self::ADJECTIVES, -1.0));
-		$this->assertEquals('Neutral', Bands::lookup(self::ADJECTIVES, -0.5));
-		$this->assertEquals('Positive', Bands::lookup(self::ADJECTIVES, 11.9));
+		$this->assertEquals('Provisional', Bands::lookup(self::ADJECTIVES, -5.0));
+		$this->assertEquals('Standing', Bands::lookup(self::ADJECTIVES, -4.5));
+		$this->assertEquals('Established', Bands::lookup(self::ADJECTIVES, 9.9));
 	}
 
 	/**

@@ -103,7 +103,7 @@ class VisibilityTest extends Database
 	{
 		return array(
 			'the number'   => array(Scale::SELF_EXACT, '1'),
-			'an adjective' => array(Scale::SELF_ADJECTIVE, 'Positive'),
+			'an adjective' => array(Scale::SELF_ADJECTIVE, 'Established'),
 		);
 	}
 
@@ -138,7 +138,7 @@ class VisibilityTest extends Database
 		return array(
 			'hidden'       => array(Scale::PUBLIC_HIDDEN, null),
 			'opt in, unset' => array(Scale::PUBLIC_OPT_IN, null),
-			'an adjective' => array(Scale::PUBLIC_ADJECTIVE, 'Positive'),
+			'an adjective' => array(Scale::PUBLIC_ADJECTIVE, 'Established'),
 			'the number'   => array(Scale::PUBLIC_EXACT, '1'),
 		);
 	}

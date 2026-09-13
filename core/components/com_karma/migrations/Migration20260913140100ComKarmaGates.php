@@ -13,9 +13,9 @@ defined('_HZEXEC_') or die();
 /**
  * Seed a gate, so the standing view has something to say
  *
- * Slashdot's comments_perday_bykarma, which is the clearest example of what a
- * gate is for: karma in, a number the caller can act on out, and the caller
- * never learns the bands.
+ * A posting rate limit is the clearest example of what a gate is for: karma
+ * in, a number the caller can act on out, and the caller never learns the
+ * bands behind it.
  **/
 class Migration20260913140100ComKarmaGates extends Base
 {
@@ -47,7 +47,7 @@ class Migration20260913140100ComKarmaGates extends Base
 		$query = "INSERT INTO `#__karma_gates` (`scale_id`, `alias`, `title`, `description`, `bands`, `default_value`)
 			VALUES (" . (int) $scale . ", 'karma.posts_per_day', 'Posts per day',
 			'How many times a member may post in a day, by karma.',
-			'-1=2|25=25|99999=50', '2');";
+			'-5=3|10=20|99999=40', '2');";
 
 		$this->db->setQuery($query);
 		$this->db->query();

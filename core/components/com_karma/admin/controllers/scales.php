@@ -93,8 +93,9 @@ class Scales extends AdminController
 			$row = Scale::oneOrNew($id);
 		}
 
-		// Sensible starting point for a new scale: Slashdot's bounds and
-		// bands, hidden from everybody but the subject.
+		// A sensible starting point: bounded either side of zero, described
+		// in words rather than numbers, and hidden from everybody but the
+		// subject until the hub decides otherwise.
 		if ($row->isNew())
 		{
 			$row->set(array(
@@ -103,7 +104,7 @@ class Scales extends AdminController
 				'initial'           => 0,
 				'visibility_self'   => Scale::SELF_ADJECTIVE,
 				'visibility_public' => Scale::PUBLIC_HIDDEN,
-				'adjectives'        => '-10=Terrible|-1=Bad|0=Neutral|12=Positive|25=Good|99999=Excellent',
+				'adjectives'        => '-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished',
 				'state'             => 1
 			));
 		}

@@ -10,7 +10,7 @@ namespace Hubzero\Karma;
 use Hubzero\Database\Relational;
 
 /**
- * A banded threshold, the generalisation of Slashdot's comments_perday_bykarma
+ * A banded threshold: karma in, whatever the caller needs out
  *
  * A gate turns a karma value into whatever a caller needs — a rate limit, a
  * boolean, a label — without the caller knowing the bands.

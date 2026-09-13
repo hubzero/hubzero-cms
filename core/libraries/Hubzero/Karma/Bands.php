@@ -8,10 +8,11 @@
 namespace Hubzero\Karma;
 
 /**
- * Threshold bands, in the pipe-delimited form Slashdot used for karma_adj
- * and comments_perday_bykarma:
+ * Threshold bands: a pipe-delimited list of threshold=value pairs, used
+ * wherever a number has to be turned into something a caller can act on —
+ * an adjective, a rate limit, a yes or no.
  *
- *     -10=Terrible|-1=Bad|0=Neutral|12=Positive|25=Good|99999=Excellent
+ *     -15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished
  *
  * A lookup scans the thresholds in ascending order and returns the value of
  * the first threshold greater than or equal to the subject, so karma of -5

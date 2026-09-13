@@ -17,11 +17,11 @@ defined('_HZEXEC_') or die();
  * leaves schema that is still sound and a re-run that is still safe. Every
  * insert checks first, so running this twice changes nothing.
  *
- * The bounds and adjective bands are Slashdot's, which are the product of a
- * decade of live tuning and a better starting point than anything invented
- * here. Visibility is not Slashdot's: hidden from others by default, because
- * publishing a conduct number against a real name is a decision a hub should
- * make deliberately rather than inherit.
+ * The scale is bounded either side of zero so that standing can be lost as
+ * well as earned, and described in words rather than numbers so that nobody
+ * is tempted to optimise it. It is hidden from others by default: publishing
+ * a number about somebody's conduct against their real name is a decision a
+ * hub should make deliberately rather than inherit.
  **/
 class Migration20260913120100KarmaSeed extends Base
 {
@@ -51,7 +51,7 @@ class Migration20260913120100KarmaSeed extends Base
 			 -25, 50, 0,
 			 0, 0, 0,
 			 'adjective', 'hidden',
-			 '-10=Terrible|-1=Bad|0=Neutral|12=Positive|25=Good|99999=Excellent', 1, 0);";
+			 '-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished', 1, 0);";
 
 		$this->db->setQuery($query);
 		$this->db->query();

@@ -30,7 +30,7 @@
 			<value>0</value>
 			<value>adjective</value>
 			<value>hidden</value>
-			<value>-10=Terrible|-1=Bad|0=Neutral|12=Positive|25=Good|99999=Excellent</value>
+			<value>-15=Restricted|-5=Provisional|0=Standing|10=Established|30=Trusted|99999=Distinguished</value>
 			<value>1</value>
 			<value>0</value>
 			<value></value>
@@ -152,7 +152,7 @@
 			<value>com_story.comments_per_day</value>
 			<value>Comments per day</value>
 			<value></value>
-			<value>-1=2|25=25|99999=50</value>
+			<value>-5=3|10=20|99999=40</value>
 			<value>2</value>
 		</row>
 	</table>
