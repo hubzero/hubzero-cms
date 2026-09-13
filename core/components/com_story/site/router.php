@@ -35,6 +35,29 @@ class Router extends Base
 	{
 		$segments = array();
 
+		// A discussion is addressed by id rather than by slug: two stories on
+		// one day can carry the same conversation title, and the id is what
+		// the comment anchors are already written against.
+		if (!empty($query['view']) && $query['view'] == 'comments')
+		{
+			$segments[] = 'comments';
+			unset($query['view']);
+
+			if (!empty($query['discussion']))
+			{
+				$segments[] = $query['discussion'];
+				unset($query['discussion']);
+			}
+
+			if (!empty($query['task']))
+			{
+				$segments[] = $query['task'];
+				unset($query['task']);
+			}
+
+			return $segments;
+		}
+
 		if (!empty($query['view']) && in_array($query['view'], array('sections', 'topics')))
 		{
 			$segments[] = ($query['view'] == 'sections') ? 'section' : 'topic';
@@ -110,6 +133,24 @@ class Router extends Base
 			if (!empty($segments[0]))
 			{
 				$vars['section'] = array_shift($segments);
+			}
+
+			return $vars;
+		}
+
+		if ($segments[0] === 'comments')
+		{
+			array_shift($segments);
+			$vars['view'] = 'comments';
+
+			if (!empty($segments[0]) && preg_match('/^\d+$/', $segments[0]))
+			{
+				$vars['discussion'] = (int) array_shift($segments);
+			}
+
+			if (!empty($segments[0]))
+			{
+				$vars['task'] = array_shift($segments);
 			}
 
 			return $vars;

@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<dataset>
+	<table name="story_discussions">
+		<column>id</column>
+		<column>story_id</column>
+		<column>title</column>
+		<column>type</column>
+		<column>comment_status</column>
+		<column>comment_count</column>
+		<column>created</column>
+		<column>last_activity</column>
+		<column>access</column>
+		<column>asset_id</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>A discussion to hang comments from</value>
+			<value>open</value>
+			<value>enabled</value>
+			<value>0</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>A second, to prove nothing leaks between them</value>
+			<value>open</value>
+			<value>enabled</value>
+			<value>0</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>2026-09-13 12:00:00</value>
+			<value>1</value>
+			<value>0</value>
+		</row>
+	</table>
+	<table name="story_comments">
+		<column>id</column>
+		<column>discussion_id</column>
+		<column>parent</column>
+		<column>path</column>
+		<column>depth</column>
+		<column>subject</column>
+		<column>comment</column>
+		<column>created</column>
+		<column>created_by</column>
+		<column>modified</column>
+		<column>modified_by</column>
+		<column>anonymous</column>
+		<column>ip</column>
+		<column>state</column>
+		<column>closed</column>
+		<column>score</column>
+		<column>score_original</column>
+		<column>score_max</column>
+		<column>tweak</column>
+		<column>tweak_original</column>
+		<column>reason_id</column>
+		<column>last_moderator_id</column>
+		<column>karma_bonus</column>
+		<column>length</column>
+		<column>signature</column>
+	</table>
+	<table name="story_preferences">
+		<column>id</column>
+		<column>user_id</column>
+		<column>mode</column>
+		<column>sort</column>
+		<column>threshold</column>
+		<column>highlight_threshold</column>
+		<column>comment_limit</column>
+		<column>comment_spill</column>
+		<column>max_comment_size</column>
+		<column>hide_scores</column>
+		<column>reparent</column>
+		<column>hide_signatures</column>
+		<column>default_score</column>
+		<column>willing_to_moderate</column>
+		<column>bonus_long</column>
+		<column>bonus_short</column>
+		<column>length_long</column>
+		<column>length_short</column>
+		<column>bonus_anonymous</column>
+		<column>bonus_new_user</column>
+		<column>new_user_percent</column>
+		<column>bonus_karma</column>
+		<column>reason_adjustments</column>
+	</table>
+</dataset>

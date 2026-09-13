@@ -10,6 +10,7 @@ namespace Components\Story\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Story\Models\Story;
 use Components\Story\Models\Text;
+use Components\Story\Models\Discussion;
 use Components\Story\Models\Section;
 use Components\Story\Models\Topic;
 use Hubzero\Utility\Date;
@@ -184,6 +185,13 @@ class Stories extends AdminController
 		if (!$text->save())
 		{
 			Notify::error(Lang::txt('COM_STORY_ERROR_TEXT_NOT_SAVED'));
+		}
+
+		// A published story gets its discussion here rather than the first
+		// time somebody reads it: a page view should not be writing rows.
+		if ($row->get('state') == Story::STATE_PUBLISHED && !$row->get('discussion_id'))
+		{
+			Discussion::forStory($row);
 		}
 
 		Notify::success(Lang::txt('COM_STORY_SAVED'));

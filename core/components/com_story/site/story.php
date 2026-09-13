@@ -30,6 +30,7 @@ if (Component::params('com_story')->get('require_login', 0)
 }
 
 require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'thread.php';
 
 $controllerName = Request::getCmd('controller', Request::getCmd('view', 'stories'));
 

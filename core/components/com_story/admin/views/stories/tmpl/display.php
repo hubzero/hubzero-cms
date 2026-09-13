@@ -48,6 +48,7 @@ if ($canDo->get('core.delete'))
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_STORIES'), Route::url('index.php?option=' . $this->option . '&controller=stories'), true);
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SECTIONS'), Route::url('index.php?option=' . $this->option . '&controller=sections'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_TOPICS'), Route::url('index.php?option=' . $this->option . '&controller=topics'));
+Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_DISCUSSIONS'), Route::url('index.php?option=' . $this->option . '&controller=comments'));
 
 $sectionTitles = array();
 foreach ($this->sections as $section)

@@ -11,11 +11,15 @@ use Hubzero\Component\SiteController;
 use Components\Story\Models\Manager;
 use Components\Story\Models\Story;
 use Components\Story\Models\Section;
+use Components\Story\Models\Discussion;
+use Components\Story\Models\Preference;
+use Components\Story\Helpers\Thread;
 use Document;
 use Pathway;
 use Request;
 use Route;
 use Lang;
+use User;
 use App;
 
 /**
@@ -131,9 +135,15 @@ class Stories extends SiteController
 
 		Document::setTitle($story->get('title'));
 
+		$discussion = Discussion::oneOrNew($story->get('discussion_id'));
+		$preference = Preference::forUser(User::get('id'));
+
 		$this->view
 			->set('story', $story)
 			->set('text', $story->text())
+			->set('discussion', $discussion)
+			->set('preference', $preference)
+			->set('thread', $discussion->get('id') ? Thread::build($discussion->get('id'), $preference) : array())
 			->set('config', $this->config)
 			->setLayout('article')
 			->display();

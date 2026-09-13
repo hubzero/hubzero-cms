@@ -9,6 +9,7 @@ namespace Components\Story\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Components\Story\Models\Section;
+use Hubzero\Config\Registry;
 use Request;
 use Notify;
 use Lang;
@@ -119,6 +120,22 @@ class Sections extends AdminController
 		$fields = Request::getArray('fields', array(), 'post');
 
 		$row = Section::oneOrNew($fields['id'])->set($fields);
+
+		// Params arrive as their own array so a form that knows about one
+		// setting cannot wipe the others.
+		$params = Request::getArray('params', array(), 'post');
+
+		if ($params)
+		{
+			$merged = new Registry($row->get('params'));
+
+			foreach ($params as $key => $value)
+			{
+				$merged->set($key, $value);
+			}
+
+			$row->set('params', $merged->toString());
+		}
 
 		if (!$row->save())
 		{

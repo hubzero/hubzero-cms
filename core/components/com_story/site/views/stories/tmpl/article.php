@@ -52,3 +52,47 @@ $topic = $this->story->topic();
 	<p class="story-back"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_STORY_BACK'); ?></a></p>
 
 </section>
+
+<?php if ($this->discussion->get('id')) {
+	$base = 'index.php?option=' . $this->option . '&view=comments&discussion=' . $this->discussion->get('id');
+?>
+<section class="story-discussion section">
+
+	<header>
+		<h3><?php echo Lang::txt('COM_STORY_DISCUSSION'); ?></h3>
+		<p class="story-comment-count">
+			<a href="<?php echo Route::url($base); ?>"><?php
+				echo Lang::txt('COM_STORY_COMMENT_COUNT', (int) $this->discussion->get('comment_count'));
+			?></a>
+		</p>
+	</header>
+
+<?php if (!count($this->thread)) { ?>
+	<p class="info"><?php echo Lang::txt('COM_STORY_NO_COMMENTS'); ?></p>
+<?php } else { ?>
+	<div class="story-comments">
+<?php
+	foreach ($this->thread as $entry)
+	{
+		$this->view('_comment', 'comments')
+			->set('option', $this->option)
+			->set('discussion', $this->discussion)
+			->set('preference', $this->preference)
+			->set('comment', $entry->comment)
+			->set('indent', $entry->indent)
+			->set('canReply', $this->discussion->isOpen())
+			->set('canEdit', !User::isGuest() && $entry->comment->get('created_by') == User::get('id') && !$entry->comment->isDeleted())
+			->display();
+	}
+?>
+	</div>
+<?php } ?>
+
+<?php if ($this->discussion->isOpen()) { ?>
+	<p class="story-add"><a class="btn" href="<?php echo Route::url($base . '&task=new'); ?>"><?php echo Lang::txt('COM_STORY_ADD_COMMENT'); ?></a></p>
+<?php } else { ?>
+	<p class="info"><?php echo Lang::txt('COM_STORY_COMMENTS_CLOSED'); ?></p>
+<?php } ?>
+
+</section>
+<?php } ?>

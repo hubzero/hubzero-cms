@@ -12,6 +12,9 @@ use Hubzero\Base\Obj;
 require_once __DIR__ . DS . 'story.php';
 require_once __DIR__ . DS . 'section.php';
 require_once __DIR__ . DS . 'topic.php';
+require_once __DIR__ . DS . 'discussion.php';
+require_once __DIR__ . DS . 'comment.php';
+require_once __DIR__ . DS . 'preference.php';
 require_once __DIR__ . DS . 'adapters' . DS . 'site.php';
 
 /**

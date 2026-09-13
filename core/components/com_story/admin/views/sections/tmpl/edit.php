@@ -50,6 +50,19 @@ Toolbar::cancel();
 		</div>
 	</fieldset>
 
+	<fieldset class="adminform">
+		<legend><?php echo Lang::txt('COM_STORY_SECTION_COMMENTING'); ?></legend>
+
+		<div class="input-wrap">
+			<label for="field-allow-anonymous"><?php echo Lang::txt('COM_STORY_FIELD_ALLOW_ANONYMOUS'); ?>:</label>
+			<select name="params[allow_anonymous]" id="field-allow-anonymous">
+				<option value="0"<?php if (!$this->row->params->get('allow_anonymous', 0)) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JNO'); ?></option>
+				<option value="1"<?php if ($this->row->params->get('allow_anonymous', 0)) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('JYES'); ?></option>
+			</select>
+			<span class="hint"><?php echo Lang::txt('COM_STORY_FIELD_ALLOW_ANONYMOUS_HINT'); ?></span>
+		</div>
+	</fieldset>
+
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="sections" />

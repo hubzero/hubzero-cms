@@ -32,6 +32,7 @@ if ($canDo->get('core.delete'))
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_STORIES'), Route::url('index.php?option=' . $this->option . '&controller=stories'));
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_SECTIONS'), Route::url('index.php?option=' . $this->option . '&controller=sections'), true);
 Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_TOPICS'), Route::url('index.php?option=' . $this->option . '&controller=topics'), false);
+Submenu::addEntry(Lang::txt('COM_STORY_SUBMENU_DISCUSSIONS'), Route::url('index.php?option=' . $this->option . '&controller=comments'));
 
 ?>
 
