@@ -101,11 +101,10 @@ shadow a shipped template by putting a directory of the same name under
 `app/templates`. Everything under `app/` is site-local; nothing there is part
 of the distribution.
 
-The file itself is looked for in the template, then in its
-[parent](05-inheritance.md) where it has one, then in `core/templates/system`.
-A `tmpl` none of them provides is a **404** — the page does not exist, and says
-so, which matters because the request carries the name: anyone can put
-`?tmpl=anything` on any URL.
+The file itself is looked for in the template and then in
+`core/templates/system`. A `tmpl` neither provides is a **404** — the page does
+not exist, and says so, which matters because the request carries the name:
+anyone can put `?tmpl=anything` on any URL.
 
 ## The front page
 
@@ -140,10 +139,9 @@ Do not compare `getActive()` to `getDefault()`: a hub can have no item marked
 home, `getDefault()` answers `0` rather than an item in that case, and
 comparing an item to `0` is fatal in PHP 8.
 
-`$this->templateFile()` searches the template and then its parent, and returns
-a path. Do not use `__DIR__`: in a [child template](05-inheritance.md) the file
-being executed is usually the parent's, so `__DIR__` is the parent's directory
-and the child's own `home.php` is invisible to it.
+`$this->templateFile()` returns the path of a file inside the active template,
+or an empty string where the template does not carry it — which is what makes
+the `if` above safe to write.
 
 A hub whose home menu item is of type **No Component** has nothing to render in
 the component area at all, which is the arrangement `home.php` is for: the

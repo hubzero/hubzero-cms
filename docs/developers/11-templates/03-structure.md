@@ -73,13 +73,10 @@ what you like. The rest the CMS looks for by name.
 
 Only two things:
 
-- **`index.php`, unless the template inherits one.** `Hubzero\Document\Type\Html`
-  looks for a page in the template, then in its
-  [parent](05-inheritance.md) where it has one, then in
-  `core/templates/system`. A [child template](05-inheritance.md) that ships no
-  `index.php` is inheriting its parent's, which is the point of being a child;
-  a template with no parent and no `index.php` renders the system template's,
-  and the symptom is a hub that looks unstyled rather than broken.
+- **`index.php`.** `Hubzero\Document\Type\Html` looks for the page in the
+  template and then in `core/templates/system`, so a template without one
+  renders the system template's instead. The symptom is a hub that looks
+  unstyled rather than broken.
 - **A row in `#__extensions`, and a style in `#__template_styles`.** The
   administrator's template list is a query against `#__extensions`, not a scan
   of the filesystem, so a directory nobody has registered is invisible — and,

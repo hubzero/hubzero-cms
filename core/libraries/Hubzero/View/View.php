@@ -47,15 +47,6 @@ class View extends Obj
     protected $_overrideRoot = null;
 
     /**
-     * The parent template's override directory, where the active template
-     * is a child of another
-     *
-     * @var  string
-     */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_overrideRootParent = null;
-
-    /**
      * The override path
      *
      * @var  string
@@ -146,10 +137,6 @@ class View extends Obj
             }
         }
         $this->_overrideRoot = array_values(array_filter((array) $config['override_root']));
-
-        if (array_key_exists('override_root_parent', $config)) {
-            $this->_overrideRootParent = $config['override_root_parent'];
-        }
 
         if (array_key_exists('override_path', $config)) {
             $this->_overridePath = $config['override_path'];
