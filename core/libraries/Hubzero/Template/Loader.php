@@ -105,6 +105,46 @@ class Loader
     }
 
     /**
+     * Does a page shell of this name exist?
+     *
+     * The shell is the whole-page file that the tmpl request variable names -
+     * index, component, group and the like. It is the active template's where
+     * that template provides one, and the system template's otherwise, which
+     * is the order the document looks in.
+     *
+     * Anything that switches the shell should ask this before it does. A name
+     * neither template has is a 404, so switching to one blindly does not
+     * degrade - it takes the page down, and if the switch is remembered in the
+     * session it takes every later page down with it.
+     *
+     * @param   string  $name      Shell name, without the extension
+     * @param   object  $template  The template to ask, or the active one
+     * @return  bool
+     */
+    public function hasShell($name, $template = null)
+    {
+        $name = preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $name);
+
+        if ($name === '') {
+            return false;
+        }
+
+        $template = $template ?: $this->load();
+
+        if (
+            is_object($template)
+            && !empty($template->path)
+            && file_exists($template->path . DIRECTORY_SEPARATOR . $name . '.php')
+        ) {
+            return true;
+        }
+
+        return file_exists(
+            $this->getPath('core') . DIRECTORY_SEPARATOR . 'system' . DIRECTORY_SEPARATOR . $name . '.php'
+        );
+    }
+
+    /**
      * Set style
      *
      * @param   integer  $style
