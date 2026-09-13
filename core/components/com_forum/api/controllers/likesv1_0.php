@@ -66,6 +66,13 @@ class Likesv1_0 extends ApiController
 		$db->bind($insertVars);
 		$insertResult = $db->execute();
 
+		// Announce it so anything that cares about a post being well received
+		// can react. Nothing here knows or cares who is listening.
+		if ($insertResult)
+		{
+			Event::trigger('karma.onForumPostLiked', array((int) $postId, (int) $userId));
+		}
+
 		$this->send($insertResult);
 	}
 
@@ -84,6 +91,11 @@ class Likesv1_0 extends ApiController
 		$db->prepare($deleteQuery);
 		$db->bind($deleteVars);
 		$deleteResult = $db->execute();
+
+		if ($deleteResult)
+		{
+			Event::trigger('karma.onForumPostUnliked', array((int) $postId, (int) $userId));
+		}
 
 		$this->send($deleteResult);
 	}

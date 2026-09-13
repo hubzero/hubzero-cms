@@ -375,6 +375,18 @@ class Threads extends SiteController
 			);
 		}
 
+		// A new post is also subject to whatever the hub's standing gate
+		// allows this member today. Editing an existing post is not: the
+		// limit is on how much somebody adds, not on correcting themselves.
+		if (!$fields['id'] && !$this->withinPostingLimit())
+		{
+			Notify::error(Lang::txt('COM_FORUM_POSTING_LIMIT_REACHED'));
+
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+		}
+
 		// Bind data
 		if (!$fields['id'])
 		{
@@ -838,6 +850,39 @@ class Threads extends SiteController
 	 * @param   integer  $assetId
 	 * @return  void
 	 */
+	/**
+	 * Has this member posted as much as their standing allows today?
+	 *
+	 * The limit comes from a karma gate, so the bands are the hub's to set
+	 * and this code never learns them. A hub with no such gate configured
+	 * gets no limit, which is the behaviour the forum has always had.
+	 *
+	 * @return  bool
+	 */
+	protected function withinPostingLimit()
+	{
+		if (!class_exists('\\Hubzero\\Karma\\Karma'))
+		{
+			return true;
+		}
+
+		$allowed = \Hubzero\Karma\Karma::gate('karma.posts_per_day', User::get('id'));
+
+		if (is_null($allowed) || $allowed === '')
+		{
+			return true;
+		}
+
+		$since = \Date::of('now')->modify('-1 day')->toSql();
+
+		$posted = Post::all()
+			->whereEquals('created_by', User::get('id'))
+			->where('created', '>=', $since)
+			->total();
+
+		return ($posted < (int) $allowed);
+	}
+
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
