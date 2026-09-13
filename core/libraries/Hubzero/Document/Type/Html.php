@@ -52,6 +52,18 @@ class Html extends Base
     public $baseurl = null;
 
     /**
+     * Directory the active template was found in
+     *
+     * The companion of $baseurl and $template, which address the same place
+     * as a URL. Kept so that anything wanting to know whether the template
+     * carries a file can ask the filesystem without rebuilding the path from
+     * the template's name.
+     *
+     * @var  string
+     */
+    public $templatePath = null;
+
+    /**
      * Array of template parameters
      *
      * @var  array
@@ -516,7 +528,8 @@ class Html extends Base
         $lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
         // Assign the variables
-        $this->template = $template;
+        $this->template     = $template;
+        $this->templatePath = $directory . DS . $template;
         // $this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) .
         // '/templates/'. $template;
         //$this->baseurl  = rtrim(\Request::root(true), '/');
@@ -527,6 +540,46 @@ class Html extends Base
         $this->_template = $this->_loadTemplate($directory . DS . $template, $file);
 
         return $this;
+    }
+
+    /**
+     * The address of a file inside the active template
+     *
+     * Templates have built these by hand - the base url, the word templates,
+     * the template's own name, the path - and then called filemtime() on a
+     * literal path beside it to bust the cache. That asks every template to
+     * know where it lives, repeats the same four-part concatenation in every
+     * file, and throws when the file it names is not there, because this
+     * platform promotes that warning to an exception.
+     *
+     * Asking here instead puts the question in one place. Today it answers
+     * from the active template; it is also the seam a parent template would
+     * be searched through, without every template having to learn about it.
+     *
+     * A file the template does not have still gets an address, unversioned,
+     * rather than stopping the page: a stylesheet that 404s is a worse page,
+     * not a broken one.
+     *
+     * @param   string   $file     Path within the template, eg js/core.js
+     * @param   boolean  $version  Append the file's modification time
+     * @return  string
+     */
+    public function asset($file, $version = true)
+    {
+        $file = ltrim((string) $file, '/');
+        $url  = $this->baseurl . '/templates/' . $this->template . '/' . $file;
+
+        if ($file === '' || !$this->templatePath) {
+            return $url;
+        }
+
+        $path = $this->templatePath . DS . str_replace('/', DS, $file);
+
+        if (!is_file($path)) {
+            return $url;
+        }
+
+        return $version ? $url . '?v=' . filemtime($path) : $url;
     }
 
     /**

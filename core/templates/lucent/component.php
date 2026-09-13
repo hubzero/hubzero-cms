@@ -20,18 +20,14 @@ Html::behavior('framework', true);
     <head>
         <meta name="viewport"
               content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <?php
-        $cssPath = $this->baseurl . '/templates/' . $this->template . '/css/component.css';
-        $cssVersion = filemtime(__DIR__ . '/css/component.css');
-        ?>
         <link rel="stylesheet" type="text/css" media="all"
-              href="<?php echo $cssPath; ?>?v=<?php echo $cssVersion; ?>" />
+              href="<?php echo $this->asset('css/component.css'); ?>" />
 
         <jdoc:include type="head" />
 
         <!--[if lt IE 9]>
             <script type="text/javascript"
-                    src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/html5.js"></script>
+                    src="<?php echo $this->asset('js/html5.js'); ?>"></script>
         <![endif]-->
     </head>
     <body id="component-body">
