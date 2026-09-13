@@ -90,7 +90,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
     ) {
         $redirect = Request::current(true);
 
-        // do we have tmpl=componet in url?
+        // do we have tmpl=component in url?
         $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
         if (Request::getCmd('tmpl', '') == 'component') {
             $redirect .= $delimeter . 'tmpl=component';

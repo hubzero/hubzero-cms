@@ -487,10 +487,22 @@ class Html extends Base
             '',
             $params['file']
         )     : 'index.php';
+        // The page shell is the active template's, or the system template's
+        // where the active one does not provide that name.
+        //
+        // A name neither of them has is a page that does not exist, and says
+        // so. It used to render nothing at all - HTTP 200 and an empty body -
+        // which is indistinguishable from a working page to a cache, a crawler
+        // or a person watching uptime, and which hid every caller that asked
+        // for a shell nobody had written.
         if (!file_exists($directory . DS . $template . DS . $file)) {
             $directory = PATH_CORE . '/templates';
             $template  = 'system';
             $params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
+
+            if (!file_exists($directory . DS . $template . DS . $file)) {
+                App::abort(404, 'Page not found.');
+            }
         }
 
         // Load the language file for the template
