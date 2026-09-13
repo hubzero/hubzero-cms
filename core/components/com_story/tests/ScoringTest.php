@@ -443,6 +443,32 @@ class ScoringTest extends Database
 	}
 
 	/**
+	 * A withdrawn comment is judged on nothing, because nothing is left
+	 *
+	 * Its body is empty, so without this a reader who rewards brevity would
+	 * see a tombstone promoted above everything around it.
+	 *
+	 * @return  void
+	 */
+	public function testWithdrawnCommentTakesNoModifiers()
+	{
+		$row = $this->comment(array('comment' => 'Said, then thought better of.'));
+		$row->set('state', Comment::STATE_DELETED);
+		$row->set('comment', '');
+		$row->save();
+
+		$reader  = $this->reader(array('bonus_short' => 1, 'length_short' => 50, 'highlight_threshold' => 2));
+		$scoring = $row->displayScore($reader, $this->context());
+
+		$this->assertEquals(array(), $scoring->modifiers, 'An empty body earns no brevity bonus');
+		$this->assertEquals(1, $scoring->score);
+
+		$built = Thread::build(self::DISCUSSION, $reader, $this->context());
+
+		$this->assertFalse($built[0]->highlighted, 'A tombstone is not the best comment in the thread');
+	}
+
+	/**
 	 * Scores read the way a reader expects them to
 	 *
 	 * @return  void

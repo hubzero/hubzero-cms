@@ -333,6 +333,19 @@ class Comment extends Relational
 
 		$modifiers = array();
 
+		// A withdrawn comment has no content left to have an opinion about.
+		// Its length is zero, which would otherwise earn it a short-comment
+		// bonus, and nobody wants a tombstone highlighted as the best thing
+		// in the thread.
+		if ($this->isDeleted())
+		{
+			return (object) array(
+				'score'     => $base,
+				'base'      => $base,
+				'modifiers' => $modifiers
+			);
+		}
+
 		if ((float) $preference->get('bonus_long')
 		 && (int) $this->get('length') > (int) $preference->get('length_long'))
 		{
