@@ -86,10 +86,6 @@ class Page implements RendererInterface
                 false,
                 array(
                     'template'  => $template->template,
-                    'parent'    => isset($template->parent) ? $template->parent : '',
-                    'parentdirectory' => !empty($template->parentPath)
-                        ? dirname($template->parentPath)
-                        : dirname($template->path),
                     'directory' => dirname($template->path),
                     'debug'     => $this->debug
                 )

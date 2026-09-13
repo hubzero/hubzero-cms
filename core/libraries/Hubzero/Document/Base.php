@@ -90,30 +90,6 @@ class Base extends Obj
     public $templatePath = null;
 
     /**
-     * Name of the template the active one inherits from, where it does
-     *
-     * @var  string
-     */
-    public $templateParent = '';
-
-    /**
-     * Directory the parent template was found in
-     *
-     * @var  string
-     */
-    public $templateParentPath = '';
-
-    /**
-     * Base url of the parent template's root
-     *
-     * A child in app can inherit from a template in core, so the parent's
-     * files are not addressed under the child's base url.
-     *
-     * @var  string
-     */
-    public $templateParentBase = '';
-
-    /**
      * Document generator
      *
      * @var  string
@@ -512,14 +488,9 @@ class Base extends Obj
     /**
      * The path of a file inside the active template, or its parent
      *
-     * The filesystem companion of asset(): the same child-then-parent search,
-     * answering where a file is rather than how to link to it.
-     *
-     * Templates reach for __DIR__ to find their own files, which is the same
-     * assumption asset() used to make about names - and it breaks in the same
-     * place. A child template's shells are rendered from its parent's
-     * directory, so __DIR__ there is the parent's, and a file the child
-     * shipped is invisible to it.
+     * The filesystem companion of asset(): the same lookup, answering where a
+     * file is rather than how to link to it, for a layout that needs to
+     * require one of its template's own files.
      *
      * @param   string  $file  Path within the template, eg home.php
      * @return  string  The absolute path, or an empty string where there is none
@@ -528,23 +499,13 @@ class Base extends Obj
     {
         $file = ltrim((string) $file, '/');
 
-        if ($file === '') {
+        if ($file === '' || !$this->templatePath) {
             return '';
         }
 
-        foreach (array($this->templatePath, $this->templateParentPath) as $dir) {
-            if (!$dir) {
-                continue;
-            }
+        $path = $this->templatePath . DS . str_replace('/', DS, $file);
 
-            $path = $dir . DS . str_replace('/', DS, $file);
-
-            if (is_file($path)) {
-                return $path;
-            }
-        }
-
-        return '';
+        return is_file($path) ? $path : '';
     }
 
     /**
@@ -557,14 +518,11 @@ class Base extends Obj
      * file, and throws when the file it names is not there, because this
      * platform promotes that warning to an exception.
      *
-     * Asking here instead puts the question in one place - which is also the
-     * place a child template's parent is searched. The active template is
-     * asked first and the parent second, so a child carries the files it
-     * wants to change and inherits the rest at their own addresses.
+     * Asking here instead puts the question in one place.
      *
-     * A file neither has still gets an address, unversioned, rather than
-     * stopping the page: a stylesheet that 404s is a worse page, not a broken
-     * one.
+     * A file the template does not have still gets an address, unversioned,
+     * rather than stopping the page: a stylesheet that 404s is a worse page,
+     * not a broken one.
      *
      * It lives here rather than on the html document because error.php is
      * rendered by a different document type, and an error page that cannot
@@ -579,34 +537,17 @@ class Base extends Obj
         $file = ltrim((string) $file, '/');
         $url  = $this->baseurl . '/templates/' . $this->template . '/' . $file;
 
-        if ($file === '') {
+        if ($file === '' || !$this->templatePath) {
             return $url;
         }
 
-        $roots = array(
-            array($this->templatePath, $this->baseurl, $this->template),
-            array($this->templateParentPath, $this->templateParentBase, $this->templateParent),
-        );
+        $path = $this->templatePath . DS . str_replace('/', DS, $file);
 
-        foreach ($roots as $root) {
-            list($dir, $base, $name) = $root;
-
-            if (!$dir || !$name) {
-                continue;
-            }
-
-            $path = $dir . DS . str_replace('/', DS, $file);
-
-            if (!is_file($path)) {
-                continue;
-            }
-
-            $found = $base . '/templates/' . $name . '/' . $file;
-
-            return $version ? $found . '?v=' . filemtime($path) : $found;
+        if (!is_file($path)) {
+            return $url;
         }
 
-        return $url;
+        return $version ? $url . '?v=' . filemtime($path) : $url;
     }
 
     /**
