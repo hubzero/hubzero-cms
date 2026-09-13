@@ -28,18 +28,15 @@ class Migration20150901115230ComResources extends Base
 
 			if (!$id)
 			{
-				include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php';
-
 				$query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
 				$this->db->setQuery($query);
-				$ordering = $this->db->loadResult();
+				$ordering = intval($this->db->loadResult()) + 1;
 
-				$tbl = new \Components\Resources\Tables\License($this->db);
-				$tbl->ordering = intval($ordering) + 1;
-				$tbl->name     = 'cc40-by-nc-sa';
-				$tbl->title    = 'Creative Commons BY-NC-SA 4.0';
-				$tbl->url      = 'http://creativecommons.org/licenses/by-nc-sa/4.0/';
-				$tbl->text     = 'You are free:
+				// Written directly rather than through Components\Resources\Tables\License,
+				// which this migration used to include: that class was removed when
+				// com_resources moved to ORM models, so the include is now fatal and
+				// takes any fresh install down with it.
+				$text = 'You are free:
 
 to Share — copy and redistribute the material in any medium or format
 to Adapt — remix, transform, and build upon the material
@@ -57,8 +54,15 @@ You do not have to comply with the license for elements of the material in the p
 No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material. 
 
 For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.';
-				$tbl->check();
-				$tbl->store();
+
+				$query = "INSERT INTO `#__resource_licenses` (`name`, `title`, `url`, `text`, `ordering`) VALUES ("
+					. $this->db->quote('cc40-by-nc-sa') . ", "
+					. $this->db->quote('Creative Commons BY-NC-SA 4.0') . ", "
+					. $this->db->quote('http://creativecommons.org/licenses/by-nc-sa/4.0/') . ", "
+					. $this->db->quote($text) . ", "
+					. (int) $ordering . ");";
+				$this->db->setQuery($query);
+				$this->db->query();
 			}
 		}
 	}
