@@ -49,15 +49,6 @@ class View extends Obj
     protected $_overrideRoot = null;
 
     /**
-     * The parent template's override directory, where the active template
-     * is a child of another
-     *
-     * @var  string
-     */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_overrideRootParent = null;
-
-    /**
      * The override path
      *
      * @var  string
@@ -150,23 +141,9 @@ class View extends Obj
 
             if (App::has('template')) {
                 $config['override_root'] = App::get('template')->path . '/html';
-
-                // A child template overrides what it wants to and leaves the
-                // rest to its parent, so the parent's overrides are searched
-                // too - after the child's.
-                if (
-                    !array_key_exists('override_root_parent', $config)
-                    && !empty(App::get('template')->parentPath)
-                ) {
-                    $config['override_root_parent'] = App::get('template')->parentPath . '/html';
-                }
             }
         }
         $this->_overrideRoot = $config['override_root'];
-
-        if (array_key_exists('override_root_parent', $config)) {
-            $this->_overrideRootParent = $config['override_root_parent'];
-        }
 
         if (array_key_exists('override_path', $config)) {
             $this->_overridePath = $config['override_path'];
@@ -584,16 +561,6 @@ class View extends Obj
                 $component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
             } else {
                 $component = ltrim($this->_overridePath, DIRECTORY_SEPARATOR);
-            }
-
-            // Added parent first: addPath puts each on top of the search
-            // list, so the child's overrides end up ahead of the parent's.
-            if ($this->_overrideRootParent) {
-                $this->addPath(
-                    $type,
-                    $this->_overrideRootParent . DIRECTORY_SEPARATOR . $component
-                        . DIRECTORY_SEPARATOR . $this->getName()
-                );
             }
 
             $path = $this->_overrideRoot . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName();

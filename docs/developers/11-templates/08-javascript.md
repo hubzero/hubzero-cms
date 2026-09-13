@@ -131,11 +131,10 @@ rather than building one:
 $this->addScript($this->asset('js/core.js'));
 ```
 
-It works out the root, appends the file's modification time to bust caches
-after a deploy, and asks the [parent template](05-inheritance.md) where the
-active one is a child. `kimera` and `kameleon` still write the address out by
-hand, with `filemtime()` beside it; that form works, but it throws on a file
-that has been removed and it cannot see a parent. See
+It works out the root and appends the file's modification time to bust caches
+after a deploy. `kimera` and `kameleon` still write the address out by hand,
+with `filemtime()` beside it; that form works, but it throws on a file that
+has been removed. See
 [Stylesheets](07-css.md#the-templates-own-stylesheets).
 
 What ships in the templates' `js/` directories is thinner than the old

@@ -110,27 +110,9 @@ class Error extends Base
             '',
             (string) $params['template']
         ), '.') : 'system';
-        $parent    = isset($params['parent'])
-            ? preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $params['parent'])
-            : '';
-        $parentDir = isset($params['parentdirectory']) ? $params['parentdirectory'] : $directory;
-
-        // Where the error page is drawn from, which a child template may
-        // leave to its parent
-        $renderDirectory = $directory;
-        $renderTemplate  = $template;
-
         if (!file_exists($directory . DS . $template . DS . $file)) {
-            if ($parent !== '' && file_exists($parentDir . DS . $parent . DS . $file)) {
-                $renderDirectory = $parentDir;
-                $renderTemplate  = $parent;
-            } else {
-                $directory = PATH_CORE . '/templates';
-                $template = 'system';
-
-                $renderDirectory = $directory;
-                $renderTemplate  = $template;
-            }
+            $directory = PATH_CORE . '/templates';
+            $template = 'system';
         }
 
         // Set variables
@@ -140,13 +122,10 @@ class Error extends Base
         $this->debug    = isset($params['debug']) ? $params['debug'] : false;
 
         // So that asset() and templateFile() can answer for an error page too
-        $this->templatePath       = $directory . DS . $template;
-        $this->templateParent     = ($template === 'system') ? '' : $parent;
-        $this->templateParentPath = $this->templateParent ? $parentDir . DS . $parent : '';
-        $this->templateParentBase = isset($params['parentbaseurl']) ? $params['parentbaseurl'] : '';
+        $this->templatePath = $directory . DS . $template;
 
         // Load
-        $data = $this->loadTemplate($renderDirectory . DS . $renderTemplate, $file);
+        $data = $this->loadTemplate($directory . DS . $template, $file);
 
         parent::render();
 

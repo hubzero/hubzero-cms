@@ -487,40 +487,21 @@ class Html extends Base
             '',
             $params['file']
         )     : 'index.php';
-        $parent    = isset($params['parent'])
-            ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['parent'])
-            : '';
-        $parentDir = isset($params['parentdirectory']) ? $params['parentdirectory'] : $directory;
-
-        // Where the shell being rendered comes from, which is not always the
-        // template whose name the page wears: a child template renders its
-        // parent's shells for everything it does not carry itself.
-        $renderDirectory = $directory;
-        $renderTemplate  = $template;
-
-        // The page shell is the active template's, then its parent's, then
-        // the system template's.
+        // The page shell is the active template's, or the system template's
+        // where the active one does not provide that name.
         //
-        // A name none of them has is a page that does not exist, and says so.
-        // It used to render nothing at all - HTTP 200 and an empty body -
+        // A name neither of them has is a page that does not exist, and says
+        // so. It used to render nothing at all - HTTP 200 and an empty body -
         // which is indistinguishable from a working page to a cache, a crawler
         // or a person watching uptime, and which hid every caller that asked
         // for a shell nobody had written.
         if (!file_exists($directory . DS . $template . DS . $file)) {
-            if ($parent !== '' && file_exists($parentDir . DS . $parent . DS . $file)) {
-                $renderDirectory = $parentDir;
-                $renderTemplate  = $parent;
-            } else {
-                $directory = PATH_CORE . '/templates';
-                $template  = 'system';
-                $params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
+            $directory = PATH_CORE . '/templates';
+            $template  = 'system';
+            $params['baseurl'] = str_replace('/app', '/core', $params['baseurl']);
 
-                $renderDirectory = $directory;
-                $renderTemplate  = $template;
-
-                if (!file_exists($directory . DS . $template . DS . $file)) {
-                    App::abort(404, 'Page not found.');
-                }
+            if (!file_exists($directory . DS . $template . DS . $file)) {
+                App::abort(404, 'Page not found.');
             }
         }
 
@@ -535,15 +516,8 @@ class Html extends Base
         $lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
         // Assign the variables
-        //
-        // The page keeps wearing the child's name and base url - it is the
-        // template in use, whatever file happened to draw this shell - and
-        // carries the parent's alongside, so asset() can answer from either.
-        $this->template           = $template;
-        $this->templatePath       = $directory . DS . $template;
-        $this->templateParent     = ($template === 'system') ? '' : $parent;
-        $this->templateParentPath = $this->templateParent ? $parentDir . DS . $parent : '';
-        $this->templateParentBase = isset($params['parentbaseurl']) ? $params['parentbaseurl'] : '';
+        $this->template     = $template;
+        $this->templatePath = $directory . DS . $template;
         // $this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) .
         // '/templates/'. $template;
         //$this->baseurl  = rtrim(\Request::root(true), '/');
@@ -551,7 +525,7 @@ class Html extends Base
         $this->params   = isset($params['params'])  ? $params['params']  : new Registry();
 
         // Load
-        $this->_template = $this->_loadTemplate($renderDirectory . DS . $renderTemplate, $file);
+        $this->_template = $this->_loadTemplate($directory . DS . $template, $file);
 
         return $this;
     }

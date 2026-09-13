@@ -65,10 +65,6 @@ that the hand-written form often did not:
   [`Hubzero\Document\Asset\File::link()`](../../../core/libraries/Hubzero/Document/Asset/File.php).
   A stylesheet linked without one is cached by version-less URL and will not
   refresh for returning visitors after a deployment.
-- **The [parent](05-inheritance.md)**, where the template is a child of
-  another: the child is asked first, the parent second, and the address comes
-  back under whichever root has the file.
-
 It also does not throw. `filemtime()` on a file that has gone is a warning, and
 this platform promotes warnings to exceptions, so the hand-written form turns a
 missing asset into a blank page. `asset()` returns the address unversioned
