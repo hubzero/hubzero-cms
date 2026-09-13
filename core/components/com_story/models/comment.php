@@ -311,6 +311,151 @@ class Comment extends Relational
 	}
 
 	/**
+	 * What a comment is worth to one particular reader
+	 *
+	 * Two readers looking at the same comment can honestly see different
+	 * numbers, because half the stack is their own preferences. The breakdown
+	 * comes back with the total for exactly that reason: a score a reader
+	 * cannot account for reads as arbitrary, and this one is not.
+	 *
+	 * @param   object  $preference
+	 * @param   object  $context
+	 * @return  object  the total, the base it started from, and every term
+	 */
+	public function displayScore($preference, $context)
+	{
+		// What moderation has made of it, kept apart from what the reader
+		// makes of it. Both halves are clamped, so the delta is the movement
+		// that actually survived the bounds rather than the raw arithmetic.
+		$born  = $context->clamp((float) $this->get('score_original') + (float) $this->get('tweak_original'));
+		$now   = $context->clamp((float) $this->get('score') + (float) $this->get('tweak'));
+		$base  = $context->clamp($born + ($now - $born));
+
+		$modifiers = array();
+
+		if ((float) $preference->get('bonus_long')
+		 && (int) $this->get('length') > (int) $preference->get('length_long'))
+		{
+			$modifiers['long'] = (float) $preference->get('bonus_long');
+		}
+
+		if ((float) $preference->get('bonus_short')
+		 && (int) $this->get('length') < (int) $preference->get('length_short'))
+		{
+			$modifiers['short'] = (float) $preference->get('bonus_short');
+		}
+
+		if ($this->get('anonymous') && (float) $preference->get('bonus_anonymous'))
+		{
+			$modifiers['anonymous'] = (float) $preference->get('bonus_anonymous');
+		}
+
+		if ((float) $preference->get('bonus_new_user') && $context->isNewMember($this))
+		{
+			$modifiers['new_member'] = (float) $preference->get('bonus_new_user');
+		}
+
+		if ($this->get('reason_id'))
+		{
+			$adjustment = (float) $preference->reasonAdjustments->get((string) $this->get('reason_id'), $context->reasonDelta($this->get('reason_id')));
+
+			if ($adjustment)
+			{
+				$modifiers['reason'] = $adjustment;
+			}
+		}
+
+		if ($this->get('karma_bonus') && (float) $preference->get('bonus_karma'))
+		{
+			$modifiers['karma'] = (float) $preference->get('bonus_karma');
+		}
+
+		return (object) array(
+			'score'     => $context->clamp($base + array_sum($modifiers)),
+			'base'      => $base,
+			'modifiers' => $modifiers
+		);
+	}
+
+	/**
+	 * What a comment is worth the moment it is written
+	 *
+	 * Standing earns a comment the benefit of the doubt and the want of it
+	 * costs the same. An anonymous comment gets neither: it carries no
+	 * identity for standing to attach to, which is the whole reason it sits
+	 * outside the karma economy.
+	 *
+	 * Sets `karma_bonus` as well as the score, because a reader may choose to
+	 * adjust for the bonus separately and needs to know it was given.
+	 *
+	 * @param   object  $config
+	 * @param   float   $karma   the author's standing, or null to look it up
+	 * @return  $this
+	 */
+	public function setBirthScore($config, $karma = null)
+	{
+		if ($this->get('anonymous') || !$this->get('created_by'))
+		{
+			$score = (float) $config->get('anonymous_default_score', 0);
+
+			$this->set('karma_bonus', 0);
+		}
+		else
+		{
+			$score = (float) $config->get('comment_default_score', 1);
+
+			if ($karma === null)
+			{
+				$karma = self::karmaOf($this->get('created_by'));
+			}
+
+			if ($karma !== null && $karma >= (float) $config->get('karma_good', 10))
+			{
+				$score++;
+				$this->set('karma_bonus', 1);
+			}
+			elseif ($karma !== null && $karma <= (float) $config->get('karma_bad', -5))
+			{
+				$score--;
+				$this->set('karma_bonus', 0);
+			}
+			else
+			{
+				$this->set('karma_bonus', 0);
+			}
+		}
+
+		$floor   = (float) $config->get('comment_min_score', -1);
+		$ceiling = (float) $config->get('comment_max_score', 5);
+		$score   = max($floor, min($ceiling, $score));
+
+		$this->set('score', $score);
+		$this->set('score_original', $score);
+		$this->set('score_max', $score);
+
+		return $this;
+	}
+
+	/**
+	 * An author's standing, or null if karma is not installed
+	 *
+	 * The component works without the library. A hub that has not turned
+	 * karma on simply gets no bonus and no penalty, rather than an error.
+	 *
+	 * @param   integer  $userId
+	 * @return  mixed
+	 */
+	public static function karmaOf($userId)
+	{
+		if (!class_exists('\\Hubzero\\Karma\\Karma'))
+		{
+			return null;
+		}
+
+		return (float) \Hubzero\Karma\Karma::of((int) $userId);
+	}
+
+	/**
 	 * Comments in a discussion, in tree order
 	 *
 	 * @param   integer  $discussionId

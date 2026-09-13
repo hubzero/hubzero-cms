@@ -72,15 +72,16 @@ $topic = $this->story->topic();
 <?php } else { ?>
 	<div class="story-comments">
 <?php
+	$canReply = $this->discussion->isOpen();
+
 	foreach ($this->thread as $entry)
 	{
 		$this->view('_comment', 'comments')
 			->set('option', $this->option)
 			->set('discussion', $this->discussion)
 			->set('preference', $this->preference)
-			->set('comment', $entry->comment)
-			->set('indent', $entry->indent)
-			->set('canReply', $this->discussion->isOpen())
+			->set('entry', $entry)
+			->set('canReply', $canReply)
 			->set('canEdit', !User::isGuest() && $entry->comment->get('created_by') == User::get('id') && !$entry->comment->isDeleted())
 			->display();
 	}

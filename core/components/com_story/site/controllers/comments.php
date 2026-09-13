@@ -13,6 +13,7 @@ use Components\Story\Models\Discussion;
 use Components\Story\Models\Preference;
 use Components\Story\Models\Story;
 use Components\Story\Helpers\Thread;
+use Components\Story\Helpers\Context;
 use Document;
 use Pathway;
 use Request;
@@ -26,6 +27,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'comment.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'discussion.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'preference.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'thread.php';
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'context.php';
 
 /**
  * A story's discussion, and what a reader may do in it
@@ -188,6 +190,7 @@ class Comments extends SiteController
 		$story      = $this->buildPathway($discussion);
 
 		$preference = $this->preference();
+		$context    = new Context($this->config);
 
 		Document::setTitle($discussion->get('title'));
 
@@ -195,7 +198,8 @@ class Comments extends SiteController
 			->set('discussion', $discussion)
 			->set('story', $story)
 			->set('preference', $preference)
-			->set('thread', Thread::build($discussion->get('id'), $preference))
+			->set('context', $context)
+			->set('thread', Thread::build($discussion->get('id'), $preference, $context, Request::getInt('comment', 0)))
 			->set('refusal', $this->refusal($discussion))
 			->set('anonymous', $this->allowsAnonymous($discussion))
 			->set('config', $this->config)
@@ -356,16 +360,20 @@ class Comments extends SiteController
 			$row->set('parent', isset($fields['parent']) ? (int) $fields['parent'] : 0);
 			$row->set('state', Comment::STATE_PUBLISHED);
 
-			// Phase 7 gives every comment the same score. Phase 8 is what
-			// makes this a number worth reading.
-			$row->set('score', 1);
-			$row->set('score_original', 1);
-			$row->set('score_max', 1);
-
 			if ($this->allowsAnonymous($discussion) && !empty($fields['anonymous']))
 			{
 				$row->set('anonymous', 1);
 			}
+
+			// Authorship first. `created_by` is an automatic, which Relational
+			// fills during save() — too late for a birth score that depends on
+			// who the author is and what standing they have. The automatic
+			// writes the same value again a moment later.
+			$row->set('created_by', (int) User::get('id'));
+
+			// After the anonymous flag, not before: an anonymous comment is
+			// born at its own score and earns no karma bonus either way.
+			$row->setBirthScore($this->config);
 
 			// Advisory only. Nothing reads it automatically, and on a hub
 			// where a whole campus shares one address it would be a poor
