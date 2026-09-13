@@ -33,7 +33,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
         <title><?php echo Config::get('sitename') . ' - ' . $code; ?></title>
 
         <link rel="stylesheet" type="text/css" media="screen"
-              href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/less/main.css" />
+              href="<?php echo $this->asset('less/main.css'); ?>" />
         <script type="text/javascript"
                 src="<?php echo Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
         <?php
@@ -44,7 +44,7 @@ Lang::load('tpl_' . $this->template, __DIR__);
 
         <!--[if lt IE 9]>
             <script type="text/javascript"
-                    src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/js/html5.js"></script>
+                    src="<?php echo $this->asset('js/html5.js'); ?>"></script>
         <![endif]-->
     </head>
     <body>
