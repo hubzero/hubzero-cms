@@ -14,6 +14,8 @@ use Components\Story\Models\Preference;
 use Components\Story\Models\Story;
 use Components\Story\Helpers\Thread;
 use Components\Story\Helpers\Context;
+use Hubzero\Moderation\Moderator;
+use Event;
 use Document;
 use Pathway;
 use Request;
@@ -44,6 +46,7 @@ class Comments extends SiteController
 		$this->registerTask('__default', 'display');
 		$this->registerTask('add', 'new');
 		$this->registerTask('apply', 'save');
+		$this->registerTask('ajaxmoderate', 'moderate');
 
 		parent::execute();
 	}
@@ -194,7 +197,16 @@ class Comments extends SiteController
 
 		Document::setTitle($discussion->get('title'));
 
+		// Moderation is offered to people who read.
+		Event::trigger('moderation.onStoryDiscussionViewed', array($discussion));
+
+		$moderator = $this->moderator();
+
 		$this->view
+			->set('mayModerate', $this->mayModerate())
+			->set('moderator', $moderator)
+			->set('reasons', $this->reasonsFor($discussion))
+			->set('credits', $moderator->credits('com_story.comment'))
 			->set('discussion', $discussion)
 			->set('story', $story)
 			->set('preference', $preference)
@@ -399,6 +411,11 @@ class Comments extends SiteController
 		$discussion->recount();
 		$discussion->touch();
 
+		// Saying something here reverses any moderating this reader did in
+		// this discussion. Taking part after moderating is the same conflict
+		// as moderating after taking part, and it is resolved the same way.
+		Event::trigger('moderation.onStoryCommentSaved', array($row));
+
 		Notify::success(Lang::txt('COM_STORY_COMMENT_SAVED'));
 
 		App::redirect(Route::url($this->discussionLink($discussion) . '#c' . $row->get('id')));
@@ -493,6 +510,217 @@ class Comments extends SiteController
 			->set('config', $this->config)
 			->setLayout('preferences')
 			->display();
+	}
+
+	/**
+	 * The reasons this reader may pick from, or an empty list
+	 *
+	 * Asked once for the page rather than once per comment: the set is the
+	 * same for every comment in it.
+	 *
+	 * @param   object  $discussion
+	 * @return  array
+	 */
+	protected function reasonsFor($discussion)
+	{
+		if (User::isGuest())
+		{
+			return array();
+		}
+
+		return \Hubzero\Moderation\Reason::forType('com_story.comment');
+	}
+
+	/**
+	 * A comment, wrapped as something the moderation library can work on
+	 *
+	 * Resolved through the plugin group rather than by naming the adapter
+	 * class. The component has no business knowing which plugin speaks for
+	 * its comments, and triggering the event is also what loads the group.
+	 *
+	 * @param   integer  $id
+	 * @return  mixed    object|null
+	 */
+	protected function moderatable($id)
+	{
+		$found = Event::trigger('moderation.onModerationResolveItem', array('com_story.comment', (int) $id));
+
+		foreach ((array) $found as $item)
+		{
+			if (is_object($item))
+			{
+				return $item;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Whether this reader is allowed to moderate at all
+	 *
+	 * The permission gates spending as well as earning. Gating only the grant
+	 * would leave somebody who had already been handed credits moderating for
+	 * as long as those lasted after the permission was taken away, which is
+	 * not what revoking a permission is understood to mean.
+	 *
+	 * @return  boolean
+	 */
+	protected function mayModerate()
+	{
+		if (User::isGuest())
+		{
+			return false;
+		}
+
+		return (User::authorise('story.moderate.unlimited', $this->_option)
+			|| User::authorise('story.moderate', $this->_option));
+	}
+
+	/**
+	 * The current reader, as a moderator
+	 *
+	 * `story.moderate.unlimited` is what separates staff moderation from
+	 * crowd moderation, and it is the only thing that does. Somebody holding
+	 * it spends no credits; everybody else spends one per moderation and is
+	 * only granted any if they hold `story.moderate`. Granting that to nobody
+	 * empties the eligible pool, so the off switch is a permission rather
+	 * than a setting.
+	 *
+	 * @return  object
+	 */
+	protected function moderator()
+	{
+		return new Moderator(
+			(int) User::get('id'),
+			User::authorise('story.moderate.unlimited', $this->_option)
+		);
+	}
+
+	/**
+	 * Move a comment's score
+	 *
+	 * Answers HTML or JSON depending on how it was asked, so a moderator can
+	 * work through a discussion without losing their place. Both paths go
+	 * through the same Moderator::moderate().
+	 *
+	 * @return  void
+	 */
+	public function moderateTask()
+	{
+		Request::checkToken(array('get', 'post'));
+
+		$id     = Request::getInt('comment', 0);
+		$reason = Request::getWord('reason', '');
+		$ajax   = ($this->getTask() == 'ajaxmoderate' || Request::getInt('no_html', 0));
+
+		$item = $this->moderatable($id);
+
+		if (!$item)
+		{
+			return $this->moderationAnswer($ajax, false, Lang::txt('COM_STORY_COMMENT_NOT_FOUND'), $id);
+		}
+
+		if (!$this->mayModerate())
+		{
+			return $this->moderationAnswer($ajax, false, $this->refusalText('permission'), $id);
+		}
+
+		$moderator = $this->moderator();
+		$log       = $moderator->moderate($item, $reason, array('ip' => Request::ip()));
+
+		if (!$log)
+		{
+			return $this->moderationAnswer($ajax, false, $this->refusalText($moderator->why()), $id);
+		}
+
+		// The library moved the score. Standing is a separate question, and
+		// the karma plugin is the only thing entitled to an opinion on it.
+		Event::trigger('karma.onStoryCommentModerated', array($item->comment(), $log));
+
+		$this->notifyAuthor($item, $log);
+
+		return $this->moderationAnswer($ajax, true, Lang::txt('COM_STORY_MODERATED'), $id, $item->currentScore());
+	}
+
+	/**
+	 * Say why a moderation was refused, in words
+	 *
+	 * Rendering the actual cause rather than greying a control out is the
+	 * difference between a rule somebody can learn and one they can only
+	 * bump into.
+	 *
+	 * @param   string  $code
+	 * @return  string
+	 */
+	protected function refusalText($code)
+	{
+		$known = array('nobody', 'own', 'already', 'participant', 'credits', 'reason', 'failed', 'permission');
+
+		if (!in_array($code, $known))
+		{
+			$code = 'failed';
+		}
+
+		return Lang::txt('COM_STORY_MODERATION_REFUSED_' . strtoupper($code));
+	}
+
+	/**
+	 * Answer a moderation, in whichever form it was asked for
+	 *
+	 * @param   boolean  $ajax
+	 * @param   boolean  $ok
+	 * @param   string   $message
+	 * @param   integer  $id
+	 * @param   float    $score
+	 * @return  void
+	 */
+	protected function moderationAnswer($ajax, $ok, $message, $id, $score = null)
+	{
+		if ($ajax)
+		{
+			Document::setType('raw');
+
+			echo json_encode(array(
+				'success' => (bool) $ok,
+				'message' => $message,
+				'comment' => (int) $id,
+				'score'   => ($score === null) ? null : (float) $score
+			));
+
+			return;
+		}
+
+		$ok ? Notify::success($message) : Notify::warning($message);
+
+		$discussion = Discussion::oneOrNew(Request::getInt('discussion', 0));
+
+		App::redirect(Route::url($this->discussionLink($discussion) . '#c' . (int) $id));
+	}
+
+	/**
+	 * Tell somebody their comment was moderated
+	 *
+	 * Not for an anonymous comment: there is nobody the moderation attaches
+	 * to, which is the same reason it moves no karma.
+	 *
+	 * @param   object  $item
+	 * @param   object  $log
+	 * @return  void
+	 */
+	protected function notifyAuthor($item, $log)
+	{
+		if (!$author = (int) $item->authorId())
+		{
+			return;
+		}
+
+		if ($author === (int) User::get('id'))
+		{
+			return;
+		}
+
+		Event::trigger('story.onStoryCommentModerationNotice', array($item->comment(), $log, $author));
 	}
 
 	/**

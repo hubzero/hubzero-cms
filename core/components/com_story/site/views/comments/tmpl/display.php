@@ -10,6 +10,8 @@ defined('_HZEXEC_') or die();
 
 use Components\Story\Models\Preference;
 
+$this->js('comments');
+
 $base    = 'index.php?option=' . $this->option . '&view=comments&discussion=' . $this->discussion->get('id');
 $current = $this->preference->get('mode');
 
@@ -45,6 +47,13 @@ $current = $this->preference->get('mode');
 <?php
 	$canReply = !$this->refusal;
 
+	// Offered when the reader has something to spend, or need not spend.
+	// The per-comment refusals — your own, already done, you are in this
+	// conversation — come back from the server in words.
+	$canModerate = $this->mayModerate && count($this->reasons)
+		&& ($this->credits > 0 || User::authorise('story.moderate.unlimited', $this->option));
+	$reasons     = $this->reasons;
+
 	foreach ($this->thread as $entry)
 	{
 		$this->view('_comment')
@@ -52,6 +61,8 @@ $current = $this->preference->get('mode');
 			->set('discussion', $this->discussion)
 			->set('preference', $this->preference)
 			->set('entry', $entry)
+			->set('reasons', $reasons)
+			->set('canModerate', $canModerate && !$entry->comment->isDeleted())
 			->set('canReply', $canReply)
 			->set('canEdit', !User::isGuest() && $entry->comment->get('created_by') == User::get('id') && !$entry->comment->isDeleted())
 			->display();

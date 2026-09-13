@@ -82,6 +82,27 @@ if ($entry->highlighted)
 	</div>
 
 	<footer class="story-comment-actions">
+<?php if ($this->canModerate) {
+	$action = Route::url($base . '&task=moderate&comment=' . $comment->get('id') . '&' . Session::getFormToken() . '=1');
+?>
+		<form class="story-moderate" method="post" action="<?php echo $action; ?>" data-comment="<?php echo (int) $comment->get('id'); ?>">
+			<label class="sr-only" for="moderate-<?php echo (int) $comment->get('id'); ?>"><?php echo Lang::txt('COM_STORY_MODERATE'); ?></label>
+			<select name="reason" id="moderate-<?php echo (int) $comment->get('id'); ?>">
+				<option value=""><?php echo Lang::txt('COM_STORY_MODERATE'); ?></option>
+<?php foreach ($this->reasons as $reason) { ?>
+				<option value="<?php echo $this->escape($reason->get('alias')); ?>"><?php
+					echo $this->escape($reason->get('title')) . ' (' . ($reason->get('value') > 0 ? '+' : '') . (int) $reason->get('value') . ')';
+				?></option>
+<?php } ?>
+			</select>
+			<input type="hidden" name="discussion" value="<?php echo (int) $this->discussion->get('id'); ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="view" value="comments" />
+			<input type="hidden" name="task" value="moderate" />
+			<?php echo Html::input('token'); ?>
+			<noscript><input type="submit" value="<?php echo Lang::txt('COM_STORY_APPLY'); ?>" /></noscript>
+		</form>
+<?php } ?>
 <?php if ($this->canReply) { ?>
 		<a class="story-reply" href="<?php echo Route::url($base . '&task=new&parent=' . $comment->get('id')); ?>"><?php echo Lang::txt('COM_STORY_REPLY'); ?></a>
 <?php } ?>

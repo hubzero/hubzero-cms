@@ -74,6 +74,12 @@ $topic = $this->story->topic();
 <?php
 	$canReply = $this->discussion->isOpen();
 
+	// The article page shows the discussion but does not moderate it.
+	// Moderation belongs on the discussion's own page, where the reader
+	// has the whole conversation in front of them.
+	$canModerate = false;
+	$reasons     = array();
+
 	foreach ($this->thread as $entry)
 	{
 		$this->view('_comment', 'comments')
@@ -81,6 +87,8 @@ $topic = $this->story->topic();
 			->set('discussion', $this->discussion)
 			->set('preference', $this->preference)
 			->set('entry', $entry)
+			->set('reasons', $reasons)
+			->set('canModerate', $canModerate && !$entry->comment->isDeleted())
 			->set('canReply', $canReply)
 			->set('canEdit', !User::isGuest() && $entry->comment->get('created_by') == User::get('id') && !$entry->comment->isDeleted())
 			->display();
