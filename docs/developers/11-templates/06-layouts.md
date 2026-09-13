@@ -101,6 +101,54 @@ shadow a shipped template by putting a directory of the same name under
 `app/templates`. Everything under `app/` is site-local; nothing there is part
 of the distribution.
 
+The file itself is looked for in the template, then in its
+[parent](05-inheritance.md) where it has one, then in `core/templates/system`.
+A `tmpl` none of them provides is a **404** — the page does not exist, and says
+so, which matters because the request carries the name: anyone can put
+`?tmpl=anything` on any URL.
+
+## The front page
+
+A template can draw the front page itself by shipping a `home.php`. `index.php`
+renders it in place of everything inside `main` — the gutters, the asides and
+the component alike — so the front page is the template's to lay out rather
+than a component's output squeezed into the content column. Nothing is
+inherited from `index.php` except the page around `main`: the masthead, the
+footer and the `head` block still come from there.
+
+The three newer site templates ask for it like this:
+
+```php
+$isFrontPage = $menu->isHome();
+$homePage    = $isFrontPage ? $this->templateFile('home.php') : '';
+```
+
+and then, inside `<main>`:
+
+```php
+<?php if ($homePage) : ?>
+    <?php require $homePage; ?>
+<?php else : ?>
+    …the ordinary content column…
+<?php endif; ?>
+```
+
+Two details are worth copying exactly.
+
+`$menu->isHome()` asks the active menu item whether it is the one marked home.
+Do not compare `getActive()` to `getDefault()`: a hub can have no item marked
+home, `getDefault()` answers `0` rather than an item in that case, and
+comparing an item to `0` is fatal in PHP 8.
+
+`$this->templateFile()` searches the template and then its parent, and returns
+a path. Do not use `__DIR__`: in a [child template](05-inheritance.md) the file
+being executed is usually the parent's, so `__DIR__` is the parent's directory
+and the child's own `home.php` is invisible to it.
+
+A hub whose home menu item is of type **No Component** has nothing to render in
+the component area at all, which is the arrangement `home.php` is for: the
+template draws the page and no component is involved.
+
 > **Note:** Error pages take a different route.
 > [`Hubzero\Document\Type\Error`](../../../core/libraries/Hubzero/Document/Type/Error.php)
 > includes `error.php` and returns its output **without parsing it**. A

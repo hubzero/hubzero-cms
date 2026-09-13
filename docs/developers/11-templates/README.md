@@ -127,7 +127,17 @@ the check to run.
 
 ## Where to start
 
-Copy a shipped template into `app/templates` and work from there:
+Two routes, and the right one depends on how much of the page you are changing.
+
+**Inherit**, when you want a shipped template with your own colours, your own
+front page, or a handful of overrides. Write a manifest naming `lucent` as the
+parent and ship only the files you are changing; everything else keeps coming
+from the parent, including whatever it gains in later releases. See
+[Inheritance](05-inheritance.md).
+
+**Copy**, when you are writing the page from scratch and will end up replacing
+most of it anyway. Copy a shipped template into `app/templates` and work from
+there:
 
 ```bash
 php core/bin/muse scaffolding copy template core/kimera to app/northgate
@@ -164,7 +174,10 @@ exists.
 - [Languages](02-languages.md) — translatable strings.
 - [Structure](03-structure.md) — the files and directories a template holds.
 - [Designing](04-designing.md) — planning the design before you write markup.
-- [Page layout](06-layouts.md) — `index.php`, `error.php` and the rest.
+- [Inheritance](05-inheritance.md) — a template that is a child of another and
+  ships only what it changes.
+- [Page layout](06-layouts.md) — `index.php`, `home.php`, `error.php` and the
+  rest.
 - [Cascading style sheets](07-css.md) — the stylesheets a template loads.
 - [JavaScript](08-javascript.md) — jQuery, template scripts and extension assets.
 - [Output overrides](09-overrides.md) — replacing an extension's markup.

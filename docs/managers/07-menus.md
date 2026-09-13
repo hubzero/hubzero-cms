@@ -199,7 +199,7 @@ at the view in general.
 > **Articles → Create Article** returns a 404. Open a new menu item on the
 > site before you publish it. Recorded with the project.
 
-The **System Links** group at the end is fixed, and holds three types that
+The **System Links** group at the end is fixed, and holds four types that
 belong to no component:
 
 | Type | What it does |
@@ -207,6 +207,16 @@ belong to no component:
 | **External URL** | Links to any address, on this hub or elsewhere. Also acts as a redirect — see [URLs](08-content/urls.md#redirecting-with-a-menu-item). |
 | **Menu Item Alias** | Points at another menu item, so one page can appear in two menus. Leave the **Alias** field empty when the two items share a parent. |
 | **Text Separator** | A label with no link, for breaking a long menu into groups. |
+| **No Component** | A page the template draws itself. Nothing is rendered in the component area, and the item does not appear in menus. |
+
+**No Component** is for a hub whose front page is the template's own. Set such
+an item as the default and the front page has no component on it at all: the
+template's `home.php` draws the page, and the item routes `/` without showing
+up in the navigation. The item is still a real menu item, so the page keeps its
+`Itemid` — which is what modules are assigned to, and what a template style is
+assigned to — unlike a hub with nothing marked home, which has neither.
+
+It is the one type other than a component that may be set as the default.
 
 ### What a menu item does besides appear in a menu
 
