@@ -47,14 +47,8 @@ class KarmaTest extends Database
 		Relational::setDefaultConnection($driver);
 		Karma::setConnection($driver);
 
-		// Three caches outlive a test and have to be cleared with the reseed.
-		// The query builder keeps a static, process-wide map of results by
-		// query hash, so a balance read in one test would otherwise be
-		// answered from the previous test's data after the table was
-		// truncated. The models keep their own caches of scales, rules and
-		// gates by alias.
-		\Hubzero\Database\Query::purgeCache();
-
+		// The query cache is cleared by the reseed in parent::setUp(). These
+		// are the models' own caches of scales, rules and gates by alias.
 		Scale::forget();
 		\Hubzero\Karma\Rule::forget();
 		\Hubzero\Karma\Gate::forget();

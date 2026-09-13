@@ -229,6 +229,17 @@ class Database extends TestCase
         $dataset = $this->getDataSet();
         $connection = $this->getConnection();
 
+        // Truncating the tables while leaving a cache keyed on their contents
+        // is only half a reset: Query::fetch() keys a process-wide static on
+        // the query hash, so a read in one test would be answered from the
+        // previous test's rows. Tests that only read never notice; tests that
+        // write see failures that vanish under --filter.
+        //
+        // This covers reseeding between tests. A test that writes and then
+        // re-reads within itself still has to purge for itself, which is what
+        // the calls in RelationalTest are doing.
+        \Hubzero\Database\Query::purgeCache();
+
         foreach ($dataset->getTables() as $table) {
             $tableName = $table->getTableName();
 
