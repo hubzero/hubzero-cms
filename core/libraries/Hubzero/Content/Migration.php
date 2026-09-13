@@ -366,6 +366,38 @@ class Migration
 			return false;
 		}
 
+		// Replaying migrations needs the SQL mode they were written under.
+		//
+		// The oldest of these date from 2012 and assume a server with neither
+		// STRICT_TRANS_TABLES nor NO_ZERO_DATE: they insert '' into integer
+		// columns, omit columns that have no default, and write zero dates.
+		// Under a modern MariaDB default those become errors, and a fresh
+		// install dies partway through with a message about a column the
+		// administrator has never heard of.
+		//
+		// Scoped to the migration run and restored afterwards, so ordinary
+		// requests keep the server's own strictness.
+		$sqlMode = null;
+
+		if (!$dryrun && !$logOnly)
+		{
+			try
+			{
+				$this->db->setQuery('SELECT @@SESSION.sql_mode');
+				$sqlMode = $this->db->loadResult();
+
+				$this->db->setQuery("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
+				$this->db->query();
+			}
+			catch (\Exception $e)
+			{
+				// A server that will not tell us, or will not be told, is left
+				// alone: the run may still succeed, and failing here would be
+				// worse than failing later with a specific message.
+				$sqlMode = null;
+			}
+		}
+
 		// Notify if we're making a dry run
 		if ($dryrun)
 		{
@@ -621,7 +653,33 @@ class Migration
 			$this->fireHooks('onAfterMigrate');
 		}
 
+		$this->restoreSqlMode($sqlMode);
+
 		return true;
+	}
+
+	/**
+	 * Put the session's SQL mode back as it was found
+	 *
+	 * @param   string  $sqlMode  The mode captured before the run, or null
+	 * @return  void
+	 */
+	protected function restoreSqlMode($sqlMode)
+	{
+		if (is_null($sqlMode))
+		{
+			return;
+		}
+
+		try
+		{
+			$this->db->setQuery('SET SESSION sql_mode = ' . $this->db->quote($sqlMode));
+			$this->db->query();
+		}
+		catch (\Exception $e)
+		{
+			// The connection is about to be discarded anyway.
+		}
 	}
 
 	/**
