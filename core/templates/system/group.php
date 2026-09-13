@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
@@ -18,6 +19,16 @@ defined('_HZEXEC_') or die();
 // get needed objects
 $group  = Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
 
+// This layout is a super group's, and com_groups asks for it by name once it
+// knows it has one. The name is a request variable, so anyone can ask for it
+// anywhere - and without a group to draw, every line below here is reading
+// properties off false. Say the page does not exist, which is true.
+if (!$group || !$group->get('gidNumber')) {
+    App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+
+    return;
+}
+
 // return url (if any)
 $return = '/' . trim(str_replace(Request::base(), '', Request::current()), '/');
 
@@ -26,8 +37,8 @@ Html::behavior('framework', true);
 Html::behavior('modal');
 
 // include group script
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/group.js');
+$this->addScript($this->asset('js/hub.js'));
+$this->addScript($this->asset('js/group.js'));
 
 // get browser agent
 $browser = new Hubzero\Browser\Detector();
@@ -62,8 +73,8 @@ $membership_control = $params->get('membership_control', 1);
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
     <head>
         <link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" type="text/css" />
-        <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/group.css" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->asset('css/main.css'); ?>" type="text/css" />
+        <link rel="stylesheet" href="<?php echo $this->asset('css/group.css'); ?>" type="text/css" />
         <jdoc:include type="head" />
     </head>
     <body class="contentpane" id="group-body">
