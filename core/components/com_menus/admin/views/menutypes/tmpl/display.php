@@ -92,6 +92,19 @@ defined('_HZEXEC_') or die();
                             <?php echo Lang::txt('COM_MENUS_TYPE_SEPARATOR'); ?>
                         </a>
                     </li>
+                    <li>
+                        <?php
+                        $noneData = base64_encode(json_encode(
+                            array('id' => $this->recordId, 'title' => 'none')
+                        ));
+                        $noneDesc = Lang::txt('COM_MENUS_TYPE_NONE_DESC');
+                        ?>
+                        <a class="choose_type" href="#"
+                            title="<?php echo $noneDesc; ?>"
+                            onclick="javascript:setmenutype('<?php echo $noneData; ?>')">
+                            <?php echo Lang::txt('COM_MENUS_TYPE_NONE'); ?>
+                        </a>
+                    </li>
                 </ul>
             </dd>
         </dl>

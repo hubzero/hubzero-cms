@@ -77,10 +77,16 @@ class Breadcrumbs extends Module
             $crumbs[$i]->link = Route::url($items[$i]->link);
         }
 
-        if ($showHome) {
+        // The home crumb points at whichever menu item is marked home. A hub
+        // that has none gets no crumb rather than a link to a page that isn't
+        // there - getDefault() answers 0 in that case, not an item. Inside a
+        // supergroup the group's own crumb stands in for it.
+        $default = \Hubzero\Facades\App::get('menu')->getDefault();
+
+        if ($showHome && ($home || is_object($default))) {
             $item = new stdClass();
             $item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
-            $item->link = Route::url($home ? $home->link : 'index.php?Itemid=' . \Hubzero\Facades\App::get('menu')->getDefault()->id);
+            $item->link = Route::url($home ? $home->link : 'index.php?Itemid=' . $default->id);
 
             array_unshift($crumbs, $item);
         }
