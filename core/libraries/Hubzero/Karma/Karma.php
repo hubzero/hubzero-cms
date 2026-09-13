@@ -282,6 +282,69 @@ class Karma
 			return false;
 		}
 
+		return self::applyDelta($subjectId, $scale, $delta, array(
+			'actor'       => $actorId,
+			'rule'        => $rule->get('alias'),
+			'source_type' => $sourceType,
+			'source_id'   => $sourceId,
+			'expires'     => isset($options['expires']) ? $options['expires'] : null,
+			'params'      => isset($options['params']) ? $options['params'] : array()
+		));
+	}
+
+	/**
+	 * Move karma without a rule
+	 *
+	 * For system-generated corrections — decay, an import, an administrator's
+	 * manual adjustment — where the amount is arithmetic rather than a price
+	 * somebody configured. Caps and the actor threshold do not apply, because
+	 * there is no rule to carry them; everything else is identical to an
+	 * award, including the ledger row, the clamping and the events.
+	 *
+	 * @param   integer  $subjectId  Whose karma moves
+	 * @param   mixed    $scale      Alias, id or model
+	 * @param   float    $delta      Signed amount
+	 * @param   string   $reason     Recorded as the ledger's rule column
+	 * @param   array    $options    actor, source_type, source_id, expires, params
+	 * @return  mixed    object|false
+	 */
+	public static function adjust($subjectId, $scale, $delta, $reason, array $options = array())
+	{
+		$subjectId = (int) $subjectId;
+		$delta     = (float) $delta;
+
+		if (!$subjectId || !$delta)
+		{
+			return false;
+		}
+
+		$scale = self::scale($scale);
+
+		if (!$scale)
+		{
+			return false;
+		}
+
+		$options['rule'] = (string) $reason;
+
+		return self::applyDelta($subjectId, $scale, $delta, $options);
+	}
+
+	/**
+	 * Write one ledger row and move the balance to match, atomically
+	 *
+	 * The only path that changes a balance. Both statements land or neither
+	 * does: a ledger the balance disagrees with would make every later
+	 * rebuild wrong.
+	 *
+	 * @param   integer  $subjectId
+	 * @param   object   $scale
+	 * @param   float    $delta
+	 * @param   array    $context  actor, rule, source_type, source_id, expires, params
+	 * @return  mixed    object|false
+	 */
+	protected static function applyDelta($subjectId, Scale $scale, $delta, array $context)
+	{
 		$db = self::connection();
 		$db->transactionStart();
 
@@ -295,16 +358,16 @@ class Karma
 
 			$entry = Ledger::blank()->set(array(
 				'scale_id'    => (int) $scale->get('id'),
-				'subject_id'  => $subjectId,
-				'actor_id'    => $actorId,
+				'subject_id'  => (int) $subjectId,
+				'actor_id'    => isset($context['actor']) ? (int) $context['actor'] : 0,
 				'delta'       => $delta,
 				'applied'     => $after - $before,
-				'rule'        => $rule->get('alias'),
-				'source_type' => $sourceType,
-				'source_id'   => $sourceId,
-				'expires'     => isset($options['expires']) ? $options['expires'] : null,
+				'rule'        => isset($context['rule']) ? $context['rule'] : '',
+				'source_type' => isset($context['source_type']) ? $context['source_type'] : '',
+				'source_id'   => isset($context['source_id']) ? (int) $context['source_id'] : 0,
+				'expires'     => isset($context['expires']) ? $context['expires'] : null,
 				'state'       => Ledger::STATE_ACTIVE,
-				'params'      => self::encode(isset($options['params']) ? $options['params'] : array())
+				'params'      => self::encode(isset($context['params']) ? $context['params'] : array())
 			));
 
 			if (!$entry->save())
@@ -313,9 +376,9 @@ class Karma
 			}
 
 			$balance->set(array(
-				'raw'          => $raw,
-				'karma'        => $after,
-				'last_event'   => self::now()
+				'raw'        => $raw,
+				'karma'      => $after,
+				'last_event' => self::now()
 			));
 
 			$counter = ($delta > 0) ? 'positive_count' : 'negative_count';
@@ -336,6 +399,15 @@ class Karma
 			return false;
 		}
 
+		// The query builder caches results process-wide by query hash, so
+		// without this a read after a write in the same request answers from
+		// before the write — reporting stale karma, and worse, handing back a
+		// balance that looks new and inserting a second row for it.
+		self::forgetCached();
+
+		// Announced here rather than in award(), so that a listener watching
+		// karma sees every change — a decay moves somebody's standing just as
+		// surely as a moderation does.
 		Event::trigger('karma.onKarmaAfterAward', array($entry, $balance));
 
 		self::announceThresholds($subjectId, $scale, $before, $after);
@@ -351,12 +423,17 @@ class Karma
 	 * rather than deleted, and compensating entries restore the balance, so
 	 * the history still explains itself.
 	 *
+	 * One source can award several people — a moderation moves both the
+	 * comment author's karma and, later, the moderator's — so a caller
+	 * undoing one person's award must say whose.
+	 *
 	 * @param   string   $sourceType
 	 * @param   integer  $sourceId
 	 * @param   string   $ruleAlias   Optional, to reverse only one rule
+	 * @param   integer  $subjectId   Optional, to reverse only one person's
 	 * @return  integer  Number of entries reversed
 	 */
-	public static function revoke($sourceType, $sourceId, $ruleAlias = null)
+	public static function revoke($sourceType, $sourceId, $ruleAlias = null, $subjectId = null)
 	{
 		$query = Ledger::all()
 			->whereEquals('source_type', (string) $sourceType)
@@ -366,6 +443,11 @@ class Karma
 		if ($ruleAlias)
 		{
 			$query->whereEquals('rule', (string) $ruleAlias);
+		}
+
+		if ($subjectId)
+		{
+			$query->whereEquals('subject_id', (int) $subjectId);
 		}
 
 		$entries = $query->rows();
@@ -409,6 +491,8 @@ class Karma
 				}
 
 				$db->transactionCommit();
+
+				self::forgetCached();
 
 				$count++;
 			}
@@ -479,6 +563,20 @@ class Karma
 	}
 
 	/**
+	 * Drop cached query results after a write
+	 *
+	 * Karma is written rarely and read constantly, so clearing the whole
+	 * result cache on a write is the cheap side of the trade — far cheaper
+	 * than a stale balance.
+	 *
+	 * @return  void
+	 */
+	protected static function forgetCached()
+	{
+		\Hubzero\Database\Query::purgeCache();
+	}
+
+	/**
 	 * Resolve a scale from an alias, an id, or a model
 	 *
 	 * @param   mixed  $scale
@@ -504,10 +602,22 @@ class Karma
 	}
 
 	/**
+	 * The user parameter holding an opt-in decision for a scale
+	 *
+	 * @param   object  $scale
+	 * @return  string
+	 */
+	public static function optInParam(Scale $scale)
+	{
+		return 'karma.public.' . $scale->get('alias');
+	}
+
+	/**
 	 * Has this user published their karma on a scale set to opt in?
 	 *
-	 * Phase 1 has no member preferences to read, so this answers no. The
-	 * preference arrives with com_karma, and only this method changes.
+	 * Absence is a no: a scale set to opt in shows nothing until its subject
+	 * says otherwise. Any failure to read the preference is also a no, for
+	 * the same reason — this decides whether to disclose, so it fails closed.
 	 *
 	 * @param   integer  $userId
 	 * @param   object   $scale
@@ -515,7 +625,21 @@ class Karma
 	 */
 	protected static function hasOptedIn($userId, Scale $scale)
 	{
-		return false;
+		try
+		{
+			$user = \Hubzero\User\User::oneOrNew((int) $userId);
+
+			if (!$user->get('id'))
+			{
+				return false;
+			}
+
+			return (bool) $user->getParam(self::optInParam($scale), 0);
+		}
+		catch (\Exception $e)
+		{
+			return false;
+		}
 	}
 
 	/**

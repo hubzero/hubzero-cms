@@ -93,6 +93,76 @@ class Balance extends Relational
 	}
 
 	/**
+	 * Rebuild one user's balance on one scale from the ledger
+	 *
+	 * The balance is a cache, and this is what makes saying so true. Safe to
+	 * run at any time: it reads the ledger, compares, and only writes when
+	 * the cached figures actually disagree.
+	 *
+	 * @param   integer  $userId
+	 * @param   object   $scale
+	 * @param   string   $now     SQL datetime to stamp the recalculation with
+	 * @return  bool     Whether anything changed
+	 */
+	public static function rebuild($userId, Scale $scale, $now = null)
+	{
+		$entries = Ledger::all()
+			->whereEquals('subject_id', (int) $userId)
+			->whereEquals('scale_id', (int) $scale->get('id'))
+			->whereEquals('state', Ledger::STATE_ACTIVE)
+			->rows();
+
+		$raw      = (float) $scale->get('initial');
+		$positive = 0;
+		$negative = 0;
+		$last     = null;
+
+		foreach ($entries as $entry)
+		{
+			$delta = (float) $entry->get('delta');
+			$raw  += $delta;
+
+			if ($delta > 0)
+			{
+				$positive++;
+			}
+			else
+			{
+				$negative++;
+			}
+
+			if (is_null($last) || $entry->get('created') > $last)
+			{
+				$last = $entry->get('created');
+			}
+		}
+
+		$balance = self::oneOrNewForScale($userId, $scale);
+		$karma   = $scale->clamp($raw);
+
+		$changed = ((float) $balance->get('raw') != $raw
+			|| (float) $balance->get('karma') != $karma
+			|| (int) $balance->get('positive_count') != $positive
+			|| (int) $balance->get('negative_count') != $negative);
+
+		if (!$changed && $balance->get('id'))
+		{
+			return false;
+		}
+
+		$balance->set(array(
+			'raw'               => $raw,
+			'karma'             => $karma,
+			'positive_count'    => $positive,
+			'negative_count'    => $negative,
+			'last_event'        => $last,
+			'last_recalculated' => $now
+		));
+
+		return (bool) $balance->save();
+	}
+
+	/**
 	 * Defines a belongs to one relationship with a scale
 	 *
 	 * @return  object

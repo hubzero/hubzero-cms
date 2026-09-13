@@ -298,6 +298,80 @@ class KarmaTest extends Database
 	}
 
 	/**
+	 * Tests that a read after a write sees the write
+	 *
+	 * The query builder caches results process-wide by query hash. Without an
+	 * explicit purge on write, Karma::of() answers from before the award —
+	 * and worse, hands back a balance that still looks new, so the next save
+	 * inserts a second row for the same user and scale. Found by running
+	 * against MySQL, where the duplicate key made it loud; against SQLite it
+	 * had simply reported the wrong number.
+	 *
+	 * @return  void
+	 */
+	public function testReadAfterWriteIsNotStale()
+	{
+		// Prime the cache with the pre-award answer.
+		$this->assertEquals(0.0, Karma::of(self::SUBJECT));
+
+		Karma::award(self::SUBJECT, 'comment.upmod');
+
+		$this->assertEquals(1.0, Karma::of(self::SUBJECT));
+
+		Karma::award(self::SUBJECT, 'comment.upmod');
+
+		$this->assertEquals(2.0, Karma::of(self::SUBJECT));
+
+		// One balance row, not one per award.
+		$this->assertEquals(
+			1,
+			Balance::all()->whereEquals('user_id', self::SUBJECT)->total(),
+			'A stale cache makes every award insert a fresh balance row'
+		);
+	}
+
+	/**
+	 * Tests that a revoke is visible to the next read
+	 *
+	 * @return  void
+	 */
+	public function testReadAfterRevokeIsNotStale()
+	{
+		Karma::award(self::SUBJECT, 'comment.upmod', array(
+			'source_type' => 'com_story.comment',
+			'source_id'   => 5
+		));
+
+		$this->assertEquals(1.0, Karma::of(self::SUBJECT));
+
+		Karma::revoke('com_story.comment', 5);
+
+		$this->assertEquals(0.0, Karma::of(self::SUBJECT));
+	}
+
+	/**
+	 * Tests that a revoke can be narrowed to one person
+	 *
+	 * One source awards several people — a moderation moves the comment
+	 * author's karma and, later, the moderator's — so undoing one must not
+	 * undo the other.
+	 *
+	 * @return  void
+	 */
+	public function testRevokeCanBeScopedToOneSubject()
+	{
+		$source = array('source_type' => 'com_story.comment', 'source_id' => 9);
+
+		Karma::award(self::SUBJECT, 'comment.upmod', $source);
+		Karma::award(self::ACTOR, 'comment.upmod', $source);
+
+		$this->assertEquals(1, Karma::revoke('com_story.comment', 9, 'comment.upmod', self::SUBJECT));
+
+		$this->assertEquals(0.0, Karma::of(self::SUBJECT));
+		$this->assertEquals(1.0, Karma::of(self::ACTOR));
+	}
+
+	/**
 	 * Tests that balances on different scales do not bleed into each other
 	 *
 	 * @return  void

@@ -177,6 +177,36 @@ class Scale extends Relational
 	}
 
 	/**
+	 * How many ledger entries name this scale
+	 *
+	 * Used to refuse a deletion that would silently discard everybody's
+	 * standing on the scale.
+	 *
+	 * @return  integer
+	 */
+	public function ledgerCount()
+	{
+		if (!$this->get('id'))
+		{
+			return 0;
+		}
+
+		return Ledger::all()
+			->whereEquals('scale_id', (int) $this->get('id'))
+			->total();
+	}
+
+	/**
+	 * Defines a one to many relationship with ledger entries
+	 *
+	 * @return  object
+	 */
+	public function entries()
+	{
+		return $this->oneToMany('Hubzero\Karma\Ledger', 'scale_id');
+	}
+
+	/**
 	 * Defines a one to many relationship with rules
 	 *
 	 * @return  object
