@@ -84,7 +84,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
     if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0)) {
         $redirect = Request::current(true);
 
-        // do we have tmpl=componet in url?
+        // do we have tmpl=component in url?
         $delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
         if (Request::getCmd('tmpl', '') == 'component') {
             $redirect .= $delimeter . 'tmpl=component';
