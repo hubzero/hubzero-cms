@@ -25,6 +25,20 @@
 				<field name="min_account_age_days" type="text" default="30" label="PLG_MODERATION_STORY_AGE_LABEL" description="PLG_MODERATION_STORY_AGE_DESC" />
 				<field name="min_karma" type="text" default="0" label="PLG_MODERATION_STORY_KARMA_LABEL" description="PLG_MODERATION_STORY_KARMA_DESC" />
 			</fieldset>
+			<fieldset name="grants" label="PLG_MODERATION_STORY_GRANTS_LABEL" description="PLG_MODERATION_STORY_GRANTS_DESC">
+				<field name="grantor" type="list" default="interval" label="PLG_MODERATION_STORY_GRANTOR_LABEL" description="PLG_MODERATION_STORY_GRANTOR_DESC">
+					<option value="interval">PLG_MODERATION_STORY_GRANTOR_INTERVAL</option>
+					<option value="tokenpool">PLG_MODERATION_STORY_GRANTOR_TOKENPOOL</option>
+				</field>
+				<field name="tokens_per_read" type="text" default="1" label="PLG_MODERATION_STORY_TPR_LABEL" description="PLG_MODERATION_STORY_TPR_DESC" />
+				<field name="tokens_per_credit" type="text" default="8" label="PLG_MODERATION_STORY_TPC_LABEL" description="PLG_MODERATION_STORY_TPC_DESC" />
+				<field name="max_tokens_add" type="text" default="3" label="PLG_MODERATION_STORY_MTA_LABEL" description="PLG_MODERATION_STORY_MTA_DESC" />
+				<field name="expire_token_cost" type="text" default="2" label="PLG_MODERATION_STORY_ETC_LABEL" description="PLG_MODERATION_STORY_ETC_DESC" />
+				<field name="factor_eligible_moderators" type="radio" default="0" label="PLG_MODERATION_STORY_FACTOR_LABEL" description="PLG_MODERATION_STORY_FACTOR_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			</fieldset>
 			<fieldset name="review" label="PLG_MODERATION_STORY_REVIEW_LABEL" description="PLG_MODERATION_STORY_REVIEW_DESC">
 				<field name="review_enabled" type="radio" default="0" label="PLG_MODERATION_STORY_REVIEW_ON_LABEL" description="PLG_MODERATION_STORY_REVIEW_ON_DESC">
 					<option value="0">JNO</option>

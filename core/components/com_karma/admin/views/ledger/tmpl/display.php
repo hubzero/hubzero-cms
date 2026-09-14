@@ -23,6 +23,7 @@ Submenu::addEntry(Lang::txt('COM_KARMA_SUBMENU_RULES'), Route::url('index.php?op
 Submenu::addEntry(Lang::txt('COM_KARMA_SUBMENU_GATES'), Route::url('index.php?option=' . $this->option . '&controller=gates'));
 Submenu::addEntry(Lang::txt('COM_KARMA_SUBMENU_LEDGER'), Route::url('index.php?option=' . $this->option . '&controller=ledger'), true);
 Submenu::addEntry(Lang::txt('COM_KARMA_SUBMENU_REVIEW'), Route::url('index.php?option=' . $this->option . '&controller=review'));
+Submenu::addEntry(Lang::txt('COM_KARMA_SUBMENU_GRANTS'), Route::url('index.php?option=' . $this->option . '&controller=grants'));
 
 $scaleTitles = array();
 foreach ($this->scales as $scale)

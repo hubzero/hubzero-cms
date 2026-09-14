@@ -58,6 +58,12 @@ class plgModerationStory extends \Hubzero\Plugin\Plugin
 				'grant_fraction'        => (float) $this->params->get('grant_fraction', 0.15),
 				'eligible_hitcount'     => (int) $this->params->get('eligible_hitcount', 3),
 				'min_account_age_days'  => (int) $this->params->get('min_account_age_days', 30),
+				'grantor'               => (string) $this->params->get('grantor', 'interval'),
+				'tokens_per_read'       => (int) $this->params->get('tokens_per_read', 1),
+				'tokens_per_credit'     => (int) $this->params->get('tokens_per_credit', 8),
+				'max_tokens_add'        => (int) $this->params->get('max_tokens_add', 3),
+				'expire_token_cost'     => (int) $this->params->get('expire_token_cost', 2),
+				'factor_eligible_moderators' => (int) $this->params->get('factor_eligible_moderators', 0),
 				'karma_scale'           => 'global',
 				'min_karma'             => (float) $this->params->get('min_karma', 0),
 

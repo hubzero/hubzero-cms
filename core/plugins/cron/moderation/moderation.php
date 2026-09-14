@@ -14,6 +14,7 @@ use Hubzero\Moderation\Reconciler;
 use Hubzero\Moderation\Eligibility;
 use Hubzero\Moderation\Activity;
 use Hubzero\Moderation\Grantor\IntervalGrantor;
+use Hubzero\Moderation\Grantor\TokenPoolGrantor;
 use Hubzero\Utility\Date;
 
 /**
@@ -74,7 +75,7 @@ class plgCronModeration extends \Hubzero\Plugin\Plugin
 		{
 			$economy = new Economy(
 				$itemType,
-				new IntervalGrantor($settings),
+				$this->grantorFor($settings),
 				new Eligibility($settings, array($this, 'authorise'))
 			);
 
@@ -116,6 +117,33 @@ class plgCronModeration extends \Hubzero\Plugin\Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Which grantor a type is configured to use
+	 *
+	 * The interval grantor is the default and the right answer for almost
+	 * every hub. The token pool ties capacity to traffic instead of to an
+	 * administrator's guess, which is better once there is traffic and issues
+	 * nothing at all when there is not — so switching is deliberate, and the
+	 * grants record is what tells somebody it is time.
+	 *
+	 * Wallet state is untouched either way: this is a settings change rather
+	 * than a migration.
+	 *
+	 * @param   array  $settings
+	 * @return  object
+	 */
+	protected function grantorFor(array $settings)
+	{
+		$which = isset($settings['grantor']) ? strtolower(trim($settings['grantor'])) : 'interval';
+
+		if ($which === 'tokenpool')
+		{
+			return new TokenPoolGrantor($settings);
+		}
+
+		return new IntervalGrantor($settings);
 	}
 
 	/**
