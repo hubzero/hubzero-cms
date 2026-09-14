@@ -38,6 +38,12 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="logo" type="media" default=""
+					label="TPL_MERIDIAN_FIELD_LOGO_LABEL"
+					description="TPL_MERIDIAN_FIELD_LOGO_DESC" />
+				<field name="logoHeight" type="text" default=""
+					label="TPL_MERIDIAN_FIELD_LOGO_HEIGHT_LABEL"
+					description="TPL_MERIDIAN_FIELD_LOGO_HEIGHT_DESC" />
 				<field name="accentColor" type="color" default="#116A8B"
 					label="TPL_MERIDIAN_FIELD_ACCENT_LABEL"
 					description="TPL_MERIDIAN_FIELD_ACCENT_DESC" />

@@ -17,6 +17,20 @@ defined('_HZEXEC_') or die();
 $tplSettingDisplayHelp = (bool) $this->params->get('helpPane', 0);
 $tplSettingRegisterLink = (bool) $this->params->get('registerLink', 0);
 
+// The masthead. A hub with a wordmark puts it here; a hub without one has its
+// name set in the same place, at the same size, which is a wordmark of a kind.
+$tplSiteName = htmlspecialchars(Config::get('sitename'), ENT_QUOTES, 'UTF-8');
+$tplLogo     = trim((string) $this->params->get('logo', ''));
+
+if ($tplLogo !== '' && !preg_match('#^(https?:)?//#', $tplLogo)) {
+    // Anything not already an address is a path from the top of the site,
+    // which is what the media picker hands back
+    $tplLogo = rtrim(Request::root(true), '/') . '/' . ltrim($tplLogo, '/');
+}
+
+$tplLogo       = htmlspecialchars($tplLogo, ENT_QUOTES, 'UTF-8');
+$tplLogoHeight = preg_replace('/[^0-9a-z.%]/i', '', (string) $this->params->get('logoHeight', ''));
+
 // The two knobs worth having
 //
 // A hub that keeps this template will still want it to be its own, and colour
@@ -150,8 +164,16 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                 <div class="inner">
                     <div class="logo">
                         <a href="<?php echo Request::root(); ?>"
-                           title="<?php echo Config::get('sitename'); ?>">
-                            <?php echo Config::get('sitename'); ?>
+                           title="<?php echo $tplSiteName; ?>">
+                            <?php if ($tplLogo) : ?>
+                                <img src="<?php echo $tplLogo; ?>"
+                                    alt="<?php echo $tplSiteName; ?>"
+                                    <?php if ($tplLogoHeight) : ?>
+                                        style="height: <?php echo $tplLogoHeight; ?>"
+                                    <?php endif; ?> />
+                            <?php else : ?>
+                                <?php echo $tplSiteName; ?>
+                            <?php endif; ?>
                         </a>
                     </div>
 
