@@ -10,10 +10,12 @@ An item that names no component.
 It is a page the template draws itself. The router still makes the item
 active, so the page keeps its Itemid - and with it the modules assigned to
 that page, its template style and its place in the menu - and only the
-component area is left empty. The menu module does not render it.
+component area is left empty.
 
 Its use is a hub whose front page is the template's own: set this item as the
-default, and the template's home layout has the page to itself.
+default, and the template's home layout has the page to itself. Since there is
+nothing for the menu to link to, it keeps out of the menu unless it is told
+otherwise.
 -->
 
 <form>
@@ -21,6 +23,16 @@ default, and the template's home layout has the page to itself.
 		<fieldset name="menu-options"
 			label="COM_MENUS_LINKTYPE_OPTIONS_LABEL"
 		>
+
+			<field name="menu_show" type="radio"
+				label="COM_MENUS_ITEM_FIELD_MENU_SHOW_LABEL"
+				description="COM_MENUS_ITEM_FIELD_MENU_SHOW_DESC"
+				default="0" filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
 		</fieldset>
 	</fields>
 </form>
