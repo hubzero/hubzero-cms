@@ -7254,6 +7254,16 @@ template {
   position: relative;
   z-index: 1;
 }
+@media (min-width: 1200px) {
+  .home-head .hero .hero-copy {
+    max-width: 30rem;
+  }
+}
+@media (min-width: 1600px) {
+  .home-head .hero .hero-copy {
+    max-width: 38rem;
+  }
+}
 .home-head .hero .eyebrow {
   font-size: 0.8rem;
   font-weight: 600;

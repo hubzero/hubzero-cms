@@ -66,6 +66,23 @@
 		.hero-copy {
 			position: relative;
 			z-index: 1;
+
+			// Once the pictures are beside the copy rather than under it,
+			// the copy stops short of them. Left to run to its own width it
+			// reaches across the monitor at some sizes and not others, which
+			// is the sort of thing that looks like a mistake on one screen
+			// and fine on the next.
+			//
+			// The art takes the right 47% of the page, so what is left is
+			// that much less the page's own gutter, and these are the widest
+			// the copy can be inside it.
+			@media (min-width: @sizeL) {
+				max-width: 30rem;
+			}
+
+			@media (min-width: @sizeXL) {
+				max-width: 38rem;
+			}
 		}
 
 		// An eyebrow says what kind of place this is before the heading
