@@ -63,14 +63,15 @@ function start() {
 
 		// The far band drifts sideways and sinks; the near ridge lifts. Two
 		// directions read as distance in a way that two speeds do not.
-		band.style.transform = 'translate3d(' + (y * 0.08) + 'px, ' + (y * 0.16) + 'px, 0)';
-		hill.style.transform = 'translate3d(' + (y * -0.04) + 'px, ' + (y * -0.05) + 'px, 0)';
+		band.style.transform = 'translate3d(' + (y * 0.16) + 'px, ' + (y * 0.38) + 'px, 0)';
+		hill.style.transform = 'translate3d(' + (y * -0.09) + 'px, ' + (y * -0.14) + 'px, 0)';
 
-		// The two laptops come out from behind the monitor, which is what the
-		// welcome template did over its first 900 pixels of scroll. They stop
-		// where it stopped them, just over a tenth of the way to either side.
+		// The two laptops come out from behind the monitor, the way they did
+		// on the welcome template. That took 900 pixels of scroll there, on a
+		// page four screens long; the hero is gone by 500, so they travel in
+		// the distance there is.
 		if (web && tool) {
-			var out = Math.min(y / 900, 1) * 12;
+			var out = Math.min(y / 420, 1) * 16;
 
 			web.style.transform  = 'translate3d(' + (-out) + '%, 0, 0)';
 			tool.style.transform = 'translate3d(' + out + '%, 0, 0)';
