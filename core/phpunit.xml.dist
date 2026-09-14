@@ -22,6 +22,9 @@
         <testsuite name="plugins">
             <directory>plugins/*/*/tests</directory>
         </testsuite>
+        <testsuite name="install">
+            <directory>bootstrap/Install/Tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
