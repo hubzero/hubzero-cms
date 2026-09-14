@@ -100,7 +100,74 @@ class Eligibility
 			}
 		}
 
+		if (!empty($this->config['factor_eligible_moderators']))
+		{
+			$eligible = $this->factorEligibleModerators($eligible, $itemType);
+		}
+
 		return $eligible;
+	}
+
+	/**
+	 * Let a moderator's record change how often they are asked again
+	 *
+	 * Somebody whose moderation has repeatedly been judged fair appears more
+	 * than once in the pool and is correspondingly more likely to be drawn;
+	 * somebody with a poor record appears once, or not at all. The list is
+	 * weighted rather than sorted, because the grantors draw from it at
+	 * random and a sorted list would hand the same few people every grant.
+	 *
+	 * Behind a flag, and off by default, because it reads the fairness
+	 * counters and those stay empty until review has been running long enough
+	 * to fill them. Switched on too early it is not neutral — it quietly
+	 * favours whoever happens to have been judged first.
+	 *
+	 * @param   array   $eligible
+	 * @param   string  $itemType
+	 * @return  array
+	 */
+	public function factorEligibleModerators(array $eligible, $itemType)
+	{
+		$weighted = array();
+
+		foreach ($eligible as $userId)
+		{
+			$wallet = Wallet::oneOrNew($userId, $itemType);
+
+			$fair   = (int) $wallet->get('up_fair') + (int) $wallet->get('down_fair');
+			$unfair = (int) $wallet->get('up_unfair') + (int) $wallet->get('down_unfair');
+			$judged = $fair + $unfair;
+
+			// Too short a record to read. Everybody starts on equal terms,
+			// which is also what a hub that has never run review looks like.
+			if ($judged < 5)
+			{
+				$weighted[] = $userId;
+				continue;
+			}
+
+			$share = $fair / $judged;
+
+			if ($share >= 0.8)
+			{
+				$weighted[] = $userId;
+				$weighted[] = $userId;
+				$weighted[] = $userId;
+			}
+			elseif ($share >= 0.5)
+			{
+				$weighted[] = $userId;
+				$weighted[] = $userId;
+			}
+			elseif ($share >= 0.25)
+			{
+				$weighted[] = $userId;
+			}
+
+			// Below a quarter, they are left out of this pass entirely.
+		}
+
+		return $weighted;
 	}
 
 	/**
