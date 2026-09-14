@@ -7075,6 +7075,7 @@ template {
   flex-grow: 1;
   z-index: 2;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   position: relative;
 }
@@ -8558,28 +8559,37 @@ h6 {
 .home-clouds .clouds-band {
   height: 417px;
   background: url(../images/clouds.png) bottom repeat-x;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 .home-clouds .clouds-hill {
   height: 110px;
   background: url(../images/clouds-bottom.png) center bottom no-repeat;
   background-size: auto 110px;
-  opacity: 0.85;
+  opacity: 1;
 }
 .hero-devices {
   display: none;
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  width: 42%;
-  max-width: 42rem;
-  transform: translateY(-50%);
   pointer-events: none;
   z-index: 0;
 }
-@media (min-width: 1200px) {
+@media (min-width: 600px) {
   .hero-devices {
     display: block;
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    margin: 1.5rem auto -1rem;
+  }
+}
+@media (min-width: 1200px) {
+  .hero-devices {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    width: 42%;
+    max-width: 42rem;
+    margin: 0;
+    transform: translateY(-50%);
   }
 }
 .hero-devices img {
