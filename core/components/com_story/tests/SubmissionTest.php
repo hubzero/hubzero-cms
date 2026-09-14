@@ -212,6 +212,56 @@ class SubmissionTest extends Database
 	}
 
 	/**
+	 * THE FARMING BOUND: standing buys influence, but only so much
+	 *
+	 * Karma weights these votes and an accepted submission awards karma, so
+	 * there is a loop here. What keeps it from running away is that the
+	 * weighting is bounded at both ends: the best-regarded member on the hub
+	 * is worth three ordinary readers, not thirty. Stated as a test rather
+	 * than as a comment, because a comment cannot fail.
+	 *
+	 * @return  void
+	 */
+	public function testStandingCannotBuyUnboundedInfluence()
+	{
+		$config = $this->config();
+
+		$ceiling = $this->submission();
+		$floor   = $this->submission();
+		$crowd   = $this->submission();
+
+		// One vote from the most regarded member there is.
+		$this->vote($ceiling, self::WELL_REGARDED);
+
+		// One from somebody the hub has lost confidence in.
+		$this->vote($floor, self::DISREGARDED);
+
+		// And three from ordinary members.
+		$this->vote($crowd, self::ORDINARY);
+		$this->vote($crowd, self::ORDINARY + 100);
+		$this->vote($crowd, self::ORDINARY + 200);
+
+		foreach (array($ceiling, $floor, $crowd) as $row)
+		{
+			$row->rescore($config);
+		}
+
+		$top    = (float) $ceiling->get('popularity') - 100;
+		$bottom = (float) $floor->get('popularity') - 100;
+
+		$this->assertEquals(3, $top, 'The ceiling band is worth three');
+		$this->assertEquals(0, $bottom, 'The floor band is worth nothing');
+
+		// The bound, in the form that matters: one very well regarded member
+		// cannot outweigh a handful of ordinary ones.
+		$this->assertLessThanOrEqual(
+			(float) $crowd->get('popularity'),
+			(float) $ceiling->get('popularity'),
+			'Three ordinary readers should hold their own against the best-regarded member on the hub'
+		);
+	}
+
+	/**
 	 * Rescoring is a recount, not a running total
 	 *
 	 * @return  void

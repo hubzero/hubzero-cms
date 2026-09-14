@@ -126,6 +126,127 @@ class CommentTreeTest extends Database
 	}
 
 	/**
+	 * Assert the stored tree is exactly what parent alone would produce
+	 *
+	 * This is the invariant the whole design rests on, and it is one line
+	 * because `path` is derived: rebuildPaths() recomputes from `parent` and
+	 * reports how many rows it had to change, so nought means the stored
+	 * state already agreed with the only source of truth.
+	 *
+	 * It is precisely the check com_forum's lft/rgt cannot be given, because
+	 * nothing there can recompute them from anything else.
+	 *
+	 * @param   string  $after
+	 * @return  void
+	 */
+	protected function assertTreeIsConsistent($after = '')
+	{
+		$before = $this->paths();
+
+		$corrected = Comment::rebuildPaths(self::DISCUSSION);
+
+		$this->assertEquals(0, $corrected, 'path/depth disagreed with parent after ' . $after);
+		$this->assertEquals($before, $this->paths(), 'the rebuild moved something after ' . $after);
+	}
+
+	/**
+	 * The invariant holds after every operation that changes the tree
+	 *
+	 * Insert, delete a leaf, delete an interior node — after each, what is
+	 * stored is what parent alone says it should be.
+	 *
+	 * @return  void
+	 */
+	public function testInvariantHoldsThroughEveryOperation()
+	{
+		$root = $this->comment(0, 'Root');
+		$this->assertTreeIsConsistent('an insert at the root');
+
+		$mid = $this->comment($root->get('id'), 'A reply');
+		$this->assertTreeIsConsistent('a reply');
+
+		$leaf = $this->comment($mid->get('id'), 'A reply to the reply');
+		$this->assertTreeIsConsistent('a nested reply');
+
+		$second = $this->comment(0, 'A second root');
+		$this->assertTreeIsConsistent('a second root');
+
+		$leaf->destroy();
+		$this->assertTreeIsConsistent('deleting a leaf');
+
+		$mid->destroy();
+		$this->assertTreeIsConsistent('deleting an interior comment');
+	}
+
+	/**
+	 * Reparenting is handled by the repair rather than inline
+	 *
+	 * save() derives the path once, on insert, so moving a comment to a new
+	 * parent afterwards leaves the derived columns stale — and rebuildPaths()
+	 * is what puts them right. Worth stating as a test rather than leaving as
+	 * an assumption: it is the case that would silently rot if the repair
+	 * ever stopped walking from `parent`.
+	 *
+	 * @return  void
+	 */
+	public function testReparentIsResolvedByTheRebuild()
+	{
+		$first  = $this->comment(0, 'First root');
+		$second = $this->comment(0, 'Second root');
+		$moving = $this->comment($first->get('id'), 'Starts under the first');
+
+		$this->assertTreeIsConsistent('the initial tree');
+
+		// Move it across. Nothing recomputes the derived columns for us.
+		$moving->set('parent', $second->get('id'));
+		$moving->save();
+
+		$corrected = Comment::rebuildPaths(self::DISCUSSION);
+
+		$this->assertEquals(1, $corrected, 'The moved comment needed putting right');
+
+		$after = Comment::oneOrNew($moving->get('id'));
+
+		$this->assertEquals(
+			$second->get('path') . '.' . Comment::segment($moving->get('id')),
+			$after->get('path'),
+			'It now hangs under its new parent'
+		);
+		$this->assertEquals(1, (int) $after->get('depth'));
+
+		$this->assertTreeIsConsistent('the reparent');
+	}
+
+	/**
+	 * Reparenting a comment with replies moves the whole subtree
+	 *
+	 * @return  void
+	 */
+	public function testReparentCarriesTheSubtree()
+	{
+		$first  = $this->comment(0, 'First root');
+		$second = $this->comment(0, 'Second root');
+		$moving = $this->comment($first->get('id'), 'Moves');
+		$child  = $this->comment($moving->get('id'), 'Comes along');
+
+		$moving->set('parent', $second->get('id'));
+		$moving->save();
+
+		Comment::rebuildPaths(self::DISCUSSION);
+
+		$movedChild = Comment::oneOrNew($child->get('id'));
+
+		$this->assertStringStartsWith(
+			$second->get('path') . '.',
+			$movedChild->get('path'),
+			'The reply travelled with the comment it answers'
+		);
+		$this->assertEquals(2, (int) $movedChild->get('depth'));
+
+		$this->assertTreeIsConsistent('reparenting a subtree');
+	}
+
+	/**
 	 * A root comment's path is its own id, padded
 	 *
 	 * @return  void
