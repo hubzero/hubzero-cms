@@ -236,9 +236,14 @@ this way. Two uses come up:
   besides appear in a menu](#what-a-menu-item-does-besides-appear-in-a-menu)
   for why that comes up.
 
-Hiding an item hides nothing underneath it — a hidden parent's children still
-appear, with nothing above them. To take a whole branch out of the menu,
-unpublish it instead.
+Hiding an item hides what is under it. Hide **Discover** and the pages beneath
+it go too, however deep they are nested — a branch whose head is gone reads as
+a set of pages belonging to nothing. To show a child without its parent, move
+the child somewhere else in the tree rather than hiding the parent.
+
+Hiding is display only. To make the pages themselves unavailable, unpublish
+them: an unpublished item stops answering at its address, a hidden one does
+not.
 
 ### What a menu item does besides appear in a menu
 

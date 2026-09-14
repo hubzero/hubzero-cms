@@ -91,6 +91,7 @@ class Menu extends Module
             $items    = $menu->getItems('menutype', $params->get('menutype'));
 
             $lastitem = 0;
+            $hidden   = array();
 
             if ($items) {
                 foreach ($items as $i => $item) {
@@ -102,9 +103,19 @@ class Menu extends Module
                     // there is nothing to link to, but any item can be told
                     // to keep out of the menu.
                     //
+                    // Hiding an item hides what is under it. A branch whose
+                    // head is gone reads as a set of pages that belong to
+                    // nothing, and the way to show a child without its parent
+                    // is to put the child somewhere else, not to leave a gap
+                    // where its parent was. Items arrive in tree order, so a
+                    // parent is always seen before the children it hides.
+                    //
                     // Dropped here rather than in a layout, where a template's
                     // own override would not know to skip it.
-                    if (!$item->params->get('menu_show', $item->type == 'none' ? 0 : 1)) {
+                    if (!$item->params->get('menu_show', $item->type == 'none' ? 0 : 1)
+                     || in_array($item->parent_id, $hidden)) {
+                        $hidden[] = $item->id;
+
                         unset($items[$i]);
                         continue;
                     }
