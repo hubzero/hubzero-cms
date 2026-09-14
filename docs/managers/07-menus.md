@@ -207,7 +207,7 @@ belong to no component:
 | **External URL** | Links to any address, on this hub or elsewhere. Also acts as a redirect — see [URLs](08-content/urls.md#redirecting-with-a-menu-item). |
 | **Menu Item Alias** | Points at another menu item, so one page can appear in two menus. Leave the **Alias** field empty when the two items share a parent. |
 | **Text Separator** | A label with no link, for breaking a long menu into groups. |
-| **No Component** | A page the template draws itself. Nothing is rendered in the component area, and the item does not appear in menus. |
+| **No Component** | A page the template draws itself. Nothing is rendered in the component area, and the item stays out of menus unless you say otherwise. |
 
 **No Component** is for a hub whose front page is the template's own. Set such
 an item as the default and the front page has no component on it at all: the
@@ -217,6 +217,28 @@ up in the navigation. The item is still a real menu item, so the page keeps its
 assigned to — unlike a hub with nothing marked home, which has neither.
 
 It is the one type other than a component that may be set as the default.
+
+### Keeping an item out of the menu
+
+Every item carries a **Display in Menu** setting, under **Link Type Options**.
+Set it to **No** and the menu stops showing a link to the page, while the page
+itself is untouched: it keeps its address, its `Itemid`, the modules assigned
+to it and its template style. Only the link goes away.
+
+This is how **No Component** items behave already — they default to **No**,
+since there is nothing for the menu to link to — but any item can be hidden
+this way. Two uses come up:
+
+- A page that is reached from somewhere other than the menu: a landing page a
+  campaign links to, a form the footer points at, a page you have not finished.
+- An item that exists to give a component its address while the link a visitor
+  actually follows sits elsewhere in the tree. See [What a menu item does
+  besides appear in a menu](#what-a-menu-item-does-besides-appear-in-a-menu)
+  for why that comes up.
+
+Hiding an item hides nothing underneath it — a hidden parent's children still
+appear, with nothing above them. To take a whole branch out of the menu,
+unpublish it instead.
 
 ### What a menu item does besides appear in a menu
 

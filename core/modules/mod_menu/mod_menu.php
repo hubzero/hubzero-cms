@@ -94,12 +94,17 @@ class Menu extends Module
 
             if ($items) {
                 foreach ($items as $i => $item) {
-                    // An item that names no component is a page the template
-                    // draws itself. It is a real address - a hub's front page
-                    // is usually one - but there is nothing to link to, so it
-                    // is dropped here rather than in a layout, where a
-                    // template's own override would not know to skip it.
-                    if ($item->type == 'none') {
+                    // An item can be a real address the menu does not show:
+                    // a page the template draws itself, or one that exists to
+                    // give a component its route while the link a visitor
+                    // follows sits somewhere else in the tree. An item that
+                    // names no component is one of those by default, since
+                    // there is nothing to link to, but any item can be told
+                    // to keep out of the menu.
+                    //
+                    // Dropped here rather than in a layout, where a template's
+                    // own override would not know to skip it.
+                    if (!$item->params->get('menu_show', $item->type == 'none' ? 0 : 1)) {
                         unset($items[$i]);
                         continue;
                     }
