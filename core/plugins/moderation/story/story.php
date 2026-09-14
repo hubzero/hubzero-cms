@@ -59,7 +59,16 @@ class plgModerationStory extends \Hubzero\Plugin\Plugin
 				'eligible_hitcount'     => (int) $this->params->get('eligible_hitcount', 3),
 				'min_account_age_days'  => (int) $this->params->get('min_account_age_days', 30),
 				'karma_scale'           => 'global',
-				'min_karma'             => (float) $this->params->get('min_karma', 0)
+				'min_karma'             => (float) $this->params->get('min_karma', 0),
+
+				// Review ships off and stays off until a hub has the volume
+				// for it. See Reviewer::hasVolumeFor() for what that means and
+				// why switching it on early is worse than leaving it alone.
+				'review_enabled'        => (int) $this->params->get('review_enabled', 0),
+				'review_consensus'      => (int) $this->params->get('review_consensus', 9),
+				'review_min_karma'      => (float) $this->params->get('review_min_karma', 0),
+				'review_interval_hours' => (int) $this->params->get('review_interval_hours', 24),
+				'review_consequences'   => (string) $this->params->get('review_consequences', '')
 			)
 		);
 	}

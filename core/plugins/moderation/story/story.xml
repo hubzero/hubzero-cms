@@ -25,6 +25,16 @@
 				<field name="min_account_age_days" type="text" default="30" label="PLG_MODERATION_STORY_AGE_LABEL" description="PLG_MODERATION_STORY_AGE_DESC" />
 				<field name="min_karma" type="text" default="0" label="PLG_MODERATION_STORY_KARMA_LABEL" description="PLG_MODERATION_STORY_KARMA_DESC" />
 			</fieldset>
+			<fieldset name="review" label="PLG_MODERATION_STORY_REVIEW_LABEL" description="PLG_MODERATION_STORY_REVIEW_DESC">
+				<field name="review_enabled" type="radio" default="0" label="PLG_MODERATION_STORY_REVIEW_ON_LABEL" description="PLG_MODERATION_STORY_REVIEW_ON_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="review_consensus" type="text" default="9" label="PLG_MODERATION_STORY_CONSENSUS_LABEL" description="PLG_MODERATION_STORY_CONSENSUS_DESC" />
+				<field name="review_min_karma" type="text" default="0" label="PLG_MODERATION_STORY_REVIEW_KARMA_LABEL" description="PLG_MODERATION_STORY_REVIEW_KARMA_DESC" />
+				<field name="review_interval_hours" type="text" default="24" label="PLG_MODERATION_STORY_REVIEW_INTERVAL_LABEL" description="PLG_MODERATION_STORY_REVIEW_INTERVAL_DESC" />
+				<field name="review_consequences" type="textarea" rows="8" default="" label="PLG_MODERATION_STORY_CONSEQUENCES_LABEL" description="PLG_MODERATION_STORY_CONSEQUENCES_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 </extension>

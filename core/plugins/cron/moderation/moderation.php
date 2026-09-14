@@ -9,6 +9,8 @@
 defined('_HZEXEC_') or die();
 
 use Hubzero\Moderation\Economy;
+use Hubzero\Moderation\Consequences;
+use Hubzero\Moderation\Reconciler;
 use Hubzero\Moderation\Eligibility;
 use Hubzero\Moderation\Activity;
 use Hubzero\Moderation\Grantor\IntervalGrantor;
@@ -48,6 +50,11 @@ class plgCronModeration extends \Hubzero\Plugin\Plugin
 			array(
 				'name'   => 'pruneModerationActivity',
 				'label'  => Lang::txt('PLG_CRON_MODERATION_PRUNE'),
+				'params' => ''
+			),
+			array(
+				'name'   => 'reconcileModerationReviews',
+				'label'  => Lang::txt('PLG_CRON_MODERATION_RECONCILE'),
 				'params' => ''
 			)
 		);
@@ -105,6 +112,43 @@ class plgCronModeration extends \Hubzero\Plugin\Plugin
 			if ($expired)
 			{
 				Log::debug('plg_cron_moderation: ' . $itemType . ' — ' . $expired . ' credits expired unspent');
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Settle up every moderation that has been judged enough times
+	 *
+	 * Done here rather than when the deciding judgement lands: the person who
+	 * happens to cast the ninth vote should not be the one who waits for the
+	 * arithmetic, and one pass handles everything that matured since the last.
+	 *
+	 * Nothing happens where review is switched off, which is the shipped
+	 * default and the right state for a hub without the volume to reach
+	 * consensus.
+	 *
+	 * @param   object  $job  \Components\Cron\Models\Job
+	 * @return  bool
+	 */
+	public function reconcileModerationReviews(\Components\Cron\Models\Job $job)
+	{
+		foreach ($this->itemTypes() as $itemType => $settings)
+		{
+			if (empty($settings['review_enabled']))
+			{
+				continue;
+			}
+
+			$table = new Consequences(isset($settings['review_consequences']) ? $settings['review_consequences'] : '');
+
+			$reconciler = new Reconciler($itemType, $table, $settings);
+			$settled    = $reconciler->run();
+
+			if ($settled)
+			{
+				Log::debug('plg_cron_moderation: ' . $itemType . ' — ' . $settled . ' moderation(s) reconciled');
 			}
 		}
 
