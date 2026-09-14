@@ -136,3 +136,145 @@
 		pointer-events: none;
 	}
 }
+
+// The bands below the hero
+//
+// home.php gives each of home-1, home-2 and home-3 a band of its own, holding
+// whatever modules the hub put in that position. The first one rises into the
+// foot of the hero's ground so the two read as one page rather than as a
+// header with a page under it.
+
+.home-section {
+	padding: 3rem 0;
+
+	& > .inner {
+		.outerPadding();
+	}
+
+	&:first-of-type {
+		padding-top: 0;
+		margin-top: -3rem;
+	}
+
+	// The heading of a band is the module's own title, which the module
+	// chrome writes as an h3; a band whose content brings its own h2 gets
+	// the same treatment.
+	& > .inner > .module > h3,
+	h2 {
+		position: relative;
+		padding-bottom: 1.2rem;
+		margin-bottom: 2rem;
+		text-align: center;
+		font-size: 1.6rem;
+		font-weight: 600;
+
+		&::after {
+			display: block;
+			content: '';
+			position: absolute;
+			height: 4px;
+			width: 2rem;
+			bottom: 0;
+			left: 50%;
+			transform: translate(-50%, 0);
+			background: @colorBrand;
+		}
+	}
+}
+
+// The clouds along the foot of the hero
+//
+// Taken from the welcome template, which is where a new hub used to land: a
+// tiling band of cloud with a single ridge centred over it. js/home.js moves
+// the two at different rates while the hero is still on screen, which is the
+// whole of the parallax; without the script they sit here and the page reads
+// the same.
+
+.home-clouds {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 190px;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 1;
+
+	span {
+		display: block;
+		position: absolute;
+		left: -10%;
+		right: -10%;
+		bottom: 0;
+		will-change: transform;
+	}
+
+	.clouds-band {
+		height: 417px;
+		background: url(../../images/clouds.png) bottom repeat-x;
+		opacity: 0.5;
+	}
+
+	.clouds-hill {
+		height: 110px;
+		background: url(../../images/clouds-bottom.png) center bottom no-repeat;
+		background-size: auto 110px;
+		opacity: 0.85;
+	}
+}
+
+// The devices beside the hero
+//
+// The welcome template put a monitor in the middle of the page with a laptop
+// behind each shoulder, and slid the laptops out from behind it as the page
+// scrolled. Same three pictures, moved to the side the hero's copy does not
+// use, and still sliding: js/home.js does what skrollr's data- attributes did.
+//
+// Decoration throughout, and marked aria-hidden. A hub that wants its own
+// picture here sets .hero-art instead and these can go.
+
+.hero-devices {
+	display: none;
+	position: absolute;
+	top: 50%;
+	right: 3%;
+	width: 42%;
+	max-width: 42rem;
+	transform: translateY(-50%);
+	pointer-events: none;
+	z-index: 0;
+
+	// Below this the hero's copy wants the whole width
+	@media (min-width: @sizeL) {
+		display: block;
+	}
+
+	img {
+		display: block;
+		max-width: 52%;
+		height: auto;
+	}
+
+	.device-screen {
+		position: relative;
+		margin: 0 auto;
+		z-index: 3;
+	}
+
+	.device-web,
+	.device-tool {
+		position: absolute;
+		top: 18%;
+		z-index: 1;
+		will-change: transform;
+	}
+
+	.device-web {
+		left: 0;
+	}
+
+	.device-tool {
+		top: 22%;
+		right: 0;
+	}
+}

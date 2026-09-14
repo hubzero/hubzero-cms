@@ -8481,3 +8481,128 @@ h5 {
 h6 {
   font-size: 1rem;
 }
+.home-section {
+  padding: 3rem 0;
+}
+.home-section > .inner {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+@media (min-width: 600px) {
+  .home-section > .inner {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+}
+@media (min-width: 900px) {
+  .home-section > .inner {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+@media (min-width: 1200px) {
+  .home-section > .inner {
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
+  }
+}
+@media (min-width: 1600px) {
+  .home-section > .inner {
+    padding-left: 12rem !important;
+    padding-right: 12rem !important;
+  }
+}
+.home-section:first-of-type {
+  padding-top: 0;
+  margin-top: -3rem;
+}
+.home-section > .inner > .module > h3,
+.home-section h2 {
+  position: relative;
+  padding-bottom: 1.2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.home-section > .inner > .module > h3::after,
+.home-section h2::after {
+  display: block;
+  content: '';
+  position: absolute;
+  height: 4px;
+  width: 2rem;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: var(--hub-accent, #116A8B);
+}
+.home-clouds {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 190px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.home-clouds span {
+  display: block;
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  will-change: transform;
+}
+.home-clouds .clouds-band {
+  height: 417px;
+  background: url(../images/clouds.png) bottom repeat-x;
+  opacity: 0.5;
+}
+.home-clouds .clouds-hill {
+  height: 110px;
+  background: url(../images/clouds-bottom.png) center bottom no-repeat;
+  background-size: auto 110px;
+  opacity: 0.85;
+}
+.hero-devices {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 3%;
+  width: 42%;
+  max-width: 42rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+@media (min-width: 1200px) {
+  .hero-devices {
+    display: block;
+  }
+}
+.hero-devices img {
+  display: block;
+  max-width: 52%;
+  height: auto;
+}
+.hero-devices .device-screen {
+  position: relative;
+  margin: 0 auto;
+  z-index: 3;
+}
+.hero-devices .device-web,
+.hero-devices .device-tool {
+  position: absolute;
+  top: 18%;
+  z-index: 1;
+  will-change: transform;
+}
+.hero-devices .device-web {
+  left: 0;
+}
+.hero-devices .device-tool {
+  top: 22%;
+  right: 0;
+}
