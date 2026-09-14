@@ -86,10 +86,8 @@ $url = Request::getString('REQUEST_URI', '', 'server');
 if ($isFrontPage) {
     $bodyClass = 'page-home';
 
-    // Add homepage-specific stuff
-    // $this->addScript(
-    //     $jsBase . '/js/pages/home.js?v=' . filemtime(__DIR__ . '/js/pages/home.js')
-    // );
+    // The clouds along the foot of the hero, and nothing else
+    $this->addScript($this->asset('js/home.js'));
 }
 
 $browser = new \Hubzero\Browser\Detector();
@@ -319,6 +317,20 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             <div class="inner">
                 <jdoc:include type="modules" name="hero" />
             </div>
+            <?php // A hub on a screen, with what it runs behind it. Decoration. ?>
+            <div class="hero-devices" aria-hidden="true">
+                <img class="device-web" alt=""
+                    src="<?php echo $this->asset('images/hubzero-web.png'); ?>" />
+                <img class="device-tool" alt=""
+                    src="<?php echo $this->asset('images/hubzero-tool.png'); ?>" />
+                <img class="device-screen" alt=""
+                    src="<?php echo $this->asset('images/screen.png'); ?>" />
+            </div>
+        </div>
+        <?php // Decoration, and the boundary between the hero's ground and the page's ?>
+        <div class="home-clouds" aria-hidden="true">
+            <span class="clouds-band"></span>
+            <span class="clouds-hill"></span>
         </div>
     </div><!-- / .home-head -->
     <?php endif; ?>
