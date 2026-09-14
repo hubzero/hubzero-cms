@@ -42,12 +42,13 @@ function start() {
 		return;
 	}
 
-	// Somebody who has asked their system to reduce motion means it
-	var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-
-	if (still && still.matches) {
-		return;
-	}
+	// Somebody who has asked their system to reduce motion means it. Asked
+	// every frame rather than once at startup: the setting can be changed
+	// while the page is open, and a page that only honours it if you reload
+	// honours it by accident.
+	var still = window.matchMedia
+		? window.matchMedia('(prefers-reduced-motion: reduce)')
+		: null;
 
 	var waiting = false;
 
@@ -61,17 +62,22 @@ function start() {
 			return;
 		}
 
+		// Everything below is scaled by this, so turning motion off puts the
+		// pictures back where the stylesheet had them instead of freezing
+		// them wherever they had got to.
+		var k = (still && still.matches) ? 0 : 1;
+
 		// The far band drifts sideways and sinks; the near ridge lifts. Two
 		// directions read as distance in a way that two speeds do not.
-		band.style.transform = 'translate3d(' + (y * 0.16) + 'px, ' + (y * 0.38) + 'px, 0)';
-		hill.style.transform = 'translate3d(' + (y * -0.09) + 'px, ' + (y * -0.14) + 'px, 0)';
+		band.style.transform = 'translate3d(' + (y * 0.16 * k) + 'px, ' + (y * 0.38 * k) + 'px, 0)';
+		hill.style.transform = 'translate3d(' + (y * -0.09 * k) + 'px, ' + (y * -0.14 * k) + 'px, 0)';
 
 		// The two laptops come out from behind the monitor, the way they did
 		// on the welcome template. That took 900 pixels of scroll there, on a
 		// page four screens long; the hero is gone by 500, so they travel in
 		// the distance there is.
 		if (web && tool) {
-			var out = Math.min(y / 420, 1) * 16;
+			var out = Math.min(y / 420, 1) * 16 * k;
 
 			web.style.transform  = 'translate3d(' + (-out) + '%, 0, 0)';
 			tool.style.transform = 'translate3d(' + out + '%, 0, 0)';
@@ -89,6 +95,16 @@ function start() {
 
 	window.addEventListener('scroll', onScroll, { passive: true });
 	window.addEventListener('resize', onScroll, { passive: true });
+
+	// And settle the pictures the moment the preference changes, rather than
+	// leaving them where they were until something else scrolls
+	if (still) {
+		if (still.addEventListener) {
+			still.addEventListener('change', onScroll);
+		} else if (still.addListener) {
+			still.addListener(onScroll);
+		}
+	}
 
 	place();
 }
