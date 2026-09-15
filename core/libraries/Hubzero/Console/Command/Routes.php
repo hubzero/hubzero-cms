@@ -105,49 +105,17 @@ class Routes extends Base implements CommandInterface
             return;
         }
 
-        $db       = App::get('db');
-        $menutype = $this->menutype($db);
-        $root     = $db->getQuery(true)
-            ->select('id')
-            ->from('#__menu')
-            ->whereEquals('parent_id', 0)
-            ->value('id');
-
-        $root = $root ? (int) $root : 1;
+        $routes = new \Hubzero\Menu\ComponentRoute(App::get('db'));
 
         foreach ($found['missing'] as $element => $id) {
-            $alias = substr($element, 4);
-
-            $db->getQuery()
-                ->insert('#__menu')
-                ->values(array(
-                    'menutype'          => $menutype,
-                    'title'             => ucfirst($alias),
-                    'alias'             => $alias,
-                    'note'              => '',
-                    'path'              => $alias,
-                    'link'              => 'index.php?option=' . $element,
-                    'type'              => 'component',
-                    'published'         => 1,
-                    'parent_id'         => $root,
-                    'level'             => 1,
-                    'component_id'      => (int) $id,
-                    'ordering'          => 0,
-                    'checked_out'       => 0,
-                    'browserNav'        => 0,
-                    'access'            => 1,
-                    'img'               => '',
-                    'template_style_id' => 0,
-                    'params'            => '',
-                    'lft'               => 0,
-                    'rgt'               => 0,
-                    'home'              => 0,
-                    'language'          => '*',
-                    'client_id'         => 0
-                ))
-                ->execute();
-
-            $this->output->addLine('Gave ' . $element . ' the address /' . $alias, 'success');
+            if ($routes->create($element, $id)) {
+                $this->output->addLine(
+                    'Gave ' . $element . ' the address /' . substr($element, 4),
+                    'success'
+                );
+            } else {
+                $this->output->addLine('Could not give ' . $element . ' an address', 'warning');
+            }
         }
 
         foreach ($found['orphaned'] as $alias => $element) {
@@ -156,11 +124,6 @@ class Routes extends Base implements CommandInterface
                 . ' and an address somebody may be linking to is not this command\'s to remove',
                 'warning'
             );
-        }
-
-        if ($found['missing']) {
-            $this->rebuild($db);
-            $this->output->addLine('Menu tree rebuilt.', 'success');
         }
     }
 
@@ -175,13 +138,15 @@ class Routes extends Base implements CommandInterface
 
         $components = array();
 
-        foreach ($db->getQuery(true)
+        $installed = $db->getQuery(true)
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
             ->from('#__extensions')
             ->whereEquals('type', 'component')
-            ->fetch() as $row) {
+            ->fetch();
+
+        foreach ($installed as $row) {
             $element = is_object($row) ? $row->element : $row['element'];
             $enabled = (int) (is_object($row) ? $row->enabled : $row['enabled']);
             $id      = (int) (is_object($row) ? $row->extension_id : $row['extension_id']);
@@ -203,13 +168,15 @@ class Routes extends Base implements CommandInterface
 
         $routed = array();
 
-        foreach ($db->getQuery(true)
+        $entries = $db->getQuery(true)
             ->select('alias')
             ->select('link')
             ->from('#__menu')
             ->whereEquals('client_id', 0)
             ->whereEquals('menutype', $this->menutype($db))
-            ->fetch() as $row) {
+            ->fetch();
+
+        foreach ($entries as $row) {
             $alias = is_object($row) ? $row->alias : $row['alias'];
             $link  = is_object($row) ? $row->link : $row['link'];
 
@@ -303,47 +270,10 @@ class Routes extends Base implements CommandInterface
      */
     protected function menutype($db)
     {
-        if ($db->tableHasField('#__menu_types', 'type')) {
-            $found = $db->getQuery(true)
-                ->select('menutype')
-                ->from('#__menu_types')
-                ->whereEquals('type', 'component')
-                ->value('menutype');
+        $routes = new \Hubzero\Menu\ComponentRoute($db);
 
-            if ($found) {
-                return $found;
-            }
-        }
+        $found = $routes->menutype();
 
-        return 'components';
-    }
-
-    /**
-     * Put lft and rgt back in order after inserting
-     *
-     * @param   object  $db  The database
-     * @return  void
-     */
-    protected function rebuild($db)
-    {
-        $rows = $db->getQuery(true)
-            ->select('id')
-            ->from('#__menu')
-            ->order('lft', 'asc')
-            ->fetch();
-
-        $left = 1;
-
-        foreach ($rows as $row) {
-            $id = (int) (is_object($row) ? $row->id : $row['id']);
-
-            $db->setQuery(
-                'UPDATE `#__menu` SET `lft` = ' . $left . ', `rgt` = ' . ($left + 1)
-                . ' WHERE `id` = ' . $id . ' AND `rgt` = `lft` + 1'
-            );
-            $db->query();
-
-            $left += 2;
-        }
+        return $found ? $found : 'components';
     }
 }
