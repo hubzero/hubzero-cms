@@ -1196,7 +1196,7 @@ INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link
 -- Dumping data for table `#__menu_types`
 --
 
-INSERT INTO `#__menu_types` (`id`, `menutype`, `title`, `description`) VALUES (1,'mainmenu','Main Menu','The main menu for the site');
+INSERT INTO `#__menu_types` (`id`, `menutype`, `title`, `description`, `type`) VALUES (1,'mainmenu','Main Menu','The main menu for the site','display');
 
 --
 -- Dumping data for table `#__messages`
