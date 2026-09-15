@@ -416,3 +416,57 @@ Recorded because they were stated confidently and were wrong.
 4. **A** — last, largest, and the only one that rewrites live URLs.
 
 A and B are independent: B is worth doing whether or not A ever happens.
+
+---
+
+## What is built, as of 2026-09-15
+
+**D is done.** The friendly URLs that were in the old `default` menu were
+separated from the component routes in the migration: an item whose alias is its
+own component's name is a route and stays; anything else is a page and was moved
+to the display menu with `menu_show=0`, which is how the front page and the
+congratulations page stopped being filed under "Generated; not edited here".
+
+**B is done.**
+
+- `#__menu_types` has a `type` of `display`, `component` or `routing`, in
+  `schema.sql` and in `Migration20260914180000MenuTypes.php`.
+- The old `default` menu became `components`, typed `component`, with a
+  description that says what it is.
+- `Migration20260914190000ComponentRoutes.php` backfills a route for every
+  enabled site component, less an exclusion list of the ones that are machinery
+  rather than a page.
+- `AddComponentEntry` takes a sixth argument and makes the route at install
+  time; `EnableComponent` and `DisableComponent` publish and unpublish it, so a
+  component that is switched off does not leave an address answering.
+- `muse routes check` and `muse routes fix` report and repair. All three hubs
+  read "28 site components should have an address. None is missing one."
+- The menu picker in `com_menus` only offers `display` menus, so a menu module
+  can no longer be pointed at the routing table.
+- The Menus list shows each menu's type and description, and offers no "add a
+  menu module" link for a menu that is never displayed.
+- Item editing is locked on a `component` menu — `alias`, `path`, `link`,
+  `type`, `component_id`, `menutype`, `parent_id`, `home`, `language` and
+  ordering — in the form and again in `save()`, because a disabled field still
+  posts. `destroy()` refuses. Title, note, access, template style, params and
+  published stay editable.
+- The component menu itself cannot be renamed, retyped or deleted, and no other
+  menu can be turned into one.
+- The menu form offers Display or Routing when creating a menu, so the third
+  type has somewhere to come from. A routing item was confirmed to resolve, to
+  render its component, and to stay out of the rendered menu.
+
+**C is not built.** Dev-only lazy generation in the `component` parse rule.
+
+**A is not built** and should not start without saying so first: it is the only
+piece that rewrites URLs on live hubs.
+
+### Defects found on the way, not fixed here
+
+- `com_menus`' items controller calls `$model->batch($vars, $pks, $contexts)`,
+  which resolves to `Hubzero\Database\Relational::batch(int $size)` and fatals.
+  The model's implementation is `batchTask()`. Batch has never worked. The
+  guard that keeps generated entries out of a batch is in `batchTask()`, ready
+  for whenever that is corrected.
+- `/redirect` returns 500.
+- Admin pages throw `jQuery is not defined`.
