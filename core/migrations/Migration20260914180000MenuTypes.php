@@ -93,12 +93,81 @@ class Migration20260914180000MenuTypes extends Base
         );
         $this->db->query();
 
+        // Not everything in there is a component route. The starter data filed
+        // the front page in it, and a page about having just installed a hub -
+        // both com_content articles that happen to live in the same menu. A
+        // route is an item whose alias is its own component's name; anything
+        // else is a page, and a page does not belong in a generated menu.
+        $strays = array();
+
+        foreach ($this->db->getQuery(true)
+            ->select('id')
+            ->select('alias')
+            ->select('link')
+            ->from('#__menu')
+            ->whereEquals('menutype', 'default')
+            ->fetch() as $row) {
+            $id    = (int) (is_object($row) ? $row->id : $row['id']);
+            $alias = is_object($row) ? $row->alias : $row['alias'];
+            $link  = (string) (is_object($row) ? $row->link : $row['link']);
+
+            if (preg_match('/option=com_(\w+)/', $link, $m) && $m[1] === $alias) {
+                continue;
+            }
+
+            $strays[$id] = $alias;
+        }
+
         $this->db->setQuery(
             "UPDATE `#__menu` SET `menutype` = 'components' WHERE `menutype` = 'default'"
         );
         $this->db->query();
 
         $this->log('Renamed the "default" menu to "components" and said what it is for');
+
+        if (!$strays) {
+            return;
+        }
+
+        // They were invisible where they were, because nothing rendered that
+        // menu. They stay invisible here, by saying so rather than by nobody
+        // having pointed a module at them. Their level and parent do not
+        // change, so neither do their paths.
+        $display = $this->db->getQuery(true)
+            ->select('menutype')
+            ->from('#__menu_types')
+            ->whereEquals('type', 'display')
+            ->order('id', 'asc')
+            ->value('menutype');
+
+        if (!$display) {
+            $this->log('Nowhere to move ' . count($strays) . ' pages to; left where they are', 'warning');
+
+            return;
+        }
+
+        foreach ($strays as $id => $alias) {
+            $params = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__menu')
+                ->whereEquals('id', $id)
+                ->value('params');
+
+            $params = json_decode((string) $params, true);
+            $params = is_array($params) ? $params : array();
+            $params['menu_show'] = 0;
+
+            $this->db->getQuery()
+                ->update('#__menu')
+                ->set(array(
+                    'menutype' => $display,
+                    'params'   => json_encode($params),
+                ))
+                ->whereEquals('id', $id)
+                ->execute();
+
+            $this->log('Moved /' . $alias . ' to ' . $display . ', hidden: it is a page, not a route');
+        }
     }
 
     /**
