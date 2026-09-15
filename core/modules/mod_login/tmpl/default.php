@@ -230,7 +230,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 <?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
     <p class="create">
         <?php
-        $regUrl = Request::base(true) . '/register'
+        $regUrl = Route::url('index.php?option=com_members&view=register&layout=create')
             . ($return ? '?return=' . $return : '');
         ?>
         <a href="<?php echo $regUrl; ?>" class="register">

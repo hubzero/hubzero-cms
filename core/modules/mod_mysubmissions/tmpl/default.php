@@ -14,7 +14,15 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 if (User::isGuest()) { ?>
-    <p class="warning"><?php echo Lang::txt('MOD_MYSUBMISSIONS_WARNING'); ?></p>
+    <p class="warning">
+        <?php
+        // The address comes from the router, so the string cannot carry it
+        echo Lang::txt(
+            'MOD_MYSUBMISSIONS_WARNING',
+            Route::url('index.php?option=com_members&view=register&layout=create')
+        );
+        ?>
+    </p>
 <?php } else {
     $steps = $this->steps;
 
