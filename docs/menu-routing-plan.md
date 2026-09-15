@@ -69,8 +69,22 @@ site components with no route: 14
 Of those fourteen, most should not have a route: `com_content` routes through
 articles, `com_cron` / `com_system` / `com_mailto` / `com_media` /
 `com_redirect` / `com_help` / `com_messages` are infrastructure, and
-`com_oaipmh` / `com_oauth` / `com_saml` are machine-facing. The genuine gaps
-are **`com_search` and `com_dataviewer`** — two.
+`com_oaipmh` / `com_oauth` / `com_saml` are machine-facing.
+
+Hitting each of them directly, on a hub with `debug` off, narrows it further:
+
+```
+/search       200   routes and renders, no Itemid   <- the genuine gap
+/dataviewer   404   has a site/ directory but does not answer at its own name
+/oaipmh       200   routes, no Itemid               machine-facing, fine
+/oauth        403   machine-facing, fine
+/saml         404   machine-facing, fine
+/redirect     500   reachable by name and errors    <- its own bug, unrelated
+```
+
+So the genuine gap is **`com_search`**, one component. `com_dataviewer` needs
+looking at on its own before assuming a menu entry would fix it, and the 500 on
+`/redirect` is a separate defect found while checking this.
 
 ---
 
@@ -119,15 +133,57 @@ covered. Note that `substr($option, 4)` is the same rule the router's fallback
 uses at `routes.php:164`, so the registry and the fallback would agree by
 construction rather than by coincidence.
 
-Three decisions inside this:
+Decisions inside this:
 
 - **Which components qualify.** `com_cron` and `com_system` go through the same
   macro. The honest test is whether the component has a `site/` directory, either
   checked by the macro or passed by the caller the way `$createMenuItem` is now.
-- **Existing hubs** need a one-time backfill. On the evidence that is two
-  components, not a sweep.
+- **Existing hubs** need a one-time backfill. On the evidence that is one
+  component, `com_search` - not a sweep. See the note on `com_dataviewer` below.
 - **`DisableComponent`** should unpublish the site item to match, or a
   switched-off component keeps answering.
+- **A `muse` reconcile command**, for drift the macro cannot see: a
+  site-specific component dropped in without a migration, where neither the
+  install hook nor a backfill knows it exists. This is also the escape hatch for
+  the protection below.
+
+#### The items are protected, not hidden
+
+The menu is generated, so hand-editing it is how `default` drifted in the first
+place. But it must not be hidden from the admin, and the reason is the reason
+the entries exist at all: an Itemid is only worth having because two things hang
+off it, and both are set against the item.
+
+- `#__modules_menu.menuid` - assigning a module to that page
+- `#__menu.template_style_id` - giving that page its own template style
+
+Hide the item and a hub cannot put a module on Search or give it its own style,
+at which point the entry buys nothing over the no-Itemid fallback and there is
+no point generating it.
+
+So: identity locked, assignment open.
+
+| locked | open |
+|---|---|
+| `alias`, `path`, `link` - derived from the component name; editing them breaks the agreement with `routes.php:164` | `template_style_id` |
+| `type`, `component_id` | `params`, including `menu_show` |
+| deleting the item | `access` |
+| deleting or renaming the menutype | |
+
+`published` follows the component, set by `EnableComponent` and
+`DisableComponent` rather than toggled by hand. Otherwise a hub can switch off a
+route while leaving the component on, and have no way to work out why the page
+stopped answering.
+
+**Mechanism.** A `protected` column on `#__menu` rather than keying off the
+menutype's name. There is precedent in the codebase: `#__extensions.protected`
+exists already, and `Migration20150626141512Core.php` sets it on the core
+templates. A column generalises; a hard-coded menutype name in `com_menus` does
+not.
+
+**Escape hatch.** A protected item with no override is a trap the first time a
+route is wrong or two components collide. Protected means the admin UI refuses
+and the `muse` command can do it - which is the same command that reconciles.
 
 ### C. Lazy generation, in development only
 
