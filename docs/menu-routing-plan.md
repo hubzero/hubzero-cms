@@ -844,3 +844,54 @@ was that empty response. Status codes alone hid it.
 **Status without size.** `200` on its own says almost nothing. Every probe here
 records the body size as well, which is what made the eight-byte ` current`
 difference visible and what would have caught the wrong port immediately.
+
+---
+
+## Correction: the alias items should become nested items, not flat ones
+
+The section above treats an alias item as something to collapse *away*, and
+weighs whether a display item should take the flat address `/resources` off the
+generated entry. That framing is backwards, and the corrected version is this.
+
+**A nested menu item is supposed to answer at its section's address.** Resources
+under Discover should be `/discover/resources`. That is what nesting it means,
+and it was never the problem.
+
+**The problem was that the prefix did not stick.** Once a visitor was inside a
+section, the next link to the same component dropped back to the flat route. The
+build rule has always meant to prevent that - given a link with no Itemid it
+looks up the current page and carries its Itemid through if the page belongs to
+the same component - but it asked `getItem()` for the Itemid it had just
+established was null, so it fetched nothing every time. `getActive()` is the
+page you are on. Fixed.
+
+**Which makes the alias items the thing standing in the way.** The router never
+matches `type = 'alias'`, so `/nav-discover/resources` is a 404 for as long as
+Resources is an alias; the alias exists only to be drawn, and it draws a link to
+the target's flat route. A prefix cannot stick to an address that does not
+exist.
+
+So the direction is to **convert each alias into a real nested item**, not to
+flatten it:
+
+- it answers at `/discover/resources`, which is what the nesting says
+- links inside the section keep the prefix - `/discover/resources/browse`
+- the generated `/resources` stays underneath as the floor, and is not removed
+- the row count does not change, and nothing is deleted
+- the item an administrator sees and edits is the one that governs the page,
+  so a template style or per-page module assigned to it finally applies
+
+Measured on lucent with Resources converted: `/nav-discover/resources` and
+`/nav-discover/resources/browse` both answer, links inside the section keep the
+prefix, a link built from an unrelated page goes to the nested item, and
+`/resources` still answers underneath.
+
+**Generated component entries are not to be removed.** They are the floor. The
+earlier option of deleting a shadowed entry is withdrawn.
+
+### What is still open
+
+The inheritance only helps a link that goes through `Route::`. Anything building
+a component url by string concatenation bypasses the router and will still emit
+the flat route, so a section's prefix will leak away at those links. How much of
+the codebase does that has not been measured.
