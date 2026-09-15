@@ -889,6 +889,52 @@ prefix, a link built from an unrelated page goes to the nested item, and
 **Generated component entries are not to be removed.** They are the floor. The
 earlier option of deleting a shadowed entry is withdrawn.
 
+### One component, several addresses
+
+A consequence of the above, and an intended one: once menu items are nested
+rather than aliased, a component can be reached by more than one address, and
+what differs between them is the Itemid.
+
+Measured on lucent with com_resources in two sections and the generated entry
+underneath:
+
+| address | Itemid | active item |
+|---|---|---|
+| `/resources` | 246 | the generated entry, nothing highlighted in the menu |
+| `/nav-discover/resources` | 166 | `item-166 current`, under Discover |
+| `/nav-learn/resources` | 249 | `item-249 current`, under Learn |
+
+All three answer, with the same component rendering the same content. What the
+Itemid carries is the page identity: the per-page modules, the template style,
+the breadcrumb, and which entry the menu highlights. So the three are not
+duplicates by accident - they are three presentations of one component, which is
+what a menu item has always been for.
+
+Each keeps its own context. From inside `/nav-discover/resources` the next link
+is `/nav-discover/resources/browse`; from `/nav-learn/resources` it is
+`/nav-learn/resources/browse`; from `/resources` it is `/resources/browse`. The
+three worlds do not leak into each other.
+
+**What this asks of a hub.** The same content now sits at several urls, so a hub
+that cares about that has to decide which is canonical and say so - the router
+does not, and never did. Nothing here emits a canonical link tag. That is worth
+knowing before a hub puts one component in three sections.
+
+**How a link from outside picks.** A link built for a component from a page that
+is not that component has no context to inherit, so it asks which item speaks
+for the component: highest ranked wins - display over routing over generated -
+and where the rank ties, the item earlier in the tree. Which is the same
+fallback the parse side uses when two items of equal kind claim an address, so
+both halves settle it the same way. It is still a tie-break rather than an
+answer: a hub with a component in two display menus gets the one that happens to
+sit earlier. If which one is canonical matters, the hub should say so by
+ordering, or keep a single non-nested item for that component.
+
+**`muse routes check` does not report this**, and should not: several addresses
+for one component is a hub's choice, not a fault. What it reports is two items
+claiming *the same* address, which is the case where one of them cannot be
+reached.
+
 ### What is still open
 
 The inheritance only helps a link that goes through `Route::`. Anything building
