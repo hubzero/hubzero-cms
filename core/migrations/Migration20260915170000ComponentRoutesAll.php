@@ -87,13 +87,15 @@ class Migration20260915170000ComponentRoutesAll extends Base
     {
         $found = array();
 
-        foreach ($this->db->getQuery(true)
+        $rows = $this->db->getQuery(true)
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
             ->from('#__extensions')
             ->whereEquals('type', 'component')
-            ->fetch() as $row) {
+            ->fetch();
+
+        foreach ($rows as $row) {
             $element = is_object($row) ? $row->element : $row['element'];
 
             $found[$element] = array(

@@ -231,7 +231,6 @@ class Routes extends Base implements CommandInterface
         $orphaned = array();
 
         foreach ($routed as $alias => $element) {
-
             if (isset($components[$element])) {
                 continue;
             }
