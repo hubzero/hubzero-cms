@@ -23,36 +23,34 @@ namespace Hubzero\Menu;
 class ComponentRoute
 {
     /**
-     * Components with a site half that is not a page
+     * Components with nothing on the site to answer with
      *
-     * Machinery, or an endpoint something else talks to rather than a person.
-     * Measured rather than assumed - at its own name, com_cron answers with
-     * JSON, com_oaipmh with OAI-PMH XML, com_mailto 402, com_oauth and
-     * com_media 403, and com_saml, com_messages, com_system and com_dataviewer
-     * 404 because they have no site view to show. com_redirect is the admin's
-     * redirect manager and currently 500s. com_content routes through article
-     * paths and has never answered at /content. com_help does render a page,
-     * but forces tmpl=help on itself, so a template style from a menu entry
-     * would be ignored.
+     * Not a judgement about which components are interesting - that kind of
+     * list ages badly, and a component that is machinery today may grow a page
+     * tomorrow with nobody remembering to take it off. Only the ones with no
+     * site code to run at all:
      *
-     * Excluding one does not make it unreachable: the router still resolves
-     * /cron by component name. It means only that there is no menu entry, and
-     * so no Itemid - which is right for something no one navigates to.
+     *   com_messages   a language file in site/, and nothing else
+     *   com_media      one class and a helper
+     *   com_system     a router and a class; routing machinery
+     *
+     * Everything else with a site directory gets an address, including the
+     * endpoints something talks to rather than a person - com_cron answering
+     * JSON, com_oaipmh answering XML, com_oauth and com_saml. An address costs
+     * nothing there: the router already resolves /cron by component name, so
+     * the entry adds an Itemid and takes a name that nothing else wanted, and
+     * the day one of them grows a page it already has somewhere to put it.
+     *
+     * Note that having no site/views directory is not the test. com_dataviewer
+     * has none and is a full site component - Controller.php, View/Gallery.php,
+     * View/Spreadsheet.php, its own router and a tree of assets - written in a
+     * namespaced layout rather than the old one.
      *
      * @var  array
      */
     protected static $notPages = array(
-        'com_content',
-        'com_cron',
-        'com_dataviewer',
-        'com_help',
-        'com_mailto',
         'com_media',
         'com_messages',
-        'com_oaipmh',
-        'com_oauth',
-        'com_redirect',
-        'com_saml',
         'com_system',
     );
 
