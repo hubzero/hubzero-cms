@@ -56,7 +56,7 @@ class Migration20260915170000ComponentRoutesAll extends Base
                 continue;
             }
 
-            if ($routes->create($element, $row['id'], $row['enabled'])) {
+            if ($routes->create($element, $row['id'])) {
                 $made++;
             }
         }

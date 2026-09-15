@@ -64,10 +64,42 @@ class Site extends Base
                 ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
         }
 
+        // A menu item for a component the hub has switched off is not a page.
+        // The dispatcher already refuses to run it, so the item was only ever
+        // a dead link in the menu and an address held against anything else
+        // that wanted it. Reading it off #__extensions rather than keeping the
+        // item's published state in step means it is right however the
+        // component was switched off - by a migration, by the extension
+        // manager, or by hand.
+        //
+        // An item with no component - a heading, a separator, a url, an alias -
+        // says so with component_id 0 and stays. Anything else has to find its
+        // component switched on, so an item left behind by a component that was
+        // uninstalled goes too rather than joining to nothing and being kept.
+        $query->whereRaw('(`m`.`component_id` = 0 OR `e`.`enabled` = 1)');
+
         // Set the query
         $db->setQuery($query->toString());
 
         $this->_items = $db->loadObjectList('id');
+
+        // An alias points at another item by id. If that item has just gone -
+        // because its component was switched off - the alias is left pointing
+        // at nothing, and the router builds a url out of the hole.
+        foreach ($this->_items as $id => $item) {
+            if ($item->type != 'alias') {
+                continue;
+            }
+
+            $params = json_decode((string) $item->params, true);
+            $target = is_array($params) && isset($params['aliasoptions'])
+                ? (int) $params['aliasoptions']
+                : 0;
+
+            if ($target && !isset($this->_items[$target])) {
+                unset($this->_items[$id]);
+            }
+        }
 
         foreach ($this->_items as &$item) {
             // Get parent information.
