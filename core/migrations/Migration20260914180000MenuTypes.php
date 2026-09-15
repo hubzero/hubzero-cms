@@ -52,6 +52,15 @@ class Migration20260914180000MenuTypes extends Base
             $this->log('Added a type to #__menu_types');
         }
 
+        // A `components` menu made before the column existed - the main menu
+        // migration runs first and makes one - took the column default and is
+        // typed display. Whatever made it, it is the component menu.
+        $this->db->setQuery(
+            "UPDATE `#__menu_types` SET `type` = 'component'"
+            . " WHERE `menutype` = 'components' AND `type` <> 'component'"
+        );
+        $this->db->query();
+
         // The one that was a component menu without being called one
         $existing = $this->db->getQuery(true)
             ->select('id')

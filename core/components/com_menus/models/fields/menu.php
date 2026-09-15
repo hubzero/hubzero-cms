@@ -44,9 +44,15 @@ class Menu extends Select
             ->from('#__menu_types')
             ->order('title', 'asc');
 
-        // Older hubs have no type; there, every menu is one to display
-        if ($db->tableHasField('#__menu_types', 'type')) {
-            $query->whereEquals('type', 'display');
+        // Only when the form asks. A menu module says kinds="display" so it
+        // cannot be pointed at the routing table; the item form says
+        // kinds="display,routing" so an item can be filed in a routing menu
+        // but not in the generated component menu. With no attribute every
+        // menu is offered, which is what a hub without the type column gets.
+        $kinds = array_filter(array_map('trim', explode(',', (string) $this->element['kinds'])));
+
+        if ($kinds && $db->tableHasField('#__menu_types', 'type')) {
+            $query->whereIn('type', $kinds);
         }
 
         $db->setQuery($query->toString());

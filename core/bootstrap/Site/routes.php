@@ -150,6 +150,11 @@ $router->rules('build')->append('content', function ($uri) {
 $speaksFor = function ($option) {
     static $best = array();
 
+    // ?option[]=x is a request, and an array is not a key
+    if (!is_string($option) || $option === '') {
+        return null;
+    }
+
     if (array_key_exists($option, $best)) {
         return $best[$option];
     }
@@ -161,16 +166,9 @@ $speaksFor = function ($option) {
     }
 
     $rank = function ($item) {
-        $kind = isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display';
-
-        switch ($kind) {
-            case 'component':
-                return 2;
-            case 'routing':
-                return 1;
-            default:
-                return 0;
-        }
+        return \Hubzero\Menu\ComponentRoute::rank(
+            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display'
+        );
     };
 
     $found     = null;
@@ -236,7 +234,7 @@ $router->rules('build')->append('component', function ($uri) use ($speaksFor) {
 
     $built = false;
 
-    if (isset($query['Itemid']) && !empty($query['Itemid']) && App::has('menu.manager')) {
+    if (!empty($query['Itemid']) && !is_array($query['Itemid']) && App::has('menu.manager')) {
         $menu = App::get('menu.manager')->menu('site');
         $item = $menu->getItem($query['Itemid']);
         if (is_object($item) && $query['option'] == $item->component) {
@@ -429,7 +427,7 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
             // component. That is only ever an item whose link is the component
             // and nothing else, so a url naming a particular view still gets
             // nothing rather than being handed a page about something else.
-            if (!empty($query['Itemid']) && $menu->getItem($query['Itemid'])) {
+            if (!empty($query['Itemid']) && !is_array($query['Itemid']) && $menu->getItem($query['Itemid'])) {
                 $menu->setActive($query['Itemid']);
             } elseif ($item = $speaksFor($query['option'])) {
                 $uri->setUriVar('Itemid', $item->id);
@@ -479,16 +477,9 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
     // address, and it steps aside the moment the hub says otherwise. Take the
     // hub's item away again and the generated one answers once more.
     $rank = function ($item) {
-        $kind = isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display';
-
-        switch ($kind) {
-            case 'component':
-                return 2;
-            case 'routing':
-                return 1;
-            default:
-                return 0;
-        }
+        return \Hubzero\Menu\ComponentRoute::rank(
+            isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display'
+        );
     };
 
     foreach ($items as $item) {

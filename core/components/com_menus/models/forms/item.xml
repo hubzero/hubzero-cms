@@ -59,6 +59,7 @@
 		<field
 			name="menutype"
 			type="menu"
+			kinds="display,routing"
 			label="COM_MENUS_ITEM_FIELD_ASSIGNED_LABEL"
 			description="COM_MENUS_ITEM_FIELD_ASSIGNED_DESC"
 			class="inputbox"
