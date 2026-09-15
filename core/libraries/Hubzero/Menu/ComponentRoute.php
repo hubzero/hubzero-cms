@@ -23,6 +23,40 @@ namespace Hubzero\Menu;
 class ComponentRoute
 {
     /**
+     * Components with a site half that is not a page
+     *
+     * Machinery, or an endpoint something else talks to rather than a person.
+     * Measured rather than assumed - at its own name, com_cron answers with
+     * JSON, com_oaipmh with OAI-PMH XML, com_mailto 402, com_oauth and
+     * com_media 403, and com_saml, com_messages, com_system and com_dataviewer
+     * 404 because they have no site view to show. com_redirect is the admin's
+     * redirect manager and currently 500s. com_content routes through article
+     * paths and has never answered at /content. com_help does render a page,
+     * but forces tmpl=help on itself, so a template style from a menu entry
+     * would be ignored.
+     *
+     * Excluding one does not make it unreachable: the router still resolves
+     * /cron by component name. It means only that there is no menu entry, and
+     * so no Itemid - which is right for something no one navigates to.
+     *
+     * @var  array
+     */
+    protected static $notPages = array(
+        'com_content',
+        'com_cron',
+        'com_dataviewer',
+        'com_help',
+        'com_mailto',
+        'com_media',
+        'com_messages',
+        'com_oaipmh',
+        'com_oauth',
+        'com_redirect',
+        'com_saml',
+        'com_system',
+    );
+
+    /**
      * Database connection
      *
      * @var  object
@@ -159,7 +193,21 @@ class ComponentRoute
             return false;
         }
 
+        if (in_array($option, self::$notPages, true)) {
+            return false;
+        }
+
         return is_dir(PATH_CORE . '/components/' . $option . '/site');
+    }
+
+    /**
+     * The components that should never be given an address
+     *
+     * @return  array
+     */
+    public static function notPages()
+    {
+        return self::$notPages;
     }
 
     /**
