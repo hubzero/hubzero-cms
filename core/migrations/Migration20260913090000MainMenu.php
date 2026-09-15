@@ -77,15 +77,6 @@ class Migration20260913090000MainMenu extends Base
         'usage'        => array('Usage', 'com_usage'),
         'developer'    => array('Developers', 'com_developer'),
 
-        // Not in the navigation - the header offers these - but a hub
-        // advertises /register everywhere and without a route it answers 404.
-        'login'        => array('Login', 'com_users', 'index.php?option=com_users&view=login'),
-        'logout'       => array('Logout', 'com_users', 'index.php?option=com_users&view=logout'),
-        'register'     => array(
-            'Register',
-            'com_members',
-            'index.php?option=com_members&view=register&layout=create'
-        ),
     );
 
     /**
