@@ -115,75 +115,100 @@ form. Resources then nests under Discover for display *and* answers at
 **Risk: highest of the four.** Every URL on every hub comes out of that column,
 and the migration rewrites paths on live sites.
 
-### B. Generate the component routes
+### B. Give a menu a type, and generate the component routes
 
-Rename what is left of `default` to say what it is — a Component menu, never
-displayed, one item per site component, giving each a route and an Itemid.
+A menu has no idea what it is for. `#__menu_types` holds `id`, `menutype`,
+`title` and `description`, and on a real hub that reads:
 
-Generate it in `AddComponentEntry`
-(`core/libraries/Hubzero/Content/Migration/Macros/AddComponentEntry.php`),
-which **already does exactly this for the admin menu** at line 125: it takes
+```
+id=1  menutype=mainmenu  title=Main Menu  description=The main menu for the site
+id=2  menutype=default   title=Default    description=(empty)
+```
+
+That empty description is the complaint in one line. A menu called Default,
+holding twenty-eight rows that turn out to be the routing table, explained
+nowhere. And nothing marks it as not-for-display: it is invisible only because
+no module happens to name it. Edit the menu module, pick Default, save, and the
+whole routing table lands in the masthead.
+
+So `#__menu_types` gains a **`type`**, and a menu says what it is:
+
+| type | what it holds | shown |
+|---|---|---|
+| `display` | what a visitor sees - `mainmenu`, `about`, `legal` | yes, by a menu module |
+| `component` | one generated entry per site component | never |
+| `routing` | addresses a hub wants working but not shown | never |
+
+Splitting generated from hand-added at the *menu* level rather than the row
+level means no per-row protected flag is needed: a `component` menu is
+generated and therefore locked, a `routing` menu is the hub's own and therefore
+editable. One field decides both.
+
+This is more work in the code than leaving it as convention, and that is the
+trade being made deliberately: the difficulty belongs to whoever maintains this,
+not to whoever has to understand a menu called Default.
+
+#### The conditionals
+
+There are fewer than expected, because the enumeration happens in two places
+and they want opposite answers.
+
+- **`com_menus/models/fields/menu.php:35`** - `SELECT menutype, title FROM
+  #__menu_types ORDER BY title`. This is the dropdown `mod_menu` uses to choose
+  which menu it renders (`mod_menu.xml:27`). **Filter to `type = 'display'`.**
+  One `WHERE` clause, and a routing menu can no longer be pointed at by a menu
+  module - which is what makes "never displayed" true rather than merely
+  intended.
+- **`com_menus/helpers/menus.php:121`, `getMenuLinks()`** - used by module
+  assignment. **Leave unfiltered, on purpose.** A module must be assignable to a
+  component or routing item, because that is the entire reason those items carry
+  an Itemid. Same for template style assignment.
+- **The menu manager** - show the type, and use the `description` column, which
+  currently holds nothing and is the cheapest part of fixing "a menu nobody can
+  explain".
+- **Item editing** - on a `component` menu, `alias`, `path`, `link`, `type` and
+  `component_id` are read-only and the item cannot be deleted; `template_style_id`,
+  `params` and `access` stay editable, because those are what the entry is for.
+  A `routing` menu is fully editable.
+- **`published`** on a component item follows the component, set by
+  `EnableComponent` and `DisableComponent`. Otherwise a hub can switch off a
+  route while leaving the component on, and have no way to work out why the page
+  stopped answering.
+- **Home and default** - only a `display` menu may hold the site default.
+- **Deleting a menu** - `display` and `routing` yes, `component` no.
+- **Escape hatch** - a locked item with no override is a trap the first time two
+  components collide. The admin UI refuses; the `muse` command below can do it.
+
+#### Generating the component menu
+
+`AddComponentEntry`
+(`core/libraries/Hubzero/Content/Migration/Macros/AddComponentEntry.php`)
+**already does exactly this for the admin menu** at line 125: it takes
 `$alias = substr($option, 4)`, sets `path` to the alias, links to
 `index.php?option=com_x`, handles the nested-set rebuild, and is idempotent on
 `(client_id, parent_id, alias)`. The site version is the same block with
-`client_id` 0 and its own menutype.
+`client_id` 0 and the component menutype.
 
 97 migrations call this macro, so every component installed from here on is
-covered. Note that `substr($option, 4)` is the same rule the router's fallback
-uses at `routes.php:164`, so the registry and the fallback would agree by
-construction rather than by coincidence.
-
-Decisions inside this:
+covered. `substr($option, 4)` is also the rule the router fallback uses at
+`routes.php:164`, so the registry and the fallback agree by construction rather
+than by coincidence.
 
 - **Which components qualify.** `com_cron` and `com_system` go through the same
-  macro. The honest test is whether the component has a `site/` directory, either
+  macro. The test is whether the component has a `site/` directory, either
   checked by the macro or passed by the caller the way `$createMenuItem` is now.
-- **Existing hubs** need a one-time backfill. On the evidence that is one
-  component, `com_search` - not a sweep. See the note on `com_dataviewer` below.
-- **`DisableComponent`** should unpublish the site item to match, or a
-  switched-off component keeps answering.
-- **A `muse` reconcile command**, for drift the macro cannot see: a
-  site-specific component dropped in without a migration, where neither the
-  install hook nor a backfill knows it exists. This is also the escape hatch for
-  the protection below.
+- **Existing hubs** need a one-time backfill, and on the evidence that is one
+  component, `com_search`.
+- **A `muse` reconcile command** for drift the macro cannot see - a
+  site-specific component dropped in without a migration - which doubles as the
+  override for locked items.
 
-#### The items are protected, not hidden
+#### Migration
 
-The menu is generated, so hand-editing it is how `default` drifted in the first
-place. But it must not be hidden from the admin, and the reason is the reason
-the entries exist at all: an Itemid is only worth having because two things hang
-off it, and both are set against the item.
-
-- `#__modules_menu.menuid` - assigning a module to that page
-- `#__menu.template_style_id` - giving that page its own template style
-
-Hide the item and a hub cannot put a module on Search or give it its own style,
-at which point the entry buys nothing over the no-Itemid fallback and there is
-no point generating it.
-
-So: identity locked, assignment open.
-
-| locked | open |
-|---|---|
-| `alias`, `path`, `link` - derived from the component name; editing them breaks the agreement with `routes.php:164` | `template_style_id` |
-| `type`, `component_id` | `params`, including `menu_show` |
-| deleting the item | `access` |
-| deleting or renaming the menutype | |
-
-`published` follows the component, set by `EnableComponent` and
-`DisableComponent` rather than toggled by hand. Otherwise a hub can switch off a
-route while leaving the component on, and have no way to work out why the page
-stopped answering.
-
-**Mechanism.** A `protected` column on `#__menu` rather than keying off the
-menutype's name. There is precedent in the codebase: `#__extensions.protected`
-exists already, and `Migration20150626141512Core.php` sets it on the core
-templates. A column generalises; a hard-coded menutype name in `com_menus` does
-not.
-
-**Escape hatch.** A protected item with no override is a trap the first time a
-route is wrong or two components collide. Protected means the admin UI refuses
-and the `muse` command can do it - which is the same command that reconciles.
+`type` defaults to `display`, so every existing menu keeps working. The existing
+`default` menutype becomes `component`; once D has removed the friendly URLs it
+holds nothing else. A `routing` menu starts empty and exists for a hub that
+wants an address without a link to it.
 
 ### C. Lazy generation, in development only
 
@@ -239,9 +264,10 @@ generated registry.
 
 ### Where that leaves things
 
-Nothing in a menutype nobody can explain. Everything is either **derived** (the
-Component menu) or **deliberately chosen** (`mainmenu`, including hidden items
-for URLs a hub wants to keep).
+Nothing in a menutype nobody can explain. Every menu says what it is for, and a
+menu that is never displayed cannot be pointed at by a menu module. Entries are
+either **generated** (a `component` menu, locked), **chosen but not shown** (a
+`routing` menu), or **shown** (a `display` menu).
 
 ---
 
@@ -296,6 +322,25 @@ let an admin add an item when they want either.
 It lost to B once it became clear the macro already creates the admin item — at
 which point generating the site one is a near-copy in a place that already
 exists, rather than new machinery.
+
+### Removing the component router's name fallback
+
+**Kept.** Once every component has a generated entry, the fallback at
+`routes.php:569` looks redundant. It is not: that rule does two jobs, and only
+one of them is the fallback. The other is invoking the component's own router on
+whatever segments are left after the menu rule has taken its prefix - which is
+how `/resources/123/whatever` is parsed, entry or no entry. The `menu` rule
+deliberately falls through when there is a remainder rather than returning.
+
+Removing the name fallback alone would also turn a working-but-degraded page
+into a 404 for the case where an operator is least able to diagnose it: a
+site-specific component installed without a migration, which the macro never saw
+and a backfill does not know about. And it would remove the hook C hangs on.
+
+What it should do instead is **say so**. It currently succeeds silently, which is
+why `com_search` has had no Itemid on every hub for years without anyone
+noticing. One log line naming the component and pointing at the reconcile
+command turns future drift into something that surfaces on its own.
 
 ### A router rule for the contractual URLs
 
