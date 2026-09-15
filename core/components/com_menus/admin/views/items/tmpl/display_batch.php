@@ -17,6 +17,13 @@ $options = array(
     Html::select('option', 'm', Lang::txt('JLIB_HTML_BATCH_MOVE'))
 );
 $published = $this->filters['published'];
+
+// "No status filter" is an empty string, and until PHP 8 that compared equal to
+// zero, so `$published >= 0` was true and the menu picker below was drawn. PHP 8
+// compares a non-numeric string against an int as strings, '' >= '0' is false,
+// and the one control the batch form exists for stopped being rendered unless
+// the administrator happened to pick a status first.
+$hasMenuTarget = ($published === '' || $published === null || $published >= 0);
 ?>
 <fieldset class="batch">
     <legend><?php echo Lang::txt('COM_MENUS_BATCH_OPTIONS');?></legend>
@@ -34,7 +41,7 @@ $published = $this->filters['published'];
             </div>
         </div>
         <div class="col span6">
-            <?php if ($published >= 0) : ?>
+            <?php if ($hasMenuTarget) : ?>
                 <div class="input-wrap combo" id="batch-choose-action">
                     <label id="batch-choose-action-lbl" for="batch-choose-action">
                         <?php echo Lang::txt('COM_MENUS_BATCH_MENU_LABEL'); ?>

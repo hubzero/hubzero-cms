@@ -1609,10 +1609,8 @@ class Item extends Nested
         $menuType = $parts[0];
         $parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
 
-        $table = $this->getTable();
-        $db = $this->getDbo();
-        $query = $db->getQuery();
         $i = 0;
+        $newIds = array();
 
         // Check that the parent exists
         if ($parentId) {
@@ -1704,7 +1702,7 @@ class Item extends Nested
 
             // Store the row.
             if (!$model->save()) {
-                $this->setError($model->getError());
+                $this->addError($model->getError());
                 return false;
             }
 
@@ -1749,10 +1747,6 @@ class Item extends Nested
         $parts = explode('.', $value);
         $menuType = $parts[0];
         $parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
-
-        $table = $this->getTable();
-        $db = $this->getDbo();
-        $query = $db->getQuery();
 
         // Check that the parent exists.
         if ($parentId) {
@@ -1807,6 +1801,11 @@ class Item extends Nested
                     ->fieldsByKey('id');
                 $children = array_merge($children, (array) $childIds);
             }
+
+            // The children were being moved to the new menu and the item they
+            // hang from was not, so a move left the item behind in the menu it
+            // came from with its own children somewhere else.
+            $model->set('menutype', $menuType);
 
             // Store the row.
             if (!$model->save()) {

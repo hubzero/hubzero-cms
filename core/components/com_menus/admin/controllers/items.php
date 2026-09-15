@@ -1077,8 +1077,10 @@ class Items extends AdminController
         } else {
             $model = Item::blank();
 
-            // Attempt to run the batch operation.
-            if ($model->batch($vars, $pks, $contexts)) {
+            // batchTask, not batch: Relational::batch(int $size) is the
+            // chunking helper, and calling it with three arguments is a
+            // TypeError the administrator sees on the page.
+            if ($model->batchTask($vars, $pks, $contexts)) {
                 // Clear the cache
                 $this->cleanCache();
 
