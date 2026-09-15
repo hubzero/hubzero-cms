@@ -75,9 +75,33 @@ class Routes extends Base implements CommandInterface
     {
         $found = $this->survey();
 
-        if (!$found['missing'] && !$found['orphaned']) {
+        if (!$found['missing'] && !$found['orphaned'] && !$found['asleep']) {
             $this->output->addLine('Every site component already has its address.', 'success');
             return;
+        }
+
+        foreach ($found['asleep'] as $element => $row) {
+            if (!$row['generated']) {
+                $this->output->addLine(
+                    'Left #' . $row['id'] . ' alone: /' . substr($element, 4) . ' is switched off'
+                    . ' in ' . $row['menutype'] . ', and that is not a generated entry to switch'
+                    . ' back on - somebody chose it',
+                    'warning'
+                );
+
+                continue;
+            }
+
+            App::get('db')->getQuery()
+                ->update('#__menu')
+                ->set(array('published' => 1))
+                ->whereEquals('id', $row['id'])
+                ->execute();
+
+            $this->output->addLine(
+                'Switched the address /' . substr($element, 4) . ' back on',
+                'success'
+            );
         }
 
         $routes = new \Hubzero\Menu\ComponentRoute(App::get('db'));
@@ -168,18 +192,39 @@ class Routes extends Base implements CommandInterface
 
         $missing = array();
 
+        $asleep = array();
+
         foreach ($components as $element => $id) {
             // Anything already reachable under that name counts, whichever menu
             // it is filed under - a hub may have made its own
-            $taken = $db->getQuery(true)
-                ->select('id')
-                ->from('#__menu')
-                ->whereEquals('client_id', 0)
-                ->whereEquals('path', substr($element, 4))
-                ->value('id');
+            $rows = $this->at($db, substr($element, 4));
 
-            if (!$taken) {
+            if (!$rows) {
                 $missing[$element] = $id;
+                continue;
+            }
+
+            // A row is not an address. The menu only loads published items, so
+            // an entry that is switched off leaves the component answering by
+            // component name with no Itemid - no modules, no template style, no
+            // breadcrumb - while a check that only asks whether a row exists
+            // reports everything as fine.
+            foreach ($rows as $row) {
+                if ($row['published']) {
+                    continue 2;
+                }
+            }
+
+            // Prefer to report - and to wake - the generated one, because that
+            // is the entry this command owns. With only somebody else's item
+            // sitting there, say so and leave it.
+            $asleep[$element] = $rows[0];
+
+            foreach ($rows as $row) {
+                if ($row['generated']) {
+                    $asleep[$element] = $row;
+                    break;
+                }
             }
         }
 
@@ -206,6 +251,7 @@ class Routes extends Base implements CommandInterface
             'components' => $components,
             'missing'    => $missing,
             'orphaned'   => $orphaned,
+            'asleep'     => $asleep,
             'shared'     => $this->shared($db),
         );
     }
@@ -235,6 +281,27 @@ class Routes extends Base implements CommandInterface
             }
 
             $this->output->addLine('Run "muse routes fix" to create them.');
+        }
+
+        if ($found['asleep']) {
+            $this->output->addLine(
+                count($found['asleep']) . ' address'
+                . (count($found['asleep']) == 1 ? ' exists but is' : 'es exist but are')
+                . ' switched off, so nothing answers there with an Itemid:',
+                'warning'
+            );
+
+            foreach ($found['asleep'] as $element => $row) {
+                $this->output->addLine(
+                    '  ' . $element . '  ->  #' . $row['id'] . ' in ' . $row['menutype']
+                    . ($row['generated'] ? ' (generated)' : ' (not a generated entry)')
+                );
+            }
+
+            $this->output->addLine(
+                '"muse routes fix" will publish the generated ones. The others are'
+                . ' somebody has decided and are left alone.'
+            );
         }
 
         if ($found['shared']) {
@@ -281,6 +348,47 @@ class Routes extends Base implements CommandInterface
                 'These are left alone: somebody may be linking to them.'
             );
         }
+    }
+
+    /**
+     * The menu items sitting at an address
+     *
+     * @param   object  $db    The database
+     * @param   string  $path  The address
+     * @return  array   id, published and whether it is a generated entry
+     */
+    protected function at($db, $path)
+    {
+        $ranked = $db->tableHasField('#__menu_types', 'type');
+
+        $query = $db->getQuery(true)
+            ->select('m.id')
+            ->select('m.published')
+            ->select('m.menutype')
+            ->from('#__menu', 'm')
+            ->whereEquals('m.client_id', 0)
+            ->whereEquals('m.path', $path);
+
+        if ($ranked) {
+            $query
+                ->select('t.type', 'kind')
+                ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
+        }
+
+        $found = array();
+
+        foreach ($query->fetch() as $row) {
+            $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
+
+            $found[] = array(
+                'id'        => (int) (is_object($row) ? $row->id : $row['id']),
+                'menutype'  => is_object($row) ? $row->menutype : $row['menutype'],
+                'published' => (int) (is_object($row) ? $row->published : $row['published']),
+                'generated' => ($kind == 'component'),
+            );
+        }
+
+        return $found;
     }
 
     /**
