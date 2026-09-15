@@ -163,9 +163,35 @@ and they want opposite answers.
   assignment. **Leave unfiltered, on purpose.** A module must be assignable to a
   component or routing item, because that is the entire reason those items carry
   an Itemid. Same for template style assignment.
-- **The menu manager** - show the type, and use the `description` column, which
-  currently holds nothing and is the cheapest part of fixing "a menu nobody can
-  explain".
+- **The Menu Manager's Menus tab**
+  (`com_menus/admin/views/menus/tmpl/display.php`) - the three menus stay in the
+  one list rather than gaining tabs of their own. They are menus; a tab implies
+  a different kind of object, and then "where do I look up a URL" has three
+  answers instead of one. Menus and Menu Items is two tabs; this would make
+  four, and five the day another type is added.
+
+  Two changes to that list:
+
+  - **A Type column**, and the `description` finally populated. That is what the
+    type field is for, and it tells you what a row is on the row you are about
+    to click, which a tab cannot do because you have to pick the tab first.
+  - **Suppress the Linked Modules actions on non-display menus.** That column
+    currently offers *Add a menu module* and *Edit module settings* for every
+    menu, so on a component menu it is a button that puts the routing table in a
+    page. It should read "Not displayed" instead. Paired with the
+    `fields/menu.php:35` filter this closes both ways in: a routing menu cannot
+    be chosen in a module's settings, and such a module cannot be made from here
+    either.
+
+  The honest cost: a read-only menu sitting among editable ones invites clicking
+  Edit and being refused. The Type column answers that better than a tab would.
+
+- **The admin navigation** (`mod_adminmenu.php:62`, rendered at
+  `tmpl/default_enabled.php:243`) lists every row of `#__menu_types` under
+  Menus. Leave the non-display ones out of those shortcuts: that list is for
+  menus somebody curates, and there are already 42 top-level admin items
+  competing for the space. They stay reachable from the Menu Manager, which is
+  the one place that answers what menus a hub has.
 - **Item editing** - on a `component` menu, `alias`, `path`, `link`, `type` and
   `component_id` are read-only and the item cannot be deleted; `template_style_id`,
   `params` and `access` stay editable, because those are what the entry is for.
