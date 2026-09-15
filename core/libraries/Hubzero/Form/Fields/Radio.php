@@ -82,6 +82,12 @@ class Radio extends Field
         $options = $this->getOptions();
         $found = false;
 
+        // Every other field type reads disabled off the element; this one only
+        // ever read it per option, so a form that disabled a radio got a radio
+        // that still looked and behaved like a radio and quietly threw the
+        // answer away.
+        $fieldDisabled = ((string) $this->element['disabled'] == 'true');
+
         $html[] = '<ul>';
 
         // Build the radio field output.
@@ -89,7 +95,7 @@ class Radio extends Field
             // Initialize some option attributes.
             $checked  = ((string) $option->value == (string) $this->value) ? ' checked="checked"' : '';
             $class    = !empty($option->class) ? ' class="' . $option->class . '"' : '';
-            $disabled = !empty($option->disable) ? ' disabled="disabled"' : '';
+            $disabled = ($fieldDisabled || !empty($option->disable)) ? ' disabled="disabled"' : '';
 
             if ($checked) {
                 $found = true;
