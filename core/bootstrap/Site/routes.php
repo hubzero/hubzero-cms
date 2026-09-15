@@ -33,7 +33,16 @@ $router->rules('build')->append('content', function ($uri) {
 
     if (is_null($itemid)) {
         if ($option = $uri->getUriVar('option')) {
-            $item  = $menu->getItem($uri->getUriVar('Itemid'));
+            // The page you are on decides the address of a link to the same
+            // component, so a section keeps its prefix as you move around
+            // inside it: from /discover/resources the next resources link is
+            // /discover/resources/..., not /resources/....
+            //
+            // This asked getItem() for the Itemid it had just established was
+            // null, so it fetched nothing and the prefix was dropped on the
+            // first click. getActive() is the page you are on.
+            $item = $menu->getActive();
+
             if (isset($item) && $item->component == $option) {
                 $uri->setUriVar('Itemid', $item->id);
             }
