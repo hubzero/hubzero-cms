@@ -96,7 +96,12 @@ class HtmlMenu
                 if (!isset($lookup[$item->menutype])) {
                     $lookup[$item->menutype] = array();
                 }
-                $lookup[$item->menutype][] = &$item;
+                // Not &$item. foreach reuses one variable, so a reference to
+                // it makes every entry an alias of the last row read - which is
+                // why every option in the batch menu picker came out as the
+                // same item. These are objects and already passed by handle,
+                // so the text below still lands on the right one.
+                $lookup[$item->menutype][] = $item;
 
                 $item->text = str_repeat('- ', $item->level) . $item->text;
             }
@@ -111,7 +116,7 @@ class HtmlMenu
 
                 // Menu items:
                 if (isset($lookup[$menu->value])) {
-                    foreach ($lookup[$menu->value] as &$item) {
+                    foreach ($lookup[$menu->value] as $item) {
                         self::$items[] = Html::select('option', $menu->value . '.' . $item->value, $item->text);
                     }
                 }
