@@ -547,7 +547,60 @@ Not chosen here.
   for whenever that is corrected.
 - `/redirect` returns 500.
 - Admin pages throw `jQuery is not defined`.
+- The first `content` build rule looks like it inherits the current page's
+  Itemid when a link is built without one: `$item = $menu->getItem($uri->
+  getUriVar('Itemid'))` inside `if (is_null($itemid))`. It passes null, and
+  `getItem()` is `isset($this->_items[$id])`, which is always false for null.
+  That branch has never done anything; it plainly means `getActive()`. Leaving
+  it is what makes component links deterministic today, so this is a note, not
+  a fix - see the section below on what wins.
 - Deleting a component route leaves any alias menu item that pointed at it
   dangling, building URLs like `/content/?Itemid=142`. `muse routes fix` remakes
   the route under a new id and cannot mend the alias. Deletion is refused in the
   admin now, so the remaining way in is a direct database change.
+
+
+---
+
+## Which address wins, measured
+
+Asked while reviewing A: with a main menu item pointing at a component and a
+generated route for the same component, which one answers? Traced and measured
+on lucent with both present - the generated `/resources` (Itemid 140) and a
+`component` item nested in the main menu at `/nav-discover/resources-direct`
+(Itemid 219).
+
+**Parsing an incoming URL: nothing contends.** Each item answers only at its own
+`path`. The parse rule walks the menu deepest-first and takes the longest
+prefix of the request path that matches an item's `path` - and skips
+`type = 'alias'` items entirely, which is why `/nav-discover/resources` is a 404
+on a hub that has that alias in its menu. So `/resources` resolved to 140 and
+`/nav-discover/resources-direct` to 219. Both 200. There is no choice to make
+because they are different URLs.
+
+**Building a URL: the generated route wins nearly everywhere.** The build rule
+uses the Itemid it is given, and falls back to the component's own name when it
+has none. Almost nothing passes one, so almost everything builds `/resources`.
+Measured from *inside* `/nav-discover/resources-direct`, the component's own
+links still came out `/resources/browse` and `/resources/new`. The only place
+the main menu item's address appears is the main menu.
+
+**Highlighting depends on the door.** With the alias arrangement, visiting
+`/resources` lights up `item-166`, the alias in the main menu - the target's
+Itemid is what mod_menu matches on, so the nav highlights correctly. With a
+direct component item as well, visiting `/nav-discover/resources-direct` lights
+up `item-219 current active`, but visiting `/resources` still lights up the
+alias. Two doors, two highlights.
+
+**So the alias items are not redundant with B.** Putting a component directly in
+the main menu gives it a second address that the component itself never uses.
+An alias item gives the nav an entry without creating a second address, which is
+exactly the split this avoids. That is worth weighing against collapsing them:
+option 1 in the section above would have to make the main menu item *be* the
+component's entry rather than a second one beside it, and option 2 - leave the
+alias items alone - now looks better than it did.
+
+Nothing in A or B changes any of this. A only lets an item state its own `path`;
+B only guarantees every component has one. They meet in exactly one place, which
+is a display item wanting the same address as a generated entry, and that is the
+case the collision check refuses.
