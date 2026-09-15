@@ -464,14 +464,7 @@ class Routes extends Base implements CommandInterface
      */
     protected function rank($kind)
     {
-        switch ($kind) {
-            case 'component':
-                return 2;
-            case 'routing':
-                return 1;
-            default:
-                return 0;
-        }
+        return \Hubzero\Menu\ComponentRoute::rank($kind);
     }
 
     /**

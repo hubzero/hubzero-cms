@@ -131,15 +131,21 @@ class Migration20260915160000MenuUnique extends Base
      */
     protected function isUnique()
     {
+        // SHOW INDEX names the table as an identifier, so the prefix is
+        // replaced. Inside a quoted string - TABLE_NAME = '#__menu' - it is
+        // not, the literal reaches MySQL as written, and this always said no.
         $this->db->setQuery(
-            "SELECT `NON_UNIQUE` FROM `information_schema`.`STATISTICS`"
-            . " WHERE `TABLE_SCHEMA` = DATABASE() AND `TABLE_NAME` = '#__menu'"
-            . " AND `INDEX_NAME` = 'idx_client_id_parent_id_alias_language' LIMIT 1"
+            "SHOW INDEX FROM `#__menu`"
+            . " WHERE `Key_name` = 'idx_client_id_parent_id_alias_language'"
         );
 
-        $found = $this->db->loadResult();
+        $rows = $this->db->loadObjectList();
 
-        return ($found !== null && (int) $found === 0);
+        if (!$rows) {
+            return false;
+        }
+
+        return ((int) $rows[0]->Non_unique === 0);
     }
 
     /**

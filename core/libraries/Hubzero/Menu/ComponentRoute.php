@@ -116,6 +116,18 @@ class ComponentRoute
             ->value('menutype');
 
         if ($found) {
+            // Found by name because it is not typed component - a row made
+            // before the column existed. It is the component menu; say so,
+            // or the router ranks its entries as display and nothing about
+            // them is locked.
+            if ($typed) {
+                $this->db->setQuery(
+                    "UPDATE `#__menu_types` SET `type` = 'component'"
+                    . " WHERE `menutype` = 'components' AND `type` <> 'component'"
+                );
+                $this->db->query();
+            }
+
             return $found;
         }
 
@@ -138,6 +150,65 @@ class ComponentRoute
         $this->say('Made the components menu');
 
         return 'components';
+    }
+
+    /**
+     * How strong a claim on an address a kind of menu has, lower being stronger
+     *
+     * A menu the hub shows beats one it does not, and both beat the generated
+     * entry. The router uses this on the way in and on the way out, the item
+     * model uses it to decide whether a save may take an address, and "muse
+     * routes check" uses it to say who answers - so it lives here once.
+     *
+     * @param   string  $kind  display, routing or component
+     * @return  integer
+     */
+    public static function rank($kind)
+    {
+        switch ($kind) {
+            case 'component':
+                return 2;
+            case 'routing':
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Take a component's generated address away, on uninstall
+     *
+     * Only the entry in the component menu. Anything a hub made itself is
+     * the hub's to keep.
+     *
+     * @param   string  $option  com_xyz
+     * @return  void
+     */
+    public function remove($option)
+    {
+        $menutype = $this->db->tableHasField('#__menu_types', 'type')
+            ? $this->db->getQuery(true)
+                ->select('menutype')
+                ->from('#__menu_types')
+                ->whereEquals('type', 'component')
+                ->value('menutype')
+            : 'components';
+
+        if (!$menutype) {
+            return;
+        }
+
+        $gone = $this->db->getQuery()
+            ->delete('#__menu')
+            ->whereEquals('client_id', 0)
+            ->whereEquals('menutype', $menutype)
+            ->whereEquals('link', 'index.php?option=' . $option)
+            ->execute();
+
+        if ($gone) {
+            $this->say('Removed the site route /' . substr($option, 4));
+            $this->rebuild();
+        }
     }
 
     /**

@@ -117,7 +117,9 @@ class Sql
 
         foreach ($body as $line) {
             // A key the schema says is unique, so the rows can be held to it
-            if (preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(([^)]+)\)/i', trim($line), $k)) {
+            // A column in a key may carry a prefix length - `saAddress`(100) -
+            // whose closing bracket is not the end of the list.
+            if (preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(((?:[^()]|\(\d+\))+)\)/i', trim($line), $k)) {
                 $columns = array();
 
                 foreach (explode(',', $k[1]) as $column) {
