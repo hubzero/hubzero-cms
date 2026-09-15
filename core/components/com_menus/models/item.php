@@ -378,12 +378,38 @@ class Item extends Nested
 
             if ($stored->get('id') && $stored->isGenerated()) {
                 $derived = array(
-                    'menutype', 'alias', 'path', 'link', 'type', 'component_id',
-                    'parent_id', 'level', 'lft', 'rgt', 'home', 'language'
+                    'menutype', 'alias', 'path', 'route', 'link', 'type',
+                    'component_id', 'parent_id', 'level', 'lft', 'rgt', 'home',
+                    'language'
                 );
 
                 foreach ($derived as $field) {
                     $this->set($field, $stored->get($field));
+                }
+            }
+        }
+
+        // A declared address is typed by hand, so tidy it, and refuse one that
+        // is already answered elsewhere: idx_path is not unique, so two items
+        // claiming the same address is a thing the database will accept and the
+        // router will resolve arbitrarily.
+        if ($this->get('route') !== null) {
+            $route = self::cleanRoute($this->get('route'));
+
+            $this->set('route', $route === '' ? null : $route);
+
+            if ($route !== '') {
+                $taken = $this->getQuery()
+                    ->select('id')
+                    ->from($this->getTableName())
+                    ->whereEquals('client_id', (int) $this->get('client_id', 0))
+                    ->whereEquals('path', $route)
+                    ->where('id', '!=', (int) $this->get('id'))
+                    ->value('id');
+
+                if ($taken) {
+                    $this->addError(Lang::txt('COM_MENUS_ERROR_ROUTE_TAKEN', $route));
+                    return false;
                 }
             }
         }
@@ -439,7 +465,7 @@ class Item extends Nested
             }
 
             // Set all the nested data
-            $this->set('path', ($parent->get('path') ? $parent->get('path') . '/' : '') . $this->get('alias'));
+            $this->set('path', $this->effectivePath($parent->get('path')));
             $this->set('lft', $reposition->new_lft);
             $this->set('rgt', $reposition->new_rgt);
             $this->set('level', $parent->get('level', 0) + 1);
@@ -458,14 +484,12 @@ class Item extends Nested
         $result = parent::save();
 
         if ($result) {
-            $this->rebuildPath();
-
-            foreach ($this->children()->rows() as $child) {
-                // Rebuild the tree path.
-                if (!$child->rebuildPath()) {
-                    $this->addError($child->getError());
-                    return false;
-                }
+            // rebuildPath() walks down, so a grandchild's address follows a
+            // change too. It used to stop at direct children, which meant a
+            // renamed alias two levels up left the bottom of the tree pointing
+            // at an address that no longer existed.
+            if (!$this->rebuildPath()) {
+                return false;
             }
         }
 
@@ -486,6 +510,7 @@ class Item extends Nested
         $query = $this->getQuery()
             ->select('id')
             ->select('alias')
+            ->select('route')
             ->from($this->getTableName())
             ->whereEquals('parent_id', (int) $parentId)
             ->order('parent_id', 'asc')
@@ -503,8 +528,13 @@ class Item extends Nested
         foreach ($children as $node) {
             // $rightId is the current right value, which is incremented on recursion return.
             // Increment the level for the children.
-            // Add this item's alias to the path (but avoid a leading /)
-            $newPath = $path . (empty($path) ? '' : '/') . $node->alias;
+            // A declared route replaces this item's whole address rather than
+            // its last segment, and what is under it follows - which is what
+            // moving a section means. A child that wants out declares its own.
+            $newPath = $node->route
+                ? self::cleanRoute($node->route)
+                : $path . (empty($path) ? '' : '/') . $node->alias;
+
             $rightId = $this->rebuild($node->id, $rightId, $level + 1, $newPath);
 
             // If there is an update failure, return false to break out of the recursion.
@@ -545,17 +575,7 @@ class Item extends Nested
         // Get the aliases for the path from the node to the root node.
         $db = App::get('db');
 
-        $path = $this->parent->get('path');
-        $segments = explode('/', $path);
-
-        // Make sure to remove the root path if it exists in the list.
-        if ($segments[0] == 'root') {
-            array_shift($segments);
-        }
-        $segments[] = $this->get('alias');
-
-        // Build the path.
-        $path = trim(implode('/', $segments), ' /\\');
+        $path = $this->effectivePath($this->parent->get('path'));
 
         // Update the path field for the node.
         $query = $db->getQuery()
@@ -575,7 +595,72 @@ class Item extends Nested
         // Update the current record's path to the new one:
         $this->set('path', $path);
 
+        // And everything under it, because an address is made of its ancestors'
+        // and one of them has just changed.
+        foreach ($this->children()->rows() as $child) {
+            if (!$child->rebuildPath()) {
+                $this->addError($child->getError());
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    /**
+     * The address this item should answer at
+     *
+     * Either the one it declares, or the one its place in the menu gives it.
+     *
+     * @param   string  $parentPath  The parent's own effective path
+     * @return  string
+     */
+    protected function effectivePath($parentPath)
+    {
+        if ($this->get('route')) {
+            return self::cleanRoute($this->get('route'));
+        }
+
+        $segments = explode('/', (string) $parentPath);
+
+        // Make sure to remove the root path if it exists in the list.
+        if ($segments[0] == 'root') {
+            array_shift($segments);
+        }
+
+        $segments[] = $this->get('alias');
+
+        return trim(implode('/', $segments), ' /\\');
+    }
+
+    /**
+     * Tidy a declared route into something that can be an address
+     *
+     * A route is matched against the request path, so it has to look like one:
+     * no leading or trailing slash, no empty or dot segments, and nothing a
+     * typed value could use to climb out of the site.
+     *
+     * @param   string  $route  What somebody typed
+     * @return  string  The route, or an empty string if nothing usable is left
+     */
+    public static function cleanRoute($route)
+    {
+        $route = str_replace('\\', '/', (string) $route);
+        $route = strtolower(trim($route, " " . chr(9) . chr(10) . chr(13) . "/"));
+
+        $out = array();
+
+        foreach (explode('/', $route) as $segment) {
+            $segment = preg_replace('/[^a-z0-9._-]/', '', $segment);
+
+            if ($segment === '' || $segment === '.' || $segment === '..') {
+                continue;
+            }
+
+            $out[] = $segment;
+        }
+
+        return implode('/', $out);
     }
 
     /**
@@ -704,7 +789,7 @@ class Item extends Nested
         // style for that page, its access level, and its params.
         if ($this->isGenerated()) {
             $locked = array(
-                'alias', 'path', 'link', 'type', 'component_id',
+                'alias', 'path', 'route', 'link', 'type', 'component_id',
                 'menutype', 'parent_id', 'home', 'menuordering', 'language'
             );
 

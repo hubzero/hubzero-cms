@@ -123,6 +123,22 @@ $formAction = Route::url(
                     <?php echo $this->form->getInput('alias'); ?>
                 </div>
 
+                <?php // An external link has no address of ours to answer at ?>
+                <?php if ($this->item->type !== 'url' && $this->item->type !== 'separator') : ?>
+                    <div class="input-wrap">
+                        <?php echo $this->form->getLabel('route'); ?>
+                        <?php echo $this->form->getInput('route'); ?>
+                        <?php if ($this->item->get('path')) : ?>
+                            <span class="hint">
+                                <?php echo Lang::txt(
+                                    'COM_MENUS_ITEM_FIELD_ROUTE_NOW',
+                                    '/' . $this->escape($this->item->get('path'))
+                                ); ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('note'); ?>
                     <?php echo $this->form->getInput('note'); ?>
