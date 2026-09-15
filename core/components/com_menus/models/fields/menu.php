@@ -25,6 +25,13 @@ class Menu extends Select
     /**
      * Method to get the list of menus for the field options.
      *
+     * This is what a menu module chooses from, so it offers the menus that are
+     * meant to be looked at. A component or routing menu holds addresses rather
+     * than navigation - the component menu is the hub's routing table - and
+     * putting one of those in a module renders the routing table as a menu.
+     * Leaving them out of the list is what makes "never displayed" true rather
+     * than merely intended.
+     *
      * @return  array  The field option objects.
      */
     protected function getOptions()
@@ -36,6 +43,11 @@ class Menu extends Select
             ->select('title', 'text')
             ->from('#__menu_types')
             ->order('title', 'asc');
+
+        // Older hubs have no type; there, every menu is one to display
+        if ($db->tableHasField('#__menu_types', 'type')) {
+            $query->whereEquals('type', 'display');
+        }
 
         $db->setQuery($query->toString());
         $menus = $db->loadObjectList();
