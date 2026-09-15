@@ -195,6 +195,15 @@
 			filter="unset"/>
 
 		<field
+			name="route"
+			type="text"
+			label="COM_MENUS_ITEM_FIELD_ROUTE_LABEL"
+			description="COM_MENUS_ITEM_FIELD_ROUTE_DESC"
+			class="inputbox"
+			size="40"
+			maxlength="255" />
+
+		<field
 			name="level"
 			type="hidden"
 			filter="unset"/>
