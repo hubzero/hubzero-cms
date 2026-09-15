@@ -70,6 +70,11 @@ class Menus extends AdminController
             ->group('title')
             ->group('description');
 
+        // A hub that has not been migrated yet has no type to group by
+        if (App::get('db')->tableHasField('#__menu_types', 'type')) {
+            $query->group('type');
+        }
+
         // Get records
         $rows = $query
             ->order($filters['sort'], $filters['sort_Dir'])
