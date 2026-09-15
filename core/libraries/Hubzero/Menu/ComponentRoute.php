@@ -125,11 +125,12 @@ class ComponentRoute
     }
 
     /**
-     * Is anything already answering under that name
+     * Is anything already answering at that address
      *
-     * Whichever menu it is filed under: a hub that made its own entry for a
-     * component made it on purpose, and the unique key on the menu is on
-     * client, parent, alias and language rather than on menutype.
+     * By address rather than by alias and parent, because an item can now
+     * declare the address it answers at regardless of where it sits - so a hub
+     * that put a component in its own menu at /xyz has already given it one,
+     * and "muse routes check" reads the same column.
      *
      * @param   string  $option  com_xyz
      * @return  mixed   The menu item id, or false
@@ -140,8 +141,7 @@ class ComponentRoute
             ->select('id')
             ->from('#__menu')
             ->whereEquals('client_id', 0)
-            ->whereEquals('parent_id', $this->root())
-            ->whereEquals('alias', substr($option, 4))
+            ->whereEquals('path', substr($option, 4))
             ->value('id');
 
         return $found ? (int) $found : false;
@@ -262,9 +262,18 @@ class ComponentRoute
             $parentId = $this->root();
         }
 
-        $children = $this->db->getQuery(true)
+        $columns = $this->db->getQuery(true)
             ->select('id')
-            ->select('alias')
+            ->select('alias');
+
+        // A hub that has not run the migration yet has no such column
+        $declares = $this->db->tableHasField('#__menu', 'route');
+
+        if ($declares) {
+            $columns->select('route');
+        }
+
+        $children = $columns
             ->from('#__menu')
             ->whereEquals('parent_id', (int) $parentId)
             ->order('parent_id', 'asc')
@@ -277,13 +286,15 @@ class ComponentRoute
         foreach ($children as $node) {
             $id    = is_object($node) ? $node->id : $node['id'];
             $alias = is_object($node) ? $node->alias : $node['alias'];
+            $route = $declares ? (is_object($node) ? $node->route : $node['route']) : '';
 
-            $rightId = $this->rebuild(
-                (int) $id,
-                $rightId,
-                $level + 1,
-                $path . (empty($path) ? '' : '/') . $alias
-            );
+            // An item that declares its address keeps it through a rebuild, or
+            // installing anything at all would quietly undo it.
+            $childPath = $route
+                ? trim(str_replace(chr(92), '/', $route), '/')
+                : $path . (empty($path) ? '' : '/') . $alias;
+
+            $rightId = $this->rebuild((int) $id, $rightId, $level + 1, $childPath);
 
             if ($rightId === false) {
                 return false;
