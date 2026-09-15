@@ -554,15 +554,19 @@ Not chosen here.
   That branch has never done anything; it plainly means `getActive()`. Leaving
   it is what makes component links deterministic today, so this is a note, not
   a fix - see the section below on what wins.
-- Deleting a component route leaves any alias menu item that pointed at it
-  dangling, building URLs like `/content/?Itemid=142`. `muse routes fix` remakes
-  the route under a new id and cannot mend the alias. Deletion is refused in the
-  admin now, so the remaining way in is a direct database change.
+- ~~Deleting a component route leaves any alias menu item that pointed at it
+  dangling, building URLs like `/content/?Itemid=142`.~~ Fixed: the menu now
+  drops an alias whose target is not loaded. `muse routes fix` still remakes a
+  deleted route under a new id and cannot mend an alias pointing at the old one,
+  but the alias no longer builds a broken URL - it simply is not drawn.
 
 
 ---
 
 ## Which address wins, measured
+
+**This section records how it behaved before the precedence rule below. Kept
+because the measurement is what justified changing it.**
 
 Asked while reviewing A: with a main menu item pointing at a component and a
 generated route for the same component, which one answers? Traced and measured
@@ -604,3 +608,239 @@ Nothing in A or B changes any of this. A only lets an item state its own `path`;
 B only guarantees every component has one. They meet in exactly one place, which
 is a display item wanting the same address as a generated entry, and that is the
 case the collision check refuses.
+
+---
+
+# Part two: precedence, and tying it to the extensions table
+
+Everything above was about giving each component an address. This part is about
+what happens when two things want the same one, and about an address that should
+stop working. Each item below was measured before and after against the same
+probe — seventy-eight URLs across the three hubs, status and body size.
+
+## E. A precedence rule
+
+**The problem.** Two menu items can answer at one address. Which one won was
+decided by `lft` — whichever sat earlier in the menu tree — and nothing else.
+Proved by building two menus with the same path and swapping only their `lft`
+values: the winner flipped.
+
+Worse than "menu order", because every menu's top-level items hang off one root
+interleaved by `ordering`. On lucent `/resources` (components, ordering 1) sits
+next to `/nav-discover` (mainmenu, ordering 1), so reordering the main menu in
+the admin can hand an address to a menu the admin is never shown alongside it.
+`lft` is also reassigned wholesale by any rebuild, and the two rebuilds in the
+tree disagree — `com_menus` orders children by `lft`, `ComponentRoute` by
+`ordering` then `lft` — so installing a component could change the answer.
+
+**The rule.** A menu the hub shows beats one it does not, and both beat the
+entry generated for a component:
+
+    display  >  routing  >  component
+
+A longer address still wins first. Where the kind ties, the old behaviour still
+decides, so nothing previously unambiguous moves.
+
+The point of that order: **a generated entry is a floor, not a claim.** It
+exists so every component has some address, and it steps aside the moment the
+hub says otherwise. Take the hub's item away and the generated one answers
+again, with no cleanup step.
+
+Verified on lucent: a main menu item declaring `/resources` wins at `lft` 960
+against the generated entry's 119, where the lower `lft` used to take it.
+
+The save-time check follows the same order — an item may take an address off a
+weaker claim and not off an equal one — which is how a hub puts a component in
+its own menu at the component's own address.
+
+`muse routes check` reports addresses claimed twice, saying which answers and
+which is shadowed, because a rule that is deterministic is still invisible.
+
+## F. The same question backwards
+
+There was no reverse lookup at all. Building a URL with no Itemid used
+`substr($option, 4)`, the component's name, full stop. So a hub whose Resources
+page sat at `/library` still emitted `/resources/browse` from inside `/library`,
+losing the Itemid and with it that page's modules and template style. The hub's
+own page was a dead end.
+
+There is now a lookup for the item that *speaks for* a component, ranked
+identically to the parse side.
+
+It counts an item whose link is the component and nothing else — one naming a
+particular view is a page about something narrower, and a link that asked for
+the component should not land there — **or** a component menu's entry whatever
+its link says. That second clause exists because real data needed it: welcome's
+entries came from the old `default` menu and carry
+`index.php?option=com_resources&view=intro` and `&view=index&layout=display`.
+A bare-link-only rule worked on lucent and silently did nothing on welcome.
+
+## G. Non-SEF URLs had no page identity
+
+`/resources` and `index.php?option=com_resources` are the same page. One had an
+Itemid and the other had none, so one had a template style, per-page modules and
+a breadcrumb and the other had none of the three.
+
+A non-SEF URL that *named* its own Itemid was ignored too:
+`index.php?option=com_x&Itemid=12` carried it as a query var and never activated
+it. The menu rule returned early for a non-SEF URL before `setActive()` was
+reached — and there is a commented-out `|| isset($query['Itemid'])` beside that
+return, which looks like somebody noticed and stopped.
+
+Now: honour the Itemid when given, otherwise use the same lookup as F.
+`index.php?option=com_content` still activates nothing, because no bare
+com_content item exists.
+
+## H. Every component with site code gets an address
+
+The skip list was a judgement about which components are worth an address, and
+that kind of list ages badly — a component that is machinery today may grow a
+page tomorrow and nobody will remember to take it off.
+
+It is now only the components with no site code to run at all:
+
+| | what is in `site/` |
+|---|---|
+| com_media | one class and a helper |
+| com_messages | a language file, nothing else |
+| com_system | a router and a class |
+
+Everything else gets one, endpoints included. That costs nothing: the router
+already resolves `/cron` by component name whether or not an entry exists, so
+the entry only adds an Itemid, and the day one of them grows a page it has
+somewhere to put its modules. Counts went 28 to 36 on welcome and mesozoic, 37
+on lucent.
+
+**"No `site/views` directory" is not the test**, though it looked like a tidy
+mechanical one. com_dataviewer has none and is a full site component —
+`Controller.php`, `View/Gallery.php`, `View/Spreadsheet.php`, its own router, a
+tree of assets — written in a namespaced layout rather than the old one. A rule
+built on that directory would have taken its address away.
+
+Before settling on this, each old exclusion was measured at its own name rather
+than argued about: com_cron answers JSON, com_oaipmh OAI-PMH XML, com_mailto
+402, com_oauth and com_media 403, com_saml, com_messages, com_system and
+com_dataviewer 404, com_redirect 500. com_content routes through article paths
+and has never answered at `/content` — and a `/content` entry was tried on
+welcome and changed nothing, because com_content's router rejects the bare view.
+com_help was the one that looked wrong, since it serves a real HTML page, but
+its controller does `Request::setVar('tmpl', 'help')`, so a template style from
+an entry would be ignored.
+
+**Found while doing it:** the dev-only lazy generation knew about none of this.
+`routable()` asked only whether a `site/` directory existed, so with debug on,
+requesting `/cron`, `/oaipmh`, `/help` or `/media` created an entry for each —
+28 entries became 32. The list had been living in two files and being ignored by
+a third. It has one home now, in `ComponentRoute`.
+
+## I. The menu's unique key, which sample data was throwing away
+
+`schema.sql` declares `idx_client_id_parent_id_alias_language` UNIQUE. Two lines
+in `starter.sql` dropped it and added it back as a plain index, so **every hub
+installed with sample data has run without the constraint ever since.** Only a
+hub installed without sample data kept it — which is why lucent refused a
+duplicate alias with an integrity error while welcome and mesozoic quietly
+accepted one.
+
+It was dropped because the sample data breaks it, in two places:
+
+- two separators under Discover, ids 46 and 49, both aliased `n`. They sit at
+  different points in the menu, so both are wanted; they only needed different
+  names.
+- the main menu's Support entry, id 8, sharing the root with the component entry
+  it points at, id 84, both aliased `support`. Which is this whole line of work
+  in miniature: a display item and a component route wanting one name, and the
+  response being to delete the constraint.
+
+Both renamed, neither moving a URL — an alias item and a separator are never
+matched against a request, so their alias is a label. A migration does the same
+for installed hubs and is careful which of a pair it renames: the cosmetic one,
+never the one answering at a path. A group with no cosmetic member is reported
+and left, because moving a working address under a hub unasked is worse than
+leaving a duplicate.
+
+The install test now reads the `UNIQUE` and `PRIMARY KEY` declarations out of
+`schema.sql` and holds the data files to them, listing every clash rather than
+the first. It would have caught this the day it was written. Making it work
+needed the reader to model `REPLACE` properly — it appended where a database
+replaces the row with the same key, and `starter.sql` replaces assets `data.sql`
+already wrote.
+
+## J. An item is only a page while its component is switched on
+
+A menu item for a component the hub has switched off is not a page. The
+dispatcher already refused to run one — `/citations` 404s the moment
+com_citations is disabled — but the item stayed in the menu as a dead link, kept
+its Itemid, and went on holding its address against anything else that wanted
+it.
+
+**A join, not a second copy of the fact.** The menu already joins
+`#__extensions` for each item's component name, so it now also leaves out any
+item whose component is not enabled. That is right however the component was
+switched off — migration, extension manager, or by hand — because there is
+nothing to keep in step.
+
+An item with no component says so with `component_id` 0 and stays. Anything else
+must find its component enabled, so an item left behind by an uninstalled
+component goes too rather than joining to nothing and being kept.
+
+Aliases go with it, which also fixes the dangling-alias URL noted earlier.
+
+**And the publish tie had to go**, because it was worse than redundant.
+`EnableComponent` and `DisableComponent` kept an entry's published state matching
+the component, so disabling by migration and re-enabling in the extension
+manager left the entry unpublished: the component ran, answered through the name
+fallback, and had no Itemid, with nothing to say why. `create()` had the same
+asymmetry, copying `enabled` into `published`. Neither does now, a migration
+publishes the entries that were switched off on a component's behalf, and an
+entry's published state goes back to meaning what it means everywhere else —
+whether the administrator wants the page.
+
+Round trip on welcome, where Resources has an alias in the main menu:
+
+| | `/resources` | nav "Resources" | dangling `Itemid=` |
+|---|---|---|---|
+| enabled | 200, 19982B | 2 | 0 |
+| disabled | 404 | 1 | 0 |
+| re-enabled | 200, 19982B | 2 | 0 |
+
+## What changed on the live hubs, in total
+
+Seventy-eight URLs across three hubs, before Part two and after. **Seventy-two
+byte for byte identical.** The six that moved are error pages on lucent, each
+eight bytes shorter, and the eight bytes are ` current` disappearing from the
+**Home** nav item: a URL with no menu entry was making the menu falsely
+highlight Home, and those URLs now have entries.
+
+## Still not done
+
+- **The alias items are still there.** Twenty-nine on lucent. Collapsing them
+  needs a display item to take an address a generated entry holds, which the
+  precedence rule now allows — but the entry's Itemid is what per-page module
+  assignments and template styles are keyed to, so anything attached to the old
+  entry would silently attach to nothing. The three options are in the section
+  above; none is chosen.
+- **`com_menus` batch has never worked.** The items controller calls
+  `$model->batch($vars, $pks, $contexts)`, which reaches
+  `Relational::batch(int $size)` and fatals. The guard keeping generated entries
+  out of a batch sits in `batchTask()` ready for whenever that is fixed.
+- **`/redirect` returns 500.**
+- **Admin pages throw `jQuery is not defined`.**
+- **The dead `getActive()` branch** in the first `content` build rule. Leaving it
+  is what keeps component links deterministic; fixing it would make every
+  component link sticky to whichever door the visitor came in by.
+
+## A note on how this was checked
+
+Two measurement mistakes worth recording, because both produced confident wrong
+statements before they were caught.
+
+**Wrong port.** The three hubs are on separate ports — welcome 7500, mesozoic
+7600, lucent 7700. Requests to `welcome.example.com:7700` reach lucent's
+listener with a Host it does not serve and come back as an empty `200`. Every
+HTTP check reported for welcome and mesozoic across a long stretch of this work
+was that empty response. Status codes alone hid it.
+
+**Status without size.** `200` on its own says almost nothing. Every probe here
+records the body size as well, which is what made the eight-byte ` current`
+difference visible and what would have caught the wrong port immediately.
