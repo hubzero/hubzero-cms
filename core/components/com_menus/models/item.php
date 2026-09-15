@@ -155,6 +155,35 @@ class Item extends Nested
                 return Lang::txt('JLIB_DATABASE_ERROR_MENU_ROOT_ALIAS_FOLDER', $alias, $alias);
             }
 
+            // #__menu is unique on client, parent, alias and language, so a
+            // second item under the same parent with the same alias is refused
+            // by the database - as a 500 with the SQL in it, which tells an
+            // administrator nothing. Every component now has a top-level entry,
+            // so every component's name is a taken top-level alias on every
+            // hub, and this is easy to walk into.
+            $clashes = $this->getQuery()
+                ->select('id')
+                ->select('link')
+                ->from($this->getTableName())
+                ->whereEquals('client_id', (int) $this->get('client_id', 0))
+                ->whereEquals('parent_id', (int) $this->get('parent_id'))
+                ->whereEquals('alias', $alias)
+                ->whereEquals('language', (string) $this->get('language', '*'))
+                ->where('id', '!=', (int) $this->get('id'))
+                ->fetch();
+
+            foreach ($clashes as $clash) {
+                $link = (string) (is_object($clash) ? $clash->link : $clash['link']);
+
+                // Saying which component it belongs to is the useful half: the
+                // answer is nearly always "that is a component's own address".
+                if (preg_match('/option=(com_\w+)/', $link, $m)) {
+                    return Lang::txt('COM_MENUS_ERROR_ALIAS_IS_COMPONENT', $alias, $m[1]);
+                }
+
+                return Lang::txt('COM_MENUS_ERROR_ALIAS_TAKEN', $alias);
+            }
+
             return false;
         });
 
@@ -398,19 +427,9 @@ class Item extends Nested
 
             $this->set('route', $route === '' ? null : $route);
 
-            if ($route !== '') {
-                $taken = $this->getQuery()
-                    ->select('id')
-                    ->from($this->getTableName())
-                    ->whereEquals('client_id', (int) $this->get('client_id', 0))
-                    ->whereEquals('path', $route)
-                    ->where('id', '!=', (int) $this->get('id'))
-                    ->value('id');
-
-                if ($taken) {
-                    $this->addError(Lang::txt('COM_MENUS_ERROR_ROUTE_TAKEN', $route));
-                    return false;
-                }
+            if ($route !== '' && $this->routeOutranked($route)) {
+                $this->addError(Lang::txt('COM_MENUS_ERROR_ROUTE_TAKEN', $route));
+                return false;
             }
         }
 
@@ -634,6 +653,104 @@ class Item extends Nested
     }
 
     /**
+     * Whether something already there would beat this item at that address
+     *
+     * Two items may answer at one address, and the router picks between them by
+     * what kind of menu each came from: a menu the hub shows beats one it does
+     * not, and both beat the entry generated for a component. So an item is
+     * only refused an address when what already holds it would win - taking one
+     * off the generated entry is allowed, and is how a hub puts a component in
+     * its own menu at the component's own address. Take the hub's item away
+     * again and the generated one answers once more.
+     *
+     * @param   string  $route  The address wanted, already cleaned
+     * @return  boolean  True if something there would win
+     */
+    protected function routeOutranked($route)
+    {
+        $db = App::get('db');
+
+        $query = $db->getQuery(true)
+            ->select('m.id')
+            ->from('#__menu', 'm')
+            ->whereEquals('m.client_id', (int) $this->get('client_id', 0))
+            ->whereEquals('m.path', $route)
+            ->where('m.id', '!=', (int) $this->get('id'));
+
+        // Without the column every menu is one the hub shows, so anything
+        // already at that address wins and this behaves as it did.
+        $ranked = $db->tableHasField('#__menu_types', 'type');
+
+        if ($ranked) {
+            $query
+                ->select('t.type', 'menuKind')
+                ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
+        }
+
+        $mine = self::routeRank($this->menuKind());
+
+        foreach ($query->fetch() as $row) {
+            if (!$ranked) {
+                return true;
+            }
+
+            $kind = is_object($row) ? $row->menuKind : $row['menuKind'];
+
+            if (self::routeRank($kind) <= $mine) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * What kind of menu this item is in
+     *
+     * @return  string  display, routing or component
+     */
+    public function menuKind()
+    {
+        if (!$this->get('menutype')) {
+            return 'display';
+        }
+
+        $db = App::get('db');
+
+        if (!$db->tableHasField('#__menu_types', 'type')) {
+            return 'display';
+        }
+
+        $kind = $db->getQuery(true)
+            ->select('type')
+            ->from('#__menu_types')
+            ->whereEquals('menutype', $this->get('menutype'))
+            ->value('type');
+
+        return $kind ? $kind : 'display';
+    }
+
+    /**
+     * How strong a claim on an address a kind of menu has, lower being stronger
+     *
+     * The same order the router uses when two items answer at one address.
+     *
+     * @param   string  $kind  display, routing or component
+     * @return  integer
+     */
+    public static function routeRank($kind)
+    {
+        switch ($kind) {
+            case 'component':
+                return 2;
+            case 'routing':
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+    /**
      * Tidy a declared route into something that can be an address
      *
      * A route is matched against the request path, so it has to look like one:
@@ -814,23 +931,7 @@ class Item extends Nested
      */
     public function isGenerated()
     {
-        if (!$this->get('menutype')) {
-            return false;
-        }
-
-        $db = App::get('db');
-
-        if (!$db->tableHasField('#__menu_types', 'type')) {
-            return false;
-        }
-
-        $kind = $db->getQuery(true)
-            ->select('type')
-            ->from('#__menu_types')
-            ->whereEquals('menutype', $this->get('menutype'))
-            ->value('type');
-
-        return ($kind == 'component');
+        return ($this->menuKind() == 'component');
     }
 
     /**

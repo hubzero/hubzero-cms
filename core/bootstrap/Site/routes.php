@@ -125,7 +125,77 @@ $router->rules('build')->append('content', function ($uri) {
 |
 | Build the route by component name
 */
-$router->rules('build')->append('component', function ($uri) {
+/*
+| Which menu item speaks for a component
+|
+| The parse side settles two items claiming one address by the kind of menu
+| each is in. This is the same question asked backwards - given a component and
+| no Itemid, which of its menu items should a link point at - and it has to be
+| settled the same way or a hub's own page for a component would answer at its
+| address while every link built for that component went somewhere else.
+|
+| Which is what happened. There was no lookup at all: without an Itemid the
+| builder used the component's name, so a hub whose Resources page sat at
+| /library still emitted /resources/browse from inside /library, losing the
+| Itemid and with it that page's modules and template style.
+|
+| Only an item whose link is the component and nothing else counts. One
+| pointing at a particular view is a page about something narrower, and a link
+| that asked for the component should not land there.
+*/
+$speaksFor = function ($option) {
+    static $best = array();
+
+    if (array_key_exists($option, $best)) {
+        return $best[$option];
+    }
+
+    $best[$option] = null;
+
+    if (!App::has('menu.manager')) {
+        return null;
+    }
+
+    $rank = function ($item) {
+        $kind = isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display';
+
+        switch ($kind) {
+            case 'component':
+                return 2;
+            case 'routing':
+                return 1;
+            default:
+                return 0;
+        }
+    };
+
+    $found     = null;
+    $foundRank = null;
+
+    foreach (App::get('menu.manager')->menu('site')->getMenu() as $item) {
+        if (!is_object($item) || $item->component != $option || $item->type == 'alias') {
+            continue;
+        }
+
+        // The component and nothing else
+        if (!is_array($item->query) || count($item->query) != 1) {
+            continue;
+        }
+
+        $itemRank = $rank($item);
+
+        if (!$found || $itemRank < $foundRank) {
+            $found     = $item;
+            $foundRank = $itemRank;
+        }
+    }
+
+    $best[$option] = $found;
+
+    return $found;
+};
+
+$router->rules('build')->append('component', function ($uri) use ($speaksFor) {
     $route = $uri->getPath();
     $query = $uri->getQuery(true);
     $tmp   = '';
@@ -155,6 +225,18 @@ $router->rules('build')->append('component', function ($uri) {
         $menu = App::get('menu.manager')->menu('site');
         $item = $menu->getItem($query['Itemid']);
         if (is_object($item) && $query['option'] == $item->component) {
+            if (!$item->home || $item->language != '*') {
+                $tmp = !empty($tmp) ? $item->route . '/' . $tmp : $item->route;
+            }
+
+            $built = true;
+        }
+    }
+
+    if (!$built && isset($query['option'])) {
+        // No Itemid was asked for, so find the item that speaks for this
+        // component rather than assuming its address is its name.
+        if ($item = $speaksFor($query['option'])) {
             if (!$item->home || $item->language != '*') {
                 $tmp = !empty($tmp) ? $item->route . '/' . $tmp : $item->route;
             }
@@ -352,8 +434,32 @@ $router->rules('parse')->append('menu', function ($uri) {
     $items = array_reverse($menu->getMenu());
 
     $found           = false;
+    $foundRank       = null;
     $route_lowercase = strtolower($route);
     $lang_tag        = App::get('language')->getTag();
+
+    // When two items answer at the same address, which one wins used to be
+    // whichever sat earlier in the menu tree - and lft is reassigned wholesale
+    // by any rebuild, so installing a component could hand the address to the
+    // other one without anybody touching either.
+    //
+    // So: a menu the hub made and shows beats one it made and does not show,
+    // and both beat the entry generated for the component. The generated entry
+    // is a floor, not a claim - it is there so that every component has some
+    // address, and it steps aside the moment the hub says otherwise. Take the
+    // hub's item away again and the generated one answers once more.
+    $rank = function ($item) {
+        $kind = isset($item->menuKind) && $item->menuKind ? $item->menuKind : 'display';
+
+        switch ($kind) {
+            case 'component':
+                return 2;
+            case 'routing':
+                return 1;
+            default:
+                return 0;
+        }
+    };
 
     foreach ($items as $item) {
         //sqlsrv  change
@@ -405,12 +511,29 @@ $router->rules('parse')->append('menu', function ($uri) {
                 // Track depth so we can replace with a better match later
                 $foundDepth = $depth;
                 break;
-            } elseif (!$found || $depth >= $foundDepth) {
-                // Or let's remember an item for all languages
-                // Deeper or equal depth matches later on are prefered
+            }
+
+            // Or let's remember an item for all languages. A longer address is
+            // always the better match; between two of the same length it is
+            // the kind of menu that decides, and only if those tie does the
+            // old behaviour - later in the walk, so earlier in the tree - get
+            // to choose, so nothing that was unambiguous before moves.
+            $itemRank = $rank($item);
+
+            if (!$found) {
+                $better = true;
+            } elseif ($depth != $foundDepth) {
+                $better = ($depth > $foundDepth);
+            } elseif ($itemRank != $foundRank) {
+                $better = ($itemRank < $foundRank);
+            } else {
+                $better = true;
+            }
+
+            if ($better) {
                 $found      = $item;
-                // Track depth so we can replace with a better match later
                 $foundDepth = $depth;
+                $foundRank  = $itemRank;
             }
         }
     }

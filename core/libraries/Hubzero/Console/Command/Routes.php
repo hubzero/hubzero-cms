@@ -214,6 +214,7 @@ class Routes extends Base implements CommandInterface
             'components' => $components,
             'missing'    => $missing,
             'orphaned'   => $orphaned,
+            'shared'     => $this->shared($db),
         );
     }
 
@@ -244,6 +245,34 @@ class Routes extends Base implements CommandInterface
             $this->output->addLine('Run "muse routes fix" to create them.');
         }
 
+        if ($found['shared']) {
+            $this->output->addLine(
+                count($found['shared']) . ' address'
+                . (count($found['shared']) == 1 ? ' is' : 'es are')
+                . ' claimed by more than one menu item:',
+                'warning'
+            );
+
+            foreach ($found['shared'] as $path => $items) {
+                $this->output->addLine('  /' . $path);
+
+                foreach ($items as $i => $item) {
+                    $this->output->addLine(
+                        '    ' . ($i === 0 ? 'answers:' : 'shadowed:')
+                        . ' #' . $item['id'] . ' in ' . $item['menutype']
+                        . ' (' . $item['kind'] . ')'
+                    );
+                }
+            }
+
+            $this->output->addLine(
+                'The one that answers is decided by the kind of menu it is in -'
+                . ' a menu the hub shows beats one it does not, and both beat a'
+                . ' generated entry. Where that ties, the item earlier in the'
+                . ' tree wins, which is not something worth relying on.'
+            );
+        }
+
         if ($found['orphaned']) {
             $this->output->addLine(
                 count($found['orphaned']) . ' address'
@@ -259,6 +288,90 @@ class Routes extends Base implements CommandInterface
             $this->output->addLine(
                 'These are left alone: somebody may be linking to them.'
             );
+        }
+    }
+
+    /**
+     * Addresses more than one menu item claims
+     *
+     * Two items may answer at one address and the router picks by the kind of
+     * menu each is in. That is a rule now rather than an accident of tree
+     * order, but it is still worth being able to see, because the losing item
+     * is a page somebody made that nobody can reach.
+     *
+     * @param   object  $db  The database
+     * @return  array  path => items, the one that answers first
+     */
+    protected function shared($db)
+    {
+        $ranked = $db->tableHasField('#__menu_types', 'type');
+
+        $query = $db->getQuery(true)
+            ->select('m.id')
+            ->select('m.path')
+            ->select('m.menutype')
+            ->select('m.lft')
+            ->from('#__menu', 'm')
+            ->whereEquals('m.client_id', 0)
+            ->whereEquals('m.published', 1)
+            ->where('m.parent_id', '>', 0)
+            ->where('m.path', '!=', '')
+            ->where('m.type', '!=', 'alias')
+            ->order('m.lft', 'asc');
+
+        if ($ranked) {
+            $query
+                ->select('t.type', 'kind')
+                ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
+        }
+
+        $byPath = array();
+
+        foreach ($query->fetch() as $row) {
+            $path = is_object($row) ? $row->path : $row['path'];
+            $kind = $ranked ? (is_object($row) ? $row->kind : $row['kind']) : 'display';
+
+            $byPath[$path][] = array(
+                'id'       => (int) (is_object($row) ? $row->id : $row['id']),
+                'menutype' => is_object($row) ? $row->menutype : $row['menutype'],
+                'kind'     => $kind ? $kind : 'display',
+                'rank'     => $this->rank($kind),
+            );
+        }
+
+        $shared = array();
+
+        foreach ($byPath as $path => $items) {
+            if (count($items) < 2) {
+                continue;
+            }
+
+            // Same order the router settles it in
+            usort($items, function ($a, $b) {
+                return $a['rank'] == $b['rank'] ? 0 : ($a['rank'] < $b['rank'] ? -1 : 1);
+            });
+
+            $shared[$path] = $items;
+        }
+
+        return $shared;
+    }
+
+    /**
+     * How strong a claim on an address a kind of menu has, lower being stronger
+     *
+     * @param   string  $kind  display, routing or component
+     * @return  integer
+     */
+    protected function rank($kind)
+    {
+        switch ($kind) {
+            case 'component':
+                return 2;
+            case 'routing':
+                return 1;
+            default:
+                return 0;
         }
     }
 

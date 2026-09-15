@@ -54,6 +54,16 @@ class Site extends Base
             ->whereEquals('m.client_id', 0)
             ->order('m.lft', 'asc');
 
+        // What kind of menu each item came from, so the router can prefer a
+        // hub's own menu over the generated one when two items answer at the
+        // same address. A hub that has not run the migration yet has no such
+        // column, and everything is treated as a menu to look at.
+        if ($db->tableHasField('#__menu_types', 'type')) {
+            $query
+                ->select('t.type', 'menuKind')
+                ->join('#__menu_types AS t', 't.menutype', 'm.menutype', 'left');
+        }
+
         // Set the query
         $db->setQuery($query->toString());
 
