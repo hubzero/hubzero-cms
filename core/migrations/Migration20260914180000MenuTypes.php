@@ -100,13 +100,15 @@ class Migration20260914180000MenuTypes extends Base
         // else is a page, and a page does not belong in a generated menu.
         $strays = array();
 
-        foreach ($this->db->getQuery(true)
+        $rows = $this->db->getQuery(true)
             ->select('id')
             ->select('alias')
             ->select('link')
             ->from('#__menu')
             ->whereEquals('menutype', 'default')
-            ->fetch() as $row) {
+            ->fetch();
+
+        foreach ($rows as $row) {
             $id    = (int) (is_object($row) ? $row->id : $row['id']);
             $alias = is_object($row) ? $row->alias : $row['alias'];
             $link  = (string) (is_object($row) ? $row->link : $row['link']);
