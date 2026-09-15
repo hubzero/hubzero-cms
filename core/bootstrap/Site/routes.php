@@ -171,22 +171,33 @@ $speaksFor = function ($option) {
 
     $found     = null;
     $foundRank = null;
+    $foundBare = false;
 
     foreach (App::get('menu.manager')->menu('site')->getMenu() as $item) {
         if (!is_object($item) || $item->component != $option || $item->type == 'alias') {
             continue;
         }
 
-        // The component and nothing else
-        if (!is_array($item->query) || count($item->query) != 1) {
+        $itemRank = $rank($item);
+
+        // The component and nothing else - or the generated entry, whatever it
+        // says. A display item naming a view is a page about something
+        // narrower, and a link that asked for the component should not land
+        // there; but a component menu's entry is that component's page by
+        // definition, and on a hub carried over from the old default menu it
+        // often names the component's own landing view.
+        $bare = (is_array($item->query) && count($item->query) == 1);
+
+        if (!$bare && $itemRank != 2) {
             continue;
         }
 
-        $itemRank = $rank($item);
-
-        if (!$found || $itemRank < $foundRank) {
+        // Between two of the same rank the plain one wins, so a hub that has
+        // both keeps the one that says only the component.
+        if (!$found || $itemRank < $foundRank || ($itemRank == $foundRank && $bare && !$foundBare)) {
             $found     = $item;
             $foundRank = $itemRank;
+            $foundBare = $bare;
         }
     }
 
@@ -388,7 +399,7 @@ $router->rules('parse')->append('limit', function ($uri) {
 | found, the component's router will be loaded to continue parsing any
 | further segments.
 */
-$router->rules('parse')->append('menu', function ($uri) {
+$router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
     $menu  = App::get('menu');
     $route = $uri->getPath();
 
@@ -405,7 +416,25 @@ $router->rules('parse')->append('menu', function ($uri) {
     // Handle an empty URL (special case)
     if (empty($route) && Request::getCmd('option', '', 'post') == '') {
         // If route is empty AND option is set in the query, assume it's non-sef url, and parse appropriately
-        if (isset($query['option'])) { // || isset($query['Itemid']))
+        if (isset($query['option'])) {
+            // A non-sef url used to get no active menu item at all - not even
+            // when it named one. index.php?option=com_x&Itemid=12 carried the
+            // Itemid as a query var and then never activated it, so the page
+            // had no template style, no per-page modules and no place in a
+            // breadcrumb, while /x - the same page - had all three.
+            //
+            // So honour the Itemid when one is given, and otherwise ask the
+            // same question the builder asks: which menu item speaks for this
+            // component. That is only ever an item whose link is the component
+            // and nothing else, so a url naming a particular view still gets
+            // nothing rather than being handed a page about something else.
+            if (!empty($query['Itemid']) && $menu->getItem($query['Itemid'])) {
+                $menu->setActive($query['Itemid']);
+            } elseif ($item = $speaksFor($query['option'])) {
+                $uri->setUriVar('Itemid', $item->id);
+                $menu->setActive($item->id);
+            }
+
             return true;
         }
 
