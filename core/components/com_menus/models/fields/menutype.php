@@ -92,7 +92,13 @@ class Menutype extends Select
         $html[] = '<input type="text" id="' . $this->id . '" readonly="readonly" disabled="disabled" '
             . 'value="' . $value . '"' . $size . $class . ' />';
         $html[] = '</span><span class="input-cell">';
-        $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
+
+        // The text box beside it has always been disabled; the button was what
+        // actually changed the type, so a form that disables this field has to
+        // take the button away too or it has disabled nothing.
+        if ((string) $this->element['disabled'] != 'true') {
+            $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
+        }
         $escapedValue = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
         $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $escapedValue . '" />';
         $html[] = '</span>';

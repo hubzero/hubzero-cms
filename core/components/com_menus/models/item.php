@@ -331,6 +331,16 @@ class Item extends Nested
      */
     public function destroy()
     {
+        // A generated entry is the component's address. Deleting it here takes
+        // the component off the hub as far as a visitor is concerned, and the
+        // next install or "muse routes fix" puts it straight back - so the hub
+        // is briefly broken and then silently mended, which is the worst of
+        // both. Switch the component off instead and the address goes with it.
+        if ($this->isGenerated()) {
+            $this->addError(Lang::txt('COM_MENUS_ERROR_GENERATED_ITEM_DELETE'));
+            return false;
+        }
+
         // Remove children
         foreach ($this->children()->rows() as $child) {
             if (!$child->destroy()) {
@@ -352,6 +362,30 @@ class Item extends Nested
     {
         if (!$this->get('access')) {
             $this->set('access', (int) Config::get('access'));
+        }
+
+        // Disabling a field in the form disables it in the form. The POST still
+        // arrives, and whatever it carries is still written - so the lock in
+        // getForm() is a courtesy to the administrator and this is the part that
+        // holds. A generated entry's address is read back off the row on disk
+        // and put back, whoever assembled the request and however.
+        //
+        // What is left alone is what the entry exists for: its title and note,
+        // its access level, its template style, its params, and whether it is
+        // published.
+        if (!$this->isNew()) {
+            $stored = self::oneOrNew($this->get('id'));
+
+            if ($stored->get('id') && $stored->isGenerated()) {
+                $derived = array(
+                    'menutype', 'alias', 'path', 'link', 'type', 'component_id',
+                    'parent_id', 'level', 'lft', 'rgt', 'home', 'language'
+                );
+
+                foreach ($derived as $field) {
+                    $this->set($field, $stored->get($field));
+                }
+            }
         }
 
         $isNew = $this->isNew();
@@ -662,7 +696,96 @@ class Item extends Nested
             $form->setFieldAttribute('published', 'filter', 'unset');
         }
 
+        // An entry in a generated menu is not the administrator's to reshape.
+        // Its alias is its component's name and its link is built from that, and
+        // the router's fallback assumes the same two things - so editing either
+        // here breaks the agreement quietly, on one hub, in a way nothing
+        // reports. What is left open is what the entry exists for: the template
+        // style for that page, its access level, and its params.
+        if ($this->isGenerated()) {
+            $locked = array(
+                'alias', 'path', 'link', 'type', 'component_id',
+                'menutype', 'parent_id', 'home', 'menuordering', 'language'
+            );
+
+            foreach ($locked as $field) {
+                $form->setFieldAttribute($field, 'disabled', 'true');
+                $form->setFieldAttribute($field, 'filter', 'unset');
+            }
+        }
+
         return $form;
+    }
+
+    /**
+     * Whether this item belongs to a menu something else maintains
+     *
+     * A component menu is written by the install macro and by "muse routes",
+     * which is also the way to change one of its entries when it is wrong. The
+     * admin refuses so that a hub cannot drift away from what generated it
+     * without anybody noticing.
+     *
+     * @return  bool
+     */
+    public function isGenerated()
+    {
+        if (!$this->get('menutype')) {
+            return false;
+        }
+
+        $db = App::get('db');
+
+        if (!$db->tableHasField('#__menu_types', 'type')) {
+            return false;
+        }
+
+        $kind = $db->getQuery(true)
+            ->select('type')
+            ->from('#__menu_types')
+            ->whereEquals('menutype', $this->get('menutype'))
+            ->value('type');
+
+        return ($kind == 'component');
+    }
+
+    /**
+     * Which of these ids belong to a generated menu
+     *
+     * One query rather than one per id, because a batch may be a whole page of
+     * them.
+     *
+     * @param   array  $pks  Menu item ids
+     * @return  array  The ids that are generated
+     */
+    public function generatedIn($pks)
+    {
+        $pks = array_filter(array_map('intval', (array) $pks));
+
+        if (!$pks) {
+            return array();
+        }
+
+        $db = App::get('db');
+
+        if (!$db->tableHasField('#__menu_types', 'type')) {
+            return array();
+        }
+
+        $rows = $db->getQuery(true)
+            ->select('m.id')
+            ->from('#__menu', 'm')
+            ->join('#__menu_types AS t', 't.menutype', 'm.menutype')
+            ->whereEquals('t.type', 'component')
+            ->whereIn('m.id', $pks)
+            ->fetch();
+
+        $found = array();
+
+        foreach ($rows as $row) {
+            $found[] = (int) (is_object($row) ? $row->id : $row['id']);
+        }
+
+        return $found;
     }
 
     /**
@@ -734,9 +857,16 @@ class Item extends Nested
 
             // Now check for a view manifest file
             if (!$formFile) {
-                $metadataPath = $base . '/views/' . $view . '/metadata.xml';
-                $path = \Hubzero\Filesystem\Util::normalizePath($metadataPath);
-                if (isset($view) && Filesystem::exists($path)) {
+                // A link without a view has no view manifest to look for, and
+                // building its path first was reading a variable that is only
+                // set in the branch above. A component's own address is exactly
+                // such a link - index.php?option=com_x and nothing else - so
+                // every generated entry used to open on a 500.
+                $path = isset($view)
+                    ? \Hubzero\Filesystem\Util::normalizePath($base . '/views/' . $view . '/metadata.xml')
+                    : '';
+
+                if ($path && Filesystem::exists($path)) {
                     $formFile = $path;
                 } else {
                     //Now check for a component manifest file
@@ -1214,6 +1344,25 @@ class Item extends Nested
         if (empty($pks)) {
             $this->addError(Lang::txt('COM_MENUS_NO_ITEM_SELECTED'));
             return false;
+        }
+
+        // Moving a generated entry out of its menu strands the component;
+        // copying one lands a second row on the same alias, which the menu's
+        // own unique key will not have. Neither is worth doing, and a batch is
+        // easy to fire at a whole page of them by accident.
+        $generated = $this->generatedIn($pks);
+
+        if ($generated) {
+            $pks = array_values(array_diff($pks, $generated));
+
+            $this->addError(Lang::txt(
+                'COM_MENUS_ERROR_GENERATED_ITEM_BATCH',
+                count($generated)
+            ));
+
+            if (!$pks) {
+                return false;
+            }
         }
 
         $done = false;

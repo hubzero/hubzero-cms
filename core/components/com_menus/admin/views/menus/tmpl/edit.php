@@ -81,6 +81,11 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
         </div>
 
         <div class="input-wrap">
+            <?php echo $this->form->getLabel('type'); ?>
+            <?php echo $this->form->getInput('type'); ?>
+        </div>
+
+        <div class="input-wrap">
             <?php echo $this->form->getLabel('description'); ?>
             <?php echo $this->form->getInput('description'); ?>
         </div>

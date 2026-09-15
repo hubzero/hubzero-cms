@@ -39,6 +39,18 @@
 			required="true" />
 
 		<field
+			id="type"
+			name="type"
+			type="list"
+			label="COM_MENUS_MENU_FIELD_TYPE_LABEL"
+			description="COM_MENUS_MENU_FIELD_TYPE_DESC"
+			class="inputbox"
+			default="display">
+			<option value="display">COM_MENUS_MENU_TYPE_DISPLAY</option>
+			<option value="routing">COM_MENUS_MENU_TYPE_ROUTING</option>
+		</field>
+
+		<field
 			id="menudescription"
 			name="description"
 			type="text"
