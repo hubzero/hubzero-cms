@@ -26,31 +26,6 @@ use Hubzero\Facades\App;
 class Routes extends Base implements CommandInterface
 {
     /**
-     * Components with a site half that is not a page
-     *
-     * Machinery, or an endpoint that something else talks to rather than a
-     * person. com_content is here because it routes through articles and has
-     * never answered at /content; com_dataviewer because it answers 404 to
-     * every spelling of its own name.
-     *
-     * @var  array
-     */
-    protected $notPages = array(
-        'com_content',
-        'com_cron',
-        'com_dataviewer',
-        'com_help',
-        'com_mailto',
-        'com_media',
-        'com_messages',
-        'com_oaipmh',
-        'com_oauth',
-        'com_redirect',
-        'com_saml',
-        'com_system',
-    );
-
-    /**
      * Default - say what is out of step without changing anything
      *
      * @return  void
@@ -155,7 +130,7 @@ class Routes extends Base implements CommandInterface
                 continue;
             }
 
-            if (in_array($element, $this->notPages, true)) {
+            if (in_array($element, \Hubzero\Menu\ComponentRoute::notPages(), true)) {
                 continue;
             }
 
