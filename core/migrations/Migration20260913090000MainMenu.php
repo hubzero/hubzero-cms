@@ -235,11 +235,24 @@ class Migration20260913090000MainMenu extends Base
         }
 
         $wanted = array(
-            'mainmenu' => 'Main Menu',
-            'default'  => 'Default',
+            'mainmenu' => array(
+                'Main Menu',
+                'display',
+                'The main menu for the site',
+            ),
+            'components' => array(
+                'Components',
+                'component',
+                'One entry per component, so every component has an address and a page'
+                . ' of its own. Generated; not edited here.',
+            ),
         );
 
-        foreach ($wanted as $type => $title) {
+        $typed = $this->db->tableHasField('#__menu_types', 'type');
+
+        foreach ($wanted as $type => $about) {
+            list($title, $kind, $description) = $about;
+
             $exists = $this->db->getQuery(true)
                 ->select('id')
                 ->from('#__menu_types')
@@ -250,13 +263,19 @@ class Migration20260913090000MainMenu extends Base
                 continue;
             }
 
+            $values = array(
+                'menutype'    => $type,
+                'title'       => $title,
+                'description' => $description,
+            );
+
+            if ($typed) {
+                $values['type'] = $kind;
+            }
+
             $this->db->getQuery(true)
                 ->insert('#__menu_types')
-                ->values(array(
-                    'menutype'    => $type,
-                    'title'       => $title,
-                    'description' => '',
-                ))
+                ->values($values)
                 ->execute();
         }
     }
@@ -276,7 +295,7 @@ class Migration20260913090000MainMenu extends Base
             $link = isset($route[2]) ? $route[2] : 'index.php?option=' . $route[1];
 
             $ids[$alias] = $this->addItem(array(
-                'menutype'     => 'default',
+                'menutype'     => 'components',
                 'title'        => $route[0],
                 'alias'        => $alias,
                 'path'         => $alias,
@@ -557,7 +576,7 @@ class Migration20260913090000MainMenu extends Base
         foreach (array_keys($this->routes) as $alias) {
             $this->db->getQuery(true)
                 ->delete('#__menu')
-                ->where('menutype', '=', 'default')
+                ->where('menutype', '=', 'components')
                 ->where('client_id', '=', 0)
                 ->where('alias', '=', $alias)
                 ->execute();

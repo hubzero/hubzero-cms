@@ -2541,6 +2541,7 @@ CREATE TABLE `#__menu_types` (
   `menutype` varchar(24) NOT NULL,
   `title` varchar(48) NOT NULL,
   `description` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(16) NOT NULL DEFAULT 'display' COMMENT 'display, component or routing',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_menutype` (`menutype`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
