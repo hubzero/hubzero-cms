@@ -472,8 +472,71 @@ All three callers - the install macro, `muse routes fix` and the router - now go
 through one class, `Hubzero\Menu\ComponentRoute`. They had three copies of the
 same insert and two different rebuilds, one of which did not derive `path`.
 
-**A is not built** and should not start without saying so first: it is the only
-piece that rewrites URLs on live hubs.
+**A is done, and it rewrites nothing.** The fear in the plan was a migration
+that changed every hub's URLs. It turned out not to need one: `#__menu` gains a
+nullable `route`, empty on every existing row, and an item only moves when
+somebody fills it in.
+
+- `path` is still what the router matches on, so the router is untouched. It
+  means "the address this item answers at" now rather than "computed from the
+  alias field", and it is computed in one place rather than the three it was
+  spread across.
+- An item with a declared route answers there wherever it sits in the menu, and
+  what is nested under it follows unless it declares its own.
+- A save that would put two items at one address is refused: `idx_path` is not
+  unique, so the database would accept it and the router would resolve it
+  arbitrarily.
+- The shared rebuild asks before overwriting a declared address, or installing
+  anything at all would quietly undo it.
+- A generated entry cannot declare one.
+- The value is cleaned to lowercase path segments - no slashes at the ends, no
+  empty or dot segments, nothing that means something else in a URL. Twenty-four
+  tests in `core/components/com_menus/tests/RouteTest.php`, including that
+  cleaning twice is cleaning once, because it runs on every save.
+
+Demonstrated on lucent: a page two levels under About, with a child, declared
+`/handbook`. Both moved, the old addresses 404, and the menu still draws the
+item nested under About linking to `/handbook`.
+
+Two fixes came with it. `rebuildPath()` stopped at direct children, so renaming
+an alias two levels up left the bottom of the tree at an address that no longer
+existed; it walks down now. And `starter.sql` inserted 105 menu rows
+positionally, so adding a column shifted every value in every one - the install
+test caught that, and they name their columns now.
+
+### What A does not yet do: collapse the alias items
+
+lucent's main menu holds twenty-nine alias items, and the plan said they "stop
+having a reason to exist". They have not stopped yet, because of how A and B
+meet.
+
+An alias item at `nav-discover/resources` points at the generated entry at
+`/resources`. To replace the pair with one item, that item must be nested under
+Discover and declare `route = resources` - which is the address the generated
+entry already holds, so the collision check refuses it. Deleting the generated
+entry first is refused too. There is no order that works.
+
+Making it work needs one more rule, and it is a real decision rather than a
+detail: **a declared route displaces a generated entry**, on the grounds that
+the generated one exists to guarantee an address and there now is one. The cost
+is that the Itemid changes, and an Itemid is what per-page module assignments
+and template styles are keyed to - so anything attached to the old entry is
+silently attached to nothing.
+
+Three ways to go:
+
+1. The rule above, plus moving the module assignments and template style across
+   when it fires. Most work, best result, and the only one that actually
+   collapses the alias items.
+2. Leave it. A is for pages - articles, headings, hand-made URLs - and
+   components keep the alias-item arrangement they have. Nothing breaks and the
+   main menu stays as it is.
+3. Let a display item and a generated entry share an address, with the display
+   one winning. Cheapest, but two rows claiming one URL is the thing the
+   collision check exists to prevent, and `muse routes check` would have to
+   learn to expect it.
+
+Not chosen here.
 
 ### Defects found on the way, not fixed here
 
