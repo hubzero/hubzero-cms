@@ -36,8 +36,7 @@ class AddComponentEntry extends Macro
         $params = '',
         $createMenuItem = true,
         $createRoute = null
-    )
-    {
+    ) {
         if (!$this->db->tableExists('#__extensions')) {
             $this->log(sprintf('Required table not found for adding component "%s"', $name), 'warning');
 
@@ -213,12 +212,6 @@ class AddComponentEntry extends Macro
      */
     protected function addSiteRoute($option, $component_id, $enabled, $wanted = null)
     {
-        if (!$this->db->tableExists('#__menu') || !$this->db->tableExists('#__menu_types')) {
-            return false;
-        }
-
-        $alias = substr($option, 4);
-
         if ($wanted === null) {
             // Nothing to route to without a site half
             $wanted = is_dir(PATH_CORE . '/components/' . $option . '/site');
@@ -228,203 +221,8 @@ class AddComponentEntry extends Macro
             return false;
         }
 
-        $menutype = $this->componentMenu();
+        $routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
 
-        if (!$menutype) {
-            return false;
-        }
-
-        $root = $this->db->getQuery(true)
-            ->select('id')
-            ->from('#__menu')
-            ->whereEquals('parent_id', 0)
-            ->value('id');
-
-        $root = $root ? (int) $root : 1;
-
-        // Unique on client, parent, alias and language, which is what to look
-        // for: the same route may have been filed under another menutype.
-        $existing = $this->db->getQuery(true)
-            ->select('id')
-            ->from('#__menu')
-            ->whereEquals('client_id', 0)
-            ->whereEquals('parent_id', $root)
-            ->whereEquals('alias', $alias)
-            ->value('id');
-
-        if ($existing) {
-            return true;
-        }
-
-        $this->db->getQuery()
-            ->insert('#__menu')
-            ->values(array(
-                'menutype'          => $menutype,
-                'title'             => ucfirst($alias),
-                'alias'             => $alias,
-                'note'              => '',
-                'path'              => $alias,
-                'link'              => 'index.php?option=' . $option,
-                'type'              => 'component',
-                'published'         => $enabled,
-                'parent_id'         => $root,
-                'level'             => 1,
-                'component_id'      => $component_id,
-                'ordering'          => 0,
-                'checked_out'       => 0,
-                'browserNav'        => 0,
-                'access'            => 1,
-                'img'               => '',
-                'template_style_id' => 0,
-                'params'            => '',
-                'lft'               => 0,
-                'rgt'               => 0,
-                'home'              => 0,
-                'language'          => '*',
-                'client_id'         => 0
-            ))
-            ->execute();
-
-        $this->log(sprintf('Added the site route /%s', $alias));
-
-        $this->rebuildMenu();
-
-        return true;
-    }
-
-    /**
-     * The menu the component routes live in, made if it is not there yet
-     *
-     * @return  string|null  Its menutype
-     */
-    protected function componentMenu()
-    {
-        $typed = $this->db->tableHasField('#__menu_types', 'type');
-
-        if ($typed) {
-            $found = $this->db->getQuery(true)
-                ->select('menutype')
-                ->from('#__menu_types')
-                ->whereEquals('type', 'component')
-                ->value('menutype');
-
-            if ($found) {
-                return $found;
-            }
-        }
-
-        $found = $this->db->getQuery(true)
-            ->select('menutype')
-            ->from('#__menu_types')
-            ->whereEquals('menutype', 'components')
-            ->value('menutype');
-
-        if ($found) {
-            return $found;
-        }
-
-        $values = array(
-            'menutype'    => 'components',
-            'title'       => 'Components',
-            'description' => 'One entry per component, so every component has an address'
-                . ' and a page of its own. Generated; not edited here.',
-        );
-
-        if ($typed) {
-            $values['type'] = 'component';
-        }
-
-        $this->db->getQuery()
-            ->insert('#__menu_types')
-            ->values($values)
-            ->execute();
-
-        $this->log('Made the components menu');
-
-        return 'components';
-    }
-
-    /**
-     * Method to recursively rebuild the whole nested set tree.
-     *
-     * @param   integer  $parentId  The root of the tree to rebuild.
-     * @param   integer  $leftId    The left id to start with in building the tree.
-     * @param   integer  $level     The level to assign to the current nodes.
-     * @param   string   $path      The path to the current nodes.
-     * @return  integer  1 + value of root rgt on success, false on failure
-     */
-    private function rebuildMenu($parentId = null, $leftId = 0, $level = 0, $path = '')
-    {
-        // If no parent is provided, try to find it.
-        if ($parentId === null) {
-            // Get the root item.
-            $query = $this->db->getQuery()
-                ->select('id')
-                ->from('#__menu')
-                ->whereEquals('parent_id', 0)
-                ->toString();
-
-            $this->db->setQuery($query);
-            $parentId = $this->db->loadResult();
-
-            if ($parentId === false) {
-                return false;
-            }
-        }
-
-        // Build the structure of the recursive query.
-        $rebuild = $this->db->getQuery()
-            ->select('id')
-            ->select('alias')
-            ->from('#__menu')
-            ->whereEquals('parent_id', (int) $parentId)
-            ->order('parent_id', 'asc')
-            ->order('ordering', 'asc')
-            ->order('lft', 'asc')
-            ->toString();
-
-        // Assemble the query to find all children of this node.
-        $this->db->setQuery($rebuild);
-        $children = $this->db->loadObjectList();
-
-        // The right value of this node is the left value + 1
-        $rightId = $leftId + 1;
-
-        // execute this function recursively over all children
-        foreach ($children as $node) {
-            // $rightId is the current right value, which is incremented on recursion return.
-            // Increment the level for the children.
-            // Add this item's alias to the path (but avoid a leading /)
-            $rightId = $this->rebuildMenu($node->id, $rightId, $level + 1, $path .
-                (empty($path) ? '' : '/') .
-                $node->alias);
-
-            // If there is an update failure, return false to break out of the recursion.
-            if ($rightId === false) {
-                return false;
-            }
-        }
-
-        // We've got the left value, and now that we've processed
-        // the children of this node we also know the right value.
-        $query = $this->db->getQuery()
-            ->update('#__menu')
-            ->set(array(
-                'lft'   => (int) $leftId,
-                'rgt'   => (int) $rightId,
-                'level' => (int) $level,
-                'path'  => $path
-            ))
-            ->whereEquals('id', (int) $parentId)
-            ->toString();
-        $this->db->setQuery($query);
-
-        // If there is an update failure, return false to break out of the recursion.
-        if (!$this->db->execute()) {
-            return false;
-        }
-
-        // Return the right value of this node + 1.
-        return $rightId + 1;
+        return $routes->create($option, $component_id, $enabled);
     }
 }

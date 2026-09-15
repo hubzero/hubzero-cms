@@ -7,7 +7,9 @@
  */
 
 use Hubzero\Facades\App;
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Log;
 use Hubzero\Facades\Request;
 
 /*
@@ -605,6 +607,89 @@ $router->rules('parse')->append('component', function ($uri) {
         return true;
     }
 });
+
+/*
+| Lazily give a new component its address - in development only
+|
+| A component's address is made when the component is installed. A component
+| that has just been written has no migration yet, so it has no address, so it
+| has no Itemid - and without an Itemid it gets no per-page modules, no template
+| style of its own and no place in a breadcrumb. The component appears to work
+| and then behaves oddly, and nothing says why.
+|
+| This closes that gap while the migration is still being written. It runs only
+| with debug on, because a production hub creating menu rows in response to
+| whatever URL it is asked for is a different thing entirely, and because the
+| right place to make a route is a migration that ships with the component.
+|
+| The entry lands after this request has already read the menu, so it is the
+| next request that gets the Itemid. That is one refresh, and it is the honest
+| behaviour: the alternative is re-reading the menu mid-request to hide it.
+*/
+if (Config::get('debug')) {
+    $router->rules('parse')->append('lazyroute', function ($uri) {
+        $option = $uri->getUriVar('option');
+
+        if (is_array($option) || !$option) {
+            return;
+        }
+
+        // Only the component's own front door. A deeper URL under it is the
+        // component router's business and creates nothing.
+        $segments = array_filter(explode('/', trim((string) $uri->getPath(), '/')));
+
+        if (count($segments) != 1 || 'com_' . $segments[0] != $option) {
+            return;
+        }
+
+        if (!App::has('db')) {
+            return;
+        }
+
+        $db     = App::get('db');
+        $routes = new \Hubzero\Menu\ComponentRoute($db);
+
+        if (!$routes->routable($option) || $routes->exists($option)) {
+            return;
+        }
+
+        // Installed and switched on, or there is nothing to route to
+        $extension = $routes->extension($option);
+
+        if (!$extension) {
+            return;
+        }
+
+        $id      = (int) (is_object($extension) ? $extension->extension_id : $extension['extension_id']);
+        $enabled = (int) (is_object($extension) ? $extension->enabled : $extension['enabled']);
+
+        if (!$enabled) {
+            return;
+        }
+
+        // Two requests arriving together would both find nothing and both
+        // insert, and the menu's unique key on client, parent, alias and
+        // language would refuse the second. The check and the insert go in one
+        // transaction, and a deadlock is worth one retry.
+        try {
+            $db->transaction(function () use ($routes, $option, $id, $enabled) {
+                if (!$routes->exists($option)) {
+                    $routes->create($option, $id, $enabled);
+                }
+            }, 2);
+        } catch (\Throwable $e) {
+            // A hub that cannot write its own menu has a larger problem than a
+            // missing Itemid, and this is not the request to report it on.
+            return;
+        }
+
+        Log::debug(sprintf(
+            'Lazily gave %s the address /%s. Write a migration: see AddComponentEntry.',
+            $option,
+            $segments[0]
+        ));
+    });
+}
 
 /*
 | Match by redirection rule
