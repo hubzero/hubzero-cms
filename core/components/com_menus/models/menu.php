@@ -144,6 +144,20 @@ class Menu extends Relational
             // Get the old value of the table just in case the 'menutype' changed
             $prev = self::oneOrNew($this->get('id'));
 
+            // As with an item, the form lock is a courtesy and this is the part
+            // that holds.
+            if ($prev->get('type') == 'component') {
+                $this->set('menutype', $prev->get('menutype'));
+                $this->set('type', 'component');
+            }
+
+            // Nothing else may become one either. A second component menu would
+            // give every component two addresses and nothing would say which
+            // one the router had picked.
+            if ($this->get('type') == 'component' && $prev->get('type') != 'component') {
+                $this->set('type', $prev->get('type') ? $prev->get('type') : 'display');
+            }
+
             if ($this->get('menutype') != $prev->get('menutype')) {
                 // Get the user id
                 $userId = User::get('id');
@@ -217,6 +231,14 @@ class Menu extends Relational
     {
         if ($this->isNew()) {
             return true;
+        }
+
+        // Deleting this takes every component's address with it, and the next
+        // install quietly puts them all back - so the hub is broken for as long
+        // as nobody runs an install, which could be a year.
+        if ($this->get('type') == 'component') {
+            $this->addError(Lang::txt('COM_MENUS_ERROR_GENERATED_MENU_DELETE'));
+            return false;
         }
 
         // Get the user id
@@ -332,6 +354,17 @@ class Menu extends Relational
 
         $data = $this->toArray();
         $form->bind($data);
+
+        // Component is not on the list, because a hub has one component menu
+        // and the installer made it. An existing one cannot be retyped into
+        // something a menu module may render, and its menutype is the name the
+        // generated entries are filed under.
+        if ($this->get('type') == 'component') {
+            foreach (array('menutype', 'type') as $field) {
+                $form->setFieldAttribute($field, 'disabled', 'true');
+                $form->setFieldAttribute($field, 'filter', 'unset');
+            }
+        }
 
         return $form;
     }
