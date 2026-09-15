@@ -50,8 +50,19 @@ class Redirect extends SiteController
         $enabled = isset($params["delay_enabled"]) ? $params["delay_enabled"] : "DISABLED";
         $time  = isset($params["delay_seconds"]) ? $params["delay_seconds"] : 10;
         $url = base64_decode($url, true);
-        if ($url === false) {
-            App::redirect("https://" . $_SERVER['HTTP_HOST']);
+
+        // An empty id decodes to an empty string rather than false, so asking
+        // for /redirect with nothing to redirect to fell past this guard and
+        // reached App::redirect('') - which throws, and the component answered
+        // 500 to its own name.
+        //
+        // Home is where a redirect with no destination goes. Request::base()
+        // rather than the Host header, because the Host header is the visitor's
+        // to set and this is the one component whose whole job is sending
+        // people elsewhere.
+        if ($url === false || trim($url) === '') {
+            App::redirect(Request::base());
+            return;
         }
         if ($enabled == "DISABLED") {
             App::redirect($url);
