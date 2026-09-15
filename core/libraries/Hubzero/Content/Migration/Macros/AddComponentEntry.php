@@ -24,9 +24,19 @@ class AddComponentEntry extends Macro
      * @param   int     $enabled         Whether or not the component should be enabled
      * @param   string  $params          Component params (if already known)
      * @param   bool    $createMenuItem  Create an admin menu item for this component
+     * @param   bool    $createRoute     Create the site route for this component. A
+     *                                   component with no site/ directory has nothing
+     *                                   to route to and is left out by default.
      * @return  bool
      **/
-    public function __invoke($name, $option = null, $enabled = 1, $params = '', $createMenuItem = true)
+    public function __invoke(
+        $name,
+        $option = null,
+        $enabled = 1,
+        $params = '',
+        $createMenuItem = true,
+        $createRoute = null
+    )
     {
         if (!$this->db->tableExists('#__extensions')) {
             $this->log(sprintf('Required table not found for adding component "%s"', $name), 'warning');
@@ -178,7 +188,160 @@ class AddComponentEntry extends Macro
             $this->rebuildMenu();
         }
 
+        $this->addSiteRoute($option, $component_id, $enabled, $createRoute);
+
         return true;
+    }
+
+    /**
+     * Give the component an address on the site, and an Itemid with it
+     *
+     * The router matches an incoming URL against #__menu.path, so a component
+     * with no entry either does not route at all or routes by name with no
+     * Itemid - and an Itemid is what modules and a template style are assigned
+     * to. One flat entry per component in the component menu is what makes
+     * /resources a page rather than a fallback.
+     *
+     * The alias is the option without its com_ prefix, which is also the rule
+     * the router's own fallback uses, so the two agree by construction.
+     *
+     * @param   string    $option        com_xyz
+     * @param   int       $component_id  Its extension id
+     * @param   int       $enabled       Whether the component is on
+     * @param   bool|null $wanted        Force it on or off; decided by the files if null
+     * @return  bool
+     */
+    protected function addSiteRoute($option, $component_id, $enabled, $wanted = null)
+    {
+        if (!$this->db->tableExists('#__menu') || !$this->db->tableExists('#__menu_types')) {
+            return false;
+        }
+
+        $alias = substr($option, 4);
+
+        if ($wanted === null) {
+            // Nothing to route to without a site half
+            $wanted = is_dir(PATH_CORE . '/components/' . $option . '/site');
+        }
+
+        if (!$wanted) {
+            return false;
+        }
+
+        $menutype = $this->componentMenu();
+
+        if (!$menutype) {
+            return false;
+        }
+
+        $root = $this->db->getQuery(true)
+            ->select('id')
+            ->from('#__menu')
+            ->whereEquals('parent_id', 0)
+            ->value('id');
+
+        $root = $root ? (int) $root : 1;
+
+        // Unique on client, parent, alias and language, which is what to look
+        // for: the same route may have been filed under another menutype.
+        $existing = $this->db->getQuery(true)
+            ->select('id')
+            ->from('#__menu')
+            ->whereEquals('client_id', 0)
+            ->whereEquals('parent_id', $root)
+            ->whereEquals('alias', $alias)
+            ->value('id');
+
+        if ($existing) {
+            return true;
+        }
+
+        $this->db->getQuery()
+            ->insert('#__menu')
+            ->values(array(
+                'menutype'          => $menutype,
+                'title'             => ucfirst($alias),
+                'alias'             => $alias,
+                'note'              => '',
+                'path'              => $alias,
+                'link'              => 'index.php?option=' . $option,
+                'type'              => 'component',
+                'published'         => $enabled,
+                'parent_id'         => $root,
+                'level'             => 1,
+                'component_id'      => $component_id,
+                'ordering'          => 0,
+                'checked_out'       => 0,
+                'browserNav'        => 0,
+                'access'            => 1,
+                'img'               => '',
+                'template_style_id' => 0,
+                'params'            => '',
+                'lft'               => 0,
+                'rgt'               => 0,
+                'home'              => 0,
+                'language'          => '*',
+                'client_id'         => 0
+            ))
+            ->execute();
+
+        $this->log(sprintf('Added the site route /%s', $alias));
+
+        $this->rebuildMenu();
+
+        return true;
+    }
+
+    /**
+     * The menu the component routes live in, made if it is not there yet
+     *
+     * @return  string|null  Its menutype
+     */
+    protected function componentMenu()
+    {
+        $typed = $this->db->tableHasField('#__menu_types', 'type');
+
+        if ($typed) {
+            $found = $this->db->getQuery(true)
+                ->select('menutype')
+                ->from('#__menu_types')
+                ->whereEquals('type', 'component')
+                ->value('menutype');
+
+            if ($found) {
+                return $found;
+            }
+        }
+
+        $found = $this->db->getQuery(true)
+            ->select('menutype')
+            ->from('#__menu_types')
+            ->whereEquals('menutype', 'components')
+            ->value('menutype');
+
+        if ($found) {
+            return $found;
+        }
+
+        $values = array(
+            'menutype'    => 'components',
+            'title'       => 'Components',
+            'description' => 'One entry per component, so every component has an address'
+                . ' and a page of its own. Generated; not edited here.',
+        );
+
+        if ($typed) {
+            $values['type'] = 'component';
+        }
+
+        $this->db->getQuery()
+            ->insert('#__menu_types')
+            ->values($values)
+            ->execute();
+
+        $this->log('Made the components menu');
+
+        return 'components';
     }
 
     /**
