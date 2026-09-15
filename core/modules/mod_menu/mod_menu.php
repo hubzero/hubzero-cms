@@ -112,8 +112,10 @@ class Menu extends Module
                     //
                     // Dropped here rather than in a layout, where a template's
                     // own override would not know to skip it.
-                    if (!$item->params->get('menu_show', $item->type == 'none' ? 0 : 1)
-                     || in_array($item->parent_id, $hidden)) {
+                    if (
+                        !$item->params->get('menu_show', $item->type == 'none' ? 0 : 1)
+                        || in_array($item->parent_id, $hidden)
+                    ) {
                         $hidden[] = $item->id;
 
                         unset($items[$i]);

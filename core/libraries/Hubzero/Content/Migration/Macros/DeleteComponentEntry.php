@@ -34,6 +34,15 @@ class DeleteComponentEntry extends Macro
                 $name = 'com_' . strtolower($name);
             }
 
+            // The address AddComponentEntry gave it goes with it. Only the
+            // generated one: a hub's own menu item for the component is the
+            // hub's, and the menu leaves it out anyway once the extension row
+            // is gone.
+            if ($this->db->tableExists('#__menu') && $this->db->tableExists('#__menu_types')) {
+                $routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
+                $routes->remove($name);
+            }
+
             // Delete component entry
             $query = $this->db->getQuery()
                 ->delete($table)

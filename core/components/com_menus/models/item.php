@@ -526,14 +526,25 @@ class Item extends Nested
      */
     public function rebuild($parentId, $leftId = 0, $level = 0, $path = '')
     {
+        // The column arrives with a migration, and Rebuild is an admin button
+        // that may be pressed before the migration has run.
+        static $hasRoute = null;
+
+        if ($hasRoute === null) {
+            $hasRoute = App::get('db')->tableHasField($this->getTableName(), 'route');
+        }
+
         $query = $this->getQuery()
             ->select('id')
             ->select('alias')
-            ->select('route')
             ->from($this->getTableName())
             ->whereEquals('parent_id', (int) $parentId)
             ->order('parent_id', 'asc')
             ->order('lft', 'asc');
+
+        if ($hasRoute) {
+            $query->select('route');
+        }
 
         // Assemble the query to find all children of this node.
         $db = App::get('db');
@@ -550,7 +561,7 @@ class Item extends Nested
             // A declared route replaces this item's whole address rather than
             // its last segment, and what is under it follows - which is what
             // moving a section means. A child that wants out declares its own.
-            $newPath = $node->route
+            $newPath = (isset($node->route) && $node->route !== null && $node->route !== '')
                 ? self::cleanRoute($node->route)
                 : $path . (empty($path) ? '' : '/') . $node->alias;
 
@@ -636,8 +647,11 @@ class Item extends Nested
      */
     protected function effectivePath($parentPath)
     {
-        if ($this->get('route')) {
-            return self::cleanRoute($this->get('route'));
+        // "0" is an address too
+        $route = $this->get('route');
+
+        if ($route !== null && $route !== '') {
+            return self::cleanRoute($route);
         }
 
         $segments = explode('/', (string) $parentPath);
@@ -740,14 +754,7 @@ class Item extends Nested
      */
     public static function routeRank($kind)
     {
-        switch ($kind) {
-            case 'component':
-                return 2;
-            case 'routing':
-                return 1;
-            default:
-                return 0;
-        }
+        return \Hubzero\Menu\ComponentRoute::rank($kind);
     }
 
     /**
