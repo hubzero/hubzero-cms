@@ -112,8 +112,9 @@ class Routes extends Base implements CommandInterface
         $db = App::get('db');
 
         $components = array();
+        $installed  = array();
 
-        $installed = $db->getQuery(true)
+        $rows = $db->getQuery(true)
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
@@ -121,12 +122,12 @@ class Routes extends Base implements CommandInterface
             ->whereEquals('type', 'component')
             ->fetch();
 
-        foreach ($installed as $row) {
+        foreach ($rows as $row) {
             $element = is_object($row) ? $row->element : $row['element'];
             $enabled = (int) (is_object($row) ? $row->enabled : $row['enabled']);
             $id      = (int) (is_object($row) ? $row->extension_id : $row['extension_id']);
 
-            if (!$enabled || substr($element, 0, 4) !== 'com_') {
+            if (substr($element, 0, 4) !== 'com_') {
                 continue;
             }
 
@@ -138,7 +139,12 @@ class Routes extends Base implements CommandInterface
                 continue;
             }
 
-            $components[$element] = $id;
+            $installed[$element] = $enabled;
+
+            // Only a component that is switched on needs an address that works
+            if ($enabled) {
+                $components[$element] = $id;
+            }
         }
 
         $routed = array();
@@ -146,6 +152,7 @@ class Routes extends Base implements CommandInterface
         $entries = $db->getQuery(true)
             ->select('alias')
             ->select('link')
+            ->select('published')
             ->from('#__menu')
             ->whereEquals('client_id', 0)
             ->whereEquals('menutype', $this->menutype($db))
@@ -155,9 +162,10 @@ class Routes extends Base implements CommandInterface
             $alias = is_object($row) ? $row->alias : $row['alias'];
             $link  = is_object($row) ? $row->link : $row['link'];
 
-            $routed[$alias] = preg_match('/option=(com_\w+)/', (string) $link, $m)
-                ? $m[1]
-                : 'com_' . $alias;
+            $routed[$alias] = array(
+                'element'   => preg_match('/option=(com_\w+)/', (string) $link, $m) ? $m[1] : 'com_' . $alias,
+                'published' => (int) (is_object($row) ? $row->published : $row['published']),
+            );
         }
 
         $missing = array();
@@ -179,10 +187,22 @@ class Routes extends Base implements CommandInterface
 
         $orphaned = array();
 
-        foreach ($routed as $alias => $element) {
-            if (!isset($components[$element])) {
-                $orphaned[$alias] = $element;
+        foreach ($routed as $alias => $entry) {
+            $element = $entry['element'];
+
+            if (isset($components[$element])) {
+                continue;
             }
+
+            // A component that is installed but switched off should have an
+            // address that is switched off too - that is the entry tracking the
+            // component, not an address left behind, and there is nothing to
+            // report. Only a published one is out of step.
+            if (isset($installed[$element]) && !$entry['published']) {
+                continue;
+            }
+
+            $orphaned[$alias] = $element;
         }
 
         return array(
