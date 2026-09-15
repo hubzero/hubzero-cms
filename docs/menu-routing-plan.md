@@ -814,21 +814,28 @@ highlight Home, and those URLs now have entries.
 
 ## Still not done
 
-- **The alias items are still there.** Twenty-nine on lucent. Collapsing them
-  needs a display item to take an address a generated entry holds, which the
-  precedence rule now allows — but the entry's Itemid is what per-page module
-  assignments and template styles are keyed to, so anything attached to the old
-  entry would silently attach to nothing. The three options are in the section
-  above; none is chosen.
-- **`com_menus` batch has never worked.** The items controller calls
-  `$model->batch($vars, $pks, $contexts)`, which reaches
-  `Relational::batch(int $size)` and fatals. The guard keeping generated entries
-  out of a batch sits in `batchTask()` ready for whenever that is fixed.
-- **`/redirect` returns 500.**
-- **Admin pages throw `jQuery is not defined`.**
-- **The dead `getActive()` branch** in the first `content` build rule. Leaving it
-  is what keeps component links deterministic; fixing it would make every
-  component link sticky to whichever door the visitor came in by.
+Four of the five things once listed here are done: the batch processing, the
+/redirect 500, the admin control panel's jQuery, and the `getActive()` branch -
+which turned out to be the thing worth fixing rather than the thing to leave
+alone. What remains:
+
+- **Convert the alias items into nested items.** The substantive one. Twenty
+  to twenty-five per hub. No code change is needed - the router, the precedence
+  rule and the prefix inheritance all support it - so this is a data migration
+  per hub, and one that changes urls, so it wants deciding rather than doing
+  quietly.
+- **How much of the codebase builds a component url without `Route::`.** The
+  prefix inheritance only reaches links that go through the router; anything
+  concatenating a url by hand still emits the flat route, and a section's
+  prefix leaks away there. Not measured.
+- **Canonical urls.** One component at several addresses is now a hub's choice
+  to make, and nothing emits a canonical link tag. Raised, not addressed.
+- **The tie-break between two items of equal kind** claiming one address, on
+  both the parse and the build side: the one earlier in the tree wins. Both
+  halves agree, which is the most that can be said for it. A hub that cares has
+  to decide by ordering.
+
+Nothing in this work has been pushed.
 
 ## A note on how this was checked
 
