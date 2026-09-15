@@ -79,6 +79,9 @@ $formAction = Route::url(
                 <th rowspan="2">
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
                 </th>
+                <th rowspan="2" class="priority-3">
+                    <?php echo Lang::txt('COM_MENUS_HEADING_MENU_TYPE'); ?>
+                </th>
                 <th colspan="3" class="priority-4">
                     <?php echo Lang::txt('COM_MENUS_HEADING_NUMBER_MENU_ITEMS'); ?>
                 </th>
@@ -114,6 +117,12 @@ $formAction = Route::url(
             $canEdit   = User::authorise('core.edit', $this->option);
             $canChange = User::authorise('core.edit.state', $this->option);
             $menutype = $item->get('menutype');
+
+            // display, component or routing. A hub migrated from before menus
+            // had a type has none, and everything it made by hand is a menu to
+            // look at.
+            $kind      = $item->get('type') ? $item->get('type') : 'display';
+            $displayed = ($kind == 'display');
             ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td class="center">
@@ -148,6 +157,14 @@ $formAction = Route::url(
                             <?php echo $this->escape($menutype); ?>)
                         <?php endif; ?>
                     </p>
+                </td>
+                <td class="priority-3">
+                    <span class="menu-kind menu-kind-<?php echo $this->escape($kind); ?>">
+                        <?php echo Lang::txt('COM_MENUS_MENU_TYPE_' . strtoupper($kind)); ?>
+                    </span>
+                    <?php if ($item->get('description')) : ?>
+                        <p class="smallsub"><?php echo $this->escape($item->get('description')); ?></p>
+                    <?php endif; ?>
                 </td>
                 <td class="priority-4 center btns">
                     <?php
@@ -226,6 +243,9 @@ $formAction = Route::url(
                         </li>
                         <?php endforeach; ?>
                     </ul>
+                    <?php elseif (!$displayed) : ?>
+                        <?php // Offering a module here would put the routing table on a page ?>
+                        <span class="smallsub"><?php echo Lang::txt('COM_MENUS_NOT_DISPLAYED'); ?></span>
                     <?php elseif ($this->modMenuId) : ?>
                         <?php
                         $addModUrl = Route::url(
