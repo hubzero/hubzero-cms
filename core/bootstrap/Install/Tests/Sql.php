@@ -38,6 +38,13 @@ class Sql
     protected $required = array();
 
     /**
+     * Column sets each table says are unique
+     *
+     * @var  array
+     */
+    protected $uniques = array();
+
+    /**
      * Rows per table
      *
      * @var  array
@@ -69,8 +76,13 @@ class Sql
                 continue;
             }
 
-            if (preg_match('/^(?:INSERT|REPLACE)(?: IGNORE)? INTO `([^`]+)`\s*(\([^)]*\))?\s*VALUES\s*\((.*)\);$/i', $line, $m)) {
-                $this->insert($this->name($m[1]), $m[2], $m[3]);
+            if (preg_match('/^(INSERT|REPLACE)(?: IGNORE)? INTO `([^`]+)`\s*(\([^)]*\))?\s*VALUES\s*\((.*)\);$/i', $line, $m)) {
+                $this->insert(
+                    $this->name($m[2]),
+                    $m[3],
+                    $m[4],
+                    strtoupper($m[1]) === 'REPLACE'
+                );
             }
         }
 
@@ -101,8 +113,22 @@ class Sql
 
         $this->columns[$table] = array();
         $this->required[$table] = array();
+        $this->uniques[$table] = array();
 
         foreach ($body as $line) {
+            // A key the schema says is unique, so the rows can be held to it
+            if (preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(([^)]+)\)/i', trim($line), $k)) {
+                $columns = array();
+
+                foreach (explode(',', $k[1]) as $column) {
+                    // An index may name a prefix length; the column is the name
+                    $columns[] = trim(preg_replace('/\(\d+\)$/', '', trim($column)), '` ');
+                }
+
+                $this->uniques[$table][] = $columns;
+                continue;
+            }
+
             if (!preg_match('/^`([^`]+)`\s+(.+?),?$/', trim($line), $m)) {
                 continue;
             }
@@ -163,7 +189,7 @@ class Sql
      * @param   string  $payload  What is between the brackets
      * @return  void
      */
-    protected function insert($table, $named, $payload)
+    protected function insert($table, $named, $payload, $replace = false)
     {
         $values = $this->values($payload);
 
@@ -185,7 +211,52 @@ class Sql
             }
         }
 
+        // REPLACE puts a row where one with the same unique key was, rather
+        // than beside it. The install files lean on that - starter.sql replaces
+        // assets data.sql already wrote - so a reader that appends sees pairs
+        // of rows that never exist together in a database.
+        if ($replace) {
+            $this->displace($table, $row);
+        }
+
         $this->rows[$table][] = $row;
+    }
+
+    /**
+     * Drop any row a REPLACE would have written over
+     *
+     * @param   string  $table  Where
+     * @param   array   $row    What is arriving
+     * @return  void
+     */
+    protected function displace($table, array $row)
+    {
+        $keys = isset($this->uniques[$table]) ? $this->uniques[$table] : array();
+
+        if (!$keys || empty($this->rows[$table])) {
+            return;
+        }
+
+        foreach ($this->rows[$table] as $i => $existing) {
+            foreach ($keys as $key) {
+                $same = true;
+
+                foreach ($key as $column) {
+                    if (!array_key_exists($column, $row) || !array_key_exists($column, $existing)
+                        || (string) $row[$column] !== (string) $existing[$column]) {
+                        $same = false;
+                        break;
+                    }
+                }
+
+                if ($same) {
+                    unset($this->rows[$table][$i]);
+                    break;
+                }
+            }
+        }
+
+        $this->rows[$table] = array_values($this->rows[$table]);
     }
 
     /**
@@ -339,6 +410,25 @@ class Sql
      * What a table holds
      *
      * @param   string  $table  Its name
+     * @return  array
+     */
+    /**
+     * The keys the schema declares unique for a table
+     *
+     * @param   string  $table  Which
+     * @return  array   One array of column names per key
+     */
+    public function uniques($table)
+    {
+        $table = $this->name($table);
+
+        return isset($this->uniques[$table]) ? $this->uniques[$table] : array();
+    }
+
+    /**
+     * Every row written to a table
+     *
+     * @param   string  $table  Which
      * @return  array
      */
     public function rows($table)

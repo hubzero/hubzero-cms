@@ -101,6 +101,64 @@ class InstallSqlTest extends Basic
     }
 
     /**
+     * No two rows collide on a key the schema declares unique
+     *
+     * A unique key is the schema saying two of these cannot both be true. When
+     * the data files break one, the install cannot simply load them - so
+     * somewhere a constraint gets dropped to make bad data fit, and then
+     * everything that relied on it is quietly unprotected for the life of the
+     * hub.
+     *
+     * @param   bool  $sample  Which install
+     * @return  void
+     */
+    #[DataProvider('installs')]
+    public function testUniqueKeysHold($sample)
+    {
+        $hub     = $this->hub($sample);
+        $checked = 0;
+        $clashes = array();
+
+        foreach ($hub->tables() as $table) {
+            foreach ($hub->uniques($table) as $key) {
+                $seen = array();
+
+                foreach ($hub->rows($table) as $row) {
+                    $values = array();
+
+                    foreach ($key as $column) {
+                        if (!array_key_exists($column, $row)) {
+                            continue 2;
+                        }
+
+                        $values[] = (string) $row[$column];
+                    }
+
+                    $signature = implode('|', $values);
+
+                    // Every one of them, not the first: a list of what to fix
+                    // is worth more than one line of it at a time.
+                    if (isset($seen[$signature])) {
+                        $clashes[] = sprintf(
+                            '%s: two rows with %s = %s',
+                            $table,
+                            implode(', ', $key),
+                            $signature
+                        );
+                    }
+
+                    $seen[$signature] = true;
+                    $checked++;
+                }
+            }
+        }
+
+        $this->assertSame(array(), $clashes, implode("
+", $clashes));
+        $this->assertGreaterThan(0, $checked, 'no unique key was checked at all');
+    }
+
+    /**
      * Every row goes into a table the schema makes
      *
      * @param   bool  $sample  Which install
