@@ -223,6 +223,6 @@ class AddComponentEntry extends Macro
 
         $routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
 
-        return $routes->create($option, $component_id, $enabled);
+        return $routes->create($option, $component_id);
     }
 }
