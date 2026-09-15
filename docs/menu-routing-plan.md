@@ -456,7 +456,21 @@ congratulations page stopped being filed under "Generated; not edited here".
   type has somewhere to come from. A routing item was confirmed to resolve, to
   render its component, and to stay out of the rendered menu.
 
-**C is not built.** Dev-only lazy generation in the `component` parse rule.
+**C is done.** A `lazyroute` parse rule, appended after `component` and wrapped
+in `if (Config::get('debug'))`, gives a brand-new component its address on the
+spot so a developer is not chasing a missing Itemid while the migration is still
+being written. The check and the insert are one transaction with one retry. The
+address lands after this request has already read the menu, so it is the next
+request that gets the Itemid.
+
+Verified with debug off, a deleted route stays deleted. With it on: the route
+comes back on the next request, and `/notacomponent`, `/wp-admin`, `/etc/passwd`,
+`/com_evil`, a deep URL under a real component, and two components that are
+installed but switched off all create nothing.
+
+All three callers - the install macro, `muse routes fix` and the router - now go
+through one class, `Hubzero\Menu\ComponentRoute`. They had three copies of the
+same insert and two different rebuilds, one of which did not derive `path`.
 
 **A is not built** and should not start without saying so first: it is the only
 piece that rewrites URLs on live hubs.
@@ -470,3 +484,7 @@ piece that rewrites URLs on live hubs.
   for whenever that is corrected.
 - `/redirect` returns 500.
 - Admin pages throw `jQuery is not defined`.
+- Deleting a component route leaves any alias menu item that pointed at it
+  dangling, building URLs like `/content/?Itemid=142`. `muse routes fix` remakes
+  the route under a new id and cannot mend the alias. Deletion is refused in the
+  admin now, so the remaining way in is a direct database change.
