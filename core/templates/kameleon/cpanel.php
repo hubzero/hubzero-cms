@@ -10,9 +10,17 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
+use Hubzero\Facades\Html;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+// The control panel draws js/index.js, which is jQuery's growl plugin and uses
+// $ throughout. index.php asks for the framework and this file never did, so
+// the one admin page every administrator lands on after signing in was the one
+// page with no jQuery on it - "jQuery is not defined", every time, since
+// whenever this template was split in two.
+Html::behavior('framework', true);
 
 // Load base styles
 $this->addStyleSheet(

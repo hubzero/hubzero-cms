@@ -60,16 +60,25 @@ class Behavior
         }
         $path = rtrim(App::get('request')->root(true), '/') . $path;
 
+        // Only remember having done this if it was actually done. The push is
+        // a no-op when there is no document to push to yet - during bootstrap,
+        // or from a plugin running before the document exists - and marking it
+        // loaded anyway meant the template's own call returned early and the
+        // page went out with no jQuery at all. Which is what the administrator
+        // saw: "jQuery is not defined", on every page after the login.
         if ($type == 'core') {
-            self::_pushScriptTo(0, $path);
+            $pushed = self::_pushScriptTo(0, $path);
 
-            if (App::isAdmin()) {
+            if ($pushed && App::isAdmin()) {
                 Asset::script('assets/core.js', false, true);
             }
         } else {
-            self::_pushScriptTo(1, $path);
+            $pushed = self::_pushScriptTo(1, $path);
         }
-        self::$loaded[__METHOD__][$type] = true;
+
+        if ($pushed) {
+            self::$loaded[__METHOD__][$type] = true;
+        }
 
         return;
     }
@@ -87,7 +96,7 @@ class Behavior
     private static function _pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
     {
         if (!App::has('document')) {
-            return;
+            return false;
         }
 
         $document = App::get('document')->instance();
@@ -138,7 +147,11 @@ class Behavior
             }
 
             $document->setHeadData($data);
+
+            return true;
         }
+
+        return false;
     }
 
     /**
