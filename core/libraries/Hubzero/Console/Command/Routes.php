@@ -152,7 +152,6 @@ class Routes extends Base implements CommandInterface
         $entries = $db->getQuery(true)
             ->select('alias')
             ->select('link')
-            ->select('published')
             ->from('#__menu')
             ->whereEquals('client_id', 0)
             ->whereEquals('menutype', $this->menutype($db))
@@ -162,10 +161,9 @@ class Routes extends Base implements CommandInterface
             $alias = is_object($row) ? $row->alias : $row['alias'];
             $link  = is_object($row) ? $row->link : $row['link'];
 
-            $routed[$alias] = array(
-                'element'   => preg_match('/option=(com_\w+)/', (string) $link, $m) ? $m[1] : 'com_' . $alias,
-                'published' => (int) (is_object($row) ? $row->published : $row['published']),
-            );
+            $routed[$alias] = preg_match('/option=(com_\w+)/', (string) $link, $m)
+                ? $m[1]
+                : 'com_' . $alias;
         }
 
         $missing = array();
@@ -187,18 +185,17 @@ class Routes extends Base implements CommandInterface
 
         $orphaned = array();
 
-        foreach ($routed as $alias => $entry) {
-            $element = $entry['element'];
+        foreach ($routed as $alias => $element) {
 
             if (isset($components[$element])) {
                 continue;
             }
 
-            // A component that is installed but switched off should have an
-            // address that is switched off too - that is the entry tracking the
-            // component, not an address left behind, and there is nothing to
-            // report. Only a published one is out of step.
-            if (isset($installed[$element]) && !$entry['published']) {
+            // An address for a component that is installed but switched off is
+            // not an address left behind - it is waiting, and the menu leaves
+            // it out for as long as the component is off. Only an address for
+            // something this hub does not have at all is worth saying.
+            if (isset($installed[$element])) {
                 continue;
             }
 

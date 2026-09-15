@@ -826,7 +826,7 @@ if (Config::get('debug')) {
         try {
             $db->transaction(function () use ($routes, $option, $id, $enabled) {
                 if (!$routes->exists($option)) {
-                    $routes->create($option, $id, $enabled);
+                    $routes->create($option, $id);
                 }
             }, 2);
         } catch (\Throwable $e) {

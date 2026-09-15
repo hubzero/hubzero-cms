@@ -211,12 +211,19 @@ class ComponentRoute
     /**
      * Give a component its address
      *
+     * The entry is published because the address exists. Whether it is used is
+     * a different question, answered by whether the component is switched on,
+     * and the menu reads that off #__extensions every time it loads. Mirroring
+     * it here as well would only give the two a chance to disagree: an entry
+     * made while the component was off would stay off after somebody turned the
+     * component on, and the component would run with no Itemid and nothing to
+     * say why.
+     *
      * @param   string   $option       com_xyz
      * @param   integer  $componentId  Its row in #__extensions
-     * @param   integer  $published    1 if the component is switched on
      * @return  boolean  True if there is now an address, false if there cannot be
      */
-    public function create($option, $componentId = 0, $published = 1)
+    public function create($option, $componentId = 0)
     {
         if (!$this->db->tableExists('#__menu') || !$this->db->tableExists('#__menu_types')) {
             return false;
@@ -244,7 +251,7 @@ class ComponentRoute
                 'path'              => $alias,
                 'link'              => 'index.php?option=' . $option,
                 'type'              => 'component',
-                'published'         => (int) $published,
+                'published'         => 1,
                 'parent_id'         => $this->root(),
                 'level'             => 1,
                 'component_id'      => (int) $componentId,
