@@ -88,7 +88,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 			</div>
 			<div class="or"></div>
 			<div class="local">
-				<a href="<?php echo $current . 'primary=hubzero&reset=1';// . $returnQueryString; ?>">
+				<a href="<?php echo Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $returnQueryString); ?>">
 					<?php echo Lang::txt('MOD_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($site_display)) ? $site_display : Config::get('sitename'))); ?>
 				</a>
 			</div>
