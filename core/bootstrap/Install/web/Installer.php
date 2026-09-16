@@ -801,12 +801,22 @@ class Installer
         $this->resolveInstallerDriver($config);
 
         try {
-            return new PdoConnection(
+            $connection = new PdoConnection(
                 $this->buildMysqlDsn($config),
                 $config['user'] ?? '',
                 $config['password'] ?? '',
-                []
+                [\PDO::ATTR_TIMEOUT => $timeout]
             );
+
+            // The connection is lazy: the constructor stores the credentials
+            // and nothing reaches the server until the first statement. So a
+            // wrong password could not fail here, "Test connection" said yes
+            // to anything, and the real failure surfaced two steps later as an
+            // exception nothing downstream catches. Connect now, inside the
+            // try that was written for it.
+            $connection->connect();
+
+            return $connection;
         } catch (ConnectionFailedException $e) {
             $previous = $e->getPrevious();
             if ($previous instanceof PDOException) {

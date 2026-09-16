@@ -149,11 +149,24 @@ class Legacy extends Registry
         $this->rootPath = $rootPath;
         $this->appPath = $appPath;
 
+        // No path means the site root, as it always did. Without this the
+        // file was '/configuration.php', and the one caller that passes
+        // nothing - saving Global Configuration - quietly stopped updating
+        // the legacy file.
+        if ($path === null) {
+            $path = defined('PATH_ROOT') ? PATH_ROOT : __DIR__;
+        }
+
         $this->file = $path . DIRECTORY_SEPARATOR . 'configuration.php';
 
         if ($this->exists()) {
             $data = $this->read($this->file);
-            $data = json_decode(json_encode($data), true);
+
+            // Not json_decode(json_encode()): json_encode() returns false on a
+            // single byte that is not UTF-8, which a Joomla-era file written
+            // in Latin-1 will have in its sitename, and the whole config then
+            // read back as empty with nothing to say why.
+            $data = $this->objectToArray($data);
 
             $config = array();
 
@@ -282,5 +295,26 @@ class Legacy extends Registry
         }
 
         return $result;
+    }
+
+    /**
+     * Turn an object into a nested array without caring what bytes it holds
+     *
+     * @param   mixed  $data
+     * @return  mixed
+     */
+    private function objectToArray($data)
+    {
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->objectToArray($value);
+            }
+        }
+
+        return $data;
     }
 }
