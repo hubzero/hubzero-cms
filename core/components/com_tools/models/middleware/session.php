@@ -208,7 +208,8 @@ class Session extends Base
 
         // Load the session owner's viewperm to copy connection details for new shares
         $ownerViewperm = new \Components\Tools\Tables\Viewperm($this->_db);
-        $rows = $ownerViewperm->loadViewperm($this->get('sessnum'), User::get('username'));
+        $rows  = $ownerViewperm->loadViewperm($this->get('sessnum'), User::get('username'));
+        $owner = (is_array($rows) && isset($rows[0])) ? $rows[0] : null;
 
         foreach ($users as $user) {
             // Check for invalid characters
@@ -234,10 +235,10 @@ class Session extends Base
                 $mwViewperm->sessnum   = $this->get('sessnum');
                 $mwViewperm->viewuser  = $zuser->get('username');
                 $mwViewperm->viewtoken = md5(rand());
-                $mwViewperm->geometry  = $rows[0]->geometry;
-                $mwViewperm->fwhost    = $rows[0]->fwhost;
-                $mwViewperm->fwport    = $rows[0]->fwport;
-                $mwViewperm->vncpass   = $rows[0]->vncpass;
+                $mwViewperm->geometry  = $owner ? $owner->geometry : null;
+                $mwViewperm->fwhost    = $owner ? $owner->fwhost : null;
+                $mwViewperm->fwport    = $owner ? $owner->fwport : null;
+                $mwViewperm->vncpass   = $owner ? $owner->vncpass : null;
                 $mwViewperm->readonly  = $readonly;
                 $mwViewperm->insert();
             } else {

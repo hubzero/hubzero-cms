@@ -384,7 +384,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->followers();
+                    $arr['html'] = $this->following();
                     break;
                 case 'follow':
                     $arr['html'] = $this->follow('group');
@@ -541,6 +541,59 @@ class Collections extends Plugin
             ->set('collections', $collections)
             ->set('posts', $posts)
             ->set('following', $following)
+            ->set('total', $total)
+            ->set('rows', $rows);
+
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
+
+        return $view->loadTemplate();
+    }
+
+    /**
+     * Display a list of what the group follows
+     *
+     * @return  string
+     */
+    private function following()
+    {
+        // Filters for returning results
+        $filters = array(
+            'limit' => Request::getInt('limit', Config::get('list_limit')),
+            'start' => Request::getInt('limitstart', 0)
+        );
+
+        $count = array(
+            'count'  => true
+        );
+
+        if (!$this->params->get('access-manage-collection')) {
+            $filters['access'] = (User::isGuest() ? 0 : array(0, 1));
+            if (in_array(User::get('id'), $this->group->get('members'))) {
+                $filters['access'] = array(0, 1, 4);
+            }
+            $count['access'] = $filters['access'];
+        }
+
+        $collections = $this->model->collections($count);
+        $posts       = $this->model->posts($count);
+        $followers   = $this->model->followers($count);
+
+        $total       = $this->model->following($count);
+        $rows        = $this->model->following($filters);
+
+        $view = $this->view('following', 'follow')
+            ->set('name', $this->_name)
+            ->set('option', $this->option)
+            ->set('group', $this->group)
+            ->set('params', $this->params)
+            ->set('model', $this->model)
+            ->set('filters', $filters)
+            ->set('collections', $collections)
+            ->set('posts', $posts)
+            ->set('followers', $followers)
+            ->set('following', $total)
             ->set('total', $total)
             ->set('rows', $rows);
 

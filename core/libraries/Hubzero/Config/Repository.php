@@ -25,20 +25,25 @@ class Repository extends Registry
     /**
      * Create a new configuration repository.
      *
-     * @param   string|array  $paths  Base path(s) containing a config/ directory
+     * @param   string|array  $paths   Base path(s) containing a config/ directory
+     * @param   string        $client  Client whose config/<client>/ overrides apply
      * @return  void
      */
-    public function __construct($paths)
+    public function __construct($paths, $client = null)
     {
         if (!is_array($paths)) {
             $paths = [$paths];
         }
 
+        // Where a Joomla-era configuration.php would be, should there be no
+        // config/ directory yet: the site root, not the app directory
+        $root = defined('PATH_ROOT') ? PATH_ROOT : null;
+
         $merged = [];
 
         foreach ($paths as $path) {
-            $loader = new FileLoader($path, $path);
-            $data = $loader->load();
+            $loader = new FileLoader($root ?: $path, $path);
+            $data = $loader->load($client);
             $merged = array_replace_recursive($merged, $data);
         }
 
@@ -98,9 +103,10 @@ class Repository extends Registry
      *
      * Supports dot-notation (e.g. 'app.debug') for grouped config.
      * For bare keys without a dot, finds the config group that contains
-     * the key and updates it there. If the bare key matches a top-level
-     * group name or is otherwise not found inside any group, delegates
-     * to parent. Throws if the bare key is not found anywhere.
+     * the key and updates it there. A bare key that names a top-level
+     * group is set directly. One found in no group throws: a value set at
+     * the top level could never be read back by a bare-key get(), so
+     * failing loudly beats a write that goes nowhere.
      *
      * @param   string  $path       Registry path (e.g. app.debug)
      * @param   mixed   $value      Value to set

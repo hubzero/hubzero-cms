@@ -909,6 +909,7 @@ class Threadsv1r0 extends ApiController
                 ->whereEquals('object_id', $filters['object_id'])
                 ->whereEquals('scope_id', $filters['scope_id'])
                 ->whereEquals('scope', $filters['scope'])
+                ->whereEquals('parent', 0)
                 ->row();
             if ($post->get('id')) {
                 $threadsstart = Request::getString('threads_start', '');
@@ -945,6 +946,7 @@ class Threadsv1r0 extends ApiController
                         ->whereEquals('object_id', $filters['object_id'])
                         ->whereEquals('scope_id', $filters['scope_id'])
                         ->whereEquals('scope', $filters['scope'])
+                        ->whereEquals('parent', 0)
                         ->row();
 
                     $list = $this->treeRecurse($post->get('id'), '', array(), $children, max(0, $levellimit - 1));

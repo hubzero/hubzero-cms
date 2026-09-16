@@ -591,17 +591,13 @@ class Mailinglists extends AdminController
         $id = Request::getInt('id', 0);
         $mid = Request::getInt('mid', 0);
 
-        // instantiate mailing list object
-        $newsletterMailinglistEmail = new Email();
+        // load the mailing list email
+        $newsletterMailinglistEmail = Email::oneOrFail($id);
 
-        // load email
-        $newsletterMailinglistEmail->load($id);
+        // mark as active again
+        $newsletterMailinglistEmail->set('status', 'active');
 
-        // mark as removed
-        $newsletterMailinglistEmail->status = 'active';
-
-        // delete mailing list email
-        if ($newsletterMailinglistEmail->save($newsletterMailinglistEmail)) {
+        if ($newsletterMailinglistEmail->save()) {
             $url = 'index.php?option=' . $this->_option
                 . '&controller=' . $this->_controller
                 . '&task=manage&id=' . $mid;

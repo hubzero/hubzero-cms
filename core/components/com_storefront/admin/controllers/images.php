@@ -362,9 +362,15 @@ class Images extends AdminController
      */
     public function displayTask($file = '', $id = 0)
     {
+        // The edit pages point their <noscript> iframe here with the object
+        // in the query string and no task at all
+        $file = $file ?: Request::getString('file', '');
+        $id   = $id ?: Request::getInt('id', 0);
+
         $this->view
             ->set('file', $file)
             ->set('id', $id)
+            ->set('type', strtolower(Request::getWord('type', '')))
             ->setErrors($this->getErrors())
             ->setLayout('display')
             ->display();

@@ -91,7 +91,9 @@ class Group extends Table
                 'uidNumber'
             );
             $group->set('members', $existing_members);
-            $group->set('managers', $existing_members);
+            // The managers the group already has stay as they are. Making
+            // every developer a manager would let any of them add members -
+            // that is, developers - which is the tool admin's decision.
         } else {
             $group->create();
             $group->set('type', 2);

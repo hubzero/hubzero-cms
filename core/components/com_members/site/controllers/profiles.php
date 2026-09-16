@@ -69,7 +69,7 @@ class Profiles extends SiteController
             return;
         }
 
-        $ia = new \Components\Members\Models\Incremental\Awards(User::get('id'));
+        $ia = new \Components\Members\Models\Incremental\Awards((int) User::get('id'));
         $ia->optOut();
 
         App::redirect(

@@ -457,7 +457,10 @@ class Feed extends Plugin
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
-        $id = Request::getInt('activity', 0);
+        // An entry names itself as activity; the comment delete link built
+        // in the activity view says cid. A comment is an activity entry too,
+        // so the same unpublishing serves both.
+        $id = Request::getInt('activity', 0) ?: Request::getInt('cid', 0);
 
         $entry = \Hubzero\Activity\Log::oneOrFail($id);
 

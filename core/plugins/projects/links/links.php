@@ -931,8 +931,12 @@ class Links extends Plugin
 
                 if (!$description) {
                     // Set description if desc meta tag found else grab a little plain text of the page
-                    if ($html->find('meta[name="description"]', 0)) {
-                        $description = $html->find('meta[name="description"]', 0)->content;
+                    // find($selector, 0) returns a blank node, not null, when
+                    // there is no match - and a blank node is truthy
+                    $meta = $html->findOneOrFalse('meta[name="description"]');
+
+                    if ($meta) {
+                        $description = $meta->getAttribute('content');
                     } else {
                         $description = $html->find('body', 0)->plaintext;
                     }

@@ -122,21 +122,4 @@ class Jobsv1r0 extends ApiController
         // Return object
         $this->send($response);
     }
-    /**
-     * Checks to ensure appropriate authorization
-     *
-     * @return  bool
-     * @throws  Exception
-     */
-    private function authorizeOrFail()
-    {
-        $permissions = new \Components\Jobs\Helpers\Permissions();
-
-        // Make sure action can be performed
-        if (!$permissions->can('api')) {
-            App::abort(401, 'Unauthorized');
-        }
-
-        return true;
-    }
 }
