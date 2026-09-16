@@ -146,6 +146,23 @@ class Git extends Obj
 	}
 
 	/**
+	 * Is the value a git object id?
+	 *
+	 * Commit hashes reach this helper from request parameters and are put on
+	 * a git command line that runs through a shell. Anything that is not
+	 * plainly a full or abbreviated object id is refused outright rather than
+	 * escaped, so git is never asked to interpret it as a revision either.
+	 *
+	 * @param   mixed  $hash
+	 * @return  bool
+	 */
+	public static function isHash($hash)
+	{
+		// \z rather than $, which would also accept a trailing newline
+		return is_string($hash) && preg_match('/^[0-9a-f]{4,64}\z/i', $hash) === 1;
+	}
+
+	/**
 	 * Run Git status
 	 *
 	 * @param   string  $status
@@ -198,10 +215,16 @@ class Git extends Obj
 			return false;
 		}
 
-		$date = $date ? ' --date="' . $date . '"' : '';
 		$author = $author ? $author : $this->getGitAuthor();
 
-		$this->callGit('commit -a -m "' . $commitMsg . '" --author="' . $author . '"' . $date);
+		// The message carries file and folder names and the author carries a
+		// profile or remote account name. Inside double quotes the shell still
+		// expands $(...) and backticks, so each is escaped as a single argument.
+		$call  = 'commit -a -m ' . escapeshellarg($commitMsg);
+		$call .= $author ? ' --author=' . escapeshellarg($author) : '';
+		$call .= $date ? ' --date=' . escapeshellarg($date) : '';
+
+		$this->callGit($call);
 
 		return true;
 	}
@@ -211,7 +234,7 @@ class Git extends Obj
 	 *
 	 * @param   string  $name   Author name
 	 * @param   string  $email  Author email
-	 * @return  string
+	 * @return  string  Unescaped "Name <email>"; gitCommit() escapes it
 	 */
 	public function getGitAuthor($name = '', $email = '')
 	{
@@ -229,9 +252,7 @@ class Git extends Obj
 			$email = $profile->get('email');
 		}
 
-		$author = escapeshellarg($name . ' <' . $email . '> ');
-
-		return $author;
+		return $name . ' <' . $email . '>';
 	}
 
 	/**
@@ -369,24 +390,26 @@ class Git extends Obj
 		{
 			return false;
 		}
-		if (!isset($old['hash']) || !isset($new['hash']) || !isset($new['fpath']))
+		if (!isset($old['hash']) || !isset($new['hash']) || !isset($old['fpath']) || !isset($new['fpath']))
+		{
+			return false;
+		}
+		if (!self::isHash($old['hash']) || !self::isHash($new['hash']))
 		{
 			return false;
 		}
 
-		$file = $new['fpath'] == $old['fpath'] ? ' -- ' . escapeshellarg($new['fpath']) : '';
-
-		$oCount = $this->callGit('diff --name-status ' . $old['hash'] . '^ ');
-		$nCount = $this->callGit('diff --name-status ' . $new['hash'] . '^ ');
+		$oCount = $this->callGit('diff --name-status ' . escapeshellarg($old['hash'] . '^'));
+		$nCount = $this->callGit('diff --name-status ' . escapeshellarg($new['hash'] . '^'));
 
 		// Get file content
 		if (count($oCount) <= 2 && count($nCount) <= 2)
 		{
-			$out = $this->callGit(' diff -M -C ' . $old['hash'] . ' ' . $new['hash']);
+			$out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash']) . ' ' . escapeshellarg($new['hash']));
 		}
 		else
 		{
-			$out = $this->callGit(' diff -M -C ' . $old['hash'] . ':' . $old['fpath'] . ' ' . $new['hash'] . ':' . $new['fpath']);
+			$out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash'] . ':' . $old['fpath']) . ' ' . escapeshellarg($new['hash'] . ':' . $new['fpath']));
 		}
 
 		return $out;
@@ -402,11 +425,11 @@ class Git extends Obj
 	 */
 	public function getContent($file = '', $hash = '', $target = '')
 	{
-		if (!$file || !$hash)
+		if (!$file || !self::isHash($hash))
 		{
 			return false;
 		}
-		$call  = 'show  ' . $hash . ':' . escapeshellarg($file);
+		$call  = 'show  ' . escapeshellarg($hash) . ':' . escapeshellarg($file);
 		$call .= $target ? ' > ' . escapeshellarg($target) : '';
 
 		// Make Git call
@@ -429,6 +452,15 @@ class Git extends Obj
 		{
 			return false;
 		}
+
+		// No hash means "the file's own history". Anything else must be an
+		// object id; answer as git would for a revision with no output.
+		$hash = (string) $hash;
+		if ($hash !== '' && !self::isHash($hash))
+		{
+			return $this->parseLog(array(), $return);
+		}
+		$rev = $hash !== '' ? escapeshellarg($hash) : '';
 
 		$what = '';
 
@@ -470,17 +502,17 @@ class Git extends Obj
 
 			case 'size':
 				$exec = ' cat-file -s ';
-				$what = $hash . ':' . escapeshellarg($file);
+				$what = $rev . ':' . escapeshellarg($file);
 				break;
 
 			case 'diff':
 				$exec = ' diff -M -C  ';
-				$what = $hash . '^ ' . $hash . ' -- '. escapeshellarg($file);
+				$what = $rev . '^ ' . $rev . ' -- '. escapeshellarg($file);
 				break;
 
 			case 'content':
 				$exec = ' show  ';
-				$what = $hash . ':'. escapeshellarg($file);
+				$what = $rev . ':'. escapeshellarg($file);
 				break;
 
 			case 'rename':
@@ -489,19 +521,19 @@ class Git extends Obj
 
 			case 'namestatus':
 				$exec = ' diff -M -C --name-status ';
-				$what = $hash . '^ ' . $hash . ' -- '. escapeshellarg($file);
+				$what = $rev . '^ ' . $rev . ' -- '. escapeshellarg($file);
 				break;
 
 			case 'blob':
 				$exec = ' show  ';
-				$what = $hash . ':' . escapeshellarg($file);
+				$what = $rev . ':' . escapeshellarg($file);
 				break;
 		}
 
 		if (!$what)
 		{
-			$what = $hash ? $hash : '';
-			$what.= $hash && $file ? ' ' : '';
+			$what = $rev;
+			$what.= $rev && $file ? ' ' : '';
 			$what.= $file ? ' -- ' .escapeshellarg($file) : '';
 		}
 
@@ -660,6 +692,18 @@ class Git extends Obj
 		if (!$item)
 		{
 			return false;
+		}
+
+		// A commit, optionally with ^ for its parent, or nothing for HEAD
+		$hash = (string) $hash;
+		if ($hash !== '')
+		{
+			$commit = substr($hash, -1) === '^' ? substr($hash, 0, -1) : $hash;
+			if (!self::isHash($commit))
+			{
+				return false;
+			}
+			$hash = escapeshellarg($hash);
 		}
 
 		// Make Git call
@@ -880,7 +924,7 @@ class Git extends Obj
 		else
 		{
 			// Collect
-			$since   = $synced != 1 ? ' --since="' . $synced . '"' : '';
+			$since   = $synced != 1 ? ' --since=' . escapeshellarg($synced) : '';
 			$where   = $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';
 			$changes = $this->callGit('rev-list ' . $where . $since);
 
@@ -898,12 +942,17 @@ class Git extends Obj
 				// Get files involved in each commit
 				foreach ($changes as $hash)
 				{
+					if (!self::isHash($hash))
+					{
+						continue;
+					}
+
 					// Get time and author of commit
 					$time   = $this->gitLog('', $hash, 'timestamp');
 					$author = $this->gitLog('', $hash, 'author');
 
 					// Get filename and change
-					$fileinfo = $this->callGit('diff --name-status ' . $hash . '^ ' . $hash);
+					$fileinfo = $this->callGit('diff --name-status ' . escapeshellarg($hash . '^') . ' ' . escapeshellarg($hash));
 
 					// First commit
 					if (!empty($fileinfo) && !empty($fileinfo[0]) && substr($fileinfo[0], 0, 5) == 'fatal')
@@ -929,7 +978,7 @@ class Git extends Obj
 						if ($n == 'f')
 						{
 							// First file in repository
-							$finfo = $this->callGit('log --pretty=oneline --name-status ' . $hash);
+							$finfo = $this->callGit('log --pretty=oneline --name-status ' . escapeshellarg($hash));
 							$status = 'A';
 							$filename = trim(substr($finfo[1], 1));
 							break;
@@ -1090,6 +1139,14 @@ class Git extends Obj
 	public function getLocalFileHistory($file = '', $rev = '', $since = '')
 	{
 		$hashes = array();
+
+		// $rev is only ever the "--" separator, and $since is only ever the
+		// option getChanges() builds with an escaped date. Keep it that way.
+		$rev = $rev === '--' ? '--' : '';
+		if ($since !== '' && !preg_match("/^ --since='[^']*'\\z/", $since))
+		{
+			return $hashes;
+		}
 
 		// Get local file history
 		$out = $this->callGit('log --follow --pretty=format:%H ' . $since . ' ' . $rev . ' ' . escapeshellarg($file));

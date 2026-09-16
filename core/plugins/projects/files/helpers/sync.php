@@ -548,7 +548,8 @@ class Sync extends \Hubzero\Base\Obj
 					// Email from profile?
 					$email = $objO->getProfileEmail($name, $this->model->get('id'));
 				}
-				$author = escapeshellarg($name . ' <' . $email . '> ');
+				// Left unescaped: gitCommit() escapes the author itself
+				$author = $name . ' <' . $email . '>';
 
 				// Change acting user to whoever did the remote change
 				$uid = $objO->getProfileId($email, $this->model->get('id'));

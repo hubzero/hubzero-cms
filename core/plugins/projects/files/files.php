@@ -234,6 +234,29 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$this->_task = 'connections';
 			}
 
+			// Someone who is not a member got this far only because subdir is
+			// in the public directory. That lets them read files there and do
+			// nothing else: no trash, sync, selectors or connections, and no
+			// item named with a path that climbs back out of the directory.
+			if ($this->model->exists() && !$this->model->access('member'))
+			{
+				if (!in_array($this->_task, array('browse', 'download', 'open', 'history', 'diff', 'serve')))
+				{
+					App::abort(403, Lang::txt('ALERTNOTAUTH'));
+				}
+
+				foreach (array('asset', 'folder', 'file') as $key)
+				{
+					foreach (Request::getArray($key, array()) as $item)
+					{
+						if (!is_scalar($item) || !AccessHelper::isPublicPath($this->subdir . DS . urldecode($item)))
+						{
+							App::abort(403, Lang::txt('ALERTNOTAUTH'));
+						}
+					}
+				}
+			}
+
 			// File actions
 			switch ($this->_task)
 			{
@@ -1630,6 +1653,23 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		$params['rev1']     = urldecode(Request::getString('old', ''));
 		$params['rev2']     = urldecode(Request::getString('new', ''));
+
+		// Each revision names its own path ("rev@hash@path"), separate from
+		// subdir. Someone let in only through the public directory may compare
+		// files in it and nowhere else.
+		if ($this->model->exists() && !$this->model->access('member'))
+		{
+			foreach (array($params['rev1'], $params['rev2']) as $rev)
+			{
+				$revParts = explode('@', $rev);
+
+				if (!isset($revParts[2]) || !AccessHelper::isPublicPath($revParts[2]))
+				{
+					App::abort(403, Lang::txt('ALERTNOTAUTH'));
+				}
+			}
+		}
+
 		$params['fullDiff'] = Request::getInt('full', 0);
 		$params['mode']     = urldecode(Request::getString('mode', 'side-by-side'));
 
@@ -3174,8 +3214,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$base_path    = sys_get_temp_dir();
 		$tarname      = 'project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip';
 		$path         = $this->subdir ? $this->_path . DS . $this->subdir : $this->_path;
+		$root         = realpath($this->_path);
 		$combinedSize = 0;
 		$tarpath      =  $base_path . DS . $tarname;
+
+		if (!$root)
+		{
+			return false;
+		}
 
 		$zip = new ZipArchive;
 
@@ -3193,9 +3239,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					}
 					else
 					{
-						$fpath = $path . DS . $item;
+						// The item and subdir both come from the request and are
+						// read straight off disk, not through the file server that
+						// refuses "..". Resolve the path, symlinks included, and
+						// take only files that are still inside the project.
+						$fpath = realpath($path . DS . $item);
 
-						if (!is_file($fpath))
+						if (!$fpath || strpos($fpath, $root . DS) !== 0 || !is_file($fpath))
 						{
 							continue;
 						}
