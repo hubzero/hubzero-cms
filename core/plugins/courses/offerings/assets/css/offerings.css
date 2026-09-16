@@ -54,5 +54,5 @@
 		color: green;
 	}
 	.entries .closed {
-		color: #ccc;
+		color: #767676; /* WCAG SC 1.4.3: was #ccc on #fff = 1.6:1; #767676 = 4.54:1 */
 	}
