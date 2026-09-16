@@ -294,6 +294,13 @@ class Migration20260913090000MainMenu extends Base
         foreach ($this->routes as $alias => $route) {
             $link = isset($route[2]) ? $route[2] : 'index.php?option=' . $route[1];
 
+            // No extensions row means the component is not installed here,
+            // and a route row with component_id 0 would pass the menu's
+            // extension check as though it named no component at all
+            if (!($componentId = $this->componentId($route[1]))) {
+                continue;
+            }
+
             $ids[$alias] = $this->addItem(array(
                 'menutype'     => 'components',
                 'title'        => $route[0],
@@ -304,7 +311,7 @@ class Migration20260913090000MainMenu extends Base
                 'parent_id'    => $root,
                 'level'        => 1,
                 'ordering'     => $ordering++,
-                'component_id' => $this->componentId($route[1]),
+                'component_id' => $componentId,
             ));
         }
 

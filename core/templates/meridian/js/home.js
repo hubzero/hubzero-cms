@@ -67,8 +67,11 @@ function start() {
 
 			var y = window.pageYOffset || document.documentElement.scrollTop || 0;
 
+			// Past the hero, hold the final position rather than whatever the
+			// last frame inside it drew: a jump over the boundary - an anchor
+			// link, a resize - would otherwise park them mid-drift.
 			if (y > head.offsetHeight) {
-				return;
+				y = head.offsetHeight;
 			}
 
 			var k = motion();

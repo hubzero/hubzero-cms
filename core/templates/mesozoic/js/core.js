@@ -159,7 +159,12 @@ let expandNavigationLinksOnHover = false;
 			}
 
 			var header = $("<header>");
-			var newRootLink = rootLink.clone();
+			// With the module's toplevelLinks on, a top-level item that has
+			// pages under it is drawn as the button that opens them and has
+			// no link to clone; its label is the button's text.
+			var newRootLink = rootLink.length
+				? rootLink.clone()
+				: $('<span class="main-link"></span>').text(menuButton.text().trim());
 			header.append(newRootLink);
 
 			if(menuButton && id) {

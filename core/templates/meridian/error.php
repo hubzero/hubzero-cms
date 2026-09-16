@@ -36,11 +36,8 @@ Lang::load('tpl_' . $this->template, __DIR__);
               href="<?php echo $this->asset('less/main.css'); ?>" />
         <script type="text/javascript"
                 src="<?php echo Html::asset('script', 'jquery.js', false, true, true); ?>"></script>
-        <?php
-        $jsBase = str_replace('/core', '', $this->baseurl) . '/templates/' . $this->template;
-        ?>
-        <script type="text/javascript" src="<?php echo $jsBase; ?>/js/core.js"></script>
-        <script type="text/javascript" src="<?php echo $jsBase; ?>/js/hub.js"></script>
+        <script type="text/javascript" src="<?php echo $this->asset('js/core.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->asset('js/hub.js'); ?>"></script>
 
         <!--[if lt IE 9]>
             <script type="text/javascript"
