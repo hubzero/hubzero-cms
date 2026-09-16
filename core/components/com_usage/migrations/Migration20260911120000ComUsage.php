@@ -68,10 +68,27 @@ class Migration20260911120000ComUsage extends Base
 
         $saved = $params->toArray();
 
+        // A metrics database that answers on localhost is exactly where it
+        // says it is - a local replica, say - and the site's host has nothing
+        // to teach it. Only rewrite what does not connect as it stands, and
+        // only to a host that does.
+        if ($this->reaches($saved)) {
+            return;
+        }
+
         $saved['statsDBHost'] = $host;
 
         if (!$params->get('statsDBPort') && \Config::get('port')) {
             $saved['statsDBPort'] = \Config::get('port');
+        }
+
+        if (!$this->reaches($saved)) {
+            $this->log(
+                'com_usage metrics database answers neither at ' . self::SHIPPED . ' nor at ' . $host
+                . '; leaving its settings as they are.',
+                'warning'
+            );
+            return;
         }
 
         $this->saveParams('com_usage', $saved);
@@ -80,6 +97,39 @@ class Migration20260911120000ComUsage extends Base
             'com_usage now reaches its metrics database at ' . $host
             . ', as the site does, rather than over a socket.'
         );
+    }
+
+    /**
+     * Whether the metrics database answers with these settings
+     *
+     * Reaches it the way the component's own helper does.
+     *
+     * @param   array  $saved  The component params as an array
+     * @return  boolean
+     **/
+    private function reaches(array $saved)
+    {
+        $driver = $saved['statsDBDriver'] ?? 'mysql';
+
+        $options = array(
+            'driver'   => ($driver == 'mysql') ? 'pdo' : $driver,
+            'host'     => $saved['statsDBHost'] ?? '',
+            'port'     => $saved['statsDBPort'] ?? '',
+            'user'     => $saved['statsDBUsername'] ?? '',
+            'password' => $saved['statsDBPassword'] ?? '',
+            'database' => $saved['statsDBDatabase'] ?? '',
+            'prefix'   => $saved['statsDBPrefix'] ?? '',
+            'ssl_ca'   => $saved['statsDBSSLCa'] ?? '',
+        );
+
+        try {
+            $db = \Hubzero\Database\Driver::getInstance($options);
+            $db->connect();
+
+            return (bool) $db->connected();
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     /**

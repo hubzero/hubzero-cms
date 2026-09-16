@@ -113,6 +113,9 @@ class Database
                 if (!empty($config['port'])) {
                     $existing['port'] = $config['port'];
                 }
+                if (!empty($config['dbprefix'])) {
+                    $existing['prefix'] = $config['dbprefix'];
+                }
             }
         }
 
@@ -276,7 +279,7 @@ class Database
             'user'     => $connection['username'] ?? '',
             'password' => $connection['password'] ?? '',
             'db'       => $connection['database'] ?? '',
-            'dbprefix' => 'jos_',
+            'dbprefix' => $existing['prefix'] ?? 'jos_',
         ];
 
         // Add socket if using socket connection
@@ -359,7 +362,7 @@ class Database
             'user'     => $connection['username'],
             'password' => $connection['password'],
             'db'       => $connection['database'],
-            'dbprefix' => $answers['prefix'] ?? 'jos_',
+            'dbprefix' => $answers['prefix'] ?? $existing['prefix'] ?? 'jos_',
         ];
 
         if (!empty($connection['socket'])) {
