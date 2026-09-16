@@ -100,8 +100,17 @@ php core/bin/muse install
 | `muse install schema` | Load the schema and essential data |
 | `muse install migrations` | Run migrations to bring the schema up to date |
 | `muse install sample` | Load sample data |
+| `muse install flavor` | Shape the hub with a [flavor](../12-muse.md#flavors) |
 | `muse install admin` | Create the first administrator account |
 | `muse install verify` | Check an installed hub: how it is served, its scheduled tasks, database server, mail and file ownership |
+
+The flavor step runs after the migrations, when every table it touches is
+there. Interactively it offers the `default` flavor — the CMS without
+simulation tools — and leaves the hub as the data shipped it if you decline.
+To choose, pass `--flavor=<name>`, and `--flavors=<dir>` to read your own
+flavor files ahead of `app/flavors` and `core/flavors`; an answer file says
+the same with `flavor` and `flavors` keys. A script can therefore stand up a
+site pointed at its own flavor directory and have it come up already shaped.
 
 This gets you the CMS. Tool sessions, Workspaces, an external mail gateway,
 LDAP, and Solr need separate services and configuration. Ask the people who

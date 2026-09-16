@@ -132,6 +132,12 @@ class Install extends Base implements CommandInterface
             // Continue anyway - some migrations may have succeeded
         }
 
+        // Shape the hub with a flavor, now that every table a lever touches
+        // is here. The answers or --flavor name one; otherwise the install
+        // asks whether to apply the default, and leaves the hub as the data
+        // shipped it if not.
+        $this->applyFlavor($this->chosenFlavor($unattended), $ansi);
+
         // Admin user creation
         // Pass the admin email from site settings as default
         $adminDefaults = [];
@@ -374,6 +380,127 @@ class Install extends Base implements CommandInterface
         if (!Install\Schema::loadDataSet($set, $ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Loading the ' . $set . ' data failed.');
         }
+    }
+
+    /**
+     * Shape the hub with a flavor
+     *
+     * @museDescription  Apply a flavor - the switches that make one hub differ from another
+     * @museArgument     flavor   The flavor to apply; without it the answer file's `flavor` decides
+     * @museArgument     flavors  A directory of flavor files to read ahead of app/flavors and core/flavors
+     *
+     * @return  void
+     **/
+    public function flavor()
+    {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
+        $configPath = PATH_APP . '/config/database.php';
+
+        if (!file_exists($configPath)) {
+            $this->output->error('Database configuration not found at ' . $configPath);
+            $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            return;
+        }
+
+        $flavor = $this->chosenFlavor(Install\Answers::isUnattended());
+
+        if (!$flavor) {
+            echo "\n";
+            echo "No flavor asked for. 'muse repository:flavor list' shows the ones there are.\n";
+            echo "\n";
+            return;
+        }
+
+        $this->applyFlavor($flavor, $this->output->isColored());
+    }
+
+    /**
+     * The flavor the install should apply, or null for none
+     *
+     * --flavor on the command line, else the answer file's `flavor`; and
+     * when neither says and somebody is there to ask, whether to apply the
+     * default.
+     *
+     * @param   bool  $unattended
+     * @return  string|null
+     */
+    protected function chosenFlavor($unattended)
+    {
+        $flavor = $this->arguments->getOpt('flavor') ?: Install\Answers::option('flavor');
+
+        if (is_string($flavor)) {
+            $flavor = strtolower(trim($flavor));
+
+            return in_array($flavor, ['', 'no', 'none', 'false', 'off'], true) ? null : $flavor;
+        }
+
+        if ($unattended) {
+            return null;
+        }
+
+        echo "\n";
+        echo "\033[33mFlavor (Optional)\033[39m\n";
+        echo "-----------------\n";
+        echo "\n";
+        echo "A flavor shapes the hub: the default flavor is the CMS without simulation\n";
+        echo "tools, which is what a hub is unless it has a tool middleware behind it.\n";
+        echo "'muse repository:flavor list' shows every flavor, and set applies one later.\n";
+        echo "\n";
+
+        return $this->promptYesNo('Apply the default flavor?', true) ? 'default' : null;
+    }
+
+    /**
+     * Apply a flavor by name, saying what was done
+     *
+     * @param   string|null  $name
+     * @param   bool         $ansi
+     * @return  void
+     */
+    protected function applyFlavor($name, $ansi)
+    {
+        if (!$name) {
+            return;
+        }
+
+        $dir    = $this->arguments->getOpt('flavors') ?: Install\Answers::option('flavors');
+        $finder = \Hubzero\Flavor\Finder::usual(is_string($dir) && $dir !== '' ? $dir : null);
+
+        try {
+            $flavor = $finder->find($name);
+        } catch (\Exception $e) {
+            $this->output->error('The flavor files do not read: ' . $e->getMessage());
+            return;
+        }
+
+        if (!$flavor) {
+            $this->output->error(
+                "There is no '{$name}' flavor in " . implode(', ', $finder->directories())
+                . ". The hub is left as the data shipped it; 'muse repository:flavor set' can shape it later."
+            );
+            return;
+        }
+
+        echo "\n";
+        echo "\033[33mApplying the {$flavor->name()} flavor\033[39m\n";
+        echo str_repeat('-', 22 + strlen($flavor->name())) . "\n";
+        echo "\n";
+
+        $applier = new \Hubzero\Flavor\Applier(\Hubzero\Facades\App::get('db'), function ($message) {
+            echo "  " . $message . "\n";
+        });
+
+        $applier->apply($flavor);
+
+        $left = $applier->check($flavor);
+
+        echo "\n";
+        echo $left
+            ? "\033[33mApplied, but the hub still differs: " . implode('; ', $left) . "\033[39m\n"
+            : "\033[32mThe hub is the {$flavor->name()} flavor.\033[39m\n";
     }
 
     /**
