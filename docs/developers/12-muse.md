@@ -417,7 +417,7 @@ Each flavor is an object of **levers**:
 | `extends` | string | The flavor this one starts from |
 | `template` | string | The site template made the default style |
 | `components` | `{enable, disable}` | `#__extensions.enabled` by element |
-| `modules` | `{enable, disable, params}` | The module's enabled flag; `params` merged into every instance |
+| `modules` | `{enable, disable, params, items}` | The module's enabled flag; `params` merged into every instance; `items` publishes or hides site instances — a number names one by id, anything else names every instance with that title |
 | `plugins` | `{enable, disable, params}` | Named `folder/element`; `params` merged into the plugin's |
 | `dashboard` | `{tiles: [{module, col}, …]}` | The member dashboard's default tiles, two rows high, stacked per column in the order given |
 | `kb` | `{categories, articles}` | Published state by alias |

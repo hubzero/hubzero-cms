@@ -7,3 +7,7 @@ quiet:
   menu:
     items:
       community/poll: 0       # the navigation entry; the poll's own route is left alone
+  modules:
+    items:
+      Latest Poll: 0          # every instance with that title
+      92: 0                   # one instance, by id
