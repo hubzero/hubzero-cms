@@ -88,7 +88,9 @@ class Group extends Table
             $group->read($devgroup);
             $existing_members = \Components\Tools\Helpers\Utils::transform((new Tool($this->_db))->getToolDevelopers($toolid), 'uidNumber');
             $group->set('members', $existing_members);
-            // (managers used to be set from an unassigned variable; they are left as they are)
+            // The managers the group already has stay as they are. Making
+            // every developer a manager would let any of them add members -
+            // that is, developers - which is the tool admin's decision.
         } else {
             $group->create();
             $group->set('type', 2);

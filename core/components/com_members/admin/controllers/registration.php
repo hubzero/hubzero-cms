@@ -89,9 +89,9 @@ class Registration extends AdminController
         if (App::get('config')->get('caching')) {
             $handler = App::get('config')->get('cache_handler');
 
-            App::get('config')->set($handler, array(
-                'cachebase' => PATH_APP . '/cache/site'
-            ));
+            // Dot-notation: the config repository rejects a bare key that is
+            // not already a group, and the handler name is not one
+            App::get('config')->set($handler . '.cachebase', PATH_APP . '/cache/site');
 
             $cache = new \Hubzero\Cache\Manager(App::getRoot());
             $cache->storage($handler);
