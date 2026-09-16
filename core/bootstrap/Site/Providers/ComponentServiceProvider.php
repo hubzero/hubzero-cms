@@ -43,15 +43,20 @@ class ComponentServiceProvider extends Middleware
             $component = $request->getCmd('option');
 
             if (!$component) {
-                // One page is allowed to name no component: the front page.
-                //
-                // A hub whose home menu item names none is asking the template
-                // to draw the page itself, so leave the component buffer empty
-                // and let it. Every other address without a component is still
-                // a page that does not exist - including the front page of a
-                // hub with no home menu item at all, which has not asked for
-                // anything and should say so.
-                if (!$this->app->has('menu') || !$this->app['menu']->isHome()) {
+                // A page is allowed to name no component when its menu item
+                // does: the item's type is 'none', the template draws the page
+                // itself, and the component buffer is left empty for it. The
+                // front page is the usual case, but the item form lets any
+                // such page be shown in the menu, and a page the menu links to
+                // has to answer. Every other address without a component is
+                // still a page that does not exist - including the front page
+                // of a hub with no home menu item at all, which has not asked
+                // for anything and should say so.
+                $menu   = $this->app->has('menu') ? $this->app['menu'] : null;
+                $active = $menu ? $menu->getActive() : null;
+                $drawn  = is_object($active) && (!empty($active->home) || $active->type == 'none');
+
+                if (!$drawn) {
                     $this->app->abort(404, 'Component not found.');
                 }
             } else {

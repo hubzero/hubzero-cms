@@ -5,7 +5,7 @@
  * adding to it, so the original is imported first and only what this template
  * needs differently follows.
  */
-@import url("../../../../../core/assets/css/jquery.fancyselect.css");
+@import url("../../../../../../core/assets/css/jquery.fancyselect.css");
 
 /* The list a select becomes when the widget takes it over */
 .fs-dropdown-options .fs-dropdown-option {

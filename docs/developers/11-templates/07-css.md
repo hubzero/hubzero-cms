@@ -52,7 +52,7 @@ what `northgate` does: brand styles load first, components layer on top, and
 the handful of component rules Northgate needs to beat are handled with
 [output overrides](09-overrides.md) rather than with a specificity war.
 
-[`$this->asset()`](../../../core/libraries/Hubzero/Document/Type/Html.php) takes
+[`$this->asset()`](../../../core/libraries/Hubzero/Document/Base.php) takes
 the path inside the template and returns the whole address. It is doing three
 things the old hand-written form did by hand, and getting two of them right
 that the hand-written form often did not:
