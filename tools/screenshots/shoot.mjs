@@ -19,7 +19,12 @@
  */
 import { chromium } from 'playwright';
 import { readdirSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { hubFor, addressFor } from './pages.mjs';
+
+// Output goes under the repository whatever directory the tool is run from
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 /** The newest chromium already on this machine. */
 function chromiumPath() {
@@ -216,7 +221,7 @@ let taken = 0;
 let failed = 0;
 
 for (const [label, size] of Object.entries(viewports)) {
-    const out = `docs/screenshots/${hub}/${label}`;
+    const out = resolve(ROOT, 'docs', 'screenshots', hub, label);
 
     mkdirSync(out, { recursive: true });
 
@@ -281,7 +286,7 @@ for (const [label, size] of Object.entries(viewports)) {
 // what this run happened to take turns --only=home into a claim that the hub
 // is one page long, which is how the count came to disagree with the files on
 // disk the first time somebody checked.
-const where = `docs/screenshots/${hub}/manifest.json`;
+const where = resolve(ROOT, 'docs', 'screenshots', hub, 'manifest.json');
 let record = manifest;
 
 if (only && existsSync(where)) {

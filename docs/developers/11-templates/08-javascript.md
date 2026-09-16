@@ -124,7 +124,7 @@ of what a click on that element means.
 available.
 
 Give `addScript()` an address from
-[`$this->asset()`](../../../core/libraries/Hubzero/Document/Type/Html.php)
+[`$this->asset()`](../../../core/libraries/Hubzero/Document/Base.php)
 rather than building one:
 
 ```php

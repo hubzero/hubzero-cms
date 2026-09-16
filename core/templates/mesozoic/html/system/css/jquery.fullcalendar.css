@@ -5,7 +5,7 @@
  * adding to it, so the original is imported first and only what this template
  * needs differently follows.
  */
-@import url("../../../../../core/assets/css/jquery.fullcalendar.css");
+@import url("../../../../../../core/assets/css/jquery.fullcalendar.css");
 
 /*
  * fullcalendar ships its own grey buttons. They are the only controls on a

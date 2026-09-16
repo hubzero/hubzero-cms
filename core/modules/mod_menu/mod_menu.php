@@ -92,6 +92,7 @@ class Menu extends Module
 
             $lastitem = 0;
             $hidden   = array();
+            $shown  = array();
 
             if ($items) {
                 foreach ($items as $i => $item) {
@@ -121,6 +122,8 @@ class Menu extends Module
                         unset($items[$i]);
                         continue;
                     }
+
+                    $shown[$item->parent_id] = true;
 
                     if (
                         ($start && $start > $item->level)
@@ -191,6 +194,15 @@ class Menu extends Module
                         $item->flink = Route::url($item->flink, true, $item->params->get('secure'));
                     } else {
                         $item->flink = Route::url($item->flink);
+                    }
+                }
+
+                // An item is drawn as a parent - a disclosure button rather
+                // than a link - on the strength of having children. One whose
+                // children were all hidden above has nothing to disclose.
+                foreach ($items as $item) {
+                    if ($item->parent && !isset($shown[$item->id])) {
+                        $item->parent = false;
                     }
                 }
 

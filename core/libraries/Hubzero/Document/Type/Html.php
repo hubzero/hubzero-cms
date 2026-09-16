@@ -441,11 +441,16 @@ class Html extends Base
             // Store the file path
             $this->_file = $directory . DS . $filename;
 
-            //get the file content
+            // Get the file content. A shell may abort - the group shell does
+            // when asked for without a group - and the buffer has to close on
+            // that path too, or the error page is written into it.
             ob_start();
-            require $directory . DS . $filename;
-            $contents = ob_get_contents();
-            ob_end_clean();
+            try {
+                require $directory . DS . $filename;
+                $contents = ob_get_contents();
+            } finally {
+                ob_end_clean();
+            }
         }
 
         // Try to find a favicon by checking the template and root folder

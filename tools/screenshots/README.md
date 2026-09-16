@@ -82,8 +82,9 @@ measured before its font arrives is text of the wrong width, and this
 repository has already had one check report five findings on one run and one on
 the next for exactly that reason.
 
-What is not pinned is the hub's own data. Run `tools/hubs/check-idempotent.sh`
-if a diff looks like content rather than design.
+What is not pinned is the hub's own data. If a diff looks like content rather
+than design, check the hub's data before suspecting the template: the sample
+data packs and their checks live with the packs, not in this repository.
 
 ## review.mjs
 

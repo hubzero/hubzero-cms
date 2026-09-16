@@ -283,6 +283,10 @@ class Items extends AdminController
                     $value = Lang::txt('COM_MENUS_TYPE_SEPARATOR');
                     break;
 
+                case 'none':
+                    $value = Lang::txt('COM_MENUS_TYPE_NONE');
+                    break;
+
                 case 'component':
                 default:
                     // load language
@@ -472,6 +476,7 @@ class Items extends AdminController
                 break;
 
             case 'separator':
+            case 'none':
                 $row->set('link', '');
                 $row->set('component_id', 0);
                 break;
@@ -926,7 +931,7 @@ class Items extends AdminController
         $title = isset($type->title) ? $type->title : null;
         $recordId = isset($type->id) ? $type->id : 0;
 
-        if ($title != 'alias' && $title != 'separator' && $title != 'url') {
+        if (!in_array($title, array('alias', 'separator', 'url', 'none'))) {
             $title = 'component';
         }
 
@@ -943,6 +948,9 @@ class Items extends AdminController
         } elseif ($title == 'alias') {
             // If the type is alias you just need the item id from the menu item referenced.
             User::setState('com_menus.edit.item.link', 'index.php?Itemid=');
+        } elseif ($title == 'none') {
+            // Nothing to link to: the template draws the page
+            User::setState('com_menus.edit.item.link', '');
         }
 
         unset($data['request']);
