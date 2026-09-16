@@ -52,9 +52,6 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 {
 	$primary = null;
 }
-
-$current  = $uri->toString(); //Hubzero\Utility\Uri::getInstance()->toString();
-$current .= (strstr($current, '?') ? '&' : '?');
 ?>
 <div class="hz_user">
 
@@ -145,7 +142,7 @@ $current .= (strstr($current, '?') ? '&' : '?');
 <?php endif; ?>
 <?php if (isset($user) && is_object($user)) : ?>
 	<div class="others">
-		<a href="<?php echo Route::url($current . 'reset=1'); // . $returnQueryString); ?>">
+		<a href="<?php echo Route::url('index.php?option=com_users&view=login&reset=1' . $returnQueryString); ?>">
 			<?php echo Lang::txt('MOD_LOGIN_SIGN_IN_WITH_DIFFERENT_ACCOUNT'); ?>
 		</a>
 	</div>
