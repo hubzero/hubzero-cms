@@ -93,6 +93,19 @@ class Role extends Relational
 			$this->set('permissions', json_encode($this->get('permissions')));
 		}
 
+		// A new role goes to the end of its group's list rather than jumping
+		// ahead of roles a manager has already put in order
+		if ($this->isNew() && !$this->get('ordering'))
+		{
+			$last = self::blank()
+				->whereEquals('gidNumber', (int) $this->get('gidNumber'))
+				->order('ordering', 'desc')
+				->limit(1)
+				->row();
+
+			$this->set('ordering', (int) $last->get('ordering') + 1);
+		}
+
 		return parent::save();
 	}
 

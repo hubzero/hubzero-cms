@@ -230,6 +230,55 @@
 .aside a.edit-role:after {
 	content: '\270E';
 }
+.aside .roles-order-hint {
+	color: #777;
+	font-size: 0.85em;
+}
+.aside .roles-sort {
+	margin: 0 0 0.5em;
+}
+.aside .roles-sort .btn {
+	font-size: 0.85em;
+	padding: 0.2em 0.6em;
+}
+.aside ul.roles.sortable li {
+	padding-left: 1.5em;
+}
+.aside ul.roles.sortable li.ui-sortable-helper {
+	background-color: #fff;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+.aside .role-mover {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 1.5em;
+	cursor: move;
+	color: #999;
+	text-align: center;
+}
+.aside .role-mover:after {
+	content: '\2630';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	transform: translateY(-50%);
+}
+.aside .role-mover:hover {
+	color: #333;
+}
+
+/* Canned deny responses */
+.deny-responses .deny-response {
+	border-bottom: 1px solid #ddd;
+	margin-bottom: 1em;
+	padding-bottom: 0.5em;
+}
+.deny-responses .deny-response-remove {
+	text-align: right;
+}
 
 /* Message AJAX */
 #sbox-content .hub-mail {

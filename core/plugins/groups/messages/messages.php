@@ -313,7 +313,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		//get all member roles
 		$db = App::get('db');
-		$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($this->group->get('gidNumber'));
+		$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($this->group->get('gidNumber'))." ORDER BY `ordering` ASC, `name` ASC";
 		$db->setQuery($sql);
 		$member_roles = $db->loadAssocList();
 
