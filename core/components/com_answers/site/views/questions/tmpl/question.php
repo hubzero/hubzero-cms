@@ -145,9 +145,10 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 							</span>
 						<?php if (($this->question->get('created_by') == User::get('id') && User::authorise('core.delete', $this->option)) || User::authorise('core.manage', $this->option)) { //$this->question->isOpen() ?>
 							<span>
-								<a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
-									<?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>
-								</a>
+								<form action="<?php echo Route::url($this->question->link('delete')); ?>" method="post" class="inline-form">
+									<?php echo Html::input('token'); ?>
+									<button type="submit" class="icon-delete delete" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>"><?php echo Lang::txt('COM_ANSWERS_DELETE'); ?></button>
+								</form>
 							</span>
 						<?php } ?>
 					<?php } ?>

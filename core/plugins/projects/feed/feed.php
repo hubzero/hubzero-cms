@@ -482,6 +482,15 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _delete()
 	{
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_PROJECTS_BLOG_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check permission
 		if (!$this->model->access('content'))
 		{

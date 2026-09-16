@@ -794,6 +794,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _publish()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// verify that the user is a manager.
 		$isManager = ($this->authorized == 'manager') ? true : false;
 		if (!$isManager)

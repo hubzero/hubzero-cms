@@ -84,7 +84,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 		<span class="checked"><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1&amp;' . Session::getFormToken() . '=1'; ?>" class="confirm-checkoff"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
 		<?php } ?>
 		<?php if ($deletable) { ?>
-		<span class="trash"><a href="<?php echo Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" class="confirm-it" id="deltd"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?></a></span>
+		<span class="trash"><form action="<?php echo Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="confirm-it" id="deltd"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?></button></form></span>
 		<?php } ?>
 	</p>
 	<div class="comment-wrap">
@@ -94,7 +94,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 			<?php foreach ($this->row->comments() as $comment) { ?>
 				<li>
 					<p><?php echo $comment->content('parsed'); ?></p>
-					<p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo \Components\Projects\Helpers\Html::timeAgo($comment->get('created')).' '.Lang::txt('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) { ?><a href="<?php echo Route::url($url . '&action=deletecomment').'/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" id="delc-<?php echo $comment->get('id'); ?>" class="confirm-it">[<?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php  } ?></p>
+					<p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo \Components\Projects\Helpers\Html::timeAgo($comment->get('created')).' '.Lang::txt('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) { ?><form action="<?php echo Route::url($url . '&action=deletecomment').'/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="confirm-it" id="delc-<?php echo $comment->get('id'); ?>">[<?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?>]</button></form><?php  } ?></p>
 				</li>
 			<?php } ?>
 			</ul>

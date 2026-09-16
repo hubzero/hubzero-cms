@@ -2195,18 +2195,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$section  = Request::getString('section', '');
 		$category = Request::getString('category', '');
 
-		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category)  . '?' . $_SERVER['QUERY_STRING'];
+		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
 
-		// Is the user logged in?
-		// Login check is handled in the onGroup() method
-		/*if (User::isGuest())
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
 		{
-			App::redirect(
-				$redirect,
-				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
-				'warning'
-			);
-		}*/
+			App::redirect($redirect, Lang::txt('PLG_GROUPS_FORUM_ERROR_METHOD_NOT_ALLOWED'), 'error');
+			return;
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('thread', 0);

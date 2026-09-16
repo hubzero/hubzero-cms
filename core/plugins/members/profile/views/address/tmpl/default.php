@@ -63,7 +63,7 @@ else
 		{
 			$formattedAddresses .= '<span class="address-links">';
 			$formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
-			$formattedAddresses .= ' | <a class="delete delete-address" href="' . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_DELETE') . '</a>';
+			$formattedAddresses .= ' | <form action="' . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="delete delete-address">' . Lang::txt('JACTION_DELETE') . '</button></form>';
 			$formattedAddresses .= '</span>';
 		}
 

@@ -81,7 +81,7 @@ if (isset($this->version) && $this->version->get('approved') == 0)
 
 			<?php if ($this->page->get('home') == 0) : ?>
 				<li class="divider"></li>
-				<li><a class="icon-delete" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE'); ?></a></li>
+				<li><form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$this->page->get('id')); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE'); ?></button></form></li>
 			<?php endif; ?>
 		</ul>
 	</div>

@@ -91,9 +91,15 @@ $this->css();
 								<?php echo $row->get('helpful', 0); ?><span> Like</span>
 							</span>
 						<?php } else { ?>
-							<a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
-								<?php echo $row->get('helpful', 0); ?><span> Like</span>
-							</a>
+							<form class="inline-form" method="post" action="<?php echo Route::url('index.php?option=com_answers&task=vote'); ?>">
+								<input type="hidden" name="id" value="<?php echo $row->get('id'); ?>" />
+								<input type="hidden" name="category" value="question" />
+								<input type="hidden" name="vote" value="yes" />
+								<?php echo Html::input('token'); ?>
+								<button type="submit" class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
+									<?php echo $row->get('helpful', 0); ?><span> Like</span>
+								</button>
+							</form>
 						<?php } ?>
 					</span>
 				</td>

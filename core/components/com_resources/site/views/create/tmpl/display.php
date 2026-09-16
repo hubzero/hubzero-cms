@@ -117,7 +117,7 @@ $this->css('introduction.css', 'system')
 							<br /><a class="retract" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=retract&id='.$submission->id); ?>"><?php echo Lang::txt('&lsaquo; Retract'); ?></a>
 							<?php } ?>
 						</td>
-						<td><a class="icon-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=discard&id='.$submission->id); ?>" title="<?php echo Lang::txt('Delete'); ?>"><?php echo Lang::txt('Delete'); ?></a></td>
+						<td><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=discard&id='.$submission->id); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="icon-delete" title="<?php echo Lang::txt('Delete'); ?>"><?php echo Lang::txt('Delete'); ?></button></form></td>
 					</tr>
 				<?php } ?>
 				</tbody>

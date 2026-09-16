@@ -348,9 +348,12 @@ $this->css('course.css')
 						<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
 							<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
 								<div class="manager-options">
-									<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage' . '&' . Session::getFormToken() . '=1'); ?>">
-										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
-									</a>
+									<form class="inline-form" method="post" action="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="icon-error btn btn-secondary btn-danger">
+											<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
+										</button>
+									</form>
 									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
 										<?php echo Lang::txt('JACTION_EDIT'); ?>
 									</a>

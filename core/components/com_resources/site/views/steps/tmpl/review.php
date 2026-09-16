@@ -227,7 +227,7 @@ $this->css('create.css')
 
 	<h1 id="preview-header"><?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?></h1>
 	<div id="preview-pane">
-		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
+		<iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?>" src="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
 	</div>
 <?php } ?>
 </section><!-- / .main section -->

@@ -127,9 +127,10 @@ $first = $this->archive->entries(array(
 						<a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
 							<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 						</a>
-						<a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
-						</a>
+						<form action="<?php echo Route::url($this->row->link('delete')); ?>" method="post" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" class="icon-trash delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
+						</form>
 					</dd>
 				<?php } ?>
 				</dl>

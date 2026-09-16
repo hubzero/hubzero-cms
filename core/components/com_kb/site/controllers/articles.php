@@ -210,7 +210,13 @@ class Articles extends SiteController
 			return;
 		}
 
-		Request::checkToken(['get', 'post']);
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Incoming
 		$type = strtolower(Request::getString('type', ''));

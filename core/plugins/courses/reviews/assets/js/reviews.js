@@ -39,16 +39,14 @@ jQuery(document).ready(function(jq){
 	});
 
 	// review ratings
-	$('.vote-button').each(function(i, item) {
-		if ($(item).attr('href')) {
-			$(item).on('click', function (e) {
-				e.preventDefault();
+	$('.inline-form:has(.vote-button)').on('submit', function(e) {
+		e.preventDefault();
 
-				$.get($(this).attr('href').nohtml(), {}, function(data) {
-					$('.tooltip').hide();
-					$(item).closest('.voting').html(data);
-				});
-			});
-		}
+		var frm = $(this);
+
+		$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+			$('.tooltip').hide();
+			frm.closest('.voting').html(data);
+		});
 	});
 });

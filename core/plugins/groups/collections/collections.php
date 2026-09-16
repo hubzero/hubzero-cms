@@ -756,6 +756,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _follow($what='collection')
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Is the board restricted to logged-in users only?
 		if (User::isGuest())
 		{
@@ -815,6 +823,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _unfollow($what='collection')
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Is the board restricted to logged-in users only?
 		if (User::isGuest())
 		{
@@ -1731,8 +1747,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _delete()
 	{
-		// Check for request forgeries
-		//Request::checkToken();
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Login check
 		if (User::isGuest())
@@ -2033,6 +2054,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Incoming
 		$id = Request::getInt('comment', 0);
 		if (!$id)
@@ -2129,6 +2158,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			return $this->_login();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('post', 0);
@@ -2392,6 +2429,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		{
 			return $this->_login();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Access check
 		if (!$this->params->get('access-delete-collection'))

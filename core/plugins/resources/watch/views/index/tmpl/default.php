@@ -14,11 +14,17 @@ $this->css();
 <div class="item-watch <?php echo $this->watched->get('id') ? 'watching' : ''; ?>">
 	<?php if ($this->watched->get('id')) { ?>
 		<p>
-			<a class="btn unsubscribe" href="<?php echo Route::url($this->link . '&action=unsubscribe'); ?>"><?php echo Lang::txt('PLG_RESOURCES_WATCH_UNSUBSCRIBE'); ?></a>
+			<form action="<?php echo Route::url($this->link . '&action=unsubscribe'); ?>" method="post" class="inline-form">
+				<?php echo Html::input('token'); ?>
+				<button type="submit" class="btn unsubscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_UNSUBSCRIBE'); ?></button>
+			</form>
 		</p>
 	<?php } else { ?>
 		<p>
-			<a class="btn subscribe" href="<?php echo Route::url($this->link . '&action=subscribe'); ?>"><?php echo Lang::txt('PLG_RESOURCES_WATCH_SUBSCRIBE'); ?></a>
+			<form action="<?php echo Route::url($this->link . '&action=subscribe'); ?>" method="post" class="inline-form">
+				<?php echo Html::input('token'); ?>
+				<button type="submit" class="btn subscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_SUBSCRIBE'); ?></button>
+			</form>
 		</p>
 	<?php } ?>
 

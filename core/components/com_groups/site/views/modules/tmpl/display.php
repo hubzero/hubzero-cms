@@ -102,7 +102,7 @@ foreach ($this->modules as $module)
 								<li><a class="icon-success" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a></li>
 							<?php endif; ?>
 							<li class="divider"></li>
-							<li><a class="icon-delete" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=delete&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?></a></li>
+							<li><form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=delete&moduleid='.$module->get('id')); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?></button></form></li>
 						</ul>
 					</div>
 				</div>

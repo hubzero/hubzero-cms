@@ -206,9 +206,10 @@ $revisions = $this->page->versions()
 									</td>
 								<?php } ?>
 								<td>
-									<a class="icon-trash delete" href="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
-										<?php echo Lang::txt('JACTION_DELETE'); ?>
-									</a>
+									<form action="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" method="post" class="inline-form">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="icon-trash delete" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+									</form>
 								</td>
 								<?php } ?>
 							</tr>

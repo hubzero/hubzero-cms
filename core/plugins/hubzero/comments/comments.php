@@ -230,6 +230,14 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		$no_html = Request::getInt('no_html', 0);
 
 		// Record the vote. $how and $item_id were left undefined when neither

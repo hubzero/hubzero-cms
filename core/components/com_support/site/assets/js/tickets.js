@@ -52,6 +52,27 @@ jQuery(document).ready(function($){
 
 			return false;
 		})
+		.on('submit', '.inline-form:has(.delete)', function (e){
+			e.preventDefault();
+
+			var frm = $(this);
+			if (!confirm(frm.find('.delete').attr('data-confirm'))) {
+				return false;
+			}
+
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + frm.attr('action').nohtml());
+			}
+
+			$.post(frm.attr('action').nohtml(), frm.serialize(), function(response){
+				if (_DEBUG) {
+					window.console && console.log(response);
+				}
+				$('#query-list').html(response);
+			});
+
+			return false;
+		})
 		.on('click', 'a.editfolder', function(e) {
 			e.preventDefault();
 

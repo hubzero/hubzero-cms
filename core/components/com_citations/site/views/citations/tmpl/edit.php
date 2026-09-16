@@ -427,7 +427,7 @@ $pid = Request::getInt('publication', 0);
 									}
 
 									echo "\t\t\t".'  <tr>'."\n";
-									echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]">'."\n";
+									echo "\t\t\t".'   <td><select name="assocs['.$i.'][tbl]" aria-label="'.Lang::txt('COM_CITATIONS_ASSOCIATION_TYPE').'">'."\n";
 									echo ' <option value=""';
 									echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"': '';
 									echo '>'.Lang::txt('COM_CITATIONS_SELECT').'</option>'."\n";
@@ -438,10 +438,10 @@ $pid = Request::getInt('publication', 0);
 									echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
 									echo '>'.Lang::txt('COM_CITATIONS_PUBLICATION').'</option>'."\n";
 									echo '</select></td>'."\n";
-									echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
+									echo "\t\t\t".'<td><input type="text" name="assocs['.$i.'][oid]" aria-label="'.Lang::txt('COM_CITATIONS_ASSOCIATION_ID').'" value="'.$this->assocs[$i]->oid.'" />'."\n";
 									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 									echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
-									echo "\t\t\t".'<td><select name="assocs['.$i.'][type]">'."\n";
+									echo "\t\t\t".'<td><select name="assocs['.$i.'][type]" aria-label="'.Lang::txt('COM_CITATIONS_CONTEXT').'">'."\n";
 									echo ' <option value=""';
 									echo ($this->assocs[$i]->type == '') ? ' selected="selected"': '';
 									echo '>'.Lang::txt('COM_CITATIONS_SELECT').'</option>'."\n";

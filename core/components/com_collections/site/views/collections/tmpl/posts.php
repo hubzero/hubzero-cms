@@ -111,9 +111,12 @@ $this->css()
 												<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 											</a>
 										<?php } else { ?>
-											<a class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('COM_COLLECTIONS_UNLIKE'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>">
-												<span><?php echo ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
-											</a>
+											<form class="inline-form" method="post" action="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('COM_COLLECTIONS_UNLIKE'); ?>">
+													<span><?php echo ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
+												</button>
+											</form>
 										<?php } ?>
 										<?php
 										// Display comment button only if enabled

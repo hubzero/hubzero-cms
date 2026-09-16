@@ -290,6 +290,15 @@ class Questions extends SiteController
 	 */
 	public function voteTask()
 	{
+		// Require POST to prevent accidental voting by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_ANSWERS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		$no_html = Request::getInt('no_html', 0);
 
 		// Is the user logged in?
@@ -930,8 +939,13 @@ class Questions extends SiteController
 	 */
 	public function deleteqTask()
 	{
-		// The confirmation form in views/questions/tmpl/question.php posts and
-		// emits Html::input('token'), so there is a caller to honour this.
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_ANSWERS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
 		Request::checkToken();
 
 		// Login required

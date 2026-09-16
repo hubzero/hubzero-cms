@@ -8,10 +8,12 @@
 	.voting {
 		white-space: nowrap;
 	}
-	.voting .vote-button, 
+	.voting .vote-button,
 	.voting a.vote-button,
-	.voting .vote-button:hover, 
-	.voting a.vote-button:hover {
+	.voting button.vote-button,
+	.voting .vote-button:hover,
+	.voting a.vote-button:hover,
+	.voting button.vote-button:hover {
 		border: none;
 		background-color: #f1f1f1;
 		color: #555;
@@ -27,8 +29,9 @@
 		text-align: left;
 		cursor: pointer;
 	}
-	.voting .vote-button:hover, 
-	.voting a.vote-button:hover {
+	.voting .vote-button:hover,
+	.voting a.vote-button:hover,
+	.voting button.vote-button:hover {
 		background-color: #e7e7e7;
 		color: #111;
 	}

@@ -153,9 +153,10 @@ $base = $this->offering->link() . '&active=forum';
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-thread')) { ?>
-												<a class="delete" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete'); ?>">
-													<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?>
-												</a>
+												<form action="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete'); ?>" method="post" class="inline-form">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="delete"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?></button>
+												</form>
 											<?php } ?>
 										</td>
 									<?php } ?>

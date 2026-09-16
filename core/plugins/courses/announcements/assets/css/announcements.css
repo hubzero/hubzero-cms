@@ -101,7 +101,8 @@
 		margin-left: 1.5em;
 	}
 	dl.entry-meta dd.entry-options a.edit,
-	dl.entry-meta dd.entry-options a.delete {
+	dl.entry-meta dd.entry-options a.delete,
+	dl.entry-meta dd.entry-options button.delete {
 		display: block;
 		width: 1.4em;
 		height: 1.4em;
@@ -118,7 +119,8 @@
 	dl.entry-meta dd.entry-options a.edit {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
 	}
-	dl.entry-meta dd.entry-options a.delete {
+	dl.entry-meta dd.entry-options a.delete,
+	dl.entry-meta dd.entry-options button.delete {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
 	}
 	dl.entry-meta dd.entry-options small.edit-before,
@@ -128,16 +130,19 @@
 	dl.entry-meta dd.entry-options small.edit-before,
 	dl.entry-meta dd.entry-options small.delete-before,
 	dl.entry-meta dd.entry-options a:before,
-	dl.entry-meta dd.entry-options a:before {
+	dl.entry-meta dd.entry-options a:before,
+	dl.entry-meta dd.entry-options button.delete:before {
 		margin-right: 1em;
 	}
 	dl.entry-meta dd.entry-options a:hover small.edit-before,
 	dl.entry-meta dd.entry-options a:hover small.delete-before,
 	dl.entry-meta dd.entry-options a:hover:before,
-	dl.entry-meta dd.entry-options a:hover:before {
+	dl.entry-meta dd.entry-options a:hover:before,
+	dl.entry-meta dd.entry-options button.delete:hover:before {
 		color: #111;
 	}
-	dl.entry-meta dd.entry-options a.delete {
+	dl.entry-meta dd.entry-options a.delete,
+	dl.entry-meta dd.entry-options button.delete {
 		right: 2em;
 	}
 	.announcement {

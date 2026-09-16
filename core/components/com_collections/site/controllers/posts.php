@@ -569,6 +569,14 @@ class Posts extends SiteController
 			return $this->loginTask();
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Incoming
 		$id = Request::getInt('comment', 0);
 		if (!$id)
@@ -639,6 +647,14 @@ class Posts extends SiteController
 		{
 			return $this->loginTask();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('post', 0);

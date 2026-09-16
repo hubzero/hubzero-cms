@@ -11,8 +11,7 @@ defined('_HZEXEC_') or die();
 $dcls = '';
 $lcls = '';
 
-$like_link    = Route::url($this->item->link('vote') . '&vote=like&' . Session::getFormToken() . '=1');
-$dislike_link = Route::url($this->item->link('vote') . '&vote=dislike&' . Session::getFormToken() . '=1');
+$vote_action = Route::url($this->item->link('vote'));
 
 if (isset($this->vote))
 {
@@ -74,14 +73,22 @@ else
 			</span>
 		<?php else : ?>
 			<span class="vote-like<?php echo $lcls; ?>">
-				<a class="vote-button like" href="<?php echo $like_link; ?>" aria-label="<?php echo $like_title; ?>">
-					<?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo $vote_action; ?>">
+					<input type="hidden" name="vote" value="like" />
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="vote-button like" aria-label="<?php echo $like_title; ?>">
+						<?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
+					</button>
+				</form>
 			</span>
 			<span class="vote-dislike<?php echo $lcls; ?>">
-				<a class="vote-button dislike" href="<?php echo $dislike_link; ?>" aria-label="<?php echo $dislike_title; ?>">
-					<?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo $vote_action; ?>">
+					<input type="hidden" name="vote" value="dislike" />
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="vote-button dislike" aria-label="<?php echo $dislike_title; ?>">
+						<?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
+					</button>
+				</form>
 			</span>
 		<?php endif; ?>
 	<?php else : ?>
@@ -92,15 +99,23 @@ else
 				</span>
 			</span>
 			<span class="vote-dislike<?php echo $dcls; ?>">
-				<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; ?>" href="<?php echo $dislike_link; ?>" aria-label="<?php echo $dislike_title; ?>">
-					<?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo $vote_action; ?>">
+					<input type="hidden" name="vote" value="dislike" />
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; ?>" aria-label="<?php echo $dislike_title; ?>">
+						<?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
+					</button>
+				</form>
 			</span>
 		<?php else : ?>
 			<span class="vote-like<?php echo $lcls; ?>">
-				<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?>" href="<?php echo $like_link; ?>" aria-label="<?php echo $like_title; ?>">
-					<?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo $vote_action; ?>">
+					<input type="hidden" name="vote" value="like" />
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?>" aria-label="<?php echo $like_title; ?>">
+						<?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
+					</button>
+				</form>
 			</span>
 			<span class="vote-dislike<?php echo $dcls; ?>">
 				<span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; ?>">

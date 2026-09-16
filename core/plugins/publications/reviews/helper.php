@@ -187,6 +187,14 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 	 */
 	public function rateitem()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		$database = App::get('db');
 		$publication =& $this->publication;
 

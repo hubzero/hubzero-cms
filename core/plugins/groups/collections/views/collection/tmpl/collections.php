@@ -95,13 +95,19 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							<div class="actions">
 								<?php if (!User::isGuest()) { ?>
 									<?php if ($row->isFollowing()) { ?>
-										<a class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
-											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
-										</a>
+										<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
+											<?php echo Html::input('token'); ?>
+											<button type="submit" class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>">
+												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
+											</button>
+										</form>
 									<?php } else { ?>
-										<a class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/follow'); ?>">
-											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
-										</a>
+										<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/follow'); ?>">
+											<?php echo Html::input('token'); ?>
+											<button type="submit" class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>">
+												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
+											</button>
+										</form>
 									<?php } ?>
 									<?php if ($this->params->get('access-manage-collection')) { ?>
 										<?php if ($this->params->get('access-edit-collection')) { ?>
@@ -110,9 +116,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 											</a>
 										<?php } ?>
 										<?php if ($this->params->get('access-delete-collection')) { ?>
-											<a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
-												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
-											</a>
+											<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="btn delete" data-id="<?php echo $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
+													<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
+												</button>
+											</form>
 										<?php } ?>
 									<?php } else { ?>
 											<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/collect'); ?>">

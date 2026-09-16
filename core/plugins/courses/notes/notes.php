@@ -293,6 +293,14 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _delete()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		$note_id = Request::getInt('note', 0);
 
 		$model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);

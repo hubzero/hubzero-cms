@@ -854,6 +854,15 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_MEMBERS_BLOG_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$id = Request::getInt('comment', 0);
 

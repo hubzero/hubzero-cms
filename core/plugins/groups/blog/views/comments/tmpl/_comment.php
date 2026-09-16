@@ -100,9 +100,10 @@ defined('_HZEXEC_') or die();
 
 			<p class="comment-options">
 			<?php if ($this->config->get('access-delete-comment')) { ?>
-				<a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')); ?>"><!--
-					--><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?><!--
-				--></a>
+				<form action="<?php echo Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></button>
+				</form>
 			<?php } ?>
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')) { ?>

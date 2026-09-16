@@ -47,6 +47,14 @@ jQuery(document).ready(function (jq) {
 				$.get($(this).attr('href').nohtml(), {}, function(data) {});
 
 				$(this).parent().parent().remove();
+			})
+			.on('submit', '.inline-form:has(.delete)', function (e){
+				e.preventDefault();
+
+				var frm = $(this);
+				$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {});
+
+				frm.closest('li').remove();
 			});
 
 		$('.author-list').sortable({
@@ -112,6 +120,13 @@ jQuery(document).ready(function (jq) {
 		var url = $(this).attr('href');
 		if (prompt === false)
 		{
+			e.preventDefault();
+		}
+	});
+
+	// Add confirm dialog to delete forms (button version)
+	$('.inline-form:has(.delete)').not('.author-list .inline-form').on('submit', function (e) {
+		if (!confirm($(this).find('.delete').attr('data-confirm') || 'Are you sure you want to delete this citation?')) {
 			e.preventDefault();
 		}
 	});

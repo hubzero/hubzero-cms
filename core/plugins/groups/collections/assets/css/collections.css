@@ -301,12 +301,14 @@
 		content: "\270E";
 		margin-right: 0.5em;
 	}
-	.post .actions a.delete:before {
+	.post .actions a.delete:before,
+	.post .actions button.delete:before {
 		content: "\f014";
 		margin-right: 0.5em;
 	}
 	.post .actions a.edit,
-	.post .actions a.delete {
+	.post .actions a.delete,
+	.post .actions button.delete {
 		width: 2.3em;
 	}
 	.icon-follow:before {

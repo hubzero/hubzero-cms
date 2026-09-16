@@ -2124,8 +2124,14 @@ class Tickets extends SiteController
 			return;
 		}
 
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_SUPPORT_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
 		// Guard against request forgeries
-		Request::checkToken(array('get', 'post'));
+		Request::checkToken();
 
 		// Must be authorized to delete tickets
 		if (!$this->acl->check('delete', 'tickets'))

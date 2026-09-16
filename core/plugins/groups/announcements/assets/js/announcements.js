@@ -41,6 +41,12 @@ jQuery(document).ready(function(jq){
 			}
 			event.preventDefault();
 			return false;
+		})
+		// Add confirm dialog to delete forms (button version)
+		.on('submit', '.inline-form:has(.delete)', function (e) {
+			if (!confirm($(this).find('.delete').attr('data-confirm'))) {
+				e.preventDefault();
+			}
 		});
 
 	//date/time picker for publish up/down

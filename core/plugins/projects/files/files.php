@@ -1218,6 +1218,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
+		// Require POST for actual deletion
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_PROJECTS_FILES_ERROR_METHOD_NOT_ALLOWED'));
+		}
+		Request::checkToken();
+
 		// Set counts
 		$deleted = 0;
 
@@ -3018,6 +3025,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 			if ($this->_task == 'disconnect')
 			{
+				// Require POST to prevent accidental disconnect by crawlers
+				if (Request::method() !== 'POST')
+				{
+					App::abort(405, Lang::txt('PLG_PROJECTS_FILES_ERROR_METHOD_NOT_ALLOWED'));
+				}
+				Request::checkToken();
+
 				if ($this->_connect->disconnect($service, $removeData))
 				{
 					$this->_msg = Lang::txt('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS')

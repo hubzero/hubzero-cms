@@ -87,17 +87,13 @@ jQuery(document).ready(function(jq){
 	});
 
 	// review ratings
-	$('#reviews-section').on('click', '.vote-button', function (e) {
+	$('#reviews-section').on('submit', '.inline-form:has(.vote-button)', function (e) {
 		e.preventDefault();
 
-		var item = $(this);
+		var frm = $(this);
 
-		if (!item.attr('href')) {
-			return;
-		}
-
-		$.get(item.attr('href').nohtml(), {}, function(data) {
-			item.closest('.voting').html(data);
+		$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+			frm.closest('.voting').html(data);
 			$('.tooltip').hide();
 		});
 	});

@@ -227,9 +227,10 @@ $this->css()
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-thread')) { ?>
-												<a class="icon-delete delete" href="<?php echo Route::url($base . '/' . $row->get('id') . '/delete')  . $sortingQueryString; ?>">
-													<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>
-												</a>
+												<form action="<?php echo Route::url($base . '/' . $row->get('id') . '/delete') . $sortingQueryString; ?>" method="post" class="inline-form">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></button>
+												</form>
 											<?php } ?>
 										</td>
 									<?php } ?>

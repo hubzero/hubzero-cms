@@ -213,14 +213,16 @@ if (isset($this->messages))
 											</a>
 										</td>
 										<td class="col-delete">
-											<a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>">
-												<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span>
-											</a>
+											<form action="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>" method="post" class="inline-form">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="icon-delete delete individual protected" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span></button>
+											</form>
 										</td>
 										<td class="col-publish">
-											<a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH'); ?>">
-												<span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'; ?></span>
-											</a>
+											<form action="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" method="post" class="inline-form">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="icon-window-publish individual publish" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH'); ?>"><span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'; ?></span></button>
+											</form>
 										</td>
 									<?php endif; ?>
 								</tr>

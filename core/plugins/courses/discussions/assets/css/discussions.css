@@ -385,7 +385,8 @@
 		color: #333;
 	}
 	ol.comments .comment-options a.abuse:hover,
-	ol.comments .comment-options a.delete:hover {
+	ol.comments .comment-options a.delete:hover,
+	ol.comments .comment-options button.delete:hover {
 		color: #c00;
 	}
 	ol.comments .comment-options a:before {

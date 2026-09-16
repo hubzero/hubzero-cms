@@ -338,6 +338,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 									type="file"
 									name="import"
 									id="import"
+									aria-label="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_IMPORT_EVENT_FILE'); ?>"
 									data-url="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=import'); ?>" />
 							</span>
 						</span>

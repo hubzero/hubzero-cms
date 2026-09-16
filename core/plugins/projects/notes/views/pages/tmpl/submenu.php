@@ -82,9 +82,10 @@ if (!isset($this->controller))
 		if (($this->page->isLocked() && $this->page->access('manage', 'page'))
 			|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
 		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
-			<a href="<?php echo Route::url($this->page->link('delete')); ?>" title="<?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?>">
-				<span><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
-			</a>
+			<form action="<?php echo Route::url($this->page->link('delete')); ?>" method="post" class="inline-form">
+				<?php echo Html::input('token'); ?>
+				<button type="submit"><span><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span></button>
+			</form>
 		</li>
 	<?php } ?>
 <?php } ?>

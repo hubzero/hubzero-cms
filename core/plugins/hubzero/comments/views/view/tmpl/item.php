@@ -139,9 +139,10 @@ defined('_HZEXEC_') or die();
 				<?php if (!$this->comment->isReported()) { ?>
 					<p class="comment-options">
 						<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-							<a class="icon-delete delete" href="<?php echo Route::url($this->comment->link('delete')); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM'); ?>"><!--
-								--><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_DELETE'); ?><!--
-							--></a>
+							<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
+								<?php echo Html::input('token'); ?>
+								<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_DELETE'); ?></button>
+							</form>
 						<?php } ?>
 						<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 							<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--

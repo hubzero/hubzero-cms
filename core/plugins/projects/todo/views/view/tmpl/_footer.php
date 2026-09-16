@@ -29,11 +29,11 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 <?php } ?>
 <?php if ($this->filters['todolist']) { ?>
 <div class="container-footer">
-	<span class="listoptions"><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>" id="del-<?php echo $this->filters['todolist']; ?>" class="dellist"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST'); ?></a></span>
+	<span class="listoptions"><form action="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="dellist" id="del-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST'); ?></button></form></span>
 	<div class="confirmaction" id="confirm-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE'); ?>
 		<ul>
-			<li><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS'); ?></a></li>
-			<li><a href="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS'); ?></a></li>
+			<li><form class="inline-form" method="post" action="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1'); ?>"><?php echo Html::input('token'); ?><button type="submit"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS'); ?></button></form></li>
+			<li><form class="inline-form" method="post" action="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>"><?php echo Html::input('token'); ?><button type="submit"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS'); ?></button></form></li>
 			<li><a href="<?php echo Route::url($url . '&list=' . $this->filters['todolist']); ?>" id="cnl-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_CANCEL'); ?></a></li>
 		</ul>
 	</div>

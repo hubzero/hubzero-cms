@@ -462,6 +462,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function approve()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Membership cannot be changed
 		if ($this->group->get('join_policy') == 3)
 		{
@@ -594,6 +602,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function promote()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -707,6 +723,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function demote()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -1024,6 +1048,15 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Require POST to prevent accidental removal by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_GROUPS_MEMBERS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1170,6 +1203,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function deny()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -1305,6 +1346,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function cancel()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;

@@ -119,6 +119,14 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _subscribe()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Incoming
 		$confirm = Request::getInt('confirm', 0);
 		$email   = Request::getString('email', '');

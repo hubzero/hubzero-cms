@@ -60,7 +60,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<fieldset>
 				<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
 				<div class="field-wrap">
-					<iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component'; ?>"></iframe>
+					<iframe width="100%" height="260" name="filer" id="filer" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?>" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component'; ?>"></iframe>
 				</div>
 			</fieldset>
 

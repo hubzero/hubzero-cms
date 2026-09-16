@@ -72,9 +72,13 @@ if (!$no_html) { ?>
 			<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
 		</span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; ?> <?php echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
-			<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
-		</a>
+		<form class="inline-form" method="post" action="<?php echo Route::url($this->url . 'action=vote'); ?>">
+			<input type="hidden" name="voteup" value="<?php echo $this->item->get('id'); ?>" />
+			<?php echo Html::input('token'); ?>
+			<button type="submit" class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; ?> <?php echo $cls; ?>" title="<?php echo $like_title; ?>">
+				<?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE'); ?></span>
+			</button>
+		</form>
 	<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
@@ -83,9 +87,13 @@ if (!$no_html) { ?>
 			<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
 		</span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; ?> <?php echo $cls; ?>" href="<?php echo Route::url($this->url . 'action=vote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
-			<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
-		</a>
+		<form class="inline-form" method="post" action="<?php echo Route::url($this->url . 'action=vote'); ?>">
+			<input type="hidden" name="votedown" value="<?php echo $this->item->get('id'); ?>" />
+			<?php echo Html::input('token'); ?>
+			<button type="submit" class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; ?> <?php echo $cls; ?>" title="<?php echo $dislike_title; ?>">
+				<?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE'); ?></span>
+			</button>
+		</form>
 	<?php } ?>
 	</span>
 <?php if (!$no_html) { ?>

@@ -68,13 +68,19 @@ $this->css()
 	<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
 		<p class="guest-options">
 			<?php if ($this->model->isFollowing()) { ?>
-				<a class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=unfollow'); ?>">
-					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=unfollow'); ?>">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>">
+						<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
+					</button>
+				</form>
 			<?php } else { ?>
-				<a class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=follow'); ?>">
-					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
-				</a>
+				<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=follow'); ?>">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>">
+						<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
+					</button>
+				</form>
 			<?php } ?>
 		</p>
 	<?php } ?>
@@ -125,22 +131,31 @@ $this->css()
 									</a>
 								<?php } ?>
 								<?php if ($this->params->get('access-delete-collection')) { //!$row->get('is_default') && ?>
-									<a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/delete'); ?>">
-										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
-									</a>
+									<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/delete'); ?>">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="btn delete" data-id="<?php echo $row->get('id'); ?>">
+											<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
+										</button>
+									</form>
 								<?php } ?>
 							<?php } else { ?>
 									<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/collect'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
 									</a>
 								<?php if ($row->isFollowing()) { ?>
-									<a class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/unfollow'); ?>">
-										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
-									</a>
+									<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/unfollow'); ?>">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>">
+											<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
+										</button>
+									</form>
 								<?php } else { ?>
-									<a class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/follow'); ?>">
-										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?></span>
-									</a>
+									<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=' . $row->get('alias') . '/follow'); ?>">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>">
+											<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?></span>
+										</button>
+									</form>
 								<?php } ?>
 							<?php } ?>
 						<?php } else { ?>

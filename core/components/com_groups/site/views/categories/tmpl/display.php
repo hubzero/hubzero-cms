@@ -42,7 +42,7 @@ defined('_HZEXEC_') or die();
 						<ul class="dropdown-menu">
 							<li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY'); ?></a></li>
 							<li class="divider"></li>
-							<li><a class="icon-delete" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=delete&categoryid='.$category->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY'); ?></a></li>
+							<li><form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=delete&categoryid='.$category->get('id')); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY'); ?></button></form></li>
 						</ul>
 					</div>
 				</div>

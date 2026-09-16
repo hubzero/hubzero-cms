@@ -130,9 +130,10 @@ switch ($this->comment->get('rating'))
 					--></a>
 				<?php } ?>
 				<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-					<a class="icon-delete delete" href="<?php echo Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>"><!--
-						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_DELETE'); ?><!--
-					--></a>
+					<form class="inline-form" method="post" action="<?php echo Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_COURSES_REVIEWS_DELETE'); ?></button>
+					</form>
 				<?php } ?>
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
 					<a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--

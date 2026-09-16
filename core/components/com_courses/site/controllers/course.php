@@ -805,7 +805,13 @@ class Course extends SiteController
 	 */
 	public function deletepageTask()
 	{
-		Request::checkToken('get');
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Check if they're logged in
 		if (User::isGuest())

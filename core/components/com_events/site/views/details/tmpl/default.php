@@ -43,7 +43,7 @@ $this->css()
 				$html .= '&nbsp;&nbsp;';
 				$html .= '<a class="edit" href="'. Route::url('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.Lang::txt('JACTION_EDIT').'">'.strtolower(Lang::txt('JACTION_EDIT')).'</a>'."\n";
 				$html .= '&nbsp;&nbsp;'."\n";
-				$html .= '<a class="delete" href="'. Route::url('index.php?option='.$this->option.'&task=delete&id='.$this->row->id.'&'.Session::getFormToken().'=1') .'" title="'.Lang::txt('JACTION_DELETE').'">'.strtolower(Lang::txt('JACTION_DELETE')).'</a>'."\n";
+				$html .= '<form action="'. Route::url('index.php?option='.$this->option.'&task=delete&id='.$this->row->id) .'" method="post" class="inline-form">'.Html::input('token').'<button type="submit" class="delete" title="'.Lang::txt('JACTION_DELETE').'">'.strtolower(Lang::txt('JACTION_DELETE')).'</button></form>'."\n";
 			}
 			$html .= '</h3>'."\n";
 

@@ -471,6 +471,54 @@ HUB.Plugins.CoursesForum = {
 					});
 				}
 			})
+			// Add delete handling for inline-form (button version)
+			.on('submit', '.inline-form:has(.delete)', function (e) {
+				e.preventDefault();
+
+				if (!confirm('Are you sure you wish to delete this item?')) {
+					return false;
+				}
+
+				var frm = $(this),
+					srch = container.find('input.search').val(),
+					url = frm.attr('action').nohtml() + (srch ? '&search=' + srch : '');
+
+				if (_DEBUG) {
+					window.console && console.log('called:' + url);
+				}
+				$.post(url, frm.serialize(), function(response){
+					var data = typeof response === 'string' ? JSON.parse(response) : response;
+					if (data.thread.total) {
+						header.text(data.thread.total + ' comments');
+
+						thread.hide();
+						thread.get(0).innerHTML = data.thread.html;
+						thread.find('script').each(function(){
+							eval($(this).html());
+						});
+						thread.fadeIn();
+
+						jQuery(document).trigger('ajaxLoad');
+					} else {
+						$('#mine' + data.thread.lastid).remove();
+						$('#thread' + data.thread.lastid).remove();
+						$('#comments-container li.thread' + data.thread.lastid).remove();
+
+						abtn.addClass('active');
+						header.text('Start a discussion');
+
+						$('#' + feed.data('active')).removeClass('active');
+						feed.data('active', '');
+
+						$('#comments-new').hide();
+
+						container.find('ol.comments').hide();
+						container.find('div.sticky-thread-controls').remove();
+
+						cfrm.fadeIn();
+					}
+				});
+			})
 			.on('click', 'a.sticky-toggle', function (e) {
 				e.preventDefault();
 

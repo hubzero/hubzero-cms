@@ -257,14 +257,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 						</li>
 					<?php } ?>
 					<li>
-						<a
-							data-id="activity<?php echo $this->row->get('id'); ?>"
-							class="icon-delete tooltips"
-							href="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>"
-							title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?>"
-							data-txt-confirm="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE'); ?>"><!--
-							--><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?><!--
-						--></a>
+						<form action="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" method="post" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?></button>
+						</form>
 					</li>
 					<?php /*<li>
 						<a

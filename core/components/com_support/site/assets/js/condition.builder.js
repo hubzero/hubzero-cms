@@ -20,7 +20,7 @@ var rootcondition = '<fieldset class="condition-set">';
 	rootcondition += '<p class="operator">';
 		rootcondition += '<button class="remove" alt="Remove">&times;</button> ';
 		rootcondition += 'Match ';
-		rootcondition += '<select>';
+		rootcondition += '<select aria-label="Match operator">';
 			rootcondition += '<option value="AND">all</option>';
 			rootcondition += '<option value="OR">any</option>';
 		rootcondition += '</select> of the following:';
@@ -37,7 +37,7 @@ rootcondition += '</fieldset>';
 var statement = '<p class="conditions">';
 	statement += '<button class="remove" alt="Remove">&times;</button> ';
 
-statement += '<select class="fld">';
+statement += '<select class="fld" aria-label="Field">';
 	statement += '<option value="open">Open/Closed</option>';
 	statement += '<option value="status">Status</option>';
 	statement += '<option value="login">Submitter</option>';
@@ -54,12 +54,12 @@ statement += '<select class="fld">';
 	statement += '<option value="category">Category</option>';
 statement += '</select>';
 
-statement += '<select class="op">';
+statement += '<select class="op" aria-label="Operator">';
 	statement += '<option value="=">is</option>';
 	statement += '<option value="!=">is not</option>';
 statement += '</select>'
 
-statement += '<select class="val">';
+statement += '<select class="val" aria-label="Value">';
 	statement += '<option value="0">user submitted</option>';
 	statement += '<option value="1">automatic</option>';
 	statement += '<option value="3">tool</option>';
@@ -205,13 +205,13 @@ var Conditions = {
 		var $ = this.jQuery;
 		
 		var values = Conditions.option[val].values;
-		var select = $('<input type="text" class="val" />');
+		var select = $('<input type="text" class="val" aria-label="Value" />');
 		if (val == 'created') {
 			select.attr('placeholder', 'YYYY-MM-DD');
 		}
 
 		if (values instanceof Array) {
-			select = $('<select class="val"></select>');
+			select = $('<select class="val" aria-label="Value"></select>');
 			$.each(values, function() {
 				if (this.sel) {
 					val = this.val;

@@ -195,7 +195,8 @@
 		-moz-transition: opacity 0.2s ease;
 		transition: opacity 0.2s ease;
 	}
-	.group .user-actions a {
+	.group .user-actions a,
+	.group .user-actions button {
 		display: block;
 		width: 1em;
 		height: 1em;
@@ -207,7 +208,8 @@
 		padding: 0;
 		line-height: 1em;
 	}
-	.group .user-actions a:hover {
+	.group .user-actions a:hover,
+	.group .user-actions button:hover {
 		color: #333;
 	}
 	.group .user-actions .manage:before {

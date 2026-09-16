@@ -55,7 +55,10 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
 						<li>
 							<span class="item-options">
 									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+									<form class="inline-form" method="post" action="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>">
+										<?php echo Html::input('token'); ?>
+										<button type="submit" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+									</form>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>

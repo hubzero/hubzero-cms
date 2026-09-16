@@ -65,13 +65,19 @@ if (!in_array($viewas, array('grid', 'list')))
 			</span>
 			<?php if (!User::isGuest()) { ?>
 				<?php if ($this->collection->isFollowing()) { ?>
-					<a class="icon-unfollow unfollow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE'); ?>" href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
-					</a>
+					<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/unfollow'); ?>">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="icon-unfollow unfollow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE'); ?>">
+							<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
+						</button>
+					</form>
 				<?php } else { ?>
-					<a class="icon-follow follow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE'); ?>" href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
-						<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
-					</a>
+					<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/follow'); ?>">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="icon-follow follow btn tooltips" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE'); ?>">
+							<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
+						</button>
+					</form>
 				<?php } ?>
 				<!-- <a class="repost btn tooltips" title="<?php echo Lang::txt('Repost :: Collect this collection'); ?>" href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/collect'); ?>">
 					<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
@@ -134,9 +140,12 @@ if (!in_array($viewas, array('grid', 'list')))
 								<?php if (!User::isGuest()) { ?>
 									<?php if ($this->group->published == 1) { ?>
 										<?php if ($item->get('created_by') != User::get('id')) { ?>
-											<a class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/vote'); ?>">
-												<span><?php echo ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
-											</a>
+											<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/vote'); ?>">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE'); ?>">
+													<span><?php echo ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
+												</button>
+											</form>
 										<?php } ?>
 										<a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment'); ?>">
 											<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
@@ -157,13 +166,19 @@ if (!in_array($viewas, array('grid', 'list')))
 											</a>
 										<?php } ?>
 										<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-manage-collection'))) { ?>
-											<a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
-												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
-											</a>
+											<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/delete'); ?>">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="btn delete" data-id="<?php echo $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
+													<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
+												</button>
+											</form>
 										<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
-											<a class="btn unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/remove'); ?>">
-												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_REMOVE'); ?></span>
-											</a>
+											<form class="inline-form" method="post" action="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/remove'); ?>">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="btn unpost" data-id="<?php echo $row->get('id'); ?>">
+													<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_REMOVE'); ?></span>
+												</button>
+											</form>
 										<?php } ?>
 									<?php } ?>
 								<?php } else { ?>

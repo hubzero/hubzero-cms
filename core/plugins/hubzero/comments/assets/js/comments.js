@@ -45,13 +45,19 @@ jQuery(document).ready(function(jq){
 			}
 			return res;
 		})
-		.on('click', 'a.vote-button', function(e) {
+		// Add confirm dialog to delete forms (button version)
+		.on('submit', '.inline-form:has(.delete)', function (e) {
+			if (!confirm($(this).find('.delete').attr('data-txt-confirm'))) {
+				e.preventDefault();
+			}
+		})
+		.on('submit', '.inline-form:has(.vote-button)', function(e) {
 			e.preventDefault();
 
-			var el = $(this);
+			var frm = $(this);
 
-			$.get(el.attr('href').nohtml(), {}, function(data) {
-				$(el.parent().parent()).html(data);
+			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+				$(frm.parent().parent()).html(data);
 			});
 		});
 

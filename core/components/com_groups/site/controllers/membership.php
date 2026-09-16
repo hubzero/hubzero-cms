@@ -792,6 +792,15 @@ class Membership extends Base
 	 */
 	public function cancelTask()
 	{
+		// Require POST to prevent accidental cancellation by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_GROUPS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{

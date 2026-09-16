@@ -157,12 +157,14 @@ if (isset($this->messages))
 										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&cid=' .$cite->id); ?>"></span>
 											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?></span>
 										</a></td>
-										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id . '&' . Session::getFormToken() . '=1'); ?>">
-											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE'); ?></span>
-										</a></td>
-										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id . '&' . Session::getFormToken() . '=1'); ?>">
-											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'; ?></span>
-										</a></td>
+										<td class="col-delete"><form action="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id); ?>" method="post" class="inline-form">
+											<?php echo Html::input('token'); ?>
+											<button type="submit" class="icon-delete delete individual protected"><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE'); ?></span></button>
+										</form></td>
+										<td class="col-publish"><form action="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id); ?>" method="post" class="inline-form">
+											<?php echo Html::input('token'); ?>
+											<button type="submit" class="icon-window-publish individual publish"><span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'; ?></span></button>
+										</form></td>
 									<?php endif; ?>
 								</tr>
 								<tr>

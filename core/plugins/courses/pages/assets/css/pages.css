@@ -158,7 +158,8 @@
 		font-family: "Fontcons";
 	}
 	.course_pages .manager-options small.delete-before,
-	.course_pages .manager-options a.delete:before {
+	.course_pages .manager-options a.delete:before,
+	.course_pages .manager-options button.delete:before {
 		content: "\f014";
 		font-family: "Fontcons";
 	}
@@ -169,7 +170,8 @@
 	.course_pages .manager-options a.edit {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="edit-before">&#x270E;</small>' + this.innerHTML);
 	}
-	.course_pages .manager-options a.delete {
+	.course_pages .manager-options a.delete,
+	.course_pages .manager-options button.delete {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="delete-before">&#xf014;</small>' + this.innerHTML);
 	}
 	.course_pages .pages-wrap {

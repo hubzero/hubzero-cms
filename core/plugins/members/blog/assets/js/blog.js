@@ -47,5 +47,11 @@ jQuery(document).ready(function (jq) {
 				e.preventDefault();
 			}
 			return res;
+		})
+		// Add confirm dialog to delete forms (button version)
+		.on('submit', '.inline-form:has(.delete)', function (e) {
+			if (!confirm($(this).find('.delete').attr('data-confirm'))) {
+				e.preventDefault();
+			}
 		});
 });

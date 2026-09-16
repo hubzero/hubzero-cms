@@ -361,6 +361,13 @@ class connections
 	 **/
 	public function deleteconnection()
 	{
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_PROJECTS_FILES_ERROR_METHOD_NOT_ALLOWED'));
+		}
+		Request::checkToken();
+
 		if (!$this->connection)
 		{
 			$this->connection = Connection::oneOrNew(Request::getInt('connection'));

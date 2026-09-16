@@ -96,7 +96,8 @@ defined('_HZEXEC_') or die();
 						data-user-name="<?php echo rawurlencode((string) User::get('name')); ?>"
 						data-likes-list="<?php echo $this->escape($userNameLikesArray); ?>"
 						data-count="<?php echo $countLike; ?>"
-						></a>
+						aria-label="<?php echo Lang::txt('COM_FORUM_LIKE'); ?>"
+						><span class="sr-only"><?php echo Lang::txt('COM_FORUM_LIKE'); ?></span></a>
 						<span class="likesStat <?php if ($countLike==0) { echo "noLikes"; } ?>">
 							<?php echo ($countLike>0) ? "View Likes (" . $countLike . ")" : "No Likes"; ?>
 						</span>
@@ -205,9 +206,10 @@ defined('_HZEXEC_') or die();
 					) { ?>
 				<p class="comment-options">
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
-						<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
-							--><?php echo Lang::txt('JACTION_DELETE'); ?><!--
-						--></a>
+						<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+						</form>
 					<?php } ?>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-edit-thread')) || ($this->comment->get('parent') && $this->config->get('access-edit-post'))) { ?>
 						<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--

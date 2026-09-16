@@ -99,7 +99,10 @@ $base = $this->offering->link();
 						<div class="jStickyNote">
 							<textarea name="note_<?php echo $note->get('id'); ?>"><?php echo $this->escape(stripslashes($note->get('content'))); ?></textarea>
 						</div>
-						<a class="jSticky-delete" href="<?php echo Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')); ?>" title="<?php echo Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE'); ?>">x</a>
+						<form class="inline-form" method="post" action="<?php echo Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')); ?>">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" class="jSticky-delete" title="<?php echo Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE'); ?>">x</button>
+						</form>
 					</div>
 				<?php endforeach; ?>
 				<div class="clear"></div>

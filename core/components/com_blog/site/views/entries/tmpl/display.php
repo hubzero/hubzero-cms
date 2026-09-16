@@ -188,9 +188,10 @@ $rows = $this->archive->entries($this->filters)
 											<a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
 												<?php echo Lang::txt('JACTION_EDIT'); ?>
 											</a>
-											<a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-												<?php echo Lang::txt('JACTION_DELETE'); ?>
-											</a>
+											<form action="<?php echo Route::url($row->link('delete')); ?>" method="post" class="inline-form">
+												<?php echo Html::input('token'); ?>
+												<button type="submit" class="icon-trash delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+											</form>
 										</dd>
 									<?php } ?>
 								</dl>

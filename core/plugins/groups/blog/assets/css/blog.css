@@ -82,7 +82,8 @@
 		margin-left: 1.5em;
 	}
 	dl.entry-meta dd.entry-options a.edit,
-	dl.entry-meta dd.entry-options a.delete {
+	dl.entry-meta dd.entry-options a.delete,
+	dl.entry-meta dd.entry-options button.delete {
 		display: block;
 		width: 1.4em;
 		height: 1.4em;
@@ -97,14 +98,17 @@
 		color: #999;
 	}
 	dl.entry-meta dd.entry-options a:before,
-	dl.entry-meta dd.entry-options a:before {
+	dl.entry-meta dd.entry-options a:before,
+	dl.entry-meta dd.entry-options button.delete:before {
 		margin-right: 1em;
 	}
 	dl.entry-meta dd.entry-options a:hover:before,
-	dl.entry-meta dd.entry-options a:hover:before {
+	dl.entry-meta dd.entry-options a:hover:before,
+	dl.entry-meta dd.entry-options button.delete:hover:before {
 		color: #111;
 	}
-	dl.entry-meta dd.entry-options a.delete {
+	dl.entry-meta dd.entry-options a.delete,
+	dl.entry-meta dd.entry-options button.delete {
 		right: 2em;
 	}
 	dd.entry-options .edit:before,
@@ -140,7 +144,8 @@
 		margin-left: 1.5em;
 	}
 	div.entry dl.entry-meta dd.entry-options a.edit,
-	div.entry dl.entry-meta dd.entry-options a.delete {
+	div.entry dl.entry-meta dd.entry-options a.delete,
+	div.entry dl.entry-meta dd.entry-options button.delete {
 		top: 0.5em;
 	}
 

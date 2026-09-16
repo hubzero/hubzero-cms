@@ -692,6 +692,15 @@ class Entries extends SiteController
 			return $this->entryTask();
 		}
 
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_BLOG_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$id    = Request::getInt('comment', 0);
 		$year  = Request::getString('year', '');

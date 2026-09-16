@@ -249,6 +249,14 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		$no_html = Request::getInt('no_html', 0);
 
 		// Record the vote. Both start assigned: neither branch runs when the
@@ -473,6 +481,14 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			$this->_login();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('comment', 0);

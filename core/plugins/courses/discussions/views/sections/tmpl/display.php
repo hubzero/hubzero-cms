@@ -64,9 +64,10 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<?php } ?>
 						<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
 							<?php if ($this->config->get('access-delete-section')) { ?>
-								<a class="delete" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=delete'); ?>" title="<?php echo Lang::txt('Delete'); ?>">
-									<span><?php echo Lang::txt('Delete'); ?></span>
-								</a>
+								<form action="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=delete'); ?>" method="post" class="inline-form">
+									<?php echo Html::input('token'); ?>
+									<button type="submit" class="delete" title="<?php echo Lang::txt('Delete'); ?>"><span><?php echo Lang::txt('Delete'); ?></span></button>
+								</form>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
 								<a class="edit" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('Edit'); ?>">
@@ -129,9 +130,10 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-												<a class="delete tooltips" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY'); ?>" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete'); ?>" title="<?php echo Lang::txt('Delete'); ?>">
-													<span><?php echo Lang::txt('Delete'); ?></span>
-												</a>
+												<form action="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete'); ?>" method="post" class="inline-form">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="delete tooltips" title="<?php echo Lang::txt('Delete'); ?>"><span><?php echo Lang::txt('Delete'); ?></span></button>
+												</form>
 											<?php } ?>
 										</td>
 									<?php } ?>

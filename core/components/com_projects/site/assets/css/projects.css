@@ -1563,7 +1563,7 @@
 		padding: 0.5em 0;
 		margin: 0;
 	}
-	.cancel, a.cancel {
+	.cancel, a.cancel, button.cancel {
 		padding: 0.1em 0.3em;
 		margin-left: 1.5em;
 		border: 1px solid #999;

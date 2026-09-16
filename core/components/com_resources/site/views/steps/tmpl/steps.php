@@ -84,7 +84,7 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
 				<?php if ($this->step == 'discard') { ?>
 					<strong><?php echo Lang::txt('JCANCEL'); ?></strong>
 				<?php } else { ?>
-					<a class="icon-delete" href="<?php echo Route::url('index.php?option='.$this->option.'&task=discard&id='.$this->id); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+					<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=discard&id='.$this->id); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="icon-delete"><?php echo Lang::txt('JCANCEL'); ?></button></form>
 				<?php } ?>
 				</td>
 			<?php } ?>

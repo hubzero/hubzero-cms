@@ -44,9 +44,10 @@ if ($this->group->isSuperGroup())
 				</a>
 			</li>
 			<li>
-				<a class="invited btn btn-secondary" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
-					<?php echo Lang::txt('COM_GROUPS_TOOLBAR_DECLINE'); ?>
-				</a>
+				<form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>" method="post" class="inline-form">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="invited btn btn-secondary"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_DECLINE'); ?></button>
+				</form>
 			</li>
 		<?php endif; ?>
 	<?php elseif ($this->group->get('join_policy') == 3 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
@@ -117,7 +118,7 @@ if ($this->group->isSuperGroup())
 
 		if ($canCancel && $membership_control == 1)
 		{
-			$menuItems[] = '<li role="none"><a role="menuitem" class="group-cancel cancel_group_membership" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=cancel') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a></li>';
+			$menuItems[] = '<li role="none"><form action="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=cancel') . '" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" role="menuitem" class="group-cancel cancel_group_membership">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button></form></li>';
 			if ($isManager)
 			{
 				$menuItems[] = '<li class="divider" role="separator"></li>';
@@ -126,7 +127,7 @@ if ($this->group->isSuperGroup())
 
 		if ($isManager && $membership_control == 1)
 		{
-			$menuItems[] = '<li role="none"><a role="menuitem" class="group-delete" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=delete') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DELETE') . '</a></li>';
+			$menuItems[] = '<li role="none"><form action="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=delete') . '" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" role="menuitem" class="group-delete">' . Lang::txt('COM_GROUPS_TOOLBAR_DELETE') . '</button></form></li>';
 		}
 
 		if ($this->logoutLink)

@@ -129,13 +129,13 @@ jQuery(document).ready(function(jq){
 
 		if (container.hasClass('loggedin')) {
 			container
-				.find('a.vote')
-				.on('click', function(e){
+				.on('submit', '.inline-form:has(.vote)', function(e){
 					e.preventDefault();
 
-					var el = $(this);
+					var frm = $(this),
+						el = frm.find('.vote');
 
-					$.get(el.attr('href').nohtml(), {}, function(data){
+					$.post(frm.attr('action').nohtml(), frm.serialize(), function(data){
 						var like = el.attr('data-text-like'),
 							unlike = el.attr('data-text-unlike')
 

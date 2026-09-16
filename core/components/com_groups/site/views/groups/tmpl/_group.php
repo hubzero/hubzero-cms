@@ -22,7 +22,7 @@ if ($group->get('published') == 1 && !User::isGuest())
 	if (in_array(User::get('id'), $members))
 	{
 		$status  = 'member';
-		$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a>';
+		$options = '<form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button></form>';
 
 		$managers = $group->get('managers');
 		if (in_array(User::get('id'), $managers))
@@ -39,12 +39,12 @@ if ($group->get('published') == 1 && !User::isGuest())
 		if (in_array(User::get('id'), $invitees))
 		{
 			$status  = 'invitee';
-			$options = ' <a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</a>';
+			$options = ' <form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</button></form>';
 		}
 		elseif (in_array(User::get('id'), $applicants))
 		{
 			$status  = 'pending';
-			$options = '<a class="cancel tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</a>';
+			$options = '<form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button></form>';
 		}
 	}
 }

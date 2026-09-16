@@ -26,7 +26,10 @@ $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
 				<span>
 					<a href="<?php echo Route::url($data->editUrl . '&action=orderdown&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-movedown" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN'); ?>">&darr;</a>
 					<a href="<?php echo Route::url($data->editUrl . '&action=orderup&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-moveup" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP'); ?>">&uarr;</a>
-					<a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+					<form class="inline-form" method="post" action="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+					</form>
 				</span>
 			<?php } ?>
 		</span>

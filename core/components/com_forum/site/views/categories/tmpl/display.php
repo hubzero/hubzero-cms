@@ -194,9 +194,10 @@ $this->category->set('section_alias', $this->filters['section']);
 													</a>
 												<?php } ?>
 												<?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == User::get('id'))) { ?>
-													<a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-														<?php echo Lang::txt('JACTION_DELETE'); ?>
-													</a>
+													<form action="<?php echo Route::url($row->link('delete')); ?>" method="post" class="inline-form">
+														<?php echo Html::input('token'); ?>
+														<button type="submit" class="icon-delete delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+													</form>
 												<?php } ?>
 											</td>
 										<?php } ?>

@@ -814,6 +814,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'deleteitem':
+				// Require POST to prevent accidental deletion by crawlers
+				if (Request::method() !== 'POST')
+				{
+					App::abort(405, Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_METHOD_NOT_ALLOWED'));
+				}
 				$pub->_curationModel->deleteItem($this->_uid, $element);
 				break;
 

@@ -878,8 +878,14 @@ class Tags extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('COM_TAGS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
 		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		// Check that the user is authorized
 		if (!$this->config->get('access-delete-tag'))

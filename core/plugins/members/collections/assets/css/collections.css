@@ -293,7 +293,8 @@
 		content: "\270E";
 		margin-right: 0;
 	}
-	.post .actions a.delete:before {
+	.post .actions a.delete:before,
+	.post .actions button.delete:before {
 		content: "\f014";
 		margin-right: 0;
 	}

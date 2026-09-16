@@ -1288,6 +1288,14 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 	 */
 	public function act_delete()
 	{
+		// Require POST to prevent accidental deletion by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Check permission
 		if (!$this->model->access('content'))
 		{

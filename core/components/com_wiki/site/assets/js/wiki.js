@@ -160,6 +160,15 @@ jQuery(document).ready(function(jq){
 			});
 		});
 
+		list.on('submit', '.inline-form:has(.delete)', function (e){
+			e.preventDefault();
+
+			var frm = $(this);
+			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+				list.html(data);
+			});
+		});
+
 		$.get(filer.attr('data-list'), {}, function(data) {
 			list.html(data);
 		});

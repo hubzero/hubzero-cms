@@ -112,6 +112,14 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 			);
 		}
 
+		// Require POST for both subscribe and unsubscribe
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Load a subscription, if it exists
 		$watch = \Hubzero\Activity\Subscription::oneByScope(
 			$this->resource->id,
@@ -122,6 +130,7 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 		// Unsubscribing
 		if ($this->action == 'unsubscribe')
 		{
+
 			$msg = Lang::txt('PLG_RESOURCES_WATCH_SUCCESS_UNSUBSCRIBED');
 
 			if ($watch->get('id'))

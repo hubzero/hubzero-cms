@@ -211,6 +211,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 	 */
 	public function rateitem()
 	{
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		$id   = Request::getInt('refid', 0);
 		$ajax = Request::getInt('no_html', 0);
 		$cat  = Request::getString('category', 'review');

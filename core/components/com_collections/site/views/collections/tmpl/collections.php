@@ -100,21 +100,30 @@ $this->css()
 												<a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($row->link() . '/edit'); ?>">
 													<span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
 												</a>
-												<a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($row->link() . '/delete'); ?>">
-													<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
-												</a>
+												<form class="inline-form" method="post" action="<?php echo Route::url($row->link() . '/delete'); ?>">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="btn delete" data-id="<?php echo $row->get('id'); ?>">
+														<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+													</button>
+												</form>
 										<?php } else { ?>
 												<a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&board=' . $row->get('id') . '&task=collect'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($row->get('title')); ?>">
 													<span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
 												</a>
 											<?php if ($row->isFollowing()) { ?>
-												<a class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($row->link() . '/unfollow'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW') . ': ' . $this->escape($row->get('title')); ?>">
-													<span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
-												</a>
+												<form class="inline-form" method="post" action="<?php echo Route::url($row->link() . '/unfollow'); ?>">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW') . ': ' . $this->escape($row->get('title')); ?>">
+														<span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
+													</button>
+												</form>
 											<?php } else { ?>
-												<a class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($row->link() . '/follow'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($row->get('title')); ?>">
-													<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
-												</a>
+												<form class="inline-form" method="post" action="<?php echo Route::url($row->link() . '/follow'); ?>">
+													<?php echo Html::input('token'); ?>
+													<button type="submit" class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?>" aria-label="<?php echo Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($row->get('title')); ?>">
+														<span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
+													</button>
+												</form>
 											<?php } ?>
 										<?php } ?>
 									<?php } else { ?>

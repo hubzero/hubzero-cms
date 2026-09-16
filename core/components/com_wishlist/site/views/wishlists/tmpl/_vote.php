@@ -62,8 +62,17 @@ else
 		<span class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'neutral';
 echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like';
-echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=yes&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></a>
+		<form class="inline-form" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem'); ?>">
+			<input type="hidden" name="refid" value="<?php echo $this->item->get('id'); ?>" />
+			<input type="hidden" name="vote" value="yes" />
+			<input type="hidden" name="page" value="<?php echo $this->page; ?>" />
+			<?php foreach ($this->filters as $key => $val) { if ($val) { ?>
+				<input type="hidden" name="<?php echo $this->escape($key); ?>" value="<?php echo $this->escape($val); ?>" />
+			<?php } } ?>
+			<?php echo Html::input('token'); ?>
+			<button type="submit" class="vote-button <?php echo ($this->item->get('positive') > 0) ? 'like' : 'like';
+echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_UP'); ?> :: <?php echo $like_title; ?>"><?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_LIKE'); ?></span></button>
+		</form>
 	<?php } ?>
 </span>
 <span class="vote-dislike<?php echo $dcls; ?>">
@@ -71,7 +80,16 @@ echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&t
 		<span class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'neutral';
 echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative'); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></span>
 	<?php } else { ?>
-		<a class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike';
-echo $cls; ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem&refid='.$this->item->get('id').'&vote=no&page='.$this->page.$filterln); ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></a>
+		<form class="inline-form" method="post" action="<?php echo Route::url('index.php?option='.$this->option.'&task=rateitem'); ?>">
+			<input type="hidden" name="refid" value="<?php echo $this->item->get('id'); ?>" />
+			<input type="hidden" name="vote" value="no" />
+			<input type="hidden" name="page" value="<?php echo $this->page; ?>" />
+			<?php foreach ($this->filters as $key => $val) { if ($val) { ?>
+				<input type="hidden" name="<?php echo $this->escape($key); ?>" value="<?php echo $this->escape($val); ?>" />
+			<?php } } ?>
+			<?php echo Html::input('token'); ?>
+			<button type="submit" class="vote-button <?php echo ($this->item->get('negative') > 0) ? 'dislike' : 'dislike';
+echo $cls; ?>" title="<?php echo Lang::txt('COM_WISHLIST_VOTING_VOTE_DOWN'); ?> :: <?php echo $dislike_title; ?>"><?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('COM_WISHLIST_VOTING_DISLIKE'); ?></span></button>
+		</form>
 	<?php } ?>
 </span>

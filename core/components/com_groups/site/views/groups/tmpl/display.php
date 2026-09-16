@@ -85,7 +85,7 @@ $this->css('introduction.css', 'system')
 					</div>
 					<ul>
 						<?php foreach ($this->mygroups['applicants'] as $applicant) : ?>
-							<li><?php echo $this->escape($applicant->description); ?><a href="<?php echo Route::url('index.php?option=com_groups&cn='.$applicant->cn.'&task=cancel'); ?>">Cancel Request</a></li>
+							<li><?php echo $this->escape($applicant->description); ?><form action="<?php echo Route::url('index.php?option=com_groups&cn='.$applicant->cn.'&task=cancel'); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit">Cancel Request</button></form></li>
 						<?php endforeach; ?>
 					</ul>
 				</div>

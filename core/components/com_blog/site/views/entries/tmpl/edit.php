@@ -54,7 +54,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 		<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<h4 id="files-header"><?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?></h4>
-				<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
+				<iframe width="100%" height="370" name="filer" id="filer" title="<?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?>" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
 			</div>
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_BLOG_EDIT_DETAILS'); ?></legend>

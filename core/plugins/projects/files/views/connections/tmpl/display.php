@@ -20,9 +20,9 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 
 <ul id="page_options" class="layout">
 	<li>
-		<a class="layout-control layout-large-icon first<?php echo ($layout == 'large-icon') ? ' active' : ''; ?>" data-class="large-icon" href="#"></a>
-		<a class="layout-control layout-small-icon<?php echo ($layout == 'small-icon') ? ' active' : ''; ?>" data-class="small-icon" href="#"></a>
-		<a class="layout-control layout-list last<?php echo ($layout == 'list') ? ' active' : ''; ?>" data-class="list" href="#"></a>
+		<a class="layout-control layout-large-icon first<?php echo ($layout == 'large-icon') ? ' active' : ''; ?>" data-class="large-icon" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID'); ?></span></a>
+		<a class="layout-control layout-small-icon<?php echo ($layout == 'small-icon') ? ' active' : ''; ?>" data-class="small-icon" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST'); ?></span></a>
+		<a class="layout-control layout-list last<?php echo ($layout == 'list') ? ' active' : ''; ?>" data-class="list" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS'); ?></span></a>
 	</li>
 </ul>
 
@@ -80,9 +80,10 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 				<a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
 					<?php echo Lang::txt('Edit'); ?>
 				</a>
-				<a class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete this connection?'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>">
-					<?php echo Lang::txt('Delete'); ?>
-				</a>
+				<form action="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>" method="post" class="inline-form">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>"><?php echo Lang::txt('Delete'); ?></button>
+				</form>
 			</div>
 			<?php endif; ?>
 		</div>
@@ -92,7 +93,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 		<fieldset class="connection">
 			<div class="new"></div>
 			<div class="name">
-				<select name="provider_id" class="connection-type">
+				<select name="provider_id" class="connection-type" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTION_TYPE'); ?>">
 					<option value=""><?php echo Lang::txt('New Connection'); ?></option>
 					<?php foreach (\Components\Projects\Models\Orm\Provider::all() as $provider) : ?>
 						<option value="<?php echo $provider->id; ?>"><?php echo $this->escape($provider->name); ?></option>

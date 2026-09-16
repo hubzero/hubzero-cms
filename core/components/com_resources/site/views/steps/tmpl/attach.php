@@ -70,7 +70,7 @@ $this->css('create.css')
 							?>
 						<?php endif; ?>
 					</div>
-					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" title="<?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_CONTENT'); ?>" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 				</div><!-- / .asset-uploader -->
 			</div><!-- / .field-wrap -->
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

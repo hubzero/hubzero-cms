@@ -599,8 +599,16 @@ class Media extends SiteController
 			return;
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		// Incoming asset
-		$id = Request::getInt('asset', 0, 'get');
+		$id = Request::getInt('asset', 0);
 
 		$model = new Asset($id);
 

@@ -25,7 +25,7 @@ class Html
 	 */
 	public static function formSelect($name, $array, $value, $class='')
 	{
-		$out  = '<select name="' . $name . '" id="' . $name . '"';
+		$out  = '<select name="' . $name . '" id="' . $name . '" aria-label="' . ucfirst($name) . '"';
 		$out .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
 		foreach ($array as $avalue => $alabel)
 		{

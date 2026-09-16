@@ -69,6 +69,18 @@ jQuery(document).ready(function(jq){
 				});
 			}
 		})
+		.on('submit', '.inline-form:has(.vote-button)', function (e) {
+			e.preventDefault();
+
+			var frm = $(this);
+
+			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+				if (data) {
+					frm.closest('.voting').html(data);
+					$('.tooltip').hide();
+				}
+			});
+		})
 		.on('click', 'a.reply', function (e) {
 			e.preventDefault();
 
