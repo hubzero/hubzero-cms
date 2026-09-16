@@ -1,0 +1,4 @@
+{
+    "loop-a": {"extends": "loop-b"},
+    "loop-b": {"extends": "loop-a"}
+}

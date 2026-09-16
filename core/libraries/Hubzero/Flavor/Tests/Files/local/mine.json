@@ -1,0 +1,12 @@
+{
+    "plain": {
+        "description": "The base, as this hub redefines it",
+        "template": "lucent"
+    },
+
+    "mine": {
+        "extends": "tooled",
+        "description": "This hub's own, on top of a shipped flavor",
+        "content": {"articles": {"welcome": 0}}
+    }
+}
