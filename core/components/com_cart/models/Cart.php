@@ -338,7 +338,7 @@ abstract class Cart
 	 */
 	protected function cartIsLinked($crtId)
 	{
-		$sql = "SELECT COUNT(`crtId`) FROM `#__cart_carts` WHERE `crtId` = {$crtId} AND `uidNumber` IS NOT NULL";
+		$sql = "SELECT COUNT(`crtId`) FROM `#__cart_carts` WHERE `crtId` = " . (int) $crtId . " AND `uidNumber` IS NOT NULL";
 		$this->_db->setQuery($sql);
 		$isLinked = $this->_db->loadResult();
 

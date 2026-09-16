@@ -1738,7 +1738,7 @@ class CurrentCart extends Cart
 		}
 
 		// If cookie exists, check if this is not pointing to a members' cart and load it.
-		$crtId = Request::getString('cartId', '', 'COOKIE');
+		$crtId = (int) Request::getString('cartId', '', 'COOKIE');
 
 		if (!empty($crtId) && !$this->cartIsLinked($crtId))
 		{
@@ -1782,7 +1782,7 @@ class CurrentCart extends Cart
 	 */
 	private function liftCart($crtId)
 	{
-		$this->crtId = $crtId;
+		$this->crtId = (int) $crtId;
 
 		// Update session cart
 		$this->syncSessionCart();
