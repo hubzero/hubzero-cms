@@ -1331,11 +1331,13 @@ class Repo extends Obj
 		//
 		// Use the configured virus_scanner so admins can switch between
 		// clamscan and clamdscan without touching code, and append -r so
-		// the scanner walks the directory. Treat any non-zero exit as
-		// unsafe (fail closed): a 1 means a virus was found, 2 means
-		// the scanner errored out (e.g., clamd unreachable), other
-		// values mean the command didn't run; in none of those cases
-		// can we assert the files are clean.
+		// the scanner walks the directory. Fail closed on any non-zero
+		// exit: 1 means a virus was found, anything else means the scan
+		// did not complete (missing binary/DB, clamd unreachable, ...) --
+		// in neither case can we assert the files are clean. Give the two
+		// cases distinct user-facing messages and log loudly (previously
+		// any non-zero was reported as "a virus," which hid real scan
+		// failures and confused users whose files were actually clean).
 		$scanner = trim(\App::get('config')->get(
 			'virus_scanner',
 			'clamscan -i --no-summary --block-encrypted'
@@ -1348,8 +1350,23 @@ class Repo extends Obj
 
 		if (!$virusChecked)
 		{
-			if ($virus_status !== 1)
+			Filesystem::deleteDirectory($extractPath);
+
+			if ($virus_status === 1)
 			{
+				error_log(sprintf(
+					'%s: virus detected in extracted archive (rejecting upload). '
+					. 'Scanner "%s". Output: %s',
+					__METHOD__,
+					$scanner,
+					implode(' | ', $output)
+				));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS'));
+			}
+			else
+			{
+				// The scan did not run to completion -- make the real reason
+				// loud in the log instead of the misleading "virus detected".
 				error_log(sprintf(
 					'%s: virus scanner "%s" exited with status %d while '
 					. 'scanning extracted archive (rejecting upload). Output: %s',
@@ -1358,9 +1375,9 @@ class Repo extends Obj
 					$virus_status,
 					implode(' | ', $output)
 				));
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_VIRUS_SCAN_FAILED'));
 			}
-			Filesystem::deleteDirectory($extractPath);
-			$this->setError('The antivirus software has rejected your files.');
+
 			return false;
 		}
 
