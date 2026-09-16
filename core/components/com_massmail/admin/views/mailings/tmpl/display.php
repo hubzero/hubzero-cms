@@ -30,13 +30,9 @@ Toolbar::help('mailings');
 Html::behavior('tooltip');
 
 $statuses = \Components\Massmail\Models\Mailing::statuses();
+
+$this->css('display.css', 'com_massmail');
 ?>
-<style>
-/* Give the pagination footer a little breathing room from the list; the
-   template's list-footer uses a negative top margin, so neutralize it here. */
-.mm-list-foot { padding-top:16px; }
-.mm-list-foot .pagination { margin-top:0; }
-</style>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="grid">
@@ -61,7 +57,7 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
+				<th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
 				<th class="priority-5"><?php echo Lang::txt('JGRID_HEADING_ID'); ?></th>
 				<th><?php echo Lang::txt('COM_MASSMAIL_COL_SUBJECT'); ?></th>
 				<th><?php echo Lang::txt('COM_MASSMAIL_COL_STATUS'); ?></th>
@@ -79,19 +75,20 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 		<?php if (!$this->rows->count()) { ?>
 			<tr><td colspan="7"><?php echo Lang::txt('COM_MASSMAIL_NO_MAILINGS'); ?></td></tr>
 		<?php } else { $i = 0; foreach ($this->rows as $row) {
-			$isDraft = ($row->get('status') == \Components\Massmail\Models\Mailing::STATUS_DRAFT);
-			$link = $isDraft
-				? Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->get('id'))
-				: Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=show&id=' . $row->get('id'));
+			// Every row opens the same view/edit page (the editor): it shows the
+			// message, stays editable until the mailing starts sending, and its
+			// status side-panel exposes the admin approve/release/etc. controls
+			// appropriate to the current status.
+			$link = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->get('id'));
 			?>
 			<tr>
 				<td><?php echo Html::grid('id', $i++, $row->get('id')); ?></td>
-				<td class="priority-5"><?php echo $row->get('id'); ?></td>
+				<td class="priority-5"><a href="<?php echo $link; ?>"><?php echo $row->get('id'); ?></a></td>
 				<td>
 					<a href="<?php echo $link; ?>"><?php echo $this->escape(stripslashes($row->get('subject'))); ?></a>
 					<?php if ((int) $row->get('ignore_optout')) { ?><span class="badge badge-warning" title="<?php echo Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT'); ?>">!</span><?php } ?>
 				</td>
-				<td><span class="mm-status mm-status-<?php echo $row->get('status'); ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status'))); ?></span></td>
+				<td><a class="mm-status-link" href="<?php echo $link; ?>"><span class="mm-status mm-status-<?php echo $row->get('status'); ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status'))); ?></span></a></td>
 				<td>
 					<?php
 					$total = (int) $row->get('total_recipients');

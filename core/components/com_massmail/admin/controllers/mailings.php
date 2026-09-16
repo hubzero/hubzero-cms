@@ -105,13 +105,6 @@ class Mailings extends AdminController
 			$row = Mailing::oneOrNew($id);
 		}
 
-		// Only drafts (or brand-new) may be edited.
-		if (!$row->isNew() && $row->get('status') != Mailing::STATUS_DRAFT)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_EDITABLE'));
-			return $this->cancelTask();
-		}
-
 		if ($row->isNew())
 		{
 			$mmp = \Component::params('com_massmail');
@@ -119,11 +112,88 @@ class Mailings extends AdminController
 			$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
 		}
 
+		// This one page both edits and views a mailing. It stays a full editor
+		// right up until the mailing starts sending (draft, pending-approval,
+		// held, scheduled); once in flight or terminal the content is frozen and
+		// the page becomes a read-only view -- but the status side-panel and its
+		// admin controls (approve/release/pause/resume/cancel) are shown either
+		// way. The view gates its toolbar/actions on this flag.
+		$editable = $row->isEditable();
+
+		// Read-only view of a frozen mailing renders the message body that was
+		// sent rather than the live editor.
+		$previewHtml = '';
+		if (!$editable)
+		{
+			$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+			$html   = trim((string) $row->get('body_html'));
+			if ($html === '')
+			{
+				$html = Formatter::buildHtml($row->get('body'), $footer);
+			}
+			$previewHtml = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
+		}
+
+		$failures = array();
+		if (!$row->isNew())
+		{
+			$failures = Recipient::all()
+				->whereEquals('mailing_id', $row->get('id'))
+				->whereEquals('status', Recipient::FAILED)
+				->limit(100)
+				->rows();
+		}
+
 		$this->view
 			->set('row', $row)
+			->set('editable', $editable)
+			->set('previewHtml', $previewHtml)
+			->set('failures', $failures)
 			->set('invalid', (array) $invalid)
 			->setLayout('edit')
 			->display();
+	}
+
+	/**
+	 * Return a launched-but-not-yet-sending mailing (held / pending-approval /
+	 * scheduled) to draft so its content can be edited, then open the editor.
+	 *
+	 * This pulls the mailing out of its queue; it must be re-launched afterward,
+	 * which re-runs the send gates (approval, hold, schedule). Editing therefore
+	 * cannot bypass a hold or an approval -- the same gate conditions are
+	 * re-evaluated at launch.
+	 *
+	 * @return  void
+	 */
+	public function todraftTask()
+	{
+		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+		if (!$row->canReturnToDraft())
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
+			return $this->cancelTask();
+		}
+
+		$row->set('status', Mailing::STATUS_DRAFT);
+
+		if (!$row->save())
+		{
+			Notify::error($row->getError());
+			return $this->cancelTask();
+		}
+
+		Notify::info(Lang::txt('COM_MASSMAIL_RETURNED_TO_DRAFT'));
+
+		// Open the editor on the now-draft mailing.
+		return $this->editTask($row);
 	}
 
 	/**
@@ -159,11 +229,11 @@ class Mailings extends AdminController
 		$row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
 		$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
 
-		// Never let a save move a mailing out of draft.
-		if ($row->isNew() || !$row->get('status'))
-		{
-			$row->set('status', Mailing::STATUS_DRAFT);
-		}
+		// Editing returns a mailing to draft. A pending-approval, held, or
+		// scheduled mailing was approved/queued/scheduled against its previous
+		// content; once that content is edited it must go back through
+		// verify -> launch (and any re-approval) before it can send again.
+		$row->set('status', Mailing::STATUS_DRAFT);
 
 		// Assemble the recipient spec from the picker.
 		$row->set('recipient_spec', json_encode($this->recipientSpec()));
@@ -910,7 +980,14 @@ class Mailings extends AdminController
 	public function stopTask()
 	{
 		$this->transition(
-			array(Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING, Mailing::STATUS_PAUSED, Mailing::STATUS_PENDING_APPROVAL),
+			array(
+				Mailing::STATUS_SENDING,
+				Mailing::STATUS_PREPARING,
+				Mailing::STATUS_PAUSED,
+				Mailing::STATUS_PENDING_APPROVAL,
+				Mailing::STATUS_HELD,
+				Mailing::STATUS_SCHEDULED
+			),
 			Mailing::STATUS_CANCELLED,
 			'COM_MASSMAIL_CANCELLED'
 		);
@@ -999,35 +1076,15 @@ class Mailings extends AdminController
 	}
 
 	/**
-	 * Show a mailing's delivery status/detail
-	 *
-	 * @return  void
-	 */
-	public function showTask()
-	{
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		$failures = Recipient::all()
-			->whereEquals('mailing_id', $row->get('id'))
-			->whereEquals('status', Recipient::FAILED)
-			->limit(100)
-			->rows();
-
-		$this->view
-			->set('row', $row)
-			->set('failures', $failures)
-			->setLayout('show')
-			->display();
-	}
-
-	/**
 	 * Delete mailing(s) and their recipients/attachments
 	 *
 	 * @return  void
 	 */
 	public function deleteTask()
 	{
-		Request::checkToken();
+		// Accept the token from a GET link (per-item Delete on the view page) as
+		// well as the list's POST form.
+		Request::checkToken(['get', 'post']);
 
 		if (!User::authorise('core.delete', $this->_option))
 		{
@@ -1044,9 +1101,20 @@ class Mailings extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$removed = 0;
+		$skipped = 0;
 		foreach ($ids as $id)
 		{
-			if ($this->purgeMailing(Mailing::oneOrFail(intval($id))))
+			$row = Mailing::oneOrFail(intval($id));
+
+			// Never destroy a mailing that has started/finished sending -- its
+			// state and history must be preserved (it can only be cancelled).
+			if (!$row->isDeletable())
+			{
+				$skipped++;
+				continue;
+			}
+
+			if ($this->purgeMailing($row))
 			{
 				$removed++;
 			}
@@ -1055,6 +1123,10 @@ class Mailings extends AdminController
 		if ($removed)
 		{
 			Notify::success(Lang::txt('COM_MASSMAIL_MAILINGS_DELETED', $removed));
+		}
+		if ($skipped)
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_DELETE_SKIPPED_SENT', $skipped));
 		}
 		$this->cancelTask();
 	}

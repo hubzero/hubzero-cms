@@ -18,6 +18,22 @@ $ignore = (int) $this->row->get('ignore_optout');
 $sendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 $atts = $this->row->attachments()->rows();
 
+// Editable right up until the mailing starts sending; after that this page is a
+// read-only view of the frozen message. Either way the status side-panel and
+// its admin controls are shown.
+$editable = isset($this->editable) ? (bool) $this->editable : $this->row->isEditable();
+$status   = $this->row->get('status');
+$Mailing  = '\Components\Massmail\Models\Mailing';
+$token    = Session::getFormToken();
+$base     = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
+
+// Delivery stats (shown in the status panel once a mailing has been launched).
+$total   = (int) $this->row->get('total_recipients');
+$sentN   = (int) $this->row->get('sent_count');
+$failedN = (int) $this->row->get('failed_count');
+$pendingN = max(0, $total - $sentN - $failedN);
+$pct     = $total > 0 ? round(($sentN + $failedN) / $total * 100) : 0;
+
 // Fields flagged by a failed "Send" so they can be highlighted here.
 $invalid    = isset($this->invalid) ? (array) $this->invalid : array();
 $badSubject = in_array('subject', $invalid);
@@ -69,153 +85,52 @@ $chipIcon = array('all' => '★', 'group' => '👥', 'user' => '👤', 'email' =
 // Live audience preview
 $preview = Recipients::previewCount($spec, $ignore ? true : false);
 
+// Recipient state + labels handed to the compose JS via data attributes.
+$rcptState = array(
+	'all'    => !empty($spec['all']),
+	'groups' => array_map(function ($g) { return array('token' => (string) $g['token'], 'label' => $g['label']); }, $gChips),
+	'users'  => array_map(function ($u) { return array('token' => (string) $u['token'], 'label' => $u['label']); }, $uChips),
+	'emails' => array_values($emails),
+);
+$composeLang = array(
+	'everyone' => Lang::txt('COM_MASSMAIL_EVERYONE'),
+	'none'     => Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET'),
+	'edit'     => Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'),
+	'add'      => Lang::txt('COM_MASSMAIL_ADD_RECIPIENTS'),
+	'optout'   => Lang::txt('COM_MASSMAIL_OPTOUT_PILL'),
+	'attach'   => Lang::txt('COM_MASSMAIL_ADD_ATTACHMENT'),
+);
+
 // Small inline icons for the action buttons (decorative; the text carries the meaning).
 $icSend  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>';
 $icSave  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 2H9v3h2V2Z"/><path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0ZM1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5Zm3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4v4.5ZM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5V15Z"/></svg>';
 $icTrash = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/></svg>';
+// Status-control icons.
+$icCheck = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M12.736 3.97a.733.733 0 0 1 1.047 0 .746.746 0 0 1 0 1.052l-7.42 7.482a.733.733 0 0 1-1.047 0L2.217 9.386a.746.746 0 1 1 1.048-1.052l2.576 2.599 6.895-6.963Z"/></svg>';
+$icPause = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M5.5 3.5A1.5 1.5 0 0 0 4 5v6a1.5 1.5 0 0 0 3 0V5a1.5 1.5 0 0 0-1.5-1.5Zm5 0A1.5 1.5 0 0 0 9 5v6a1.5 1.5 0 0 0 3 0V5a1.5 1.5 0 0 0-1.5-1.5Z"/></svg>';
+$icPlay  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M4.5 3.5v9a.5.5 0 0 0 .765.424l7-4.5a.5.5 0 0 0 0-.848l-7-4.5A.5.5 0 0 0 4.5 3.5Z"/></svg>';
+$icX     = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm2.828 8.243a.75.75 0 0 1-1.06 1.06L8 8.536 6.232 10.303a.75.75 0 1 1-1.06-1.06L6.94 7.475 5.172 5.707a.75.75 0 0 1 1.06-1.06L8 6.414l1.768-1.767a.75.75 0 0 1 1.06 1.06L9.06 7.475l1.768 1.768Z"/></svg>';
+$icEdit  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10ZM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5Zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5Zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325Z"/></svg>';
 
-Toolbar::title(Lang::txt($isNew ? 'COM_MASSMAIL_NEW_MAILING' : 'COM_MASSMAIL_EDIT_MAILING'), 'massmail');
-Toolbar::apply();
-Toolbar::save();
-if (!$isNew && $canDo->get('core.send'))
+Toolbar::title(Lang::txt($isNew ? 'COM_MASSMAIL_NEW_MAILING' : ($editable ? 'COM_MASSMAIL_EDIT_MAILING' : 'COM_MASSMAIL_MAILING_STATUS')), 'massmail');
+if ($editable)
 {
-	Toolbar::custom('sendtest', 'preview', 'preview', Lang::txt('COM_MASSMAIL_SEND_TEST'), false);
-	// "Send" goes through the review/verification page, not straight to dispatch.
-	Toolbar::custom('review', 'upload', 'upload', Lang::txt('COM_MASSMAIL_LAUNCH'), false);
+	Toolbar::apply();
+	Toolbar::save();
+	if (!$isNew && $canDo->get('core.send'))
+	{
+		Toolbar::custom('sendtest', 'preview', 'preview', Lang::txt('COM_MASSMAIL_SEND_TEST'), false);
+		// "Send" goes through the review/verification page, not straight to dispatch.
+		Toolbar::custom('review', 'upload', 'upload', Lang::txt('COM_MASSMAIL_LAUNCH'), false);
+	}
 }
 Toolbar::cancel();
+
+$this->css('edit.css', 'com_massmail');
+$this->js('edit.js', 'com_massmail');
 ?>
-<style>
-/* Compose page: bounded width, centered, with gutters. */
-.mm-compose { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
-.mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
-@media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
-.mm-compose input::placeholder, .mm-compose textarea::placeholder { color:#b7c0cb; opacity:1; }
-.mm-compose .hint { color:#a7b0bd; }
-
-.mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; }
-
-/* Webmail-style message card. */
-.mm-mail { overflow:visible; }
-.mm-mail-headers { padding:2px 18px; }
-.mm-mail-row { display:flex; align-items:flex-start; gap:12px; border-bottom:1px solid #edf2f7; padding:10px 0; }
-.mm-mail-label { flex:0 0 68px; color:#718096; font-size:13px; padding-top:3px; }
-.mm-mail-value { color:#1a202c; font-size:14px; font-weight:600; }
-.mm-mail-row input { flex:1; border:1px solid #e2e8f0; background:#f8fafc; box-shadow:none; padding:5px 9px; margin:0; font-size:14px; color:#1a202c; min-width:0; border-radius:6px; }
-.mm-mail-row input:focus { outline:none; box-shadow:none; border-color:#90cdf4; background:#fff; }
-/* From is read-only info -- render as plain text, not an editable box. */
-.mm-mail-row input.mm-from-info { background:transparent; border-color:transparent; color:#2d3748; font-weight:600; cursor:default; padding-left:0; }
-.mm-mail-row input.mm-from-info:focus { background:transparent; border-color:transparent; }
-
-/* Fields flagged by a failed Send. */
-input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
-.mm-to-display.mm-invalid { border-color:#e53e3e; background:#fff5f5; }
-/* Beat #adminForm .ck.ck-editor__editable so the red frame actually shows. */
-#adminForm .mm-mail-body.mm-invalid .ck.ck-toolbar,
-#adminForm .mm-mail-body.mm-invalid .ck.ck-editor__editable { border-color:#e53e3e; }
-.mm-required-note { color:#c53030; font-size:12px; font-weight:600; }
-.mm-mail-subject { font-weight:600; }
-.mm-mail-from { display:flex; gap:10px; flex:1; min-width:0; }
-.mm-mail-from input.mm-from-name { flex:0 0 38%; }
-.mm-mail-body { padding:14px 18px 18px; }
-.mm-header-hint { margin:0; padding:0 18px 14px; color:#a0aec0; font-size:12px; }
-
-/* To: shaded like the other header inputs so it reads as an editable field. */
-.mm-to-display { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; min-width:0; cursor:pointer; border:1px solid #e2e8f0; background:#f8fafc; border-radius:6px; padding:4px 9px; min-height:34px; box-sizing:border-box; }
-.mm-to-display:hover { border-color:#cbd5e0; }
-.mm-chip-optout { background:#fed7d7; border-color:#fc8181; }
-.mm-to-chips { display:flex; flex-wrap:wrap; gap:6px; list-style:none; margin:0; padding:0; }
-.mm-to-edit { background:none; border:1px dashed #cbd5e0; border-radius:14px; color:#3182ce; font-size:12px; padding:3px 12px; cursor:pointer; }
-.mm-to-edit:hover { border-color:#3182ce; background:#ebf4ff; }
-.mm-to-none { color:#a0aec0; font-size:13px; }
-.mm-count { color:#718096; font-size:12px; padding:4px 0 2px 80px; }
-.mm-count strong { color:#2d3748; }
-
-/* Recipient builder modal. */
-/* Above the admin's notification/tooltip layer (z-index up to ~1000001) so an
-   error banner never floats over the open builder. */
-.mm-modal { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; z-index:2000000; align-items:flex-start; justify-content:center; padding:40px 20px; overflow:auto; }
-.mm-modal.open { display:flex; }
-.mm-modal-inner { background:#fff; border-radius:10px; padding:22px 24px; width:100%; max-width:520px; position:relative; box-shadow:0 12px 40px rgba(0,0,0,.3); }
-.mm-modal-close { position:absolute; top:8px; right:14px; font-size:26px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
-.mm-rcpt-inner h3 { margin:0 0 4px; font-size:18px; }
-.mm-modal-count { margin:0 0 16px; color:#718096; }
-.mm-rcpt-section { padding:14px 0; border-top:1px solid #edf2f7; }
-.mm-rcpt-section:first-of-type { border-top:none; padding-top:2px; }
-.mm-rcpt-section h5 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
-.mm-rcpt-section textarea { width:100%; box-sizing:border-box; }
-.mm-rcpt-section .mm-chips { margin:0; }
-.mm-rcpt-section .mm-chips:not(:empty) { margin:0 0 10px; }
-.mm-rcpt-section.is-disabled { opacity:.45; pointer-events:none; }
-.mm-modal-actions { margin-top:18px; text-align:right; }
-
-/* Chips (To: and attachments). */
-.mm-chip { display:inline-flex; align-items:center; gap:6px; background:#edf2f7; border:1px solid #e2e8f0; border-radius:14px; padding:2px 6px 2px 9px; font-size:12px; color:#2d3748; }
-.mm-chip .mm-chip-ic { font-size:11px; line-height:1; }
-.mm-chip-all { background:#fef3c7; border-color:#fcd34d; }
-.mm-chip-group { background:#e0e7ff; border-color:#c7d2fe; }
-.mm-chip-user { background:#dcfce7; border-color:#bbf7d0; }
-.mm-chip .mm-kb { color:#a0aec0; }
-.mm-chip-x { background:none; border:none; color:#718096; cursor:pointer; font-size:15px; line-height:1; padding:0 2px; text-decoration:none; }
-.mm-chip-x:hover { color:#c53030; }
-
-/* Autocomplete dropdown. */
-.mm-ac-wrap { position:relative; }
-.mm-ac-list { position:absolute; z-index:60; left:0; right:0; top:100%; margin:2px 0 0; padding:0; list-style:none; background:#fff; border:1px solid #cbd5e0; border-radius:6px; box-shadow:0 4px 14px rgba(0,0,0,.14); max-height:240px; overflow:auto; min-width:240px; }
-.mm-ac-list li { display:flex; align-items:baseline; gap:6px; padding:6px 10px; cursor:pointer; font-size:13px; border-bottom:1px solid #f1f5f9; }
-.mm-ac-list li:last-child { border-bottom:none; }
-.mm-ac-list li:hover, .mm-ac-list li.active { background:#ebf4ff; }
-.mm-ac-ic { font-size:11px; }
-.mm-ac-cn { font-weight:600; color:#2d3748; }
-.mm-ac-title { color:#718096; font-size:12px; }
-
-/* Framed editor. */
-#adminForm .ck.ck-toolbar { border-radius:5px 5px 0 0; border-color:#ccc; background:#f7f8fa; }
-#adminForm .ck.ck-editor__editable { border-color:#ccc; border-radius:0 0 5px 5px; height:auto; min-height:300px; resize:vertical; overflow-y:auto; }
-#adminForm .ck.ck-editor__editable.ck-focused { border-color:#4299e1; box-shadow:none; }
-.mm-attach-btn { cursor:pointer; }
-.mm-attach-btn svg { pointer-events:none; }
-.mm-chips { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
-.mm-chips:empty { margin:0; }
-
-/* Sidebar cards. */
-.mm-side .mm-card { padding:16px; margin-bottom:16px; }
-.mm-side h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
-.mm-optout-label { display:block; margin-bottom:14px; }
-.mm-optout-note { margin-top:0; }
-.mm-compose .input-datetime { display:block; }
-.mm-compose .calendar-field { width:100%; box-sizing:border-box; }
-
-/* Delivery-mode toggle (as-soon-as-possible vs scheduled). */
-.mm-delivery-toggle { display:flex; flex-direction:column; gap:8px; }
-.mm-dopt { display:flex; align-items:flex-start; gap:10px; margin:0; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer; transition:border-color .12s ease, background .12s ease; }
-.mm-dopt:hover { border-color:#cbd5e0; }
-.mm-dopt.is-active { border-color:#4299e1; background:#ebf4ff; }
-.mm-dopt input { margin:2px 0 0; flex:0 0 auto; }
-.mm-dopt-body { display:flex; flex-direction:column; line-height:1.3; }
-.mm-dopt-title { font-weight:600; color:#2d3748; font-size:13px; }
-.mm-dopt-sub { color:#a0aec0; font-size:12px; }
-.mm-schedule-field { margin-top:10px; }
-.mm-schedule-field[hidden] { display:none; }
-
-/* Bottom action bar: send on the left, exit options on the right. */
-.mm-compose-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
-.mm-compose-actions .mm-spacer { flex:1; }
-.mm-compose-actions .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
-.mm-compose-actions .btn svg { flex:0 0 auto; }
-.mm-btn-send { background:#3182ce; border:1px solid #2c73b8; color:#fff; }
-.mm-btn-send:hover, .mm-btn-send:focus { background:#2c6ca8; border-color:#2c6ca8; color:#fff; }
-.mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
-.mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
-.mm-btn-danger { background:#fff5f5; border:1px solid #fc8181; color:#c53030; }
-.mm-btn-danger:hover, .mm-btn-danger:focus { background:#fed7d7; border-color:#e53e3e; color:#9b2c2c; }
-</style>
 
 <div class="mm-compose">
-
-	<?php if (!$sendingOn) { ?>
-	<p class="warning"><?php echo Lang::txt('COM_MASSMAIL_SENDING_OFF_WARNING'); ?></p>
-	<?php } ?>
 
 	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
 		<div class="mm-grid">
@@ -225,12 +140,24 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_TO'); ?></span>
 							<div class="mm-to-display<?php echo $badRcpt ? ' mm-invalid' : ''; ?>" id="mm-to-display">
-								<ul class="mm-to-chips" id="mm-to-summary"></ul>
-								<button type="button" class="mm-to-edit" id="mm-to-edit"><?php echo Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'); ?></button>
-								<?php if ($badRcpt) { ?><span class="mm-required-note"><?php echo Lang::txt('COM_MASSMAIL_REQUIRED'); ?></span><?php } ?>
+								<?php if ($editable) { ?>
+									<?php // Filled in by the compose JS from the recipient config. ?>
+									<ul class="mm-to-chips" id="mm-to-summary"></ul>
+									<button type="button" class="mm-to-edit" id="mm-to-edit"><?php echo Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS'); ?></button>
+									<?php if ($badRcpt) { ?><span class="mm-required-note"><?php echo Lang::txt('COM_MASSMAIL_REQUIRED'); ?></span><?php } ?>
+								<?php } else { ?>
+									<?php // Read-only view: render the saved audience as static chips. ?>
+									<ul class="mm-to-chips">
+										<?php foreach ($toChips as $c) { ?>
+											<li class="mm-to-chip"><span class="mm-chip-ic" aria-hidden="true"><?php echo $chipIcon[$c['kind']]; ?></span> <?php echo $this->escape($c['label']); ?></li>
+										<?php } ?>
+									</ul>
+								<?php } ?>
 							</div>
 						</div>
+						<?php if ($editable) { ?>
 						<div class="mm-count"><span class="mm-preview"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></span></div>
+						<?php } ?>
 
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
@@ -238,7 +165,7 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 						</div>
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span>
-							<?php if ($isSuper) { ?>
+							<?php if ($isSuper && $editable) { ?>
 								<input type="text" name="fields[reply_to]" id="field-reply-to" value="<?php echo $this->escape($replyTo); ?>" />
 							<?php } else { ?>
 								<span class="mm-mail-value"><?php echo $replyTo ? $this->escape($replyTo) : '&mdash;'; ?></span>
@@ -246,10 +173,15 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 						</div>
 						<div class="mm-mail-row">
 							<span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span>
-							<input class="mm-mail-subject<?php echo $badSubject ? ' mm-invalid' : ''; ?>" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
+							<?php if ($editable) { ?>
+								<input class="mm-mail-subject<?php echo $badSubject ? ' mm-invalid' : ''; ?>" type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->row->get('subject')); ?>" />
+							<?php } else { ?>
+								<span class="mm-mail-value mm-mail-subject-ro"><?php echo $this->escape(stripslashes($this->row->get('subject'))); ?></span>
+							<?php } ?>
 						</div>
 					</div>
 
+					<?php if ($editable) { ?>
 					<div class="mm-mail-body<?php echo $badBody ? ' mm-invalid' : ''; ?>">
 						<?php
 						$editor = \Hubzero\Html\Editor::getInstance('ckeditor5');
@@ -277,21 +209,149 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 					</div>
 
 					<p class="mm-header-hint"><?php echo Lang::txt($isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT'); ?></p>
+					<?php } else { ?>
+					<div class="mm-mail-body-ro">
+						<iframe class="mm-message-body" sandbox="" title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_MESSAGE_HEADING')); ?>" srcdoc="<?php echo $this->escape($this->previewHtml); ?>"></iframe>
+						<?php if (count($atts)) { ?>
+						<ul class="mm-chips">
+							<?php foreach ($atts as $att) { ?>
+								<li class="mm-chip"><span class="mm-clip">&#128206;</span> <?php echo $this->escape($att->get('filename')); ?> <span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span></li>
+							<?php } ?>
+						</ul>
+						<?php } ?>
+					</div>
+					<?php } ?>
 				</div>
 
+				<?php if ($editable) { ?>
 				<div class="mm-compose-actions">
 					<?php if ($canDo->get('core.send')) { ?>
-						<button type="button" class="btn mm-btn-send" onclick="Joomla.submitbutton('review');"><?php echo $icSend . Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
+						<button type="button" class="btn mm-btn-send mm-submit" data-task="review"><?php echo $icSend . Lang::txt('COM_MASSMAIL_LAUNCH'); ?></button>
 					<?php } ?>
 					<span class="mm-spacer"></span>
-					<button type="button" class="btn mm-btn-neutral" onclick="Joomla.submitbutton('save');"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
+					<button type="button" class="btn mm-btn-neutral mm-submit" data-task="save"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
 					<?php if (!$isNew) { ?>
-						<a class="btn mm-btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+						<a class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
 					<?php } ?>
 				</div>
+				<?php } ?>
 			</div>
 
 			<div class="mm-side">
+				<?php if (!$isNew) { ?>
+				<div class="mm-card mm-status-card">
+					<h4><?php echo Lang::txt('COM_MASSMAIL_DETAILS'); ?></h4>
+
+					<?php
+					// Meta block, using the admin template's shaded table.meta styling
+					// (as com_content etc. do) for a consistent look. Rows appear only
+					// when their value exists, so it grows over the mailing's lifecycle.
+					$creatorName = $this->row->creator ? $this->row->creator->get('name') : '';
+					$fmt = 'M j, Y g:i a';
+					?>
+					<table class="meta mm-meta">
+						<tbody>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FIELD_ID'); ?></th>
+								<td><?php echo (int) $this->row->get('id'); ?></td>
+							</tr>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
+								<td><span class="mm-status mm-status-<?php echo $status; ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)); ?></span></td>
+							</tr>
+							<?php if ($this->row->get('created') && $this->row->get('created') != '0000-00-00 00:00:00') { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED'); ?></th>
+									<td><?php echo Date::of($this->row->get('created'))->toLocal($fmt); ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($creatorName) { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED_BY'); ?></th>
+									<td><?php echo $this->escape($creatorName); ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($this->row->get('modified') && $this->row->get('modified') != '0000-00-00 00:00:00') { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
+									<td><?php echo Date::of($this->row->get('modified'))->toLocal($fmt); if ($this->row->get('modified_by')) { echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($this->row->get('modified_by'))->get('name'))) . '</span>'; } ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($status == constant($Mailing . '::STATUS_SCHEDULED') && $this->row->get('scheduled_at')) { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_SCHEDULED'); ?></th>
+									<td><?php echo Date::of($this->row->get('scheduled_at'))->toLocal($fmt . ' T'); ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($this->row->get('approved_by')) { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_APPROVED_BY'); ?></th>
+									<td><?php echo $this->escape(User::getInstance($this->row->get('approved_by'))->get('name')); if ($this->row->get('approved_on')) { echo '<br /><span class="mm-meta-sub">' . Date::of($this->row->get('approved_on'))->toLocal($fmt) . '</span>'; } ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($this->row->get('started_on') && $this->row->get('started_on') != '0000-00-00 00:00:00') { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_STARTED'); ?></th>
+									<td><?php echo Date::of($this->row->get('started_on'))->toLocal($fmt); ?></td>
+								</tr>
+							<?php } ?>
+							<?php if ($this->row->get('completed_on') && $this->row->get('completed_on') != '0000-00-00 00:00:00') { ?>
+								<tr>
+									<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_COMPLETED'); ?></th>
+									<td><?php echo Date::of($this->row->get('completed_on'))->toLocal($fmt); ?></td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+
+					<?php // Admin status controls, shown as appropriate to the current state. ?>
+					<div class="mm-status-actions">
+						<?php // Pull a held/pending/scheduled mailing back to draft to re-edit.
+						      // It must be re-launched after, which re-runs the send gates. ?>
+						<?php if ($this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))) { ?>
+							<a class="btn mm-edit-draft" href="<?php echo Route::url($base . '&task=todraft&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT'); ?></a>
+						<?php } ?>
+						<?php if ($status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')) { ?>
+							<a class="btn btn-success" href="<?php echo Route::url($base . '&task=approve&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icCheck . Lang::txt('COM_MASSMAIL_APPROVE'); ?></a>
+						<?php } ?>
+						<?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
+							<a class="btn btn-success" href="<?php echo Route::url($base . '&task=release&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icSend . Lang::txt('COM_MASSMAIL_RELEASE'); ?></a>
+						<?php } ?>
+						<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'))) && $canDo->get('core.edit.state')) { ?>
+							<a class="btn" href="<?php echo Route::url($base . '&task=pause&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icPause . Lang::txt('COM_MASSMAIL_PAUSE'); ?></a>
+						<?php } ?>
+						<?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
+							<a class="btn" href="<?php echo Route::url($base . '&task=resume&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icPlay . Lang::txt('COM_MASSMAIL_RESUME'); ?></a>
+						<?php } ?>
+						<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED'))) && $canDo->get('core.edit.state')) { ?>
+							<a class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')); ?>" href="<?php echo Route::url($base . '&task=stop&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></a>
+						<?php } ?>
+						<?php // Permanent delete -- only for mailings that never started sending
+						      // (a sent/in-flight mailing keeps its record and can only be
+						      // cancelled). On an editable draft this is omitted: the compose
+						      // bar's "Discard" does the same thing (both purge the mailing),
+						      // so we only surface Delete on the read-only deletable states
+						      // (held / pending / scheduled) which have no Discard button. ?>
+						<?php if (!$editable && $this->row->isDeletable() && $canDo->get('core.delete')) { ?>
+							<a class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')); ?>" href="<?php echo Route::url($base . '&task=delete&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING'); ?></a>
+						<?php } ?>
+					</div>
+
+					<?php if ($total > 0 || $this->row->get('started_on')) { ?>
+						<div class="mm-progress-bar"><div class="mm-progress-fill" data-pct="<?php echo $pct; ?>"></div></div>
+						<table class="mm-status-stats">
+							<tbody>
+								<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_TOTAL_RECIPIENTS'); ?></th><td><?php echo number_format($total); ?></td></tr>
+								<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_SENT'); ?></th><td><?php echo number_format($sentN); ?></td></tr>
+								<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_PENDING'); ?></th><td><?php echo number_format($pendingN); ?></td></tr>
+								<tr><th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FAILED'); ?></th><td><?php echo number_format($failedN); ?></td></tr>
+							</tbody>
+						</table>
+					<?php } ?>
+				</div>
+				<?php } ?>
+
+				<?php if ($editable) { ?>
 				<div class="mm-card">
 					<h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
 					<div class="mm-delivery-toggle">
@@ -313,7 +373,20 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 					<div class="mm-schedule-field"<?php echo $isScheduled ? '' : ' hidden'; ?>>
 						<?php echo Html::input('calendar', 'scheduled_at', $scheduledLocal, array('id' => 'field-schedule', 'format' => 'Y-m-d H:i:s')); ?>
 					</div>
+
 				</div>
+				<?php } ?>
+
+				<?php // Mass mailing is off: a boxed notice (matching the review page's
+				      // disposition style) shown for any not-yet-sent mailing -- both the
+				      // editable draft and the read-only held/pending/scheduled views -- so
+				      // the "off / will be held / needs release" state is always clear. ?>
+				<?php if (!$sendingOn && ($editable || $this->row->canReturnToDraft())) { ?>
+					<div class="mm-disp mm-disp-hold">
+						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
+						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_HOLD'); ?></span>
+					</div>
+				<?php } ?>
 
 			</div>
 		</div>
@@ -330,6 +403,9 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 		<?php echo Html::input('token'); ?>
 	</form>
 
+	<div id="mm-compose-config" hidden data-lang="<?php echo htmlspecialchars(json_encode($composeLang), ENT_QUOTES, 'UTF-8'); ?>" data-state="<?php echo htmlspecialchars(json_encode($rcptState), ENT_QUOTES, 'UTF-8'); ?>"></div>
+
+	<?php if ($editable) { ?>
 	<div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_RECIPIENTS')); ?>">
 		<div class="mm-modal-inner mm-rcpt-inner">
 			<button type="button" class="mm-modal-close" id="mm-rcpt-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
@@ -372,335 +448,6 @@ input.mm-invalid, .mm-mail-row input.mm-invalid { border-color:#e53e3e; backgrou
 			</div>
 		</div>
 	</div>
+	<?php } ?>
 </div>
-<?php $rcptState = array(
-	'all'    => !empty($spec['all']),
-	'groups' => array_map(function ($g) { return array('token' => (string) $g['token'], 'label' => $g['label']); }, $gChips),
-	'users'  => array_map(function ($u) { return array('token' => (string) $u['token'], 'label' => $u['label']); }, $uChips),
-	'emails' => array_values($emails),
-); ?>
 
-<script type="text/javascript">
-(function () {
-	var form = document.getElementById('adminForm');
-
-	// --- Validation feedback: dismiss the error banner + clear per-field marks
-	// A failed Send flags the missing fields; each flag clears as soon as that
-	// field is actually addressed (rather than lingering or clearing wholesale).
-	function mmDismissError() {
-		if (window.Hubzero && typeof Hubzero.removeMessages === 'function') { Hubzero.removeMessages(); }
-		var box = document.getElementById('system-message-container');
-		if (box) { box.innerHTML = ''; }
-		// Kameleon shows admin messages as a floating "growl" notice separate
-		// from that container -- remove those too, or the error stays visible.
-		var notices = document.querySelectorAll('.growl-notice');
-		for (var n = 0; n < notices.length; n++) {
-			if (notices[n].parentNode) { notices[n].parentNode.removeChild(notices[n]); }
-		}
-	}
-	function mmClearRcptMark() {
-		var d = document.getElementById('mm-to-display');
-		if (!d) { return; }
-		d.classList.remove('mm-invalid');
-		var note = d.querySelector('.mm-required-note');
-		if (note && note.parentNode) { note.parentNode.removeChild(note); }
-	}
-	(function () {
-		function onEdit(e) {
-			var t = e.target;
-			if (!t) { return; }
-			var tag = t.tagName;
-			if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable) { mmDismissError(); }
-		}
-		document.addEventListener('focusin', onEdit, true);
-		document.addEventListener('input', onEdit, true);
-
-		// Clear the subject/body highlight the moment there's real content.
-		var subj = document.getElementById('field-subject');
-		if (subj) { subj.addEventListener('input', function () { if (subj.value.trim() !== '') { subj.classList.remove('mm-invalid'); } }); }
-		var mbody = document.querySelector('.mm-mail-body');
-		if (mbody) { mbody.addEventListener('input', function () { mbody.classList.remove('mm-invalid'); }, true); }
-		// The recipient highlight is cleared by the live count (below), which
-		// already accounts for groups, individuals, raw emails and opt-out override.
-	})();
-
-	// --- Live audience prediction (reads the hidden recipient fields) --------
-	var outs  = document.querySelectorAll('.mm-preview strong');
-	var timer = null;
-	function collect() {
-		var fd = new FormData();
-		if (document.getElementById('field-all').value === '1') { fd.append('rcpt_all', '1'); }
-		fd.append('groups[]', document.getElementById('field-groups').value);
-		fd.append('users', document.getElementById('field-users').value);
-		fd.append('emails', document.getElementById('field-emails').value);
-		var ig = document.querySelector('input[name="ignore_optout"]');
-		if (ig && ig.checked) { fd.append('ignore_optout', '1'); }
-		return fd;
-	}
-	function update() {
-		if (!form || !outs.length) { return; }
-		fetch(form.getAttribute('action') + '&task=preview', {
-			method: 'POST', body: collect(), credentials: 'same-origin',
-			headers: { 'X-Requested-With': 'XMLHttpRequest' }
-		})
-		.then(function (r) { return r.json(); })
-		.then(function (d) {
-			if (d && typeof d.text === 'string') { for (var oi = 0; oi < outs.length; oi++) { outs[oi].textContent = d.text; } }
-			// Once the selection actually reaches someone (respecting opt-out
-			// override), drop any "recipients required" highlight.
-			if (d && d.count > 0) { mmClearRcptMark(); }
-		})
-		.catch(function () {});
-	}
-	function schedule() { clearTimeout(timer); timer = setTimeout(update, 300); }
-
-	// --- Recipient builder modal ---------------------------------------------
-	(function () {
-		var modal   = document.getElementById('mm-rcpt-modal');
-		var summary = document.getElementById('mm-to-summary');
-		if (!modal || !summary) { return; }
-		var ICON = { all: '★', group: '👥', user: '👤', email: '✉', optout: '⚠' };
-		var EVERYONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EVERYONE')); ?>;
-		var NONE = <?php echo json_encode(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS_YET')); ?>;
-		var EDIT_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS')); ?>;
-		var ADD_LABEL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_ADD_RECIPIENTS')); ?>;
-		var OPTOUT_PILL = <?php echo json_encode(Lang::txt('COM_MASSMAIL_OPTOUT_PILL')); ?>;
-		var state = <?php echo json_encode($rcptState); ?>;
-		var ignEl = document.getElementById('field-optout');
-
-		var fAll = document.getElementById('field-all');
-		var fGroups = document.getElementById('field-groups');
-		var fUsers = document.getElementById('field-users');
-		var fEmails = document.getElementById('field-emails');
-
-		function serialize() {
-			fAll.value = state.all ? '1' : '0';
-			fGroups.value = state.groups.map(function (g) { return g.token; }).join(',');
-			fUsers.value  = state.users.map(function (u) { return u.token; }).join(',');
-			fEmails.value = state.emails.join(',');
-			schedule();
-		}
-		function makeChip(kind, label, onRemove) {
-			var li = document.createElement('li');
-			li.className = 'mm-chip mm-chip-' + kind;
-			var ic = document.createElement('span'); ic.className = 'mm-chip-ic'; ic.textContent = ICON[kind];
-			var s = document.createElement('span'); s.textContent = label;
-			li.appendChild(ic); li.appendChild(s);
-			if (onRemove) {
-				var x = document.createElement('button'); x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
-				x.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); onRemove(); });
-				li.appendChild(x);
-			}
-			return li;
-		}
-		function renderSummary() {
-			summary.innerHTML = '';
-			var any = false;
-			if (state.all) { summary.appendChild(makeChip('all', EVERYONE, function () { state.all = false; changed(); })); any = true; }
-			state.groups.forEach(function (g, i) { summary.appendChild(makeChip('group', g.label, function () { state.groups.splice(i, 1); changed(); })); any = true; });
-			state.users.forEach(function (u, i) { summary.appendChild(makeChip('user', u.label, function () { state.users.splice(i, 1); changed(); })); any = true; });
-			state.emails.forEach(function (e, i) { summary.appendChild(makeChip('email', e, function () { state.emails.splice(i, 1); changed(); })); any = true; });
-			if (ignEl && ignEl.checked) {
-				summary.appendChild(makeChip('optout', OPTOUT_PILL, function () { ignEl.checked = false; ignEl.dispatchEvent(new Event('change')); }));
-			}
-			if (!any) { var none = document.createElement('li'); none.className = 'mm-to-none'; none.textContent = NONE; summary.appendChild(none); }
-			var eb = document.getElementById('mm-to-edit'); if (eb) { eb.textContent = any ? EDIT_LABEL : ADD_LABEL; }
-		}
-
-		var mbAll = document.getElementById('mb-all');
-		var mbGroupChips = document.getElementById('mb-group-chips');
-		var mbUserChips = document.getElementById('mb-user-chips');
-		var mbEmails = document.getElementById('mb-emails');
-
-		function setSectionDisabled(searchId, off) {
-			var s = document.getElementById(searchId);
-			if (!s) { return; }
-			var sec = s.closest('.mm-rcpt-section');
-			if (sec) { sec.classList.toggle('is-disabled', off); }
-			s.disabled = off;
-		}
-		function renderModal() {
-			mbAll.checked = !!state.all;
-			// Everyone supersedes group/individual targeting, so lock those sections.
-			setSectionDisabled('mb-group-search', !!state.all);
-			setSectionDisabled('mb-user-search', !!state.all);
-			mbGroupChips.innerHTML = '';
-			state.groups.forEach(function (g, i) { mbGroupChips.appendChild(makeChip('group', g.label, function () { state.groups.splice(i, 1); changed(); })); });
-			mbUserChips.innerHTML = '';
-			state.users.forEach(function (u, i) { mbUserChips.appendChild(makeChip('user', u.label, function () { state.users.splice(i, 1); changed(); })); });
-			if (document.activeElement !== mbEmails) { mbEmails.value = state.emails.join('\n'); }
-		}
-		function changed() { serialize(); renderSummary(); renderModal(); }
-
-		function sectionPicker(searchId, acId, task, listKey, tokenIsId) {
-			var search = document.getElementById(searchId);
-			var ac = document.getElementById(acId);
-			if (!search || !ac) { return; }
-			var t = null, items = [], active = -1;
-			function hide() { ac.hidden = true; ac.innerHTML = ''; items = []; active = -1; }
-			function has(token) { return state[listKey].some(function (e) { return e.token === ('' + token); }); }
-			function render(list) {
-				items = list; active = -1;
-				if (!list.length) { hide(); return; }
-				ac.innerHTML = '';
-				list.forEach(function (it) {
-					var li = document.createElement('li');
-					var nm = document.createElement('span'); nm.className = 'mm-ac-cn'; nm.textContent = (it.title || it.cn);
-					var subv = it.cn || '';
-					var sub = document.createElement('span'); sub.className = 'mm-ac-title'; sub.textContent = subv ? (' — ' + subv) : '';
-					li.appendChild(nm); li.appendChild(sub);
-					li.addEventListener('mousedown', function (e) { e.preventDefault(); addOne(it); });
-					ac.appendChild(li);
-				});
-				ac.hidden = false;
-			}
-			function addOne(it) {
-				var token = '' + (tokenIsId ? it.id : it.cn);
-				if (!has(token)) { state[listKey].push({ token: token, label: (it.title || it.cn) }); changed(); }
-				search.value = ''; hide(); search.focus();
-			}
-			function lookup() {
-				var q = search.value.trim();
-				if (q.length < 2) { hide(); return; }
-				fetch(form.getAttribute('action') + '&task=' + task + '&q=' + encodeURIComponent(q), { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-					.then(function (r) { return r.json(); }).then(render).catch(hide);
-			}
-			search.addEventListener('focus', function () { search.removeAttribute('readonly'); });
-			search.addEventListener('input', function () { clearTimeout(t); t = setTimeout(lookup, 180); });
-			search.addEventListener('keydown', function (e) {
-				if (ac.hidden) { return; }
-				var lis = ac.querySelectorAll('li');
-				if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, lis.length - 1); }
-				else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); }
-				else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); addOne(items[active]); return; }
-				else if (e.key === 'Escape') { hide(); return; }
-				else { return; }
-				for (var i = 0; i < lis.length; i++) { lis[i].classList.toggle('active', i === active); }
-			});
-			search.addEventListener('blur', function () { setTimeout(hide, 150); });
-		}
-		sectionPicker('mb-group-search', 'mb-group-ac', 'grouplookup', 'groups', false);
-		sectionPicker('mb-user-search', 'mb-user-ac', 'userlookup', 'users', true);
-
-		mbAll.addEventListener('change', function () { state.all = mbAll.checked; changed(); });
-		mbEmails.addEventListener('input', function () {
-			var arr = [];
-			mbEmails.value.split(/[\s,;]+/).forEach(function (e) { e = e.trim(); if (e !== '') { arr.push(e); } });
-			state.emails = arr; serialize(); renderSummary();
-		});
-
-		var editBtn = document.getElementById('mm-to-edit');
-		var closeBtn = document.getElementById('mm-rcpt-close');
-		var doneBtn = document.getElementById('mb-done');
-		var display = document.getElementById('mm-to-display');
-		function openModal() { renderModal(); modal.classList.add('open'); }
-		function closeModal() { modal.classList.remove('open'); }
-		if (editBtn) { editBtn.addEventListener('click', function (e) { e.stopPropagation(); openModal(); }); }
-		if (display) { display.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.mm-chip-x')) { return; } openModal(); }); }
-		if (ignEl) { ignEl.addEventListener('change', renderSummary); }
-		if (closeBtn) { closeBtn.addEventListener('click', closeModal); }
-		if (doneBtn) { doneBtn.addEventListener('click', closeModal); }
-		modal.addEventListener('click', function (e) { if (e.target === modal) { closeModal(); } });
-		document.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.keyCode === 27) && modal.classList.contains('open')) { closeModal(); } });
-
-		serialize(); renderSummary();
-	})();
-
-	// --- Opt-out note: informational until the override is actually enabled ---
-	var ign = document.querySelector('input[name="ignore_optout"]');
-	if (ign) { ign.addEventListener('change', schedule); }
-	var note = document.getElementById('mm-optout-note');
-	if (ign && note) {
-		function syncNote() {
-			note.classList.toggle('warning', ign.checked);
-			note.classList.toggle('info', !ign.checked);
-		}
-		ign.addEventListener('change', syncNote);
-		syncNote();
-	}
-
-	// --- Delivery mode: as-soon-as-possible vs scheduled ---------------------
-	var dModes = document.querySelectorAll('input[name="delivery_mode"]');
-	var schedWrap = document.querySelector('.mm-schedule-field');
-	var schedInput = document.getElementById('field-schedule');
-	if (dModes.length && schedWrap) {
-		function reflectDelivery() {
-			var m = document.querySelector('input[name="delivery_mode"]:checked');
-			var isSched = !!m && m.value === 'schedule';
-			schedWrap.hidden = !isSched;
-			if (!isSched && schedInput) { schedInput.value = ''; }
-			var opts = document.querySelectorAll('.mm-dopt');
-			for (var i = 0; i < opts.length; i++) {
-				var r = opts[i].querySelector('input');
-				opts[i].classList.toggle('is-active', !!r && r.checked);
-			}
-			return isSched;
-		}
-		for (var d = 0; d < dModes.length; d++) {
-			dModes[d].addEventListener('change', function () {
-				if (reflectDelivery() && schedInput) { schedInput.focus(); }
-			});
-		}
-		reflectDelivery();
-	}
-	if (schedInput) {
-		var idt = schedInput.closest('.input-datetime');
-		if (idt) {
-			idt.addEventListener('click', function (e) {
-				if (e.target !== schedInput) {
-					schedInput.focus();
-					if (window.jQuery) { try { window.jQuery(schedInput).datepicker('show'); } catch (err) {} }
-				}
-			});
-		}
-	}
-
-	// --- Paperclip attach in the editor toolbar ------------------------------
-	var fileInput = document.getElementById('field-attachment');
-	var chips = document.getElementById('mm-chips');
-	if (fileInput && chips && window.DataTransfer) {
-		var bag = new DataTransfer();
-		function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
-		function renderPicked() {
-			var old = chips.querySelectorAll('.mm-chip-new');
-			for (var k = 0; k < old.length; k++) { old[k].remove(); }
-			Array.prototype.forEach.call(bag.files, function (f, idx) {
-				var li = document.createElement('li');
-				li.className = 'mm-chip mm-chip-new';
-				li.innerHTML = '<span class="mm-clip">📎</span> ' + esc(f.name) + ' <span class="mm-kb">(' + Math.round(f.size / 1024) + ' KB)</span>';
-				var x = document.createElement('button');
-				x.type = 'button'; x.className = 'mm-chip-x'; x.innerHTML = '&times;';
-				x.addEventListener('click', function () {
-					var nb = new DataTransfer();
-					Array.prototype.forEach.call(bag.files, function (g, m) { if (m !== idx) { nb.items.add(g); } });
-					bag = nb; fileInput.files = bag.files; renderPicked();
-				});
-				li.appendChild(x);
-				chips.appendChild(li);
-			});
-		}
-		fileInput.addEventListener('change', function () {
-			Array.prototype.forEach.call(fileInput.files, function (f) { bag.items.add(f); });
-			fileInput.files = bag.files;
-			renderPicked();
-		});
-
-		var tries = 0;
-		var iv = setInterval(function () {
-			var items = document.querySelector('#adminForm .ck-toolbar__items') || document.querySelector('#adminForm .ck-toolbar');
-			if (items && !document.getElementById('mm-attach-btn')) {
-				var b = document.createElement('button');
-				b.type = 'button'; b.id = 'mm-attach-btn';
-				b.className = 'ck ck-button ck-off mm-attach-btn';
-				b.title = <?php echo json_encode(Lang::txt('COM_MASSMAIL_ADD_ATTACHMENT')); ?>;
-				b.setAttribute('aria-label', b.title);
-				b.innerHTML = '<svg class="ck ck-icon ck-button__icon" viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>';
-				b.addEventListener('click', function (e) { e.preventDefault(); fileInput.click(); });
-				items.appendChild(b);
-				clearInterval(iv);
-			}
-			if (++tries > 40) { clearInterval(iv); }
-		}, 250);
-	}
-})();
-</script>

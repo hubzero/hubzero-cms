@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system">
+	<name>System - Mass Mail</name>
+	<creationDate>July 2026</creationDate>
+	<author>Purdue University</author>
+	<copyright>Copyright © 2026 Purdue University. All Rights Reserved.</copyright>
+	<license>http://opensource.org/licenses/MIT MIT</license>
+	<description>Keeps the mass-mail delivery cron in sync with the component's sending switch.</description>
+	<files>
+		<filename plugin="massmail">massmail.php</filename>
+	</files>
+</extension>

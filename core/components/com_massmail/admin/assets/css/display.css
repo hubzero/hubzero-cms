@@ -1,0 +1,13 @@
+/**
+ * Mass Mail -- mailings list.
+ */
+
+/* Give the pagination footer a little breathing room from the list; the
+   template's list-footer uses a negative top margin, so neutralize it here. */
+.mm-list-foot { padding-top:16px; }
+.mm-list-foot .pagination { margin-top:0; }
+
+/* The status column links to the mailing's view/edit page; keep the chip from
+   picking up default link underline/color. (Chip colors live in component.css,
+   loaded on every mass-mail admin page so list and view stay consistent.) */
+.mm-status-link { text-decoration:none; }

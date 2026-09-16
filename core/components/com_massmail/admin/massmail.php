@@ -42,26 +42,48 @@ foreach ($menuItems as $k => $v)
 
 // A mass-mail on/off status pill, pinned to the right of the component
 // sub-navigation so the send state is visible at a glance on every page.
+// Styles/behavior live in external assets (CSP-friendly); state is handed to
+// the script through the #mm-pill-data element below.
+// A single traffic-light status for the whole send pipeline, folding the two
+// gates -- the sending toggle and the delivery cron -- into one indicator:
+//   red    = sending disabled (nothing goes out; new mailings are held)
+//   orange = sending enabled but the cron is stopped (mail queues, doesn't move)
+//   green  = sending enabled and the cron is running (normal operation)
 $mmSendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
-$mmPillClass = $mmSendingOn ? 'mm-pill-on' : 'mm-pill-off';
-$mmPillText  = \Lang::txt($mmSendingOn ? 'COM_MASSMAIL_SENDING_ON' : 'COM_MASSMAIL_SENDING_OFF');
-\Document::addStyleDeclaration(
-	'#submenu li.mm-pill-li { float:right; margin:0; padding:0; border:none; }'
-	. '.mm-status-pill { display:inline-flex; align-items:center; gap:6px; margin:2px 0; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600; line-height:1.4; }'
-	. '.mm-status-pill .mm-dot { width:8px; height:8px; border-radius:50%; background:currentColor; }'
-	. '.mm-pill-on { background:#c6f6d5; color:#22543d; }'
-	. '.mm-pill-off { background:#fed7d7; color:#9b2c2c; }'
-);
-\Document::addScriptDeclaration(
-	'document.addEventListener("DOMContentLoaded", function () {'
-	. ' var ul = document.getElementById("submenu");'
-	. ' if (!ul || document.querySelector(".mm-status-pill")) { return; }'
-	. ' var li = document.createElement("li"); li.className = "mm-pill-li";'
-	. ' var pill = document.createElement("span"); pill.className = "mm-status-pill ' . $mmPillClass . '";'
-	. ' pill.innerHTML = \'<span class="mm-dot"></span>\' + ' . json_encode($mmPillText) . ';'
-	. ' li.appendChild(pill); ul.appendChild(li);'
-	. '});'
-);
+
+$mmDb = \App::get('db');
+$mmDb->setQuery("SELECT state FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
+$mmCron   = $mmDb->loadObject();
+$mmCronOn = ($mmCron && (int) $mmCron->state == 1);
+
+if (!$mmSendingOn)
+{
+	$mmState  = 'red';
+	$mmPillText = \Lang::txt('COM_MASSMAIL_STATUS_DOWN');
+	$mmDetail = \Lang::txt('COM_MASSMAIL_STATUS_DOWN_DETAIL');
+}
+elseif (!$mmCronOn)
+{
+	$mmState  = 'orange';
+	$mmPillText = \Lang::txt('COM_MASSMAIL_STATUS_DEGRADED');
+	$mmDetail = \Lang::txt('COM_MASSMAIL_STATUS_DEGRADED_DETAIL');
+}
+else
+{
+	$mmState  = 'green';
+	$mmPillText = \Lang::txt('COM_MASSMAIL_STATUS_OK');
+	$mmDetail = \Lang::txt('COM_MASSMAIL_STATUS_OK_DETAIL');
+}
+
+$mmAssetBase = str_replace('/administrator', '', \Request::base(true)) . '/core/components/com_massmail/admin/assets';
+$mmAssetDir  = PATH_CORE . DS . 'components' . DS . 'com_massmail' . DS . 'admin' . DS . 'assets';
+$mmCssVer    = @filemtime($mmAssetDir . DS . 'css' . DS . 'component.css');
+$mmJsVer     = @filemtime($mmAssetDir . DS . 'js' . DS . 'component.js');
+\Document::addStyleSheet($mmAssetBase . '/css/component.css' . ($mmCssVer ? '?v=' . $mmCssVer : ''));
+\Document::addScript($mmAssetBase . '/js/component.js' . ($mmJsVer ? '?v=' . $mmJsVer : ''));
+echo '<div id="mm-pill-data" hidden data-state="' . $mmState . '"'
+	. ' data-label="' . htmlspecialchars($mmPillText, ENT_QUOTES, 'UTF-8') . '"'
+	. ' data-detail="' . htmlspecialchars($mmDetail, ENT_QUOTES, 'UTF-8') . '"></div>';
 
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 

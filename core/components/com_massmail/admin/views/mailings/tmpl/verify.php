@@ -13,6 +13,11 @@ $disp  = $this->disposition;
 $token = Session::getFormToken();
 $base  = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 
+// Meta block (mirrors the edit/view page).
+$status      = $row->get('status');
+$creatorName = $row->creator ? $row->creator->get('name') : '';
+$fmt         = 'M j, Y g:i a';
+
 $fromName  = trim((string) $row->get('from_name'))  ?: Config::get('fromname');
 $fromEmail = trim((string) $row->get('from_email')) ?: Config::get('mailfrom');
 $replyTo   = trim((string) $row->get('reply_to'));
@@ -39,60 +44,10 @@ $icTrash = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" f
 
 Toolbar::title(Lang::txt('COM_MASSMAIL_VERIFY_TITLE'), 'massmail');
 Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
+
+$this->css('verify.css', 'com_massmail');
+$this->js('verify.js', 'com_massmail');
 ?>
-<style>
-.mm-verify { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
-.mm-verify .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
-@media (max-width:960px){ .mm-verify .mm-grid{ grid-template-columns:1fr; } }
-.mm-verify .mm-intro { color:#4a5568; margin:0 0 16px; }
-.mm-verify .mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; }
-
-.mm-pv-head { display:flex; align-items:center; gap:10px; border-bottom:1px solid #edf2f7; padding:12px 18px; }
-.mm-pv-head h4 { margin:0; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; flex:1; }
-.mm-pv-toggle { display:inline-flex; border:1px solid #cbd5e0; border-radius:6px; overflow:hidden; }
-.mm-pv-toggle button { background:#fff; border:none; padding:5px 12px; font-size:12px; color:#4a5568; cursor:pointer; }
-.mm-pv-toggle button + button { border-left:1px solid #cbd5e0; }
-.mm-pv-toggle button.is-active { background:#3182ce; color:#fff; }
-
-.mm-env { padding:12px 18px; border-bottom:1px solid #edf2f7; font-size:13px; }
-.mm-env-row { display:flex; gap:10px; padding:2px 0; }
-.mm-env-label { flex:0 0 68px; color:#718096; }
-.mm-env-val { color:#1a202c; font-weight:600; word-break:break-word; }
-
-.mm-pv-body { padding:0; }
-#mm-pv-html { width:100%; height:520px; border:none; display:block; background:#f4f4f4; }
-#mm-pv-text { margin:0; padding:18px; white-space:pre-wrap; word-wrap:break-word; font-family:Menlo,Consolas,monospace; font-size:13px; line-height:1.5; color:#1a202c; background:#fff; }
-#mm-pv-text[hidden], #mm-pv-html[hidden] { display:none; }
-
-.mm-sum { padding:16px; margin-bottom:16px; }
-.mm-sum h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
-.mm-sum-row { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-top:1px solid #edf2f7; font-size:13px; }
-.mm-sum-row:first-of-type { border-top:none; }
-.mm-sum-row .k { color:#718096; }
-.mm-sum-row .v { color:#1a202c; font-weight:600; text-align:right; }
-.mm-sum-count { font-size:15px; }
-
-.mm-disp { border-radius:8px; padding:12px 14px; font-size:13px; line-height:1.5; margin:14px 0 0; }
-.mm-disp-approve { background:#fefcbf; border:1px solid #f6e05e; color:#744210; }
-.mm-disp-hold    { background:#fed7d7; border:1px solid #fc8181; color:#742a2a; }
-.mm-disp-send    { background:#c6f6d5; border:1px solid #9ae6b4; color:#22543d; }
-.mm-disp-title { font-weight:700; display:block; margin-bottom:3px; }
-.mm-disp-sub { display:block; margin-top:5px; }
-.mm-optout-flag { background:#fff5f5; border:1px solid #fc8181; color:#742a2a; border-radius:8px; padding:10px 12px; font-size:12px; margin-top:12px; }
-
-.mm-verify-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
-.mm-verify-actions .spacer { flex:1; }
-/* Normalize so the <button> and <a> actions render as the same box. */
-.mm-verify-actions .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
-.mm-verify-actions .btn svg { flex:0 0 auto; }
-.mm-btn-accept { background:#2f855a; border:1px solid #276749; color:#fff; }
-.mm-btn-accept:hover, .mm-btn-accept:focus { background:#276749; border-color:#276749; color:#fff; }
-.mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
-.mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
-.mm-btn-danger { background:#fff5f5; border:1px solid #fc8181; color:#c53030; }
-.mm-btn-danger:hover, .mm-btn-danger:focus { background:#fed7d7; border-color:#e53e3e; color:#9b2c2c; }
-</style>
-
 <form action="<?php echo Route::url($base); ?>" method="post" name="adminForm" id="adminForm" class="mm-verify">
 	<p class="mm-intro"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_INTRO'); ?></p>
 
@@ -114,21 +69,55 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 					<div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span><span class="mm-env-val"><?php echo $this->escape(stripslashes((string) $row->get('subject'))); ?></span></div>
 				</div>
 				<div class="mm-pv-body">
-					<iframe id="mm-pv-html" sandbox="" title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')); ?>"></iframe>
+					<iframe id="mm-pv-html" sandbox="" title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')); ?>" srcdoc="<?php echo $this->escape($this->previewHtml); ?>"></iframe>
 					<pre id="mm-pv-text" hidden><?php echo $this->escape($this->previewText); ?></pre>
 				</div>
 			</div>
 
 			<div class="mm-verify-actions">
-				<button type="button" class="btn mm-btn-accept" onclick="Joomla.submitbutton('launch');"><?php echo $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
+				<button type="button" class="btn mm-btn-accept mm-submit" data-task="launch"><?php echo $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
 				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
 				<span class="spacer"></span>
 				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base); ?>"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></a>
-				<a class="btn mm-btn-danger" href="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id') . '&' . $token . '=1'); ?>" onclick="return confirm('<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>');"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+				<a class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" href="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
 			</div>
 		</div>
 
 		<div class="mm-side">
+			<div class="mm-card mm-status-card">
+				<h4><?php echo Lang::txt('COM_MASSMAIL_DETAILS'); ?></h4>
+				<table class="meta mm-meta">
+					<tbody>
+						<tr>
+							<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FIELD_ID'); ?></th>
+							<td><?php echo (int) $row->get('id'); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
+							<td><span class="mm-status mm-status-<?php echo $status; ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)); ?></span></td>
+						</tr>
+						<?php if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') { ?>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED'); ?></th>
+								<td><?php echo Date::of($row->get('created'))->toLocal($fmt); ?></td>
+							</tr>
+						<?php } ?>
+						<?php if ($creatorName) { ?>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED_BY'); ?></th>
+								<td><?php echo $this->escape($creatorName); ?></td>
+							</tr>
+						<?php } ?>
+						<?php if ($row->get('modified') && $row->get('modified') != '0000-00-00 00:00:00') { ?>
+							<tr>
+								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
+								<td><?php echo Date::of($row->get('modified'))->toLocal($fmt); if ($row->get('modified_by')) { echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($row->get('modified_by'))->get('name'))) . '</span>'; } ?></td>
+							</tr>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+
 			<div class="mm-card mm-sum">
 				<h4><?php echo Lang::txt('COM_MASSMAIL_VERIFY_SUMMARY'); ?></h4>
 				<div class="mm-sum-row">
@@ -185,25 +174,3 @@ Toolbar::cancel('cancel', 'JTOOLBAR_BACK');
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<?php echo Html::input('token'); ?>
 </form>
-
-<script type="text/javascript">
-(function () {
-	var iframe = document.getElementById('mm-pv-html');
-	if (iframe) { iframe.srcdoc = <?php echo json_encode($this->previewHtml, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>; }
-
-	var bHtml = document.getElementById('mm-pv-btn-html');
-	var bText = document.getElementById('mm-pv-btn-text');
-	var pHtml = document.getElementById('mm-pv-html');
-	var pText = document.getElementById('mm-pv-text');
-	function show(mode) {
-		var isHtml = (mode === 'html');
-		pHtml.hidden = !isHtml; pText.hidden = isHtml;
-		bHtml.classList.toggle('is-active', isHtml);
-		bText.classList.toggle('is-active', !isHtml);
-	}
-	if (bHtml && bText) {
-		bHtml.addEventListener('click', function () { show('html'); });
-		bText.addEventListener('click', function () { show('text'); });
-	}
-})();
-</script>

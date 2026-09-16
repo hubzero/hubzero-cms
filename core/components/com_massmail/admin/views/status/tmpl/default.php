@@ -16,8 +16,6 @@ if ($canDo->get('core.admin'))
 	Toolbar::preferences($this->option, '550');
 }
 
-$sendingOn = (int) $this->params->get('sending_enabled', 0);
-$cronOn    = ($this->cron && (int) $this->cron->state == 1);
 $queueTxt  = $this->queueSize < 0 ? Lang::txt('COM_MASSMAIL_DASH_QUEUE_UNREADABLE') : number_format($this->queueSize);
 
 // Reusable single-series bar-chart renderer. Empty data draws just the axis.
@@ -61,62 +59,23 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
 };
 
 $sum = function ($s) { return array_sum(array_column($s, 'value')); };
+
+$this->css('status.css', 'com_massmail');
+$this->js('status.js', 'com_massmail');
 ?>
-<style>
-.mm-dash { max-width: 1100px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
-.mm-dash .mm-alert { padding:10px 14px; border-radius:6px; margin:0 0 10px; font-weight:600; }
-.mm-dash .mm-alert.warn { background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; }
-.mm-section { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:#718096; font-weight:700; margin:18px 0 8px; }
-.mm-section:first-of-type { margin-top:6px; }
-.mm-statusline { display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:11px 16px; margin-bottom:12px; font-size:13px; color:#4a5568; }
-.mm-statusline .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:middle; }
-.mm-statusline .ok { background:#2f855a; } .mm-statusline .bad { background:#c53030; }
-.mm-statusline strong { color:#1a202c; font-weight:700; }
-.mm-sending { padding:3px 12px; border-radius:6px; font-weight:700; font-size:13px; color:#fff; }
-.mm-sending.on { background:#2f855a; } .mm-sending.off { background:#c53030; }
-.mm-sending.held { background:#c05621; text-decoration:none; }
-.mm-sending.held:hover { background:#9c4221; color:#fff; }
-/* The admin template injects a dim ⊘ before any .off element; make it crisp black on our red pill. */
-.mm-dash .mm-sending.off:before { color:#000; }
-.mm-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media (max-width:800px){ .mm-cards{ grid-template-columns:1fr; } }
-.mm-cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-@media (max-width:900px){ .mm-cards-3{ grid-template-columns:1fr; } }
-.mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; }
-.mm-card h3 { margin:0 0 10px; font-size:14px; color:#2d3748; }
-.mm-card figure { margin:0; }
-.mm-legend { font-size:11px; color:#718096; margin-top:6px; }
-.mm-pill { display:inline-block; padding:2px 8px; border-radius:10px; color:#fff; font-size:11px; font-weight:600; }
-.mm-pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-.mm-count { display:inline-block; padding:1px 8px; border-radius:5px; background:#2f855a; color:#fff; font-size:11px; font-weight:700; }
-.mm-count-queue { background:#dd6b20; }
-.mm-sbar { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:13px; }
-.mm-sbar .bar { height:10px; border-radius:5px; }
-.mm-recent { width:100%; border-collapse:collapse; margin-top:6px; }
-.mm-recent th, .mm-recent td { text-align:left; padding:6px 8px; border-bottom:1px solid #edf2f7; font-size:13px; }
-.mm-card.mm-clickable { cursor:pointer; }
-.mm-card.mm-clickable:hover { border-color:#94a3b8; box-shadow:0 1px 6px rgba(0,0,0,.08); }
-.mm-modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,.6); display:none; z-index:10000; align-items:center; justify-content:center; padding:24px; }
-.mm-modal.open { display:flex; }
-.mm-modal-inner { background:#fff; border-radius:10px; padding:24px 28px; width:100%; max-width:1500px; max-height:92vh; overflow:auto; position:relative; box-shadow:0 10px 40px rgba(0,0,0,.3); }
-.mm-modal-close { position:absolute; top:6px; right:14px; font-size:28px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
-.mm-modal-body h3 { font-size:18px; }
-.mm-modal-body figure svg { width:100%; height:auto; }
-.mm-modal-body .mm-pills { margin-top:14px; }
-</style>
 
 <div class="mm-dash">
 
 	<!-- Mass Mail -->
 	<div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_MASSMAIL'); ?></div>
 	<div class="mm-statusline">
-		<span class="mm-sending <?php echo $sendingOn ? 'on' : 'off'; ?>"><?php echo $sendingOn ? Lang::txt('COM_MASSMAIL_SENDING_ON') : Lang::txt('COM_MASSMAIL_SENDING_OFF'); ?></span>
-		<span class="mm-sending <?php echo $cronOn ? 'on' : 'off'; ?>"><?php echo $cronOn ? Lang::txt('COM_MASSMAIL_CRON_ON') : Lang::txt('COM_MASSMAIL_CRON_OFF'); ?></span>
+		<?php // Send-pipeline health (sending toggle + delivery cron) is shown as a
+		      // single traffic-light status pill on the sub-navigation (see massmail.php). ?>
 		<?php if ($this->heldMailings > 0) { ?>
 			<a class="mm-sending held" href="<?php echo Route::url('index.php?option=com_massmail&controller=mailings&status=' . \Components\Massmail\Models\Mailing::STATUS_HELD); ?>"><?php echo Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)); ?></a>
 		<?php } ?>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT'); ?>: <strong><?php echo number_format($this->hourly); ?>/hr</strong></span>
-		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN'); ?>: <strong><?php echo number_format($this->perRun); ?></strong> <span style="color:#a0aec0;"><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)); ?></span></span>
+		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN'); ?>: <strong><?php echo number_format($this->perRun); ?></strong> <span class="mm-muted"><?php echo Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)); ?></span></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR'); ?>: <strong><?php echo number_format($this->ourLastHour); ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_REMAINING'); ?>: <strong><?php echo number_format($this->hourlyRemaining); ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_MESSAGES_PENDING'); ?>: <strong><?php echo number_format($this->messagesPending); ?></strong></span>
@@ -145,7 +104,7 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 	<div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_POSTFIX'); ?></div>
 	<div class="mm-statusline">
 		<span><span class="dot <?php echo $this->pfRunning ? 'ok' : 'bad'; ?>"></span><?php echo Lang::txt('COM_MASSMAIL_PF_SERVICE'); ?>: <strong><?php echo Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED'); ?></strong></span>
-		<span><span class="dot <?php echo $this->pfConfig['configured'] ? 'ok' : 'bad'; ?>"></span><strong><?php echo Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED'); ?></strong><?php if ($this->pfConfig['configured'] && $this->pfConfig['version']) { echo ' <span style="color:#a0aec0;">' . $this->escape($this->pfConfig['version']) . '</span>'; } ?></span>
+		<span><span class="dot <?php echo $this->pfConfig['configured'] ? 'ok' : 'bad'; ?>"></span><strong><?php echo Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED'); ?></strong><?php if ($this->pfConfig['configured'] && $this->pfConfig['version']) { echo ' <span class="mm-muted">' . $this->escape($this->pfConfig['version']) . '</span>'; } ?></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong></span>
 		<span><?php echo Lang::txt('COM_MASSMAIL_DASH_LAST_SENT'); ?>: <strong><?php echo $this->lastSent ? $this->escape($this->lastSent) : '&mdash;'; ?></strong></span>
 	</div>
@@ -175,42 +134,12 @@ $sum = function ($s) { return array_sum(array_column($s, 'value')); };
 			</div>
 		</div>
 	</div>
-	<p class="mm-legend"><span style="display:inline-block;width:14px;height:0;border-top:2px solid #dd6b20;vertical-align:middle;margin-right:5px;"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly)); ?></p>
+	<p class="mm-legend"><span class="mm-legend-swatch"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly)); ?></p>
 </div>
 
-<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>">
+<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>" data-hint="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>">
 	<div class="mm-modal-inner">
 		<button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
 		<div class="mm-modal-body"></div>
 	</div>
 </div>
-<script type="text/javascript">
-(function () {
-	var modal = document.getElementById('mm-modal');
-	if (!modal) { return; }
-	var body  = modal.querySelector('.mm-modal-body');
-	var hint  = <?php echo json_encode(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>;
-
-	function closeModal() { modal.classList.remove('open'); body.innerHTML = ''; }
-
-	var cards = document.querySelectorAll('.mm-dash .mm-card');
-	for (var i = 0; i < cards.length; i++) {
-		(function (card) {
-			if (!card.querySelector('svg')) { return; }
-			card.classList.add('mm-clickable');
-			card.setAttribute('title', hint);
-			card.addEventListener('click', function () {
-				body.innerHTML = card.innerHTML;
-				modal.classList.add('open');
-			});
-		})(cards[i]);
-	}
-
-	modal.addEventListener('click', function (e) {
-		if (e.target === modal || e.target.classList.contains('mm-modal-close')) { closeModal(); }
-	});
-	document.addEventListener('keydown', function (e) {
-		if (e.key === 'Escape' || e.keyCode === 27) { closeModal(); }
-	});
-})();
-</script>

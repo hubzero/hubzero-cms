@@ -1,0 +1,45 @@
+/**
+ * Mass Mail -- status dashboard.
+ */
+.mm-dash { max-width: 1100px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
+.mm-dash .mm-alert { padding:10px 14px; border-radius:6px; margin:0 0 10px; font-weight:600; }
+.mm-dash .mm-alert.warn { background:#fffaf0; border:1px solid #f6ad55; color:#9c4221; }
+.mm-section { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:#718096; font-weight:700; margin:18px 0 8px; }
+.mm-section:first-of-type { margin-top:6px; }
+.mm-statusline { display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:11px 16px; margin-bottom:12px; font-size:13px; color:#4a5568; }
+.mm-statusline .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+.mm-statusline .ok { background:#2f855a; } .mm-statusline .bad { background:#c53030; }
+.mm-statusline strong { color:#1a202c; font-weight:700; }
+/* Held-mailings link in the dashboard statusline (send/cron health now lives
+   in the single traffic-light pill on the sub-navigation). */
+.mm-sending.held { padding:3px 12px; border-radius:6px; font-weight:700; font-size:13px; color:#fff; background:#c05621; text-decoration:none; }
+.mm-sending.held:hover { background:#9c4221; color:#fff; }
+.mm-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:800px){ .mm-cards{ grid-template-columns:1fr; } }
+.mm-cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+@media (max-width:900px){ .mm-cards-3{ grid-template-columns:1fr; } }
+.mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:16px; }
+.mm-card h3 { margin:0 0 10px; font-size:14px; color:#2d3748; }
+.mm-card figure { margin:0; }
+.mm-legend { font-size:11px; color:#718096; margin-top:6px; }
+.mm-pill { display:inline-block; padding:2px 8px; border-radius:10px; color:#fff; font-size:11px; font-weight:600; }
+.mm-pills { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.mm-count { display:inline-block; padding:1px 8px; border-radius:5px; background:#2f855a; color:#fff; font-size:11px; font-weight:700; }
+.mm-count-queue { background:#dd6b20; }
+.mm-sbar { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:13px; }
+.mm-sbar .bar { height:10px; border-radius:5px; }
+.mm-recent { width:100%; border-collapse:collapse; margin-top:6px; }
+.mm-recent th, .mm-recent td { text-align:left; padding:6px 8px; border-bottom:1px solid #edf2f7; font-size:13px; }
+.mm-card.mm-clickable { cursor:pointer; }
+.mm-card.mm-clickable:hover { border-color:#94a3b8; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+.mm-modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,.6); display:none; z-index:10000; align-items:center; justify-content:center; padding:24px; }
+.mm-modal.open { display:flex; }
+.mm-modal-inner { background:#fff; border-radius:10px; padding:24px 28px; width:100%; max-width:1500px; max-height:92vh; overflow:auto; position:relative; box-shadow:0 10px 40px rgba(0,0,0,.3); }
+.mm-modal-close { position:absolute; top:6px; right:14px; font-size:28px; line-height:1; background:none; border:none; color:#718096; cursor:pointer; }
+.mm-modal-body h3 { font-size:18px; }
+.mm-modal-body figure svg { width:100%; height:auto; }
+.mm-modal-body .mm-pills { margin-top:14px; }
+
+/* Small utilities (replacing former inline styles). */
+.mm-muted { color:#a0aec0; }
+.mm-legend-swatch { display:inline-block; width:14px; height:0; border-top:2px solid #dd6b20; vertical-align:middle; margin-right:5px; }

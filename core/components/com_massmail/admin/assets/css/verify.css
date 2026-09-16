@@ -1,0 +1,49 @@
+/**
+ * Mass Mail -- review / verification page.
+ */
+.mm-verify { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
+.mm-verify .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
+@media (max-width:960px){ .mm-verify .mm-grid{ grid-template-columns:1fr; } }
+.mm-verify .mm-intro { color:#4a5568; margin:0 0 16px; }
+.mm-verify .mm-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; }
+
+.mm-pv-head { display:flex; align-items:center; gap:10px; border-bottom:1px solid #edf2f7; padding:12px 18px; }
+.mm-pv-head h4 { margin:0; font-size:13px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; flex:1; }
+.mm-pv-toggle { display:inline-flex; border:1px solid #cbd5e0; border-radius:6px; overflow:hidden; }
+.mm-pv-toggle button { background:#fff; border:none; padding:5px 12px; font-size:12px; color:#4a5568; cursor:pointer; }
+.mm-pv-toggle button + button { border-left:1px solid #cbd5e0; }
+.mm-pv-toggle button.is-active { background:#3182ce; color:#fff; }
+
+.mm-env { padding:12px 18px; border-bottom:1px solid #edf2f7; font-size:13px; }
+.mm-env-row { display:flex; gap:10px; padding:2px 0; }
+.mm-env-label { flex:0 0 68px; color:#718096; }
+.mm-env-val { color:#1a202c; font-weight:600; word-break:break-word; }
+
+.mm-pv-body { padding:0; }
+#mm-pv-html { width:100%; height:520px; border:none; display:block; background:#f4f4f4; }
+#mm-pv-text { margin:0; padding:18px; white-space:pre-wrap; word-wrap:break-word; font-family:Menlo,Consolas,monospace; font-size:13px; line-height:1.5; color:#1a202c; background:#fff; }
+#mm-pv-text[hidden], #mm-pv-html[hidden] { display:none; }
+
+.mm-sum { padding:16px; margin-bottom:16px; }
+.mm-sum h4 { margin:0 0 12px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:#718096; font-weight:700; }
+.mm-sum-row { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-top:1px solid #edf2f7; font-size:13px; }
+.mm-sum-row:first-of-type { border-top:none; }
+.mm-sum-row .k { color:#718096; }
+.mm-sum-row .v { color:#1a202c; font-weight:600; text-align:right; }
+.mm-sum-count { font-size:15px; }
+
+/* .mm-disp* (disposition notice boxes) now live in component.css, shared with
+   the edit page. */
+.mm-optout-flag { background:#fff5f5; border:1px solid #fc8181; color:#742a2a; border-radius:8px; padding:10px 12px; font-size:12px; margin-top:12px; }
+
+.mm-verify-actions { display:flex; gap:10px; align-items:center; margin:20px 0 30px; padding-top:18px; border-top:1px solid #e2e8f0; }
+.mm-verify-actions .spacer { flex:1; }
+/* Normalize so the <button> and <a> actions render as the same box. */
+.mm-verify-actions .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; box-sizing:border-box; min-width:120px; margin:0; padding:8px 16px; font:inherit; font-size:14px; line-height:1.4; text-align:center; text-decoration:none; border-radius:6px; cursor:pointer; vertical-align:middle; }
+.mm-verify-actions .btn svg { flex:0 0 auto; }
+.mm-btn-accept { background:#2f855a; border:1px solid #276749; color:#fff; }
+.mm-btn-accept:hover, .mm-btn-accept:focus { background:#276749; border-color:#276749; color:#fff; }
+.mm-btn-neutral { background:#edf2f7; border:1px solid #cbd5e0; color:#4a5568; }
+.mm-btn-neutral:hover, .mm-btn-neutral:focus { background:#e2e8f0; color:#2d3748; }
+.mm-btn-danger { background:#fff5f5; border:1px solid #fc8181; color:#c53030; }
+.mm-btn-danger:hover, .mm-btn-danger:focus { background:#fed7d7; border-color:#e53e3e; color:#9b2c2c; }
