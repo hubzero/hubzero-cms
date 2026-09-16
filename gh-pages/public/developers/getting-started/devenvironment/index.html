@@ -206,11 +206,11 @@ repository gives you from what you have to get elsewhere.</p>
 <td>Runs <code>phpcs --standard=PSR12</code> and <code>parallel-lint</code> over the files you name.</td>
 </tr>
 <tr>
-<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/tools/lint"><code>tools/lint/</code></a></td>
+<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/docs/_tools/lint"><code>docs/_tools/lint/</code></a></td>
 <td><code>missing-facade-imports.php</code> and <code>undefined-language-keys.php</code>.</td>
 </tr>
 <tr>
-<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/tools/docs"><code>tools/docs/</code></a> and <code>gh-pages/</code></td>
+<td><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/docs/_tools/docs"><code>docs/_tools/docs/</code></a> and <code>gh-pages/</code></td>
 <td>The documentation builder and the reference generators.</td>
 </tr>
 <tr>
@@ -386,9 +386,9 @@ dependencies or the migrations change.</p>
 <ul>
 <li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.3. Three checks: <code>php -l</code> over every PHP
 file under <code>core/</code> and <code>app/</code> outside <code>vendor/</code>;
-<code>tools/lint/missing-facade-imports.php</code>, which fails on any namespaced file
+<code>docs/_tools/lint/missing-facade-imports.php</code>, which fails on any namespaced file
 that uses a facade without importing it; and
-<code>tools/lint/undefined-language-keys.php --quiet --max=444</code>, which fails if
+<code>docs/_tools/lint/undefined-language-keys.php --quiet --max=444</code>, which fails if
 the number of language keys nothing defines rises above the current count.
 The second exists because such a file parses cleanly and misbehaves only
 when the line runs — see

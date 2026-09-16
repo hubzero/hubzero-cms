@@ -338,9 +338,9 @@ year can carry the fault for years — which is exactly where most of the 730
 were found.</p>
 </aside>
 <h3 id="the-linter">The linter</h3>
-<pre><code class="language-bash">php tools/lint/missing-facade-imports.php            # scans components, plugins, modules, libraries
-php tools/lint/missing-facade-imports.php --fix      # inserts the missing use statements
-php tools/lint/missing-facade-imports.php core/components/com_booking
+<pre><code class="language-bash">php docs/_tools/lint/missing-facade-imports.php            # scans components, plugins, modules, libraries
+php docs/_tools/lint/missing-facade-imports.php --fix      # inserts the missing use statements
+php docs/_tools/lint/missing-facade-imports.php core/components/com_booking
 </code></pre>
 <p>Paths are relative to the repository root. With no path it scans
 <code>core/components</code>, <code>core/plugins</code>, <code>core/modules</code> and

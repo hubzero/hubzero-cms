@@ -11,7 +11,7 @@ The pages carry ``status: generated`` and are rebuilt by CI; edit the XML or
 the language files, not the pages.
 
 Usage:
-    python3 tools/docs/gen_config_reference.py
+    python3 docs/_tools/docs/gen_config_reference.py
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 CORE = ROOT / "core"
 OUT = ROOT / "docs" / "reference" / "configuration"
 SKIP_TYPES = {"spacer", "rules", "hidden"}

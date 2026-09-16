@@ -8,7 +8,7 @@ task docblocks, the same tags ``Hubzero\\Api\\Doc\\Generator`` reads for the
 one page per component under ``docs/reference/api/``.
 
 Usage:
-    python3 tools/docs/gen_api_reference.py
+    python3 docs/_tools/docs/gen_api_reference.py
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ import json
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 CORE = ROOT / "core"
 OUT = ROOT / "docs" / "reference" / "api"
 HEADER = "<!--\nstatus: generated\nsource: {source}\n-->\n"

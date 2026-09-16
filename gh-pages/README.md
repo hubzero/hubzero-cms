@@ -18,8 +18,8 @@ public/             the built site, committed so it can be read without a build
 ## Build locally
 
 ```bash
-python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
-sh tools/docs/rebuild.sh
+python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
+sh docs/_tools/docs/rebuild.sh
 python3 -m http.server -d gh-pages/public 8000
 ```
 

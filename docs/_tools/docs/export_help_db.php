@@ -5,7 +5,7 @@
  *
  * Run on help.hubzero.org as root (hubconfiguration.php is root-only):
  *
- *   scp tools/docs/export_help_db.php help.hubzero.org:/tmp/
+ *   scp docs/_tools/docs/export_help_db.php help.hubzero.org:/tmp/
  *   ssh help.hubzero.org sudo php /tmp/export_help_db.php
  *   scp help.hubzero.org:/tmp/documentation-export.json docs/_import/help-export.json
  *

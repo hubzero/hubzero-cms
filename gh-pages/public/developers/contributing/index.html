@@ -291,7 +291,7 @@ this repository and has not been for several release lines. Use <code>2.4-main</
 <p>Then:</p>
 <pre><code class="language-bash">(cd core &amp;&amp; vendor/bin/parallel-lint --exclude vendor .)
 (cd core &amp;&amp; vendor/bin/phpunit -c phpunit.xml.dist)
-php tools/lint/missing-facade-imports.php
+php docs/_tools/lint/missing-facade-imports.php
 </code></pre>
 <p>Read <a href="../conventions/index.html#checking-your-work">PHP Coding Style</a>
 for what each of those catches and how to run phpcs usefully against a
@@ -299,7 +299,7 @@ codebase that has no committed ruleset. The suite takes about half a minute;
 <a href="../testing/index.html#running-one-test">Testing</a> covers running one test while you
 work on it.</p>
 <p>If you touched anything under <code>docs/</code>, rebuild the site and commit the result:</p>
-<pre><code class="language-bash">sh tools/docs/rebuild.sh
+<pre><code class="language-bash">sh docs/_tools/docs/rebuild.sh
 </code></pre>
 <h3 id="what-the-build-checks">What the build checks</h3>
 <p>Three workflows run on a pull request, each on the paths it cares about. A
@@ -317,7 +317,7 @@ else.</p>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a></td>
 <td>any <code>*.php</code> changes</td>
-<td><code>php -l</code> on every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>tools/lint/missing-facade-imports.php</code>, then <code>tools/lint/undefined-language-keys.php</code> against a ceiling</td>
+<td><code>php -l</code> on every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>docs/_tools/lint/missing-facade-imports.php</code>, then <code>docs/_tools/lint/undefined-language-keys.php</code> against a ceiling</td>
 </tr>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/tests.yml"><code>tests.yml</code></a></td>
@@ -326,7 +326,7 @@ else.</p>
 </tr>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/pages.yml"><code>pages.yml</code></a></td>
-<td><code>docs/</code>, <code>gh-pages/</code> or <code>tools/docs/</code> changes</td>
+<td><code>docs/</code>, <code>gh-pages/</code> or <code>docs/_tools/docs/</code> changes</td>
 <td>Runs the documentation builder's tests, regenerates <code>docs/reference</code> and fails if it differs, builds the site, checks every internal link, and fails if the committed <code>gh-pages/public</code> is stale</td>
 </tr>
 </tbody>
@@ -437,8 +437,8 @@ site rebuilt and checked before it merges.</p>
 <h3 id="editing-a-page">Editing a page</h3>
 <p>Every page has an <strong>Edit this page on GitHub</strong> link in its footer. For
 anything larger than a typo, clone the repository and work locally:</p>
-<pre><code class="language-bash">python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
-sh tools/docs/rebuild.sh
+<pre><code class="language-bash">python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
+sh docs/_tools/docs/rebuild.sh
 python3 -m http.server -d gh-pages/public 8000
 </code></pre>
 <p>Then open http://localhost:8000/. Rebuild after each change; the build

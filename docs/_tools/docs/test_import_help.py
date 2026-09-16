@@ -5,7 +5,7 @@ hard to see in a diff: a link that silently stays absolute, a heading level
 that drifts, a reviewed page duplicated under a new number. These tests pin
 the parts that decide those outcomes.
 
-Run: python3 -m pytest tools/docs/test_import_help.py -q
+Run: python3 -m pytest docs/_tools/docs/test_import_help.py -q
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "gh-pages"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "gh-pages"))
 
 import import_help as ih  # noqa: E402
 

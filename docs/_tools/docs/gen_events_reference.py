@@ -9,7 +9,7 @@ where it is fired, the arguments as written at the call site, and the
 plugins that listen.
 
 Usage:
-    python3 tools/docs/gen_events_reference.py
+    python3 docs/_tools/docs/gen_events_reference.py
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 CORE = ROOT / "core"
 OUT = ROOT / "docs" / "reference" / "events"
 SCAN = ["components", "libraries", "plugins", "modules", "templates", "bootstrap"]

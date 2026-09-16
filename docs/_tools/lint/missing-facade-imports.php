@@ -33,7 +33,7 @@
  * namespace is left alone.
  *
  * Usage:
- *   php tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]
+ *   php docs/_tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]
  *
  * With no path it scans core/components, core/plugins, core/modules, and
  * core/libraries/Hubzero. It exits non-zero when anything is found, so it
@@ -45,7 +45,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-$root = dirname(__DIR__, 2);
+$root = dirname(__DIR__, 3);
 $defaults = ['core/components', 'core/plugins', 'core/modules', 'core/libraries/Hubzero'];
 
 $fix = false;
@@ -57,7 +57,7 @@ foreach (array_slice($argv, 1) as $arg) {
     } elseif ($arg === '--quiet') {
         $quiet = true;
     } elseif ($arg === '--help' || $arg === '-h') {
-        fwrite(STDOUT, "usage: php tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]\n");
+        fwrite(STDOUT, "usage: php docs/_tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]\n");
         exit(0);
     } else {
         $paths[] = $arg;

@@ -116,7 +116,7 @@ Then:
 ```bash
 (cd core && vendor/bin/parallel-lint --exclude vendor .)
 (cd core && vendor/bin/phpunit -c phpunit.xml.dist)
-php tools/lint/missing-facade-imports.php
+php docs/_tools/lint/missing-facade-imports.php
 ```
 
 Read [PHP Coding Style](19-conventions.md#checking-your-work)
@@ -128,7 +128,7 @@ work on it.
 If you touched anything under `docs/`, rebuild the site and commit the result:
 
 ```bash
-sh tools/docs/rebuild.sh
+sh docs/_tools/docs/rebuild.sh
 ```
 
 ### What the build checks
@@ -139,9 +139,9 @@ else.
 
 | Workflow | Runs when | Checks |
 |---|---|---|
-| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | any `*.php` changes | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `tools/lint/missing-facade-imports.php`, then `tools/lint/undefined-language-keys.php` against a ceiling |
+| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | any `*.php` changes | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `docs/_tools/lint/missing-facade-imports.php`, then `docs/_tools/lint/undefined-language-keys.php` against a ceiling |
 | [`tests.yml`](../../.github/workflows/tests.yml) | `core/**.php`, `core/phpunit.xml.dist` or the Composer files change | Installs the Composer dependencies and runs `vendor/bin/phpunit -c phpunit.xml.dist` |
-| [`pages.yml`](../../.github/workflows/pages.yml) | `docs/`, `gh-pages/` or `tools/docs/` changes | Runs the documentation builder's tests, regenerates `docs/reference` and fails if it differs, builds the site, checks every internal link, and fails if the committed `gh-pages/public` is stale |
+| [`pages.yml`](../../.github/workflows/pages.yml) | `docs/`, `gh-pages/` or `docs/_tools/docs/` changes | Runs the documentation builder's tests, regenerates `docs/reference` and fails if it differs, builds the site, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 
 A fourth, [`dev-push.yml`](../../.github/workflows/dev-push.yml), deploys to a
 Purdue development host and is switched off.
@@ -269,8 +269,8 @@ Every page has an **Edit this page on GitHub** link in its footer. For
 anything larger than a typo, clone the repository and work locally:
 
 ```bash
-python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
-sh tools/docs/rebuild.sh
+python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
+sh docs/_tools/docs/rebuild.sh
 python3 -m http.server -d gh-pages/public 8000
 ```
 

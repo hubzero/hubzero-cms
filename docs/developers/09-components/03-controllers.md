@@ -90,7 +90,7 @@ The failure is worth picturing, because it is the most common one in this
 tree: the file parses, the page loads, and one branch — the error path, the
 "you already have a reservation" path — dies with
 `Class "Components\Bookings\Site\Controllers\Lang" not found`. Run
-`php tools/lint/missing-facade-imports.php` rather than waiting to find out.
+`php docs/_tools/lint/missing-facade-imports.php` rather than waiting to find out.
 
 > **Warning:** Not every facade exists in every client. `Toolbar` and
 > `Submenu` are declared only in

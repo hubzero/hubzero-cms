@@ -166,7 +166,7 @@ no argument passed comes out with the `%s` still in it, for the same reason.
 > usually resolves anyway, through a fallback in the alias autoloader, and
 > then fails in a few specific situations. Import it. See
 > [Facades](../03-foundation/06-facades.md#importing-a-facade), and run
-> `php tools/lint/undefined-language-keys.php app/plugins/bookings/notify` to
+> `php docs/_tools/lint/undefined-language-keys.php app/plugins/bookings/notify` to
 > find keys with no string behind them.
 
 ## Registering the file

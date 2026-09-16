@@ -5,7 +5,7 @@ reviewed: 2026-09-09
 # Reference
 
 Generated references, rebuilt from the source tree so they cannot drift
-from the code. Each is produced by a script under `tools/docs/`, and the
+from the code. Each is produced by a script under `docs/_tools/docs/`, and the
 Pages workflow fails if the committed pages differ from a fresh run.
 
 - [Configuration](configuration/README.md) — every parameter in every
@@ -24,7 +24,7 @@ Pages workflow fails if the committed pages differ from a fresh run.
 To regenerate after changing a manifest, a controller, or a command:
 
 ```bash
-for g in config muse events api; do python3 tools/docs/gen_${g}_reference.py; done
+for g in config muse events api; do python3 docs/_tools/docs/gen_${g}_reference.py; done
 python3 gh-pages/build_site.py
 ```
 

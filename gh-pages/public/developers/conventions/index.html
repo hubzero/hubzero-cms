@@ -469,7 +469,7 @@ vendor/bin/parallel-lint --exclude vendor .
 vendor/bin/phpunit -c phpunit.xml.dist
 </code></pre>
 <p>The facade check runs from the repository root:</p>
-<pre><code class="language-bash">php tools/lint/missing-facade-imports.php
+<pre><code class="language-bash">php docs/_tools/lint/missing-facade-imports.php
 </code></pre>
 <p>It takes <code>--fix</code> to insert the missing <code>use</code> statements, and any path to narrow
 the scan; with no path it scans <code>core/components</code>, <code>core/plugins</code>,
@@ -528,7 +528,7 @@ cares about.</p>
 <tbody>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a></td>
-<td><code>php -l</code> over every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>tools/lint/missing-facade-imports.php</code>, then <code>tools/lint/undefined-language-keys.php</code> against a ceiling of 444</td>
+<td><code>php -l</code> over every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>docs/_tools/lint/missing-facade-imports.php</code>, then <code>docs/_tools/lint/undefined-language-keys.php</code> against a ceiling of 444</td>
 </tr>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/tests.yml"><code>tests.yml</code></a></td>
@@ -1177,7 +1177,7 @@ in <code>~/.gitconfig</code>:</p>
 <h3 id="before-you-commit">Before you commit</h3>
 <p>Run the linters over what you changed. See
 <a href="#php-coding-style">PHP Coding Style</a> for the commands.
-If the change touches <code>docs/</code>, run <code>sh tools/docs/rebuild.sh</code> and commit the
+If the change touches <code>docs/</code>, run <code>sh docs/_tools/docs/rebuild.sh</code> and commit the
 rebuilt <code>gh-pages/public/</code> with it; the Pages workflow fails on a stale copy.</p>
 
         </div>

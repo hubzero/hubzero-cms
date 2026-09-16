@@ -31,7 +31,7 @@ The conversion is mechanical enough to do in an afternoon for a small
 extension. The order that wastes least time: rename the classes, add the
 `use` lines for every facade the file now names, run
 `php -l` over the result, then run
-`php tools/lint/missing-facade-imports.php <your path>` to catch the imports
+`php docs/_tools/lint/missing-facade-imports.php <your path>` to catch the imports
 you missed. That last step is not optional — a missing import is the one
 mistake in this list that neither PHP nor your eyes will find.
 

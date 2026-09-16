@@ -9,7 +9,7 @@ sub-commands (``muse user:group``). This script reads those docblocks and
 writes them all onto ``docs/reference/muse.md``, one section per command.
 
 Usage:
-    python3 tools/docs/gen_muse_reference.py
+    python3 docs/_tools/docs/gen_muse_reference.py
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 COMMANDS = ROOT / "core" / "libraries" / "Hubzero" / "Console" / "Command"
 OUT = ROOT / "docs" / "reference" / "muse.md"
 SKIP_FILES = {"Base.php", "CommandInterface.php"}

@@ -4,7 +4,7 @@
 Source, in order of preference:
 
 1. ``docs/_import/help-export.json``, the full-table export written by
-   ``tools/docs/export_help_db.php`` (includes unpublished trees such as 2.2).
+   ``docs/_tools/docs/export_help_db.php`` (includes unpublished trees such as 2.2).
 2. The public API, ``/api/documentation/articles/list``, which returns only
    published articles. Its response is cached at ``docs/_import/help-api.json``.
 
@@ -25,7 +25,7 @@ The importer never overwrites a page whose header says anything other than
 reviewed chapters survive a rerun.
 
 Usage:
-    python3 tools/docs/import_help.py [--merge-from 220] [--no-fetch] [--dry-run]
+    python3 docs/_tools/docs/import_help.py [--merge-from 220] [--no-fetch] [--dry-run]
 """
 
 from __future__ import annotations
@@ -51,7 +51,7 @@ try:
 except ImportError as exc:  # pragma: no cover
     raise SystemExit("beautifulsoup4 is required: python3 -m pip install beautifulsoup4 lxml") from exc
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "gh-pages"))
 from build_site import parse_meta, slug_for, slugify  # noqa: E402
 

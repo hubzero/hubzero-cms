@@ -17,13 +17,13 @@ on:
     paths:
       - 'docs/**'
       - 'gh-pages/**'
-      - 'tools/docs/**'
+      - 'docs/_tools/docs/**'
       - '.github/workflows/pages.yml'
   pull_request:
     paths:
       - 'docs/**'
       - 'gh-pages/**'
-      - 'tools/docs/**'
+      - 'docs/_tools/docs/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -45,14 +45,14 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install builder dependencies
-        run: python3 -m pip install -r gh-pages/requirements.txt -r tools/docs/requirements.txt pytest
+        run: python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
       - name: Builder and importer unit tests
-        run: python3 -m pytest gh-pages/test_build_site.py tools/docs/test_import_help.py -q
+        run: python3 -m pytest gh-pages/test_build_site.py docs/_tools/docs/test_import_help.py -q
       - name: Generated references must match the source tree
         run: |
-          for g in config muse events api; do python3 tools/docs/gen_${g}_reference.py; done
+          for g in config muse events api; do python3 docs/_tools/docs/gen_${g}_reference.py; done
           if ! git diff --quiet -- docs/reference; then
-            echo "::error::docs/reference is stale: rerun tools/docs/gen_*_reference.py and commit the result."
+            echo "::error::docs/reference is stale: rerun docs/_tools/docs/gen_*_reference.py and commit the result."
             git diff --stat -- docs/reference
             exit 1
           fi

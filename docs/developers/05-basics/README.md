@@ -35,7 +35,7 @@ namespace standing in for an object in the application container.
 >
 > `\Request::getInt('id')` works too. Nothing catches a missing import
 > before the line runs, so a rarely taken error path can carry the fault for
-> a long time; `php tools/lint/missing-facade-imports.php` finds them, and
+> a long time; `php docs/_tools/lint/missing-facade-imports.php` finds them, and
 > it runs in continuous integration. See
 > [facades](../03-foundation/06-facades.md).
 

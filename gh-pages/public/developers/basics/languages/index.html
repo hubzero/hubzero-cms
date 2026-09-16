@@ -195,12 +195,12 @@ echo Lang::txt('COM_BOOKINGS_HOLD_RELEASED');
 of a sentence, and it survives review because the path that renders it is
 usually an error branch, a confirmation email, or a screen only an
 administrator sees.</p>
-<p>It is not rare. <code>php tools/lint/undefined-language-keys.php</code> currently
+<p>It is not rare. <code>php docs/_tools/lint/undefined-language-keys.php</code> currently
 reports <strong>444 keys</strong> the tree asks for that no <code>en-GB</code> file anywhere
 defines, and the
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml">PHP lint workflow</a> runs it against
 that number as a ceiling rather than against zero:</p>
-<pre><code class="language-yaml">run: php tools/lint/undefined-language-keys.php --quiet --max=444
+<pre><code class="language-yaml">run: php docs/_tools/lint/undefined-language-keys.php --quiet --max=444
 </code></pre>
 <p>So the build fails when your change makes it 445. Three rules keep you off
 that list.</p>
@@ -450,7 +450,7 @@ differently&quot;. A view override for a wording change duplicates a file that
 will then drift from the original at the next upgrade.</p>
 </aside>
 <h2 id="checking-your-work">Checking your work</h2>
-<pre><code class="language-bash">php tools/lint/undefined-language-keys.php core/components/com_bookings
+<pre><code class="language-bash">php docs/_tools/lint/undefined-language-keys.php core/components/com_bookings
 </code></pre>
 <p>Run it against your own extension before you push, and against nothing at
 all — the whole of <code>core/</code> — to see where the ceiling stands. A clean run is

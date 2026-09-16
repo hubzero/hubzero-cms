@@ -215,7 +215,7 @@
         
         <div class="prose">
 <p>Generated references, rebuilt from the source tree so they cannot drift
-from the code. Each is produced by a script under <code>tools/docs/</code>, and the
+from the code. Each is produced by a script under <code>docs/_tools/docs/</code>, and the
 Pages workflow fails if the committed pages differ from a fresh run.</p>
 <ul>
 <li><a href="configuration/index.html">Configuration</a> — every parameter in every
@@ -232,7 +232,7 @@ explorer in <code>com_developer</code> also reads.</li>
 listen.</li>
 </ul>
 <p>To regenerate after changing a manifest, a controller, or a command:</p>
-<pre><code class="language-bash">for g in config muse events api; do python3 tools/docs/gen_${g}_reference.py; done
+<pre><code class="language-bash">for g in config muse events api; do python3 docs/_tools/docs/gen_${g}_reference.py; done
 python3 gh-pages/build_site.py
 </code></pre>
 <p>The narrative counterparts live in the <a href="../developers/index.html">Developers</a>

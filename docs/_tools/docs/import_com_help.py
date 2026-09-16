@@ -9,7 +9,7 @@ committed) with a report that says which book chapter each one belongs to.
 Reviewers pull what is worth keeping into the real chapter during phase 3.
 
 Usage:
-    python3 tools/docs/import_com_help.py
+    python3 docs/_tools/docs/import_com_help.py
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ import shutil
 import sys
 from pathlib import Path, PurePosixPath
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "tools" / "docs"))
 sys.path.insert(0, str(ROOT / "gh-pages"))
 

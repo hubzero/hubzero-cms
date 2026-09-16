@@ -269,12 +269,12 @@ nothing in fixtures. The controller that calls them is checked by using it.</p>
 <td>Lists and runs one extension's tests</td>
 </tr>
 <tr>
-<td><code>tools/lint/missing-facade-imports.php</code></td>
+<td><code>docs/_tools/lint/missing-facade-imports.php</code></td>
 <td></td>
 <td>Finds unqualified facade calls in namespaced files</td>
 </tr>
 <tr>
-<td><code>tools/lint/undefined-language-keys.php</code></td>
+<td><code>docs/_tools/lint/undefined-language-keys.php</code></td>
 <td></td>
 <td>Finds language keys nothing defines</td>
 </tr>
@@ -431,8 +431,8 @@ not happen to execute the affected line. Both have a linter.</p>
 <code>Route::url()</code> resolves to <code>Current\Namespace\Route</code> and fatals when the line
 runs. The file parses; nothing complains until that branch executes, which
 on a rarely used error path can be years.</p>
-<pre><code class="language-bash">php tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
-php tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
+<pre><code class="language-bash">php docs/_tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
+php docs/_tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
 </code></pre>
 <p>It reads the file with PHP's tokenizer, so a name in a comment, a string or
 a heredoc is not counted. It exits non-zero on a finding, and the PHP lint
@@ -441,8 +441,8 @@ were fixed at once, and this is what keeps them from coming back.</p>
 <h3 id="undefined-language-keys">Undefined language keys</h3>
 <p><code>Lang::txt()</code> returns its argument unchanged when the key is not found, so a
 missing string is not an error — the raw key is printed into the page.</p>
-<pre><code class="language-bash">php tools/lint/undefined-language-keys.php
-php tools/lint/undefined-language-keys.php core/components/com_blog
+<pre><code class="language-bash">php docs/_tools/lint/undefined-language-keys.php
+php docs/_tools/lint/undefined-language-keys.php core/components/com_blog
 </code></pre>
 <p>A key counts as defined if any <code>en-GB</code> file anywhere under <code>core/</code> or <code>app/</code>
 defines it, which is deliberately generous: only a handful of files load per

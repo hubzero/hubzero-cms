@@ -24,8 +24,8 @@ Everything here is in the tree and you can read it:
 | [`core/bin/composer`](../../../core/bin/composer) | A bundled Composer. Run it as `php core/bin/composer install` from `core/`. |
 | [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. The platform is pinned to PHP `8.2.30`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, `parallel-lint`, and Mockery. |
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
-| [`tools/lint/`](../../../tools/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
-| [`tools/docs/`](../../../tools/docs) and `gh-pages/` | The documentation builder and the reference generators. |
+| [`docs/_tools/lint/`](../../_tools/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
+| [`docs/_tools/docs/`](../../_tools/docs) and `gh-pages/` | The documentation builder and the reference generators. |
 | `.github/workflows/` | The CI. See below. |
 
 ## What this repository does not provide
@@ -183,9 +183,9 @@ Three workflows, in `.github/workflows/`:
 
 - **`php-lint.yml`** — runs on PHP 8.3. Three checks: `php -l` over every PHP
   file under `core/` and `app/` outside `vendor/`;
-  `tools/lint/missing-facade-imports.php`, which fails on any namespaced file
+  `docs/_tools/lint/missing-facade-imports.php`, which fails on any namespaced file
   that uses a facade without importing it; and
-  `tools/lint/undefined-language-keys.php --quiet --max=444`, which fails if
+  `docs/_tools/lint/undefined-language-keys.php --quiet --max=444`, which fails if
   the number of language keys nothing defines rises above the current count.
   The second exists because such a file parses cleanly and misbehaves only
   when the line runs — see

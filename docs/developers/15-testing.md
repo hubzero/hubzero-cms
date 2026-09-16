@@ -68,8 +68,8 @@ nothing in fixtures. The controller that calls them is checked by using it.
 | PHPUnit 11.5 | `core/vendor/bin/phpunit` | The test runner |
 | `core/phpunit.xml.dist` | | The shipped configuration: three suites |
 | `muse test` | `core/bin/muse` | Lists and runs one extension's tests |
-| `tools/lint/missing-facade-imports.php` | | Finds unqualified facade calls in namespaced files |
-| `tools/lint/undefined-language-keys.php` | | Finds language keys nothing defines |
+| `docs/_tools/lint/missing-facade-imports.php` | | Finds unqualified facade calls in namespaced files |
+| `docs/_tools/lint/undefined-language-keys.php` | | Finds language keys nothing defines |
 | `core/bin/php_tests.sh` | | PSR-12 style plus a syntax check, over a list of files |
 | `.github/workflows/php-lint.yml` | | CI: `php -l` over `core` and `app`, the facade linter, and the language-key ceiling |
 | `.github/workflows/tests.yml` | | CI: the PHPUnit suite |
@@ -257,8 +257,8 @@ runs. The file parses; nothing complains until that branch executes, which
 on a rarely used error path can be years.
 
 ```bash
-php tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
-php tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
+php docs/_tools/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
+php docs/_tools/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
 ```
 
 It reads the file with PHP's tokenizer, so a name in a comment, a string or
@@ -272,8 +272,8 @@ were fixed at once, and this is what keeps them from coming back.
 missing string is not an error — the raw key is printed into the page.
 
 ```bash
-php tools/lint/undefined-language-keys.php
-php tools/lint/undefined-language-keys.php core/components/com_blog
+php docs/_tools/lint/undefined-language-keys.php
+php docs/_tools/lint/undefined-language-keys.php core/components/com_blog
 ```
 
 A key counts as defined if any `en-GB` file anywhere under `core/` or `app/`

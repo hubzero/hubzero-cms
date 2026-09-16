@@ -187,9 +187,9 @@ sweep of both trees before the alias autoloader answers.
 ### The linter
 
 ```bash
-php tools/lint/missing-facade-imports.php            # scans components, plugins, modules, libraries
-php tools/lint/missing-facade-imports.php --fix      # inserts the missing use statements
-php tools/lint/missing-facade-imports.php core/components/com_booking
+php docs/_tools/lint/missing-facade-imports.php            # scans components, plugins, modules, libraries
+php docs/_tools/lint/missing-facade-imports.php --fix      # inserts the missing use statements
+php docs/_tools/lint/missing-facade-imports.php core/components/com_booking
 ```
 
 Paths are relative to the repository root. With no path it scans

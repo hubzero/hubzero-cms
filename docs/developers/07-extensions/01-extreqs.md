@@ -260,7 +260,7 @@ use Route;
 use Lang;
 ```
 
-`php tools/lint/missing-facade-imports.php` finds the ones you missed, and
+`php docs/_tools/lint/missing-facade-imports.php` finds the ones you missed, and
 runs on every push. See [Facades](../03-foundation/06-facades.md).
 
 Which facades exist depends on the client. `Toolbar` and `Submenu` are

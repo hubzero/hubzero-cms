@@ -33,14 +33,14 @@ of a sentence, and it survives review because the path that renders it is
 usually an error branch, a confirmation email, or a screen only an
 administrator sees.
 
-It is not rare. `php tools/lint/undefined-language-keys.php` currently
+It is not rare. `php docs/_tools/lint/undefined-language-keys.php` currently
 reports **444 keys** the tree asks for that no `en-GB` file anywhere
 defines, and the
 [PHP lint workflow](../../../.github/workflows/php-lint.yml) runs it against
 that number as a ceiling rather than against zero:
 
 ```yaml
-run: php tools/lint/undefined-language-keys.php --quiet --max=444
+run: php docs/_tools/lint/undefined-language-keys.php --quiet --max=444
 ```
 
 So the build fails when your change makes it 445. Three rules keep you off
@@ -279,7 +279,7 @@ Change** box resolves a piece of wording back to the key that produced it.
 ## Checking your work
 
 ```bash
-php tools/lint/undefined-language-keys.php core/components/com_bookings
+php docs/_tools/lint/undefined-language-keys.php core/components/com_bookings
 ```
 
 Run it against your own extension before you push, and against nothing at

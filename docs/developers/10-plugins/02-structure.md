@@ -173,7 +173,7 @@ namespaced file usually *works*, because the alias autoloader falls back to
 the last segment of the class name, and then fails later in a handful of
 specific situations. Read [Facades](../03-foundation/06-facades.md#importing-a-facade)
 for which ones, and run
-`php tools/lint/missing-facade-imports.php app/plugins/bookings/notify` before
+`php docs/_tools/lint/missing-facade-imports.php app/plugins/bookings/notify` before
 you ship.
 
 ## The entry guard

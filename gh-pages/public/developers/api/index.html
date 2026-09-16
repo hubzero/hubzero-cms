@@ -285,7 +285,7 @@ Do not write an endpoint that assumes either has run.</p>
 <p>Endpoint documentation is docblock tags on the task method, and they are not
 decoration — two things read them. <code>Hubzero\Api\Doc\Generator</code> builds the
 interactive explorer a hub serves at <code>/developer/api/docs</code>, and
-<code>tools/docs/gen_api_reference.py</code> builds the
+<code>docs/_tools/docs/gen_api_reference.py</code> builds the
 <a href="../../reference/api/index.html">API reference</a> in these pages.</p>
 <pre><code class="language-php">	/**
 	 * Display a list of entries
@@ -398,7 +398,7 @@ extending <code>ApiController</code>.</li>
 <li>Check authorisation explicitly. An API controller has no menu item and no
 component parameters merged into it; nothing is checked for you.</li>
 <li>Return data with <code>$this-&gt;send()</code>. Do not echo.</li>
-<li>Regenerate the reference: <code>python3 tools/docs/gen_api_reference.py</code>. The
+<li>Regenerate the reference: <code>python3 docs/_tools/docs/gen_api_reference.py</code>. The
 documentation workflow regenerates it too and fails if your committed copy
 differs.</li>
 </ol>

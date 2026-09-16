@@ -347,7 +347,7 @@ definition, from an entirely different cause.</li>
 unchanged, so the page renders <code>COM_EXAMPLE_SAVE_FAILED</code> in place of a
 sentence. That fails quietly, and it fails hardest on the paths nobody
 exercises.</p>
-<pre><code class="language-bash">php tools/lint/undefined-language-keys.php core/components/com_example
+<pre><code class="language-bash">php docs/_tools/lint/undefined-language-keys.php core/components/com_example
 </code></pre>
 <p>That reports every literal key the code asks for that no <code>en-GB</code> file
 anywhere defines. It cannot check keys assembled at runtime

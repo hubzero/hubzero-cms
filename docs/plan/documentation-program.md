@@ -186,7 +186,7 @@ docs/
 gh-pages/
   README.md  site.json  build_site.py  check_links.py  test_build_site.py
   requirements.txt  redirects.json  templates/  assets/  public/
-tools/docs/
+docs/_tools/docs/
   import_help.py  gen_config_reference.py  gen_api_reference.py
   gen_muse_reference.py  gen_events_reference.py  screenshots.py
 .github/workflows/pages.yml
@@ -245,7 +245,7 @@ Deliverable: every 2.4 page, plus every 2.2 page that 2.4 lacks, rendered on the
 site under the legacy structure, marked "imported, not yet reviewed", with old
 URLs redirecting.
 
-1. Export the whole documentation table with `tools/docs/export_help_db.php`
+1. Export the whole documentation table with `docs/_tools/docs/export_help_db.php`
    (section 9). This supersedes the public API as the source because it includes
    the 2.2 tree and any unpublished 2.4 pages; the API stays as a fallback.
 2. Align 2.2 and 2.4 by path. Three outcomes per page: only in 2.4, keep as is;
@@ -254,7 +254,7 @@ URLs redirecting.
    pages keep the 2.4 copy. Where 2.2 is longer or newer, keep 2.4 as the base
    and append the 2.2-only material under a clearly marked heading for the
    reviewer to reconcile in phase 3. Emit a merge report listing every decision.
-3. `tools/docs/import_help.py`: read the export, then convert
+3. `docs/_tools/docs/import_help.py`: read the export, then convert
    each article's HTML to Markdown. Pandoc handles the bulk; a post-processing
    pass fixes what it cannot: language guessing for the 696 `<pre>` blocks,
    `{{version}}` macros, CKEditor artifacts (`&nbsp;`, empty paragraphs, inline
@@ -324,7 +324,7 @@ Mechanics:
 - Work in batches of 10 to 15 pages per pull request, grouped by component.
 - Subagents do the code inspection and first-draft rewrite; a human reads the
   result before the status flips to `reviewed`.
-- Screenshots come from `tools/docs/screenshots.py` driving Playwright against a
+- Screenshots come from `docs/_tools/docs/screenshots.py` driving Playwright against a
   local hub populated by seed scripts written for this purpose (sample articles,
   members, groups, resources, and so on). Extend the seed set as chapters need
   it.
@@ -410,20 +410,20 @@ site to land near 200k words plus the generated references.
 3. Write `docs/STYLE.md` and `docs/LICENSE.md` (MIT).
 4. Run the database export (section 9) and check the 2.2 and 2.4 trees into
    `docs/_import/`, so the merge rules are designed against real data.
-5. Write `tools/docs/import_help.py` against that export, convert, and review a
+5. Write `docs/_tools/docs/import_help.py` against that export, convert, and review a
    30-page sample.
 6. Start `docs/plan/review-tracker.md` from the export so phase 3 has a complete
    page list on day one.
 
 ## 9. Exporting the database
 
-`tools/docs/export_help_db.php` dumps every row of the documentation table to
+`docs/_tools/docs/export_help_db.php` dumps every row of the documentation table to
 JSON, including the unpublished 2.2 tree, and prints one summary line per
 version. It has to run as root on help.hubzero.org because
 `hubconfiguration.php` is root-only. It prints no credentials.
 
 ```bash
-scp tools/docs/export_help_db.php help.hubzero.org:/tmp/
+scp docs/_tools/docs/export_help_db.php help.hubzero.org:/tmp/
 ssh help.hubzero.org sudo php /tmp/export_help_db.php
 mkdir -p docs/_import
 scp help.hubzero.org:/tmp/documentation-export.json docs/_import/help-export.json

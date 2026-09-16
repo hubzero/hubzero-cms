@@ -75,7 +75,7 @@ Nothing is logged, so the only way to find the ones you have not exercised is
 to look:
 
 ```bash
-php tools/lint/undefined-language-keys.php app/components/com_bookings
+php docs/_tools/lint/undefined-language-keys.php app/components/com_bookings
 ```
 
 Any further arguments are passed to `sprintf()`, so a string can carry

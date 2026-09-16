@@ -137,7 +137,7 @@ callback when one is asked for.
 Endpoint documentation is docblock tags on the task method, and they are not
 decoration — two things read them. `Hubzero\Api\Doc\Generator` builds the
 interactive explorer a hub serves at `/developer/api/docs`, and
-`tools/docs/gen_api_reference.py` builds the
+`docs/_tools/docs/gen_api_reference.py` builds the
 [API reference](../reference/api/README.md) in these pages.
 
 <!--include: core/components/com_blog/api/controllers/entriesv1_0.php:29-40-->
@@ -234,7 +234,7 @@ return array(
 3. Check authorisation explicitly. An API controller has no menu item and no
    component parameters merged into it; nothing is checked for you.
 4. Return data with `$this->send()`. Do not echo.
-5. Regenerate the reference: `python3 tools/docs/gen_api_reference.py`. The
+5. Regenerate the reference: `python3 docs/_tools/docs/gen_api_reference.py`. The
    documentation workflow regenerates it too and fails if your committed copy
    differs.
 
