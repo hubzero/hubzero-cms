@@ -237,24 +237,30 @@ class PdfForm
 			}
 		}
 
-		// Sort
+		// Sort (reindexed, since natsort keeps the scandir keys)
 		natsort($versions);
+		$versions = array_values($versions);
 
 		// If there's a dir for the given version, just use that
 		if (in_array($version, $versions))
 		{
-			$base = $this->base . $this->id . DS . $version;
 			$version_dir = $version;
 		}
 		else // Otherwise, see if there's a version dir for a previous version
 		{
-			for ($i=0; $i < count($versions); $i++)
+			foreach ($versions as $v)
 			{
-				if ($versions[$i] < $version)
+				if ($v < $version)
 				{
-					$version_dir = $versions[$i];
+					$version_dir = $v;
 				}
 			}
+		}
+
+		// Count the page images in the same dir the image URLs point at
+		if (isset($version_dir))
+		{
+			$base = $this->base . $this->id . DS . $version_dir;
 		}
 
 		$dir    = opendir($base);
