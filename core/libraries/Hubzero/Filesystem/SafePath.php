@@ -252,6 +252,22 @@ class SafePath
 	}
 
 	/**
+	 * Reduce a name to a single safe path component, refusing traversal
+	 *
+	 * For values that are meant to be one filename, never a path: any directory
+	 * separator, "." or ".." segment, null byte or control character is grounds
+	 * for refusal rather than silent stripping, so a caller cannot be tricked
+	 * into writing outside the directory it chose.
+	 *
+	 * @param   string  $name
+	 * @return  string|boolean  The name, or false if it isn't a single safe component
+	 */
+	public static function name($name)
+	{
+		return self::isComponent(is_string($name) ? $name : '') ? $name : false;
+	}
+
+	/**
 	 * Split a relative path into components, refusing traversal
 	 *
 	 * @param   string  $relative

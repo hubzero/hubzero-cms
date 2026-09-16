@@ -816,7 +816,7 @@ class Filesv1_0 extends ApiController
 			$subdir = Request::getString('subdir', '', 'GET');
 
 			$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-			$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
+			$temp_dir .= rtrim(strtr(base64_encode($subdir), '+/', '-_'), '=') . '_' . $flowIdentifier;
 
 			$chunk_file = $temp_dir . DS . $flowFilename . '.part' . $flowChunkNumber;
 
@@ -862,7 +862,7 @@ class Filesv1_0 extends ApiController
 				if (trim($flowIdentifier) != '')
 				{
 					$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-					$temp_dir .= base64_encode($subdir) . '_' . $flowIdentifier;
+					$temp_dir .= rtrim(strtr(base64_encode($subdir), '+/', '-_'), '=') . '_' . $flowIdentifier;
 				}
 
 				$flowFilename = self::chunkFilename(Request::getString('flowFilename', '', 'POST'));
@@ -876,7 +876,7 @@ class Filesv1_0 extends ApiController
 				// Create the temporary directory
 				if (!is_dir($temp_dir))
 				{
-					mkdir($temp_dir, 0777, true);
+					mkdir($temp_dir, 0700, true);
 				}
 
 				// Move the temporary file

@@ -511,7 +511,11 @@ class connections
 			'name'		=> 'connected',
 			'layout'	=> 'pathprefix'
 		]);
-		$subdir = Request::getString('subdir', '');
+		$subdir = \Hubzero\Filesystem\SafePath::relative((string) Request::getString('subdir', ''));
+		if ($subdir === false)
+		{
+			App::abort(404, Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+		}
 
 		// A failure here is typically an expired/revoked provider credential;
 		// show a notice rather than surfacing a raw 401/500.
@@ -1001,7 +1005,7 @@ class connections
 				}
 
 				$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-				$temp_dir .= base64_encode($this->subdir) . '_' . $_GET['flowIdentifier'];
+				$temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=') . '_' . $_GET['flowIdentifier'];
 
 				$chunk_file = $temp_dir . DS . $_GET['flowFilename'] . '.part' . $_GET['flowChunkNumber'];
 
@@ -1045,7 +1049,7 @@ class connections
 					if (isset($_POST['flowIdentifier']) && trim($_POST['flowIdentifier']) != '')
 					{
 						$temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-						$temp_dir .= base64_encode($this->subdir) . '_' . $_POST['flowIdentifier'];
+						$temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=') . '_' . $_POST['flowIdentifier'];
 					}
 
 					$dest_file = $temp_dir . DS . $_POST['flowFilename'] . '.part' . $_POST['flowChunkNumber'];
@@ -1053,7 +1057,7 @@ class connections
 					// Create the temporary directory
 					if (!is_dir($temp_dir))
 					{
-						mkdir($temp_dir, 0777, true);
+						mkdir($temp_dir, 0700, true);
 					}
 
 					// Move the temporary file
