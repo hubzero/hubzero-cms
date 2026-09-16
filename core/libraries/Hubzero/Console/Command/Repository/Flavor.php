@@ -226,7 +226,7 @@ class Flavor extends Base implements CommandInterface
              ->addArgument(
                  '<dir>/*.json, *.yml, *.yaml',
                  'An object of flavor names, each an object of levers: description, extends, '
-                 . 'template, components {enable, disable}, modules {enable, disable, params}, '
+                 . 'template, components {enable, disable}, modules {enable, disable, params, items}, '
                  . 'plugins {enable, disable, params} (named folder/element), dashboard {tiles}, '
                  . 'kb {categories, articles}, content {articles}, menu {items, by path}, '
                  . 'resource_types. JSON and YAML read alike; YAML can carry a comment.'

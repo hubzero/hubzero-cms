@@ -259,7 +259,10 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
             ->whereEquals('name', 'Eve')
             ->execute();
 
-        $this->assertTrue($result > 0, "[$dbName] Update should return affected rows");
+        // execute() hands back the driver, as every Driver::query() does;
+        // the row count is the driver's to report
+        $this->assertNotFalse($result, "[$dbName] Update should execute");
+        $this->assertSame(1, $driver->getAffectedRows(), "[$dbName] Update should affect one row");
 
         // Verify updated data
         $query = new Query($driver);
@@ -303,7 +306,8 @@ class QueryBuilderIntegrationTest extends AbstractDriverTestCase
             ->whereEquals('name', 'Frank')
             ->execute();
 
-        $this->assertTrue($result > 0, "[$dbName] Delete should return affected rows");
+        $this->assertNotFalse($result, "[$dbName] Delete should execute");
+        $this->assertSame(1, $driver->getAffectedRows(), "[$dbName] Delete should affect one row");
 
         // Verify deleted
         $query = new Query($driver);

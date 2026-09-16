@@ -128,6 +128,11 @@ class FlavorTest extends TestCase
             array('community/poll' => 0, 'community/poll/archive' => 0),
             $all['quieter']->get('menu', array(), 'items')
         );
+
+        // module instances merge by id or title, alongside the module switches
+        $this->assertSame(array('Latest Poll' => 0, 92 => 0), $quiet->get('modules', array(), 'items'));
+        $this->assertSame(array('Latest Poll' => 0, 92 => 1), $all['quieter']->get('modules', array(), 'items'));
+        $this->assertSame(array('mod_mytools'), $all['quieter']->get('modules', array(), 'disable'), 'switches kept');
         $this->assertSame(array('com_tools', 'com_usage', 'com_poll'), $all['quieter']->get('components', array(), 'disable'));
     }
 

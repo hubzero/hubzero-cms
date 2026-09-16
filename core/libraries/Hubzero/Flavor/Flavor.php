@@ -41,7 +41,7 @@ class Flavor
         'extends'        => 'string',
         'template'       => 'string',
         'components'     => array('enable' => 'list', 'disable' => 'list'),
-        'modules'        => array('enable' => 'list', 'disable' => 'list', 'params' => 'map'),
+        'modules'        => array('enable' => 'list', 'disable' => 'list', 'params' => 'map', 'items' => 'states'),
         'plugins'        => array('enable' => 'list', 'disable' => 'list', 'params' => 'map'),
         'dashboard'      => array('tiles' => 'tiles'),
         'kb'             => array('categories' => 'states', 'articles' => 'states'),
@@ -207,9 +207,9 @@ class Flavor
                     $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : array();
 
                     foreach ($value as $key => $states) {
-                        $result[$lever][$key] = array_merge(
-                            isset($result[$lever][$key]) ? $result[$lever][$key] : array(),
-                            $states
+                        $result[$lever][$key] = self::over(
+                            $states,
+                            isset($result[$lever][$key]) ? $result[$lever][$key] : array()
                         );
                     }
                     break;
@@ -218,9 +218,9 @@ class Flavor
                     $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : array();
 
                     foreach ($value as $alias => $columns) {
-                        $result[$lever][$alias] = array_merge(
-                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : array(),
-                            $columns
+                        $result[$lever][$alias] = self::over(
+                            $columns,
+                            isset($result[$lever][$alias]) ? $result[$lever][$alias] : array()
                         );
                     }
                     break;
@@ -273,14 +273,40 @@ class Flavor
         $params = isset($parent['params']) ? $parent['params'] : array();
 
         foreach (isset($child['params']) ? $child['params'] : array() as $element => $values) {
-            $params[$element] = array_merge(isset($params[$element]) ? $params[$element] : array(), $values);
+            $params[$element] = self::over($values, isset($params[$element]) ? $params[$element] : array());
         }
 
         if ($params) {
             $result['params'] = $params;
         }
 
+        // Module instances, by id or title: the child's word on each
+        $items = self::over(
+            isset($child['items']) ? $child['items'] : array(),
+            isset($parent['items']) ? $parent['items'] : array()
+        );
+
+        if ($items) {
+            $result['items'] = $items;
+        }
+
         return $result;
+    }
+
+    /**
+     * The child's keys laid over the parent's: the parent's order, the
+     * child's values, keys kept as they are
+     *
+     * Not array_merge(): that renumbers integer keys, and a module id or an
+     * all-digit alias is an integer key once YAML or JSON has read it.
+     *
+     * @param   array  $child
+     * @param   array  $parent
+     * @return  array
+     */
+    protected static function over(array $child, array $parent)
+    {
+        return array_replace($parent, $child);
     }
 
     /**
