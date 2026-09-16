@@ -49,7 +49,7 @@
 	display: inline-block;
 }
 .filelist .item-details {
-	color: #999;
+	color: #767676; /* WCAG SC 1.4.3: was #999 on #fff = 2.84:1; #767676 = 4.54:1 */
 	float: right;
 }
 .filelist li {
