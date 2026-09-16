@@ -24,13 +24,13 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse help`](#muse-help) | 0 | Help class for rendering utility-wide help documentation |
 | [`muse htmx`](#muse-htmx) | 2 | HTMX developer tooling command. |
 | [`muse inertia`](#muse-inertia) | 2 | Inertia developer tooling command. |
-| [`muse install`](#muse-install) | 9 | Install  - fresh HUBzero installation |
+| [`muse install`](#muse-install) | 10 | Install  - fresh HUBzero installation |
 | [`muse log:post`](#muse-log-post) | 0 | Post log class |
 | [`muse log:profile`](#muse-log-profile) | 0 | Profile log class |
 | [`muse log:sql`](#muse-log-sql) | 0 | Sql log class |
 | [`muse log`](#muse-log) | 1 | Log class |
 | [`muse migration`](#muse-migration) | 6 | Migration class |
-| [`muse repository:flavor`](#muse-repository-flavor) | 2 | The flavor of a hub: whether it runs simulation tools |
+| [`muse repository:flavor`](#muse-repository-flavor) | 4 | Shape a hub with a flavor |
 | [`muse repository:package`](#muse-repository-package) | 2 | Repository class |
 | [`muse repository`](#muse-repository) | 12 | Repository class |
 | [`muse resources`](#muse-resources) | 3 | Resources |
@@ -318,6 +318,15 @@ Configure site settings and generate config files
 
 Load a set of starting content into the database
 
+### `muse install flavor`
+
+Apply a flavor - the switches that make one hub differ from another
+
+Arguments:
+
+- flavor   The flavor to apply; without it the answer file's `flavor` decides
+- flavors  A directory of flavor files to read ahead of app/flavors and core/flavors
+
 ### `muse install migrations`
 
 Run database migrations to update schema
@@ -396,19 +405,43 @@ Drops ALL tables and re-runs migrations (EXTREMELY DESTRUCTIVE)
 
 ## `muse repository:flavor`
 
-The flavor of a hub: whether it runs simulation tools.
+Shape a hub with a flavor.
 
 Implemented in [`Flavor.php`](../../core/libraries/Hubzero/Console/Command/Repository/Flavor.php).
 
-Run alone, `muse repository:flavor` default (required) command
+Run alone, `muse repository:flavor` shape the hub with a flavor; run alone, lists the flavors there are
+
+### `muse repository:flavor list`
+
+List the flavors available, with their descriptions
+
+Arguments:
+
+- path  A directory of flavor files to read ahead of app/flavors and core/flavors
+
+### `muse repository:flavor show`
+
+Show a flavor's levers, resolved through what it extends
+
+Arguments:
+
+- path  A directory of flavor files to read ahead of app/flavors and core/flavors
 
 ### `muse repository:flavor set`
 
-No description available.
+Pull every lever a flavor names
+
+Arguments:
+
+- path  A directory of flavor files to read ahead of app/flavors and core/flavors
 
 ### `muse repository:flavor status`
 
-No description available.
+Say how the hub differs from a flavor, or which flavor it matches
+
+Arguments:
+
+- path  A directory of flavor files to read ahead of app/flavors and core/flavors
 
 ## `muse repository:package`
 

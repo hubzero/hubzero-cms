@@ -1,0 +1,27 @@
+{
+    "plain": {
+        "description": "The base",
+        "template": "meridian",
+        "components": {"disable": ["com_tools", "com_usage"]},
+        "modules": {
+            "disable": ["mod_mytools"],
+            "params": {"mod_mycontributions": {"show_tools": "0", "limit": "5"}}
+        },
+        "dashboard": {"tiles": [{"module": 44, "col": 1}, {"module": 37, "col": 3}]},
+        "kb": {"categories": {"tools": 0}, "articles": {"webdav": 0}},
+        "resource_types": {"tools": {"contributable": 0}}
+    },
+
+    "tooled": {
+        "extends": "plain",
+        "description": "The base, with tools",
+        "components": {"enable": ["com_tools"]},
+        "modules": {
+            "enable": ["mod_mytools"],
+            "params": {"mod_mycontributions": {"show_tools": "1"}}
+        },
+        "dashboard": {"tiles": [{"module": 41, "col": 3}, {"module": 44, "col": 1}, {"module": 37, "col": 3}]},
+        "kb": {"articles": {"webdav": 1}},
+        "resource_types": {"tools": {"contributable": 1}}
+    }
+}

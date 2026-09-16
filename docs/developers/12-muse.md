@@ -372,6 +372,57 @@ finish the update by hand.
 [`muse repository clean`](../reference/muse.md#muse-repository-clean) prunes
 rollback points and stashes, and asks before each.
 
+#### Flavors
+
+[`muse repository:flavor`](../reference/muse.md#muse-repository-flavor)
+shapes a hub from a **flavor**: a JSON description of the switches that make
+one hub differ from another. The CMS ships two in
+[`core/flavors/flavors.json`](../../core/flavors/flavors.json) — `default`,
+the CMS without simulation tools, and `full`, with them — and a hub adds its
+own in `app/flavors/`, or in any directory named with `--path` or the
+`HUBZERO_FLAVORS` environment variable. Files are read in that order and the
+first definition of a name wins, so a hub redefines a shipped flavor by
+writing one of the same name.
+
+```bash
+php core/bin/muse repository:flavor list             # what there is, and from where
+php core/bin/muse repository:flavor show full        # its levers, resolved
+php core/bin/muse repository:flavor set default      # pull them
+php core/bin/muse repository:flavor status           # which flavor the hub matches
+php core/bin/muse repository:flavor status quiet --path=/srv/flavors
+```
+
+A file holds any number of flavors, an object keyed by name; each is an
+object of **levers**:
+
+| Lever | Shape | Pulls |
+|---|---|---|
+| `description` | string | Shown by `list` |
+| `extends` | string | The flavor this one starts from |
+| `template` | string | The site template made the default style |
+| `components` | `{enable, disable}` | `#__extensions.enabled` by element |
+| `modules` | `{enable, disable, params}` | The module's enabled flag; `params` merged into every instance |
+| `plugins` | `{enable, disable, params}` | Named `folder/element`; `params` merged into the plugin's |
+| `dashboard` | `{tiles: [{module, col}, …]}` | The member dashboard's default tiles, two rows high, stacked per column in the order given |
+| `kb` | `{categories, articles}` | Published state by alias |
+| `content` | `{articles}` | Published state by alias |
+| `resource_types` | `{alias: {column: value}}` | Columns of `#__resource_types` by alias |
+
+Every lever is a switch on rows that exist; nothing is added or removed, so
+applying one flavor after another leaves the hub as the second describes it.
+A key that is not a lever is refused by name, with the list of what is.
+
+Flavors **cascade**. One that `extends` another starts from its parent's
+levers and overrides them: a scalar replaces; a name the child enables leaves
+the inherited disable list, and the other way round; `params` and states
+merge key by key; a `dashboard` layout replaces the layout. This is how
+`full` is written — as `default` with the tool pieces named in `enable` — and
+a parent may live in any of the directories, so a hub's flavor can start from
+a shipped one. A circle, or a parent defined nowhere, is refused.
+
+`muse install` applies a flavor after the migrations; see
+[the development environment](01-getting-started/06-devenvironment.md#getting-a-hub-to-develop-against).
+
 ### Scaffolding
 
 [`muse scaffolding`](../reference/muse.md#muse-scaffolding) writes the files
