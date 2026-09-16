@@ -84,7 +84,22 @@ class Google extends Plugin
         $entered_code = Request::getString('token');
 
         $totp = TOTP::createFromSecret($data->secret);
-        $verification = $totp->verify($entered_code, null, 1);
+
+        // The library that was replaced accepted the previous and the next
+        // period as well as this one, so a phone a few seconds off, or a code
+        // read just before the window turned, still worked. otphp's third
+        // argument is a leeway in seconds, not periods, and 1 shrank that to a
+        // one-second window. Check the three periods explicitly instead.
+        $now          = time();
+        $period       = $totp->getPeriod();
+        $verification = false;
+
+        foreach (array(-1, 0, 1) as $offset) {
+            if ($totp->verify($entered_code, $now + ($offset * $period), 0)) {
+                $verification = true;
+                break;
+            }
+        }
 
         if ($verification) {
             App::get('session')->set('authfactors.status', true);

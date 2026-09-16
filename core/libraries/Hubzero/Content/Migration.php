@@ -402,8 +402,12 @@ class Migration
             $batchTransactionStarted = true;
         }
 
+        // Rolling back walks the list the other way, so a table is not
+        // dropped before the migration that altered it has undone its part.
+        $ordered = ($direction == 'down') ? array_reverse($this->files, true) : $this->files;
+
         // Loop through files and run their '$direction' method
-        foreach ($this->files as $fullpath) { //$file)
+        foreach ($ordered as $fullpath) { //$file)
         // Get just the file
             $file = basename($fullpath);
 
@@ -1083,7 +1087,15 @@ class Migration
         $skipped = [];
 
         foreach ($history as $entry) {
-            $key = $entry->scope . '/' . $entry->file;
+            // migrate() treats a scope of '' or 'migrations' as core/migrations,
+            // because that is how older hubs recorded core runs. Key the same
+            // way, or every one of those shows as pending while run() correctly
+            // has nothing to do.
+            $scope = ($entry->scope === '' || $entry->scope === 'migrations')
+                ? 'core/migrations'
+                : $entry->scope;
+
+            $key = $scope . '/' . $entry->file;
 
             // Only track the most recent execution for each file
             if (!isset($executed[$key])) {
