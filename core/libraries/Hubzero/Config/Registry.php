@@ -423,7 +423,11 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
                 continue;
             }
 
-            if ($recursive && ((is_array($v) && array_keys($v) !== range(0, count($v) - 1)) || is_object($v))) {
+            // range(0, -1) is [0, -1], so without the emptiness test an empty
+            // array counted as associative and came back as an empty object -
+            // [] to {} on every round trip, and a TypeError for anything that
+            // then did in_array() or count() on it.
+            if ($recursive && ((is_array($v) && $v !== array() && array_keys($v) !== range(0, count($v) - 1)) || is_object($v))) {
                 if (!isset($parent->$k) || !is_object($parent->$k)) {
                     $parent->$k = new stdClass();
                 }

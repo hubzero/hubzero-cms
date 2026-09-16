@@ -11,14 +11,30 @@ namespace Hubzero\Config\Processor;
 use Hubzero\Config\Exception\ParseException;
 use Hubzero\Config\Processor as Base;
 use stdClass;
+use Symfony\Component\Yaml\Yaml as SymfonyYaml;
+use Symfony\Component\Yaml\Exception\ExceptionInterface as SymfonyYamlException;
 
 /**
  * YAML Processor
  *
- * Uses the PECL yaml extension (yaml_parse/yaml_emit)
+ * Uses the PECL yaml extension (yaml_parse/yaml_emit) when it is loaded, and
+ * the symfony/yaml package the framework already ships when it is not. The
+ * extension is not declared anywhere, and the registry tries this processor
+ * on any string the others did not claim - so without the fallback a params
+ * value as ordinary as "disabled" was a fatal error on a host without it.
  */
 class Yaml extends Base
 {
+    /**
+     * Whether the PECL extension is here to be used
+     *
+     * @return  boolean
+     */
+    private function hasExtension()
+    {
+        return function_exists('yaml_parse');
+    }
+
     /**
      * Returns an array of allowed file extensions for this parser
      *
@@ -39,6 +55,19 @@ class Yaml extends Base
     public function parse($path)
     {
         $this->assertReadable($path);
+
+        if (!$this->hasExtension()) {
+            try {
+                return SymfonyYaml::parseFile($path);
+            } catch (SymfonyYamlException $e) {
+                throw new ParseException(
+                    array(
+                        'message' => 'Error parsing YAML file: ' . $path,
+                        'file' => $path,
+                    )
+                );
+            }
+        }
 
         $data = @\yaml_parse_file($path);
 
@@ -64,6 +93,16 @@ class Yaml extends Base
     {
         $data = trim($data);
 
+        if (!$this->hasExtension()) {
+            try {
+                SymfonyYaml::parse($data);
+            } catch (SymfonyYamlException $e) {
+                return false;
+            }
+
+            return true;
+        }
+
         $parsed = @\yaml_parse($data);
 
         if ($parsed === false) {
@@ -84,6 +123,10 @@ class Yaml extends Base
     {
         if (is_string($object)) {
             return $object;
+        }
+
+        if (!$this->hasExtension()) {
+            return SymfonyYaml::dump((array) $this->asArray($object));
         }
 
         return \yaml_emit((array) $this->asArray($object));
@@ -125,7 +168,19 @@ class Yaml extends Base
 
         $data = trim($data);
 
-        $parsed = @\yaml_parse($data);
+        if (!$this->hasExtension()) {
+            try {
+                $parsed = SymfonyYaml::parse($data);
+            } catch (SymfonyYamlException $e) {
+                throw new ParseException(
+                    array(
+                        'message' => 'Error parsing YAML',
+                    )
+                );
+            }
+        } else {
+            $parsed = @\yaml_parse($data);
+        }
 
         if ($parsed === false) {
             throw new ParseException(

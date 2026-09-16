@@ -88,13 +88,7 @@ class Flavor extends Base implements CommandInterface
 
                 // Set amazon template as home
                 $this->output->addLine('Setting amazon template for welcome page');
-                $query  = "UPDATE `#__template_styles` SET `home` = 1 where `template` = 'welcome' and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
-                $query  = "UPDATE `#__template_styles` SET `home` = 0 where `template` != 'welcome' " .
-                    "and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
+                $this->makeHome($database, 'welcome');
 
                 // Update default content page(s)
                 /*
@@ -302,13 +296,7 @@ class Flavor extends Base implements CommandInterface
 
                 // Set amazon template as home
                 $this->output->addLine('Setting amazon template for welcome page');
-                $query  = "UPDATE `#__template_styles` SET `home` = 1 where `template` = 'welcome' and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
-                $query  = "UPDATE `#__template_styles` SET `home` = 0 where `template` != 'welcome' " .
-                    "and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
+                $this->makeHome($database, 'welcome');
 
                 // Delete tools resource type
                 $query = "DELETE FROM `#__resource_types` WHERE `alias` = 'tools'";
@@ -723,14 +711,7 @@ HTML;
 
                 // Set amazon template as default
                 $this->output->addLine('Setting amazon template for welcome page');
-                $query  = "UPDATE `#__template_styles` SET `home` = 1 where template = 'hubbasic2013' " .
-                    "and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
-                $query  = "UPDATE `#__template_styles` SET `home` = 0 where template != hubbasic2013' " .
-                    "and `client_id` = 0";
-                $database->setQuery($query);
-                $database->query();
+                $this->makeHome($database, 'hubbasic2013');
 
                 // Add back tools resource type
                 $query = "SELECT * FROM `#__resource_types` WHERE `alias` = 'tools'";
@@ -1135,5 +1116,49 @@ HTML;
                  'This is the default hub install.'
              )
              ->render();
+    }
+
+    /**
+     * Make one site template style the default, if there is one to make
+     *
+     * This used to set home on the named template and then clear it on every
+     * other style without checking the first update had found anything. Once
+     * the `welcome` template was retired the first update matched nothing and
+     * the second cleared every style, so running this command left a hub with
+     * no default template at all. Look before clearing.
+     *
+     * @param   object  $database  The database
+     * @param   string  $template  The template whose site style becomes home
+     * @return  boolean  Whether a style was made the default
+     */
+    private function makeHome($database, $template)
+    {
+        $database->setQuery(
+            "SELECT COUNT(*) FROM `#__template_styles` WHERE `template` = " . $database->quote($template)
+            . " AND `client_id` = 0"
+        );
+
+        if ((int) $database->loadResult() < 1) {
+            $this->output->addLine(
+                "No site template style named '" . $template . "' - leaving the current default as it is",
+                'warning'
+            );
+
+            return false;
+        }
+
+        $database->setQuery(
+            "UPDATE `#__template_styles` SET `home` = 1 WHERE `template` = " . $database->quote($template)
+            . " AND `client_id` = 0"
+        );
+        $database->query();
+
+        $database->setQuery(
+            "UPDATE `#__template_styles` SET `home` = 0 WHERE `template` != " . $database->quote($template)
+            . " AND `client_id` = 0"
+        );
+        $database->query();
+
+        return true;
     }
 }
