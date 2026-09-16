@@ -46,6 +46,7 @@ class Flavor
         'dashboard'      => array('tiles' => 'tiles'),
         'kb'             => array('categories' => 'states', 'articles' => 'states'),
         'content'        => array('articles' => 'states'),
+        'menu'           => array('items' => 'states'),
         'resource_types' => 'map',
     );
 
@@ -202,6 +203,7 @@ class Flavor
 
                 case 'kb':
                 case 'content':
+                case 'menu':
                     $result[$lever] = isset($parent[$lever]) ? $parent[$lever] : array();
 
                     foreach ($value as $key => $states) {

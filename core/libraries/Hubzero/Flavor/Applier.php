@@ -42,6 +42,16 @@ class Applier
     protected $migration;
 
     /**
+     * What the last check() found nothing to pull on: a row a flavor names
+     * that this hub does not have. Not a difference - the hub is not in the
+     * wrong state, there is no state - but worth knowing, since a mistyped
+     * path looks exactly like this.
+     *
+     * @var  array
+     */
+    protected $notes = array();
+
+    /**
      * Constructor
      *
      * @param   object         $db
@@ -76,6 +86,7 @@ class Applier
         );
         $this->applyStates('#__kb_articles', 'state', $flavor->get('kb', array(), 'articles'), '', 'knowledge base article');
         $this->applyStates('#__content', 'state', $flavor->get('content', array(), 'articles'), '', 'article');
+        $this->applyStates('#__menu', 'published', $flavor->get('menu', array(), 'items'), '`client_id` = 0', 'menu item', 'path');
         $this->applyResourceTypes($flavor->get('resource_types', array()));
     }
 
@@ -87,7 +98,8 @@ class Applier
      */
     public function check(Flavor $flavor)
     {
-        $found = array();
+        $found       = array();
+        $this->notes = array();
 
         $this->checkSwitches($found, 'component', $flavor->get('components', array()));
         $this->checkSwitches($found, 'module', $flavor->get('modules', array()));
@@ -104,9 +116,28 @@ class Applier
         );
         $this->checkStates($found, '#__kb_articles', 'state', $flavor->get('kb', array(), 'articles'), '', 'knowledge base article');
         $this->checkStates($found, '#__content', 'state', $flavor->get('content', array(), 'articles'), '', 'article');
+        $this->checkStates(
+            $found,
+            '#__menu',
+            'published',
+            $flavor->get('menu', array(), 'items'),
+            '`client_id` = 0',
+            'menu item',
+            'path'
+        );
         $this->checkResourceTypes($found, $flavor->get('resource_types', array()));
 
         return $found;
+    }
+
+    /**
+     * The rows the last check() found the flavor naming but the hub lacking
+     *
+     * @return  array  Sentences
+     */
+    public function notes()
+    {
+        return $this->notes;
     }
 
     // ------------------------------------------------------------ extensions
@@ -488,16 +519,20 @@ class Applier
     // ------------------------------------------------------- published states
 
     /**
-     * Set a state column on rows picked by alias
+     * Set a state column on rows picked by alias (or another key column)
+     *
+     * A menu item is picked by its path - the address the router matches -
+     * which is unique among a client's items where an alias is not.
      *
      * @param   string  $table
      * @param   string  $column
-     * @param   array   $states  alias => state
+     * @param   array   $states  key => state
      * @param   string  $also    An extra condition, or ''
      * @param   string  $what    For messages
+     * @param   string  $key     The column the keys name
      * @return  void
      */
-    protected function applyStates($table, $column, array $states, $also, $what)
+    protected function applyStates($table, $column, array $states, $also, $what, $key = 'alias')
     {
         if (!$states) {
             return;
@@ -508,14 +543,20 @@ class Applier
             return;
         }
 
-        foreach ($states as $alias => $state) {
-            $this->db->setQuery(
-                "UPDATE `{$table}` SET `{$column}` = " . (int) $state
-                . " WHERE `alias` = " . $this->db->quote($alias) . ($also ? " AND {$also}" : '')
-            );
+        foreach ($states as $name => $state) {
+            $where = "`{$key}` = " . $this->db->quote($name) . ($also ? " AND {$also}" : '');
+
+            $this->db->setQuery("SELECT COUNT(*) FROM `{$table}` WHERE " . $where);
+
+            if (!(int) $this->db->loadResult()) {
+                $this->say("No {$what} {$name} to set", 'warning');
+                continue;
+            }
+
+            $this->db->setQuery("UPDATE `{$table}` SET `{$column}` = " . (int) $state . " WHERE " . $where);
             $this->db->query();
 
-            $this->say(((int) $state ? 'Publishing ' : 'Unpublishing ') . $what . ' ' . $alias);
+            $this->say(((int) $state ? 'Publishing ' : 'Unpublishing ') . $what . ' ' . $name);
         }
     }
 
@@ -528,9 +569,10 @@ class Applier
      * @param   array   $states
      * @param   string  $also
      * @param   string  $what
+     * @param   string  $key
      * @return  void
      */
-    protected function checkStates(array &$found, $table, $column, array $states, $also, $what)
+    protected function checkStates(array &$found, $table, $column, array $states, $also, $what, $key = 'alias')
     {
         if (!$states || !$this->db->tableExists($table)) {
             return;
@@ -538,12 +580,17 @@ class Applier
 
         foreach ($states as $alias => $state) {
             $this->db->setQuery(
-                "SELECT `{$column}` FROM `{$table}` WHERE `alias` = " . $this->db->quote($alias)
+                "SELECT `{$column}` FROM `{$table}` WHERE `{$key}` = " . $this->db->quote($alias)
                 . ($also ? " AND {$also}" : '')
             );
             $now = $this->db->loadResult();
 
-            if ($now !== null && (int) $now !== (int) $state) {
+            if ($now === null) {
+                $this->notes[] = "no {$what} {$alias} to set";
+                continue;
+            }
+
+            if ((int) $now !== (int) $state) {
                 $found[] = "{$what} {$alias} is " . ((int) $now ? 'published' : 'unpublished')
                     . " (the flavor " . ((int) $state ? 'publishes' : 'unpublishes') . " it)";
             }
@@ -607,7 +654,7 @@ class Applier
             $row = $this->db->loadAssoc();
 
             if (!$row) {
-                $found[] = "resource type {$alias} is absent";
+                $this->notes[] = "no resource type {$alias} to set";
                 continue;
             }
 

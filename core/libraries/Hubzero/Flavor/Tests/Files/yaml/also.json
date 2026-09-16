@@ -1,0 +1,7 @@
+{
+    "quieter": {
+        "extends": "quiet",
+        "description": "Quiet, and the poll's whole branch hidden",
+        "menu": {"items": {"community/poll": 0, "community/poll/archive": 0}}
+    }
+}
