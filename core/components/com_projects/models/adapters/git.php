@@ -592,9 +592,17 @@ class Git extends Models\Adapter
 		{
 			return false;
 		}
+		if (!Helpers\Git::isHash($hash))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_FILES_RESTORE_FAILED'));
+			return false;
+		}
 
 		// Checkout pre-delete revision
-		$this->_git->gitCheckout($file->get('localPath'), $hash . '^ ');
+		if (!$this->_git->gitCheckout($file->get('localPath'), $hash . '^'))
+		{
+			return false;
+		}
 
 		// If restored
 		if (is_file($file->get('fullPath')))
@@ -633,8 +641,11 @@ class Git extends Models\Adapter
 		$rev1Parts = explode('@', $rev1);
 		$rev2Parts = explode('@', $rev2);
 
-		// Run some checks
-		if (count($rev1Parts) <= 2 || count($rev2Parts) <= 2)
+		// Run some checks. Each revision is "rev@hash@path", and the hash goes
+		// to git, so it has to be an object id and nothing else.
+		if (count($rev1Parts) <= 2 || count($rev2Parts) <= 2
+		 || !Helpers\Git::isHash($rev1Parts[1])
+		 || !Helpers\Git::isHash($rev2Parts[1]))
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_DIFF_NO_CONTENT'));
 			return false;

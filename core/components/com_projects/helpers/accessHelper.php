@@ -23,9 +23,44 @@ class AccessHelper extends Obj
 	 */
 	public static function allowPublicAccess($subdir)
 	{
-		$isPublicDirectory = preg_match('/^\/?public.*/', $subdir == null ? '' : $subdir); //!= 'public' && $subdir != '/public')
-		$allowPublicAccess = !User::isGuest() && $isPublicDirectory;
+		return !User::isGuest() && self::isPublicPath($subdir);
+	}
 
-		return $allowPublicAccess;
+	/**
+	 * Is the path inside the project's top-level public directory?
+	 *
+	 * This used to accept anything starting with "public", which let in a
+	 * folder named "publications" and a path such as "public/../private".
+	 * Callers decode the path again before they use it, so an encoded ".."
+	 * would get past a check on the raw value. Decode until nothing changes,
+	 * then refuse any ".." segment.
+	 *
+	 * @param   string  $path  Path relative to the project repository
+	 * @return  bool
+	 */
+	public static function isPublicPath($path)
+	{
+		$path = (string) $path;
+
+		$stable = false;
+		for ($i = 0; $i < 5 && !$stable; $i++)
+		{
+			$decoded = rawurldecode($path);
+			$stable  = ($decoded === $path);
+			$path    = $decoded;
+		}
+
+		// Still changing after five rounds is not a path anyone meant
+		if (!$stable || strpos($path, "\0") !== false)
+		{
+			return false;
+		}
+
+		if (preg_match('#(^|/)\.\.(/|$)#', $path))
+		{
+			return false;
+		}
+
+		return preg_match('#^/?public(/|$)#', $path) === 1;
 	}
 }
