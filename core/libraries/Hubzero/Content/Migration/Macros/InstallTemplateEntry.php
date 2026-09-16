@@ -37,6 +37,13 @@ class InstallTemplateEntry extends AddTemplateEntry
         $styles = null,
         $protected = 0
     ) {
+        // This macro used to take ($element, $name, $client, $styles, $protected);
+        // a migration written that way has its styles in the fourth slot
+        if (is_array($enabled)) {
+            $styles    = $enabled;
+            $protected = $home;
+        }
+
         return parent::__invoke($element, $name, $client, 1, 1, $styles, $protected);
     }
 }

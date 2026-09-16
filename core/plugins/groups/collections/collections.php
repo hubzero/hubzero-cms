@@ -349,7 +349,7 @@ class Collections extends Plugin
                     $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->followers();
+                    $arr['html'] = $this->following();
                     break;
                 case 'follow':
                     $arr['html'] = $this->follow('group');
@@ -514,6 +514,7 @@ class Collections extends Plugin
             ->set('collections', $collections)
             ->set('posts', $posts)
             ->set('followers', $followers)
+            ->set('following', $total)
             ->set('total', $total)
             ->set('rows', $rows);
 
@@ -570,6 +571,7 @@ class Collections extends Plugin
 
         return $view->loadTemplate();
     }
+
 
     /**
      * Display a list of collections

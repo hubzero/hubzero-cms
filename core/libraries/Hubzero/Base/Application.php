@@ -371,7 +371,7 @@ class Application extends Container
 
         $client = $this['client']->name;
 
-        $this['config'] = new \Hubzero\Config\Repository(PATH_APP);
+        $this['config'] = new \Hubzero\Config\Repository(PATH_APP, $client);
 
         $providers = PATH_CORE . '/bootstrap/' . $client . '/services.php';
         $services = file_exists($providers) ? require $providers : array();

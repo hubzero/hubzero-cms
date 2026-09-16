@@ -575,7 +575,8 @@ class Ftp implements AdapterInterface
     {
         $connection = $this->getConnection();
 
-        // deepest entries first (listDirectoryContents() was never defined; listContents() is the adapter's lister)
+        // Paths, not bare names: ftp_delete() and ftp_rmdir() resolve against
+        // the session's working directory, not against $dirname
         $contents = array_reverse($this->listContents($dirname, '.', true, false));
 
         foreach ($contents as $object) {
@@ -588,7 +589,8 @@ class Ftp implements AdapterInterface
             }
         }
 
-        return ftp_rmdir($connection, $dirname);
+        // Preserving keeps the (now empty) directory itself, as Local does
+        return $preserve ? true : ftp_rmdir($connection, $dirname);
     }
 
     /**
