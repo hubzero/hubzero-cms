@@ -17,7 +17,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse configuration:aliases`](#muse-configuration-aliases) | 1 | Aliases configuration class for adding command aliases |
 | [`muse configuration:hooks`](#muse-configuration-hooks) | 1 | Hooks configuration class for adding a new hook |
 | [`muse configuration`](#muse-configuration) | 1 | Help class for rendering utility-wide help documentation |
-| [`muse database`](#muse-database) | 2 | Database class |
+| [`muse database`](#muse-database) | 6 | Database class |
 | [`muse environment`](#muse-environment) | 0 | Environment class |
 | [`muse extension`](#muse-extension) | 5 | Extension class |
 | [`muse group`](#muse-group) | 3 | Group |
@@ -29,12 +29,14 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse log:profile`](#muse-log-profile) | 0 | Profile log class |
 | [`muse log:sql`](#muse-log-sql) | 0 | Sql log class |
 | [`muse log`](#muse-log) | 1 | Log class |
-| [`muse migration`](#muse-migration) | 2 | Migration class |
-| [`muse repository:flavor`](#muse-repository-flavor) | 1 | Repository flavor class |
+| [`muse migration`](#muse-migration) | 6 | Migration class |
+| [`muse repository:flavor`](#muse-repository-flavor) | 2 | The flavor of a hub: whether it runs simulation tools |
 | [`muse repository:package`](#muse-repository-package) | 2 | Repository class |
 | [`muse repository`](#muse-repository) | 12 | Repository class |
 | [`muse resources`](#muse-resources) | 3 | Resources |
+| [`muse routes`](#muse-routes) | 2 | The addresses a hub's components answer at |
 | [`muse scaffolding`](#muse-scaffolding) | 2 | Scaffolding class for generating template extensions |
+| [`muse schema`](#muse-schema) | 10 | Schema management command |
 | [`muse searchmigration`](#muse-searchmigration) | 1 | Migration class |
 | [`muse test`](#muse-test) | 2 | Test class |
 | [`muse user:terms`](#muse-user-terms) | 1 | User class for terms of use functions |
@@ -172,6 +174,22 @@ Dumps the current site database into a file in the users home directory
 
 Loads the provided database into the hubs currently configured database
 
+### `muse database schema`
+
+Converts schema.sql from one database type to another (e.g., mysql to sqlite)
+
+### `muse database cli`
+
+Opens the native database client (mysql/psql/sqlite3) with auto-configured credentials
+
+### `muse database query`
+
+Runs a single SQL query against the database with automatic table prefix replacement
+
+### `muse database drivers`
+
+Lists all supported database drivers and their PHP extension availability
+
 ## `muse environment`
 
 Environment class.
@@ -298,7 +316,7 @@ Configure site settings and generate config files
 
 ### `muse install sample`
 
-Load sample/demo data into database
+Load a set of starting content into the database
 
 ### `muse install migrations`
 
@@ -356,19 +374,39 @@ Run alone, `muse migration` default (required) command - just executes run
 
 Runs pending migrations according to options provided
 
+### `muse migration status`
+
+Shows a summary of migration status (pending, executed, failed)
+
 ### `muse migration history`
 
 Shows a history of previously run migrations
 
+### `muse migration mark`
+
+Marks a migration as executed without running it, or removes a tracking record
+
+### `muse migration refresh`
+
+Rolls back all migrations then re-runs them (DESTRUCTIVE)
+
+### `muse migration fresh`
+
+Drops ALL tables and re-runs migrations (EXTREMELY DESTRUCTIVE)
+
 ## `muse repository:flavor`
 
-Repository flavor class.
+The flavor of a hub: whether it runs simulation tools.
 
 Implemented in [`Flavor.php`](../../core/libraries/Hubzero/Console/Command/Repository/Flavor.php).
 
 Run alone, `muse repository:flavor` default (required) command
 
 ### `muse repository:flavor set`
+
+No description available.
+
+### `muse repository:flavor status`
 
 No description available.
 
@@ -473,6 +511,22 @@ No description available.
 
 No description available.
 
+## `muse routes`
+
+The addresses a hub's components answer at.
+
+Implemented in [`Routes.php`](../../core/libraries/Hubzero/Console/Command/Routes.php).
+
+Run alone, `muse routes` default - say what is out of step without changing anything
+
+### `muse routes check`
+
+Report components whose route is missing or stale
+
+### `muse routes fix`
+
+Create any missing component routes
+
 ## `muse scaffolding`
 
 Scaffolding class for generating template extensions.
@@ -488,6 +542,54 @@ No description available.
 ### `muse scaffolding copy`
 
 No description available.
+
+## `muse schema`
+
+Schema management command.
+
+Implemented in [`Schema.php`](../../core/libraries/Hubzero/Console/Command/Schema.php).
+
+Run alone, `muse schema` default (required) command - show help
+
+### `muse schema diff`
+
+Compares two tables and shows the structural differences
+
+### `muse schema introspect`
+
+Shows the structure of a single table
+
+### `muse schema sql`
+
+Generates migration SQL from schema differences
+
+### `muse schema tables`
+
+Lists all tables in the current database
+
+### `muse schema export`
+
+Exports the current database schema to JSON format
+
+### `muse schema compare`
+
+Compares current database against a schema JSON file
+
+### `muse schema generate`
+
+Generates a migration PHP file from schema differences
+
+### `muse schema blank`
+
+Creates an empty migration file with up() and down() stubs
+
+### `muse schema snapshot`
+
+Save, list, compare, and manage schema snapshots
+
+### `muse schema squash`
+
+Generates a single migration from current database schema
 
 ## `muse searchmigration`
 
