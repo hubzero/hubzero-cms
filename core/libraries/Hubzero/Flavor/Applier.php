@@ -74,6 +74,7 @@ class Applier
     {
         $this->applySwitches('component', $flavor->get('components', array()));
         $this->applySwitches('module', $flavor->get('modules', array()));
+        $this->applyModuleItems($flavor->get('modules', array(), 'items') ?: array());
         $this->applySwitches('plugin', $flavor->get('plugins', array()));
         $this->applyTemplate($flavor->get('template'));
         $this->applyTiles($flavor->get('dashboard', null, 'tiles'));
@@ -103,6 +104,7 @@ class Applier
 
         $this->checkSwitches($found, 'component', $flavor->get('components', array()));
         $this->checkSwitches($found, 'module', $flavor->get('modules', array()));
+        $this->checkModuleItems($found, $flavor->get('modules', array(), 'items') ?: array());
         $this->checkSwitches($found, 'plugin', $flavor->get('plugins', array()));
         $this->checkTemplate($found, $flavor->get('template'));
         $this->checkTiles($found, $flavor->get('dashboard', null, 'tiles'));
@@ -360,6 +362,91 @@ class Applier
         $parts = explode('/', $name, 2);
 
         return array($parts[0], isset($parts[1]) ? $parts[1] : '');
+    }
+
+    // ------------------------------------------------------- module instances
+
+    /**
+     * Publish or hide module instances, by id or by title
+     *
+     * A number names one instance; anything else is a title and names every
+     * instance with it, since the shipped data places the same module in
+     * more than one template's positions under one title.
+     *
+     * @param   array  $items  id-or-title => state
+     * @return  void
+     */
+    protected function applyModuleItems(array $items)
+    {
+        if (!$items) {
+            return;
+        }
+
+        if (!$this->db->tableExists('#__modules')) {
+            $this->say('No modules table - skipping the module instance settings', 'warning');
+            return;
+        }
+
+        foreach ($items as $which => $state) {
+            $where = $this->moduleWhere($which);
+
+            $this->db->setQuery("SELECT COUNT(*) FROM `#__modules` WHERE " . $where);
+
+            if (!(int) $this->db->loadResult()) {
+                $this->say("No module instance {$which} to set", 'warning');
+                continue;
+            }
+
+            $this->db->setQuery("UPDATE `#__modules` SET `published` = " . (int) $state . " WHERE " . $where);
+            $this->db->query();
+
+            $this->say(((int) $state ? 'Publishing' : 'Unpublishing') . " module instance {$which}");
+        }
+    }
+
+    /**
+     * Compare module instances with the flavor's
+     *
+     * @param   array  &$found
+     * @param   array  $items
+     * @return  void
+     */
+    protected function checkModuleItems(array &$found, array $items)
+    {
+        if (!$items || !$this->db->tableExists('#__modules')) {
+            return;
+        }
+
+        foreach ($items as $which => $state) {
+            $this->db->setQuery("SELECT `published` FROM `#__modules` WHERE " . $this->moduleWhere($which));
+            $rows = (array) $this->db->loadColumn();
+
+            if (!$rows) {
+                $this->notes[] = "no module instance {$which} to set";
+                continue;
+            }
+
+            foreach ($rows as $now) {
+                if ((int) $now !== (int) $state) {
+                    $found[] = "module instance {$which} is " . ((int) $now ? 'published' : 'unpublished')
+                        . " (the flavor " . ((int) $state ? 'publishes' : 'unpublishes') . " it)";
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * The WHERE that picks module instances by id or title, on the site
+     *
+     * @param   mixed  $which
+     * @return  string
+     */
+    protected function moduleWhere($which)
+    {
+        $pick = is_numeric($which) ? "`id` = " . (int) $which : "`title` = " . $this->db->quote($which);
+
+        return $pick . " AND `client_id` = 0";
     }
 
     // -------------------------------------------------------------- template
