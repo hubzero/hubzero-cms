@@ -153,12 +153,7 @@ class Publication extends Table
 			{
 				if (is_array($filters['status']))
 				{
-					$squery = '';
-					foreach ($filters['status'] as $s)
-					{
-						$squery .= "'" . $s . "',";
-					}
-					$squery = substr($squery, 0, strlen($squery) - 1);
+					$squery = implode(',', array_map(array($this->_db, 'quote'), $filters['status']));
 					$query .= " AND (V.state IN (" . $squery . ")) ";
 				}
 				else
@@ -230,7 +225,7 @@ class Publication extends Table
 			}
 			else
 			{
-				$query .= " AND t.url_alias='" . $filters['category']."' ";
+				$query .= " AND t.url_alias=" . $this->_db->quote($filters['category']) . " ";
 			}
 		}
 		if (isset($filters['author']) && intval($filters['author']))
