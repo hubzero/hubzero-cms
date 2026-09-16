@@ -101,6 +101,50 @@ class FlavorTest extends TestCase
     }
 
     /**
+     * A YAML file reads like a JSON one, and both may sit in one directory;
+     * a flavor in either may extend one in the other
+     *
+     * @return  void
+     */
+    public function testYamlAndJsonReadAlike()
+    {
+        $finder = new Finder(array($this->files('yaml'), $this->files('shipped')));
+        $all    = $finder->all();
+
+        $this->assertSame(array('plain', 'quiet', 'quieter', 'tooled'), array_keys($all));
+
+        // quiet (yml) extends plain (json, other directory)
+        $quiet = $all['quiet'];
+        $this->assertSame('meridian', $quiet->get('template'));
+        $this->assertSame(
+            array('com_tools', 'com_usage', 'com_poll'),
+            $quiet->get('components', array(), 'disable')
+        );
+        $this->assertSame(array('community/poll' => 0), $quiet->get('menu', array(), 'items'));
+        $this->assertStringEndsWith('extra.yml', $quiet->file());
+
+        // quieter (json, same directory) extends quiet (yml): menu items merge by path
+        $this->assertSame(
+            array('community/poll' => 0, 'community/poll/archive' => 0),
+            $all['quieter']->get('menu', array(), 'items')
+        );
+        $this->assertSame(array('com_tools', 'com_usage', 'com_poll'), $all['quieter']->get('components', array(), 'disable'));
+    }
+
+    /**
+     * A file that does not parse is refused with its name and the reason
+     *
+     * @return  void
+     */
+    public function testAFileThatDoesNotParseIsRefused()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('broken.yml does not read as flavors');
+
+        (new Finder(array($this->files('broken'))))->all();
+    }
+
+    /**
      * Extending in a circle is refused with the circle named
      *
      * @return  void
