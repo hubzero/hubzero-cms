@@ -133,7 +133,7 @@ class Helper extends Module
 		$auth = '';
 		if ($areturn = Request::getString('return', null))
 		{
-			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $return))
+			if (preg_match('/[^A-Za-z0-9\+\/\=]/', $areturn))
 			{
 				// This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
 				$return = null;
