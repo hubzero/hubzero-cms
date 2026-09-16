@@ -165,7 +165,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		// Project model
 		$this->model = $model;
-		$subdir = Request::getString('subdir');
+
+		// Confine subdir to a relative path inside the repo, once, here. The
+		// access check below and every filesystem operation downstream then act
+		// on the same trusted value; a traversal attempt ("..", encoded or not)
+		// is refused rather than reaching move_uploaded_file() or the git tree.
+		$subdir = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
+		if ($subdir === false)
+		{
+			App::abort(404, Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+		}
 
 		// Check authorization
 		if ($this->model->exists() && !$this->model->access('member') && !AccessHelper::allowPublicAccess($subdir))
@@ -186,7 +195,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$this->_database   = \App::get('db');
 			$this->_uid        = User::get('id');
 			$this->_task       = $action ? $action : Request::getString('action', $default);
-			$this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
+			$this->subdir      = $subdir; // already confined above
 			$this->publication = Request::getInt('pid', 0);
 
 			// Set repo path

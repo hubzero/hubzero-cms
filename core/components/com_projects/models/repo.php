@@ -919,6 +919,21 @@ class Repo extends Obj
 		$dirPath     = isset($params['subdir']) ? $params['subdir'] : null;
 		$available   = $this->getAvailableDiskSpace();
 
+		// A file is written under this subdir with move_uploaded_file/copy,
+		// outside any filesystem adapter. Callers should confine the value, but
+		// this is the one point every upload passes through, so refuse a subdir
+		// that escapes the repo here too rather than trust each of them.
+		if ($dirPath !== null && $dirPath !== '')
+		{
+			$dirPath = \Hubzero\Filesystem\SafePath::relative($dirPath);
+			if ($dirPath === false)
+			{
+				$this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+				return false;
+			}
+			$params['subdir'] = $dirPath;
+		}
+
 		// Collector
 		$results = array(
 			'uploaded' => array(),
