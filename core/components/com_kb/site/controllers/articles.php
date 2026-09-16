@@ -96,6 +96,12 @@ class Articles extends SiteController
 			throw new Exception(Lang::txt('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
+		// The pager falls back to the offset it last saved in the session, and
+		// that one saved offset is shared by every category. Without a start
+		// in the URL, page 2 of a long category would open a short one past
+		// its last article, so a link with no start means the first page.
+		Request::setVar('start', Request::getInt('start', 0));
+
 		// Get configuration
 		$this->view->filters = array(
 			'sort'     => Request::getWord('sort', 'recent'),
