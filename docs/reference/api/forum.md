@@ -113,7 +113,7 @@ API version 1.0, task `sections` in [`threadsv1_0.php`](../../../core/components
 
 Retrieve a thread
 
-API version 1.0, task `read` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L798).
+API version 1.0, task `read` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L806).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

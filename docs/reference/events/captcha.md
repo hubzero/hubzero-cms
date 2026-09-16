@@ -12,6 +12,7 @@ Events in the `captcha` group. A plugin in `core/plugins/captcha/` receives an e
 Fired from:
 
 - [`core/components/com_members/models/registration.php:761`](../../../core/components/com_members/models/registration.php#L761)
+- [`core/components/com_members/site/controllers/register.php:1365`](../../../core/components/com_members/site/controllers/register.php#L1365)
 - [`core/components/com_support/site/controllers/tickets.php:950`](../../../core/components/com_support/site/controllers/tickets.php#L950)
 
 Listeners:
@@ -25,6 +26,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_members/site/views/register/tmpl/default.php:600`](../../../core/components/com_members/site/views/register/tmpl/default.php#L600)
+- [`core/components/com_members/site/views/register/tmpl/resend_request.php:37`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L37)
 
 Listeners:
 

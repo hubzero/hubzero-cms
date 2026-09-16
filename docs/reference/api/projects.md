@@ -342,7 +342,7 @@ API version 1.0, task `delete` in [`filesv1_0.php`](../../../core/components/com
 
 Download file or folder from project (non-default connection providers only)
 
-API version 1.0, task `download` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L571).
+API version 1.0, task `download` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L575).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -379,7 +379,7 @@ API version 1.0, task `get` in [`filesv1_0.php`](../../../core/components/com_pr
 
 Get file annotation
 
-API version 1.0, task `getmetadata` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L882).
+API version 1.0, task `getmetadata` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L890).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -392,7 +392,7 @@ API version 1.0, task `getmetadata` in [`filefsv1_0.php`](../../../core/componen
 
 Insert/update a project file
 
-API version 1.0, task `save` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L791).
+API version 1.0, task `save` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L799).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -494,7 +494,7 @@ API version 1.0, task `rename` in [`filesv1_0.php`](../../../core/components/com
 
 Set file annotation
 
-API version 1.0, task `setmetadata` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L970).
+API version 1.0, task `setmetadata` in [`filefsv1_0.php`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L978).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
