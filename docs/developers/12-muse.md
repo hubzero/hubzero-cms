@@ -392,8 +392,24 @@ php core/bin/muse repository:flavor status           # which flavor the hub matc
 php core/bin/muse repository:flavor status quiet --path=/srv/flavors
 ```
 
-A file holds any number of flavors, an object keyed by name; each is an
-object of **levers**:
+A file holds any number of flavors, an object keyed by name, written as JSON
+(`*.json`) or YAML (`*.yml`, `*.yaml`) — the two read alike, and within a
+directory files are read in name order. YAML can carry a comment, which a
+hub's own file usually wants:
+
+```yaml
+# Why this hub is shaped this way, next to what shapes it
+quiet:
+  extends: full
+  description: Full, without the poll
+  components:
+    disable: [com_poll]
+  menu:
+    items:
+      community/poll: 0     # the navigation entry; the poll's own route is left alone
+```
+
+Each flavor is an object of **levers**:
 
 | Lever | Shape | Pulls |
 |---|---|---|
@@ -406,6 +422,7 @@ object of **levers**:
 | `dashboard` | `{tiles: [{module, col}, …]}` | The member dashboard's default tiles, two rows high, stacked per column in the order given |
 | `kb` | `{categories, articles}` | Published state by alias |
 | `content` | `{articles}` | Published state by alias |
+| `menu` | `{items: {path: state}}` | Published state of site menu items by path — the address the router matches. Meant for navigation entries; a generated component route (the `components` menu) is what `muse routes fix` republishes, so hide the component instead |
 | `resource_types` | `{alias: {column: value}}` | Columns of `#__resource_types` by alias |
 
 Every lever is a switch on rows that exist; nothing is added or removed, so

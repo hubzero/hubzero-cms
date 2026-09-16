@@ -10,12 +10,14 @@ namespace Hubzero\Flavor;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Finds the flavors there are, and resolves what each extends
  *
- * Flavors live in JSON files, any number to a file, each file an object
- * whose keys are flavor names. The files are read from a list of
+ * Flavors live in JSON or YAML files, any number to a file, each file an
+ * object whose keys are flavor names. The files are read from a list of
  * directories in order of precedence: a directory the caller points at (or
  * the HUBZERO_FLAVORS environment variable names), then the hub's own
  * app/flavors, then the CMS's core/flavors. The first definition of a name
@@ -115,7 +117,13 @@ class Finder
         $defined = array();
 
         foreach ($this->dirs as $dir) {
-            $files = glob($dir . DIRECTORY_SEPARATOR . '*.json') ?: array();
+            $files = array();
+
+            foreach (array('json', 'yml', 'yaml') as $extension) {
+                $files = array_merge($files, glob($dir . DIRECTORY_SEPARATOR . '*.' . $extension) ?: array());
+            }
+
+            // Within a directory, files are read in name order
             sort($files);
 
             foreach ($files as $file) {
@@ -153,7 +161,7 @@ class Finder
     }
 
     /**
-     * The flavors in one file
+     * The flavors in one file, JSON or YAML by its extension
      *
      * @param   string  $file
      * @return  array   name => definition
@@ -161,12 +169,22 @@ class Finder
      */
     protected function read($file)
     {
-        $data = json_decode((string) file_get_contents($file), true);
+        $why = '';
+
+        if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) == 'json') {
+            $data = json_decode((string) file_get_contents($file), true);
+            $why  = json_last_error() ? json_last_error_msg() : '';
+        } else {
+            try {
+                $data = Yaml::parseFile($file);
+            } catch (ParseException $e) {
+                $data = null;
+                $why  = $e->getMessage();
+            }
+        }
 
         if (!is_array($data)) {
-            throw new RuntimeException(
-                "{$file} does not read as flavors" . (json_last_error() ? ': ' . json_last_error_msg() : '')
-            );
+            throw new RuntimeException("{$file} does not read as flavors" . ($why ? ': ' . $why : ''));
         }
 
         foreach ($data as $name => $definition) {

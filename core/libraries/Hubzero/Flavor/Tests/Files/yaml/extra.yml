@@ -1,0 +1,9 @@
+# A flavor written in YAML, which can say why - JSON cannot carry a comment.
+quiet:
+  extends: plain              # defined in a JSON file in another directory
+  description: The base, with the poll and its menu entry off
+  components:
+    disable: [com_poll]
+  menu:
+    items:
+      community/poll: 0       # the navigation entry; the poll's own route is left alone

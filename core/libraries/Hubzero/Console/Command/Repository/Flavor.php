@@ -133,33 +133,37 @@ class Flavor extends Base implements CommandInterface
 
             if (!$found) {
                 $this->output->addLine("The hub is the {$flavor->name()} flavor.", 'success');
-                return;
+            } else {
+                $this->output->addLine("The hub differs from the {$flavor->name()} flavor:", 'warning');
+
+                foreach ($found as $difference) {
+                    $this->output->addLine('  ' . $difference);
+                }
             }
 
-            $this->output->addLine("The hub differs from the {$flavor->name()} flavor:", 'warning');
-
-            foreach ($found as $difference) {
-                $this->output->addLine('  ' . $difference);
-            }
+            $this->notes($applier->notes());
 
             return;
         }
 
         $matches = array();
         $nearest = null;
+        $notes   = array();
 
         foreach ($this->flavors($this->finder()) as $flavor) {
             $found = $applier->check($flavor);
 
             if (!$found) {
                 $matches[] = $flavor->name();
+                $notes     = array_merge($notes, $applier->notes());
             } elseif ($nearest === null || count($found) < count($nearest[1])) {
-                $nearest = array($flavor->name(), $found);
+                $nearest = array($flavor->name(), $found, $applier->notes());
             }
         }
 
         if ($matches) {
             $this->output->addLine('The hub is the ' . implode(' and the ', $matches) . ' flavor.', 'success');
+            $this->notes(array_unique($notes));
             return;
         }
 
@@ -169,7 +173,25 @@ class Flavor extends Base implements CommandInterface
             foreach ($nearest[1] as $difference) {
                 $this->output->addLine('  ' . $difference);
             }
+
+            $this->notes($nearest[2]);
         }
+    }
+
+    /**
+     * Say what a flavor names that the hub does not have - not a difference,
+     * but a mistyped path looks exactly like this
+     *
+     * @param   array  $notes
+     * @return  void
+     */
+    protected function notes(array $notes)
+    {
+        if (!$notes) {
+            return;
+        }
+
+        $this->output->addLine('Named by the flavor, not on this hub: ' . implode('; ', $notes) . '.', 'warning');
     }
 
     /**
@@ -202,11 +224,12 @@ class Flavor extends Base implements CommandInterface
              ->addSpacer()
              ->addSection('Flavor files')
              ->addArgument(
-                 '<dir>/*.json',
+                 '<dir>/*.json, *.yml, *.yaml',
                  'An object of flavor names, each an object of levers: description, extends, '
                  . 'template, components {enable, disable}, modules {enable, disable, params}, '
                  . 'plugins {enable, disable, params} (named folder/element), dashboard {tiles}, '
-                 . 'kb {categories, articles}, content {articles}, resource_types.'
+                 . 'kb {categories, articles}, content {articles}, menu {items, by path}, '
+                 . 'resource_types. JSON and YAML read alike; YAML can carry a comment.'
              )
              ->render();
     }
