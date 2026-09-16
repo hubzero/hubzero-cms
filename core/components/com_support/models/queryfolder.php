@@ -165,13 +165,11 @@ class QueryFolder extends Relational
     }
 
     /**
-     * Clone core folders and queries and assign
-     * them to a given user ID
+     * The shared folders, building the defaults when there are none yet
      *
-     * @param   integer  $user_id  User ID
-     * @return  array
+     * @return  array  The iscore=1 folders every user is cloned from
      */
-    public static function cloneCore($user_id = 0)
+    public static function ensureCore()
     {
         // Get all the default folders
         $folders = self::all()
@@ -222,6 +220,24 @@ class QueryFolder extends Relational
                 }
             }
         }
+
+        return $folders;
+    }
+
+    /**
+     * Clone core folders and queries and assign
+     * them to a given user ID
+     *
+     * Builds the shared set first if nobody has yet. Anyone who only needs
+     * the shared set to exist - the read-only ticket list does - should call
+     * ensureCore() instead, or they get a personal copy they never asked for.
+     *
+     * @param   integer  $user_id  User ID
+     * @return  array
+     */
+    public static function cloneCore($user_id = 0)
+    {
+        $folders = self::ensureCore();
 
         $user_id = $user_id ?: User::get('id');
         $fid = 0;

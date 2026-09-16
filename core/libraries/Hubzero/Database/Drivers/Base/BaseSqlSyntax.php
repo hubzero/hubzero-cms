@@ -3196,8 +3196,7 @@ abstract class BaseSqlSyntax
 
         foreach ($data as $field => $value) {
             $fields[] = $this->connection->quoteName($field);
-            $values[] = '?';
-            $this->bind(is_string($value) ? trim($value) : $value);
+            $values[] = $this->valuePlaceholder($value);
         }
 
         return '(' . implode(',', $fields) . ') VALUES (' . implode(',', $values) . ')';
@@ -3260,15 +3259,39 @@ abstract class BaseSqlSyntax
             $placeholders = [];
 
             foreach ($fields as $field) {
-                $value = $row[$field] ?? null;
-                $placeholders[] = '?';
-                $this->bind(is_string($value) ? trim($value) : $value);
+                $placeholders[] = $this->valuePlaceholder($row[$field] ?? null);
             }
 
             $tuples[] = '(' . implode(',', $placeholders) . ')';
         }
 
         return '(' . implode(',', $quoted) . ') VALUES ' . implode(',', $tuples);
+    }
+
+    /**
+     * What stands for one inserted value in the statement
+     *
+     * A subquery or an Expression is SQL and is rendered as such, the way
+     * buildSet() already does; anything else is a bound parameter. Binding an
+     * Expression instead handed PDO its debugging string - "Expression(now)"
+     * for Expression::now() - and the database got a literal, not a function.
+     *
+     * @param   mixed   $value
+     * @return  string
+     */
+    protected function valuePlaceholder($value)
+    {
+        if ($value instanceof \Hubzero\Database\Query) {
+            return '(' . $value->toString() . ')';
+        }
+
+        if (is_object($value)) {
+            return $value->build($this);
+        }
+
+        $this->bind(is_string($value) ? trim($value) : $value);
+
+        return '?';
     }
 
     /**

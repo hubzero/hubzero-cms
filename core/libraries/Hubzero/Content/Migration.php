@@ -467,7 +467,7 @@ class Migration
                         // The last check is to make sure that the previous run we see was a success
                         // If we don't have a status line (which is an implicit success),
                         // or we do have a status and it was a success, then we can reasonably skip this entry
-                        if (!$hasStatus || ($hasStatus && $row->status == 'success')) {
+                        if (!$hasStatus || in_array($row->status, array('success', 'warning'))) {
                             continue;
                         }
                     }
@@ -482,7 +482,7 @@ class Migration
                     } elseif ($row && $row->direction == $direction) {
                     // If the last run was the same direction as is currently being run, we shouldn't run it again
                         // Lastly, check status as well
-                        if (!$hasStatus || ($hasStatus && $row->status == 'success')) {
+                        if (!$hasStatus || in_array($row->status, array('success', 'warning'))) {
                             if ($dryrun) {
                                 $this->log("Would ignore {$direction}() {$scope}/{$file}");
                                 continue;
@@ -917,7 +917,7 @@ class Migration
         }
 
         $fullpath = $this->files[0];
-        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+        $scope = $this->scopeFromPath(dirname($fullpath));
         $hash = hash('md5', $file);
 
         // Record the migration
@@ -959,7 +959,7 @@ class Migration
         }
 
         $fullpath = $this->files[0];
-        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+        $scope = $this->scopeFromPath(dirname($fullpath));
 
         try {
             // Find the most recent entry for this file/scope
@@ -1025,7 +1025,7 @@ class Migration
         }
 
         $fullpath = $this->files[0];
-        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+        $scope = $this->scopeFromPath(dirname($fullpath));
 
         try {
             $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
@@ -1116,7 +1116,7 @@ class Migration
         $pending = [];
         foreach ($allFiles as $filepath) {
             $file = basename($filepath);
-            $scope = str_replace(PATH_ROOT . DS, '', dirname($filepath));
+            $scope = $this->scopeFromPath(dirname($filepath));
             $key = $scope . '/' . $file;
 
             // Pending if: never run, or last run was down, or last run failed/skipped

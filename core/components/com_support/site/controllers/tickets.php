@@ -520,7 +520,7 @@ class Tickets extends SiteController
             // no such person has opened this page yet, everyone else got a
             // list with no query behind it and therefore no tickets.
             if (!count($folders)) {
-                QueryFolder::cloneCore(User::get('id'));
+                QueryFolder::ensureCore();
 
                 $folders = QueryFolder::all()
                     ->whereEquals('user_id', 0)

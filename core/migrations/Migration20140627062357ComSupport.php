@@ -124,7 +124,13 @@ class Migration20140627062357ComSupport extends Base
                 }
             }
 
-            $this->db->schema()->modifyString('#__support_tickets', 'owner', 50)->notNull()->default('');
+            $this->db
+                ->schema()
+                ->modifyColumn('#__support_tickets', 'owner')
+                ->string(50)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
 
         // Support ticket comments
@@ -151,7 +157,13 @@ class Migration20140627062357ComSupport extends Base
                 }
             }
 
-            $this->db->schema()->modifyString('#__support_comments', 'created_by', 50)->notNull()->default('');
+            $this->db
+                ->schema()
+                ->modifyColumn('#__support_comments', 'created_by')
+                ->string(50)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
     }
 }
