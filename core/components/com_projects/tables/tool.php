@@ -110,13 +110,14 @@ class Tool extends Table
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$search = $filters['search'];
+			$like   = $this->_db->quote('%' . $search . '%');
 			if (intval($search))
 			{
-				$filter .= " AND f.id='%$search%' ";
+				$filter .= " AND f.id=" . $this->_db->quote($search) . " ";
 			}
 			else
 			{
-				$filter .= " AND ((LOWER(f.name) LIKE '%$search%') OR (LOWER(f.title) LIKE '%$search%')) ";
+				$filter .= " AND ((LOWER(f.name) LIKE " . $like . ") OR (LOWER(f.title) LIKE " . $like . ")) ";
 			}
 		}
 
