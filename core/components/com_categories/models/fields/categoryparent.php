@@ -131,7 +131,6 @@ class CategoryParent extends Select
                 // but you should be able to save in that category.
                 if (\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true) {
                     if ($option->value != $oldCat) {
-                        echo 'y';
                         unset($options[$i]);
                     }
                 } elseif (
@@ -140,7 +139,6 @@ class CategoryParent extends Select
                     (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
                     && $option->value != $oldCat
                 ) {
-                    echo 'x';
                     unset($options[$i]);
                 }
             }

@@ -685,8 +685,12 @@ class GradeBook extends Base
      **/
     public function isEligibleForRecognition($member_id = null)
     {
-        static $assets = null;
-        static $grades = null;
+        // Kept for the run of the request, but keyed: the assets belong to a
+        // section and the grades to whoever was asked about. Held flat, the
+        // first caller's grades answered for everyone after them, so a report
+        // that walks a class measured the whole class against one student.
+        static $assets = array();
+        static $grades = array();
 
         // Get a grade policy object
         $section = $this->course->offering()->section();
@@ -694,10 +698,13 @@ class GradeBook extends Base
         $sectionId = $section->get('id');
         $gradePolicy = new GradePolicies($sectionGradePolicyId, $sectionId);
 
-        if (!isset($assets)) {
+        $assetKey = $this->course->get('id') . ':'
+            . $this->course->offering()->get('id') . ':' . $sectionId;
+
+        if (!isset($assets[$assetKey])) {
             // Get the graded assets
             $asset  = new Tables\Asset(App::get('db'));
-            $assets = $asset->find(
+            $found  = $asset->find(
                 array(
                     'w' => array(
                         'course_id'   => $this->course->get('id'),
@@ -724,27 +731,31 @@ class GradeBook extends Base
                 )
             );
 
-            $assets = array_merge($assets, $auxiliary);
+            $assets[$assetKey] = array_merge($found, $auxiliary);
         }
+
+        $sectionAssets = $assets[$assetKey];
 
         // Get totals by type
         $totals = array('exam' => 0, 'quiz' => 0, 'homework' => 0);
         $counts = array();
 
-        if ($assets && count($assets) > 0) {
-            foreach ($assets as $asset) {
+        if ($sectionAssets && count($sectionAssets) > 0) {
+            foreach ($sectionAssets as $asset) {
                 ++$totals[$asset->grade_weight];
             }
         }
 
-        if (!isset($grades)) {
+        $gradeKey = is_array($member_id) ? implode(',', $member_id) : (string) $member_id;
+
+        if (!isset($grades[$gradeKey])) {
             // Get count of graded items taken
             $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
-            $grades = $this->fetchGrades($filters);
+            $grades[$gradeKey] = $this->fetchGrades($filters);
         }
 
         // Restructure data
-        foreach ($grades as $g) {
+        foreach ($grades[$gradeKey] as $g) {
             if (!is_null($g->score) || !is_null($g->override)) {
                 if (isset($counts[$g->member_id][$g->grade_weight])) {
                     ++$counts[$g->member_id][$g->grade_weight];
