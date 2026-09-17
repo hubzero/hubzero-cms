@@ -87,6 +87,29 @@ class ApiController implements ControllerInterface
 	protected $isDynamic = false;
 
 	/**
+	 * Require management rights on a dynamically generated endpoint.
+	 *
+	 * Concrete API controllers ship their own tasks and authorisation and leave
+	 * $isDynamic false, so this is a no-op for them.
+	 *
+	 * @return  void
+	 */
+	protected function requireDynamicManage()
+	{
+		if (!$this->isDynamic)
+		{
+			return;
+		}
+
+		$this->requiresAuthentication();
+
+		if (!User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+	}
+
+	/**
 	 * Response object
 	 *
 	 * @var  object
@@ -308,6 +331,11 @@ class ApiController implements ControllerInterface
 	 */
 	public function indexTask()
 	{
+		// A concrete controller's index is its published documentation. A generated
+		// one instead enumerates the component table's own columns, so it is only
+		// for the callers that may actually use the endpoint.
+		$this->requireDynamicManage();
+
 		// var to hold output
 		$output = new stdClass();
 		$output->component = substr($this->_option, 4);
@@ -469,6 +497,10 @@ class ApiController implements ControllerInterface
 	 */
 	public function listTask()
 	{
+		// A dynamically generated endpoint would otherwise dump a component's
+		// whole table to anyone who asks
+		$this->requireDynamicManage();
+
 		$query = $this->resolveModel();
 
 		$properties = $query->getStructure()->getTableColumns($query->getTableName());
@@ -643,6 +675,16 @@ class ApiController implements ControllerInterface
 	{
 		$this->requiresAuthentication();
 
+		// A dynamically generated endpoint writes straight into a component's
+		// table with no model of its own, so creating a row there is a
+		// management action, not something any authenticated caller may do.
+		if ($this->isDynamic
+		 && !User::authorise('core.create', $this->_option)
+		 && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$model = $this->resolveModel();
 
 		$properties = $model->getStructure()->getTableColumns($model->getTableName());
@@ -742,6 +784,9 @@ class ApiController implements ControllerInterface
 	 */
 	public function readTask()
 	{
+		// As listTask: a generated endpoint exposes raw component rows
+		$this->requireDynamicManage();
+
 		$model = $this->resolveModel();
 
 		// Load record
@@ -782,6 +827,12 @@ class ApiController implements ControllerInterface
 		// Require authenitcation
 		$this->requiresAuthentication();
 
+		// As listTask/readTask/createTask: on a generated endpoint the loop below
+		// mass-assigns every non-key column from the request, so a row's own author
+		// could rewrite the columns that decide whose row it is and what it hangs
+		// off (created_by, item_id, item_type, state, access, ...)
+		$this->requireDynamicManage();
+
 		$model = $this->resolveModel();
 
 		// Load record
@@ -792,6 +843,36 @@ class ApiController implements ControllerInterface
 		if ($model->isNew())
 		{
 			App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_ITEM_NOT_FOUND'));
+		}
+
+		// Only the record's owner (or a component manager) may change it.
+		// Owners may act on their own record; anything else (including records with
+		// no owner column at all) needs manage rights on the component.
+		//
+		// Worth being honest about the reach of this: on a generated endpoint
+		// requireDynamicManage() above has already required core.manage, so the
+		// owner branch below cannot be what admits anyone there. It is written
+		// for a subclass that inherits these tasks with $isDynamic false, where
+		// requireDynamicManage() is a no-op -- and no shipped subclass reaches
+		// here today, because resolveModel() cannot produce an instantiable
+		// model for any of them. For all but one that is because it singularizes
+		// a versioned controller name (Entriesv1_0) to a model file that does not
+		// exist and aborts; com_courses' unversioned `base` controller does
+		// resolve, to an abstract class, and fatals on `new`. Keep the branch: a
+		// subclass that sets $_model reaches it, and then it is the only guard.
+		$ownerId = null;
+		foreach (array('created_by', 'user_id', 'uidNumber') as $ownerColumn)
+		{
+			if ($model->hasAttribute($ownerColumn))
+			{
+				$ownerId = (int) $model->get($ownerColumn);
+				break;
+			}
+		}
+		if (($ownerId === null || $ownerId !== (int) User::get('id'))
+			&& !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		// Collect data
@@ -886,8 +967,11 @@ class ApiController implements ControllerInterface
 	 */
 	public function deleteTask()
 	{
-		// Require authenitcation
+		// As updateTask: a generated endpoint deletes straight out of a component's
+		// table with no model of its own to say who may
 		$this->requiresAuthentication();
+
+		$this->requireDynamicManage();
 
 		$model = $this->resolveModel();
 
@@ -899,6 +983,36 @@ class ApiController implements ControllerInterface
 		if ($model->isNew())
 		{
 			App::abort(404, Lang::txt('JLIB_APPLICATION_ERROR_ITEM_NOT_FOUND'));
+		}
+
+		// Only the record's owner (or a component manager) may change it.
+		// Owners may act on their own record; anything else (including records with
+		// no owner column at all) needs manage rights on the component.
+		//
+		// Worth being honest about the reach of this: on a generated endpoint
+		// requireDynamicManage() above has already required core.manage, so the
+		// owner branch below cannot be what admits anyone there. It is written
+		// for a subclass that inherits these tasks with $isDynamic false, where
+		// requireDynamicManage() is a no-op -- and no shipped subclass reaches
+		// here today, because resolveModel() cannot produce an instantiable
+		// model for any of them. For all but one that is because it singularizes
+		// a versioned controller name (Entriesv1_0) to a model file that does not
+		// exist and aborts; com_courses' unversioned `base` controller does
+		// resolve, to an abstract class, and fatals on `new`. Keep the branch: a
+		// subclass that sets $_model reaches it, and then it is the only guard.
+		$ownerId = null;
+		foreach (array('created_by', 'user_id', 'uidNumber') as $ownerColumn)
+		{
+			if ($model->hasAttribute($ownerColumn))
+			{
+				$ownerId = (int) $model->get($ownerColumn);
+				break;
+			}
+		}
+		if (($ownerId === null || $ownerId !== (int) User::get('id'))
+			&& !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JGLOBAL_AUTH_ACCESS_DENIED'));
 		}
 
 		if (!$model->destroy())
