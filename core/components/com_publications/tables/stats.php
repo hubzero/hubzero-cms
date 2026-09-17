@@ -64,7 +64,7 @@ class Stats extends Table
 				FROM $this->_tbl
 				WHERE period =" . $this->_db->quote($period) . "
 				AND publication_id =" . $this->_db->quote($publication_id);
-		$sql.= $dthis ? " AND datetime='" . $dthis . "-00 00:00:00'" : '';
+		$sql.= $dthis ? " AND datetime=" . $this->_db->quote($dthis . '-00 00:00:00') : '';
 		$sql.= " ORDER BY datetime DESC LIMIT 1";
 
 		$this->_db->setQuery($sql);

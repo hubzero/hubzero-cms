@@ -100,6 +100,10 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 
 		// Get/set some variables
 		$dthis  = Request::getString('dthis', date('Y') . '-' . date('m'));
+		if (!preg_match('/^[0-9]{4}-[0-9]{2}$/', $dthis))
+		{
+			$dthis = date('Y') . '-' . date('m');
+		}
 		$period = Request::getInt('period', $this->params->get('period', 14));
 
 		require_once \Component::path($option) . DS . 'tables' . DS . 'stats.php';
