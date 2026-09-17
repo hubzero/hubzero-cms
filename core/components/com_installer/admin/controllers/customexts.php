@@ -387,6 +387,18 @@ class Customexts extends AdminController
 		// Check for request forgeries.
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
+		if (
+			!User::authorise('core.edit.state', $this->_option)
+			// core.edit.state, not core.edit: the button is rendered on
+			// core.edit.state (views/*/tmpl/default.php) and the shipped #__assets
+			// row denies core.edit.state to group 7 while leaving core.edit to be
+			// inherited from root -- so a core.edit test admitted exactly the
+			// administrators the ACL and the page both refuse.
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Initialise variables.
 		$ids    = Request::getArray('cid', array());
 		$values = array('update' => 1, 'publish' => 1, 'unpublish' => 0);
@@ -413,7 +425,7 @@ class Customexts extends AdminController
 
 					if (is_dir($extdir . '/__' . $repodir))
 					{
-						$museCmd = 'renameRepo currPath=' . $extdir . '/__' . $repodir . ' targetPath=' . $model->path;
+						$museCmd = 'renameRepo currPath=' . escapeshellarg($extdir . '/__' . $repodir) . ' targetPath=' . escapeshellarg($model->path);
 
 						$rename_response = Cli::call($museCmd, $task='repository');
 						$rename_response = json_decode($rename_response);
@@ -433,7 +445,7 @@ class Customexts extends AdminController
 						$repoPath = array_pop($pieces);
 						$extdir = implode("/", $pieces);
 
-						$museCmd = 'renameRepo currPath=' . $model->path . ' targetPath=' . $extdir . '/__' . $repoPath;
+						$museCmd = 'renameRepo currPath=' . escapeshellarg($model->path) . ' targetPath=' . escapeshellarg($extdir . '/__' . $repoPath);
 
 						$rename_response = Cli::call($museCmd, $task='repository');
 						$rename_response = json_decode($rename_response);
@@ -483,6 +495,14 @@ class Customexts extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getArray('cid', array());
 
@@ -516,11 +536,11 @@ class Customexts extends AdminController
 				if ($extension->get('apikey'))
 				{
 					$newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
-					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $newURL;
+					$museCmd = 'cloneRepo repoPath=' . escapeshellarg($extension->path) . ' sourceUrl=' . escapeshellarg($newURL);
 				}
 				else
 				{
-					$museCmd = 'cloneRepo repoPath=' . $extension->path . ' sourceUrl=' . $extension->get('url');
+					$museCmd = 'cloneRepo repoPath=' . escapeshellarg($extension->path) . ' sourceUrl=' . escapeshellarg($extension->get('url'));
 				}
 
 				$clone_response = Cli::call($museCmd, $task='repository');
@@ -575,7 +595,7 @@ class Customexts extends AdminController
 					$newURL = $extension->get('url');
 				}
 
-				$museCmd = 'updateGitURLconf repoPath=' . $extension->path . ' newsourceUrl=' . $newURL;
+				$museCmd = 'updateGitURLconf repoPath=' . escapeshellarg($extension->path) . ' newsourceUrl=' . escapeshellarg($newURL);
 				$updateGitURLconf_response = Cli::call($museCmd, $task='repository');
 				$updateGitURLconf_response = json_decode($updateGitURLconf_response == null ? '' : $updateGitURLconf_response);
 
@@ -593,7 +613,7 @@ class Customexts extends AdminController
 				else
 				{
 					// Check if specified branch is being used.  If not checkout out specified branch
-					$museCmd = 'checkoutRepoBranch repoPath=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . $extension->get('git_branch') : '');
+					$museCmd = 'checkoutRepoBranch repoPath=' . escapeshellarg($extension->path) . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . escapeshellarg($extension->get('git_branch')) : '');
 					$checkoutRepoBranch_response = Cli::call($museCmd, $task='repository');
 					$checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
@@ -606,7 +626,7 @@ class Customexts extends AdminController
 					else
 					{
 						// Check for updates in remote branch
-						$museCmd = 'update -r=' . $extension->path . ((!empty($extension->get('git_branch'))) ? ' source=' . $extension->get('git_branch') : '');
+						$museCmd = 'update -r=' . escapeshellarg($extension->path) . ((!empty($extension->get('git_branch'))) ? ' source=' . escapeshellarg($extension->get('git_branch')) : '');
 
 						$fetch_response = Cli::call($museCmd, $task='repository');
 						$fetch_response = json_decode($fetch_response == null ? '' : $fetch_response);
@@ -660,6 +680,14 @@ class Customexts extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$ids = Request::getArray('id', array());
 
@@ -685,7 +713,7 @@ class Customexts extends AdminController
 		{
 			$extension = Custom_extensions::oneOrNew($id);
 
-			$museCmd = 'update -r=' . $extension->path . ' -f --no-colors';
+			$museCmd = 'update -r=' . escapeshellarg($extension->path) . ' -f --no-colors';
 			$update_response = Cli::call($museCmd, $task='repository');
 			$update_response = json_decode($update_response == null ? '' : $update_response);
 
@@ -746,7 +774,7 @@ class Customexts extends AdminController
 			// If enextion is enabled
 			if ($extension->enabled == 1)
 			{
-				$museCmd = 'removeRepo -path=' . $extension->path;
+				$museCmd = 'removeRepo -path=' . escapeshellarg($extension->path);
 			}  // If enextion is disabled
 			else if ($extension->enabled == 0)
 			{
@@ -754,7 +782,7 @@ class Customexts extends AdminController
 				$repodir = array_pop($pieces);
 				$extdir = implode("/", $pieces);
 
-				$museCmd = 'removeRepo -path=' . $extdir . '/__' . $repodir;
+				$museCmd = 'removeRepo -path=' . escapeshellarg($extdir . '/__' . $repodir);
 			}
 
 			// Run migrations

@@ -81,7 +81,7 @@ class Cli
 		}
 		if (isset($search))
 		{
-			$args[] = '--search=' . escapeshellarg($search);
+			$args[] = '--search=' . $search;
 		}
 		if (isset($upcoming) && $upcoming)
 		{
@@ -97,7 +97,7 @@ class Cli
 		}
 		if (isset($source))
 		{
-			$args[] = '--source=' . escapeshellarg($source);
+			$args[] = '--source=' . $source;
 		}
 
 		return self::call('log', 'repository', $args);
@@ -129,12 +129,12 @@ class Cli
 
 		if (isset($source))
 		{
-			$args[] = '--source=' . escapeshellarg($source);
+			$args[] = '--source=' . $source;
 		}
 
 		if (isset($autoPushRef))
 		{
-			$args[] = '--git-auto-push-ref=' . escapeshellarg($autoPushRef);
+			$args[] = '--git-auto-push-ref=' . $autoPushRef;
 		}
 
 		return self::call('update', 'repository', $args);
@@ -182,7 +182,7 @@ class Cli
 		}
 		if (isset($file))
 		{
-			$args[] = '--file=' . escapeshellarg($file);
+			$args[] = '--file=' . $file;
 		}
 
 		return self::call('run', 'migration', $args);
@@ -205,7 +205,7 @@ class Cli
 		{
 			$user = \Component::params('com_installer')->get('system_user', 'hubadmin');
 			// Check this user exists on host, if not set user to apache
-			if (shell_exec('getent passwd ' . $user . ' | wc -l') == 0)
+			if (shell_exec('getent passwd ' . escapeshellarg($user) . ' | wc -l') == 0)
 			{
 				$user = 'apache';
 			}
@@ -220,12 +220,12 @@ class Cli
 
 		if ($user == 'apache')
 		{
-			$cmd = PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+			$cmd = PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
 		}
 		else
 		{
-			$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
-			$cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+			$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . escapeshellarg($user) . ' ' : '';
+			$cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
 		}
 
 		return shell_exec($cmd);
