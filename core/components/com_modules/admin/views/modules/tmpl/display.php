@@ -319,7 +319,18 @@ $saveOrder = $listOrder == 'ordering';
                 </td>
                 <td class="priority-2 left">
                     <?php if ($item->position) : ?>
-                        <?php echo $item->position; ?>
+                        <?php echo $this->escape($item->position); ?>
+                        <?php // A position the template never asks for renders
+                              // nowhere. Say so here rather than leave someone
+                              // wondering why a published module is missing.
+                        if ($this->declared && !in_array($item->position, $this->declared)) : ?>
+                            <p class="smallsub warning">
+                                <?php echo Lang::txt(
+                                    'COM_MODULES_WARNING_POSITION_NOT_IN_TEMPLATE',
+                                    $this->escape($this->template)
+                                ); ?>
+                            </p>
+                        <?php endif; ?>
                     <?php else : ?>
                         <?php echo ':: ' . Lang::txt('JNONE') . ' ::'; ?>
                     <?php endif; ?>

@@ -12,6 +12,7 @@ use Hubzero\Utility\Arr;
 use Hubzero\Component\AdminController;
 use Components\Modules\Models\Module;
 use Components\Modules\Helpers\Modules as ModulesHelper;
+use Hubzero\Template\Positions;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
 use Hubzero\Facades\Config;
@@ -267,10 +268,19 @@ class Modules extends AdminController
             Notify::warning(Lang::txt('COM_MODULES_MSG_MANAGE_NO_MODULES'));
         }
 
+        // What the template this client wears declares. A module in any other
+        // position is published and renders nowhere, and until now nothing
+        // said so - a template can stop declaring a position and leave the
+        // modules in it behind, silently.
+        $template = \Hubzero\Template\Style::current(App::get('db'), $filters['client_id']);
+        $declared = Positions::declared($template);
+
         $this->view
             ->set('filters', $filters)
             ->set('items', $items)
             ->set('total', $total)
+            ->set('template', $template)
+            ->set('declared', $declared)
             ->display();
     }
 
@@ -595,55 +605,51 @@ class Modules extends AdminController
             }
         }
 
-        // Load the positions from the installed templates.
+        // Load the positions from the installed templates. What a template
+        // declares is read in one place, so that the picker here and the
+        // warning in the list are answering the same question.
         foreach (ModulesHelper::getTemplates($filters['client_id']) as $template) {
-            $xmlFile = '/templates/' . $template->element . '/templateDetails.xml';
-            $path = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . $xmlFile);
+            $declared = Positions::labelled($template->element);
 
-            if (!file_exists($path)) {
-                $path = \Hubzero\Filesystem\Util::normalizePath(PATH_CORE . $xmlFile);
+            if (!$declared) {
+                continue;
             }
 
-            if (file_exists($path)) {
-                $xml = simplexml_load_file($path);
-                if (isset($xml->positions[0])) {
-                    $tplPath = '/templates/' . $template->element;
-                    $langFile = 'tpl_' . $template->element . '.sys';
-                    Lang::load($langFile, PATH_APP . $tplPath, null, false, true) ||
-                    Lang::load($langFile, PATH_CORE . $tplPath, null, false, true);
+            $tplPath = '/templates/' . $template->element;
+            $langFile = 'tpl_' . $template->element . '.sys';
+            Lang::load($langFile, PATH_APP . $tplPath, null, false, true) ||
+            Lang::load($langFile, PATH_CORE . $tplPath, null, false, true);
 
-                    foreach ($xml->positions[0] as $position) {
-                        $value = (string)$position['value'];
-                        $label = (string)$position;
-                        if (!$value) {
-                            $value    = $label;
-                            $label    = preg_replace(
-                                '/[^a-zA-Z0-9_\-]/',
-                                '_',
-                                'TPL_' . $template->element . '_POSITION_' . $value
-                            );
-                            $altlabel = preg_replace(
-                                '/[^a-zA-Z0-9_\-]/',
-                                '_',
-                                'COM_MODULES_POSITION_' . $value
-                            );
-                            if (!Lang::hasKey($label) && Lang::hasKey($altlabel)) {
-                                $label = $altlabel;
-                            }
-                        }
-                        $stateMatch = $filters['state'] != '' && $filters['state'] != $template->enabled;
-                        if ($filters['type'] == 'user' || $stateMatch) {
-                            unset($positions[$value]);
-                        } elseif (
-                            preg_match(chr(1) . $filters['search'] . chr(1) . 'i', $value)
-                            && ($filters['template'] == '' || $filters['template'] == $template->element)
-                        ) {
-                            if (!isset($positions[$value])) {
-                                $positions[$value] = array();
-                            }
-                            $positions[$value][$template->name] = $label;
-                        }
+            foreach ($declared as $value => $label) {
+                if (!$label) {
+                    $label    = preg_replace(
+                        '/[^a-zA-Z0-9_\-]/',
+                        '_',
+                        'TPL_' . $template->element . '_POSITION_' . $value
+                    );
+                    $altlabel = preg_replace(
+                        '/[^a-zA-Z0-9_\-]/',
+                        '_',
+                        'COM_MODULES_POSITION_' . $value
+                    );
+                    if (!Lang::hasKey($label) && Lang::hasKey($altlabel)) {
+                        $label = $altlabel;
                     }
+                }
+                $stateMatch = $filters['state'] != '' && $filters['state'] != $template->enabled;
+                if ($filters['type'] == 'user' || $stateMatch) {
+                    unset($positions[$value]);
+                } elseif (
+                    // A search is a substring, the way it is against the
+                    // positions modules sit in. Handing it to preg_match as
+                    // the pattern made a bracket in the box an error.
+                    ($filters['search'] == '' || stripos($value, $filters['search']) !== false)
+                    && ($filters['template'] == '' || $filters['template'] == $template->element)
+                ) {
+                    if (!isset($positions[$value])) {
+                        $positions[$value] = array();
+                    }
+                    $positions[$value][$template->name] = $label;
                 }
             }
         }
