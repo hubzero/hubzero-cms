@@ -323,11 +323,14 @@ class Entriesv1_0 extends ApiController
 		try
 		{
 			// execute latex to build dvi
-			$command = 'cd ' . $dir . '; /usr/bin/latex ' . $filename . '.tex < /dev/null |grep ^!|grep -v Emergency > ' . $dir . DS . $filename . '.error 2> /dev/null 2>&1';
+			// Restrict TeX file access to the working dir (openin_any/openout_any=p) and
+			// disable shell-escape so a \input{}/\write18{} in the expression cannot read
+			// arbitrary files or run commands; escape the paths as defence in depth.
+			$command = 'cd ' . escapeshellarg($dir) . '; openin_any=p openout_any=p timeout 20 /usr/bin/latex -no-shell-escape -halt-on-error -interaction=nonstopmode ' . escapeshellarg($filename . '.tex') . ' < /dev/null |grep ^!|grep -v Emergency > ' . escapeshellarg($dir . DS . $filename . '.error') . ' 2> /dev/null 2>&1';
 			exec($command, $output_lines, $exit_status);
 
 			// execute dvi2png to build png
-			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . $dir . DS . $filename . '.png '. $dir . DS . $filename . '.dvi 2>&1';
+			$command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . escapeshellarg($dir . DS . $filename . '.png') . ' ' . escapeshellarg($dir . DS . $filename . '.dvi') . ' 2>&1';
 			exec($command, $output_lines, $exit_status);
 
 			if ($exit_status != 0)
