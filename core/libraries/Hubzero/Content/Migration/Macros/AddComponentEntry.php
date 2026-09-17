@@ -17,6 +17,13 @@ use Hubzero\Access\Asset;
 class AddComponentEntry extends Macro
 {
     /**
+     * The component route helper, once asked for
+     *
+     * @var  \Hubzero\Menu\ComponentRoute
+     */
+    protected $routes;
+
+    /**
      * Add, as needed, the component to the appropriate table, depending on the CMS version
      *
      * @param   string  $name            Component name
@@ -183,8 +190,10 @@ class AddComponentEntry extends Macro
 
             $this->log(sprintf('Added menu entry for component "%s"', $name));
 
-            // Rebuild lft/rgt
-            $this->rebuildMenu();
+            // Rebuild lft/rgt. The whole tree: one root carries both clients,
+            // and an entry inserted with zeroes for its bounds is an entry the
+            // admin menu cannot place.
+            $this->routes()->rebuild();
         }
 
         $this->addSiteRoute($option, $component_id, $enabled, $createRoute);
@@ -221,8 +230,20 @@ class AddComponentEntry extends Macro
             return false;
         }
 
-        $routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
+        return $this->routes()->create($option, $component_id);
+    }
 
-        return $routes->create($option, $component_id);
+    /**
+     * The one place that makes and orders component routes
+     *
+     * @return  \Hubzero\Menu\ComponentRoute
+     */
+    protected function routes()
+    {
+        if (!isset($this->routes)) {
+            $this->routes = new \Hubzero\Menu\ComponentRoute($this->db, array($this, 'log'));
+        }
+
+        return $this->routes;
     }
 }
