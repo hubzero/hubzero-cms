@@ -69,11 +69,11 @@ class Articlesv1_0 extends ApiController
 
 		$query = "SELECT c.*
 					FROM `#__content` as c, `#__categories` as cat
-					WHERE cat.alias='{$category}'
+					WHERE cat.alias=" . $database->quote($category) . "
 					AND c.catid=cat.id
 					AND state=1
 					ORDER BY c.ordering ASC
-					LIMIT {$limit}";
+					LIMIT " . (int) $limit;
 
 		$database->setQuery($query);
 		$rows = $database->loadObjectList();
