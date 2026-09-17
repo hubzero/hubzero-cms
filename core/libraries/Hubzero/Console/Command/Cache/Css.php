@@ -49,21 +49,36 @@ class Css extends Base implements CommandInterface
      */
     public function clear()
     {
+        // The compiled stylesheet is written per client - app/cache/site/site.css,
+        // app/cache/admin/site.css - by Document\Assets::getSystemStylesheet().
+        // This looked for app/cache/site.css, which nothing writes, so it
+        // reported the file missing and cleared nothing on every hub.
         $cacheDir = PATH_APP . DS . 'cache';
         $files    = array('site.css', 'site.less.cache');
+        $removed  = 0;
 
-        // Remove each file
-        foreach ($files as $file) {
-            if (!is_file($cacheDir . DS . $file)) {
-                $this->output->addLine($file . ' does not exist', 'warning');
-                continue;
-            }
+        foreach ((array) glob($cacheDir . DS . '*', GLOB_ONLYDIR) as $clientDir) {
+            foreach ($files as $file) {
+                $path = $clientDir . DS . $file;
 
-            if (!Filesystem::delete($cacheDir . DS . $file)) {
-                $this->output->addLine('Unable to delete cache file: ' . $file, 'error');
-            } else {
-                $this->output->addLine($file . ' deleted', 'success');
+                if (!is_file($path)) {
+                    continue;
+                }
+
+                $name = basename($clientDir) . '/' . $file;
+
+                if (!Filesystem::delete($path)) {
+                    $this->output->addLine('Unable to delete cache file: ' . $name, 'error');
+                } else {
+                    $this->output->addLine($name . ' deleted', 'success');
+                    $removed++;
+                }
             }
+        }
+
+        if (!$removed) {
+            $this->output->addLine('No compiled CSS to remove', 'warning');
+            return;
         }
 
         // success!

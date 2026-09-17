@@ -153,7 +153,6 @@ class Utilities
         $filters['type']       = 0;
         $filters['owner']      = '';
         $filters['reportedby'] = '';
-        $filters['severity']   = 'normal';
         $filters['severity']   = '';
 
         $filters['sort']       = trim(Request::getState('com_support.tickets.sort', 'filter_order', 'created'));

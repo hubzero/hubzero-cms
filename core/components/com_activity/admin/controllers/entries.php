@@ -91,8 +91,8 @@ class Entries extends AdminController
                     $dateStr = $k . '-' . $monthStr . '-' . $dayStr;
 
                     $amount = Activity::all()
-                        ->where('created', '>', $dateStr . ' 00:00:00')
-                        ->where('created', '<', $dateStr . ' 24:59:59')
+                        ->where('created', '>=', $dateStr . ' 00:00:00')
+                        ->where('created', '<=', $dateStr . ' 23:59:59')
                         ->total();
 
                     $data[$k . '-' . $i . '-' . $d] = $amount;

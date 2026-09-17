@@ -178,7 +178,9 @@ class Citations extends SiteController
         }
 
         // Reset the filter if the user came from a different section
-        if (strpos($referer, "/citations/browse") == false) {
+        // === : a referer that *starts* with the browse path matches at
+        // position 0, which == false reads as no match at all
+        if (strpos($referer, "/citations/browse") === false) {
             $this->view->filters['idlist'] = "";
             $session->set('idlist', $this->view->filters['idlist']);
         }
