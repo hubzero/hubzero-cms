@@ -1268,7 +1268,7 @@ class Repo extends Obj
 			try
 			{
 				chdir($tempPath);
-				exec('tar zxvf ' . $tmp_name . ' -C ' . $extractPath . ' 2>&1', $out);
+				exec('tar zxvf ' . escapeshellarg($tmp_name) . ' -C ' . escapeshellarg($extractPath) . ' 2>&1', $out);
 			}
 			catch (Exception $e)
 			{
@@ -1285,7 +1285,7 @@ class Repo extends Obj
 			If no directory is found, create a unique one for the project to contain the files.
 			***/
 			$matches = [];
-			$firstArchiveEntry = shell_exec("unzip -qql " .  $tmp_name . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
+			$firstArchiveEntry = shell_exec("unzip -qql " . escapeshellarg($tmp_name) . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
 			preg_match("/(^.*?\/)/", (string) $firstArchiveEntry, $matches);
 
 			$topLevelDirectory = $matches[0] ?? (string) $firstArchiveEntry;
