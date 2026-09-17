@@ -12,6 +12,7 @@ use Hubzero\Component\AdminController;
 use Filesystem;
 use Request;
 use Lang;
+use Component;
 
 /**
  * Methods for listing and managing files and folders
@@ -91,6 +92,18 @@ class Media extends AdminController
 			$file['name'] = Filesystem::clean($file['name']);
 			// Ensure file names fit.
 			$ext = Filesystem::extension($file['name']);
+
+			// Refuse only server-executable extensions and the markup types the
+			// download handler serves inline (the same rule as resource attachments
+			// and site media uploads); archives are ordinary files here and are only
+			// unpacked by batch mode below
+			$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+			if (in_array(strtolower((string) $ext), $blockedExtensions))
+			{
+				$this->setError(Lang::txt('File type not allowed: %s', $ext));
+				return $this->displayTask();
+			}
+
 			$file['name'] = str_replace(' ', '_', $file['name']);
 			if (strlen($file['name']) > 230)
 			{
@@ -119,14 +132,14 @@ class Media extends AdminController
 					switch ($ext)
 					{
 						case 'gz':
-							$cmd = "tar zxvf {$escaped_file} -C {$path}";
+							$cmd = "tar zxvf {$escaped_file} -C " . escapeshellarg($path);
 							break;
 						case 'tar':
-							$cmd = "tar xvf {$escaped_file} -C {$path}";
+							$cmd = "tar xvf {$escaped_file} -C " . escapeshellarg($path);
 							break;
 						case 'zip':
 						default:
-							$cmd = "unzip -o {$escaped_file} -d {$path}";
+							$cmd = "unzip -o {$escaped_file} -d " . escapeshellarg($path);
 					}
 
 					//unzip file
@@ -198,6 +211,15 @@ class Media extends AdminController
 
 		$folder = Utilities::normalizePath($folder);
 
+		// As deletefileTask: normalizePath() does not strip '..', and this is a
+		// recursive delete. buildUploadPath() now refuses a traversing listdir
+		// or subdir; this covers the folder name itself.
+		if (strpos($folder, '..') !== false)
+		{
+			$this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
+			return $this->displayTask();
+		}
+
 		// Check if the folder even exists
 		if (!is_dir($path . $folder) or !$folder)
 		{
@@ -253,6 +275,13 @@ class Media extends AdminController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
+			return $this->displayTask();
+		}
+
+		// Keep the target within the upload directory
+		if (strpos($file, '..') !== false)
+		{
+			$this->setError(Lang::txt('COM_RESOURCES_ERROR_FILE_NOT_FOUND'));
 			return $this->displayTask();
 		}
 

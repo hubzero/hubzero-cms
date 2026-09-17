@@ -63,7 +63,7 @@ class Video extends File
 
 				// Exec the command to unzip things
 				// @FIXME: check for symlinks and other potential security concerns
-				if ($result = shell_exec("unzip -o {$escaped_file} -d {$asset['upload_path']}"))
+				if ($result = shell_exec("unzip -o {$escaped_file} -d " . escapeshellarg($asset['upload_path'])))
 				{
 					// Remove original archive
 					Filesystem::delete($asset['target_path']);

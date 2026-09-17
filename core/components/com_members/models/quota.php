@@ -94,7 +94,7 @@ class Quota extends Relational
 
 		if ($result)
 		{
-			$command = "update_quota '" . $this->get('user_id') . "' '" . $this->get('soft_blocks') . "' '" . $this->get('hard_blocks') . "'";
+			$command = 'update_quota ' . escapeshellarg($this->get('user_id')) . ' ' . escapeshellarg($this->get('soft_blocks')) . ' ' . escapeshellarg($this->get('hard_blocks'));
 
 			$cmd = "/bin/sh " . \Component::path('com_tools') . "/scripts/mw {$command} 2>&1 </dev/null";
 
