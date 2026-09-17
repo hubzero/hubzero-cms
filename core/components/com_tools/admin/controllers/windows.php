@@ -286,7 +286,7 @@ class Windows extends AdminController
 
 		if (!empty($appname))
 		{
-			exec('/usr/bin/hz-aws-appstream getappsessions --appid' . ' "' . $appname . '"', $rawsessions);
+			exec('/usr/bin/hz-aws-appstream getappsessions --appid ' . escapeshellarg($appname), $rawsessions);
 
 			$sessions = array();
 			foreach ($rawsessions as $s)
