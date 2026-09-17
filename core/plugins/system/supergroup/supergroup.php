@@ -31,6 +31,17 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 
 		$cn     = Request::getString('cn', '');
 		$active = Request::getString('active', '');
+		// $active becomes a component path segment in a require_once below; keep it a
+		// bare component name so it cannot traverse to or include an arbitrary file.
+		$active = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
+		// '-' and '.' stay: a super-group component directory may contain them,
+		// which is why the function name built further down strips them again.
+		// Every separator is already gone, so refusing '..' is what stops this
+		// climbing out of the components directory.
+		if (strpos($active, '..') !== false)
+		{
+			$active = '';
+		}
 
 		// load group object
 		$group  = Hubzero\User\Group::getInstance($cn);
@@ -142,6 +153,15 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 			// get request options
 			$cn     = Request::getVar('cn', '');
 			$active = Request::getVar('active', '');
+			$active = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $active);
+		// '-' and '.' stay: a super-group component directory may contain them,
+		// which is why the function name built further down strips them again.
+		// Every separator is already gone, so refusing '..' is what stops this
+		// climbing out of the components directory.
+		if (strpos($active, '..') !== false)
+		{
+			$active = '';
+		}
 
 			// load group object
 			$group  = Hubzero\User\Group::getInstance($cn);
