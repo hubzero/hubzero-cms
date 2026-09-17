@@ -828,6 +828,10 @@ class Ticket extends Relational
 			$filters['sort'] = 'group_id';
 		}
 
+		// Prevent ORDER BY injection: restrict column to identifier charset and direction to ASC/DESC.
+		$filters['sort']    = preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']);
+		$filters['sortdir'] = (strtoupper(trim($filters['sortdir'])) == 'ASC') ? 'ASC' : 'DESC';
+
 		if ($filters['sort'] == 'severity')
 		{
 			$sql .= " ORDER BY CASE severity ";
