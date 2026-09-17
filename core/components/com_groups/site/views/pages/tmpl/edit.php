@@ -63,7 +63,7 @@ $pageHeading = Lang::txt("COM_GROUPS_PAGES_ADD_PAGE");
 
 // if we are in edit mode
 if ($this->page->get('id')) {
-    $pageHeading = Lang::txt("COM_GROUPS_PAGES_EDIT_PAGE", $title);
+    $pageHeading = Lang::txt("COM_GROUPS_PAGES_EDIT_PAGE_TITLED", $title);
 }
 ?>
 <header id="content-header">
