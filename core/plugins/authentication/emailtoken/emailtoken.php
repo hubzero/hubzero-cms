@@ -87,8 +87,10 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 				'warning');
 		}
 
-		// Check if they gave the correct confimation token
-		if ($code != -intval($activation))
+		// Check if they gave the correct confirmation token. Only a genuinely
+		// pending account has a negative activation token; require an exact match
+		// so a loosely-equal/zero value cannot pass.
+		if ((int) $activation >= 0 || (int) $code !== -((int) $activation))
 		{
 			// Don't need to do anything if it failed
 			return;
