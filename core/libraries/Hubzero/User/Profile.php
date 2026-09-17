@@ -883,7 +883,7 @@ class Profile extends Obj
 			{
 				if (is_object($this->_params))
 				{
-					$query .= "params='".str_replace("", "", $this->_params->toString())."'";
+					$query .= "params=".$db->quote($this->_params->toString());
 				}
 				else
 				{
