@@ -635,7 +635,18 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			$path .= DS . $dir;
 		}
 
-		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== false)
+		// Confine the requested file to the project repository: resolve it and
+		// verify it still sits under the repo root before opening it.
+		$repoReal   = realpath(\Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias')));
+		$targetReal = realpath($path . DS . $file);
+		if ($repoReal === false || $targetReal === false
+			|| strpos($targetReal, $repoReal . DS) !== 0)
+		{
+			echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
+			return;
+		}
+
+		if (file_exists($targetReal) && ($handle = fopen($targetReal, "r")) !== false)
 		{
 			$table = array();
 			$dd = array();
