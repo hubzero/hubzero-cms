@@ -179,9 +179,12 @@ class Inspector extends Obj
                 'checked_out_time' => $fields['checked_out_time']->Default
             );
 
-            if (isset($fields[$tn]['editor'])) {
-                $values['editor'] = '';
-            }
+            // There was a branch here that blanked an `editor` column alongside
+            // the check-in. It tested $fields[$tn]['editor'] - the column list
+            // indexed by table name - so it never fired, and repairing it would
+            // have been worse than leaving it: the only `editor` column on a
+            // stock schema is #__citations.editor, the bibliographic editor of a
+            // citation, which check-in has no business emptying.
 
             $query = $db->getQuery()
                 ->update($tn)
