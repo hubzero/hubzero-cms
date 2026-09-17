@@ -285,7 +285,9 @@ class Helper
 		{
 			return array();
 		}
-		
+
+		$uid = (int) $uid;
+
 		$db = \App::get('db');
 
 		$g = '';
@@ -369,6 +371,8 @@ class Helper
 	 */
 	public static function getCourses($uid, $type='all', $cat = null)
 	{
+		$uid = (int) $uid;
+
 		$db = \App::get('db');
 
 		$g = '';

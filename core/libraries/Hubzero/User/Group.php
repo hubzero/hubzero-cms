@@ -568,7 +568,7 @@ class Group extends Obj
 				// this same loop (members first), so diffing managers against
 				// the managers table would fire a second enrollment event for
 				// somebody who was just enrolled.
-				$query = "SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber=" . $this->gidNumber;
+				$query = "SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber=" . (int) $this->gidNumber;
 				$db->setQuery($query);
 
 				// compile current list of members in this group
@@ -1244,6 +1244,23 @@ class Group extends Obj
 			$filters['fields'][] = 'cn';
 		}
 
+		// Only allow plain column identifiers (and the COUNT(*) aggregate) in the
+		// select list; callers may pass this straight from request input.
+		$safeFields = array();
+		foreach ((array) $filters['fields'] as $f)
+		{
+			$f = trim($f);
+			if ($f === 'COUNT(*)' || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $f))
+			{
+				$safeFields[] = $f;
+			}
+		}
+		if (empty($safeFields))
+		{
+			$safeFields[] = 'cn';
+		}
+		$filters['fields'] = $safeFields;
+
 		$field = implode(',', $filters['fields']);
 
 		$query = "SELECT $field FROM `#__xgroups`";
@@ -1265,14 +1282,14 @@ class Group extends Obj
 					$query .= 'description ASC';
 					break;
 				default:
-					$query .= $filters['sortby'];
+					$query .= preg_replace('/[^a-zA-Z0-9_,. ]/', '', $filters['sortby']);
 					break;
 			}
 		}
 
 		if (isset($filters['limit']) && $filters['limit'] != 'all')
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
 		}
 
 		$query .= ";";
