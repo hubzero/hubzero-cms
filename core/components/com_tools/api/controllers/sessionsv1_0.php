@@ -199,7 +199,7 @@ class Sessionsv1_0 extends ApiController
 				$sql = "SELECT 0 AS id, tv.toolname AS alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, tv.fulltxt as abstract, '0000-00-00 00:00:00' AS created, tv.toolid, tv.id
 					FROM `#__tool_version` as tv
 					WHERE
-					tv.toolname='{$tool}'
+					tv.toolname=" . $database->quote($tool) . "
 				        AND tv.revision IS NULL";
 			}
 			else
@@ -210,14 +210,14 @@ class Sessionsv1_0 extends ApiController
 				r.type=7
 				AND r.standalone=1
 				AND r.alias=tv.toolname
-				AND r.alias='{$tool}' 
-				AND tv.revision='{$version}'";
+				AND r.alias=" . $database->quote($tool) . " 
+				AND tv.revision=" . $database->quote($version) . "";
 			}
 		}
 		else
 		{
 			$sql = "SELECT 0 AS id, t.toolname AS alias, t.toolname, t.title, t.description, t.toolaccess as access, t.mw, CONCAT(t.toolname,'_dev') AS instance, 'dev' AS revision, t.fulltxt as abstract, '0000-00-00 00:00:00' AS created, t.id AS toolid, 0 AS id FROM `#__tool` as t
-				WHERE t.toolname='{$tool}'";
+				WHERE t.toolname=" . $database->quote($tool) . "";
 		}
 		$database->setQuery($sql);
 		$tool_info = $database->loadObject();
