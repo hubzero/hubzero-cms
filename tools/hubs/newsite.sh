@@ -170,7 +170,7 @@ cat > "$ANSWERS" <<JSONEOF
         "offset": "America/Indiana/Indianapolis",
         "MetaDesc": "A HUBzero demonstration hub.",
         "site_template": "$TEMPLATE",
-        "administrator_template": "kimera",
+        "administrator_template": "kameleon",
         "application_env": "development",
         "debug": "1"
     },
@@ -197,22 +197,9 @@ chmod 600 "$ANSWERS"
 say "Installing"
 "$DOCROOT/muse" install --no-ansi --config="$ANSWERS"
 
-# ---------------------------------------------------------------- template --
-# The default template is a row in the database, and the base data names one
-# already, so say plainly which one this hub uses rather than leaving the
-# config file to be a fallback nobody reaches.
-say "Making $TEMPLATE the site template"
-mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DBUSER" -p"$DB_PASSWORD" "$DATABASE" <<SQL
-UPDATE \`jos_template_styles\` SET \`home\` = '0' WHERE \`client_id\` = 0;
-INSERT INTO \`jos_template_styles\` (\`template\`, \`client_id\`, \`home\`, \`title\`, \`params\`)
-SELECT '$TEMPLATE', 0, '1', '$TEMPLATE', '{}' FROM DUAL
-WHERE NOT EXISTS (
-    SELECT 1 FROM (SELECT * FROM \`jos_template_styles\`) AS s
-    WHERE s.\`template\` = '$TEMPLATE' AND s.\`client_id\` = 0
-);
-UPDATE \`jos_template_styles\` SET \`home\` = '1'
-WHERE \`template\` = '$TEMPLATE' AND \`client_id\` = 0;
-SQL
+# The install makes site_template the style the hub wears, so there is nothing
+# to do here any more. "muse install template --template=<name>" changes it
+# later, and a flavor's template lever says it as part of a shape.
 
 # ------------------------------------------------------------------- caddy --
 if [ "$WRITE_CADDY" = "1" ] && [ -f "$CADDYFILE" ]; then
