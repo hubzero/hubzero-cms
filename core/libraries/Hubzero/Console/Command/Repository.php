@@ -604,7 +604,7 @@ class Repository extends Base implements CommandInterface
 		$sourceUrl = $this->arguments->getOpt('sourceUrl');
 		$repoPath = $this->arguments->getOpt('repoPath');
 
-		$command  = "umask 0002 && git clone" . " " . $sourceUrl . " " . $repoPath . ' 2>&1';
+		$command  = "umask 0002 && git clone" . " " . escapeshellarg($sourceUrl) . " " . escapeshellarg($repoPath) . ' 2>&1';
 		$response = shell_exec($command);
 
 		$this->output->addLine($response);
@@ -622,12 +622,12 @@ class Repository extends Base implements CommandInterface
 		$newsourceUrl = $this->arguments->getOpt('newsourceUrl');
 		$repoPath = $this->arguments->getOpt('repoPath');
 
-		$newsourceUrl_command  = "cd " . $repoPath . " && git remote set-url origin " . $newsourceUrl . ' 2>&1';
+		$newsourceUrl_command  = "cd " . escapeshellarg($repoPath) . " && git remote set-url origin " . escapeshellarg($newsourceUrl) . ' 2>&1';
 		$newsourceUrl_command_response = shell_exec($newsourceUrl_command);
 		$this->output->addLine($newsourceUrl_command_response);
 
 		//check if new token is valid.
-		$lsremote_command  = "cd " . $repoPath . " && git ls-remote" . ' 2>&1';
+		$lsremote_command  = "cd " . escapeshellarg($repoPath) . " && git ls-remote" . ' 2>&1';
 		$lsremote_command_response = shell_exec($lsremote_command);
 
 		if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response))
@@ -657,21 +657,32 @@ class Repository extends Base implements CommandInterface
 		else
 		{
 			// get default remote
-			$default_remote = shell_exec("umask 0002 && cd " . $repoPath . " && git remote show");
+			$default_remote = shell_exec("umask 0002 && cd " . escapeshellarg($repoPath) . " && git remote show");
 			// get remote default branch
-			$default_remote_branch_cmd = "git remote show " . trim($default_remote) . " | grep 'HEAD branch' | cut -d ':' -f 2";
-			$git_branch = shell_exec("umask 0002 && cd " . $repoPath . " && ". $default_remote_branch_cmd);
+			// "git remote show" may list several remotes; take the first line
+			$default_remote_branch_cmd = "git remote show " . escapeshellarg(strtok(trim((string) $default_remote), "\n")) . " | grep 'HEAD branch' | cut -d ':' -f 2";
+			// cut leaves a leading space and a trailing newline, which the shell used
+			// to discard by word-splitting but a quoted argument keeps
+			$git_branch = trim((string) shell_exec("umask 0002 && cd " . escapeshellarg($repoPath) . " && ". $default_remote_branch_cmd));
 		}
 
 		$cur_branch = "git rev-parse --abbrev-ref HEAD";
 		// Get current branch
-		$command  = "umask 0002 && cd " . $repoPath . " && git rev-parse --abbrev-ref HEAD";
-		$cur_branch = shell_exec($command);
+		$command  = "umask 0002 && cd " . escapeshellarg($repoPath) . " && git rev-parse --abbrev-ref HEAD";
+		$cur_branch = trim((string) shell_exec($command));
+
+		// Trimming both sides above made this comparison meaningful, and so made
+		// the false branch reachable for the first time: an extension already on
+		// its configured branch now skips the checkout. $response is only
+		// assigned inside the branch, so without this it reaches addLine()
+		// undefined -- a PHP 8 warning printed ahead of the JSON payload that
+		// the caller then fails to decode.
+		$response = '';
 
 		// If the current branch doesn't match the specified branch, the checkout the specified branch
 		if ($cur_branch != $git_branch)
 		{
-			$command  = "umask 0002 && cd " . $repoPath . " && git stash -q && git checkout " . $git_branch;
+			$command  = "umask 0002 && cd " . escapeshellarg($repoPath) . " && git stash -q && git checkout " . escapeshellarg($git_branch);
 			$response = shell_exec($command);
 		}
 		$this->output->addLine($response);
