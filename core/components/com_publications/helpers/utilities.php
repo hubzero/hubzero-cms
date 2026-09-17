@@ -58,7 +58,7 @@ class Utilities
 			 * Exit status code 0 represents mkAIP script completes its execution and without any exception.
 			 * Exit status code 1 represents some exception is thrown out.
 			 **/
-			$cmd = '/usr/bin/php ' . $mkaip . ' ' .$row->doi . ' ' . '2>&1 > ' . "/www/tmp/$mkaipOutput";
+			$cmd = '/usr/bin/php ' . escapeshellarg($mkaip) . ' ' . escapeshellarg($row->doi) . ' ' . '2>&1 > ' . escapeshellarg('/www/tmp/' . $mkaipOutput);
 			exec($cmd, $output, $exitCode);
 
 			if ($exitCode == 0)

@@ -81,8 +81,8 @@ class plgHandlersLatex extends Plugin
 		$temp->write($data);
 
 		// Build the command
-		$command  = DS . trim($this->params->get('texpath', '/usr/bin/pdflatex'), DS);
-		$command .= ' -output-directory=' . $outputDir . ' -interaction=batchmode ' . escapeshellarg($temp->getAbsolutePath());
+		$command  = escapeshellarg(DS . trim($this->params->get('texpath', '/usr/bin/pdflatex'), DS));
+		$command .= ' -output-directory=' . escapeshellarg($outputDir) . ' -interaction=batchmode ' . escapeshellarg($temp->getAbsolutePath());
 
 		// Exec and capture output
 		exec($command, $out);

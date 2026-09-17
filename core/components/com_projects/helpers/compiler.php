@@ -123,7 +123,7 @@ class Compiler extends Obj
 		fclose($fp);
 
 		chdir($cacheFolder);
-		$command = $texpath . DS . 'pdflatex -output-directory=' . $outputDir . ' -interaction=batchmode ' . escapeshellarg($texFile . '.tex');
+		$command = escapeshellarg($texpath . DS . 'pdflatex') . ' -output-directory=' . escapeshellarg($outputDir) . ' -interaction=batchmode ' . escapeshellarg($texFile . '.tex');
 		exec($command, $out);
 
 		// Remove temp tex copy
