@@ -177,6 +177,8 @@ class Applications extends SiteController
 
 		// check to see if we are passing in a model
 		// most likely from a failed save attempt
+		$id = 0;
+
 		if (!($application instanceof Application))
 		{
 			// Grab the incoming ID and load the record for editing
@@ -197,10 +199,15 @@ class Applications extends SiteController
 		}
 
 		// make sure its ours
-		// or we can create
-		if (!$this->config->get('access-edit-application', 0)
-		 && !$this->config->get('access-create-application', 0)
-		 && $id > 0)
+		//
+		// The test used to be "not edit and not create", but _authorize() grants
+		// access-create-application to every logged-in user, so the second term
+		// was always true and the refusal could never fire: any account could
+		// open another person's application and read its name, description,
+		// redirect URIs and team roster. saveTask() resolves ownership the same
+		// way, so this refuses exactly who it refuses. $id stays 0 when a bound
+		// model is handed in from a failed save, which is the caller's own.
+		if ($id > 0 && !$this->_ownsApplication($id))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -244,6 +251,17 @@ class Applications extends SiteController
 		// get request vars
 		$data = Request::getArray('application', array(), 'post');
 		$team = Request::getString('team', '', 'post');
+
+		// For an existing application, require ownership of that exact app
+		if (!User::isGuest() && !empty($data['id']) && (int) $data['id'] > 0 && !$this->_ownsApplication($data['id']))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_developer&controller=applications'),
+				Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
 
 		// must be logged in
 		if (User::isGuest())
@@ -435,6 +453,17 @@ class Applications extends SiteController
 		// get the app id
 		$id = Request::getInt('id', 0);
 
+		// Only the application owner or a team member may act on it
+		if (!User::isGuest() && !$this->_ownsApplication($id))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_developer&controller=applications'),
+				Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
+
 		// must be logged in
 		if (User::isGuest())
 		{
@@ -484,6 +513,7 @@ class Applications extends SiteController
 
 		// get the app id
 		$id    = Request::getInt('id', 0);
+
 		$token = Request::getInt('token', 0);
 
 		// must be logged in
@@ -498,6 +528,18 @@ class Applications extends SiteController
 
 		// get access tokens apps
 		$accessToken = Accesstoken::oneOrFail($token);
+
+		// The application's owner/team may revoke any of its tokens; anyone may
+		// revoke a grant they issued themselves ("authorized applications" list)
+		if (!$this->_ownsApplication($id) && (int) $accessToken->get('uidNumber') !== (int) User::get('id'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_developer&controller=applications'),
+				Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
 
 		// delete the access token
 		if ($accessToken->get('application_id') == $id)
@@ -531,6 +573,17 @@ class Applications extends SiteController
 
 		// get the app id
 		$id = Request::getInt('id', 0);
+
+		// Only the application owner or a team member may act on it
+		if (!User::isGuest() && !$this->_ownsApplication($id))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_developer&controller=applications'),
+				Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
 
 		// must be logged in
 		if (User::isGuest())
@@ -570,6 +623,17 @@ class Applications extends SiteController
 
 		// Get the application
 		$id = Request::getInt('id', 0);
+
+		// Only the application owner or a team member may act on it
+		if (!User::isGuest() && !$this->_ownsApplication($id))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_developer&controller=applications'),
+				Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
 
 		// Must be logged in
 		if (User::isGuest())
@@ -685,6 +749,40 @@ class Applications extends SiteController
 	 * @param   integer  $assetId
 	 * @return  void
 	 */
+	/**
+	 * Is the current user an owner or team member of the given application?
+	 *
+	 * @param   integer  $id  Application ID
+	 * @return  boolean
+	 */
+	protected function _ownsApplication($id)
+	{
+		$id = (int) $id;
+		if ($id <= 0)
+		{
+			return false;
+		}
+		$app = Application::oneOrNew($id);
+
+		// A guest is nobody's owner. Without this the loose comparison below
+		// answered true for them: User::get('id') is 0 for a guest, a missing
+		// application yields a blank model whose created_by is null, and
+		// 0 == null is true in PHP.
+		$uid = (int) User::get('id');
+		if (!$uid || !$app->get('id'))
+		{
+			return false;
+		}
+
+		$team = array();
+		foreach ($app->team()->rows() as $member)
+		{
+			$team[] = (int) $member->get('uidNumber');
+		}
+
+		return in_array($uid, $team, true) || (int) $app->get('created_by') === $uid;
+	}
+
 	protected function _authorize($assetType='application', $assetId=null)
 	{
 		// Logged in?
