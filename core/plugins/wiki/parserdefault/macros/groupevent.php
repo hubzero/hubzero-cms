@@ -128,7 +128,7 @@ class GroupEventMacro extends WikiMacro
 		//do we have a limit set
 		if (isset($filters['number']))
 		{
-			$sql .= " LIMIT " . $filters['number'];
+			$sql .= " LIMIT " . (int) $filters['number'];
 		}
 
 		//return result
