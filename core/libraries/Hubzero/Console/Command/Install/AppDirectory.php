@@ -256,7 +256,7 @@ class AppDirectory
         // Write mail.php
         if (
             !self::writeConfigFile($ansi, $appPath, 'mail.php', [
-            'mailer'     => 'mail',
+            'mailer'     => 'sendmail',
             'mailfrom'   => $config['mailfrom'] ?? 'noreply@example.com',
             'fromname'   => $config['sitename'] ?? 'HUBzero',
             'smtpauth'   => '0',

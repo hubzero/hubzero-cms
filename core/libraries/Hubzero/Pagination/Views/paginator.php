@@ -74,7 +74,7 @@ if (!function_exists('paginator_item_active')) {
             echo \Hubzero\Html\Builder\Select::genericlist($limits, $this->pages->prefix . 'limit', $attr, 'value', 'text', $selected);
 
             if (!App::isAdmin()) {
-                echo ' <button type="submit" class="pagination-go">Go</button>';
+                echo ' <button type="submit" class="pagination-go">' . Lang::txt('JLIB_HTML_PAGINATION_GO') . '</button>';
             }
             ?>
         </li>
@@ -94,7 +94,7 @@ if (!function_exists('paginator_item_active')) {
         <?php } else { ?>
         <li class="pagination-prev prev">
             <?php if ($this->pages->previous->base !== null) { ?>
-                <a href="<?php echo $this->pages->previous->link; ?>" aria-label="<?php echo Lang::txt('Previous page'); ?>">&lsaquo;</a>
+                <a href="<?php echo $this->pages->previous->link; ?>" aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_PREVIOUS_PAGE'); ?>">&lsaquo;</a>
             <?php } else { ?>
                 <span class="disabled" aria-hidden="true">&lsaquo;</span>
             <?php } ?>
@@ -150,7 +150,7 @@ if (!function_exists('paginator_item_active')) {
         <?php } else { ?>
         <li class="pagination-next next">
             <?php if ($this->pages->next->base !== null) { ?>
-                <a href="<?php echo $this->pages->next->link; ?>" aria-label="<?php echo Lang::txt('Next page'); ?>">&rsaquo;</a>
+                <a href="<?php echo $this->pages->next->link; ?>" aria-label="<?php echo Lang::txt('JLIB_HTML_PAGINATION_NEXT_PAGE'); ?>">&rsaquo;</a>
             <?php } else { ?>
                 <span class="disabled" aria-hidden="true">&rsaquo;</span>
             <?php } ?>
