@@ -529,6 +529,8 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
 	// Main function to deidentify users
 	public function onUserDeidentify($user_id) {
+		$user_id = (int) $user_id;
+
         $db = \App::get('db');
 
         // PURPOSE: Find username, id, email from jos_users table

@@ -499,7 +499,7 @@ class MathRenderer
 	{
 		$url = DS . 'app' . DS . trim($this->config->get('mathpath', '/site/wiki/math'), DS) . DS . substr($this->hash, 0, 1) . DS . substr($this->hash, 1, 1) . DS . substr($this->hash, 2, 1) . DS . "{$this->hash}.png";
 
-		return '<img src="' . $url . '" class="tex" alt="' . $this->tex . '" />';
+		return '<img src="' . $url . '" class="tex" alt="' . htmlspecialchars($this->tex) . '" />';
 	}
 
 	/**
