@@ -9,6 +9,7 @@
 namespace Hubzero\Flavor;
 
 use Hubzero\Content\Migration\Base as Migration;
+use Hubzero\Template\Style;
 
 /**
  * Pulls a flavor's levers, and says which are not where the flavor puts them
@@ -459,27 +460,11 @@ class Applier
      */
     protected function applyTemplate($template)
     {
-        if (!$template || !$this->db->tableExists('#__template_styles')) {
+        if (!$template) {
             return;
         }
 
-        $this->db->setQuery(
-            "SELECT `id` FROM `#__template_styles` WHERE `client_id` = 0 AND `template` = "
-            . $this->db->quote($template) . " ORDER BY `home` DESC, `id` ASC"
-        );
-        $id = (int) $this->db->loadResult();
-
-        if (!$id) {
-            $this->say("No site style for template '{$template}' - leaving the default template as it is", 'warning');
-            return;
-        }
-
-        $this->db->setQuery("UPDATE `#__template_styles` SET `home` = 0 WHERE `client_id` = 0");
-        $this->db->query();
-        $this->db->setQuery("UPDATE `#__template_styles` SET `home` = 1 WHERE `id` = " . $id);
-        $this->db->query();
-
-        $this->say('Making ' . $template . ' the default template');
+        Style::makeDefault($this->db, $template, 0, $this->log);
     }
 
     /**
@@ -495,8 +480,7 @@ class Applier
             return;
         }
 
-        $this->db->setQuery("SELECT `template` FROM `#__template_styles` WHERE `client_id` = 0 AND `home` = 1");
-        $home = (string) $this->db->loadResult();
+        $home = Style::current($this->db, 0);
 
         if ($home !== (string) $template) {
             $found[] = "the default template is " . ($home !== '' ? $home : 'not set') . " (the flavor sets {$template})";

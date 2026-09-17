@@ -132,10 +132,20 @@ class Install extends Base implements CommandInterface
             // Continue anyway - some migrations may have succeeded
         }
 
+        // The template the settings step was told to use. It has been written
+        // to app/config by now, but the config is only the fallback; the style
+        // marked home is what the hub wears, and that comes from the base data
+        // until something says otherwise.
+        Install\Template::configure(
+            $ansi,
+            $this->arguments->getOpt('template') ?: Install\Template::asked(Install\Answers::section('site'))
+        );
+
         // Shape the hub with a flavor, now that every table a lever touches
         // is here. The answers or --flavor name one; otherwise the install
         // asks whether to apply the default, and leaves the hub as the data
-        // shipped it if not.
+        // shipped it if not. A flavor that names a template is more specific
+        // than the setting, so it runs after and wins.
         $this->applyFlavor($this->chosenFlavor($unattended), $ansi);
 
         // Admin user creation
@@ -380,6 +390,42 @@ class Install extends Base implements CommandInterface
         if (!Install\Schema::loadDataSet($set, $ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Loading the ' . $set . ' data failed.');
         }
+    }
+
+    /**
+     * Make a template the one the hub wears
+     *
+     * @museDescription  Make the configured template the hub's default style
+     * @museArgument     template  The site template; without it the answer file's site_template decides
+     *
+     * @return  void
+     **/
+    public function template()
+    {
+        if (!$this->loadAnswers()) {
+            return;
+        }
+
+        $configPath = PATH_APP . '/config/database.php';
+
+        if (!file_exists($configPath)) {
+            $this->output->error('Database configuration not found at ' . $configPath);
+            $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            return;
+        }
+
+        $site = $this->arguments->getOpt('template')
+            ?: Install\Template::asked(Install\Answers::section('site'));
+
+        if (!$site) {
+            echo "\n";
+            echo "No template asked for. Pass --template=<name>, or give the answer file a\n";
+            echo "site_template, and this makes it the style the hub wears.\n";
+            echo "\n";
+            return;
+        }
+
+        Install\Template::configure($this->output->isColored(), $site);
     }
 
     /**
