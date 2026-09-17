@@ -122,7 +122,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 			if ($action == 'top')
 			{
 				$dtm = Request::getString('datetime', '0000-00-00 00:00:00');
-				if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $dtm))
+				if (!preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $dtm))
 				{
 					$dtm = '0000-00-00 00:00:00';
 				}
@@ -339,7 +339,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 				LEFT JOIN `#__resource_stats_tools_topvals` AS v ON v.id=t.id
 				WHERE t.resid = '$id'
 				AND t.period = '$prd'
-				AND t.datetime = '" . $datetime . "-00 00:00:00'
+				AND t.datetime = " . $database->quote($datetime . '-00 00:00:00') . "
 				AND t.id = $tid
 				AND v.top = '$top'
 				ORDER BY v.id, v.rank";
@@ -361,7 +361,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 	{
 		$database = App::get('db');
 
-		$sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = " . $database->quote($id) . " AND t.period = " . $database->quote($period) . " AND t.datetime = '" . $datetime . "-00 00:00:00' ORDER BY t.id LIMIT 1";
+		$sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = " . $database->quote($id) . " AND t.period = " . $database->quote($period) . " AND t.datetime = " . $database->quote($datetime . '-00 00:00:00') . " ORDER BY t.id LIMIT 1";
 		$database->setQuery($sql);
 		return $database->loadResult();
 	}
