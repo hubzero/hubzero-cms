@@ -324,10 +324,10 @@ class Articles extends AdminController
                 $message = Lang::txt('COM_KB_ARCHIVED', count($ids));
                 break;
             case '1':
-                $message = Lang::txt('COM_KB_PUBLISHED', count($ids));
+                $message = Lang::txt('COM_KB_ITEMS_PUBLISHED', count($ids));
                 break;
             case '0':
-                $message = Lang::txt('COM_KB_UNPUBLISHED', count($ids));
+                $message = Lang::txt('COM_KB_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }
 

@@ -180,7 +180,7 @@ class Register extends SiteController
                     ->setBody($message);
 
                 if (!$msg->send()) {
-                    $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+                    $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION_PLAIN'));
                     // @FIXME: LOG ERROR CONDITION SOMEWHERE
                 }
             }
@@ -242,7 +242,7 @@ class Register extends SiteController
                     ->setBody($message);
 
                 if (!$msg->send()) {
-                    $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+                    $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION_PLAIN'));
                     // @FIXME: LOG ERROR CONDITION SOMEWHERE
                 }
             }

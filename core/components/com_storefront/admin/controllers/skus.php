@@ -399,10 +399,10 @@ class Skus extends AdminController
                 $message = Lang::txt('COM_STOREFRONT_ARCHIVED', count($ids));
                 break;
             case '1':
-                $message = Lang::txt('COM_STOREFRONT_PUBLISHED', count($ids));
+                $message = Lang::txt('COM_STOREFRONT_ITEMS_PUBLISHED', count($ids));
                 break;
             case '0':
-                $message = Lang::txt('COM_STOREFRONT_UNPUBLISHED', count($ids));
+                $message = Lang::txt('COM_STOREFRONT_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }
 

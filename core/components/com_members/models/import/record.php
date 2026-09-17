@@ -554,7 +554,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $msg->addPart($message, 'text/html');
 
             if (!$msg->send()) {
-                array_push($this->record->errors, Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
+                array_push($this->record->errors, Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION_PLAIN'));
             }
         }
     }

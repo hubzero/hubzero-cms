@@ -222,7 +222,7 @@ class Utility
         $msg->addPart($message, 'text/html');
 
         if (!$msg->send()) {
-            //$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'/*, $hubMonitorEmail*/));
+            //$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION_PLAIN'));
             // @FIXME: LOG ERROR SOMEWHERE
             return false;
         }
