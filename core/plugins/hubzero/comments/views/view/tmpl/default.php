@@ -171,7 +171,7 @@ $this->css()
                     <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">
                     <ul class="entries-menu sort-options">
                         <?php if ($currentOrderDir == 'asc') : ?>
-                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESC'); ?></button></li>
+                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESCENDING'); ?></button></li>
                         <?php else : ?>
                             <li><button type="submit" name="orderdir" value="asc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC'); ?></button></li>
                         <?php endif; ?>
