@@ -9,10 +9,10 @@
 		<fieldset>
 			<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 			<input type="hidden" id="selecteditems" name="selecteditems" value="" />
-			<input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $this->filterUrl;?>" />
+			<input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $this->escape($this->filterUrl); /* built with plain &, escaped once here */ ?>" />
 			<?php foreach ($this->hiddenFields as $field): ?>
-				<input type="hidden" name="<?php echo $field['name'];?>" value="<?php echo $field['value'];?>" 
-					<?php echo !empty($field['value']) ? 'id="' . $field['value'] . '"' : '';?> />
+				<input type="hidden" name="<?php echo $this->escape($field['name']);?>" value="<?php echo $this->escape($field['value']);?>"
+					<?php echo !empty($field['value']) ? 'id="' . $this->escape($field['value']) . '"' : '';?> />
 			<?php endforeach; ?>
 		</fieldset>
 

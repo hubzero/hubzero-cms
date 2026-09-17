@@ -527,7 +527,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$pid       = Request::getInt('pid', 0);
 		$vid       = Request::getInt('vid', 0);
 		$filter    = urldecode(Request::getString('filter', ''));
-		$directory = urldecode(Request::getString('directory', ''));
+		// The listing root reaches Repo::filelist() and the git adapter; without
+		// this it enumerates directories outside the repository.
+		$directory = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('directory', '')));
+		$directory = ($directory === false) ? '' : $directory;
 
 		// Parse props for curation
 		$parts   = explode('-', $props);
@@ -552,7 +555,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$min = '';
 		$max = '';
 		$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
-		$filterUrl = Route::url($route) . '?action=filter&amp;p=' . $props . '&amp;ajax=1&amp;no_html=1';
+		// Plain separators: the view escapes this once into the attribute, and
+		// $props is raw request input that must not reach the page unescaped
+		$filterUrl = Route::url($route) . '?action=filter&p=' . $props . '&ajax=1&no_html=1';
 		$elId = '';
 		if ($pid !== 0)
 		{
@@ -599,7 +604,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
 			$attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
 			$route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
-			$filterUrl .= '&amp;pid=' . $view->publication->get('id') . '&amp;vid=' . $view->publication->get('version_id');
+			$filterUrl .= '&pid=' . $view->publication->get('id') . '&vid=' . $view->publication->get('version_id');
 
 			// Set params
 			$used = array();
@@ -761,7 +766,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	private function _fileList($params = array(), $allowed = array(), $selected = array(), $used = array())
 	{
 		$template = null;
-		$directory = urldecode(Request::getString('directory', ''));
+		// The listing root reaches Repo::filelist() and the git adapter; without
+		// this it enumerates directories outside the repository.
+		$directory = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('directory', '')));
+		$directory = ($directory === false) ? '' : $directory;
 		if (!empty($directory))
 		{
 			$cid = Request::getInt('cid', 0);
@@ -1033,10 +1041,19 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Repo::makeDirectory() runs the name through Filesystem::cleanPath(),
+		// which normalises separators but does not remove '..'.
+		$newDir = \Hubzero\Filesystem\SafePath::relative(trim((string) Request::getString('newdir', '')));
+
+		if ($newDir === false)
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
+
 		// Set params
 		$params = array(
 			'subdir' => $this->subdir,
-			'newDir' => trim(Request::getString('newdir', '')),
+			'newDir' => $newDir,
 			'path'   => $this->_path
 		);
 
@@ -1080,10 +1097,21 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
+		// As the rename/move/restore paths: Repo::deleteDirectory() gates only on
+		// dirExists(), which is true for a traversing path, and the git adapter
+		// then hands fullPath to Filesystem::deleteDirectory() -- a recursive
+		// delete outside the repository, available to any collaborator.
+		$item = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('dir', '')));
+
+		if ($item === false)
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
-			'item'    => trim(urldecode(Request::getString('dir', '')), DS),
+			'item'    => trim($item, DS),
 			'path'    => $this->_path
 		);
 
@@ -1303,12 +1331,21 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
+		// Confine the rename source/target to the repo (reject any traversal),
+		// mirroring the subdir guard above.
+		$from = \Hubzero\Filesystem\SafePath::relative((string) Request::getString('oldname', ''));
+		$to   = \Hubzero\Filesystem\SafePath::relative((string) Request::getString('newname', ''));
+		if ($from === false || $to === false)
+		{
+			App::abort(404, Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+		}
+
 		// Set params
 		$params = array(
 			'subdir'  => $this->subdir,
 			'path'    => $this->_path,
-			'from'    => Request::getString('oldname', ''),
-			'to'      => Request::getString('newname', ''),
+			'from'    => $from,
+			'to'      => $to,
 			'type'    => Request::getString('type', 'file')
 		);
 
@@ -1419,9 +1456,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		// Set counts
 		$moved  = 0;
 
-		// Incoming
-		$newpath = trim(urldecode(Request::getString('newpath', '')), DS);
+		// Incoming — confine the move target to the repo (reject traversal)
+		$newpath = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('newpath', '')));
 		$newdir  = Request::getString('newdir', '');
+		$newdir  = $newdir === '' ? '' : \Hubzero\Filesystem\SafePath::relative((string) $newdir);
+		if ($newpath === false || $newdir === false)
+		{
+			App::abort(404, Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+		}
 		$target  = $newdir ? $newdir : $newpath;
 
 		// Set params for the move
@@ -1826,8 +1868,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
-		// Incoming
-		$item = urldecode(Request::getString('asset', ''));
+		// Incoming — confine the asset path to the repo (reject traversal)
+		$item = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('asset', '')));
+		if ($item === false)
+		{
+			App::abort(404, Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'));
+		}
 		$hash = Request::getString('hash', '');
 
 		// Params for repo call
@@ -2427,7 +2473,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 					$pdfPath    = PATH_APP . $outputDir . DS . $contentFile;
 					$exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
-					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=$exportPath $pdfPath 2>&1", $out);
+					exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=" . escapeshellarg($exportPath) . " " . escapeshellarg($pdfPath) . " 2>&1", $out);
 
 					if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg'))
 					{
@@ -3623,25 +3669,27 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		foreach ($checked as $key => $value)
 		{
-			if (trim($value) == '')
+			$safe = trim($value) == '' ? false : \Hubzero\Filesystem\SafePath::relative(urldecode((string) $value));
+			if ($safe === false)
 			{
 				unset($checked[$key]);
 			}
 			else
 			{
-				$checked[$key] = $value;
+				$checked[$key] = $value; // keep the encoded form: _sortIncoming() decodes once
 			}
 		}
 
 		foreach ($folders as $key => $value)
 		{
-			if (trim($value) == '')
+			$safe = trim($value) == '' ? false : \Hubzero\Filesystem\SafePath::relative(urldecode((string) $value));
+			if ($safe === false)
 			{
 				unset($folders[$key]);
 			}
 			else
 			{
-				$folders[$key] = $value;
+				$folders[$key] = $value; // keep the encoded form: _sortIncoming() decodes once
 			}
 		}
 
@@ -3668,7 +3716,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($checked as $ch)
 			{
-				if (trim($ch) != '')
+				if (trim($ch) != '' && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $ch)) !== false)
 				{
 					$combined[] = array('file' => urldecode($ch));
 				}
@@ -3685,13 +3733,13 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($files as $ch)
 			{
-				if (trim($ch) != '')
+				if (trim($ch) != '' && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $ch)) !== false)
 				{
 					$combined[] = array('file' => urldecode($ch));
 				}
 			}
 		}
-		elseif ($file = Request::getString('file', ''))
+		elseif (($file = Request::getString('file', '')) && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $file)) !== false)
 		{
 			$combined[] = array('file' => urldecode($file));
 		}
