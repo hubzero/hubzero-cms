@@ -539,18 +539,18 @@ class Manage extends AdminController
 		if ($srcTplPath)
 		{
 			$uploadTplPath = $uploadPath . DS . 'template';
-			shell_exec("cp -rf $srcTplPath $uploadTplPath 2>&1");
+			shell_exec("cp -rf " . escapeshellarg($srcTplPath) . " " . escapeshellarg($uploadTplPath) . " 2>&1");
 		}
 
 		// copy over default template recursively
 		// must have  /. at the end of source path to get all items in that directory
 		// also doesnt overwrite already existing files/folders
-		shell_exec("cp -rn $srcPath $uploadPath 2>&1");
+		shell_exec("cp -rn " . escapeshellarg($srcPath) . " " . escapeshellarg($uploadPath) . " 2>&1");
 
 		// make sure files are group read and writable
 		// make sure files are all group owned properly
-		shell_exec("chmod -R 2770 $uploadPath 2>&1");
-		shell_exec("chgrp -R " . escapeshellcmd($this->config->get('super_group_file_owner', 'access-content')) . " " . $uploadPath . " 2>&1");
+		shell_exec("chmod -R 2770 " . escapeshellarg($uploadPath) . " 2>&1");
+		shell_exec("chgrp -R " . escapeshellarg($this->config->get('super_group_file_owner', 'access-content')) . " " . escapeshellarg($uploadPath) . " 2>&1");
 
 		// get all current users granted permissionss
 		$this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
@@ -740,7 +740,7 @@ class Manage extends AdminController
 		$uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
 
 		// build author info for making first commit
-		$authorInfo = '"' . Config::get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>"';
+		$authorInfo = escapeshellarg(Config::get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>');
 
 		// check to see if we already have git repo
 		// only run gitlab setup once.
@@ -756,7 +756,7 @@ class Manage extends AdminController
 		// build command to run via shell
 		// this will init the git repo, make the initial commit and push to the repo management machine
 		$cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
-		$cmd .= $uploadPath  . ' ' . $authorInfo . ' ' . $gitLabUrl . ' 2>&1';
+		$cmd .= escapeshellarg($uploadPath) . ' ' . $authorInfo . ' ' . escapeshellarg($gitLabUrl) . ' 2>&1';
 
 		// execute command
 		$output = shell_exec($cmd);
@@ -880,7 +880,8 @@ class Manage extends AdminController
 
 				// setup stage environment
 				$cmd  = 'sh ' . dirname(dirname(__DIR__)). DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
-				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $group->get('cn') . ' ' . $gitLabUrl . ' 2>&1';
+				// as _handleSuperGroup/_handSuperGroupGitlab above
+				$cmd .= escapeshellarg(str_replace('/' . $group->get('gidNumber'), '', $uploadPath)) . ' ' . escapeshellarg((string) $group->get('gidNumber')) . ' ' . escapeshellarg((string) $group->get('cn')) . ' ' . escapeshellarg((string) $gitLabUrl) . ' 2>&1';
 
 				// execute command
 				$output = shell_exec($cmd);
@@ -901,7 +902,7 @@ class Manage extends AdminController
 			if ($url_bits["pass"] !== $gitLabKey) {
 				$gitLabUrl = $url_bits["scheme"] . '://' . $url_bits["user"] . ':' . $gitLabKey . '@' . $url_bits["host"] . $url_bits["path"];
 				$rcmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_reset_remote.sh ';
-				$rcmd .= $uploadPath  . ' ' . $gitLabUrl . ' 2>&1';
+				$rcmd .= escapeshellarg((string) $uploadPath) . ' ' . escapeshellarg((string) $gitLabUrl) . ' 2>&1';
 				$output = shell_exec($rcmd);
 			}
 
@@ -910,7 +911,7 @@ class Manage extends AdminController
 			$museCmd = 'update';
 
 			// Run as (hubadmin)
-			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+			$sudo =  '/usr/bin/sudo -u ' . escapeshellarg((string) $user) . ' ';
 
 			// Determines the path to muse and run the group update muse command
 			$cmd .= $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $museCmd . ' --format=json';
@@ -1025,7 +1026,7 @@ class Manage extends AdminController
 			$museCmd = 'update';
 
 			// Run as (hubadmin)
-			$sudo =  '/usr/bin/sudo -u ' . $user . ' ';
+			$sudo =  '/usr/bin/sudo -u ' . escapeshellarg((string) $user) . ' ';
 
 			// Determines the path to muse and run the group update muse command
 			$cmd .= $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $museCmd . ' -f --no-colors';
