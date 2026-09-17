@@ -29,8 +29,18 @@ $this->view('_submenu', 'shared')
     <table class="adminlist">
         <thead>
             <tr>
+                <?php
+                // The columns come back named as the table names them. Say
+                // them the way the rest of the screen does, and fall back to
+                // the column for anything this list does not know about.
+                $labels = array(
+                    'doc_id'     => 'COM_SEARCH_LABEL_DOC_ID',
+                    'created_by' => 'COM_SEARCH_LABEL_CREATED_BY',
+                    'created'    => 'COM_SEARCH_LABEL_CREATED',
+                );
+                ?>
                 <?php foreach (array_keys($header[0]) as $key) : ?>
-                    <th><?php echo $key; ?></th>
+                    <th><?php echo isset($labels[$key]) ? Lang::txt($labels[$key]) : $key; ?></th>
                 <?php endforeach; ?>
                 <th></th>
             </tr>
