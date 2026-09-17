@@ -25,6 +25,7 @@ class SubscriptionsHelper
 
 	public function loadSubscriptions($userId)
 	{
+		$userId = (int) $userId;
 		$activeRef = self::$activeReferenceField;
 
 		$this->db->setQuery("
@@ -73,6 +74,8 @@ class SubscriptionsHelper
 
 	public function updateSubscriptions($userId, $updatedSubscriptions)
 	{
+		$userId = (int) $userId;
+
 		foreach ($updatedSubscriptions as $s)
 		{
 			$this->updateSubscription($userId, $s);

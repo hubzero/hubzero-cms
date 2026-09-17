@@ -60,7 +60,7 @@ class Emailsubscriptions extends SiteController
 		Request::checkToken();
 
 		$code = Request::getString('code');
-		$userId = Request::getString('userId');
+		$userId = Request::getInt('userId');
 		$username = User::whereEquals('id', $userId)->row()->get('username');
 		$campaignId = Request::getInt('campaign');
 

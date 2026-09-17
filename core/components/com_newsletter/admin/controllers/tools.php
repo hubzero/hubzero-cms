@@ -83,7 +83,7 @@ class Tools extends AdminController
 			}
 
 			//define image
-			$image = $uploadPath . DS . $imageFile['name'];
+			$image = $uploadPath . DS . basename($imageFile['name']);
 
 			//move uploaded file
 			move_uploaded_file($imageFile['tmp_name'], $image);
