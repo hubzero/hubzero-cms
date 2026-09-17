@@ -33,9 +33,15 @@ interface Searchable
 
     /*
      * Provide batch of solr documents to be indexed.
+     *
+     * The limit comes first. Every implementation in the tree and both
+     * callers have always passed it that way; the declaration said the
+     * opposite, which cost nothing while the arguments were positional and
+     * would have indexed the wrong window the moment somebody named them.
+     *
      * @return array
      */
-    public static function searchResults($offset, $limit);
+    public static function searchResults($limit, $offset = 0);
 
     /*
      * Grab total of objects that will be indexed during full index process

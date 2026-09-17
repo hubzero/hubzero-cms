@@ -83,6 +83,7 @@ class Configure extends AdminController
         $box = array();
         $box['param'] = 'fields';
         $box['value'] = '';
+        $field        = '';
 
         if (is_array($fields)) {
             $txta = array();
