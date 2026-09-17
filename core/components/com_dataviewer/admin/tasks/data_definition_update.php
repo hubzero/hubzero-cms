@@ -15,6 +15,17 @@ function dv_data_definition_update()
 
 	$db_id = Request::getString('db', false);
 	$dd_name = Request::getString('dd', false);
+
+	// Validate the caller-supplied identifiers before they reach the shell,
+	// a filesystem path or the generated PHP: they name a database directory and
+	// a data-definition file, so restrict them to a safe identifier character set.
+	foreach (array($db_id, $dd_name) as $__id)
+	{
+		if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $__id) || strpos((string) $__id, '..') !== false)
+		{
+			App::abort(400, 'Invalid identifier');
+		}
+	}
 	$dd_text = $_POST['dd_text'];
 
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
@@ -26,7 +37,7 @@ function dv_data_definition_update()
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";
 	file_put_contents($dd_file_php, $dd_text);
 
-	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions-php/; git commit $dd_name.php --author=\"$author\" -m\"[UPDATE] $dd_name.php.\"  > /dev/null";
+	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions-php/; git commit $dd_name.php --author=" . escapeshellarg($author) . " -m\"[UPDATE] $dd_name.php.\"  > /dev/null";
 	system($cmd);
 
 	$dd_file_json = "$base/$db_id/applications/$com_name/datadefinitions/$dd_name.json";
@@ -34,7 +45,7 @@ function dv_data_definition_update()
 	$cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
 	system($cmd);
 
-	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions/; git commit $dd_name.json --author=\"$author\" -m\"[UPDATE] $dd_name.json.\"  > /dev/null";
+	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions/; git commit $dd_name.json --author=" . escapeshellarg($author) . " -m\"[UPDATE] $dd_name.json.\"  > /dev/null";
 	system($cmd);
 
 	$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']);

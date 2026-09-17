@@ -9,6 +9,9 @@ defined('_HZEXEC_') or die();
 
 function dv_data_definition_new()
 {
+	// Session-bound request check, as the other write tasks do
+	check_rid();
+
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
@@ -21,6 +24,16 @@ function dv_data_definition_new()
 
 	$name = strtolower(preg_replace('/\W/', '_', $name));
 
+	// $name is reduced to [a-z0-9_] above; validate the database id and table too
+	if (!preg_match('/^[A-Za-z0-9_.-]+$/', (string) $db_id) || strpos((string) $db_id, '..') !== false)
+	{
+		App::abort(400, 'Invalid identifier');
+	}
+	if (!preg_match('/^[A-Za-z0-9_.$-]+$/', (string) $table))
+	{
+		App::abort(400, 'Invalid table name');
+	}
+
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
@@ -31,7 +44,7 @@ function dv_data_definition_new()
 	$dd['table'] = $table;
 	$dd['title'] = $title;
 
-	$sql = "SHOW COLUMNS FROM $table";
+	$sql = "SHOW COLUMNS FROM " . $jdb->quoteName($table);
 	$jdb->setQuery($sql);
 	$cols = $jdb->loadAssocList();
 
@@ -49,8 +62,15 @@ function dv_data_definition_new()
 
 	$dd_text = "<?php\ndefined('_HZEXEC_') or die();\n\n";
 	$dd_text .= "function get_$name()\n{\n";
-	$dd_text .= "\t" . '$dd[\'title\'] = \'' . $title . '\';' . "\n";
-	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $dd['table'] . '\';' . "\n";
+	// These land inside single-quoted PHP literals, where only backslash and
+	// the quote itself need escaping (addslashes would also leave a stray
+	// backslash before every double quote in the title)
+	$sq = function ($s)
+	{
+		return str_replace(array('\\', "'"), array('\\\\', "\\'"), (string) $s);
+	};
+	$dd_text .= "\t" . '$dd[\'title\'] = \'' . $sq($title) . '\';' . "\n";
+	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $sq($dd['table']) . '\';' . "\n";
 	$dd_text .= "\t" . '$dd[\'pk\'] = \'' . $pk . '\';' . "\n\n";
 
 	foreach ($dd['cols'] as $col => $val) {
@@ -79,7 +99,7 @@ function dv_data_definition_new()
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";
 	file_put_contents($dd_file_php, $dd_text);
 
-	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions-php/; git add $dd_name.php; git commit $dd_name.php --author=\"$author\" -m\"[ADD] $dd_name.php Initial commit.\"  > /dev/null";
+	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions-php/; git add $dd_name.php; git commit $dd_name.php --author=" . escapeshellarg($author) . " -m\"[ADD] $dd_name.php Initial commit.\"  > /dev/null";
 	system($cmd);
 
 
@@ -87,7 +107,7 @@ function dv_data_definition_new()
 	$cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$dd_file_php -o$dd_file_json";
 	system($cmd);
 
-	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions/; git add $dd_name.json; git commit $dd_name.json --author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
+	$cmd = "cd $base/$db_id/applications/$com_name/datadefinitions/; git add $dd_name.json; git commit $dd_name.json --author=" . escapeshellarg($author) . " -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
 	system($cmd);
 
 	db_msg('New Dataview Added', 'message');
