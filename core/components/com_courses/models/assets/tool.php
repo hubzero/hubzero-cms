@@ -147,8 +147,26 @@ class Tool extends Content
 		}
 		$projectId = Request::getInt('project_id', 0);
 		$selectedItems = Request::getString('selecteditems', '');
+
+		// Nothing was picked from a project. An ordinary tool create/edit, or a
+		// file dropped straight onto the asset, carries no project at all, so
+		// there is nothing to copy and no project to authorize against.
+		if (trim($selectedItems) === '')
+		{
+			$return['projectFiles'] = array();
+			return $return;
+		}
+
 		$toAttach = explode(',', $selectedItems);
 		$project = new Project($projectId);
+
+		// The picker lists the projects the user has an owner row on, so require
+		// the same: membership (which read-only members also hold), not the
+		// stricter content right
+		if (!$project->get('id') || !$project->access('member'))
+		{
+			return array('error' => 'Not authorized to access this project');
+		}
 		$repoPath = $project->repo()->get('path');
 		$filePaths = array();
 		$return['projectFiles'] = array();
@@ -166,6 +184,12 @@ class Tool extends Content
 			else
 			{
 				$identifier = urldecode($identifier);
+
+				// Keep the attached repo file inside the project repository
+				if (in_array('..', explode('/', $identifier), true) || strpos($identifier, "\0") !== false)
+				{
+					continue;
+				}
 				$filePath = $repoPath . '/' . $identifier;
 			}
 
@@ -229,6 +253,13 @@ class Tool extends Content
 				// Reset identifier
 				$identifier = str_replace($matches[0], '', $identifier);
 				$connection = Connection::oneOrFail($connection);
+				// The connection (and its stored credentials) may only be used
+				// through a project the current user can access
+				$conProject = new Project((int) $connection->get('project_id'));
+				if (!$conProject->get('id') || !$conProject->access('member'))
+				{
+					return false;
+				}
 
 				// Create file objects
 				$conFile = Entity::fromPath($identifier, $connection->adapter());
