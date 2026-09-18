@@ -105,6 +105,8 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 
 		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content == null ? '' : $content);
 
+		$rendered = false;
+
 		if (trim($content) && $this->_isWiki($content))
 		{
 			if (!isset($params['fullparse']))
@@ -120,6 +122,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 			// Trigger the onFinderBeforeSave event.
 			$results = Event::trigger('wiki.onWikiParseText', array($content, $params, $params['fullparse'], true));
 			$content = implode('', $results);
+			$rendered = true;
 		}
 
 		if ($this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
@@ -127,6 +130,20 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 			$article->set($key, $content);
 			$article->store(false);
+		}
+		elseif ($rendered)
+		{
+			// Tell the rest of the onContentPrepare chain that this is the wiki
+			// parser's own output, not stored markup. formathtml runs next
+			// (ordering 9 against this plugin's 8) and sanitises unmarked
+			// content, which would put this HTML through HTMLPurifier: measured
+			// against the shipped configuration that drops allowfullscreen from
+			// video embeds, deletes empty layout divs outright, strips every
+			// data-* attribute and rewrites rel="external".
+			//
+			// The marker is transient. formathtml removes it, and if that plugin
+			// is disabled it degrades to an invisible HTML comment.
+			$content = '<!-- {FORMAT:RENDERED} -->' . $content;
 		}
 
 		$article->set($key, $content);

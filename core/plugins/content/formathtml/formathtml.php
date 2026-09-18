@@ -53,22 +53,21 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 		}
 
 		// Is there a format already applied?
-		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
+		$hadHtmlMarker = false;
+		if (preg_match('/^<!-- \{FORMAT:(.*?)\} -->/i', $content, $matches))
 		{
 			$format = strtolower(trim($matches[1]));
-			if ($format != 'html')
+
+			// Wiki markup is owned (and escaped) by the formatwiki plugin
+			if ($format == 'wiki' && \Plugin::isEnabled('content', 'formatwiki'))
 			{
 				return;
 			}
-		}
-		// No format applied
-		elseif (strstr($content, '</'))
-		{
-			// Force apply a format?
-			if (!$this->params->get('applyFormat'))
-			{
-				return;
-			}
+
+			// An HTML marker is restored below. Any other marker is dropped and the
+			// content handled as HTML, so a crafted marker cannot skip sanitisation.
+			$hadHtmlMarker = ($format == 'html');
+			$content = substr($content, strlen($matches[0]));
 		}
 
 		if ($this->params->get('sanitizeBefore', 1))
@@ -77,9 +76,8 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			$content = \Hubzero\Utility\Sanitize::html($content);
 		}
 
-		if ($this->params->get('applyFormat'))
+		if ($this->params->get('applyFormat') || $hadHtmlMarker)
 		{
-			$content = preg_replace('/^(<!-- \{FORMAT:HTML\} -->)/i', '', $content);
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 		}
 
@@ -130,6 +128,44 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
+
+		// Neutralise dangerous HTML at render time too (content can reach the DB
+		// without passing onContentBeforeSave). Only the purifier is used here: it is
+		// idempotent, whereas Sanitize::clean() re-encodes entities on every pass.
+		if ($this->params->get('sanitizeBefore', 1))
+		{
+			$formatMarker = '';
+			if (preg_match('/^(<!-- \{FORMAT:[^}]*\} -->)/i', $content, $fm))
+			{
+				$formatMarker = $fm[1];
+			}
+
+			// {FORMAT:RENDERED} is the transient marker formatwiki puts on its
+			// own parser output for this request. That is rendered HTML, not
+			// stored markup, and purifying it costs a visible regression on
+			// every wiki page: measured against the shipped configuration it
+			// drops allowfullscreen from video embeds, deletes empty layout
+			// <div>s outright via AutoFormat.RemoveEmpty, strips every data-*
+			// attribute and rewrites rel="external", which the externalhref
+			// plugin later keys on.
+			//
+			// Everything else still goes through, and unmarked content is the
+			// case that matters: none of the blog entries on a stock hub carry
+			// a marker at all, so exempting unmarked content here would reopen
+			// the stored XSS that HZ-2026-0012 covers.
+			if (stripos($formatMarker, '{FORMAT:RENDERED}') === false
+			 && ($formatMarker === '' || stripos($formatMarker, '{FORMAT:HTML}') !== false))
+			{
+				$content = substr($content, strlen($formatMarker));
+				$content = \Hubzero\Utility\Sanitize::html($content);
+				$content = $formatMarker . $content;
+			}
+		}
+
+		// Drop formatwiki's transient marker before the format test below, which
+		// would otherwise read it as a foreign format and return -- losing the
+		// asset-path rewriting and macro parsing that follow.
+		$content = preg_replace('/^<!-- \{FORMAT:RENDERED\} -->/i', '', $content);
 
 		// Is there a format already applied?
 		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
