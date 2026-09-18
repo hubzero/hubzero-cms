@@ -165,6 +165,18 @@ class Threads extends SiteController
 		// Load the topic
 		$thread = Post::oneOrFail($filters['thread']);
 
+		// As editTask(): oneOrFail() resolves any row of #__forum_posts, and the
+		// section and category above are resolved by alias within this forum's
+		// scope but were never tied to the post. Without this, any thread on the
+		// hub -- including one in a private group or project forum -- renders
+		// through the site route, title, post tree and attachment list, for any
+		// visitor holding its access level. Closing the edit form alone was not
+		// enough; this is the read path for the same rows.
+		if ($thread->get('category_id') != $category->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
+		}
+
 		// Check logged in status
 		if (!in_array($thread->get('access'), User::getAuthorisedViewLevels()))
 		{
@@ -270,25 +282,54 @@ class Threads extends SiteController
 		}
 
 		// Incoming
-		if (!is_object($post))
+		$loaded = !is_object($post);
+
+		if ($loaded)
 		{
 			$post = Post::oneOrNew($id);
 		}
 
 		$this->_authorize('thread', $id);
 
+		// Post::oneOrNew() resolves any row of #__forum_posts, so a post reached
+		// by id has to sit in the category this request resolved -- that one was
+		// looked up by this forum's scope above, so a post from a private group
+		// or project forum can no longer be rendered into the site edit form.
+		// Only applied when the id came from the request: saveTask() hands back
+		// an already bound model on its error paths, whose category_id is the
+		// one the author just picked, and refusing that would discard a draft
+		// mid-move.
+		if ($loaded && !$post->isNew() && $post->get('category_id') != $category->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_FORUM_CATEGORY_NOT_FOUND'));
+		}
+
 		if ($post->isNew())
 		{
 			$post->set('scope', $this->forum->get('scope'));
 			$post->set('created_by', User::get('id'));
 		}
-		elseif ($post->get('created_by') != User::get('id') && !$this->config->get('access-edit-thread'))
+		elseif ($post->get('created_by') != User::get('id')
+			&& !$this->_moderates('core.edit', 'thread', $id))
 		{
+			// access-edit-thread cannot carry this check: _authorize() sets it
+			// true for every logged-in user and only overrides it when
+			// User::authorise('core.edit.thread', 'com_forum.thread.<id>') is
+			// non-null. That asset name is never created -- Asset::getAssetName()
+			// builds com_{namespace}.{modelName}.{pk} and the model is Post, so
+			// the row would be com_forum.post.<id> -- so the override never fired
+			// and this refusal could not happen at all. saveTask() and
+			// deleteTask() use _moderates() for the same reason.
+			//
+			// $section and $category are model objects by this point, so the
+			// original concatenation raised "could not be converted to string"
+			// and the refusal came back as a fatal rather than a redirect.
 			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+				Route::url('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')),
 				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
 				'warning'
 			);
+			return;
 		}
 
 		// Set the page title
@@ -337,6 +378,7 @@ class Threads extends SiteController
 
 		// Instantiate a Post record
 		$post = Post::oneOrNew($fields['id']);
+		$isNew = !$post->get('id');
 
 		// Set authorization if the current user is the creator
 		// of an existing post.
@@ -367,6 +409,17 @@ class Threads extends SiteController
 		// Authorization check
 		$this->_authorize($assetType, intval($fields['id']));
 
+		// Editing an existing post requires ownership or moderator rights
+		if (!$isNew
+			&& $post->get('created_by') != User::get('id')
+			&& !$this->_moderates('core.edit', $assetType, intval($fields['id'])))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option)
+			);
+			return;
+		}
+
 		if (!$this->config->get('access-edit-' . $assetType)
 		 && !$this->config->get('access-create-' . $assetType))
 		{
@@ -380,7 +433,25 @@ class Threads extends SiteController
 		{
 			$fields['id'] = null;
 		}
+		// created_by is not on the edit form, but $fields comes from
+		// Request::getArray('fields'), so an added fields[created_by] rides in
+		// through set() and modify() writes every set column. The guard above
+		// reads the STORED author and passes, and the write then re-attributes
+		// the post to whoever the caller named. Pin it either way: to the caller
+		// on create, to the row's own value on edit.
+		$owner = $isNew ? User::get('id') : $post->get('created_by');
+
 		$post->set($fields);
+		$post->set('created_by', $owner);
+
+		// scope and scope_id ride in from the form as hidden fields and decide
+		// which forum the row belongs to, so pin them to the forum this
+		// controller is actually serving. Post::automaticScope() keeps whatever
+		// the request supplies and only defaults to 'site' when it is absent, so
+		// fields[scope]=group with a group's id would otherwise file the post
+		// inside that group's forum.
+		$post->set('scope', $this->forum->get('scope'));
+		$post->set('scope_id', $this->forum->get('scope_id'));
 
 		// Make sure the thread exists and is accepting new posts
 		if ($post->get('parent') && isset($fields['thread']))
@@ -396,6 +467,20 @@ class Threads extends SiteController
 
 		// Make sure the category exists and is accepting new posts
 		$category = Category::oneOrFail($post->get('category_id'));
+
+		// category_id also rides in through set(), and oneOrFail() resolves any
+		// row of #__forum_categories, so this is what decides which forum the
+		// post lands in. The edit form only offers categories from this forum
+		// (views/threads/tmpl/edit.php builds the select from
+		// $this->forum->sections()), so requiring the same scope refuses nothing
+		// it offers -- but without it a caller could create a thread inside a
+		// private group's forum, or move their own post into one.
+		if ($category->get('scope') != $this->forum->get('scope')
+		 || $category->get('scope_id') != $this->forum->get('scope_id'))
+		{
+			Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'));
+			return $this->editTask($post);
+		}
 
 		if ($category->get('closed'))
 		{
@@ -601,6 +686,18 @@ class Threads extends SiteController
 
 		// Check if user is authorized to delete entries
 		$this->_authorize('thread', $id);
+
+		// Deleting requires ownership or moderator rights
+		if ($post->get('created_by') != User::get('id')
+			&& !$this->_moderates('core.delete', 'thread', $id))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
+				Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
+				'warning'
+			);
+			return;
+		}
 
 		if (!$this->config->get('access-delete-thread'))
 		{
@@ -847,6 +944,58 @@ class Threads extends SiteController
 	 * @param   integer  $assetId
 	 * @return  void
 	 */
+	/**
+	 * Whether the current user moderates the given forum asset.
+	 *
+	 * In practice this is core.admin or core.manage on com_forum: the per-asset
+	 * test below is inert as it is called.
+	 *
+	 * The ACTION name is fine -- config/access.xml declares core.edit.thread and
+	 * core.delete.thread under <section name="component">, so a hub can grant
+	 * them on the com_forum asset. What misses is the ASSET: every call site
+	 * passes a non-zero id, so the name built here is 'com_forum.thread.<id>',
+	 * while Asset::getAssetName() composes com_{namespace}.{modelName}.{pk} from
+	 * the model, which is Post -- the row that would have to exist is
+	 * 'com_forum.post.<id>'. With the named asset absent, getAssetRules() falls
+	 * back to the ROOT asset's rules (not to nothing), and core.edit.thread is
+	 * not among them, so authorise() returns NULL and `=== true` is false.
+	 *
+	 * That fallback is worth knowing: a core.edit.thread rule set on the global
+	 * root would make this branch fire for every thread on the hub.
+	 *
+	 * Kept rather than reduced to the two component checks, because it is the
+	 * shape a working per-thread grant would take, and because collapsing it
+	 * would invite someone to restore it as `!== false`, which accepts the NULL
+	 * and admits every logged-in user. Making the intended configuration work --
+	 * a Moderators group holding Thread::Edit without Access Administration
+	 * Interface -- needs a fall back to the component asset when the per-asset
+	 * lookup finds no rule. That is a widening, so it is not being done days
+	 * before a push; today such a hub needs core.manage on com_forum.
+	 *
+	 * The `=== true` is therefore deliberate: User::authorise() returns NULL
+	 * when no rule applies, and _authorize() treats that NULL as "allowed" for
+	 * its display defaults. Accepting NULL here would undo the ownership check
+	 * this predicate guards.
+	 *
+	 * @param   string   $action     'core.edit' or 'core.delete'
+	 * @param   string   $assetType  component, section, category or thread
+	 * @param   integer  $assetId    Asset id, if any
+	 * @return  boolean
+	 */
+	protected function _moderates($action, $assetType='component', $assetId=null)
+	{
+		if (User::authorise('core.admin', $this->_option)
+		 || User::authorise('core.manage', $this->_option))
+		{
+			return true;
+		}
+
+		$at    = ($assetType != 'component') ? '.' . $assetType : '';
+		$asset = $this->_option . ($assetId ? $at . '.' . $assetId : '');
+
+		return User::authorise($action . $at, $asset) === true;
+	}
+
 	protected function _authorize($assetType='component', $assetId=null)
 	{
 		$this->config->set('access-view-' . $assetType, true);
