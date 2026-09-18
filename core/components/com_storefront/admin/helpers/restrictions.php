@@ -112,29 +112,37 @@ class RestrictionsHelper
 			$options['usersType'] = 'sku';
 		}
 
+		// sort and sort_Dir went into the statement verbatim. The two public
+		// entry points above currently pass `$filters = array()` in the argument
+		// list, which discards the caller's filters, so the request-controlled
+		// values from the restrictions and whitelist controllers never arrive --
+		// but the allowlist is what makes that a bug about sorting rather than a
+		// bug about SQL, and both default here anyway, so nothing changes today.
+		$sortable = array('id', 'uId', 'uName', 'name', 'username', 'email');
+
+		if (!in_array($filters['sort'], $sortable, true))
+		{
+			$filters['sort'] = 'uId';
+		}
+
+		$filters['sort_Dir'] = (is_scalar($filters['sort_Dir'])
+			&& strtoupper((string) $filters['sort_Dir']) == 'DESC') ? 'DESC' : 'ASC';
+
 		$db = App::get('db');
 		$sql = "SELECT p.id, p.uId, p.username AS uName, u.name, u.username, u.email
 				FROM `#__storefront_permissions` p
 				LEFT JOIN `#__users` u ON (u.id = p.uId)
-				WHERE p.scope='" . $options['usersType'] . "' AND p.scope_id = " . $db->quote($sId);
+				WHERE p.scope=" . $db->quote($options['usersType']) . " AND p.scope_id = " . $db->quote($sId);
 
-		if (isset($filters['sort']))
-		{
-			$sql .= " ORDER BY " . $filters['sort'];
-
-			if (isset($filters['sort_Dir']))
-			{
-				$sql .= ' ' . $filters['sort_Dir'];
-			}
-		}
+		$sql .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && is_numeric($filters['limit']) && $filters['return'] != 'count')
 		{
-			$sql .= ' LIMIT ' . $filters['limit'];
+			$sql .= ' LIMIT ' . (int) $filters['limit'];
 
 			if (isset($filters['start']) && is_numeric($filters['start']))
 			{
-				$sql .= ' OFFSET ' . $filters['start'];
+				$sql .= ' OFFSET ' . (int) $filters['start'];
 			}
 		}
 
