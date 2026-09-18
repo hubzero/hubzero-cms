@@ -110,15 +110,20 @@ class Request
 	 */
 	private function load_tags()
 	{
-		$weight = 'match(t.raw_tag, t.description) against (\'' . join(' ', $this->term_ar['stemmed']) . '\')';
+		$dbh = \App::get('db');
+
+		$stemmed = $dbh->escape(join(' ', $this->term_ar['stemmed']));
+		$weight = 'match(t.raw_tag, t.description) against (\'' . $stemmed . '\')';
 
 		$addtl_where = array();
 		foreach ($this->term_ar['mandatory'] as $mand)
 		{
+			$mand = $dbh->escape($mand);
 			$addtl_where[] = "(t.raw_tag LIKE '%$mand%' OR t.tag LIKE '%$mand%' OR t.description LIKE '%$mand%')";
 		}
 		foreach ($this->term_ar['forbidden'] as $forb)
 		{
+			$forb = $dbh->escape($forb);
 			$addtl_where[] = "(t.raw_tag NOT LIKE '%$forb%' AND t.tag NOT LIKE '%$forb%' AND t.description NOT LIKE '%$forb%')";
 		}
 
