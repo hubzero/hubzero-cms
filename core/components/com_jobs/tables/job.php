@@ -136,14 +136,8 @@ class Job extends Table
 			$sort = '';
 		}
 
-		if (isset($filters['sortdir']) && $filters['sortdir'] != '')
-		{
-			$sortdir = $filters['sortdir'];
-		}
-		else
-		{
-			$sortdir = 'DESC';
-		}
+		// Only ASC/DESC are valid; anything else is DESC to prevent ORDER BY injection.
+		$sortdir = (isset($filters['sortdir']) && strtoupper(trim($filters['sortdir'])) == 'ASC') ? 'ASC' : 'DESC';
 
 		if (!isset($filters['sortby']) || $filters['sortby'] == '')
 		{
@@ -285,7 +279,7 @@ class Job extends Table
 
 		if (!$count && isset ($filters['limit']) && $filters['limit']!=0)
 		{
-			$sql .= " LIMIT " . $filters['start'] . ", " . $filters['limit'];
+			$sql .= " LIMIT " . (int) $filters['start'] . ", " . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($sql);
