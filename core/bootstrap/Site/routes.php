@@ -80,7 +80,7 @@ $router->rules('build')->append('content', function ($uri)
 		if (isset($query['view']) && $query['view'] == 'article' && !empty($query['id']))
 		{
 			$db = \App::get('db');
-			$db->setQuery("SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id={$query['id']}' AND published=1");
+			$db->setQuery("SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . (int) $query['id'] . "' AND published=1");
 			if ($menuitem = $db->loadResult())
 			{
 				$segments = explode('/', $menuitem);
@@ -89,7 +89,7 @@ $router->rules('build')->append('content', function ($uri)
 			{
 				$q  = "SELECT cat.`path`, con.`alias` AS con_alias, cat.`alias` AS cat_alias FROM `#__content` AS con";
 				$q .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";
-				$q .= " WHERE con.state=1 AND con.`id` = '{$query['id']}'";
+				$q .= " WHERE con.state=1 AND con.`id` = " . $db->quote($query['id']);
 				$db->setQuery($q);
 				if ($result = $db->loadObject())
 				{

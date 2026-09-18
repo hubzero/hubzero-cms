@@ -48,7 +48,7 @@ class TranslationServiceProvider extends ServiceProvider
 		// If a language was specified it has priority
 		if (!$language && $this->app->has('request'))
 		{
-			$lang = $this->app['request']->getString('language', null);
+			$lang = preg_replace('/[^a-zA-Z_-]/', '', (string) $this->app['request']->getString('language', null));
 
 			if ($lang && $translator->exists($lang, $path))
 			{
@@ -59,7 +59,7 @@ class TranslationServiceProvider extends ServiceProvider
 		// Detect cookie language
 		if (!$language) // && $this->app->has('language.filter'))
 		{
-			$lang = $this->app['request']->getString($this->app->hash('language'), null, 'cookie');
+			$lang = preg_replace('/[^a-zA-Z_-]/', '', (string) $this->app['request']->getString($this->app->hash('language'), null, 'cookie'));
 
 			if ($lang && $translator->exists($lang, $path))
 			{
