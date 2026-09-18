@@ -384,6 +384,7 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 		<input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
 		<input type="hidden" name="option" value="com_members" />
 		<input type="hidden" name="active" value="citations" />
+		<?php echo Html::input('token'); ?>
 		<input type="hidden" name="action" value="save" />
 
 		<p class="submit">

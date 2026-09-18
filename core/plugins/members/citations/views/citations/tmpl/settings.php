@@ -162,5 +162,6 @@ $base =	Route::url($this->member->link() . '&active=' . $this->_name);
 		</p>
 
 		<div class="clear"></div>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>
