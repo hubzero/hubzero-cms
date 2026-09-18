@@ -917,6 +917,11 @@ class Projects extends AdminController
 	 */
 	public function eraseTask()
 	{
+		if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$id = Request::getInt('id', 0);
 		$permanent = 1;
 
@@ -1031,6 +1036,11 @@ class Projects extends AdminController
 	 */
 	public function gitaddTask()
 	{
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$id   = Request::getInt('id', 0);
 		$file = Request::getString('file', '');
 
@@ -1090,6 +1100,11 @@ class Projects extends AdminController
 	 */
 	public function gitgcTask()
 	{
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$id = Request::getInt('id', 0);
 
 		// Get repo model
@@ -1124,6 +1139,11 @@ class Projects extends AdminController
 	 */
 	public function fixsyncTask()
 	{
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$id = Request::getInt('id', 0);
 		$service = 'google';
 
