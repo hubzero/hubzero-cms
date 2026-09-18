@@ -56,6 +56,9 @@ class Helper extends Module
 					$item = trim(implode('_r', $bits));
 				}
 
+				// Tool aliases only; the value comes from the request.
+				$item = preg_replace('/[^A-Za-z0-9_\-.]/', '', $item);
+
 				$items[] = $item;
 			}
 			$tools = \Components\Tools\Models\Version::getVersionInfo('', 'current', $items, '');

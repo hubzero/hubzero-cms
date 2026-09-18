@@ -1333,18 +1333,18 @@ class Version
 		$query .= "FROM #__tool_version as v LEFT JOIN #__doi_mapping as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
 		if ($id)
 		{
-			$query .= "WHERE v.id = '".$id."' ";
+			$query .= "WHERE v.id = " . $db->quote($id) . " ";
 		}
 		else if ($version && $toolname)
 		{
 			if (is_array($toolname))
 			{
 				$query .= "LEFT JOIN #__tool_version AS v2 ON v2.revision < v.revision AND v2.toolname=v.toolname ";
-				$query .= "WHERE v.toolname IN ('".implode("','", $toolname)."') ";
+				$query .= "WHERE v.toolname IN (" . implode(',', array_map(array($db, 'quote'), $toolname)) . ") ";
 			}
 			else
 			{
-				$query.= "WHERE v.toolname='".$toolname."' ";
+				$query.= "WHERE v.toolname=" . $db->quote($toolname) . " ";
 			}
 			switch ($version)
 			{
@@ -1363,13 +1363,13 @@ class Version
 					}
 				break;
 				default:
-					$query .= "AND v.version = '".$version."' ";
+					$query .= "AND v.version = " . $db->quote($version) . " ";
 				break;
 			}
 		}
 		else if ($instance)
 		{
-			$query.= "WHERE v.instance='".$instance."' ";
+			$query.= "WHERE v.instance=" . $db->quote($instance) . " ";
 		}
 		$db->setQuery( $query );
 		return $db->loadObjectList();
