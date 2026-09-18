@@ -26,6 +26,41 @@ use Lang;
 class Media extends SiteController
 {
 	/**
+	 * Confirm the current user may write to the given blog scope
+	 *
+	 * @param   string   $scope    site|member|group
+	 * @param   integer  $scopeId  member/group id
+	 * @return  boolean
+	 */
+	protected function _authorizeArchive($scope, $scopeId)
+	{
+		if (User::authorise('core.manage', 'com_blog'))
+		{
+			return true;
+		}
+		// Site blog authors (create/edit) use this filer from the entry editor
+		if ($scope == 'site')
+		{
+			return (User::authorise('core.create', 'com_blog') || User::authorise('core.edit', 'com_blog'));
+		}
+		if ($scope == 'member')
+		{
+			return ($scopeId == User::get('id'));
+		}
+		if ($scope == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($scopeId);
+			if ($group)
+			{
+				$uid = User::get('id');
+				return in_array($uid, (array) $group->get('members'))
+					|| in_array($uid, (array) $group->get('managers'));
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Download a file
 	 *
 	 * @return  void
@@ -64,6 +99,13 @@ class Media extends SiteController
 
 		// Decode file name
 		$file = urldecode($file);
+
+		// Confine the file to the archive filespace (reject any traversal)
+		$file = \Hubzero\Filesystem\SafePath::relative($file);
+		if ($file === false)
+		{
+			throw new InvalidArgumentException(Lang::txt('The requested file could not be found: %s', ''), 404);
+		}
 
 		// Build file path
 		$file_path = $archive->filespace() . DS . $file;
@@ -112,11 +154,16 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Only the owner, a group member/manager, or a blog admin may write here
+		$scope   = Request::getWord('scope', 'site');
+		$scopeId = Request::getInt('id', 0);
+		if (!$this->_authorizeArchive($scope, $scopeId))
+		{
+			throw new \Exception(Lang::txt('Access denied.'), 403);
+		}
+
 		// Incoming
-		$archive = new Archive(
-			Request::getWord('scope', 'site'),
-			Request::getInt('id', 0)
-		);
+		$archive = new Archive($scope, $scopeId);
 
 		// Build the file path
 		$path = $archive->filespace();
@@ -210,14 +257,29 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		// Incoming
-		$archive = new Archive(
-			Request::getWord('scope', 'site'),
-			Request::getInt('id', 0)
-		);
+		// Only the owner, a group member/manager, or a blog admin may write here
+		$scope   = Request::getWord('scope', 'site');
+		$scopeId = Request::getInt('id', 0);
+		if (!$this->_authorizeArchive($scope, $scopeId))
+		{
+			throw new \Exception(Lang::txt('Access denied.'), 403);
+		}
 
-		// Build the file path
-		$folder = $archive->filespace();
+		// Incoming
+		$archive = new Archive($scope, $scopeId);
+
+		// Confine the requested name to the filespace
+		$file = \Hubzero\Filesystem\SafePath::relative($file);
+		if ($file === false)
+		{
+			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
+			return $this->displayTask();
+		}
+
+		// Build the file path. The requested folder was read above and then
+		// never used, so this deleted the WHOLE blog filespace for the scope
+		// rather than the one directory that was asked for.
+		$folder = $archive->filespace() . DS . $file;
 
 		// Delete the folder
 		if (is_dir($folder))
@@ -257,11 +319,23 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Only the owner, a group member/manager, or a blog admin may write here
+		$scope   = Request::getWord('scope', 'site');
+		$scopeId = Request::getInt('id', 0);
+		if (!$this->_authorizeArchive($scope, $scopeId))
+		{
+			throw new \Exception(Lang::txt('Access denied.'), 403);
+		}
+
 		// Incoming
-		$archive = new Archive(
-			Request::getWord('scope', 'site'),
-			Request::getInt('id', 0)
-		);
+		$archive = new Archive($scope, $scopeId);
+
+		// Keep the target within the blog filespace
+		if (strpos($file, '..') !== false)
+		{
+			$this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
+			return $this->displayTask();
+		}
 
 		// Build the file path
 		$path = $archive->filespace();
@@ -289,11 +363,21 @@ class Media extends SiteController
 	 */
 	public function displayTask()
 	{
+		$scope   = Request::getWord('scope', 'site');
+		$scopeId = Request::getInt('id', 0);
+
+		// Same predicate as upload and delete. Without it this listing -- and
+		// listTask below -- enumerated any member's or group's blog filespace
+		// for anyone who asked. The internal `return $this->displayTask()`
+		// calls that follow an upload or a delete are the same actor in the
+		// same request, so they still pass.
+		if (!$this->_authorizeArchive($scope, $scopeId))
+		{
+			throw new \Exception(Lang::txt('Access denied.'), 403);
+		}
+
 		// Output HTML
-		$archive = new Archive(
-			Request::getWord('scope', 'site'),
-			Request::getInt('id', 0)
-		);
+		$archive = new Archive($scope, $scopeId);
 
 		$this->view
 			->set('archive', $archive)
@@ -310,10 +394,15 @@ class Media extends SiteController
 	public function listTask()
 	{
 		// Incoming
-		$archive = new Archive(
-			Request::getWord('scope', 'site'),
-			Request::getInt('id', 0)
-		);
+		$scope   = Request::getWord('scope', 'site');
+		$scopeId = Request::getInt('id', 0);
+
+		if (!$this->_authorizeArchive($scope, $scopeId))
+		{
+			throw new \Exception(Lang::txt('Access denied.'), 403);
+		}
+
+		$archive = new Archive($scope, $scopeId);
 
 		// Build the file path
 		$path = $archive->filespace();
