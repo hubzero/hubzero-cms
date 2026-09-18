@@ -534,7 +534,7 @@ class Service extends Obj
 		$this->database->setQuery($sql);
 		$total = $this->database->loadResult();
 
-		$sql = "SELECT m.* FROM (" . implode(' UNION ', $queries) . ") AS m LIMIT " . $start . "," . $limit;
+		$sql = "SELECT m.* FROM (" . implode(' UNION ', $queries) . ") AS m LIMIT " . (int) $start . "," . (int) $limit;
 		$this->database->setQuery($sql);
 		$records = $this->database->loadObjectList();
 

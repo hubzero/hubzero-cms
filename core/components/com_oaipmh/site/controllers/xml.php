@@ -153,7 +153,7 @@ class Xml extends SiteController
 						}
 						else
 						{
-							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
 							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
@@ -215,7 +215,7 @@ class Xml extends SiteController
 						}
 						else
 						{
-							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
 							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
@@ -266,7 +266,7 @@ class Xml extends SiteController
 						}
 						else
 						{
-							$service->set('limit', isset($data['limit']) ? $data['limit'] : $service->get('limit'));
+							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
 							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
