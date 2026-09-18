@@ -147,16 +147,16 @@ class Admin extends SiteController
 
 		if (!file_exists('/usr/bin/addrepo.sh'))
 		{
-			$command  = '/usr/bin/addrepo ' . $status['toolname'];
+			$command  = '/usr/bin/addrepo ' . escapeshellarg($status['toolname']);
 			$command .= ' -title ' . escapeshellarg($status['title']);
 			$command .= ' -description ' . escapeshellarg($status['description']);
-			$command .= ' -password "' . $pw . '"';
+			$command .= ' -password ' . escapeshellarg($pw);
 			$command .= ' -hubdir ' . PATH_ROOT;
 		}
 		else
 		{
-			$command  = '/usr/bin/addrepo.sh ' . $status['repohost'];
-			$command .= ' --project ' . $status['toolname'];
+			$command  = '/usr/bin/addrepo.sh ' . escapeshellarg($status['repohost']);
+			$command .= ' --project ' . escapeshellarg($status['toolname']);
 			$command .= ' --title ' . escapeshellarg($status['title']);
 			$command .= ' --description ' . escapeshellarg($status['description']);
 			$command .= ' --hubdir ' . PATH_ROOT;
@@ -164,11 +164,11 @@ class Admin extends SiteController
 			{
 				if ($status['github'])
 				{
-					$command .= ' --gitURL ' . $status['github'];
+					$command .= ' --gitURL ' . escapeshellarg($status['github']);
 				}
 			}
 			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
-				$command .= ' --publishOption ' . $status['publishType'];
+				$command .= ' --publishOption ' . escapeshellarg($status['publishType']);
 			}
 		}
 
@@ -249,8 +249,8 @@ class Admin extends SiteController
 				else
 				{
 					$command = '/usr/bin/sudo -u apps '
-							. '/usr/bin/git2svn.sh -g ' . $status['github']
-							. ' -s ' . $status['toolname']
+							. '/usr/bin/git2svn.sh -g ' . escapeshellarg($status['github'])
+							. ' -s ' . escapeshellarg($status['toolname'])
 							. ' -c ' . PATH_ROOT;
 
 					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
@@ -266,9 +266,9 @@ class Admin extends SiteController
 			{
 				if ($status['github'])
 				{
-					$command  = '/usr/bin/git2git.sh ' . $status['repohost'];
-					$command .= ' --project ' . $status['toolname'];
-					$command .= ' --gitURL ' . $status['github'];
+					$command  = '/usr/bin/git2git.sh ' . escapeshellarg($status['repohost']);
+					$command .= ' --project ' . escapeshellarg($status['toolname']);
+					$command .= ' --gitURL ' . escapeshellarg($status['github']);
 
 					if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION')))
 					{
@@ -286,27 +286,27 @@ class Admin extends SiteController
 			$command .=    '/usr/bin/installtool';
 			$command .=       ' -type raw';
 			$command .=       ' -hubdir ' . PATH_ROOT . '/ ';
-			$command .=       $status['toolname'];
+			$command .=       escapeshellarg($status['toolname']);
 			$commitHashRequired = false;
 		}
 		else
 		{
 			$command  = '/usr/bin/sudo -u apps ';
-			$command .=    '/usr/bin/installtool.sh ' . $status['repohost'];
+			$command .=    '/usr/bin/installtool.sh ' . escapeshellarg($status['repohost']);
 			$command .=       ' --type raw';
 			$command .=       ' --hubdir ' . PATH_ROOT;
-			$command .=       ' --project ' . $status['toolname'];
+			$command .=       ' --project ' . escapeshellarg($status['toolname']);
 			if ($status['repohost'] == 'gitExternal')
 			{
 				if ($status['github'])
 				{
-					$command .= ' --gitURL ' . $status['github'];
+					$command .= ' --gitURL ' . escapeshellarg($status['github']);
 				}
 			}
 			$commitHashRequired = true;
 
 			if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
-				$command .= ' --publishOption ' . $status['publishType'];
+				$command .= ' --publishOption ' . escapeshellarg($status['publishType']);
 			}
 		}
 
@@ -862,24 +862,24 @@ class Admin extends SiteController
 				$command  = '/usr/bin/sudo -u apps ';
 				$command .=    '/usr/bin/finalizetool';
 				$command .=       ' -hubdir ' . PATH_ROOT . '/';
-				$command .=       ' -title "' . $status['title'] . '"';
-				$command .=       ' -version "' . $status['version'] . '"';
-				$command .=       ' -license ' . $fname;
-				$command .=       ' ' . $status['toolname'];
+				$command .=       ' -title ' . escapeshellarg($status['title']);
+				$command .=       ' -version ' . escapeshellarg($status['version']);
+				$command .=       ' -license ' . escapeshellarg($fname);
+				$command .=       ' ' . escapeshellarg($status['toolname']);
 
 			}
 			else
 			{
 				$command  = '/usr/bin/sudo -u apps ';
-				$command .=    '/usr/bin/finalizetool.sh ' . $status['repohost'];
+				$command .=    '/usr/bin/finalizetool.sh ' . escapeshellarg($status['repohost']);
 				$command .=       ' --hubdir ' . PATH_ROOT;
 				$command .=       ' --title ' . escapeshellarg($status['title']);
 				$command .=       ' --version ' . escapeshellarg($status['version']);
-				$command .=       ' --license ' . $fname;
-				$command .=       ' --project ' . $status['toolname'];
+				$command .=       ' --license ' . escapeshellarg($fname);
+				$command .=       ' --project ' . escapeshellarg($status['toolname']);
 
 				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
-					$command .= ' --publishOption ' . $status['publishType'];
+					$command .= ' --publishOption ' . escapeshellarg($status['publishType']);
 				}
 			}
 
@@ -927,7 +927,7 @@ class Admin extends SiteController
 			else
 			{
 				Log::debug("findalizeTool(): deleting tmp files");
-				exec ('sudo -u apps rm -f /tmp/' . $tar, $out, $result);
+				exec ('sudo -u apps rm -f ' . escapeshellarg('/tmp/' . $tar), $out, $result);
 			}
 			return true;
 		}

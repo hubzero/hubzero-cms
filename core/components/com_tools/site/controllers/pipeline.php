@@ -551,6 +551,13 @@ class Pipeline extends SiteController
 			);
 		}
 
+		// Only tool admins/developers may change license and code access
+		if (!$this->_checkAccess($id))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+			return;
+		}
+
 		$hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
 
 		// Replace the default values
@@ -1264,16 +1271,16 @@ class Pipeline extends SiteController
 
 			if (!file_exists('/usr/bin/addrepo.sh'))
 			{
-				$command  = '/usr/bin/addrepo ' . $toolinfo['toolname'];
+				$command  = '/usr/bin/addrepo ' . escapeshellarg($toolinfo['toolname']);
 				$command .= ' -title ' . escapeshellarg($toolinfo['title']);
 				$command .= ' -description ' . escapeshellarg($toolinfo['description']);
-				$command .= ' -password "' . $pw . '"';
+				$command .= ' -password ' . escapeshellarg($pw);
 				$command .= ' -hubdir ' . PATH_ROOT;
 			}
 			else
 			{
-				$command  = '/usr/bin/addrepo.sh ' . $toolinfo['repohost'];
-				$command .= ' --project ' . $toolinfo['toolname'];
+				$command  = '/usr/bin/addrepo.sh ' . escapeshellarg($toolinfo['repohost']);
+				$command .= ' --project ' . escapeshellarg($toolinfo['toolname']);
 				$command .= ' --title ' . escapeshellarg($toolinfo['title']);
 				$command .= ' --description ' . escapeshellarg($toolinfo['description']);
 				$command .= ' --hubdir ' . PATH_ROOT;
@@ -1281,12 +1288,12 @@ class Pipeline extends SiteController
 				{
 					if ($toolinfo['github'])
 					{
-						$command .= ' --gitURL ' . $toolinfo['github'];
+						$command .= ' --gitURL ' . escapeshellarg($toolinfo['github']);
 					}
 				}
 
 				if (is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) {
-					$command .= ' --publishOption ' . $toolinfo['publishType'];
+					$command .= ' --publishOption ' . escapeshellarg($toolinfo['publishType']);
 				}
 			}
 
