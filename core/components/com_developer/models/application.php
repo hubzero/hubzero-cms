@@ -227,7 +227,7 @@ class Application extends Relational
 			{
 				$this->set('client_id', $this->automaticClientId($data));
 			}
-			$data['client_secret'] = sha1($this->get('client_id'));
+			$data['client_secret'] = bin2hex(random_bytes(20));
 		}
 
 		return $data['client_secret'];
