@@ -439,7 +439,7 @@ class Provider
 
 		if ($result->user_id == '0') // check verifier on request tokens
 		{
-			if ($result->verifier != $this->_provider->verifier)
+			if (!hash_equals((string) $result->verifier, (string) $this->_provider->verifier))
 			{
 				return OAUTH_VERIFIER_INVALID;
 			}

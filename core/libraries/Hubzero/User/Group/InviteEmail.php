@@ -132,7 +132,7 @@ class InviteEmail extends Relational
 				$model->set([
 					'email'     => $a,
 					'gidNumber' => $gid,
-					'token'     => md5($a)
+					'token'     => bin2hex(random_bytes(16))
 				]);
 				$model->save();
 			}
