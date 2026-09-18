@@ -13,6 +13,7 @@ use Hubzero\Component\SiteController;
 use Lang;
 use Request;
 use User;
+use App;
 
 /**
  * Manage a course's manager entries
@@ -28,6 +29,13 @@ class Managers extends SiteController
 	{
 		// Load the course page
 		$this->course = Course::getInstance(Request::getString('gid', ''));
+
+		// Only a course manager (or super admin) may view or change managers
+		if (User::get('usertype') != 'Super Administrator' && !$this->course->access('manage'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
+		}
 
 		parent::execute();
 	}
@@ -197,6 +205,30 @@ class Managers extends SiteController
 
 		foreach ($entries as $key => $data)
 		{
+			// The default above is array(0), so with no `entries` parameter at all
+			// $data is the int 0 and writing to it is a PHP 8 fatal ("Cannot use a
+			// scalar value as an array"). Nothing in the UI submits that -- the
+			// selects only exist when the listing has rows -- but a hand-made
+			// request from any course manager reaches it.
+			if (!is_array($data))
+			{
+				continue;
+			}
+
+			// execute() authorizes against the course named by `gid`, but the
+			// member row rewritten below was named by entries[n][course_id] from
+			// the POST body, so a manager of one course could re-role anyone in
+			// any other course. Pin it to the course actually authorized; the
+			// form builds this field from the managers listing of that same
+			// course, so no legitimate submission changes.
+			//
+			// offering_id and section_id stay as posted. That is safe because
+			// course_id is pinned and load() ANDs it into the same WHERE, so no
+			// reachable row belongs to another course -- not because the listing
+			// spans them: Course::managers() hard-sets both to 0 when absent, so
+			// the listing only ever shows course-wide rows.
+			$data['course_id'] = $this->course->get('id');
+
 			// Retrieve user's account info
 			$tbl = new Tables\Member($this->database);
 			$tbl->load($data['user_id'], $data['course_id'], $data['offering_id'], $data['section_id'], 0);
