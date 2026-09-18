@@ -54,7 +54,7 @@ class Helper
 		//do we want to limit return
 		if ($limit > 0)
 		{
-			$sql .= "  LIMIT {$limit}";
+			$sql .= "  LIMIT " . (int) $limit;
 		}
 
 		//execute query and return result
@@ -93,7 +93,7 @@ class Helper
 				AND g.published=1
 				AND g.approved=1
 				AND g.discoverability=0
-				AND g.cn IN ('".implode("','", $groupList)."')";
+				AND g.cn IN (" . implode(',', array_map(array($database, 'quote'), $groupList)) . ")";
 
 		$database->setQuery( $sql );
 		if (!$database->getError())
@@ -249,7 +249,7 @@ class Helper
 
 		$db =  \App::get('db');
 
-		$query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id='" . $role . "' AND r.id=m.roleid AND r.gidNumber='" . $group->gidNumber . "'";
+		$query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=" . $db->quote($role) . " AND r.id=m.roleid AND r.gidNumber=" . $db->quote($group->gidNumber);
 
 		$db->setQuery($query);
 
