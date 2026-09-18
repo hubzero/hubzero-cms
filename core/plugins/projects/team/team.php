@@ -494,6 +494,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save()
 	{
+		// Managing team membership is a manager/owner action
+		if (!$this->model->access('manager'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		// Incoming
 		$newm    = Request::getVar('newmember', '', 'post');
 		if (is_string($newm))
@@ -803,6 +809,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function delete()
 	{
+		// Managing team membership is a manager/owner action
+		if (!$this->model->access('manager'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		// Incoming
 		$checked = Request::getArray('owner', array());
 		$groups  = Request::getArray('group', array());
@@ -1016,6 +1028,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _changeOwner()
 	{
+		// Role and ownership changes are manager actions
+		if (!$this->model->access('manager'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
 		// Incoming
 		$confirm = Request::getInt('confirm', 0, 'post');
 		$user    = Request::getInt('owned_by_user', $this->model->get('owned_by_user'), 'post');
@@ -1193,6 +1210,11 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _changeRole()
 	{
+		// Role and ownership changes are manager actions
+		if (!$this->model->access('manager'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
 		// Incoming
 		$checked = Request::getArray('owner', array());
 		$groups  = Request::getArray('group', array());
