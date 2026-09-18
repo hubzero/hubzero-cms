@@ -1559,6 +1559,13 @@ class Profiles extends SiteController
 			App::abort(404, Lang::txt('COM_MEMBERS_NO_ID'));
 		}
 
+		// A user may only save their own profile unless they can manage the
+		// component. editTask already enforces this; the save handler must too.
+		if (!User::authorise('core.manage', $this->_option) && $id != User::get('id'))
+		{
+			App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
+		}
+
 		// Load the profile
 		$member = Member::oneOrFail($id);
 
