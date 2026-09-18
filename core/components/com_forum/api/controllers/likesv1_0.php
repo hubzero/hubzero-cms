@@ -47,12 +47,14 @@ class Likesv1_0 extends ApiController
 	 */
 	public function addLikeToPostTask() 
 	{
+		$this->requiresAuthentication();
+
 		$threadId = Request::getString('threadId');
 		$postId  = Request::getString('postId');
-		$userId = Request::getString('userId');
+		$userId = \App::get('authn')['user_id'];
 		$created = Date::of('now')->toSql();
 
-		if (!$userId || ($userId === 0))
+		if (!$userId)
 		{
 			throw new Exception("Please sign into post a Like", 404);
 		}
@@ -72,9 +74,11 @@ class Likesv1_0 extends ApiController
 	// DELETE: Delete a like from a post
 	public function deleteLikeFromPostTask() 
 	{
+		$this->requiresAuthentication();
+
 		$threadId = Request::getString('threadId');
 		$postId  = Request::getString('postId');
-		$userId = Request::getString('userId');
+		$userId = \App::get('authn')['user_id'];
 
 		// Open up the database tables
 		$db = \App::get('db');

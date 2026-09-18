@@ -37,6 +37,12 @@ class UsersCategoriesv2_0 extends ApiController
 	 */
 	public function createTask()
 	{
+		// As destroyTask(). Without this a guest passes _requiresMatchingUser()
+		// by sending userId=0, because User::get('id') is 0 for a guest too, and
+		// every id in categoriesIds is then written to #__forum_users_categories
+		// as an unauthenticated insert.
+		$this->requiresAuthentication();
+
 		$userId = Request::getInt('userId');
 		$currentUserId = User::get('id');
 
@@ -126,6 +132,8 @@ class UsersCategoriesv2_0 extends ApiController
 	 */
 	public function destroyTask()
 	{
+		$this->requiresAuthentication();
+
 		$userId = Request::getInt('userId');
 		$currentUserId = User::get('id');
 
@@ -182,14 +190,9 @@ class UsersCategoriesv2_0 extends ApiController
 	 */
 	protected function _requiresMatchingUser($currentUserId, $userId)
 	{
-		if ($currentUserId !== $userId)
+		if ((int) $currentUserId !== (int) $userId)
 		{
-			$error = array(
-				'status' => 'error',
-				'error' => 'User ID mismatch, unable to proceed.'
-			);
-
-			$this->send($result);
+			throw new \Exception('User ID mismatch, unable to proceed.', 403);
 		}
 	}
 }
