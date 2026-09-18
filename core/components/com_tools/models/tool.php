@@ -1231,7 +1231,9 @@ class Tool
 				$sqlsearch .= " (";
 				foreach ($words as $word)
 				{
-					$sqlsearch .= " (t.id LIKE '$word') OR (t.title LIKE '%$word%') OR (t.toolname LIKE '%$word%') OR";
+					$exact = $db->Quote($word);
+					$like  = $db->Quote('%' . $word . '%');
+					$sqlsearch .= " (t.id LIKE $exact) OR (t.title LIKE $like) OR (t.toolname LIKE $like) OR";
 				}
 				$sqlsearch = substr($sqlsearch, 0, - 3);
 				$sqlsearch .= ") ";
