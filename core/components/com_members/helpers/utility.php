@@ -188,7 +188,7 @@ class Utility
 	 */
 	public static function genemailconfirm()
 	{
-		return (-rand(1, pow(2, 31)-1)); // php5 in debian etch returns negative values if i don't subtract 1 from this max
+		return (-random_int(1, pow(2, 31)-1)); // account activation / email confirmation token: use a CSPRNG (rand()/mt_rand() are not); kept negative for the existing activation column
 	}
 
 	/**
