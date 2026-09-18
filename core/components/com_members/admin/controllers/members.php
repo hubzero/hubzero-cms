@@ -1026,6 +1026,19 @@ class Members extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		// core.deidentify is the action the page gates on
+		// (admin/views/members/tmpl/display.php renders the button on
+		// core.delete && core.deidentify) and the one config/access.xml
+		// declares. com_members has no #__assets row, so that action falls back
+		// to root, where only a core.admin holder has it -- a core.manage test
+		// therefore admitted administrators the page itself refuses.
+		if (!User::authorise('core.admin', $this->_option)
+		 && !(User::authorise('core.delete', $this->_option)
+		   && User::authorise('core.deidentify', $this->_option)))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming user ID
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -1040,6 +1053,8 @@ class Members extends AdminController
 		// Make sure plugin user/deidentify has been migrated / imported
 		// Run through main CMS tables, then run through client specific database tables that pertains to jobs, sessions, views with same trigger name
 		foreach ($ids as $id) {
+			$id = (int) $id;
+
 			// Creating New Credentials for each user
 			$anonPassword = "anonPassword_" . $id;
 			$anonUserName = "anonUsername_" . $id;
@@ -1081,6 +1096,14 @@ class Members extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.manage', $this->_option)
+		 && !User::authorise('core.admin', $this->_option)
+		 && !User::authorise('core.edit.state', $this->_option)
+		 && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$state = ($this->getTask() == 'block' ? 1 : 0);
 
