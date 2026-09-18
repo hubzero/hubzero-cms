@@ -121,22 +121,23 @@ class Respondent extends Table
 
 		if (array_key_exists('sortby', $filters))
 		{
-			if (preg_match('/(registered|name|special|id)(?:\ (ASC|DESC))?/', $filters['sortby'], $match))
+			if (preg_match('/^(registered|name|special|id)(?:\ (ASC|DESC))?$/', $filters['sortby'], $match))
 			{
+				$dir = (isset($match[2]) && strtoupper($match[2]) == 'DESC') ? 'DESC' : 'ASC';
 				if ($match[1] == 'name')
 				{
-					$this->order_desc = 'name ' . $match[2];
+					$this->order_desc = 'name ' . $dir;
 					$this->order = ' ORDER BY last_name, first_name';
 				}
 				else if ($match[1] == 'special')
 				{
-					$this->order_desc = 'special ' . $match[2];
-					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN comment IS NOT null THEN 2 ELSE 3 END ' . $match[2];
+					$this->order_desc = 'special ' . $dir;
+					$this->order = ' ORDER BY CASE WHEN disability_needs OR dietary_needs IS NOT null THEN 1 WHEN comment IS NOT null THEN 2 ELSE 3 END ' . $dir;
 				}
 				else
 				{
-					$this->order_desc = $filters['sortby'];
-					$this->order = ' ORDER BY ' . $filters['sortby'];
+					$this->order_desc = $match[1] . ' ' . $dir;
+					$this->order = ' ORDER BY ' . $match[1] . ' ' . $dir;
 				}
 				unset($filters['sortby']);
 			}
