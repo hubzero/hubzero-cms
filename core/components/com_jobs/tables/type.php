@@ -36,7 +36,7 @@ class JobType extends Table
 	{
 		$types = array();
 
-		$query  = "SELECT id, category FROM `$this->_tbl` ORDER BY $sortby $sortdir ";
+		$query  = "SELECT id, category FROM `$this->_tbl` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . " ";
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
 		if ($result)
