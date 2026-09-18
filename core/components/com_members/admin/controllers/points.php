@@ -363,7 +363,7 @@ class Points extends AdminController
 			{
 				$id = intval($i);
 				$id++; // $i starts at '0'. Can't have an ID of zero.
-				$this->database->setQuery("INSERT INTO `#__users_points_config` (`id`,`description`,`alias`,`points`) VALUES ($id,'$description','$alias', '$point')");
+				$this->database->setQuery("INSERT INTO `#__users_points_config` (`id`,`description`,`alias`,`points`) VALUES (" . $id . "," . $this->database->quote($description) . "," . $this->database->quote($alias) . "," . $point . ")");
 				$this->database->query();
 			}
 		}
