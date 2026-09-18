@@ -5955,6 +5955,7 @@ CREATE TABLE `#__xgroups_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gidNumber` int(11) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT 0,
   `permissions` text DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;

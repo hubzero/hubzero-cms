@@ -1211,9 +1211,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for managing the group's canned deny responses
 	 *
+	 * @param   array  $responses  Responses to show instead of the saved ones,
+	 *                             so a failed save can hand back what was typed
 	 * @return  void
 	 */
-	private function denyresponses()
+	private function denyresponses($responses = null)
 	{
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
@@ -1231,7 +1233,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->option = $this->_option;
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
-		$view->responses = $this->getDenyResponses();
+		$view->responses = is_array($responses) ? $responses : $this->getDenyResponses();
 		// Users on their way to being denied, so saving can return to that form
 		$view->users = Request::getArray('users', array());
 
@@ -1293,8 +1295,25 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$params = new Hubzero\Config\Registry($this->group->get('params'));
 		$params->set('deny_responses', $responses);
 
-		$this->group->set('params', $params->toString());
-		$this->group->update();
+		$serialized = $params->toString();
+
+		// `#__xgroups`.`params` is a TEXT column. Refusing an oversized write
+		// here beats letting MySQL truncate it, which would leave the group
+		// with unparsable JSON and so lose every other group setting.
+		if (strlen($serialized) > 65535)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_TOO_LONG'));
+			return $this->denyresponses($responses);
+		}
+
+		$this->group->set('params', $serialized);
+
+		// A failed write must not report success - the responses would be gone
+		if (!$this->group->update())
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_NOT_SAVED'));
+			return $this->denyresponses($responses);
+		}
 
 		$url = 'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members';
 
@@ -1724,21 +1743,32 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$db  = App::get('db');
-			$gid = (int) $this->group->get('gidNumber');
+			$ids = array_values(array_filter(array_map('intval', Request::getArray('roles', array(), 'post'))));
 
-			$ordering = 1;
-			foreach (Request::getArray('roles', array(), 'post') as $id)
+			// Nothing usable to order by. Saying so beats reporting success
+			// for a list the browser is still showing but nobody stored.
+			if (empty($ids))
 			{
-				// The gidNumber condition keeps a request from reordering
-				// another group's roles
-				$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote((int) $id) . " AND `gidNumber`=" . $db->quote($gid));
-				$db->query();
-
-				$ordering++;
+				$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR');
 			}
+			else
+			{
+				$db  = App::get('db');
+				$gid = (int) $this->group->get('gidNumber');
 
-			$response['success'] = true;
+				$ordering = 1;
+				foreach ($ids as $id)
+				{
+					// The gidNumber condition keeps a request from reordering
+					// another group's roles
+					$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote($id) . " AND `gidNumber`=" . $db->quote($gid));
+					$db->query();
+
+					$ordering++;
+				}
+
+				$response['success'] = true;
+			}
 		}
 
 		header('Content-type: application/json');
