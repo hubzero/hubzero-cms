@@ -382,6 +382,15 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
+		// Only a section manager may upload page files
+		if (!$this->view->offering->access('manage', 'section'))
+		{
+			ob_clean();
+			header('Content-type: text/plain');
+			echo json_encode(array('error' => Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE')));
+			exit();
+		}
+
 		// Get media config
 		$mediaConfig = Component::params('com_media');
 
@@ -537,6 +546,13 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		// Check for request forgeries
 		Request::checkToken();
+
+		// Only a section manager may upload page files
+		if (!$this->view->offering->access('manage', 'section'))
+		{
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_LOGIN_NOTICE'));
+			return $this->_files();
+		}
 
 		// Ensure we have an ID to work with
 		$listdir = Request::getInt('listdir', 0, 'post');
@@ -695,6 +711,16 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 			return $this->_files();
 		}
+
+		// Only a section manager may delete page files
+		if (!$this->view->offering->access('manage', 'section'))
+		{
+			$this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_NO_FILE_PROVIDED'));
+			return $this->_files();
+		}
+
+		// Keep the target within the page directory
+		$file = basename($file);
 
 		// Build the file path
 		$path = $this->_path();
