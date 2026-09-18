@@ -63,7 +63,15 @@ class Hook extends Relational
 	public function fileSpacePath()
 	{
 		// build upload path
-		$uploadPath = PATH_APP . DS . 'site' . DS . 'import' . DS . 'hooks' . DS . $this->get('id');
+		// (int) because the id decides the directory: every importer controller
+		// builds an upload target from this path, and they bind hook[id]/import[id]
+		// straight off the request through set(), where Request::getArray() filters
+		// nothing. A traversing id walked move_uploaded_file() clean out of the
+		// import filespace, and save() did not stand in the way -- a non-numeric
+		// primary key leaves isNew() false, so the UPDATE matched no rows and still
+		// returned success. Casting here holds the containment for every caller
+		// rather than relying on four controllers each to remember.
+		$uploadPath = PATH_APP . DS . 'site' . DS . 'import' . DS . 'hooks' . DS . (int) $this->get('id');
 
 		// return path
 		return $uploadPath;
