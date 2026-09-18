@@ -18,6 +18,7 @@ use Date;
 use User;
 use Lang;
 use App;
+use Component;
 
 /**
  * Resources controller class for media
@@ -59,6 +60,20 @@ class Media extends SiteController
 			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
+		// Uploads and deletes require a contributor who may edit this resource.
+		// Temp ids (< 1 or 9999-prefixed) are in-progress contributions.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+		if (!($resource < 1 || substr($resource, 0, 4) == '9999')
+			&& !$row->access('edit') && !$row->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+
 		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the upload path exist
@@ -84,6 +99,18 @@ class Media extends SiteController
 
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
+
+		// Refuse only server-executable extensions and the markup types the
+		// download handler serves inline (the same rule as resource attachments):
+		// the com_media whitelist would reject common resource media such as
+		// docx or mp4 on a default install
+		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+		if (in_array(strtolower((string) $ext), $blockedExtensions))
+		{
+			$this->setError(Lang::txt('File type not allowed: %s', $ext));
+			return $this->displayTask();
+		}
+
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -146,6 +173,20 @@ class Media extends SiteController
 			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
+		// Uploads and deletes require a contributor who may edit this resource.
+		// Temp ids (< 1 or 9999-prefixed) are in-progress contributions.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+		if (!($resource < 1 || substr($resource, 0, 4) == '9999')
+			&& !$row->access('edit') && !$row->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+
 		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the listdir follows YYYY/MM/##/media
@@ -162,6 +203,13 @@ class Media extends SiteController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('RESOURCES_NO_FILE'));
+			return $this->displayTask();
+		}
+
+		// Keep the target within the resource media directory
+		if (strpos($file, '..') !== false)
+		{
+			$this->setError(Lang::txt('FILE_NOT_FOUND'));
 			return $this->displayTask();
 		}
 
