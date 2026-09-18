@@ -56,10 +56,15 @@ class SpanMacro extends WikiMacro
 			foreach ($attribs as $a)
 			{
 				$a = preg_split('/=/', $a);
-				$key = $a[0];
-				$val = end($a);
+				$key = strtolower(trim($a[0]));
+				if (!in_array($key, array('class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'), true)
+					&& !preg_match('/^(data|aria)-[a-z0-9\-]+$/', $key))
+				{
+					continue;
+				}
+				$val = trim(end($a), "'\"");
 
-				$atts[] = $key . '="' . trim($val, "'\"") . '"';
+				$atts[] = $key . '="' . htmlspecialchars($val, ENT_QUOTES, 'UTF-8') . '"';
 			}
 		}
 

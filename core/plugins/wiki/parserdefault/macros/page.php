@@ -71,7 +71,7 @@ class PageMacro extends WikiMacro
 
 		if (!$row->exists())
 		{
-			return '(Page(' . $et . ') failed)';
+			return '(Page(' . htmlspecialchars($et, ENT_QUOTES, 'UTF-8') . ') failed)';
 		}
 
 		if ($nolink)

@@ -99,6 +99,11 @@ class ColumnMacro extends WikiMacro
 				{
 					$a = preg_split('/=/', $a);
 					$key = strtolower(trim($a[0]));
+					if (!in_array($key, array('class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'), true)
+						&& !preg_match('/^(data|aria)-[a-z0-9\-]+$/', $key))
+					{
+						continue;
+					}
 					$val = trim(end($a));
 					$val = trim($val, '"');
 					$val = trim($val, "'");

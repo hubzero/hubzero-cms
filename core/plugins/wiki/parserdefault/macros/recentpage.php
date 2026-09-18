@@ -62,7 +62,7 @@ class RecentPageMacro extends WikiMacro
 			}
 			if (isset($args[1]))
 			{
-				$cls = $args[1];
+				$cls = preg_replace('/[^A-Za-z0-9_\- ]/', '', $args[1]);
 			}
 			if (isset($args[2]))
 			{

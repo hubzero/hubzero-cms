@@ -74,7 +74,7 @@ class FileIndexMacro extends WikiMacro
 				$link  = $page->link();
 				$fpath = $row->filespace() . DS . $this->pageid . DS . $row->get('filename');
 
-				$html .= '<li><a href="' . Route::url($link) . '">' . $row->get('filename') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+				$html .= '<li><a href="' . Route::url($link) . '">' . htmlspecialchars($row->get('filename'), ENT_QUOTES, 'UTF-8') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = $row->creator();
 				if ($huser->get('id'))
 				{
@@ -84,7 +84,7 @@ class FileIndexMacro extends WikiMacro
 				{
 					$html .= Date::of($row->get('created'))->relative() . '. ';
 				}
-				$html .= $row->get('description') ? '<span>"' . stripslashes($row->get('description')) . '"</span>' : '';
+				$html .= $row->get('description') ? '<span>"' . htmlspecialchars(stripslashes($row->get('description')), ENT_QUOTES, 'UTF-8') . '"</span>' : '';
 				$html .= '</li>' . "\n";
 			}
 			$html .= '</ul>';

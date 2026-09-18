@@ -71,6 +71,19 @@ Examples:
 		$title = preg_replace('/\(.*?\)/', '', $title);
 		$title = preg_replace('/^.*?\:/', '', $title);
 
-		return '<a class="' . $cls . '" href="' . $href . '">' . trim($title) . '</a>';
+		// Browsers ignore control characters inside a scheme, so test a stripped copy
+		// and allow only known-safe schemes (relative links have no scheme)
+		$chk = preg_replace('/[\x00-\x20]+/', '', (string) $href);
+		// The list matches the protocols parser.php itself links (its 'url'
+		// pattern and buildLink both accept gopher, news and file). Leaving
+		// those three out here rendered href="" for links the wiki syntax
+		// supports; none of them executes script, so only javascript:,
+		// vbscript: and data: are actually being kept out.
+		if (preg_match('/^[a-z][a-z0-9+.\-]*:/i', $chk) && !preg_match('/^(https?|ftp|mailto|gopher|news|file):/i', $chk))
+		{
+			$href = '';
+		}
+
+		return '<a class="' . $cls . '" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars(trim($title), ENT_QUOTES, 'UTF-8') . '</a>';
 	}
 }

@@ -51,11 +51,11 @@ class TwitterMacro extends WikiMacro
 		$args = array_map('trim', explode(',', $this->args));
 
 		//get screen name & num tweets
-		$screenName = (isset($args[0])) ? ltrim($args[0], '@') : '';
-		$widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
+		$screenName = (isset($args[0])) ? preg_replace('/[^A-Za-z0-9_]/', '', ltrim($args[0], '@')) : '';
+		$widgetId   = (preg_match('/widgetid="([^"]*)"/', $this->args, $matches)) ? preg_replace('/[^0-9]/', '', $matches[1]) : '';
 		$chrome     = (preg_match('/chrome="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '';
-		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? $matches[1] : '100%';
-		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? $matches[1] : 500;
+		$width      = (preg_match('/width="([^"]*)"/', $this->args, $matches)) ? preg_replace('/[^0-9%]/', '', $matches[1]) : '100%';
+		$height     = (preg_match('/height="([^"]*)"/', $this->args, $matches)) ? preg_replace('/[^0-9%]/', '', $matches[1]) : 500;
 
 		//make sure we have a user name
 		if ($screenName == '' && $widgetId == '' || strpos($screenName, '#') !== false)

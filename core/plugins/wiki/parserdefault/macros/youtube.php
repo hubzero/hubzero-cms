@@ -64,8 +64,11 @@ class YoutubeMacro extends WikiMacro
 		$args = array_map('trim', explode(',', $content));
 		$url  = $args[0];
 
-		$width  = (isset($args[1]) && $args[1] != '') ? $args[1] : $default_width;
-		$height = (isset($args[2]) && $args[2] != '') ? $args[2] : $default_height;
+		// Fall back to the default when the supplied value carries no digits at
+		// all. Stripping alone turned a non-numeric argument such as "auto"
+		// into an empty string and rendered width="" height="".
+		$width  = (isset($args[1]) && preg_replace('/[^0-9%]/', '', $args[1]) !== '') ? preg_replace('/[^0-9%]/', '', $args[1]) : $default_width;
+		$height = (isset($args[2]) && preg_replace('/[^0-9%]/', '', $args[2]) !== '') ? preg_replace('/[^0-9%]/', '', $args[2]) : $default_height;
 
 		// check is user entered full youtube url or just Video Id
 		if (strstr($url, 'http'))
@@ -96,6 +99,7 @@ class YoutubeMacro extends WikiMacro
 		}
 
 		// append to the youtube url
+		$video_id = preg_replace('/[^A-Za-z0-9_-]/', '', isset($video_id) ? (string) $video_id : '');
 		$youtube_url .= $video_id;
 
 		// add wmode to url so that lightboxes appear over embedded videos
