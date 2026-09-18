@@ -241,6 +241,33 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		// Load the message and parse it
 		$xmessage = Hubzero\Message\Message::oneOrFail($message);
 
+		// The id names any row of #__xmessage, including a private message between
+		// two users, so first: it has to belong to this group.
+		if ((int) $xmessage->get('group_id') !== (int) $this->group->get('gidNumber'))
+		{
+			App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_NOT_FOUND'));
+		}
+
+		// Belonging to the group is not enough to READ one. The forum plugin
+		// files a group message per recipient and picks those recipients by view
+		// level, precisely so a restricted category is not mailed to everyone
+		// (forum.php _getEmailRecipientIds, ticket 307). Those bodies carry this
+		// group_id too, so the sent list showing a subject to the whole area does
+		// not mean anyone may open it. Read it if you manage the group, or if it
+		// was addressed to you.
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			$mine = \Hubzero\Message\Recipient::all()
+				->whereEquals('mid', (int) $xmessage->get('id'))
+				->whereEquals('uid', (int) User::get('id'))
+				->total();
+
+			if (!$mine)
+			{
+				App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_NOT_FOUND'));
+			}
+		}
+
 		if (substr($xmessage->get('component'), 0, 4) == 'com_')
 		{
 			$xmessage->set('component', substr($xmessage->get('component'), 4));
@@ -320,6 +347,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _send()
 	{
+		// Only group managers/admins may send group messages
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
