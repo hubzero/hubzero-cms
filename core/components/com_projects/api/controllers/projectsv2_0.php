@@ -395,7 +395,7 @@ class Projectsv2_0 extends ApiController
 			'alias'           => Request::getString('alias', '', 'post'),
 			'about'           => Request::getString('about', '', 'post'),
 			'created'         => with(new Date('now'))->toSql(),
-			'owned_by_user'   => Request::getInt('owned_by_user', User::get('id'), 'post'),
+			'owned_by_user'   => User::get('id'),
 			'created_by_user' => User::get('id'), //Request::getInt('created_by', User::get('id'), 'post'),
 			'state'           => Request::getInt('state', Project::STATE_PUBLISHED, 'post'),
 			'type'            => 1,
@@ -659,7 +659,7 @@ class Projectsv2_0 extends ApiController
 				'action'      => 'created',
 				'scope'       => 'project',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . $row->get('title') . ' (' . $row->get('alias') . ')</a>'),
+				'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
 				'details'     => $fields
 			],
 			'recipients' => [
@@ -918,17 +918,32 @@ class Projectsv2_0 extends ApiController
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
+		// Content collaborators (edit_description) may only change the title and
+		// description; ownership, state, privacy and alias are manager/owner only.
+		$isManager = ($row->access('owner') || $row->access('manager'));
+
 		$fields = array(
 			'title'          => Request::getString('title', $row->get('title')),
-			'alias'          => Request::getString('alias', $row->get('alias')),
 			'about'          => Request::getString('about', $row->get('about')),
-			'owned_by_user'  => Request::getInt('owned_by_user', $row->get('owned_by_user')),
-			'state'          => Request::getInt('state', $row->get('state')),
 			'type'           => 1,
-			'provisioned'    => 0,
-			'private'        => Request::getInt('private', $row->get('private')),
-			'owned_by_group' => Request::getInt('owned_by_group', $row->get('owned_by_group'))
+			'provisioned'    => 0
 		);
+		if ($isManager)
+		{
+			$fields['alias']          = Request::getString('alias', $row->get('alias'));
+			$fields['owned_by_user']  = Request::getInt('owned_by_user', $row->get('owned_by_user'));
+			$fields['state']          = Request::getInt('state', $row->get('state'));
+			$fields['private']        = Request::getInt('private', $row->get('private'));
+			$fields['owned_by_group'] = Request::getInt('owned_by_group', $row->get('owned_by_group'));
+		}
+		else
+		{
+			$fields['alias']          = $row->get('alias');
+			$fields['owned_by_user']  = $row->get('owned_by_user');
+			$fields['state']          = $row->get('state');
+			$fields['private']        = $row->get('private');
+			$fields['owned_by_group'] = $row->get('owned_by_group');
+		}
 
 		$fields['access'] = $row->get('access');
 		if ($fields['private'])
@@ -1160,7 +1175,7 @@ class Projectsv2_0 extends ApiController
 				'action'      => 'updated',
 				'scope'       => 'project',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . $row->get('title') . ' (' . $row->get('alias') . ')</a>'),
+				'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => $url
@@ -1241,7 +1256,7 @@ class Projectsv2_0 extends ApiController
 					'action'      => 'deleted',
 					'scope'       => 'project',
 					'scope_id'    => $id,
-					'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . $data['title'] . ' (' . $data['alias'] . ')</a>'),
+					'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) $data['title'], ENT_QUOTES, 'UTF-8') . ' (' . $data['alias'] . ')</a>'),
 					'details'     => $data
 				],
 				'recipients' => [
