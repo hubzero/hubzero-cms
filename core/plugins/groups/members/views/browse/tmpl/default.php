@@ -73,6 +73,11 @@ $option = 'com_groups';
 						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
 					</a>
 				<?php endif; ?>
+				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') : ?>
+					<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=denyresponses'); ?>">
+						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'); ?>
+					</a>
+				<?php endif; ?>
 			</li>
 		</ul>
 	<?php //} ?>
@@ -353,7 +358,8 @@ $option = 'com_groups';
 										"SELECT r.id, r.name, r.permissions
 										FROM `#__xgroups_roles` as r
 										LEFT JOIN `#__xgroups_member_roles` as m ON m.roleid=r.id
-										WHERE m.uidNumber=" . $db->quote($u->get('id')) . " AND r.gidNumber=" . $db->quote($this->group->gidNumber)
+										WHERE m.uidNumber=" . $db->quote($u->get('id')) . " AND r.gidNumber=" . $db->quote($this->group->gidNumber) . "
+										ORDER BY r.ordering ASC, r.name ASC"
 									);
 									$roles = $db->loadAssocList();
 
@@ -577,10 +583,37 @@ $option = 'com_groups';
 		<div class="container">
 			<h4><?php echo Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES'); ?></h4>
 			<?php if (count($this->member_roles) > 0) { ?>
-				<ul class="roles">
+				<?php
+				// Only managers may put the roles in order
+				$canOrderRoles = ($this->authorized == 'manager' && $this->membership_control == 1 && count($this->member_roles) > 1);
+				if ($canOrderRoles)
+				{
+					Html::behavior('framework', true);
+				}
+				?>
+				<?php if ($canOrderRoles) : ?>
+					<form class="roles-order" action="<?php echo Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=reorderroles&no_html=1'); ?>" method="post" data-error="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR')); ?>">
+						<?php echo Html::input('token'); ?>
+					</form>
+					<p class="roles-order-hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_HINT'); ?></p>
+					<form class="roles-sort" action="<?php echo Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members'); ?>" method="post">
+						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->cn); ?>" />
+						<input type="hidden" name="active" value="members" />
+						<input type="hidden" name="option" value="<?php echo $option; ?>" />
+						<input type="hidden" name="action" value="sortroles" />
+						<?php echo Html::input('token'); ?>
+						<button type="submit" class="btn sort-roles" data-confirm="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_CONFIRM')); ?>">
+							<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT'); ?>
+						</button>
+					</form>
+				<?php endif; ?>
+				<ul class="roles<?php echo $canOrderRoles ? ' sortable' : ''; ?>">
 					<?php foreach ($this->member_roles as $role) { ?>
 						<?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
-						<li>
+						<li id="roles_<?php echo (int) $role['id']; ?>">
+							<?php if ($canOrderRoles) : ?>
+								<span class="role-mover" title="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_DRAG')); ?>" aria-hidden="true"></span>
+							<?php endif; ?>
 							<?php if ($this->authorized == 'manager' && $this->membership_control == 1) : ?>
 								<a class="remove-role" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=removerole&role='.$role['id']); ?>" title="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>">
 									<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE'); ?>
