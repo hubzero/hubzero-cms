@@ -63,6 +63,10 @@ class Prerequisitev1_0 extends base
 	 */
 	public function newTask()
 	{
+		// The outline builder does not send a course id; take it from the section
+		$this->_setCourseFromSection(Request::getInt('section_id', 0));
+		$this->authorizeOrFail();
+
 		$db  = App::get('db');
 		$tbl = new Prerequisites($db);
 		$tbl->set('item_scope', Request::getWord('item_scope', 'asset'));
@@ -105,6 +109,10 @@ class Prerequisitev1_0 extends base
 		$db  = App::get('db');
 		$tbl = new Prerequisites($db);
 		$tbl->load($id);
+
+		// Authorize against the course that owns this prerequisite
+		$this->_setCourseFromSection((int) $tbl->get('section_id'));
+		$this->authorizeOrFail();
 		$tbl->delete();
 
 		// Send an array so the response is encoded as valid JSON.
@@ -113,5 +121,18 @@ class Prerequisitev1_0 extends base
 		// through unquoted (invalid JSON) and silently routes to jQuery's
 		// error handler, leaving the deleted prerequisite visible in the list.
 		$this->send(['success' => true, 'message' => 'Item successfully deleted']);
+	}
+
+	/**
+	 * Point the authorization check at the course that owns a section
+	 *
+	 * @param   integer  $sectionId
+	 * @return  void
+	 */
+	protected function _setCourseFromSection($sectionId)
+	{
+		$db = App::get('db');
+		$db->setQuery("SELECT o.course_id FROM `#__courses_offering_sections` AS s JOIN `#__courses_offerings` AS o ON o.id = s.offering_id WHERE s.id = " . (int) $sectionId);
+		Request::setVar('course_id', (int) $db->loadResult());
 	}
 }
