@@ -651,6 +651,12 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Get instance
 		$hzal = \Hubzero\Auth\Link::find_by_id($hzal_id);
 
+		// Only the owner may unlink their own authentication link
+		if ($hzal && $hzal->user_id != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_UNLINK_FAILED'));
+		}
+
 		if ($hzal)
 		{
 			// Delete the auth_link
