@@ -287,7 +287,7 @@ $this->css()
 										<span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
 									</span>
 									<?php if ($this->acl->check('delete', 'tickets')) { ?>
-										<a class="delete" href="<?php echo Route::url($row->link('delete')); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+										<a class="delete" href="<?php echo Route::url($row->link('delete') . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 											<?php echo Lang::txt('JACTION_DELETE'); ?>
 										</a>
 									<?php } ?>
