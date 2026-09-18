@@ -382,7 +382,13 @@ class plgMembersUsage extends \Hubzero\Plugin\Plugin
 	{
 		$database = App::get('db');
 
-		$sql = "SELECT " . $user_type . " FROM `#__author_stats` WHERE authorid = " . $database->quote($authorid) . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
+		// Column identifier, not a value - constrain to the known stat columns.
+		if (!in_array($user_type, array('tool_users', 'andmore_users', 'total_users'), true))
+		{
+			$user_type = 'total_users';
+		}
+
+		$sql = "SELECT `" . $user_type . "` FROM `#__author_stats` WHERE authorid = " . $database->quote($authorid) . " AND period = " . $database->quote($period) . " ORDER BY datetime DESC LIMIT 1";
 
 		$database->setQuery($sql);
 		return $database->loadResult();
