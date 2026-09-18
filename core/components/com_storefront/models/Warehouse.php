@@ -612,13 +612,15 @@ class Warehouse extends \Hubzero\Base\Obj
 				$filters['sort'] = 'pActive';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
-			$whiteListSql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
+			$whiteListSql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
-				$whiteListSql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$dir = (strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC';
+				$sql .= ' ' . $dir;
+				$whiteListSql .= ' ' . $dir;
 			}
 		}
 
@@ -943,11 +945,12 @@ class Warehouse extends \Hubzero\Base\Obj
 
 		if (isset($filters['sort']))
 		{
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$sql .= ' ' . ((strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC');
 			}
 		}
 		else {
@@ -1003,11 +1006,12 @@ class Warehouse extends \Hubzero\Base\Obj
 				$filters['sort'] = 'oActive';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$sql .= ' ' . ((strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC');
 			}
 		}
 		else
@@ -1123,7 +1127,8 @@ class Warehouse extends \Hubzero\Base\Obj
 		{
 			foreach ($skus as $sId)
 			{
-				$sqlIn .= ', ' . $sId;
+				// SKU ids are integers; cast to prevent SQL injection through the IN() list.
+				$sqlIn .= ', ' . (int) $sId;
 			}
 		}
 		$sqlIn .= ')';
@@ -1166,11 +1171,12 @@ class Warehouse extends \Hubzero\Base\Obj
 				$filters['sort'] = 'sSku';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$sql .= ' ' . ((strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC');
 			}
 
 			$sql .= ", `sId`";
@@ -1319,11 +1325,12 @@ class Warehouse extends \Hubzero\Base\Obj
 				$filters['sort'] = 'sSku';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$sql .= ' ' . ((strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC');
 			}
 
 			$sql .= ", `sId`";
@@ -1705,11 +1712,12 @@ class Warehouse extends \Hubzero\Base\Obj
 				$filters['sort'] = 'cActive';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				// Constrain the direction to an allowlist (identifier context).
+				$sql .= ' ' . ((strtoupper($filters['sort_Dir']) === 'DESC') ? 'DESC' : 'ASC');
 			}
 		}
 		else {
