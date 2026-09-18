@@ -239,6 +239,18 @@ class Manage extends AdminController
 		// Check for request forgeries.
 		Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
 
+		if (
+			!User::authorise('core.edit.state', $this->_option)
+			// core.edit.state, not core.edit: the button is rendered on
+			// core.edit.state (views/*/tmpl/default.php) and the shipped #__assets
+			// row denies core.edit.state to group 7 while leaving core.edit to be
+			// inherited from root -- so a core.edit test admitted exactly the
+			// administrators the ACL and the page both refuse.
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Initialise variables.
 		$ids    = Request::getArray('cid', array());
 		$values = array('publish' => 1, 'unpublish' => 0);
@@ -348,6 +360,14 @@ class Manage extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$ids = Request::getArray('cid', array());
 		\Hubzero\Utility\Arr::toInteger($ids, array());
