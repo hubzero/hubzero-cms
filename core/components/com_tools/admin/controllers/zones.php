@@ -548,6 +548,15 @@ class Zones extends AdminController
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
+		// Restrict to image types, as the ajax upload path does
+		$allowedExtensions = array('png', 'jpeg', 'jpg', 'gif');
+		if (!in_array(strtolower(Filesystem::extension($file['name'])), $allowedExtensions))
+		{
+			$this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
+			$this->pictureTask('', $id);
+			return;
+		}
+
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
 		{

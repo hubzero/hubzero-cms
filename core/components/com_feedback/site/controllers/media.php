@@ -54,6 +54,13 @@ class Media extends SiteController
 			return $this->displayTask('', $id);
 		}
 
+		// Only act on the current user's own quote space
+		if (User::get('id') != $id)
+		{
+			$this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
+			return $this->displayTask('', User::get('id'));
+		}
+
 		// Incoming file
 		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
@@ -111,7 +118,7 @@ class Media extends SiteController
 		else
 		{
 			// Do we have an old file we're replacing?
-			$curfile = Request::getString('currentfile', '');
+			$curfile = basename(Request::getString('currentfile', ''));
 
 			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
