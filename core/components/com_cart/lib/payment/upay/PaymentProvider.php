@@ -94,7 +94,7 @@ class PaymentProvider
 		$this->postBack = $postBack;
 
 		// Check if the post back is kosher (really comes from uPay).
-		if ($postBack['posting_key'] != $this->options->postingKey)
+		if (!hash_equals((string) $this->options->postingKey, (string) $postBack['posting_key']))
 		{
 			return false;
 		}
