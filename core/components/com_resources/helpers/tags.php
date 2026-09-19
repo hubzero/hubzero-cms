@@ -179,6 +179,16 @@ class Tags extends Cloud
 	{
 		$now  = \Date::toSql();
 
+		// These reach the query as bare column names, so restrict them to the
+		// known set once, here. Filtering them further down instead left the
+		// enclosing !empty() test looking at the unfiltered array: a request
+		// whose every value was invalid passed the test, then built the empty
+		// " AND (() OR ())" and turned the page into a SQL syntax error.
+		$filterby = array_values(array_intersect(
+			(array) $filterby,
+			array('level0', 'level1', 'level2', 'level3', 'level4')
+		));
+
 		if ($tag || $tag2)
 		{
 			$query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, ";
