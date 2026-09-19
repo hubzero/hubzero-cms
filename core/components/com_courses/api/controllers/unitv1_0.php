@@ -91,6 +91,14 @@ class Unitv1_0 extends base
 			App::abort(500, 'Failed to instantiate a unit object');
 		}
 
+		// Ensure the unit's offering belongs to the authorized course
+		$offeringId = $id ? $unit->get('offering_id') : Request::getInt('offering_id', 0);
+		$offering = \Components\Courses\Models\Offering::getInstance($offeringId);
+		if (!$offering->get('id') || $offering->get('course_id') != $this->course_id)
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		if ($section_id = Request::getInt('section_id', 0))
 		{
 			$unit->set('section_id', $section_id);
