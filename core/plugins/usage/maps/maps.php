@@ -158,6 +158,12 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
 			case 'markers':
 				$date = Request::getString('period', '2008-03-00');
+				// period is a date/time boundary interpolated into the query; constrain
+				// it to date characters so it cannot carry SQL.
+				if (!preg_match('/^[0-9:\- ]+$/', $date))
+				{
+					$date = '2008-03-00';
+				}
 				$local = Request::getString('local', '');
 
 				if ($local == 'us')
@@ -258,6 +264,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$lat  = Request::getString('lat', '35');
 		$long = Request::getString('long', '-90');
+		$lat  = is_numeric($lat) ? $lat : '35';
+		$long = is_numeric($long) ? $long : '-90';
 		$zoom = Request::getString('zoom', '');
 		if ($lat != '35' && $long != '-90')
 		{
