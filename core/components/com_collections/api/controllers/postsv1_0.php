@@ -18,6 +18,7 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
+use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
@@ -26,6 +27,28 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
  */
 class Postsv1_0 extends ApiController
 {
+	/**
+	 * May the authenticated caller manage the given collection's posts?
+	 *
+	 * @param   integer  $collectionId
+	 * @return  boolean
+	 */
+	protected function _canManageCollection($collectionId)
+	{
+		$collection = new Collection((int) $collectionId);
+		if (!$collection->get('id'))
+		{
+			return false;
+		}
+		$uid = App::get('authn')['user_id'];
+		if ($collection->get('object_type') == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($collection->get('object_id'));
+			return ($group && ($group->isMember($uid) || $group->isManager($uid)));
+		}
+		return ($collection->get('object_id') == $uid) || ($collection->get('created_by') == $uid);
+	}
+
 	/**
 	 * Execute a request
 	 *
@@ -265,6 +288,13 @@ class Postsv1_0 extends ApiController
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_COLLECTION'), 422);
 		}
+
+		// Must be able to manage the target collection; never trust created_by
+		if (!$this->_canManageCollection($fields['collection_id']))
+		{
+			throw new Exception(Lang::txt('Access denied'), 403);
+		}
+		$fields['created_by'] = App::get('authn')['user_id'];
 
 		$row = new Item();
 
@@ -521,6 +551,18 @@ class Postsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
 		}
 
+		// Must manage the post's current collection, and any collection it is moved to
+		if (!$this->_canManageCollection($row->get('collection_id')))
+		{
+			throw new Exception(Lang::txt('Access denied'), 403);
+		}
+		if (!empty($fields['collection_id']) && $fields['collection_id'] != $row->get('collection_id')
+			&& !$this->_canManageCollection($fields['collection_id']))
+		{
+			throw new Exception(Lang::txt('Access denied'), 403);
+		}
+		unset($fields['created_by']);
+
 		if (!$row->bind($fields))
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_BINDING_DATA'), 422);
@@ -614,6 +656,11 @@ class Postsv1_0 extends ApiController
 			if (!$row->exists())
 			{
 				throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
+			}
+
+			if (!$this->_canManageCollection($row->get('collection_id')))
+			{
+				throw new Exception(Lang::txt('Access denied'), 403);
 			}
 
 			if (!$row->delete())

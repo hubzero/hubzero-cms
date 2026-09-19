@@ -372,6 +372,19 @@ class Item extends Base
 		else
 		{
 			$tbl = new Tables\Asset($this->_db);
+
+			// Scope the removal to THIS item. Callers hand this an id straight
+			// from the request (posts.php and the member/group collection
+			// plugins all pass ?remove=<id>), and without the check the table
+			// loads and deletes whichever asset that id names, on any item.
+			$tbl->load((int) $asset);
+
+			if (!$tbl->id || (int) $tbl->item_id !== (int) $this->get('id'))
+			{
+				$this->setError(Lang::txt('Failed to remove asset.'));
+				return false;
+			}
+
 			if (!$tbl->remove($asset))
 			{
 				$this->setError(Lang::txt('Failed to remove asset.'));
