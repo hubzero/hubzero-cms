@@ -140,6 +140,17 @@ class Screenshots extends SiteController
 			return $this->displayTask($pid, $version);
 		}
 
+		// Only a member of the tool's dev team may edit a screenshot.
+		// deleteTask carries the same check; _authorize() returns without
+		// denying anything for a guest and execute() adds no gate, so without
+		// this the task is reachable unauthenticated for any pid.
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		if (!$this->_checkAccess($this->_toolid))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+
 		// Incoming child ID
 		$this->view->file = Request::getString('filename', '');
 		if (!$this->view->file)
@@ -207,6 +218,17 @@ class Screenshots extends SiteController
 			return $this->displayTask($pid, $version);
 		}
 
+		// Only a member of the tool's dev team may save a screenshot.
+		// deleteTask carries the same check; _authorize() returns without
+		// denying anything for a guest and execute() adds no gate, so without
+		// this the task is reachable unauthenticated for any pid.
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		if (!$this->_checkAccess($this->_toolid))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+
 		// Incoming
 		$file = Request::getString('filename', '');
 		$title = preg_replace('/\s+/', ' ', Request::getString('title', ''));
@@ -251,12 +273,20 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming child ID
-		$file = Request::getString('filename', '');
+		$file = basename(str_replace('\\', '/', (string) Request::getString('filename', '')));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
 			$this->displayTask($pid, $version);
 			return;
+		}
+
+		// Only a member of the tool's dev team may delete a screenshot
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		if (!$this->_checkAccess($this->_toolid))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
 		}
 
 		// Load resource info
@@ -330,6 +360,17 @@ class Screenshots extends SiteController
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 			return $this->displayTask($pid, $version);
+		}
+
+		// Only a member of the tool's dev team may upload a screenshot.
+		// deleteTask carries the same check; _authorize() returns without
+		// denying anything for a guest and execute() adds no gate, so without
+		// this the task is reachable unauthenticated for any pid.
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		$this->_toolid = $obj->getToolIdFromResource($pid);
+		if (!$this->_checkAccess($this->_toolid))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
 		}
 
 		$version = Request::getString('version', 'dev');
