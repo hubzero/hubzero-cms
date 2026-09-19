@@ -150,7 +150,7 @@ class Images extends AdminController
 		}
 
 		// Do we have an old file we're replacing?
-		if (($curfile = Request::getString('currentfile', '')))
+		if (($curfile = basename(Request::getString('currentfile', ''))))
 		{
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
@@ -284,7 +284,7 @@ class Images extends AdminController
 			}
 
 			// Do we have an old file we're replacing?
-			if (($curfile = Request::getString('currentfile', '')))
+			if (($curfile = basename(Request::getString('currentfile', ''))))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
