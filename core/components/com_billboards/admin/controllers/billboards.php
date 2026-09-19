@@ -153,6 +153,20 @@ class BillBoards extends AdminController
 		// If so, proceed with saving the image
 		if (isset($billboard_image['name']) && $billboard_image['name'])
 		{
+			// Never trust the client-supplied filename: strip any path and require a
+			// real image extension so it cannot traverse the upload dir or drop a
+			// .php/.phtml file. Note svg stays in the list because billboards use
+			// it as a vector image, and an SVG can carry script that runs in this
+			// origin when viewed directly -- acceptable only because uploading one
+			// already requires an administrator.
+			$billboard_image['name'] = basename(str_replace('\\', '/', (string) $billboard_image['name']));
+			$imgExt = strtolower(pathinfo($billboard_image['name'], PATHINFO_EXTENSION));
+			if (!in_array($imgExt, array('jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'), true))
+			{
+				Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
+				return $this->editTask($billboard);
+			}
+
 			// Build the upload path if it doesn't exist
 			$image_location  = $this->config->get('image_location', 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards');
 			$uploadDirectory = PATH_ROOT . DS . trim($image_location, DS) . DS;
