@@ -249,7 +249,7 @@ class Query extends Relational
 		$db = App::get('db');
 		$user = User::getInstance();
 
-		$op = ' ' . strtoupper($condition->operator) . ' ';
+		$op = (strtoupper(trim((string) $condition->operator)) === 'OR') ? ' OR ' : ' AND ';
 
 		$having = '';
 		$e = array();
@@ -259,13 +259,15 @@ class Query extends Relational
 		for ($i = 0; $i < count($condition->expressions); $i++)
 		{
 			$expr = $condition->expressions[$i];
+			$selfBuilt = false; // true only for value lists this method builds itself
 			if (strtolower($expr->fldval) == 'tag')
 			{
-				$tags[] = $expr->val;
+				// These are imploded straight into IN ('...') below
+				$tags[] = $db->escape((string) $expr->val);
 
 				if ($expr->opval == '!=')
 				{
-					$nottags[] = $expr->val;
+					$nottags[] = $db->escape((string) $expr->val);
 				}
 			}
 			/*if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
@@ -290,22 +292,50 @@ class Query extends Relational
 			}
 
 			$expr = $condition->expressions[$i];
+			$selfBuilt = false; // true only for value lists this method builds itself
+
+			// Field names are identifiers; quoteName() does not neutralise backticks
+			$expr->fldval = preg_replace('/[^A-Za-z0-9_]/', '', (string) $expr->fldval);
 			switch ($expr->opval)
 			{
 				case 'lt':
 					$expr->opval = '<';
 					break;
 				case 'lt=':
+				case '=lt':
+					// '=lt' is the spelling models/conditions.php emitted for
+					// "less than or equal to", so saved rows carry it; it never
+					// matched here and the term was silently discarded.
 					$expr->opval = '<=';
 					break;
 				case 'gt':
 					$expr->opval = '>';
 					break;
 				case 'gt=':
+				case '=gt':
 					$expr->opval = '>=';
 					break;
 				default:
 				break;
+			}
+
+			// Only allow known operator templates; drop anything else so a
+			// crafted condition cannot inject SQL through the operator.
+			$allowedOps = array(
+				'=', '!=', '<', '>', '<=', '>=',
+				'LIKE \'%$1%\'', 'LIKE \'$1%\'', 'LIKE \'%$1\'',
+				'NOT LIKE \'%$1%\'', 'NOT LIKE \'$1%\'', 'NOT LIKE \'%$1\'',
+			);
+			if (!in_array($expr->opval, $allowedOps, true))
+			{
+				// Fail closed. Dropping the term was the wrong move: these
+				// conditions are also how a non-agent is scoped to their own
+				// tickets, and removing a term from an AND condition REMOVES a
+				// restriction. An always-false term makes an AND condition
+				// match nothing and contributes nothing to an OR condition,
+				// so an unrecognised operator can only ever narrow.
+				$e[] = '1 = 0';
+				continue;
 			}
 
 			if ($expr->val == 'trivial')
@@ -368,9 +398,10 @@ class Query extends Relational
 						$g = array();
 						foreach ($xgroups as $xgroup)
 						{
-							$g[] = $xgroup->gidNumber;
+							$g[] = (int) $xgroup->gidNumber;
 						}
 						$expr->val = "'" . implode("','", $g) . "'";
+						$selfBuilt = true;
 					}
 					else
 					{
@@ -387,7 +418,7 @@ class Query extends Relational
 				}
 				else
 				{
-					$e[] = $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval);
+					$e[] = $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', ($selfBuilt ? $expr->val : $db->escape($expr->val)), $expr->opval);
 				}
 			}
 			else
