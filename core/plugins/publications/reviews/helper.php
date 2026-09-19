@@ -93,7 +93,27 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 
 		$database = App::get('db');
 
-		$row = \Hubzero\Item\Comment::blank()->set($comment);
+		$__cid = isset($comment['id']) ? (int) $comment['id'] : 0;
+		$row = \Hubzero\Item\Comment::oneOrNew($__cid);
+
+		// A reply may only be edited by its author
+		if (!$row->isNew() && $row->get('created_by') != User::get('id'))
+		{
+			$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
+		$__isNew = $row->isNew();
+		$__owner = $row->get('created_by');
+		if (!$__isNew)
+		{
+			// An edit may change the text, not where the reply lives
+			unset($comment['item_id'], $comment['item_type'], $comment['parent'], $comment['state']);
+		}
+		$row->set($comment);
+		// Never take the author from the form: a new reply is the caller's, an
+		// edited one keeps its author
+		$row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
 		$message = $row->id ? Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDITS_SAVED') : Lang::txt('PLG_PUBLICATIONS_REVIEWS_COMMENT_POSTED');
 
@@ -325,8 +345,21 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
 			return;
 		}
 
+		// A review may only be edited by its author
+		$reviewId = Request::getInt('reviewid', 0);
+		if ($reviewId)
+		{
+			$existing = new \Components\Publications\Tables\Review($database);
+			$existing->load($reviewId);
+			if ($existing->id && $existing->created_by != User::get('id'))
+			{
+				$this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'));
+				return;
+			}
+		}
+
 		// Perform some text cleaning, etc.
-		$row->id         = Request::getInt('reviewid', 0);
+		$row->id         = $reviewId;
 		$row->state      = 1;
 		$row->comment    = \Hubzero\Utility\Sanitize::stripAll($row->comment);
 		$row->anonymous  = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
