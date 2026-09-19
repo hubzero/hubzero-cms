@@ -684,6 +684,19 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event['created']    = Date::toSql();
 			$event['created_by'] = $this->user->get('id');
 		}
+		else
+		{
+			// Editing an existing event: it must belong to this group and be
+			// the creator's (or a manager's) to modify
+			$existing = new \Components\Events\Models\Event((int) $event['id']);
+			if (!$existing->get('id')
+			 || $existing->get('scope') != 'group'
+			 || $existing->get('scope_id') != $this->group->get('gidNumber')
+			 || ($existing->get('created_by') != $this->user->get('id') && $this->authorized != 'manager'))
+			{
+				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			}
+		}
 
 		// Handle all-day events, iCal is literal
 		// Since Google adopts the behavior of adding 24 hours to whatever the end date is, I've done the same here.
@@ -845,6 +858,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//load event data
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
+
+		// As _registrantEvent(): the id names any row of #__events, so without
+		// this a manager of any group could soft-delete another group's event,
+		// or a site-wide com_events one.
+		if (!$eventsModelEvent->get('id')
+		 || $eventsModelEvent->get('scope') != 'group'
+		 || $eventsModelEvent->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
 
 		//for rediction purposes
 		$publish_up = strtotime($eventsModelEvent->get('publish_up'));
@@ -1429,6 +1452,36 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Load an event of this group and check who may see its registrant list
+	 *
+	 * The event page offers the registrant list to the event's creator as well as
+	 * to a group manager, so admit both here. The list is personal data, so the
+	 * event also has to belong to the group being viewed.
+	 *
+	 * @param   integer  $eventId  Event to load
+	 * @return  object
+	 */
+	private function _registrantEvent($eventId)
+	{
+		$event = new \Components\Events\Tables\Event($this->database);
+		$event->load((int) $eventId);
+
+		if (!$event->id
+		 || $event->scope != 'group'
+		 || $event->scope_id != $this->group->get('gidNumber'))
+		{
+			App::abort(404, Lang::txt('Event not found.'));
+		}
+
+		if ($this->user->get('id') != $event->created_by && $this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		return $event;
+	}
+
+	/**
 	 * View Event Registrants
 	 *
 	 * @return  string
@@ -1441,9 +1494,8 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//get request varse
 		$eventId = Request::getInt('event_id', 0, 'get');
 
-		//load event data
-		$view->event = new \Components\Events\Tables\Event($this->database);
-		$view->event->load($eventId);
+		//load event data, and check who is asking
+		$view->event = $this->_registrantEvent($eventId);
 
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
@@ -1476,6 +1528,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		//get request varse
 		$eventId = Request::getInt('event_id', 0, 'get');
+
+		//check who is asking, on the same rule as the registrant list
+		$this->_registrantEvent($eventId);
 
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
@@ -1635,7 +1690,21 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view = $this->view('edit', 'calendars');
 
 		// get the calendar
+		// As saveCalendar/deleteCalendar: manager-only, and the calendar has to
+		// belong to this group -- getInstance() resolves any row.
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		$view->calendar = Components\Events\Models\Calendar::getInstance($calendarId);
+		if (!$view->calendar->get('id')
+		 || (string) $view->calendar->get('scope') !== 'group'
+		 || (int) $view->calendar->get('scope_id') !== (int) $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 
 		//push some vars to the view
 		$view->month      = $this->month;
@@ -1664,11 +1733,31 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		Request::checkToken();
 
+		// Manager-only, as deleteCalendar is: the view offers "Manage Calendars"
+		// on $this->authorized == 'manager'.
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		//get request vars
 		$calendarInput = Request::getArray('calendar', array());
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarInput['id']);
+		// An EXISTING calendar must already belong to THIS group.
+		// Calendar::getInstance() resolves any row on the hub and the scope and
+		// scope_id are overwritten with this group's below, so without this a
+		// caller could name another group's calendar and have it moved into
+		// theirs. A new one has no row yet -- it gets this group's scope below --
+		// creation stays open to managers.
+		if ($calendar->get('id')
+		 && ((string) $calendar->get('scope') !== 'group'
+		  || (int) $calendar->get('scope_id') !== (int) $this->group->get('gidNumber')))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 
 		//add scope and scope id to calendar array
 		$calendarInput['scope']    = 'group';
@@ -1730,6 +1819,12 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleteCalendar()
 	{
+		// Manager-only action
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		//get the passed in event id
 		$calendarId   = Request::getInt('calendar_id', 0);
 		$events       = Request::getWord('events', 'delete');
@@ -1737,6 +1832,16 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
+		// ...and it must already belong to THIS group. Calendar::getInstance()
+		// resolves any row on the hub, so without this a manager of any group --
+		// which anyone becomes by creating one -- could name another group's
+		// calendar by id and delete it.
+		if (!$calendar->get('id')
+		 || (string) $calendar->get('scope') !== 'group'
+		 || (int) $calendar->get('scope_id') !== (int) $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
 
 		//delete the calendar
 		$calendar->delete($deleteEvents);
@@ -1756,11 +1861,25 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	 */
 	private function refreshCalendar()
 	{
+		// As saveCalendar/deleteCalendar: manager-only, and the calendar has to
+		// belong to this group -- getInstance() resolves any row.
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		//get the passed in event id
 		$calendarId = Request::getInt('calendar_id', 0);
 
 		// get the calendar
 		$calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
+
+		if (!$calendar->get('id')
+		 || (string) $calendar->get('scope') !== 'group'
+		 || (int) $calendar->get('scope_id') !== (int) $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
 
 		// refresh Calendar (force refresh even if we dont need to yet)
 		if (!$calendar->refresh(true))
