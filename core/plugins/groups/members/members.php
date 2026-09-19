@@ -1449,10 +1449,26 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function editRole($role = null)
 	{
+		// As saveRole(): managing roles is a manager/admin action. This form had
+		// no check at all, so anyone reaching the members area could open it.
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		if (!$role)
 		{
 			// load role object
 			$role = Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
+
+			// Role::oneOrNew() resolves any row of #__xgroups_roles, so a manager
+			// of one group could read another group's role name and permissions
+			// by passing its id. Id 0 is the "add" case and yields a blank row.
+			if ($role->get('id')
+			 && $role->get('gidNumber') != $this->group->get('gidNumber'))
+			{
+				return false;
+			}
 		}
 
 		// pass vars to view
@@ -1479,10 +1495,32 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveRole()
 	{
+		// Managing roles is a manager/admin action
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		// get request vars
 		$fields = Request::getArray('role', array());
+		$fields['id']          = isset($fields['id']) ? (int) $fields['id'] : 0;
 		$fields['gidNumber']   = $this->group->get('gidNumber');
-		$fields['permissions'] = json_encode($fields['permissions']);
+		$fields['permissions'] = json_encode(isset($fields['permissions']) ? $fields['permissions'] : array());
+
+		// An id in the posted form makes save() an UPDATE of that row, and
+		// gidNumber is overwritten just above -- so without this a manager of one
+		// group could rename another group's role and move it into their own,
+		// removing it from the group that owns it.
+		if ($fields['id'])
+		{
+			$existing = Components\Groups\Models\Role::oneOrNew($fields['id']);
+
+			if (!$existing->get('id')
+			 || $existing->get('gidNumber') != $this->group->get('gidNumber'))
+			{
+				return false;
+			}
+		}
 
 		// load role object
 		$role = Components\Groups\Models\Role::blank()->set($fields);
@@ -1535,6 +1573,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function removerole()
 	{
+		// Managing roles is a manager/admin action
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1548,6 +1592,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$role = Components\Groups\Models\Role::oneOrFail($role);
+
+		// As saveRole(): oneOrFail() resolves any row of #__xgroups_roles, so
+		// without this a manager of one group could delete another group's role
+		// by passing its id.
+		if ($role->get('gidNumber') != $this->group->get('gidNumber'))
+		{
+			return false;
+		}
 
 		if (!$role->destroy())
 		{
@@ -1646,6 +1698,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function submitrole()
 	{
+		// Managing roles is a manager/admin action
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1660,6 +1718,21 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$this->setError('You must select a role.');
 			$this->assignrole();
 			return;
+		}
+
+		// As saveRole()/removerole(): #__xgroups_roles is global and the id comes
+		// straight off the request. Permissions::getGroupMemberRoles() joins on
+		// the ROLE's gidNumber, so granting a role belonging to another group
+		// hands the grantee that role's permissions *in the group that owns it* --
+		// a manager of any self-service group could take group.edit, group.pages
+		// or group.invite in any other group. assignrole() already lists only
+		// this group's roles, so this refuses nothing the form offers.
+		$existing = Components\Groups\Models\Role::oneOrNew($role);
+
+		if (!$existing->get('id')
+		 || $existing->get('gidNumber') != $this->group->get('gidNumber'))
+		{
+			return false;
 		}
 
 		$db = App::get('db');
@@ -1683,6 +1756,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleterole()
 	{
+		// Managing roles is a manager/admin action
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
 		if ($this->membership_control == 0)
 		{
 			return false;
@@ -1692,6 +1771,18 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$role = Request::getInt('role', 0);
 
 		if (!$uid || !$role)
+		{
+			return false;
+		}
+
+		// As submitrole(): the role id comes straight off the request, so without
+		// this a manager of one group could strip a role assignment in another
+		// and demote that group's delegates. The listing builds these links from
+		// a query already scoped to this group, so nothing offered is refused.
+		$existing = Components\Groups\Models\Role::oneOrNew($role);
+
+		if (!$existing->get('id')
+		 || $existing->get('gidNumber') != $this->group->get('gidNumber'))
 		{
 			return false;
 		}
