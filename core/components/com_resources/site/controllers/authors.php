@@ -38,6 +38,26 @@ class Authors extends SiteController
 	}
 
 	/**
+	 * Confirm the current user may edit the given resource
+	 *
+	 * @param   integer  $id  Resource ID
+	 * @return  Entry
+	 */
+	protected function _authorizeResource($id)
+	{
+		if (!$id)
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+		$resource = Entry::oneOrFail((int) $id);
+		if (!$resource->access('edit') && !$resource->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+		return $resource;
+	}
+
+	/**
 	 * Save one or more authors
 	 *
 	 * @param   integer  $show        Display author list when done?
@@ -61,6 +81,9 @@ class Authors extends SiteController
 			}
 			return;
 		}
+
+		// Only a resource editor may change its authors
+		$this->_authorizeResource($id);
 
 		// Incoming authors
 		$authorsNewstr = trim(Request::getString('new_authors', '', 'post'));
@@ -204,7 +227,7 @@ class Authors extends SiteController
 							'action'      => 'updated',
 							'scope'       => 'resource',
 							'scope_id'    => $resource->get('id'),
-							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
+							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 							'details'     => array(
 								'title' => $resource->get('title'),
 								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
@@ -245,6 +268,9 @@ class Authors extends SiteController
 			return $this->displayTask();
 		}
 
+		// Only a resource editor may change its authors
+		$this->_authorizeResource($pid);
+
 		// Ensure we have the contributor's ID ($id)
 		if ($id)
 		{
@@ -266,7 +292,7 @@ class Authors extends SiteController
 							'action'      => 'updated',
 							'scope'       => 'resource',
 							'scope_id'    => $resource->get('id'),
-							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . $resource->get('title') . '</a>'),
+							'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 							'details'     => array(
 								'title' => $resource->get('title'),
 								'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
@@ -303,6 +329,9 @@ class Authors extends SiteController
 			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
 			return $this->displayTask();
 		}
+
+		// Only a resource editor may change its authors
+		$this->_authorizeResource($pid);
 
 		// Ensure we have the contributor's ID ($id)
 		if ($ids)
@@ -354,6 +383,9 @@ class Authors extends SiteController
 			$this->setError(Lang::txt('COM_CONTRIBUTE_NO_ID'));
 			return $this->displayTask($pid);
 		}
+
+		// Only a resource editor may reorder its authors
+		$this->_authorizeResource($pid);
 
 		switch ($move)
 		{

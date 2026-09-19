@@ -682,19 +682,81 @@ class Create extends SiteController
 	 *
 	 * @return  void
 	 */
+	/**
+	 * Confirm the current user may edit the given resource (author, creator,
+	 * last editor, or a site administrator).
+	 *
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean
+	 */
+	protected function _authorizeResource($id)
+	{
+		$id = (int) $id;
+		if (!$id)
+		{
+			return false;
+		}
+
+		$uid = (int) User::get('id');
+
+		$this->database->setQuery(
+			'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . $uid . ' AND subtable = \'resources\' AND subid = ' . $id . '
+			UNION
+			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . $uid . ' OR modified_by = ' . $uid . ')
+			UNION
+			SELECT 1 FROM `#__users` u
+			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
+			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
+			WHERE u.id = ' . $uid
+		);
+
+		return (bool) $this->database->loadResult();
+	}
+
 	public function step_compose_process()
 	{
 		// Initiate extended database class
 		$fields = Request::getArray('fields', array(), 'post');
 
-		$row = Entry::oneOrNew($fields['id'])->set($fields);
+		$rid = isset($fields['id']) ? (int) $fields['id'] : 0;
 
-		$isNew = $row->get('id') < 1 || substr($row->get('id'), 0, 4) == '9999';
+		// A brand-new resource carries the '9999' . rand() temp id handed out by
+		// step_compose(); it is not a row yet (the save below resets it to 0 and
+		// inserts), so there is nothing to authorize. Only gate real ids.
+		// Match the generator's shape, not a bare '9999' prefix: create.php
+		// issues these as '9999' . rand(1000, 10000), so they are "9999"
+		// followed by four or five digits. A prefix test also matched real
+		// resource 9999 and every id in 99990-99999, 999900-999999 and beyond,
+		// and since this flag SKIPS the ownership check, those rows were
+		// readable into the compose form and copyable without authorization.
+		$isTempId = ($rid < 1 || preg_match('/^9999[0-9]{4,5}$/', (string) $rid));
+
+		// Only the owner/author (or an admin) may edit an existing resource
+		if ($rid && !$isTempId && !$this->_authorizeResource($rid))
+		{
+			App::abort(403, Lang::txt('Forbidden'));
+			return;
+		}
+
+		// Never let ownership/privileged columns be mass-assigned from the form
+		unset($fields['created_by'], $fields['created'], $fields['path'], $fields['ranking'], $fields['standalone']);
+
+		$row = Entry::oneOrNew($rid)->set($fields);
+
+		// Same shape test as $isTempId above -- a bare '9999' prefix also matched
+		// real resources 9999, 99990-99999, 999900-... and would have inserted a
+		// duplicate of one instead of updating it, resetting its state to draft
+		// and its owner to the editor.
+		$isNew = $row->get('id') < 1 || preg_match('/^9999[0-9]{4,5}$/', (string) $row->get('id'));
 
 		// Set status to "composing"
 		if ($isNew)
 		{
 			$row->set('published', Entry::STATE_DRAFT);
+			$row->set('created_by', User::get('id'));
+			// The compose form's standalone=1 is dropped above, so set it here:
+			// a contributed resource is a top-level (browsable) record.
+			$row->set('standalone', 1);
 		}
 
 		$row->set('published', (int)$row->get('published', 2));
@@ -868,7 +930,7 @@ class Create extends SiteController
 				'action'      => ($isNew ? 'updated' : 'created'),
 				'scope'       => 'resource',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>'),
+				'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id'))
@@ -906,6 +968,13 @@ class Create extends SiteController
 
 		// Load the resource
 		$row = Entry::oneOrFail($id);
+
+		// Only the owner/author (or an admin) may change ownership/access
+		if (!$this->_authorizeResource($id))
+		{
+			App::abort(403, Lang::txt('Forbidden'));
+			return;
+		}
 
 		$prev = $row->get('group_owner');
 
@@ -1282,6 +1351,12 @@ class Create extends SiteController
 			App::abort(404, Lang::txt('COM_CONTRIBUTE_NO_ID'));
 		}
 
+		// Only the owner/author (or an admin) may submit this resource
+		if (!$this->_authorizeResource($id))
+		{
+			App::abort(403, Lang::txt('Forbidden'));
+		}
+
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
 
@@ -1442,7 +1517,7 @@ class Create extends SiteController
 					'action'      => $activity,
 					'scope'       => 'resource',
 					'scope_id'    => $resource->get('title'),
-					'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
+					'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 					'details'     => array(
 						'title' => $resource->get('title'),
 						'url'   => Route::url($resource->link())
@@ -1533,6 +1608,13 @@ class Create extends SiteController
 			return;
 		}
 
+		// Only the owner/author (or an admin) may delete this resource
+		if (!$this->_authorizeResource($id))
+		{
+			App::abort(403, Lang::txt('Forbidden'));
+			return;
+		}
+
 		// Load the resource
 		$resource = Entry::oneOrNew($id);
 
@@ -1618,7 +1700,7 @@ class Create extends SiteController
 						'action'      => 'deleted',
 						'scope'       => 'resource',
 						'scope_id'    => $resource->get('id'),
-						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . $resource->get('title') . '</a>'),
+						'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 						'details'     => array(
 							'title' => $resource->get('title'),
 							'url'   => Route::url($resource->link())
@@ -1650,6 +1732,13 @@ class Create extends SiteController
 		{
 			// Load the resource
 			$resource = Entry::oneOrFail($id);
+
+			// Only the owner/author (or an admin) may retract this resource
+			if (!$this->_authorizeResource($id))
+			{
+				App::abort(403, Lang::txt('Forbidden'));
+				return;
+			}
 
 			// Check if it's in pending status
 			if ($resource->get('published') == Entry::STATE_PENDING)

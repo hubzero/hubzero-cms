@@ -57,12 +57,34 @@ class Authors extends SiteController
 	 * @param   array    $authorsNew  Authors to add
 	 * @return  void
 	 */
+	/**
+	 * Confirm the current user may edit the given resource
+	 *
+	 * @param   integer  $id  Resource ID
+	 * @return  Entry
+	 */
+	protected function _authorizeResource($id)
+	{
+		if (!$id)
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+		$resource = Entry::oneOrFail((int) $id);
+		if (!$resource->access('edit') && !$resource->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+		return $resource;
+	}
+
 	public function saveTask($show = 1, $id = 0, $authorsNew = array())
 	{
 		// Incoming resource ID
+		$fromRequest = false;
 		if (!$id)
 		{
 			$id = Request::getInt('pid', 0);
+			$fromRequest = true;
 		}
 		if (!$id)
 		{
@@ -72,6 +94,14 @@ class Authors extends SiteController
 				$this->displayTask($id);
 			}
 			return;
+		}
+
+		// Only a resource editor may change its authors. An internal caller
+		// (tool registration passes the id explicitly, before the developer
+		// group has been written) has already established that right.
+		if ($fromRequest)
+		{
+			$this->_authorizeResource($id);
 		}
 
 		// Incoming authors
@@ -240,6 +270,9 @@ class Authors extends SiteController
 			return $this->displayTask();
 		}
 
+		// Only a resource editor may change its authors
+		$this->_authorizeResource($pid);
+
 		// Ensure we have the contributor's ID ($id)
 		if ($id)
 		{
@@ -272,6 +305,9 @@ class Authors extends SiteController
 			$this->setError(Lang::txt('COM_TOOLS_COM_CONTRIBUTE_NO_ID'));
 			return $this->displayTask();
 		}
+
+		// Only a resource editor may change its authors
+		$this->_authorizeResource($pid);
 
 		// Ensure we have the contributor's ID ($id)
 		if ($ids)
@@ -324,6 +360,9 @@ class Authors extends SiteController
 			return $this->displayTask($pid);
 		}
 
+		// Only a resource editor may reorder its authors
+		$this->_authorizeResource($pid);
+
 		switch ($move)
 		{
 			case 'up':
@@ -363,7 +402,7 @@ class Authors extends SiteController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
+			App::abort(400, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
 		}
 
 		$version = Request::getString('version', $version);
