@@ -566,7 +566,7 @@ class Media extends SiteController
 
 		$model = new Asset($id);
 
-		if ($model->exists())
+		if ($model->exists() && $this->userOwnsAsset($model))
 		{
 			$model->set('state', 2);
 			if (!$model->store())
@@ -580,12 +580,63 @@ class Media extends SiteController
 	}
 
 	/**
+	 * Is the current user allowed to modify this asset? Only the asset's
+	 * creator, the owner of the collection it belongs to, or a component
+	 * administrator may delete it.
+	 *
+	 * @param   object   $asset
+	 * @return  boolean
+	 */
+	protected function userOwnsAsset($asset)
+	{
+		if (User::isGuest())
+		{
+			return false;
+		}
+		if (User::authorise('core.admin', $this->_option))
+		{
+			return true;
+		}
+		if ($asset->get('created_by') == User::get('id'))
+		{
+			return true;
+		}
+		// An asset hangs off an ITEM; find the collection through the item's original post
+		$item = new Item((int) $asset->get('item_id'));
+		if ($item->exists() && $item->get('created_by') == User::get('id'))
+		{
+			return true;
+		}
+		$db = \App::get('db');
+		$db->setQuery("SELECT c.created_by, c.object_type, c.object_id FROM `#__collections_posts` AS p INNER JOIN `#__collections` AS c ON c.id = p.collection_id WHERE p.original = 1 AND p.item_id = " . (int) $asset->get('item_id'));
+		if ($c = $db->loadObject())
+		{
+			if ($c->created_by == User::get('id') || ($c->object_type == 'member' && $c->object_id == User::get('id')))
+			{
+				return true;
+			}
+			if ($c->object_type == 'group' && ($g = \Hubzero\User\Group::getInstance($c->object_id)) && $g->isManager(User::get('id')))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Display a form for uploading files
 	 *
 	 * @return  void
 	 */
 	public function ajaxDeleteTask()
 	{
+		// Must be logged in
+		if (User::isGuest())
+		{
+			echo json_encode(array('success' => false, 'error' => Lang::txt('Login required.')));
+			return;
+		}
+
 		// Incoming
 		$id = Request::getInt('asset', 0);
 
@@ -595,6 +646,11 @@ class Media extends SiteController
 
 			if ($model->exists())
 			{
+				if (!$this->userOwnsAsset($model))
+				{
+					echo json_encode(array('success' => false, 'error' => Lang::txt('Not authorized.')));
+					return;
+				}
 				$model->set('state', 2);
 				if (!$model->store())
 				{
