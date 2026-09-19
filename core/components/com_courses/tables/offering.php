@@ -262,6 +262,11 @@ class Offering extends Table
 			$orderby = "ci." . $sort . " " . $sortDir;
 		}
 
+		// Only the request-derived branch needs filtering, and it is already
+		// allowlisted above. The 'available' branch composes its own expression
+		// with =, parentheses and quoted literals -- running that through a
+		// character class strips all three and leaves "CASE WHEN ci.ordering  0
+		// THEN", which is a syntax error, i.e. a 500 on every course page.
 		$query .= " ORDER BY " . $orderby;
 
 		if (isset($filters['limit']) && $filters['limit'] != 0)

@@ -157,7 +157,7 @@ class Page extends Table
 
 		if (isset($filters['orderby']))
 		{
-			$sql .= " ORDER BY " . $filters['orderby'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['orderby']) ?: '1');
 		}
 
 		return $sql;

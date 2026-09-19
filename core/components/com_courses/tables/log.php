@@ -85,7 +85,7 @@ class Log extends Table
 		$query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " ORDER BY `timestamp` DESC";
 		if ($limit)
 		{
-			$query .= " LIMIT " . $limit;
+			$query .= " LIMIT " . (int) $limit;
 		}
 
 		$this->_db->setQuery($query);

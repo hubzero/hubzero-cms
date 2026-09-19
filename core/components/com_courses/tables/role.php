@@ -176,7 +176,7 @@ class Role extends Table
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 		if (isset($filters['sort']) && $filters['sort'])
 		{
@@ -184,7 +184,7 @@ class Role extends Table
 			{
 				$filters['sort_Dir'] = 'ASC';
 			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 		}
 
 		$this->_db->setQuery($query);

@@ -144,7 +144,7 @@ class Blog extends Table
 		$query .= " AND m.state != 2";
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
-			$query .= " ORDER BY " . $filters['order'];
+			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order']) ?: '1');
 		}
 		else
 		{

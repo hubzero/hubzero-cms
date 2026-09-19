@@ -185,7 +185,7 @@ class Activity extends Table
 		{
 			if (isset ($limit) && $limit!=0)
 			{
-				$query.= " LIMIT " . $limitstart . ", " . $limit;
+				$query.= " LIMIT " . (int) $limitstart . ", " . (int) $limit;
 			}
 		}
 

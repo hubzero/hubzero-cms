@@ -384,7 +384,7 @@ class Attachment extends Table
 		}
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
-			$query .= " ORDER BY " . $filters['order'];
+			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order']) ?: '1');
 		}
 		else
 		{
@@ -392,7 +392,7 @@ class Attachment extends Table
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0 && !$count)
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

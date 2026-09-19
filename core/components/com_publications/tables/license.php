@@ -150,7 +150,7 @@ class License extends Table
 		{
 			$filters['sort_Dir'] = 'DESC';
 		}
-		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+		$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
@@ -173,7 +173,7 @@ class License extends Table
 
 		$query  = "SELECT * FROM $this->_tbl ";
 		$query .= " WHERE active=1 ";
-		$query .= " ORDER BY " . $sortby;
+		$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1');
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

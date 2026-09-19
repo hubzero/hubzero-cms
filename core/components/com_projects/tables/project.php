@@ -525,7 +525,7 @@ class Project extends Table
 		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0)
 		{
 			$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
@@ -655,7 +655,7 @@ class Project extends Table
 		else if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] != 0)
 		{
 			$filters['start'] = isset($filters['start']) ? $filters['start'] : 0;
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

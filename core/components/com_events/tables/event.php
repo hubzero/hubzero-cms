@@ -274,7 +274,7 @@ class Event extends Table
 		{
 			if (isset($filters['start']))
 			{
-				$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+				$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 			}
 			else
 			{
@@ -361,7 +361,7 @@ class Event extends Table
 				}
 				$filters['start'] = intval($filters['start']);
 
-				$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+				$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 			}
 		}
 
@@ -479,7 +479,7 @@ class Event extends Table
 		// specify order?
 		if (isset($filters['orderby']))
 		{
-			$sql .= " ORDER BY " . $filters['orderby'];
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['orderby']) ?: '1');
 		}
 
 		// limit and start

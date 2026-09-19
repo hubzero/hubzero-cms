@@ -167,7 +167,7 @@ class Asset extends Table
 				{
 					$filters['sort_Dir'] = 'ASC';
 				}
-				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+				$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
 				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{

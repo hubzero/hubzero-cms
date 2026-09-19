@@ -227,7 +227,7 @@ class JobSeeker extends Table
 		}
 
 		// Paging
-		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
+		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . (int) $filters['start'] . ", " . (int) $filters['limit'] : "";
 
 		$this->_db->setQuery($query);
 		$seekers = $this->_db->loadObjectList();

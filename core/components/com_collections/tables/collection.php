@@ -47,7 +47,35 @@ class Collection extends Table
 
 		if (is_numeric($oid))
 		{
-			return parent::load($oid);
+			if (!parent::load($oid))
+			{
+				return false;
+			}
+
+			// Apply the scope the caller handed us. It used to be honoured for
+			// an alias and dropped for an id, so ?board=<alias> was confined to
+			// the group or member being viewed and ?board=<number> was not.
+			//
+			// Both tests are on a supplied value, not on null: Models\Collection
+			// defaults these to 0 and 'member' rather than null, so a caller
+			// that wants no scope at all -- every plain new Collection($id) --
+			// arrives here with object_id 0 and is left alone.
+			if ($object_id && (int) $this->object_id !== (int) $object_id)
+			{
+				$this->reset();
+				$this->id = 0;
+				return false;
+			}
+
+			if ($object_id && $object_type
+			 && strtolower(trim($this->object_type)) !== strtolower(trim($object_type)))
+			{
+				$this->reset();
+				$this->id = 0;
+				return false;
+			}
+
+			return true;
 		}
 
 		$query = "SELECT * FROM $this->_tbl WHERE state!=2 AND alias=" . $this->_db->quote(trim($oid));
@@ -386,7 +414,7 @@ class Collection extends Table
 				{
 					$filters['sort_Dir'] = 'DESC';
 				}
-				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+				$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
 				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{

@@ -215,12 +215,12 @@ class Asset extends Table
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		if (!empty($filters['order_by']) && !empty($filters['order_dir']))
 		{
-			$query .= " ORDER BY " . $filters['order_by'] . " " . $filters['order_dir'];
+			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order_by']) ?: '1') . " " . (strtoupper((string) $filters['order_dir']) === 'ASC' ? 'ASC' : 'DESC');
 		}
 		else
 		{

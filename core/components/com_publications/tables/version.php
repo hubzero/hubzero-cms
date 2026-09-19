@@ -250,7 +250,7 @@ class Version extends Table
 		$query.= " WHERE publication_id=" . $this->_db->quote($pid);
 		$query.= $withdev ? "" : " AND v.state!=3 ";
 		$query.= $public ? " AND (v.state = 1 OR v.state = 0) AND v.access <= 1 " : "";
-		$query.= " ORDER BY " . $sortby;
+		$query.= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1');
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
