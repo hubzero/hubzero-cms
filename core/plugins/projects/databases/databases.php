@@ -1201,14 +1201,14 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			fclose($fp);
 
 			// Commit update file
-			$commit_message = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' ' . escapeshellarg($file);
-			$author = escapeshellarg(User::get('name') . ' <' . User::get('email') . '> ');
+			$commit_message = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' ' . $file;
+			$author = User::get('name') . ' <' . User::get('email') . '> ';
 
 			chdir($path);
 			exec($this->gitpath . ' add ' . escapeshellarg($file));
 			exec($this->gitpath . ' commit ' . escapeshellarg($file)
-				. ' -m "' . $commit_message . '"'
-				. ' --author="' . $author . '" 2>&1');
+				. ' -m ' . escapeshellarg($commit_message)
+				. ' --author=' . escapeshellarg($author) . ' 2>&1');
 
 			$hash = \Hubzero\Utility\Date::of()->toUnix(); // Use the current time as a hash
 			$objPD->source_revision = $hash;
