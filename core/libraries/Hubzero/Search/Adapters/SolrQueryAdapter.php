@@ -158,7 +158,7 @@ class SolrQueryAdapter implements QueryInterface
 		// Derive user permission filters
 		$this->restrictAccess();
 		$userPerms = $this->query->getFilterQuery('userPerms')->getQuery();
-		$url .= '&fq=' . $userPerms;
+		$url .= '&fq=' . urlencode($userPerms);
 
 		// Limit rows, not interested in results, just facets
 		$url .= '&rows=0';
@@ -173,7 +173,7 @@ class SolrQueryAdapter implements QueryInterface
 		$url .= '&facet.mincount=1';
 
 		//  The actual searching part
-		$url .= '&facet.prefix=' . strtolower($terms);
+		$url .= '&facet.prefix=' . urlencode(strtolower($terms));
 
 		// Make it JSON
 		$url .= '&wt=json';
