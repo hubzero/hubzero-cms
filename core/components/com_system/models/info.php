@@ -149,7 +149,7 @@ class Info extends Obj
 			$this->info['sapi_name']   = php_sapi_name();
 			$this->info['version']     = HVERSION;
 			$this->info['platform']    = 'HUBzero CMS';
-			$this->info['useragent']   = $_SERVER['HTTP_USER_AGENT'];
+			$this->info['useragent']   = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 		}
 		return $this->info;
 	}
