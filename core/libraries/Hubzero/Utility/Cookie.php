@@ -69,7 +69,7 @@ class Cookie
 		if ($str = \App::get('request')->getString($hash, '', 'cookie'))
 		{
 			$sstr   = $crypt->decrypt($str);
-			$cookie = @unserialize($sstr);
+			$cookie = @unserialize($sstr, array('allowed_classes' => false));
 
 			return (object)$cookie;
 		}
