@@ -231,6 +231,18 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Verify the current user may change this course before writing. The page
+		// offers the uploader on access('edit', 'course'), so admit that too: a course
+		// manager carrying a custom permission set can hold edit without manage.
+		$course = Course::getInstance($listdir);
+		if (User::get('usertype') != 'Super Administrator'
+		 && !$course->access('manage')
+		 && !$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
+		}
+
 		// Build the upload path if it doesn't exist
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS);
 
@@ -319,6 +331,17 @@ class Media extends SiteController
 		if (!$listdir)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_NO_ID')));
+			return;
+		}
+
+		// Same rule as the non-ajax path, which dispatches here before its own check
+		$course = Course::getInstance($listdir);
+		if (User::isGuest()
+		 || (User::get('usertype') != 'Super Administrator'
+		  && !$course->access('manage')
+		  && !$course->access('edit', 'course')))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COURSES_NOT_AUTH')));
 			return;
 		}
 
@@ -498,6 +521,23 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Keep the target within the course directory
+		if (strpos($folder, '..') !== false)
+		{
+			Notify::error(Lang::txt('COURSES_NO_DIRECTORY'));
+			return $this->displayTask();
+		}
+
+		// Verify the current user may manage this course
+		$course = Course::getInstance($listdir);
+		if (User::get('usertype') != 'Super Administrator'
+		 && !$course->access('manage')
+		 && !$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
+		}
+
 		$del_folder = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS) . DS . ltrim($folder, DS);
 
 		// Delete the folder
@@ -550,6 +590,23 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Keep the target within the course directory
+		if (strpos($file, '..') !== false)
+		{
+			Notify::error(Lang::txt('FILE_NOT_FOUND'));
+			return $this->displayTask();
+		}
+
+		// Verify the current user may manage this course
+		$course = Course::getInstance($listdir);
+		if (User::get('usertype') != 'Super Administrator'
+		 && !$course->access('manage')
+		 && !$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
+		}
+
 		// Build the file path
 		$path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir;
 
@@ -591,6 +648,15 @@ class Media extends SiteController
 
 		$course = Course::getInstance($listdir);
 
+		// As listfilesTask: the file manager for a course is a manager view.
+		if (User::get('usertype') != 'Super Administrator'
+		 && !$course->access('manage')
+		 && !$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
+		}
+
 		// Output HTML
 		$this->view
 			->set('config', $config)
@@ -614,6 +680,18 @@ class Media extends SiteController
 		if ($listdir == '')
 		{
 			$listdir = $this->listdir;
+		}
+
+		// Same predicate as the upload and delete tasks: this enumerates a
+		// course's uploaded filenames, including unpublished courses, and had
+		// no check at all.
+		$course = Course::getInstance($listdir);
+		if (User::get('usertype') != 'Super Administrator'
+		 && !$course->access('manage')
+		 && !$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+			return;
 		}
 
 		if (!$listdir)

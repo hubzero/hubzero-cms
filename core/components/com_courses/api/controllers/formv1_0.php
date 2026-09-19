@@ -60,6 +60,12 @@ class formv1_0 extends base
 		$version  = Request::getInt('form_version', 0);
 		$filename = Request::getString('file', '');
 		$filename = urldecode($filename);
+
+		// Keep the request within the form image directory
+		if (strpos($filename, '..') !== false)
+		{
+			App::abort(404, 'Image not found');
+		}
 		$filename = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
 
 		// Ensure the file exist

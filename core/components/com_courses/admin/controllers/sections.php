@@ -442,12 +442,23 @@ class Sections extends AdminController
 				// Get the file extension
 				$pathinfo = pathinfo($badge_image['name']);
 				$filename = $pathinfo['filename'];
-				$ext      = $pathinfo['extension'];
+				$ext      = isset($pathinfo['extension']) ? strtolower($pathinfo['extension']) : '';
+
+				// Only allow image extensions for the badge upload.
+				if (!in_array($ext, array('png', 'jpg', 'jpeg', 'gif'), true))
+				{
+					$this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
+					$ext = '';
+				}
 
 				// Check for square and at least 420 x 420
 				$dimensions = getimagesize($badge_image['tmp_name']);
 
-				if ($dimensions[0] != $dimensions[1])
+				if ($ext === '')
+				{
+					// Rejected file type: error already set, keep the existing badge
+				}
+				else if ($dimensions[0] != $dimensions[1])
 				{
 					$this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
 				}

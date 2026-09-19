@@ -152,7 +152,7 @@ class Logo extends AdminController
 		}
 
 		// Do we have an old file we're replacing?
-		if (($curfile = Request::getString('currentfile', '')))
+		if (($curfile = basename(Request::getString('currentfile', ''))))
 		{
 			// Remove old image
 			if (file_exists($path . DS . $curfile))
@@ -255,7 +255,7 @@ class Logo extends AdminController
 			$this->displayTask('', $id);
 			return;
 		}
-		$curfile = Request::getString('curfile', '');
+		$curfile = basename(Request::getString('curfile', ''));
 
 		if (!is_dir($path))
 		{
@@ -312,7 +312,7 @@ class Logo extends AdminController
 			}
 
 			// Do we have an old file we're replacing?
-			if (($curfile = Request::getString('currentfile', '')))
+			if (($curfile = basename(Request::getString('currentfile', ''))))
 			{
 				// Remove old image
 				if (file_exists($path . DS . $curfile))
@@ -477,7 +477,7 @@ class Logo extends AdminController
 		}
 
 		// Incoming file
-		$file = Request::getString('file', '');
+		$file = basename(Request::getString('file', ''));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE_FOUND'));

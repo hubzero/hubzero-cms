@@ -608,6 +608,10 @@ class Pages extends AdminController
 
 		// Incoming directory to delete
 		$folder = trim(Request::getString('delFolder', ''), DS);
+		if (strpos($folder, '..') !== false)
+		{
+			$folder = '';
+		}
 		if (!$folder)
 		{
 			$this->setError(Lang::txt('COURSES_NO_DIRECTORY'));
@@ -654,7 +658,7 @@ class Pages extends AdminController
 		$path = $this->_buildUploadPath($listdir, $subdir);
 
 		// Incoming file to delete
-		$file = Request::getString('delFile', '');
+		$file = basename(Request::getString('delFile', ''));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_COURSES_ERROR_NO_FILE'));
