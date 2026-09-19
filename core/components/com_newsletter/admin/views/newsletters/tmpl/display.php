@@ -34,8 +34,14 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::spacer();
 }
 Toolbar::custom('preview', 'preview', '', 'COM_NEWSLETTER_TOOLBAR_PREVIEW');
-Toolbar::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
-Toolbar::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
+// Send and Send Test now require core.edit; every other button on this toolbar
+// is already gated, and offering these two to an operator who only holds
+// core.manage means they fill in the whole send form before being refused.
+if ($canDo->get('core.edit') || $canDo->get('core.create'))
+{
+	Toolbar::custom('sendtest', 'sendtest', '', 'COM_NEWSLETTER_TOOLBAR_SEND_TEST');
+	Toolbar::custom('sendnewsletter', 'send', '', 'COM_NEWSLETTER_TOOLBAR_SEND');
+}
 if ($canDo->get('core.admin'))
 {
 	Toolbar::spacer();
