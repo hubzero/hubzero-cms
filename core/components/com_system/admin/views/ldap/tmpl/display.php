@@ -8,6 +8,12 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+
+// The four tasks these buttons submit require core.admin on com_system.
+// Rendering them for an administrator who only holds core.manage -- which
+// is all the component's own entry gate asks for -- produces a 403 on
+// submit, and for the AJAX export a generic 'error processing records'.
+$canRun = \User::authorise('core.admin', 'com_system');
 Toolbar::title(Lang::txt('COM_SYSTEM_LDAP_CONFIGURATION'), 'config');
 Toolbar::preferences($this->option, '550');
 
@@ -26,7 +32,7 @@ $this->css('ldap')
 					<tbody>
 						<tr>
 							<td class="key"><!-- onclick="submitbutton('exportUsers');" -->
-								<input type="submit" name="exportUsers" id="exportUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" data-delay="3" data-start="0" data-progress="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=exportusersbatch&' . Session::getFormToken() . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000) . '&start='); ?>" />
+								<?php if ($canRun) { ?><input type="submit" name="exportUsers" id="exportUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" data-delay="3" data-start="0" data-progress="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=exportusersbatch&' . Session::getFormToken() . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000) . '&start='); ?>" /><?php } ?>
 							</td>
 							<td>
 								<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_USERS_TO_LDAP'); ?>
@@ -37,7 +43,7 @@ $this->css('ldap')
 							</td>
 						</tr>
 						<tr>
-							<td class="key"><input type="submit" name="deleteUsers" id="deleteUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /></td>
+							<td class="key"><?php if ($canRun) { ?><input type="submit" name="deleteUsers" id="deleteUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /><?php } ?></td>
 							<td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_USERS_FROM_LDAP'); ?></td>
 						</tr>
 					</tbody>
@@ -49,11 +55,11 @@ $this->css('ldap')
 				<table class="admintable">
 					<tbody>
 						<tr>
-							<td class="key"><input type="submit" name="exportGroups" id="exportGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" /></td>
+							<td class="key"><?php if ($canRun) { ?><input type="submit" name="exportGroups" id="exportGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" /><?php } ?></td>
 							<td><?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_GROUPS_TO_LDAP'); ?></td>
 						</tr>
 						<tr>
-							<td class="key"><input type="submit" name="deleteGroups" id="deleteGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /></td>
+							<td class="key"><?php if ($canRun) { ?><input type="submit" name="deleteGroups" id="deleteGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /><?php } ?></td>
 							<td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_GROUPS_FROM_LDAP'); ?></td>
 						</tr>
 					</tbody>

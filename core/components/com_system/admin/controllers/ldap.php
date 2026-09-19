@@ -11,6 +11,7 @@ use Hubzero\Component\AdminController;
 use Route;
 use Lang;
 use App;
+use User;
 use Notify;
 use Request;
 
@@ -39,6 +40,11 @@ class Ldap extends AdminController
 	 */
 	public function deleteGroupsTask()
 	{
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$result = \Hubzero\Utility\Ldap::deleteAllGroups();
 
 		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
@@ -68,6 +74,11 @@ class Ldap extends AdminController
 	 */
 	public function deleteUsersTask()
 	{
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$result = \Hubzero\Utility\Ldap::deleteAllUsers();
 
 		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
@@ -95,6 +106,11 @@ class Ldap extends AdminController
 	 */
 	public function exportGroupsTask()
 	{
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$result = \Hubzero\Utility\Ldap::syncAllGroups();
 
 		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
@@ -122,6 +138,11 @@ class Ldap extends AdminController
 	 */
 	public function exportUsersTask()
 	{
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$result = \Hubzero\Utility\Ldap::syncAllUsers();
 
 		//Notify::error(Lang::txt('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'));
@@ -149,6 +170,11 @@ class Ldap extends AdminController
 	 */
 	public function exportUsersBatchTask()
 	{
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$start = Request::getInt('start', 0);
 		$limit = Request::getInt('limit', 1000);
 
