@@ -137,7 +137,7 @@ class Owner extends Table
 			$i = 1;
 			foreach ($ids as $id)
 			{
-				$query .= "'" . $id . "'";
+				$query .= $this->_db->quote($id);
 				$query .= $i < count($ids) ? ',' : '';
 				$i++;
 			}
@@ -148,7 +148,7 @@ class Owner extends Table
 				$k = 1;
 				foreach ($groups as $group)
 				{
-					$query .= "'" . $group . "'";
+					$query .= $this->_db->quote($group);
 					$query .= $k < count($groups) ? ',' : '';
 					$k++;
 				}
@@ -348,14 +348,14 @@ class Owner extends Table
 			{
 				$name   = $entry->name ? $entry->name : $entry->invited_email;
 				$name   = $name ? $name : $entry->invited_name;
-				$names .= $name;
+				$names .= htmlspecialchars($name);
 				if ($show_uid)
 				{
-					$names .= ' (' . $entry->userid . ')';
+					$names .= ' (' . (int) $entry->userid . ')';
 				}
 				elseif ($withUsername)
 				{
-					$names .= ' (<a href="/members/' . $entry->userid . '">' . $entry->username . '</a>)';
+					$names .= ' (<a href="/members/' . (int) $entry->userid . '">' . htmlspecialchars($entry->username) . '</a>)';
 				}
 
 				if ($limit && $i == $limit && $i != count($result))
