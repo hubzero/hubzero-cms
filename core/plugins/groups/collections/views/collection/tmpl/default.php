@@ -105,7 +105,7 @@ if (!in_array($viewas, array('grid', 'list')))
 				<div class="post <?php echo $item->type(); ?>" id="post_<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $row->get('id')); ?>">
 					<div class="content">
 						<?php
-							$this->view('default_' . $item->type(), 'post')
+							$this->view('default_' . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'), 'post')
 							     ->set('name', $this->name)
 							     ->set('option', $this->option)
 							     ->set('group', $this->group)
@@ -146,7 +146,12 @@ if (!in_array($viewas, array('grid', 'list')))
 										<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
 									</a>
 									<?php if ($this->group->published == 1) { ?>
-										<?php if ($item->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
+										<?php // The post's own author, as the members plugin view does:
+										      // _save() writes the item's content, which stays the
+										      // original author's, so a manager offered this would
+										      // only reach a 403. Moderation is the Delete and Remove
+										      // controls below, which they keep.
+										      if ($row->get('created_by') == User::get('id')) { ?>
 											<a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $row->get('id') . '/edit'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?>">
 												<span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
 											</a>

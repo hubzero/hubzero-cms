@@ -889,6 +889,17 @@ class Item extends Base
 			$post = new Tables\Post($this->_db);
 			$post->load($id);
 
+			// ?post= named a row that does not exist, so there is no item to
+			// resolve. Falling through to the blank-item store() below wrote a
+			// #__collections_items row with object_id 0 on every such request --
+			// and that happens before mod_collect's token check, so a bare GET
+			// could do it repeatedly. Nothing can be made here; say so.
+			if (!$post->get('id'))
+			{
+				$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_POST'));
+				return false;
+			}
+
 			if (!$this->_tbl->load($post->item_id))
 			{
 				$this->setError($this->_tbl->getError());
@@ -910,5 +921,134 @@ class Item extends Base
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether a user may collect (repost) this item.
+	 *
+	 * The item a repost carries arrives as an id from the request, and nothing
+	 * downstream re-checks it: Tables\Post::check() only requires it to be
+	 * non-zero. Without this an attacker can mint a post of their own carrying
+	 * any item on the hub, which is enough to defeat every guard that is keyed
+	 * on "the item this post carries" -- the asset delete, the item delete and
+	 * the collection comment scope all are.
+	 *
+	 * An item is collectable when it sits on at least one board the caller can
+	 * read, which is the same thing as it being visible to them in the first
+	 * place.
+	 *
+	 * @param   integer  $uid  User to test, or null for the current one
+	 * @return  boolean
+	 */
+	public function isCollectableBy($uid = null)
+	{
+		$uid = ($uid === null) ? (int) User::get('id') : (int) $uid;
+
+		if (!$this->exists())
+		{
+			return false;
+		}
+
+		// A collection's own Item row is created by Collection::store() and never
+		// gets a post row -- nothing writes one. Judging it by "which boards is
+		// it posted on" therefore refuses every collection to everybody,
+		// including a public one to its own owner, and the Collect control is
+		// rendered on every collection page. Fall back to the collection's own
+		// readability for that type.
+		if ($this->get('type') == 'collection')
+		{
+			$collection = new Collection($this->get('object_id'));
+
+			return $collection->isReadableBy($uid);
+		}
+
+		$this->_db->setQuery(
+			"SELECT DISTINCT p.`collection_id`
+			   FROM `#__collections_posts` AS p
+			  WHERE p.`item_id` = " . (int) $this->get('id')
+		);
+
+		foreach ((array) $this->_db->loadColumn() as $cid)
+		{
+			$collection = new Collection($cid);
+
+			if ($collection->isReadableBy($uid))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Pick a layout suffix for this item that the calling directory actually has.
+	 *
+	 * type() can return publication, collection, deleted, image, file, text or
+	 * link, and no directory carries a template for every one of them. A missing
+	 * template does not fail loudly: View::loadTemplate() falls back to the fixed
+	 * name 'default', which in the plugin post directories is the very view doing
+	 * the dispatch -- rendered without the variables it needs -- and in
+	 * com_collections does not exist on the search path at all. Either way the
+	 * whole page dies, for every viewer, until the row is changed. 'image' and
+	 * 'text' are both types the edit form offers and the type column is bound
+	 * straight from the request, so any member could plant one.
+	 *
+	 * The available list is read from the directory rather than hard-coded, so
+	 * adding a layout is enough to make it used and no list can fall out of step
+	 * with the files.
+	 *
+	 * @param   string  $dir     Directory the caller renders templates from
+	 * @param   string  $prefix  Layout prefix, e.g. 'display_' or 'default_'
+	 * @return  string
+	 */
+	public function layout($dir, $prefix)
+	{
+		static $cache = array();
+
+		$key = $dir . '|' . $prefix;
+
+		if (!isset($cache[$key]))
+		{
+			$found = array();
+
+			// glob() returns false on error, and (array) false is array(false),
+			// not an empty array -- so normalise explicitly.
+			foreach ((glob($dir . DS . $prefix . '*.php') ?: array()) as $file)
+			{
+				$found[] = substr(basename($file, '.php'), strlen($prefix));
+			}
+
+			$cache[$key] = $found;
+		}
+
+		$available = $cache[$key];
+		$type      = $this->type();
+
+		// An empty list means the caller passed a directory that does not hold
+		// these templates at all -- a programming error, not a missing layout.
+		// Picking a name here would render EVERY item as whatever that name is,
+		// silently and with a 200. Hand the type back unchanged instead, so the
+		// view layer resolves it exactly as it did before this method existed.
+		if (!$available)
+		{
+			return $type;
+		}
+
+		if (in_array($type, $available, true))
+		{
+			return $type;
+		}
+
+		// Closest equivalent that does exist: an image carries assets exactly as
+		// a file does, and a publication is reached by its url, like a link.
+		$nearest = array('image' => 'file', 'publication' => 'link');
+
+		if (isset($nearest[$type]) && in_array($nearest[$type], $available, true))
+		{
+			return $nearest[$type];
+		}
+
+		return in_array('link', $available, true) ? 'link' : 'deleted';
 	}
 }

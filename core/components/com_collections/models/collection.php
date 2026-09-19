@@ -741,4 +741,96 @@ class Collection extends Base
 
 		return $data;
 	}
+
+	/**
+	 * Whether a user may post to this collection.
+	 *
+	 * The board a post, repost or move lands on always arrives as an id from
+	 * the request, and Collection resolves any row, so every writer has to ask
+	 * this before trusting it.
+	 *
+	 * @param   integer  $uid  User to test, or null for the current one
+	 * @return  boolean
+	 */
+	public function canBePostedToBy($uid = null)
+	{
+		$uid = ($uid === null) ? (int) User::get('id') : (int) $uid;
+
+		if (!$uid || !$this->exists())
+		{
+			return false;
+		}
+
+		if ($this->get('object_type') == 'group')
+		{
+			$group = Group::getInstance($this->get('object_id'));
+
+			return ($group && (in_array($uid, (array) $group->get('members'))
+				|| in_array($uid, (array) $group->get('managers'))));
+		}
+
+		return ((int) $this->get('object_id') === $uid);
+	}
+
+	/**
+	 * Whether a user may moderate what sits on this collection -- that is,
+	 * unpost someone else's contribution to it.
+	 *
+	 * Wider than ownership of the post and narrower than membership: the board's
+	 * own member, or a manager of the group that owns it.
+	 *
+	 * @param   integer  $uid  User to test, or null for the current one
+	 * @return  boolean
+	 */
+	public function canBeModeratedBy($uid = null)
+	{
+		$uid = ($uid === null) ? (int) User::get('id') : (int) $uid;
+
+		if (!$uid || !$this->exists())
+		{
+			return false;
+		}
+
+		if ($this->get('object_type') == 'group')
+		{
+			$group = Group::getInstance($this->get('object_id'));
+
+			return ($group && in_array($uid, (array) $group->get('managers')));
+		}
+
+		return ((int) $this->get('object_id') === $uid);
+	}
+
+	/**
+	 * Whether a user may read this collection.
+	 *
+	 * access 0 is public, 1 is any logged-in user and 4 is private to the board
+	 * -- the same three values the group and member plugins test for.
+	 *
+	 * @param   integer  $uid  User to test, or null for the current one
+	 * @return  boolean
+	 */
+	public function isReadableBy($uid = null)
+	{
+		$uid = ($uid === null) ? (int) User::get('id') : (int) $uid;
+
+		if (!$this->exists() || $this->get('state') == 2)
+		{
+			return false;
+		}
+
+		switch ((int) $this->get('access'))
+		{
+			case 0:
+				return true;
+
+			case 1:
+				return ($uid > 0);
+
+			default:
+				// A private board is readable by whoever may post to it: its own
+				// member, or a member of the group that owns it.
+				return $this->canBePostedToBy($uid);
+		}
+	}
 }

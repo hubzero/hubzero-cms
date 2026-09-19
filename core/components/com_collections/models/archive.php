@@ -194,6 +194,30 @@ class Archive extends Obj
 			{
 				$this->_collection = Collection::getInstance($id, $this->_object_id, $this->_object_type);
 			}
+
+			// Tables\Collection::load() short-circuits to parent::load() for a
+			// numeric id, throwing away the object_id/object_type it was just
+			// handed. So an alias was confined to this archive's object while a
+			// numeric id resolved a board belonging to any member or group on
+			// the hub -- and a board arrives here straight from ?board=. Confine
+			// the numeric id the same way the alias already was.
+			//
+			// An out-of-scope id now behaves exactly like an out-of-scope alias:
+			// an empty model that exists() reports false for, which every caller
+			// here already has to handle. Replace, never reset -- getInstance()
+			// hands back a shared instance.
+			//
+			// An archive built with no object (com_collections' own, which shows
+			// a post from any board and then asks canAccess()) carries no scope
+			// to apply and is left alone.
+			if ($this->_object_id
+			 && $this->_object_type
+			 && $this->_collection->exists()
+			 && ((int) $this->_collection->get('object_id') !== (int) $this->_object_id
+			  || strtolower((string) $this->_collection->get('object_type')) !== strtolower($this->_object_type)))
+			{
+				$this->_collection = new Collection();
+			}
 		}
 		// Return current offering
 		return $this->_collection;
