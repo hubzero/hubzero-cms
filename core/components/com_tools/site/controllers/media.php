@@ -55,6 +55,19 @@ class Media extends SiteController
 			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
+		// Only a contributor who may edit this resource can manage its media.
+		// The compose page this iframe sits in admits the tool's dev team and a
+		// com_tools manager, so admit the manager here too rather than 403 inside
+		// a page the same user is allowed to edit.
+		if (User::isGuest()
+		 || (!$row->access('edit')
+		  && !$row->access('edit-own')
+		  && !User::authorise('core.manage', 'com_tools')))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+
 		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the upload path exist
@@ -80,6 +93,18 @@ class Media extends SiteController
 
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
+
+		// Refuse only server-executable extensions and the markup types a
+		// download handler would serve inline (the same rule as resource media):
+		// the com_media whitelist ships without jpeg, mp4 or docx, so screenshots
+		// and demo videos would be turned away on a default install
+		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+		if (in_array(strtolower((string) $ext), $blockedExtensions))
+		{
+			$this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
+			return $this->displayTask();
+		}
+
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -134,6 +159,19 @@ class Media extends SiteController
 			$row->set('created', Date::format('Y-m-d 00:00:00'));
 		}
 
+		// Only a contributor who may edit this resource can manage its media.
+		// The compose page this iframe sits in admits the tool's dev team and a
+		// com_tools manager, so admit the manager here too rather than 403 inside
+		// a page the same user is allowed to edit.
+		if (User::isGuest()
+		 || (!$row->access('edit')
+		  && !$row->access('edit-own')
+		  && !User::authorise('core.manage', 'com_tools')))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return;
+		}
+
 		$path = $row->filespace() . DS . 'media';
 
 		// Make sure the listdir follows YYYY/MM/##/media
@@ -150,6 +188,13 @@ class Media extends SiteController
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
+			return $this->displayTask();
+		}
+
+		// Keep the target within the resource media directory
+		if (strpos($file, '..') !== false)
+		{
+			$this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
 			return $this->displayTask();
 		}
 
