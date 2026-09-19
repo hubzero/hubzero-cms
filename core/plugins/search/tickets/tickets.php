@@ -63,11 +63,11 @@ class plgSearchTickets extends \Hubzero\Plugin\Plugin
 				$row = $db->setQuery($sql)->query()->loadObject();
 
 				// Get the name of the author
-				$sql1 = "SELECT name FROM `#__users` WHERE username={$row->login};";
+				$sql1 = "SELECT name FROM `#__users` WHERE username=" . $db->quote($row->login) . ";";
 				$author = $db->setQuery($sql1)->query()->loadResult();
 				if (!$author)
 				{
-					$sql1 = "SELECT name FROM `#__users` WHERE email={$row->email};";
+					$sql1 = "SELECT name FROM `#__users` WHERE email=" . $db->quote($row->email) . ";";
 					$author = $db->setQuery($sql1)->query()->loadResult();
 				}
 				if (!$author)

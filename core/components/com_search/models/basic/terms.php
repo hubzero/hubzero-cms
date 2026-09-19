@@ -111,7 +111,7 @@ class Terms extends Obj
 			return $this->raw;
 		}
 
-		return preg_replace('/^'.implode(':', $this->section).':/', '', $this->raw);
+		return preg_replace('/^' . implode(':', array_map('preg_quote', $this->section)) . ':/', '', $this->raw);
 	}
 
 	/**
@@ -228,10 +228,10 @@ class Terms extends Obj
 		}
 		else if (array_key_exists('section', $_GET))
 		{
-			$this->section = array($_GET['section']);
+			$this->section = array(preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section']));
 		}
 
-		$raw = preg_replace('#[^-:/\\+"[:alnum:] ]#', '', preg_replace('/\s+/', ' ', trim($raw)));
+		$raw = preg_replace('#[^-:/+"[:alnum:] ]#', '', preg_replace('/\s+/', ' ', trim($raw)));
 		for ($idx = 0, $len = strlen($raw); $idx < $len; ++$idx)
 		{
 			$cur = $raw[$idx];

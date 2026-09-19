@@ -47,7 +47,7 @@ class plgSupportBlog extends \Hubzero\Plugin\Plugin
 
 		$query  = "SELECT rc.id, rc.entry_id, rc.content as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'blog' AS parent_category
 					FROM `#__blog_comments` AS rc
-					WHERE rc.id=" . $refid;
+					WHERE rc.id=" . (int) $refid;
 
 		$database = App::get('db');
 		$database->setQuery($query);

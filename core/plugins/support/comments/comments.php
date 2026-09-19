@@ -30,7 +30,7 @@ class plgSupportComments extends \Hubzero\Plugin\Plugin
 
 		$query  = "SELECT rc.`id`, rc.`content` as `text`, rc.`created_by` as `author`, rc.`created`, NULL as `subject`, rc.`anonymous` as `anon`, concat(rc.`item_type`, 'comment') AS `parent_category`, NULL AS `href` "
 				. "FROM #__item_comments AS rc "
-				. "WHERE rc.id=" . $refid;
+				. "WHERE rc.id=" . (int) $refid;
 		$database = App::get('db');
 		$database->setQuery($query);
 

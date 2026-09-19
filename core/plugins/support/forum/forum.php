@@ -33,7 +33,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
 					FROM `#__forum_posts` AS rc
 					LEFT JOIN `#__forum_categories` AS c ON c.id = rc.category_id
 					LEFT JOIN `#__forum_sections` AS s ON s.id = c.section_id
-					WHERE rc.id=" . $refid;
+					WHERE rc.id=" . (int) $refid;
 
 		$database = App::get('db');
 		$database->setQuery($query);
