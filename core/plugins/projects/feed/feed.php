@@ -363,12 +363,22 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$comment['description'] = \Hubzero\Utility\Sanitize::stripScripts($comment['description']);
 		$comment['description'] = \Hubzero\Utility\Sanitize::stripImages($comment['description']);
 
-		$row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
+		$row = Hubzero\Activity\Log::oneOrNew((int) $comment['id']);
 
+		// Editing an existing entry: it must belong to this project and the caller
 		if ($row->get('id'))
 		{
+			// ... and the caller must be its author or a project manager (the
+			// feed view offers the edit action to managers on every entry)
+			if (!$this->_entryBelongsToProject($row)
+				|| ($row->get('created_by') != User::get('id') && !$this->model->access('manager')))
+			{
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			}
 			$isNew = false;
 		}
+
+		$row->set($comment);
 
 		if ($comment['description'])
 		{
@@ -475,6 +485,12 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 		$id = Request::getInt('activity', 0);
 
 		$entry = Hubzero\Activity\Log::oneOrFail($id);
+
+		// The entry must belong to the project being viewed
+		if (!$this->_entryBelongsToProject($entry))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
 
 		if ($this->model->access('content') || $entry->get('created_by') == User::get('id'))
 		{
@@ -779,5 +795,27 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			],
 			'recipients' => $recipients
 		]);
+	}
+
+	/**
+	 * Is the activity entry addressed to the project being viewed?
+	 *
+	 * The log's own scope_id is the to-do/note/publication id, so the project
+	 * linkage has to be read from the recipient rows.
+	 *
+	 * @param   object  $entry
+	 * @return  boolean
+	 */
+	protected function _entryBelongsToProject($entry)
+	{
+		foreach ($entry->recipients()->rows() as $recipient)
+		{
+			if (in_array($recipient->get('scope'), array('project', 'project_managers'))
+			 && (int) $recipient->get('scope_id') === (int) $this->model->get('id'))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
