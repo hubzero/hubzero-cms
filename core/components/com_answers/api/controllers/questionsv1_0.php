@@ -210,7 +210,14 @@ class Questionsv1_0 extends ApiController
 			'subject'    => Request::getString('subject', null, 'post', 'none', 2),
 			'question'   => Request::getString('question', null, 'post', 'none', 2),
 			'created'    => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
-			'created_by' => Request::getInt('created_by', User::get('id'), 'post'),
+			// updateTask below pins created_by so a question's author cannot be
+			// reassigned. Leaving it open here left the same forgery reachable
+			// through create: any authenticated caller could file a question in
+			// another member's name, and $row->tag() below stamps the tags with
+			// the same id. A manager may still post on someone's behalf.
+			'created_by' => (User::authorise('core.manage', 'com_answers')
+				? Request::getInt('created_by', User::get('id'), 'post')
+				: User::get('id')),
 			'state'      => Request::getInt('state', 0, 'post'),
 			'reward'     => Request::getInt('reward', 0, 'post')
 		);
@@ -363,13 +370,20 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
 		}
 
+		// Only the author (or a component manager) may edit a question.
+		if ($row->get('created_by') != User::get('id')
+			&& !User::authorise('core.manage', 'com_answers'))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
 		$fields = array(
 			'email'      => Request::getInt('email', $row->get('email')),
 			'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
 			'subject'    => Request::getString('subject', $row->get('subject')),
 			'question'   => Request::getString('question', $row->get('question')),
 			'created'    => Request::getString('created', $row->get('created')),
-			'created_by' => Request::getInt('created_by', $row->get('created_by')),
+			'created_by' => $row->get('created_by'),
 			'state'      => Request::getInt('state', $row->get('state')),
 			'reward'     => Request::getInt('reward', $row->get('reward'))
 		);
@@ -433,6 +447,13 @@ class Questionsv1_0 extends ApiController
 			if (!$row->get('id'))
 			{
 				throw new Exception(Lang::txt('COM_ANSWERS_ERROR_MISSING_RECORD'), 404);
+			}
+
+			// Only the author (or a component manager) may delete a question.
+			if ($row->get('created_by') != User::get('id')
+				&& !User::authorise('core.manage', 'com_answers'))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 			}
 
 			if (!$row->destroy())
