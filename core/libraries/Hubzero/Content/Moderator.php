@@ -103,14 +103,14 @@ class Moderator
 	 **/
 	public function validateToken()
 	{
-		if ($this->token !== $this->getToken())
+		if (!hash_equals($this->getToken(), (string) $this->token))
 		{
 			// Using 'public' as the session ID allows for shareable URLs
 			// not tied to a specific user session. Usage would be for
 			// files that do not need access control.
 			$this->session_id = 'public';
 		}
-		return ($this->token === $this->getToken());
+		return hash_equals($this->getToken(), (string) $this->token);
 	}
 
 	/**
@@ -130,7 +130,7 @@ class Moderator
 	 **/
 	private function getToken()
 	{
-		return hash('sha256', $this->session_id . ':' . $this->secret);
+		return hash('sha256', $this->session_id . ':' . $this->secret . ':' . $this->path);
 	}
 
 	/**

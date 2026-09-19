@@ -143,12 +143,12 @@ class Server extends Obj
 			return false;
 		}
 		// Disallow \
-		if (strpos($filename, '\\'))
+		if (strpos($filename, '\\') !== false)
 		{
 			return false;
 		}
 		// Disallow ..
-		if (strpos($filename, '..'))
+		if (strpos($filename, '..') !== false)
 		{
 			return false;
 		}
