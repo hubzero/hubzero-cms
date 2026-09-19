@@ -438,7 +438,14 @@ class Entriesv1_1 extends ApiController
 			'action'         => Request::getString('action', null, 'post', 'none', 2),
 			'description'    => Request::getString('description', null, 'post', 'none', 2),
 			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
-			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
+			// updateTask below pins created_by so an entry's author cannot be
+			// reassigned. Leaving it open here left the same forgery reachable
+			// through create: any authenticated caller could file an entry in
+			// another member's name and, via recipients, push it into other
+			// people's feeds. A manager may still post on someone's behalf.
+			'created_by'     => (User::authorise('core.manage', 'com_activity')
+				? Request::getInt('created_by', User::get('id'), 'post')
+				: User::get('id')),
 			'anonymous'      => Request::getInt('anonymous', 0, 'post'),
 			'parent'         => Request::getInt('parent', 0, 'post')
 		);
@@ -709,13 +716,23 @@ class Entriesv1_1 extends ApiController
 			throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_MISSING_RECORD'), 404);
 		}
 
+		// Same rule as deleteTask below. Without it any authenticated caller --
+		// the API accepts an ordinary browser session -- could rewrite an entry's
+		// description, reassign its author and fan it out to other users' feeds,
+		// which is the more dangerous half of the pair.
+		if ($row->get('created_by') != User::get('id')
+			&& !User::authorise('core.manage', 'com_activity'))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
 		$fields = array(
 			'scope'          => Request::getString('scope', $row->get('scope')),
 			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
 			'action'         => Request::getString('action', $row->get('action')),
 			'description'    => Request::getString('description', $row->get('description')),
 			'created'        => Request::getString('created', $row->get('created')),
-			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
+			'created_by'     => $row->get('created_by'),
 			'anonymous'      => Request::getInt('anonymous', $row->get('anonymous')),
 			'parent'         => Request::getInt('parent', $row->get('parent'))
 		);
@@ -867,6 +884,13 @@ class Entriesv1_1 extends ApiController
 			if (!$row->get('id'))
 			{
 				throw new Exception(Lang::txt('COM_ACTIVITY_ERROR_MISSING_RECORD'), 404);
+			}
+
+			// Only the owner of the activity entry, or a manager, may remove it.
+			if ($row->get('created_by') != User::get('id')
+				&& !User::authorise('core.manage', 'com_activity'))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 			}
 
 			if (!$row->destroy())
