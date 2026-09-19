@@ -1077,14 +1077,55 @@ class Wishlists extends SiteController
 		// trim and addslashes all posted items
 		$fields = Request::getArray('fields', array(), 'post');
 
+		$existingId = isset($fields['id']) ? (int) $fields['id'] : 0;
+		$row = Wish::oneOrNew($existingId);
+		$canManage = $wishlist->access('manage');
+
+		// The manage right is granted per list, and for a personal list that
+		// includes its own owner -- so checking it against a list the caller
+		// named in the request says nothing about the wish they are editing.
+		// Tie the two together first: the wish must belong to this list.
+		if (!$row->isNew() && (int) $row->get('wishlist') !== (int) $wishlist->get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Editing an existing wish requires ownership or list-manage rights
+		if (!$row->isNew() && !$canManage && $row->get('proposed_by') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Non-managers may only set descriptive fields
+		if (!$canManage)
+		{
+			foreach (array('status', 'assigned', 'ranking', 'private', 'proposed_by',
+				'granted', 'granted_by', 'granted_vid', 'accepted') as $k)
+			{
+				unset($fields[$k]);
+			}
+		}
+
 		// initiate class and bind posted items to database fields
-		$row = Wish::oneOrNew($fields['id'])->set($fields);
+		$isNewWish = $row->isNew();
+		$row->set($fields);
+
+		// The list a wish belongs to is the one resolved and access-checked
+		// above, never a posted field -- otherwise an author could move their
+		// own wish into someone else's list. A new wish needs this set too:
+		// the model requires a non-zero wishlist.
+		$row->set('wishlist', $wishlist->get('id'));
+
+		if ($isNewWish)
+		{
+			$row->set('proposed_by', User::get('id'));
+		}
 
 		$wishid = $row->get('id');
 
-		// If we are editing
+		// Managers may attribute the wish to another user
 		$by = Request::getString('by', '', 'post');
-		if ($by)
+		if ($by && $canManage)
 		{
 			$ruser = User::getInstance($by);
 			if (is_object($ruser))
@@ -1233,7 +1274,7 @@ class Wishlists extends SiteController
 				'action'      => ($wishid ? 'updated' : 'created'),
 				'scope'       => 'wishlist.wish',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . $row->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'subject'    => $row->get('subject'),
 					'url'      => Route::url($row->link('permalink'))
@@ -1781,7 +1822,7 @@ class Wishlists extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'wishlist.wish',
 				'scope_id'    => $wish->get('id'),
-				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . $wish->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'subject' => $wish->get('subject'),
 					'url'     => Route::url($wish->link('permalink'))
@@ -1887,7 +1928,7 @@ class Wishlists extends SiteController
 				'action'      => 'voted',
 				'scope'       => 'wishlist.wish',
 				'scope_id'    => $wish->get('id'),
-				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . $wish->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'subject' => $wish->get('subject'),
 					'url'     => Route::url($wish->link())
@@ -1958,7 +1999,60 @@ class Wishlists extends SiteController
 		{
 			$fields = Request::getArray('comment', array(), 'post');
 
-			$row = Comment::blank()->set($fields);
+			// The wish has to be on the list that was named; both ids come from
+			// the request and nothing above tied them together.
+			if ((int) $objWish->get('wishlist') !== (int) $wishlist->get('id'))
+			{
+				App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
+			}
+
+			// Resolve the row before anything is bound onto it.
+			//
+			// This was Comment::blank()->set($fields). set() copies id, and a
+			// Relational carrying an id is not new, so save() issues an UPDATE --
+			// a posted comment[id] rewrote ANY comment on the hub, from any
+			// logged-in account, with no ownership test anywhere in this method.
+			// item_id rode in the same way and was never pinned, so a new comment
+			// could be hung on any wish.
+			$__cid   = isset($fields['id']) ? (int) $fields['id'] : 0;
+			$row     = Comment::oneOrNew($__cid);
+			$__isNew = $row->isNew();
+
+			if (!$__isNew)
+			{
+				if ((int) $row->get('item_id') !== (int) $wishid
+				 || $row->get('created_by') != User::get('id'))
+				{
+					App::abort(403, Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
+				}
+
+				// What the comment hangs off, who wrote it, when, and whether it
+				// is published are not the form's to change on an edit.
+				unset($fields['item_id'], $fields['item_type'], $fields['parent'],
+					$fields['created'], $fields['created_by'], $fields['state']);
+			}
+
+			$row->set($fields);
+
+			if ($__isNew)
+			{
+				// Both forms carry the wish as item_id; take it from the wish
+				// this request already loaded rather than from the form.
+				$row->set('item_id', $wishid);
+
+				// A reply joins a thread, so its parent has to be a comment on
+				// this same wish.
+				if ($row->get('parent'))
+				{
+					$__parent = Comment::oneOrNew((int) $row->get('parent'));
+
+					if (!$__parent->get('id')
+					 || (int) $__parent->get('item_id') !== (int) $wishid)
+					{
+						App::abort(403, Lang::txt('COM_WISHLIST_ERROR_ALERTNOTAUTH'));
+					}
+				}
+			}
 
 			// Perform some text cleaning, etc.
 			$row->set(
@@ -1976,8 +2070,15 @@ class Wishlists extends SiteController
 			}
 
 			$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
-			$row->set('state', 1);
-			$row->set('item_type', $category);
+
+			// Create only. Applied on an edit as well, these would republish a
+			// comment its author had removed and re-file it under whatever `cat`
+			// the request carried.
+			if ($__isNew)
+			{
+				$row->set('state', 1);
+				$row->set('item_type', $category);
+			}
 
 			// Save the data
 			if (!$row->save())
@@ -2103,7 +2204,7 @@ class Wishlists extends SiteController
 					'action'      => 'created',
 					'scope'       => 'wishlist.comment',
 					'scope_id'    => $row->get('id'),
-					'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . $objWish->get('subject') . '</a>'),
+					'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 					'details'     => array(
 						'wish'    => $objWish->get('id'),
 						'url'     => Route::url($objWish->link())
@@ -2172,7 +2273,7 @@ class Wishlists extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'wishlist.comment',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . $wish->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'id'  => $row->get('id'),
 					'url' => Route::url($wish->link())
