@@ -27,6 +27,55 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 class Entriesv1_0 extends ApiController
 {
 	/**
+	 * Decide which blog an entry may be written to, and whose name goes on it.
+	 *
+	 * The API accepts an ordinary logged-in browser session, so none of these
+	 * three may come from the request for an ordinary caller: created_by is
+	 * the byline, and scope/scope_id decide whose blog the entry appears in.
+	 * Taken raw, any member could publish under another member's name, onto
+	 * another member's blog, or into a group they do not belong to.
+	 *
+	 * The site never takes them from the request either -- the member and
+	 * group blog plugins set both from the page context.
+	 *
+	 * A component manager may still name all three, which is what the admin
+	 * and migration tooling needs.
+	 *
+	 * @param   string   $scope      Requested scope
+	 * @param   integer  $scopeId    Requested scope id
+	 * @param   integer  $createdBy  Requested author
+	 * @return  array    [scope, scope_id, created_by]
+	 * @throws  Exception
+	 */
+	protected function authorizedScope($scope, $scopeId, $createdBy)
+	{
+		$uid = (int) User::get('id');
+
+		if (User::authorise('core.manage', 'com_blog'))
+		{
+			return array($scope, (int) $scopeId, (int) $createdBy);
+		}
+
+		$scope   = strtolower((string) $scope);
+		$scopeId = (int) $scopeId;
+
+		if ($scope == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($scopeId);
+
+			if (!$group || !in_array($uid, (array) $group->get('members')))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+
+			return array('group', $scopeId, $uid);
+		}
+
+		// Anything else is this member's own blog
+		return array('member', $uid, $uid);
+	}
+
+	/**
 	 * Display a list of entries
 	 *
 	 * @apiMethod GET
@@ -234,14 +283,20 @@ class Entriesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		list($scope, $scopeId, $createdBy) = $this->authorizedScope(
+			Request::getString('scope', '', 'post'),
+			Request::getInt('scope_id', 0, 'post'),
+			Request::getInt('created_by', User::get('id'), 'post')
+		);
+
 		$fields = array(
-			'scope'          => Request::getString('scope', '', 'post'),
-			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
+			'scope'          => $scope,
+			'scope_id'       => $scopeId,
 			'title'          => Request::getString('title', null, 'post', 'none', 2),
 			'alias'          => Request::getString('alias', null, 'post'),
 			'content'        => Request::getString('content', null, 'post', 'none', 2),
 			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
-			'created_by'     => Request::getInt('created_by', User::get('id'), 'post'),
+			'created_by'     => $createdBy,
 			'state'          => Request::getInt('state', 1, 'post'),
 			'access'         => Request::getInt('access', 1, 'post'),
 			'allow_comments' => Request::getInt('allow_comments', 0, 'post'),
@@ -300,7 +355,7 @@ class Entriesv1_0 extends ApiController
 				'action'      => 'created',
 				'scope'       => 'blog.entry',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => $url
@@ -474,14 +529,29 @@ class Entriesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 		}
 
+		// Only the author (or a component manager) may edit an entry.
+		if ($row->get('created_by') != User::get('id')
+			&& !User::authorise('core.manage', 'com_blog'))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
+		// The author gate above is worth nothing if the request can then move
+		// the entry into someone else's blog or put someone else's name on it.
+		list($scope, $scopeId, $createdBy) = $this->authorizedScope(
+			Request::getString('scope', $row->get('scope')),
+			Request::getInt('scope_id', $row->get('scope_id')),
+			Request::getInt('created_by', $row->get('created_by'))
+		);
+
 		$fields = array(
-			'scope'          => Request::getString('scope', $row->get('scope')),
-			'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
+			'scope'          => $scope,
+			'scope_id'       => $scopeId,
 			'title'          => Request::getString('title', $row->get('title')),
 			'alias'          => Request::getString('alias', $row->get('alias')),
 			'content'        => Request::getString('content', $row->get('content')),
 			'created'        => Request::getString('created', $row->get('created')),
-			'created_by'     => Request::getInt('created_by', $row->get('created_by')),
+			'created_by'     => $createdBy,
 			'state'          => Request::getInt('state', $row->get('state')),
 			'access'         => Request::getInt('access', $row->get('access')),
 			'allow_comments' => Request::getInt('allow_comments', $row->get('allow_comments')),
@@ -538,7 +608,7 @@ class Entriesv1_0 extends ApiController
 				'action'      => 'updated',
 				'scope'       => 'blog.entry',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+				'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => $url
@@ -587,6 +657,13 @@ class Entriesv1_0 extends ApiController
 				throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
 			}
 
+			// Only the author (or a component manager) may delete an entry.
+			if ($row->get('created_by') != User::get('id')
+				&& !User::authorise('core.manage', 'com_blog'))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+
 			if (!$row->destroy())
 			{
 				throw new Exception($row->getError(), 500);
@@ -604,7 +681,7 @@ class Entriesv1_0 extends ApiController
 					'action'      => 'deleted',
 					'scope'       => 'blog.entry',
 					'scope_id'    => $id,
-					'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . $row->get('title') . '</a>'),
+					'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 					'details'     => array(
 						'title' => $row->get('title'),
 						'url'   => $url
