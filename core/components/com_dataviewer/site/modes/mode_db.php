@@ -13,7 +13,7 @@ function get_conf($db_id)
 	global $dv_conf, $com_name;
 	$db_dv_conf = array();
 
-	$db_name = isset($db_id['name']) ? $db_id['name'] : '';
+	$db_name = isset($db_id['name']) ? str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name'])) : '';
 
 	if (empty($db_name))
 	{
@@ -63,8 +63,9 @@ function get_dd($db_id)
 {
 	global $dv_conf;
 	$dd = false;
-	$dv_id = Request::getString('dv');
-	$db_name = $db_id['name'];
+	$dv_id = preg_replace('/[^A-Za-z0-9_.-]/', '', (string) Request::getString('dv'));
+	$dv_id = str_replace('..', '', $dv_id);
+	$db_name = str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']));
 
 	$dv_conf['dd_json'] = "{$dv_conf['db_base_dir']}/$db_name/applications/dataviewer/datadefinitions";
 
@@ -177,15 +178,45 @@ function _dd_post($dd)
 		}
 
 		// Custom Group by
+		//
+		// An allowlist of this dataview's own columns, for the same reason as
+		// custom_view below -- lib/db.php concatenates this straight into the
+		// statement. A character class is NOT enough here: letters, digits,
+		// comma, dot, space and backtick are everything a
+		// "1 WITH ROLLUP UNION SELECT ..." payload needs, and naming WITH ROLLUP
+		// also suppresses the trailing ORDER BY at lib/db.php:659, which is what
+		// would otherwise have made the injected UNION a syntax error.
 		$group_by = Request::getString('group_by', '');
 		if ($group_by !== '') {
-			$dd['group_by'] = htmlspecialchars($group_by);
+			$group_cols = array();
+			foreach (explode(',', $group_by) as $gb_col) {
+				$gb_col = trim($gb_col);
+				// accept a bare column or its "WITH ROLLUP" suffix, nothing else
+				$rollup = '';
+				if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m)) {
+					$gb_col = trim($m[1]);
+					$rollup = ' WITH ROLLUP';
+				}
+				if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols'])) {
+					$group_cols[] = '`' . $gb_col . '`' . $rollup;
+				}
+			}
+			if ($group_cols) {
+				$dd['group_by'] = implode(', ', $group_cols);
+			}
 		}
 
 		// Ordering
 		$order_cols = $dd['cols'];
 		$dd['cols'] = array();
 		foreach ($custom_view as $cv_col) {
+			// Only real columns of this dataview. An unknown key yields a null
+			// conf, and lib/db.php then uses the key itself both as the column
+			// expression and as its backtick-quoted alias -- so anything else was
+			// an injection straight into the SELECT list.
+			if (!array_key_exists($cv_col, $order_cols)) {
+				continue;
+			}
 			$dd['cols'][$cv_col] = $order_cols[$cv_col];
 		}
 
