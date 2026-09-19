@@ -679,6 +679,16 @@ class Citations extends SiteController
 
 		// Bind incoming data to object
 		$row = Citation::oneOrNew($id);
+
+		// Authorized to edit this citation? (editTask enforces the same.) A brand
+		// new citation has no owner yet.
+		if (!$row->isNew()
+			&& !User::authorise('core.manage', $this->_option)
+			&& !$row->canEdit())
+		{
+			App::abort(403, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
+		}
+
 		$row->set($c);
 
 		$updateAuthorsId = false;
