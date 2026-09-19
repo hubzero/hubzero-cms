@@ -528,6 +528,13 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
+		// Only a recipient of the message, or its sender, may read it
+		if ((!$recipient->get('id') || User::get('id') != $member->get('id'))
+			&& $xmessage->get('created_by') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		if (substr($xmessage->get('component'), 0, 4) == 'com_')
 		{
 			$xmessage->set('component', substr($xmessage->get('component'), 4));
