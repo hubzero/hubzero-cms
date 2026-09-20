@@ -333,6 +333,16 @@ class Auth extends SiteController
 	 **/
 	protected function isBase64($str)
 	{
+		// An absent `return` gives getString() null, which this handed straight
+		// to preg_match() -- a PHP 8 deprecation -- and then answered true for,
+		// so the caller ran base64_decode(null) for a second one, both printed
+		// ahead of the Location header. The caller's fallback is the same either
+		// way, so refusing the empty string changes no live URL.
+		if ($str === null || $str === '')
+		{
+			return false;
+		}
+
 		if (preg_match('/[^A-Za-z0-9\+\/\=]/', $str))
 		{
 			return false;
@@ -606,7 +616,12 @@ class Auth extends SiteController
 		}
 		else
 		{
-			$return = Reoute::url('index.php');
+			$return = Route::url('index.php');
+		}
+
+		if (!$return || !Uri::isInternal($return))
+		{
+			$return = Route::url('index.php');
 		}
 
 		App::redirect($return);
