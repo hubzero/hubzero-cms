@@ -11,6 +11,7 @@ use Hubzero\Component\AdminController;
 use Route;
 use Lang;
 use App;
+use Request;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'awards.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'groups.php';
@@ -38,6 +39,9 @@ class Incremental extends AdminController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$this->database->setQuery('DELETE FROM `#__incremental_registration_groups`');
 		$this->database->execute();
 

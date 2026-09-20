@@ -155,8 +155,8 @@ class Media extends AdminController
 			return $this->displayTask($id);
 		}
 
-		// Incoming file
-		$file = Request::getString('file', '');
+		// Incoming file - restrict to a bare filename within the member dir
+		$file = basename(Request::getString('file', ''));
 		if (!$file)
 		{
 			$this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));

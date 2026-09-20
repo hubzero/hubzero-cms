@@ -33,6 +33,12 @@ class ImportHooks extends AdminController
 	{
 		Lang::load($this->_option . '.import', dirname(__DIR__));
 
+		// Import hooks are executable files; restrict management to full admins
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$this->registerTask('add', 'edit');
 		$this->registerTask('apply', 'save');
 
@@ -190,6 +196,9 @@ class ImportHooks extends AdminController
 		// If we have a file
 		if ($file['size'] > 0 && $file['error'] == 0)
 		{
+			// Keep the upload inside the hook's filespace - strip any path parts
+			$file['name'] = basename($file['name']);
+
 			move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
 			$hook->set('file', $file['name']);
