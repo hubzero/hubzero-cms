@@ -177,6 +177,45 @@ class Helper extends Module
 			// already been posted to this collection (i.e., no duplicates)
 			$database = \App::get('db');
 
+			// collectible[collection_id] comes straight from the module's form and
+			// nothing downstream re-checks it -- Tables\Post::check() only wants a
+			// non-zero value and stamps created_by from the session -- so the
+			// board has to be one this caller may post to.
+			//
+			$__board = new \Components\Collections\Models\Collection((int) $collectible['collection_id']);
+
+			if (!$__board->canBePostedToBy())
+			{
+				return false;
+			}
+
+			// Whether the ITEM needs gating depends on where it came from, and
+			// that turns on the option this module is rendering under.
+			//
+			// Archive::collectible() returns a per-option adapter for every
+			// option BUT com_collections, and each of those adapters creates the
+			// item row for the thing being collected (models/item/resources.php
+			// and its eight siblings). A brand-new item sits on no board yet, so
+			// asking "which boards already carry it" would refuse every
+			// first-ever collect of a resource, wiki page, blog entry and so on.
+			// What the caller may see there is the page they are already on.
+			//
+			// For com_collections it returns the BASE Models\Item, whose make()
+			// does Tables\Post::load(Request::getInt('post')) -- an unscoped
+			// primary-key load, so the item is whatever post id the request
+			// names. That is the path canCollect() exists to serve, and it is
+			// exactly the "mint a post carrying any item on the hub" shape the
+			// rest of this campaign closed. It still has to be gated.
+			if (Request::getCmd('option') == 'com_collections')
+			{
+				$__item = new \Components\Collections\Models\Item($this->item->get('id'));
+
+				if (!$__item->isCollectableBy())
+				{
+					return false;
+				}
+			}
+
 			$post = new Post($database);
 			$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));
 			if (!$post->id)
