@@ -111,7 +111,7 @@ class Reader implements Iterator
 	{
 		// open file with reader
 		// force UTF-8, validate XML, & substitute entities while reading
-		$this->reader->open($this->file, 'UTF-8', XMLReader::VALIDATE | XMLReader::SUBST_ENTITIES);
+		$this->reader->open($this->file, 'UTF-8', LIBXML_NONET);
 
 		// fast forward to first record
 		while ($this->reader->read() && $this->reader->name !== $this->key)

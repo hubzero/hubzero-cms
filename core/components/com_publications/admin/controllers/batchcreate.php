@@ -216,7 +216,7 @@ class Batchcreate extends AdminController
 		$this->reader = new \XMLReader();
 
 		// Open and validate XML against schema
-		if (!$this->reader->XML($this->data, 'UTF-8', \XMLReader::VALIDATE | \XMLReader::SUBST_ENTITIES))
+		if (!$this->reader->XML($this->data, 'UTF-8', LIBXML_NONET))
 		{
 			echo json_encode(array(
 				'result'  => 'error',
