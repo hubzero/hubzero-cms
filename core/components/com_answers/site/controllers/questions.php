@@ -98,13 +98,43 @@ class Questions extends SiteController
 			App::abort(404, Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
 		}
 
+		$__existing = (!empty($comment['id']) && (int) $comment['id'] > 0);
+		if ($__existing)
+		{
+			$__row = Comment::oneOrFail((int) $comment['id']);
+			// core.edit as well as core.manage: the gate that admits the caller
+			// into this task accepts core.edit, core.create or core.manage, so a
+			// moderator group holding Edit but not Access Administration
+			// Interface would pass the door and then be refused here. core.create
+			// is deliberately not accepted -- it permits authoring, not editing
+			// someone else's entry.
+			if ($__row->get('created_by') != User::get('id')
+				&& !User::authorise('core.edit', $this->_option)
+				&& !User::authorise('core.manage', $this->_option))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		// created and state are forced below, but created_by, item_id and
+		// item_type are posted by the form and would otherwise stick: an
+		// existing comment could change hands or be moved onto another item.
+		if ($__existing)
+		{
+			unset($comment['created_by']);
+			$comment['item_id']   = $__row->get('item_id');
+			$comment['item_type'] = $__row->get('item_type');
+		}
+
 		$row = Comment::oneOrNew($comment['id'])->set($comment);
 
 		// Perform some text cleaning, etc.
 		$row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 		$row->set('created', Date::toSql());
 		$row->set('state', 0);
-		$row->set('created_by', User::get('id'));
+		if (!$__existing)
+		{
+			$row->set('created_by', User::get('id'));
+		}
 
 		// Save the data
 		if (!$row->save())
@@ -207,7 +237,7 @@ class Questions extends SiteController
 				'scope'       => 'question.answer.comment',
 				'scope_id'    => $row->get('id'),
 				'anonymous'   => $row->get('anonymous', 0),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $question->get('title'),
 					'url'   => $question->link()
@@ -294,6 +324,21 @@ class Questions extends SiteController
 			$row = Comment::oneOrFail($id);
 			$scope = 'question.answer.comment';
 		}
+		else
+		{
+			// An absent or unknown category left $row unassigned, and the very
+			// next line called a method on it -- a fatal on PHP 8, reachable
+			// by anyone logged in.
+			if (!$no_html)
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->_option),
+					Lang::txt('COM_ANSWERS_ERROR_ID_NOT_FOUND'),
+					'error'
+				);
+			}
+			return;
+		}
 
 		// Can't vote for your own comment
 		if ($row->get('created_by') == User::get('id'))
@@ -345,7 +390,10 @@ class Questions extends SiteController
 			if ($row instanceof Comment)
 			{
 				$question = Question::oneOrFail($row->get('question_id'));
-				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_ON', $row->get('id'), $question->get('subject'));
+				// $txt is dropped into an activity description that the feed
+				// renders as HTML, so the subject has to be escaped here --
+				// after this it is indistinguishable from the language string.
+				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_ON', $row->get('id'), htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'));
 			}
 
 			Event::trigger('system.logActivity', [
@@ -693,7 +741,39 @@ class Questions extends SiteController
 		});
 
 		// Initiate class and bind posted items to database fields
+		$__existing = (!empty($fields['id']) && (int) $fields['id'] > 0);
+		if ($__existing)
+		{
+			$__row = Question::oneOrFail((int) $fields['id']);
+			// core.edit as well as core.manage: the gate that admits the caller
+			// into this task accepts core.edit, core.create or core.manage, so a
+			// moderator group holding Edit but not Access Administration
+			// Interface would pass the door and then be refused here. core.create
+			// is deliberately not accepted -- it permits authoring, not editing
+			// someone else's entry.
+			if ($__row->get('created_by') != User::get('id')
+				&& !User::authorise('core.edit', $this->_option)
+				&& !User::authorise('core.manage', $this->_option))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		// Narrow the bound array. The check above decides WHO may write this
+		// row; it says nothing about WHICH columns, and $fields is the raw
+		// POST. The new-question form posts a constant state of 0 and never
+		// posts an author or a timestamp.
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.manage', $this->_option))
+		{
+			unset($fields['created_by'], $fields['created']);
+			$fields['state'] = $__existing ? $__row->get('state') : 0;
+		}
+
 		$row = Question::oneOrNew($fields['id'])->set($fields);
+		if (!$__existing)
+		{
+			$row->set('created_by', User::get('id'));
+		}
 
 		if ($fields['reward'] && $this->config->get('banking'))
 		{
@@ -807,7 +887,7 @@ class Questions extends SiteController
 				'scope'       => 'question',
 				'scope_id'    => $row->get('id'),
 				'anonymous'   => $row->get('anonymous', 0),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => $row->link()
@@ -833,6 +913,10 @@ class Questions extends SiteController
 	 */
 	public function deleteqTask()
 	{
+		// The confirmation form in views/questions/tmpl/question.php posts and
+		// emits Html::input('token'), so there is a caller to honour this.
+		Request::checkToken();
+
 		// Login required
 		if (User::isGuest())
 		{
@@ -857,6 +941,18 @@ class Questions extends SiteController
 		}
 
 		$question = Question::oneOrFail($id);
+
+		// The view offers this form only to the question's own author holding
+		// core.delete, so a hub that grants core.delete to ordinary authors --
+		// which is what makes the form appear at all -- would otherwise let any
+		// of them delete anyone's question.
+		if ($question->get('created_by') != User::get('id')
+		 && !User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$question->set('state', Question::STATE_DELETED);
 		$question->set('reward', 0);
 
@@ -938,7 +1034,7 @@ class Questions extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'question',
 				'scope_id'    => $question->get('id'),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . $question->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $question->get('title'),
 					'url'   => $question->link()
@@ -997,7 +1093,44 @@ class Questions extends SiteController
 		});
 
 		// Initiate class and bind posted items to database fields
+		$__existing = (!empty($response['id']) && (int) $response['id'] > 0);
+		if ($__existing)
+		{
+			$__row = Response::oneOrFail((int) $response['id']);
+			// core.edit as well as core.manage: the gate that admits the caller
+			// into this task accepts core.edit, core.create or core.manage, so a
+			// moderator group holding Edit but not Access Administration
+			// Interface would pass the door and then be refused here. core.create
+			// is deliberately not accepted -- it permits authoring, not editing
+			// someone else's entry.
+			if ($__row->get('created_by') != User::get('id')
+				&& !User::authorise('core.edit', $this->_option)
+				&& !User::authorise('core.manage', $this->_option))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		// As above. state 1 is what Question::chosen() reads as the accepted
+		// answer, so leaving it bindable let an author mark their own answer
+		// accepted and skip acceptTask entirely. question_id is fixed on an
+		// existing row so an answer cannot be moved to another question.
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.manage', $this->_option))
+		{
+			unset($response['created_by'], $response['created'], $response['helpful'], $response['nothelpful']);
+			$response['state'] = $__existing ? $__row->get('state') : 0;
+
+			if ($__existing)
+			{
+				$response['question_id'] = $__row->get('question_id');
+			}
+		}
+
 		$row = Response::oneOrNew($response['id'])->set($response);
+		if (!$__existing)
+		{
+			$row->set('created_by', User::get('id'));
+		}
 
 		// Store new content
 		if (!$row->save())
@@ -1089,7 +1222,7 @@ class Questions extends SiteController
 				'action'      => ($response['id'] ? 'updated' : 'created'),
 				'scope'       => 'question.answer',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED', '<a href="' . Route::url($question->link() . '#a' . $row->get('id')) . '">' . $question->get('subject') . '</a>'),
+				'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED', '<a href="' . Route::url($question->link() . '#a' . $row->get('id')) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'       => $question->get('title'),
 					'question_id' => $question->get('id'),
@@ -1159,7 +1292,7 @@ class Questions extends SiteController
 					'action'      => 'accepted',
 					'scope'       => 'question.answer',
 					'scope_id'    => $rid,
-					'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED', $rid, '<a href="' . Route::url($question->link() . '#a' . $rid) . '">' . $question->get('subject') . '</a>'),
+					'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED', $rid, '<a href="' . Route::url($question->link() . '#a' . $rid) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
 					'details'     => array(
 						'title'       => $question->get('title'),
 						'question_id' => $question->get('id'),
