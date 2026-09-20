@@ -9,6 +9,7 @@ namespace Components\Projects\Site\Controllers;
 
 
 use Components\Projects\Tables;
+use Hubzero\Utility\Uri;
 use Components\Projects\Models;
 use Components\Projects\Helpers;
 use Components\Projects\Helpers\AccessHelper;
@@ -1029,10 +1030,19 @@ class Projects extends Base
 		$json  = base64_decode($state);
 		$json  = json_decode($json);
 
+		// is_object() alone still leaves $json->alias undefined for a well-formed
+		// but empty object, which warns and then hands a null identifier to the
+		// project model.
+		if (!is_object($json) || !isset($json->alias) || $json->alias === '')
+		{
+			App::redirect(Route::url('index.php'));
+			return;
+		}
+
 		$this->_identifier = $json->alias;
 		$this->model = new Models\Project($this->_identifier);
 
-		$service = $json->service ? $json->service : 'google';
+		$service = (isset($json->service) && $json->service) ? $json->service : 'google';
 
 		// Successful authorization grant, fetch the access token
 		if ($code)
@@ -1058,6 +1068,12 @@ class Projects extends Base
 				: Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_NOW');
 			$this->_setNotification($error, 'error');
 			$return = $json->return;
+		}
+
+		// Only redirect to an internal location
+		if (empty($return) || !Uri::isInternal($return))
+		{
+			$return = Route::url('index.php');
 		}
 
 		App::redirect($return);
