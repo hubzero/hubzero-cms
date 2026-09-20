@@ -128,6 +128,23 @@ class ImportHooks extends AdminController
 		$data = Request::getArray('hook', array());
 		$file = Request::getArray('file', array(), 'FILES');
 
+		// The stored file name is written by the upload branch below and nowhere
+		// else. Binding it from the request let a POST with no upload at all set
+		// hook[file] to a traversing path, which rawTask() then reads and prints.
+		unset($data['file']);
+
+		// The id decides the upload DIRECTORY: fileSpacePath() concatenates it
+		// onto PATH_APP/site/resources/import/hooks, and Request::getArray()
+		// filters nothing. hook[id]=../../../../config walked the
+		// move_uploaded_file() target below out of the hook filespace and into
+		// PATH_APP/config, and save() did not stand in the way -- a non-numeric
+		// id leaves isNew() false, so the UPDATE matched no rows and still
+		// returned success. basename() on the uploaded name does not help here,
+		// because the traversal is in the directory rather than the name.
+		// is_array first: PHP casts a non-empty array to int(1) with no diagnostic,
+		// so hook[id][]=99 would silently rewrite hook #1.
+		$data['id'] = (isset($data['id']) && !is_array($data['id'])) ? (int) $data['id'] : 0;
+
 		// create hook model object
 		$hook = Hook::oneOrNew($data['id'])->set($data);
 
@@ -165,6 +182,9 @@ class ImportHooks extends AdminController
 		// if we have a file
 		if ($file['size'] > 0 && $file['error'] == 0)
 		{
+			// Keep the upload inside the hook's filespace - strip any path parts
+			$file['name'] = basename($file['name']);
+
 			move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
 			$hook->set('file', $file['name']);
@@ -194,8 +214,9 @@ class ImportHooks extends AdminController
 		// create hook model object
 		$hook = Hook::oneOrFail($id);
 
-		// get path to file
-		$file = $hook->fileSpacePath() . DS . $hook->get('file');
+		// get path to file -- basename again here, so a row stored before this
+		// change cannot still walk out of the hook's filespace
+		$file = $hook->fileSpacePath() . DS . basename((string) $hook->get('file'));
 
 		// default contents
 		$contents = '';

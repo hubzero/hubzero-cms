@@ -289,6 +289,9 @@ class Entriesv1_0 extends ApiController
 	public function renderlatexTask()
 	{
 		$expression = Request::getString('expression', '');
+		// Defensive: bound the input and strip TeX shell-escape primitives
+		$expression = substr($expression, 0, 3000);
+		$expression = str_ireplace(array('\\write18', '\\input', '\\openin', '\\openout'), '', $expression);
 
 		$dir = PATH_APP . DS . 'cache' . DS . 'ckeditor' . DS . 'hubzeroequation' . DS;
 		$filename = uniqid('equation_');
@@ -363,7 +366,7 @@ class Entriesv1_0 extends ApiController
 		$object->expression = $expression;
 
 		// clean up our cache mess
-		shell_exec('rm ' . $dir . $filename . '.*');
+		shell_exec('rm ' . escapeshellarg($dir . $filename) . '.*');
 
 		$this->send($object);
 	}
