@@ -212,7 +212,7 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 					return false;
 				}
 
-				$command = 'sudo ' . $path . ' set ' . $jailname . ' banip ' . $ip;
+				$command = 'sudo ' . escapeshellarg($path) . ' set ' . escapeshellarg($jailname) . ' banip ' . escapeshellarg($ip);
 				exec($command);
 			}
 		}
