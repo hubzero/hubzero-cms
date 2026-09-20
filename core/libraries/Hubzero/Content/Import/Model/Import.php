@@ -139,8 +139,8 @@ class Import extends Relational
 			throw new Exception(__METHOD__ . '(); ' . Lang::txt('Missing required data file.'));
 		}
 
-		// build path to file
-		$filePath = $this->fileSpacePath() . DS . $file;
+		// build path to file (basename guards against a stored name with path parts)
+		$filePath = $this->fileSpacePath() . DS . basename($file);
 
 		// make sure file exists
 		if (!file_exists($filePath))

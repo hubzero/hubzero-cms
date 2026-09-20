@@ -190,6 +190,7 @@ class ImportHooks extends AdminController
 		// If we have a file
 		if ($file['size'] > 0 && $file['error'] == 0)
 		{
+			$file['name'] = \Hubzero\Filesystem\Util::normalizeFile(basename(str_replace('\\', '/', $file['name'])));
 			move_uploaded_file($file['tmp_name'], $hook->fileSpacePath() . DS . $file['name']);
 
 			$hook->set('file', $file['name']);

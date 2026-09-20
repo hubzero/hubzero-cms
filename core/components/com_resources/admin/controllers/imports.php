@@ -232,6 +232,7 @@ class Imports extends AdminController
 				Filesystem::makeDirectory($import->fileSpacePath());
 			}
 
+			$file['name'] = \Hubzero\Filesystem\Util::normalizeFile(basename(str_replace('\\', '/', $file['name'])));
 			move_uploaded_file($file['tmp_name'], $import->fileSpacePath() . DS . $file['name']);
 
 			$import->set('file', $file['name']);
