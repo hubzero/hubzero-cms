@@ -103,6 +103,7 @@ $types = $dbh->loadAssocList('id');
 				<input type="hidden" value="<?php echo $this->option; ?>" name="option" />
 				<input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
 				<input type="hidden" name="task" value="updatefocusareas" />
+				<?php echo Html::input('token'); ?>
 			</p>
 		</div>
 		<div class="col span4">

@@ -36,10 +36,10 @@ class Relationships extends AdminController
 			$this->view->setError($error);
 		}
 
-		$tag = Request::getString('tag', null);
-		if ($tag && (int) $tag == $tag)
+		$tag = Request::getInt('tag', 0);
+		if ($tag)
 		{
-			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . $tag);
+			$this->database->setQuery('SELECT tag FROM `#__tags` WHERE id = ' . (int) $tag);
 			$this->view->set('preload', $this->database->loadResult());
 		}
 
@@ -312,6 +312,8 @@ class Relationships extends AdminController
 	 */
 	public function updateTask()
 	{
+		Request::checkToken();
+
 		if (isset($_POST['tag']) && ($tid = (int)$_POST['tag']))
 		{
 			$this->database->setQuery('UPDATE `#__tags` SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
@@ -424,6 +426,8 @@ class Relationships extends AdminController
 	 */
 	public function updatefocusareasTask()
 	{
+		Request::checkToken();
+
 		$this->database->setQuery('SELECT id, tag_id, mandatory_depth, multiple_depth FROM `#__focus_areas`');
 
 		$existing = $this->database->loadAssocList('id');

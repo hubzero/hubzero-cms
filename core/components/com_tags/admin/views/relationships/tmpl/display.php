@@ -63,6 +63,7 @@ $this->js('d3.js', 'system')
 							<td colspan="2">
 								<input type="hidden" class="tag-id" name="tag" value="" />
 								<input type="hidden" value="update" name="task" />
+								<?php echo Html::input('token'); ?>
 								<button type="submit"><?php echo Lang::txt('COM_TAGS_RELATIONSHIP_UPDATE'); ?></button>
 							</td>
 						</tr>
