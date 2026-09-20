@@ -695,6 +695,7 @@ class Threadsv1_0 extends ApiController
 		}
 
 		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
+		$row->set('created_by', User::get('id'));
 
 		$category = Category::all()
 			->whereEquals('id', $row->get('category_id'))
@@ -713,11 +714,6 @@ class Threadsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_FORUM_ERROR_SAVING_DATA'), 500);
 		}
 
-		if ($fields['created_by'])
-		{
-			$row->set('created_by', (int)$fields['created_by']);
-			$row->save();
-		}
 
 		if ($tags = Request::getString('tags', null, 'post'))
 		{
@@ -1067,7 +1063,7 @@ class Threadsv1_0 extends ApiController
 
 				$list[$id] = $v;
 				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
+				$list[$id]->children = count($children[$id] ?? array());
 
 				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}

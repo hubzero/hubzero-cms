@@ -321,6 +321,16 @@ class Groupsv1_1 extends ApiController
 		$fields = explode(',', $fields);
 		$fields = array_map('trim', $fields);
 
+		// Private fields are only exposed to members, managers, or admins
+		$uid = User::get('id');
+		$isMember = (in_array($uid, (array) $record->get('members'))
+			|| in_array($uid, (array) $record->get('managers'))
+			|| User::authorise('core.admin', 'com_groups'));
+		if (!$isMember)
+		{
+			$fields = array_diff($fields, array('private_desc', 'params'));
+		}
+
 		foreach ($fields as $field)
 		{
 			if (property_exists($record, $field))

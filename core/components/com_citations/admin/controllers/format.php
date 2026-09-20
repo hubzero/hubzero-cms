@@ -13,6 +13,7 @@ use Request;
 use Notify;
 use Lang;
 use App;
+use User;
 
 /**
  * Controller class for citation format
@@ -64,6 +65,11 @@ class Format extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		//get format
 		$format = Request::getArray('citationFormat', array());

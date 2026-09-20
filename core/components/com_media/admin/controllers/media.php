@@ -364,6 +364,14 @@ class Media extends AdminController
 	 */
 	public function ajaxUploadTask()
 	{
+		// Check for request forgeries
+		Session::checkToken(['get', 'post']);
+
+		if (!User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$params = Component::params('com_media');
 
 		// Size limit is in MB, so we need to turn it into just B

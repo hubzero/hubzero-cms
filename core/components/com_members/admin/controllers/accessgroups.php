@@ -149,6 +149,15 @@ class Accessgroups extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (
+			!User::authorise('core.admin', $this->_option)
+			&& !User::authorise('core.manage', $this->_option)
+			&& !User::authorise('core.edit', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming password blacklist edits
 		$fields = Request::getArray('fields', array(), 'post');
 

@@ -332,6 +332,14 @@ class Mailinglists extends AdminController
 	 */
 	public function doAddEmailTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// array to hold emails
 		$emails           = array();
 		$duplicateEmails  = array();
@@ -672,6 +680,11 @@ class Mailinglists extends AdminController
 	 */
 	public function exportTask()
 	{
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$ids = Request::getArray('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
@@ -728,6 +741,11 @@ class Mailinglists extends AdminController
 	 */
 	public function emailCountTask()
 	{
+		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get the mailing list
 		$id = Request::getInt('mailinglistid', '-1');
 

@@ -57,6 +57,17 @@ class Articles extends AdminController
 	 */
 	public function batchTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$ids = Request::getArray('cid', array());
 
 		if (empty($ids))
@@ -465,6 +476,15 @@ class Articles extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+			&& !User::authorise('core.edit.own', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming data
 		$items = Request::getArray('fields', array(), 'post');

@@ -1149,6 +1149,17 @@ class Items extends AdminController
 	 */
 	public function batchTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (
+			!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option)
+		)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$vars = Request::getArray('batch', array());
 		$pks  = Request::getArray('cid', array());
 
