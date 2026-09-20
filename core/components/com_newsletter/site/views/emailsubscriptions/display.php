@@ -46,7 +46,7 @@ $this->view('_breadcrumbs', 'shared')
 				           ->display(); ?>
 
 				<?php echo Html::input('token'); ?>
-				<input type="hidden" name="code" value="<?php echo $code; ?>">
+				<input type="hidden" name="code" value="<?php echo $this->escape($code); ?>">
 				<input type="hidden" name="userId" value="<?php echo $userId; ?>">
 				<input type="hidden" name="campaign" value="<?php echo $campaign; ?>">
 				<input type="submit" class="btn btn-success" value="<?php echo $submitText; ?>">

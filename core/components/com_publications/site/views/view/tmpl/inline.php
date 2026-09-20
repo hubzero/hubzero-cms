@@ -80,7 +80,7 @@ $viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publicati
 
 ?>
 <div class="sample">
-	<p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>'; } ?></p>
+	<p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->escape($this->publication->title) . '</strong>'; ?> <?php if ($this->primary->role != 1) { echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->escape($this->primary->path) . '</strong>'; } ?></p>
 </div>
 
 <?php

@@ -36,10 +36,10 @@ $this->view('_breadcrumbs', 'shared')
 				<textarea name="reply[text]" rows="30"></textarea>
 
 				<?php echo Html::input('token'); ?>
-				<input type="hidden" name="code" value="<?php echo $code; ?>">
+				<input type="hidden" name="code" value="<?php echo $this->escape($code); ?>">
 				<input type="hidden" name="page_id" value="<?php echo $pageId; ?>">
 
-				<input type="hidden" name="user" value="<?php echo $user; ?>">
+				<input type="hidden" name="user" value="<?php echo $this->escape($user); ?>">
 				<input type="hidden" name="campaign_id" value="<?php echo $campaignId; ?>">
 
 				<input type="submit" class="btn btn-success" value="<?php echo $submitText; ?>">

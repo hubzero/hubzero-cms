@@ -56,7 +56,7 @@ $no_show = array("errors","duplicate");
 							<tr>
 								<!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
 								<td>
-									<span class="citation-title"><u><?php echo Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE'); ?></u>: <?php echo html_entity_decode($c['title']); ?></span>
+									<span class="citation-title"><u><?php echo Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE'); ?></u>: <?php echo $this->escape(html_entity_decode((string) $c['title'])); ?></span>
 									<span class="click-more"><?php echo Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'); ?></span>
 	<?php if (1) { ?>
 									<table class="citation-details hide">
@@ -105,14 +105,14 @@ $no_show = array("errors","duplicate");
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
 														<td class="key">
-															<?php echo str_replace("_", " ", $k); ?>
+															<?php echo $this->escape(str_replace("_", " ", (string) $k)); ?>
 														</td>
 														<td>
 															<table class="citation-differences">
 																<tr>
 																	<td><?php echo Lang::txt('COM_CITATIONS_IMPORT_JUST_UPLOADED'); ?>:</td>
 																	<td>
-																		<span class="new insert"><?php echo html_entity_decode(nl2br($c[$k])); ?></span>
+																		<span class="new insert"><?php echo nl2br($this->escape(html_entity_decode((string) $c[$k]))); ?></span>
 																	</td>
 																</tr>
 																<tr>
@@ -122,13 +122,13 @@ $no_show = array("errors","duplicate");
 																			<?php
 																				switch ($k)
 																				{
-																					case 'type':	echo $type_title;
+																					case 'type':	echo $this->escape($type_title);
 break;
-																					case 'tags':	echo $tags;
+																					case 'tags':	echo $this->escape($tags);
 break;
-																					case 'badges':	echo $badges;
+																					case 'badges':	echo $this->escape($badges);
 break;
-																					default:		echo html_entity_decode(nl2br($c['duplicate']->get($k)));
+																					default:		echo nl2br($this->escape(html_entity_decode((string) $c['duplicate']->get($k))));
 																				}
 																			?>
 																		</span>
@@ -172,7 +172,7 @@ break;
 										<?php
 											if (array_key_exists("title", $c))
 											{
-												echo html_entity_decode($c['title']);
+												echo $this->escape(html_entity_decode((string) $c['title']));
 											}
 											else
 											{
@@ -191,8 +191,8 @@ break;
 											<?php foreach (array_keys($c) as $k) : ?>
 												<?php if (!in_array($k, $no_show)) : ?>
 													<tr>
-														<td class="key"><?php echo str_replace("_", " ", $k); ?></td>
-														<td><?php echo html_entity_decode(nl2br($c[$k])); ?></td>
+														<td class="key"><?php echo $this->escape(str_replace("_", " ", (string) $k)); ?></td>
+														<td><?php echo nl2br($this->escape(html_entity_decode((string) $c[$k]))); ?></td>
 													</tr>
 												<?php endif; ?>
 											<?php endforeach; ?>

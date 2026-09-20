@@ -33,7 +33,7 @@ $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this
 			<div class="grid">
 				<div class="col span6">
 					<p>
-						<?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM_SCREEN') . ' "' . $this->model->get('title') . '". ' . Lang::txt('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
+						<?php echo Lang::txt('COM_PROJECTS_INVITED_CONFIRM_SCREEN') . ' "' . $this->escape($this->model->get('title')) . '". ' . Lang::txt('COM_PROJECTS_INVITED_NEED_ACCOUNT_TO_JOIN'); ?>
 					</p>
 				</div>
 				<div class="col span6 omega">

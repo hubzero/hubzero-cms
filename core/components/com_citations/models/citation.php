@@ -975,17 +975,17 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 										$user = User::getInstance($id);
 										if (is_object($user))
 										{
-											$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+											$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . htmlspecialchars(str_replace($matches[0], '', $author), ENT_QUOTES, 'UTF-8') . '</a>';
 										}
 										else
 										{
-											$a[] = $author;
+											$a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
 										}
 									}
 								}
 								else
 								{
-									$a[] = $author;
+									$a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
 								}
 
 								// add author coins
@@ -995,16 +995,16 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 							{
 								if ($author->uidNumber > 0)
 								{
-									$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . $author->author . '</a>';
+									$a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8') . '</a>';
 								}
 								else
 								{
-									$a[] = $author->author;
+									$a[] = htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8');
 								}
 							} //new ORM method
 							else
 							{
-								$a[] = $author;
+								$a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
 							}
 						}
 						$replace_values[$v] = implode(", ", array_filter($a));
@@ -1064,9 +1064,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 						$t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
 					}
 
+					$tEsc   = htmlspecialchars($t, ENT_QUOTES, 'UTF-8');
+					$urlEsc = htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8');
 					$title = ($url != '' && preg_match('/http:|https:/', $url))
-							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'
-							: '<span class="citation-title">' . $t . '</span>';
+							? '<a rel="external" class="citation-title" href="' . $urlEsc . '">' . $tEsc . '</a>'
+							: '<span class="citation-title">' . $tEsc . '</span>';
 
 					//do we want to display single citation
 					//$singleCitationView = $config('citation_single_view', 0);
@@ -1074,7 +1076,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 					if ($singleCitationView && isset($this->id))
 					{
-						$title = '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $t . '</a>';
+						$title = '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $tEsc . '</a>';
 					}
 
 					//send back title to replace title placeholder ({TITLE})
