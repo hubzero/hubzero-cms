@@ -65,6 +65,8 @@ function query_gen(&$dd)
 {
 	global $dv_conf;
 
+	$escLink = isset($dd['db']) ? get_db($dd['db']) : get_db();
+
 	if (!isset($dd['cols']) && isset($dd['table'])) {
 		$link = isset($dd['db'])? get_db($dd['db']): get_db();
 		$sql = "SELECT DB_column_name, Column_info FROM Columns_Info WHERE Table_name='" . $dd['table'] . "'";
@@ -247,7 +249,7 @@ function query_gen(&$dd)
 		$col = $cols[$col_id];
 		$searchable = Request::getString('bSearchable_' . $i, 'false');
 		$fieldtype = Request::getString('fieldtype_' . $i, 'string');
-		$search_str = Request::getString('sSearch_' . $i, '');
+		$search_str = mysqli_real_escape_string($escLink, Request::getString('sSearch_' . $i, ''));
 
 		if ($searchable === 'true' && $search_str !== '') {
 			if ($col['aggr']) {
@@ -267,8 +269,14 @@ function query_gen(&$dd)
 		foreach ($filters as $filter) {
 			$filter = explode('|', $filter);
 			$col_id = $filter[0];
+			// Only filter on columns defined by the data definition; an unknown
+			// (request-supplied) column name must never reach the SQL.
+			if (!isset($cols[$col_id]))
+			{
+				continue;
+			}
 			$col = $cols[$col_id];
-			$filter_str = $filter[1];
+			$filter_str = mysqli_real_escape_string($escLink, $filter[1]);
 			$fieldtype = isset($filter[2]) ? $filter[2] : 'string';
 			$filter_type = isset($filter[3]) ? $filter[3] : 'exact';
 
@@ -288,6 +296,14 @@ function query_gen(&$dd)
 	if (count($where_filter) > 0) {
 		$where_filter_arr = array();
 		foreach ($where_filter as $key => $val) {
+			// number/datetime/numrange values are placed into the SQL by this builder
+			// (it adds the quotes itself), so allow at most one leading operator and
+			// then a plain number, date or "a to b" range - nothing else
+			if (in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+			 && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val']))
+			{
+				continue;
+			}
 			if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
 				$val['val'] = strtolower($val['val']);
 				if (strstr($val['val'], 'to')) {
@@ -326,8 +342,8 @@ function query_gen(&$dd)
 				$max_col = $dd['cols'][$key]['numrange']['max'];
 				if (strstr($val['val'], 'to')) {
 					$vals = explode('to', $val['val']);
-					$min = trim($vals[0]);
-					$max = trim($vals[1]);
+					$min = (float) trim($vals[0]);
+					$max = (float) trim($vals[1]);
 					if ($min < $max) {
 						$where_filter_arr[] = $min_col . " >= $min";
 						$where_filter_arr[] = $max_col . " <= $max";
@@ -336,9 +352,9 @@ function query_gen(&$dd)
 						$where_filter_arr[] = $max_col . " <= $min";
 					}
 				} elseif (strstr($val['val'], '<')) {
-					$where_filter_arr[] = $max_col . " " . $val['val'];
+					$where_filter_arr[] = $max_col . " " . preg_replace('/[^0-9.<>=!-]/', '', $val['val']);
 				} elseif (strstr($val['val'], '>')) {
-					$where_filter_arr[] = $min_col . " " . $val['val'];
+					$where_filter_arr[] = $min_col . " " . preg_replace('/[^0-9.<>=!-]/', '', $val['val']);
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$where_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
@@ -392,6 +408,14 @@ function query_gen(&$dd)
 	if (count($having_filter) > 0) {
 		$having_filter_arr = array();
 		foreach ($having_filter as $key => $val) {
+			// number/datetime/numrange values are placed into the SQL by this builder
+			// (it adds the quotes itself), so allow at most one leading operator and
+			// then a plain number, date or "a to b" range - nothing else
+			if (in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+			 && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val']))
+			{
+				continue;
+			}
 			$val['val'] = strtolower($val['val']);
 			if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
 				if (strstr($val['val'], 'to')) {
@@ -428,8 +452,8 @@ function query_gen(&$dd)
 				$max_col = $dd['cols'][$key]['numrange']['max'];
 				if (strstr($val['val'], 'to')) {
 					$vals = explode('to', $val['val']);
-					$min = trim($vals[0]);
-					$max = trim($vals[1]);
+					$min = (float) trim($vals[0]);
+					$max = (float) trim($vals[1]);
 					if ($min < $max) {
 						$having_filter_arr[] = $min_col . " >= $min";
 						$having_filter_arr[] = $max_col . " <= $max";
@@ -438,9 +462,9 @@ function query_gen(&$dd)
 						$having_filter_arr[] = $max_col . " <= $min";
 					}
 				} elseif (strstr($val['val'], '<')) {
-					$having_filter_arr[] = $max_col . " " . $val['val'];
+					$having_filter_arr[] = $max_col . " " . preg_replace('/[^0-9.<>=!-]/', '', $val['val']);
 				} elseif (strstr($val['val'], '>')) {
-					$having_filter_arr[] = $min_col . " " . $val['val'];
+					$having_filter_arr[] = $min_col . " " . preg_replace('/[^0-9.<>=!-]/', '', $val['val']);
 				} elseif (strstr($val['val'], '!=')) {
 					$val['val'] = trim(str_replace('!=', '', $val['val']));
 					$having_filter_arr[] = "NOT " . $val['col'] . " <=> '" . $val['val'] . "'";
@@ -493,7 +517,7 @@ function query_gen(&$dd)
 	$where_search = array();
 	$having_search = array();
 
-	$search_str = Request::getString('sSearch', '');
+	$search_str = mysqli_real_escape_string($escLink, Request::getString('sSearch', ''));
 	if ($search_str != '') {
 		for ($i = 0; $i < count($cols_vis); $i++) {
 			$col_id = $cols_vis[$i];
@@ -535,10 +559,21 @@ function query_gen(&$dd)
 		foreach ($dd['where'] as $w) {
 			if (isset($w['raw'])) {
 				$where[] = $w['raw'];
-			} elseif ($cols[$w['field']]['raw']) {
-				$where[] = $cols[$w['field']]['expr'] . " IN ('" . str_replace(',', "','", $w['value']) . "')";
 			} else {
-				$where[] = $w['field'] . " IN ('" . str_replace(',', "','", $w['value']) . "')";
+				$inList = implode(',', array_map(function ($v) use ($escLink) {
+					return "'" . mysqli_real_escape_string($escLink, $v) . "'";
+				}, explode(',', (string) $w['value'])));
+				if ($cols[$w['field']]['raw']) {
+					$where[] = $cols[$w['field']]['expr'] . " IN (" . $inList . ")";
+				} else {
+					// The id is a `table.column` pair (see $dd['pk']); quote each part on
+					// its own so it stays a qualified column reference rather than one
+					// literal name MySQL cannot resolve
+					$field = implode('.', array_map(function ($p) {
+						return '`' . str_replace('`', '``', $p) . '`';
+					}, explode('.', (string) $w['field'])));
+					$where[] = $field . " IN (" . $inList . ")";
+				}
 			}
 		}
 		$where_str .= implode(' AND ', $where);
@@ -605,7 +640,7 @@ function query_gen(&$dd)
 			$sortable = Request::getString('bSortable_' . $idx, 'false');
 			if ($sortable === 'true') {
 				$col_id = $cols_vis[$idx];
-				$sort_dir = Request::getString('sSortDir_' . $i, 'asc');
+				$sort_dir = (strtolower(Request::getString('sSortDir_' . $i, 'asc')) === 'desc') ? 'desc' : 'asc';
 				if ($cols[$col_id]['aggr']) {
 					$order[] = '`' . $col_id . '` ' . $sort_dir;
 				} elseif ($cols[$col_id]['raw']) {
@@ -633,7 +668,7 @@ function query_gen(&$dd)
 	$limit_start = Request::getVar('iDisplayStart', false);
 	$limit_length = Request::getVar('iDisplayLength', $dv_conf['settings']['limit']);
 	if ($no_limit === false && $limit_start !== false && $limit_length != '-1') {
-		$limit = " LIMIT $limit_start, $limit_length";
+		$limit = " LIMIT " . (int) $limit_start . ", " . (int) $limit_length;
 	} elseif ($no_limit === false && isset($dd['serverside']) && $dd['serverside']) {
 		$limit = " LIMIT 0, " . $dv_conf['settings']['limit'];
 	}
