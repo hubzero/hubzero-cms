@@ -240,7 +240,15 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
 	{
 		try
 		{
-			$session = $this->globus()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
+				$storedState = Session::get('state', null, 'globus');
+			$state = Request::getVar('state');
+			if (empty($state) || $storedState !== $state)
+			{
+				throw new \Exception('Mismatched state');
+			}
+			Session::clear('state', 'globus');
+
+		$session = $this->globus()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
 		}
 		catch (\Exception $ex)
 		{

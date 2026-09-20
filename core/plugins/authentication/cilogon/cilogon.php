@@ -261,7 +261,15 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	{
 		try
 		{
-			$session = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
+				$storedState = Session::get('state', null, 'cilogon');
+			$state = Request::getVar('state');
+			if (empty($state) || $storedState !== $state)
+			{
+				throw new \Exception('Mismatched state');
+			}
+			Session::clear('state', 'cilogon');
+
+		$session = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
 		}
 		catch (\Exception $ex)
 		{
