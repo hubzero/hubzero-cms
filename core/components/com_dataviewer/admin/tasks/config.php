@@ -15,7 +15,7 @@ function dv_config()
 	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = Request::getString('db', false);
+	$db_id = dv_identifier(Request::getString('db', false), 'db');
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 

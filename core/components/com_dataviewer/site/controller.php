@@ -14,9 +14,24 @@ function controller()
 
 	$db_id['id'] = Request::getString('db','');
 	$db_info = explode(':', $db_id['id']);
-	$db_id['name'] = $db_info[0];
-	$db_id['mode'] = isset($db_info[1]) ? $db_info[1] : 'db';
-	$db_id['extra'] = isset($db_info[2]) ? $db_info[2] : false;
+	// Sanitize the request-derived database identifier and mode (name feeds
+	// SQL, file paths and a database name; mode selects a require'd mode_*.php).
+	$db_id['name'] = str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_info[0]));
+	$db_id['mode'] = isset($db_info[1]) ? preg_replace('/[^A-Za-z0-9]/', '', $db_info[1]) : 'db';
+	$db_id['extra'] = isset($db_info[2]) ? preg_replace('/[^A-Za-z0-9_.-]/', '', $db_info[2]) : false;
+
+	// Rebuild the composite id from the sanitized parts (keeping its shape): the
+	// views and filter output echo it into URLs and HTML attributes
+	$parts = array($db_id['name']);
+	if (isset($db_info[1]))
+	{
+		$parts[] = $db_id['mode'];
+	}
+	if (isset($db_info[2]))
+	{
+		$parts[] = $db_id['extra'];
+	}
+	$db_id['id'] = implode(':', $parts);
 
 	$dv_conf['settings']['db_id'] = $db_id;
 
@@ -55,7 +70,11 @@ function task_view($db_id)
 		return;
 	}
 
-	$filter = strtolower(Request::getString('format', 'json'));
+	// This name selects a require'd filter/<name>.php and came straight from
+	// the request, so "../../../../tmp/x" executed /tmp/x.php. Every shipped
+	// filter is plain lowercase letters, so strip to that charset: no dot and
+	// no separator survives and the path cannot leave the filter directory.
+	$filter = preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('format', 'json')));
 	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);
@@ -81,7 +100,8 @@ function task_data($db_id)
 		return;
 	}
 
-	$filter = strtolower(Request::getString('type', 'csv'));
+	// As in task_view above: request-controlled path segment of a require_once.
+	$filter = preg_replace('/[^a-z0-9_]/', '', strtolower(Request::getString('type', 'csv')));
 	$file = (__DIR__.DS."filter/$filter.php");
 	if (file_exists($file)) {
 		require_once ($file);

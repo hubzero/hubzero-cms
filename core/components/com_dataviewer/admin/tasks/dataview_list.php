@@ -15,7 +15,7 @@ function dv_dataview_list()
 	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = Request::getString('db', false);
+	$db_id = dv_identifier(Request::getString('db', false), 'db');
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
@@ -97,8 +97,11 @@ function dv_dataview_list()
 					$cmd = "cd " . dirname(__DIR__) . "; php ./ddconvert.php -i$php_file -o$json_file";
 					system($cmd);
 
-					$author = User::get('name') . ' <' . User::get('email') . '>';
-					$cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json --author=\"$author\" -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
+					// escapeshellarg, as the three data_definition_* siblings already
+					// do: a display name carrying a quote plus $(...) or a backtick
+					// injects into this command.
+					$author = escapeshellarg(User::get('name') . ' <' . User::get('email') . '>');
+					$cmd = "cd $path; git add $dd_name.json; git commit $dd_name.json --author=$author -m\"[ADD] $dd_name.json Initial commit.\"  > /dev/null";
 					system($cmd);
 				}
 

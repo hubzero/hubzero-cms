@@ -15,3 +15,15 @@ function check_rid()
 
 	exit;
 }
+
+function dv_identifier($value, $label = 'identifier')
+{
+	$value = (string) $value;
+
+	if ($value === '' || !preg_match('/^[A-Za-z0-9_.-]+$/', $value) || strpos($value, '..') !== false)
+	{
+		App::abort(400, 'Invalid ' . $label);
+	}
+
+	return $value;
+}

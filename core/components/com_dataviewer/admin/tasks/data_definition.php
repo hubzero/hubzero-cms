@@ -15,11 +15,11 @@ function dv_data_definition()
 	$document = App::get('document');
 	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = Request::getString('db', false);
+	$db_id = dv_identifier(Request::getString('db', false), 'db');
 	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
 	$db_conf = json_decode(file_get_contents($db_conf_file), true);
 
-	$dd_name = Request::getString('dd', false);
+	$dd_name = dv_identifier(Request::getString('dd', false), 'dd');
 
 
 	$full_screen = Request::getString('tmpl', false);
@@ -64,7 +64,7 @@ function dv_data_definition()
 		</div>
 
 		<div id="tabs-2">
-			<textarea id="db-dd-source-php" style="display: none;"><?php echo $dd_php; ?></textarea>
+			<textarea id="db-dd-source-php" style="display: none;"><?php echo htmlspecialchars($dd_php); ?></textarea>
 			<div id="db-dd-editor-php" style="height: <?php echo $full_screen ? 600 : 500; ?>px; width: 100%;"></div>
 			<input id="db-dd-update" type="button" value="Update Dataview" style="color: blue; position: absolute; top: 60px; right: 60px;" />
 			<br />

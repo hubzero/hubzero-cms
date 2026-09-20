@@ -13,7 +13,7 @@ function dv_config_update()
 	global $com_name, $conf;
 	$base = $conf['dir_base'];
 
-	$db_id = Request::getString('db', false);
+	$db_id = dv_identifier(Request::getString('db', false), 'db');
 	$dv_conf_text = Request::getString('conf_text', false);
 
 	$dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
