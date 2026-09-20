@@ -65,10 +65,10 @@ if (isset($this->messages))
 							<?php if ($this->isAdmin) : ?>
 								<tr class="hidden">
 									<div class="admin">
-										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
+										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true&' . Session::getFormToken() . '=1'); ?>">
 											<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH_SELECTED'); ?>
 										</a>
-										<a class="btn icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+										<a class="btn icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true&' . Session::getFormToken() . '=1'); ?>">
 											<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE_SELECTED'); ?>
 										</a>
 										</td>
@@ -149,7 +149,7 @@ if (isset($this->messages))
 													<?php $final = substr($final, 0, -2); ?>
 													<p class="sponsor"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 												<?php endif; ?>
-												<p><?php echo nl2br($cite->abstract); ?></p>
+												<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 											</div>
 										<?php endif; ?>
 									</td>
@@ -157,10 +157,10 @@ if (isset($this->messages))
 										<td class="col-edit"><a class="icon-edit edit individual" href="<?php echo Route::url($base. '&action=edit&cid=' .$cite->id); ?>"></span>
 											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?></span>
 										</a></td>
-										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id); ?>">
+										<td class="col-delete"><a class="icon-delete delete individual protected" href="<?php echo Route::url($base. '&action=delete&cid=' . $cite->id . '&' . Session::getFormToken() . '=1'); ?>">
 											<span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_DELETE'); ?></span>
 										</a></td>
-										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id); ?>">
+										<td class="col-publish"><a class="icon-window-publish individual publish" href="<?php echo Route::url($base. '&action=publish&cid=' . $cite->id . '&' . Session::getFormToken() . '=1'); ?>">
 											<span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>'; ?></span>
 										</a></td>
 									<?php endif; ?>
@@ -244,7 +244,7 @@ if (isset($this->messages))
 						</select>
 					</label>
 					<input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
-					<input type="hidden" name="referer" value="<?php echo isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''; ?>" />
+					<input type="hidden" name="referer" value="<?php echo isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES) : ''; ?>" />
 					<input type="hidden" name="action" value="browse" />
 
 					<div class="btn-cluster">

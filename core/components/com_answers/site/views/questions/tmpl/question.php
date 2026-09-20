@@ -111,7 +111,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 						</p>
 					<?php } else { ?>
 						<div class="entry-subject">
-							<?php echo $this->question->subject; ?>
+							<?php echo $this->escape($this->question->subject); ?>
 						</div><!-- / .question-subject -->
 
 						<?php if ($this->question->get('question')) { ?>

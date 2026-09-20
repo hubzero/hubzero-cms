@@ -15,7 +15,7 @@ if (!$this->sub)
 $this->js();
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-	<h2><?php echo $this->page->title; ?></h2>
+	<h2><?php echo $this->escape($this->page->title); ?></h2>
 </header><!-- /#content-header -->
 
 <?php if (!$this->sub) { ?>

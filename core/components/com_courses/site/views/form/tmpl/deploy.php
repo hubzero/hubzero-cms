@@ -23,7 +23,7 @@ $this->css('form.css')
 			<input type="hidden" name="task" value="createDeployment" />
 			<input type="hidden" name="formId" value="<?php echo $this->pdf->getId() ?>" />
 			<?php if ($tmpl = Request::getWord('tmpl', false)): ?>
-				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
+				<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
 			<?php endif; ?>
 			<div class="navbar">
 				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('JCANCEL'); ?></a></div>

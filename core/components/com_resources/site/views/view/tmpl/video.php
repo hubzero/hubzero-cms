@@ -22,8 +22,10 @@ $base = substr($base, strlen(PATH_ROOT));
 $presentation = $this->manifest->presentation;
 
 //determine height and width
-$width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
-$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
+// Cast: these go straight into a <style> block below, and the manifest they come
+// from is a .json file in the resource filespace, i.e. contributor-controlled.
+$width  = (isset($presentation->width) && (int) $presentation->width != 0) ? (int) $presentation->width . 'px' : 'auto';
+$height = (isset($presentation->height) && (int) $presentation->height != 0) ? (int) $presentation->height . 'px' : 'auto';
 
 $this->css('
 #video-flowplayer {
@@ -81,10 +83,10 @@ $this->css('
 						$url = $source;
 					}
 				?>
-				<source src="<?php echo $url; ?>" type="<?php echo $type; ?>" />
+				<source src="<?php echo $this->escape($url); ?>" type="<?php echo $this->escape($type); ?>" />
 			<?php endforeach; ?>
 
-			<a href="<?php echo $url; ?>"
+			<a href="<?php echo $this->escape($url); ?>"
 				id="video-flowplayer"
 				data-mediaid="<?php echo $this->resource->id; ?>"
 				aria-label="<?php echo Lang::txt('COM_RESOURCES_DOWNLOAD_VIDEO'); ?>"></a>
@@ -118,14 +120,14 @@ $this->css('
 					<?php if (preg_match('/\.vtt$/i', $source)) : ?>
 					<?php // VTT: use native <track> — browser renders captions with
 					      // user-preferred styles from OS accessibility settings. ?>
-					<track kind="captions" src="<?php echo $source; ?>?v=<?php echo $modified; ?>" srclang="<?php echo isset($subtitle->lang) ? $subtitle->lang : 'en'; ?>" label="<?php echo $subtitle->name; ?>"<?php echo ($auto) ? ' default' : ''; ?> />
+					<track kind="captions" src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>" srclang="<?php echo $this->escape(isset($subtitle->lang) ? $subtitle->lang : 'en'); ?>" label="<?php echo $this->escape($subtitle->name); ?>"<?php echo ($auto) ? ' default' : ''; ?> />
 					<?php else : ?>
 					<?php // SRT: use custom JS overlay (browsers don't support native SRT) ?>
 					<div aria-hidden="true"
-						data-autoplay="<?php echo $auto; ?>"
+						data-autoplay="<?php echo $this->escape($auto); ?>"
 						data-type="subtitle"
-						data-lang="<?php echo $subtitle->name; ?>"
-						data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
+						data-lang="<?php echo $this->escape($subtitle->name); ?>"
+						data-src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>"></div>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>

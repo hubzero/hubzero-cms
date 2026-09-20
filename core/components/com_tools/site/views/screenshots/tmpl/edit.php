@@ -19,16 +19,16 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
 <?php } ?>
 	<div class="ss_pop">
 		<div>
-			<img src="<?php echo $this->wpath . '/' . $this->file; ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="" />
+			<img src="<?php echo $this->escape($this->wpath . '/' . $this->file); ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="" />
 		</div>
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="tmpl" value="component" />
-			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->escape($this->version); ?>" />
 			<input type="hidden" name="pid" id="pid" value="<?php echo $this->pid; ?>" />
 			<input type="hidden" name="path" id="path" value="<?php echo $this->upath; ?>" />
-			<input type="hidden" name="filename" id="filename" value="<?php echo $this->file; ?>" />
+			<input type="hidden" name="filename" id="filename" value="<?php echo $this->escape($this->file); ?>" />
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->vid; ?>" />
 			<input type="hidden" name="task" value="save" />
 			<fieldset class="uploading">

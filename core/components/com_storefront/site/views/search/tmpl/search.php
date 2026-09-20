@@ -30,7 +30,7 @@ $this->css()
 				<input class="entry-search-submit" type="submit" value="Search">
 				<fieldset class="entry-search">
 					<label for="entry-search-field">Search</label>
-					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->search; ?>" placeholder="Search">
+					<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->search); ?>" placeholder="Search">
 				</fieldset>
 			</div>
 		</form>

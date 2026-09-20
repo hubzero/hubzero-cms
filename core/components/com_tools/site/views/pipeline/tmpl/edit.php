@@ -72,7 +72,7 @@ $this->css('pipeline.css')
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="<?php echo ($this->id) ? 'save' : 'register'; ?>" />
-				<input type="hidden" name="editversion" value="<?php echo $this->editversion; ?>" />
+				<input type="hidden" name="editversion" value="<?php echo $this->escape($this->editversion); ?>" />
 				<?php echo Html::input('token'); ?>
 
 				<div class="form-group">

@@ -54,7 +54,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 		<div id="applyinfo">
 			<h3>
-				<?php echo $job->title; ?> -
+				<?php echo $this->escape($job->title); ?> -
 				<?php echo preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName; ?>,
 				<?php echo $job->companyLocation; ?>,
 				<?php echo $job->companyLocationCountry; ?> <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>

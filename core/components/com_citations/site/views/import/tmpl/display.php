@@ -47,7 +47,7 @@ $this->css()
 			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<?php if (isset($this->gid)): ?>
-				<input type="hidden" name="group" value="<?php echo $this->gid; ?>" />
+				<input type="hidden" name="group" value="<?php echo $this->escape($this->gid); ?>" />
 			<?php endif; ?>
 			<input type="hidden" name="task" value="import_upload" />
 		</form>

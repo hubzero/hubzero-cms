@@ -32,7 +32,7 @@ $this->css('form.css')
 			<input type="hidden" name="deploymentId" value="<?php echo $this->dep->getId() ?>" />
 			<input type="hidden" name="id" value="<?php echo $this->dep->getId() ?>" />
 			<?php if ($tmpl = Request::getWord('tmpl', false)): ?>
-				<input type="hidden" name="tmpl" value="<?php echo $tmpl ?>" />
+				<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl) ?>" />
 			<?php endif; ?>
 			<div class="navbar">
 				<div><a href="<?php echo Request::base(true); ?>/courses/form" id="done">Done</a></div>

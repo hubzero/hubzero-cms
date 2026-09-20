@@ -128,7 +128,7 @@ defined('_HZEXEC_') or die();
 				<h3><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_DETAILS'); ?><span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $this->subscription->code; ?></span></h3>
 
 				<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_SERVICE'); ?></span>
-				<p><?php echo $this->service->title; ?></p>
+				<p><?php echo $this->escape($this->service->title); ?></p>
 
 				<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_STATUS'); ?></span>
 				<p class="<?php echo $class; ?>"><?php echo $status; ?></p>

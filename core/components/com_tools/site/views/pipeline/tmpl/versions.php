@@ -145,7 +145,7 @@ $this->css('pipeline.css')
 						<td id="conftdone_<?php echo $i; ?>"></td>
 						<td colspan="4" id="conftdtwo_<?php echo $i; ?>">
 							<div id="confdiv_<?php echo $i; ?>" class="vmanage">
-								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $t->title; ?></span></p>
+								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $this->escape($t->title); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $t->description; ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>

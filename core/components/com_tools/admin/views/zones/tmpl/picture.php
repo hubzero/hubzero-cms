@@ -60,7 +60,7 @@ defined('_HZEXEC_') or die();
 						<img src="<?php echo substr($path, strlen(PATH_ROOT)) . '/' . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
 					</td>
 					<th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
-					<td><?php echo $file; ?></td>
+					<td><?php echo $this->escape($file); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_TOOLS_IMAGE_SIZE'); ?>:</th>
@@ -75,7 +75,7 @@ defined('_HZEXEC_') or die();
 					<td><?php echo $height; ?> px</td>
 				</tr>
 				<tr>
-					<td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
+					<td><input type="hidden" name="currentfile" value="<?php echo $this->escape($file); ?>" /></td>
 					<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('JDELETE'); ?> ]</a></td>
 				</tr>
 			<?php } else { ?>

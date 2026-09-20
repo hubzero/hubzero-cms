@@ -25,10 +25,10 @@ $this->css('status.css')
 						<header><h3>Last Session</h3></header>
 						<div class="content">
 							<div >Session Number: <?php echo $this->lastsession->sessnum; ?></div>
-							<div >Username: <?php echo $this->lastsession->username; ?></div>
+							<div >Username: <?php echo $this->escape($this->lastsession->username); ?></div>
 							<div >Started: <?php echo $this->lastsession->start; ?></div>
 							<div >Last Accessed: <?php echo $this->lastsession->accesstime; ?></div>
-							<div >Tool Alias: <?php echo $this->lastsession->sessname; ?></div>
+							<div >Tool Alias: <?php echo $this->escape($this->lastsession->sessname); ?></div>
 							<div >Tool Revision: <?php echo $this->lastsession->appname; ?></div>
 						</div>
 					</div>

@@ -84,8 +84,8 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
 		?>
 		<tr>
 			<td class="jobtitle">
-				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code); ?>" title="<?php echo $model->content('clean', 250); ?>">
-					<?php echo $this->jobs[$i]->title; ?>
+				<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code); ?>" title="<?php echo $this->escape(html_entity_decode($model->content('clean', 250), ENT_QUOTES, 'UTF-8')); ?>">
+					<?php echo $this->escape($this->jobs[$i]->title); ?>
 				</a>
 			</td>
 		<?php if ($this->admin && !$this->emp && !$this->mini) { ?>

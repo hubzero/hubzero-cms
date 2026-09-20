@@ -38,12 +38,12 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 <div class="aboutme<?php echo $this->seeker->mine && $this->list ? ' mine' : '';
 echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : ''; ?>">
 	<div class="thumb">
-		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
+		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($this->seeker->name); ?>" />
 	</div>
 	<div class="grid">
 		<div class="aboutlb col span5">
 			<?php echo $this->list ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
-			<?php echo $this->seeker->name; ?>
+			<?php echo $this->escape($this->seeker->name); ?>
 			<?php echo $this->list ? '</a>' : ''; ?>
 			<?php if ($this->seeker->countryresident) { ?>
 				, <span class="wherefrom"><?php echo $this->escape($this->seeker->countryresident); ?></span>

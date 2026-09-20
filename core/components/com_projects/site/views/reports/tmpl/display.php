@@ -300,7 +300,7 @@ $this->js('flot/jquery.flot.min.js', 'system')
 										<?php if (!$project->get('private')): ?>
 											<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')); ?>">
 										<?php endif; ?>
-										<?php echo $project->get('title'); ?>
+										<?php echo $this->escape($project->get('title')); ?>
 										<?php if (!$project->get('private')): ?>
 											</a>
 										<?php endif; ?>
@@ -398,7 +398,7 @@ $this->js('flot/jquery.flot.min.js', 'system')
 										<?php if (!$topProject->private): ?>
 											<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>">
 										<?php endif; ?>
-										<?php echo $topProject->title . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')'; ?>
+										<?php echo $this->escape($topProject->title) . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')'; ?>
 										<?php if (!$topProject->private): ?>
 											</a>
 										<?php endif; ?>

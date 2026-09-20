@@ -351,7 +351,7 @@ $pid = Request::getInt('publication', 0);
 							if (count($tags_list) > 0) {
 								echo $tags_list[0];
 							} else {
-								echo '<input type="text" name="tags" value="' . $tags . '" />';
+								echo '<input type="text" name="tags" value="' . $this->escape($tags) . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_TAGS_HINT'); ?></span>
@@ -372,7 +372,7 @@ $pid = Request::getInt('publication', 0);
 							if (count($badges_list) > 0) {
 								echo $badges_list[0];
 							} else {
-								echo '<input type="text" name="badges" value="' . $badges . '" />';
+								echo '<input type="text" name="badges" value="' . $this->escape($badges) . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_BADGES_HINT'); ?></span>

@@ -68,7 +68,7 @@ if (!$this->app->sess) {
 
 	<div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
 		<div id="app-header">
-			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
+			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->escape($this->app->caption); ?></h2>
 			<?php if ($this->app->sess) { ?>
 				<ul class="app-toolbar" id="session-options">
 					<li>
@@ -121,7 +121,7 @@ if (!$this->app->sess) {
 									if ($viewer == $plugin->name) { continue;
 									}
 								?>
-									<option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
+									<option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($plugin->title); ?></option>
 								<?php } ?>
 							</select>
 						</span>

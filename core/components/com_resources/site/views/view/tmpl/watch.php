@@ -188,10 +188,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
 		<form name="presentation-picker" id="presentation-picker" method="post">
 			<label for="presentation">Select a different presentation:
 				<select name="presentation" id="presentation">
-					<optgroup label="<?php echo $parent->title; ?>">
+					<optgroup label="<?php echo $this->escape($parent->title); ?>">
 						<?php foreach ($children as $c) : ?>
 							<?php if (Date::toSql() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
-								<option <?php if ($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
+								<option <?php if ($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $this->escape($c->title); ?></option>
 							<?php endif; ?>
 						<?php endforeach; ?>
 					</optgroup>
@@ -207,7 +207,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 <?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>" data-id="<?php echo $this->resid; ?>">
 	<div id="presenter-header">
-		<div id="title"><?php echo $rr->title; ?></div>
+		<div id="title"><?php echo $this->escape($rr->title); ?></div>
 		<div id="author"><?php if ($a) { echo "by: " . implode(", ", $a); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
@@ -218,9 +218,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 				<ul class="no-js">
 					<?php $counter = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
-						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
+						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $slide->time; ?>">
 							<?php if ($slide->type == 'Image') : ?>
-								<img src="<?php echo $content_url.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo $content_url.DS.$slide->media; ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 							<?php else : ?>
 								<video class="slidevideo" preload="metadata" muted>
 									<?php foreach ($slide->media as $source): ?>
@@ -228,7 +228,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									<?php endforeach; ?>
 									<a href="<?php echo $content_url.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
-								<img src="<?php echo $content_url.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+								<img src="<?php echo $content_url.DS.$slide->media[3]->source; ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement">
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -500,7 +500,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 								<div
 									data-autoplay="<?php echo $auto; ?>"
 									data-type="subtitle"
-									data-lang="<?php echo $subtitle->name; ?>" 
+									data-lang="<?php echo $this->escape($subtitle->name); ?>" 
 									data-src="<?php echo $source_url ?>?v=<?php echo $modified; ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
@@ -551,7 +551,7 @@ $last_slide_id = 0; ?>
 										$thumb = $content_url.DS.$slide->thumb;
 									}
 								?>
-								<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 								<span>
 									<?php 
 										$num++;

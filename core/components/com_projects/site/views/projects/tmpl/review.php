@@ -60,14 +60,14 @@ if ($this->getError()) {
 		<input type="hidden" name="ajax" value="1" />
 		<input type="hidden" name="no_html" value="1" />
 		<input type="hidden" name="reviewer" value="<?php echo $this->reviewer; ?>" />
-		<input type="hidden" name="filterby" value="<?php echo $this->filterby; ?>" />
+		<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filterby); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	</fieldset>
 	<div class="info_blurb">
 		<div class="pthumb"><img src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title">
-			<?php echo $this->model->get('title'); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
+			<?php echo $this->escape($this->model->get('title')); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
 			<p class="info_title"><span><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
 		</div>
 	</div>
@@ -80,33 +80,33 @@ if ($this->getError()) {
 			<tr>
 				<td>
 					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-					 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>"  />
+					 <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_title')); ?>"  />
 					</label>
 				</td>
 				<td class="tdmini"></td>
 				<td>
 					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-					 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->params->get('grant_PI'); ?>"  />
+					 <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_PI')); ?>"  />
 					</label>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-					 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>"  />
+					 <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_agency')); ?>"  />
 					</label>
 				</td>
 				<td class="tdmini"></td>
 				<td>
 					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-					 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->params->get('grant_budget'); ?>"  />
+					 <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_budget')); ?>"  />
 					</label>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-					 <input name="award_number" maxlength="250" type="text" value="<?php echo $this->params->get('award_number'); ?>"  />
+					 <input name="award_number" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('award_number')); ?>"  />
 					</label>
 				</td>
 			</tr>
@@ -116,7 +116,7 @@ if ($this->getError()) {
 } else { echo 'spsapproval'; } ?>"><?php echo $approved
 						? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
 						: Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
-					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
+					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_approval')); ?>"  />
 					<?php if (!$approved) { ?>
 					 <p class="hint mini"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
 					<?php } ?>
