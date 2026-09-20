@@ -244,6 +244,21 @@ class Comments extends SiteController
 		// This is how comments() knows if it needs to display a form or not
 		$mycomment = Comment::oneOrNew($id);
 
+		// Reading is bound the same way saveTask's write is: oneOrNew() resolves
+		// any row of #__wiki_comments, and this renders the body into the editor
+		// plus created_by into a hidden field -- so without this, any logged-in
+		// user could read any comment on the hub, including the author of one
+		// marked anonymous.
+		if (!$mycomment->isNew())
+		{
+			if ((int) $mycomment->get('page_id') !== (int) $this->page->get('id')
+			 || ($mycomment->get('created_by') != User::get('id')
+			  && !$this->page->access('manage')))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+
 		if (!$id)
 		{
 			// No ID, so we're creating a new comment
@@ -272,7 +287,57 @@ class Comments extends SiteController
 		$fields = Request::getArray('comment', array(), 'post');
 
 		// Bind the form data to our object
-		$comment = Comment::oneOrNew($fields['id'])->set($fields);
+		// The form always posts this, but a crafted request need not, and reading
+		// a missing key is a warning this hub turns into a 500.
+		$__cid   = isset($fields['id']) ? (int) $fields['id'] : 0;
+		$comment = Comment::oneOrNew($__cid);
+
+		// The comment has to belong to the page this request resolved.
+		// $this->page comes from the request's scope/pagename, and
+		// Comment::oneOrNew() resolves any row of #__wiki_comments -- so
+		// without this, access('manage') on any one page admitted editing any
+		// comment on the hub.
+		if (!$comment->isNew()
+		 && (int) $comment->get('page_id') !== (int) $this->page->get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// For an existing comment, require ownership or page-manage rights
+		if (!$comment->isNew()
+		 && $comment->get('created_by') != User::get('id')
+		 && !$this->page->access('manage'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// created_by and page_id decide whose comment this is and where it
+		// lives, and BOTH are hidden inputs on the form
+		// (views/comments/tmpl/display.php), so pin them on every path. Pinning
+		// page_id only for an existing row left the create path able to plant a
+		// comment on any page id the caller named -- including a private or
+		// comments-disabled page -- because $this->page was never used for the
+		// write.
+		$__isNew  = $comment->isNew();
+		$__owner  = $comment->get('created_by');
+		$__page   = $comment->get('page_id');
+		$__state  = $comment->get('state');
+		$__parent = $comment->get('parent');
+
+		$comment->set($fields);
+
+		$comment->set('created_by', $__isNew ? User::get('id') : $__owner);
+		$comment->set('page_id',    $__isNew ? $this->page->get('id') : $__page);
+
+		// state and parent are hidden inputs too. state is the one that matters:
+		// it carries the reported-as-abusive flag, so leaving it bound let an
+		// author clear the report on their own comment. parent decides where the
+		// comment sits in the thread.
+		if (!$__isNew)
+		{
+			$comment->set('state', $__state);
+			$comment->set('parent', $__parent);
+		}
 
 		// Parse the wikitext and set some values
 		$comment->set('chtml', null);
@@ -319,11 +384,11 @@ class Comments extends SiteController
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'action'      => ($__cid ? 'updated' : 'created'),
 				'scope'       => 'wiki.comment',
 				'scope_id'    => $this->page->get('id'),
 				'anonymous'   => $comment->get('anonymous', 0),
-				'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . $this->page->title . '</a>'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $this->page->title,
 					'url'      => Route::url($this->page->link('comments')),
@@ -357,6 +422,15 @@ class Comments extends SiteController
 			if ($this->page->access('delete', 'comment'))
 			{
 				$comment = Comment::oneOrFail($id);
+
+				// ...on THIS page. As savecomment above: oneOrFail() resolves
+				// any comment row, so delete rights on one page would otherwise
+				// reach every comment on the hub.
+				if ((int) $comment->get('page_id') !== (int) $this->page->get('id'))
+				{
+					App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+				}
+
 				$comment->set('state', Comment::STATE_DELETED);
 				if ($comment->save())
 				{
@@ -380,7 +454,7 @@ class Comments extends SiteController
 						'action'      => 'deleted',
 						'scope'       => 'wiki.comment',
 						'scope_id'    => $this->page->get('id'),
-						'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . $this->page->title . '</a>'),
+						'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
 						'details'     => array(
 							'title'    => $this->page->title,
 							'url'      => Route::url($this->page->link('comments')),

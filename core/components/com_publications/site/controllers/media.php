@@ -54,6 +54,20 @@ class Media extends SiteController
 			return;
 		}
 
+		// Only serve media for a publication the caller may view. The third
+		// argument is a version ID; if the row it loads is not this publication's
+		// (a caller passed a version NUMBER), reload by number so the decision is
+		// made on the requested publication
+		$pub = new Models\Publication($pid, null, $vid);
+		if ($vid && $pub->exists() && (int) $pub->get('id') !== (int) $pid)
+		{
+			$pub = new Models\Publication($pid, $vid);
+		}
+		if (!$pub->exists() || (int) $pub->get('id') !== (int) $pid || !$pub->access('view'))
+		{
+			return;
+		}
+
 		// Get the file name
 		$uri = Request::getString('REQUEST_URI', '', 'server');
 		if (strstr($uri, 'Image:'))

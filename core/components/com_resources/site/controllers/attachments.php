@@ -139,6 +139,7 @@ class Attachments extends SiteController
 		$pid = strtolower(Request::getInt('pid', 0));
 		$resourceTitle = Request::getString('resource-title');
 		header('Content-Type: application/json');
+		$createdHere = false;
 		if (!$pid && !empty($resourceTitle))
 		{
 			$parentResource = Entry::blank();
@@ -162,11 +163,24 @@ class Attachments extends SiteController
 				exit();
 			}
 			$pid = $parentResource->get('id');
+			$createdHere = true;
 		}
 		if (!$pid)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_RESOURCES_NO_ID')));
 			exit();
+		}
+
+		// Must be able to edit the parent resource (same rule as the upload
+		// twin); a parent this request just created belongs to the caller
+		if (!$createdHere)
+		{
+			$parentAuth = Entry::oneOrFail($pid);
+			if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
+			{
+				echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+				exit();
+			}
 		}
 
 		$childId = Request::getInt('childid');
@@ -259,6 +273,14 @@ class Attachments extends SiteController
 			return;
 		}
 
+		// Must be able to edit the parent resource
+		$parentAuth = Entry::oneOrFail($pid);
+		if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
+		{
+			echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+			return;
+		}
+
 		//max upload size
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
@@ -310,6 +332,16 @@ class Attachments extends SiteController
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
+
+		// Contributors upload archives, source and media of many types, so block
+		// only server-executable extensions and the markup types the download
+		// handler serves inline (a stored HTML file would run in the hub origin)
+		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+		if (in_array(strtolower((string) $ext), $blockedExtensions))
+		{
+			echo json_encode(array('error' => Lang::txt('File type not allowed: %s', $ext)));
+			return;
+		}
 		/*while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -468,6 +500,16 @@ class Attachments extends SiteController
 		$pid  = Request::getInt('pid', 0);
 		$move = Request::getWord('move', 'down');
 
+		// Must be able to edit the parent resource
+		if ($pid)
+		{
+			$parentAuth = Entry::oneOrFail($pid);
+			if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
@@ -520,6 +562,14 @@ class Attachments extends SiteController
 		if ($id && $name)
 		{
 			$resource = Entry::oneOrFail($id);
+			// Authorize against the parent resource the attachment belongs to, so
+			// any of its editors (not only whoever uploaded the file) may rename it
+			$assoc  = Association::all()->whereEquals('child_id', $id)->row();
+			$authOn = ($assoc && $assoc->get('parent_id')) ? Entry::oneOrFail($assoc->get('parent_id')) : $resource;
+			if (!$authOn->access('edit') && !$authOn->access('edit-own'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
 			$resource->set('title', (string)$name);
 			$resource->save();
 		}
@@ -548,6 +598,13 @@ class Attachments extends SiteController
 			return $this->displayTask($pid);
 		}
 
+		// Must be able to edit the parent resource
+		$parentAuth = Entry::oneOrFail($pid);
+		if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming file
 		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
@@ -561,6 +618,16 @@ class Attachments extends SiteController
 
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
+
+		// Contributors upload archives, source and media of many types, so block
+		// only server-executable extensions and the markup types the download
+		// handler serves inline (a stored HTML file would run in the hub origin)
+		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+		if (in_array(strtolower((string) $ext), $blockedExtensions))
+		{
+			$this->setError(Lang::txt('File type not allowed: %s', $ext));
+			return $this->displayTask($pid);
+		}
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -814,6 +881,20 @@ class Attachments extends SiteController
 
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
+
+		// The attachment must really belong to the given parent, and the caller
+		// must be able to edit that parent (any of its editors, not only the
+		// uploader) to change the attachment's access
+		$assoc = Association::oneByRelationship($pid, $id);
+		if (!$assoc || !$assoc->get('id'))
+		{
+			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+		$parentAuth = Entry::oneOrFail($pid);
+		if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Set value
 		$access = Request::getInt('access', 0);

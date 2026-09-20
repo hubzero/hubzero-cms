@@ -348,7 +348,7 @@ class History extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'wiki.page.revision',
 				'scope_id'    => $this->page->get('id'),
-				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_DELETED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . $this->page->title . '</a>'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_DELETED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $this->page->title,
 					'url'      => Route::url($this->page->link()),
@@ -431,7 +431,7 @@ class History extends SiteController
 				'action'      => 'approved',
 				'scope'       => 'wiki.page.revision',
 				'scope_id'    => $this->page->get('id'),
-				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_APPROVED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . $this->page->title . '</a>'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_REVISION_APPROVED', $revision->get('id'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $this->page->title,
 					'url'      => Route::url($this->page->link()),
@@ -473,6 +473,12 @@ class History extends SiteController
 
 		}
 
+		// Changing the current revision requires edit/manage access
+		if (!$this->page->access('edit') && !$this->page->access('manage'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$this->page->set('version_id', $newversion_id);
 
 		if (!$this->page->save())
@@ -502,7 +508,7 @@ class History extends SiteController
 				'action'      => ($this->page['id'] ? 'updated' : 'created'),
 				'scope'       => 'wiki.page',
 				'scope_id'    => $this->page->get('id'),
-				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_UPDATED', '<a href="' . Route::url($this->page->link()) . '">' . $this->page->title . '</a>'),
+				'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_UPDATED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $this->page->title,
 					'url'      => Route::url($this->page->link()),

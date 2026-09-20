@@ -173,6 +173,11 @@ class Abusereports extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.manage', $this->_option) && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 		$parentid = Request::getInt('parentid', 0);
@@ -227,6 +232,11 @@ class Abusereports extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.manage', $this->_option) && !User::authorise('core.delete', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$id = Request::getInt('id', 0);

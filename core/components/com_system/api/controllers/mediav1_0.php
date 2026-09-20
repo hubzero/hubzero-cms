@@ -32,6 +32,8 @@ class Mediav1_0 extends ApiController
 	 */
 	public function trackingTask()
 	{
+		$this->requiresAuthentication();
+
 		// Instantiate objects
 		$database = App::get('db');
 		$session  = App::get('session');
@@ -55,6 +57,14 @@ class Mediav1_0 extends ApiController
 		// Load tracking information for user for this entity
 		$trackingInformation         = Mediatracking::oneByUserAndObject($entityId, $entityType, User::get('id'));
 		$trackingInformationDetailed = Mediatrackingdetailed::oneOrNew($detailedId);
+
+		// Only update a detailed record that belongs to the current user
+		if (!$trackingInformationDetailed->isNew()
+		 && $trackingInformationDetailed->get('user_id') != User::get('id'))
+		{
+			echo 'Not authorized.';
+			return;
+		}
 
 		// Are we creating a new tracking record?
 		if (!is_object($trackingInformation) || $trackingInformation->isNew())

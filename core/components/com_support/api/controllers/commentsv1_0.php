@@ -97,6 +97,19 @@ class Commentsv1_0 extends ApiController
 
 		$obj = \Components\Support\Models\Comment::all();
 
+		if (!$this->acl->check('read', 'private_comments'))
+		{
+			$obj = $obj->whereEquals('access', 0);
+		}
+
+		// Scope to one ticket when asked. None of the $filters assembled below
+		// is applied to the query, so without this the endpoint answers every
+		// request with every comment on every ticket, whatever was asked for.
+		if ($ticketId = Request::getInt('ticket', 0))
+		{
+			$obj = $obj->whereEquals('ticket', $ticketId);
+		}
+
 		$filters = array(
 			'limit'      => Request::getInt('limit', 25),
 			'start'      => Request::getInt('limitstart', 0),
@@ -412,8 +425,16 @@ class Commentsv1_0 extends ApiController
 		// Initiate class and bind data to database fields
 		$id = Request::getInt('comment', 0);
 
-		// Initiate class and bind data to database fields
-		$ticket = \Components\Support\Models\Comment::oneOrFail($id);
+		// Initiate class and bind data to database fields. The rest of this
+		// method refers to the loaded model under both names -- $comment was
+		// never assigned, so every call fataled on it in PHP 8 before reaching
+		// the response.
+		$ticket = $comment = \Components\Support\Models\Comment::oneOrFail($id);
+
+		if ($comment->isPrivate() && !$this->acl->check('read', 'private_comments'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');

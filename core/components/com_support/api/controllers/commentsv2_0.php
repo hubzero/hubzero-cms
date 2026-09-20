@@ -75,6 +75,11 @@ class Commentsv2_0 extends ApiController
 
 		$comments = \Components\Support\Models\Comment::all();
 
+		if (!$this->acl->check('read', 'private_comments'))
+		{
+			$comments = $comments->whereEquals('access', 0);
+		}
+
 		if (Request::getInt('ticket', null))
 		{
 			$comments = $comments->whereEquals('ticket', Request::getInt('ticket'));
@@ -467,6 +472,11 @@ class Commentsv2_0 extends ApiController
 
 		// Initiate class and bind data to database fields
 		$comment = \Components\Support\Models\Comment::oneOrFail($id);
+
+		if ($comment->isPrivate() && !$this->acl->check('read', 'private_comments'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$response = new stdClass;
 		$response->id = $comment->get('id');

@@ -763,6 +763,7 @@ class Tags extends SiteController
 		$this->view
 			->set('tag', $tag)
 			->set('filters', $filters)
+			->set('config', $this->config)
 			->setLayout('edit')
 			->display();
 	}
@@ -799,6 +800,12 @@ class Tags extends SiteController
 
 		// Incoming
 		$tag = Request::getArray('fields', array(), 'post');
+
+		// Site editors may not flag a tag as an admin/system tag
+		if (!$this->config->get('access-manage-tag'))
+		{
+			unset($tag['admin']);
+		}
 
 		$subs = '';
 		if (isset($tag['substitutions']))
@@ -854,6 +861,9 @@ class Tags extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Check that the user is authorized
 		if (!$this->config->get('access-delete-tag'))
 		{

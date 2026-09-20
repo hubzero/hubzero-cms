@@ -17,6 +17,7 @@ use Event;
 use Lang;
 use Date;
 use App;
+use User;
 
 /**
  * API controller class for system tasks
@@ -40,6 +41,13 @@ class Systemv1_0 extends ApiController
 	 */
 	public function infoTask()
 	{
+		$this->requiresAuthentication();
+
+		if (!User::authorise('core.admin'))
+		{
+			App::abort(403, Lang::txt('Not authorized'));
+		}
+
 		$values = Request::getString('values', 'all');
 
 		$response = new stdClass;
