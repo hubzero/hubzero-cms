@@ -203,7 +203,30 @@ class Login extends AdminController
 	{
 		Session::set('user_consent', true);
 
-		App::redirect(base64_decode(Request::getString('return')));
+		// getString() defaults to null, and base64_decode(null) is a PHP 8
+		// deprecation whose output would precede the Location header. A value
+		// that is not base64 at all decodes to binary, which isInternal()
+		// happily accepts because it parses no host -- so require real base64.
+		//
+		// The com_users and com_login site siblings of this task gate on their
+		// own isBase64(), which is a character-class test rather than a
+		// round-trip: it accepts any string of base64 characters, including one
+		// whose length makes it undecodable. This is the stricter of the two.
+		$return = (string) Request::getString('return', '');
+		$decoded = ($return !== '') ? base64_decode($return, true) : false;
+
+		if ($decoded === false || base64_encode($decoded) !== $return)
+		{
+			$decoded = '';
+		}
+
+		$return = $decoded;
+
+		if (!$return || !\Hubzero\Utility\Uri::isInternal($return))
+		{
+			$return = '/';
+		}
+		App::redirect($return);
 	}
 
 	/**
