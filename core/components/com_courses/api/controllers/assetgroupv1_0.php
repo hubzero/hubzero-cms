@@ -94,6 +94,34 @@ class Assetgroupv1_0 extends base
 		// Check for an incoming 'id'
 		$id = Request::getInt('id', null);
 
+		// The group being edited (or the unit/parent a new group is added to)
+		// must belong to the course that was just authorized
+		$db = App::get('db');
+		if ($id)
+		{
+			$db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $id);
+			if ((int) $db->loadResult() !== (int) $this->course_id)
+			{
+				App::abort(403, 'Asset group is not a part of this course');
+			}
+		}
+		else if ($unitId = Request::getInt('unit_id', 0))
+		{
+			$db->setQuery("SELECT o.course_id FROM `#__courses_units` AS u JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE u.id = " . (int) $unitId);
+			if ((int) $db->loadResult() !== (int) $this->course_id)
+			{
+				App::abort(403, 'Unit is not a part of this course');
+			}
+		}
+		else if ($parentId = Request::getInt('parent', 0))
+		{
+			$db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $parentId);
+			if ((int) $db->loadResult() !== (int) $this->course_id)
+			{
+				App::abort(403, 'Parent asset group is not a part of this course');
+			}
+		}
+
 		// Create an asset group instance
 		$assetGroup = new Assetgroup($id);
 
@@ -207,7 +235,48 @@ class Assetgroupv1_0 extends base
 	 */
 	public function reorderTask()
 	{
+		// The outline builder sends only the sortable ids, so the course is
+		// resolved from each asset group rather than from the request.
+		$this->requiresAuthentication();
+
 		$groups = Request::getArray('assetgroupitem', []);
+
+		$db      = App::get('db');
+		$courses = array();
+		foreach ($groups as $id)
+		{
+			$db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $id);
+			$cid = (int) $db->loadResult();
+
+			if (!$cid)
+			{
+				App::abort(401, 'Unauthorized');
+			}
+
+			$courses[$cid] = true;
+		}
+
+		// Do NOT check these one course at a time. Permissions::getInstance()
+		// is a singleton that ignores its arguments after the first call, and
+		// its access-checked-<item> flags live on Component::params('com_courses'),
+		// which is one shared registry for the whole request. So the second
+		// course's access('manage') skips _calculate() and returns the FIRST
+		// course's answer -- a manager of course A could mix in course B's
+		// asset groups and have them accepted.
+		//
+		// The outline builder only ever reorders within one course, so require
+		// that and check it once.
+		if (count($courses) !== 1)
+		{
+			App::abort(401, 'Unauthorized');
+		}
+
+		$courseId = (int) key($courses);
+
+		if (!\Components\Courses\Models\Course::getInstance($courseId)->access('manage'))
+		{
+			App::abort(401, 'Unauthorized');
+		}
 
 		$order = 1;
 
@@ -240,6 +309,13 @@ class Assetgroupv1_0 extends base
 	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourses
 	// COURSES - LEVEL 1
 	public function getAllCoursesTask(){
+		// Admin-side pickers: no course in the request, so require component manage rights
+		$this->requiresAuthentication();
+		if (!\User::authorise('core.manage', 'com_courses') && !\User::authorise('core.admin', 'com_courses'))
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		$database = \App::get('db');
 		$query = "SELECT * FROM `#__courses`";
 
@@ -255,6 +331,13 @@ class Assetgroupv1_0 extends base
 	// COURSE OFFERING - LEVEL 2
 	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseOfferings?courseId=8
 	public function getAllCourseOfferingsTask(){
+		// Admin-side pickers: no course in the request, so require component manage rights
+		$this->requiresAuthentication();
+		if (!\User::authorise('core.manage', 'com_courses') && !\User::authorise('core.admin', 'com_courses'))
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		$courseId = Request::getInt('courseId', false);
 
 		// Conditional Checks
@@ -277,6 +360,13 @@ class Assetgroupv1_0 extends base
 	// COURSE UNITS - LEVEL 3
 	// https://stage.stemedhub.org/api/courses/assetgroup/getAllCourseUnits?offeringId=8
 	public function getAllCourseUnitsTask(){
+		// Admin-side pickers: no course in the request, so require component manage rights
+		$this->requiresAuthentication();
+		if (!\User::authorise('core.manage', 'com_courses') && !\User::authorise('core.admin', 'com_courses'))
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		$offeringId = Request::getInt('offeringId', false);
 
 		// Conditional Checks
@@ -300,6 +390,13 @@ class Assetgroupv1_0 extends base
 	// https://stage.stemedhub.org/api/courses/assetgroup/getAllAssetGroups?unitId=18
 	// https://stackoverflow.com/questions/21021863/creating-a-nested-array-form-a-flat-array-trough-parent-id
 	public function getAllAssetGroupsTask(){
+		// Admin-side pickers: no course in the request, so require component manage rights
+		$this->requiresAuthentication();
+		if (!\User::authorise('core.manage', 'com_courses') && !\User::authorise('core.admin', 'com_courses'))
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		$unitId = Request::getInt('unitId', false);
 
 		// Conditional Checks

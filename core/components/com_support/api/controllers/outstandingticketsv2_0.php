@@ -43,6 +43,11 @@ class OutstandingTicketsv2_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			throw new \Exception(\Lang::txt('Not authorized'), 403);
+		}
+
 		$criteria = Criterion::all();
 		$outstandingTicketData = array(
 			'tickets'  => array(),

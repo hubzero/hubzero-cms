@@ -96,6 +96,29 @@ class Passportv1_0 extends base
 			App::abort(400, 'No matching badge found');
 		}
 
+		// Authorize against the section this badge actually belongs to.
+		//
+		// This has to be a numeric comparison, not another access() call.
+		// Permissions::getInstance() is a singleton that ignores its arguments
+		// after the first call, and its access-checked-<item> flags live on
+		// Component::params('com_courses'), one shared registry per request.
+		// authorizeOrFail() above has already run access() for the course named
+		// in the request, so a second access() here returns that same cached
+		// answer and can never refuse -- leaving a manager of their own course
+		// free to accept or deny a badge in any other course's section.
+		$db = App::get('db');
+		$db->setQuery(
+			"SELECT o.course_id FROM `#__courses_offering_sections` AS s"
+			. " JOIN `#__courses_offerings` AS o ON o.id = s.offering_id"
+			. " WHERE s.id = " . (int) $section_id
+		);
+		$sectionCourseId = (int) $db->loadResult();
+
+		if (!$sectionCourseId || $sectionCourseId !== (int) $this->course_id)
+		{
+			App::abort(403, 'Unauthorized');
+		}
+
 		// Get member id via user id and section id
 		$member = \Components\Courses\Models\Member::getInstance($user_id, 0, 0, $section_id);
 

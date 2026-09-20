@@ -17,6 +17,7 @@ use Filesystem;
 use Request;
 use Lang;
 use User;
+use App;
 use Component;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
@@ -31,18 +32,108 @@ class Media extends SiteController
 	 *
 	 * @return  string
 	 */
+	/**
+	 * May the current user attach a file to this ticket?
+	 *
+	 * Anonymous ticket submission uploads to a temporary (negative) id that
+	 * belongs to no ticket yet. A real ticket only accepts attachments from the
+	 * reporter, the assigned owner, or a support agent.
+	 *
+	 * @param   integer  $ticket  Ticket ID
+	 * @return  boolean
+	 */
+	protected function _mayAttachToTicket($ticket)
+	{
+		$ticket = (int) $ticket;
+		if ($ticket <= 0)
+		{
+			return true;
+		}
+		if (User::isGuest())
+		{
+			return false;
+		}
+		$row = Ticket::oneOrNew($ticket);
+		if (!$row->get('id'))
+		{
+			return false;
+		}
+		// The reporter and the assigned owner are matched directly on the ticket
+		// (the model's access() only lifts them to 'read'); agents come through
+		// the ACL ('update').
+		$uid   = (int) User::get('id');
+		$login = (string) $row->get('login');
+		// 'read' is evaluated first on purpose: that branch is what lifts a user
+		// named in the ticket's cc list, who is shown the comment form and the
+		// uploader alongside it.
+		return ($login !== '' && $login === (string) User::get('username'))
+			|| ($uid > 0 && (int) $row->get('owner') === $uid)
+			|| (bool) $row->access('update', 'tickets')
+			|| ((bool) $row->access('read', 'tickets') && (bool) $row->access('create', 'comments'));
+	}
+
+	/**
+	 * Whether the current user may remove the given attachment.
+	 *
+	 * com_support authorizes its front-end agents through #__support_acl_*,
+	 * not through Joomla permissions -- an agent who can work a queue need
+	 * hold no core.manage on the component. A core.manage-only test therefore
+	 * refused the very people whose job this is.
+	 *
+	 * The comparison is `> 0`, not a cast to bool: Ticket::access() lifts a
+	 * reporter who is not the assigned owner to -1 rather than 1
+	 * (models/ticket.php, setAccess('update', 'tickets', isOwner() ? 1 : -1)),
+	 * and (bool) -1 is true.
+	 *
+	 * @param   object  $model  Attachment
+	 * @return  boolean
+	 */
+	protected function _mayManageAttachment($model)
+	{
+		$ticket = (int) $model->get('ticket');
+
+		// A temporary attachment belongs to a not-yet-submitted, possibly
+		// anonymous ticket, as elsewhere in this controller.
+		if ($ticket <= 0)
+		{
+			return true;
+		}
+
+		if (User::isGuest())
+		{
+			return false;
+		}
+
+		if ((int) $model->get('created_by') === (int) User::get('id'))
+		{
+			return true;
+		}
+
+		$row = Ticket::oneOrNew($ticket);
+
+		return ($row->get('id') && (int) $row->access('update', 'tickets') > 0)
+			|| User::authorise('core.manage', 'com_support');
+	}
+
 	public function ajaxUploadTask()
 	{
-		// Check if they're logged in
-		/*if (User::isGuest())
-		{
-			echo json_encode(array('error' => Lang::txt('Must be logged in.')));
-			return;
-		}*/
-
 		// Ensure we have an ID to work with
 		$ticket  = Request::getInt('ticket', 0);
 		$comment = Request::getInt('comment', 0);
+
+		// Anonymous ticket submission uploads to a temporary (negative) ticket id.
+		// Only attachments on a real ticket require a login.
+		if ($ticket > 0 && User::isGuest())
+		{
+			echo json_encode(array('error' => Lang::txt('Must be logged in.')));
+			return;
+		}
+		// A real ticket may only receive attachments from someone who can act on it
+		if (!$this->_mayAttachToTicket($ticket))
+		{
+			echo json_encode(array('error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+			return;
+		}
 		if (!$ticket)
 		{
 			echo json_encode(array('error' => Lang::txt('COM_SUPPORT_NO_ID'), 'ticket' => $ticket));
@@ -292,6 +383,13 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// The same rule as the ajax twin above: this path is reached without it
+		if (!$this->_mayAttachToTicket($ticket))
+		{
+			$this->setError(Lang::txt('JERROR_ALERTNOAUTHOR'));
+			return $this->displayTask();
+		}
+
 		// Incoming file
 		$file = Request::getArray('upload', array(), 'files');
 		if (empty($file) || !$file['name'])
@@ -428,6 +526,12 @@ class Media extends SiteController
 		{
 			return $this->displayTask();
 		}
+		// Only the person who added the attachment, or a support agent, may delete it
+		if (!$this->_mayManageAttachment($model))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$model->destroy();
 
 		// Push through to the media view
@@ -447,6 +551,19 @@ class Media extends SiteController
 		if ($id)
 		{
 			$model = Attachment::oneOrFail($id);
+
+			// Temporary attachments (ticket <= 0) belong to a not-yet-submitted,
+			// possibly anonymous, ticket. Real tickets need a login and ownership.
+			if ($model->get('ticket') > 0 && User::isGuest())
+			{
+				echo json_encode(array('success' => false, 'error' => Lang::txt('Must be logged in.')));
+				return;
+			}
+			if (!$this->_mayManageAttachment($model))
+			{
+				echo json_encode(array('success' => false, 'error' => Lang::txt('JERROR_ALERTNOAUTHOR')));
+				return;
+			}
 
 			if (!$model->destroy())
 			{
@@ -476,6 +593,18 @@ class Media extends SiteController
 		$ticket  = Request::getInt('ticket', 0);
 		$comment = Request::getInt('comment', 0);
 
+		// The same predicate as the upload beside it. This listing took no
+		// authorization at all, so naming any ticket id returned its
+		// attachments -- and uploadTask answers its own refusal with
+		// `return $this->displayTask()`, which handed the listing to the very
+		// caller it had just turned away. A temporary (non-positive) id is
+		// still admitted, as it is for upload: it belongs to a ticket that has
+		// not been submitted yet.
+		if (!$this->_mayAttachToTicket($ticket))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		if (!$ticket)
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
@@ -484,6 +613,16 @@ class Media extends SiteController
 		if ($comment)
 		{
 			$model = Comment::oneOrFail($comment);
+
+			// Comment::attachments() is oneToMany on comment_id with no ticket
+			// constraint, so authorizing the ticket alone was not enough: with
+			// ticket=0 _mayAttachToTicket() returns true for the temporary-id
+			// case and any comment's attachment list came back. Bind the comment
+			// to a ticket the caller may actually reach.
+			if (!$this->_mayAttachToTicket($model->get('ticket')))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
 		}
 		else
 		{

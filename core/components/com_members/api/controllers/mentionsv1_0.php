@@ -39,7 +39,6 @@ class Mentionsv1_0 extends ApiController {
         if ($search) {
             $entries->whereLike('name', strtolower((string)$search), 1)
                 ->orWhereLike('username', strtolower((string)$search), 1)
-                ->orWhereLike('email', strtolower((string)$search), 1)
                 ->resetDepth();
         }
 
@@ -52,7 +51,6 @@ class Mentionsv1_0 extends ApiController {
             $obj->picture   = $entry->picture();
             $obj->username  = $entry->get('username');
             $obj->name      = $entry->get('name');
-            $obj->email     = $entry->get('email');
 
             $response[] = $obj;
         }
@@ -95,7 +93,6 @@ class Mentionsv1_0 extends ApiController {
             $obj->picture   = $user->picture();
             $obj->username  = $userName;
             $obj->name      = $name;
-            $obj->email     = $email;
 
             // Add to the response array if search is empty or if search term is present, search term is in array
             if ((!empty($search) && preg_grep('~' . $searchInput . '~', $os)) || empty($search)) {

@@ -71,6 +71,13 @@ class Attachments extends SiteController
 			return $this->displayTask($pid);
 		}
 
+		// Authorize against the tool that owns this attachment
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		if (!$this->_checkAccess($obj->getToolIdFromResource($pid)))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+
 		switch ($move)
 		{
 			case 'up':
@@ -108,13 +115,21 @@ class Attachments extends SiteController
 		// Ensure we have everything we need
 		if ($id && $name)
 		{
+			// Authorize against the tool that owns this attachment
+			$association = Association::all()->whereEquals('child_id', $id)->row();
+			$obj = new \Components\Tools\Tables\Tool($this->database);
+			if (!$this->_checkAccess($obj->getToolIdFromResource($association->get('parent_id'))))
+			{
+				App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+			}
+
 			$resource = Entry::oneOrFail($id);
 			$resource->set('title', (string)$name);
 			$resource->save();
 		}
 
-		// Echo the name
-		echo $name;
+		// Echo the name (this is a text/html response, so it must be inert)
+		echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
 	}
 
 	/**

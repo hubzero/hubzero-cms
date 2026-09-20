@@ -41,6 +41,16 @@ class Toolsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = Request::getInt('id', 0);
+		$authid = App::get('authn')['user_id'];
+		if (!$userid)
+		{
+			$userid = $authid;
+		}
+		// Only the member themselves or an administrator may read this
+		if ($userid != $authid && !User::authorise('core.admin') && !User::authorise('core.manage', 'com_members'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 		$result = User::getInstance($userid);
 
 		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')
@@ -194,6 +204,16 @@ class Toolsv1_0 extends ApiController
 		$this->requiresAuthentication();
 
 		$userid = Request::getInt('id', 0);
+		$authid = App::get('authn')['user_id'];
+		if (!$userid)
+		{
+			$userid = $authid;
+		}
+		// Only the member themselves or an administrator may read this
+		if ($userid != $authid && !User::authorise('core.admin') && !User::authorise('core.manage', 'com_members'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 		$result = User::getInstance($userid);
 
 		if (!$result || $result->isNew() || strstr($result->get('email'), '@') == '@invalid')

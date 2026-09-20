@@ -137,6 +137,14 @@ class Categories extends Base
 		// load category object
 		$this->category = new Page\Category($category['id']);
 
+		// A manager may only edit a category that belongs to their own group
+		if ($this->category->get('id')
+			&& $this->category->get('gidNumber') != $this->group->get('gidNumber'))
+		{
+			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_ERROR'), 'error');
+			return $this->editTask();
+		}
+
 		// bind to our new results
 		if (!$this->category->bind($category))
 		{
