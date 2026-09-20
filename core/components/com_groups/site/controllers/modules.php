@@ -312,10 +312,6 @@ class Modules extends Base
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
 
 		App::redirect($url);
-		if ($return = Request::getString('return', '', 'post'))
-		{
-			App::redirect(base64_decode($return));
-		}
 	}
 
 	/**
@@ -391,7 +387,11 @@ class Modules extends Base
 
 		if ($return = Request::getString('return', '', 'get'))
 		{
-			$url = base64_decode($return);
+			$decoded = base64_decode($return);
+			if (\Hubzero\Utility\Uri::isInternal($decoded))
+			{
+				$url = $decoded;
+			}
 		}
 
 		// Log activity
