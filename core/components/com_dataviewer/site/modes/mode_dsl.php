@@ -121,7 +121,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	if (!isset($dd['publication_state']) || $dd['publication_state'] != 1)
 	{
 		// Project owners
-		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = {$dd['project']}";
+		$sql = "SELECT username FROM #__project_owners po JOIN #__users u ON (u.id = po.userid) WHERE projectid = " . (int) $dd['project'] . "";
 		$db = App::get('db');
 		$db->setQuery($sql);
 		$dd['acl']['allowed_users'] = $db->loadColumn();
@@ -205,10 +205,35 @@ function _dd_post($dd)
 		}
 
 		// Custom Group by
+		//
+		// An allowlist of this dataview's own columns, as in mode_db/mode_ds:
+		// lib/db.php concatenates this straight into the statement, and a
+		// character class admitting letters, digits, comma, dot, space and
+		// backtick is everything a "1 WITH ROLLUP UNION SELECT ..." payload
+		// needs -- naming WITH ROLLUP also suppresses the trailing ORDER BY at
+		// lib/db.php:659 that would have made the injected UNION invalid.
 		$group_by = Request::getString('group_by', '');
 		if ($group_by !== '')
 		{
-			$dd['group_by'] = htmlspecialchars($group_by);
+			$group_cols = array();
+			foreach (explode(',', $group_by) as $gb_col)
+			{
+				$gb_col = trim($gb_col);
+				$rollup = '';
+				if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m))
+				{
+					$gb_col = trim($m[1]);
+					$rollup = ' WITH ROLLUP';
+				}
+				if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols']))
+				{
+					$group_cols[] = '`' . $gb_col . '`' . $rollup;
+				}
+			}
+			if ($group_cols)
+			{
+				$dd['group_by'] = implode(', ', $group_cols);
+			}
 		}
 
 		// Ordering
@@ -216,6 +241,13 @@ function _dd_post($dd)
 		$dd['cols'] = array();
 		foreach ($custom_view as $cv_col)
 		{
+			// Only real columns of this dataview. An unknown key yields a null
+			// conf, and lib/db.php then uses the key itself both as the column
+			// expression and as its backtick-quoted alias -- so anything else was
+			// an injection straight into the SELECT list.
+			if (!array_key_exists($cv_col, $order_cols)) {
+				continue;
+			}
 			$dd['cols'][$cv_col] = $order_cols[$cv_col];
 		}
 
