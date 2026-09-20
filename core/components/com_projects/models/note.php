@@ -129,7 +129,7 @@ class Note extends \Components\Wiki\Models\Book
 		$query  = "SELECT p.pagename FROM `#__wiki_pages` AS p
 				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2";
 
-		$query .= $prefix ? "AND p.pagename LIKE '" . $prefix . "%'" : "";
+		$query .= $prefix ? " AND p.pagename LIKE " . $this->_db->quote($prefix . '%') : "";
 		$query .= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
 
 		$this->_db->setQuery($query);
@@ -182,7 +182,7 @@ class Note extends \Components\Wiki\Models\Book
 				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
 				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
-				  ORDER BY $orderby ";
+				  ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $orderby) ?: '1') . " ";
 
 		$query .= intval($limit) ? " LIMIT $limit" : '';
 
@@ -223,7 +223,7 @@ class Note extends \Components\Wiki\Models\Book
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
-		$query.=  is_numeric($id) ? " AND p.id='$id' LIMIT 1" : " AND p.pagename='$id' LIMIT 1";
+		$query .= is_numeric($id) ? " AND p.id=" . (int) $id . " LIMIT 1" : " AND p.pagename=" . $this->_db->quote($id) . " LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();
@@ -258,7 +258,7 @@ class Note extends \Components\Wiki\Models\Book
 	 */
 	public function fixScopePaths($scope, $oldpagename, $newpagename)
 	{
-		$query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, '/" . $oldpagename . "', '/" . $newpagename . "')
+		$query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->_db->quote('/' . $oldpagename) . ", " . $this->_db->quote('/' . $newpagename) . ")
 				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id);
 
 		$this->_db->setQuery($query);
