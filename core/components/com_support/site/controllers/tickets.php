@@ -1170,7 +1170,7 @@ class Tickets extends SiteController
 					'action'      => 'created',
 					'scope'       => 'support.ticket',
 					'scope_id'    => $row->get('id'),
-					'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_CREATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>'),
+					'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_CREATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>'),
 					'details'     => array(
 						'id'      => $row->get('id'),
 						'summary' => $row->get('summary'),
@@ -2091,6 +2091,25 @@ class Tickets extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Must be logged in
+		if (User::isGuest())
+		{
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
+			);
+			return;
+		}
+
+		// Guard against request forgeries
+		Request::checkToken(array('get', 'post'));
+
+		// Must be authorized to delete tickets
+		if (!$this->acl->check('delete', 'tickets'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Incoming
 		$id = Request::getInt('id', 0);
 
