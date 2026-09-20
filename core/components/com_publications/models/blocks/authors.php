@@ -312,7 +312,7 @@ class Authors extends Base
 			}
 
 			$pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
-			if ($pAuthor->load($id))
+			if ($pAuthor->load($id) && $pAuthor->publication_version_id == $pub->version_id)
 			{
 				$pAuthor->ordering = $o;
 				$o++;

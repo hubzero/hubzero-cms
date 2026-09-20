@@ -68,7 +68,7 @@ $this->css('course.css')
 
 <?php if ($this->course->access('edit', 'course') && $this->course->get('state') != 1) { ?>
 	<div class="manager-options draft">
-		<a class="icon-edit btn btn-secondary btn-success" href="<?php echo Route::url($this->course->link() . '&task=publish'); ?>">
+		<a class="icon-edit btn btn-secondary btn-success" href="<?php echo Route::url($this->course->link() . '&task=publish' . '&' . Session::getFormToken() . '=1'); ?>">
 			<?php echo Lang::txt('COM_COURSES_PUBLISH'); ?>
 		</a>
 		<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_STATE_DRAFT'); ?></strong></span>
@@ -348,7 +348,7 @@ $this->css('course.css')
 						<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
 							<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
 								<div class="manager-options">
-									<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
+									<a class="icon-error btn btn-secondary btn-danger" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage' . '&' . Session::getFormToken() . '=1'); ?>">
 										<?php echo Lang::txt('COM_COURSES_DELETE'); ?>
 									</a>
 									<a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">

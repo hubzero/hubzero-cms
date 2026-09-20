@@ -195,6 +195,13 @@ class Assetv1_0 extends base
 			App::abort(500, 'No asset id provided');
 		}
 
+		// The asset must belong to the authorized course.
+		$ownerAsset = new Asset($asset_id);
+		if ($ownerAsset->get('course_id') != $this->course->get('id'))
+		{
+			App::abort(403, 'Asset is not a part of this course.');
+		}
+
 		// Initiate our file handler
 		$database     = App::get('db');
 		$assetHandler = new Handler($database);
@@ -235,6 +242,13 @@ class Assetv1_0 extends base
 		if (!$asset_id = Request::getInt('id', false))
 		{
 			App::abort(500, 'No asset id provided');
+		}
+
+		// The asset must belong to the authorized course.
+		$ownerAsset = new Asset($asset_id);
+		if ($ownerAsset->get('course_id') != $this->course->get('id'))
+		{
+			App::abort(403, 'Asset is not a part of this course.');
 		}
 
 		// Initiate our file handler
@@ -299,6 +313,12 @@ class Assetv1_0 extends base
 
 		// Create our object
 		$asset = new Asset($id);
+
+		// An existing asset must belong to the authorized course.
+		if ($id && $asset->get('course_id') != $this->course->get('id'))
+		{
+			App::abort(403, 'Asset is not a part of this course.');
+		}
 
 		// Check to make sure we have an asset group object
 		if (!is_object($asset))
@@ -493,9 +513,41 @@ class Assetv1_0 extends base
 			// Create asset assoc object
 			$assocObj = new AssetAssociation($database);
 
+			// The association's scope must belong to the authorized course --
+			// the same check deleteTask and reorderTask carry. Without it a
+			// caller who manages any course could attach an asset into another
+			// course's outline, and AssetGroup::assets() filters only on the
+			// scope, never on course_id, so it renders there.
+			// strtolower, because Request::getCmd() filters with a
+			// case-INSENSITIVE character class and never lowercases -- so
+			// scope=ASSET_GROUP failed a `== 'asset_group'` test and skipped the
+			// check entirely, while the reader's column collation
+			// (utf8mb3_general_ci) still matched it. And deny an unrecognised
+			// scope rather than waving it through, as reorderTask does.
+			$assocScope   = strtolower(Request::getCmd('scope', 'asset_group'));
+			$assocScopeId = (int) Request::getInt('scope_id', 0);
+
+			if ($assocScope === 'asset_group')
+			{
+				$database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+			}
+			else if ($assocScope === 'offering')
+			{
+				$database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
+			}
+			else
+			{
+				App::abort(403, 'Unsupported asset scope');
+			}
+
+			if ((int) $database->loadResult() !== (int) $this->course_id)
+			{
+				App::abort(403, 'Asset scope is not a part of this course');
+			}
+
 			$row->asset_id  = $asset->get('id');
-			$row->scope     = Request::getCmd('scope', 'asset_group');
-			$row->scope_id  = Request::getInt('scope_id', 0);
+			$row->scope     = $assocScope;
+			$row->scope_id  = $assocScopeId;
 
 			// Save the asset association
 			if (!$assocObj->save($row))
@@ -520,8 +572,40 @@ class Assetv1_0 extends base
 					App::abort(500, 'Failed to load asset association');
 				}
 
+				// The association's scope must belong to the authorized course --
+				// the same check deleteTask and reorderTask carry. Without it a
+				// caller who manages any course could attach an asset into another
+				// course's outline, and AssetGroup::assets() filters only on the
+				// scope, never on course_id, so it renders there.
+				// strtolower, because Request::getCmd() filters with a
+				// case-INSENSITIVE character class and never lowercases -- so
+				// scope=ASSET_GROUP failed a `== 'asset_group'` test and skipped the
+				// check entirely, while the reader's column collation
+				// (utf8mb3_general_ci) still matched it. And deny an unrecognised
+				// scope rather than waving it through, as reorderTask does.
+				$assocScope   = strtolower(Request::getCmd('scope', 'asset_group'));
+				$assocScopeId = (int) $scope_id;
+
+				if ($assocScope === 'asset_group')
+				{
+					$database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+				}
+				else if ($assocScope === 'offering')
+				{
+					$database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
+				}
+				else
+				{
+					App::abort(403, 'Unsupported asset scope');
+				}
+
+				if ((int) $database->loadResult() !== (int) $this->course_id)
+				{
+					App::abort(403, 'Asset scope is not a part of this course');
+				}
+
 				// Set new scope id
-				$row->scope_id  = $scope_id;
+				$row->scope_id  = $assocScopeId;
 
 				// Save the asset association
 				if (!$assocObj->save($row))
@@ -601,6 +685,25 @@ class Assetv1_0 extends base
 		$asset_id  = Request::getInt('asset_id', 0);
 		$scope     = Request::getCmd('scope', 'asset_group');
 		$scope_id  = Request::getInt('scope_id', 0);
+
+		// Both the asset and the group it is being removed from must belong to
+		// the course that was just authorized
+		if ($asset_id)
+		{
+			$owner = new Asset($asset_id);
+			if ((int) $owner->get('course_id') !== (int) $this->course_id)
+			{
+				App::abort(403, 'Asset is not a part of this course');
+			}
+		}
+		if ($scope_id && $scope == 'asset_group')
+		{
+			$database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $scope_id);
+			if ((int) $database->loadResult() !== (int) $this->course_id)
+			{
+				App::abort(403, 'Asset group is not a part of this course');
+			}
+		}
 
 		// Make sure we're not missing anything
 		if (!$asset_id || !$scope || !$scope_id)
@@ -758,6 +861,19 @@ class Assetv1_0 extends base
 	 */
 	public function reorderTask()
 	{
+		$this->requiresAuthentication();
+
+		// The outline builder sends only the asset group (scope_id), not the
+		// course, so resolve the course from the group before authorizing
+		if (!Request::getInt('course_id', 0) && Request::getCmd('scope', 'asset_group') == 'asset_group')
+		{
+			$db = App::get('db');
+			$db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) Request::getInt('scope_id', 0));
+			Request::setVar('course_id', (int) $db->loadResult());
+		}
+
+		$this->authorizeOrFail();
+
 		// Get our asset group object
 		$database           = App::get('db');
 		$assetAssocationObj = new AssetAssociation($database);
@@ -765,6 +881,31 @@ class Assetv1_0 extends base
 		$assets   = Request::getArray('asset', array());
 		$scope_id = Request::getInt('scope_id', 0);
 		$scope    = Request::getWord('scope', 'asset_group');
+
+		// The scope must belong to the authorized course: resolving it above only
+		// helps the builder, which sends no course_id, so a caller who manages
+		// any course could otherwise reorder another course's associations.
+		// loadByAssetScope() matches on (asset_id, scope_id, scope) with no
+		// course constraint, so a scope we cannot resolve is refused rather than
+		// waved through. The outline builder only ever sends asset_group
+		// (assets/js/build.js).
+		if ($scope == 'asset_group')
+		{
+			$database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $scope_id);
+		}
+		else if ($scope == 'offering')
+		{
+			$database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . (int) $scope_id);
+		}
+		else
+		{
+			App::abort(403, 'Unsupported asset scope');
+		}
+
+		if (!$scope_id || (int) $database->loadResult() !== (int) $this->course_id)
+		{
+			App::abort(403, 'Asset scope is not a part of this course');
+		}
 
 		$order = 1;
 
@@ -817,6 +958,12 @@ class Assetv1_0 extends base
 		// Get our asset object
 		$asset = new Asset($id);
 
+		// The asset must belong to the authorized course.
+		if ($asset->get('course_id') != $this->course->get('id'))
+		{
+			App::abort(403, 'Asset is not a part of this course.');
+		}
+
 		// Make sure we have an asset model
 		if (!is_object($asset) || !$asset instanceof \Components\Courses\Models\Asset)
 		{
@@ -858,10 +1005,26 @@ class Assetv1_0 extends base
 	 */
 	public function getformidTask()
 	{
+		$this->requiresAuthentication();
+
 		// Get the asset id
 		if (!$id = Request::getInt('id', false))
 		{
 			App::abort(404, 'No ID provided');
+		}
+
+		// The outline builder sends only the asset id; resolve its course before
+		// authorizing, and verify it either way so an explicit course_id cannot
+		// be used to reach another course's asset
+		$owner = new Asset($id);
+		if (!Request::getInt('course_id', 0))
+		{
+			Request::setVar('course_id', (int) $owner->get('course_id'));
+		}
+		$this->authorizeOrFail();
+		if ((int) $owner->get('course_id') !== (int) $this->course_id)
+		{
+			App::abort(403, 'Asset is not a part of this course');
 		}
 
 		$database = App::get('db');
@@ -911,10 +1074,26 @@ class Assetv1_0 extends base
 	 */
 	public function getformanddepidTask()
 	{
+		$this->requiresAuthentication();
+
 		// Get the asset id
 		if (!$id = Request::getInt('id', false))
 		{
 			App::abort(404, 'No ID provided');
+		}
+
+		// The outline builder sends only the asset id; resolve its course before
+		// authorizing, and verify it either way so an explicit course_id cannot
+		// be used to reach another course's asset
+		$owner = new Asset($id);
+		if (!Request::getInt('course_id', 0))
+		{
+			Request::setVar('course_id', (int) $owner->get('course_id'));
+		}
+		$this->authorizeOrFail();
+		if ((int) $owner->get('course_id') !== (int) $this->course_id)
+		{
+			App::abort(403, 'Asset is not a part of this course');
 		}
 
 		$database = App::get('db');

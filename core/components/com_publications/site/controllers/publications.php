@@ -1668,6 +1668,15 @@ class Publications extends SiteController
 			return;
 		}
 
+		// Make sure the actor is allowed to view the source version BEFORE any
+		// project is provisioned for the fork, so a refused fork leaves nothing behind
+		$version   = Models\Orm\Version::oneOrFail($vid);
+		$sourcePub = new Models\Publication(null, 'default', $version->get('id'));
+		if (!$sourcePub->access('view'))
+		{
+			return $this->_blockAccess();
+		}
+
 		// Get project model
 		$project = new \Components\Projects\Models\Project($pid);
 
@@ -1764,8 +1773,7 @@ class Publications extends SiteController
 
 		include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
 
-		// Load the version
-		$version = Models\Orm\Version::oneOrFail($vid);
+		// (The source version was loaded and checked above, before provisioning.)
 
 		// Make sure the license applied allows for derivations
 		if (!$version->license->get('derivatives'))
@@ -2276,7 +2284,7 @@ class Publications extends SiteController
 				'action'      => 'forked',
 				'scope'       => 'publication',
 				'scope_id'    => $pub_id,
-				'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . $version->get('title') . '</a>'),
+				'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . htmlspecialchars((string) ($version->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $version->get('title'),
 					'url'   => Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum),
@@ -2348,6 +2356,13 @@ class Publications extends SiteController
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option)
 			);
+		}
+
+		// Make sure the actor is allowed to view the lft (source) version
+		$lsource = new Models\Publication(null, 'default', $lversion->get('id'));
+		if (!$lsource->access('view'))
+		{
+			return $this->_blockAccess();
 		}
 
 		// Load the rgt version and make sure the user has access

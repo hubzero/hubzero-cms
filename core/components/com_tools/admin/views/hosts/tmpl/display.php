@@ -87,7 +87,7 @@ if ($this->rows)
 							echo '<strong>';
 						}
 						?>
-					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key); ?>">
+					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key . '&' . Session::getFormToken() . '=1'); ?>">
 						<span><?php echo $this->escape($key); ?></span>
 					</a>
 						<?php

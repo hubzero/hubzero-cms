@@ -371,7 +371,7 @@ class Content extends Base
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 
 		// We need attachment record
-		if (!$aid || !$row->load($aid))
+		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 			return false;
@@ -415,7 +415,7 @@ class Content extends Base
 		$row = new \Components\Publications\Tables\Attachment( $this->_parent->_db );
 
 		// We need attachment record
-		if (!$aid || !$row->load($aid))
+		if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id)
 		{
 			$this->setError( Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT'));
 			return false;

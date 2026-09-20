@@ -86,6 +86,12 @@ class Filesv1_0 extends ApiController
 			if ($this->cid)
 			{
 				$this->ormconn = \Components\Projects\Models\Orm\Connection::oneOrFail($this->cid);
+
+				// The connection must belong to the authorized project
+				if ($this->ormconn->get('project_id') != $this->ormproj->get('id'))
+				{
+					throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
+				}
 			}
 		}
 

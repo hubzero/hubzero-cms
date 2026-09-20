@@ -368,6 +368,8 @@ class Course extends SiteController
 	 */
 	public function publishTask()
 	{
+		Request::checkToken('get');
+
 		// Incoming
 		$id = Request::getCmd('gid', '');
 
@@ -475,6 +477,20 @@ class Course extends SiteController
 		$course   = Models\Course::getInstance($data['course_id']);
 		$offering = Models\Offering::getInstance($data['id']);
 
+		// Only a course manager may create or change its offerings.
+		if (!$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// ...and an existing offering has to already belong to that course, for
+		// the same reason as savepageTask: getInstance() loads any id and bind()
+		// writes the posted course_id over it.
+		if ($offering->exists() && (int) $offering->get('course_id') !== (int) $course->get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Is this a new entry or updating?
 		$isNew = false;
 		if (!$offering->exists())
@@ -558,6 +574,12 @@ class Course extends SiteController
 		if (!$this->course->exists())
 		{
 			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		// Must be authorized to edit the source course
+		if (!$this->course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Check authorization
@@ -702,6 +724,47 @@ class Course extends SiteController
 			);
 		}
 
+		// Only a course manager may create or change its pages.
+		if (!$course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// ...and the page being written has to already belong to that course.
+		// Models\Page loads any id, and bind() writes every posted column
+		// including course_id, so authorizing the POSTed course_id alone let a
+		// manager of one course rebind another course's page into theirs.
+		if (!empty($page['id']))
+		{
+			$existing = new Models\Page($page['id']);
+
+			if ($existing->exists() && (int) $existing->get('course_id') !== (int) $course->get('id'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+
+		// Pin the scope to the course that was actually authorized, and do it
+		// on the RESOLVED id. The guard above compares $course->get('id'), but
+		// bind() writes $page['course_id'] verbatim -- and Tables\Course::load()
+		// resolves a non-numeric key as an alias, so page[course_id]=<my-alias>
+		// authorized fine while Tables\Page::check() intval()'d it to 0. A page
+		// with course_id=0/offering_id=0/active=1 is exactly the "all courses"
+		// bucket plugins/courses/pages fetches, i.e. it renders in every
+		// offering on the hub. offering_id is pinned for the same reason:
+		// Offering::pages() filters on offering_id and active, never course_id.
+		$page['course_id'] = (int) $course->get('id');
+
+		if (!empty($page['offering_id']))
+		{
+			$offering = Models\Offering::getInstance((int) $page['offering_id']);
+
+			if (!$offering->exists() || (int) $offering->get('course_id') !== (int) $course->get('id'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+
 		$model = new Models\Page($page['id']);
 
 		if (!$model->bind($page))
@@ -740,6 +803,8 @@ class Course extends SiteController
 	 */
 	public function deletepageTask()
 	{
+		Request::checkToken('get');
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{
@@ -968,6 +1033,12 @@ class Course extends SiteController
 			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
 		}
 
+		// Must be authorized to edit the source course
+		if (!$this->course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
+		}
+
 		$rtrn = Request::getString('return');
 
 		$this->view
@@ -990,6 +1061,12 @@ class Course extends SiteController
 		if (!$this->course->exists())
 		{
 			App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
+		}
+
+		// Must be authorized to edit the source course
+		if (!$this->course->access('edit', 'course'))
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
 		}
 
 		// Incoming

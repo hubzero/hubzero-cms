@@ -40,7 +40,7 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 						$weight AS weight
 					FROM #__citations c
 					WHERE
-						c.published=1 AND $weight > 0
+						c.published=1 AND (c.scope = '' OR c.scope IS NULL OR c.scope = 'hub') AND $weight > 0
 					ORDER BY $weight DESC";
 
 			$results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
@@ -62,7 +62,7 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 						tago.tbl='citations'
 					AND
 						tago.label=''";
-			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+			$sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
 		}
 		else
 		{
@@ -73,7 +73,7 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 						$weight AS weight
 					FROM #__citations c
 					WHERE
-						c.published=1 AND $weight > 0
+						c.published=1 AND (c.scope = '' OR c.scope IS NULL OR c.scope = 'hub') AND $weight > 0
 					ORDER BY $weight DESC";
 			$results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
 
@@ -94,11 +94,11 @@ class plgSearchCitations extends \Hubzero\Plugin\Plugin
 						tago.tbl='citations'
 					AND
 						tago.label=''";
-			$sql2 .= "AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+			$sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
 		}
 
 		//add final query to ysearch
-		$sql_result_one = "SELECT c.id as id FROM #__citations c WHERE c.published=1 AND $weight > 0 ORDER BY $weight DESC";
+		$sql_result_one = "SELECT c.id as id FROM #__citations c WHERE c.published=1 AND (c.scope = '' OR c.scope IS NULL OR c.scope = 'hub') AND $weight > 0 ORDER BY $weight DESC";
 		$sql2 .= " AND c.id NOT IN(" . $sql_result_one . ")";
 		$results->add(new \Components\Search\Models\Basic\Result\Sql($sql2));
 	}

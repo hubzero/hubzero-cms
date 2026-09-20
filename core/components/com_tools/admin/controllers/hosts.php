@@ -289,6 +289,8 @@ class Hosts extends AdminController
 	 */
 	public function toggleTask()
 	{
+		Request::checkToken('get');
+
 		// Incoming
 		$hostname = Request::getString('hostname', '', 'get');
 		$item = Request::getString('item', '', 'get');
