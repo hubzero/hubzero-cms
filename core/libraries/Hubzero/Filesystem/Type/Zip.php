@@ -36,6 +36,17 @@ class Zip extends Expandable
 			for ($i = 0; $i < $zip->numFiles; $i++)
 			{
 				$filename = $zip->getNameIndex($i);
+
+				// Guard against zip-slip: skip entries that would escape the target
+				$normalized = str_replace('\\', '/', (string) $filename);
+				// Only a ".." path SEGMENT escapes the target; a name that merely
+				// contains two dots ("report..final.pdf") is an ordinary file
+				$segments = explode('/', $normalized);
+				if ($normalized === '' || $normalized[0] === '/' || in_array('..', $segments, true))
+				{
+					continue;
+				}
+
 				$entity   = Entity::fromPath($this->getParent() . '/' . $filename, $this->getAdapter());
 
 				if ($entity->isFile())

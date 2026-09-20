@@ -380,7 +380,7 @@ class Geocode
 			return array();
 		}
 
-		$gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) ='" . strtolower($country) . "'");
+		$gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) =" . $gdb->quote(strtolower($country)));
 		return $gdb->loadColumn();
 	}
 
