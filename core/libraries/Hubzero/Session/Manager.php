@@ -663,7 +663,14 @@ class Manager extends Obj
 
 		// Restore config
 		ini_set('session.use_trans_sid', $trans);
-		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure']);
+		// Always mark the session cookie HttpOnly so it cannot be read from JavaScript.
+		session_set_cookie_params(array(
+			'lifetime' => $cookie['lifetime'],
+			'path'     => $cookie['path'],
+			'domain'   => $cookie['domain'],
+			'secure'   => $cookie['secure'],
+			'httponly' => true,
+		));
 
 		// Restart session with new id
 		session_id($id);
@@ -725,7 +732,14 @@ class Manager extends Obj
 			$cookie['path'] = $this->cookie_path;
 		}
 
-		session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'], $cookie['secure']);
+		// Always mark the session cookie HttpOnly so it cannot be read from JavaScript.
+		session_set_cookie_params(array(
+			'lifetime' => $cookie['lifetime'],
+			'path'     => $cookie['path'],
+			'domain'   => $cookie['domain'],
+			'secure'   => $cookie['secure'],
+			'httponly' => true,
+		));
 	}
 
 	/**
@@ -744,7 +758,7 @@ class Manager extends Obj
 
 		for ($i = 0; $i < $length; ++$i)
 		{
-			$token .= $chars[(rand(0, $max))];
+			$token .= $chars[random_int(0, $max)];
 		}
 
 		return md5($token . $name);
