@@ -275,6 +275,21 @@ class Setup extends Base
 				throw new Exception(Lang::txt('COM_PROJECTS_NO_GROUP_FOUND'), 404);
 			}
 			$this->_gid = $this->group->get('gidNumber');
+
+			// Re-pointing an EXISTING project at a different group is a manager
+			// action. The authorisation check below runs AFTER this and admits a
+			// description-only collaborator when edit_description is on, so without
+			// this, one could rebind group ownership. Comparing against the current
+			// value keeps the ordinary save -- which posts the project's own gid --
+			// working for everyone. displayTask() only sets it for rendering and
+			// _process() sets it when creating, so neither needs this.
+			if ($this->model->exists()
+			 && (int) $this->model->get('owned_by_group') !== (int) $this->_gid
+			 && !$this->model->access('manager') && !$this->model->access('owner'))
+			{
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			}
+
 			$this->model->set('owned_by_group', $this->_gid);
 
 			// Make sure we have up-to-date group membership information
@@ -699,11 +714,16 @@ class Setup extends Base
 
 				$this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
 				$this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
-				$this->model->set('type', Request::getInt('type', 1, 'post'));
+				// Only a manager/owner (or the creator during setup) may change
+				// the project type or visibility; a description-only collaborator may not.
+				if ($new || $this->model->access('manager') || $this->model->access('owner'))
+				{
+					$this->model->set('type', Request::getInt('type', 1, 'post'));
 
-				// save advanced permissions
-				$this->model->set('private', $private);
-				$this->model->set('access', $access);
+					// save advanced permissions
+					$this->model->set('private', $private);
+					$this->model->set('access', $access);
+				}
 
 				if ($setup && !$this->model->exists())
 				{
@@ -835,6 +855,20 @@ class Setup extends Base
 				{
 					// Save params
 					$incoming   = Request::getArray('params', array());
+
+					// The public-exposure flags live in the same fieldset as the
+					// type/visibility writes guarded above -- params[files_public],
+					// [notes_public], [team_public], [publications_public],
+					// [allow_membershiprequest] -- so gating one and not the other
+					// left a description-only collaborator able to flip every one
+					// of them. Same predicate as that guard.
+					if (!empty($incoming)
+					 && !$this->model->access('manager')
+					 && !$this->model->access('owner'))
+					{
+						$incoming = array();
+					}
+
 					if (!empty($incoming))
 					{
 						foreach ($incoming as $key => $value)
@@ -913,6 +947,14 @@ class Setup extends Base
 					return false;
 				}
 
+				// Team membership and group syncing are a manager/owner action. The
+				// team plugin checks this too, but only after this branch has already
+				// stored sync_group and called saveOwners().
+				if (!$this->model->access('manager') && !$this->model->access('owner'))
+				{
+					throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+				}
+
 				if ($this->model->groupOwner())
 				{
 					// Save group sync settings
@@ -964,6 +1006,12 @@ class Setup extends Base
 				if ($new)
 				{
 					return false;
+				}
+
+				// Project settings are a manager/owner action
+				if (!$this->model->access('manager') && !$this->model->access('owner'))
+				{
+					App::abort(403, Lang::txt('ALERTNOTAUTH'));
 				}
 
 				// Save privacy
