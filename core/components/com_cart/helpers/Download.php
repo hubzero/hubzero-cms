@@ -155,11 +155,11 @@ class CartDownload
 				$filters['sort'] = 'pName';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']);
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				$sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 			}
 
 			if ($filters['sort'] == 'product')
@@ -286,11 +286,11 @@ class CartDownload
 				$filters['sort'] = 'pName';
 			}
 
-			$sql .= " ORDER BY " . $filters['sort'];
+			$sql .= " ORDER BY " . preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']);
 
 			if (isset($filters['sort_Dir']))
 			{
-				$sql .= ' ' . $filters['sort_Dir'];
+				$sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 			}
 
 			if ($filters['sort'] == 'product')
