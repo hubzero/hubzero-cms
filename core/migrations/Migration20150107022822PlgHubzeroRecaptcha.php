@@ -21,8 +21,8 @@ class Migration20150107022822PlgHubzeroRecaptcha extends Base
 	public function up()
 	{
 		$params = array(
-			'private' => '6Lf9IgATAAAAAAs_fYlomzK_HO6gbUVpSkGkDTRl',
-			'public'  => '6Lf9IgATAAAAAAl3WEw0hwpbsG9O2_EXY_-NH7xd'
+			'private' => '',
+			'public'  => ''
 		);
 
 		$this->savePluginParams('hubzero', 'recaptcha', $params);

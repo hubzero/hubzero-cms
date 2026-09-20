@@ -43,7 +43,7 @@ class Migration20180821190002ComPublications extends Base
 				}
 				if (!isset($params->ezid_doi_userpw))
 				{
-					$params->ezid_doi_userpw = "purr:#purrisice#";
+					$params->ezid_doi_userpw = "";
 				}
 				$query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
 				$this->db->setQuery($query);
