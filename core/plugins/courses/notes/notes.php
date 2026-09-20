@@ -215,6 +215,12 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 
 		$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
 
+		// Notes are private to their author
+		if ($note_id && $model->get('id') && $model->get('created_by') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		if ($scope = Request::getWord('scope', 'lecture'))
 		{
 			$model->set('scope', $scope);
@@ -281,6 +287,13 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		$note_id = Request::getInt('note', 0);
 
 		$model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
+
+		// Notes are private to their author
+		if ($model->get('created_by') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$model->set('state', 2);
 		if (!$model->save())
 		{
