@@ -58,6 +58,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 								<input type="hidden" name="action" value="savesection" />
 								<input type="hidden" name="unit" value="manage" />
 								<input type="hidden" name="active" value="discussions" />
+								<?php echo Html::input('token'); ?>
 						<?php } else { ?>
 							<?php echo $this->escape(stripslashes($section->get('title'))); ?>
 						<?php } ?>
@@ -178,6 +179,8 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<input type="hidden" name="active" value="discussions" />
 						<input type="hidden" name="unit" value="manage" />
 						<input type="hidden" name="action" value="savesection" />
+
+						<?php echo Html::input('token'); ?>
 					</fieldset>
 				</form>
 			</div><!-- /.container -->

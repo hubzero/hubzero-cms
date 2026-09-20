@@ -249,6 +249,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 
+		// The record must belong to this group
+		if ($entry->get('scope') != 'group' || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		if (!$entry->markAsUnpublished())
 		{
 			$this->setError($entry->getError());
@@ -300,6 +306,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$action  = Request::getWord('action', 'star');
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+
+		// The record must belong to this group
+		if ($entry->get('scope') != 'group' || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
 		$entry->set('starred', ($action == 'star' ? 1 : 0));
 
 		if (!$entry->save())
@@ -357,7 +369,16 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$comment = Request::getArray('activity', array(), 'post');
 
 		// Instantiate a new object and bind data
-		$row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
+		$lid = isset($comment['id']) ? (int) $comment['id'] : 0;
+		$row = Hubzero\Activity\Log::oneOrNew($lid);
+
+		if (!$row->isNew()
+		 && ($row->get('scope') != 'group' || $row->get('scope_id') != $this->group->get('gidNumber')))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		$row->set($comment);
 
 		// Process attachment
 		$upload = Request::getArray('activity_file', '', 'files');

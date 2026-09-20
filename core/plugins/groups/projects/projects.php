@@ -408,6 +408,11 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
+			// The project must be one of this group's projects
+			if (!in_array($projectid, (array) $this->_projects))
+			{
+				App::abort(403, Lang::txt('ALERTNOTAUTH'));
+			}
 			$projects = array($projectid);
 		}
 

@@ -69,6 +69,16 @@ class connections
 		if (isset($connection) && $connection > 0)
 		{
 			$this->connection = Connection::oneOrFail($connection);
+
+			// A connection may only be used inside the project it belongs to,
+			// and a private (unshared) one only by its owner: every task below
+			// operates on the connection's stored provider credentials
+			$projectId = $this->model ? (int) $this->model->get('id') : 0;
+			if ((int) $this->connection->get('project_id') !== $projectId
+			 || (!$this->connection->isShared() && (int) $this->connection->get('owner_id') !== (int) User::get('id')))
+			{
+				App::abort(403, Lang::txt('ALERTNOTAUTH'));
+			}
 		}
 	}
 
@@ -215,6 +225,18 @@ class connections
 	{
 		$connection = Connection::oneOrNew(Request::getInt('connection'));
 
+		if ($connection->get('id') && $connection->get('project_id') != $this->model->get('id'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
+		// A manager may reset any of the project's connections; anyone else
+		// only a private one of their own
+		if (!$this->connectionOwnedOrManageableByUser($connection))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		if ($this->connection)
 		{
 			$connection_params = json_decode($connection->get('params'));
@@ -242,6 +264,18 @@ class connections
 	{
 		$connection = Connection::oneOrNew(Request::getInt('connection'));
 
+		if ($connection->get('id') && $connection->get('project_id') != $this->model->get('id'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
+		// A manager may reset any of the project's connections; anyone else
+		// only a private one of their own
+		if (!$this->connectionOwnedOrManageableByUser($connection))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		if ($this->connection)
 		{
 			$connection_params = json_decode($connection->get('params'));
@@ -261,7 +295,34 @@ class connections
 	 **/
 	public function saveconnection()
 	{
+		// This task does NOT only ever create a row. connect[id] is a hidden input
+		// on views/connections/tmpl/edit.php, Relational::set() copies it onto
+		// the blank model below, and isNew() is !hasAttribute('id') || !$this->id
+		// -- so save() issues an UPDATE. Without the test here a plain member
+		// could name any connection on the hub and have it rebound to this
+		// project under their own ownership, carrying the provider credentials
+		// stored in params with it.
+		//
+		// Creating stays open to any project member, as upstream had it; the
+		// dispatcher in files.php has already refused non-members, and the
+		// project id below comes from the loaded model rather than the request.
 		$data = Request::getArray('connect', array(), 'post');
+
+		$__cid = isset($data['id']) ? (int) $data['id'] : 0;
+
+		if ($__cid)
+		{
+			$__stored = Connection::oneOrNew($__cid);
+
+			if (!$__stored->get('id')
+			 || (int) $__stored->get('project_id') !== (int) $this->model->get('id')
+			 || !$this->connectionOwnedOrManageableByUser($__stored))
+			{
+				App::abort(403, Lang::txt('ALERTNOTAUTH'));
+			}
+		}
+
+		$data['project_id'] = $this->model->get('id');
 
 		$data['owner_id'] = User::get('id');
 		if (Request::getInt('shareconnection', 0, 'post'))
@@ -303,6 +364,21 @@ class connections
 		if (!$this->connection)
 		{
 			$this->connection = Connection::oneOrNew(Request::getInt('connection'));
+		}
+
+		if ($this->connection->get('id') && $this->connection->get('project_id') != $this->model->get('id'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
+		// A manager may delete any of the project's connections; anyone else
+		// only a private one of their own -- which is the predicate the listing
+		// now uses to decide whether to render this link at all, so the two
+		// agree and neither refuses what the other offers.
+		if ($this->connection->get('id')
+		 && !$this->connectionOwnedOrManageableByUser($this->connection))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
 		}
 
 		if ($this->connection->get('id'))
@@ -371,6 +447,37 @@ class connections
 			&& $member->get('id')
 			&& $member->get('status') == 1
 			&& $member->get('role') == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER;
+	}
+
+	/**
+	 * Whether the current user may act on one already-stored connection.
+	 *
+	 * A project manager may act on any of them. Anyone else may act only on a
+	 * private connection they own -- which is the only kind the listing shows
+	 * them besides the shared ones (Orm\Connection::thatICanView() returns the
+	 * caller's own rows plus owner_id 0/NULL).
+	 *
+	 * This is deliberately wider than connectionManageableByUser(): a plain
+	 * member keeps the Refresh, Edit and Delete links on a private connection
+	 * they created themselves, which views/connections/tmpl/display.php offers
+	 * them on exactly this predicate. Shared connections stay manager-only:
+	 * clearing one's stored credential breaks it for the whole project, and
+	 * only a manager can run authorize() to restore it.
+	 *
+	 * @param   object  $connection  The connection being acted on
+	 * @return  bool
+	 */
+	private function connectionOwnedOrManageableByUser($connection)
+	{
+		if ($this->connectionManageableByUser())
+		{
+			return true;
+		}
+
+		return $connection
+			&& $connection->get('id')
+			&& !$connection->isShared()
+			&& (int) $connection->get('owner_id') === (int) User::get('id');
 	}
 
 	/**
@@ -557,6 +664,14 @@ class connections
 	 */
 	public function setprefix()
 	{
+		// A manager may set the path on any of the project's connections;
+		// anyone else only on a private one of their own. The constructor has
+		// already refused a connection belonging to another project.
+		if (!$this->connectionOwnedOrManageableByUser($this->connection))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		$prefix = urldecode(Request::getString('prefix', ''));
 		$connection_params = json_decode($this->connection->params);
 		// Attempt to prevent URL tampering
@@ -758,7 +873,8 @@ class connections
 			// Go through uploaded files
 			for ($i=0; $i < count($upload['name']); $i++)
 			{
-				$path = trim($this->subdir, '/') . '/' . $upload['name'][$i];
+				// As the single-file branches above: a name, not a path
+				$path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $upload['name'][$i]));
 				$file = Entity::fromPath($path, $this->connection->adapter());
 
 				$file->contents = file_get_contents($upload['tmp_name'][$i]);
@@ -1097,7 +1213,8 @@ class connections
 			// Go through uploaded files
 			for ($i=0; $i < count($upload['name']); $i++)
 			{
-				$path = trim($this->subdir, '/') . '/' . $upload['name'][$i];
+				// As the single-file branches above: a name, not a path
+				$path = trim($this->subdir, '/') . '/' . basename(str_replace('\\', '/', $upload['name'][$i]));
 				$file = Entity::fromPath($path, $this->connection->adapter());
 
 				$file->contents = file_get_contents($upload['tmp_name'][$i]);

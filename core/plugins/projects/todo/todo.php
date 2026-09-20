@@ -394,6 +394,15 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$todoid    = Request::getInt('todoid', 0);
 		$newlist   = Request::getString('newlist', '', 'post');
 		$newcolor  = Request::getString('newcolor', '', 'post');
+		$todoColors = array('orange', 'lightblue', 'green', 'purple', 'blue', 'black', 'red', 'yellow', 'pink');
+		if (!in_array($listcolor, $todoColors))
+		{
+			$listcolor = $listcolor == 'none' ? 'none' : '';
+		}
+		if (!in_array($newcolor, $todoColors))
+		{
+			$newcolor = '';
+		}
 		$page      = Request::getString('page', 'list', 'post');
 		$assigned  = Request::getInt('assigned', 0);
 		$mine      = Request::getInt('mine', 0);
@@ -856,6 +865,14 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		if ($objC->load($cid))
 		{
+			// The comment's todo must belong to the current project
+			$todo = new \Components\Projects\Tables\Todo($this->_database);
+			$todo->loadTodo($this->model->get('id'), $objC->itemid);
+			if (!$todo->id)
+			{
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			}
+
 			$activityid = $objC->activityid;
 
 			// delete comment

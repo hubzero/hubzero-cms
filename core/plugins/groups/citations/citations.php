@@ -613,8 +613,21 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$isNew = ($cid < 0 ? true : false);
 
 		// get the citation (single) or create a new one
-		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
-			->set(array(
+		// Managing group citations is a manager action
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		$citation = \Components\Citations\Models\Citation::oneOrNew($cid);
+
+		if ($cid > 0 && $citation->get('id')
+		 && ($citation->get('scope') != 'group' || $citation->get('scope_id') != $this->group->get('gidNumber')))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		$citation->set(array(
 				'type' => Request::getInt('type'),
 				'cite' => Request::getString('cite'),
 				'ref_type' => Request::getString('ref_type'),
@@ -807,8 +820,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 
 			// save the state
-			if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-					&& $citation->scope_id == $this->group->get('gidNumber'))
+			// Scope FIRST: && is left-to-right, so save() ahead of the comparison
+			// wrote the new state to whatever citation the request named and let
+			// the scope test pick only the flash message. The bulk branches in
+			// this file already order it this way.
+			if ($citation->scope != self::PLUGIN_SCOPE
+			 || $citation->scope_id != $this->group->get('gidNumber'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+
+			if ($citation->save())
 			{
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
@@ -940,8 +962,17 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 			$citation->set('published', $citation::STATE_DELETED);
 
-			if ($citation->save() && $citation->scope == self::PLUGIN_SCOPE
-					&& $citation->scope_id == $this->group->get('gidNumber'))
+			// Scope FIRST: && is left-to-right, so save() ahead of the comparison
+			// wrote the new state to whatever citation the request named and let
+			// the scope test pick only the flash message. The bulk branches in
+			// this file already order it this way.
+			if ($citation->scope != self::PLUGIN_SCOPE
+			 || $citation->scope_id != $this->group->get('gidNumber'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+
+			if ($citation->save())
 			{
 				App::redirect(
 					Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
@@ -1047,6 +1078,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	{
 		if ($_POST)
 		{
+			if ($this->authorized != 'manager')
+			{
+				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			}
 			$display = Request::getString('display', '');
 			$format  = Request::getString('citation-format', '');
 
@@ -1214,6 +1249,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		Request::checkToken();
 
+		// Importing citations is a manager action
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+
 		// get file
 		$file = Request::file('citations_file');
 
@@ -1326,6 +1368,13 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$config  = new \Hubzero\Config\Registry($this->group->get('params'));
 
 		Request::checkToken();
+
+		// Importing citations is a manager action
+		if ($this->authorized != 'manager')
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 
 		$cites_require_attention    = $this->importer->readRequiresAttention();
 		$cites_require_no_attention = $this->importer->readRequiresNoAttention();

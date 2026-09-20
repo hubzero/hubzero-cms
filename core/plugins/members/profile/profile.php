@@ -330,7 +330,15 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		$data['uidNumber'] = User::get('id');
 
 		// set up objects
-		$address = Components\Members\Models\Address::blank()->set($data);
+		// An address may only be edited by its owner
+		$aid = isset($data['id']) ? (int) $data['id'] : 0;
+		$address = Components\Members\Models\Address::oneOrNew($aid);
+		if (!$address->isNew() && $address->get('uidNumber') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+		$data['uidNumber'] = User::get('id');
+		$address->set($data);
 
 		// attempt to save
 		if (!$address->save())

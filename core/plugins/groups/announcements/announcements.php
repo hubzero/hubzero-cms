@@ -387,13 +387,38 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Are we creating the announcement?
-		if (!isset($fields['id']) || !$fields['id'])
+		$__aid = isset($fields['id']) ? (int) $fields['id'] : 0;
+
+		if (!$__aid)
 		{
 			$fields['id']         = 0;
 			$fields['scope']      = 'group';
 			$fields['scope_id']   = $this->group->get('gidNumber');
 			$fields['created']    = Date::toSql();
 			$fields['created_by'] = User::get('id');
+		}
+		else
+		{
+			// An existing announcement has to be this group's before anything is
+			// bound onto it. _edit() makes exactly this test before it will even
+			// render the form; the writer did not, and oneOrNew() resolves any
+			// row on the hub. $this->authorized == 'manager' is no more than
+			// being in the managers list of the group being VIEWED, which any
+			// registered user gets by creating a group -- and scope, scope_id
+			// and created_by all ride in through the set() below, so this was a
+			// way to rewrite any group's announcement and re-scope it into your
+			// own group.
+			$__existing = Hubzero\Item\Announcement::oneOrNew($__aid);
+
+			if (!$__existing->get('id')
+			 || !$__existing->belongsToObject('group', $this->group->get('gidNumber')))
+			{
+				$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+				return $this->_list();
+			}
+
+			// Where it lives and who wrote it are not the form's to change.
+			unset($fields['scope'], $fields['scope_id'], $fields['created'], $fields['created_by']);
 		}
 
 		// Do we want to mark sticky?
@@ -415,7 +440,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		}
 
 		// Bind data
-		$model = Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
+		$model = Hubzero\Item\Announcement::oneOrNew($__aid)->set($fields);
 
 		if ($model->get('publish_down')
 		 && $model->get('publish_down') != '0000-00-00 00:00:00'
@@ -501,6 +526,18 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		$id = Request::getInt('id', 0);
 
 		$model = Hubzero\Item\Announcement::oneOrFail($id);
+
+		// It has to be this group's announcement. oneOrFail() resolves any row on
+		// the hub, and the ownership test below cannot refuse anything: it is
+		// ANDed with $this->authorized != 'manager', which is false for the
+		// manager of the group being viewed -- so a manager of a group they just
+		// created could soft-delete every group announcement on the site. _edit()
+		// makes this same test before it will show the row.
+		if (!$model->belongsToObject('group', $this->group->get('gidNumber')))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
+			return $this->_list();
+		}
 
 		// Make sure we are the one who created it
 		if ($model->get('created_by') != User::get('id') && $this->authorized != 'manager')
