@@ -234,9 +234,22 @@ class Articles extends SiteController
 		{
 			case 'article':
 				$row = Article::oneOrFail($id);
+				$this->_requireReadableArticle($row);
 			break;
 			case 'comment':
 				$row = Comment::oneOrFail($id);
+
+				// A comment's visibility is its article's, plus its own state:
+				// oneOrFail() resolves any row, so without this a vote could be
+				// cast on a deleted comment, or on a comment belonging to an
+				// article the caller cannot see -- and the difference between a
+				// counted vote and a 404 tells them which hidden ids exist.
+				if (!in_array((int) $row->get('state'), array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED), true))
+				{
+					throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+				}
+
+				$this->_requireReadableArticle(Article::oneOrNew($row->get('entry_id')));
 			break;
 		}
 
@@ -296,11 +309,61 @@ class Articles extends SiteController
 		// Incoming
 		$comment = Request::getArray('comment', array(), 'post');
 
-		// Instantiate a new comment object and pass it the data
-		$row = Comment::oneOrNew($comment['id'])->set($comment);
-		if ($row->isNew())
+		// The form always posts this one, but a crafted request need not, and
+		// reading a missing key is a warning this hub turns into a 500.
+		$cid = isset($comment['id']) ? (int) $comment['id'] : 0;
+
+		// Instantiate the comment object
+		$row = Comment::oneOrNew($cid);
+
+		// For an existing comment, require ownership
+		if (!$row->isNew()
+		 && $row->get('created_by') != User::get('id')
+		 && !User::authorise('core.manage', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$isNew = $row->isNew();
+
+		// Who wrote the comment, what it hangs off and whether it has been
+		// reported are not the submitter's to set. set() copies every key of the
+		// request array onto a real column of #__kb_comments, and the ownership
+		// test above governs WHICH row is written, not WHAT is written to it --
+		// so without pinning these, an edit of one's own comment could
+		// re-attribute it to another member, move it to another article, or
+		// clear a state of 3 (reported as abusive) back to published.
+		$keep = array(
+			'entry_id'   => $row->get('entry_id'),
+			'parent'     => $row->get('parent'),
+			'created'    => $row->get('created'),
+			'created_by' => $row->get('created_by'),
+			'state'      => $row->get('state')
+		);
+
+		$row->set($comment);
+
+		if ($isNew)
 		{
 			$row->set('created', \Date::toSql());
+			$row->set('created_by', User::get('id'));
+			$row->set('state', Comment::STATE_PUBLISHED);
+
+			// entry_id is a form field too, so confirm it names an article that
+			// is actually readable before hanging a comment off it.
+			$target = Article::oneOrNew((int) $row->get('entry_id'));
+
+			if (!$target->get('id') || $target->get('state') != Article::STATE_PUBLISHED)
+			{
+				throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			}
+		}
+		else
+		{
+			foreach ($keep as $__k => $__v)
+			{
+				$row->set($__k, $__v);
+			}
 		}
 
 		// Store new content
@@ -321,11 +384,11 @@ class Articles extends SiteController
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($comment['id'] ? 'updated' : 'created'),
+				'action'      => ($cid ? 'updated' : 'created'),
 				'scope'       => 'kb.article.comment',
 				'scope_id'    => $row->get('id'),
 				'anonymous'   => $row->get('anonymous', 0),
-				'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . $article->get('title') . '</a>'),
+				'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($cid ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . htmlspecialchars((string) ($article->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $article->get('title'),
 					'entry_id' => $article->get('id'),
@@ -357,13 +420,15 @@ class Articles extends SiteController
 		$id    = Request::getInt('id', 0);
 
 		// Load the article
-		$category = Category::oneByAlias(Request::getString('category'));
-
 		$article = ($alias ? Article::oneByAlias($alias) : Article::oneOrFail($id));
 		if (!$article->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
+
+		// This feed carries the same comments the article page shows, so it must
+		// not serve an article the page itself refuses.
+		$this->_requireReadableArticle($article);
 
 		// Set the mime encoding for the document
 		Document::setType('feed');
@@ -381,34 +446,93 @@ class Articles extends SiteController
 		Document::instance()->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
 		Document::instance()->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
 
-		// Start outputing results if any found
-		$this->_feedItem($article->comments('list'));
+		// Start outputing results if any found.
+		//
+		// comments() hands back a relation, not rows: it is not Traversable, so
+		// the foreach in _feedItem() iterated nothing and this feed has always
+		// been empty whatever the article carried. Resolve the rows here, with
+		// the same state filter the article view applies, and take only the
+		// top-level ones -- the relation returns replies too, and _feedItem()
+		// recurses into those itself.
+		$comments = $article->comments()
+			->whereEquals('parent', 0)
+			->whereIn('state', array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED))
+			->rows();
+
+		$this->_feedItem($comments, Route::url($article->link()));
+	}
+
+	/**
+	 * Refuse an article the article page itself would refuse.
+	 *
+	 * articleTask() requires a published state and a published category before
+	 * rendering, but the feed and the vote handler both resolved a row by id or
+	 * alias and went straight on -- oneOrFail()/oneByAlias() apply no state
+	 * filter. That let the comment bodies, author names and timestamps of an
+	 * unpublished or trashed article be read by anyone who knew its alias, and
+	 * let votes be cast on hidden rows.
+	 *
+	 * The state test is on STATE_PUBLISHED rather than on truthiness:
+	 * articleTask()'s !state lets a trashed article (STATE_DELETED) through, and
+	 * nothing links a feed or a vote control for one.
+	 *
+	 * @param   object  $article
+	 * @return  void
+	 */
+	protected function _requireReadableArticle($article)
+	{
+		if (!$article->get('id') || $article->get('state') != Article::STATE_PUBLISHED)
+		{
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+		}
+
+		// The category comes from the ARTICLE, never from the request: the
+		// router's 'category' value was never checked against the article it
+		// named.
+		$category = Category::oneOrNew($article->get('category'));
+
+		if (!$category->get('id') || !$category->get('published'))
+		{
+			throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+		}
 	}
 
 	/**
 	 * Recursive function to append comments to a feed
 	 *
-	 * @param   object  $comments
+	 * @param   object  $comments  Resolved comment rows, not a relation
+	 * @param   string  $link      Link to the article the comments hang off
 	 * @return  void
 	 */
-	protected function _feedItem($comments)
+	protected function _feedItem($comments, $link)
 	{
 		foreach ($comments as $comment)
 		{
 			// Load individual item creator class
 			$item = new \Hubzero\Document\Type\Feed\Item();
 
+			// creator() takes no arguments and hands back the relation, not the
+			// name -- passing it a field and a fallback put a BelongsToOne object
+			// into the title below, which Lang::txt() then tried to convert to a
+			// string. The property resolves the related user.
 			$item->author = Lang::txt('JANONYMOUS');
 			if (!$comment->get('anonymous'))
 			{
-				$item->author = $comment->creator('name', $item->author);
+				$name = $comment->creator->get('name');
+
+				if ($name)
+				{
+					$item->author = $name;
+				}
 			}
 
 			// Prepare the title
 			$item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
-			// URL link to article
-			$item->link = $feed->link . '#c' . $comment->get('id');
+			// URL link to article. This read $feed->link, and $feed has never
+			// existed in this scope -- the article's link is the caller's to
+			// supply, which is what commentsTask() sets on the document.
+			$item->link = $link . '#c' . $comment->get('id');
 
 			// Strip html from feed item description text
 			if ($comment->isReported())
@@ -417,7 +541,14 @@ class Articles extends SiteController
 			}
 			else
 			{
-				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($comment->content('clean')));
+				// Decode BEFORE stripping, not after: stripping first and then
+				// decoding turns a comment whose text is "&lt;img onerror=...&gt;"
+				// back into live markup in the feed, which a reader that renders
+				// the description as HTML would run. This order strips whatever
+				// the decode produces, and still un-escapes ordinary entities.
+				$item->description = \Hubzero\Utility\Sanitize::stripAll(
+					html_entity_decode($comment->content('clean'))
+				);
 			}
 
 			$item->date = $comment->created();
@@ -426,9 +557,14 @@ class Articles extends SiteController
 			// Loads item info into rss array
 			Document::addItem($item);
 
-			if ($comment->replies()->total())
+			// replies() hands back a query builder, so this needs resolving too
+			$replies = $comment->replies()
+				->whereIn('state', array(Comment::STATE_PUBLISHED, Comment::STATE_FLAGGED))
+				->rows();
+
+			if ($replies->count())
 			{
-				$this->_feedItem($comment->replies());
+				$this->_feedItem($replies, $link);
 			}
 		}
 	}

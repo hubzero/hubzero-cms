@@ -14,6 +14,7 @@ use Config;
 use Route;
 use Lang;
 use App;
+use User;
 
 require_once \Component::path('com_members') . DS . 'helpers' . DS . 'permissions.php';
 
@@ -48,6 +49,15 @@ class Premis extends AdminController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		// Creating accounts in bulk is an administrator action
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{

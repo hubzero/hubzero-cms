@@ -148,6 +148,12 @@ class Groups extends AdminController
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
+		if (!User::authorise('core.admin', 'com_groups')
+		 && !User::authorise('core.manage', 'com_groups'))
+		{
+			return $this->displayTask();
+		}
+
 		$options = Request::getArray('memberoption', array());
 
 		// User ID

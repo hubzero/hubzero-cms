@@ -778,6 +778,12 @@ class Pages extends Base
 		// page object
 		$page = new Page($pageid);
 
+		// make sure page belongs to this group
+		if (!$page->belongsToGroup($this->group))
+		{
+			App::abort(403, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
+		}
+
 		// render preview
 		echo Helpers\Pages::generatePreview($page, $version);
 		exit();

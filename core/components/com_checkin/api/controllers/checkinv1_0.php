@@ -13,6 +13,7 @@ use Exception;
 use stdClass;
 use Request;
 use Lang;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'inspector.php';
 
@@ -62,6 +63,11 @@ class Checkinv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		if (!User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
 		$model = new Inspector();
 
 		$response = new stdClass;
@@ -88,6 +94,11 @@ class Checkinv1_0 extends ApiController
 	public function checkinTask()
 	{
 		$this->requiresAuthentication();
+
+		if (!User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$ids = Request::getArray('table', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);

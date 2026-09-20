@@ -14,6 +14,8 @@ use Request;
 use Notify;
 use Route;
 use App;
+use User;
+use Lang;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php';
@@ -137,6 +139,12 @@ class Authors extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Incoming
 		$fields   = Request::getArray('fields', array(), 'post');

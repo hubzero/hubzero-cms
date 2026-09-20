@@ -48,6 +48,32 @@ class Authors extends SiteController
 				$this->setError(Lang::txt('COM_CITATIONS_ERROR_INVALID_CITATION'));
 			}
 		}
+		// Only a logged-in citation editor (or citations manager) may change authors
+		if (User::isGuest())
+		{
+			throw new Exception(Lang::txt('COM_CITATIONS_ERROR_INVALID_CITATION'), 403);
+		}
+		if (!$this->citation->isNew()
+		 && !User::authorise('core.manage', $this->_option)
+		 && !$this->citation->canEdit())
+		{
+			// The member and group citation plugins share this author manager
+			$allowed = false;
+			if ($this->citation->get('scope') == 'member' && $this->citation->get('uid') == User::get('id'))
+			{
+				$allowed = true;
+			}
+			elseif ($this->citation->get('scope') == 'group')
+			{
+				$grp = \Hubzero\User\Group::getInstance($this->citation->get('scope_id'));
+				$allowed = ($grp && in_array(User::get('id'), (array) $grp->get('managers')));
+			}
+			if (!$allowed)
+			{
+				throw new Exception(Lang::txt('COM_CITATIONS_ERROR_INVALID_CITATION'), 403);
+			}
+		}
+
 		parent::execute();
 	}
 

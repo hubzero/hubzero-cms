@@ -13,6 +13,7 @@ use Exception;
 use stdClass;
 use Request;
 use Lang;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'manager.php';
 
@@ -69,6 +70,11 @@ class Cachev1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		if (!User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
 		$model = new Manager();
 
 		$response = new stdClass;
@@ -95,6 +101,11 @@ class Cachev1_0 extends ApiController
 	public function cleanTask()
 	{
 		$this->requiresAuthentication();
+
+		if (!User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$ids = Request::getArray('group', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -124,6 +135,11 @@ class Cachev1_0 extends ApiController
 	public function purgeTask()
 	{
 		$this->requiresAuthentication();
+
+		if (!User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$model = new Manager();
 

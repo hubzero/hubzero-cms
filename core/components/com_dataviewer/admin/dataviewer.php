@@ -7,6 +7,17 @@
 
 defined('_HZEXEC_') or die();
 
+// The admin application gates only on core.login.admin, not per component, so
+// what separates one component's managers from another's is this test at the
+// entry file -- 47 of the 55 admin entries make it. This one did not, and the
+// component's own authorized() returns true for everyone whenever
+// access_limit_to_group is unset, which is the default. Any account that can
+// reach the admin area at all could therefore use the data viewer's admin.
+if (!\User::authorise('core.manage', 'com_dataviewer'))
+{
+	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+}
+
 require_once __DIR__ . DS . 'config.php';
 
 // Libs
