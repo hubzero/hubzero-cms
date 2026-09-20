@@ -339,7 +339,32 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Initiate class and bind posted items to database fields
 		$fields = Request::getArray('question', array(), 'post');
 
-		$row = \Components\Answers\Models\Question::oneOrNew($fields['id'])->set($fields);
+		$__qid = isset($fields['id']) ? (int) $fields['id'] : 0;
+		$row = \Components\Answers\Models\Question::oneOrNew($__qid);
+
+		// A question may only be edited by its author
+		if (!$row->isNew() && $row->get('created_by') != User::get('id') && !User::authorise('core.admin'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// As plugins/publications/questions and plugins/resources/reviews: the
+		// guard above reads the STORED author and passes, then set($fields)
+		// writes whatever created_by the request carried -- the new-question
+		// form emits question[created_by], so the field name is discoverable,
+		// and handing a question over also locks its original author out of it.
+		// state is pinned for the same reason.
+		$__isNew = $row->isNew();
+		$__owner = $row->get('created_by');
+		$__state = $row->get('state');
+
+		$row->set($fields);
+		$row->set('created_by', $__isNew ? User::get('id') : $__owner);
+
+		if (!$__isNew)
+		{
+			$row->set('state', $__state);
+		}
 
 		if ($reward && $this->banking)
 		{
@@ -460,7 +485,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 				'scope'       => 'question',
 				'scope_id'    => $row->get('id'),
 				'anonymous'   => $row->get('anonymous', 0),
-				'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('subject') . '</a>'),
+				'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => $row->link()

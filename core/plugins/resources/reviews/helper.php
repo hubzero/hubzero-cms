@@ -94,7 +94,26 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 			return;
 		}
 
-		$row = \Hubzero\Item\Comment::oneOrNew($comment['id'])->set($comment);
+		$__cid = isset($comment['id']) ? (int) $comment['id'] : 0;
+		$row = \Hubzero\Item\Comment::oneOrNew($__cid);
+
+		// A reply may only be edited by its author or a resources moderator (the
+		// browse view offers Edit to core.manage as well)
+		if (!$row->isNew() && $row->get('created_by') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin'))
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
+		$__isNew = $row->isNew();
+		$__owner = $row->get('created_by');
+		if (!$__isNew)
+		{
+			// An edit may change the text, not who wrote it or where it lives
+			unset($comment['item_id'], $comment['item_type'], $comment['parent'], $comment['state']);
+		}
+		$row->set($comment);
+		$row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
 		// Perform some text cleaning, etc.
 		$row->set('content', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('content'))));
@@ -301,7 +320,26 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$data = Request::getArray('review', array(), 'post');
 
 		// Bind the form data to our object
-		$row = \Components\Resources\Reviews\Models\Review::oneOrNew($data['id'])->set($data);
+		$__rid = isset($data['id']) ? (int) $data['id'] : 0;
+		$row = \Components\Resources\Reviews\Models\Review::oneOrNew($__rid);
+
+		// A review may only be edited by its author or a resources moderator (the
+		// browse view offers Edit to core.manage as well)
+		if (!$row->isNew() && $row->get('user_id') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin'))
+		{
+			$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
+			return;
+		}
+
+		$__isNew = $row->isNew();
+		$__owner = $row->get('user_id');
+		if (!$__isNew)
+		{
+			// An edit may change the text, not its author or the resource it is on
+			unset($data['resource_id']);
+		}
+		$row->set($data);
+		$row->set('user_id', $__isNew ? User::get('id') : $__owner);
 
 		// Perform some text cleaning, etc.
 		if ($row->isNew())
