@@ -325,6 +325,19 @@ class Profilesv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
 		}
 
+		// Honour the profile's access level: a caller may read their own profile
+		// or one whose access level is within their authorised view levels.
+		if (User::get('id') != $result->get('id')
+			&& !in_array($result->get('access'), User::getAuthorisedViewLevels()))
+		{
+			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
+		}
+
+		// Email is PII; it is only disclosed for the caller's own profile or to a
+		// component manager. A viewable profile page does not make the address public.
+		$isSelfOrManager = (User::get('id') == $result->get('id'))
+			|| User::authorise('core.manage', 'com_members');
+
 		// Get any request vars
 		$base = rtrim(Request::base(), '/');
 
@@ -335,7 +348,7 @@ class Profilesv1_0 extends ApiController
 			'first_name'        => $result->get('givenName'),
 			'middle_name'       => $result->get('middleName'),
 			'last_name'         => $result->get('surname'),
-			'email'             => $result->get('email'),
+			'email'             => $isSelfOrManager ? $result->get('email') : null,
 			'member_since'      => $result->get('registerDate'),
 			'picture'   => array(
 				'thumb' => $result->picture(0, true),
@@ -423,6 +436,13 @@ class Profilesv1_0 extends ApiController
 		if (!$result || !$result->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_MEMBERS_ERROR_USER_NOT_FOUND'), 404);
+		}
+
+		// A member's group list (including hidden groups) is only theirs or an
+		// administrator's to see, as in the v1.1 endpoint
+		if (User::get('id') != $userid && !User::authorise('core.admin'))
+		{
+			throw new Exception(Lang::txt('Access denied'), 403);
 		}
 
 		$groups = $result->groups('members');
