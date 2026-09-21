@@ -26,6 +26,39 @@ use Component;
 class Media extends SiteController
 {
 	/**
+	 * Does this id have the shape of an in-progress contribution id?
+	 *
+	 * The bypass used to be a "9999" string prefix, which also matched real
+	 * resource 9999 and every id in 99990-99999, 999900-999999 and so on, and a
+	 * negative id slipped through the "< 1" half. This narrows it to the shape
+	 * create.php actually generates, which is what closes those collisions.
+	 *
+	 * It is a shape test and nothing more. Binding it to the temp id the
+	 * contribute flow stores in the session (resources_temp_id, set in
+	 * create.php) would be stronger -- the generator is rand(1000, 10000), so
+	 * the whole 9 001-value namespace is enumerable and any logged-in user can
+	 * still list, overwrite or delete another user's in-progress contribution
+	 * media by guessing one. That was tried and reverted: the session value is
+	 * absent on the paths the media iframe is reached from, so comparing
+	 * against it refused genuine contributors. The session binding is the right
+	 * fix and needs the contribute flow driven end to end to land safely.
+	 *
+	 * @param   mixed  $resource  Requested resource id
+	 * @return  boolean
+	 */
+	protected function _isTempId($resource)
+	{
+		// create.php issues these as '9999' . rand(1000, 10000), so they are
+		// "9999" followed by four or five digits. The old test was a bare
+		// substr() prefix match, which also admitted real resource 9999 and
+		// every id in 99990-99999, 999900-999999 and beyond -- those resources
+		// were writable and deletable by any logged-in user. Matching the
+		// generator's actual shape keeps the contribution flow working while
+		// putting the collision far above any plausible resource id.
+		return (bool) preg_match('/^9999[0-9]{4,5}$/', (string) $resource);
+	}
+
+	/**
 	 * Upload a file or create a new folder
 	 *
 	 * @return  void
@@ -44,7 +77,7 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		if ($this->_isTempId($resource))
 		{
 			$row = Entry::blank();
 		}
@@ -61,14 +94,16 @@ class Media extends SiteController
 		}
 
 		// Uploads and deletes require a contributor who may edit this resource.
-		// Temp ids (< 1 or 9999-prefixed) are in-progress contributions.
+		// An in-progress contribution is recognised by the shape of its temp id
+		// -- see _isTempId(), which records what that does and does not buy.
 		if (User::isGuest())
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
-		if (!($resource < 1 || substr($resource, 0, 4) == '9999')
-			&& !$row->access('edit') && !$row->access('edit-own'))
+		if (!($this->_isTempId($resource))
+			&& !$row->access('edit') && !$row->access('edit-own')
+			&& !User::authorise('core.manage', 'com_resources'))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
@@ -100,10 +135,14 @@ class Media extends SiteController
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
 
-		// Refuse only server-executable extensions and the markup types the
-		// download handler serves inline (the same rule as resource attachments):
-		// the com_media whitelist would reject common resource media such as
-		// docx or mp4 on a default install
+		// Refuse server-executable extensions and the markup types the download
+		// handler serves inline -- the same rule as resource attachments.
+		//
+		// This is a deny-list, so .svg, .js and double extensions such as
+		// foo.php.jpg all pass; it closes code execution and inline HTML in the
+		// hub origin, not upload typing in general. An allow-list would be
+		// better and is worth doing, but com_media's list is not the one to
+		// borrow: it is a media-manager list, not a resource list.
 		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
 		if (in_array(strtolower((string) $ext), $blockedExtensions))
 		{
@@ -157,7 +196,7 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
-		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		if ($this->_isTempId($resource))
 		{
 			$row = Entry::blank();
 		}
@@ -174,14 +213,16 @@ class Media extends SiteController
 		}
 
 		// Uploads and deletes require a contributor who may edit this resource.
-		// Temp ids (< 1 or 9999-prefixed) are in-progress contributions.
+		// An in-progress contribution is recognised by the shape of its temp id
+		// -- see _isTempId(), which records what that does and does not buy.
 		if (User::isGuest())
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
 		}
-		if (!($resource < 1 || substr($resource, 0, 4) == '9999')
-			&& !$row->access('edit') && !$row->access('edit-own'))
+		if (!($this->_isTempId($resource))
+			&& !$row->access('edit') && !$row->access('edit-own')
+			&& !User::authorise('core.manage', 'com_resources'))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			return;
@@ -247,7 +288,7 @@ class Media extends SiteController
 			return;
 		}
 
-		if ($resource < 1 || substr($resource, 0, 4) == '9999')
+		if ($this->_isTempId($resource))
 		{
 			$row = Entry::blank();
 		}
@@ -256,6 +297,22 @@ class Media extends SiteController
 			$row = Entry::oneOrFail($resource);
 		}
 		$row->set('id', $resource);
+
+		// Same rule as the upload and delete tasks above, which reach this view
+		// after their own check: a contributor who may edit the resource, or any
+		// logged-in user while the contribution is still a temp id.
+		if (User::isGuest())
+		{
+			echo '<p class="error">' . Lang::txt('JERROR_ALERTNOAUTHOR') . '</p>';
+			return;
+		}
+		if (!($this->_isTempId($resource))
+			&& !$row->access('edit') && !$row->access('edit-own')
+			&& !User::authorise('core.manage', 'com_resources'))
+		{
+			echo '<p class="error">' . Lang::txt('JERROR_ALERTNOAUTHOR') . '</p>';
+			return;
+		}
 
 		// Incoming sub-directory
 		$subdir = Request::getString('subdir', '');
