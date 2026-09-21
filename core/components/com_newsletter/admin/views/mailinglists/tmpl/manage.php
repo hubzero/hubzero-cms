@@ -72,11 +72,11 @@ $this->js();
 							<label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $le->id; ?></label>
 						</td>
 						<td>
-							<a href="mailto:<?php echo $le->email; ?>"><?php echo $this->escape($le->email); ?></a>
+							<a href="mailto:<?php echo $this->escape($le->email); ?>"><?php echo $this->escape($le->email); ?></a>
 							<?php
 								if ($le->unsubscribe->reason)
 								{
-									echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $le->unsubscribe->reason . '</p>';
+									echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $this->escape($le->unsubscribe->reason) . '</p>';
 								}
 							?>
 						</td>

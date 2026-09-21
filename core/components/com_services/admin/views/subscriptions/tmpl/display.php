@@ -111,7 +111,7 @@ $this->css('admin.subscriptions.css');
 					<?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
 				</td>
 				<td>
-					<?php echo $name . ' (' . $login . ')'; ?>
+					<?php echo $this->escape($name) . ' (' . $this->escape($login) . ')'; ?>
 				</td>
 				<td>
 					<?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>

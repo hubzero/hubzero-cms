@@ -64,7 +64,7 @@ $authIDs = array();
 			<span class="handle"><?php echo Lang::txt('COM_RESOURCES_AUTHOR_DRAG'); ?></span>
 			<a class="state trash" data-parent="author_<?php echo $authname->authorid; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $authname->authorid; ?>');return false;"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></a>
 			<?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>)
-			<br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $org; ?>" />
+			<br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $this->escape($org); ?>" />
 
 			<select name="<?php echo $authname->authorid; ?>_role">
 				<option value=""<?php if ($authname->role == '') { echo ' selected="selected"'; }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>

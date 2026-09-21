@@ -100,8 +100,8 @@ if ($this->contributors)
 			if (trim($contributor->organization == null ? '' : $contributor->organization) != '' && !in_array(trim($contributor->organization == null ? '' : $contributor->organization), $orgs))
 			{
 				$orgs[$i-1] = trim($contributor->organization);
-				$orgsln    .= $i . '. ' . trim($contributor->organization) . ' ';
-				$orgsln_s  .= trim($contributor->organization).' ';
+				$orgsln    .= $i . '. ' . $this->escape(trim($contributor->organization)) . ' ';
+				$orgsln_s  .= $this->escape(trim($contributor->organization)).' ';
 				$k = $i;
 				$i++;
 			}

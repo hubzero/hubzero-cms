@@ -87,19 +87,19 @@ defined('_HZEXEC_') or die();
 				}
 				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
 			}
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'vimeo'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else if (stristr($parsed['host'], 'blip'))
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 		else
 		{
-			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $url . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 	}
 	else if (is_file($source))
@@ -114,12 +114,12 @@ defined('_HZEXEC_') or die();
 			$rufle_path =  Component::path('com_resources') . DS . 'site' . DS . 'assets' . DS . 'js' . DS . 'ruffle';
 			$rufle_path = (substr($rufle_path, strlen(PATH_ROOT) + 0));
 			$html .= '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,65,0" width="100%" height="'.$height.'" id="SlideContent" VIEWASTEXT>'."\n";
-			$html .= ' <param name="movie" value="'. $url .'" />'."\n";
+			$html .= ' <param name="movie" value="'. $this->escape($url) .'" />'."\n";
 			$html .= ' <param name="quality" value="high" />'."\n";
 			$html .= ' <param name="menu" value="false" />'."\n";
 			$html .= ' <param name="loop" value="false" />'."\n";
 			$html .= ' <param name="scale" value="showall" />'."\n";
-			$html .= ' <embed src="'. $url .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
+			$html .= ' <embed src="'. $this->escape($url) .'" menu="false" quality="best" loop="false" width="100%" height="'.$height.'" scale="showall" name="SlideContent" align="" type="application/x-shockwave-flash" pluginspage="https://www.macromedia.com/go/getflashplayer" swLiveConnect="true"></embed>'."\n";
 			$html .= '</object>'."\n";
 			$html .= '<script>'."\n";
 			$html .= 'window.RufflePlayer = window.RufflePlayer || {};'."\n";
@@ -131,7 +131,7 @@ defined('_HZEXEC_') or die();
 		}
 		else if (in_array(strtolower($type), $images))
 		{
-			$html .= '<img ' . $attributes . ' src="' . $url . '" alt="Image" />'."\n";
+			$html .= '<img ' . $attributes . ' src="' . $this->escape($url) . '" alt="Image" />'."\n";
 		}
 		else if (in_array(strtolower($type), $files))
 		{
@@ -158,18 +158,18 @@ defined('_HZEXEC_') or die();
 		else if (in_array(strtolower($type), $videos))
 		{
 			$html .= '<video controls autoplay ' . $attributes . '>' . "\n";
-			$html .= '    <source src="' . $url .  '" type="video/mp4"/>' . "\n";
+			$html .= '    <source src="' . $this->escape($url) . '" type="video/mp4"/>' . "\n";
 			$html .= '</video>' . "\n";
 		}
 		else if (in_array(strtolower($type), $audios))
 		{
 			$html .= '<audio controls autoplay ' . $attributes . '>' . "\n";
-			$html .= '    <source src="' . $url .  '" type="audio/mpeg"/>' . "\n";
+			$html .= '    <source src="' . $this->escape($url) . '" type="audio/mpeg"/>' . "\n";
 			$html .= '</audio>' . "\n";
 		}
 		else if (strtolower($type) == 'jar')
 		{
-			$html .= '<applet ' . $attributes . ' archive="'. $url .'" width="';
+			$html .= '<applet ' . $attributes . ' archive="'. $this->escape($url) .'" width="';
 			$html .= ($width > 0) ? $width : '';
 			$html .= '" height="';
 			$html .= ($height > 0) ? $height : '';

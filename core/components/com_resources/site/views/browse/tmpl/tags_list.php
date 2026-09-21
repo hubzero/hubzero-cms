@@ -120,7 +120,7 @@ switch ($this->level)
 				{
 					$html .= 'class="supported" ';
 				}
-				$html .= '><span id="col2_'.$tool->id.'" data-type="'.$type->get('id').'" data-input="'.$tool->id.'" data-input2="" data-level="3" data-col="col2_'.$tool->id.'" data-rid="">'.stripslashes($tool->title).'</span></li>';
+				$html .= '><span id="col2_'.$tool->id.'" data-type="'.$type->get('id').'" data-input="'.$tool->id.'" data-input2="" data-level="3" data-col="col2_'.$tool->id.'" data-rid="">'.$this->escape(stripslashes($tool->title)).'</span></li>';
 			}
 		}
 		else

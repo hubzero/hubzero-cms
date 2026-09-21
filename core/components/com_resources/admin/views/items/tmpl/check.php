@@ -109,7 +109,7 @@ Html::behavior('tooltip');
 													$result->set('title', $notes->field);
 												}
 											}
-											echo $result->get('title', Lang::txt('COM_RESOURCES_UNKNOWN')); ?>
+											echo $this->escape($result->get('title', Lang::txt('COM_RESOURCES_UNKNOWN'))); ?>
 										</a>
 									</td>
 									<td>

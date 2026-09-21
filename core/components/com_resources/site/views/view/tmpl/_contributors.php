@@ -72,7 +72,7 @@ if ($this->contributors)
 			}
 		}
 
-		$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
+		$link .= ($contributor->role) ? ' (' . $this->escape($contributor->role) . ')' : '';
 
 		if (trim($contributor->organization == null ? '' : $contributor->organization) != '' && !in_array(trim($contributor->organization == null ? '' : $contributor->organization), $orgs))
 		{

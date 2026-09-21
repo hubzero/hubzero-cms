@@ -86,8 +86,8 @@ else
 			}
 			$title = $att->title ? $att->title : $att->path;
 			$html .= '<li>(' . $type . ') ';
-			$html .= $att->title ? $att->title : $att->path;
-			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path . '</span>' : '';
+			$html .= $att->title ? $this->escape($att->title) : $this->escape($att->path);
+			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $this->escape($att->path) . '</span>' : '';
 			$html .= '</li>'."\n";
 		}
 		$html .= '</ul>';
@@ -110,8 +110,8 @@ else
 			}
 			$title = $att->title ? $att->title : $att->path;
 			$html .= '<li>(' . $type . ') ';
-			$html .= $att->title ? $att->title : $att->path;
-			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $att->path.'</span>' : '';
+			$html .= $att->title ? $this->escape($att->title) : $this->escape($att->path);
+			$html .= $att->title != $att->path ? '<br /><span class="ctitle">' . $this->escape($att->path).'</span>' : '';
 			$html .= '</li>' . "\n";
 		}
 		$html .= '</ul>';

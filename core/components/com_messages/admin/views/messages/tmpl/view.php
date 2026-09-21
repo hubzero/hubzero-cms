@@ -30,7 +30,7 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');
 			<?php echo Date::of($this->item->date_time)->toSql();?></li>
 
 			<li><?php echo Lang::txt('COM_MESSAGES_FIELD_SUBJECT_LABEL'); ?>
-			<?php echo $this->item->subject;?></li>
+			<?php echo $this->escape($this->item->subject);?></li>
 
 			<li><?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_LABEL'); ?>
 			<pre class="pre_message"><?php echo $this->escape($this->item->message);?></pre></li>

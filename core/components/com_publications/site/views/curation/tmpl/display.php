@@ -140,7 +140,7 @@ $this->css()
 											<?php } ?>
 										</td>
 										<td>
-											v.<?php echo $row->version_label; ?>
+											v.<?php echo $this->escape($row->version_label); ?>
 										</td>
 										<td>
 											<span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?>

@@ -230,12 +230,12 @@ else
 						<span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</span>
-						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
+						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>': ''; ?>
 					<?php } else { ?>
 						<a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']); ?>" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
-						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
+						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>': ''; ?>
 					<?php } ?>
 				</td>
 				<td>

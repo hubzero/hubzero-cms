@@ -48,7 +48,11 @@ Html::behavior('modal', 'a.modals');
 						<tr>
 							<td>
 								<h4><?php echo '<a class="modals" href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
-								<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
+								<?php // The reported body is rendered markup for some sources -- the
+								// wiki support plugin selects rc.chtml into this column -- so escaping
+								// it shows an administrator literal <p> and <a> tags. Purify it, which
+								// is what the site twin (site/views/abuse/tmpl/display.php) does. ?>
+								<p><?php echo (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : ''; ?></p>
 								<?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
 									echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
 								} ?>
@@ -66,7 +70,7 @@ Html::behavior('modal', 'a.modals');
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
-						<td><?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
+						<td><?php echo (is_object($reporter) && $reporter->get('username')) ? $this->escape($reporter->get('username')) : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>

@@ -59,16 +59,16 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_SERVICES_FIELD_PROFILE'); ?>:</label><br />
 					<?php echo Lang::txt('Login'); ?>: <?php echo $this->customer->get('username') ?> <br />
-					<?php echo Lang::txt('Name'); ?>: <?php echo $this->customer->get('name') ?> <br />
-					<?php echo Lang::txt('Email'); ?>: <?php echo $this->customer->get('email') ?> <br />
-					<?php echo Lang::txt('Tel.'); ?>: <?php echo $this->customer->get('phone') ?>
+					<?php echo Lang::txt('Name'); ?>: <?php echo $this->escape($this->customer->get('name')) ?> <br />
+					<?php echo Lang::txt('Email'); ?>: <?php echo $this->escape($this->customer->get('email')) ?> <br />
+					<?php echo Lang::txt('Tel.'); ?>: <?php echo $this->escape($this->customer->get('phone')) ?>
 				</div>
 
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_SERVICES_FIELD_EMPLOYER'); ?>:</label><br />
-					<?php echo Lang::txt('Company Name'); ?>: <?php echo $this->subscription->companyName; ?> <br />
-					<?php echo Lang::txt('Company Location'); ?>: <?php echo $this->subscription->companyLocation; ?> <br />
-					<?php echo Lang::txt('Company URL'); ?>: <?php echo $this->subscription->companyWebsite; ?>
+					<?php echo Lang::txt('Company Name'); ?>: <?php echo $this->escape($this->subscription->companyName); ?> <br />
+					<?php echo Lang::txt('Company Location'); ?>: <?php echo $this->escape($this->subscription->companyLocation); ?> <br />
+					<?php echo Lang::txt('Company URL'); ?>: <?php echo $this->escape($this->subscription->companyWebsite); ?>
 				</div>
 
 				<div class="input-wrap">

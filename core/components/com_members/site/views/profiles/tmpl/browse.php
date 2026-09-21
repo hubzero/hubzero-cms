@@ -413,7 +413,7 @@ foreach ($this->fields as $field)
 									</div>
 									<div class="result-title">
 										<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>" aria-label="<?php echo $_uniqueLabel; ?>">
-											<?php echo $name; ?>
+											<?php echo $this->escape($name); ?>
 										</a>
 										<?php foreach ($this->fields as $c) { ?>
 											<?php

@@ -92,7 +92,7 @@ $this->css()
 							$html .= Lang::txt('UNEMPLOYED');
 							break;
 						default:
-							$html .=  $users[$userkey]['orgtype'];
+							$html .=  $this->escape($users[$userkey]['orgtype']);
 							break;
 					}
 					$html .= '</td>'."\n";

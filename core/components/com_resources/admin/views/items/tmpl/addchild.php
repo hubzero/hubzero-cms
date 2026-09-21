@@ -14,7 +14,7 @@ Toolbar::cancel();
 Request::setVar('hidemainmenu', 1);
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
-	<h3><?php echo stripslashes($this->parent->title); ?></h3>
+	<h3><?php echo $this->escape(stripslashes($this->parent->title)); ?></h3>
 
 	<fieldset class="adminform">
 		<legend><span><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CHOOSE'); ?></span></legend>

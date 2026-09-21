@@ -46,7 +46,7 @@ Submenu::addEntry(
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="facet" value="<?php echo $this->facet; ?>" /> 
+	<input type="hidden" name="facet" value="<?php echo $this->escape($this->facet); ?>" /> 
 
 	<?php echo Html::input('token'); ?>
 </form>

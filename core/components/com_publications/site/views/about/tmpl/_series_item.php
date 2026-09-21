@@ -19,10 +19,10 @@ $url = "/publications/$publicationId/$versionNumber";
 <?php if (!empty($series)): ?>
 	<li>
 		<a href="<?php echo $url; ?>" rel="noreferrer noopener" target="_blank">
-			<u><?php echo $title; ?></u>
+			<u><?php echo $this->escape($title); ?></u>
 		</a>
 		<p>
-			<?php echo $abstract; ?>
+			<?php echo $this->escape($abstract); ?>
 		</p>
 	</li>
 <?php endif;

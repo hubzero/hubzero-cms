@@ -43,7 +43,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 		<div class="curation-wrap">
 			<div class="pubtitle">
 				<h3>
-					<span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
+					<span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label); ?>
 				</h3>
 			</div>
 			<p class="instruct">
@@ -86,7 +86,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 			<?php if ($this->history && $this->history->comment): ?>
 				<div class="submitter-comment">
 					<h5><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT'); ?></h5>
-					<p><?php echo $this->history->comment; ?></p>
+					<p><?php echo $this->history->comment; /* encoded where it is stored (saveHistory) */ ?></p>
 				</div>
 			<?php endif; ?>
 

@@ -18,8 +18,8 @@ $this->css('register')
 <section class="main section">
 <?php if ($this->getError() && $this->getError() == 'login mismatch') : ?>
 	<p class="warning">
-		You are currently logged in as <strong><?php echo $this->login; ?></strong>. If you're trying to activate a different account,
-		you may do so by <a href="<?php echo $this->redirect; ?>">confirming a different email address</a>.
+		You are currently logged in as <strong><?php echo $this->escape($this->login); ?></strong>. If you're trying to activate a different account,
+		you may do so by <a href="<?php echo $this->escape($this->redirect); ?>">confirming a different email address</a>.
 	</p>
 <?php elseif ($this->getError()) : ?>
 	<div class="section-inner hz-layout-with-aside">

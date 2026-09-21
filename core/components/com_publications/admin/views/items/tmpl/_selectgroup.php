@@ -23,7 +23,7 @@ if ($this->groups)
 		{
 			$html .= ' selected="selected"';
 		}
-		$html .= '>' . \Hubzero\Utility\Str::truncate($group->description, 60) .'</option>'."\n";
+		$html .= '>' . $this->escape(\Hubzero\Utility\Str::truncate($group->description, 60)) .'</option>'."\n";
 	}
 }
 $html .= '</select>'."\n";

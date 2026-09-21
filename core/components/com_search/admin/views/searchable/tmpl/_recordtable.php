@@ -32,7 +32,7 @@ $this->css('
 			<tr>
 				<td><?php echo $document['id']; ?></td>
 				<td><?php echo $document['hubtype']; ?></td>
-				<td><?php echo $document['title'][0]; ?></td>
+				<td><?php echo $this->escape($document['title'][0]); ?></td>
 				<td><?php echo $document['access_level']; ?></td>
 				<td>
 					<?php 
@@ -43,7 +43,7 @@ $this->css('
 								$user = \Hubzero\User\User::one($document['owner'][0]);
 								if (isset($user) && is_object($user))
 								{
-									echo $user->get('name');
+									echo $this->escape($user->get('name'));
 								}
 								else
 								{
@@ -55,7 +55,7 @@ $this->css('
 								$group = \Hubzero\User\Group::getInstance($document['owner'][0]);
 								if (isset($group) && is_object($group))
 								{
-									echo $group->get('description');
+									echo $this->escape($group->get('description'));
 								}
 								else
 								{
@@ -89,7 +89,7 @@ $this->css('
 	<tfoot>
 		<tr>
 			<td colspan="11">
-				<input type="hidden" name="facet" value="<?php echo $this->facet; ?>"/>
+				<input type="hidden" name="facet" value="<?php echo $this->escape($this->facet); ?>"/>
 				<?php echo $this->pagination->render(); ?>
 			</td>
 		</tr>

@@ -19,10 +19,10 @@ if ($this->authNames != null)
 	foreach ($this->authNames as $authname)
 	{
 		$authIDs[] = $authname->id;
-		$name = $authname->name;
-		$dept = $authname->department;
-		$org = $authname->organization ? $authname->organization : $authname->p_organization;
-		$email = $authname->p_email ? $authname->p_email : $authname->invited_email;
+		$name = $this->escape($authname->name);
+		$dept = $this->escape($authname->department);
+		$org = $this->escape($authname->organization ? $authname->organization : $authname->p_organization);
+		$email = $this->escape($authname->p_email ? $authname->p_email : $authname->invited_email);
 		$credit = ($authname->credit)
 			? $this->escape($authname->credit) : '';
 		$userid = $authname->user_id ? $authname->user_id : 'unregistered';

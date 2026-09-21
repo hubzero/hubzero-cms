@@ -83,7 +83,7 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Version:</th>
-							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->publication->get('version_label'); ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->publication->get('version_label')); ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
@@ -96,7 +96,14 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
 					<tbody>
 						<tr>
 							<td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-								<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></div>
+								<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php
+								// $comment was never assigned -- views do not extract() their data, and
+								// the only renderer (plugins/publications/watch) sets 'message', which is
+								// what the plain twin echoes. So this part of every watch notification hit
+								// an undefined variable and the body was never output. The value is a
+								// Lang::txt() constant, i.e. plain text going into an HTML mail.
+								echo nl2br(htmlspecialchars((string) $this->message, ENT_QUOTES, 'UTF-8'));
+								?></div>
 							</td>
 						</tr>
 					</tbody>

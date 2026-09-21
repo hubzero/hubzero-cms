@@ -29,15 +29,16 @@ $hostname = Request::root();
 	<?php
 		if (strpos($o->path, "http") === false)
 		{
+			// Route::url() output is already attribute-encoded
 			$path = Route::url($hostname . $o->path);
 		}
 		else
 		{
-			$path = $o->path;
+			$path = $this->escape($o->path);
 		}
 	?>
 	<div class="autogen-container">
-	<li class="autogen autogen-title"><a href="<?php echo $path; ?>"><?php echo $o->title; ?></a>
+	<li class="autogen autogen-title"><a href="<?php echo $path; ?>"><?php echo $this->escape($o->title); ?></a>
 		<ul>
 			<li class="autogen autogen-date"><?php echo $o->date; ?></li>
 			<li class="autogen autogen-body"><?php echo strip_tags($o->body); ?></li>

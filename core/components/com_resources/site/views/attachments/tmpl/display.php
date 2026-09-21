@@ -26,7 +26,7 @@ $hideform = Request::getInt('hideform', 0);
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="tmpl" value="component" />
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
-				<input type="hidden" name="path" id="path" value="<?php echo $this->path; ?>" />
+				<input type="hidden" name="path" id="path" value="<?php echo $this->escape($this->path); ?>" />
 				<input type="hidden" name="task" value="save" />
 			</fieldset>
 		</form>
@@ -110,7 +110,7 @@ $hideform = Request::getInt('hideform', 0);
 						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>">
 							<?php echo $this->escape($child->title); ?>
 						</span>
-						<?php echo ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $url . '</span>'; ?>
+						<?php echo ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>'; ?>
 					</td>
 					<td>
 						<?php

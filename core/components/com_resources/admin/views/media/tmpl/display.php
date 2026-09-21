@@ -16,7 +16,7 @@ $this->js('media.js');
 
 ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
-	<p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', str_replace(PATH_ROOT, 'ROOT', $this->path)); ?></p>
+	<p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', $this->escape(str_replace(PATH_ROOT, 'ROOT', $this->path))); ?></p>
 
 	<fieldset>
 		<label>
@@ -55,7 +55,7 @@ $this->js('media.js');
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />
+		<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->escape($this->listdir); ?>" />
 		<input type="hidden" name="task" value="upload" />
 	</fieldset>
 

@@ -24,7 +24,7 @@ endif;
 	<div class="curation-history">
 		<div class="pubtitle">
 			<p>
-				<?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
+				<?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label); ?>
 			</p>
 		</div>
 		<?php if ($history): ?>
@@ -56,7 +56,7 @@ endif;
 							</div>
 							<?php if ($event->comment): ?>
 								<div class="changelog-comment">
-									<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment . '</span>'; ?>
+									<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment /* encoded where it is stored (saveHistory) */ . '</span>'; ?>
 								</div>
 							<?php endif; ?>
 						</div>

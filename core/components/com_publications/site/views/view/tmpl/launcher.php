@@ -14,7 +14,7 @@ $this->css()
 
 $this->css('
 	.launcher-image .imager {
-		background-image: url("' . Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master");
+		background-image: url("' . Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_id) . '/Image:master");
 	}
 ');
 
@@ -42,7 +42,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
 				<?php // Show published date and category
 					echo \Components\Publications\Helpers\Html::showSubInfo($this->publication);
 				?>
-				<h3><?php echo \Hubzero\Utility\Str::truncate(stripslashes($this->publication->title), 150); ?></h3>
+				<h3><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->title), 150)); ?></h3>
 				<?php
 				// Display authors
 				if ($this->publication->params->get('show_authors'))
@@ -66,7 +66,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
 				if ($this->publication->abstract)
 				{
 					?>
-					<p class="ataglance"><?php echo \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250); ?></p>
+					<p class="ataglance"><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250)); ?></p>
 					<?php
 				}
 				?>
