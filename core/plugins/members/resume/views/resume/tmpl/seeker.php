@@ -52,7 +52,7 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 			<?php } ?>
 			<?php if ($this->seeker->tagline) { ?>
 				<blockquote>
-					<?php echo stripslashes($this->seeker->tagline); ?>
+					<?php echo $this->escape(stripslashes($this->seeker->tagline)); ?>
 				</blockquote>
 			<?php } ?>
 		</div>
@@ -63,7 +63,7 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 				<?php echo $jobcat ? ' &bull; ' . $jobcat : ''; ?>
 			</span>
 			<span class="abouttext">
-				<?php echo stripslashes($this->seeker->lookingfor); ?>
+				<?php echo $this->escape(stripslashes($this->seeker->lookingfor)); ?>
 			</span>
 		</div>
 	</div>
@@ -98,7 +98,7 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 			<?php if ($this->seeker->linkedin) { ?>
 				<span class="mini"> | </span>
 				<span class="mini">
-					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
+					<a href="<?php echo (preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->escape($this->seeker->linkedin) : ''); ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
 				</span>
 			<?php } ?>
 		<?php } else { ?>

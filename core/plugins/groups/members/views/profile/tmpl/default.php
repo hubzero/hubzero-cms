@@ -150,41 +150,50 @@ foreach ($profiles as $profile)
 					{
 						foreach ($value as $k => $v)
 						{
-							if (strstr($v, '{'))
+							if (is_string($v) && strstr($v, '{'))
 							{
-								$v = json_decode((string)$v, true);
+								$decoded = json_decode((string)$v, true);
 
-								if (!$v|| json_last_error() !== JSON_ERROR_NONE)
+								if (!$decoded || json_last_error() !== JSON_ERROR_NONE)
 								{
+									$value[$k] = $this->escape($v);
 									continue;
 								}
 
-								foreach ($v as $nm => $vl)
+								foreach ($decoded as $nm => $vl)
 								{
-									$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+									$decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> ' . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
 								}
 
-								$value[$k] = implode('<br />', $v);
+								$value[$k] = implode('<br />', $decoded);
+							}
+							else
+							{
+								$value[$k] = $this->escape(is_scalar($v) ? (string) $v : json_encode($v));
 							}
 						}
 					}
 					else
 					{
-						if (strstr($value == null ? '' : $value, '{'))
+						if ($field->get('type') != 'tags' && strstr($value == null ? '' : $value, '{'))
 						{
-							$v = json_decode((string)$value, true);
+							$decoded = json_decode((string)$value, true);
 
-							if (!$v || json_last_error() !== JSON_ERROR_NONE)
+							if (!$decoded || json_last_error() !== JSON_ERROR_NONE)
 							{
-								$v = array($value);
+								$decoded = array($value);
 							}
 
-							foreach ($v as $nm => $vl)
+							foreach ($decoded as $nm => $vl)
 							{
-								$v[$nm] = '<strong>' . $nm . ':</strong> ' . $vl;
+								$decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> ' . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
 							}
 
-							$value = implode('<br />', $v);
+							$value = implode('<br />', $decoded);
+						}
+						elseif ($field->get('type') != 'tags')
+						{
+							$value = $this->escape($value == null ? '' : $value);
 						}
 					}
 
