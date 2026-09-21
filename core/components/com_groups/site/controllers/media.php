@@ -89,8 +89,32 @@ class Media extends Base
 			$this->authorized = true;
 		}
 
+		// A site administrator is not necessarily a group member, and the write
+		// gate below keys off $this->authorized. Helpers\View::authorize() already
+		// treats core.admin on com_groups as 'admin' for this component, so admit
+		// them here too rather than refusing them their own file manager.
+		if (!$this->authorized && User::authorise('core.admin', 'com_groups'))
+		{
+			$this->authorized = true;
+		}
+
 		//build path to the group folder
 		$this->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
+
+		// Mutating file operations require group membership (authorized).
+		// Resolve the task the way SiteController::execute() does -- it falls back
+		// to the `layout` word when `task` is absent, so reading `task` alone lets
+		// ?layout=deletefile reach deletefileTask() with this gate skipped.
+		$mtask = strtolower(Request::getCmd('task', Request::getWord('layout', '')));
+		$writeTasks = array(
+			'upload', 'ajaxupload', 'editorupload', 'doupload', 'domovefile', 'dorenamefile',
+			'deletefile', 'savefolder', 'dorenamefolder', 'domovefolder',
+			'deletefolder', 'extractfile'
+		);
+		if (in_array($mtask, $writeTasks) && !$this->authorized)
+		{
+			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+		}
 
 		//continue with parent execute method
 		parent::execute();
@@ -101,6 +125,28 @@ class Media extends Base
 	 *
 	 * @return  void
 	 */
+	protected function _containRelativePath($rel)
+	{
+		// Deliberately not Util::normalizePath(): that substitutes PATH_ROOT for
+		// anything empty() calls empty -- including the string "0", a perfectly
+		// good folder name -- and the loop below would then rebuild the server's
+		// document root as though the caller had asked for it. Every call site
+		// here defaults its parameter to '', so that case is the common one.
+		// Strip control characters, normalise separators, and drop any segment
+		// that would climb out.
+		$rel = preg_replace('#\p{C}+#u', '', (string) $rel);
+		$out = array();
+		foreach (explode('/', str_replace('\\', '/', $rel)) as $seg)
+		{
+			if ($seg === '' || $seg === '.' || $seg === '..')
+			{
+				continue;
+			}
+			$out[] = $seg;
+		}
+		return $out ? DS . implode(DS, $out) : '';
+	}
+
 	public function filebrowserTask()
 	{
 		// set the neeced layout
@@ -647,7 +693,7 @@ class Media extends Base
 		}
 
 		//get folder
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// make sure we have an active folder
 		if ($folder == '')
@@ -818,7 +864,7 @@ class Media extends Base
 		$this->view->setLayout('movefile');
 
 		// get request vars
-		$file = Request::getString('file', '');
+		$file = $this->_containRelativePath(Request::getString('file', ''));
 
 		// default folder to have open
 		$this->view->activeFolder = '/uploads';
@@ -862,8 +908,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$file   = Request::getString('file', '');
-		$folder = Request::getString('folder', '');
+		$file   = $this->_containRelativePath(Request::getString('file', ''));
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// build source and destination folder
 		$source      = $this->path . $file;
@@ -903,7 +949,7 @@ class Media extends Base
 	public function renameFileTask()
 	{
 		// get request vars
-		$file = Request::getString('file', '');
+		$file = $this->_containRelativePath(Request::getString('file', ''));
 
 		// pass vars to view
 		$this->view->group = $this->group;
@@ -927,8 +973,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$file = Request::getString('file', '');
-		$name = Request::getString('name', '');
+		$file = $this->_containRelativePath(Request::getString('file', ''));
+		$name = basename(Request::getString('name', ''));
 
 		// get parts of original file
 		$fileInfo = pathinfo($file);
@@ -971,8 +1017,11 @@ class Media extends Base
 	 */
 	public function extractFileTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming file
-		$file = trim(Request::getString('file', '', 'get'));
+		$file = $this->_containRelativePath(trim(Request::getString('file', '', 'get')));
 
 		$adapter = \Hubzero\Filesystem\Manager::adapter('local', array('path' => $this->path));
 		$archive = \Hubzero\Filesystem\File::fromPath($file, $adapter);
@@ -1005,7 +1054,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// Incoming file
-		$file = trim(Request::getString('file', '', 'get'));
+		$file = $this->_containRelativePath(trim(Request::getString('file', '', 'get')));
 		$file = $this->path . $file;
 
 		// get folder to output to
@@ -1096,7 +1145,7 @@ class Media extends Base
 
 		//get request vars
 		$name   = Request::getCmd('name', '');
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		//create return folder
 		$returnFolder = $folder;
@@ -1140,7 +1189,7 @@ class Media extends Base
 	public function renameFolderTask()
 	{
 		// get request vars
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// pass vars to view
 		$this->view->group  = $this->group;
@@ -1164,7 +1213,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 		$name   = Request::getCmd('name', '');
 
 		//get path info
@@ -1220,7 +1269,7 @@ class Media extends Base
 	public function moveFolderTask()
 	{
 		// get request vars
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// default folder to have open
 		$this->view->activeFolder = '/uploads';
@@ -1266,8 +1315,8 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		// get request vars
-		$current = Request::getString('current', '');
-		$folder  = Request::getString('folder', '');
+		$current = $this->_containRelativePath(Request::getString('current', ''));
+		$folder  = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// return path
 		$returnFolder = $this->path . $folder;
@@ -1313,7 +1362,7 @@ class Media extends Base
 		Request::checkToken(['get', 'post']);
 
 		//get request vars
-		$folder = Request::getString('folder', '');
+		$folder = $this->_containRelativePath(Request::getString('folder', ''));
 
 		// define where to return to
 		$returnFolder = dirname($folder);
