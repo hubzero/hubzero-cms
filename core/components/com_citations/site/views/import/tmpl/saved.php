@@ -127,7 +127,7 @@ else
 								{
 									$formatted = str_replace(
 										'doi:' . $cite->doi,
-										'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+										'<a href="' . $this->escape(preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $cite->url)) ? '' : $cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
 										$formatted
 									);
 								}
@@ -137,7 +137,7 @@ else
 
 								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
 									<div class="citation-notes">
-										<p><?php echo nl2br($cite->abstract); ?></p>
+										<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 									</div>
 								<?php endif; ?>
 

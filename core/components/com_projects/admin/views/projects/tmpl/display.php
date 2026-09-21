@@ -134,7 +134,11 @@ if (substr($base, -13) == 'administrator')
 					{
 						$row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
 					}
-					$owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $row->groupcn . '</span>' : $row->authorname;
+					else
+					{
+						$row->groupname = $this->escape($row->groupname);
+					}
+					$owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $this->escape($row->groupcn) . '</span>' : $this->escape(stripslashes($row->authorname));
 					$owner = $owner ? $owner : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
 					$ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 

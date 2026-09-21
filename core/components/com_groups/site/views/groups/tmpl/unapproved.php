@@ -17,7 +17,7 @@ $this->css();
 <section class="main section">
 	<div class="group-unapproved">
 		<span class="name">
-			<?php echo $this->group->get('description'); ?>
+			<?php echo $this->escape($this->group->get('description')); ?>
 		</span>
 		<p class="warning"><?php echo Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></p>
 

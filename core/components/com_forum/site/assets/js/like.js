@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', (domEvent) => {
+    // names come back from data-* attributes decoded, so escape before innerHTML
+    const escHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     // Find all the "like" / stat button
     const commentSections = document.querySelectorAll('.comment-content')
     if (commentSections.length) {
@@ -52,12 +54,20 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                     let whoLikedArray = [];
                                     const newLikesArray = newLikesString.split("/");
                                     for (let i = 0; i < newLikesArray.length; i++) {
-                                        const nameArray = newLikesArray[i].split('#')
-                                        const userName = nameArray[0];
-                                        const userId =  nameArray[1];
+                                        // Records are "percentEncodedName#id" separated by "/". The name is
+                                        // percent-encoded server-side, so neither '#' nor '/' can appear in it
+                                        // and both splits are unambiguous; the browser decodes data-likes-list
+                                        // before this runs, which is why the format cannot rely on HTML escaping.
+                                        const nameArray = newLikesArray[i].split('#');
+                                        const userId = parseInt(nameArray[nameArray.length - 1], 10);
+                                        if (!userId) { continue; }
+                                        let userName = nameArray.slice(0, -1).join('#');
+                                        // decodeURIComponent throws on a malformed sequence; show the raw text
+                                        // rather than losing the whole list to one bad record.
+                                        try { userName = decodeURIComponent(userName); } catch (err) { /* leave encoded */ }
                                         const userProfileUrl = `/members/${userId}/profile`;
     
-                                        whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                                        whoLikedArray.push(`<a href="${userProfileUrl}" target='_blank'>${escHtml(userName)}</a>`);
                                     }
     
                                     likeStatsLink.classList.remove("noLikes");
@@ -85,12 +95,20 @@ window.addEventListener('DOMContentLoaded', (domEvent) => {
                                 let whoLikedArray = [];
                                 const newLikesArray = newLikesString.split("/");
                                 for (let i = 0; i < newLikesArray.length; i++) {
-                                    const nameArray = newLikesArray[i].split('#')
-                                    const userName = nameArray[0];
-                                    const userId =  nameArray[1];
+                                    // Records are "percentEncodedName#id" separated by "/". The name is
+                                    // percent-encoded server-side, so neither '#' nor '/' can appear in it
+                                    // and both splits are unambiguous; the browser decodes data-likes-list
+                                    // before this runs, which is why the format cannot rely on HTML escaping.
+                                    const nameArray = newLikesArray[i].split('#');
+                                    const userId = parseInt(nameArray[nameArray.length - 1], 10);
+                                    if (!userId) { continue; }
+                                    let userName = nameArray.slice(0, -1).join('#');
+                                    // decodeURIComponent throws on a malformed sequence; show the raw text
+                                    // rather than losing the whole list to one bad record.
+                                    try { userName = decodeURIComponent(userName); } catch (err) { /* leave encoded */ }
                                     const userProfileUrl = `/members/${userId}/profile`;
     
-                                    whoLikedArray.push(`<a href=${userProfileUrl} target='_blank'>${userName}</a>`);
+                                    whoLikedArray.push(`<a href="${userProfileUrl}" target='_blank'>${escHtml(userName)}</a>`);
                                 }
     
                                 whoLikedPostDiv.innerHTML = "<div class='names'>" + whoLikedArray.join(', ') + " liked this</div>";

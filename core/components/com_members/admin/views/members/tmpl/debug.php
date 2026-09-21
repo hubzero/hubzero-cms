@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 // Load the tooltip behavior.
 Html::behavior('tooltip');
 
-Toolbar::title(Lang::txt('COM_MEMBERS_VIEW_DEBUG_USER_TITLE', $this->user->get('id'), $this->user->get('name')), 'user');
+Toolbar::title(Lang::txt('COM_MEMBERS_VIEW_DEBUG_USER_TITLE', $this->user->get('id'), $this->escape($this->user->get('name'))), 'user');
 Toolbar::help('JHELP_USERS_DEBUG_USERS');
 
 $listOrder = $this->escape($this->filters['sort']);

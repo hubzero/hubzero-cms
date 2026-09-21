@@ -24,7 +24,15 @@ defined('_HZEXEC_') or die();
 			$userLikesComment = true;
 		}
 
-		$userNameLikesArray .= "/" . ($likeObj->userName) . "#" . ($likeObj->userId);
+		// One record per liker, "name#id", records separated by "/". A display
+		// name may contain BOTH delimiters: Sanitize::cleanProperName(), which
+		// the profile and admin saves run, strips only ':', '<', '>', '&' and
+		// control characters, and the profiles API sets `name` straight from
+		// Request::getString() with no filtering at all. So the name is
+		// percent-encoded here and decoded at every reader (the loop below and
+		// assets/js/like.js), which keeps the format unambiguous whatever the
+		// name holds instead of resting on what some validator rejects today.
+		$userNameLikesArray .= "/" . rawurlencode((string) $likeObj->userName) . "#" . (int) $likeObj->userId;
 	}
 
 	$userNameLikesArray = substr($userNameLikesArray,1);
@@ -85,8 +93,8 @@ defined('_HZEXEC_') or die();
 						data-thread="<?php echo $this->thread->get('id'); ?>"
 						data-post="<?php echo $this->comment->get('id'); ?>"
 						data-user="<?php echo User::get('id'); ?>"
-						data-user-name="<?php echo User::get('name'); ?>"
-						data-likes-list="<?php echo $userNameLikesArray; ?>"
+						data-user-name="<?php echo rawurlencode((string) User::get('name')); ?>"
+						data-likes-list="<?php echo $this->escape($userNameLikesArray); ?>"
 						data-count="<?php echo $countLike; ?>"
 						></a>
 						<span class="likesStat <?php if ($countLike==0) { echo "noLikes"; } ?>">
@@ -101,14 +109,24 @@ defined('_HZEXEC_') or die();
 								<?php
 									$nameArray = preg_split("#/#", $userNameLikesArray);
 									$links = array();
-									foreach ($nameArray as $nameString) 
+									foreach ($nameArray as $nameString)
 									{
-										$nameArray = explode("#", $nameString);
-										$userName = $nameArray[0];
-										$userId =  $nameArray[1];
-										$userProfileUrl = "/members/$userId/profile";
+										// Records are "percentEncodedName#id": the name is encoded
+										// where the list is built above, so neither '#' nor '/' can
+										// appear in it and the split is unambiguous. Decode for
+										// display, then escape -- the decoded name is user-written.
+										$parts    = explode("#", $nameString);
+										$userId   = (int) array_pop($parts);
+										$userName = rawurldecode(implode("#", $parts));
 
-										$links[] = "<a href=$userProfileUrl target='_blank'>$userName</a>";
+										if (!$userId)
+										{
+											continue;
+										}
+
+										$userProfileUrl = "/members/" . $userId . "/profile";
+
+										$links[] = '<a href="' . $userProfileUrl . '" target="_blank">' . $this->escape($userName) . '</a>';
 									}
 									echo join(", ", $links) . " liked this";
 								?>
@@ -146,7 +164,7 @@ defined('_HZEXEC_') or die();
 						else
 						{
 							$html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
-							$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+							$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 							$html .= '<p class="attachment-meta">';
 							$html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
 							$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
@@ -157,9 +175,9 @@ defined('_HZEXEC_') or die();
 					else
 					{
 						$html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
-						$html .= '<p class="attachment-description">' . $attachment->get('description') . '</p>';
+						$html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
 						$html .= '<p class="attachment-meta">';
-						$html .= '<span class="attachment-size">' . $attachment->get('filename') . '</span>';
+						$html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
 						$html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
 						$html .= '</p>';
 						$html .= '</div>';

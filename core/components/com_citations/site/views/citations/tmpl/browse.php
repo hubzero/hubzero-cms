@@ -164,8 +164,8 @@ if ($label == 'none') {
 												if ($cite->doi)
 												{
 													$formatted = str_replace('doi:' . $cite->doi,
-														'<a href="' . $cite->url . '" rel="external">'
-														. 'doi:' . $cite->doi . '</a>', $formatted);
+														'<a href="' . $this->escape(preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $cite->url)) ? '' : $cite->url) . '" rel="external">'
+														. 'doi:' . $this->escape($cite->doi) . '</a>', $formatted);
 												}
 
 												echo $formatted; ?>
@@ -182,7 +182,11 @@ if ($label == 'none') {
 														{
 															foreach ($cite->sponsors as $s)
 															{
-																$final .= '<a rel="external" href="' . $s->get('link') . '">' . $s->get('sponsor') . '</a>, ';
+																// Same treatment as the DOI link above: reject a
+																// javascript:/vbscript:/data: target judged on a
+																// control-character-stripped probe, and escape the name.
+																$slink = preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $s->get('link'))) ? '' : $s->get('link');
+																$final .= '<a rel="external" href="' . $this->escape($slink) . '">' . $this->escape($s->get('sponsor')) . '</a>, ';
 															}
 														}
 													?>
@@ -190,7 +194,7 @@ if ($label == 'none') {
 														<?php $final = substr($final, 0, -2); ?>
 														<p class="sponsor"><?php echo Lang::txt('COM_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 													<?php endif; ?>
-													<p><?php echo nl2br($cite->abstract); ?></p>
+													<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 												</div>
 											<?php endif; ?>
 											<div class="citation-details">

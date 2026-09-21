@@ -154,7 +154,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							$group = \Hubzero\User\Group::getInstance($row->scope_id);
 							if (is_object($group))
 							{
-								echo Lang::txt('COM_EVENTS_EVENT_GROUP', Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $group->get('description'));
+								echo Lang::txt('COM_EVENTS_EVENT_GROUP', Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $this->escape($group->get('description')));
 							}
 							else
 							{

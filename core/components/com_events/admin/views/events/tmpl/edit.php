@@ -112,7 +112,7 @@ $this->js('events.js');
 
 					<div class="input-wrap">
 						<label for="field-repeating_rule"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></label><br />
-						<input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
+						<input type="text" name="repeating_rule" value="<?php echo $this->escape(stripslashes($this->row->repeating_rule)); ?>" />
 						<span class="block-hint"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html'); ?></span>
 					</div>
 				</fieldset>
@@ -148,12 +148,12 @@ $this->js('events.js');
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
-						<td><?php echo $this->row->created ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
+						<td><?php echo $this->row->created ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY').'</th><td>'.$this->escape($userc) : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
 					</tr>
 				<?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
-						<td><?php echo $this->row->modified ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
+						<td><?php echo $this->row->modified ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia').'</td></tr><tr><th>'.Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY').'</th><td>'.$this->escape($userm) : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
 					</tr>
 				<?php } ?>
 				</tbody>

@@ -45,7 +45,7 @@ $content = $this->page->version()->get('content');
 	</div>
 
 	<h3><?php echo Lang::txt('COM_GROUPS_PAGES_UPDATE_CONTENT'); ?></h3>
-	<textarea name="page[content]" rows="40"><?php echo $content; ?></textarea>
+	<textarea name="page[content]" rows="40"><?php echo $this->escape($content); ?></textarea>
 
 	<input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

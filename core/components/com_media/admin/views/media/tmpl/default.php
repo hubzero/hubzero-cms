@@ -65,7 +65,7 @@ $this->js();
 								$fld .= '/' . $crumb;
 								?>
 								<span class="icon-chevron-right dir-separator">/</span>
-								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=' . $fld); ?>" data-folder="<?php echo $fld; ?>" class="media-breadcrumbs folder has-next-button" id="path_<?php echo $crumb; ?>"><?php echo $crumb; ?></a>
+								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=' . $fld); ?>" data-folder="<?php echo $this->escape($fld); ?>" class="media-breadcrumbs folder has-next-button" id="path_<?php echo $this->escape($crumb); ?>"><?php echo $this->escape($crumb); ?></a>
 								<?php
 							endforeach;
 							?>

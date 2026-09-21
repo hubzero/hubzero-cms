@@ -33,7 +33,7 @@ $this->css()
 </nav>
 
 <section class="main section">
-	<h3><?php echo stripslashes($this->event->title); ?></h3>
+	<h3><?php echo $this->escape(stripslashes($this->event->title)); ?></h3>
 	<?php
 		$html  = '<div id="sub-sub-menu">'."\n";
 		$html .= '<ul>'."\n";
@@ -49,7 +49,7 @@ $this->css()
 				if ($this->page->alias == $p->alias) {
 					$html .= ' class="active"';
 				}
-				$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->event->id.'&page='.$p->alias) .'"><span>'.trim(stripslashes($p->title)).'</span></a></li>'."\n";
+				$html .= '><a class="tab" href="'. Route::url('index.php?option='.$this->option.'&task=details&id='.$this->event->id.'&page='.$p->alias) .'"><span>'.$this->escape(trim(stripslashes($p->title))).'</span></a></li>'."\n";
 			}
 		}
 		$html .= "\t".'<li';

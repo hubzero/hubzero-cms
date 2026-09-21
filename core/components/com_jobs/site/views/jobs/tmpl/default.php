@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 if ($this->subscriptionCode && $this->employer)
 {
-	$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->employer->companyName;
+	$this->title .= ' ' . Lang::txt('FROM') . ' ' . $this->escape($this->employer->companyName);
 }
 
 ?>
@@ -89,11 +89,11 @@ if ($this->subscriptionCode && $this->employer)
 			{
 				if ($this->employer)
 				{
-					echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->employer->companyName . ' (' . $this->subscriptionCode . ')';
+					echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_EMPLOYER') . ' ' . $this->escape($this->employer->companyName) . ' (' . $this->escape($this->subscriptionCode) . ')';
 				}
 				else
 				{
-					echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->subscriptionCode . ')';
+					echo ' ' . Lang::txt('COM_JOBS_FROM') . ' ' . Lang::txt('COM_JOBS_REQUESTED_EMPLOYER') . ' (' . $this->escape($this->subscriptionCode) . ')';
 				}
 				echo '. <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse') . '"">' . Lang::txt('COM_JOBS_ACTION_BROWSE_ALL_JOBS') . '</a>';
 			}

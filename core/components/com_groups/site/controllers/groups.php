@@ -598,7 +598,7 @@ class Groups extends Base
 		}
 
 		$g_cn              = trim(Request::getString('cn', '', 'post'));
-		$g_description     = preg_replace('/\s+/', ' ', trim(Request::getString('description', Lang::txt('NONE'), 'post')));
+		$g_description     = preg_replace('/\s+/', ' ', trim(strip_tags(Request::getString('description', Lang::txt('NONE'), 'post'))));
 		$g_discoverability = Request::getInt('discoverability', 0, 'post');
 		$g_public_desc     = Sanitize::clean(trim(Request::getString('public_desc', '', 'post', 'none', 2)));
 		$g_private_desc    = Sanitize::clean(trim(Request::getString('private_desc', '', 'post', 'none', 2)));
@@ -974,7 +974,7 @@ class Groups extends Base
 				'action'      => ($this->_task == 'new' ? 'created' : 'updated'),
 				'scope'       => 'group',
 				'scope_id'    => $group->get('gidNumber'),
-				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'), '<a href="' . $url . '">' . $group->get('description') . '</a>'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'     => $group->get('description'),
 					'url'       => $url,
@@ -1238,7 +1238,7 @@ class Groups extends Base
 				'action'      => 'deleted',
 				'scope'       => 'group',
 				'scope_id'    => $deletedgroup->get('gidNumber'),
-				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')) . '">' . $deletedgroup->get('description') . '</a>'),
+				'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')) . '">' . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'     => $deletedgroup->get('description'),
 					'url'       => Route::url('index.php?option=' . $this->_option . '&cn=' . $deletedgroup->get('cn')),

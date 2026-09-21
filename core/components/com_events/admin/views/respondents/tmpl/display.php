@@ -15,7 +15,7 @@ Toolbar::cancel();
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
-	<h2><?php echo stripslashes($this->event->title); ?></h2>
+	<h2><?php echo $this->escape(stripslashes($this->event->title)); ?></h2>
 
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
@@ -63,7 +63,7 @@ Toolbar::cancel();
 						</a>
 					</td>
 					<td>
-						<a href="mailto:<?php echo $row->email ?>">
+						<a href="mailto:<?php echo $this->escape($row->email); ?>">
 							<?php echo $this->escape($row->email); ?>
 						</a>
 					</td>
@@ -95,8 +95,8 @@ Toolbar::cancel();
 	</table>
 
 	<?php $id = Request::getArray('id', array()); ?>
-	<input type="hidden" name="event" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
-	<input type="hidden" name="id[]" value="<?php echo is_array($id) ? implode(',', $id) : $id; ?>" />
+	<input type="hidden" name="event" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
+	<input type="hidden" name="id[]" value="<?php echo $this->escape(is_array($id) ? implode(',', $id) : $id); ?>" />
 
 	<input type="hidden" name="task" value="" autocomplete="" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

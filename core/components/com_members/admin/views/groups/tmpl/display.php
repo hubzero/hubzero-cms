@@ -33,7 +33,7 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
 								<?php
 								if ($this->rows) foreach ($this->rows as $row)
 								{
-									echo '<option value="' . $row->gidNumber . '">' . $row->description . ' (' . $row->cn . ')</option>' . "\n";
+									echo '<option value="' . $row->gidNumber . '">' . $this->escape($row->description) . ' (' . $this->escape($row->cn) . ')</option>' . "\n";
 								}
 								?>
 							</select>

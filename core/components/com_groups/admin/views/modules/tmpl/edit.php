@@ -58,7 +58,7 @@ Toolbar::cancel();
 					<select name="module[ordering]" id="field-ordering">
 						<?php foreach ($this->order as $k => $order) : ?>
 							<?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-							<option <?php echo $sel; ?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
+							<option <?php echo $sel; ?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $this->escape($order->get('title')); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -90,7 +90,7 @@ Toolbar::cancel();
 						<div class="input-wrap">
 							<label for="assigned<?php echo $i; ?>">
 								<?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-								<input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" id="assigned<?php echo $i; ?>" value="<?php echo $page->get('id'); ?>" /> <?php echo $page->get('title'); ?>
+								<input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" id="assigned<?php echo $i; ?>" value="<?php echo $page->get('id'); ?>" /> <?php echo $this->escape($page->get('title')); ?>
 							</label>
 						</div>
 					<?php endforeach; ?>
@@ -103,7 +103,7 @@ Toolbar::cancel();
 					<tbody>
 						<tr>
 							<th><?php echo Lang::txt('COM_GROUPS_MODULES_OWNER'); ?></th>
-							<td><?php echo $this->group->get('description'); ?></td>
+							<td><?php echo $this->escape($this->group->get('description')); ?></td>
 						</tr>
 						<tr>
 							<th><?php echo Lang::txt('COM_GROUPS_MODULES_ID'); ?></th>
@@ -158,7 +158,7 @@ Toolbar::cancel();
 
 				<div class="input-wrap">
 					<label for="field-content"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
-					<textarea name="module[content]" id="field-content" rows="20"><?php echo $this->module->get('content'); ?></textarea>
+					<textarea name="module[content]" id="field-content" rows="20"><?php echo $this->escape($this->module->get('content')); ?></textarea>
 				</div>
 			</fieldset>
 		</div>
