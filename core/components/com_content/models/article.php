@@ -932,7 +932,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 			{
 				$filters['published'] = array($filters['published']);
 			}
-			$query->whereRaw($publishedWhere . ' IN (' . implode(',', $filters['published']) . ')');
+			$query->whereRaw($publishedWhere . ' IN (' . implode(',', array_map('intval', $filters['published'])) . ')');
 		}
 
 		// Filter by featured state

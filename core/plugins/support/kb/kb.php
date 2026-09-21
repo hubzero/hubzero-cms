@@ -35,7 +35,7 @@ class plgSupportKb extends \Hubzero\Plugin\Plugin
 						ON f.id = rc.entry_id
 					LEFT JOIN `#__categories` AS c
 						ON c.id = f.category
-					WHERE rc.id=" . $refid;
+					WHERE rc.id=" . (int) $refid;
 
 		$database = App::get('db');
 		$database->setQuery($query);

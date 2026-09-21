@@ -693,6 +693,11 @@ class Rule extends Relational
 	 */
 	public static function isBasedOnUsername($word, $username)
 	{
-		return preg_match("/$username/i", $word);
+		if ($username === null || $username === '')
+		{
+			return false;
+		}
+
+		return stripos((string) $word, (string) $username) !== false;
 	}
 }

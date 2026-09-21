@@ -47,7 +47,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
 
 		$query  = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
-					WHERE rc.id=" . $refid;
+					WHERE rc.id=" . (int) $refid;
 
 		$database = App::get('db');
 		$database->setQuery($query);

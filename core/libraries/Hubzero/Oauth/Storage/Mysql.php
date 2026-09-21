@@ -189,7 +189,7 @@ class Mysql
 		}
 
 		// make sure stored secret matches incoming
-		if ($client['client_secret'] != $client_secret)
+		if (!hash_equals((string) $client['client_secret'], (string) $client_secret))
 		{
 			return false;
 		}

@@ -79,8 +79,8 @@ class JConfig
 	var $cookiesubdomains = '0';
 	var $lifetime = '120';
 	var $session_handler = 'database';
-	var $solr_client_id = '12b910947122dfab5238b9e728774486';
-	var $solr_client_secret = '6e291d7c6a9c8859104dd04332f5f07cbb30d6c0';
+	var $solr_client_id = 'dummy_solr_client_id';
+	var $solr_client_secret = 'dummy_solr_client_secret';
 	var $solr_host = 'localhost';
 	var $solr_password = 'drowssaprlos';
 	var $solr_port = '2093';

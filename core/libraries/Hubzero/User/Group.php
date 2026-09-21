@@ -1282,7 +1282,7 @@ class Group extends Obj
 					$query .= 'description ASC';
 					break;
 				default:
-					$query .= preg_replace('/[^a-zA-Z0-9_,. ]/', '', $filters['sortby']);
+					$query .= (preg_replace('/[^a-zA-Z0-9_,. ]/', '', $filters['sortby']) ?: '1');
 					break;
 			}
 		}

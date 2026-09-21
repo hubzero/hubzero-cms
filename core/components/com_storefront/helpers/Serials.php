@@ -133,7 +133,7 @@ class Serials
 
 		if (isset($filters['sort']))
 		{
-			$sql .= " ORDER BY " . preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']);
+			$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 			if (isset($filters['sort_Dir']))
 			{

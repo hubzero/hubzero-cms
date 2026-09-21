@@ -769,7 +769,7 @@ class Password
 			$hashed = self::getCryptedPassword($password, $salt, $encryption);
 		}
 
-		return ($crypt == $hashed);
+		return hash_equals((string) $crypt, (string) $hashed);
 	}
 
 	/**

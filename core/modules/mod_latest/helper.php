@@ -85,6 +85,10 @@ class Helper extends Module
 			$grouped = false;
 			$article_grouping = $params->get('article_grouping', 'none');
 			$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
+			if (!in_array($article_grouping_direction, array('ksort', 'krsort', 'asort', 'arsort'), true))
+			{
+				$article_grouping_direction = 'ksort';
+			}
 			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 			$item_heading = $params->get('item_heading');
 
@@ -265,7 +269,7 @@ class Helper extends Module
 
 		if ($excluded_articles = $params->get('excluded_articles', ''))
 		{
-			$excluded_articles = explode("\r\n", $excluded_articles);
+			$excluded_articles = array_map('intval', explode("\r\n", $excluded_articles));
 			$query->whereRaw('id', 'NOT IN(' . implode(',', $excluded_articles) . ')');
 		}
 

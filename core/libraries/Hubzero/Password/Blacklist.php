@@ -441,7 +441,7 @@ class Blacklist extends Relational
 
 		$len = strlen($word);
 
-		for ($i = 0; $i < $word; $i++)
+		for ($i = 0; $i < $len; $i++)
 		{
 			$o = ord($word[$i]);
 

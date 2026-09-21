@@ -45,6 +45,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReportedItem($refid, $category, $parent)
 	{
+		$refid = (int) $refid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -112,6 +113,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getParentId($parentid, $category)
 	{
+		$parentid = (int) $parentid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -149,6 +151,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function parent($parentid)
 	{
+		$parentid = (int) $parentid;
 		return \Hubzero\Item\Comment::oneOrFail($parentid);
 	}
 
@@ -161,6 +164,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getTitle($category, $parentid)
 	{
+		$parentid = (int) $parentid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -191,6 +195,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onReportItem($refid, $category)
 	{
+		$refid = (int) $refid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -229,6 +234,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function releaseReportedItem($refid, $parent, $category)
 	{
+		$refid = (int) $refid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -272,6 +278,8 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function deleteReportedItem($referenceid, $parentid, $category, $message)
 	{
+		$referenceid = (int) $referenceid;
+		$parentid = (int) $parentid;
 		if (!$this->_canHandle($category))
 		{
 			return null;
@@ -421,6 +429,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 	 */
 	public function getReward($id)
 	{
+		$id = (int) $id;
 		$database = App::get('db');
 
 		// check if question owner assigned a reward for answering his Q

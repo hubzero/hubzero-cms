@@ -130,7 +130,7 @@ class Tool extends Table
 			$query .= "JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber ";
 		}
 		$query .= "$filter"
-				. " ORDER BY " . preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby);
+				. " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1');
 
 		return $query;
 	}

@@ -81,7 +81,7 @@ class Migration20150904235936ComUsage extends Base
 			}
 			else
 			{
-				$query = 'GRANT ALL PRIVILEGES ON ' . $options['database'] . '.* TO ' . $options['user'] . '@localhost';
+				$query = 'GRANT ALL PRIVILEGES ON ' . $this->db->quoteName($options['database']) . '.* TO ' . $this->db->quote($options['user']) . '@' . $this->db->quote('localhost');
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

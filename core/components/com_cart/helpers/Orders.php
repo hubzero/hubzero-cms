@@ -104,7 +104,7 @@ class CartOrders
 			$sql .= " WHERE " . implode(" AND ", $where) . " ";
 		}
 
-		$sql .= " ORDER BY " . preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']);
+		$sql .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');
 
 		$sql .= ' ' . ((strtoupper(trim($filters['sort_Dir'])) == 'ASC') ? 'ASC' : 'DESC');
 
