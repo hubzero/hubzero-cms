@@ -388,6 +388,9 @@ class Relationships extends AdminController
 			$tag = $this->get_tag($tid, false);
 			if (isset($_POST['really']) && $_POST['really'] === 'on')
 			{
+				// The destructive confirm step is a POST form action
+				Request::checkToken();
+
 				if (isset($_POST['do_merge']) && $_POST['do_merge'] === 'on')
 				{
 					if (!isset($_POST['merge_tag']))
