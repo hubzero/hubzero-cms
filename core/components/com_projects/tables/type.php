@@ -33,7 +33,7 @@ class Type extends Table
 	 */
 	public function getParams($type = 1)
 	{
-		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE id=$type");
+		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE id=" . (int) $type);
 		return $this->_db->loadResult();
 	}
 

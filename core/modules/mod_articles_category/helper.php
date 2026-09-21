@@ -269,7 +269,7 @@ class Helper extends Module
 		if ($excluded_articles = $params->get('excluded_articles', ''))
 		{
 			$excluded_articles = explode("\r\n", $excluded_articles);
-			$query->whereRaw('id NOT IN(' . implode(',', $excluded_articles) . ')');
+			$query->whereRaw('id NOT IN(' . implode(',', array_map('intval', $excluded_articles)) . ')');
 		}
 
 		$date_filtering = $params->get('date_filtering', 'off');

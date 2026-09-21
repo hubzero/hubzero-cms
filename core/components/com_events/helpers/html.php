@@ -545,7 +545,7 @@ class Html
 		else
 		{
 			$database = \App::get('db');
-			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id='$agid'");
+			$database->setQuery("SELECT created_by_alias FROM #__events WHERE id=" . (int) $agid);
 			$userdet = $database->loadResult();
 			if ($userdet)
 			{

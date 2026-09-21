@@ -180,7 +180,7 @@ class Unit extends Table
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$query .= " ORDER BY cu.ordering";

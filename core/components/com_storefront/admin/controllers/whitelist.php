@@ -148,6 +148,9 @@ class Whitelist extends AdminController
 	 */
 	public function addusersTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$sId = Request::getInt('sId', 0);
 		$users = Request::getString('users', '');
 

@@ -33,7 +33,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') as $idp)
 		// print "error, name ".$dname." contains a quote\n";
 		continue;
 	}
-	exec('grep -q -i "'.$dname.'" /root/tmp/cando.txt', $found, $rc);
+	exec('grep -q -i ' . escapeshellarg($dname) . ' /root/tmp/cando.txt', $found, $rc);
 	if ($rc) {
 		// print "skipping\n";
 		continue;

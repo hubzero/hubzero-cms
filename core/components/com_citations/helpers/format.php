@@ -301,17 +301,17 @@ class Format
 								$user = \User::getInstance($id);
 								if (is_object($user))
 								{
-									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+									$a[] = '<a rel="external" href="' . \Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . htmlspecialchars(str_replace($matches[0], '', $author), ENT_QUOTES, 'UTF-8') . '</a>';
 								}
 								else
 								{
-									$a[] = $author;
+									$a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
 								}
 							}
 						}
 						else
 						{
-							$a[] = $author;
+							$a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
 						}
 
 						//add author coins
@@ -376,15 +376,17 @@ class Format
 						$t = (!preg_match('!\S!u', $t)) ? mbstring($t) : $t;
 					}
 
+					$tEsc   = htmlspecialchars($t, ENT_QUOTES, 'UTF-8');
+					$urlEsc = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
 					$title = ($url != '' && preg_match('/http:|https:/', $url))
-							? '<a rel="external" class="citation-title" href="' . $url . '">' . $t . '</a>'
-							: '<span class="citation-title">' . $t . '</span>';
+							? '<a rel="external" class="citation-title" href="' . $urlEsc . '">' . $tEsc . '</a>'
+							: '<span class="citation-title">' . $tEsc . '</span>';
 
 					//do we want to display single citation
 					$singleCitationView = $config->get('citation_single_view', 0);
 					if ($singleCitationView && isset($citation->id))
 					{
-						$title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $t . '</a>';
+						$title = '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $tEsc . '</a>';
 					}
 
 					//send back title to replace title placeholder ({TITLE})
@@ -705,7 +707,7 @@ class Format
 				{
 					if ($rid->tbl == 'resource')
 					{
-						$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $rid->oid);
+						$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . (int) $rid->oid);
 						$state = $database->loadResult();
 						if ($state == 1)
 						{
@@ -728,7 +730,7 @@ class Format
 			{
 				if ($assocs->first()->tbl == 'resource')
 				{
-					$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . $assocs->first()->oid);
+					$database->setQuery("SELECT published FROM `#__resources` WHERE id=" . (int) $assocs->first()->oid);
 					$state = $database->loadResult();
 					if ($state == 1)
 					{
@@ -955,16 +957,16 @@ class Format
 					$auth = preg_replace('/{{(.*?)}}/s', '', $auth);
 					if ($aid)
 					{
-						$a[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $aid) . '">' . trim($auth) . '</a>';
+						$a[] = '<a href="' . \Route::url('index.php?option=com_members&id=' . $aid) . '">' . htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8') . '</a>';
 					}
 					else
 					{
-						$a[] = trim($auth);
+						$a[] = htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8');
 					}
 				}
 				else
 				{
-					$a[] = trim($auth);
+					$a[] = htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8');
 				}
 			}
 			$row->author = implode('; ', $a);

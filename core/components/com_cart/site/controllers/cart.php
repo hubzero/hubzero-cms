@@ -41,15 +41,6 @@ class Cart extends ComponentController
 		parent::execute();
 	}
 
-	/**
-	 * Dump post
-	 *
-	 * @return     void
-	 */
-	public function huiTask()
-	{
-		ddie($_POST);
-	}
 
 	/**
 	 * Display default page

@@ -167,7 +167,7 @@ class AssetAssociation extends Table
 
 		if (!empty($filters['start']) && !empty($filters['limit']))
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

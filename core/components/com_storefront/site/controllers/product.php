@@ -82,6 +82,7 @@ class Product extends \Hubzero\Component\SiteController
 		$addToCartRequest = Request::getBool('addToCart', false, 'post');
 		$options = Request::getArray('og', array(), 'post');
 		$qty = Request::getInt('qty', 1, 'post');
+		$qty = max(1, $qty);
 
 		if ($addToCartRequest)
 		{

@@ -94,6 +94,12 @@ class Unityv1_0 extends base
 		// Get the key and IV - Trim the first xx characters from the payload for IV
 		$key  = $course->config()->get('unity_key', 0);
 
+		// Fail closed: without a configured key any payload could be forged
+		if (empty($key) || $key === '0')
+		{
+			App::abort(500, 'Unity key is not configured');
+		}
+
 	        $data = base64_decode($data);
 		$iv_size = openssl_cipher_iv_length('AES-256-CBC');
 		$iv = substr($data, 0, $iv_size);

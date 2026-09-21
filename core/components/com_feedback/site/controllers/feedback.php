@@ -233,6 +233,9 @@ class Feedback extends SiteController
 
 		$fields['user_id'] = User::get('id');
 
+		// Never let the submitter set the row id or self-publish as notable
+		unset($fields['id'], $fields['notable_quote']);
+
 		// Initiate class and bind posted items to database fields
 		$row = Quote::oneOrNew(0)->set($fields);
 

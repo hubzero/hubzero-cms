@@ -201,6 +201,9 @@ class Tools extends SiteController
 	 */
 	public function cssTask($css = 'site_css.css')
 	{
+		// Only a bare filename is valid here; strip any path components
+		$css = basename($css);
+
 		$paths = array(
 			\App::get('template')->path . DS . 'css' . DS . $css,
 			dirname(__DIR__) . DS . 'assets' . DS . 'css' . DS . $css,
