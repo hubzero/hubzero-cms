@@ -66,11 +66,12 @@ if (!$this->thread->thread)
 		}
 		else
 		{
+			$title = $this->escape(stripslashes($this->thread->title));
 			if ($this->search)
 			{
-				$this->thread->title = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $this->thread->title);
+				$title = preg_replace('#' . preg_quote($this->search, '#') . '#i', "<span class=\"highlight\">\\0</span>", $title);
 			}
-			$comment = $this->thread->title . ' &hellip;';
+			$comment = $title . ' &hellip;';
 		}
 
 		$this->thread->instructor_replied = 0;

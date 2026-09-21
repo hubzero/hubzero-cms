@@ -8,10 +8,10 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$newSession = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version), 'server');
+$newSession = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='. $this->app->version, false), 'server');
 if (strstr($newSession, '?'))
 {
-	$newSession .= '&amp;newinstance=1';
+	$newSession .= '&newinstance=1';
 }
 else
 {
@@ -38,7 +38,7 @@ else
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<a href="<?php echo $newSession; ?>">
+					<a href="<?php echo $this->escape($newSession); ?>">
 						<?php echo Lang::txt('COM_TOOLS_MYSESSIONS_START_NEW'); ?>
 					</a>
 				</td>
@@ -55,7 +55,7 @@ else
 			<tr class="<?php echo $cls; ?>">
 				<td>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>">
-						<?php echo $session->sessname; ?>
+						<?php echo $this->escape($session->sessname); ?>
 					</a>
 				</td>
 				<td>

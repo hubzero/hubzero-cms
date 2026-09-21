@@ -56,7 +56,7 @@ $base = rtrim(Request::base(true), '/');
 							</div>
 						<?php endif; ?>
 						<div class="session-title">
-							<?php echo $session->sessname; ?>
+							<?php echo $this->escape($session->sessname); ?>
 							<span class="status"></span>
 						</div>
 					</div>
@@ -65,7 +65,7 @@ $base = rtrim(Request::base(true), '/');
 						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<div class="session-details-left">
 								<div class="session-snapshot">
-									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
+									<a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $this->escape($session->sessname); ?>">
 										<img class="snapshot snapshot-main" src="<?php echo $snapshot; ?>" data-src="<?php echo $snapshot; ?>" />
 									</a>
 								</div>
@@ -81,11 +81,11 @@ $base = rtrim(Request::base(true), '/');
 								<div class="session-sharing">
 									<span><?php echo Lang::txt('MOD_MYSESSIONS_SESSION_OWNER'); ?></span>
 									<?php
-										$name = $session->username;
+										$name = $this->escape($session->username);
 										$user = User::getInstance($session->username);
 										if ($user->get('id'))
 										{
-											$name = $user->get('name');
+											$name = $this->escape($user->get('name'));
 											if (in_array($user->get('access'), User::getAuthorisedViewLevels()))
 											{
 												$name = '<a href="' . Route::url($user->link()) . '">' . $name . '</a>';

@@ -69,7 +69,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								Instructors: <span class="entry-instructors"><?php echo implode(', ', $names); ?></span>
 							</span>
 							<span class="entry-content">
-								<?php echo \Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200); ?>
+								<?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200)); ?>
 							</span>
 						</td>
 						<td>

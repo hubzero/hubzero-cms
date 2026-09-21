@@ -69,7 +69,7 @@ $this->css();
 						$css .= '.' . preg_replace('/[^a-zA-Z0-9]/', '', $domain->domain) . ' { background-color: ' . $colors[$k] . '; }';
 
 						$data  = '{';
-						$data .= '"label": "' . $domain->domain . '",';
+						$data .= '"label": ' . json_encode($domain->domain, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ',';
 						$data .= '"data": ' . round(($domain->email_count / $total)*100, 2) . ',';
 						$data .= '"color": "' . $colors[$k] . '"';
 						$data .= '}';
@@ -188,7 +188,7 @@ $this->css();
 						?>
 						<tr>
 							<th scope="row">
-								<span class="pie-key <?php echo preg_replace('/[^a-zA-Z0-9]/', '', $domain->domain); ?>"></span><?php echo $domain->domain; ?>
+								<span class="pie-key <?php echo preg_replace('/[^a-zA-Z0-9]/', '', $domain->domain); ?>"></span><?php echo $this->escape($domain->domain); ?>
 							</th>
 							<td class="val">
 								<?php echo $domain->email_count; ?>

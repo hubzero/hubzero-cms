@@ -111,7 +111,7 @@ if (!$tmpl && !$no_html) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
-		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
+		<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
 		<input type="hidden" name="task" value="save" />
 
 		<?php echo Html::input('token'); ?>
@@ -212,7 +212,7 @@ if (!$tmpl && !$no_html) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
-		<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
+		<input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
 		<input type="hidden" name="task" value="save" />
 
 		<?php echo Html::input('token'); ?>

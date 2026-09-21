@@ -20,7 +20,7 @@ if ($parsedLog->activityDescription): ?>
 	<li class="<?php echo $parsedLog->class; ?>"
 		data-id="<?php echo $id; ?>">
 		<span class="entry-log-data">
-			<?php echo $parsedLog->activityDescription; ?>
+			<?php echo $this->escape($parsedLog->activityDescription); ?>
 		</span>
 	</li>
 <?php endif;

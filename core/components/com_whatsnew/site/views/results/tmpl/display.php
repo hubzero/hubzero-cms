@@ -229,7 +229,7 @@ foreach ($this->cats as $cat)
 							}
 
 							$html .= "\t" . '<li>' . "\n";
-							$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+							$html .= "\t\t" . '<p class="title"><a href="' . $this->escape(str_replace('&amp;', '&', $row->href)) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
 							if ($row->text) {
 								$html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))), 200) . '</p>' . "\n";
 							}

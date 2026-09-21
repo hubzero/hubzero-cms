@@ -313,7 +313,7 @@ $progress_timeline .= '</div>';
 	<?php endif; ?>
 
 	<h3>
-		<?php echo (Request::getInt('id', false)) ? User::getInstance($this->member->get('user_id'))->get('name') . ':' : '' ?>
+		<?php echo (Request::getInt('id', false)) ? $this->escape(User::getInstance($this->member->get('user_id'))->get('name')) . ':' : '' ?>
 		<?php echo $h3 ?>
 	</h3>
 	<h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>
@@ -439,7 +439,7 @@ $progress_timeline .= '</div>';
 
 		<div class="unit-entry">
 			<div class="unit-overview">
-				<div class="unit-title"><?php echo $unit->get('title') ?></div>
+				<div class="unit-title"><?php echo $this->escape($unit->get('title')); ?></div>
 				<div class="unit-score">
 					<?php
 						echo (isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))

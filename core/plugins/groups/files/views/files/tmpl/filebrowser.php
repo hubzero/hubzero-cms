@@ -39,7 +39,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 					</div>
 				<?php } ?>
 			</div>
-			<div class="foldertree" data-activefolder="<?php echo $this->activeFolder; ?>">
+			<div class="foldertree" data-activefolder="<?php echo $this->escape($this->activeFolder); ?>">
 				<?php echo $this->folderTree; ?>
 			</div>
 			<div class="foldertree-list">

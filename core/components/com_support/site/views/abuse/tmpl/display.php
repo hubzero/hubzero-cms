@@ -48,7 +48,7 @@ if (!$no_html)
 								$name = Lang::txt('COM_SUPPORT_UNKNOWN');
 								if (is_object($user))
 								{
-									$name = $user->get('name');
+									$name = $this->escape($user->get('name'));
 								}
 							}
 
@@ -57,7 +57,7 @@ if (!$no_html)
 							echo ($this->report->anon != 0) ? Lang::txt('JANONYMOUS') : $name;
 							echo ($this->report->href) ? '</a>': '';
 						?></p>
-						<?php echo ($this->report->subject) ? '<p><strong>'.stripslashes($this->report->subject).'</strong></p>' : ''; ?>
+						<?php echo ($this->report->subject) ? '<p><strong>'.$this->escape(stripslashes($this->report->subject)).'</strong></p>' : ''; ?>
 						<blockquote cite="<?php echo ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name; ?>">
 							<p><?php echo Sanitize::html($this->report->text); ?></p>
 						</blockquote>

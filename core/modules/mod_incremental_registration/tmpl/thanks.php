@@ -18,5 +18,5 @@ defined('_HZEXEC_') or die();
 		<?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_REDIRECTED_SOON'); ?>
 	</p>
 
-	<a href="<?php echo Request::getString('REQUEST_URI', Request::getString('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>"><?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
+	<a href="<?php echo $this->escape(Request::getString('REQUEST_URI', Request::getString('REDIRECT_REQUEST_URI', '', 'server'), 'server')); ?>"><?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
 </div>

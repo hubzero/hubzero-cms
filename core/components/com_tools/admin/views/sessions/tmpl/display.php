@@ -127,7 +127,7 @@ Html::behavior('tooltip');
 						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->sessnum; ?></label>
 					</td>
 					<td>
-						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $row->exechost; ?>&lt;br /&gt;IP: <?php echo $row->remoteip; ?>">
+						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $this->escape($row->exechost); ?>&lt;br /&gt;IP: <?php echo $this->escape($row->remoteip); ?>">
 							<span><?php echo $this->escape($row->sessnum); ?></span>
 						</span>
 					</td>

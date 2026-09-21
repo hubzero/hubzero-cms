@@ -170,7 +170,7 @@ $cc = array();
 									{
 										?>
 										<a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-											<p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
+											<p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
 											<p class="attachment-meta">
 												<span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
 												<span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>

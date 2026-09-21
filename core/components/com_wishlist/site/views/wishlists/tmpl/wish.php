@@ -33,11 +33,11 @@ $this->css()
 	}
 
 	// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
-	$assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="'.Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->assignee->get('name').'</a>') : '';
+	$assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="'.Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby']).'&tags='.urlencode($this->filters['tag']).'&action=editplan#plan">'.$this->escape(stripslashes($this->wish->assignee->get('name'))).'</a>') : '';
 
 	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0)
 	{
-		$assigned = '<a href="' . Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.Lang::txt('unassigned').'</a>';
+		$assigned = '<a href="' . Route::url('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby']).'&tags='.urlencode($this->filters['tag']).'&action=editplan#plan">'.Lang::txt('unassigned').'</a>';
 	}
 
 	$this->wish->set('status', ($this->wish->get('accepted')==1 && $this->wish->get('status')==0 ? 6 : $this->wish->get('status')));
@@ -47,7 +47,7 @@ $this->css()
 	$this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
 ?>
 	<header id="content-header">
-		<h2><?php echo $this->title . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id'); ?></h2>
+		<h2><?php echo $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id'); ?></h2>
 
 		<?php /*<div id="content-header-extra">
 			<ul id="useroptions">
@@ -154,7 +154,7 @@ $this->css()
 					<?php if ($tags = $this->wish->tags('string')) { ?>
 						<div class="entry-tags">
 							<p>Tags:</p>
-							<?php echo $tags; ?>
+							<?php echo $this->escape($tags); ?>
 						</div><!-- / .wish-tags -->
 					<?php } ?>
 				</div><!-- / .wish-content -->
@@ -878,7 +878,7 @@ $this->css()
 					<?php } ?>
 						<div class="planbody">
 							<p class="plannote">
-								<?php echo Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT').' '.$this->wish->plan->created('date').' at '.$this->wish->plan->created('time').' '.Lang::txt('COM_WISHLIST_BY').' '.$this->wish->plan->creator->get('name');?>
+								<?php echo Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT').' '.$this->wish->plan->created('date').' at '.$this->wish->plan->created('time').' '.Lang::txt('COM_WISHLIST_BY').' '.$this->escape($this->wish->plan->creator->get('name'));?>
 							</p>
 							<?php echo $this->wish->plan->content; ?>
 						</div>

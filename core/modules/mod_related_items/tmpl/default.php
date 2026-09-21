@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die;
 					echo '<time datetime="' . $item->created . '">' . Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')) . '</time> - ';
 				endif;
 				?>
-				<?php echo $item->title; ?>
+				<?php echo $this->escape($item->title); ?>
 			</a>
 		</li>
 	<?php endforeach; ?>

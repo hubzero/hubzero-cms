@@ -68,7 +68,7 @@ class Icons
 		$html[] = '>';
 		if (isset($button['image']) && $button['image'])
 		{
-			$html[] = \Html::asset('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : htmlspecialchars($button['alt']), null, true);
+			$html[] = \Html::asset('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : $button['alt'], null, true);
 		}
 		$html[] = (empty($button['text'])) ? '' : ('<span>' . $button['text'] . '</span>');
 		$html[] = '</a>';

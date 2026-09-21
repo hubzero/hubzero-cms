@@ -105,7 +105,7 @@ if ($this->children)
 		$out .= '  <td width="100%">';
 		if ($this->allowupload)
 		{
-			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.Route::url('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$child->title.'">'.\Components\Tools\Helpers\Html::getFileAttribs($url, $base).'</a>)</span>';
+			$out .= '<span'.$liclass.' item:name id:'.$child->id.'" data-id="' . $child->id . '">'.$this->escape($child->title).'</span><br /><span class="caption">(<a href="'.Route::url('index.php?option=com_resources&task=download&id='.$child->id).'" title="'.$this->escape($child->title).'">'.\Components\Tools\Helpers\Html::getFileAttribs($url, $base).'</a>)</span>';
 		}
 		else
 		{

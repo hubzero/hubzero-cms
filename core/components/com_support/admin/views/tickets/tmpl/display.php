@@ -237,7 +237,7 @@ echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : '';
 								</p>
 								<p>
 									<span class="ticket-author">
-										<?php echo $row->get('name');
+										<?php echo $this->escape($row->get('name'));
 echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">

@@ -33,7 +33,7 @@ $this->css();
 			?>
 			<li class="curation-task <?php echo $class; ?>">
 				<a href="<?php echo $row->state == 5 ? Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id) : Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" />
-				<?php echo $row->title . ' v.' . $row->version_label; ?></a>
+				<?php echo $this->escape($row->title) . ' v.' . $this->escape($row->version_label); ?></a>
 				<span><?php if ($row->state == 5) { ?><a href="<?php echo Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id); ?>"><?php echo Lang::txt('MOD_MYCURATION_REVIEW'); ?></a><?php } ?><?php if ($row->state == 7) { echo Lang::txt('MOD_MYCURATION_PENDING_CHANGES');  } ?></span>
 			</li>
 			<?php

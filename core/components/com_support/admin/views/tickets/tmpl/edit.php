@@ -131,17 +131,17 @@ if (!$no_html)
 								{
 									if ($attachment->width() > 400)
 									{
-										$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+										$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 									}
 									else
 									{
-										$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+										$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
 									}
 									echo $img;
 								}
 								else
 								{
-									echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+									echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $this->escape($attachment->get('description')) . '">' . $this->escape($attachment->get('description')) . '</a></p>';
 								}
 							}
 							?>
@@ -153,7 +153,7 @@ if (!$no_html)
 						<tbody>
 							<tr>
 								<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_EMAIL'); ?>:</th>
-								<td><a href="mailto:<?php echo $this->row->get('email'); ?>"><?php echo $this->escape($this->row->get('email')); ?></a></td>
+								<td><a href="mailto:<?php echo $this->escape($this->row->get('email')); ?>"><?php echo $this->escape($this->row->get('email')); ?></a></td>
 							</tr>
 							<tr>
 								<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>
@@ -318,17 +318,17 @@ if (!$no_html)
 									{
 										if ($attachment->width() > 400)
 										{
-											$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+											$img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
 										}
 										else
 										{
-											$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+											$img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
 										}
 										echo $img;
 									}
 									else
 									{
-										echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+										echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $this->escape($attachment->get('description')) . '">' . $this->escape($attachment->get('description')) . '</a></p>';
 									}
 								}
 								?>
