@@ -91,7 +91,7 @@ class Component extends Obj
 
 		if (!$form->loadFile($file, false, '//config'))
 		{
-			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+			$this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
 			return false;
 		}
 

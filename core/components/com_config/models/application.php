@@ -44,7 +44,7 @@ class Application extends Obj
 
 		if (!$form->loadFile($file, false, '//form'))
 		{
-			$this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
+			$this->setError(Lang::txt('JERROR_LOADFILE_FAILED'));
 		}
 
 		if (!empty($data))
