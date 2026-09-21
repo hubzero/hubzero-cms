@@ -229,7 +229,7 @@ $this->js();
 								<?php
 								$file = ltrim($file, DS);
 								$sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> value="<?php echo $file; ?>"><?php echo $file; ?></option>
+								<option <?php echo $sel; ?> value="<?php echo $this->escape($file); ?>"><?php echo $this->escape($file); ?></option>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</select>

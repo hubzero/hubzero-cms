@@ -39,6 +39,6 @@ class Textarea extends Element
 		// Convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<textarea name="' . $control_name . '[' . $name . ']" cols="' . $cols . '" rows="' . $rows . '" ' . $class . ' id="' . $control_name . $name . '" >' . $value . '</textarea>';
+		return '<textarea name="' . $control_name . '[' . $name . ']" cols="' . $cols . '" rows="' . $rows . '" ' . $class . ' id="' . $control_name . $name . '" >' . htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8') . '</textarea>';
 	}
 }

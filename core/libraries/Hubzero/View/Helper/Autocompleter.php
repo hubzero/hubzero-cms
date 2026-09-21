@@ -66,7 +66,7 @@ class Autocompleter extends AbstractHelper
 		}
 		else
 		{
-			$results = '<input type="text" name="' . $name . '" id="' . $id . '" value="' . $value . '" />';
+			$results = '<input type="text" name="' . htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8') . '" id="' . htmlspecialchars((string) $id, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false) . '" />';
 		}
 
 		return $results;

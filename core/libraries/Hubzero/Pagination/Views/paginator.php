@@ -29,7 +29,7 @@ if (!function_exists('paginator_item_active'))
 	{
 		if (App::isAdmin())
 		{
-			return '<a data-prefix="' . $prefix . '" data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
+			return '<a data-prefix="' . htmlspecialchars((string) $prefix, ENT_QUOTES, 'UTF-8') . '" data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
 		}
 		else
 		{
@@ -66,7 +66,7 @@ if (!function_exists('paginator_item_active'))
 			?>
 		</li>
 		<li class="limit">
-			<label for="<?php echo $this->prefix; ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label>
+			<label for="<?php echo htmlspecialchars((string) $this->prefix, ENT_QUOTES, 'UTF-8'); ?>limit"><?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?></label>
 			<?php
 			// Build the select list.
 			$selected = $this->viewall ? 0 : $this->limit;

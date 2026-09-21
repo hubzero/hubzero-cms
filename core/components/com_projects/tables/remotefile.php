@@ -130,13 +130,13 @@ class RemoteFile extends Table
 		}
 
 		$query  = "SELECT * FROM $this->_tbl";
-		$query .= " WHERE projectid=$projectid  ";
-		$query .= " AND service='" . $service . "' ";
+		$query .= ' WHERE projectid=' . (int) $projectid . '  ';
+		$query .= ' AND service=' . $this->_db->quote($service) . ' ';
 		if ($remoteEdit)
 		{
 			$query .= " AND remote_editing=1 ";
 		}
-		$query .= " AND local_dirpath='" . $subdir . "' ";
+		$query .= ' AND local_dirpath=' . $this->_db->quote($subdir) . ' ';
 
 		$this->_db->setQuery($query);
 		$results = $this->_db->loadObjectList();

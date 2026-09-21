@@ -935,16 +935,16 @@ class Behavior
 		}
 		Asset::script($script, true, true);
 
-		$terms = str_replace('"', '\"', $terms);
+		$jflags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 
 		$options = "{
-			className: '" . $className . "',
-			element: '" . $tag . "'
+			className: " . json_encode((string) $className, $jflags) . ",
+			element: " . json_encode((string) $tag, $jflags) . "
 		}";
 
 		App::get('document')->addScriptDeclaration("
 			jQuery(document).ready(function($){
-				$('body').highlight([\"" . implode('","', $terms) . "\"], " . $options . ");
+				$('body').highlight(" . json_encode(array_values((array) $terms), $jflags) . ", " . $options . ");
 			});
 		");
 

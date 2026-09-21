@@ -514,7 +514,7 @@ class Select
 					$dataField = strtolower(substr($property, 0, 4));
 					if ($dataField == 'data')
 					{
-						$dataAttributes .= ' ' . $property . '="' . $element->get($property) . '"';
+						$dataAttributes .= ' ' . $property . '="' . htmlspecialchars((string) $element->get($property), ENT_COMPAT, 'UTF-8') . '"';
 					}
 				}
 			}
@@ -699,8 +699,10 @@ class Select
 				$extra .= ((string) $k == (string) $selected ? ' checked="checked"' : '');
 			}
 
-			$html .= '<label for="' . $id_text . $k . '"' . ' id="' . $id_text . $k . '-lbl" class="radiobtn option">' . "\n";
-			$html .= '<input type="radio" name="' . $name . '"' . ' id="' . $id_text . $k . '" value="' . $k . '"' . ' ' . $extra . ' ' . $attribs . '/>' . $t . "\n";
+			$ek = htmlspecialchars((string) $k, ENT_COMPAT, 'UTF-8');
+			$et = htmlspecialchars((string) $t, ENT_COMPAT, 'UTF-8');
+			$html .= '<label for="' . $id_text . $ek . '"' . ' id="' . $id_text . $ek . '-lbl" class="radiobtn option">' . "\n";
+			$html .= '<input type="radio" name="' . $name . '"' . ' id="' . $id_text . $ek . '" value="' . $ek . '"' . ' ' . $extra . ' ' . $attribs . '/>' . $et . "\n";
 			$html .= '</label>' . "\n";
 		}
 		$html .= "\n";

@@ -53,11 +53,11 @@ class Rss extends Renderer
 		$feed  = '<rss version="2.0" xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">' . "\n";
 		//$feed  = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 		$feed .= '	<channel>' . "\n";
-		$feed .= '		<title>' . $data->title . '</title>' . "\n";
-		$feed .= '		<description><![CDATA[' . $data->description . ']]></description>' . "\n";
-		$feed .= '		<link>' . str_replace(' ', '%20', $url . ltrim($data->link, '/')) . '</link>' . "\n";
+		$feed .= '		<title>' . $this->escape($data->title) . '</title>' . "\n";
+		$feed .= '		<description><![CDATA[' . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $data->description)) . ']]></description>' . "\n";
+		$feed .= '		<link>' . $this->_escapeUrl(str_replace(' ', '%20', $url . ltrim($data->link, '/'))) . '</link>' . "\n";
 		$feed .= '		<lastBuildDate>' . $this->escape($now->toRFC822()) . '</lastBuildDate>' . "\n";
-		$feed .= '		<generator>' . $data->getGenerator() . '</generator>' . "\n";
+		$feed .= '		<generator>' . $this->escape($data->getGenerator()) . '</generator>' . "\n";
 
 		// iTunes specific tags
 		if ($data->itunes_summary != '')
@@ -81,12 +81,12 @@ class Rss extends Renderer
 		{
 			$feed .= '		<itunes:owner>' . "\n";
 			$feed .= '			<itunes:name>' . $this->escape($data->itunes_owner->name) . '</itunes:name>' . "\n";
-			$feed .= '			<itunes:email>' . $data->itunes_owner->email . '</itunes:email>' . "\n";
+			$feed .= '			<itunes:email>' . $this->escape($data->itunes_owner->email) . '</itunes:email>' . "\n";
 			$feed .= '		</itunes:owner>' . "\n";
 		}
 		if ($data->itunes_explicit != '')
 		{
-			$feed .= '		<itunes:explicit>' . $data->itunes_explicit . '</itunes:explicit>' . "\n";
+			$feed .= '		<itunes:explicit>' . $this->escape($data->itunes_explicit) . '</itunes:explicit>' . "\n";
 		}
 		if ($data->itunes_keywords != '')
 		{
@@ -98,33 +98,33 @@ class Rss extends Renderer
 		}
 		if ($data->itunes_image != null)
 		{
-			$feed .= '		<itunes:image href="' . $data->itunes_image->url . '" />' . "\n";
+			$feed .= '		<itunes:image href="' . $this->_escapeUrl($data->itunes_image->url) . '" />' . "\n";
 		}
 		// end iTunes specific tags
 
 		if ($data->image != null)
 		{
 			$feed .= '		<image>' . "\n";
-			$feed .= '			<url>' . $data->image->url . '</url>' . "\n";
+			$feed .= '			<url>' . $this->_escapeUrl($data->image->url) . '</url>' . "\n";
 			$feed .= '			<title>' . $this->escape($data->image->title) . '</title>' . "\n";
-			$feed .= '			<link>' . str_replace(' ', '%20', $data->image->link) . '</link>' . "\n";
+			$feed .= '			<link>' . $this->_escapeUrl(str_replace(' ', '%20', $data->image->link)) . '</link>' . "\n";
 			if ($data->image->width != "")
 			{
-				$feed .= '			<width>' . $data->image->width . '</width>' . "\n";
+				$feed .= '			<width>' . $this->escape($data->image->width) . '</width>' . "\n";
 			}
 			if ($data->image->height != '')
 			{
-				$feed .= '			<height>' . $data->image->height . '</height>' . "\n";
+				$feed .= '			<height>' . $this->escape($data->image->height) . '</height>' . "\n";
 			}
 			if ($data->image->description != '')
 			{
-				$feed .= '			<description><![CDATA[' . $data->image->description . ']]></description>' . "\n";
+				$feed .= '			<description><![CDATA[' . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $data->image->description)) . ']]></description>' . "\n";
 			}
 			$feed .= '		</image>' . "\n";
 		}
 		if ($data->language != '')
 		{
-			$feed .= "		<language>" . $data->language . "</language>\n";
+			$feed .= "		<language>" . htmlspecialchars((string) $data->language, ENT_QUOTES, 'UTF-8') . "</language>\n";
 		}
 		if ($data->copyright != '')
 		{
@@ -178,19 +178,22 @@ class Rss extends Renderer
 
 		for ($i=0; $i<count($data->items); $i++)
 		{
-			if ((strpos($data->items[$i]->link, 'http://') === false) and (strpos($data->items[$i]->link, 'https://') === false))
+			// Test the PREFIX, not "contains": a relative link may legitimately
+			// carry "http://" inside its query string (a redirect target, say),
+			// and such a link was left unprefixed and so unresolvable in a reader.
+			if (!preg_match('#^https?://#i', (string) $data->items[$i]->link))
 			{
-				$data->items[$i]->link = str_replace(' ', '%20', $url . ltrim($data->items[$i]->link, '/'));
+				$data->items[$i]->link = str_replace(' ', '%20', $url . ltrim((string) $data->items[$i]->link, '/'));
 			}
 
 			$feed .= "		<item>\n";
 			$feed .= "			<title>" . $this->escape(strip_tags($data->items[$i]->title)) . "</title>\n";
-			$feed .= "			<link>" . str_replace(' ', '%20', $data->items[$i]->link) . "</link>\n";
-			$feed .= "			<description>" . $this->_relToAbs($data->items[$i]->description) . "</description>\n";
+			$feed .= "			<link>" . $this->_escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</link>\n";
+			$feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $this->_relToAbs($data->items[$i]->description))) . "]]></description>\n";
 
 			if (empty($data->items[$i]->guid) === true)
 			{
-				$feed .= "			<guid isPermaLink=\"true\">" . str_replace(' ', '%20', $data->items[$i]->link) . "</guid>\n";
+				$feed .= "			<guid isPermaLink=\"true\">" . $this->_escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</guid>\n";
 			}
 			else
 			{
@@ -208,7 +211,7 @@ class Rss extends Renderer
 			}
 			if ($data->items[$i]->itunes_explicit != '')
 			{
-				$feed .= "			<itunes:explicit>" . $data->items[$i]->itunes_explicit . "</itunes:explicit>\n";
+				$feed .= "			<itunes:explicit>" . $this->escape($data->items[$i]->itunes_explicit) . "</itunes:explicit>\n";
 			}
 			if ($data->items[$i]->itunes_keywords != '')
 			{
@@ -234,20 +237,20 @@ class Rss extends Renderer
 			if ($data->items[$i]->itunes_image != null)
 			{
 				$feed .= "			<itunes:image>\n";
-				$feed .= "				<url>" . $data->items[$i]->itunes_image->url . "</url>\n";
+				$feed .= "				<url>" . $this->_escapeUrl($data->items[$i]->itunes_image->url) . "</url>\n";
 				$feed .= "				<title>" . $this->escape($data->items[$i]->itunes_image->title) . "</title>\n";
-				$feed .= "				<link>" . $data->items[$i]->itunes_image->link . "</link>\n";
+				$feed .= "				<link>" . $this->_escapeUrl($data->items[$i]->itunes_image->link) . "</link>\n";
 				if ($data->items[$i]->itunes_image->width != '')
 				{
-					$feed .= "			<width>" . $data->items[$i]->itunes_image->width . "</width>\n";
+					$feed .= "			<width>" . $this->escape($data->items[$i]->itunes_image->width) . "</width>\n";
 				}
 				if ($data->items[$i]->itunes_image->height != '')
 				{
-					$feed .= "			<height>" . $data->items[$i]->itunes_image->height . "</height>\n";
+					$feed .= "			<height>" . $this->escape($data->items[$i]->itunes_image->height) . "</height>\n";
 				}
 				if ($data->items[$i]->itunes_image->description != '')
 				{
-					$feed .= "			<description><![CDATA[" . $data->items[$i]->itunes_image->description . "]]></description>\n";
+					$feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $data->items[$i]->itunes_image->description)) . "]]></description>\n";
 				}
 				$feed .= "			</itunes:image>\n";
 			}
@@ -278,13 +281,13 @@ class Rss extends Renderer
 				$itemDate = new Date($data->items[$i]->date);
 				$feed .= "			<pubDate>" . $this->escape($itemDate->toRFC822()) . "</pubDate>\n";
 			}
-			if ($data->items[$i]->guid != '')
-			{
-				$feed .= "			<guid>" . $this->escape($data->items[$i]->guid) . "</guid>\n";
-			}
+			// A <guid> is already emitted above -- with isPermaLink set, as the
+			// spec requires -- so this second, attribute-less one made every item
+			// carry two. Readers key de-duplication on guid; a repeated element
+			// is at best ignored and at worst treated as a different item.
 			if ($data->items[$i]->enclosure != null)
 			{
-				$feed .= '			<enclosure url="' . $data->items[$i]->enclosure->url . '" length="' . $data->items[$i]->enclosure->length . '" type="' . $data->items[$i]->enclosure->type . '"/>' . "\n";
+				$feed .= '			<enclosure url="' . $this->_escapeUrl($data->items[$i]->enclosure->url) . '" length="' . $this->escape($data->items[$i]->enclosure->length) . '" type="' . $this->escape($data->items[$i]->enclosure->type) . '"/>' . "\n";
 			}
 
 			$feed .= "		</item>\n";
@@ -316,6 +319,42 @@ class Rss extends Renderer
 	 */
 	public function escape($text)
 	{
-		return htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
+		return htmlspecialchars((string) $text, ENT_COMPAT, 'UTF-8');
+	}
+
+	/**
+	 * Strip a CDATA wrapper that a feed producer added itself, so it is not
+	 * nested inside the wrapper this renderer adds.
+	 *
+	 * @param   string  $text
+	 * @return  string
+	 */
+	protected function _unwrapCdata($text)
+	{
+		if (preg_match('/^\s*<!\[CDATA\[(.*)\]\]>\s*$/s', $text, $m))
+		{
+			return $m[1];
+		}
+		return $text;
+	}
+
+	/**
+	 * Escape a URL for an XML element or attribute.
+	 *
+	 * Feed producers set link and url fields from Route::url(), whose $xhtml
+	 * argument defaults to true -- so the value arrives already entity-encoded
+	 * and escaping it again turns "&amp;" into "&amp;amp;", which corrupts the
+	 * query string of every link in the feed whenever SEF is off. Other
+	 * producers hand over a raw URL, which must be escaped or a bare "&" makes
+	 * the document not well-formed. $double_encode = false covers both: it
+	 * escapes a bare "&" and leaves an existing entity alone. Atom.php carries
+	 * the same helper, for the same reason.
+	 *
+	 * @param   string  $url
+	 * @return  string
+	 */
+	protected function _escapeUrl($url)
+	{
+		return htmlspecialchars((string) $url, ENT_COMPAT, 'UTF-8', false);
 	}
 }

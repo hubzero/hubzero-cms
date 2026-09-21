@@ -68,7 +68,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 						<div class="summary">
 							<?php if ($res->has_metadata()): ?>
 								<p class="details">
-									<?php if (($section = $res->get_section())) {?><span class="section"><?php echo $section; ?></span><?php }?>
+									<?php if (($section = $res->get_section())) {?><span class="section"><?php echo $this->escape($section); ?></span><?php }?>
 									<?php if (($date = $res->get_date())) { ?><span class="date"><?php echo Date::of($date)->format('j M Y'); ?></span><?php } ?>
 									<?php if (($contributors = $res->get_contributors())): ?>
 									<span class="contributors">
@@ -79,9 +79,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 											Contributor(s):
 											<?php foreach ($contributors as $idx => $contrib): ?>
 												<?php if (isset($contrib_ids[$idx])): ?>
-												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) { echo ', ';} ?>
+												<a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $this->escape($contrib); ?></a><?php if ($idx != $contrib_len - 1) { echo ', ';} ?>
 												<?php else: ?>
-												<?php echo $contrib; ?>
+												<?php echo $this->escape($contrib); ?>
 												<?php endif; ?>
 											<?php endforeach; ?>
 									</span>

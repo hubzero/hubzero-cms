@@ -42,7 +42,7 @@ $this->css();
 			<fieldset>
 				<legend><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_TITLE'); ?></legend>
 
-		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC', $this->group->get('description')); ?></p>
+		 		<p><?php echo Lang::txt('COM_GROUPS_INVITE_SECTION_DESC', $this->escape($this->group->get('description'))); ?></p>
 
 				<label>
 					<?php echo Lang::txt('COM_GROUPS_INVITE_LOGINS'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
@@ -65,7 +65,7 @@ $this->css();
 			<input type="hidden" name="controller" value="membership" />
 			<input type="hidden" name="task" value="doinvite" />
 			<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-			<input type="hidden" name="return" value="<?php echo $this->return; ?>" />
+			<input type="hidden" name="return" value="<?php echo $this->escape($this->return); ?>" />
 			<?php echo Html::input('token'); ?>
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_INVITE_BTN_TEXT'); ?>" />

@@ -62,7 +62,7 @@ if (!empty($this->notifications))
 										echo ' <em>Required</em>';
 									}
 									?>
-									<textarea name="notes-<?php echo $sId; ?>"></textarea>
+									<textarea name="notes-<?php echo $this->escape($sId); ?>"></textarea>
 								</label>
 
 								<?php

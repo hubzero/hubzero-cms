@@ -740,6 +740,7 @@ class Html
 		}
 		else
 		{
+			$title = htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8');
 			$archiveUrl = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
 			?>
 			<div class="button-highlighter">
@@ -820,7 +821,7 @@ class Html
 		?>
 		<div id="plg-header">
 			<h3 class="publications c-header">
-				<a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo \Hubzero\Utility\Str::truncate($pub->get('title'), 65); ?>"<?php if ($append) { echo '</a>'; } ?></span>
+				<a href="<?php echo Route::url($pub->link('editbase')); ?>" title="<?php echo $tabtitle; ?>"><?php echo $tabtitle; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist">"<?php if ($append) { echo '<a href="' . $pubUrl . '" >'; } ?><?php echo htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8'); ?>"<?php if ($append) { echo '</a>'; } ?></span>
 				<?php if ($append) { echo $append; } ?>
 			</h3>
 		</div>
@@ -838,7 +839,7 @@ class Html
 	{
 		?>
 		<h3 class="prov-header">
-			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo \Hubzero\Utility\Str::truncate($pub->get('title'), 65); ?>"
+			<a href="<?php echo Route::url($pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; "<?php echo htmlspecialchars(\Hubzero\Utility\Str::truncate($pub->get('title'), 65), ENT_QUOTES, 'UTF-8'); ?>"
 			<?php if ($append) { echo $append; } ?>
 		</h3>
 		<?php

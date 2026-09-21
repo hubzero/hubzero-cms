@@ -53,7 +53,7 @@ class Xml extends Base
 
 		parent::render();
 
-		\App::get('response')->headers->set('Content-disposition', 'inline; filename="' . $this->getName() . '.xml"', true);
+		\App::get('response')->headers->set('Content-disposition', 'inline; filename="' . preg_replace('/[^A-Za-z0-9._-]/', '', (string) $this->getName()) . '.xml"', true);
 
 		return $this->getBuffer();
 	}

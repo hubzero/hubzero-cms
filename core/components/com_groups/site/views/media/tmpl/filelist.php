@@ -142,7 +142,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 			?>
 			<li class="file file-<?php echo strtolower($extension); ?>">
 				<div class="name">
-					<a href="javascript:void(0);"><?php echo $file; ?></a>
+					<a href="javascript:void(0);"><?php echo $this->escape($file); ?></a>
 				</div>
 				<div class="modified">
 					<?php echo ($modified) ? $formattedModified : '--'; ?>
@@ -163,7 +163,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 					<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DETAILS'); ?></div>
 					<ul>
 						<li>
-							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_NAME'); ?>: </strong> <?php echo $file; ?>
+							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_NAME'); ?>: </strong> <?php echo $this->escape($file); ?>
 						</li>
 						<li>
 							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE'); ?>: </strong> <?php echo $formattedFilesize; ?>

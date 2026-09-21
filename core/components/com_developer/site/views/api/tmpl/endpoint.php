@@ -105,7 +105,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 					->display();
 			}
 			?>
-			<h2 class="doc-section-header" id="<?php echo $this->active; ?>">
+			<h2 class="doc-section-header" id="<?php echo $this->escape($this->active); ?>">
 				<?php echo ucfirst($this->active); ?>
 				<?php if (!empty($versions)): ?>
 					<div class="btn-group dropdown">

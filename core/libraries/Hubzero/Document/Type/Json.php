@@ -51,7 +51,7 @@ class Json extends Base
 	{
 		\App::get('response')->headers->set('Cache-Control', 'no-cache', false);
 		\App::get('response')->headers->set('Pragma', 'no-cache');
-		\App::get('response')->headers->set('Content-disposition', 'attachment; filename="' . $this->getName() . '.json"', true);
+		\App::get('response')->headers->set('Content-disposition', 'attachment; filename="' . preg_replace('/[^A-Za-z0-9._-]/', '', (string) $this->getName()) . '.json"', true);
 
 		parent::render();
 

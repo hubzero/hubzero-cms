@@ -98,7 +98,7 @@ endif;
 					<div class="form-group">
 						<label for="field-description">
 							<?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
-							<input type="text" name="description" id="field-description" size="35" class="form-control" value="<?php echo stripslashes($this->group->get('description') ? $this->group->get('description') : ''); ?>" />
+							<input type="text" name="description" id="field-description" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->group->get('description') ? $this->group->get('description') : '')); ?>" />
 						</label>
 					</div>
 
@@ -108,7 +108,7 @@ endif;
 							<?php if (count($tf) > 0):
 								echo $tf[0];
 							else: ?>
-								<input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->tags; ?>" />
+								<input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->tags); ?>" />
 							<?php endif; ?>
 
 							<span class="hint"><?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_TAGS_HINT'); ?></span>

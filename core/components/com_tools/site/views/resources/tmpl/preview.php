@@ -58,7 +58,7 @@ $this->css('resource.css')
 
 		<input type="hidden" name="msg" value="<?php echo Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'); ?>" />
 		<input type="hidden" name="step" value="6" />
-		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
+		<input type="hidden" name="editversion" value="<?php echo $this->escape($this->version); ?>" />
 		<input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
 
 		<div class="steps-nav">

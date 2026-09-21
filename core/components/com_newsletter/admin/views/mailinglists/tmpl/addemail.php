@@ -68,7 +68,7 @@ Toolbar::cancel('cancelemail');
 				<tr>
 					<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_RAW'); ?>:</th>
 					<td>
-						<textarea name="email_box" rows="10" cols="100"><?php echo $this->emailBox; ?></textarea>
+						<textarea name="email_box" rows="10" cols="100"><?php echo $this->escape($this->emailBox); ?></textarea>
 					</td>
 				</tr>
 			</tbody>

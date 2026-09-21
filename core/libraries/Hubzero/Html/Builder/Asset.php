@@ -219,7 +219,7 @@ class Asset
 		}
 		else
 		{
-			return '<img src="' . (count($includes) ? $includes[0] : '') . '" alt="' . $alt . '" ' . $attribs . ' />';
+			return '<img src="' . htmlspecialchars((string) (count($includes) ? $includes[0] : ''), ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars((string) $alt, ENT_QUOTES, 'UTF-8') . '" ' . $attribs . ' />';
 		}
 	}
 
@@ -346,6 +346,7 @@ class Asset
 	 */
 	public static function icon($symbol, $ariahidden = true)
 	{
+		$symbol = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $symbol);
 		$paths = array();
 		if (App::has('template'))
 		{

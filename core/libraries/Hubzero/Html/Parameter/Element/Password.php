@@ -38,6 +38,6 @@ class Password extends Element
 		$class = (string) $node['class'];
 		$class = ($class ? 'class="' . $class . '"' : 'class="text_area"');
 
-		return '<input type="password" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' />';
+		return '<input type="password" name="' . $control_name . '[' . $name . ']" id="' . $control_name . $name . '" value="' . htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8') . '" ' . $class . ' ' . $size . ' />';
 	}
 }

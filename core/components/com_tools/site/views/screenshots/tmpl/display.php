@@ -191,7 +191,7 @@ echo $html;
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="changing_version" value="0" />
-		<input type="hidden" name="version" id="version" value="<?php echo $this->version; ?>" />
+		<input type="hidden" name="version" id="version" value="<?php echo $this->escape($this->version); ?>" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->rid; ?>" />
 		<input type="hidden" name="path" id="path" value="<?php echo $this->upath; ?>" />
 		<input type="hidden" name="task" value="upload" />
@@ -203,7 +203,7 @@ echo $html;
 			<legend><?php echo Lang::txt('COM_TOOLS_COPY_SCREENSHOTS'); ?></legend>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->escape($this->version); ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="copy" />
 			<input type="hidden" name="rid" value="<?php echo $this->rid; ?>" />

@@ -98,7 +98,7 @@ $this->css('resource.css')
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $task; ?>" />
 		<input type="hidden" name="step" value="<?php echo $nextstep; ?>" />
-		<input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
+		<input type="hidden" name="editversion" value="<?php echo $this->escape($this->version); ?>" />
 		<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']; ?>" />
 		<?php echo Html::input('token'); ?>
 

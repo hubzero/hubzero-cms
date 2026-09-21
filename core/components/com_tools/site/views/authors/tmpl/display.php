@@ -57,7 +57,7 @@ if ($this->version == 'dev') {
 					</p>
 				</div>
 			</div>
-			<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->escape($this->version); ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="tmpl" value="component" />
@@ -81,7 +81,7 @@ if ($this->contributors) {
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="update" />
-		<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
+		<input type="hidden" name="version" value="<?php echo $this->escape($this->version); ?>" />
 		<table class="list">
 			<tfoot>
 				<td>
@@ -159,7 +159,7 @@ if ($this->contributors) {
 						}
 					?></td>
 					<td class="t">
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;ver=<?php echo $this->version?>" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;ver=<?php echo $this->escape($this->version)?>" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
 							<span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
 						</a>
 					</td>

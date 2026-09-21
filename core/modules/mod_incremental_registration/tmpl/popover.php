@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 	<?php if ($awardPer): ?>
 		<p>We'll award you with <strong><?php echo $awardPer; ?></strong> points for each question you answer. You can use these points towards items in the site <a href="/store">store</a>, or to place bounties on <a href="/answers">questions</a> and <a href="/wishlist">wishes</a>.</p>
 	<?php endif; ?>
-	<form action="<?php echo Request::current(); ?>" method="post">
+	<form action="<?php echo htmlspecialchars(Request::current(), ENT_QUOTES, 'UTF-8'); ?>" method="post">
 		<input type="hidden" name="option" value="<?php echo Request::getCmd('option'); ?>" />
 		<ol>
 				<?php if (isset($row['orgtype'])): ?>
