@@ -27,7 +27,7 @@ if ($this->get('new_pubs')) {
 ?>
 <tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->get('id'); ?>">
 <td class="pub-image"><img src="<?php echo Route::url($row->link('thumb')); ?>" alt="" /></td>
-<td><a href="<?php echo $pubUrl; ?>" <?php if ($row->get('abstract')) { echo 'title="' . $this->escape($row->get('abstract')) . '"'; } ?>><?php echo $row->get('title'); ?></a> v.<?php echo $row->get('version_label'); ?>
+<td><a href="<?php echo $pubUrl; ?>" <?php if ($row->get('abstract')) { echo 'title="' . $this->escape($row->get('abstract')) . '"'; } ?>><?php echo $this->escape($row->get('title')); ?></a> v.<?php echo $this->escape($row->get('version_label')); ?>
 </td>
 <td><?php echo $row->get('id'); ?></td>
 <td class="restype"><?php echo $row->get('base'); ?></td>

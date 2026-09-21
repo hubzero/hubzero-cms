@@ -31,7 +31,7 @@ $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
 			<?php } ?>
 		</span>
 		<span class="item-title link-type">
-			<a href="<?php echo $row->path; ?>" rel="external"><?php echo $title; ?></a>
-			<span class="item-details"><?php echo $details; ?></span>
+			<a href="<?php echo $row->path; ?>" rel="external"><?php echo $this->escape($title); ?></a>
+			<span class="item-details"><?php echo $this->escape($details); ?></span>
 		</span>
 	</li>

@@ -27,7 +27,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 				<input type="hidden" name="action" value="removeit" />
 				<input type="hidden" name="task" value="view" />
 				<input type="hidden" name="active" value="files" />
-				<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+				<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 				<p><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_FILES_CONFIRM'); ?></p>
@@ -36,7 +36,7 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 					<?php foreach ($this->items as $file) : ?>
 						<li>
 							<?php echo \Components\Projects\Models\File::drawIcon($file->getExtension()); ?>
-							<?php echo $file->getName(); ?>
+							<?php echo $this->escape($file->getName()); ?>
 							<?php echo $file->isDir()
 								? '<input type="hidden" name="folder[]" value="' . urlencode($file->getPath()) . '" />'
 								: '<input type="hidden" name="asset[]"  value="' . urlencode($file->getPath()) . '" />'; ?>

@@ -71,7 +71,7 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0)
 	<?php if ($linkUrl) : ?>
 		<a href="<?php echo $linkUrl; ?>" class="preview file:<?php echo $urlEncodedItemName; ?>" <?php echo $linkTarget; ?>>
 	<?php endif; ?>
-			<?php echo $itemFileNameShort; ?>
+			<?php echo str_replace('&amp;#8230;', '&#8230;', $this->escape($itemFileNameShort)); ?>
 	<?php if ($linkUrl) : ?>
 		</a>
 	<?php endif; ?>

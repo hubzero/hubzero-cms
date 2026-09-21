@@ -81,7 +81,7 @@ $this->css();
 					. trim($r['source_dir'], '/') . '&asset=' . $r['source_file'];
 				$file_url = Route::url($file_url);
 
-				$file_name = '<a href="' . $file_url . '">' . $r['source_file'] . '</a>';
+				$file_name = '<a href="' . $file_url . '">' . $this->escape($r['source_file']) . '</a>';
 
 				$recreate = '<a href="' . Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=create&db_id=' . $r['id']) . '" class="re-create-db">' . Lang::txt('Update Database') . '</a>';
 

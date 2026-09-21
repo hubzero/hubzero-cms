@@ -37,8 +37,8 @@ if (count($matches) > 0)
 						// make sure have a valid url
 						$doiUrl = 'https://doi.org/' . $resourceFields['doi'];
 					?>
-					<a rel="external" href="<?php echo $doiUrl; ?>">
-						<?php echo $doiUrl; ?>
+					<a rel="external" href="<?php echo $this->escape($doiUrl); ?>">
+						<?php echo $this->escape($doiUrl); ?>
 					</a>
 				</td>
 			</tr>
@@ -92,7 +92,7 @@ if (count($matches) > 0)
 						$query .= $this->model->title;
 					}
 					?>
-				<a rel="external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
+				<a rel="external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $this->escape($query); ?>">
 					<img src="http://scholar.google.com/intl/en/scholar/images/scholar_logo_lg_2011.gif" alt="Google Scholar Search Results" width="100" />
 				</a>
 			</td>
@@ -105,7 +105,7 @@ if (count($matches) > 0)
 				<ul>
 					<li>
 						<?php
-							$url = 'http://www.deepdyve.com/search?query=' . str_replace(' ', '+', $this->model->title);
+							$url = 'http://www.deepdyve.com/search?query=' . rawurlencode($this->model->title);
 							echo Lang::txt('PLG_RESOURCES_FINDTHISTEXT_SOURCES_DEEPDYVE', $url);
 						?>
 					</li>

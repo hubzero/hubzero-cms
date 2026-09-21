@@ -51,7 +51,7 @@ if ($this->task == 'new')
 }
 elseif ($page->get('id'))
 {
-	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($page->link()).'">'. $page->get('title') . '</a></span>';
+	$bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($page->link()).'">'. $this->escape($page->get('title')) . '</a></span>';
 
 }
 

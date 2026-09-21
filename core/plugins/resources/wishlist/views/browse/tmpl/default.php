@@ -40,7 +40,8 @@ $this->css();
 		{
 			foreach ($this->rows as $item)
 			{
-				$item->subject = $this->escape(stripslashes($item->subject));
+				// Plain text here; the single sink below escapes once on output
+				$item->subject = stripslashes($item->subject);
 
 				$item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 
@@ -92,7 +93,7 @@ $this->css();
 					</th>
 					<td>
 					<?php if ($item->status != 7) { ?>
-						<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
+						<a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . urlencode($this->filters['tag'])); ?>"><?php echo $this->escape($item->subject); ?></a><br />
 						<span class="entry-details">
 							<?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
 							<span class="entry-time-at">@</span>
@@ -150,7 +151,7 @@ $this->css();
 							case 0:
 								if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3))
 								{
-									$html .= '<a class="rankit" href="index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
+									$html .= '<a class="rankit" href="index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
 								}
 								else if (isset($item->ranked) && $item->ranked)
 								{

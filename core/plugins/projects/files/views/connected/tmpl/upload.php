@@ -93,7 +93,7 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 		<input type="hidden" name="queue" id="queue" value="" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" name="connection" value="<?php echo $this->connection->id; ?>" />

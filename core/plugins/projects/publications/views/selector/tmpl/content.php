@@ -69,31 +69,34 @@ $pa = new \Components\Publications\Tables\Author($database);
 			*/
 			$authors = $pa->getAuthors($item->get('version_id'));
 
+			// Str::truncate() is called without html => true here, so it will cut a
+			// tag in half -- this value is not being treated as safe markup, and the
+			// sink below echoes it into the page. Escape at the source.
 			$description = '';
 			if ($item->get('abstract'))
 			{
-				$description = \Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300) . "\n";
+				$description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300)) . "\n";
 			}
 			else if ($item->get('description'))
 			{
-				$description = \Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300) . "\n";
+				$description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300)) . "\n";
 			}
 
 			$info = array();
 			if ($item->get('category'))
 			{
-				$info[] = $item->get('cat_name');
+				$info[] = $this->escape($item->get('cat_name'));
 			}
 			if ($item->get('doi'))
 			{
-				$info[] = 'doi:' . $item->get('doi');
+				$info[] = 'doi:' . $this->escape($item->get('doi'));
 			}
 			?>
 			<li class="type-publication allowed <?php if ($selected) { echo ' selectedfilter'; } ?>" id="<?php echo $liId; ?>">
 				<div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
 				<!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
 				<span class="item-wrap">
-					<?php echo $item->get('title'); ?> <span class="item-version">(<?php echo $item->get('version_label'); ?>)</span><br />
+					<?php echo $this->escape($item->get('title')); ?> <span class="item-version">(<?php echo $this->escape($item->get('version_label')); ?>)</span><br />
 					<span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
 				</span>
 				<span class="item-fullinfo">

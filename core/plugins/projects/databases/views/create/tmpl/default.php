@@ -57,9 +57,9 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 				$dir = '';
 			}
 			?>
-				<optgroup label="<?php echo $dir?>">
+				<optgroup label="<?php echo $this->escape($dir)?>">
 			<?php foreach ($files as $file): ?>
-				<option data-dir="<?php echo $dir?>" data-hash="<?php echo $file['hash']?>" data-date="<?php echo $file['date']?>" value="<?php echo $file['name']?>" class="preview"><?php echo $file['name']?></option>
+				<option data-dir="<?php echo $this->escape($dir)?>" data-hash="<?php echo $this->escape($file['hash'])?>" data-date="<?php echo $this->escape($file['date'])?>" value="<?php echo $this->escape($file['name'])?>" class="preview"><?php echo $this->escape($file['name'])?></option>
 			<?php endforeach; ?>
 		<?php endforeach; ?>
 		</select>
@@ -71,16 +71,16 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 	elseif (isset($this->db_id) && $this->db_id)
 	{
 ?>
-	<h3><?php echo Lang::txt('Loading database'); ?>: <em><?php echo $this->title?></em>...</h3>
+	<h3><?php echo Lang::txt('Loading database'); ?>: <em><?php echo $this->escape($this->title)?></em>...</h3>
 	<form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
 		<select id="prj-db-select-src">
-			<option selected data-dir="<?php echo $this->dir?>" value="<?php echo $this->file?>" class="preview"><?php echo $this->file?></option>
+			<option selected data-dir="<?php echo $this->escape($this->dir)?>" value="<?php echo $this->escape($this->file)?>" class="preview"><?php echo $this->escape($this->file)?></option>
 		</select>
-		<input type="hidden" name="dir" value="<?php echo $this->dir?>">
-		<input type="hidden" name="file" value="<?php echo $this->file?>">
-		<input type="hidden" name="title" value="<?php echo $this->title?>">
-		<input type="hidden" name="desc" value="<?php echo $this->desc?>">
-		<input type="hidden" name="db_id" value="<?php echo $this->db_id?>">
+		<input type="hidden" name="dir" value="<?php echo $this->escape($this->dir)?>">
+		<input type="hidden" name="file" value="<?php echo $this->escape($this->file)?>">
+		<input type="hidden" name="title" value="<?php echo $this->escape($this->title)?>">
+		<input type="hidden" name="desc" value="<?php echo $this->escape($this->desc)?>">
+		<input type="hidden" name="db_id" value="<?php echo $this->escape($this->db_id)?>">
 		<input type="button" value="<?php echo Lang::txt('Next'); ?> &raquo;" class="btn" id="prj-db-preview-file" />
 	</form>
 <?php

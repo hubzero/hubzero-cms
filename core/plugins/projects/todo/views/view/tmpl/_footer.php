@@ -22,8 +22,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 <input type="hidden" name="list" id="list" value="<?php echo $this->filters['todolist']; ?>" />
 <input type="hidden" name="state" id="tdstate" value="<?php echo $this->filters['state']; ?>" />
 <input type="hidden" name="mine" value="<?php echo $this->filters['mine']; ?>" />
-<input type="hidden" name="sortby" value="<?php echo $this->filters['sortby']; ?>" />
-<input type="hidden" name="sortdir" value="<?php echo $this->filters['sortdir']; ?>" />
+<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
 <?php if ($this->filters['state'] == 0) { ?>
 	<p class="tips js"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_REORDER_INSTRUCT')); ?></p>
 <?php } ?>

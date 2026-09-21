@@ -27,7 +27,7 @@ if (count($this->authors) > 0)
 			<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 			<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
 			<input type="hidden" name="alias" value="<?php echo $this->model->get('alias'); ?>" />
-			<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
+			<input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="additem" />
 			<?php if ($this->model->isProvisioned()) { ?>

@@ -136,7 +136,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 				<div class="element-instructions">
 					<label>
 						<span class="review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
-						<input type="text" id="publish_date" name="publish_date" value="<?php echo $pubdate; ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
+						<input type="text" id="publish_date" name="publish_date" value="<?php echo $this->escape($pubdate); ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
 						<span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
 					</label>
 
@@ -174,7 +174,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 							?>
 							<li>
 								<span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) { echo ' checked="checked"'; } ?>/></span>
-									<span class="item-title"><?php echo $name; ?> 
+									<span class="item-title"><?php echo $this->escape($name); ?> 
 										<?php if(!empty($dept)) {?>
 										<span id=<?php echo $this->escape($author->id) . "_dept" ?> class="item-subtext"><?php echo ' - ' . $dept; ?></span>
 										<?php } ?>

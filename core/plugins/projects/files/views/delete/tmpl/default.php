@@ -28,8 +28,8 @@ if (!$this->getError()) {
 		<input type="hidden" name="action" value="removeit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_FILES_CONFIRM'); ?></p>

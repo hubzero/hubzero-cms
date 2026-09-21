@@ -68,5 +68,5 @@ endif;
 			<img src="<?php echo $this->file->getPreview($this->model, $this->file->get('hash'), 'url'); ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
 		</div>
 	<?php elseif ($this->file->get('content')): ?>
-		<pre><?php echo $this->file->get('content'); ?></pre>
+		<pre><?php echo $this->escape($this->file->get('content')); ?></pre>
 	<?php endif;

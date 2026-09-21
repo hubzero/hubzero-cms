@@ -35,7 +35,7 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=
 						<label><?php echo ucfirst(Lang::txt('PLG_MEMBERS_TODO_CHOOSE_PROJECT')); ?>:
 							<select name="projectid">
 							<?php foreach ($this->projects as $project) { ?>
-								<option value="<?php echo $project->get('id'); ?>"><?php echo stripslashes($project->get('title')) . '(' . $project->get('alias') . ')'; ?></option>
+								<option value="<?php echo $project->get('id'); ?>"><?php echo $this->escape(stripslashes($project->get('title'))) . ' (' . $this->escape($project->get('alias')) . ')'; ?></option>
 							<?php } ?>
 							</select>
 						</label>

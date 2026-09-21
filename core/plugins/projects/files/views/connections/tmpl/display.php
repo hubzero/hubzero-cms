@@ -44,11 +44,39 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 					<div class="private-connection"></div>
 				<?php endif; ?>
 				<img src="<?php echo $img; ?>" alt="" />
-				<div class="name"><?php echo $connection->name; ?></div>
+				<div class="name"><?php echo $this->escape($connection->name); ?></div>
 			</a>
+			<?php
+				// Match connections.php::connectionOwnedOrManageableByUser(): a
+				// project manager may act on any of the project's connections,
+				// anyone else only on a private one of their own. thatICanView()
+				// also returns the project's SHARED connections (owner_id
+				// 0/NULL), so rendering these four links unconditionally handed
+				// every member controls that then 403'd.
+				//
+				// The manager half is connectionManageableByUser() spelled out
+				// rather than $this->model->access('manager'), which is also true
+				// for a site-wide com_projects manager who is not a member of
+				// this project -- someone the controller still refuses.
+				$member = $this->model->member();
+
+				$isProjectManager = $member
+					&& $member->get('id')
+					&& $member->get('status') == 1
+					&& $member->get('role') == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER;
+
+				$mayActOnConnection = $isProjectManager
+					|| (!empty($connection->owner_id)
+						&& (int) $connection->owner_id === (int) User::get('id'));
+			?>
+			<?php if ($mayActOnConnection) : ?>
 			<div class="connection-actions">
 				<a class="connection-refresh icon-refresh" title="<?php echo Lang::txt('Refresh Connection Credentials'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id); ?>">
+					<?php echo Lang::txt('Refresh Connection Credentials'); ?>
+				</a>
 				<a class="connection-refreshpath icon-folder" title="<?php echo Lang::txt('Refresh Connection Path'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshpath&connection=' . $connection->id); ?>">
+					<?php echo Lang::txt('Refresh Connection Path'); ?>
+				</a>
 				<a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
 					<?php echo Lang::txt('Edit'); ?>
 				</a>
@@ -56,6 +84,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 					<?php echo Lang::txt('Delete'); ?>
 				</a>
 			</div>
+			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>
 

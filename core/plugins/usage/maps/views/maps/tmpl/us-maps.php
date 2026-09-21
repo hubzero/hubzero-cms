@@ -26,8 +26,8 @@ $dataurl = str_replace('&amp;', '&', $dataurl);
 	<body>
 		<div id="map_canvas"
 			data-url="<?php echo $dataurl; ?>"
-			data-date="<?php echo $date; ?>"
-			data-plotdt="<?php echo substr($date, 0, 7); ?>"
+			data-date="<?php echo $this->escape($date); ?>"
+			data-plotdt="<?php echo $this->escape(substr($date, 0, 7)); ?>"
 			data-map="<?php echo $this->mappath; ?>"
 			data-path="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps"
 			data-lat="<?php echo $this->lat; ?>"

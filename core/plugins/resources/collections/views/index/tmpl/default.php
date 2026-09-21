@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
 					<select name="pid" id="pid">
 						<option value="" selected><?php echo Lang::txt('PLG_RESOURCES_COLLECTIONS_SELECT_PLACEHOLDER', $this->type->type);?></option>
 						<?php foreach ($this->resources as $entry): ?>
-							<option value="<?php echo $entry->id;?>"><?php echo $entry->title; ?></option>
+							<option value="<?php echo $entry->id;?>"><?php echo $this->escape($entry->title); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>

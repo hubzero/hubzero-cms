@@ -33,7 +33,7 @@ defined('_HZEXEC_') or die();
 		$parentCss = '';
 		if ($parent = Request::getString('parent', false))
 		{
-			$parentCss = ' parent-' . $parent;
+			$parentCss = ' parent-' . $this->escape($parent);
 		}
 
 		$a++;
@@ -68,7 +68,7 @@ defined('_HZEXEC_') or die();
 		</li>
 	<?php } ?>
 <?php else : ?>
-	<li class="noresults <?php echo ($parent = Request::getString('parent', '')) ? 'parent-' . $parent : ''; ?>"><?php echo $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></li>
+	<li class="noresults <?php echo ($parent = Request::getString('parent', '')) ? 'parent-' . $this->escape($parent) : ''; ?>"><?php echo $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></li>
 <?php endif; ?>
 
 <?php if (!isset($this->noUl) || !$this->noUl) : ?>

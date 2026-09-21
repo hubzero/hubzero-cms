@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 // Directory path breadcrumbs
 $bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false);
-$bcEnd = $this->item->isDir() ? '<span class="folder">' . $this->item->getName() . '</span>' : '<span class="file">' . $this->item->getName() . '</span>';
+$bcEnd = $this->item->isDir() ? '<span class="folder">' . $this->escape($this->item->getName()) . '</span>' : '<span class="file">' . $this->escape($this->item->getName()) . '</span>';
 $lang  = $this->item->isDir() ? 'folder' : 'file';
 
 $dubCore = [
@@ -41,9 +41,9 @@ $dubCore = [
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset>
-				<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+				<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 				<input type="hidden" name="action" value="annotateit" />
-				<input type="hidden" name="item" value="<?php echo $this->item->getName(); ?>" />
+				<input type="hidden" name="item" value="<?php echo $this->escape($this->item->getName()); ?>" />
 
 				<ul id="metadata-entries">
 					<?php $i = 0; ?>

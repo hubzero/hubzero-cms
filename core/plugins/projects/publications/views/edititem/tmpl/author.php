@@ -29,16 +29,17 @@ if (trim($name)) {
 	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
 }
 else {
-	$firstname = htmlspecialchars($author->givenName);
-	$lastname  = htmlspecialchars($author->surname);
+	// Plain text here; the inputs below escape once on output
+	$firstname = $author->givenName;
+	$lastname  = $author->surname;
 	if (!$author->user_id)
 	{
 		$name = $author->invited_email;
 	}
 }
 
-$firstname = $author->firstName ? htmlspecialchars($author->firstName) : $firstname;
-$lastname = $author->lastName ? htmlspecialchars($author->lastName) : $lastname;
+$firstname = $author->firstName ? $author->firstName : $firstname;
+$lastname = $author->lastName ? $author->lastName : $lastname;
 $department = $author->department;
 
 ?>
@@ -52,7 +53,7 @@ $department = $author->department;
 				<input type="hidden" name="uid" value="<?php echo $this->row->user_id; ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
 				<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
-				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
+				<input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
@@ -63,26 +64,26 @@ $department = $author->department;
 			</fieldset>
 			<div class="content-wrap">
 				<div class="profile-info">
-					<p><img src="<?php echo $thumb; ?>" alt="<?php echo $name; ?>" />
+					<p><img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($name); ?>" />
 						<span>
 						<span class="block faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_TEAM_MEMBER')); ?>:</span>
-						<?php echo $author->username ? $author->p_name.' ('.$author->username.')' : $name.' (unconfirmed)';  ?></span>
+						<?php echo $this->escape($author->username ? $author->p_name.' ('.$author->username.')' : $name.' (unconfirmed)');  ?></span>
 					</p>
 				</div>
 				<div class="author-edit">
 					<label class="display_inline">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_FIRST_NAME')); ?>*:</span>
-						<input type="text" name="firstName" value="<?php echo $firstname;  ?>" maxlength="255" />
+						<input type="text" name="firstName" value="<?php echo $this->escape($firstname);  ?>" maxlength="255" />
 					</label>
 					<div class="clear"></div>
 					<label class="display_inline">
 						<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME')); ?>*:</span>
-						<input type="text" name="lastName" value="<?php echo $lastname;  ?>" maxlength="255" />
+						<input type="text" name="lastName" value="<?php echo $this->escape($lastname);  ?>" maxlength="255" />
 					</label>
 					<div class="clear"></div>
 					<label class="display_inline">
 						<span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT')); ?>*:</span>
-						<input type="text" name="department" value="<?php echo $department; ?>" maxlength="255" />
+						<input type="text" name="department" value="<?php echo $this->escape($department); ?>" maxlength="255" />
 						<?php 
 							if (\Component::params('com_publications')->get('department')) { 
 								echo "<div id='autocomplete-department' class='departmentAvailable'></div>";	
@@ -106,19 +107,19 @@ $department = $author->department;
 					<?php if (!$author->username) { ?>
 						<label for="email">
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')); ?>:</span>
-							<input type="text" name="email" class="long" value="<?php echo $author->invited_email ? $author->invited_email : ''; ?>" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+							<input type="text" name="email" class="long" value="<?php echo $this->escape($author->invited_email ? $author->invited_email : ''); ?>" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 						</label>
 						<div class="clear"></div>
 					<?php } else { ?>
 						<label for="email">
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')); ?>:</span>
-							<input type="text" name="email" class="long" value="<?php echo $author->p_email ? $author->p_email : ''; ?>" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+							<input type="text" name="email" class="long" value="<?php echo $this->escape($author->p_email ? $author->p_email : ''); ?>" maxlength="255" /><span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 						</label>
 						<div class="clear"></div>
 					<?php } ?>
 					<label for="orcid">
 						<span class="leftshift faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID'); ?>:</span>
-						<input type="text" name="orcid"  class="long" placeholder="####-####-####-####" value="<?php echo $author->orcid; ?>" maxlength="255"/>
+						<input type="text" name="orcid"  class="long" placeholder="####-####-####-####" value="<?php echo $this->escape($author->orcid); ?>" maxlength="255"/>
 						<p id="orcid-message" class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID_DESC'); ?></p>
 						<span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 					</label>

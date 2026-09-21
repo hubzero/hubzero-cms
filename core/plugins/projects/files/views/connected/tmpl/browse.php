@@ -31,7 +31,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 			<?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
 			<img src="<?php echo $img; ?>" alt="" height="20" width="20" />
 			<a href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id); ?>">
-				<?php echo $this->connection->name; ?>
+				<?php echo $this->escape($this->connection->name); ?>
 			</a>
 			&nbsp;
 			<?php echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, true, $this->connection->adapter()); ?>
@@ -39,7 +39,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 	</div>
 	<fieldset>
 		<input type="hidden" name="subdir"  id="subdir"    value="<?php echo urlencode($this->subdir); ?>" />
-		<input type="hidden" name="sortby"  id="sortby"    value="<?php echo $this->sortby; ?>" />
+		<input type="hidden" name="sortby"  id="sortby"    value="<?php echo $this->escape($this->sortby); ?>" />
 		<input type="hidden" name="sortdir" id="sortdir"   value="<?php echo $this->sortdir; ?>" />
 		<input type="hidden" name="id"      id="projectid" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="uid"     id="uid"       value="<?php echo User::get('id'); ?>" />

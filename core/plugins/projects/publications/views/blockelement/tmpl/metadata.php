@@ -120,7 +120,7 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->
 					$val = $model->parse($aliasmap, $this->manifest->params->field, 'parsed');
 				}
 				?>
-				<div class="element-value"><?php echo $val; ?></div>
+				<div class="element-value"><?php echo $editor ? $val : $this->escape($val); ?></div>
 			<?php } ?>
 		</div>
 	</div>

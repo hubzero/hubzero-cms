@@ -135,8 +135,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="avail" id="avail" value="<?php echo $this->unused; ?>" />
-		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 

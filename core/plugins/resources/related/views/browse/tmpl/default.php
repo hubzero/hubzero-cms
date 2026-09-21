@@ -57,15 +57,15 @@ defined('_HZEXEC_') or die();
 				<td>
 				<?php if ($line->section != 'Topic') { ?>
 					<?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
-					<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
+					<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
 					<div class="hide" id="rsrce<?php echo $line->id; ?>">
-						<h4><?php echo stripslashes($line->title); ?></h4>
+						<h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
 						<div>
 							<table>
 								<tbody>
 									<tr>
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_TYPE'); ?></th>
-										<td><?php echo $line->section; ?></td>
+										<td><?php echo $this->escape($line->section); ?></td>
 									</tr>
 									<tr>
 										<th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
@@ -74,13 +74,13 @@ defined('_HZEXEC_') or die();
 								</tbody>
 							</table>
 						</div>
-						<?php echo \Hubzero\Utility\Str::truncate(stripslashes($line->introtext), 300); ?>
+						<?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->introtext)), 300)); ?>
 					</div>
 				<?php } else { ?>
-					<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
+					<a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
 				<?php } ?>
 				</td>
-				<td class="type"><?php echo $line->section; ?></td>
+				<td class="type"><?php echo $this->escape($line->section); ?></td>
 			</tr>
 		<?php } ?>
 		</tbody>

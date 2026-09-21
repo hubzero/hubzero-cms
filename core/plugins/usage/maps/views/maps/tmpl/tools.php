@@ -24,7 +24,7 @@ $this->zoom = 2;
 	</head>
 	<body>
 		<div id="div_map"
-			data-map="<?php echo $this->mappath; ?>/resource_maps/<?php echo $id; ?>.xml"
+			data-map="<?php echo $this->mappath; ?>/resource_maps/<?php echo $this->escape($id); ?>.xml"
 			data-path="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps"
 			data-lat="<?php echo $this->lat; ?>"
 			data-long="<?php echo $this->long; ?>"

@@ -50,8 +50,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
 	<fieldset>
 		<legend class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY'); ?></legend>
 		<input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
-		<input type="hidden" name="sortby" id="sortby" value="<?php echo $this->params['sortby']; ?>" />
-		<input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->params['sortdir']; ?>" />
+		<input type="hidden" name="sortby" id="sortby" value="<?php echo $this->escape($this->params['sortby']); ?>" />
+		<input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->escape($this->params['sortdir']); ?>" />
 		<input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="sync" id="sync" value="<?php echo $sync; ?>" />
 		<input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />

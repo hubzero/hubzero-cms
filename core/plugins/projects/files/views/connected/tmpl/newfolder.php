@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset>
-				<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+				<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 				<input type="hidden" name="action" value="savedir" />
 				<label>
 					<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/img/folder.gif" alt="" />

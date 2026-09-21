@@ -78,7 +78,8 @@ if ($images)
 				if ($si->filename == $ima)
 				{
 					$new['title'] = stripslashes($si->title);
-					$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
+					$new['title'] = htmlspecialchars($new['title'], ENT_QUOTES, 'UTF-8');
+					$new['title'] = preg_replace('/&quot;((.)*?)&quot;/i', "&#147;\\1&#148;", $new['title']);
 					$new['ordering'] = $si->ordering;
 				}
 			}

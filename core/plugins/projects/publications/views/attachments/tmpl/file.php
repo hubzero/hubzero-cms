@@ -33,7 +33,7 @@ if ($data->get('viewer') != 'freeze')
 			<?php } ?>
 		</span>
 		<span class="item-title" id="<?php echo 'file-'.$data->get('id'); ?>">
-			<?php echo $data::drawIcon($data->get('ext')); ?> <?php echo $data->get('title'); ?>
+			<?php echo $data::drawIcon($data->get('ext')); ?> <?php echo $this->escape($data->get('title')); ?>
 		</span>
-		<span class="item-details"><?php echo $details; ?></span>
+		<span class="item-details"><?php echo $this->escape($details); ?></span>
 	</li>

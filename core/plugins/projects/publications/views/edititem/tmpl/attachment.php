@@ -54,7 +54,7 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
 			<input type="hidden" name="aid" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="pid" value="<?php echo $this->pub->get('id'); ?>" />
 			<input type="hidden" name="version" value="<?php echo $this->pub->get('version_number'); ?>" />
-			<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
+			<input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
 			<input type="hidden" name="action" value="saveitem" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
@@ -68,7 +68,7 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
 
 				<label for="title">
 					<span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
-					<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : $defaultTitle; ?>" placeholder="<?php echo $placeholder; ?>" />
+					<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle); ?>" placeholder="<?php echo $this->escape($placeholder); ?>" />
 				</label>
 				<?php if ($this->row->type == 'link') { ?>
 					<p class="c-wrapper">

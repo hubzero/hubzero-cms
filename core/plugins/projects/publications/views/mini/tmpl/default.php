@@ -28,9 +28,9 @@ $this->css();
 			<li>
 				<span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt=""/></span>
 				<span class="pub-details">
-					<a href="<?php echo Route::url($pub->link('editversion')); ?>" title="<?php echo $this->escape($pub->get('title')); ?>"><?php echo \Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100); ?></a>
+					<a href="<?php echo Route::url($pub->link('editversion')); ?>" title="<?php echo $this->escape($pub->get('title')); ?>"><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100)); ?></a>
 					 <span class="block faded mini">
-						<span>v. <?php echo $pub->get('version_label'); ?> (<?php echo $status; ?>)</span>
+						<span>v. <?php echo $this->escape($pub->get('version_label')); ?> (<?php echo $this->escape($status); ?>)</span>
 					</span>
 				</span>
 			</li>

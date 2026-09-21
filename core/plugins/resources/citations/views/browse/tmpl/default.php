@@ -47,7 +47,7 @@ if ($this->citations)
 		{
 			if ($cite->eprint)
 			{
-				$item .= "\t\t\t" . ' <span>|</span> <a href="' . stripslashes($cite->eprint) . '">' . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
+				$item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">' . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
 			}
 		}
 		$item .= "\t\t" . '</p>' . "\n";

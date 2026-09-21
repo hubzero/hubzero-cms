@@ -38,7 +38,7 @@ if ($this->group && $this->model->get('sync_group') == 1)
 			elseif ($this->onlymanager) { ?>
 					<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo Route::url($this->model->link('edit') . '&section=team'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM'); ?></a>.</p>
 			<?php } elseif ($inGroup) { ?>
-				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
+				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('gidNumber')); ?>"><?php echo $this->escape($group->get('description')); ?></a> <?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
 			<?php } else { ?>
 				<p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_NOTE'); ?></p>
 				<h4><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></h4>

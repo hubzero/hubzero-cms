@@ -36,7 +36,7 @@ $newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 		<input type="hidden" name="selecteditems" id="selecteditems" value="" />
-		<input type="hidden" name="p" id="p" value="<?php echo $this->props; ?>" />
+		<input type="hidden" name="p" id="p" value="<?php echo $this->escape($this->props); ?>" />
 		<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
 		<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
 		<input type="hidden" name="section" value="<?php echo $this->block; ?>" />

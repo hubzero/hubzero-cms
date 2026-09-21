@@ -39,7 +39,7 @@ $p_url = Route::url($route . '&active=databases');
 			if ($item->revision == null || ($selected && $selected == $item->database_name))
 			{
 			?>
-		<li class="c-click databases" id="data::<?php echo $item->database_name; ?>"><?php echo $item->title; ?></li>
+		<li class="c-click databases" id="data::<?php echo $this->escape($item->database_name); ?>"><?php echo $this->escape($item->title); ?></li>
 	<?php
 			$shown[] = $item->database_name;
 			}
@@ -72,7 +72,7 @@ $p_url = Route::url($route . '&active=databases');
 		{
 			foreach ($missing as $miss)
 			{ ?>
-				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
+				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $this->escape($miss['title']); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
 		<?php	}
 		}
 	}

@@ -24,7 +24,7 @@ if (count($this->items) > 0) {
 				if ($page && $page->get('id'))
 				{
 		?>
-		<li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $page->get('title'); ?></li>
+		<li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $this->escape($page->get('title')); ?></li>
 		<?php }
 			}
 		} ?>

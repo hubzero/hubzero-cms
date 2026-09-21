@@ -62,7 +62,7 @@ if ($this->getError()) {
 	<?php } ?>
 
 	<fieldset >
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="file" value="<?php echo $this->file->get('name'); ?>" />
 		<input type="hidden" name="action" value="diff" />
 			<ul class="sample">

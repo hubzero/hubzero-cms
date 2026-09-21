@@ -32,7 +32,7 @@ if ($this->citations)
 
 		if ($cite->doi && $cite->url)
 		{
-			$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>', $formatted);
+			$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $this->escape($cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>', $formatted);
 		}
 
 		$item  = "\t" . '<li>' . "\n";
@@ -47,7 +47,7 @@ if ($this->citations)
 		{
 			if ($cite->eprint)
 			{
-				$item .= "\t\t\t" . ' <span>|</span> <a href="' . stripslashes($cite->eprint) . '">' . Lang::txt('PLG_PUBLICATION_CITATIONS_ELECTRONIC_PAPER') . '</a>'."\n";
+				$item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">' . Lang::txt('PLG_PUBLICATION_CITATIONS_ELECTRONIC_PAPER') . '</a>'."\n";
 			}
 		}
 		$item .= "\t\t" . '</p>' . "\n";

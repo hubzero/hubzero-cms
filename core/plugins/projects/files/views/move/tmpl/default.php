@@ -44,8 +44,8 @@ else {
 		<input type="hidden" name="action" value="moveit" />
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_FILES_CONFIRM'); ?></p>
 
@@ -93,7 +93,7 @@ else {
 				<div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
 			<?php }  ?>
 			<label><span class="block"><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
-				<span class="mini prominent"><?php echo $this->subdir ? $this->subdir . DS : ''; ?></span>
+				<span class="mini prominent"><?php echo $this->subdir ? $this->escape($this->subdir) . DS : ''; ?></span>
 				<input type="text" name="newdir" maxlength="50" value="" />
 			</label>
 			<?php }  ?>

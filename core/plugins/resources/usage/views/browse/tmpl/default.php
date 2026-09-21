@@ -114,7 +114,7 @@ $bars = array();
 			<div class="grid">
 				<div class="col span3">
 					<h4><?php echo Lang::txt('World usage'); ?></h4>
-					<p><?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', stripslashes($this->resource->title)); ?></p>
+					<p><?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', $this->escape(stripslashes($this->resource->title))); ?></p>
 				</div><!-- / .col span3 -->
 				<div class="col span9 omega">
 					<p>
@@ -338,8 +338,8 @@ $bars = array();
 								$bars[] = $nm;
 							}
 							?>
-							<tr rel="<?php echo $row->name; ?>">
-								<td class="textual-data"><?php echo $row->name; ?></td>
+							<tr rel="<?php echo $this->escape($row->name); ?>">
+								<td class="textual-data"><?php echo $this->escape($row->name); ?></td>
 								<td><span class="bar-wrap"><span class="bar bar<?php echo $width; ?>"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo $width; ?>)</span></span></td>
 							</tr>
 							<?php
@@ -474,7 +474,7 @@ $bars = array();
 									$bars[] = $nm;
 								}
 								?>
-							<tr rel="<?php echo $row->name; ?>">
+							<tr rel="<?php echo $this->escape($row->name); ?>">
 								<td class="textual-data"><?php
 								if (isset($codes[$row->name])) { ?>
 									<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
@@ -592,8 +592,8 @@ $bars = array();
 
 								$cls = ($cls == 'even') ? 'odd' : 'even';
 								?>
-							<tr rel="<?php echo $row->name; ?>">
-								<td class="textual-data"><?php echo $row->name; ?></td>
+							<tr rel="<?php echo $this->escape($row->name); ?>">
+								<td class="textual-data"><?php echo $this->escape($row->name); ?></td>
 								<td><?php echo number_format($row->value); ?></td>
 								<td><?php echo round((($row->value/$total)*100), 2); ?></td>
 							</tr>

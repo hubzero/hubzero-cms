@@ -81,7 +81,7 @@ $rows = $this->todo->entries('list', $this->filters);
 				<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name'); ?>
 					| <?php echo Lang::txt('PLG_PROJECTS_TODO_COMMENTS'); ?>: <a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo $row->comments('count'); ?></a></span>
 			</td>
-			<td><a href="<?php echo Route::url($row->project()->link('todo')); ?>"><?php echo $row->project('title'); ?></a></td>
+			<td><a href="<?php echo Route::url($row->project()->link('todo')); ?>"><?php echo $this->escape($row->project('title')); ?></a></td>
 			<td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
 			<td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote;?></td>
 			<td></td>

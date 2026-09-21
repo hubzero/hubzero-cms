@@ -47,7 +47,7 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
 				$cls = (($cls == 'even') ? 'odd' : 'even');
 				?>
 				<tr class="<?php echo $cls; ?>">
-					<td <?php if ($v->version_number == $this->publication->version_number) { echo 'class="active"'; }  ?>><?php echo $v->version_label; ?></td>
+					<td <?php if ($v->version_number == $this->publication->version_number) { echo 'class="active"'; }  ?>><?php echo $this->escape($v->version_label); ?></td>
 					<td><?php echo ($v->published_up && $v->published_up!='0000-00-00 00:00:00') ? Date::of($v->published_up)->toLocal('M d, Y') : Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
 					<td><?php echo $v->doi ? $v->doi : Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
 					<td class="<?php echo $v->state == 1 ? 'state_published' : 'state_unpublished'; ?>"><?php echo $v->state == 1 ? Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED') : Lang::txt('PLG_PUBLICATION_VERSIONS_UNPUBLISHED'); ?></td>

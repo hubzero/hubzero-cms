@@ -82,7 +82,7 @@ if ($this->name == 'curator')
 					$value = $model->parse($aliasmap, $field, 'parsed');
 				}
 				?>
-				<div class="element-value"><?php echo $value; ?></div>
+				<div class="element-value"><?php echo $editor ? $value : $this->escape($value); ?></div>
 			<?php } else { ?>
 				<p class="noresults">No user input</p>
 				<?php if (!$this->pub->isPublished() && ($this->status->getError() || ($required && !$complete))) { ?>

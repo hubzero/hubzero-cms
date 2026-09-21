@@ -140,7 +140,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<?php if ($this->count_groups) { ?>
 						<td class="priority-2">
-							<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?><span class="block short prominent"><?php echo $owner->groupname; ?></span>
+							<?php echo $owner->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($owner->groupdesc, 30)) : ''; ?><span class="block short prominent"><?php echo $this->escape($owner->groupname); ?></span>
 						</td>
 					<?php } ?>
 					<td class="priority-4">

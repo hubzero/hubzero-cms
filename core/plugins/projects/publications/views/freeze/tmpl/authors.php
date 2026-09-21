@@ -41,14 +41,14 @@ $elName = "authorList";
 					?>
 					<li>
 						<span class="item-order"><?php echo $i; ?></span>
-						<span class="item-title"><?php echo $name; ?> 
+						<span class="item-title"><?php echo $this->escape($name); ?> 
 							<?php if ($author->repository_contact == 1 && !empty($dept) && !empty($org) && !empty($email)) { ?>
-							<span class="item-subtext"><?php echo ' - ' . $dept . ' - ' . $org . ' - ' . $email; ?></span>
+							<span class="item-subtext"><?php echo ' - ' . $this->escape($dept) . ' - ' . $this->escape($org) . ' - ' . $this->escape($email); ?></span>
 							<?php } else {?>
-							<span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span>
+							<span class="item-subtext"><?php echo $org ? ' - ' . $this->escape($org) : ''; ?></span>
 							<?php }?>
 						</span>
-						<span class="item-details"><?php echo $details; ?></span>
+						<span class="item-details"><?php echo $this->escape($details); ?></span>
 					</li>
 					<?php
 					$i++;

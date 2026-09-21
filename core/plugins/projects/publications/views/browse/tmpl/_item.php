@@ -16,14 +16,14 @@ defined('_HZEXEC_') or die();
 	</span>
 	<span class="pub-thumb"><img src="<?php echo Route::url($this->row->link('thumb')); ?>" alt=""/></span>
 	<span class="pub-details">
-		<?php echo $this->row->get('title'); ?>
+		<?php echo $this->escape($this->row->get('title')); ?>
 		<span class="block faded mini">
-			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->row->get('version_label'); ?>
+			<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->escape($this->row->get('version_label')); ?>
 			<span class="<?php echo $this->row->getStatusCss(); ?> major_status"><?php echo $this->row->getStatusName(); ?></span>
 			<span class="block">
-				<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->row->creator('name'); ?>
+				<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_BY') . ' ' . $this->escape($this->row->creator('name')); ?>
 				<?php if (!$this->row->project()->isProvisioned()) {
-				echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link() . '">' . \Hubzero\Utility\Str::truncate(stripslashes($this->row->project()->get('title')), 80) . '</a>';
+				echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROJECT') . ' <a href="' . $this->row->project()->link() . '">' . $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->row->project()->get('title')), 80)) . '</a>';
 			} ?></span>
 		</span>
 	</span>

@@ -17,7 +17,7 @@ if ($this->getError())
 
 <h4>
 	<?php echo \Components\Projects\Models\File::drawIcon($this->file->getExtension()); ?>
-	<?php echo $this->file->getName(); ?>
+	<?php echo $this->escape($this->file->getName()); ?>
 </h4>
 
 <ul class="filedata">

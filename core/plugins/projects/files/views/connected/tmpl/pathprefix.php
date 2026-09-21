@@ -31,7 +31,7 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
 				<input type="hidden" name="action" value="setprefix" />
 				<input type="hidden" name="task" value="view" />
 				<input type="hidden" name="active" value="files" />
-				<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+				<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
 				<div id="dirs" class="dirs">
@@ -51,7 +51,7 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
 							echo '<input type="radio" name="prefix" value="' . urlencode($this->current_dir->getPath()) . '" />';
 							echo \Components\Projects\Models\File::drawIcon($this->current_dir->getExtension());
 							?>
-							<span><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTED_CURRENT_DIRECTORY', $this->current_dir->getDisplayName()); ?></span>
+							<span><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTED_CURRENT_DIRECTORY', $this->escape($this->current_dir->getDisplayName())); ?></span>
 						</li>
 					<?php
 					foreach ($this->items as $dir) : ?>
@@ -59,7 +59,7 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
 							<?php 
 							echo '<input type="radio" name="prefix" value="' . urlencode($dir->getPath()) . '" />';
 							echo \Components\Projects\Models\File::drawIcon($dir->getExtension());
-							echo '<a href="'. Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . $dir->getPath()) . '">' . $dir->getDisplayName() . '</a>'; ?>
+							echo '<a href="'. Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->id . '&subdir=' . $dir->getPath()) . '">' . $this->escape($dir->getDisplayName()) . '</a>'; ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>

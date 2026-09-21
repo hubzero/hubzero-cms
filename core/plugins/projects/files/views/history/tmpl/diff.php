@@ -58,7 +58,7 @@ if ($this->getError()) {
 	<?php } ?>
 
 	<fieldset class="diff-form">
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="file" value="<?php echo urlencode($this->file->get('localPath')); ?>" />
 		<input type="hidden" name="action" value="diff" />
 
@@ -99,8 +99,8 @@ if ($this->getError()) {
 			<table id="table-diff" class="diff diffSideBySide">
 			 <thead>
 				<tr>
-					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $old['rev'] . ' (' . $old['hash'] . ')'; ?></th>
-					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $new['rev'] . ' (' . $new['hash'] . ')'; ?></th>
+					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')'; ?></th>
+					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')'; ?></th>
 				</tr>
 			 </thead>
 
@@ -116,8 +116,8 @@ if ($this->getError()) {
 			<table id="table-diff" class="diff diffInline">
 			 <thead>
 				<tr>
-					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $old['rev']; ?></th>
-					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $new['rev']; ?></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']); ?></th>
+					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']); ?></th>
 					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
 				</tr>
 			 </thead>
@@ -135,7 +135,7 @@ if ($this->getError()) {
 				?>
 				<div class="diffGit">
 					<h5>
-					<?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $old['rev'] . ' (' . $old['hash'] . ') and @' . $new['rev'] . ' (' . $new['hash'] . ') '; ?></h5>
+					<?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') '; ?></h5>
 					<?php if ($this->diff) { echo '<pre>' . $this->diff . '</pre>'; } else {  ?>
 					<pre><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_EMPTY_IDENTICAL'); ?></pre>
 				<?php } ?>

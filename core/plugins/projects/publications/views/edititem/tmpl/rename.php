@@ -26,7 +26,7 @@ if ($this->row->type == 'file')
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" />
 				<input type="hidden" name="aid" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="props" value="<?php echo $this->props; ?>" />
+				<input type="hidden" name="props" value="<?php echo $this->escape($this->props); ?>" />
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
