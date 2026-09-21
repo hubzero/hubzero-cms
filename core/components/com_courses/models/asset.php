@@ -423,6 +423,18 @@ class Asset extends Base
 			return;
 		}
 
+		// Confine the resolved path to the course asset directory so a crafted
+		// "file" parameter cannot traverse out and read arbitrary files.
+		$allowedBase = realpath(PATH_APP . (strpos($base_path, DS) === 0 ? '' : DS) . $base_path);
+		$resolved    = realpath($filename);
+		if ($allowedBase === false || $resolved === false
+			|| strpos($resolved . DS, rtrim($allowedBase, DS) . DS) !== 0)
+		{
+			App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
+			return;
+		}
+		$filename = $resolved;
+
 		// Initiate a new content server and serve up the file
 		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($filename);

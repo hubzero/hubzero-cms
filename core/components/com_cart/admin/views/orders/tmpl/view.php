@@ -97,9 +97,9 @@ $this->css()
 				<p>
 					<strong>Ship to:</strong><br>
 					<?php
-						echo $this->tInfo->tiShippingToFirst . ' ' . $this->tInfo->tiShippingToLast . '<br>';
-						echo $this->tInfo->tiShippingAddress . '<br>';
-						echo $this->tInfo->tiShippingCity . ', ' . $this->tInfo->tiShippingState . ' ' . $this->tInfo->tiShippingZip . '<br>';
+						echo $this->escape($this->tInfo->tiShippingToFirst) . ' ' . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
+						echo $this->escape($this->tInfo->tiShippingAddress) . '<br>';
+						echo $this->escape($this->tInfo->tiShippingCity) . ', ' . $this->escape($this->tInfo->tiShippingState) . ' ' . $this->escape($this->tInfo->tiShippingZip) . '<br>';
 					?>
 				</p>
 
@@ -220,7 +220,7 @@ $this->css()
 				{
 					echo ': ';
 				}
-				echo $note['notes'];
+				echo $this->escape($note['notes']);
 				echo '</p>';
 			}
 			echo '</fieldset>';

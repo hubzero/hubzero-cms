@@ -1814,24 +1814,24 @@ class Curation extends Obj
 							if ($element->getError())
 							{
 								$changelog .= '<span class="italic">Change request:</span>';
-								$changelog .= '<span>' . $element->getError() . '</span>';
+								$changelog .= '<span>' . htmlspecialchars($element->getError()) . '</span>';
 							}
 							if ($element->message)
 							{
 								$changelog .= '<span class="italic">Author response:</span>';
-								$changelog .= '<span>' . $element->message . '</span>';
+								$changelog .= '<span>' . htmlspecialchars($element->message) . '</span>';
 							}
 						}
 					}
 					if ($block->review->getError())
 					{
 						$changelog .= '<span class="italic">Change request:</span>';
-						$changelog .= '<span>' . $block->review->getError() . '</span>';
+						$changelog .= '<span>' . htmlspecialchars($block->review->getError()) . '</span>';
 					}
 					if ($block->review->message)
 					{
 						$changelog .= '<span class="italic">Author response:</span>';
-						$changelog .= '<span>' . $block->review->message . '</span>';
+						$changelog .= '<span>' . htmlspecialchars($block->review->message) . '</span>';
 					}
 					$changelog .= '</li>';
 				}

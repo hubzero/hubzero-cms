@@ -126,6 +126,11 @@ class DiffFormatter
 				{
 					$ctx = $formatContextOutput($ctx);
 				}
+				else
+				{
+					// Unchanged context lines are raw page source - escape them
+					$ctx = htmlspecialchars($ctx);
+				}
 
 				$this->i++;
 				echo "\t\t".'<tr>'."\n";

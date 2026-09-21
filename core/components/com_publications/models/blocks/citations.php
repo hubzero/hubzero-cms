@@ -253,6 +253,23 @@ class Citations extends Base
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
 			return false;
 		}
+
+		// When editing an existing citation, ensure it belongs to this publication
+		if (!$new)
+		{
+			$assocCheck = \Components\Citations\Models\Association::all()
+				->whereEquals('cid', (int) $cite['id'])
+				->whereEquals('tbl', 'publication')
+				->whereEquals('oid', $pub->version->id)
+				->row();
+
+			if (!$assocCheck->get('id'))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+				return false;
+			}
+		}
+
 		unset($cite['uri']);
 		$citation = \Components\Citations\Models\Citation::all()->set($cite);
 		$citation->set('created', $new ? Date::toSql() : $citation->get('created'));

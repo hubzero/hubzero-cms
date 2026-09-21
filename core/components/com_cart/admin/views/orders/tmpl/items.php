@@ -179,8 +179,8 @@ $this->view('_submenu')
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 	<input type="hidden" name="order" id="filter_ordernum" value="<?php echo $this->filters['order']; ?>" />
 	<input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->filters['pId']; ?>" />
 	<input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->filters['sId']; ?>" />

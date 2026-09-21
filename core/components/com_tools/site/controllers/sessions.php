@@ -701,7 +701,7 @@ class Sessions extends SiteController
 				'action'      => 'created',
 				'scope'       => 'tool.session',
 				'scope_id'    => $app->sess,
-				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_CREATED', $app->sess, '<a href="' . Route::url($url) . '">' . $app->caption . '</a>'),
+				'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_CREATED', $app->sess, '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($app->caption), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'tool'    => $app->name,
 					'url'     => $url
@@ -1629,20 +1629,45 @@ class Sessions extends SiteController
 	 */
 	public function renameTask()
 	{
+		// Must be logged in
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+			return;
+		}
+
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		$id = Request::getInt('id', 0);
+		// trim, not strip_tags. strip_tags treats an unterminated "<" as the
+		// start of a tag and drops everything after it, so a session named
+		// "Run 1 <2" was permanently stored as "Run 1 ". Every sink that prints
+		// this value now escapes it, which is where the defence belongs.
 		$name = trim(Request::getString('name', ''));
 
 		if ($id && $name)
 		{
 			$ms = new \Components\Tools\Tables\Session($mwdb);
-			$ms->load($id);
-			$ms->sessname = $name;
-			$ms->store();
+
+			// Restrict to the current user's own session unless allowed to manage all
+			if ($this->config->get('access-manage-session'))
+			{
+				$ms->load($id);
+			}
+			else
+			{
+				$ms->load($id, User::get('username'));
+			}
+
+			// Only rename when a matching (owned) session was found
+			if ($ms->username)
+			{
+				$ms->sessname = $name;
+				$ms->store();
+			}
 		}
 
-		echo $name;
+		echo htmlspecialchars($name);
 	}
 
 	/**

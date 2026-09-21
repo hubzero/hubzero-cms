@@ -95,9 +95,9 @@ $this->css()
 				<p>
 					<strong>Ship to:</strong><br>
 					<?php
-						echo $this->tInfo->tiShippingToFirst . ' ' . $this->tInfo->tiShippingToLast . '<br>';
-						echo $this->tInfo->tiShippingAddress . '<br>';
-						echo $this->tInfo->tiShippingCity . ', ' . $this->tInfo->tiShippingState . ' ' . $this->tInfo->tiShippingZip . '<br>';
+						echo $this->escape($this->tInfo->tiShippingToFirst) . ' ' . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
+						echo $this->escape($this->tInfo->tiShippingAddress) . '<br>';
+						echo $this->escape($this->tInfo->tiShippingCity) . ', ' . $this->escape($this->tInfo->tiShippingState) . ' ' . $this->escape($this->tInfo->tiShippingZip) . '<br>';
 					?>
 				</p>
 
@@ -221,11 +221,11 @@ $this->css()
 				echo $note['label'];
 				if ($note['object'] == 'transactionItem')
 				{
-					echo '<textarea rows="6" name="checkoutNotes[' . $note['objectId'] . ']">' . $note['notes'] . '</textarea>';
+					echo '<textarea rows="6" name="checkoutNotes[' . $this->escape($note['objectId']) . ']">' . $this->escape($note['notes']) . '</textarea>';
 				}
 				elseif ($note['object'] == 'transaction')
 				{
-					echo '<textarea rows="6" name="tiNotes">' . $note['notes'] . '</textarea>';
+					echo '<textarea rows="6" name="tiNotes">' . $this->escape($note['notes']) . '</textarea>';
 				}
 				echo '</p>';
 			}
