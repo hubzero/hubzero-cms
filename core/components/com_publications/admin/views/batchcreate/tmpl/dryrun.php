@@ -38,7 +38,7 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 				<?php } ?>
 				<tr<?php if (!$item['license']) { echo ' class="missing"'; } ?>>
 					<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE'); ?></td>
-					<td><?php echo $item['license'] ? $item['license']->title : 'N/A'; ?></td>
+					<td><?php echo $item['license'] ? $this->escape($item['license']->title) : 'N/A'; ?></td>
 				</tr>
 				<tr>
 					<td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TAGS'); ?></td>
@@ -67,8 +67,8 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 								<?php foreach ($item['authors'] as $authorRecord) { ?>
 									<tr<?php if ($authorRecord['error']) { echo ' class="missing"'; } ?>>
 										<td><?php echo $authorRecord['author']->user_id; ?></td>
-										<td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $authorRecord['error'] . '</span>' : ''; ?><?php echo $authorRecord['author']->name; ?></td>
-										<td><?php echo $authorRecord['author']->organization; ?></td>
+										<td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $this->escape($authorRecord['error']) . '</span>' : ''; ?><?php echo $this->escape($authorRecord['author']->name); ?></td>
+										<td><?php echo $this->escape($authorRecord['author']->organization); ?></td>
 										<td><?php echo $authorRecord['owner'] ? Lang::txt('JYES') : Lang::txt('JNO'); ?></td>
 									</tr>
 								<?php } ?>
@@ -94,9 +94,9 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 								<?php foreach ($item['files'] as $filerecord) { ?>
 									<tr<?php if ($filerecord['error']) { echo ' class="missing"'; } ?>>
 										<td><?php echo $filerecord['type']; ?></td>
-										<td><?php echo $filerecord['subtype']; ?></td>
-										<td><?php echo $filerecord['error'] ? ' <span class="block prominent">' . $filerecord['error'] . '</span>' : ''; ?><?php echo $filerecord['attachment']->path; ?></td>
-										<td><?php echo $filerecord['attachment']->title; ?></td>
+										<td><?php echo $this->escape($filerecord['subtype']); ?></td>
+										<td><?php echo $filerecord['error'] ? ' <span class="block prominent">' . $this->escape($filerecord['error']) . '</span>' : ''; ?><?php echo $this->escape($filerecord['attachment']->path); ?></td>
+										<td><?php echo $this->escape($filerecord['attachment']->title); ?></td>
 									</tr>
 								<?php } ?>
 							<?php } ?>

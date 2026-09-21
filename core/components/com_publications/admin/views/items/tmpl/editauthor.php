@@ -32,8 +32,9 @@ if (trim($name))
 	$firstname = count($nameParts) > 1 ? $nameParts[0] : '';
 }
 
-$firstname = $this->author->firstName ? htmlspecialchars($this->author->firstName) : $firstname;
-$lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName) : $lastname;
+// Plain text here; the inputs below escape once on output
+$firstname = $this->author->firstName ? $this->author->firstName : $firstname;
+$lastname  = $this->author->lastName ? $this->author->lastName : $lastname;
 $email = $this->author->p_email ? $this->author->p_email : $this->author->invited_email;
 
 ?>
@@ -92,13 +93,13 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
 				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 					<td>
-						<input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
+						<input type="text" name="firstName" value="<?php echo $this->escape($firstname); ?>" size="25" />
 					</td>
 				</tr>
 				<tr>
 					<td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
 					<td>
-						<input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
+						<input type="text" name="lastName" value="<?php echo $this->escape($lastname); ?>" size="25" />
 					</td>
 				</tr>
 				<tr>

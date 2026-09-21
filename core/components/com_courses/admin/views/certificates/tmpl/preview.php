@@ -99,10 +99,10 @@ p.signature {
 		<p id="title">Certification of completion</p>
 
 		<p>This is to certify that</p>
-		<p id="name"><?php echo $this->student->get('name'); ?></p>
+		<p id="name"><?php echo $this->escape($this->student->get('name')); ?></p>
 		<p>has successfully completed the course requirements for</p>
 
-		<p id="certification"><?php echo $this->course->get('title'); ?></p>
+		<p id="certification"><?php echo $this->escape($this->course->get('title')); ?></p>
 
 		<p>On the <span id="date_day">[[date_day]]</span> Day of <span id="date_month">[[date_month]]</span> In the Year <span id="date_year">[[date_year]]</span></p>
 		<p>At: <span id="location">[[location]]</span>.</p>

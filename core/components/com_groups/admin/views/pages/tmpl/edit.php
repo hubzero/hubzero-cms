@@ -55,7 +55,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 						<option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_OPTION_NULL'); ?></option>
 						<?php foreach ($this->categories as $pageCategory) : ?>
 							<?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-							<option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
+							<option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $this->escape($pageCategory->get('title')); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
@@ -71,7 +71,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 								<?php if ($page->get('id') == $this->page->get('id')) { continue; } ?>
 								<?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
-									<?php echo $page->heirarchyIndicator(' &ndash; ') . $page->get('title'); ?>
+									<?php echo $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')); ?>
 								</option>
 							<?php endforeach; ?>
 						</select>
@@ -158,7 +158,7 @@ Html::behavior('modal', 'a.version', array('handler' => 'iframe', 'fullScreen' =
 				<tbody>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_OWNER'); ?></th>
-						<td><?php echo $this->group->get('description'); ?></td>
+						<td><?php echo $this->escape($this->group->get('description')); ?></td>
 					</tr>
 					<?php if ($this->page->get('id')) : ?>
 						<tr>

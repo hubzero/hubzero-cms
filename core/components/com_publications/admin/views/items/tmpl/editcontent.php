@@ -84,18 +84,18 @@ if ($tmpl != 'component')
 					<?php if (count($attachments) > 1 && $multiZip) { ?>
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
-						<input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $bundleName; ?>" />
+						<input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $this->escape($bundleName); ?>" />
 					</div>
 					<?php } ?>
 					<?php if ($attachments) { ?>
 						<?php foreach ($attachments as $attach) { ?>
 							<div class="input-wrap withdivider">
-								<p>[<?php echo $attach->type; ?>] <?php echo $attach->path; ?></p>
+								<p>[<?php echo $this->escape($attach->type); ?>] <?php echo $this->escape($attach->path); ?></p>
 								<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
-								<input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $attach->title; ?>" />
+								<input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $this->escape($attach->title); ?>" />
 								<?php if ($attach->role == 3) { ?>
 									<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_GALLERY_DESCRIPTION'); ?>:</label>
-									<textarea name="attachments[<?php echo $attach->id; ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?php echo $attach->attribs; ?>" placeholder="Enter up to 5000 characters..."><?php echo $attach->attribs;; ?></textarea>
+									<textarea name="attachments[<?php echo $attach->id; ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?php echo $this->escape($attach->attribs); ?>" placeholder="Enter up to 5000 characters..."><?php echo $this->escape($attach->attribs); ?></textarea>
 								<?php } ?>
 							</div>
 						<?php } ?>

@@ -108,7 +108,7 @@ $this->js();
 							<?php echo Date::of($campaign->modified)->toLocal("Y-m-d H:ia"); ?>
 						</td>
 						<td class="priority-3">
-							<?php echo User::one($campaign->modified_by)->name; ?>
+							<?php echo $this->escape(User::one($campaign->modified_by)->name); ?>
 						</td>
 					</tr>
 				<?php $k++; } ?>

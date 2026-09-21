@@ -69,7 +69,7 @@ if ($comment)
 	<tbody>
 		<tr>
 			<td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-			<?php echo $this->subject; ?>
+			<?php echo $this->escape($this->subject); ?>
 			</td>
 		</tr>
 	</tbody>
@@ -96,11 +96,11 @@ if ($comment)
 					<tbody>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Title:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->model->get('title'); ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->model->get('title')); ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Version:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->model->get('version_label'); ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->model->get('version_label')); ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
@@ -108,7 +108,7 @@ if ($comment)
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
-							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->project->get('title'); ?> (<?php echo $this->project->get('alias'); ?> <?php echo $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : ''; ?>)</td>
+							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->project->get('title')); ?> (<?php echo $this->escape($this->project->get('alias')); ?> <?php echo $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : ''; ?>)</td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>

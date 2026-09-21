@@ -84,11 +84,11 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USERNAME'); ?></th>
-						<td><?php echo ($user) ? $user->username : ''; ?></td>
+						<td><?php echo ($user) ? $this->escape($user->username) : ''; ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('COM_TOOLS_USER_PREFS_NAME'); ?></th>
-						<td><?php echo ($user) ? $user->name : ''; ?></td>
+						<td><?php echo ($user) ? $this->escape($user->name) : ''; ?></td>
 					</tr>
 				</tbody>
 			</table>
