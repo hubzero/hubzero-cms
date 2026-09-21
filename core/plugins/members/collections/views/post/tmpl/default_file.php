@@ -123,9 +123,26 @@ if ($assets->total() > 0)
 			foreach ($files as $asset)
 			{
 				?>
+				<?php
+				$assetHref = $asset->isLink() ? (string) $asset->get('filename') : $asset->link('original');
+				// A link asset's filename is typed freely in the edit form, so reject
+				// by scheme rather than by naming schemes: a denylist of
+				// javascript|vbscript|data still admits blob:, filesystem:,
+				// view-source: and protocol-relative //evil.com.
+				if ($asset->isLink())
+				{
+					$probe = preg_replace('/[\x00-\x20]+/', '', $assetHref);
+
+					if (preg_match('#^/[/\\\\]#', $probe)
+					 || (preg_match('#^[a-z][a-z0-9+.\-]*:#i', $probe) && !preg_match('#^https?://#i', $probe)))
+					{
+						$assetHref = '';
+					}
+				}
+				?>
 				<li class="type-<?php echo $asset->get('type'); ?>">
-					<a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link('original'); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
-						<?php echo $asset->get('filename'); ?>
+					<a href="<?php echo $this->escape($assetHref); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
+						<?php echo $this->escape($asset->get('filename')); ?>
 					</a>
 					<span class="file-meta">
 						<span class="file-size">

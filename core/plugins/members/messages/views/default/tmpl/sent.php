@@ -61,18 +61,18 @@ $this->css()
 						}
 
 						//get the message
-						$preview = ($row->message) ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>' . nl2br(stripslashes($row->message)) : '';
+						$preview = ($row->message) ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>' . nl2br(htmlspecialchars(stripslashes($row->message))) : '';
 
 						//subject link
 						$subject_cls = 'message-link';
 
-						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}</a>";
+						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">" . $this->escape(stripslashes($subject)) . "</a>";
 
 						// Check for identity masking flag
 						if (strpos($row->type, '_anonymous') === false)
 						{
 							// Display who the message is to
-							$to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $row->name . '</a>';
+							$to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $this->escape($row->name) . '</a>';
 						}
 						else
 						{

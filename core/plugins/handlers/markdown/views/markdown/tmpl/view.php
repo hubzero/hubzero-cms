@@ -11,11 +11,11 @@ defined('_HZEXEC_') or die();
 <div class="file-preview markdown">
 	<?php if ($this->getError()): ?>
 		<div class="error">
-			<?php echo $this->getError(); ?>
+			<?php echo $this->escape($this->getError()); ?>
 		</div>
 	<?php endif; ?>
 
 	<div class="file-preview-rendered">
-		<?php echo $this->rendered; ?>
+		<?php echo \Hubzero\Utility\Sanitize::html($this->rendered); ?>
 	</div>
 </div>

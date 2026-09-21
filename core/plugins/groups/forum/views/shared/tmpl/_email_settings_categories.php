@@ -34,7 +34,7 @@ $currentUserId = User::get('id');
 			?>
 			<span class="line-item">
 				<input type="checkbox" name="<?php echo $category->get('id'); ?>"<?php echo $checked; ?>>
-				<?php echo $category->get('title'); ?>
+				<?php echo $this->escape(stripslashes($category->get('title'))); ?>
 			</span>
 		<?php endforeach; ?>
 

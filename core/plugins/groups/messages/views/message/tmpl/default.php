@@ -52,7 +52,7 @@ else
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT'); ?>:</th>
-						<td><?php echo stripslashes($this->xmessage->subject); ?></td>
+						<td><?php echo $this->escape(stripslashes($this->xmessage->subject)); ?></td>
 					</tr>
 					<tr>
 						<th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_MESSAGE'); ?>:</th>

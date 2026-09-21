@@ -109,9 +109,7 @@ if ($this->results) {
 						break;
 				}
 
-				// Encode some potentially troublesome characters
-				$line->title = $this->escape($line->title);
-
+				// Plain text here; the three sinks below escape once on output
 				// Make sure we have an SEF, otherwise it's a querystring
 				if (strstr($line->href, 'option='))
 				{
@@ -137,11 +135,11 @@ if ($this->results) {
 				<td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span></td>
 			<?php } ?>
 				<td>
-					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title; ?></a>
+					<a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape($line->title); ?></a>
 					<div class="hide" id="rsrce<?php echo $line->id; ?>">
-						<h4><?php echo $line->title; ?></h4>
+						<h4><?php echo $this->escape($line->title); ?></h4>
 						<div>
-							<table summary="<?php echo $line->title; ?>">
+							<table summary="<?php echo $this->escape($line->title); ?>">
 								<tbody>
 									<tr>
 										<th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_TYPE'); ?></th>
@@ -176,7 +174,7 @@ if ($this->results) {
 								</tbody>
 							</table>
 						</div>
-						<?php echo \Hubzero\Utility\Str::truncate($line->itext, 300); ?>
+						<?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags((string) $line->itext), ENT_QUOTES, 'UTF-8'), 300)); ?>
 					</div>
 				</td>
 				<td class="type"><?php echo $line->area; ?></td>

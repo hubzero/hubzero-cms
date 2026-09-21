@@ -58,7 +58,7 @@ switch ($this->which)
 				<tr class="mline">
 					<td class="th_image">
 						<?php if ($row->access('member') || $row->access('readonly')) { ?>
-							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')'; ?>">
 								<img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
 							</a>
 						<?php } else { ?>
@@ -73,14 +73,14 @@ switch ($this->which)
 					</td>
 					<td class="th_title">
 						<?php if ($row->access('member') || $row->access('readonly')) { ?>
-							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+							<a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')'; ?>">
 								<?php echo $this->escape($row->get('title')); ?>
 							</a>
 						<?php } else { ?>
 							<?php echo $this->escape($row->get('title')); ?>
 						<?php } ?>
 						<?php if ($this->which != 'owned') { ?>
-							<span class="block"><?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
+							<span class="block"><?php echo $this->escape($row->groupOwner() ? $row->groupOwner('description') : $row->owner('name')); ?></span>
 						<?php } ?>
 					</td>
 					<td class="th_status">

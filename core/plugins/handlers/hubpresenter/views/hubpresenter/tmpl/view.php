@@ -113,9 +113,9 @@ if (isset($this->entityId) && isset($this->entityType))
 				<ul class="no-js">
 					<?php $counter = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
-						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
+						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $slide->time; ?>">
 							<?php if ($slide->type == 'Image') : ?>
-								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media))->getUrl(); ?>" alt="<?php echo $slide->title; ?>" />
+								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 							<?php else : ?>
 								<video class="slidevideo">
 									<?php foreach ($slide->media as $source): ?>
@@ -123,7 +123,7 @@ if (isset($this->entityId) && isset($this->entityType))
 									<?php endforeach; ?>
 									<a href="<?php echo with(new Moderator($content_folder . DS . $slide->media[0]->source))->getUrl(); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
-								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl(); ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement" />
+								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -310,7 +310,7 @@ if (isset($this->entityId) && isset($this->entityType))
 								<div
 									data-autoplay="<?php echo $sub->autoplay; ?>"
 									data-type="subtitle"
-									data-lang="<?php echo $sub->name; ?>"
+									data-lang="<?php echo $this->escape($sub->name); ?>"
 									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime($sub->source); ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>

@@ -109,13 +109,13 @@ $this->css()
 						}
 
 						//get the message
-						$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(stripslashes($row->message)) : "";
+						$preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(htmlspecialchars(stripslashes($row->message))) : "";
 
 						//subject link
 						$subject_cls = "message-link";
 						$subject_cls .= ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
 
-						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">{$subject}";
+						$subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">" . $this->escape(stripslashes($subject));
 						//$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
 						$subject .= "</a>";
 
@@ -126,7 +126,7 @@ $this->css()
 							if (!$row->anonymous)
 							{
 								$u = User::getInstance($row->created_by);
-								$from = '<a href="' . Route::url('index.php?option='.$this->option.'&id='.$u->get('id')) . '">' . $u->get('name') . '</a>';
+								$from = '<a href="' . Route::url('index.php?option='.$this->option.'&id='.$u->get('id')) . '">' . $this->escape($u->get('name')) . '</a>';
 							}
 						}
 						else

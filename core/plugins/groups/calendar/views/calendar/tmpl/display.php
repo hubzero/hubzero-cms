@@ -42,7 +42,7 @@ $timezone = $userLocalizer->getTimezone();
 	<option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
 	<?php foreach ($this->calendars as $calendar) : ?>
 		<?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
-		<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>" class="calendar-picker-option"><?php echo $calendar->get('title'); ?></option>
+		<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>" class="calendar-picker-option"><?php echo $this->escape($calendar->get('title')); ?></option>
 	<?php endforeach; ?>
 </select>
 
@@ -61,12 +61,12 @@ $timezone = $userLocalizer->getTimezone();
 					<li>
 						<h4 class="entry-title">
 							<a href="<?php echo $event->link(); ?>">
-								<?php echo $event->get('title'); ?>
+								<?php echo $this->escape($event->get('title')); ?>
 							</a>
 						</h4>
 						<dl class="entry-meta">
 							<dd class="calendar">
-								in <?php echo ($event->calendar()->get('id')) ? $event->calendar()->get('title') : 'Uncategorized'; ?>
+								in <?php echo ($event->calendar()->get('id')) ? $this->escape($event->calendar()->get('title')) : 'Uncategorized'; ?>
 							</dd>
 							<?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
 								<dd class="start-and-end">

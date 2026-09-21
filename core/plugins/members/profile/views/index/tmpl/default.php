@@ -134,7 +134,7 @@ function renderIfJson($v)
 			{
 				continue;
 			}
-			$o[] = '<tr><th>' . $nm . ':</th><td>' . $vl . '</td></tr>';
+			$o[] = '<tr><th>' . htmlspecialchars((string) $nm, ENT_QUOTES, 'UTF-8') . ':</th><td>' . htmlspecialchars((string) $vl, ENT_QUOTES, 'UTF-8') . '</td></tr>';
 		}
 		$o[] = '</tbody>';
 		$o[] = '</table>';
@@ -719,11 +719,11 @@ $legacy = array(
 						if ($field->get('type') == 'url')
 						{
 							$parsed = parse_url($value);
-							if (empty($parsed['scheme']))
+							if (empty($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), array('http', 'https')))
 							{
 								$value = 'http://' . ltrim($value, '/');
 							}
-							$value = '<a href="' . $value . '" rel="external">' . $value . '</a>';
+							$value = '<a href="' . $this->escape($value) . '" rel="external">' . $this->escape($value) . '</a>';
 						}
 					}
 				}
@@ -756,7 +756,7 @@ $legacy = array(
 					$val = array();
 					foreach ($value as $k => $v)
 					{
-						$val[$k] = renderIfJson($v);
+						$val[$k] = (is_string($v) && strpos($v, '{') === false) ? $this->escape($v) : renderIfJson($v);
 					}
 					$val = implode('<br />', $val);
 				}
@@ -767,7 +767,14 @@ $legacy = array(
 						$sh += $f[$field->get('name')][$value];
 					}
 
-					$val = renderIfJson($value);
+					if (is_string($value) && strpos($value, '{') === false && !in_array($field->get('type'), array('url', 'textarea', 'tags')))
+					{
+						$val = $this->escape($value);
+					}
+					else
+					{
+						$val = renderIfJson($value);
+					}
 				}
 
 				$hd = array_diff($hd, $sh);

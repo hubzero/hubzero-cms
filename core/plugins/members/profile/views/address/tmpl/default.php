@@ -33,29 +33,29 @@ else
 		//do we have a to field
 		if (isset($address->addressTo) && $address->addressTo != '')
 		{
-			$formattedAddresses .= '<strong>' . $address->addressTo . '</strong><br />';
+			$formattedAddresses .= '<strong>' . $this->escape($address->addressTo) . '</strong><br />';
 		}
 
 		//do we have an address line 1
 		if (isset($address->address1) && $address->address1 != '')
 		{
-			$formattedAddresses .= $address->address1 . '<br />';
+			$formattedAddresses .= $this->escape($address->address1) . '<br />';
 		}
 
 		//do we have an address line 2
 		if (isset($address->address2) && $address->address2 != '')
 		{
-			$formattedAddresses .= $address->address2 . '<br />';
+			$formattedAddresses .= $this->escape($address->address2) . '<br />';
 		}
 
 		//do we gave a city state and zip
-		$formattedAddresses .= $address->addressCity . ' ' . $address->addressRegion . ', ' . $address->addressPostal . '<br />';
+		$formattedAddresses .= $this->escape($address->addressCity) . ' ' . $this->escape($address->addressRegion) . ', ' . $this->escape($address->addressPostal) . '<br />';
 
 		//do we have a country && its not USA
 		if (isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US' &&
 			$address->addressCountry != 'USA' && $address->addressCountry != 'United States' && $address->addressCountry != 'United States of America')
 		{
-			$formattedAddresses .= $address->addressCountry . '<br />';
+			$formattedAddresses .= $this->escape($address->addressCountry) . '<br />';
 		}
 
 		//do we want to display edit links

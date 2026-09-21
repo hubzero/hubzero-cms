@@ -118,7 +118,7 @@ $this->css()
 						</td>
 						<td>
 							<a class="<?php echo $subject_cls; ?>" href="<?php echo Route::url($this->member->link() . '&active=messages&msg=' . $row->id); ?>">
-								<?php echo $subject; ?>
+								<?php echo $this->escape(stripslashes($subject)); ?>
 							</a>
 						</td>
 						<td>
@@ -129,7 +129,7 @@ $this->css()
 								if (!$row->anonymous)
 								{
 									$u = User::getInstance($row->created_by);
-									$from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
+									$from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $this->escape($u->get('name')) . '</a>';
 								}
 								echo $from;
 							}

@@ -19,10 +19,10 @@ $source = with(new \Hubzero\Content\Moderator($this->compiled->getAbsolutePath()
 		<?php echo Lang::txt('PLG_HANDLERS_LATEX_PREVIEW_FAILED'); ?>
 	</h3>
 	<p class="witherror">
-		<?php echo $this->getError(); ?>
+		<?php echo $this->escape($this->getError()); ?>
 		<pre>
 			<?php if (!empty($this->log)) : ?>
-				<?php echo $this->log; ?>
+				<?php echo $this->escape($this->log); ?>
 			<?php endif; ?>
 		</pre>
 	</div>

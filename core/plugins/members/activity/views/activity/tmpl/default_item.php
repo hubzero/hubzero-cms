@@ -152,7 +152,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 					{
 						?>
 						<div class="activity-source icon-group">
-							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity'); ?>"><?php echo $group->get('description'); ?></a>
+							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity'); ?>"><?php echo $this->escape($group->get('description')); ?></a>
 						</div>
 						<?php
 					}
@@ -168,7 +168,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 					{
 						?>
 						<div class="activity-source icon-project">
-							<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $project->get('alias')); ?>"><?php echo $project->get('title'); ?></a>
+							<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $project->get('alias')); ?>"><?php echo $this->escape(stripslashes($project->get('title'))); ?></a>
 						</div>
 						<?php
 					}

@@ -26,7 +26,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
 <div class="event-title-bar">
 	<span class="event-title">
-		<?php echo $this->event->get('title'); ?>
+		<?php echo $this->escape($this->event->get('title')); ?>
 	</span>
 	<?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
 		<a class="delete" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>">

@@ -158,7 +158,7 @@ if (isset($this->messages))
 										{
 											$formatted = str_replace(
 												'doi:' . $cite->doi,
-												'<a href="' . $cite->url . '" rel="external">' . 'doi:' . $cite->doi . '</a>',
+												'<a href="' . $this->escape($cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
 												$formatted
 											);
 										}
@@ -175,7 +175,7 @@ if (isset($this->messages))
 											<ul class="citation-links">
 												<?php foreach ($links as $link) { ?>
 													<li>
-														<a href="<?php echo $link->url; ?>"><?php echo $this->escape($link->title); ?></a>
+														<a href="<?php echo $this->escape($link->url); ?>"><?php echo $this->escape($link->title); ?></a>
 													</li>
 												<?php } ?>
 											</ul>
@@ -193,7 +193,7 @@ if (isset($this->messages))
 												<?php if ($final != '' && $this->config->get('citation_sponsors', 'yes') == 'yes') : ?>
 													<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo substr($final, 0, -2); ?></p>
 												<?php endif; ?>
-												<p><?php echo nl2br($cite->abstract); ?></p>
+												<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 											</div>
 										<?php endif; ?>
 										<div class="citation-details <?php echo ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : ''; ?>">

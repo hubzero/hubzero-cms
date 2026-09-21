@@ -23,7 +23,7 @@ endif;
 		<div class="input">
 			<div class="prompt input_prompt"> </div>
 			<div class="inner_cell">
-				<div class="text_cell_render rendered_html"><?php echo ($this->parser) ? $this->parser->parse($source) : $source; ?></div>
+				<div class="text_cell_render rendered_html"><?php echo \Hubzero\Utility\Sanitize::html(($this->parser) ? $this->parser->parse($source) : $source); ?></div>
 			</div>
 		</div>
 	</div>
@@ -34,9 +34,9 @@ if ($cell->cell_type == 'code'):
 		?>
 		<div class="cell <?php echo $cell->cell_type; ?> rendered">
 			<div class="input">
-				<div class="prompt input_prompt">In [<?php echo (isset($cell->prompt_number)) ? $cell->prompt_number : ' '; ?>]:</div>
+				<div class="prompt input_prompt">In [<?php echo (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' '; ?>]:</div>
 				<div class="inner_cell">
-					<pre name="code" class="<?php echo (isset($cell->language)) ? $cell->language : 'python'; ?>:nogutter:nocontrols"><?php echo $this->escape($source); ?></pre>
+					<pre name="code" class="<?php echo (isset($cell->language)) ? $this->escape($cell->language) : 'python'; ?>:nogutter:nocontrols"><?php echo $this->escape($source); ?></pre>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@ if ($cell->cell_type == 'code'):
 		?>
 		<div class="cell <?php echo $cell->cell_type; ?> rendered">
 			<div class="input">
-				<div class="prompt output_prompt">Out[<?php echo (isset($cell->prompt_number)) ? $cell->prompt_number : ' '; ?>]:</div>
+				<div class="prompt output_prompt">Out[<?php echo (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' '; ?>]:</div>
 				<div class="inner_cell <?php echo $cls; ?> output_execute_result">
 					<?php
 					$out = array();
@@ -58,7 +58,7 @@ if ($cell->cell_type == 'code'):
 						if ($output->output_type == 'pyout'):
 							?>
 							<?php if (isset($output->png)): ?>
-								<div class="output_img"><img src="data:image/png;base64,<?php echo trim($output->png); ?>" alt="<?php echo $this->escape(implode('', $output->text)); ?>" /></div>
+								<div class="output_img"><img src="data:image/png;base64,<?php echo preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png); ?>" alt="<?php echo $this->escape(implode('', $output->text)); ?>" /></div>
 							<?php else: ?>
 								<pre class="output"><?php echo $this->escape(implode('', $output->text)); ?></pre>
 							<?php endif; ?>

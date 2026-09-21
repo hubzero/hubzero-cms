@@ -360,7 +360,7 @@ $option = 'com_groups';
 									if ($roles) {
 										$html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 										foreach ($roles as $role) {
-											$all_roles .= ', <span><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
+											$all_roles .= ', <span><a href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$this->escape($role['name']).'</a>';
 
 											if ($this->authorized == 'manager') {
 												if ($this->membership_control == 1) {
@@ -436,7 +436,7 @@ $option = 'com_groups';
 									if ($row)
 									{
 										$html .= '<span class="reason" data-title="' . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
-										$html .= '<span class="reason-reason">'.stripslashes($row->reason).'</span>';
+										$html .= '<span class="reason-reason">'.$this->escape(stripslashes($row->reason)).'</span>';
 										$html .= '<span class="reason-date">'.Date::of($row->date)->toLocal('F d, Y @ g:ia').'</span>';
 										$html .= '</span>';
 									}

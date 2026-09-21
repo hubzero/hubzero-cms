@@ -46,7 +46,7 @@ $this->view('submenu', 'partials')
 									<?php foreach ($this->projects as $project) { ?>
 										<option value="<?php echo $project; ?>"><?php
 										$p = new Components\Projects\Models\Project($project);
-										echo $p->get('title');
+										echo $this->escape($p->get('title'));
 										?></option>
 									<?php } ?>
 								</select>

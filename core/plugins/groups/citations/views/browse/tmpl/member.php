@@ -76,8 +76,8 @@ if (count($this->citations) > 0) :
 								if ($cite->doi)
 								{
 									$formatted = str_replace('doi:' . $cite->doi,
-										'<a href="' . $cite->url . '" rel="external">'
-										. 'doi:' . $cite->doi . '</a>', $formatted);
+										'<a href="' . $this->escape($cite->url) . '" rel="external">'
+										. 'doi:' . $this->escape($cite->doi) . '</a>', $formatted);
 								}
 
 								echo $formatted; ?>
@@ -99,7 +99,7 @@ if (count($this->citations) > 0) :
 										<?php $final = substr($final, 0, -2); ?>
 										<p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
 									<?php endif; ?>
-									<p><?php echo nl2br($cite->abstract); ?></p>
+									<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 								</div>
 							<?php endif; ?>
 						</td>
