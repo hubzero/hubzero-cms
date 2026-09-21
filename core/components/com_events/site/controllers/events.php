@@ -991,7 +991,7 @@ class Events extends SiteController
 			{
 				$passwrd = Request::getString('passwrd', '', 'post');
 
-				if ($event->restricted == $passwrd)
+				if (hash_equals((string) $event->restricted, (string) $passwrd))
 				{
 					// Instantiate a view
 					$this->view->setLayout('default');
@@ -1700,6 +1700,9 @@ class Events extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
 		// Check if they are logged in
 		if (User::isGuest())
 		{

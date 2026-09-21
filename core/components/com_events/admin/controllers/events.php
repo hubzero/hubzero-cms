@@ -575,6 +575,9 @@ class Events extends AdminController
 	 */
 	public function publishTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
@@ -614,6 +617,9 @@ class Events extends AdminController
 	 */
 	public function unpublishTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
@@ -653,6 +659,9 @@ class Events extends AdminController
 	 */
 	public function settypeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ids = Request::getArray('id', array());
 		if (!is_array($ids))
@@ -707,6 +716,9 @@ class Events extends AdminController
 	 */
 	public function removeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ids = Request::getArray('id', array());
 		if (!is_array($ids))

@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 			<a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
 				<?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
 			</a>
-			<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+			<a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 				<?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
 			</a>
 		<?php } ?>
