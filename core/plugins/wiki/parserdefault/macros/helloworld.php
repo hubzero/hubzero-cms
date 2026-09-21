@@ -33,6 +33,6 @@ class HelloWorldMacro extends WikiMacro
 	 */
 	public function render()
 	{
-		return 'Hello World, args = ' . $this->args;
+		return 'Hello World, args = ' . htmlspecialchars($this->args, ENT_QUOTES, 'UTF-8');
 	}
 }

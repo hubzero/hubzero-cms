@@ -108,17 +108,21 @@ class Resources extends Macro
 
 			if ($nolink)
 			{
-				return stripslashes($r->get('title'));
+				// Same sink as the linked branch below, reached by
+				// [[Resource(123, nolink)]] -- the title is user-written either way.
+				return htmlspecialchars(stripslashes((string) $r->get('title')), ENT_QUOTES, 'UTF-8');
 			}
 			else
 			{
-				return '<a href="' . \Route::url($link) . '">' . stripslashes($r->get('title')) . '</a>';
+				// The resource title is user-written and the macro argument is raw
+				// wiki source; the parser hands args through unescaped.
+				return '<a href="' . \Route::url($link) . '">' . htmlspecialchars(stripslashes((string) $r->get('title')), ENT_QUOTES, 'UTF-8') . '</a>';
 			}
 		}
 		else
 		{
 			// Return error message
-			return '(Resource(' . $et . ') failed)';
+			return '(Resource(' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ') failed)';
 		}
 	}
 

@@ -44,7 +44,7 @@ class Ticketmessage extends Element
 
 		foreach ($messages as $anode)
 		{
-			$html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . stripslashes($anode->title) . '</option>';
+			$html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . htmlspecialchars(stripslashes($anode->title), ENT_QUOTES, 'UTF-8') . '</option>';
 		}
 
 		$html[] = '</select>';

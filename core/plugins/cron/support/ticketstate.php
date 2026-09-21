@@ -54,7 +54,7 @@ class Ticketstate extends Element
 				$html[] = '<option value="-1"' . ($value == -1 ? ' selected="selected"' : '') . '>closed: No resolution</option>';
 				$switched = true;
 			}
-			$html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title) . '</option>';
+			$html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . ($anode->open ? 'open: ' : 'closed: ') . htmlspecialchars(stripslashes($anode->title), ENT_QUOTES, 'UTF-8') . '</option>';
 		}
 
 		$html[] = '</select>';

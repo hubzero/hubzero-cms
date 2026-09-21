@@ -22,7 +22,7 @@ $revisions = $this->page->versions()
 	<?php if (count($this->parents)) { ?>
 		<p class="wiki-crumbs">
 			<?php foreach ($this->parents as $parent) { ?>
-				<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+				<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $this->escape($parent->title); ?></a> /
 			<?php } ?>
 		</p>
 	<?php } ?>
@@ -169,7 +169,7 @@ $revisions = $this->page->versions()
 									<td><?php /* [a11y] new-version radio placeholder */ ?></td>
 								<?php } ?>
 								<td>
-									<a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
+									<a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $this->escape(strip_tags((string) $summary)); ?>">
 										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d h:i:s')); ?></time>
 									</a>
 								</td>

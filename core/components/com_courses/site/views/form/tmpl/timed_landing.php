@@ -27,7 +27,7 @@ defined('_HZEXEC_') or die();
 		<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 		<input type="hidden" name="attempt" value="<?php echo (int)$this->resp->getAttemptNumber() ?>" />
 		<input type="hidden" name="controller" value="form" />
-		<?php echo isset($_GET['tmpl']) ? '<input type="hidden" name="tmpl" value="'.str_replace('"', '&quot;', $_GET['tmpl']).'" />' : '' ?>
+		<?php echo (isset($_GET['tmpl']) && is_scalar($_GET['tmpl'])) ? '<input type="hidden" name="tmpl" value="'.htmlspecialchars((string) $_GET['tmpl'], ENT_QUOTES).'" />' : '' ?>
 		<button type="submit">Continue</button>
 	</fieldset>
 </form>

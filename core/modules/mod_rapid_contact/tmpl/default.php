@@ -14,7 +14,7 @@ $this->css();
 <?php if ($this->recipient === ''): ?>
 	<p class="error"><?php echo Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
 <?php else: ?>
-	<form method="post" action="<?php echo $this->url; ?>" id="<?php echo $this->module->module; ?>-form-<?php echo $this->module->id; ?>" class="<?php echo $this->mod_class_suffix; ?>">
+	<form method="post" action="<?php echo $this->escape($this->url); ?>" id="<?php echo $this->module->module; ?>-form-<?php echo $this->module->id; ?>" class="<?php echo $this->mod_class_suffix; ?>">
 		<fieldset>
 			<legend><?php echo Lang::txt('MOD_RAPID_CONTACT_FORM'); ?></legend>
 

@@ -127,7 +127,11 @@ class Video extends Macro
 
 					if (!file_exists($video_url))
 					{
-						return '(video:' . $url . ' not found)' . $this->_path($url);
+						// The macro argument is raw wiki source -- the parser hands
+						// args through unescaped -- and _path() echoes it back
+						// inside a filesystem path, so both halves are sinks.
+						return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not found)'
+							. htmlspecialchars((string) $this->_path($url), ENT_QUOTES, 'UTF-8');
 					}
 				}
 			}

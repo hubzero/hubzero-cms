@@ -92,7 +92,9 @@ class FileIndex extends Macro
 		{
 			// Return error message
 			//return '(TitleIndex('.$et.') failed)';
-			return '(No ' . $et . ' files to display)';
+			// strip_tags() drops the angle brackets but not the quotes, and this
+			// string is spliced into page HTML.
+			return '(No ' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ' files to display)';
 		}
 	}
 }

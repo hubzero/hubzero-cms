@@ -21,7 +21,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 	</section><!-- / .main section -->
 <?php } else { ?>
 	<header id="content-header">
-		<h2><?php echo $this->title; ?></h2>
+		<h2><?php echo $this->escape($this->title); ?></h2>
 
 		<div id="content-header-extra">
 			<ul id="useroptions">
@@ -46,7 +46,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 					<label for="field-title">
 						<?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
 				<?php if ($this->wishlist->get('category') == 'resource') { ?>
-						<span class="highighted"><?php echo $this->wishlist->get('title'); ?></span>
+						<span class="highighted"><?php echo $this->escape($this->wishlist->get('title')); ?></span>
 						<input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
 					</label>
 					<p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>

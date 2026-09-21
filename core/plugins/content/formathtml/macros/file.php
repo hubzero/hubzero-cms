@@ -165,8 +165,10 @@ class File extends Macro
 		}
 		else
 		{
-			// Return error message
-			return '(file:' . $file . ' not found)';
+			// Return error message. strip_tags() on the argument drops the angle
+			// brackets but not the quotes, and this string is spliced into page
+			// HTML, so escape it properly.
+			return '(file:' . htmlspecialchars((string) $file, ENT_QUOTES, 'UTF-8') . ' not found)';
 		}
 	}
 

@@ -55,6 +55,6 @@ class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
 
 		$cls = ($cls) ? 'wiki-toolbar-content ' . $cls : 'wiki-toolbar-content';
 
-		return '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $content . '</textarea>' . "\n";
+		return '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . htmlspecialchars($content, ENT_QUOTES, 'UTF-8') . '</textarea>' . "\n";
 	}
 }

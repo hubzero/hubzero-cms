@@ -196,7 +196,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		{
 			if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
 			{
-				return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
+				return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File provided is not an allowed image type)';
 			}
 
 			// Return HTML
@@ -204,8 +204,10 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 		else
 		{
-			// Return error message
-			return '(Image(' . $content . ') failed - File not found)'; // . $this->_path($file);
+			// Return error message. strip_tags() on the argument drops the angle
+			// brackets but not the quotes, and this string is spliced into page
+			// HTML, so escape it properly.
+			return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->_path($file);
 		}
 	}
 

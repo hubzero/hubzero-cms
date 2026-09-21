@@ -52,13 +52,15 @@ class Tag extends Macro
 			// Did we get a result from the database?
 			if ($a)
 			{
-				// Build and return the link
-				return '<a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag) . '">' . stripslashes($a) . '</a>';
+				// raw_tag is whatever the user who created the tag typed, and the
+				// macro argument is raw wiki source -- the parser hands args
+				// through unescaped, so both are sinks here.
+				return '<a href="' . \Route::url('index.php?option=com_tags&tag=' . $tag) . '">' . htmlspecialchars(stripslashes((string) $a), ENT_QUOTES, 'UTF-8') . '</a>';
 			}
 			else
 			{
 				// Return error message
-				return '(' . $tag . ' not found)';
+				return '(' . htmlspecialchars((string) $tag, ENT_QUOTES, 'UTF-8') . ' not found)';
 			}
 		}
 		else

@@ -41,11 +41,16 @@ $this->css()
 					<input type="text" name="fields[raw_tag]" id="field-raw_tag" data-error="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_BLANK'); ?>" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
 				</label>
 
+				<?php // The save handler drops fields[admin] for anyone without
+				// access-manage-tag, so offering the control to them is a
+				// checkbox that silently does nothing. ?>
+				<?php if ($this->config->get('access-manage-tag')) : ?>
 				<label for="field-admin">
-					<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1" />
+					<input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1"<?php echo $this->tag->get('admin') ? ' checked="checked"' : ''; ?> />
 					<strong><?php echo Lang::txt('COM_TAGS_FIELD_ADMINISTRATION'); ?></strong>
 					<span class="hint">(<?php echo Lang::txt('COM_TAGS_FIELD_ADMINISTRATION_EXPLANATION'); ?>)</span>
 				</label>
+				<?php endif; ?>
 
 				<label for="field-description">
 					<?php echo Lang::txt('COM_TAGS_FIELD_DESCRIPTION'); ?>
@@ -58,7 +63,7 @@ $this->css()
 					<span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
 				</label>
 
-				<input type="hidden" name="fields[tag]" value="<?php echo $this->tag->get('tag'); ?>" />
+				<input type="hidden" name="fields[tag]" value="<?php echo $this->escape($this->tag->get('tag')); ?>" />
 				<input type="hidden" name="fields[id]" value="<?php echo $this->tag->get('id'); ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

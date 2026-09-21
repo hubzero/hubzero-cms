@@ -41,7 +41,7 @@ class Helper extends Module
 					header('HTTP/1.1 422 Unprocessable Entity');
 					exit();
 				}
-				$log[$k] = $_POST[$k];
+				$log[$k] = substr((string) $_POST[$k], 0, 1024);
 			}, array('message', 'file', 'line', 'url', 'navigator'));
 
 			$fh = fopen($path . '/client_error.log', 'a');

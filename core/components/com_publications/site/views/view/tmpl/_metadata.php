@@ -102,7 +102,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 			$link = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
 		}
 
-		echo '<p class="supported"><a href="' . $link . '">' . $tag->get('raw_tag') . '</a></p>';
+		echo '<p class="supported"><a href="' . $link . '">' . $this->escape($tag->get('raw_tag')) . '</a></p>';
 	}
 
 	// Show audience
@@ -130,7 +130,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
 		<p>
 			<?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
 			[<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' .
-					$this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->lastPubRelease->version_label; ?></a>]
+					$this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->escape($this->lastPubRelease->version_label); ?></a>]
 			<?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
 		</p>
 	<?php }

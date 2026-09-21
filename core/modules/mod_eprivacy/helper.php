@@ -63,7 +63,7 @@ class Helper extends Module
 		$uri .= (strstr($uri, '?')) ? '&' : '?';
 		$uri .= $this->moduleid . '=close';
 
-		$this->uri = $uri;
+		$this->uri = htmlspecialchars($uri, ENT_QUOTES, 'UTF-8');
 
 		// Get the view
 		parent::display();

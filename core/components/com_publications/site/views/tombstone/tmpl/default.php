@@ -13,7 +13,7 @@ $this->css()
 ?>
 
 <div class="content-header with-nav with-details">
-	<h2><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_TITLE') . $this->record->title; ?></h2>
+	<h2><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_TITLE') . $this->escape($this->record->title); ?></h2>
 </div>
 <div class="tombstone-section">
 	<h3><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_RETRACTION_DESCRIPTION'); ?></h3>
