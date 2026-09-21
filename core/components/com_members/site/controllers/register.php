@@ -108,6 +108,9 @@ class Register extends SiteController
 
 		if (Request::getString('edit', '', 'post'))
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			// Load POSTed data
 			$xregistration->loadPOST();
 		}
@@ -355,6 +358,9 @@ class Register extends SiteController
 
 		if ($method == 'POST')
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			// Load POSTed data
 			$xregistration->loadPost();
 
@@ -1548,6 +1554,9 @@ class Register extends SiteController
 
 		if ($update)
 		{
+			// Check for request forgeries
+			Request::checkToken();
+
 			if (!$pemail)
 			{
 				$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_EMAIL'));

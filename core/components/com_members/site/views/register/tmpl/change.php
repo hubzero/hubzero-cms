@@ -41,6 +41,7 @@ $this->css('register')
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="task" value="change" />
 		<input type="hidden" name="act" value="show" />
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit"><input type="submit" name="update" value="<?php echo Lang::txt('Update Email'); ?>" /></p>
 	</form>
