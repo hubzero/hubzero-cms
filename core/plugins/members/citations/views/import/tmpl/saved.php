@@ -114,7 +114,7 @@ $base = $this->member->link() . '&active=citations';
 
 								<?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
 									<div class="citation-notes">
-										<p><?php echo nl2br($cite->abstract); ?></p>
+										<p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
 									</div>
 								<?php endif; ?>
 

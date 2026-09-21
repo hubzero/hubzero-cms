@@ -79,7 +79,7 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
 					<tbody>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Publication:</th>
-							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->publication->get('title'); ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->publication->get('title')); ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Version:</th>

@@ -145,9 +145,9 @@ $site = rtrim(Request::base(), '/');
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->name ? $ticket->name : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $ticket->login . ')' : ''; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->severity; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
@@ -247,9 +247,9 @@ $site = rtrim(Request::base(), '/');
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->name ? $ticket->name : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $ticket->login . ')' : ''; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->severity; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
@@ -384,9 +384,9 @@ $site = rtrim(Request::base(), '/');
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->name ? $ticket->name : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $ticket->login . ')' : ''; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->severity; ?></td>
+										<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
 									</tr>
 									<tr>
 										<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>

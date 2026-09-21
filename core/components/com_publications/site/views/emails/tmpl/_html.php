@@ -97,7 +97,7 @@ if ($comment)
 					<tbody>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Publication:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->publication->get('title'); ?> v. <?php echo $this->publication->get('version_label'); ?>(#<?php echo $this->publication->get('id'); ?>)</td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->publication->get('title')); ?> v. <?php echo $this->escape($this->publication->get('version_label')); ?>(#<?php echo $this->publication->get('id'); ?>)</td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>

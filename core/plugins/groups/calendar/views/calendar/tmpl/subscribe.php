@@ -63,7 +63,7 @@ foreach ($this->calendars as $calendar)
 					<?php else : ?>
 						<img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="" />
 					<?php endif; ?>
-					<?php echo $calendar->get('title'); ?>
+					<?php echo $this->escape($calendar->get('title')); ?>
 					<?php
 						if (!$enabled)
 						{

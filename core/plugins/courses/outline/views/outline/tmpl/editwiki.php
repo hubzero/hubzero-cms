@@ -26,7 +26,7 @@ $assets = array();
 
 		<p>
 			<label for="title">Title: </label><span class="required">*required</span>
-			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $asset->get('title') ?>" />
+			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $this->escape($asset->get('title')); ?>" />
 		</p>
 
 		<label for="content">Content: </label>
@@ -100,7 +100,7 @@ $assets = array();
 			<select name="scope_id">
 				<?php foreach ($assetgroups as $assetgroup) : ?>
 					<?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $this->escape($assetgroup['title']); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>

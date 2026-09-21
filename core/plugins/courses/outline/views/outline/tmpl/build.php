@@ -73,7 +73,7 @@ HTML::behavior('core');
 			<div class="unit-title-arrow"></div>
 			<div class="unit-edit-container">
 				<div class="title unit-title">
-					<div class="unit-title-value"><?php echo $unit->get('title'); ?></div>
+					<div class="unit-title-value"><?php echo $this->escape($unit->get('title')); ?></div>
 					<div class="edit">edit</div>
 				</div>
 				<div class="clear"></div>
@@ -81,7 +81,7 @@ HTML::behavior('core');
 					<div class="unit-edit-wrap">
 						<form action="<?php echo Request::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
 							<label for="title">Title:</label>
-							<input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
+							<input class="unit-edit-text" name="title" type="text" value="<?php echo $this->escape($unit->get('title')); ?>" placeholder="title" />
 							<input class="unit-edit-save" type="submit" value="Save" />
 							<input class="unit-edit-reset" type="reset" value="Cancel" />
 							<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
@@ -115,12 +115,12 @@ HTML::behavior('core');
 						<div class="asset-group-title-container">
 							<div class="asset-group-title title">
 								<div class="asset-group-title-edit edit">edit</div>
-								<div class="title"><?php echo $agt->get('title'); ?></div>
+								<div class="title"><?php echo $this->escape($agt->get('title')); ?></div>
 							</div>
 							<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 								<div class="label-input-pair">
 									<label for="title">Title:</label>
-									<input class="" name="title" type="text" value="<?php echo $agt->get('title') ?>" />
+									<input class="" name="title" type="text" value="<?php echo $this->escape($agt->get('title')) ?>" />
 								</div>
 								<div class="label-input-pair">
 									<label for="state">Published:</label>
@@ -169,7 +169,7 @@ HTML::behavior('core');
 ?>
 
 								<li class="add-new asset-group-item">
-									Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
+									Add a new <?php echo $this->escape((substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's'))); ?>
 									<form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
 										<input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
 										<input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />

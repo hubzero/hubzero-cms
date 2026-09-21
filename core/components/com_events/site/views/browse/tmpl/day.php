@@ -77,7 +77,7 @@ $this->css();
 						foreach ($this->categories as $id => $title)
 						{
 						?>
-							<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo stripslashes($title); ?></option>
+							<option value="<?php echo $id; ?>"<?php if ($this->category == $id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($title)); ?></option>
 						<?php
 						}
 					}

@@ -46,7 +46,7 @@ $tool_path = $config->get('tool_path');
 
 		<p>
 			<label for="title">Title:</label>
-			<input type="text" name="title" value="<?php echo $asset->get('title') ?>" placeholder="Asset Title" />
+			<input type="text" name="title" value="<?php echo $this->escape($asset->get('title')); ?>" placeholder="Asset Title" />
 		</p>
 		<?php if ($asset->get('type') != 'form') : ?>
 		<p>
@@ -84,7 +84,7 @@ $tool_path = $config->get('tool_path');
 			<select name="scope_id">
 				<?php foreach ($assetgroups as $assetgroup) : ?>
 					<?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $this->escape($assetgroup['title']); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>

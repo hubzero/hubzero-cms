@@ -51,7 +51,7 @@ $tool_path = $config->get('tool_path');
 		?>
 		<p>
 			<label for="title">Title: </label><span class="required">*required</span>
-			<input type="text" name="title" class="tool-title" placeholder="Tool Title" value="<?php echo $asset->get('title') ?>" />
+			<input type="text" name="title" class="tool-title" placeholder="Tool Title" value="<?php echo $this->escape($asset->get('title')); ?>" />
 		</p>
 		<p>
 			<label for="tool-alias">Tool:</label>
@@ -106,7 +106,7 @@ $tool_path = $config->get('tool_path');
 			<select name="scope_id">
 				<?php foreach ($assetgroups as $assetgroup) : ?>
 					<?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+					<option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $this->escape($assetgroup['title']); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>

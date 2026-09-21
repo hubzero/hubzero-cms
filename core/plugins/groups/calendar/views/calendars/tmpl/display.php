@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
 		<?php if (count($this->calendars) > 0) : ?>
 			<?php foreach ($this->calendars as $calendar) : ?>
 				<tr>
-					<td><?php echo $calendar->get('title'); ?></td>
+					<td><?php echo $this->escape($calendar->get('title')); ?></td>
 					<td>
 						<?php
 						$colors = array('red','orange','yellow','green','blue','purple','brown');

@@ -72,7 +72,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 								}
 								$sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : '';
 								?>
-								<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
+								<option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $this->escape($calendar->get('title')); ?></option>
 							<?php endforeach; ?>
 						</select>
 
