@@ -189,7 +189,7 @@ class Courses extends Macro
 				// make sure we dont want to hide the description
 				if (!(bool) $this->_getArg('hidedescription'))
 				{
-					$html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200) . '</p>';
+					$html .= '<p>' . htmlspecialchars(\Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200), ENT_QUOTES, 'UTF-8') . '</p>';
 				}
 			}
 		}

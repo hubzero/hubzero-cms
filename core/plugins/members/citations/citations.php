@@ -520,6 +520,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			return $this->loginAction();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		if (!$this->params->get('access-manage'))
 		{
 			throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
@@ -670,6 +673,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleteAction()
 	{
+		// Guard against request forgeries (the links below carry the token)
+		Request::checkToken(['get', 'post']);
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{
@@ -775,6 +781,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	{
 		if ($_POST)
 		{
+			// Check for request forgeries and manage rights
+			Request::checkToken();
+			if (!$this->params->get('access-manage'))
+			{
+				throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+			}
+
 			$display = Request::getString('display', '');
 			$format = Request::getString('citation-format', '');
 
@@ -906,6 +919,9 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function publishAction()
 	{
+		// Guard against request forgeries (the links below carry the token)
+		Request::checkToken(['get', 'post']);
+
 		$id = Request::getInt('cid', 0);
 		$citationIDs = Request::getString('citationIDs', '');
 		$bulk = Request::getBool('bulk', false);
