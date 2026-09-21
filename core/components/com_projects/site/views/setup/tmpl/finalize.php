@@ -187,31 +187,31 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 						<div class="form-group">
 							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-								<input name="grant_title" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('grant_title'); ?>" class="long" />
+								<input name="grant_title" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_title')); ?>" class="long" />
 							</label>
 						</div>
 						<div class="form-group">
 							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-								<input name="grant_PI" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('grant_PI'); ?>" class="long" />
+								<input name="grant_PI" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_PI')); ?>" class="long" />
 							</label>
 						</div>
 						<div class="form-group">
 							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-								<input name="award_number" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('award_number'); ?>" class="long" />
+								<input name="award_number" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('award_number')); ?>" class="long" />
 							</label>
 						</div>
 						<div class="form-group">
 							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-								<input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('grant_agency'); ?>" class="long" />
+								<input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_agency')); ?>" class="long" />
 							</label>
 						</div>
 						<div class="form-group">
 							<label class="terms-label">
 								<?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-								<input name="grant_budget" maxlength="250" type="text" class="form-control" value="<?php echo $this->model->params->get('grant_budget'); ?>" class="long" />
+								<input name="grant_budget" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_budget')); ?>" class="long" />
 							</label>
 						</div>
 					</div>

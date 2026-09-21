@@ -53,10 +53,10 @@ if ($this->project->config()->get('restricted_data', 0) && $this->reviewer == 's
 if ($this->project->config()->get('grantinfo', 0) && $this->reviewer == 'sponsored')
 {
 	$comment .= '<ul style="' . $ulStyle . '">';
-	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->project->params->get('grant_title') . '</li>';
-	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->project->params->get('grant_PI') . '</li>';
-	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->project->params->get('grant_agency') . '</li>';
-	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->project->params->get('grant_budget') . '</li>';
+	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->escape($this->project->params->get('grant_title')) . '</li>';
+	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->escape($this->project->params->get('grant_PI')) . '</li>';
+	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->escape($this->project->params->get('grant_agency')) . '</li>';
+	$comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->escape($this->project->params->get('grant_budget')) . '</li>';
 	$comment .= '</ul>';
 }
 
