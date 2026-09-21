@@ -44,6 +44,16 @@ trait Escapable
 			return '';
 		}
 
+		// htmlspecialchars() and htmlentities() reject an array outright on
+		// PHP 8, so a view escaping a value that turns out to be one takes the
+		// whole page down. Escape the members instead and hand the array back:
+		// a template that then prints it emits the same "Array" it always did,
+		// and one that implodes or loops gets escaped members.
+		if (is_array($var))
+		{
+			return array_map(array($this, 'escape'), $var);
+		}
+
 		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities')))
 		{
 			return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
