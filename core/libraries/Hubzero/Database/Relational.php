@@ -1325,7 +1325,39 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	public static function one($id)
 	{
 		$instance = self::blank();
-		return $instance->whereEquals($instance->getPrimaryKey(), $id)->rows()->seek($id);
+		$rows     = $instance->whereEquals($instance->getPrimaryKey(), $id)->rows();
+		$row      = $rows->seek($id);
+
+		// Rows keys by the stored primary key and seek() is an exact array-key
+		// lookup, so an id the database matched loosely -- "0123", " 123",
+		// "+123", "1e2" -- misses here and a blank row is handed back. That
+		// turns the common
+		//
+		//     $row = Model::oneOrNew($posted['id']);
+		//     if (!$row->isNew()) { ...ownership check... }
+		//     $row->set($posted);
+		//
+		// idiom into a no-op: the check is skipped because the row looks new,
+		// then set() puts the id back and save() issues
+		// UPDATE ... WHERE id = '0123' against the row the database did match.
+		//
+		// Resolve whatever single row the database itself matched. Restricting
+		// this to is_numeric() ids is not enough: MySQL coerces "0123", " 123"
+		// and "123abc" alike, all three reach row 123, and only the first two
+		// are numeric. What matters is that the model handed to the caller is
+		// the same row a later UPDATE would land on -- resolving it can never
+		// expose a row the query did not already return.
+		if ($row === false && count($rows) === 1)
+		{
+			$only = $rows->first();
+
+			if ($only && $only->getPkValue())
+			{
+				$row = $only;
+			}
+		}
+
+		return $row;
 	}
 
 	/**
