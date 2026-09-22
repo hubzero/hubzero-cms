@@ -35,7 +35,7 @@ $this->css('tools.css');
 				$cls = ($cls == 'odd') ? 'even' : 'odd';
 		?>
 			<tr class="<?php echo $cls; ?>">
-				<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=session&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
+				<td><a href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=session&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $this->escape($session->sessname); ?></a></td>
 				<td><?php echo $session->start; ?></td>
 				<td><?php echo $session->accesstime; ?></td>
 			<?php if (User::get('username') == $session->username) { ?>
