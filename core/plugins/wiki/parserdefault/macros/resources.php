@@ -117,16 +117,16 @@ class ResourcesMacro extends WikiMacro
 
 			if ($nolink)
 			{
-				return stripslashes($r[1]);
+				return htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8');
 			}
 			else
 			{
-				return '<a href="' . Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
+				return '<a href="' . Route::url($link) . '">' . htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8') . '</a>';
 			}
 		}
 
 		// Return error message
-		return '(Resource(' . $et . ') failed)';
+		return '(Resource(' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ') failed)';
 	}
 
 	/**

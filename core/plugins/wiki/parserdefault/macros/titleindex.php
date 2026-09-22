@@ -110,7 +110,7 @@ class TitleIndexMacro extends WikiMacro
 				}
 
 				$items .= '<li><a href="' . Route::url($row->link()) . '">';
-				$items .= stripslashes(($row->get('title') ?: $row->get('pagename')) ?? '');
+				$items .= htmlspecialchars(stripslashes(($row->get('title') ?: $row->get('pagename')) ?? ''), ENT_QUOTES, 'UTF-8');
 				$items .= '</a></li>' . "\n";
 			}
 
@@ -121,6 +121,6 @@ class TitleIndexMacro extends WikiMacro
 		}
 
 		// Return error message
-		return '(No ' . $et . ' pages to display)';
+		return '(No ' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ' pages to display)';
 	}
 }

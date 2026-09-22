@@ -251,7 +251,15 @@ class VideoMacro extends WikiMacro
 		else
 		{
 			$title = isset($this->attr['title']) ? $this->attr['title'] : ucfirst($type) . ' video';
-			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title) . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			// As youtube.php: the url and the dimensions come from macro args and
+			// land in unquoted-by-nothing attributes, so a title containing a
+			// quote closes src= and adds its own handler -- and an onload there
+			// runs in the page, not inside the sandbox.
+			$safeUrl    = htmlspecialchars((string) $video_url, ENT_QUOTES, 'UTF-8');
+			$safeWidth  = preg_replace('/[^0-9%]/', '', (string) $width);
+			$safeHeight = preg_replace('/[^0-9%]/', '', (string) $height);
+
+			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $safeUrl . '" width="' . $safeWidth . '" height="' . $safeHeight . '" title="' . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8') . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 
 		// Return the emdeded youtube video

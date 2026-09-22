@@ -40,6 +40,24 @@ class Utilities
 		// Normalize path
 		$dir = self::normalizePath($dir);
 
+		// normalizePath() is Filesystem::cleanPath(): it tidies separators but
+		// leaves '..' intact, and every caller joins the result onto PATH_APP
+		// and then uploads, lists or recursively deletes under it. Refuse any
+		// traversing component in either segment rather than trusting callers
+		// to test each request value individually -- deletefolderTask tested
+		// none, and deletefileTask tested only the file name while the
+		// directory came from the same request.
+		foreach (array($dir, $subdir) as $segment)
+		{
+			foreach (preg_split('#[\\\\/]+#', (string) $segment) as $part)
+			{
+				if ($part === '..')
+				{
+					throw new Exception(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'), 403);
+				}
+			}
+		}
+
 		// Does the beginning of the $dir match the config path?
 		if (substr($dir, 0, strlen($base)) == $base)
 		{
