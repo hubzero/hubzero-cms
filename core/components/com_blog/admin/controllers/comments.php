@@ -174,7 +174,7 @@ class Comments extends AdminController
 
 				$list[$id] = $v;
 				$list[$id]->set('treename', "$indent$txt");
-				$list[$id]->set('children', count(@$children[$id]));
+				$list[$id]->set('children', count($children[$id] ?? array()));
 				$list = $this->treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level+1, $type);
 			}
 		}

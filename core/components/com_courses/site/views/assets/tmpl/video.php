@@ -184,8 +184,11 @@ elseif ($type == 'html5')
 	$presentation = $manifest->presentation;
 
 	// Determine height and width
-	$width  = (isset($presentation->width) && $presentation->width != 0) ? $presentation->width . 'px' : 'auto';
-	$height = (isset($presentation->height) && $presentation->height != 0) ? $presentation->height . 'px' : 'auto';
+	// Cast: these are interpolated into the <style> block below and the
+	// manifest they come from is a .json file in the asset filespace, i.e.
+	// contributor-controlled.
+	$width  = (isset($presentation->width) && (int) $presentation->width != 0) ? (int) $presentation->width . 'px' : 'auto';
+	$height = (isset($presentation->height) && (int) $presentation->height != 0) ? (int) $presentation->height . 'px' : 'auto';
 
 	$this->css('
 	#video-flowplayer {
@@ -242,10 +245,39 @@ if ($type == 'hubpresenter' || $type == 'html5')
 
 ?>
 <?php if ($type == 'html5') : ?>
+	<?php
+		// Neither key is guaranteed to be in the manifest, and count(null) is a
+		// TypeError on PHP 8 -- a plain video with no captions carries `media`
+		// and no `subtitles`, which fataled the page three lines after $base was
+		// repaired. The hubpresenter branch of this same file already guards
+		// `subtitles` the same way.
+		$__media = isset($presentation->media) ? (array) $presentation->media : array();
+		$__subs  = isset($presentation->subtitles) ? (array) $presentation->subtitles : array();
+	?>
 	<div id="video-container">
-		<?php if (count($presentation->media) > 0) : ?>
+		<?php if (count($__media) > 0) : ?>
+			<?php
+				// $mp4 is only assigned inside the loop below, and only for a
+				// source whose type is mp4 or m4v. A presentation carrying just
+				// webm or ogv left it undefined at the <a href> after the loop,
+				// which on PHP 8 is a warning this hub turns into a 500 for the
+				// whole page. Start it empty so the link is merely inert.
+				$mp4 = '';
+
+				// $base has never been assigned in this template either -- views
+				// do not extract() -- so all three uses of it below were the same
+				// undefined-variable 500, for any presentation carrying a local
+				// (non-http) source or any subtitle at all.
+				//
+				// The manifest's media sit beside the manifest, and the subtitle
+				// branch reads one back with filemtime(PATH_ROOT . $source), so
+				// the prefix is the manifest's own directory made relative to
+				// PATH_ROOT. com_resources' twin of this template builds its
+				// $base the same way.
+				$base = substr($media_dir, strlen(PATH_ROOT)) . DS;
+			?>
 			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->id; ?>">
-				<?php foreach ($presentation->media as $video) : ?>
+				<?php foreach ($__media as $video) : ?>
 					<?php
 						switch ($video->type)
 						{
@@ -282,15 +314,15 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							}
 						}
 					?>
-					<source src="<?php echo $source; ?>" type="<?php echo $type; ?>" />
+					<source src="<?php echo $this->escape($source); ?>" type="<?php echo $this->escape($type); ?>" />
 				<?php endforeach; ?>
 
-				<a href="<?php echo $mp4; ?>"
+				<a href="<?php echo $this->escape($mp4); ?>"
 					id="video-flowplayer"
 					data-mediaid="<?php echo $this->asset->id; ?>"></a>
 
-				<?php if (count($presentation->subtitles) > 0) : ?>
-					<?php foreach ($presentation->subtitles as $subtitle) : ?>
+				<?php if (count($__subs) > 0) : ?>
+					<?php foreach ($__subs as $subtitle) : ?>
 						<?php
 							//get file modified time
 							$source = $subtitle->source;
@@ -308,10 +340,10 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							}
 						?>
 						<div
-							data-autoplay="<?php echo $auto; ?>"
+							data-autoplay="<?php echo $this->escape($auto); ?>"
 							data-type="subtitle"
-							data-lang="<?php echo $subtitle->name; ?>"
-							data-src="<?php echo $source ?>?v=<?php echo $modified; ?>"></div>
+							data-lang="<?php echo $this->escape($subtitle->name); ?>"
+							data-src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>"></div>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</video>
@@ -499,7 +531,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	<?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
 	<div id="presenter-container">
 		<div id="presenter-header">
-			<div id="title"><?php echo $this->asset->get('title'); ?></div>
+			<div id="title"><?php echo $this->escape($this->asset->get('title')); ?></div>
 		</div><!-- /#header -->
 
 		<div id="presenter-content">
@@ -508,17 +540,17 @@ if ($type == 'hubpresenter' || $type == 'html5')
 					<ul class="no-js">
 						<?php $counter = 0; ?>
 						<?php foreach ($presentation->slides as $slide) : ?>
-							<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
+							<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
 								<?php if ($slide->type == 'Image') : ?>
-									<img src="<?php echo $content_folder . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+									<img src="<?php echo $this->escape($content_folder . DS . $slide->media); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 								<?php else : ?>
 									<video class="slidevideo">
 										<?php foreach ($slide->media as $source): ?>
-											<source src="<?php echo $content_folder . DS . $source->source; ?>" />
+											<source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
 										<?php endforeach; ?>
-										<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+										<a href="<?php echo $this->escape($content_folder . DS . $slide->media[0]->source); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 									</video>
-									<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement" />
+									<img src="<?php echo $this->escape($content_folder . DS . $slide->media[3]->source); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
 								<?php endif; ?>
 							</li>
 							<?php $counter++; ?>
@@ -697,7 +729,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 							&& $presentation->videoPosition == "left"
 							&& strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
 			<div id="presenter-right">
-				<div id="media" class="<?php echo $cls; ?>">
+				<div id="media" class="<?php echo $this->escape($cls); ?>">
 					<?php if (strtolower($presentation->type) == 'video') : ?>
 						<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $this->asset->get('id'); ?>">
 							<?php foreach ($presentation->media as $source): ?>
@@ -713,17 +745,17 @@ break;
 break;
 									}
 								?>
-								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
+								<source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" type='<?php echo $this->escape($type); ?>'>
 							<?php endforeach; ?>
-							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer"></a>
+							<a href="<?php echo $this->escape($content_folder . DS . $presentation->media[0]->source); ?>" id="flowplayer"></a>
 
 							<?php if (isset($subs) && count($subs) > 0) : ?>
 								<?php foreach ($subs as $sub) : ?>
 									<div
-										data-autoplay="<?php echo $sub->autoplay; ?>"
+										data-autoplay="<?php echo $this->escape($sub->autoplay); ?>"
 										data-type="subtitle"
-										data-lang="<?php echo $sub->name; ?>"
-										data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime( $sub->source ); ?>"></div>
+										data-lang="<?php echo $this->escape($sub->name); ?>"
+										data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo $this->escape(filemtime($sub->source)); ?>"></div>
 								<?php endforeach; ?>
 							<?php endif; ?>
 
@@ -731,9 +763,9 @@ break;
 					<?php else : ?>
 						<audio id="player" preload="auto" controls="controls">
 							<?php foreach ($presentation->media as $source): ?>
-								<source src="<?php echo $content_folder . DS . $source->source; ?>" />
+								<source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
 							<?php endforeach; ?>
-							<a href="<?php echo $content_folder . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $presentation->duration; } ?>"></a>
+							<a href="<?php echo $this->escape($content_folder . DS . $presentation->media[0]->source); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $this->escape($presentation->duration); } ?>"></a>
 						</audio>
 					<?php endif; ?>
 					<div id="video-subtitles"></div>
@@ -758,7 +790,7 @@ $last_slide_id = 0; ?>
 											$thumb = $content_folder.DS.$slide->media;
 										}
 									?>
-									<img src="<?php echo $thumb; ?>" alt="<?php echo $slide->title; ?>" />
+									<img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 									<span>
 										<?php
 											$num++;
@@ -772,7 +804,7 @@ $last_slide_id = 0; ?>
 											}
 										?>
 									</span>
-									<span class="time"><?php echo $slide->time; ?></span>
+									<span class="time"><?php echo $this->escape($slide->time); ?></span>
 									<div id="list-slider-<?php echo $counter; ?>" class="list-slider"></div>
 									<div class="list-progress">00:00/00:00</div>
 								</li>
@@ -812,16 +844,16 @@ $last_slide_id = 0; ?>
 					case 'mov':
 					case 'mp4':
 					case 'm4v':
-						echo '<source src="' . $path . '" type="video/mp4" />';
+						echo '<source src="' . $this->escape($path) . '" type="video/mp4" />';
 					break;
 
 					case 'ogg':
 					case 'ogv':
-						echo '<source src="' . $path . '" type="video/ogg" />';
+						echo '<source src="' . $this->escape($path) . '" type="video/ogg" />';
 					break;
 
 					case 'webm':
-						echo '<source src="' . $path . '" type="video/webm" />';
+						echo '<source src="' . $this->escape($path) . '" type="video/webm" />';
 					break;
 				}
 			?>

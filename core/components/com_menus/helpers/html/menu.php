@@ -332,7 +332,7 @@ class HtmlMenu
 
 				$list[$id] = $v;
 				$list[$id]->treename = "$indent$txt";
-				$list[$id]->children = count(@$children[$id]);
+				$list[$id]->children = count($children[$id] ?? array());
 
 				$list = self::treeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
 			}
