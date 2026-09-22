@@ -362,11 +362,53 @@ class Members extends AdminController
 		$fields = Request::getArray('fields', array(), 'post');
 
 		// Load the profile
-		$user = Member::oneOrNew($fields['id']);
+		$user = Member::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
 
 		// Get the user before changes so we can
 		// compare how data changed later on
 		$prev = clone $user;
+
+		$iAmSuperAdmin = User::authorise('core.admin');
+
+		// $fields is the whole request array and User::save() binds every real
+		// column, so what must not be bindable has to come out before set().
+		//
+		// The password changes through newpass, below, behind the password rules;
+		// the users table's own password column is not the way in. It is still
+		// read as a fallback by Password::passwordMatches() for an account with
+		// no #__users_password row, so a posted hash there would log in.
+		unset($fields['password']);
+
+		// A non-super-admin may not edit a super admin. removeTask() already
+		// refuses to delete one on exactly this test; this method never made it,
+		// so any Administrator -- core.manage and core.edit here, no core.admin --
+		// could change a super admin's e-mail, block them, or drop their Super
+		// Users membership through accessgroups below.
+		if (!$iAmSuperAdmin && !$user->isNew() && Access::check($user->get('id'), 'core.admin'))
+		{
+			Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+			return $this->cancelTask();
+		}
+
+		// ...nor hand out a group that carries core.admin. User::save() replaces
+		// the user's whole group map from accessgroups, so a posted
+		// fields[accessgroups][]=<Super Users> made any Administrator a super
+		// admin -- of themselves, since fields[id] is theirs to choose. The form's
+		// picker hides those groups from a non-super-admin
+		// (Html::access('usergroups', ..., true)); the server did not look. This
+		// is the refusal the access-group editor already makes, for the same
+		// reason.
+		if (!$iAmSuperAdmin && isset($fields['accessgroups']))
+		{
+			foreach ((array) $fields['accessgroups'] as $gid)
+			{
+				if (Access::checkGroup((int) $gid, 'core.admin'))
+				{
+					Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+					return $this->editTask($user);
+				}
+			}
+		}
 
 		// Set the incoming data
 		$user->set($fields);
@@ -485,8 +527,6 @@ class Members extends AdminController
 		}
 
 		// Make sure that we are not removing ourself from Super Admin group
-		$iAmSuperAdmin = User::authorise('core.admin');
-
 		if ($iAmSuperAdmin && User::get('id') == $user->get('id'))
 		{
 			// Check that at least one of our new groups is Super Admin
@@ -829,12 +869,21 @@ class Members extends AdminController
 			return $this->cancelTask();
 		}
 
+		$iAmSuperAdmin = User::authorise('core.admin');
+
 		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
+
+			// A non-super-admin may not act on a super admin, as in removeTask().
+			if (!$iAmSuperAdmin && Access::check($user->get('id'), 'core.admin'))
+			{
+				Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+				continue;
+			}
 
 			if ($state)
 			{
@@ -892,12 +941,21 @@ class Members extends AdminController
 			return $this->cancelTask();
 		}
 
+		$iAmSuperAdmin = User::authorise('core.admin');
+
 		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
+
+			// A non-super-admin may not act on a super admin, as in removeTask().
+			if (!$iAmSuperAdmin && Access::check($user->get('id'), 'core.admin'))
+			{
+				Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+				continue;
+			}
 
 			$prev = $user->get('approved');
 
@@ -1118,12 +1176,22 @@ class Members extends AdminController
 			return $this->cancelTask();
 		}
 
+		$iAmSuperAdmin = User::authorise('core.admin');
+
 		$i = 0;
 
 		foreach ($ids as $id)
 		{
 			// Load the profile
 			$user = Member::oneOrFail(intval($id));
+
+			// A non-super-admin may not act on a super admin, as in removeTask().
+			if (!$iAmSuperAdmin && Access::check($user->get('id'), 'core.admin'))
+			{
+				Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+				continue;
+			}
+
 			// Block user
 			$user->set('block', $state);
 
