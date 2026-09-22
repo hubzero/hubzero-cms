@@ -94,16 +94,16 @@ if ($revertAllowed && $this->pub->accepted())
 		<div class="col span6" id="c-selector">
 			<div class="c-inner">
 		<?php } ?>
-				<h4><?php echo $this->pub->title . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->pub->get('version_label') . ' (' . $status . ')</span>'; ?></h4>
+				<h4><?php echo $this->escape($this->pub->title) . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->escape($this->pub->get('version_label')) . ' (' . $this->escape($status) . ')</span>'; ?></h4>
 				<table class="tbl-panel">
 					<tbody>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>:</td>
-							<td class="tbl-input"><span><?php echo $this->pub->title; ?></span></td>
+							<td class="tbl-input"><span><?php echo $this->escape($this->pub->title); ?></span></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL'); ?>:</td>
-							<td class="tbl-input"><span <?php if (($this->pub->versionAlias == 'dev' || $this->pub->state == 4) && $this->task != 'edit' && ($this->project->access('content'))) { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->pub->get('version_label');  ?></span> <?php if ($this->pub->main == 1) { echo '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT') . ')</span>'; } ?></td>
+							<td class="tbl-input"><span <?php if (($this->pub->versionAlias == 'dev' || $this->pub->state == 4) && $this->task != 'edit' && ($this->project->access('content'))) { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->escape($this->pub->get('version_label'));  ?></span> <?php if ($this->pub->main == 1) { echo '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT') . ')</span>'; } ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_NUMBER'); ?>:</td>

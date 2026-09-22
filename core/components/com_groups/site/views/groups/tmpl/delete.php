@@ -46,7 +46,7 @@ $this->css()
 		<fieldset>
 			<legend><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_HEADING'); ?></legend>
 
-	 		<p class="warning"><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_WARNING', $this->group->get('description')) . '<br /><br />' . $this->log; ?></p>
+	 		<p class="warning"><?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_WARNING', $this->escape($this->group->get('description'))) . '<br /><br />' . $this->log; ?></p>
 
 			<div class="form-group form-check">
 				<label for="confirmdel">

@@ -90,7 +90,7 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Group:</th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
 									<a href="<?php echo $groupLink; ?>">
-										<?php echo $this->group->get('description'); ?>
+										<?php echo $this->escape($this->group->get('description')); ?>
 									</a>
 								</td>
 							</tr>

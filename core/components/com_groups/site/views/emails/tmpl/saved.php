@@ -146,7 +146,7 @@ $onOffLabel = function($v)
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Group:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
-									<?php echo $this->group->get('description'); ?>
+									<?php echo $this->escape($this->group->get('description')); ?>
 								</td>
 							</tr>
 							<tr>

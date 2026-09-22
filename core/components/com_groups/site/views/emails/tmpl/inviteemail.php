@@ -89,7 +89,7 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
 							<tr>
 								<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Group:'); ?></th>
 								<td style="text-align: left; padding: 0 0.5em;" align="left">
-									<?php echo $this->group->get('description'); ?>
+									<?php echo $this->escape($this->group->get('description')); ?>
 								</td>
 							</tr>
 							<tr>
@@ -134,7 +134,7 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
 										</p>
 									<?php } else { ?>
 										<p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
-											<?php echo Lang::txt('You\'ve been invited to the "%s" group!', $this->group->get('description')); ?>
+											<?php echo Lang::txt('You\'ve been invited to the "%s" group!', $this->escape($this->group->get('description'))); ?>
 										</p>
 									<?php } ?>
 									<div style="text-align: center; margin: 2rem 0 1rem;">

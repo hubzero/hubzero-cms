@@ -97,12 +97,12 @@ $this->css($css);
 		<tr>
 			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
 				<p>
-					<?php echo $this->xprofile->get('name'); ?>
+					<?php echo $this->escape($this->xprofile->get('name')); ?>
 					<?php if ($this->xprofile->get('orginization')) : ?>
-						/ <?php echo $this->xprofile->get('orginization'); ?>
+						/ <?php echo $this->escape($this->xprofile->get('orginization')); ?>
 					<?php endif; ?>
-					has requested the new account <b><?php echo $this->xprofile->get('username'); ?></b>
-					(<?php echo $this->xprofile->get('email'); ?>) on <?php echo $this->sitename; ?>.
+					has requested the new account <b><?php echo $this->escape($this->xprofile->get('username')); ?></b>
+					(<?php echo $this->escape($this->xprofile->get('email')); ?>) on <?php echo $this->sitename; ?>.
 				</p>
 
 				<p>
