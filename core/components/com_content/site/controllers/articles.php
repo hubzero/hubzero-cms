@@ -1683,9 +1683,16 @@ class Articles extends SiteController
 		$data = Request::getArray('fields', array(), 'post');
 		$context = "com_content.article.$id";
 
-		$model = Article::oneOrNew($id)->set($data);
+		// $asset and $catId are assigned in editTask, not here, so the checks
+		// below were authorising against a null asset -- the root, not this
+		// article -- and the category branch could never be taken. Both also
+		// raised an undefined-variable warning on every save.
+		$asset = $id ? $context : 'com_content';
+		$catId = isset($data['catid']) ? (int) $data['catid'] : Request::getInt('catid');
 
-		// Check general edit permission first.
+		$model = Article::oneOrNew($id);
+
+		// Check general edit permission first (against the stored owner).
 		$authorised = false;
 
 		if (User::authorise('core.edit', $context))
@@ -1702,25 +1709,7 @@ class Articles extends SiteController
 			}
 		}
 
-		// Check edit state permission.
-		if ($id)
-		{
-			// Existing item
-			$authorised = User::authorise('core.edit.state', $asset);
-		}
-		else
-		{
-			// New item.
-			if ($catId)
-			{
-				$authorised = User::authorise('core.edit.state', 'com_content.category.' . $catId);
-			}
-			else
-			{
-				$authorised = User::authorise('core.edit.state', 'com_content');
-			}
-		}
-
+		// New items require create permission
 		if (empty($model->id))
 		{
 			$authorised = User::authorise('core.create', 'com_content') || count(User::getAuthorisedCategories('com_content', 'core.create'));
@@ -1730,6 +1719,19 @@ class Articles extends SiteController
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
+
+		// Changing the published state requires the edit.state permission
+		$canEditState = $id
+			? User::authorise('core.edit.state', $asset)
+			: ($catId
+				? User::authorise('core.edit.state', 'com_content.category.' . $catId)
+				: User::authorise('core.edit.state', 'com_content'));
+		if (!$canEditState)
+		{
+			unset($data['state'], $data['featured']);
+		}
+
+		$model->set($data);
 
 		if ($model->isCheckedOut() && $model->get('checked_out') != User::get('id'))
 		{
