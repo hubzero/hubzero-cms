@@ -159,7 +159,7 @@ class Sections extends SiteController
 				'action'      => ($fields['id'] ? 'updated' : 'created'),
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url('index.php?option=' . $this->_option)
@@ -248,7 +248,7 @@ class Sections extends SiteController
 				'action'      => 'deleted',
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . $section->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->_option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url('index.php?option=' . $this->_option)

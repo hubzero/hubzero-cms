@@ -620,7 +620,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				'action'      => ($entry['id'] ? 'updated' : 'created'),
 				'scope'       => 'blog.entry',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . $row->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => Route::url($row->link())
@@ -763,7 +763,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				'scope'       => 'blog.entry.comment',
 				'scope_id'    => $comment->get('id'),
 				'anonymous'   => $comment->get('anonymous', 0),
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . $entry->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $entry->get('title'),
 					'entry_id' => $entry->get('id'),
@@ -831,7 +831,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 				'action'      => 'deleted',
 				'scope'       => 'blog.entry.comment',
 				'scope_id'    => $comment->get('id'),
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . $entry->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $entry->get('title'),
 					'entry_id' => $entry->get('id'),

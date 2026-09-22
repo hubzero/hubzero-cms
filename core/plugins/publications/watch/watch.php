@@ -176,7 +176,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 				'action'      => $this->action . 'd',
 				'scope'       => 'publication',
 				'scope_id'    => $this->publication->get('id'),
-				'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . $this->publication->get('title') . '</a>'),
+				'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $this->publication->get('title'),
 					'url'   => $url
