@@ -310,11 +310,16 @@ class Wishlist extends Relational
 	}
 
 	/**
-	 * Remove one or more owners
+	 * Remove owners from a wishlist
 	 *
-	 * @param   string  $what  Owner type to remove
-	 * @param   mixed   $data  integer|string|array
-	 * @return  object
+	 * A native owner -- the private list's own member, the underlying object's
+	 * contributors, and every member of a native group -- cannot be removed. The
+	 * settings page hides Remove for them; this is the server-side half of that
+	 * rule, which the legacy table method enforced.
+	 *
+	 * @param   string  $what  individuals|advisory|groups
+	 * @param   mixed   $data  One id or a list of ids (or user/group objects)
+	 * @return  boolean
 	 */
 	public function removeOwner($what, $data)
 	{
@@ -322,21 +327,18 @@ class Wishlist extends Relational
 
 		$what = strtolower($what);
 
-		switch ($what)
+		if (!in_array($what, array('advisory', 'individuals', 'groups')))
 		{
-			case 'advisory':
-			case 'individuals':
-				$tbl = new Owner($this->_db);
-			break;
-
-			case 'groups':
-				$tbl = new OwnerGroup($this->_db);
-			break;
-
-			default:
-				throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
-			break;
+			throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
 		}
+
+		// The ORM rewrite of this component kept these calls as
+		// (new Owner($db))->delete_owner(...) and ->delete_owner_group(...),
+		// methods of the JTable classes it replaced. Neither exists on the
+		// Relational models, so every Remove on the settings page has been a
+		// BadMethodCallException (a 500) since that rewrite. Resolve the row with
+		// the finders the models already carry and destroy() it.
+		$native = $this->getOwners($this->config('group', 'hubadmin'), 1);
 
 		foreach ($data as $result)
 		{
@@ -346,24 +348,38 @@ class Wishlist extends Relational
 				case 'individuals':
 					$user_id = (int) $this->_userId($result);
 
-					if (!$tbl->delete_owner($this->get('id'), $user_id, $this->config('group', 'hubadmin')))
+					if (!$user_id || in_array($user_id, (array) $native['individuals']))
 					{
-						$this->addError($tbl->getError());
+						continue 2;
+					}
+
+					$record = Owner::oneByWishlistAndUser($this->get('id'), $user_id);
+
+					if ($record->get('id') && !$record->destroy())
+					{
+						$this->addError($record->getError());
 					}
 				break;
 
 				case 'groups':
 					$group_id = (int) $this->_groupId($result);
 
-					if (!$tbl->delete_owner_group($this->get('id'), $group_id, $this->config('group', 'hubadmin')))
+					if (!$group_id || in_array($group_id, (array) $native['groups']))
 					{
-						$this->addError($tbl->getError());
+						continue 2;
+					}
+
+					$record = Ownergroup::oneByWishlistAndGroup($this->get('id'), $group_id);
+
+					if ($record->get('id') && !$record->destroy())
+					{
+						$this->addError($record->getError());
 					}
 				break;
 			}
 		}
 
-		return $this;
+		return !$this->getError();
 	}
 
 	/**

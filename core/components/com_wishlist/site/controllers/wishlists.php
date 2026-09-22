@@ -674,7 +674,15 @@ class Wishlists extends SiteController
 			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
-		// Deeleting a user/group
+		// Check for request forgeries -- BEFORE the owner removal below, and
+		// accepting the token from the query string as well as the body. The
+		// three Remove links on the settings page are GETs that carry the
+		// token; the settings form POSTs it. The check used to sit after this
+		// branch and take POST only, so ?action=delete&user=N stripped an owner
+		// from a list on a bare GET -- a page a list manager visited could do it.
+		Request::checkToken(['get', 'post']);
+
+		// Deleting a user/group
 		if ($action == 'delete')
 		{
 			$user  = Request::getInt('user', 0);
@@ -697,9 +705,6 @@ class Wishlists extends SiteController
 			);
 			return;
 		}
-
-		// Check for request forgeries
-		Request::checkToken();
 
 		$fields = Request::getArray('fields', array(), 'post');
 

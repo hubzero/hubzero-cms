@@ -131,7 +131,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($instance->get('cn')); ?></td>
 								<td><?php echo count($members); ?></td>
 								<td>
-									<?php echo ($n>1 && !in_array($groups[$i], $native['groups'])) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]) . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
+									<?php echo ($n>1 && !in_array($groups[$i], $native['groups'])) ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i] . '&' . Session::getFormToken() . '=1') . '" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
 								</td>
 							</tr>
 							<?php
@@ -196,7 +196,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($kuser->get('name')); ?></td>
 								<td><?php echo $this->escape($kuser->get('username')); ?></td>
 								<td>
-									<?php echo ($n> 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]).'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
+									<?php echo ($n> 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="'.Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i] . '&' . Session::getFormToken() . '=1').'" class="delete">'.Lang::txt('COM_WISHLIST_OPTION_REMOVE').'</a>' : ''; ?>
 								</td>
 							</tr>
 							<?php
@@ -263,7 +263,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 									<td><?php echo $this->escape($quser->get('name')); ?></td>
 									<td><?php echo $this->escape($quser->get('username')); ?></td>
 									<td>
-										<a href="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></a>
+										<a href="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i] . '&' . Session::getFormToken() . '=1'); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></a>
 									</td>
 								</tr>
 								<?php
