@@ -2230,6 +2230,11 @@ class Wishlists extends SiteController
 	 */
 	public function deletereplyTask()
 	{
+		// This is reached by a GET link, so the token has to be accepted from the
+		// query string -- Comment::link() puts it there. Without any check, a page
+		// a logged-in user visited could delete their replies for them.
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$row = Comment::oneOrFail(Request::getInt('replyid', 0));
 

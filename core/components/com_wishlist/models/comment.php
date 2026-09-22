@@ -49,12 +49,17 @@ class Comment extends ItemComment
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))
 		{
+			// deletereplyTask() now requires a form token, and these two cases are the
+			// only producers of its URL, so the token rides on the link. (The 'edit'
+			// case has always built the delete URL; there is no edit-reply task.)
 			case 'edit':
-				$link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id');
+				$link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id')
+				      . '&' . \Session::getFormToken() . '=1';
 			break;
 
 			case 'delete':
-				$link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id');
+				$link .= 'index.php?option=com_wishlist&task=deletereply&replyid=' . $this->get('id')
+				      . '&' . \Session::getFormToken() . '=1';
 			break;
 
 			case 'reply':
