@@ -931,20 +931,15 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$no_html = Request::getInt('no_html', 0);
-		if ($no_html)
-		{
-			$type = strtolower(Request::getWord('type', 'file'));
-			if (!in_array($type, array('file', 'image', 'text', 'link')))
-			{
-				$type = 'file';
-			}
 
-			$view = $this->view('edit_' . $type, 'post');
-		}
-		else
-		{
-			$view =  $this->view('edit', 'post');
-		}
+		// One template for both paths. The AJAX branch used to dispatch to
+		// 'edit_' . $type, and no edit_<type>.php has ever existed in
+		// views/post/tmpl/ -- only edit.php. View::loadTemplate() then falls back
+		// to the fixed name 'default', which is the post closeup, rendered
+		// without $this->post: a fatal on every ?no_html=1 edit. edit.php already
+		// threads $this->no_html through its form action and a hidden input, so
+		// it is the right template for the AJAX case too.
+		$view = $this->view('edit', 'post');
 		$view->name       = $this->_name;
 		$view->option     = $this->option;
 		$view->member     = $this->member;

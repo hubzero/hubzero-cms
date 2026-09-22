@@ -1028,20 +1028,15 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$no_html = Request::getInt('no_html', 0);
-		if ($no_html)
-		{
-			$type = strtolower(Request::getWord('type', 'file'));
-			if (!in_array($type, array('file', 'image', 'text', 'link')))
-			{
-				$type = 'file';
-			}
 
-			$view = $this->view('edit_' . $type, 'post');
-		}
-		else
-		{
-			$view = $this->view('edit', 'post');
-		}
+		// One template for both paths. The AJAX branch used to dispatch to
+		// 'edit_' . $type, and no edit_<type>.php has ever existed in
+		// views/post/tmpl/ -- only edit.php. View::loadTemplate() then falls back
+		// to the fixed name 'default', which is the post closeup, rendered
+		// without $this->post: a fatal on every ?no_html=1 edit. edit.php already
+		// threads $this->no_html through its form action, so it is the right
+		// template for the AJAX case too.
+		$view = $this->view('edit', 'post');
 		$view->name        = $this->_name;
 		$view->option      = $this->option;
 		$view->group       = $this->group;
@@ -1586,6 +1581,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$__coll = new \Components\Collections\Models\Collection($post->get('collection_id'));
 		if (!$__coll->get('id') || $__coll->get('object_type') != 'group'
 		 || $__coll->get('object_id') != $this->group->get('gidNumber'))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
+			return $this->_collections();
+		}
+
+		// views/collection/tmpl/default.php offers Remove to the post's creator or
+		// to a holder of access-manage-collection, which _authorize() grants to
+		// managers only. This method asked for nothing more than
+		// access-create-item, which every member holds -- so any member of the
+		// group could remove any repost from any of its boards, a control the page
+		// never offered them. Match the view: the creator, or someone who may
+		// moderate the board. The members plugin's twin already tests this.
+		if ($post->get('created_by') != User::get('id')
+		 && !$__coll->canBeModeratedBy())
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
