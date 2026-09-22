@@ -35,18 +35,12 @@ class Postsv1_0 extends ApiController
 	 */
 	protected function _canManageCollection($collectionId)
 	{
-		$collection = new Collection((int) $collectionId);
-		if (!$collection->get('id'))
-		{
-			return false;
-		}
-		$uid = App::get('authn')['user_id'];
-		if ($collection->get('object_type') == 'group')
-		{
-			$group = \Hubzero\User\Group::getInstance($collection->get('object_id'));
-			return ($group && ($group->isMember($uid) || $group->isManager($uid)));
-		}
-		return ($collection->get('object_id') == $uid) || ($collection->get('created_by') == $uid);
+		// The one predicate the site uses for "may this user post to this board".
+		// This method used to carry its own copy, and the copy had drifted: it
+		// also admitted created_by == uid, which the site does not -- so the member
+		// who CREATED a group board could still post to it through the API after
+		// leaving the group, while the site refused them. One implementation now.
+		return (new Collection((int) $collectionId))->canBePostedToBy((int) App::get('authn')['user_id']);
 	}
 
 	/**

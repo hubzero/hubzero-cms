@@ -9,6 +9,7 @@ namespace Components\Collections\Site\Controllers;
 
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Archive;
+use Hubzero\Base\ItemList;
 use Components\Collections\Models\Post;
 use Components\Collections\Models\Item;
 use Components\Collections\Tables;
@@ -98,6 +99,53 @@ class Posts extends SiteController
 	}
 
 	/**
+	 * The boards the current user may move a post onto, as the ItemList the edit
+	 * form iterates: their own boards and their groups', which is what
+	 * Archive::mine() returns for collectTask()'s repost form.
+	 *
+	 * mine('groups') leaves out a group board that only managers may post to when
+	 * the caller is not a manager, while canBePostedToBy() -- the test saveTask()
+	 * enforces -- admits any member. The post's current board is kept selectable
+	 * in that gap, or an edit that never touched the select would relocate the
+	 * post to whatever option came first.
+	 *
+	 * @param   object  $current  The post's current board, or null
+	 * @return  \Hubzero\Base\ItemList
+	 */
+	protected function _postableBoards($current = null)
+	{
+		$boards = array();
+		$seen   = array();
+
+		foreach ((array) $this->model->mine() as $row)
+		{
+			$boards[] = new Collection($row);
+			$seen[(int) $row->id] = true;
+		}
+
+		foreach ((array) $this->model->mine('groups') as $rows)
+		{
+			foreach ((array) $rows as $row)
+			{
+				if (!isset($seen[(int) $row->id]))
+				{
+					$boards[] = new Collection($row);
+					$seen[(int) $row->id] = true;
+				}
+			}
+		}
+
+		if ($current && $current->exists()
+		 && !isset($seen[(int) $current->get('id')])
+		 && $current->canBePostedToBy())
+		{
+			$boards[] = $current;
+		}
+
+		return new ItemList($boards);
+	}
+
+	/**
 	 * Display a form for editing an entry
 	 *
 	 * @return  string
@@ -119,15 +167,6 @@ class Posts extends SiteController
 
 		$this->view->collection = $this->model->collection(Request::getString('board', 0));
 
-		// Get all collections for a user
-		$this->view->collections = $this->model->collections();
-		if (!$this->view->collections->total())
-		{
-			$this->view->collection->setup(User::get('id'), 'member');
-			$this->view->collections = $this->model->collections();
-			$this->view->collection  = $this->model->collection(Request::getString('board', 0));
-		}
-
 		// Load the post
 		$this->view->entry = $this->view->collection->post($id);
 		if (!$this->view->collection->exists() && $this->view->entry->exists())
@@ -145,6 +184,28 @@ class Posts extends SiteController
 		 && !(new Collection($this->view->entry->get('collection_id')))->isReadableBy())
 		{
 			App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
+		}
+
+		// The boards this post may be moved to. $this->model is the component's
+		// UNSCOPED archive -- deliberately, so displayTask() can show any post --
+		// and its collections() therefore listed every board on the hub, private
+		// ones included, as <option>s for anyone who opened this form. Offer what
+		// the caller may actually post to instead: their own boards and their
+		// groups', the same two sources collectTask()'s repost form draws on.
+		// saveTask() enforces canBePostedToBy() on whatever is submitted, so
+		// this closes the listing, not the write.
+		$this->view->collections = $this->_postableBoards($this->view->collection);
+		if (!$this->view->collections->total())
+		{
+			$this->view->collection->setup(User::get('id'), 'member');
+			$this->view->collections = $this->_postableBoards($this->view->collection);
+
+			// A board named in the request only if the post did not already
+			// resolve one -- re-resolving unconditionally would discard it.
+			if (!$this->view->collection->exists())
+			{
+				$this->view->collection = $this->model->collection(Request::getString('board', 0));
+			}
 		}
 
 		// Are we removing an asset?
