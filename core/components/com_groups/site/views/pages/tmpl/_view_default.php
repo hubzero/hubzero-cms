@@ -90,8 +90,8 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 		{
 			$value = implode('<br />', $value);
 		}
-		echo '<div class="input-wrap" id="input-' . $field->get('name') . '">';
-		echo '<h4>' . $field->get('label') . '</h4>';
+		echo '<div class="input-wrap" id="input-' . $this->escape($field->get('name')) . '">';
+		echo '<h4>' . $this->escape($field->get('label')) . '</h4>';
 		echo '<div class="input-value">';
 		echo $value;
 		echo '</div>';

@@ -62,11 +62,11 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 			<tr class="row<?php echo $i % 2; ?>">
 				<td>
 					<a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('<?php echo $row->get('id'); ?>', '<?php echo $this->escape(addslashes($row->get('name'))); ?>');">
-						<?php echo $row->get('name'); ?>
+						<?php echo $this->escape($row->get('name')); ?>
 					</a>
 				</td>
 				<td align="center">
-					<?php echo $row->get('username'); ?>
+					<?php echo $this->escape($row->get('username')); ?>
 				</td>
 				<td align="left">
 					<?php

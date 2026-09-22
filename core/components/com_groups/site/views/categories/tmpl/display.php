@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
 				<div class="item-container">
 					<div class="item-title">
 						<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>">
-							<?php echo $category->get('title'); ?>
+							<?php echo $this->escape($category->get('title')); ?>
 						</a>
 					</div>
 

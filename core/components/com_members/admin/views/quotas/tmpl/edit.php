@@ -98,11 +98,11 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></th>
-						<td><?php echo $this->row->get('username'); ?></td>
+						<td><?php echo $this->escape($this->row->get('username')); ?></td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></th>
-						<td><?php echo $this->row->get('name'); ?></td>
+						<td><?php echo $this->escape($this->row->get('name')); ?></td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE'); ?></th>

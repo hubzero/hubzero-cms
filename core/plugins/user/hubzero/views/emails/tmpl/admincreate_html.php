@@ -99,7 +99,7 @@ $base = rtrim($base, '/');
 		<tr>
 			<td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
 				<p>
-					<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->user['name'] . ' (' . $this->user['email'] . ')', $this->user['username'], $this->sitename); ?>
+					<?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ADMIN_ACCOUNT_REQUESTED', $this->escape($this->user['name']) . ' (' . $this->escape($this->user['email']) . ')', $this->escape($this->user['username']), $this->sitename); ?>
 				</p>
 
 				<p>

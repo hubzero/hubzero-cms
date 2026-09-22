@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
 				<th><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_REDIRECT_URI'); ?></th>
 				<td>
 					<?php foreach (explode(' ', $this->application->get('redirect_uri')) as $uri) : ?>
-						<code><?php echo $uri; ?></code> 
+						<code><?php echo $this->escape($uri); ?></code> 
 					<?php endforeach; ?>
 				</td>
 			</tr>

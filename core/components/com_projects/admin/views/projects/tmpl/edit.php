@@ -160,7 +160,7 @@ if ($this->model->groupOwner())
 						<?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
 						<select name="owned_by_user" class="block">
 							<?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
-								<option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) { echo 'selected="selected"'; } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) { echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'; } ?></option>
+								<option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) { echo 'selected="selected"'; } ?>><?php echo $this->escape($member->fullname); ?> <?php if ($member->userid == $this->model->get('owned_by_user')) { echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'; } ?></option>
 							<?php } ?>
 						</select>
 					</label>
@@ -180,7 +180,7 @@ if ($this->model->groupOwner())
 										continue;
 									}
 									$used[] = $g->gidNumber; ?>
-									<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+									<option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) { echo 'selected="selected"'; } ?>><?php echo $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30)) . ' (' . $this->escape($g->cn) . ')'; ?></option>
 								<?php } ?>
 							</select>
 						</label>
@@ -312,7 +312,7 @@ if ($this->model->groupOwner())
 				<tbody>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
-						<td><?php echo $this->model->get('created'); ?> <?php echo Lang::txt('COM_PROJECTS_BY').' ' . $this->model->creator('name') . ' (' . $this->model->creator('username') . ')'; ?></td>
+						<td><?php echo $this->model->get('created'); ?> <?php echo Lang::txt('COM_PROJECTS_BY').' ' . $this->escape($this->model->creator('name')) . ' (' . $this->escape($this->model->creator('username')) . ')'; ?></td>
 					</tr>
 					<tr>
 						<th scope="row"><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
@@ -353,8 +353,9 @@ if ($this->model->groupOwner())
 						<td><?php if ($this->last_activity) {
 							$activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
 							$activity = preg_replace('/&#58;/', "", $activity);
+					$activity = $this->escape(strip_tags($activity));
 							?>
-							<?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->creator->name; ?></span> <?php echo $activity; ?>
+							<?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->escape($this->last_activity->creator->name); ?></span> <?php echo $activity; ?>
 							<?php } else { echo Lang::txt('COM_PROJECTS_NA'); }?>
 						</td>
 					</tr>

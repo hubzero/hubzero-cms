@@ -149,10 +149,10 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 			<?php
 			// Reviewers
 			if ($isReviewer && $this->row->owner()):
-				echo '<span class="block owner-email">' . $this->row->owner('email') . '</span>';
+				echo '<span class="block owner-email">' . $this->escape($this->row->owner('email')) . '</span>';
 
 				if ($this->row->owner('phone')):
-					echo '<span class="block owner-telephone"> Tel.' . $this->row->owner('phone') . '</span>';
+					echo '<span class="block owner-telephone"> Tel.' . $this->escape($this->row->owner('phone')) . '</span>';
 				endif;
 			endif;
 			?>

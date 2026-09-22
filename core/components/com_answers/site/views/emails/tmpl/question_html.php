@@ -117,7 +117,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
 						<tbody>
 							<tr>
 								<td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->question->subject; ?></div>
+									<div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->escape($this->question->subject); ?></div>
 								</td>
 							</tr>
 							<tr>

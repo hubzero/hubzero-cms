@@ -140,7 +140,7 @@ if (!empty($errors))
 								echo '<tr class="cartItemDiscount">';
 
 								echo '<td class="cartDiscountName"><!--span>Discount:</span--> ';
-								echo $itemsPerks[$sId]->name;
+								echo $this->escape($itemsPerks[$sId]->name);
 								echo '</td>';
 
 								echo '<td>';
@@ -194,7 +194,7 @@ if (!empty($errors))
 
 						foreach ($genericPerks as $perk)
 						{
-							echo '<p class="cartDiscountName"><span>Discount</span>: ' . $perk->name . ': ';
+							echo '<p class="cartDiscountName"><span>Discount</span>: ' . $this->escape($perk->name) . ': ';
 							if ($perk->discount > 0)
 							{
 								echo '-$' . number_format($perk->discount, 2);

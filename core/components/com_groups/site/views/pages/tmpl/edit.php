@@ -234,7 +234,7 @@ if ($this->page->get('id'))
 									<?php if ($page->get('id') == $id) { continue; } ?>
 									<?php $sel = ($parent == $page->get('id')) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
-										<?php echo $page->heirarchyIndicator(' &ndash; ') . $page->get('title'); ?>
+										<?php echo $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
@@ -251,7 +251,7 @@ if ($this->page->get('id'))
 
 									<?php $sel = ($page->get('title') == $title) ? 'selected="selected"' : ''; ?>
 									<option <?php echo $sel; ?> data-parent="<?php echo $page->get('parent'); ?>" value="<?php echo $page->get('lft'); ?>">
-										<?php echo $page->get('lft') . ' ' . $page->get('title'); ?>
+										<?php echo $page->get('lft') . ' ' . $this->escape($page->get('title')); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>

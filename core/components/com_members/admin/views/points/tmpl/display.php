@@ -46,7 +46,7 @@ $this->css();
 					}
 				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<th scope="row"><?php echo $name; ?></th>
+					<th scope="row"><?php echo $this->escape($name); ?></th>
 					<td><?php echo $row->uid; ?></td>
 					<td><?php echo $row->earnings; ?></td>
 					<td><?php echo $row->balance; ?></td>

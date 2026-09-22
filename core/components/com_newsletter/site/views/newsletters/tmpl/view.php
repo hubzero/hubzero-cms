@@ -63,7 +63,7 @@ $this->css()
 					<?php if ($newsletter->published) : ?>
 						<li>
 							<a class="<?php if ($this->id == $newsletter->id) { echo "active"; } ?>" href="<?php echo Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>">
-								<?php echo $newsletter->name; ?>
+								<?php echo $this->escape($newsletter->name); ?>
 							</a>
 						</li>
 					<?php endif; ?>

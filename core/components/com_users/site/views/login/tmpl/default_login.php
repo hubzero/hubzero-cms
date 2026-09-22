@@ -126,7 +126,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 					<div class="input-wrap">
 						<?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
 							<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
-							<div class="existing-name"><?php echo $user->get('name'); ?></div>
+							<div class="existing-name"><?php echo $this->escape($user->get('name')); ?></div>
 							<div class="existing-email"><?php echo $user->get('email'); ?></div>
 						<?php else : ?>
 							<div class="label-input-pair username">

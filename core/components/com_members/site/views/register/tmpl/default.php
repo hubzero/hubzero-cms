@@ -546,7 +546,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
 					$errors = (!empty($this->xregistration->_invalid[$field->get('name')])) ? '<span class="error" role="alert">' . $this->xregistration->_invalid[$field->get('name')] . '</span>' : '';
 					?>
-					<div class="form-group<?php echo $errors ? ' fieldWithErrors' : ''; ?>" id="input-<?php echo $field->get('name'); ?>">
+					<div class="form-group<?php echo $errors ? ' fieldWithErrors' : ''; ?>" id="input-<?php echo $this->escape($field->get('name')); ?>">
 						<?php
 						echo $formfield->label;
 						echo $formfield->input;

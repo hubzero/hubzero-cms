@@ -12,7 +12,7 @@ $this->css()
      ->js();
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo $this->escape($this->title); ?></h2>
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
@@ -41,7 +41,7 @@ $this->css()
 		<fieldset>
 			<h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>
 
-	 		<p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING', $this->course->get('description')).'<br /><br />'.$this->log; ?></p>
+	 		<p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING', $this->escape($this->course->get('description'))).'<br /><br />'.$this->log; ?></p>
 
 			<div class="form-group">
 				<label for="msg">

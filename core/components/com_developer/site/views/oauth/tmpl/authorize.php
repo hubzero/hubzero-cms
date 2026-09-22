@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 
 <section class="main section">
 	<div class="section-inner">
-		<p><?php echo Lang::txt('COM_DEVELOPER_API_OAUTH_AUTHORIZATION_NEEDED_DESC', $this->application->get('name')); ?></p>
+		<p><?php echo Lang::txt('COM_DEVELOPER_API_OAUTH_AUTHORIZATION_NEEDED_DESC', $this->escape($this->application->get('name'))); ?></p>
 		<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="oauth_form" method="post">
 			<fieldset class="buttons">
 				<button type="submit" name="authorize" value="1" class="btn btn-success"><?php echo Lang::txt('Authorize'); ?></button>

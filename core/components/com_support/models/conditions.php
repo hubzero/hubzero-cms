@@ -118,7 +118,7 @@ class Conditions extends Obj
 			foreach ($xgroups as $xgroup)
 			{
 				$xgroup->description = trim($xgroup->description) ?: $xgroup->cn;
-				$items[] = $this->_value($xgroup->cn, stripslashes($this->escape($xgroup->description)), false);
+				$items[] = $this->_value($xgroup->cn, stripslashes($xgroup->description), false);
 			}
 		}
 		$conditions->group = $this->_expression(
@@ -153,7 +153,7 @@ class Conditions extends Obj
 				$this->_operator('!=', 'is not', false),
 				$this->_operator('lt', 'less than', false),
 				$this->_operator('gt', 'grater than', false),
-				$this->_operator('=lt', 'less than or equal to', false),
+				$this->_operator('lt=', 'less than or equal to', false),
 				$this->_operator('gt=', 'greater than or equal to', false)
 			),
 			'text'
@@ -187,7 +187,7 @@ class Conditions extends Obj
 			->rows();
 
 		$items = array();
-		$items[] = $this->_value(0, $this->escape('open: New'), true);
+		$items[] = $this->_value(0, 'open: New', true);
 		if (count($status) > 0)
 		{
 			$switched = false;
@@ -195,10 +195,10 @@ class Conditions extends Obj
 			{
 				if (!$anode->open && !$switched)
 				{
-					$items[] = $this->_value(-1, $this->escape('closed: No resolution'), false);
+					$items[] = $this->_value(-1, 'closed: No resolution', false);
 					$switched = true;
 				}
-				$items[] = $this->_value($anode->id, $this->escape(($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title)), false);
+				$items[] = $this->_value($anode->id, ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title), false);
 			}
 		}
 		$conditions->status = $this->_expression(
@@ -274,7 +274,7 @@ class Conditions extends Obj
 			foreach ($categories as $anode)
 			{
 				$sel = false;
-				$items[] = $this->_value($this->escape($anode->alias), $this->escape(stripslashes($anode->title)), $sel);
+				$items[] = $this->_value($anode->alias, stripslashes($anode->title), $sel);
 			}
 		}
 		$conditions->category = $this->_expression(

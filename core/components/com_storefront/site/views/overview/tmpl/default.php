@@ -34,7 +34,7 @@ if ($customLandingPage && is_numeric($customLandingPage))
 	?>
 
 	<header id="content-header">
-		<h2><?php echo $article->title; ?></h2>
+		<h2><?php echo $this->escape($article->title); ?></h2>
 	</header>
 
 	<section class="section">

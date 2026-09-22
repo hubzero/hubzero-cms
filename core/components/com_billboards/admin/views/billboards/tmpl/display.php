@@ -87,10 +87,10 @@ Toolbar::help('billboards');
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
+					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $this->escape($row->name); ?></a>
 				</td>
 				<td class="priority-2">
-					<?php echo $row->collection->name; ?>
+					<?php echo $this->escape($row->collection->name); ?>
 				</td>
 				<td class="order priority-3">
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" />

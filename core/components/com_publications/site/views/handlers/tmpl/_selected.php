@@ -8,6 +8,6 @@
 defined('_HZEXEC_') or die();
 ?>
 <div class="handlertype-<?php echo $this->handler->get('_name'); ?>">
-	<h3><?php echo $this->configs->label; ?></h3>
+	<h3><?php echo $this->escape($this->configs->label); ?></h3>
 	<p><?php echo $this->configs->about; ?></p>
 </div>

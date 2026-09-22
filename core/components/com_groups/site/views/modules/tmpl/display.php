@@ -52,7 +52,7 @@ foreach ($this->modules as $module)
 				<div class="item-container <?php echo $class; ?>">
 					<div class="item-title">
 						<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>">
-							<?php echo $module->get('title'); ?>
+							<?php echo $this->escape($module->get('title')); ?>
 						</a>
 
 						<?php

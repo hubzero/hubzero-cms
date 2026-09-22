@@ -55,7 +55,7 @@ $this->css('quotas.css')
 				<select name="class_alias" id="filter_class_alias" class="filter filter-submit">
 					<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
 					<?php foreach ($this->classes as $class) : ?>
-						<option value="<?php echo $class->get('alias'); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->get('alias')); ?></option>
+						<option value="<?php echo $this->escape($class->get('alias')); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->get('alias')); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>

@@ -25,7 +25,7 @@ if (isset($this->version) && $this->version->get('approved') == 0)
 			<span class="icon-lock tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>
 		<?php endif; ?>
 		<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id')); ?>">
-			<?php echo $this->page->get('title'); ?>
+			<?php echo $this->escape($this->page->get('title')); ?>
 		</a>
 	</div>
 

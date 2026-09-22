@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 ?>
 <fieldset class="search-filters">
-<legend><?php echo $this->filter->label;?></legend>
+<legend><?php echo $this->escape($this->filter->label);?></legend>
 <?php foreach ($this->filter->options as $option): ?>
 		<label>
 			<?php $checked = in_array($option->value, $this->selectedOptions) ? 'checked' : ''; ?>

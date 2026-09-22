@@ -121,7 +121,7 @@ defined('_HZEXEC_') or die();
 					<?php if ($thissub or ($this->subscription->serviceid==0 && $this->services->key() == 1)) {
 						echo 'checked="checked"';
 					}
-					echo '> ' . $currentService->title . ' - '; ?>
+					echo '> ' . $this->escape($currentService->title) . ' - '; ?>
 					<span class="priceline"><?php echo $currentService->currency . ' ' . $currentService->unitprice.'  ' . Lang::txt( 'COM_JOBS_PER' ) . ' ' . $currentService->unitmeasure; ?></span>
 					<span><?php echo $currentService->description; ?></span>
 

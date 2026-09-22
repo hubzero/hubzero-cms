@@ -140,7 +140,7 @@ $this->js();
 					<?php echo Date::of($row->get('created'))->toLocal(); ?>
 				</td>
 				<td class="priority-4">
-					<?php echo $row->creator->get('name', Lang::txt('(unknown)')); ?>
+					<?php echo $this->escape($row->creator->get('name', Lang::txt('(unknown)'))); ?>
 				</td>
 				<td class="priority-3">
 					<?php echo ($row->isHubAccount()) ? '<span class="state default"><span>' . Lang::txt('COM_DEVELOPER_COL_HUB_ACCOUNT') . '</span></span>' : ''; ?>

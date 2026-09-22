@@ -73,7 +73,7 @@ defined('_HZEXEC_') or die('Restricted access');
 				echo '<tr class="cartItemDiscount">';
 
 				echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-				echo $this->perks['items'][$sId]->name;
+				echo $this->escape($this->perks['items'][$sId]->name);
 				echo '</td>';
 
 				echo '<td class="cartDiscountDiscount">';
@@ -98,7 +98,7 @@ defined('_HZEXEC_') or die('Restricted access');
 					echo '<tr class="cartDiscount">';
 
 					echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-					echo $coupon->name;
+					echo $this->escape($coupon->name);
 					echo '</td>';
 
 					echo '<td class="cartDiscountDiscount">';
@@ -123,7 +123,7 @@ defined('_HZEXEC_') or die('Restricted access');
 				echo '<tr class="cartDiscount">';
 
 				echo '<td class="cartDiscountName"><span>Coupon discount:</span> ';
-				echo $this->perks['shipping']->name;
+				echo $this->escape($this->perks['shipping']->name);
 				echo '</td>';
 
 				echo '<td class="cartDiscountDiscount">';

@@ -68,7 +68,7 @@ $config = $this->model->config();
 					foreach ($this->info as $field)
 					{ ?>
 						<tr>
-							<th class="htd"><?php echo $field->label; ?></th>
+							<th class="htd"><?php echo $this->escape($field->label); ?></th>
 							<td><?php echo $field->value; ?></td>
 						</tr>
 			<?php } // end foreach

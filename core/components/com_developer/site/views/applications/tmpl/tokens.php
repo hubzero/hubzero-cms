@@ -40,7 +40,7 @@ $tokens = $this->application->accessTokens()
 					<?php foreach ($tokens as $token) : ?>
 						<li>
 							<h4>
-								<?php echo Hubzero\User\User::oneOrNew($token->get('uidNumber'))->get('name'); ?>
+								<?php echo $this->escape(Hubzero\User\User::oneOrNew($token->get('uidNumber'))->get('name')); ?>
 							</h4>
 
 							<a class="btn btn-secondary revoke confirm" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_TOKEN_CONFIRM'); ?>" href="<?php echo Route::url($this->application->link('revoke').'&token=' . $token->get('id').'&return=tokens'); ?>">

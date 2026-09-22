@@ -30,7 +30,7 @@ $cls = implode(' ', $cls);
 $cls = trim($cls);
 ?>
 <div class="curation-block">
-	<h4><?php echo $this->manifest->title; ?></h4>
+	<h4><?php echo $this->escape($this->manifest->title); ?></h4>
 
 	<?php if (!$this->pub->curation('blocks', $this->step, 'hasElements')): ?>
 		<div id="<?php echo 'element' . $this->active; ?>" class="blockelement <?php echo $cls; ?>">
@@ -42,7 +42,7 @@ $cls = trim($cls);
 				<?php echo $this->pub->curation()->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->title); ?>
 
 				<div class="block-subject">
-					<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
+					<h5 class="element-title"><?php echo $this->escape($this->manifest->label); ?></h5>
 
 					<?php echo $this->pub->curation()->drawCurationNotice($curatorStatus, $props, 'curator', 'element' . $this->active); ?>
 
