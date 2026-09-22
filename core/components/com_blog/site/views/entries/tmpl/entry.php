@@ -163,7 +163,7 @@ $first = $this->archive->entries(array(
 								</h4>
 								<div class="entry-author-bio">
 									<?php if ($this->row->creator->get('bio')) { ?>
-										<?php echo $this->row->creator->get('bio'); ?>
+										<?php echo $this->escape($this->row->creator->get('bio')); ?>
 									<?php } else { ?>
 										<em><?php echo Lang::txt('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
 									<?php } ?>
@@ -354,7 +354,7 @@ $first = $this->archive->entries(array(
 								<span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
 							</p>
 							<p>
-								<?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?>
+								<?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)); ?>
 							</p>
 						</blockquote>
 						<?php

@@ -51,15 +51,34 @@ class Redirect extends SiteController
         $blacklist = isset($params["delay_blacklist"]) ? explode(",", $params["delay_blacklist"]) : array();
         $enabled = isset($params["delay_enabled"]) ? $params["delay_enabled"] : "DISABLED";
         $time  = isset($params["delay_seconds"]) ? $params["delay_seconds"] : 10;
-        $url = base64_decode($url, true); 
-        if ($url === false) {
-            App::redirect("https://" . $_SERVER['HTTP_HOST']);
+        $url = base64_decode($url, true);
+
+        // Nothing usable to redirect to: no id at all, an id that is not valid
+        // base64, or one that decodes to nothing. Visiting /index.php?option=com_redirect
+        // with no id lands here, and handing App::redirect an empty string raises
+        // "Cannot redirect to an empty URL" -- a 500 on a plain GET.
+        if ($url === false || trim($url) === '') {
+            App::redirect(Request::root());
+            return;
         }
+        $host = parse_url($url);
+
+        // Only web URLs are wrapped by the redirector; a javascript: target
+        // would run on click. This has to come BEFORE the DISABLED branch
+        // below: delay_enabled is absent on an unconfigured hub, which is the
+        // default, so a check placed after it would never run there -- and the
+        // disabled path hands the URL straight to App::redirect(). Refuse to
+        // the site root rather than a Host header the caller controls.
+        if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), array('http', 'https')))
+        {
+            App::redirect(Request::root());
+            return;
+        }
+
         if ($enabled == "DISABLED"){
             App::redirect($url);
             return;
         }
-        $host = parse_url($url);            
 
         if (!$host || !isset($host['host'])){
             if (!empty($_SERVER['HTTP_REFERER'])) {

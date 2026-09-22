@@ -123,7 +123,7 @@ class Editor extends Obj
 		// Return a standard textarea if no editor is found
 		if (!$this->name)
 		{
-			return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . $html . '</textarea>' . "\n";
+			return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . htmlspecialchars((string) $html, ENT_QUOTES, 'UTF-8') . '</textarea>' . "\n";
 		}
 
 		$this->load($params);
