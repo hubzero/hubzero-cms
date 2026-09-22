@@ -1643,10 +1643,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Log activity
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'action'      => ($__sid ? 'updated' : 'created'),
 				'scope'       => 'forum.section',
 				'scope_id'    => $section->get('id'),
-				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($__sid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $section->get('title'),
 					'url'   => Route::url($this->base)
@@ -2017,10 +2017,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Log activity
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($fields['id'] ? 'updated' : 'created'),
+				'action'      => ($__cid ? 'updated' : 'created'),
 				'scope'       => 'forum.category',
 				'scope_id'    => $category->get('id'),
-				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+				'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($__cid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $category->get('title'),
 					'url'   => Route::url($this->base)
@@ -2372,11 +2372,14 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$fields  = array_map('trim', $fields);
 
 		// Check permissions
-		$this->_authorize('thread', intval($fields['id']));
+		// $fields is Request::getArray('fields'), so 'id' need not be present at all;
+		// read it once, guarded, and use that everywhere below.
+		$__pid   = isset($fields['id']) ? (int) $fields['id'] : 0;
+		$this->_authorize('thread', $__pid);
 		$asset = 'thread';
 
-		if (($fields['id'] && !$this->params->get('access-edit-thread'))
-		 || (!$fields['id'] && !$this->params->get('access-create-thread')))
+		if (($__pid && !$this->params->get('access-edit-thread'))
+		 || (!$__pid && !$this->params->get('access-create-thread')))
 		{
 			App::redirect(
 				Route::url($this->base),
@@ -2387,7 +2390,6 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Bind data
-		$__pid   = isset($fields['id']) ? (int) $fields['id'] : 0;
 		$post    = Post::oneOrNew($__pid);
 		$__isNew = $post->isNew();
 		$__owner = $post->get('created_by');
@@ -2660,7 +2662,21 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Instantiate an attachment record
-		$attachment = Attachment::oneOrNew(Request::getInt('attachment', 0));
+		// oneOrNew() resolves any attachment row on the hub, and the lines below
+		// re-parent it onto the post just saved -- so naming someone else's
+		// attachment id moved it, with its stored file, onto this thread. An
+		// existing row has to already belong to the post being saved. The group
+		// forum plugin's twin of this method got the same test earlier.
+		$__aid      = Request::getInt('attachment', 0);
+		$attachment = Attachment::oneOrNew($__aid);
+
+		if ($__aid
+		 && $attachment->get('id')
+		 && (int) $attachment->get('post_id') !== (int) $post_id)
+		{
+			$attachment = Attachment::blank();
+		}
+
 		$attachment->set('description', trim(Request::getString('description', '')));
 		$attachment->set('parent', $thread_id);
 		$attachment->set('post_id', $post_id);
