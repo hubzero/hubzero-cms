@@ -528,6 +528,15 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		<div id="transcripts"></div>
 	</div>
 <?php elseif ($type == 'hubpresenter') : ?>
+	<?php
+		// `type` and `media` are in a hubpresenter manifest by convention, not
+		// by guarantee -- only `slides` is what put us in this branch. This
+		// block read both unguarded, and on PHP 8 a foreach over a missing
+		// property or ->media[0] on an empty list is a fatal, which this hub
+		// serves as a 500. Guard them the way the html5 branch above does.
+		$__ptype  = isset($presentation->type) ? strtolower((string) $presentation->type) : '';
+		$__pmedia = isset($presentation->media) ? array_values((array) $presentation->media) : array();
+	?>
 	<?php $presentationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
 	<div id="presenter-container">
 		<div id="presenter-header">
@@ -727,12 +736,12 @@ if ($type == 'hubpresenter' || $type == 'html5')
 			</div><!-- /#left -->
 			<?php $cls = (isset($presentation->videoPosition)
 							&& $presentation->videoPosition == "left"
-							&& strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
+							&& $__ptype == 'video') ? "move-left": ""; ?>
 			<div id="presenter-right">
 				<div id="media" class="<?php echo $this->escape($cls); ?>">
-					<?php if (strtolower($presentation->type) == 'video') : ?>
+					<?php if ($__ptype == 'video') : ?>
 						<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $this->asset->get('id'); ?>">
-							<?php foreach ($presentation->media as $source): ?>
+							<?php foreach ($__pmedia as $source): ?>
 								<?php
 									switch (strtolower($source->type))
 									{
@@ -747,7 +756,7 @@ break;
 								?>
 								<source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" type='<?php echo $this->escape($type); ?>'>
 							<?php endforeach; ?>
-							<a href="<?php echo $this->escape($content_folder . DS . $presentation->media[0]->source); ?>" id="flowplayer"></a>
+							<a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer"></a>
 
 							<?php if (isset($subs) && count($subs) > 0) : ?>
 								<?php foreach ($subs as $sub) : ?>
@@ -762,10 +771,10 @@ break;
 						</video>
 					<?php else : ?>
 						<audio id="player" preload="auto" controls="controls">
-							<?php foreach ($presentation->media as $source): ?>
+							<?php foreach ($__pmedia as $source): ?>
 								<source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
 							<?php endforeach; ?>
-							<a href="<?php echo $this->escape($content_folder . DS . $presentation->media[0]->source); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $this->escape($presentation->duration); } ?>"></a>
+							<a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $this->escape($presentation->duration); } ?>"></a>
 						</audio>
 					<?php endif; ?>
 					<div id="video-subtitles"></div>
