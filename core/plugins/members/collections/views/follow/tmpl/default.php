@@ -48,11 +48,11 @@ if ($this->rows->total() > 0)
 		{
 			$item->set('type', 'deleted');
 		}
-		$type = $item->get('type');
-		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
-		{
-			$type = 'link';
-		}
+		// This whitelist admitted 'image', for which no default_image.php exists
+		// in this directory -- and a missing template falls back to a view that
+		// is rendered without the variables it needs, taking the page down.
+		// layout() resolves against the templates that are actually here.
+		$type = $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_');
 ?>
 		<div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
 			<div class="content">

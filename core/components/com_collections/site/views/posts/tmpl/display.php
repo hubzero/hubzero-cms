@@ -61,13 +61,13 @@ if (!$no_html) {
 								</span>
 							</p>
 						<?php } else { ?>
-							<p class="typeof <?php echo $item->get('type'); ?>">
+							<p class="typeof <?php echo $this->escape($item->get('type')); ?>">
 								<?php echo $this->escape($item->type('title')); ?>
 							</p>
 						<?php } ?>
 					</div><!-- / .attribution -->
 					<?php
-					$this->view('display_' . $item->type(), 'posts')
+					$this->view('display_' . $item->layout(__DIR__, 'display_'), 'posts')
 					     ->set('actual', true)
 					     ->set('option', $this->option)
 					     ->set('params', $this->config)
@@ -174,7 +174,7 @@ if (!$no_html) {
 									</a>
 								</p>
 								<div class="comment-body">
-									<p><?php echo stripslashes($comment->content); ?></p>
+									<p><?php echo $this->escape(stripslashes($comment->content)); ?></p>
 								</div>
 							</div>
 						</li>

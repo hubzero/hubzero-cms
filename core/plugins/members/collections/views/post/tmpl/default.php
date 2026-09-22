@@ -47,13 +47,13 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 					</span>
 				</p>
 			<?php } else { ?>
-				<p class="typeof <?php echo $item->get('type'); ?>">
+				<p class="typeof <?php echo $this->escape($item->get('type')); ?>">
 					<?php echo $this->escape($item->type('title')); ?>
 				</p>
 			<?php } ?>
 		</div><!-- / .attribution -->
 		<?php
-		$this->view('default_' . $item->type(), 'post')
+		$this->view('default_' . $item->layout(__DIR__, 'default_'), 'post')
 		     ->set('actual', true)
 		     ->set('name', $this->name)
 		     ->set('option', $this->option)
@@ -91,10 +91,18 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 			</a>
 			<p>
 				<?php
+				// $who already holds the escaped POST creator's name. It used to be
+				// re-linked around $name, which is the ITEM creator's name and is
+				// assigned only inside the branch far above that tests
+				// $item->get('type') for 'file' or 'collection'. So on a post of
+				// any other stored type the variable did not exist and PHP 8 made
+				// the whole page a 500, and on those two it named the wrong person.
+				// (An image or text post does not get this far: the layout
+				// dispatch above fataled on it first.)
 				$who = $this->escape(stripslashes($this->post->creator()->get('name')));
 				if (in_array($this->post->creator()->get('access'), User::getAuthorisedViewLevels()))
 				{
-					$who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $name . '</a>';
+					$who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $who . '</a>';
 				}
 
 				$where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
@@ -135,7 +143,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 						</span>
 					</p>
 					<blockquote>
-						<p><?php echo stripslashes($comment->content); ?></p>
+						<p><?php echo $this->escape(stripslashes($comment->content)); ?></p>
 					</blockquote>
 				</div>
 				<?php

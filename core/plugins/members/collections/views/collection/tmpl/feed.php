@@ -49,7 +49,7 @@ $this->css()
 			<div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>">
 				<div class="content">
 					<?php
-						$this->view('default_' . $item->type(), 'post')
+						$this->view('default_' . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'), 'post')
 						     ->set('name', $this->name)
 						     ->set('option', $this->option)
 						     ->set('member', $this->member)
