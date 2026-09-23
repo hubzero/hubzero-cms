@@ -58,7 +58,7 @@ $authIDs = array();
 
 			$authIDs[] = $authname->authorid;
 
-			$org = ($authname->organization) ? $this->escape($authname->organization) : $this->attribs->get($authname->authorid, '');
+			$org = ($authname->organization) ? $authname->organization : $this->attribs->get($authname->authorid, '');
 		?>
 		<li id="author_<?php echo $authname->authorid; ?>">
 			<span class="handle"><?php echo Lang::txt('COM_RESOURCES_AUTHOR_DRAG'); ?></span>
