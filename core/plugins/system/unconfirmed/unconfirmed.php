@@ -71,7 +71,8 @@ class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
 			// string, so a stray view segment silently broke the confirm/resend
 			// exemptions and trapped the user in a redirect they couldn't escape.
 			$isRegister = (Request::getWord('option') == 'com_members'
-				&& (Request::getWord('controller') == 'register' || Request::getWord('view') == 'register'));
+				&& (Request::getWord('controller') == 'register'
+				 || (Request::getWord('view') == 'register' && !Request::getWord('controller'))));
 
 			$id = User::get('id');
 			$activation = User::one($id)->get('activation');
