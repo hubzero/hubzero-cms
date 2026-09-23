@@ -655,7 +655,10 @@ class Membership extends Base
 		//check to make sure weve been invited
 		if ($token)
 		{
-			$sql = "SELECT * FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token);
+			// ...for THIS group: a token is issued per invitation, and one
+			// for any group used to admit its holder to the group on the URL.
+			$sql = "SELECT * FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token)
+				. " AND gidNumber=" . (int) $this->view->group->get('gidNumber');
 			$this->database->setQuery($sql);
 			$invite = $this->database->loadAssoc();
 
