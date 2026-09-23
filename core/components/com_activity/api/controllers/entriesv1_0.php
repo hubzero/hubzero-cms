@@ -223,7 +223,7 @@ class Entriesv1_0 extends ApiController
 			'scope'          => Request::getString('scope', '', 'post'),
 			'scope_id'       => Request::getInt('scope_id', 0, 'post'),
 			'action'         => Request::getString('action', null, 'post', 'none', 2),
-			'description'    => Request::getString('description', null, 'post', 'none', 2),
+			'description'    => \Hubzero\Utility\Sanitize::html((string) Request::getString('description', null, 'post', 'none', 2)),
 			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
 			// updateTask below pins created_by so an entry's author cannot be
 			// reassigned. Leaving it open here left the same forgery reachable
