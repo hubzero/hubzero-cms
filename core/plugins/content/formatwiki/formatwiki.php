@@ -14,6 +14,26 @@ defined('_HZEXEC_') or die;
 class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Output this plugin produced during this request, keyed by md5. formathtml
+	 * consults it before honouring a {FORMAT:RENDERED} marker: the marker on its
+	 * own is text, and text can be stored.
+	 *
+	 * @var  array
+	 */
+	public static $rendered = array();
+
+	/**
+	 * Did this plugin produce the given content in this request?
+	 *
+	 * @param   string  $content
+	 * @return  boolean
+	 */
+	public static function wasRendered($content)
+	{
+		return isset(self::$rendered[md5((string) $content)]);
+	}
+
+	/**
 	 * Finder before save content method
 	 * Article is passed by reference, but after the save, so no changes will be saved.
 	 * Method is called right after the content is saved
@@ -144,6 +164,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 			// The marker is transient. formathtml removes it, and if that plugin
 			// is disabled it degrades to an invisible HTML comment.
 			$content = '<!-- {FORMAT:RENDERED} -->' . $content;
+			self::$rendered[md5($content)] = true;
 		}
 
 		$article->set($key, $content);

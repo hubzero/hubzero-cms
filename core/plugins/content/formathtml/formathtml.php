@@ -153,10 +153,25 @@ class plgContentFormathtml extends \Hubzero\Plugin\Plugin
 			// case that matters: none of the blog entries on a stock hub carry
 			// a marker at all, so exempting unmarked content here would reopen
 			// the stored XSS that HZ-2026-0012 covers.
-			if (stripos($formatMarker, '{FORMAT:RENDERED}') === false
-			 && ($formatMarker === '' || stripos($formatMarker, '{FORMAT:HTML}') !== false))
+			//
+			// The marker is only text, though, and text can be stored: a blog
+			// body that begins with it would have skipped the purifier. So it
+			// is honoured only when formatwiki registered this exact content
+			// as its own output in this request; otherwise it is a user's
+			// bytes, stripped, and the content is purified like any other.
+			// Any other marker (HTML or a foreign format) is stored markup too.
+			$isRendered = (stripos($formatMarker, '{FORMAT:RENDERED}') !== false);
+			$trusted    = $isRendered
+				&& class_exists('plgContentFormatwiki', false)
+				&& \plgContentFormatwiki::wasRendered($content);
+
+			if (!$trusted)
 			{
 				$content = substr($content, strlen($formatMarker));
+				if ($isRendered)
+				{
+					$formatMarker = '';
+				}
 				$content = \Hubzero\Utility\Sanitize::html($content);
 				$content = $formatMarker . $content;
 			}
