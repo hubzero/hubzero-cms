@@ -295,7 +295,19 @@ class Posts extends SiteController
 		{
 			$__existing = new Item($__iid);
 
-			if ($__existing->exists() && $__existing->get('created_by') != User::get('id'))
+			// The Edit button is also offered on a member's own REPOST, whose
+			// item belongs to the original poster: the form posts post[id], and
+			// a post the caller made of this very item is theirs to edit.
+			$__postin = Request::getArray('post', array(), 'post');
+			$__pid    = isset($__postin['id']) ? (int) $__postin['id'] : 0;
+			$__mine   = false;
+			if ($__pid)
+			{
+				$__p = Post::getInstance($__pid);
+				$__mine = ($__p && $__p->get('created_by') == User::get('id') && (int) $__p->get('item_id') === $__iid);
+			}
+
+			if ($__existing->exists() && $__existing->get('created_by') != User::get('id') && !$__mine)
 			{
 				App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
 			}
