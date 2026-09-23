@@ -708,6 +708,11 @@ class Wishlists extends SiteController
 
 		$fields = Request::getArray('fields', array(), 'post');
 
+		// The settings form posts title, description and public; the list is
+		// the one whose manage right was checked above, and what it is a list
+		// OF is not the form's to change.
+		unset($fields['id'], $fields['category'], $fields['referenceid'], $fields['created_by'], $fields['created'], $fields['state']);
+
 		$wishlist->set($fields);
 		$wishlist->removeAttribute('admin');
 
