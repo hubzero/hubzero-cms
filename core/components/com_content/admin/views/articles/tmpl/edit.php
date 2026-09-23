@@ -316,7 +316,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 		</div>
 	</div>
 
-	<?php if (User::authorise('core.manage')): ?>
+	<?php if (User::authorise('core.admin', 'com_content')): ?>
 		<div class="width-100">
 			<fieldset class="panelform">
 				<?php echo $this->form->getInput('rules'); ?>

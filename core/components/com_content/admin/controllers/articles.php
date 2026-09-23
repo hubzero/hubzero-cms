@@ -493,6 +493,26 @@ class Articles extends AdminController
 
 		$article = Article::oneOrNew($articleId);
 
+		// The same test editTask() makes: the component-level gate above admits
+		// core.edit.own, which is not a licence to save someone else's article.
+		if (!$article->isNew())
+		{
+			if (!User::authorise('core.edit', $article->get('asset_id'))
+			 && (!User::authorise('core.edit.own', $article->get('asset_id'))
+			  || $article->get('created_by') != User::get('id')))
+			{
+				App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
+			}
+		}
+		elseif (!User::authorise('core.create', 'com_content'))
+		{
+			App::abort(403, Lang::txt('COM_CONTENT_NOT_AUTHORIZED'));
+		}
+
+		// The row is the one checked above; set() would otherwise take a posted
+		// fields[id] and save onto that one instead.
+		unset($items['id']);
+
 		$checkedOut = $article->get('checked_out');
 		if ($checkedOut)
 		{
@@ -501,7 +521,10 @@ class Articles extends AdminController
 			$article->save();
 		}
 
-		if (!empty($items['rules']))
+		// Permission rules are for core.admin only, as in the category, forum
+		// and access-group editors; the form's field is hidden from everyone else
+		// and a posted one is dropped.
+		if (!empty($items['rules']) && User::authorise('core.admin', 'com_content'))
 		{
 			$rules = array_map(
 				function($item)
