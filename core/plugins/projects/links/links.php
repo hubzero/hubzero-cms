@@ -185,6 +185,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
 		}
 
+		// ...and the version is that publication's: pid was checked, vid is
+		// what the citation is detached from
+		if (!$this->getError() && !$this->_versionOfProject($vid))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
+		}
+
 		// Remove citation
 		if (!$this->getError())
 		{
@@ -276,6 +283,18 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		if (!$vid || !$cite['type'] || !$cite['title'])
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+		}
+		// The version has to be one of this project's publications, and an
+		// existing citation (cite[id] names any row on the hub) one already
+		// attached to that version -- otherwise this rewrote any citation.
+		elseif (!$this->_versionOfProject($vid)
+		 || (!$new && !Association::all()
+				->whereEquals('cid', (int) $cite['id'])
+				->whereEquals('tbl', 'publication')
+				->whereEquals('oid', (int) $vid)
+				->total()))
+		{
+			$this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
 		}
 		else
 		{
@@ -1412,5 +1431,22 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		}
 
 		return $cannonical;
+	}
+
+	/**
+	 * Is this publication version one of this project's?
+	 *
+	 * @param   integer  $vid
+	 * @return  boolean
+	 */
+	protected function _versionOfProject($vid)
+	{
+		$v = \Components\Publications\Models\Orm\Version::oneOrNew((int) $vid);
+		if ($v->isNew())
+		{
+			return false;
+		}
+		$p = \Components\Publications\Models\Orm\Publication::oneOrNew((int) $v->get('publication_id'));
+		return (!$p->isNew() && (int) $p->get('project_id') === (int) $this->model->get('id'));
 	}
 }
