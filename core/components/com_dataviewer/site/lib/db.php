@@ -714,11 +714,18 @@ function query_gen_total($dd)
 	$where_str = '';
 
 	if (isset($dd['where'])) {
+		// The field/value pairs come from the request (_dd_post: ?id= and
+		// ?custom_field=); quote them as query_gen() does. 'raw' entries are
+		// the definition's own.
+		$escLink = isset($dd['db']) ? get_db($dd['db']) : get_db();
 		$where_str = ' WHERE ';
 		$where = array();
 		foreach ($dd['where'] as $w) {
 			if (isset($w['field']) && isset($w['value'])) {
-				$where[] = $w['field'] . "='" . $w['value'] . "'";
+				$field = implode('.', array_map(function ($p) {
+					return '`' . str_replace('`', '``', $p) . '`';
+				}, explode('.', (string) $w['field'])));
+				$where[] = $field . "='" . mysqli_real_escape_string($escLink, (string) $w['value']) . "'";
 			} elseif (isset($w['raw'])) {
 				$where[] = $w['raw'];
 			}
