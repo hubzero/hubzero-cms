@@ -1731,6 +1731,10 @@ class Articles extends SiteController
 			unset($data['state'], $data['featured']);
 		}
 
+		// The row is the one authorised above; set() would otherwise take a
+		// posted fields[id] and save onto that one instead.
+		unset($data['id']);
+
 		$model->set($data);
 
 		if ($model->isCheckedOut() && $model->get('checked_out') != User::get('id'))
