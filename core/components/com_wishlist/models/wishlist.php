@@ -327,6 +327,11 @@ class Wishlist extends Relational
 
 		$what = strtolower($what);
 
+		if ($what === 'group')
+		{
+			$what = 'groups';
+		}
+
 		if (!in_array($what, array('advisory', 'individuals', 'groups')))
 		{
 			throw new \InvalidArgumentException(Lang::txt('Owner type not supported.'));
