@@ -1090,6 +1090,15 @@ class Citations extends SiteController
 	 */
 	public function downloadimageTask()
 	{
+		// This fetched any URL from the request -- get_headers() then
+		// imagecreatefrom*() -- for anyone, guests included: a server-side
+		// request to internal hosts and cloud metadata addresses, and an open
+		// image proxy. Its only producer was the OpenURL resolver icon, whose
+		// lookup is commented out in displayTask(), so the icon is always ''
+		// and nothing links here. Refused until that feature returns with a
+		// fixed, configured icon URL.
+		App::abort(404, Lang::txt('JERROR_LAYOUT_PAGE_NOT_FOUND'));
+
 		// get the image we want to serve
 		$image = Request::getString('image', '');
 
