@@ -51,12 +51,24 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 			$session = \Hubzero\Session\Helper::getSession($session_id);
 
-			$user = User::getInstance($session->userid);
-			$user->set('guest', 0);
-			$user->set('id', $session->userid);
-			$user->set('username', $session->username);
+			// Only a live, logged-in session matching that id acts here;
+			// anything else is treated as a guest and refused below.
+			if ($session && !empty($session->userid) && empty($session->guest))
+			{
+				$user = User::getInstance($session->userid);
+				$user->set('guest', 0);
+				$user->set('id', $session->userid);
+				$user->set('username', $session->username);
 
-			$ip = $session->ip;
+				$ip = $session->ip;
+			}
+			else
+			{
+				$user = User::getInstance(0);
+				$user->set('guest', 1);
+
+				$ip = Request::ip();
+			}
 		}
 		// No token, get the user the standard way
 		else
