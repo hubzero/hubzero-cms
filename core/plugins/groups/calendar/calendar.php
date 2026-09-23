@@ -1698,9 +1698,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->calendar = Components\Events\Models\Calendar::getInstance($calendarId);
-		if (!$view->calendar->get('id')
-		 || (string) $view->calendar->get('scope') !== 'group'
-		 || (int) $view->calendar->get('scope_id') !== (int) $this->group->get('gidNumber'))
+
+		// A new calendar (calendar_id=0, the Add calendar form) has no row to
+		// belong to anything yet; only an existing one has to be this group's.
+		if ($calendarId
+		 && (!$view->calendar->get('id')
+		  || (string) $view->calendar->get('scope') !== 'group'
+		  || (int) $view->calendar->get('scope_id') !== (int) $this->group->get('gidNumber')))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
