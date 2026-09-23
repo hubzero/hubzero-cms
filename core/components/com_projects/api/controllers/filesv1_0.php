@@ -90,7 +90,10 @@ class Filesv1_0 extends ApiController
 		//if there is a connection id, get an ORM Connection object as well
 		if ($this->cid || ($this->_task == 'connections'))
 		{
-			$this->ormproj = \Components\Projects\Models\Orm\Project::oneOrFail($id);
+			// $id is the raw request value, which may be an alias; the model
+			// above resolved it. oneOrFail() on the raw value would let the
+			// database coerce a digit-leading alias to another project's id.
+			$this->ormproj = \Components\Projects\Models\Orm\Project::oneOrFail((int) $this->model->get('id'));
 			if ($this->cid)
 			{
 				$this->ormconn = \Components\Projects\Models\Orm\Connection::oneOrFail($this->cid);

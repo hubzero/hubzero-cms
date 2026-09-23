@@ -479,7 +479,7 @@ class History extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$this->page->set('version_id', $newversion_id);
+		$this->page->set('version_id', (int) $newversion->get('id'));
 
 		if (!$this->page->save())
 		{
