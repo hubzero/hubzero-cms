@@ -202,7 +202,7 @@ class User extends Base
 				'index.php?option=' . $this->get('option')
 			);
 			Pathway::append(
-				stripslashes($this->_item->get('name')),
+				stripslashes((string) $this->_item->get('name')),
 				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
 			);
 			Pathway::append(
