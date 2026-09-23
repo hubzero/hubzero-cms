@@ -2185,6 +2185,16 @@ class Resources extends SiteController
 			return;
 		}
 
+		// The trigger names a method that Event::trigger() calls on every plugin
+		// of the group, so without a list any public method of any resources plugin
+		// was callable from a URL (windowstools' command-line builder among
+		// them). Only the triggers this component's own pages link to.
+		if (!in_array($trigger, array('invoke', 'onResourcesRecoms'), true))
+		{
+			echo '<p class="error">' . Lang::txt('COM_RESOURCES_NO_TRIGGER_FOUND') . '</p>';
+			return;
+		}
+
 		// Call the trigger
 		$html = '';
 
