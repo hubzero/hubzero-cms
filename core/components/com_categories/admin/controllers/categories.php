@@ -60,9 +60,13 @@ class Categories extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		// The category belongs to an extension (com_content, com_kb, ...) and
+		// the edit form and entry point authorise against it; com_categories
+		// has no rules of its own.
+		$__ext = Request::getCmd('extension', $this->_option) ?: $this->_option;
 		if (
-			!User::authorise('core.edit', $this->_option)
-			&& !User::authorise('core.create', $this->_option)
+			!User::authorise('core.edit', $__ext)
+			&& !User::authorise('core.create', $__ext)
 		)
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -302,9 +306,13 @@ class Categories extends AdminController
 	{
 		Request::checkToken();
 
+		// The category belongs to an extension (com_content, com_kb, ...) and
+		// the edit form and entry point authorise against it; com_categories
+		// has no rules of its own.
+		$__ext = Request::getCmd('extension', $this->_option) ?: $this->_option;
 		if (
-			!User::authorise('core.edit', $this->_option)
-			&& !User::authorise('core.create', $this->_option)
+			!User::authorise('core.edit', $__ext)
+			&& !User::authorise('core.create', $__ext)
 		)
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
