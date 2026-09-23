@@ -60,7 +60,7 @@ function filter($res, &$dd)
 
 	file_put_contents ("$file_name.vrt", $vrt);
 	file_put_contents ("$file_name.csv", $csv);
-	system("ogr2ogr $path $file_name.vrt");
+	system('ogr2ogr ' . escapeshellarg($path) . ' ' . escapeshellarg($file_name . '.vrt'));
 
 	header('Content-Description: File Transfer');
 	header('Content-Type: ' . 'application/zip');
