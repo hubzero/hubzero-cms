@@ -1053,12 +1053,12 @@ class Warehouse extends \Hubzero\Base\Obj
 	public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
 	{
 		// Find the number of options required for this product
-		$sql = "SELECT COUNT(pog.`ogId`) AS cnt FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '{$pId}'";
+		$sql = "SELECT COUNT(pog.`ogId`) AS cnt FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '" . (int) $pId . "'";
 
 		/*
 		$sql = "SELECT COUNT(s.`sId`) AS cnt FROM `#__storefront_skus` s
 				INNER JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
-				WHERE s.`pId` = '{$pId}' AND s.`sActive` > 0
+				WHERE s.`pId` = '" . (int) $pId . "' AND s.`sActive` > 0
 				GROUP BY s.`sId` ORDER BY cnt DESC LIMIT 1";
 		*/
 		$this->_db->setQuery($sql);
@@ -1083,14 +1083,14 @@ class Warehouse extends \Hubzero\Base\Obj
 			$skuOptionsSql = '(0';
 			foreach ($options as $oId)
 			{
-				$skuOptionsSql .= " OR so.`oId` = '{$oId}'";
+				$skuOptionsSql .= " OR so.`oId` = " . (int) $oId;
 			}
 			$skuOptionsSql .= ')';
 		}
 
 		$sql = "SELECT s.`sId`, COUNT(so.`oId`) AS matches FROM `#__storefront_skus` s
 				LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
-				WHERE s.`pId` = '{$pId}' AND s.sActive > 0";
+				WHERE s.`pId` = '" . (int) $pId . "' AND s.sActive > 0";
 		if (!empty($options))
 		{
 			$sql .= " AND {$skuOptionsSql}";
