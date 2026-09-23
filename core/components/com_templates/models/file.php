@@ -136,7 +136,7 @@ class File extends Obj
 
 		if (in_array(false, $result, true))
 		{
-			$this->setError($table->getError());
+			$this->setError(Lang::txt('COM_TEMPLATES_ERROR_FAILED_TO_SAVE_FILENAME', $fileName));
 			return false;
 		}
 
