@@ -176,9 +176,17 @@ class Authors extends SiteController
 		foreach ($mbrs as $i => $mbr)
 		{
 			$author = Author::one($mbr);
+
+			// author[] names any row of #__citations_authors; only this
+			// citation's rows are this request's to reorder
+			if ($author === false || (int) $author->get('cid') !== (int) $this->citation->get('id'))
+			{
+				$this->setError(Lang::txt('COM_CITATIONS_ERROR_UNABLE_TO_UPDATE') . ' ' . $mbr);
+				continue;
+			}
 			$author->set('ordering', $i + 1);
 
-			if ($author === false || !$author->save())
+			if (!$author->save())
 			{
 				$this->setError(Lang::txt('COM_CITATIONS_ERROR_UNABLE_TO_UPDATE') . ' ' . $mbr);
 			}
@@ -206,7 +214,10 @@ class Authors extends SiteController
 
 		$mbrs = Request::getArray('author', array());
 		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
-		$authors = Author::all()->whereIn('id', $mbrs)->rows();
+		$authors = Author::all()
+			->whereIn('id', $mbrs)
+			->whereEquals('cid', (int) $this->citation->get('id'))
+			->rows();
 
 		foreach ($authors as $author)
 		{
