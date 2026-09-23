@@ -595,8 +595,22 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// make sure we dont want to turn off comments
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
-		// Instantiate model
-		$row = \Components\Blog\Models\Entry::oneOrNew($entry['id'])->set($entry);
+		// Instantiate model. entry[id] names any row on the hub; an existing
+		// one has to be this member's own, and scope/owner are this blog's.
+		$row = \Components\Blog\Models\Entry::oneOrNew(isset($entry['id']) ? (int) $entry['id'] : 0);
+
+		if (!$row->isNew()
+		 && ($row->get('scope') != 'member'
+		  || (int) $row->get('scope_id') !== (int) $this->member->get('id')))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		unset($entry['id']);
+		$row->set($entry);
+		$row->set('scope', 'member');
+		$row->set('scope_id', $this->member->get('id'));
+		$row->set('created_by', $row->isNew() ? User::get('id') : $row->get('created_by'));
 
 		// Store new content
 		if (!$row->save())
@@ -734,8 +748,43 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$data = Request::getArray('comment', array(), 'post');
 
-		// Instantiate a new comment object and pass it the data
-		$comment = \Components\Blog\Models\Comment::oneOrNew($data['id'])->set($data);
+		// comment[id] names any row on the hub: an existing comment has to be
+		// the caller's own, and a new one goes on an entry of this blog.
+		$__cid   = isset($data['id']) ? (int) $data['id'] : 0;
+		$comment = \Components\Blog\Models\Comment::oneOrNew($__cid);
+
+		if (!$comment->isNew())
+		{
+			if ($comment->get('created_by') != User::get('id')
+			 && !User::authorise('core.manage', 'com_blog'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+			unset($data['entry_id'], $data['parent'], $data['created_by'], $data['created'], $data['state']);
+		}
+		else
+		{
+			unset($data['id'], $data['created'], $data['state']);
+
+			$__entry = \Components\Blog\Models\Entry::oneOrNew(isset($data['entry_id']) ? (int) $data['entry_id'] : 0);
+			if ($__entry->isNew()
+			 || $__entry->get('scope') != 'member'
+			 || (int) $__entry->get('scope_id') !== (int) $this->member->get('id'))
+			{
+				App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
+			}
+			if (!empty($data['parent']))
+			{
+				$__parent = \Components\Blog\Models\Comment::oneOrNew((int) $data['parent']);
+				if ($__parent->isNew() || (int) $__parent->get('entry_id') !== (int) $__entry->get('id'))
+				{
+					App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
+				}
+			}
+			$data['created_by'] = User::get('id');
+		}
+
+		$comment->set($data);
 
 		// Store new content
 		if (!$comment->save())
