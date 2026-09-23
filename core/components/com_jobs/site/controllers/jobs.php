@@ -251,6 +251,16 @@ class Jobs extends SiteController
 			return;
 		}
 
+		// The trigger names a method that Event::trigger() calls on every plugin
+		// of the group, so without a list any public method of any members plugin
+		// was callable from a URL (windowstools' command-line builder among
+		// them). Only the triggers this component's own pages link to.
+		if (!in_array($trigger, array('onMembersShortlist'), true))
+		{
+			echo '<p class="error">' . Lang::txt('COM_JOBS_ERROR_NO_TRIGGER_FOUND') . '</p>';
+			return;
+		}
+
 		// Call the trigger
 		$results = Event::trigger('members.' . $trigger, array());
 		if (is_array($results) && isset($results[0]) && isset($results[0]['html']))
