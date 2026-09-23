@@ -220,8 +220,13 @@ class Cloud extends \Hubzero\Base\Obj
 				// and returns the entire scope's tag vocabulary (e.g. a brand-new
 				// support ticket's changelog showing "tags changed from <every
 				// support tag> to (blank)").
-				$scope_id = isset($filters['scope_id']) ? (int) $filters['scope_id'] : (int) $this->get('scope_id');
-				$results->whereEquals($tbl . '.objectid', $scope_id);
+				// ...but a caller asking for a whole scope's tags (no scope_id at
+				// all, e.g. courses' popular categories) must not be pinned to 0.
+				if (isset($filters['scope_id']) || $this->get('scope_id') !== null)
+				{
+					$scope_id = isset($filters['scope_id']) ? (int) $filters['scope_id'] : (int) $this->get('scope_id');
+					$results->whereEquals($tbl . '.objectid', $scope_id);
+				}
 			}
 			if (isset($filters['label']) && $filters['label'])
 			{
