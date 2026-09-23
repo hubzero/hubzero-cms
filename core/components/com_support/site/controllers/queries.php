@@ -102,6 +102,13 @@ class Queries extends SiteController
 	 */
 	public function saveTask()
 	{
+		// Saved queries belong to logged-in users; a guest (id 0) would
+		// otherwise match the shared core rows (user_id 0) below.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -110,12 +117,25 @@ class Queries extends SiteController
 		$no_html = Request::getInt('no_html', 0);
 		$tmpl    = Request::getCmd('component', '');
 
-		$row = Query::oneOrNew($fields['id']);
+		$row = Query::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
 
-		// A saved query belongs to the user who created it
-		if (!$row->isNew() && $row->get('user_id') != User::get('id'))
+		// A saved query belongs to the user who created it; the core rows
+		// (iscore) are the component's and nobody's to edit here
+		if (!$row->isNew() && ($row->get('iscore') || $row->get('user_id') != User::get('id')))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// iscore is what makes a query show for every non-agent; a folder is
+		// only the caller's own
+		unset($fields['iscore']);
+		if (!empty($fields['folder_id']))
+		{
+			$__folder = QueryFolder::oneOrNew((int) $fields['folder_id']);
+			if ($__folder->isNew() || $__folder->get('user_id') != User::get('id'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
 		}
 
 		$row->set($fields);
@@ -162,6 +182,13 @@ class Queries extends SiteController
 	 */
 	public function removeTask()
 	{
+		// Saved queries belong to logged-in users; a guest (id 0) would
+		// otherwise match the shared core rows (user_id 0) below.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// The only link to this task appends Session::getFormToken() to the
 		// URL (site/views/queries/tmpl/list.php), exactly as the folder delete
 		// beside it does, so there is a caller to honour the check.
@@ -187,6 +214,10 @@ class Queries extends SiteController
 		}
 
 		$row = Query::oneOrFail(intval($id));
+		if ($row->get('iscore'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// Only the owner may delete their saved query
 		if ($row->get('user_id') != User::get('id'))
@@ -305,6 +336,13 @@ class Queries extends SiteController
 	 */
 	public function savefolderTask($redirect=true)
 	{
+		// Saved queries belong to logged-in users; a guest (id 0) would
+		// otherwise match the shared core rows (user_id 0) below.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
@@ -368,6 +406,13 @@ class Queries extends SiteController
 	 */
 	public function removefolderTask()
 	{
+		// Saved queries belong to logged-in users; a guest (id 0) would
+		// otherwise match the shared core rows (user_id 0) below.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
@@ -403,6 +448,13 @@ class Queries extends SiteController
 	 */
 	public function saveorderingTask()
 	{
+		// Saved queries belong to logged-in users; a guest (id 0) would
+		// otherwise match the shared core rows (user_id 0) below.
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
