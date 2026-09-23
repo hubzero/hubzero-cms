@@ -575,7 +575,7 @@ class WikiParser
 			$matches[0],
 			'anchor',
 			$this->_randomString(),
-			'<a class="ext-link" href="' . $href . '" rel="external">' . $this->glyphs($txt) . '</a>'
+			'<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs($txt) . '</a>'
 		));
 	}
 
@@ -654,7 +654,7 @@ class WikiParser
 				$whole,
 				'anchor',
 				$this->_randomString(),
-				'<a class="' . $cls . '" href="' . $href . '">' . $this->glyphs($title) . '</a>'
+				'<a class="' . $cls . '" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '">' . $this->glyphs($title) . '</a>'
 			));
 		}
 
@@ -856,7 +856,7 @@ class WikiParser
 			$matches[0],
 			'anchor',
 			$this->_randomString(),
-			'<a class="ext-link" href="' . $href . '" rel="external">' . $this->glyphs(trim($title)) . '</a>'
+			'<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs(trim($title)) . '</a>'
 		));
 	}
 

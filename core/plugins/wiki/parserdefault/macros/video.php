@@ -232,16 +232,16 @@ class VideoMacro extends WikiMacro
 				case 'mov':
 				case 'mp4':
 				case 'm4v':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/mp4" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
 				break;
 
 				case 'ogg':
 				case 'ogv':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/ogg" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
 				break;
 
 				case 'webm':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/webm" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
 				break;
 			}
 			$html .= '</video>';
