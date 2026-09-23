@@ -602,6 +602,14 @@ class Question extends Relational
 		// Load the answer
 		$answer = Response::oneOrFail($answer_id);
 
+		// ...to THIS question. The id names any response on the hub, and
+		// accepting one pays it.
+		if ((int) $answer->get('question_id') !== (int) $this->get('id'))
+		{
+			$this->addError(Lang::txt('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'));
+			return false;
+		}
+
 		// Mark it at the chosen one
 		$answer->set('state', 1);
 		if (!$answer->save())
