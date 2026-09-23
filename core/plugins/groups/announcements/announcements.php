@@ -746,8 +746,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Only admins and group managers
-		if (!User::authorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		// Only admins and group managers. (This was ||, which demanded both, so a
+		// group manager who was not also a super admin was always refused.)
+		if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers')))
 		{
 			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
 		}
@@ -837,13 +838,20 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Only admins and group managers
-		if (!User::authorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		// Only admins and group managers. (This was ||, which demanded both, so a
+		// group manager who was not also a super admin was always refused.)
+		if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers')))
 		{
 			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
 		}
 
 		$model = Hubzero\Item\Announcement::oneOrFail($id);
+
+		// Managing this group's announcements is not managing another group's.
+		if (!$model->belongsToObject('group', $group->get('gidNumber')))
+		{
+			throw new Exception(Lang::txt('Announcement not found.'), 404);
+		}
 
 		// Incoming data
 		$fields = array(
@@ -854,8 +862,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'priority'     => Request::getInt('priority', $model->get('priority', 0), 'post'),
 			'publish_up'   => Request::getString('publish_up', $model->get('publish_up'), 'post'),
 			'publish_down' => Request::getString('publish_down', $model->get('publish_down'), 'post'),
-			'created'      => Request::getString('created', $model->get('created'), 'post'),
-			'created_by'   => Request::getInt('created_by', $model->get('created_by'), 'post'),
+			'created'      => $model->get('created'),
+			'created_by'   => $model->get('created_by'),
 		);
 
 		// Format publish up
@@ -905,8 +913,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Only admins and group managers
-		if (!User::authorise('core.admin') || !in_array(User::get('id'), $group->get('managers')))
+		// Only admins and group managers. (This was ||, which demanded both, so a
+		// group manager who was not also a super admin was always refused.)
+		if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers')))
 		{
 			throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
 		}
@@ -914,8 +923,8 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Load the record
 		$model = Hubzero\Item\Announcement::oneOrFail($id);
 
-		// Was it actually found?
-		if (!$model->get('id'))
+		// Was it actually found, in this group?
+		if (!$model->get('id') || !$model->belongsToObject('group', $group->get('gidNumber')))
 		{
 			throw new Exception(Lang::txt('Announcement not found.'), 404);
 		}
