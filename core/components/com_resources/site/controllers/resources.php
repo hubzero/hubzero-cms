@@ -1742,6 +1742,12 @@ class Resources extends SiteController
 		{
 			$filters['sortby'] = Request::getString('sortby', 'ranking');
 		}
+		// sortby goes into ORDER BY as a column name; only a column of the
+		// children listing is one.
+		if (!in_array($filters['sortby'], array('ordering', 'ranking', 'title', 'created', 'publish_up', 'id'), true))
+		{
+			$filters['sortby'] = ($resource->get('type') == 2) ? 'ordering' : 'ranking';
+		}
 		$filters['limit'] = Request::getInt('limit', 100);
 		$filters['start'] = Request::getInt('limitstart', 0);
 		$filters['year']  = Request::getInt('year', 0);
