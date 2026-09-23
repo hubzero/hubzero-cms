@@ -412,11 +412,25 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			$row->set('item_type', $this->obj_type);
 		}
 
-		$row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
-
-		if ($row->get('id')
-		 && $row->get('created_by') != User::get('id')
-		 && !$this->params->get('access-edit-comment'))
+		// access-edit-comment is every enrolled student (comments_editable),
+		// so testing it alone let any student edit any other's review. The
+		// rule the view renders Edit on: the author, where reviews are
+		// editable, or a manager. A new review needs access-create-comment,
+		// which comments_close withdraws.
+		if ($row->get('id'))
+		{
+			if (!$this->params->get('access-manage-comment')
+			 && !$this->params->get('access-admin-comment')
+			 && !($this->params->get('access-edit-comment') && $row->get('created_by') == User::get('id')))
+			{
+				App::redirect(
+					$this->url,
+					Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
+					'warning'
+				);
+			}
+		}
+		elseif (!$this->params->get('access-create-comment'))
 		{
 			App::redirect(
 				$this->url,
