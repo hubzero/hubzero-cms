@@ -809,11 +809,11 @@ class Threadsv1_0 extends ApiController
 			// Editing an existing post must not re-sort the thread to the top
 			// of the activity-ordered listing or misrepresent the most recent
 			// post (see support ticket #2145).
-			if (!$fields['id'])
-			{
-				$thread->set('last_activity', $row->get('created'));
-				$thread->save();
-			}
+			// createTask() only ever creates: this is always a NEW reply.
+			// ($fields has no 'id' key -- reading one was an undefined-index
+			// warning, a 500 here, after every reply had already been saved.)
+			$thread->set('last_activity', $row->get('created'));
+			$thread->save();
 
 			$type = 'post';
 			$desc = Lang::txt(
