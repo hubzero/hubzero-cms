@@ -131,7 +131,13 @@ class Cart extends ComponentController
 						// Check for request forgeries
 						Request::checkToken();
 
-						$sId = $toDelete[1];
+						// The parameter NAME carries the SKU id: an integer, or
+						// this is not a delete request.
+						if (!isset($toDelete[1]) || !ctype_digit((string) $toDelete[1]))
+						{
+							continue;
+						}
+						$sId = (int) $toDelete[1];
 						// Delete the requested item by setting its QTY to zero
 						$redirect = true;
 						try

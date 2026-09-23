@@ -591,7 +591,7 @@ abstract class Cart
 	private function deleteItem($sId)
 	{
 		// delete cart item
-		$sql = "DELETE FROM `#__cart_cart_items` WHERE `sId` = '{$sId}' AND `crtId` = {$this->crtId}";
+		$sql = "DELETE FROM `#__cart_cart_items` WHERE `sId` = " . (int) $sId . " AND `crtId` = " . (int) $this->crtId;
 
 		$this->_db->setQuery($sql);
 		$this->_db->query();
