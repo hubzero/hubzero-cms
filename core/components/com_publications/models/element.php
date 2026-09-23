@@ -147,7 +147,13 @@ class Element extends Obj
 	 */
 	public function display($value)
 	{
-		return $value;
+		// The about page echoes this as HTML; the value is what the author
+		// typed into the metadata field.
+		if (is_array($value))
+		{
+			$value = implode(', ', $value);
+		}
+		return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
