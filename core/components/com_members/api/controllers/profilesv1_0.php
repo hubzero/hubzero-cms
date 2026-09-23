@@ -171,6 +171,13 @@ class Profilesv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		// As v1.1: creating accounts is for administrators and account
+		// creators, not any authenticated caller.
+		if (!User::authorise('core.admin') && !User::authorise('core.create', 'com_members'))
+		{
+			throw new Exception(Lang::txt('Access denied'), 403);
+		}
+
 		// Initialize new usertype setting
 		$usersConfig = Component::params('com_members');
 		$newUsertype = $usersConfig->get('new_usertype');
