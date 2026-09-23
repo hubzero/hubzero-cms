@@ -323,7 +323,10 @@ class Categories extends AdminController
 			$category->save();
 		}
 
-		if (!empty($items['rules']))
+		// Permission rules only from someone the form would show them to
+		// (canDo core.admin on this category); a posted one is dropped.
+		if (!empty($items['rules'])
+		 && CategoriesHelper::getActions($extension, 'category', $category->get('id', 0))->get('core.admin'))
 		{
 			$rules = array_map(
 				function($item)
