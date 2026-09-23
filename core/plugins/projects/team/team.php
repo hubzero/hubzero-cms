@@ -587,7 +587,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					// By email
 					else
 					{
-						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
+						// Anchored at both ends: the address is stored, and a trailing
+						// quote was enough to reach the INSERT
+						$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-]+)+$/';
 						if (preg_match($regex, $cid))
 						{
 							// This is an email - check if user with the email exists
