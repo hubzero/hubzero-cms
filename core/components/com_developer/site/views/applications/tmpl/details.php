@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 		<tbody>
 			<tr>
 				<th><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_CLIENT_ID'); ?></th>
-				<td><code><?php echo $this->application->get('client_id'); ?></code></td>
+				<td><code><?php echo $this->escape($this->application->get('client_id')); ?></code></td>
 			</tr>
 			<tr>
 				<th><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_CLIENT_SECRET'); ?></th>
