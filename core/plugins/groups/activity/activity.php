@@ -250,7 +250,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 
 		// The record must belong to this group
-		if ($entry->get('scope') != 'group' || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -308,7 +308,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 
 		// The record must belong to this group
-		if ($entry->get('scope') != 'group' || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -373,7 +373,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$row = Hubzero\Activity\Log::oneOrNew($lid);
 
 		if (!$row->isNew()
-		 && ($row->get('scope') != 'group' || $row->get('scope_id') != $this->group->get('gidNumber')))
+		 && (!in_array($row->get('scope'), array('group', 'group_managers')) || $row->get('scope_id') != $this->group->get('gidNumber')))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
