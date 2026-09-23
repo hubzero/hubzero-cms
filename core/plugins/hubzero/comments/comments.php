@@ -394,6 +394,25 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 
 		if ($__isNew)
 		{
+			// Only where the form is offered: access-create-comment is what
+			// comments_close withdraws, and the view shows the form only on it.
+			if (!$this->params->get('access-create-comment'))
+			{
+				App::redirect($this->url, Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'), 'warning');
+			}
+
+			// A reply's parent has to be a comment on this same item.
+			if ($row->get('parent'))
+			{
+				$__parent = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew((int) $row->get('parent'));
+				if ($__parent->isNew()
+				 || (string) $__parent->get('item_type') !== (string) $this->obj_type
+				 || (int) $__parent->get('item_id') !== (int) $this->obj_id)
+				{
+					App::redirect($this->url);
+				}
+			}
+
 			// item_type/item_id are hidden inputs too, so a new comment could
 			// otherwise be attached to any item of any type -- including one with
 			// comments disabled or not visible to the caller. Pin both to the
@@ -492,8 +511,13 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			App::redirect($this->url);
 		}
 
-		if (User::get('id') != $comment->get('created_by')
-		 && !$this->params->get('access-delete-comment'))
+		// The rule item.php renders the Delete link on: the author, where the
+		// item's comments are deletable, or a manager. access-delete-comment
+		// alone is every logged-in user (see above), so testing it OR authorship
+		// let any member delete anyone's comment on a deletable item.
+		if (!$this->params->get('access-manage-comment')
+		 && !$this->params->get('access-admin-comment')
+		 && !($this->params->get('access-delete-comment') && User::get('id') == $comment->get('created_by')))
 		{
 			App::redirect($this->url);
 		}
