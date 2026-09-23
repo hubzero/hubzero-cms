@@ -580,6 +580,14 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			foreach ($mids as $mid)
 			{
 				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+
+				// Only a message this member was sent has a recipient row; a
+				// blank one here would be INSERTed for any mid[] and then
+				// satisfy the read guard in message().
+				if (!$recipient->get('id'))
+				{
+					continue;
+				}
 				$recipient->set('mid', $mid);
 				$recipient->set('uid', $member->get('id'));
 				$recipient->set('state', 1);
@@ -629,6 +637,14 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			foreach ($mids as $mid)
 			{
 				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+
+				// Only a message this member was sent has a recipient row; a
+				// blank one here would be INSERTed for any mid[] and then
+				// satisfy the read guard in message().
+				if (!$recipient->get('id'))
+				{
+					continue;
+				}
 				$recipient->set('mid', $mid);
 				$recipient->set('uid', $member->get('id'));
 				$recipient->set('state', 0);
@@ -671,6 +687,14 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			foreach ($mids as $mid)
 			{
 				$recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+
+				// Only a message this member was sent has a recipient row; a
+				// blank one here would be INSERTed for any mid[] and then
+				// satisfy the read guard in message().
+				if (!$recipient->get('id'))
+				{
+					continue;
+				}
 				$recipient->set('mid', $mid);
 				$recipient->set('uid', $member->get('id'));
 				$recipient->set('state', 2);
