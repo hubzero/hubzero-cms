@@ -1037,7 +1037,8 @@ class Owner extends Table
 
 		$query  = "INSERT INTO $this->_tbl (`projectid`,`userid`,`added`,`status`,
 			`native`, `role`, `invited_name`, `invited_email`, `invited_code`)
-			VALUES ($projectid, 0 ,'$now' , 0 , 0, $role, '$name', '$email', '$code' )";
+			VALUES (" . (int) $projectid . ", 0 , " . $this->_db->quote($now) . " , 0 , 0, " . (int) $role . ", "
+			. $this->_db->quote($name) . ", " . $this->_db->quote($email) . ", " . $this->_db->quote($code) . " )";
 		$this->_db->setQuery($query);
 		if ($this->_db->query())
 		{
