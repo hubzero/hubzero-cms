@@ -58,15 +58,22 @@ class Filefsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_CANNOT_LOAD'), 404);
 		}
 
-		$contentTasks = array('insert', 'update', 'delete', 'move', 'rename', 'makedirectory');
+		// Read-only tasks; every other task writes and needs content access.
+		// An allowlist, and compared the way parent::execute() dispatches
+		// (lowercased getCmd): the old list of write tasks missed save itself
+		// (insert/update are only its aliases) and chunkedupload, and was
+		// case-sensitive against a case-insensitive dispatch, so a read-only
+		// member -- or, on an open project, anyone -- could write or delete.
+		$task      = strtolower(Request::getCmd('task', 'list'));
+		$readTasks = array('list', 'files', 'get', 'download', 'getmetadata', 'connections');
 
 		//tasks specific to adapters
-		$connectionTasks = array('upload', 'download', 'getmetadata', 'setmetadata');
+		$connectionTasks = array('upload', 'chunkedupload', 'download', 'getmetadata', 'setmetadata');
 
 		// Check authorization
-		if ((in_array($this->_task, $contentTasks) && !$this->model->access('content'))
-			|| (in_array($this->_task, $connectionTasks) && !$this->model->access('content'))
-			|| !$this->model->access('member'))
+		if (!$this->model->access('member')
+			|| (!in_array($task, $readTasks) && !$this->model->access('content'))
+			|| (in_array($task, $connectionTasks) && !$this->model->access('content')))
 		{
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 401);
 		}
