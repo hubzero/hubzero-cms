@@ -1208,8 +1208,11 @@ class Jobs extends SiteController
 			}
 			else
 			{
-				// Save new information
-				$ja->bind($_POST);
+				// Save new information -- only what the application form
+				// carries. bind($_POST) also took id, uid, jid and status, which
+				// rewrote any application on the hub or filed one in another
+				// member's name.
+				$ja->bind(array_intersect_key($_POST, array_flip(array('cover', 'resumeid'))));
 				$ja->applied = $appid ? $ja->applied : $now;
 				$ja->status  = 1;
 			}
@@ -1436,6 +1439,13 @@ class Jobs extends SiteController
 		$employerid = $code ? $job->employerid : $employerid;
 		$job->employerid = $employerid;
 
+		// A new job is posted under the caller's own employer account unless
+		// an administrator is posting it; employerid came from the request.
+		if (!$code && $employerid != User::get('id') && !$this->_admin && !$this->_masterAdmin)
+		{
+			App::abort(403, Lang::txt('COM_JOBS_ERROR_NOT_AUTHORIZED'));
+		}
+
 		// load Employer
 		if (!$employer->loadEmployer($employerid))
 		{
@@ -1465,7 +1475,7 @@ class Jobs extends SiteController
 			// missing required information
 			if (!$job->description or !$job->title or !$job->companyName or !$job->companyLocation)
 			{
-				$job->bind($_POST);
+				$job->bind(array_intersect_key($_POST, array_flip(array('title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'))));
 				$this->_job     = $job;
 				$this->_jobCode = $code;
 				$this->setError(Lang::txt('COM_JOBS_ERROR_MISSING_INFORMATION'));
@@ -1479,7 +1489,7 @@ class Jobs extends SiteController
 		// Save new information
 		if (!$min)
 		{
-			$job->bind($_POST);
+			$job->bind(array_intersect_key($_POST, array_flip(array('title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'))));
 			$job->description      = rtrim(stripslashes($_POST['description']));
 			$job->title            = rtrim(stripslashes($_POST['title']));
 			$job->companyName      = rtrim(stripslashes($_POST['companyName']));
