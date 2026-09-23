@@ -286,6 +286,13 @@ class Attachments extends SiteController
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
 
+		// id names any resource on the hub; pid is the one authorised above.
+		// Only its own child is this request's to delete.
+		if (!\Components\Resources\Models\Association::oneByRelationship($pid, $id)->get('id'))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
+
 		// Check for stored file
 		if ($resource->get('path') != '')
 		{
