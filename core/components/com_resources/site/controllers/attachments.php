@@ -94,6 +94,17 @@ class Attachments extends SiteController
 		}
 		$childId = Request::getInt('childid');
 		$resource = Entry::oneOrNew($childId);
+
+		// childid names any row on the hub. Attaching an existing resource
+		// grafts it under this parent -- and a child with two parents is
+		// served on the more permissive one -- so the caller has to be
+		// allowed to edit the child as well as the parent.
+		if (!$resource->isNew()
+		 && !$resource->access('edit') && !$resource->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+
 		if ($resource->isNew())
 		{
 			// Create new record
@@ -185,6 +196,17 @@ class Attachments extends SiteController
 
 		$childId = Request::getInt('childid');
 		$resource = Entry::oneOrNew($childId);
+
+		// childid names any row on the hub. Attaching an existing resource
+		// grafts it under this parent -- and a child with two parents is
+		// served on the more permissive one -- so the caller has to be
+		// allowed to edit the child as well as the parent.
+		if (!$resource->isNew()
+		 && !$resource->access('edit') && !$resource->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+
 		if ($resource->isNew())
 		{
 			// Create new record
