@@ -1710,6 +1710,26 @@ class Tickets extends SiteController
 		$old = Ticket::oneOrNew($id);
 		$old->set('tags', $old->tags('string'));
 
+		if ($old->isNew())
+		{
+			App::abort(404, Lang::txt('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
+		}
+
+		// Who may change what: the ticket form offers group, severity, status,
+		// target date and category to agents (update on tickets), and only an
+		// open/close checkbox to the ticket's submitter. Nothing else offered
+		// anyone the ticket[] fields, but they were bound as posted for any
+		// logged-in user on any ticket.
+		if ($this->acl->check('update', 'tickets') <= 0)
+		{
+			if (!$old->isSubmitter())
+			{
+				App::abort(403, Lang::txt('COM_SUPPORT_ERROR_NOT_AUTH'));
+			}
+			$incoming = array_intersect_key($incoming, array('status' => 1));
+		}
+		unset($incoming['id'], $incoming['login'], $incoming['created'], $incoming['report'], $incoming['summary'], $incoming['email'], $incoming['name'], $incoming['ip'], $incoming['hostname'], $incoming['uas'], $incoming['referrer']);
+
 		// Initiate class and bind posted items to database fields
 		$row = Ticket::oneOrNew($id)->set($incoming);
 
