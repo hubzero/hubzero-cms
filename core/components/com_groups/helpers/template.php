@@ -7,11 +7,17 @@
 
 namespace Components\Groups\Helpers;
 
+use Hubzero\Base\Traits\Escapable;
 use Component;
 use App;
 
 class Template extends Document
 {
+	// The super group template files call $this->escape(); Document does not
+	// carry it, so every page of a super group seeded from super/default
+	// fataled.
+	use Escapable;
+
 	/**
 	 * Error bag
 	 *
