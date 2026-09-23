@@ -103,6 +103,17 @@ class Component extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// The row the params are written to is named by the posted id, and the
+		// check above is on the posted component; they have to be the same
+		// extension, or core.admin on one component rewrites another's config.
+		$extension = Models\Extension::oneOrNew($id);
+		if ($extension->isNew()
+		 || $extension->get('type') != 'component'
+		 || $extension->get('element') != $option)
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Validate the posted data.
 		$return = $model->validate($form, $data);
 
@@ -133,6 +144,37 @@ class Component extends AdminController
 				Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
 			);
 			return false;
+		}
+
+		// A usergroup option (com_members' new_usertype, the group every
+		// registration and every admin-created user is put in) must not name a
+		// group that carries core.admin unless the saver is a super admin. The
+		// field lists every group, and core.admin on a component is not core.admin
+		// on the site: the stock Administrator group has the first, not the second.
+		if (!User::authorise('core.admin'))
+		{
+			foreach ($form->getFieldset() as $field)
+			{
+				if (strtolower($field->type) != 'usergroup' || !isset($return[$field->fieldname]))
+				{
+					continue;
+				}
+
+				foreach ((array) $return[$field->fieldname] as $gid)
+				{
+					if (\Hubzero\Access\Access::checkGroup((int) $gid, 'core.admin'))
+					{
+						Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+
+						User::setState($this->_option . '.config.global.data', $data);
+
+						App::redirect(
+							Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
+						);
+						return false;
+					}
+				}
+			}
 		}
 
 		// Attempt to save the configuration.
