@@ -128,7 +128,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
 		// Check for the required subject dn field
-		if (isset($_SERVER['SSL_CLIENT_S_DN']) && $_SERVER['SSL_CLIENT_S_DN'])
+		if ($this->isAuthenticated())
 		{
 			$domain   = $_SERVER['SSL_CLIENT_I_DN_CN'];
 			$username = $_SERVER['SSL_CLIENT_S_DN_CN'];
@@ -261,7 +261,24 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
 	 */
 	private function isAuthenticated()
 	{
-		return (isset($_SERVER['SSL_CLIENT_S_DN']) && $_SERVER['SSL_CLIENT_S_DN']);
+		if (!isset($_SERVER['SSL_CLIENT_S_DN']) || !$_SERVER['SSL_CLIENT_S_DN'])
+		{
+			return false;
+		}
+
+		// The subject DN is only as good as the web server's verification of the
+		// certificate that carries it. With SSLVerifyClient optional_no_ca (or a
+		// proxy that forwards whatever it was handed) an unverified, self-made
+		// certificate supplies any subject, and the account linked to that
+		// subject is signed in. mod_ssl sets SSL_CLIENT_VERIFY with the DN
+		// variables; behind nginx, pass $ssl_client_verify as SSL_CLIENT_VERIFY.
+		if ($this->params->get('require_verify', 1)
+		 && (!isset($_SERVER['SSL_CLIENT_VERIFY']) || $_SERVER['SSL_CLIENT_VERIFY'] !== 'SUCCESS'))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

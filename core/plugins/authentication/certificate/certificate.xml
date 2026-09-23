@@ -28,6 +28,10 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				<field name="require_verify" type="radio" label="PLG_AUTHENTICATION_CERTIFICATE_PARAM_REQUIRE_VERIFY_LABEL" default="1" description="PLG_AUTHENTICATION_CERTIFICATE_PARAM_REQUIRE_VERIFY_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
