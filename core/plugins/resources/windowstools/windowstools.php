@@ -99,7 +99,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 				$params[] = 'token=' . $token;
 				if ($appid)
 				{
-					$params[] = 'appid=' . $appid;
+					$params[] = 'appid=' . urlencode($appid);
 				}
 				$params[] = 'standaloneUrl=' . $url;
 				$rurl .= implode('&', $params);
@@ -109,9 +109,17 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 				if (!$no_html)
 				{
+					// Where the page sends the browser back to: the referring hub
+					// page, or the hub itself -- never an off-site referer.
+					$back = isset($_SERVER['HTTP_REFERER']) ? (string) $_SERVER['HTTP_REFERER'] : '';
+					if (!$back || !\Hubzero\Utility\Uri::isInternal($back))
+					{
+						$back = Request::base();
+					}
+
 					$this->view('invoke', 'display')
 						->set('url', $rurl)
-						->set('rurl', $_SERVER['HTTP_REFERER'])
+						->set('rurl', $back)
 						->display();
 
 					exit();
@@ -128,7 +136,9 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
 		$response = json_encode($response);
 
-		if ($callback = Request::getString('callback'))
+		// A JSONP callback is a function name, not markup.
+		$callback = Request::getString('callback');
+		if ($callback && preg_match('/^[A-Za-z_$][A-Za-z0-9_$.]{0,63}$/', $callback))
 		{
 			$response = $callback . '(' . $response . ')';
 		}
@@ -150,7 +160,10 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 	{
 		$appid = $appid ?: Request::getString('appid');
 
-		if (!$appid)
+		// appid goes onto a shell command line below, straight from the
+		// request. An AppStream application id is a plain identifier; anything
+		// else is refused rather than quoted into the command.
+		if (!$appid || !preg_match('/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/', $appid))
 		{
 			return '';
 		}
@@ -200,7 +213,10 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 		$od = $od . ",sessionid=" . $sessionID;
 		$od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
 
-		$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid . "' --opaquedata '" . $od . "'");
+		// Both arguments carry request- or user-supplied text (appid; the
+		// username and e-mail in the opaque data), so each is escaped as a
+		// single shell word rather than wrapped in hand-written quotes.
+		$eurl = exec('/usr/bin/hz-aws-appstream getentitlementurl --appid ' . escapeshellarg($appid) . ' --opaquedata ' . escapeshellarg($od));
 
 		return $eurl;
 	}
