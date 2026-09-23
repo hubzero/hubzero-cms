@@ -495,9 +495,12 @@ class Customexts extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		// Updating publishes the extension (publishTask() below), so it needs
+		// what publishing needs; the toolbar button is shown on the same test.
 		if (
-			!User::authorise('core.edit', $this->_option)
-			&& !User::authorise('core.create', $this->_option)
+			(!User::authorise('core.edit', $this->_option)
+			&& !User::authorise('core.create', $this->_option))
+			|| !User::authorise('core.edit.state', $this->_option)
 		)
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));

@@ -32,7 +32,10 @@ if ($canDo->get('core.edit.state'))
 	Toolbar::unpublish('customexts.unpublish', 'JTOOLBAR_DISABLE', true);
 	Toolbar::divider();
 }
-Toolbar::custom('customexts.update', 'refresh', '', 'COM_INSTALLER_CUSTOMEXTS_UPDATE_CODE');
+if ($canDo->get('core.edit.state'))
+{
+	Toolbar::custom('customexts.update', 'refresh', '', 'COM_INSTALLER_CUSTOMEXTS_UPDATE_CODE');
+}
 Toolbar::divider();
 
 Toolbar::help('customexts');
