@@ -709,6 +709,68 @@ class Threadsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'), 400);
 		}
 
+		// Everything above came from the request. The category lookup proves the
+		// ids agree with each other, not that this caller may post there.
+		$isManager = User::authorise('core.manage', 'com_forum');
+
+		if (!$isManager)
+		{
+			// Moderation and bookkeeping fields are not the poster's to set.
+			$row->set('sticky', 0);
+			$row->set('closed', 0);
+			$row->set('hits', 0);
+			$row->set('state', Post::STATE_PUBLISHED);
+			$row->set('created', with(new Date('now'))->toSql());
+
+			if ($category->isClosed())
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+
+			// A group's forum is its members'. Other non-site scopes (courses,
+			// projects) have their own rules that this endpoint does not know.
+			if ($row->get('scope') == 'group')
+			{
+				$group = \Hubzero\User\Group::getInstance($row->get('scope_id'));
+				if (!$group || !in_array(User::get('id'), (array) $group->get('members')))
+				{
+					throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+				}
+			}
+			elseif ($row->get('scope') != 'site')
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+			// A site category's access is a view level. (A group category's is
+			// the group plugin's own scale -- 5 is "members" -- which the
+			// membership test above already stands for.)
+			elseif (!in_array($category->get('access'), User::getAuthorisedViewLevels()))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+		}
+
+		if ($row->get('parent'))
+		{
+			// A reply goes into an open thread of this category, under a post of
+			// that same thread.
+			$thread = Post::oneOrNew($row->get('thread'));
+			$parent = Post::oneOrNew($row->get('parent'));
+			if ($thread->isNew() || $parent->isNew()
+			 || $thread->get('parent')
+			 || $thread->get('category_id') != $category->get('id')
+			 || $parent->get('thread') != $thread->get('id')
+			 || ($thread->isClosed() && !$isManager))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+		}
+		else
+		{
+			// A thread starter is its own thread; save() fills that in.
+			$row->set('thread', 0);
+		}
+
 		if (!$row->save())
 		{
 			throw new Exception(Lang::txt('COM_FORUM_ERROR_SAVING_DATA'), 500);
