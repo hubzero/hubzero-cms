@@ -144,6 +144,8 @@ class Applications extends AdminController
 		// Bind the incoming data to our mdoel
 		$row = Application::oneOrNew($fields['id'])->set($fields);
 
+		$isNew = $row->isNew();
+
 		// Validate and save the data
 		if (!$row->save())
 		{
@@ -185,8 +187,10 @@ class Applications extends AdminController
 		}
 
 		// add creator if new
-		// will only ever get added once
-		$team[] = User::get('id');
+		if ($isNew)
+		{
+			$team[] = User::get('id');
+		}
 
 		// get current team
 		$currentTeam = $row->team()->rows();
