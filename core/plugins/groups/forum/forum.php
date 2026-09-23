@@ -1688,6 +1688,33 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				Notify::error(Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_CLOSED'));
 				return $this->editthread($post);
 			}
+
+			// fields[thread] and fields[parent] name any rows on the hub. A
+			// reply goes into a thread starter of the category it is posted to
+			// (checked against this forum above), under a post of that same
+			// thread -- otherwise a member files a reply into any thread on
+			// the hub.
+			if ($thread->get('parent')
+			 || (int) $thread->get('category_id') !== (int) $post->get('category_id'))
+			{
+				Notify::error(Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_CLOSED'));
+				return $this->editthread($post);
+			}
+
+			if ((int) $post->get('parent') !== (int) $thread->get('id'))
+			{
+				$parentPost = Post::oneOrNew((int) $post->get('parent'));
+				if ($parentPost->isNew() || (int) $parentPost->get('thread') !== (int) $thread->get('id'))
+				{
+					Notify::error(Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_CLOSED'));
+					return $this->editthread($post);
+				}
+			}
+		}
+		elseif (!$post->get('parent') && $isNew)
+		{
+			// A new thread starter is its own thread; save() fills that in.
+			$post->set('thread', 0);
 		}
 
 		if (!$post->get('category_id'))
