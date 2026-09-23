@@ -529,7 +529,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$filter    = urldecode(Request::getString('filter', ''));
 		// The listing root reaches Repo::filelist() and the git adapter; without
 		// this it enumerates directories outside the repository.
-		$directory = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('directory', '')));
+		$directory = urldecode((string) Request::getString('directory', ''));
+		// fileselector.js asks for the root as directory=.; that is the
+		// repository root, not an unsafe segment.
+		$directory = ($directory === '.' || $directory === './') ? '' : \Hubzero\Filesystem\SafePath::relative($directory);
 		$directory = ($directory === false) ? '' : $directory;
 
 		// Parse props for curation
@@ -768,7 +771,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$template = null;
 		// The listing root reaches Repo::filelist() and the git adapter; without
 		// this it enumerates directories outside the repository.
-		$directory = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('directory', '')));
+		$directory = urldecode((string) Request::getString('directory', ''));
+		// fileselector.js asks for the root as directory=.; that is the
+		// repository root, not an unsafe segment.
+		$directory = ($directory === '.' || $directory === './') ? '' : \Hubzero\Filesystem\SafePath::relative($directory);
 		$directory = ($directory === false) ? '' : $directory;
 		if (!empty($directory))
 		{
