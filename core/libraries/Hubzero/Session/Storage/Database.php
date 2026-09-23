@@ -236,12 +236,22 @@ class Database extends Store
 	 */
 	public function session($id)
 	{
+		// The id is the whole point: this is looked up by callers that were
+		// handed an encrypted session id (resources download, Windows tools)
+		// and then act as that session's user. Without the WHERE it returned
+		// the first row of a per-user grouping -- some real user's session --
+		// for any id at all.
+		$id = (string) $id;
+		if ($id === '')
+		{
+			return null;
+		}
+
 		$query = $this->connection->getQuery()
 			->select('*')
 			->from('#__session')
-			->group('userid')
-			->group('client_id')
-			->order('time', 'desc');
+			->whereEquals('session_id', $id)
+			->limit(1);
 
 		$this->connection->setQuery($query->toString());
 		return $this->connection->loadObject();
