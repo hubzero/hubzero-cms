@@ -2295,10 +2295,19 @@ class Resources extends SiteController
 
 			$session = \Hubzero\Session\Helper::getSession($session_id);
 
-			$user = User::getInstance($session->userid);
-			$user->set('guest', 0);
-			$user->set('id', $session->userid);
-			$user->set('usertype', $session->usertype);
+			// Only a live, logged-in session matching that id acts here; any
+			// other token -- garbage decrypts to garbage -- is a guest.
+			if ($session && !empty($session->userid) && empty($session->guest))
+			{
+				$user = User::getInstance($session->userid);
+				$user->set('guest', 0);
+				$user->set('id', $session->userid);
+				$user->set('usertype', $session->usertype);
+			}
+			else
+			{
+				$user = User::getInstance();
+			}
 		}
 		else
 		{
