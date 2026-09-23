@@ -542,9 +542,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		$cid = Request::getInt('cid');
 		$isNew = ($cid < 0 ? true : false);
 
-		// Get the citation (single) or create a new one
-		$citation = \Components\Citations\Models\Citation::oneOrNew($cid)
-			->set(array(
+		// Get the citation (single) or create a new one. cid names any row
+		// on the hub; an existing one has to be this member's own.
+		$citation = \Components\Citations\Models\Citation::oneOrNew($cid);
+		if (!$citation->isNew()
+		 && ($citation->get('scope') != $scope || (int) $citation->get('scope_id') !== (int) $scopeID))
+		{
+			throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+		}
+		$citation->set(array(
 				'type' => Request::getInt('type'),
 				'cite' => Request::getString('cite'),
 				'ref_type' => Request::getString('ref_type'),
@@ -696,10 +702,15 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		if ($id != 0 && !$bulk)
 		{
 			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+			// Decide before the write, not after it
+			if ($citation->scope != 'member' || $citation->scope_id != $this->member->get('id'))
+			{
+				throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+			}
 			$citation->set('published', $citation::STATE_DELETED);
 
-			if ($citation->save() && $citation->scope == 'member'
-			 && $citation->scope_id == $this->member->get('id'))
+			if ($citation->save())
 			{
 				App::redirect(
 					Route::url($this->member->link() . '&active=' . $this->_name),
@@ -743,11 +754,16 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			foreach ($citationIDs as $id)
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+				// Decide before the write, not after it
+				if ($citation->scope != 'member' || $citation->scope_id != $this->member->get('id'))
+				{
+					continue;
+				}
 				$citation->set('published', $citation::STATE_DELETED);
 
 				// update the record
-				if ($citation->save() && $citation->scope == 'member'
-				&& $citation->scope_id == $this->member->get('id'))
+				if ($citation->save())
 				{
 					array_push($deleted, $id);
 				}
@@ -930,6 +946,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			$citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
+			// This member's citation only -- decided before the write
+			if ($citation->scope != 'member' || $citation->scope_id != $this->member->get('id'))
+			{
+				throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+			}
+
 			if ($citation->uid != $this->member->get('id'))
 			{
 				// redirect
@@ -998,6 +1020,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 			foreach ($citationIDs as $id)
 			{
 				$citation = \Components\Citations\Models\Citation::oneOrFail($id);
+
+				// This member's citations only
+				if ($citation->scope != 'member' || $citation->scope_id != $this->member->get('id'))
+				{
+					continue;
+				}
 
 				// toggle the state
 				if ($citation->published != $citation::STATE_PUBLISHED)
