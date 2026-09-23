@@ -917,7 +917,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _approveMembership()
 	{
-		Request::checkToken('get');
+		Request::checkToken(['get', 'post']);
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
@@ -954,7 +954,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _denyMembership()
 	{
-		Request::checkToken('get');
+		Request::checkToken(['get', 'post']);
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
