@@ -538,11 +538,29 @@ class Entriesv1_0 extends ApiController
 
 		// The author gate above is worth nothing if the request can then move
 		// the entry into someone else's blog or put someone else's name on it.
-		list($scope, $scopeId, $createdBy) = $this->authorizedScope(
-			Request::getString('scope', $row->get('scope')),
-			Request::getInt('scope_id', $row->get('scope_id')),
-			Request::getInt('created_by', $row->get('created_by'))
-		);
+		// An update that leaves the scope alone keeps it: authorizedScope()
+		// maps anything that is not a group to the caller's own member blog,
+		// which is right for a move but would relocate a site entry its author
+		// merely edited.
+		$reqScope   = strtolower(Request::getString('scope', $row->get('scope')));
+		$reqScopeId = Request::getInt('scope_id', $row->get('scope_id'));
+
+		if ($reqScope === strtolower((string) $row->get('scope')) && $reqScopeId == (int) $row->get('scope_id'))
+		{
+			$scope     = $row->get('scope');
+			$scopeId   = (int) $row->get('scope_id');
+			$createdBy = User::authorise('core.manage', 'com_blog')
+				? Request::getInt('created_by', $row->get('created_by'))
+				: (int) $row->get('created_by');
+		}
+		else
+		{
+			list($scope, $scopeId, $createdBy) = $this->authorizedScope(
+				$reqScope,
+				$reqScopeId,
+				Request::getInt('created_by', $row->get('created_by'))
+			);
+		}
 
 		$fields = array(
 			'scope'          => $scope,
