@@ -617,6 +617,15 @@ class Groups extends Base
 		{
 			$group = Group::getInstance($g_gidNumber);
 			$this->_task = 'edit';
+
+			// _authorize() and _authorizedForTask() read $this->cn, which is
+			// whatever cn the request carried; the group being written is the
+			// posted gidNumber. Authorise against that group.
+			if (!$group || !$group->get('gidNumber'))
+			{
+				App::abort(404, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+			}
+			$this->cn = $group->get('cn');
 			// Snapshot the pre-save state for groups.onGroupAfterSave listeners.
 			// Group::getInstance() is a singleton cache, so a second call would
 			// return the *same* instance as $group and reflect the post-save

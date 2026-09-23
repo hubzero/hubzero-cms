@@ -266,6 +266,14 @@ class Pages extends Base
 		$this->page    = new Page($page['id']);
 		$this->version = new Page\Version();
 
+		// make sure the STORED page belongs to this group -- before bind(),
+		// which would take page[gidNumber] from the request and make the test
+		// below compare the caller's own group with itself
+		if ($task == 'update' && !$this->page->belongsToGroup($this->group))
+		{
+			App::abort(403, Lang::txt('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
+		}
+
 		// bind new page properties
 		if (!$this->page->bind($page))
 		{
