@@ -20,6 +20,7 @@ use Route;
 use Lang;
 use Event;
 use Filesystem;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';
@@ -1069,6 +1070,11 @@ class Filesv1_0 extends ApiController
 			throw new Exception(Lang::txt('No data path given'), 404);
 		}
 
+		if (!$this->_acceptDataPath($dataPath))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
+
 		// Insert file
 		$response = new stdClass;
 		$response->results     = $this->model->repo()->insert(
@@ -1636,5 +1642,55 @@ class Filesv1_0 extends ApiController
 		$name = basename(str_replace('\\', '/', (string) $name));
 
 		return ($name === '.' || $name === '..') ? '' : $name;
+	}
+
+	/**
+	 * May this caller hand the repository this data_path?
+	 *
+	 * Repo::insert() copies a local path straight into the project, and fetches
+	 * anything else with curl. From any collaborator that was a read of every
+	 * file the web server can see (configuration.php included) into a project
+	 * they can download from, and a request from the server to any address.
+	 * A server-local path stays available to a site super admin; a remote one
+	 * must be http(s) to a host that resolves only to public addresses.
+	 *
+	 * @param   string   $dataPath
+	 * @return  boolean
+	 */
+	protected function _acceptDataPath($dataPath)
+	{
+		$scheme = strtolower((string) parse_url($dataPath, PHP_URL_SCHEME));
+
+		if ($scheme === '')
+		{
+			return User::authorise('core.admin');
+		}
+
+		if ($scheme !== 'http' && $scheme !== 'https')
+		{
+			return false;
+		}
+
+		$host = trim((string) parse_url($dataPath, PHP_URL_HOST), '[]');
+		if ($host === '')
+		{
+			return false;
+		}
+
+		$ips = filter_var($host, FILTER_VALIDATE_IP) ? array($host) : (array) gethostbynamel($host);
+		if (empty($ips))
+		{
+			return false;
+		}
+
+		foreach ($ips as $ip)
+		{
+			if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

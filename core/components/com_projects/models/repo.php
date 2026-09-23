@@ -1099,6 +1099,10 @@ class Repo extends Obj
 			// Download file to a temp directory
 			if (curl_setopt($ch, CURLOPT_URL, $dataPath))
 			{
+				// A remote source is fetched over http(s) only -- never file://,
+				// gopher:// or the like, and not by following a redirect into one.
+				curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+				curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 				curl_setopt($ch, CURLOPT_FILE, $tempFile);
 				curl_exec ($ch);
 				$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
