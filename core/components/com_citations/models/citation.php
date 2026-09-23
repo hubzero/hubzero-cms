@@ -755,7 +755,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		}
 		if (!empty($this->get('formatted')))
 		{
-			return $this->get('formatted');
+			// Typed into fields[formatted] on the edit form and echoed as HTML
+			// on the public browse and view pages: purify, don't trust.
+			return \Hubzero\Utility\Sanitize::html((string) $this->get('formatted'));
 		}
 		//get hub specific details
 		$hub_name = \Config::get('sitename');
@@ -1186,7 +1188,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			$cite .= $coins;
 		}
 		// output the citation
-		return $cite;
+		// Every field but the title and authors was substituted raw; the
+		// result is echoed as HTML on public pages.
+		return \Hubzero\Utility\Sanitize::html((string) $cite);
 	}
 
 	/**
