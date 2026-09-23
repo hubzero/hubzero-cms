@@ -70,7 +70,8 @@ class Authors extends SiteController
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
 		}
 		$resource = Entry::oneOrFail((int) $id);
-		if (!$resource->access('edit') && !$resource->access('edit-own'))
+		if (!$resource->access('edit') && !$resource->access('edit-own')
+		 && !User::authorise('core.manage', 'com_tools'))
 		{
 			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
 		}
