@@ -281,7 +281,10 @@ class Categories extends AdminController
 
 		// Bind the rules.
 		$data = Request::getArray('data', array(), 'post');
-		if (isset($data['rules']) && is_array($data['rules']))
+		// Only from someone the form shows the rules to (core.admin); a posted
+		// one is dropped.
+		if (isset($data['rules']) && is_array($data['rules'])
+		 && User::authorise('core.admin', $this->_option))
 		{
 			$form = $category->getForm($data);
 			$data = $form->filter($data);
