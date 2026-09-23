@@ -200,10 +200,22 @@ class Auth extends SiteController
 				// Dropping the return is the correct degradation: the user
 				// lands on the site default after login instead of being
 				// bounced back to a login page they have just left.
+				// Only the hub's own login and registration pages nest: the
+				// path is /login or /register (below the site root), or the
+				// query names view=login|register with no task. A path that
+				// merely contains such a segment -- /saml/idp/login, which the
+				// IdP sends guests to log in with, or /register/confirm in the
+				// e-mail confirmation chain -- is a real destination.
 				$rpath  = (string) parse_url($decoded_return, PHP_URL_PATH);
 				$rquery = (string) parse_url($decoded_return, PHP_URL_QUERY);
-				if (preg_match('#(^|/)(login|register)(/|$)#i', $rpath)
-				 || preg_match('#view=(login|register)(&|$)#i', $rquery))
+				$rbase  = rtrim((string) Request::base(true), '/');
+				if ($rbase !== '' && strpos($rpath, $rbase) === 0)
+				{
+					$rpath = substr($rpath, strlen($rbase));
+				}
+				if (preg_match('#^/?(login|register)/?$#i', $rpath)
+				 || (preg_match('#(^|&)view=(login|register)(&|$)#i', $rquery)
+				  && !preg_match('#(^|&)task=#i', $rquery)))
 				{
 					$return = null;
 					Request::setVar('return', null);
