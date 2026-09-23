@@ -63,6 +63,17 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setClientSecret($this->params->get('app_secret'))
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
+		// A code this browser did not ask for is not redeemed (see
+		// OauthClient::beginAuthorization()).
+		if (Request::getString('code') && !self::consumeAuthorization('scistarter'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login'),
+				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
+				'error'
+			);
+		}
+
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
 		if ($code = Request::getString('code'))
 		{
@@ -102,6 +113,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
 
 		// Redirect to the login URL
+		self::beginAuthorization('scistarter');
 		App::redirect($client->getAuthorizationUrl());
 	}
 
@@ -252,6 +264,17 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
 		$client->setClientId($this->params->get('app_id'))
 		       ->setClientSecret($this->params->get('app_secret'))
 		       ->setRedirectUri(self::getRedirectUri('scistarter'));
+
+		// A code this browser did not ask for is not redeemed: redeemed in a
+		// victim's session it would link someone else's SciStarter account to theirs.
+		if (Request::getString('code') && !self::consumeAuthorization('scistarter'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				Lang::txt('PLG_AUTHENTICATION_SCISTARTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
+				'error'
+			);
+		}
 
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
 		if ($code = Request::getString('code'))

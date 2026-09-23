@@ -96,4 +96,39 @@ abstract class OauthClient extends Plugin
 
 		return $service . $scope;
 	}
+
+	/**
+	 * Record that this browser is starting an authorization round trip with
+	 * the named provider. Call it from display(), just before redirecting out.
+	 *
+	 * The callback (login() or link()) is a GET that redeems whatever `code`
+	 * it is handed. Without this, a code the attacker obtained for their own
+	 * provider account could be redeemed in a victim's session: logged in, it
+	 * links the attacker's identity to the victim's account; logged out, it
+	 * logs the victim into the attacker's. Providers that echo a per-session
+	 * `state` guard against that themselves; this does not depend on the
+	 * provider returning anything.
+	 *
+	 * @param   string  $name  The plugin name
+	 * @return  void
+	 */
+	protected static function beginAuthorization($name)
+	{
+		\Session::set('started', time(), 'oauthflow.' . $name);
+	}
+
+	/**
+	 * True once, if this browser began a round trip with the named provider in
+	 * the last fifteen minutes. Clears the record either way.
+	 *
+	 * @param   string  $name  The plugin name
+	 * @return  boolean
+	 */
+	protected static function consumeAuthorization($name)
+	{
+		$started = (int) \Session::get('started', 0, 'oauthflow.' . $name);
+		\Session::clear('started', 'oauthflow.' . $name);
+
+		return ($started > 0 && (time() - $started) < 900);
+	}
 }

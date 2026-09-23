@@ -110,6 +110,17 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$client->setClientSecret($this->params->get('app_secret'));
 		$client->setRedirectUri(self::getRedirectUri('google'));
 
+		// A code this browser did not ask for is not redeemed (see
+		// OauthClient::beginAuthorization()).
+		if (Request::getString('code') && !self::consumeAuthorization('google'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login'),
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
+				'error'
+			);
+		}
+
 		// If we have a code comeing back, the user has authorized our app, and we can authenticate
 		if ($code = Request::getString('code', ''))
 		{
@@ -151,6 +162,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 		$client->setScopes('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
 
 		// Create and follow the authorization URL
+		self::beginAuthorization('google');
 		App::redirect($client->createAuthUrl());
 	}
 
@@ -281,6 +293,17 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
 
 		// Create OAuth2 Instance
 		$oauth2 = new Google_Service_Oauth2($client);
+
+		// A code this browser did not ask for is not redeemed: redeemed in a
+		// victim's session it would link someone else's Google account to theirs.
+		if (Request::getString('code') && !self::consumeAuthorization('google'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				Lang::txt('PLG_AUTHENTICATION_GOOGLE_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
+				'error'
+			);
+		}
 
 		// If we have this code, we know we have a successful return from google
 		if ($code = Request::getString('code', ''))

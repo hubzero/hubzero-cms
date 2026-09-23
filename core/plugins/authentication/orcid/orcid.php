@@ -77,6 +77,17 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 
 		$options['return'] = $b64dreturn;
 
+		// A code this browser did not ask for is not redeemed (see
+		// OauthClient::beginAuthorization()).
+		if (Request::getString('code') && !self::consumeAuthorization('orcid'))
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login'),
+				Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
+				'error'
+			);
+		}
+
 		// If we have a code coming back, the user has authorized our app, and we can authenticate
 		if (!Request::getString('code'))
 		{
@@ -131,6 +142,7 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		}
 
 		// Create and follow the authorization URL
+		self::beginAuthorization('orcid');
 		App::redirect($oauth->getAuthorizationUrl());
 	}
 
@@ -334,6 +346,17 @@ class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
 		if (!Request::getString('code'))
 		{
 			// User didn't authorize our app, or, clicked cancel...
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
+				'error'
+			);
+		}
+
+		// A code this browser did not ask for is not redeemed: redeemed in a
+		// victim's session it would link someone else's ORCID account to theirs.
+		if (Request::getString('code') && !self::consumeAuthorization('orcid'))
+		{
 			App::redirect(
 				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
 				Lang::txt('PLG_AUTHENTICATION_ORCID_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
