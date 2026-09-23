@@ -439,10 +439,21 @@ class Threads extends SiteController
 		// reads the STORED author and passes, and the write then re-attributes
 		// the post to whoever the caller named. Pin it either way: to the caller
 		// on create, to the row's own value on edit.
-		$owner = $isNew ? User::get('id') : $post->get('created_by');
+		$owner    = $isNew ? User::get('id') : $post->get('created_by');
+		$__sticky = $post->get('sticky');
+		$__closed = $post->get('closed');
 
 		$post->set($fields);
 		$post->set('created_by', $owner);
+
+		// sticky and closed are manager controls: views/threads/tmpl/edit.php
+		// renders the checkboxes only on access-manage-thread and otherwise
+		// round-trips the stored values as hidden inputs.
+		if (!$this->config->get('access-manage-thread'))
+		{
+			$post->set('sticky', $isNew ? 0 : $__sticky);
+			$post->set('closed', $isNew ? 0 : $__closed);
+		}
 
 		// scope and scope_id ride in from the form as hidden fields and decide
 		// which forum the row belongs to, so pin them to the forum this
@@ -463,6 +474,33 @@ class Threads extends SiteController
 				Notify::error(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'));
 				return $this->editTask($post);
 			}
+
+			// fields[thread] and fields[parent] name any rows on the hub. A
+			// reply goes into a thread starter of the category it is posted
+			// to (the category is scoped to this forum below), under a post
+			// of that same thread -- otherwise a reply is filed into any
+			// thread, a private group's included.
+			if ($thread->get('parent')
+			 || (int) $thread->get('category_id') !== (int) $post->get('category_id'))
+			{
+				Notify::error(Lang::txt('COM_FORUM_POST_NOT_FOUND'));
+				return $this->editTask($post);
+			}
+
+			if ((int) $post->get('parent') !== (int) $thread->get('id'))
+			{
+				$parentPost = Post::oneOrNew((int) $post->get('parent'));
+				if ($parentPost->isNew() || (int) $parentPost->get('thread') !== (int) $thread->get('id'))
+				{
+					Notify::error(Lang::txt('COM_FORUM_POST_NOT_FOUND'));
+					return $this->editTask($post);
+				}
+			}
+		}
+		elseif (!$post->get('parent') && $isNew)
+		{
+			// A new thread starter is its own thread; save() fills that in.
+			$post->set('thread', 0);
 		}
 
 		// Make sure the category exists and is accepting new posts
