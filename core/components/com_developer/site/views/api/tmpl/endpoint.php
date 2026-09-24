@@ -53,8 +53,8 @@ foreach (array_keys($endpoints) as $version) {
 	}
 }
 $token = "";
-if (!empty($this->tokens)) {
-	$token = $this->tokens->first()->access_token;
+if (!empty($this->tokens) && count($this->tokens) && $this->tokens->first()) {
+	$token = $this->tokens->first()->get('access_token');
 }
 
 // pull list of versions from doc

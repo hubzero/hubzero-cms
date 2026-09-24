@@ -251,9 +251,10 @@ class Applications extends SiteController
 		// get request vars
 		$data = Request::getArray('application', array(), 'post');
 		$team = Request::getString('team', '', 'post');
+		$id   = (int) (isset($data['id']) ? $data['id'] : 0);
 
 		// For an existing application, require ownership of that exact app
-		if (!User::isGuest() && !empty($data['id']) && (int) $data['id'] > 0 && !$this->_ownsApplication($data['id']))
+		if (!User::isGuest() && $id > 0 && !$this->_ownsApplication($id))
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -266,15 +267,19 @@ class Applications extends SiteController
 		// must be logged in
 		if (User::isGuest())
 		{
-			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $data['id'], false, true);
+			$return = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false, true);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
 
-		// bind data to model
-		$model = Application::oneOrNew($data['id'])->set($data);
+		// bind data to model -- only the fields the form owns. client_id,
+		// client_secret, grant_types, hub_account, state and the created
+		// columns are generated or admin-managed and must not come from the
+		// request (a hub_account app is the one every session token is issued
+		// under).
+		$model = Application::oneOrNew($id)->set(array_intersect_key($data, array_flip(array('name', 'description', 'redirect_uri'))));
 
 		// is the app available
 		if ($model->isDeleted())
@@ -290,7 +295,7 @@ class Applications extends SiteController
 		// make sure its ours
 		if (!$this->config->get('access-edit-application', 0)
 		 && !$this->config->get('access-create-application', 0)
-		 && $data['id'] > 0)
+		 && $id > 0)
 		{
 			App::redirect(
 				Route::url('index.php?option=com_developer&controller=applications'),
@@ -325,11 +330,11 @@ class Applications extends SiteController
 				else
 				{
 					// load profile by username
-					$profile = \Hubzero\User\User::oneOrNew($t);
+					$profile = \Hubzero\User\User::oneByUsername($t);
 				}
 
 				// swap usernames for uidnumbers
-				if ($profile)
+				if ($profile && $profile->get('id'))
 				{
 					$team[$k] = $profile->get('id');
 				}

@@ -142,7 +142,7 @@ class Applications extends AdminController
 		$team   = Request::getString('team', '', 'post');
 
 		// Bind the incoming data to our mdoel
-		$row = Application::oneOrNew($fields['id'])->set($fields);
+		$row = Application::oneOrNew(isset($fields['id']) ? $fields['id'] : 0)->set($fields);
 
 		$isNew = $row->isNew();
 
@@ -171,11 +171,11 @@ class Applications extends AdminController
 				else
 				{
 					// load profile by username
-					$profile = \Hubzero\User\User::oneOrNew($t);
+					$profile = \Hubzero\User\User::oneByUsername($t);
 				}
 
 				// swap usernames for uidnumbers
-				if ($profile)
+				if ($profile && $profile->get('id'))
 				{
 					$team[$k] = $profile->get('id');
 				}
