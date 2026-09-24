@@ -22,7 +22,7 @@ else
 <div class="subject">
 	<?php if (!$this->no_html): ?>
 	<ul class="entries-menu">
-		<li><a class="active" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
+		<li><a class="active" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
 		<?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
 			<li><a href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages&action=new'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
 		<?php } ?>
