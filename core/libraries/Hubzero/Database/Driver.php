@@ -389,6 +389,14 @@ abstract class Driver
 				continue;
 			}
 
+			// An empty primary key on insert means "new row": leave it to the
+			// auto-increment. Forms post id="" for new records, and strict SQL
+			// mode refuses '' for an integer column.
+			if ($key && $k === $key && ($v === '' || $v === 0 || $v === '0'))
+			{
+				continue;
+			}
+
 			// Prepare and sanitize the fields and values for the database query
 			$fields[] = $this->quoteName($k);
 			$values[] = '?';
