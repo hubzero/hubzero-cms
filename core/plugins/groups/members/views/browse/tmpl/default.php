@@ -466,7 +466,9 @@ $option = 'com_groups';
 										case 'members':
 										default:
 											if ($this->membership_control == 1) {
-												if (!in_array($guser, $this->managers) || (in_array($guser, $this->managers) && count($this->managers) > 1)) {
+												// A closed group's membership cannot be changed: remove() refuses
+												// it, so do not offer a link that only reloads this list
+												if ($this->group->get('join_policy') != 3 && (!in_array($guser, $this->managers) || (in_array($guser, $this->managers) && count($this->managers) > 1))) {
 													$html .= "\t\t\t\t".'<td class="remove-member"><a class="remove tooltips" href="'.Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=remove&users[]='.$guser.'&filter='.$this->filter).'" title="'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_MEMBER', $this->escape($u->get('name'))).'">'.Lang::txt('PLG_GROUPS_MEMBERS_REMOVE').'</a></td>'."\n";
 												} else {
 													$html .= "\t\t\t\t".'<td class="remove-member"> </td>'."\n";
