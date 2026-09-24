@@ -359,7 +359,9 @@ class Groupsv1_0 extends ApiController
 
 		$sections = array();
 
-		$pluginAccess = \Hubzero\User\Group\Helper::getPluginAccess($group);
+		// getPluginAccess() takes the group object; handed the output array it
+		// returned null and every read died on the offset lookups below
+		$pluginAccess = (array) \Hubzero\User\Group\Helper::getPluginAccess($record);
 		$plugins = Event::trigger('groups.onGroupAreas', array());
 
 		if ($plugins)
