@@ -1809,23 +1809,23 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		switch ($filters['sortby'])
 		{
 			case 'title':
-				$filters['sort'] = 'sticky` DESC, `title';
+				$filters['sort'] = 'title';
 				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
-				$filters['sort'] = 'sticky` DESC, `rgt';
+				$filters['sort'] = 'rgt';
 				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'created':
-				$filters['sort'] = 'sticky` DESC, `created';
+				$filters['sort'] = 'created';
 				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
-				$filters['sort'] = 'sticky` DESC, `activity';
+				$filters['sort'] = 'activity';
 				$filters['sort_Dir'] = strtoupper(Request::getString('sortdir', 'DESC'));
 			break;
 		}
@@ -1860,6 +1860,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			->select("*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
 			->whereEquals('state', $filters['state'])
 			->whereIn('access', $filters['access'])
+			->order('sticky', 'desc') // pinned threads first, then the chosen sort
 			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated()
 			->rows();
