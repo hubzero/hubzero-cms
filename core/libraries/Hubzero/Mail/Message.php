@@ -175,8 +175,12 @@ class Message extends \Symfony\Component\Mime\Email
 			$mailer->send($this, $this->_failures);
 			$result = true;
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
+			// Unqualified, this named Hubzero\Mail\Exception, which does not
+			// exist, so a transport failure escaped as a 500 after the caller
+			// had already saved its data
+			\Log::error('Mail send failed: ' . $e->getMessage());
 			$result = false;
 		}
 
