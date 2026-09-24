@@ -189,6 +189,14 @@ class Member extends Table
 
 		$this->role_id = intval($this->role_id);
 
+		// `permissions` is NOT NULL with no default; a new member row left it
+		// null, so insertObject() omitted it and strict SQL refused the insert
+		// (every enrollment and every manager add 500'd)
+		if ($this->permissions === null)
+		{
+			$this->permissions = '';
+		}
+
 		if (!$this->id)
 		{
 			$this->enrolled = Date::toSql();

@@ -89,6 +89,17 @@ class Announcement extends Table
 			}
 		}
 
+		// A blank date field arrives as ''; store NULL (no window) instead,
+		// since strict SQL refuses '' for a DATETIME and the save 500'd
+		if (!$this->publish_up)
+		{
+			$this->publish_up = null;
+		}
+		if (!$this->publish_down)
+		{
+			$this->publish_down = null;
+		}
+
 		$this->sticky = intval($this->sticky);
 
 		if (!$this->id)
