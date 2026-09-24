@@ -198,7 +198,8 @@ class Pluginsv1_0 extends ApiController
 		// Check for errors at this point
 		if (!$response)
 		{
-			throw new Exception(Lang::txt('Expected data object not found.'), 500);
+			// no plugin answered for this "active" name: nothing to find, not a server fault
+			throw new Exception(Lang::txt('Expected data object not found.'), 404);
 		}
 
 		$this->send($response);
@@ -293,7 +294,8 @@ class Pluginsv1_0 extends ApiController
 		// Check for errors at this point
 		if (!$response)
 		{
-			throw new Exception(Lang::txt('Expected data object not found.'), 500);
+			// no plugin answered for this "active" name: nothing to find, not a server fault
+			throw new Exception(Lang::txt('Expected data object not found.'), 404);
 		}
 
 		$this->send($response);
@@ -388,7 +390,8 @@ class Pluginsv1_0 extends ApiController
 		// Check for errors at this point
 		if (!$response)
 		{
-			throw new Exception(Lang::txt('Expected data object not found.'), 500);
+			// no plugin answered for this "active" name: nothing to find, not a server fault
+			throw new Exception(Lang::txt('Expected data object not found.'), 404);
 		}
 
 		$this->send($response);

@@ -168,7 +168,9 @@ class Groupsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		$cn              = Request::getWord('cn', '');
+		// getWord() strips digits, so "lab2024" was created as "lab"; take the
+		// raw token and let Validate::group() below judge it
+		$cn              = Request::getCmd('cn', '');
 		$title           = Request::getString('title', '');
 		$tags            = Request::getString('tags', '');
 		$publicDesc      = Request::getString('public_description', '');
@@ -246,7 +248,9 @@ class Groupsv1_0 extends ApiController
 		// check for errors at this point
 		if (!empty($errors))
 		{
-			throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", $errors), 422);
+			// each error is a [field, message] pair; implode() of the pairs was an
+			// "Array to string conversion" 500 instead of this 422
+			throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')), 422);
 		}
 
 		// make sure we have a public desc of none was entered
@@ -543,7 +547,9 @@ class Groupsv1_0 extends ApiController
 		// check for errors at this point
 		if (!empty($errors))
 		{
-			throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", $errors), 422);
+			// each error is a [field, message] pair; implode() of the pairs was an
+			// "Array to string conversion" 500 instead of this 422
+			throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')), 422);
 		}
 
 		// map the join policy & discoverability values to their int value

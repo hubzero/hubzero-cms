@@ -758,6 +758,11 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'id'           => 0,
 			'scope'        => 'group',
 			'scope_id'     => $group->get('gidNumber'),
+			// the text and state were never read, so every API announcement was
+			// saved empty and unpublished, and could not be updated or deleted
+			// afterwards (save() then failed "content cannot be empty")
+			'content'      => trim(Request::getString('content', '', 'post')),
+			'state'        => Request::getInt('state', Hubzero\Item\Announcement::STATE_PUBLISHED, 'post'),
 			'sticky'       => Request::getInt('sticky', 0, 'post'),
 			'priority'     => Request::getInt('priority', 0, 'post'),
 			'publish_up'   => Request::getString('publish_up', '', 'post'),
@@ -859,6 +864,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 			'id'           => $id,
 			'scope'        => 'group',
 			'scope_id'     => $group->get('gidNumber'),
+			// the text was never read (see onGroupsApiCreate); a PUT body is not
+			// in the 'post' hash, so read it from the request
+			'content'      => trim((string) Request::getString('content', (string) $model->get('content'))),
 			'sticky'       => Request::getInt('sticky', $model->get('sticky', 0), 'post'),
 			'priority'     => Request::getInt('priority', $model->get('priority', 0), 'post'),
 			'publish_up'   => Request::getString('publish_up', $model->get('publish_up'), 'post'),

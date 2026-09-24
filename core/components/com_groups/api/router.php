@@ -82,8 +82,15 @@ class Router extends Base
 				else
 				{
 					$vars['controller'] = 'plugins';
-					$vars['task']       = 'index';
 					$vars['active']     = $segments[1];
+					// Only a GET falls back to the index; a POST/PUT/DELETE keeps
+					// the create/update/delete task the API's crud rule preset, or
+					// the documented POST /groups/{group}/{plugin} and
+					// PUT|DELETE /groups/{group}/{plugin}/{id} all answered "index"
+					if (\App::get('request')->method() == 'GET')
+					{
+						$vars['task'] = 'index';
+					}
 
 					if ($segments[1] == 'members')
 					{
