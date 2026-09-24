@@ -172,7 +172,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 
 		if (!$publish_up || $publish_up == '0000-00-00 00:00:00')
 		{
-			$publish_up = ($data['id'] ? $this->created : \Date::toSql());
+			// save paths may drop the posted id before binding, so it can be absent
+			$publish_up = (!empty($data['id']) ? $this->created : \Date::toSql());
 		}
 
 		return $publish_up;
