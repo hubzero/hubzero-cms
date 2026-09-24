@@ -566,13 +566,19 @@ class Auth extends SiteController
 			$data['remember'] = isset($options['remember']) ? (int)$options['remember'] : 0;
 			User::setState('login.form.data', $data);
 
-			// Facilitate third party login forms
+			// Facilitate third party login forms. Keep this un-routed: it is
+			// passed through Route::url() below, and routing an already-routed
+			// path ("/login") yields an empty URL, which is a 500 on every
+			// failed login.
 			if (!isset($return) || !$return)
 			{
-				$return	= Route::url('index.php?option=com_users&view=login');
+				$return	= 'index.php?option=com_users&view=login';
 			}
 
-			if (isset($freturn))
+			// $freturn is always assigned above (empty when the form did not
+			// post one), so test its value: an empty one routed to '' and every
+			// failed login became a 500 instead of the error message
+			if (!empty($freturn))
 			{
 				$return = $freturn;
 			}
