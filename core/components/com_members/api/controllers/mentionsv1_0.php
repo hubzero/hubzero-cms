@@ -34,7 +34,8 @@ class Mentionsv1_0 extends ApiController {
 			->whereEquals('block', 0)
 			->whereEquals('activation', 1)
 			->where('username', 'NOT LIKE', '-%')
-			->where('approved', '>', 0);
+			->where('approved', '>', 0)
+			->whereIn('access', User::getAuthorisedViewLevels());
 
         if ($search) {
             $entries->whereLike('name', strtolower((string)$search), 1)
@@ -68,6 +69,16 @@ class Mentionsv1_0 extends ApiController {
 
         if (!$group) { throw new Exception("There is no group for this ID", 404); }
 
+        // A hidden group's roster is for its members only; a visible group's
+        // forum may be open to non-members, who mention people from it too
+        if ($group->get('discoverability') == 1
+         && !$group->isMember(User::get('id'))
+         && !$group->isManager(User::get('id'))
+         && !User::authorise('core.manage', 'com_groups'))
+        {
+            throw new Exception("There is no group for this ID", 404);
+        }
+
         // Get all group members, managers, etc
         $members    = $group->get('members');
         $managers   = $group->get('managers');
@@ -83,10 +94,10 @@ class Mentionsv1_0 extends ApiController {
 
             $userName = $user->get('username');
             $name = $user->get('name');
-            $email = $user->get('email');
 
             // Case-sensitive, use preg_grep as it matches a pattern
-            $os = array(strtolower($userName), strtolower($name), strtolower($email));
+            // (email is not part of the response, so it is not searched either)
+            $os = array(strtolower($userName), strtolower($name));
 
             $obj = new stdClass;
             $obj->id        = $user->get('id');

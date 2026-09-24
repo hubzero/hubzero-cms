@@ -86,7 +86,7 @@ class Toolsv1_0 extends ApiController
 		$sessions = $ms->getRecords($result->get("username"), '', false);
 
 		// Run middleware command to create screenshots
-		$cmd = "/bin/sh ". Component::path('com_tools') . "/scripts/mw screenshot " . $result->get('username') . " 2>&1 </dev/null";
+		$cmd = "/bin/sh ". Component::path('com_tools') . "/scripts/mw screenshot " . escapeshellarg($result->get('username')) . " 2>&1 </dev/null";
 		exec($cmd, $results, $status);
 
 		$results = array();
@@ -242,7 +242,7 @@ class Toolsv1_0 extends ApiController
 				AND r.access!=4
 				AND r.alias=tv.toolname
 				AND tv.state=1
-				AND rt.uid={$result->get("uidNumber")}
+				AND rt.uid=" . (int) $result->get('uidNumber') . "
 				AND rt.tool=r.alias
 				GROUP BY r.alias
 				ORDER BY rt.created DESC";

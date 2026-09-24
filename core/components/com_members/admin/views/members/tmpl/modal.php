@@ -73,7 +73,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 					$groups = array();
 					foreach ($row->accessgroups as $agroup)
 					{
-						$groups[] = $this->accessgroups->seek($agroup->get('group_id'))->get('title');
+						$groups[] = $this->escape($this->accessgroups->seek($agroup->get('group_id'))->get('title'));
 					}
 					$row->set('group_names', implode('<br />', $groups));
 					echo $row->get('group_names'); ?>

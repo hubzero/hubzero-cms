@@ -292,6 +292,19 @@ class Media extends SiteController
 		$dir  = '/' . trim($dir, '/') . '/';
 		$file = ltrim($file, '/');
 
+		// The only caller asks about the picture it just uploaded, so the
+		// directory is always a member's own filespace: anything else is a
+		// probe of the docroot. Match doajaxuploadTask's response format.
+		$base  = '/' . trim(str_replace(PATH_ROOT, '', PATH_APP . DS . $this->filespace()), '/') . '/';
+		$owner = (strpos($dir, $base) === 0) ? trim(substr($dir, strlen($base)), '/') : '';
+
+		if ($owner === '' || !ctype_digit($owner))
+		{
+			return;
+		}
+
+		$this->_requireSelfOrAdmin((int) $owner);
+
 		if (!file_exists(PATH_ROOT . $dir . $file))
 		{
 			return;
@@ -627,7 +640,8 @@ class Media extends SiteController
 
 		//get the file name
 		// make sure to leave out any query params (ex. ?v={timestamp})
-		$uri = Request::getString('SCRIPT_URL', '', 'server');
+		$uri  = Request::getString('SCRIPT_URL', '', 'server');
+		$file = '';
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));
@@ -656,6 +670,11 @@ class Media extends SiteController
 			$parts[] = $seg;
 		}
 		$file = implode(DS, $parts);
+
+		if ($file === '')
+		{
+			App::abort(404, Lang::txt('MEMBERS_NO_FILE'));
+		}
 
 		// build base path
 		$base_path = $this->filespace() . DS . \Hubzero\Utility\Str::pad($member->get('id'), 5);

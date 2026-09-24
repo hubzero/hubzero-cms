@@ -253,11 +253,10 @@ class Utility
 	{
 		$genpass = '';
 		$salt = "abchefghjkmnpqrstuvwxyz0123456789";
-		srand((double)microtime()*1000000);
 		$i = 0;
 		while ($i < $length)
 		{
-			$num = rand() % 33;
+			$num = random_int(0, strlen($salt) - 1);
 			$tmp = substr($salt, $num, 1);
 			$genpass = $genpass . $tmp;
 			$i++;

@@ -78,7 +78,7 @@ class Profiles extends SiteController
 		require_once dirname(dirname(__DIR__)) . '/models/incremental/groups.php';
 		require_once dirname(dirname(__DIR__)) . '/models/incremental/options.php';
 
-		$ia = new \Components\Members\Models\Incremental\Awards($profile);
+		$ia = new \Components\Members\Models\Incremental\Awards((int) User::get('id'));
 		$ia->optOut();
 
 		App::redirect(
@@ -116,7 +116,7 @@ class Profiles extends SiteController
 
 					case 1:
 					default:
-						$profile = User::groups();
+						$xgroups = User::groups();
 						$usersgroups = array();
 						if (!empty($xgroups))
 						{
@@ -1073,6 +1073,9 @@ class Profiles extends SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$passrules = false;
 
 		// Check if they have a previously set pass
@@ -1152,6 +1155,10 @@ class Profiles extends SiteController
 
 		// Redirect user back to main account page
 		$return = base64_decode(Request::getString('return', '', 'method', 'base64'));
+		if ($return && !\Hubzero\Utility\Uri::isInternal($return))
+		{
+			$return = '';
+		}
 		$this->_redirect = $return ? $return : Route::url('index.php?option=' . $this->_option . '&id=' . $id);
 		$session = App::get('session');
 
@@ -1353,6 +1360,7 @@ class Profiles extends SiteController
 		if ($request !== null && !empty($resourcemessage))
 		{
 			$sitename =  Config::get('sitename');
+			$hubName  = $sitename;
 			$live_site = rtrim(Request::base(), '/');
 
 			// Email subject
@@ -1598,7 +1606,12 @@ class Profiles extends SiteController
 
 		if (!is_null($visibility))
 		{
-			$member->set('access', $visibility);
+			// Public, registered or private -- the only levels the form offers
+			if (!in_array((int) $visibility, array(1, 2, 5)))
+			{
+				$visibility = 1;
+			}
+			$member->set('access', (int) $visibility);
 		}
 
 		// Check email
@@ -1782,7 +1795,10 @@ class Profiles extends SiteController
 			if ($member->get('email') != $user->get('email'))
 			{
 				$user->set('email', $member->get('email'));
-				$user->set('activation', $confirm);
+				if (isset($confirm))
+				{
+					$user->set('activation', $confirm);
+				}
 
 				// Add item to session to mark that the user changed emails
 				// this way we can serve profile images for these users but not all
@@ -1796,7 +1812,9 @@ class Profiles extends SiteController
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
 		if ($email != $oldemail)
 		{
-                        $result = \Components\Members\Helpers\Utility::sendConfirmEmail($user, null, false);
+			// $user is only the session user when editing one's own profile;
+			// the mail goes to whichever member was edited
+			$result = \Components\Members\Helpers\Utility::sendConfirmEmail($member, null, false);
 
 			if ($result)
 			{

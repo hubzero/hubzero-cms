@@ -58,6 +58,17 @@ class Premis extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// The registration helper this import hands each row to is not part
+		// of the shipped tree; without it there is nothing to do with the file.
+		$helper = dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php';
+
+		if (!is_file($helper))
+		{
+			$this->setError(Lang::txt('The PREMIS registration helper is not installed.'));
+			$this->displayTask();
+			return;
+		}
+
 		$file = Request::getArray('upload', '', 'files');
 		if (!$file['name'])
 		{
@@ -121,7 +132,7 @@ class Premis extends AdminController
 			$ok = 0;
 			$fail = 0;
 
-			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Premis.php';
+			include_once $helper;
 
 			if (($handle = fopen($filename, "r")) !== false)
 			{

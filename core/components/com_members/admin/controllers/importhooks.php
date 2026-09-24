@@ -163,6 +163,9 @@ class ImportHooks extends AdminController
 		$fields = Request::getArray('hook', array(), 'post');
 		$file   = Request::getArray('file', array(), 'FILES');
 
+		// The script name is only ever set from the upload below
+		unset($fields['file']);
+
 		// Create hook model object
 		$hook = Hook::blank()->set($fields);
 
@@ -234,7 +237,7 @@ class ImportHooks extends AdminController
 		$hook = Hook::oneOrFail($id);
 
 		// get path to file
-		$file = $hook->fileSpacePath() . DS . $hook->get('file');
+		$file = $hook->fileSpacePath() . DS . basename((string) $hook->get('file'));
 
 		// default contents
 		$contents = '';

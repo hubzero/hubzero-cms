@@ -229,6 +229,13 @@ class Imports extends AdminController
 		$fields = Request::getArray('mapping', array());
 		$file   = Request::getArray('file', array(), 'FILES');
 
+		// The data file is picked from a list of names inside the import's own
+		// filespace, so it is never anything but a bare filename
+		if (isset($import['file']))
+		{
+			$import['file'] = basename((string) $import['file']);
+		}
+
 		// Create import model object
 		$model = Import::oneOrNew(isset($import['id']) ? $import['id'] : 0);
 
@@ -418,7 +425,7 @@ class Imports extends AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//Session::checkToken();
+		Request::checkToken();
 
 		// Start of import
 		$start = microtime(true);
@@ -531,7 +538,7 @@ class Imports extends AdminController
 			}
 
 			// Build path to script
-			$hookFile = $importHook->fileSpacePath() . DS . $importHook->get('file');
+			$hookFile = $importHook->fileSpacePath() . DS . basename((string) $importHook->get('file'));
 
 			// Make sure we have a file
 			if (!is_file($hookFile))

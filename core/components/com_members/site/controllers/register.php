@@ -164,7 +164,7 @@ class Register extends SiteController
 
 		if ($xregistration->get('email') != $xprofile->get('email'))
 		{
-			$code = Components\Members\Helper\Utility::genemailconfirm();
+			$code = \Components\Members\Helpers\Utility::genemailconfirm();
 			$xprofile->set('activation', $code);
 			$updateEmail = true;
 		}
@@ -1322,8 +1322,8 @@ class Register extends SiteController
 	 */
 	public function resendTask()
 	{
-		// Incoming
-		$return = urldecode(Request::getString('return', '/'));
+		// Incoming (validated as internal)
+		$return = ReturnUrl::sanitize(Request::getString('return', '')) ?: '/';
 
 		// An unconfirmed user rarely has a live session (that is the whole
 		// point of confirmation), so requiring login to re-request the
@@ -1545,8 +1545,8 @@ class Register extends SiteController
 
 		$success = false;
 
-		// Incoming
-		$return = urldecode(Request::getString('return', '/'));
+		// Incoming (validated as internal)
+		$return = ReturnUrl::sanitize(Request::getString('return', '')) ?: '/';
 
 		// Check if a new email was submitted
 		$pemail = Request::getString('email', '', 'post');
@@ -1687,6 +1687,10 @@ class Register extends SiteController
 		{
 			$code = Request::getString('code', false);
 		}
+
+		// The token is a positive integer; anything else is negated below,
+		// which is a type error on a non-numeric string
+		$code = ctype_digit((string) $code) ? (int) $code : false;
 
 		// Get the return value if it was requested (validated as internal)
 		$return = ReturnUrl::sanitize(Request::getString('return', false));
@@ -1916,7 +1920,7 @@ class Register extends SiteController
 			->set('login', $xprofile->get('username'))
 			->set('email', $xprofile->get('email'))
 			->set('code', $code)
-			->set('redirect', (isset($return) ? $return : ''))
+			->set('redirect', (isset($redirect) ? $redirect : (isset($return) ? $return : '')))
 			->set('sitename', Config::get('sitename'))
 			->setErrors($this->getErrors())
 			->display();
@@ -1937,8 +1941,8 @@ class Register extends SiteController
 		// redirect straight back into the plugin and loop forever.
 		$email_confirmed = User::oneOrNew($xprofile->get('id'))->get('activation');
 
-		// Incoming
-		$return = Request::getString('return', urlencode('/'));
+		// Incoming (validated as internal)
+		$return = ReturnUrl::sanitize(Request::getString('return', '')) ?: '/';
 
 		// Loop guard: even if some unforeseen state mismatch lines up to send us
 		// back to this page over and over, never redirect off it more than a few
@@ -1950,7 +1954,7 @@ class Register extends SiteController
 		if (($email_confirmed == 1 || $email_confirmed == 3) && $redirects < 3)
 		{
 			Session::set('members.unconfirmed.redirects', $redirects + 1);
-			App::redirect(urldecode($return));
+			App::redirect($return);
 		}
 
 		// We're rendering the page rather than redirecting — clear the guard.

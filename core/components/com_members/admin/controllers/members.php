@@ -532,7 +532,7 @@ class Members extends AdminController
 			// Check that at least one of our new groups is Super Admin
 			$stillSuperAdmin = false;
 
-			foreach ($fields['accessgroups'] as $group)
+			foreach ((array) (isset($fields['accessgroups']) ? $fields['accessgroups'] : array()) as $group)
 			{
 				$stillSuperAdmin = ($stillSuperAdmin ? $stillSuperAdmin : Access::checkGroup($group, 'core.admin'));
 			}

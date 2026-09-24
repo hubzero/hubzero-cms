@@ -24,6 +24,7 @@ use Date;
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
+include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
 /**
  * Members API controller class
@@ -299,7 +300,7 @@ class Profilesv1_1 extends ApiController
 		$user->set('givenName', $givenName);
 		$user->set('middleName', $middleName);
 		$user->set('surname', $surname);
-		$user->set('activation', -rand(1, pow(2, 31)-1));
+		$user->set('activation', \Components\Members\Helpers\Utility::genemailconfirm());
 		$user->set('access', 1);
 		$user->set('password', $password);
 
