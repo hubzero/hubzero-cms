@@ -637,6 +637,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			if ($thread)
 			{
 				$post = Post::oneOrNew($thread);
+
+				// thread= resolves any forum post on the hub. Only a post of this
+				// offering's forum is rendered (or, below, made sticky) here.
+				if ($post->get('id')
+				 && ($post->get('scope') != $filters['scope']
+				  || (int) $post->get('scope_id') !== (int) $filters['scope_id']))
+				{
+					App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'));
+				}
 			}
 
 			if (!$action && $thread)
@@ -672,6 +681,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'sticky':
+					// Pinning a thread is a manager action (access-edit-thread is
+					// set for offering managers only)
+					if (!$post->get('id') || !$this->params->get('access-edit-thread'))
+					{
+						App::abort(403, Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'));
+					}
 					$post->set('sticky', Request::getInt('sticky', 0));
 					$post->save();
 				break;
@@ -1244,6 +1259,15 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			if ($thread)
 			{
 				$post = Post::oneOrNew($thread);
+
+				// thread= resolves any forum post on the hub. Only a post of this
+				// offering's forum is rendered (or, below, made sticky) here.
+				if ($post->get('id')
+				 && ($post->get('scope') != $filters['scope']
+				  || (int) $post->get('scope_id') !== (int) $filters['scope_id']))
+				{
+					App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'));
+				}
 			}
 
 			if (!$action && $thread)
@@ -1279,6 +1303,12 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				break;
 
 				case 'sticky':
+					// Pinning a thread is a manager action (access-edit-thread is
+					// set for offering managers only)
+					if (!$post->get('id') || !$this->params->get('access-edit-thread'))
+					{
+						App::abort(403, Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'));
+					}
 					$post->set('sticky', Request::getInt('sticky', 0));
 					$post->save();
 				break;
