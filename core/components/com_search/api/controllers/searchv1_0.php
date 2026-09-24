@@ -23,6 +23,28 @@ use User;
 class Searchv1_0 extends ApiController
 {
 	/**
+	 * A search query for the configured engine
+	 *
+	 * Only a Solr query adapter exists; with the default "basic" engine the
+	 * Query constructor died on a missing \Hubzero\Search\Adapters\BasicQueryAdapter
+	 * class (a 500 on every call). Say that the API is unavailable instead.
+	 *
+	 * @param   object  $config
+	 * @return  Query
+	 */
+	private function searchQuery($config)
+	{
+		$adapter = '\\Hubzero\\Search\\Adapters\\' . ucfirst((string) $config->get('engine')) . 'QueryAdapter';
+
+		if (!class_exists($adapter))
+		{
+			throw new \Exception('The search API needs the Solr search engine; this hub is configured for "' . $config->get('engine') . '".', 501);
+		}
+
+		return new Query($config);
+	}
+
+	/**
 	 * Display a list of entries
 	 *
 	 * @apiMethod GET
@@ -81,7 +103,7 @@ class Searchv1_0 extends ApiController
 	public function listTask()
 	{
 		$config = Component::params('com_search');
-		$query = new Query($config);
+		$query = $this->searchQuery($config);
 
 		$terms   = Request::getString('terms', '*:*');
 		$limit   = Request::getInt('limit', 10);
@@ -186,7 +208,7 @@ class Searchv1_0 extends ApiController
 		if ($terms != '')
 		{
 			$config = Component::params('com_search');
-			$query = new \Hubzero\Search\Query($config);
+			$query = $this->searchQuery($config);
 			$suggest = $query->getSuggestions($terms);
 		}
 
@@ -219,7 +241,7 @@ class Searchv1_0 extends ApiController
 		if ($terms != '')
 		{
 			$config = Component::params('com_search');
-			$query = new Query($config);
+			$query = $this->searchQuery($config);
 			$typeSuggestions = $query->spellCheck($terms);
 
 			if (!empty($typeSuggestions))
@@ -258,7 +280,7 @@ class Searchv1_0 extends ApiController
 	public function getHubTypesTask()
 	{
 		$config = Component::params('com_search');
-		$query = new Query($config);
+		$query = $this->searchQuery($config);
 
 		$terms = Request::getString('terms', '*:*');
 		$type  = Request::getString('type', '');
