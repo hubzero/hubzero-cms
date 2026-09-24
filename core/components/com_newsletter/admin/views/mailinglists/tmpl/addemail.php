@@ -9,7 +9,7 @@
 defined('_HZEXEC_') or die();
 
 //set title
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->escape($this->list->name), 'list');
 
 //add toolbar buttons
 Toolbar::custom('doaddemail', 'save', '', 'COM_NEWSLETTER_TOOLBAR_SUBMIT', false);
@@ -24,7 +24,7 @@ Toolbar::cancel('cancelemail');
 			<tbody>
 				<tr>
 					<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_MAILINGLIST'); ?>:</th>
-					<td><strong><?php echo $this->list->name; ?></strong></td>
+					<td><strong><?php echo $this->escape($this->list->name); ?></strong></td>
 				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION'); ?>:</th>
@@ -54,7 +54,7 @@ Toolbar::cancel('cancelemail');
 							<select name="email_group">
 								<option value=""><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP_OPTION_NULL'); ?></option>
 								<?php foreach ($this->groups as $group) : ?>
-									<option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
+									<option value="<?php echo (int) $group->gidNumber; ?>"><?php echo $this->escape($group->description); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>

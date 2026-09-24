@@ -74,7 +74,8 @@ class Tools extends AdminController
 		{
 			//make sure file is image
 			$info = pathinfo($imageFile['name']);
-			if (!in_array($info['extension'], array('png','jpg','jpeg','bmp','gif', 'tiff')))
+			$ext  = isset($info['extension']) ? strtolower($info['extension']) : '';
+			if (!in_array($ext, array('png','jpg','jpeg','bmp','gif', 'tiff')))
 			{
 				Notify::error(Lang::txt('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
 				return $this->displayTask();

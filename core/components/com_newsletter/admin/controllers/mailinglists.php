@@ -387,8 +387,9 @@ class Mailinglists extends AdminController
 		{
 			// make sure its an allowed file
 			$pathInfo = pathinfo($this->emailFile['name']);
+			$ext      = isset($pathInfo['extension']) ? strtolower($pathInfo['extension']) : '';
 
-			if (!in_array(strtolower($pathInfo['extension']), $allowedExtensions))
+			if (!in_array($ext, $allowedExtensions))
 			{
 				Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TYPE_NOT_ALLOWED'));
 				return $this->addEmailTask();
@@ -506,6 +507,11 @@ class Mailinglists extends AdminController
 	 */
 	public function editemailTask($row = null)
 	{
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$mid = Request::getInt('mid', 0);
 
@@ -537,11 +543,18 @@ class Mailinglists extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming data
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Incoming data -- the form edits the address only; status and
+		// confirmation are set by the (un)subscribe and confirmation flows
 		$fields = Request::getArray('fields', array(), 'post');
+		$fields = array_intersect_key($fields, array_flip(array('id', 'mid', 'email')));
 
 		// Initiate model
-		$row = Email::oneOrNew($fields['id'])->set($fields);
+		$row = Email::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0)->set($fields);
 
 		// save mailing list
 		if (!$row->save())
@@ -571,6 +584,11 @@ class Mailinglists extends AdminController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// get request vars
 		$ids = Request::getArray('email_id', array());
@@ -618,21 +636,27 @@ class Mailinglists extends AdminController
 	 */
 	public function subscribeEmailTask()
 	{
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$id = Request::getInt('id', 0);
 		$mid = Request::getInt('mid', 0);
 
-		// instantiate mailing list object
-		$newsletterMailinglistEmail = new MailingListEmail($this->database);
+		// load the email, which must belong to this list
+		$email = Email::oneOrFail($id);
 
-		// load email
-		$newsletterMailinglistEmail->load($id);
+		if ($email->get('mid') != $mid)
+		{
+			App::abort(404, Lang::txt('The specified email address is not on this mailing list.'));
+		}
 
-		// mark as removed
-		$newsletterMailinglistEmail->status = 'active';
+		// mark as active
+		$email->set('status', 'active');
 
-		// delete mailing list email
-		if ($newsletterMailinglistEmail->save($newsletterMailinglistEmail))
+		if ($email->save())
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false),
@@ -641,7 +665,7 @@ class Mailinglists extends AdminController
 		}
 		else
 		{
-			$this->setError($newsletterMailinglistEmail->getError());
+			$this->setError($email->getError());
 			$this->manageTask();
 			return;
 		}
@@ -654,6 +678,11 @@ class Mailinglists extends AdminController
 	 */
 	public function sendConfirmationTask()
 	{
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$id  = Request::getInt('id', 0);
 		$mid = Request::getInt('mid', 0);
@@ -661,8 +690,13 @@ class Mailinglists extends AdminController
 		// instantiate mailing list object
 		$mailinglist = Mailinglist::oneOrFail($mid);
 
-		// instantiate mailing list email object
+		// instantiate mailing list email object, which must belong to this list
 		$email = Email::oneOrFail($id);
+
+		if ($email->get('mid') != $mailinglist->get('id'))
+		{
+			App::abort(404, Lang::txt('The specified email address is not on this mailing list.'));
+		}
 
 		// send confirmation email
 		Helper::sendMailinglistConfirmationEmail($email->email, $mailinglist, false);

@@ -115,7 +115,7 @@ class SubscriptionsHelper
 
 		$countQuery = "select id
 		               from #__user_profiles
-		               where user_id = $userId and profile_key = '$profileFieldFk';";
+		               where user_id = $userId and profile_key = " . $this->db->quote($profileFieldFk) . ";";
 
 		$this->db->setQuery($countQuery);
 
@@ -129,8 +129,8 @@ class SubscriptionsHelper
 		$profileFieldFk = $subscription['foreign_key'];
 
 		return "update #__user_profiles
-		        set profile_value = '$preference'
-		        where profile_key = '$profileFieldFk' and user_id = $userId;";
+		        set profile_value = " . $this->db->quote($preference) . "
+		        where profile_key = " . $this->db->quote($profileFieldFk) . " and user_id = $userId;";
 	}
 
 	private function generateInsertQuery($userId, $subscription) {
@@ -139,7 +139,7 @@ class SubscriptionsHelper
 
 		return "insert into #__user_profiles
 		        (user_id, profile_key, profile_value)
-		        values($userId, '$profileFieldFk', '$preference');";
+		        values($userId, " . $this->db->quote($profileFieldFk) . ", " . $this->db->quote($preference) . ");";
 	}
 
 	private function validateSubmittedSubscription($profileFieldFk,	$preference)

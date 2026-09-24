@@ -224,7 +224,7 @@ HUB.Administrator.Newsletter = {
 				$.ajax({
 					type: 'get',
 					dataType: 'json',
-					url: 'index.php?option=com_newsletter&controller=mailinglist&task=emailcount&mailinglistid='+value+'&no_html=1',
+					url: 'index.php?option=com_newsletter&controller=mailinglists&task=emailcount&mailinglistid='+value+'&no_html=1',
 					success: function(data)
 					{
 						var emailCount = data.length;

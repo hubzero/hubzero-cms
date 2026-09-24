@@ -27,7 +27,7 @@ $hostname = Request::root();
 <ul class="autogen">
 <?php foreach ($this->object as $o): ?>
 	<?php
-		if (strpos($o->path, "http") === false)
+		if (!preg_match('#^https?://#i', (string) $o->path))
 		{
 			// Route::url() output is already attribute-encoded
 			$path = Route::url($hostname . $o->path);

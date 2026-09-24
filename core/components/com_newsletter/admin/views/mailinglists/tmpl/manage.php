@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
 
-Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->list->name, 'list');
+Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->escape($this->list->name), 'list');
 if ($canDo->get('core.edit'))
 {
 	Toolbar::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');

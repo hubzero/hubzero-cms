@@ -72,7 +72,7 @@ class Emailsubscriptions extends SiteController
 		}
 
 		// Look up the subscription based on user id:
-		$updatedSubscriptions = Request::getArray('subscriptions');
+		$updatedSubscriptions = array_filter(Request::getArray('subscriptions'), 'is_array');
 		$subHelper = new SubscriptionsHelper();
 
 		$subHelper->updateSubscriptions(
