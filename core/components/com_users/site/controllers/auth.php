@@ -517,6 +517,8 @@ class Auth extends SiteController
 			if (!Uri::isInternal($return))
 			{
 				$data['return'] = '';
+				// the failed-login branch below redirects to $return too
+				$return = '';
 			}
 		}
 
