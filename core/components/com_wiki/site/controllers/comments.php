@@ -155,7 +155,9 @@ class Comments extends SiteController
 			$mycomment = Comment::blank();
 			// No ID, so we're creating a new comment
 			// In that case, we'll need to set some data...
-			$revision = $this->page->version();
+			// version() is the relationship, not the row: its get('version')
+			// is empty and the posted comment[version]='' 500s on strict SQL
+			$revision = $this->page->version;
 
 			$mycomment->set('page_id', $revision->get('page_id'));
 			$mycomment->set('version', $revision->get('version'));
@@ -269,7 +271,9 @@ class Comments extends SiteController
 		{
 			// No ID, so we're creating a new comment
 			// In that case, we'll need to set some data...
-			$revision = $this->page->version();
+			// version() is the relationship, not the row: its get('version')
+			// is empty and the posted comment[version]='' 500s on strict SQL
+			$revision = $this->page->version;
 
 			$mycomment->set('page_id', $revision->get('page_id'));
 			$mycomment->set('version', $revision->get('version'));
@@ -339,6 +343,10 @@ class Comments extends SiteController
 		$__parent = $comment->get('parent');
 
 		$comment->set($fields);
+
+		// comment[version] is a hidden field; an empty value is not an integer
+		// on strict SQL (the column is NOT NULL int)
+		$comment->set('version', (int) $comment->get('version', 0) ?: (int) $this->page->version->get('version'));
 
 		$comment->set('created_by', $__isNew ? User::get('id') : $__owner);
 		$comment->set('page_id',    $__isNew ? $this->page->get('id') : $__page);

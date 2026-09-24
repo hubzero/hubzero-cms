@@ -77,6 +77,9 @@ class Router extends Base
 			case 'compare':
 			case 'approve':
 			case 'deleterevision':
+			// the history view links "set as current" on the site wiki too; the
+			// group plugin already routes it to the history controller
+			case 'setcurrentrevision':
 				$vars['controller'] = 'history';
 			break;
 
