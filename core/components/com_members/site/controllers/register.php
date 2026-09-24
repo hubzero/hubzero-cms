@@ -1717,7 +1717,7 @@ class Register extends SiteController
 					{
 						$dest = $cReturn;
 					}
-					$pReturn = base64_decode(urldecode($pending->getParam('return', '')));
+					$pReturn = ReturnUrl::sanitize($pending->getParam('return', ''));
 					if ($pReturn)
 					{
 						$dest = $pReturn;
