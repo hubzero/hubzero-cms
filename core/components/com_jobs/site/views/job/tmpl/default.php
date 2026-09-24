@@ -11,7 +11,8 @@ defined('_HZEXEC_') or die();
 	/* Job Posting */
 	$job        = $this->job;
 	$job->cat   = $job->cat ? $job->cat : 'Unspecified';
-	$job->type  = $job->type ? $job->type : 'Unspecified';
+	// The type label lives in typename; type stays the int id because content() below may store() this row
+	$jobtype    = !empty($job->typename) ? $job->typename : 'Unspecified';
 
 	$startdate = ($job->startdate && $job->startdate !='0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
 	$closedate = ($job->closedate && $job->closedate !='0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
@@ -111,7 +112,7 @@ defined('_HZEXEC_') or die();
 			<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_CATEGORY') ?></span>
 				<p><?php echo $job->cat ?></p>
 			<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_TYPE') ?></span>
-				<p><?php echo $job->type ?></p>
+				<p><?php echo $jobtype ?></p>
 			<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_START_DATE') ?></span>
 				<p><?php echo $startdate ?></p>
 			<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_EXPIRES') ?></span>

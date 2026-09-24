@@ -1341,7 +1341,8 @@ class Jobs extends SiteController
 		// Get category & type names
 		$jt = new JobType($this->database);
 		$jc = new JobCategory($this->database);
-		$job->type = $jt->getType($job->type);
+		// Keep the label apart from type: the view's content() call can store() this row, and type is an int column
+		$job->typename = $jt->getType($job->type);
 		$job->cat = $jc->getCat($job->cid);
 
 		// Get applications
