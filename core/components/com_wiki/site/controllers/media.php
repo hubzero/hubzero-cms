@@ -325,6 +325,16 @@ class Media extends SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		// Virus scan. uploadTask() (the no-JS form) scans; this, the path the
+		// editor's drag-and-drop uploader takes, stored any file unscanned.
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+			return;
+		}
+
 		// Create database entry
 		$attachment->set('page_id', $listdir);
 		$attachment->set('filename', $filename . '.' . $ext);
@@ -435,7 +445,7 @@ class Media extends SiteController
 			{
 				Filesystem::delete($path . DS . $file['name']);
 
-				$this->setError(Lang::txt('COM_WIKI_ERROR_UPLOADING'));
+				$this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
 			}
 			else
 			{
