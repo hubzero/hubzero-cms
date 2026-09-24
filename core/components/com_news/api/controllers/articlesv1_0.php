@@ -72,6 +72,7 @@ class Articlesv1_0 extends ApiController
 					WHERE cat.alias=" . $database->quote($category) . "
 					AND c.catid=cat.id
 					AND state=1
+					AND c.access IN (" . implode(',', array_map('intval', User::getAuthorisedViewLevels())) . ")
 					ORDER BY c.ordering ASC
 					LIMIT " . (int) $limit;
 
