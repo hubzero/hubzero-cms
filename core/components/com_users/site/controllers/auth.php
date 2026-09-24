@@ -50,7 +50,7 @@ class Auth extends SiteController
 		// Check for errors.
 		if ($this->getError())
 		{
-			App::abort(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $this->getErrors()));
 		}
 
 		// Get the active menu
@@ -634,6 +634,9 @@ class Auth extends SiteController
 	 **/
 	public function consentTask()
 	{
+		// The consent form posts a token
+		Request::checkToken();
+
 		Session::set('user_consent', true);
 
 		$return = Request::getString('return');

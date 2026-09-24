@@ -30,7 +30,6 @@ switch ($task)
 	case 'reset':
 	case 'remind':
 	case 'unapproved':
-	case 'userconsent':
 		$uri->setUriVar('option', 'com_members');
 
 		$url = $uri->toString();
@@ -43,6 +42,7 @@ switch ($task)
 	case 'logout':
 	case 'factors':
 	case 'userconsent':
+	case 'consent':
 	case 'link':
 	case 'endsinglesignon':
 	case 'spamjail':
