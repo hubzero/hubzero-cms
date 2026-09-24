@@ -396,6 +396,13 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		Request::checkToken(['post']);
 
+		// The update form is offered to group managers only (views/updates);
+		// the handler has to draw the same line.
+		if (!in_array(User::get('id'), (array) $this->group->get('managers')))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		$managers  = Request::getInt('managers_only', 0, 'post');
 		$entry     = trim(Request::getString('blogentry', '', 'post'));
 		$posted    = Date::toSql();
