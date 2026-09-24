@@ -532,21 +532,24 @@ class Postsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		$row = new Post(Request::getInt('id', 0, 'put'));
+
+		// Fields not sent keep their current values. They defaulted to
+		// empty/0 before, so a partial PUT (just a new description) zeroed
+		// collection_id and the store failed with a 500.
 		$fields = array(
 			'id'             => Request::getInt('id', 0, 'put'),
-			'title'          => Request::getString('title', null, 'put'),
-			'description'    => Request::getString('description', null, 'put'),
-			'url'            => Request::getString('url', null, 'put'),
-			'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'put'),
+			'title'          => Request::getString('title', $row->get('title'), 'put'),
+			'description'    => Request::getString('description', $row->get('description'), 'put'),
+			'url'            => Request::getString('url', $row->get('url'), 'put'),
+			'created'        => Request::getString('created', $row->get('created', with(new Date('now'))->toSql()), 'put'),
 			'created_by'     => Request::getInt('created_by', 0, 'put'),
-			'state'          => Request::getInt('state', 1, 'put'),
-			'access'         => Request::getInt('access', 0, 'put'),
-			'type'           => Request::getString('type', 'file', 'put'),
-			'object_id'      => Request::getInt('object_id', 0, 'put'),
-			'collection_id'  => Request::getInt('collection_id', 0, 'put')
+			'state'          => Request::getInt('state', (int) $row->get('state', 1), 'put'),
+			'access'         => Request::getInt('access', (int) $row->get('access', 0), 'put'),
+			'type'           => Request::getString('type', $row->get('type', 'file'), 'put'),
+			'object_id'      => Request::getInt('object_id', (int) $row->get('object_id', 0), 'put'),
+			'collection_id'  => Request::getInt('collection_id', (int) $row->get('collection_id', 0), 'put')
 		);
-
-		$row = new Post($fields['id']);
 
 		if (!$row->exists())
 		{
