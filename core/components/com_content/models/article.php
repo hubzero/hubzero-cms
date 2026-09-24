@@ -338,9 +338,35 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function automaticAlias($data)
 	{
-		$alias = (isset($data['alias']) && trim((string) $data['alias']) !== '') ? $data['alias'] : (isset($data['title']) ? $data['title'] : '');
-		$alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower((string) $alias)), '-');
-		return $alias !== '' ? $alias : \Date::of('now')->format('Y-m-d-H-i-s');
+		// An alias the editor typed is kept as typed. One is made from the
+		// title only when none was given: an empty alias used to be stored,
+		// and the site router then matched it against the bare index.php.
+		$alias = isset($data['alias']) ? trim((string) $data['alias']) : '';
+
+		if ($alias === '')
+		{
+			$alias = Lang::transliterate(strip_tags(isset($data['title']) ? (string) $data['title'] : ''));
+			$alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower($alias)), '-');
+		}
+
+		if ($alias === '')
+		{
+			$alias = Date::of('now')->format('Y-m-d-H-i-s');
+		}
+
+		// The router looks an article up by alias within its category, so
+		// the alias is kept unique there (other rows only: a row's own alias
+		// is not a collision)
+		$catid = isset($data['catid']) ? (int) $data['catid'] : 0;
+		$id    = isset($data['id']) ? (int) $data['id'] : 0;
+		$base  = $alias;
+		$n     = 2;
+		while (self::all()->whereEquals('alias', $alias)->whereEquals('catid', $catid)->where('id', '!=', $id)->total())
+		{
+			$alias = $base . '-' . $n++;
+		}
+
+		return $alias;
 	}
 
 	/**
