@@ -1594,6 +1594,8 @@ class Articles extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		$form = $item->getForm('site');
+
 		if (!empty($item) && isset($item->id))
 		{
 			$item->images = json_decode($item->images);
@@ -1605,8 +1607,6 @@ class Articles extends SiteController
 
 			$form->bind($tmp);
 		}
-
-		$form = $item->getForm('site');
 
 		if ($params->get('enable_category') == 1)
 		{

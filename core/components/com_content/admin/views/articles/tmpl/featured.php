@@ -131,7 +131,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 		<tfoot>
 			<tr>
 				<td colspan="15">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php echo $this->pagination; ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -152,7 +152,7 @@ $saveOrder = $listOrder == 'fp.ordering';
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'featured.', $canCheckin); ?>
+						<?php echo Html::grid('checkedout', $i, (is_object($item->editor) ? $item->editor->get('name') : $item->editor), $item->checked_out_time, 'featured.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 					<a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&return=featured&id=' . $item->id);?>">

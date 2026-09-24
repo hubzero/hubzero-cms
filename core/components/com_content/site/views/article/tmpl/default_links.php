@@ -19,9 +19,9 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
 		<ul>
 			<?php
 			$urlarray = array(
-				array($urls->urla, $urls->urlatext, $urls->targeta, 'a'),
-				array($urls->urlb, $urls->urlbtext, $urls->targetb, 'b'),
-				array($urls->urlc, $urls->urlctext, $urls->targetc, 'c')
+				array($urls->urla ?? '', $urls->urlatext ?? '', $urls->targeta ?? '', 'a'),
+				array($urls->urlb ?? '', $urls->urlbtext ?? '', $urls->targetb ?? '', 'b'),
+				array($urls->urlc ?? '', $urls->urlctext ?? '', $urls->targetc ?? '', 'c')
 			);
 			foreach ($urlarray as $url):
 				$link = $url[0];

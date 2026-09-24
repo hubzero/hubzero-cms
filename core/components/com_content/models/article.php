@@ -976,7 +976,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 				\Hubzero\Utility\Arr::toInteger($articleId);
 				$articleId = implode(',', $articleId);
 				$type = $filters['article_id.include'] ? 'IN' : 'NOT IN';
-				$query->whereRaw('a.id', $type . ' (' . $articleId . ')');
+				$query->whereRaw('a.id ' . $type . ' (' . $articleId . ')');
 			}
 		}
 
@@ -1043,7 +1043,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 				if (!empty($categoryId))
 				{
 					$type = $filters['category_id.include'] ? 'IN' : 'NOT IN';
-					$query->whereRaw('a.catid', $type . ' (' . $categoryId . ')');
+					$query->whereRaw('a.catid ' . $type . ' (' . $categoryId . ')');
 				}
 			}
 		}
@@ -1106,9 +1106,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 				{
 					\Hubzero\Utility\Arr::toString($authorAlias);
 
+					$db = \App::get('db');
 					foreach ($authorAlias as $key => $alias)
 					{
-						$authorAlias[$key] = $db->Quote($alias);
+						$authorAlias[$key] = $db->quote($alias);
 					}
 
 					$authorAlias = implode(',', $authorAlias);

@@ -102,7 +102,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 									$selected = 'selected="selected"';
 								}
 							?>
-							<option value="<?php echo $category->id; ?>" <?php echo $selected;?>><?php echo $category->nestedTitle(); ?></option>
+							<option value="<?php echo $category->id; ?>" <?php echo $selected;?>><?php echo $this->escape($category->nestedTitle()); ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
