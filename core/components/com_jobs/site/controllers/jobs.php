@@ -1447,6 +1447,13 @@ class Jobs extends SiteController
 		$employerid = $code ? $job->employerid : $employerid;
 		$job->employerid = $employerid;
 
+		// A new posting starts as a draft (4) for the preview/confirm step; the
+		// form's status field is not bound (see the allowlist below), so set it
+		if (!$code)
+		{
+			$job->status = 4;
+		}
+
 		// A new job is posted under the caller's own employer account unless
 		// an administrator is posting it; employerid came from the request.
 		if (!$code && $employerid != User::get('id') && !$this->_admin && !$this->_masterAdmin)
