@@ -320,6 +320,25 @@ class Pages extends SiteController
 	}
 
 	/**
+	 * May the current user suggest a change to this page?
+	 *
+	 * Only on a knowledge-mode page with "allow changes" on (where the page
+	 * model grants 'modify'); a suggestion is saved unapproved. In ordinary
+	 * wiki mode 'modify' is granted to every member, so it confers nothing.
+	 *
+	 * @return  boolean
+	 */
+	protected function _canSuggest()
+	{
+		return !User::isGuest()
+			&& $this->page->exists()
+			&& $this->page->param('mode', 'wiki') == 'knol'
+			&& $this->page->param('allow_changes')
+			&& $this->page->access('modify')
+			&& !$this->page->isLocked();
+	}
+
+	/**
 	 * Show a form for editing an entry
 	 *
 	 * @param   object  $revision
@@ -337,8 +356,10 @@ class Pages extends SiteController
 		}
 
 		// Check if the page can be edited. access('edit') already encodes
-		// ownership (core.edit, or the creator via core.edit.own).
-		if (!$this->page->access('edit') && !$this->page->access('manage'))
+		// ownership (core.edit, or the creator via core.edit.own). A knowledge
+		// page with "allow changes" on also takes suggestions (access 'modify'):
+		// those are saved as unapproved revisions for an author to approve.
+		if (!$this->page->access('edit') && !$this->page->access('manage') && !$this->_canSuggest())
 		{
 			App::redirect(
 				Route::url($this->page->link()),
@@ -615,9 +636,15 @@ class Pages extends SiteController
 
 		// Editing an existing page requires edit/manage access and respects the
 		// page lock and the protected help namespace (as editTask does).
+		// A suggester (see editTask) submits a revision only: the page row
+		// itself -- title, access, params -- is left as stored
+		$suggestOnly = !$this->page->isNew()
+			&& !$this->page->access('edit') && !$this->page->access('manage')
+			&& $this->_canSuggest();
+
 		if (!$this->page->isNew())
 		{
-			if (!$this->page->access('edit') && !$this->page->access('manage'))
+			if (!$this->page->access('edit') && !$this->page->access('manage') && !$suggestOnly)
 			{
 				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			}
@@ -636,18 +663,21 @@ class Pages extends SiteController
 			$page['protected'] = $this->page->isNew() ? 0 : (int) $this->page->get('protected');
 		}
 
+		if (!$suggestOnly)
+		{
 		$this->page->set($page);
 		$this->page->set('pagename', trim(Request::getString('pagename', '', 'post')));
+		}
 
-		// Get parameters
-		$p = Request::getArray('params', array(), 'post');
+		// Get parameters (a suggester's are ignored)
+		$p = $suggestOnly ? array() : Request::getArray('params', array(), 'post');
 
 		$params = new \Hubzero\Config\Registry($this->page->get('params', ''));
 		$params->merge($p);
 
 		foreach (array('hide_authors', 'allow_changes', 'allow_comments') as $key)
 		{
-			if (!isset($p[$key]) || !$p[$key])
+			if (!$suggestOnly && (!isset($p[$key]) || !$p[$key]))
 			{
 				$params->set($key, 0);
 			}
@@ -787,7 +817,12 @@ class Pages extends SiteController
 				return $this->editTask($revision);
 			}
 
-			$this->page->set('version_id', $revision->get('id'));
+			// Only an approved revision becomes the page's current text; a
+			// suggestion waits for an author to approve it (history approve)
+			if ($revision->get('approved'))
+			{
+				$this->page->set('version_id', $revision->get('id'));
+			}
 			$this->page->set('modified', $revision->get('created'));
 		}
 		else
