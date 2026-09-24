@@ -23,6 +23,19 @@ $this->css()
 					<form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform" enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<?php
+							// commentreply= resolves any comment on the hub; only a
+							// comment on THIS item is quoted and replied to
+							$replyto = Request::getInt('commentreply', 0);
+							$reply   = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($replyto);
+
+							if (!$reply->get('id')
+							 || $reply->get('item_type') != $this->obj_type
+							 || (int) $reply->get('item_id') !== (int) $this->obj_id)
+							{
+								$replyto = 0;
+								$reply   = \Plugins\Hubzero\Comments\Models\Comment::blank();
+							}
+
 							$edit = 0;
 							// Make sure editing capaibilites are available before even accepting an ID to edit
 							if ($this->params->get('access-edit-comment') || $this->params->get('access-manage-comment'))
@@ -33,7 +46,11 @@ $this->css()
 							// Load the comment
 							$comment = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($edit);
 							// If the comment exists and the editor is NOT the creator and the editor is NOT a manager...
-							if ($comment->get('id') && $comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
+							// (or it is a comment on some other item -- commentedit= resolves any comment on the hub)
+							if ($comment->get('id')
+							 && (($comment->get('created_by') != User::get('id') && !$this->params->get('access-manage-comment'))
+							  || $comment->get('item_type') != $this->obj_type
+							  || (int) $comment->get('item_id') !== (int) $this->obj_id))
 							{
 								// Disallow editing
 								$comment = \Plugins\Hubzero\Comments\Models\Comment::blank();
@@ -41,7 +58,7 @@ $this->css()
 
 							if ($comment->isNew())
 							{
-								$comment->set('parent', Request::getInt('commentreply', 0));
+								$comment->set('parent', $replyto);
 								$comment->set('created_by', (!User::isGuest() ? User::get('id') : 0));
 								$comment->set('anonymous', (!User::isGuest() ? 0 : 1));
 							}
@@ -52,14 +69,12 @@ $this->css()
 							<?php
 							if (!User::isGuest())
 							{
-								if ($replyto = Request::getInt('commentreply', 0))
+								if ($replyto)
 								{
-									$reply = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($replyto);
-
 									$name = Lang::txt('COM_KB_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
-										$name = $this->escape(stripslashes($repy->creator->get('name')));
+										$name = $this->escape(stripslashes($reply->creator->get('name')));
 										if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels()))
 										{
 											$name = '<a href="' . Route::url($reply->creator->link()) . '">' . $name . '</a>';
