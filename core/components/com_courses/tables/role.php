@@ -174,10 +174,6 @@ class Role extends Table
 		$query .= ") AS total";
 		$query .= $this->_buildquery($filters);
 
-		if (!empty($filters['start']) && !empty($filters['limit']))
-		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
-		}
 		if (isset($filters['sort']) && $filters['sort'])
 		{
 			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
@@ -185,6 +181,10 @@ class Role extends Table
 				$filters['sort_Dir'] = 'ASC';
 			}
 			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+		}
+		if (!empty($filters['start']) && !empty($filters['limit']))
+		{
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
