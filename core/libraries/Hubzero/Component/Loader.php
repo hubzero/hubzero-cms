@@ -473,7 +473,7 @@ class Loader
 	{
 		$option = $this->canonical($option);
 		$client = ($client ? $client : $this->app['client']->alias);
-		$key    = $option . $client;
+		$key    = $option . $client . ($version ? 'v' . $version : '');
 
 		if (!isset(self::$routers[$key]))
 		{
@@ -483,6 +483,19 @@ class Loader
 
 			$legacy = $compname . 'Router';
 			$name   = '\\Components\\' . $compname . '\\' . $client . '\\Router';
+
+			// A version-specific router (routerv2_1.php) declares the same class
+			// as router.php, so it has to be loaded before class_exists() below
+			// lets the autoloader pull in router.php -- which it always did, so
+			// the versioned routers were never used
+			if (!is_null($version) && !class_exists($name, false))
+			{
+				$vpath = $this->path($option) . DIRECTORY_SEPARATOR . strtolower($client) . DIRECTORY_SEPARATOR . 'routerv' . $version . '.php';
+				if (file_exists($vpath))
+				{
+					require_once $vpath;
+				}
+			}
 
 			if (!class_exists($name) && !class_exists($legacy))
 			{
