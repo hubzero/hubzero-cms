@@ -102,9 +102,8 @@ class Helper extends Module
 	 */
 	private function _prepText($txt)
 	{
-		$txt = stripslashes($txt);
-		$txt = str_replace('"', '&quot;', $txt);
-		return $txt;
+		// the result lands in title="" attributes and link text
+		return htmlspecialchars(stripslashes((string) $txt), ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -153,7 +152,7 @@ class Helper extends Module
 
 					$cls = '';
 					// Build the HTML
-					$html .= "\t\t" . ' <li id="' . $tool->name . '"';
+					$html .= "\t\t" . ' <li id="' . htmlspecialchars((string) $tool->name, ENT_QUOTES, 'UTF-8') . '"';
 					// If we're in the 'all tools' pane ...
 					if ($type == 'all')
 					{

@@ -58,6 +58,8 @@ class Helper extends Module
 	 */
 	public function collect()
 	{
+		Lang::load('com_collections', \Component::path('com_collections') . DS . 'site');
+
 		$collectible = Request::getArray('collectible', array(), 'post');
 
 		if (!$this->item->make())
@@ -184,9 +186,11 @@ class Helper extends Module
 			//
 			$__board = new \Components\Collections\Models\Collection((int) $collectible['collection_id']);
 
+			// The form's JavaScript expects the JSON reply built below, so a
+			// refusal is reported as an error rather than by returning
 			if (!$__board->canBePostedToBy())
 			{
-				return false;
+				$this->setError(Lang::txt('COM_COLLECTIONS_NOT_AUTH'));
 			}
 
 			// Whether the ITEM needs gating depends on where it came from, and
@@ -206,19 +210,22 @@ class Helper extends Module
 			// names. That is the path canCollect() exists to serve, and it is
 			// exactly the "mint a post carrying any item on the hub" shape the
 			// rest of this campaign closed. It still has to be gated.
-			if (Request::getCmd('option') == 'com_collections')
+			if (!$this->getError() && Request::getCmd('option') == 'com_collections')
 			{
 				$__item = new \Components\Collections\Models\Item($this->item->get('id'));
 
 				if (!$__item->isCollectableBy())
 				{
-					return false;
+					$this->setError(Lang::txt('COM_COLLECTIONS_NOT_AUTH'));
 				}
 			}
 
 			$post = new Post($database);
-			$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));
-			if (!$post->id)
+			if (!$this->getError())
+			{
+				$post->loadByBoard($collectible['collection_id'], $this->item->get('id'));
+			}
+			if (!$this->getError() && !$post->id)
 			{
 				// No record found -- we're OK to add one
 				$post = new Post($database);

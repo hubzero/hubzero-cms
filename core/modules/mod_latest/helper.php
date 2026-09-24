@@ -165,7 +165,7 @@ class Helper extends Module
 								{
 									// Get an instance of the generic article model
 									$article = Article::all();
-									$article->whereEquals('published', Article::STATE_PUBLISHED);
+									$article->whereEquals('state', Article::STATE_PUBLISHED);
 									$article->whereEquals('id', (int) $article_id);
 
 									$item = $article->row();
@@ -209,7 +209,7 @@ class Helper extends Module
 		{
 			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0)
 			{
-				require_once Component::path('com_category') . '/models/category.php';
+				require_once Component::path('com_categories') . '/models/category.php';
 
 				// Get an instance of the generic categories model
 				$categories = Category::all();
@@ -345,7 +345,7 @@ class Helper extends Module
 					$Itemid = Request::getInt('Itemid');
 				}
 
-				$item->link = Route::url('index.php?option=com_users&view=loginItemid=' . $Itemid);
+				$item->link = Route::url('index.php?option=com_users&view=login&Itemid=' . $Itemid);
 			}
 
 			// Used for styling the active article

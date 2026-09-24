@@ -85,6 +85,10 @@ class Helper extends Module
 			$grouped = false;
 			$article_grouping = $params->get('article_grouping', 'none');
 			$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
+			if (!in_array($article_grouping_direction, array('ksort', 'krsort', 'asort', 'arsort'), true))
+			{
+				$article_grouping_direction = 'ksort';
+			}
 			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
 			$item_heading = $params->get('item_heading');
 
@@ -156,7 +160,7 @@ class Helper extends Module
 							{
 								$article_id = Request::getInt('id');
 
-								$catid      = $params->get('catid', NULL);
+								$catid      = (array) $params->get('catid', array());
 								if (empty(implode($catid)))
 								{
 									$catid = false;
@@ -260,7 +264,8 @@ class Helper extends Module
 			$query->whereEquals('featured', 1);
 		}
 
-		$creator = $params->get('created_by', '');
+		// an empty multi-select is not saved at all, so the param may be missing
+		$creator = (array) $params->get('created_by', array());
 		if (count($creator) > 0 && implode(',', $creator) != '')
 		{
 			$query->whereEquals('created_by', $creator);
@@ -364,7 +369,7 @@ class Helper extends Module
 					$Itemid = Request::getInt('Itemid');
 				}
 
-				$item->link = Route::url('index.php?option=com_users&view=loginItemid=' . $Itemid);
+				$item->link = Route::url('index.php?option=com_users&view=login&Itemid=' . $Itemid);
 			}
 
 			// Used for styling the active article

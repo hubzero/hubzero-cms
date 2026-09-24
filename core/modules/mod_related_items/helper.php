@@ -31,17 +31,9 @@ class Helper extends Module
 		// [!] Legacy compatibility
 		$params = $this->params;
 
-		$cacheparams = new stdClass;
-		$cacheparams->cachemode    = 'safeuri';
-		$cacheparams->class        = '\Modules\RelatedItems\Helper';
-		$cacheparams->method       = 'getList';
-		$cacheparams->methodparams = $params;
-		$cacheparams->modeparams   = array(
-			'id'     => 'int',
-			'Itemid' => 'int'
-		);
-
-		$list = \Module::cache($module, $params, $cacheparams);
+		// Module::cache() is a stub that returns true, so the list is built
+		// directly; count(true) is a TypeError on PHP 8
+		$list = self::getList($params);
 
 		if (!count($list))
 		{

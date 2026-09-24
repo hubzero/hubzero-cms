@@ -33,21 +33,27 @@ class Helper extends Module
 				$path = '/var/log/hubzero';
 			}
 
+			// A page re-rendered after some other form's POST runs this module
+			// too, so only a report carrying every field the script below sends
+			// is treated as one; anything else just renders the script.
 			$log = array();
-			array_map(function($k) use(&$log)
+			foreach (array('message', 'file', 'line', 'url', 'navigator') as $k)
 			{
-				if (!array_key_exists($k, $_POST))
+				if (!isset($_POST[$k]) || !is_scalar($_POST[$k]))
 				{
-					header('HTTP/1.1 422 Unprocessable Entity');
-					exit();
+					$log = null;
+					break;
 				}
 				$log[$k] = substr((string) $_POST[$k], 0, 1024);
-			}, array('message', 'file', 'line', 'url', 'navigator'));
+			}
 
-			$fh = fopen($path . '/client_error.log', 'a');
-			fwrite($fh, json_encode($log));
-			fclose($fh);
-			exit();
+			if ($log !== null)
+			{
+				$fh = fopen($path . '/client_error.log', 'a');
+				fwrite($fh, json_encode($log));
+				fclose($fh);
+				exit();
+			}
 		}
 
 		require $this->getLayoutPath();

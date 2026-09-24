@@ -94,8 +94,10 @@ class Helper extends Module
 		$authorized = User::authorise('core.manage', 'com_tools');
 
 		// Ensure we have a connection to the middleware
+		// A guest has no username to look sessions up by (getRecords() returns
+		// false for one, and the layout counts the result)
 		$this->error = false;
-		if (!$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized))
+		if (User::isGuest() || !$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized))
 		{
 			$this->error = true;
 			return false;
@@ -113,7 +115,7 @@ class Helper extends Module
 
 		// Get sessions
 		$session = new \Components\Tools\Tables\Session($mwdb);
-		$this->sessions = $session->getRecords(User::get('username'), '', false);
+		$this->sessions = $session->getRecords(User::get('username'), '', false) ?: array();
 
 		// Output module
 		require $this->getLayoutPath();
