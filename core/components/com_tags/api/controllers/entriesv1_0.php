@@ -116,6 +116,13 @@ class Entriesv1_0 extends ApiController
 			'sort'       => Request::getWord('sort', 'raw_tag'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
 		);
+
+		// A scope named with no scope_id asks for the whole scope's tags; an
+		// always-present 0 would pin the query to a non-existent object
+		if (!Request::has('scope_id'))
+		{
+			unset($filters['scope_id']);
+		}
 		// Columns of the tags table (and the 'total' alias Cloud maps to objects)
 		if (!in_array($filters['sort'], array('raw_tag', 'tag', 'id', 'created', 'modified', 'objects', 'total')))
 		{
