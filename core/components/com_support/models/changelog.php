@@ -239,13 +239,14 @@ class Changelog extends Obj
 				$clog[] = '<ul class="' . $type . '">';
 				foreach ($log as $items)
 				{
+					// Logged values are stored as submitted (severity, category, cc addresses)
 					if ($type == 'changes' && $items['before'] != $items['after'])
 					{
-						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $this->_esc($items['field']), $this->_esc($items['before']), $this->_esc($items['after'])) . '</li>';
 					}
 					else if ($type == 'notifications')
 					{
-						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $items['role'], $items['name'], $items['address']) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $this->_esc($items['role']), $this->_esc($items['name']), $this->_esc($items['address'])) . '</li>';
 					}
 				}
 				$clog[] = '</ul>';
@@ -256,6 +257,17 @@ class Changelog extends Obj
 			$clog[] = '<ul class="changes"><li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NONE_MADE') . '</li></ul>';
 		}
 		return implode("\n", $clog);
+	}
+
+	/**
+	 * Escape a logged value for HTML output
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
+	private function _esc($value)
+	{
+		return htmlspecialchars((string) $value, ENT_COMPAT, 'UTF-8');
 	}
 
 	/**

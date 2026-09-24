@@ -418,13 +418,20 @@ class Queries extends SiteController
 
 		// Incoming
 		$ids = Request::getArray('id', array());
-		$ids = (is_array($ids) ?: array($ids));
+		$ids = (is_array($ids) ? $ids : array($ids));
 
 		$no_html = Request::getInt('no_html', 0);
 
 		foreach ($ids as $id)
 		{
 			$row = QueryFolder::oneOrFail(intval($id));
+
+			// Only the caller's own folders; the core rows are the component's
+			if ($row->get('iscore') || (int) $row->get('user_id') !== (int) User::get('id'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+
 			$row->destroy();
 		}
 

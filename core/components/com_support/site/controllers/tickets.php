@@ -1024,7 +1024,10 @@ class Tickets extends SiteController
 		$row->set('status', 0);
 		$row->set('created', Date::toSql());
 		$row->set('login', $reporter['login']);
-		$row->set('severity', (isset($problem['severity']) ? $problem['severity'] : 'normal'));
+		// The form offers a fixed set of severities; anything else is stored as
+		// submitted and echoed back into class attributes on the ticket pages
+		$severities = Utilities::getSeverities($this->config->get('severities'));
+		$row->set('severity', (isset($problem['severity']) && in_array($problem['severity'], $severities) ? $problem['severity'] : 'normal'));
 		$row->set('owner', (isset($problem['owner']) ? $problem['owner'] : 0));
 		$row->set('category', (isset($problem['category']) ? $problem['category'] : ''));
 		$row->set('summary', $problem['short']);
@@ -1381,10 +1384,10 @@ class Tickets extends SiteController
 					$recipients[] = ['user', $creator->get('id')];
 				}
 
-				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
 				if ($rowc->get('comment'))
 				{
-					$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+					$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
 				}
 
 				Event::trigger('system.logActivity', [
@@ -2073,10 +2076,10 @@ class Tickets extends SiteController
 				}
 			}
 
-			$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+			$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
 			if ($rowc->get('comment'))
 			{
-				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . $row->get('id') . ' - ' . $row->get('summary') . '</a>');
+				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
 			}
 
 			Event::trigger('system.logActivity', [
@@ -2145,7 +2148,7 @@ class Tickets extends SiteController
 		// Load the record
 		$ticket = Ticket::oneOrFail($id);
 
-		$description = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . $ticket->get('id') . ' - ' . $ticket->get('summary') . '</a>');
+		$description = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . htmlspecialchars((string) ($ticket->get('id') . ' - ' . $ticket->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
 
 		// Delete ticket
 		if (!$ticket->destroy())
@@ -2221,9 +2224,15 @@ class Tickets extends SiteController
 	 */
 	public function createTask()
 	{
+		// Only the documented fields above; the ticket's owner, group, state
+		// and id are not the reporter's to set
+		$incoming = array_intersect_key($_POST, array_flip(array(
+			'login', 'severity', 'category', 'summary', 'report', 'email', 'name',
+			'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'cookies', 'section', 'tags'
+		)));
+
 		// trim and addslashes all posted items
-		$incoming = array_map('trim', $_POST);
-		$incoming = array_map('addslashes', $incoming);
+		$incoming = array_map(function ($v) { return is_scalar($v) ? addslashes(trim((string) $v)) : ''; }, $incoming);
 
 		// initiate class and bind posted items to database fields
 		$row = Ticket::blank();

@@ -215,6 +215,16 @@ class Commentsv2_0 extends ApiController
 		}
 
 		$ticket = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
+
+		// Commenting needs a ticket the caller may read; changing the ticket's
+		// own fields (owner, status, ...) is what 'update tickets' grants, a
+		// separate permission from 'create comments'
+		if (!$ticket->access('read', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+		$canUpdate = ($ticket->access('update', 'tickets') > 0);
+
 		$comment = \Components\Support\Models\Comment::blank();
 		$changelog = new stdClass;
 
@@ -223,8 +233,14 @@ class Commentsv2_0 extends ApiController
 		$comment->set('created_by', User::get('id'));
 		$comment->set('access', (Request::getBool('private', false) == 'true' ? 1 : 0));
 
+		if ($comment->get('access') && !$ticket->access('create', 'private_comments'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
 		$changes = array();
-		foreach (['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
+		$fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : array();
+		foreach ($fields as $index)
 		{
 			if (Request::get($index, null))
 			{
@@ -254,14 +270,14 @@ class Commentsv2_0 extends ApiController
 						}
 						else
 						{
-							$old_status = \Components\Support\Models\Orm\Status::oneOrFail($ticket->get('status'));
+							$old_status = \Components\Support\Models\Status::oneOrFail($ticket->get('status'));
 						}
 						$temp->before = $old_status->get('title');
 						$temp->after = $status_model->get('title');
 						$ticket->set('open', $status_model->get('open'));
 						if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed')
 						{
-							$tiket->set('closed', null);
+							$ticket->set('closed', null);
 						}
 						if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open')
 						{

@@ -390,7 +390,7 @@ class Queries extends AdminController
 
 		// Incoming
 		$ids = Request::getArray('id', array());
-		$ids = (is_array($ids) ?: array($ids));
+		$ids = (is_array($ids) ? $ids : array($ids));
 
 		$no_html = Request::getInt('no_html', 0);
 		$removed = 0;
@@ -438,6 +438,7 @@ class Queries extends AdminController
 		}
 
 		// Incoming
+		$no_html = Request::getInt('no_html', 0);
 		$folders = Request::getArray('folder', array());
 		$queries = Request::getArray('queries', array());
 

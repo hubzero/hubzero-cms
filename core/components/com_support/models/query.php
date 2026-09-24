@@ -241,9 +241,19 @@ class Query extends Relational
 			$condition = json_decode($condition);
 		}
 
-		if (empty($condition))
+		if (empty($condition) || !is_object($condition))
 		{
 			return '';
+		}
+
+		// A stored condition may omit either list
+		if (!isset($condition->expressions) || !is_array($condition->expressions))
+		{
+			$condition->expressions = array();
+		}
+		if (!isset($condition->nestedexpressions) || !is_array($condition->nestedexpressions))
+		{
+			$condition->nestedexpressions = array();
 		}
 
 		$db = App::get('db');

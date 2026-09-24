@@ -624,6 +624,13 @@ class Ticket extends Relational
 	 */
 	public function access($action='view', $item='tickets')
 	{
+		// A guest matches an anonymous ticket's login ('') and an unassigned
+		// ticket's owner (0) below
+		if (User::isGuest())
+		{
+			return 0;
+		}
+
 		if (!$this->get('_access-check-done', false))
 		{
 			$this->_acl = ACL::getACL();

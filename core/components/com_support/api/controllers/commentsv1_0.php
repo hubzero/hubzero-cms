@@ -37,7 +37,7 @@ class Commentsv1_0 extends ApiController
 		$this->database = \App::get('db');
 
 		$this->acl = \Components\Support\Helpers\ACL::getACL();
-		$this->acl->setUser($userid);
+		$this->acl->setUser(User::get('id'));
 
 		parent::execute();
 	}
@@ -440,12 +440,15 @@ class Commentsv1_0 extends ApiController
 		$response->id = $comment->get('id');
 		$response->ticket = $comment->get('ticket');
 
-		$response->owner = new stdClass;
-		$response->owner->username = $ticket->owner('username');
-		$response->owner->name     = $ticket->owner('name');
-		$response->owner->id       = $ticket->owner('id');
+		// The owner is the assignee of the comment's ticket
+		$owner = $comment->ticket->assignee;
 
-		$response->content = $comment->content('raw');
+		$response->owner = new stdClass;
+		$response->owner->username = $owner->get('username');
+		$response->owner->name     = $owner->get('name');
+		$response->owner->id       = $owner->get('id');
+
+		$response->content = $comment->get('comment');
 
 		$response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $comment->get('ticket') . '#c' . $comment->get('id')), '/'));
 

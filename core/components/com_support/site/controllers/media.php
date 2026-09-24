@@ -610,7 +610,14 @@ class Media extends SiteController
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
 		}
 
-		if ($comment)
+		if ($comment < 0)
+		{
+			// A temporary id for a comment that has not been posted yet; the
+			// uploader files attachments against it by comment_id
+			$model = Comment::blank();
+			$model->set('id', $comment);
+		}
+		else if ($comment)
 		{
 			$model = Comment::oneOrFail($comment);
 

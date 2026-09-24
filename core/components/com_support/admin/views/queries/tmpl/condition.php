@@ -23,6 +23,11 @@ if ($this->condition->expressions)
 {
 	foreach ($this->condition->expressions as $expression)
 	{
+		// A stored field name the condition builder no longer knows
+		if (!isset($expression->fldval) || !isset($this->conditions->{$expression->fldval}))
+		{
+			continue;
+		}
 		$operators = $this->conditions->{$expression->fldval}->operators;
 		$values    = $this->conditions->{$expression->fldval}->values;
 		?>

@@ -88,7 +88,7 @@ if (!$no_html)
 		<fieldset>
 			<legend><span><?php echo Lang::txt('COM_SUPPORT_TICKET') . ($this->row->get('id') ? ' #' . $this->row->get('id') : ''); ?></span></legend>
 	<?php } else { ?>
-				<dl class="ticket-info <?php echo $this->row->get('severity'); ?>">
+				<dl class="ticket-info <?php echo $this->escape($this->row->get('severity')); ?>">
 					<dt>#</dt>
 					<dd><?php echo $this->row->get('id'); ?></dd>
 					<dt>Type:</dt>
@@ -96,7 +96,7 @@ if (!$no_html)
 					<dt><?php echo Lang::txt('COM_SUPPORT_TICKET_STATUS'); ?>:</dt>
 					<dd class="ticket-status <?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>"><?php echo (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN'); ?></dd>
 					<dt><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</dt>
-					<dd class="ticket-severity <?php echo $this->row->get('severity'); ?>"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))); ?></dd>
+					<dd class="ticket-severity <?php echo $this->escape($this->row->get('severity')); ?>"><?php echo $this->escape(Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity')))); ?></dd>
 				</dl>
 	<?php } ?>
 			<div class="ticket<?php echo ($no_html) ? '-body' : ''; ?>" id="t<?php echo $this->row->get('id'); ?>">
@@ -197,7 +197,7 @@ if (!$no_html)
 			<tbody>
 				<tr>
 					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?></th>
-					<td><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))); ?></td>
+					<td><?php echo $this->escape(Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity')))); ?></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OWNER'); ?></th>
@@ -413,7 +413,7 @@ if (!$no_html)
 
 							<label for="comment-field-content">
 								<span class="label"><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS'); ?></span>
-								<textarea name="comment" id="comment-field-comment" cols="75" rows="15"><?php echo $this->comment->get('comment'); ?></textarea>
+								<textarea name="comment" id="comment-field-comment" cols="75" rows="15"><?php echo $this->escape($this->comment->get('comment')); ?></textarea>
 							</label>
 
 							<?php if ($this->config->get('email_terse')) { ?>
@@ -481,7 +481,7 @@ if (!$no_html)
 									->display();
 								?>
 							</div>
-							<input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?php echo $tmp; ?>" />
+							<input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?php echo $this->escape($tmp); ?>" />
 						</fieldset>
 
 						<div class="input-wrap">

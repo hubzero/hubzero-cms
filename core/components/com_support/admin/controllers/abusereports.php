@@ -298,7 +298,8 @@ class Abusereports extends AdminController
 			}
 		}
 
-		if ($isSpam)
+		// The reported item may already be gone
+		if ($isSpam && $reported)
 		{
 			$results = Event::trigger('antispam.onAntispamTrain', array(
 				$reported->text,
@@ -316,7 +317,7 @@ class Abusereports extends AdminController
 		}
 
 		// Notify item owner
-		if ($email)
+		if ($email && $reported)
 		{
 			Lang::load($this->_option . '.abuse', dirname(dirname(__DIR__)) . '/site');
 
