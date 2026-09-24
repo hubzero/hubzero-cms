@@ -125,6 +125,21 @@ class Questions extends SiteController
 			$comment['item_type'] = $__row->get('item_type');
 		}
 
+		// Comments hang off a response, and the notified question is the one
+		// that response belongs to -- not whatever `rid` the form carried.
+		$response = Response::oneOrFail((int) $comment['item_id']);
+		$questionID = (int) $response->get('question_id');
+		$comment['item_type'] = 'response';
+
+		if (!empty($comment['parent']))
+		{
+			$parent = Comment::oneOrFail((int) $comment['parent']);
+			if ((int) $parent->get('item_id') !== (int) $comment['item_id'])
+			{
+				App::abort(404, Lang::txt('COM_ANSWERS_ERROR_QUESTION_ID_NOT_FOUND'));
+			}
+		}
+
 		$row = Comment::oneOrNew($comment['id'])->set($comment);
 
 		// Perform some text cleaning, etc.
@@ -380,15 +395,18 @@ class Questions extends SiteController
 			if ($row instanceof Question)
 			{
 				$question = $row;
-				$txt = $row->get('subject');
+				$txt = htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8');
 			}
 			if ($row instanceof Response)
 			{
 				$question = Question::oneOrFail($row->get('question_id'));
-				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ON', $row->get('id'), $question->get('subject'));
+				$txt = Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ON', $row->get('id'), htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'));
 			}
 			if ($row instanceof Comment)
 			{
+				// A comment carries no question_id of its own; link() derives
+				// it from the parent response.
+				$row->link();
 				$question = Question::oneOrFail($row->get('question_id'));
 				// $txt is dropped into an activity description that the feed
 				// renders as HTML, so the subject has to be escaped here --
@@ -727,7 +745,7 @@ class Questions extends SiteController
 				App::abort(500, Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
 			}
 			// Are they offering more than they can afford?
-			if ($fields['reward'] > $fields['funds'])
+			if ($fields['reward'] > (int) ($fields['funds'] ?? 0))
 			{
 				App::abort(500, Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
 			}

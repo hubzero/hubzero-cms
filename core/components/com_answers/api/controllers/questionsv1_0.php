@@ -204,12 +204,21 @@ class Questionsv1_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		// Same door the site form uses (newTask/saveqTask).
+		if (!User::authorise('core.create', 'com_answers')
+		 && !User::authorise('core.manage', 'com_answers'))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
+		$manager = User::authorise('core.manage', 'com_answers');
+
 		$fields = array(
 			'email'      => Request::getInt('email', 0, 'post'),
 			'anonymous'  => Request::getInt('anonymous', 0, 'post'),
 			'subject'    => Request::getString('subject', null, 'post', 'none', 2),
 			'question'   => Request::getString('question', null, 'post', 'none', 2),
-			'created'    => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
+			'created'    => ($manager ? Request::getString('created', with(new Date('now'))->toSql(), 'post') : with(new Date('now'))->toSql()),
 			// updateTask below pins created_by so a question's author cannot be
 			// reassigned. Leaving it open here left the same forgery reachable
 			// through create: any authenticated caller could file a question in
@@ -218,8 +227,11 @@ class Questionsv1_0 extends ApiController
 			'created_by' => (User::authorise('core.manage', 'com_answers')
 				? Request::getInt('created_by', User::get('id'), 'post')
 				: User::get('id')),
-			'state'      => Request::getInt('state', 0, 'post'),
-			'reward'     => Request::getInt('reward', 0, 'post')
+			// The site form strips state and reward for non-managers; a reward
+			// set here would pay out at acceptance without the bank hold the
+			// site path places.
+			'state'      => ($manager ? Request::getInt('state', 0, 'post') : 0),
+			'reward'     => ($manager ? Request::getInt('reward', 0, 'post') : 0)
 		);
 
 		$row = new Question();
@@ -229,8 +241,8 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 500);
 		}
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+		$row->set('email', ($fields['email'] ? 1 : 0));
+		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
 
 		if (!$row->save())
 		{
@@ -377,15 +389,17 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
+		$manager = User::authorise('core.manage', 'com_answers');
+
 		$fields = array(
 			'email'      => Request::getInt('email', $row->get('email')),
 			'anonymous'  => Request::getInt('anonymous', $row->get('anonymous')),
 			'subject'    => Request::getString('subject', $row->get('subject')),
 			'question'   => Request::getString('question', $row->get('question')),
-			'created'    => Request::getString('created', $row->get('created')),
+			'created'    => ($manager ? Request::getString('created', $row->get('created')) : $row->get('created')),
 			'created_by' => $row->get('created_by'),
-			'state'      => Request::getInt('state', $row->get('state')),
-			'reward'     => Request::getInt('reward', $row->get('reward'))
+			'state'      => ($manager ? Request::getInt('state', $row->get('state')) : $row->get('state')),
+			'reward'     => ($manager ? Request::getInt('reward', $row->get('reward')) : $row->get('reward'))
 		);
 
 		if (!$row->set($fields))
@@ -393,8 +407,8 @@ class Questionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_ANSWERS_ERROR_BINDING_DATA'), 422);
 		}
 
-		$row->set('email', (isset($fields['email']) ? 1 : 0));
-		$row->set('anonymous', (isset($fields['anonymous']) ? 1 : 0));
+		$row->set('email', ($fields['email'] ? 1 : 0));
+		$row->set('anonymous', ($fields['anonymous'] ? 1 : 0));
 
 		if (!$row->save())
 		{
