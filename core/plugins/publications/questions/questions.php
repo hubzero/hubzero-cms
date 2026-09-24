@@ -319,7 +319,12 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 
 		$__isNew = $row->isNew();
 		$__owner = $row->get('created_by');
-		$row->set($fields);
+		// Only the fields the form is meant to edit; state, points, helpful etc. stay server-side
+		$row->set(array_intersect_key($fields, array_flip(array('subject', 'question', 'anonymous', 'email'))));
+		if ($__isNew)
+		{
+			$row->set('state', 0);
+		}
 		// Never take the author from the form: a new question is the caller's,
 		// an edited one keeps its author
 		$row->set('created_by', $__isNew ? User::get('id') : $__owner);

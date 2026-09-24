@@ -45,6 +45,7 @@ else
 				<input type="hidden" name="id" value="<?php echo $review->get('publication_id'); ?>" />
 				<input type="hidden" name="action" value="savereview" />
 				<input type="hidden" name="active" value="reviews" />
+				<?php echo Html::input('token'); ?>
 
 				<fieldset>
 					<legend><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_FORM_RATING'); ?>:</legend>

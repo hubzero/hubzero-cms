@@ -112,6 +112,24 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 			// An edit may change the text, not who wrote it or where it lives
 			unset($comment['item_id'], $comment['item_type'], $comment['parent'], $comment['state']);
 		}
+		else
+		{
+			// A new reply goes on a review of this resource, under a reply to that review
+			$itemId = isset($comment['item_id']) ? (int) $comment['item_id'] : 0;
+			$parentReview = \Components\Resources\Reviews\Models\Review::oneOrNew($itemId);
+			if (!isset($comment['item_type']) || $comment['item_type'] != 'review' || $parentReview->get('resource_id') != $this->resource->id)
+			{
+				$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+				return;
+			}
+			$parentId = isset($comment['parent']) ? (int) $comment['parent'] : 0;
+			if ($parentId && \Hubzero\Item\Comment::oneOrNew($parentId)->get('item_id') != $itemId)
+			{
+				$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
+				return;
+			}
+			unset($comment['state']);
+		}
 		$row->set($comment);
 		$row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
@@ -142,6 +160,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 			return;
 		}
 
+		// The delete form posts a token
+		Request::checkToken();
+
 		// Incoming
 		$replyid = Request::getInt('comment', 0);
 
@@ -162,8 +183,15 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		// Delete the review
 		$reply = \Hubzero\Item\Comment::oneOrFail($replyid);
 
-		// Permissions check
-		if ($reply->get('created_by') != User::get('id') && !User::authorise('core.admin'))
+		// The reply must hang off a review of this resource
+		$parentReview = \Components\Resources\Reviews\Models\Review::oneOrNew((int) $reply->get('item_id'));
+		if ($reply->get('item_type') != 'review' || $parentReview->get('resource_id') != $this->resource->id)
+		{
+			return;
+		}
+
+		// Permissions check (the browse view offers Delete to core.manage as well)
+		if ($reply->get('created_by') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin'))
 		{
 			return;
 		}
@@ -335,8 +363,22 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 		$__owner = $row->get('user_id');
 		if (!$__isNew)
 		{
-			// An edit may change the text, not its author or the resource it is on
-			unset($data['resource_id']);
+			// An edit may change the text, not its author, state or the resource it is on
+			unset($data['resource_id'], $data['state']);
+		}
+		else
+		{
+			// A new review is on the resource being viewed, one per user
+			$data['resource_id'] = $this->resource->id;
+			if (\Components\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'))->get('id'))
+			{
+				$this->setError('You have already reviewed this resource.');
+				return;
+			}
+		}
+		if (isset($data['rating']))
+		{
+			$data['rating'] = min(5, max(1, (int) $data['rating']));
 		}
 		$row->set($data);
 		$row->set('user_id', $__isNew ? User::get('id') : $__owner);
@@ -413,6 +455,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 			return;
 		}
 
+		// The delete form posts a token
+		Request::checkToken();
+
 		// Incoming
 		$reviewid = Request::getInt('comment', 0);
 
@@ -432,8 +477,14 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 
 		$review = \Components\Resources\Reviews\Models\Review::oneOrFail($reviewid);
 
-		// Permissions check
-		if ($review->get('user_id') != User::get('id') && !User::authorise('core.admin'))
+		// The review must belong to this resource
+		if ($review->get('resource_id') != $this->resource->id)
+		{
+			return;
+		}
+
+		// Permissions check (the browse view offers Delete to core.manage as well)
+		if ($review->get('user_id') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin'))
 		{
 			return;
 		}

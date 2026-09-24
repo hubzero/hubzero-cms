@@ -318,8 +318,17 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$tags   = Request::getString('tags', '');
-		$funds  = Request::getInt('funds', 0);
 		$reward = Request::getInt('reward', 0);
+
+		// Available funds come from the bank, not the form
+		$banking = Component::params('com_members')->get('bankAccounts');
+		$funds   = 0;
+		if ($banking)
+		{
+			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
+			$funds = $BTL->summary() - $BTL->credit_summary();
+			$funds = $funds > 0 ? $funds : 0;
+		}
 
 		// If offering a reward, do some checks
 		if ($reward)
@@ -358,6 +367,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		$__owner = $row->get('created_by');
 		$__state = $row->get('state');
 
+		// The reward flag is set below, only once the bank holds the amount
+		unset($fields['reward']);
 		$row->set($fields);
 		$row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
@@ -366,7 +377,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$row->set('state', $__state);
 		}
 
-		if ($reward && $this->banking)
+		if ($reward && $banking)
 		{
 			$row->set('reward', 1);
 		}
@@ -379,7 +390,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Hold the reward for this question if we're banking
-		if ($reward && $this->banking)
+		if ($reward && $banking)
 		{
 			$BTL = new \Hubzero\Bank\Teller(User::get('id'));
 			$BTL->hold($reward, Lang::txt('COM_ANSWERS_HOLD_REWARD_FOR_BEST_ANSWER'), 'answers', $row->get('id'));

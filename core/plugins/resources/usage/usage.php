@@ -280,7 +280,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		{
 			$data = Lang::txt('PLG_RESOURCES_USAGE_SECONDS', round($time, 2));
 		}
-		else if ($time > 60 && $time < 3600)
+		else if ($time >= 60 && $time < 3600)
 		{
 			$data = Lang::txt('PLG_RESOURCES_USAGE_MINUTES', round(($time/60), 2));
 		}
