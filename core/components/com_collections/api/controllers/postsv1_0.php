@@ -395,6 +395,12 @@ class Postsv1_0 extends ApiController
 
 		$collection = new Collection($entry->get('collection_id'));
 
+		// The post is only as readable as the board it sits on.
+		if (!$collection->isReadableBy())
+		{
+			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
+		}
+
 		$entry->set('object_type', $collection->get('object_type'));
 		$entry->set('object_id', $collection->get('object_id'));
 

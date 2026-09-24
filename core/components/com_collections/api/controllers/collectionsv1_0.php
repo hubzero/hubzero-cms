@@ -275,7 +275,9 @@ class Collectionsv1_0 extends ApiController
 
 		$row = new Collection($id);
 
-		if (!$row->exists())
+		// A private or members-only board is not readable through the API by
+		// someone who could not read it on the site.
+		if (!$row->exists() || !$row->isReadableBy())
 		{
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_MISSING_RECORD'), 404);
 		}
