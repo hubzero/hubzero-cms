@@ -2572,6 +2572,9 @@ class Tickets extends SiteController
 						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN'));
 						//return Lang::txt('COM_SUPPORT_ERROR_FAILED_VIRUS_SCAN');
 					}
+					// Skip the database entry: saving it anyway left an
+					// attachment on the ticket pointing at the deleted file
+					continue;
 				}
 
 				// File was uploaded
