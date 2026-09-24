@@ -603,6 +603,51 @@ class Job extends Relational
 	}
 
 	/**
+	 * Release whatever job is in flight when the process ends.
+	 *
+	 * A fatal inside a job skips the caller's finally block, and the job then
+	 * stays active until STALE_ACTIVE_SECONDS pass. The returned holder's
+	 * ->job is set by the runner before triggering the job and cleared once
+	 * it has released it itself; anything still set at shutdown is released.
+	 *
+	 * @return  \stdClass  Holder with a ->job property
+	 */
+	public static function releaseOnShutdown()
+	{
+		$inFlight = new \stdClass;
+		$inFlight->job = null;
+
+		register_shutdown_function(function () use ($inFlight)
+		{
+			if (!$inFlight->job)
+			{
+				return;
+			}
+
+			$next = null;
+			try
+			{
+				$next = $inFlight->job->nextRun();
+			}
+			catch (\Throwable $e)
+			{
+				// leave next_run as-is if the recurrence can't be parsed
+			}
+
+			try
+			{
+				$inFlight->job->release(gmdate('Y-m-d H:i:s'), $next);
+			}
+			catch (\Throwable $e)
+			{
+				// best-effort: nothing more can be done at shutdown
+			}
+		});
+
+		return $inFlight;
+	}
+
+	/**
 	 * Release this job from the active state and clear its process ownership.
 	 *
 	 * Done as a targeted raw UPDATE rather than save() on purpose: releasing a

@@ -95,35 +95,7 @@ class Jobs extends SiteController
 		// (the job is effectively wedged until then / a worker recycle). Track the
 		// in-flight job and release it on shutdown so a fatal can't wedge it;
 		// cleared in the finally on normal completion (then this is a no-op).
-		$inFlight = new \stdClass;
-		$inFlight->job = null;
-
-		register_shutdown_function(function () use ($inFlight)
-		{
-			if (!$inFlight->job)
-			{
-				return;
-			}
-
-			$next = null;
-			try
-			{
-				$next = $inFlight->job->nextRun();
-			}
-			catch (\Throwable $e)
-			{
-				// leave next_run as-is if the recurrence can't be parsed
-			}
-
-			try
-			{
-				$inFlight->job->release(gmdate('Y-m-d H:i:s'), $next);
-			}
-			catch (\Throwable $e)
-			{
-				// best-effort: nothing more can be done at shutdown
-			}
-		});
+		$inFlight = Job::releaseOnShutdown();
 
 		foreach ($results as $job)
 		{

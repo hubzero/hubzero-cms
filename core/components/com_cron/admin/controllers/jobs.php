@@ -285,35 +285,7 @@ class Jobs extends AdminController
 		// A fatal inside a job skips the finally below and left the job marked
 		// active until STALE_ACTIVE_SECONDS (6 hours) passed. Release whatever
 		// is in flight at shutdown, as the site tick does.
-		$inFlight = new stdClass;
-		$inFlight->job = null;
-
-		register_shutdown_function(function () use ($inFlight)
-		{
-			if (!$inFlight->job)
-			{
-				return;
-			}
-
-			$next = null;
-			try
-			{
-				$next = $inFlight->job->nextRun();
-			}
-			catch (\Throwable $e)
-			{
-				// leave next_run as-is if the recurrence can't be parsed
-			}
-
-			try
-			{
-				$inFlight->job->release(gmdate('Y-m-d H:i:s'), $next);
-			}
-			catch (\Throwable $e)
-			{
-				// best-effort at shutdown
-			}
-		});
+		$inFlight = Job::releaseOnShutdown();
 
 		// Loop through each ID
 		foreach ($ids as $id)
