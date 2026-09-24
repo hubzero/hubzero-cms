@@ -71,10 +71,10 @@ function dv_data_definition_new()
 	};
 	$dd_text .= "\t" . '$dd[\'title\'] = \'' . $sq($title) . '\';' . "\n";
 	$dd_text .= "\t" . '$dd[\'table\'] = \'' . $sq($dd['table']) . '\';' . "\n";
-	$dd_text .= "\t" . '$dd[\'pk\'] = \'' . $pk . '\';' . "\n\n";
+	$dd_text .= "\t" . '$dd[\'pk\'] = \'' . $sq($pk) . '\';' . "\n\n";
 
 	foreach ($dd['cols'] as $col => $val) {
-		$dd_text .= "\t" . '$dd[\'cols\'][\'' . $col . '\'] = ' . format_var(var_export($val, true)) . "\n";
+		$dd_text .= "\t" . '$dd[\'cols\'][\'' . $sq($col) . '\'] = ' . format_var(var_export($val, true)) . "\n";
 	}
 
 	$dd_text .= "\n\t" . 'return $dd;' . "\n\n}\n?>";

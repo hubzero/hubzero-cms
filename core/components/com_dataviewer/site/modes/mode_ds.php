@@ -43,6 +43,10 @@ function get_dd($db_id)
 		$db->setQuery($sql);
 		$r = $db->loadAssoc();
 
+		if (!$r) {
+			App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+		}
+
 		$td = json_decode($r['table_definition'], true);
 
 		$dd['db'] = $dv_conf['db'];
@@ -237,7 +241,7 @@ function _dd_post($dd)
 	// Data for Custom Views
 	$custom_view = Request::getString('custom_view', '');
 
-	if ($custom_view != '') {
+	if ($custom_view != '' && isset($dd['cols']) && is_array($dd['cols'])) {
 		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 

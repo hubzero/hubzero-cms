@@ -25,7 +25,6 @@ function filter($res, $dd)
 
 	$table = array();
 	$table['title'] = $dd['title'];
-	$table['__sql'] = $res['sql'];
 	$table['sColumns'] = array();
 	$table['aaData'] = array();
 	$table['iTotalRecords'] = $total;

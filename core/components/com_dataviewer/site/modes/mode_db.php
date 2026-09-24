@@ -81,8 +81,15 @@ function get_dd($db_id)
 			// Remove access restrictions for managers
 			$dd['acl']['allowed_users'] = false;
 			$dd['acl']['allowed_groups'] = false;
+		} else {
+			// Browsing a raw table is a manager feature; without a managers list
+			// nobody else may read it, whatever the component-level ACL allows.
+			$dd['acl']['allowed_users'] = array();
+			$dd['acl']['allowed_groups'] = array();
 		}
 	} else {
+		// Definitions are read from JSON; the PHP form is the admin's source only
+		$dd_php_file = false;
 
 		if ($dd_json_file) {
 			$dd = json_decode(file_get_contents($dd_json_file), true);
@@ -167,7 +174,7 @@ function _dd_post($dd)
 	// Data for Custom Views
 	$custom_view = Request::getString('custom_view', '');
 
-	if ($custom_view != '') {
+	if ($custom_view != '' && isset($dd['cols']) && is_array($dd['cols'])) {
 		$custom_view = explode(',', $custom_view);
 		unset($dd['customizer']);
 

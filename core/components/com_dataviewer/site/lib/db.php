@@ -276,7 +276,7 @@ function query_gen(&$dd)
 				continue;
 			}
 			$col = $cols[$col_id];
-			$filter_str = mysqli_real_escape_string($escLink, $filter[1]);
+			$filter_str = mysqli_real_escape_string($escLink, isset($filter[1]) ? $filter[1] : '');
 			$fieldtype = isset($filter[2]) ? $filter[2] : 'string';
 			$filter_type = isset($filter[3]) ? $filter[3] : 'exact';
 
@@ -335,7 +335,7 @@ function query_gen(&$dd)
 				} else {
 					$where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
 				}
-			} elseif ($val['fieldtype'] == 'numrange') {
+			} elseif ($val['fieldtype'] == 'numrange' && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])) {
 				$val['val'] = strtolower($val['val']);
 
 				$min_col = $dd['cols'][$key]['numrange']['min'];
@@ -447,7 +447,7 @@ function query_gen(&$dd)
 				} else {
 					$having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
 				}
-			} elseif ($val['fieldtype'] == 'numrange') {
+			} elseif ($val['fieldtype'] == 'numrange' && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])) {
 				$min_col = $dd['cols'][$key]['numrange']['min'];
 				$max_col = $dd['cols'][$key]['numrange']['max'];
 				if (strstr($val['val'], 'to')) {
@@ -563,7 +563,7 @@ function query_gen(&$dd)
 				$inList = implode(',', array_map(function ($v) use ($escLink) {
 					return "'" . mysqli_real_escape_string($escLink, $v) . "'";
 				}, explode(',', (string) $w['value'])));
-				if ($cols[$w['field']]['raw']) {
+				if (isset($cols[$w['field']]) && !empty($cols[$w['field']]['raw'])) {
 					$where[] = $cols[$w['field']]['expr'] . " IN (" . $inList . ")";
 				} else {
 					// The id is a `table.column` pair (see $dd['pk']); quote each part on
@@ -637,6 +637,9 @@ function query_gen(&$dd)
 		for ($i = 0; $i < $sort_col_count; $i++)
 		{
 			$idx = Request::getInt('iSortCol_' . $i, null);
+			if ($idx === null || !isset($cols_vis[$idx]) || !isset($cols[$cols_vis[$idx]])) {
+				continue;
+			}
 			$sortable = Request::getString('bSortable_' . $idx, 'false');
 			if ($sortable === 'true') {
 				$col_id = $cols_vis[$idx];

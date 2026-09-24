@@ -35,6 +35,12 @@ function controller()
 
 	$dv_conf['settings']['db_id'] = $db_id;
 
+	// Only the shipped modes exist; anything else would be a fatal require
+	if ($db_id['name'] === '' || !in_array($db_id['mode'], array('db', 'ds', 'dsl'), true))
+	{
+		App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+	}
+
 	/* Include database mode specific functionality */
 	require_once __DIR__ . DS . 'modes' . DS . 'mode_' . $db_id['mode'] . '.php';
 
