@@ -78,7 +78,7 @@ class FileIndexMacro extends WikiMacro
 				$huser = $row->creator();
 				if ($huser->get('id'))
 				{
-					$html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
+					$html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . htmlspecialchars(stripslashes((string) $huser->get('name')), ENT_QUOTES, 'UTF-8') . '</a> ';
 				}
 				if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00')
 				{
@@ -93,6 +93,6 @@ class FileIndexMacro extends WikiMacro
 		}
 
 		// Return error message
-		return '(No ' . $et . ' files to display)';
+		return '(No ' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ' files to display)';
 	}
 }

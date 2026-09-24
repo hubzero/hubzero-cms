@@ -63,6 +63,8 @@ class ColumnMacro extends WikiMacro
 			return '<div class="grid">' . "\n";
 		}
 
+		$div = '';
+
 		if (trim($text) == 'start')
 		{
 			$this->_cursor++;

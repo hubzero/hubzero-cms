@@ -85,7 +85,7 @@ class GroupEventMacro extends WikiMacro
 		$html  = '<div class="upcoming_events">';
 
 		//display the title
-		$html .= (isset($arg['title']) && $arg['title'] != '') ? '<h3>' . $arg['title'] . '</h3>' : '';
+		$html .= (isset($arg['title']) && $arg['title'] != '') ? '<h3>' . htmlspecialchars((string) $arg['title'], ENT_QUOTES, 'UTF-8') . '</h3>' : '';
 
 		//render the events
 		$html .= $this->renderEvents( $group, $events );
@@ -126,9 +126,9 @@ class GroupEventMacro extends WikiMacro
 		$sql .= " ORDER BY publish_up ASC";
 
 		//do we have a limit set
-		if (isset($filters['number']))
+		if (isset($filters['limit']) && (int) $filters['limit'] > 0)
 		{
-			$sql .= " LIMIT " . (int) $filters['number'];
+			$sql .= " LIMIT " . (int) $filters['limit'];
 		}
 
 		//return result
@@ -181,7 +181,7 @@ class GroupEventMacro extends WikiMacro
 
 				//create list
 				$content .= '<div class="event">';
-				$content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
+				$content .= '<strong><a class=" title" href="' . $link . '">' . htmlspecialchars(stripslashes((string) $event->title), ENT_QUOTES, 'UTF-8') . '</a></strong>';
 				$content .= '<br /><span class="date">' . $date . '</span>';
 				$content .= '<br /><span class="details">' . $details . '</span>';
 				$content .= '</div><br />';

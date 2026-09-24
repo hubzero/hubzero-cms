@@ -76,10 +76,10 @@ class PageMacro extends WikiMacro
 
 		if ($nolink)
 		{
-			return stripslashes($row->get('title', $row->get('pagename')));
+			return htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8');
 		}
 
 		// Build and return the link
-		return '<a href="' . Route::url($row->link()) . '">' . stripslashes($row->get('title', $row->get('pagename'))) . '</a>';
+		return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
 	}
 }

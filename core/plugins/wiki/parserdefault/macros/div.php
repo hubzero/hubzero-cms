@@ -43,6 +43,8 @@ class DivMacro extends WikiMacro
 		$attribs = explode(',', $et);
 		$text = array_shift($attribs);
 
+		$div = '';
+
 		if (trim($text) == 'start')
 		{
 			$atts = array();

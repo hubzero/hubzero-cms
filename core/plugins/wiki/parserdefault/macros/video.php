@@ -126,7 +126,7 @@ class VideoMacro extends WikiMacro
 
 					if (!file_exists($video_url))
 					{
-						return '(video:' . $url . ' not found)' . $this->_path($url);
+						return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not found)';
 					}
 				}
 			}
@@ -146,6 +146,8 @@ class VideoMacro extends WikiMacro
 
 			if (strstr($video_url, '?'))
 			{
+				$video_id = '';
+
 				//split the string into two parts
 				//uri and query string
 				$full_url_parts = explode('?', $video_url);
@@ -161,7 +163,7 @@ class VideoMacro extends WikiMacro
 					$pairs_parts = explode("%3D", $qsp);
 					if ($pairs_parts[0] == 'v')
 					{
-						$video_id = $pairs_parts[1];
+						$video_id = isset($pairs_parts[1]) ? $pairs_parts[1] : '';
 						break;
 					}
 				}
@@ -194,20 +196,20 @@ class VideoMacro extends WikiMacro
 				{
 					if (strtolower($bit) == 'partner_id')
 					{
-						$partner_id = $bits[$i+1];
+						$partner_id = isset($bits[$i+1]) ? $bits[$i+1] : 0;
 					}
 					switch (strtolower($bit))
 					{
 						case 'partner_id':
-							$partner_id = $bits[$i+1];
+							$partner_id = isset($bits[$i+1]) ? $bits[$i+1] : 0;
 						break;
 
 						case 'uiconf_id':
-							$uiconf_id = $bits[$i+1];
+							$uiconf_id = isset($bits[$i+1]) ? $bits[$i+1] : 0;
 						break;
 
 						case 'entry_id':
-							$entry_id = $bits[$i+1];
+							$entry_id = isset($bits[$i+1]) ? $bits[$i+1] : 0;
 						break;
 					}
 				}

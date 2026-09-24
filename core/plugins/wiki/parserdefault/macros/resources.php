@@ -92,6 +92,8 @@ class ResourcesMacro extends WikiMacro
 		// Did we get a result from the database?
 		if ($r)
 		{
+			$id = (int) $r[0];
+
 			if ($scrnshts && $r[2])
 			{
 				return $this->screenshots($r[2], $num);

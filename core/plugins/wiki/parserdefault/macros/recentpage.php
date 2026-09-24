@@ -105,7 +105,7 @@ class RecentPageMacro extends WikiMacro
 					$html .= ' class="' . $cls . '"';
 				}
 				$html .= '>' . "\n";
-				$html .= "\t" . '<h3><a href="' . Route::url($row->link()) . '">' . stripslashes($row->title) . '</a></h3>' . "\n";
+				$html .= "\t" . '<h3><a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->title), ENT_QUOTES, 'UTF-8') . '</a></h3>' . "\n";
 				$html .= "\t" . '<p class="modified-date">';
 				if ($row->get('version') > 1)
 				{

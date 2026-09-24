@@ -78,7 +78,7 @@ class YoutubeMacro extends WikiMacro
 			$full_url_parts = explode('?', $url);
 
 			// split apart any key=>value pairs in query string
-			$query_string_parts = explode("%26%2338%3B", urlencode($full_url_parts[1]));
+			$query_string_parts = explode("%26%2338%3B", urlencode(isset($full_url_parts[1]) ? $full_url_parts[1] : ''));
 
 			// foreach query string parts
 			// explode at equals sign
@@ -88,7 +88,7 @@ class YoutubeMacro extends WikiMacro
 				$pairs_parts = explode("%3D", $qsp);
 				if ($pairs_parts[0] == 'v')
 				{
-					$video_id = $pairs_parts[1];
+					$video_id = isset($pairs_parts[1]) ? $pairs_parts[1] : '';
 					break;
 				}
 			}

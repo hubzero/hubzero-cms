@@ -70,7 +70,8 @@ class SpanMacro extends WikiMacro
 
 		$span  = '<span';
 		$span .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
-		$span .= trim($text) . '</span>';
+		// Macro output is never wiki-parsed again, so the text is plain text
+		$span .= htmlspecialchars(trim((string) $text), ENT_QUOTES, 'UTF-8') . '</span>';
 
 		return $span;
 	}

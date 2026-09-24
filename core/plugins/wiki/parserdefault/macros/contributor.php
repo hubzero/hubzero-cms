@@ -40,6 +40,7 @@ class ContributorMacro extends WikiMacro
 			return '';
 		}
 		$id = 0;
+		$name = '';
 		// Is it numeric?
 		if (is_numeric($et))
 		{
