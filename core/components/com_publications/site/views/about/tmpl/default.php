@@ -211,7 +211,7 @@ $schema = $metaElements->getSchema();
 			$submitter  = $this->publication->_submitter->name;
 			$submitter .= $this->publication->_submitter->organization
 					? ', ' . $this->publication->_submitter->organization : '';
-			echo $submitter;
+			echo $this->escape($submitter);
 		?>
 	</div>
 <?php } ?>

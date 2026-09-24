@@ -70,6 +70,7 @@ class Media extends SiteController
 
 		// Get the file name
 		$uri = Request::getString('REQUEST_URI', '', 'server');
+		$file = '';
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));
@@ -81,6 +82,10 @@ class Media extends SiteController
 
 		//decode file name
 		$file = urldecode($file);
+		if ($file === '')
+		{
+			return;
+		}
 
 		if (strtolower($file) == 'thumb')
 		{

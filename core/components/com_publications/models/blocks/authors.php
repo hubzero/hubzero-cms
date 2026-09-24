@@ -143,9 +143,17 @@ class Authors extends Base
 
 		$order = $pAuthor->getLastOrder($pub->version_id) + 1;
 
+		// Only this project's team can be attached as authors
+		$teamIds = (array) $objO->getIds($pub->_project->get('id'), 'all', 0, 0);
+
 		foreach ($toAttach as $owner)
 		{
 			if (!trim($owner))
+			{
+				continue;
+			}
+
+			if (!in_array((int) $owner, $teamIds))
 			{
 				continue;
 			}

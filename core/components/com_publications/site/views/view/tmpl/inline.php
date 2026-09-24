@@ -43,7 +43,8 @@ if ($attributes)
 			if (strstr($b, ':'))
 			{
 				$b = explode(':', $b);
-				$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
+				// Attribute names and values come from the author's file description
+				$bits[] = preg_replace('/[^a-zA-Z0-9_-]/', '', trim($b[0])) . '="' . $this->escape(trim($b[1])) . '"';
 			}
 		}
 	}

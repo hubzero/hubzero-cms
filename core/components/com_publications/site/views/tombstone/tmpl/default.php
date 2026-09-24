@@ -17,7 +17,7 @@ $this->css()
 </div>
 <div class="tombstone-section">
 	<h3><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_RETRACTION_DESCRIPTION'); ?></h3>
-	<p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER'); ?><a target="_blank" rel="external" href="<?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->record->doi;?>"><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->record->doi;?></a><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON') . lcfirst($this->record->unpublished_reason) . "."; ?></p>
+	<p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER'); ?><a target="_blank" rel="external" href="<?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi);?>"><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi);?></a><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON') . $this->escape(lcfirst((string) $this->record->unpublished_reason)) . "."; ?></p>
 	<p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_CONTACT_PURR'); ?></p>
 </div>
 

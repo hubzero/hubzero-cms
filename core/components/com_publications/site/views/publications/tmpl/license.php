@@ -13,7 +13,7 @@ $text = preg_replace("/\r\n/", "\r", trim($text));
 
 ?>
 <header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+	<h2><?php echo $this->escape($this->title); ?></h2>
 	<div class="license-wrap">
 		<?php if ($this->getError()) { echo '<p class="error">' . $this->getError() . '</p>';
 } else { echo '<pre>' . $this->escape($text) . '</pre>'; } ?>

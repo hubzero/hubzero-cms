@@ -575,8 +575,8 @@ class Batchcreate extends AdminController
 		// Display results
 		$out .= '<p class="publication">#' . $pid . ': <a href="'
 			. trim($this->site, DS) . '/publications/' . $pid
-			. DS . '1" rel="external">' . $item['version']->title
-			. ' v.' . $item['version']->version_label . '</a></p>';
+			. DS . '1" rel="external">' . htmlspecialchars((string) $item['version']->title, ENT_QUOTES, 'UTF-8')
+			. ' v.' . htmlspecialchars((string) $item['version']->version_label, ENT_QUOTES, 'UTF-8') . '</a></p>';
 		return true;
 	}
 
@@ -598,6 +598,12 @@ class Batchcreate extends AdminController
 			return;
 		}
 
+		// The path must stay inside the project repository: no empty, '.' or '..' segments
+		$relPath = implode(DS, array_filter(explode('/', str_replace('\\', '/', (string) $file->path)), function ($seg)
+		{
+			return $seg !== '' && $seg !== '.' && $seg !== '..';
+		}));
+
 		$error = null;
 
 		// Get attribute
@@ -606,7 +612,7 @@ class Batchcreate extends AdminController
 
 		// Start new attachment record
 		$attach = new Tables\Attachment($this->database);
-		$attach->path       = trim($file->path, DS);
+		$attach->path       = $relPath;
 		$attach->title      = isset($file->title) ? trim($file->title) : '';
 		$attach->role       = $role;
 		$attach->ordering   = $ordering;
@@ -614,7 +620,7 @@ class Batchcreate extends AdminController
 		$attach->type       = 'file';
 
 		// Check if file exists
-		$filePath = $this->projectPath . DS . trim($file->path, DS);
+		$filePath = $this->projectPath . DS . $relPath;
 		$exists = $file->path && file_exists($filePath) ? true : false;
 
 		// Hightlight a problem

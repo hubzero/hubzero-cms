@@ -245,6 +245,7 @@ class Citations extends Base
 	public function addItem($manifest, $blockId, $pub, $actor = 0, $elementId = 0, $cid = 0)
 	{
 		$cite = Request::getArray('cite', array(), 'post');
+		$cite = array_merge(array('id' => 0, 'type' => '', 'title' => ''), (array) $cite);
 
 		$new  = $cite['id'] ? false : true;
 
@@ -270,10 +271,18 @@ class Citations extends Base
 			}
 		}
 
-		unset($cite['uri']);
-		$citation = \Components\Citations\Models\Citation::all()->set($cite);
-		$citation->set('created', $new ? Date::toSql() : $citation->get('created'));
-		$citation->set('uid', $new ? $actor : $citation->get('uid'));
+		// Provenance and scope columns are never taken from the form; an edit
+		// starts from the stored row so they keep their values
+		unset($cite['uri'], $cite['uid'], $cite['created'], $cite['scope'], $cite['scope_id'], $cite['published']);
+		$citation = $new
+			? \Components\Citations\Models\Citation::blank()
+			: \Components\Citations\Models\Citation::oneOrNew((int) $cite['id']);
+		$citation->set($cite);
+		if ($new)
+		{
+			$citation->set('created', Date::toSql());
+			$citation->set('uid', $actor);
+		}
 		$citation->set('published', 1);
 
 		if (!$citation->save())

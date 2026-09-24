@@ -55,12 +55,12 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 					echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED');
 					$name = $this->pub->modifier('name');
 					$name = $name ?: Lang::txt('JUNKNOWN');
-					echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $name);
+					echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name));
 					?>
 				</strong>
 				<?php if ($this->pub->curator()): ?>
 					<span class="block">
-						<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->pub->curator('name') . ' (' . $this->pub->curator('username') . ')</strong>';  ?>
+						<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->escape($this->pub->curator('name')) . ' (' . $this->escape($this->pub->curator('username')) . ')</strong>';  ?>
 					</span>
 				<?php endif; ?>
 				<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>

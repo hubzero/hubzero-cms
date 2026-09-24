@@ -81,7 +81,7 @@ if ($tmpl != 'component')
 									? false : true;
 
 					?>
-					<?php if (count($attachments) > 1 && $multiZip) { ?>
+					<?php if ($attachments && count($attachments) > 1 && $multiZip) { ?>
 					<div class="input-wrap">
 						<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
 						<input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $this->escape($bundleName); ?>" />

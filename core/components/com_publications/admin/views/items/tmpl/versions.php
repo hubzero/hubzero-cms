@@ -56,7 +56,7 @@ Toolbar::cancel();
 					endif;
 					?>
 				</td>
-				<td><?php echo $doi_notice; ?></td>
+				<td><?php echo $this->escape($doi_notice); ?></td>
 				<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION'); ?></a></td>
 			</tr>
 			<?php

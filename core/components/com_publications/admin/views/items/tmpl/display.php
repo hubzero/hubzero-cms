@@ -106,9 +106,10 @@ $this->js();
 		<tbody>
 		<?php
 		$k = 0;
-		$filterstring  = $this->filters['sortby'] ? '&sort=' . $this->filters['sortby'] : '';
-		$filterstring .= '&status=' . $this->filters['status'];
-		$filterstring .= ($this->filters['category']) ? '&category=' . $this->filters['category'] : '';
+		// The filters are request values held in the session; they are echoed into hrefs and inputs
+		$filterstring  = $this->filters['sortby'] ? '&sort=' . $this->escape($this->filters['sortby']) : '';
+		$filterstring .= '&status=' . $this->escape($this->filters['status']);
+		$filterstring .= ($this->filters['category']) ? '&category=' . $this->escape($this->filters['category']) : '';
 
 		for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		{
@@ -206,8 +207,8 @@ $this->js();
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" autocomplete="off" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sortby']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sortdir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>

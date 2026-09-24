@@ -197,7 +197,7 @@ $panels = array(
 					<tr>
 						<th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CREATOR'); ?></th>
 						<td>
-							<?php echo $this->model->creator()->get('name', Lang::txt('(unknown)')); ?>
+							<?php echo $this->escape($this->model->creator()->get('name', Lang::txt('(unknown)'))); ?>
 						</td>
 					</tr>
 					<tr>
@@ -259,7 +259,7 @@ $panels = array(
 						</tr>
 						<tr>
 							<th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
-							<td><?php echo $this->model->modifier()->get('name', Lang::txt('(unknown)')); ?></td>
+							<td><?php echo $this->escape($this->model->modifier()->get('name', Lang::txt('(unknown)'))); ?></td>
 						</tr>
 					</tbody>
 				</table>
@@ -288,7 +288,7 @@ $panels = array(
 				</div>
 				<div class="input-wrap" id="reasonDiv">
 					<label for="reason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ASK_REASON'); ?>:</label><br />
-					<textarea name="reason" id="reason" rows="5" cols="50" disabled ><?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->model->get('unpublished_reason') : ''; ?></textarea>
+					<textarea name="reason" id="reason" rows="5" cols="50" disabled ><?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->escape($this->model->get('unpublished_reason')) : ''; ?></textarea>
 				</div>
 				<div class="input-wrap">
 					<label for="field-featured"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED'); ?>:</label><br />
@@ -340,7 +340,7 @@ $panels = array(
 				</div>
 				<div class="input-wrap">
 					<label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DOI'); ?>:</label>
-					<input type="text" id="doi" name="doi" value="<?php echo $this->model->doi; ?>" />
+					<input type="text" id="doi" name="doi" value="<?php echo $this->escape($this->model->doi); ?>" />
 				</div>
 
 				<div class="input-wrap">

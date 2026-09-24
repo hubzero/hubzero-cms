@@ -348,7 +348,7 @@ class Html
 
 			if ($cite->doi && $cite->url)
 			{
-				$formatted = str_replace('doi:' . $cite->doi, '<a href="' . $cite->url . '" rel="external">doi:' . $cite->doi . '</a>', $formatted);
+				$formatted = str_replace('doi:' . $cite->doi, '<a href="' . htmlspecialchars((string) $cite->url, ENT_COMPAT, 'UTF-8') . '" rel="external">doi:' . htmlspecialchars((string) $cite->doi, ENT_COMPAT, 'UTF-8') . '</a>', $formatted);
 			}
 			else
 			{
@@ -477,7 +477,7 @@ class Html
 		{
 			$text .= "\t\t" . '<span class="block">' . Lang::txt('COM_PUBLICATIONS_LAST_PUB_RELEASE')
 			. ' <a href="'. Route::url(
-			$publication->link() . '&v=' . $lastPubRelease->version_number) . '">' . $lastPubRelease->version_label . '</a></span>';
+			$publication->link() . '&v=' . $lastPubRelease->version_number) . '">' . htmlspecialchars((string) $lastPubRelease->version_label, ENT_COMPAT, 'UTF-8') . '</a></span>';
 		}
 
 		// Output
@@ -664,7 +664,7 @@ class Html
 		{
 			$html .= ' | ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
 					. ' <a href="/groups/' . $publication->groupOwner('cn') . '">'
-					. $publication->groupOwner('description') . '</a>';
+					. htmlspecialchars((string) $publication->groupOwner('description'), ENT_COMPAT, 'UTF-8') . '</a>';
 		}
 		$html .= '</p>'."\n";
 
@@ -768,6 +768,8 @@ class Html
 	public static function writePubCategory($cat_alias = '', $typetitle = '')
 	{
 		$html = '';
+		$cls   = '';
+		$title = '';
 
 		if (!$cat_alias && !$typetitle)
 		{
@@ -779,7 +781,7 @@ class Html
 			$cls = str_replace(' ', '', $cat_alias);
 			$title = $cat_alias;
 		}
-		elseif ($pubtitle)
+		elseif ($typetitle)
 		{
 			$normalized = strtolower($typetitle);
 			$cls = preg_replace("/[^a-zA-Z0-9]/", '', $normalized);

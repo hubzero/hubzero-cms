@@ -1614,7 +1614,7 @@ class Curation extends Obj
 			<span class="update-notice"><?php
 			if ($viewer == 'curator')
 			{
-				echo $curatorStatus->updatenotice;
+				echo htmlspecialchars((string) $curatorStatus->updatenotice, ENT_QUOTES, 'UTF-8');
 			}
 			elseif ($curatorStatus->status != 3)
 			{
@@ -1624,7 +1624,7 @@ class Curation extends Obj
 					<span class="dispute-notice">
 						<span class="remove-notice" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_DELETE'); ?></a>]</span>
 						<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?>
-						<span class="dispute-text"><?php echo $curatorStatus->authornotice; ?></span>
+						<span class="dispute-text"><?php echo htmlspecialchars((string) $curatorStatus->authornotice, ENT_QUOTES, 'UTF-8'); ?></span>
 					</span>
 					<?php
 				}
@@ -1638,11 +1638,11 @@ class Curation extends Obj
 				<span class="disputeit" id="<?php echo $props; ?>">[<a href="#<?php echo $elName; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_THIS'); ?></a>]</span>
 			<?php } ?>
 			<span class="fail-notice"><?php echo $viewer == 'curator' ? Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
-			<span class="notice-text"><?php echo $curatorStatus->curatornotice; ?></span>
+			<span class="notice-text"><?php echo htmlspecialchars((string) $curatorStatus->curatornotice, ENT_QUOTES, 'UTF-8'); ?></span>
 			<?php if ($curatorStatus->authornotice && $viewer == 'curator') { ?>
 				<span class="dispute-notice">
 					<strong><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
-					<?php echo $curatorStatus->authornotice; ?>
+					<?php echo htmlspecialchars((string) $curatorStatus->authornotice, ENT_QUOTES, 'UTF-8'); ?>
 				</span>
 			<?php } ?>
 		</div>
