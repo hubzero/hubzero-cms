@@ -617,7 +617,9 @@ class Pages extends SiteController
 		{
 			$page['scope']    = $this->book->get('scope');
 			$page['scope_id'] = (int) $this->book->get('scope_id');
-			$page['access']   = 1;
+			// 0 is public (the column default); 1 reads as members-only in the
+			// group wiki's file download, so a new page's images 403'd for visitors
+			$page['access']   = 0;
 			$page['state']    = 1;
 
 			$this->page->set('scope', $page['scope']);
