@@ -1109,6 +1109,18 @@ class Course extends SiteController
 	 */
 	public function forkTask()
 	{
+		// Forking makes the caller the new course's manager, so there has to be one
+		if (User::isGuest())
+		{
+			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=fork', false, true), 'server'));
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+				Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
+				'warning'
+			);
+			return;
+		}
+
 		// Ensure we found the course info
 		if (!$this->course->exists())
 		{
@@ -1137,6 +1149,12 @@ class Course extends SiteController
 	{
 		// Check for request forgeries
 		Request::checkToken();
+
+		// A guest fork would be created with user 0 as its only manager
+		if (User::isGuest())
+		{
+			App::abort(403, Lang::txt('COM_COURSES_NOT_LOGGEDIN'));
+		}
 
 		// Ensure we found the course info
 		if (!$this->course->exists())
