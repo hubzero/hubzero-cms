@@ -30,6 +30,10 @@ function controller_exec()
 	$task = Request::getCmd('task', 'list');
 
 	$task_file = __DIR__ . DS . 'tasks' . DS . $task . '.php';
+	// An unknown task (e.g. the toolbar-generic task=add) has no file: 404, not a fatal
+	if (!is_file($task_file)) {
+		App::abort(404, Lang::txt('JERROR_LAYOUT_PAGE_NOT_FOUND'));
+	}
 	if (require_once($task_file)) {
 		$task_func = 'dv_' . $task;
 		if (function_exists($task_func)) {
