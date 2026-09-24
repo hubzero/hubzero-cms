@@ -250,7 +250,7 @@ class Entriesv1_0 extends ApiController
 
 		$row = Plugin::oneOrFail($id);
 
-		if (!$row->get('id'))
+		if ($row->isNew())
 		{
 			App::abort(404, Lang::txt('COM_PLUGINS_ERROR_MISSING_RECORD'));
 		}
@@ -393,7 +393,7 @@ class Entriesv1_0 extends ApiController
 		{
 			$row = Plugin::oneOrNew(intval($id));
 
-			if (!$row->get('id'))
+			if ($row->isNew())
 			{
 				App::abort(404, Lang::txt('COM_PLUGINS_ERROR_MISSING_RECORD'));
 			}
