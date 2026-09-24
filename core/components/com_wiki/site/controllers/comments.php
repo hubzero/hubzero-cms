@@ -112,6 +112,12 @@ class Comments extends SiteController
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
 		}
 
+		// Same view check as the page itself
+		if (!$this->page->access('view', 'page'))
+		{
+			App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
+		}
+
 		if (!$this->page->config('comments', 1))
 		{
 			App::redirect(
@@ -319,6 +325,14 @@ class Comments extends SiteController
 		// comments-disabled page -- because $this->page was never used for the
 		// write.
 		$__isNew  = $comment->isNew();
+
+		// A new comment needs a logged-in user the page lets comment
+		// (knol pages can turn comments off)
+		if ($__isNew && (User::isGuest() || !$this->page->access('create', 'comment')))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		$__owner  = $comment->get('created_by');
 		$__page   = $comment->get('page_id');
 		$__state  = $comment->get('state');
@@ -412,6 +426,9 @@ class Comments extends SiteController
 	 */
 	public function removeTask()
 	{
+		// The delete button is a form that posts a token
+		Request::checkToken();
+
 		$msg = null;
 		$cls = 'message';
 

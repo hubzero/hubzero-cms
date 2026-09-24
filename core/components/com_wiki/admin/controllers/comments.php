@@ -301,9 +301,10 @@ class Comments extends AdminController
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
+		$removed = 0;
+
 		if (count($ids) > 0)
 		{
-			$removed = 0;
 
 			// Loop through all the IDs
 			foreach ($ids as $id)

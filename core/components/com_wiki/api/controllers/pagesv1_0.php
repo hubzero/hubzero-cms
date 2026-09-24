@@ -95,7 +95,8 @@ class Pagesv1_0 extends ApiController
 			'sort_Dir'   => strtoupper(Request::getWord('sort_Dir', 'ASC')),
 			'state'      => array(Page::STATE_PUBLISHED),
 			'scope'      => Request::getWord('scope', 'site'),
-			'scope_id'   => Request::getInt('scope_id', 0)
+			'scope_id'   => Request::getInt('scope_id', 0),
+			'access'     => User::getAuthorisedViewLevels()
 		);
 
 		$book = new Book($filters['scope'], $filters['scope_id']);
@@ -393,8 +394,7 @@ class Pagesv1_0 extends ApiController
 			'created'        => Request::getString('created', null),
 			'created_by'     => Request::getInt('created_by', null),
 			'state'          => Request::getInt('state', null),
-			'access'         => Request::getInt('access', null),
-			'params'         => Request::getArray('params', array())
+			'access'         => Request::getInt('access', null)
 		);
 
 		if (!$id)

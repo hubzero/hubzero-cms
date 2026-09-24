@@ -110,6 +110,13 @@ class History extends SiteController
 			App::abort(404, Lang::txt('COM_WIKI_WARNING_NOT_FOUND'));
 		}
 
+		// Revisions and diffs show the page text, so the same view check
+		// the page itself gets
+		if (!$this->page->access('view', 'page'))
+		{
+			App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
+		}
+
 		if (is_null($this->sub))
 		{
 			$this->sub = ($this->page->get('scope') != 'site');
@@ -488,7 +495,8 @@ class History extends SiteController
 		}
 
 		// Changing the current revision requires edit/manage access
-		if (!$this->page->access('edit') && !$this->page->access('manage'))
+		// (or delete, which is what the history view offers the link under)
+		if (!$this->page->access('edit') && !$this->page->access('manage') && !$this->page->access('delete'))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}

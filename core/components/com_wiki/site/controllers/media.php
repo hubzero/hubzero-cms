@@ -130,10 +130,9 @@ class Media extends SiteController
 		// Load the page
 		if ($this->page->exists())
 		{
-			// Check if the page is group restricted and the user is not authorized
-			if ($this->page->get('scope') != 'site'
-			 && $this->page->get('access') != 0
-			 && !$this->page->access('view'))
+			// Check if the page is restricted and the user is not authorized
+			// (site pages carry an access level too)
+			if (!$this->page->access('view'))
 			{
 				App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
 			}
@@ -285,7 +284,7 @@ class Media extends SiteController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
