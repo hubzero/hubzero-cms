@@ -119,7 +119,7 @@ class Job extends Relational
 
 		if (!$data['publish_up'] || $data['publish_up'] == '0000-00-00 00:00:00')
 		{
-			$data['publish_up'] = ($data['id'] ? $this->get('created') : \Date::toSql());
+			$data['publish_up'] = (!empty($data['id']) ? $this->get('created') : \Date::toSql());
 		}
 
 		return $data['publish_up'];
