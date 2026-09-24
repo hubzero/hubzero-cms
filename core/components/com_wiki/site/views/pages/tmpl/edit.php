@@ -28,7 +28,10 @@ if ($this->page->exists())
 else
 {
 	$lid = Request::getInt('lid', (time() . rand(0, 10000)), 'post');
-	$lid = '-' . substr($lid, -8);
+	// A preview posts the temporary id back already negative ("-07448099"
+	// comes back as -7448099); drop the sign and keep eight digits, or it
+	// became "--7448099", which the media handlers read as 0 and refuse
+	$lid = '-' . str_pad(substr((string) abs((int) $lid), -8), 8, '0', STR_PAD_LEFT);
 }
 
 $macros = \Components\Wiki\Models\Page::oneByPath('Help:WikiMacros', 'site', 0);
