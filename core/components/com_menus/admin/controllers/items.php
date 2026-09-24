@@ -219,7 +219,7 @@ class Items extends AdminController
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->whereEquals('a.id', (int) substr($search, 3));
+				$query->whereEquals($a . '.id', (int) substr($search, 3));
 			}
 			elseif (stripos($search, 'link:') === 0)
 			{
@@ -241,7 +241,7 @@ class Items extends AdminController
 		$parentId = $filters['parent_id'];
 		if (!empty($parentId))
 		{
-			$query->whereEquals('p.id', (int)$parentId);
+			$query->whereEquals($a . '.parent_id', (int)$parentId);
 		}
 
 		// Filter the items over the menu id if set.
@@ -583,7 +583,7 @@ class Items extends AdminController
 
 		if (App::has('menu_associations') && App::get('menu_associations') != 0)
 		{
-			if ($pk != null)
+			if (!$row->isNew())
 			{
 				$row->set('associations', MenusHelper::getAssociations($row->get('id')));
 			}
@@ -884,6 +884,12 @@ class Items extends AdminController
 	{
 		Request::checkToken();
 
+		// The toolbar only offers this to super users
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Initialise variables.
 		$model = Item::blank();
 
@@ -955,6 +961,11 @@ class Items extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// Get items to publish from the request.
 		$cid   = Request::getArray('cid', array(), '');
 		$data  = array('setDefault' => 1, 'unsetDefault' => 0);
@@ -970,14 +981,9 @@ class Items extends AdminController
 			// Make sure the item ids are integers
 			\Hubzero\Utility\Arr::toInteger($cid);
 
-			$model = Item::oneOrFail($cid);
-
-			// Publish the items.
-			if (!$model->setHome($value))
-			{
-				Notify::error($model->getError());
-			}
-			else
+			// Publish the items. setHome() takes the id list itself and
+			// reports its own errors.
+			if (Item::setHome($cid, $value))
 			{
 				if ($value == 1)
 				{
@@ -1189,7 +1195,7 @@ class Items extends AdminController
 			$model = Item::blank();
 
 			// Attempt to run the batch operation.
-			if ($model->batch($vars, $pks, $contexts))
+			if ($model->batchTask($vars, $pks, $contexts))
 			{
 				// Clear the cache
 				$this->cleanCache();
