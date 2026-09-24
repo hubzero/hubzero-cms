@@ -213,7 +213,6 @@ class Entriesv1_1 extends ApiController
 			// and an admin's list came back empty (a bare 404); test its value
 			if (!empty($searchable) && $admin)
 			{
-				return false;
 				foreach ($records as $entry)
 				{
 					$obj = new stdClass;

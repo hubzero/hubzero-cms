@@ -100,12 +100,11 @@ class Publicationsv1_1 extends ApiController
 		}
 
 
-		// $searchable is a bool set for every admin, so isset() was always true
-		// and an admin's list came back empty (a bare 404); test its value
+		// both list shapes build absolute links from it
+		$base = rtrim(Request::base(), '/');
+
 		if ($response->total && empty($searchable))
 		{
-			$base = rtrim(Request::base(), '/');
-
 			foreach ($publications as $i => $entry)
 			{
 				$obj = new stdClass;
@@ -135,7 +134,6 @@ class Publicationsv1_1 extends ApiController
 		}
 		elseif (!empty($searchable))
 		{
-			return false;
 			foreach ($publications as $i => $entry)
 			{
 				$obj = new stdClass;

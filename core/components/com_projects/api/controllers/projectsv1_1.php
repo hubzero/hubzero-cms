@@ -103,12 +103,6 @@ class Projectsv1_1 extends ApiController
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
-			// $searchable is a bool set for every admin, so isset() was always true
-			// and an admin's list came back empty (a bare 404); test its value
-			if (!empty($searchable))
-			{
-				return false;
-			}
 			foreach ($model->entries('list', $filters, $admin) as $i => $entry)
 			{
 				if (!empty($searchable))
