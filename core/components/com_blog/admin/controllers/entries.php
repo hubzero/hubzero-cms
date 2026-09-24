@@ -199,6 +199,12 @@ class Entries extends AdminController
 			$fields['publish_down'] = Date::of($fields['publish_down'], Config::get('offset'))->toSql();
 		}
 
+		// A new entry's hidden hits field posts ''; strict SQL mode rejects '' for the int column
+		if (isset($fields['hits']))
+		{
+			$fields['hits'] = (int) $fields['hits'];
+		}
+
 		// Initiate extended database class
 		$row = Entry::oneOrNew($fields['id'])->set($fields);
 
