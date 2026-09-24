@@ -151,7 +151,8 @@ class Service extends Relational
 		$sub = Subscription::blank()->getTableName();
 
 		$row = $query
-			->join($sub, $sub . '.id', $ser . '.serviceid', 'inner')
+			// serviceid is on the subscription, not the service: join sub.serviceid = service.id
+			->join($sub, $sub . '.serviceid', $ser . '.id', 'inner')
 			->whereEquals($ser . '.category', $category)
 			->whereEquals($sub . '.uid', $uid)
 			->order($sub . '.id', 'desc')
