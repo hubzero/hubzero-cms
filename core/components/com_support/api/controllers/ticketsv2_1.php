@@ -560,16 +560,18 @@ class Ticketsv2_1 extends ApiController
 	{
 		$this->requiresAuthentication();
 
-		if (!$this->acl->check('read', 'tickets'))
-		{
-			throw new Exception(Lang::txt('Not authorized'), 403);
-		}
-
 		// Initiate class and bind data to database fields
 		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
 		$ticket = Ticket::oneOrFail($ticket_id);
+
+		// The same test the site ticket page uses: agents, and the ticket's own
+		// submitter (a component-wide acl check refused submitters their own ticket)
+		if (!$ticket->access('read', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
 
 		$owner     = $ticket->assignee;
 		$submitter = $ticket->submitter;
