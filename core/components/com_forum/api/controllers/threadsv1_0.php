@@ -1075,7 +1075,7 @@ class Threadsv1_0 extends ApiController
 						$v->set('created', with(new Date($v->get('created')))->format('Y-m-d\TH:i:s\Z'));
 
 						$pt      = $v->get('parent');
-						$list    = @$children[$pt] ? $children[$pt] : array();
+						$list    = isset($children[$pt]) ? $children[$pt] : array();
 						array_push($list, $v);
 						$children[$pt] = $list;
 					}
@@ -1152,7 +1152,7 @@ class Threadsv1_0 extends ApiController
 	 */
 	private function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
-		if (@$children[$id] && $level <= $maxlevel)
+		if (!empty($children[$id]) && $level <= $maxlevel)
 		{
 			foreach ($children[$id] as $v)
 			{
