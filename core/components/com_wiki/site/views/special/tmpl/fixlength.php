@@ -8,6 +8,14 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+// This page repairs stored data as it renders (on a plain GET), so it is a
+// wiki manager's tool, not something any visitor or crawler may trigger
+if (!$this->page->access('manage'))
+{
+	echo '<p class="warning">' . Lang::txt('COM_WIKI_WARNING_NOT_AUTH') . '</p>';
+	return;
+}
+
 Pathway::append(
 	Lang::txt('COM_WIKI_SPECIAL_FIX_LENGTH'),
 	$this->page->link()
