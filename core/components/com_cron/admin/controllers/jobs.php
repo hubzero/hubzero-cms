@@ -216,7 +216,17 @@ class Jobs extends AdminController
 
 		if ($row->get('recurrence'))
 		{
-			$row->set('next_run', $row->nextRun());
+			// A bad custom expression throws here; report it the way a failed
+			// save() would instead of surfacing an error page.
+			try
+			{
+				$row->set('next_run', $row->nextRun());
+			}
+			catch (\Throwable $e)
+			{
+				Notify::error($e->getMessage());
+				return $this->editTask($row);
+			}
 		}
 
 		$p = new \Hubzero\Config\Registry(Request::getArray('params', array(), 'post'));
@@ -471,10 +481,11 @@ class Jobs extends AdminController
 		foreach ($ids as $id)
 		{
 			$row = Job::oneOrFail(intval($id));
-			$row->set('active', 0);
 
-			// Attempt to delete
-			if (!$row->save())
+			// release() clears the lock and its pid columns without going through
+			// save(), so a job whose stored recurrence no longer validates can
+			// still be deactivated.
+			if (!$row->release())
 			{
 				Notify::error($row->getError());
 				continue;
