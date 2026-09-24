@@ -42,6 +42,24 @@ class Redirect extends SiteController
         return $host;
     }
 
+    /**
+     * Is this host the hub itself (or one of its subdomains)?
+     *
+     * A substring test would also accept "hub.org.evil.example", and on
+     * PHP 8 an empty needle matches everything, so compare host names
+     * exactly, ignoring case and any port in the Host header.
+     */
+    private function isHubHost($host)
+    {
+        $hub  = !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+        $hub  = strtolower(preg_replace('/:\d+$/', '', (string) $hub));
+        $host = strtolower((string) $host);
+        if ($hub === '' || $host === '') {
+            return false;
+        }
+        return $host === $hub || substr($host, -strlen('.' . $hub)) === '.' . $hub;
+    }
+
     public function displayTask()
     {   
         $url =  Request::getString("id", ""); //base64_encode('https://www.google.com/')
@@ -81,19 +99,11 @@ class Redirect extends SiteController
         }
 
         if (!$host || !isset($host['host'])){
-            if (!empty($_SERVER['HTTP_REFERER'])) {
-                $referrer = $_SERVER['HTTP_REFERER'];
-                $refParsed = parse_url($referrer);
-                $host = isset($refParsed['host']) ? $refParsed['host'] : '';
-                $path = isset($refParsed['path']) ? $refParsed['path'] : '';
-                $url = 'https://' . $host . "/". $path . $url;
-            } else if (!empty($_SERVER['HTTP_HOST'])){
-                $url = 'https://' . $_SERVER['HTTP_HOST'] . $url;
-            } else {
-                $url = 'https://' . $url;
-            }
-            App::redirect($url);
-        } else if (strpos($host['host'], $_SERVER['HTTP_HOST']) !== false && strpos($host['host'], "proxy") === false ) {
+            // A host-less id is a hub-relative path; resolve it against the
+            // site root (gluing the Referer's path in front of it produced
+            // "https://hub//path/from/referer<id>").
+            App::redirect(Request::root() . ltrim($url, '/'));
+        } else if ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false ) {
             App::redirect($url);
         } else if (in_array($host['host'], $whitelist) !== false) {
             App::redirect($url);
