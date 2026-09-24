@@ -140,11 +140,11 @@ class SolrQueryAdapter implements QueryInterface
 	 */
 	public function getSuggestions($terms)
 	{
-		// Rewrite for easier keyboard typing
-		$config = $this->config['endpoint']['hubsearch'];
+		// The endpoint is keyed by the configured core name
+		$config = reset($this->config['endpoint']);
 
-		// Create the base URL
-		$url = rtrim(Request::Root(), '/\\');
+		// Talk to the configured Solr host, not to whatever host this request named
+		$url = 'http://' . $config['host'];
 
 		// Use the correct port
 		$url .= ':' . $config['port'];
@@ -180,7 +180,8 @@ class SolrQueryAdapter implements QueryInterface
 
 		$client = new \GuzzleHttp\Client();
 		$res = $client->get($url);
-		$resultSet = $res->json()['facet_counts']['facet_fields'];
+		$body = json_decode((string) $res->getBody(), true);
+		$resultSet = isset($body['facet_counts']['facet_fields']) ? $body['facet_counts']['facet_fields'] : array();
 
 		$suggestions = array();
 

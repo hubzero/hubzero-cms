@@ -187,7 +187,9 @@ class Blacklist extends Relational
 			->whereIn('word', $words)
 			->total();
 
-		return ($total > 1); // returns true if char belongs to class
+		// IN () matches each blacklist row once, so a password equal to one
+		// blacklisted word yields a total of exactly 1 and must fail
+		return ($total > 0);
 	}
 
 	/**

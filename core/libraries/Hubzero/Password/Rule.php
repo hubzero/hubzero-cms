@@ -675,7 +675,9 @@ class Rule extends Relational
 				continue;
 			}
 
-			if (strpos($w, $word) !== false)
+			// the name (or a part of it) inside the password, or the
+			// password inside the name
+			if (strpos($word, $w) !== false || strpos($w, $word) !== false)
 			{
 				return true;
 			}

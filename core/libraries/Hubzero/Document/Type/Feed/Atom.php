@@ -157,8 +157,9 @@ class Atom extends Renderer
 			}
 			if ($data->items[$i]->description != "")
 			{
-				$feed .= "		<summary type=\"html\">" . htmlspecialchars($data->items[$i]->description, ENT_COMPAT, 'UTF-8') . "</summary>\n";
-				$feed .= "		<content type=\"html\">" . htmlspecialchars($data->items[$i]->description, ENT_COMPAT, 'UTF-8') . "</content>\n";
+				$description = $this->_unwrapCdata((string) $data->items[$i]->description);
+				$feed .= "		<summary type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</summary>\n";
+				$feed .= "		<content type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</content>\n";
 			}
 			if (empty($data->items[$i]->category) === false)
 			{
@@ -201,6 +202,25 @@ class Atom extends Renderer
 	protected function _escapeUrl($url)
 	{
 		return htmlspecialchars((string) $url, ENT_COMPAT, 'UTF-8', false);
+	}
+
+	/**
+	 * Strip a producer-supplied CDATA wrapper
+	 *
+	 * Some producers (blog, tags, member/group blogs) hand over the description
+	 * already wrapped in CDATA for the RSS renderer; here the text is
+	 * entity-escaped, so the wrapper would appear literally.
+	 *
+	 * @param   string  $text
+	 * @return  string
+	 */
+	protected function _unwrapCdata($text)
+	{
+		if (preg_match('/^\s*<!\[CDATA\[(.*)\]\]>\s*$/s', $text, $m))
+		{
+			return $m[1];
+		}
+		return $text;
 	}
 
 	/**
