@@ -303,7 +303,7 @@ class Activity extends Table
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE id=" . $aid;
+		$query .= " WHERE id=" . (int) $aid;
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -328,7 +328,7 @@ class Activity extends Table
 			return false;
 		}
 		$query  = "UPDATE $this->_tbl SET preview =" . $this->_db->quote($preview);
-		$query .= " WHERE id=" . $aid;
+		$query .= " WHERE id=" . (int) $aid;
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -358,7 +358,7 @@ class Activity extends Table
 		}
 
 		$query  = ($permanent) ? "DELETE FROM $this->_tbl " : "UPDATE $this->_tbl SET state = 2 ";
-		$query .= " WHERE projectid=" . $projectid;
+		$query .= " WHERE projectid=" . (int) $projectid;
 
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
@@ -385,7 +385,7 @@ class Activity extends Table
 
 		$query  = " SELECT COUNT(*) FROM `#__project_activity` AS X ";
 		$query .= " LEFT JOIN #__project_owners as o ON o.projectid=X.projectid AND o.userid=" . $this->_db->quote($uid);
-		$query .= " WHERE X.projectid=" . $projectid . "
+		$query .= " WHERE X.projectid=" . (int) $projectid . "
 					AND (X.recorded >= o.lastvisit AND o.lastvisit IS NOT null
 					AND X.state != 2 AND (X.managers_only = 0
 					OR (X.managers_only=1 AND o.role=1)))";
@@ -409,7 +409,7 @@ class Activity extends Table
 		}
 
 		$query  = " SELECT COUNT(*) FROM `#__project_activity` AS X ";
-		$query .= " WHERE X.projectid=" . $projectid . "
+		$query .= " WHERE X.projectid=" . (int) $projectid . "
 				    AND X.state != 2";
 
 		$this->_db->setQuery($query);
@@ -511,7 +511,7 @@ class Activity extends Table
 				$d++;
 			}
 
-			return number_format($c/$d, 0);
+			return $d ? number_format($c / $d, 0) : 0;
 		}
 	}
 

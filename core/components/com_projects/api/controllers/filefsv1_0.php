@@ -939,6 +939,13 @@ class Filefsv1_0 extends ApiController
 	 */
 	public function getmetadataTask()
 	{
+		// Metadata is an adapter feature; this controller only serves the
+		// local repository and never loads a connection.
+		if (empty($this->ormconn))
+		{
+			throw new Exception("This action is only supported by connection adapters", 400);
+		}
+
 		$response = new stdClass;
 		$response->success = 0;
 
@@ -1027,6 +1034,13 @@ class Filefsv1_0 extends ApiController
 	 */
 	public function setmetadataTask()
 	{
+		// Metadata is an adapter feature; this controller only serves the
+		// local repository and never loads a connection.
+		if (empty($this->ormconn))
+		{
+			throw new Exception("This action is only supported by connection adapters", 400);
+		}
+
 		$response = new stdClass;
 		$response->success = 0;
 

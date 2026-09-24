@@ -169,7 +169,7 @@ class Projectsv2_0 extends ApiController
 					$obj->inSetup       = $entry->inSetup();
 					$obj->owner         = $entry->owner()->get('name');
 					$obj->created       = $entry->get('created');
-					//$obj->userRole      = $entry->member()->role;
+					$obj->userRole      = (int) $entry->member()->get('role');
 					$obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
 					$obj->privacy       = $entry->get('private');
 					$obj->access        = $entry->get('access');
@@ -451,6 +451,16 @@ class Projectsv2_0 extends ApiController
 				throw new Exception(Lang::txt('COM_PROJECTS_ERROR_GROUP_NOT_FOUND'), 409);
 			}
 
+			// A project can only be filed under a group the caller belongs to
+			// (as the site setup does); with sync_group the whole group
+			// becomes managers, so this cannot be an arbitrary gid.
+			if (!User::authorise('core.manage', $this->_option)
+			 && !$group->is_member_of('members', User::get('id'))
+			 && !$group->is_member_of('managers', User::get('id')))
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
+			}
+
 			$row->set('sync_group', Request::getInt('sync_group', 0, 'post'));
 		}
 
@@ -468,7 +478,7 @@ class Projectsv2_0 extends ApiController
 			}
 
 			// Save params
-			$row->param->set('restricted_data', $restricted);
+			$row->params->set('restricted_data', $restricted);
 		}
 
 		// Restricted data with specific questions
@@ -921,6 +931,7 @@ class Projectsv2_0 extends ApiController
 		// Content collaborators (edit_description) may only change the title and
 		// description; ownership, state, privacy and alias are manager/owner only.
 		$isManager = ($row->access('owner') || $row->access('manager'));
+		$oldGroup  = (int) $row->get('owned_by_group');
 
 		$fields = array(
 			'title'          => Request::getString('title', $row->get('title')),
@@ -975,6 +986,16 @@ class Projectsv2_0 extends ApiController
 			if (!$group || !$group->get('gidNumber'))
 			{
 				throw new Exception(Lang::txt('COM_PROJECTS_ERROR_GROUP_NOT_FOUND'), 409);
+			}
+
+			// Moving the project to a new group needs membership in that
+			// group (as the site setup does); an existing group owner is kept
+			if ((int) $row->get('owned_by_group') != $oldGroup
+			 && !User::authorise('core.manage', $this->_option)
+			 && !$group->is_member_of('members', User::get('id'))
+			 && !$group->is_member_of('managers', User::get('id')))
+			{
+				throw new Exception(Lang::txt('COM_PROJECTS_ALERTNOTAUTH_GROUP'), 403);
 			}
 
 			$row->set('sync_group', Request::getInt('sync_group', $row->get('sync_group')));

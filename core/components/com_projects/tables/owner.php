@@ -351,7 +351,8 @@ class Owner extends Table
 				$names .= htmlspecialchars($name);
 				if ($show_uid)
 				{
-					$names .= ' (' . (int) $entry->userid . ')';
+					// userid is the 'invited' marker for pending invites (see the select above)
+					$names .= ' (' . (is_numeric($entry->userid) ? (int) $entry->userid : htmlspecialchars((string) $entry->userid)) . ')';
 				}
 				elseif ($withUsername)
 				{
@@ -1110,7 +1111,7 @@ class Owner extends Table
 			if ($found === null)
 			{
 				// User not in project
-				$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT $projectid, $userid, $groupid , '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
+				$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT " . (int) $projectid . ", " . (int) $userid . ", " . (int) $groupid . ", " . $this->_db->quote($now) . ", " . (int) $status . ", " . (int) $native . ", " . (int) $role . ", " . $this->_db->quote($invited_email) . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = " . (int) $projectid . " AND `userid` = " . (int) $userid . " LIMIT 1)";
 				$this->_db->setQuery($query);
 				if ($this->_db->query())
 				{
@@ -1164,7 +1165,7 @@ class Owner extends Table
 					if ($found === null)
 					{
 						// User not in project
-						$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT $projectid, $owner, $gidNumber, '$now', $status, $native, $role, '$invited_email' FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = $projectid AND `userid` = $userid LIMIT 1)";
+						$query  = "INSERT INTO $this->_tbl (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT " . (int) $projectid . ", " . (int) $owner . ", " . (int) $gidNumber . ", " . $this->_db->quote($now) . ", " . (int) $status . ", " . (int) $native . ", " . (int) $role . ", " . $this->_db->quote($invited_email) . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->_tbl WHERE `projectid` = " . (int) $projectid . " AND `userid` = " . (int) $owner . " LIMIT 1)";
 						$this->_db->setQuery($query);
 						if ($this->_db->query())
 						{
@@ -1193,10 +1194,10 @@ class Owner extends Table
 						{
 							// Upgrade role (e.g., group member promoted to group manager)
 							$query  = "UPDATE $this->_tbl"
-								. " set role=" . $role
-								. " WHERE groupid=" . $gidNumber
-								. " AND projectid=" . $projectid
-								. " AND userid=" . $owner . ";";
+								. " set role=" . (int) $role
+								. " WHERE groupid=" . (int) $gidNumber
+								. " AND projectid=" . (int) $projectid
+								. " AND userid=" . (int) $owner . ";";
 							$this->_db->setQuery($query);
 							if ($this->_db->query())
 							{

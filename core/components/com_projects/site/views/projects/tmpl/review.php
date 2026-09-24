@@ -68,7 +68,7 @@ if ($this->getError()) {
 		<div class="pinfo">
 			<p class="info_title">
 			<?php echo $this->escape($this->model->get('title')); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
-			<p class="info_title"><span><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
+			<p class="info_title"><span><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->escape($this->model->creator('name')); ?></span></p>
 		</div>
 	</div>
 

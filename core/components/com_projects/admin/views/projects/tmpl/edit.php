@@ -23,7 +23,8 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-Toolbar::title(Lang::txt('Projects') . ': ' . stripslashes($this->model->get('title')) . ' (' . $this->model->get('alias') . ', #' . $this->model->get('id') . ')', 'projects');
+// Toolbar::title() writes the string into the page heading as-is
+Toolbar::title(Lang::txt('Projects') . ': ' . $this->escape(stripslashes($this->model->get('title'))) . ' (' . $this->escape($this->model->get('alias')) . ', #' . (int) $this->model->get('id') . ')', 'projects');
 
 if (User::authorise('core.edit', $this->option))
 {

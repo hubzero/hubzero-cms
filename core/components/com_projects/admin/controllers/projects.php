@@ -1001,7 +1001,9 @@ class Projects extends AdminController
 		{
 			// Delete base dir for .git repos
 			$dir     = $alias;
-			$prefix  = $this->config->get('offroot', 0) ? '' : PATH_CORE;
+			// The repo lives under PATH_APP when not off-root (see gitaddTask
+			// and Helpers\Html::getProjectRepoPath)
+			$prefix  = $this->config->get('offroot', 0) ? '' : PATH_APP;
 			$repodir = DS . trim($this->config->get('webpath'), DS);
 			$path    = $prefix . $repodir . DS . $dir;
 

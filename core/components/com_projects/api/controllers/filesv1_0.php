@@ -820,6 +820,9 @@ class Filesv1_0 extends ApiController
 	 */
 	public function chunkedUploadTask()
 	{
+		$response = new stdClass;
+		$result   = false;
+		$flowChunkNumber = $flowTotalChunks = 0;
 
 		// Check if request is GET and the requested chunk exists or not.
 		if (Request::getMethod() === 'GET')
@@ -919,23 +922,17 @@ class Filesv1_0 extends ApiController
 
 		if ($result)
 		{
-			$file  = Entity::fromPath($subdir . DS . $_FILES["file"]["name"], $this->ormconn->adapter());
-			if ($file->exists())
-			{
-				$updateType = 'updated';
-			}
-			$file->contents = file_get_contents($_FILES["file"]["tmp_name"]);
-			$file->size = (int) $_FILES["file"]["size"];
-			if ($file->save())
-			{
-				$parsedResults = array();
+			// createFileFromChunks() has already assembled and saved the file
+			// (and the last chunk's tmp_name is gone), so only report it
+			$file = Entity::fromPath(trim($subdir, DS) . DS . $flowFilename, $this->ormconn->adapter());
 
-				// Get metadata
-				$parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
+			$parsedResults = array();
 
-				$response->results = $parsedResults;
-				$this->send($response);
-			}
+			// Get metadata
+			$parsedResults[] = $this->ormconn->adapter()->getMetadata($file->getPath());
+
+			$response->results = $parsedResults;
+			$this->send($response);
 		}
 		else
 		{

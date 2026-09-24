@@ -53,7 +53,7 @@ class Media extends Base
 		{
 			$stream = true;
 			$file = $_GET['qqfile'];
-			$size = (int) $_SERVER["CONTENT_LENGTH"];
+			$size = (int) ($_SERVER["CONTENT_LENGTH"] ?? 0);
 		}
 		elseif (isset($_FILES['qqfile']))
 		{
@@ -83,7 +83,7 @@ class Media extends Base
 		//check to make sure we have an allowable extension
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
-		$ext      = $pathinfo['extension'];
+		$ext      = $pathinfo['extension'] ?? '';
 		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);

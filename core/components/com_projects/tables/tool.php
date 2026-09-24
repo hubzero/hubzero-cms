@@ -85,7 +85,7 @@ class Tool extends Table
 	{
 		// get and set record filter
 		$filter   = ($admin) ? " WHERE f.id!=0 ": " WHERE f.status !=2 ";
-		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
+		$project  = isset($filters['project']) && intval($filters['project']) ? (int) $filters['project'] : "";
 		$dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
 		$projects = isset($filters['projects']) && !empty($filters['projects'])
 					? $filters['projects'] : array();
@@ -130,7 +130,7 @@ class Tool extends Table
 			$tquery = '';
 			foreach ($projects as $project)
 			{
-				$tquery .= "'" . $project . "',";
+				$tquery .= "'" . (int) $project . "',";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$filter .= $tquery . ") ";
@@ -138,7 +138,7 @@ class Tool extends Table
 
 		// Sorting
 		$sort = '';
-		$sortdir = isset($filters['sortdir']) ? $filters['sortdir'] : 'ASC';
+		$sortdir = (isset($filters['sortdir']) && strtoupper($filters['sortdir']) == 'DESC') ? 'DESC' : 'ASC';
 		$sortby = (isset($filters['sortby'])) ? $filters['sortby'] : '';
 
 		switch ($sortby)
@@ -241,7 +241,7 @@ class Tool extends Table
 		$sql .= " FROM " . $this->buildQuery($filters, $admin);
 		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			$sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			$sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($sql);
@@ -312,7 +312,7 @@ class Tool extends Table
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT id FROM `#__project_tool` WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE name=" . $this->_db->quote($name) . " LIMIT 1");
 		return $this->_db->loadResult();
 	}
 

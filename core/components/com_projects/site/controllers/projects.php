@@ -73,7 +73,7 @@ class Projects extends Base
 		);
 
 		// Get records
-		$rows = $this->model->entries('list', $this->view->filters, false);
+		$rows = $this->model->entries('list', $filters, false);
 
 		// Output search results in JSON format
 		$json = array();
@@ -1067,7 +1067,7 @@ class Projects extends Base
 				? Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_PERMISSION')
 				: Lang::txt('COM_PROJECTS_FILES_ERROR_CONNECT_NOW');
 			$this->_setNotification($error, 'error');
-			$return = $json->return;
+			$return = isset($json->return) ? $json->return : '';
 		}
 
 		// Only redirect to an internal location

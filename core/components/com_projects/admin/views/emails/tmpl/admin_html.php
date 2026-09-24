@@ -118,7 +118,7 @@ else
 						<?php if ($owner) { ?>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Owner:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $owner; ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($owner); ?></td>
 						</tr>
 						<?php } ?>
 						<tr>

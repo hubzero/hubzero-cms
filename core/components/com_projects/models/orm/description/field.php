@@ -274,7 +274,7 @@ class Field extends Relational
 		$xml[] = '<fieldset name="basic">';
 		foreach ($fields as $field)
 		{
-			$f  = '<field type="' . $field->get('type') . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
+			$f  = '<field type="' . htmlspecialchars((string) $field->get('type'), ENT_COMPAT) . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
 			$f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
 			$f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
@@ -287,7 +287,7 @@ class Field extends Relational
 			$xml[] = $f;
 			foreach ($field->options as $option)
 			{
-				$xml[] = '<option value="' . $option->get('value') . '">' . $option->get('label') . '</option>';
+				$xml[] = '<option value="' . htmlspecialchars((string) $option->get('value'), ENT_COMPAT) . '">' . htmlspecialchars((string) $option->get('label'), ENT_COMPAT) . '</option>';
 			}
 			$xml[] = '</field>';
 		}

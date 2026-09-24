@@ -136,7 +136,8 @@ class Git extends Models\Adapter
 		// Apply the filter early, reduces iterations through foreach()
 		if (isset($filter) && $filter != '')
 		{
-			$files = preg_grep("(" . $filter . ")", $files);
+			// The filter is a search string typed by the user, not a pattern
+			$files = preg_grep("/" . preg_quote($filter, "/") . "/i", $files);
 		}
 
 		// Go through items and get what we need

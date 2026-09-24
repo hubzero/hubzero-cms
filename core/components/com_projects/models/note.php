@@ -184,7 +184,7 @@ class Note extends \Components\Wiki\Models\Book
 				  AND p.state!=2
 				  ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $orderby) ?: '1') . " ";
 
-		$query .= intval($limit) ? " LIMIT $limit" : '';
+		$query .= intval($limit) ? " LIMIT " . (int) $limit : '';
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

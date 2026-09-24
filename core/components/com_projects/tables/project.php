@@ -349,7 +349,7 @@ class Project extends Table
 			$tquery = '';
 			foreach ($filters['exclude'] as $ex)
 			{
-				$tquery .= "'" . $ex . "',";
+				$tquery .= $this->_db->quote($ex) . ",";
 			}
 			$tquery = substr($tquery, 0, strlen($tquery) - 1);
 			$query .= $tquery . ") ";
@@ -368,7 +368,7 @@ class Project extends Table
 
 		if (isset($filters['created']))
 		{
-			$query .= " AND p.created LIKE '" . $filters['created'] . "%' ";
+			$query .= " AND p.created LIKE " . $this->_db->quote($filters['created'] . '%') . " ";
 		}
 		if (isset($filters['setup']) && $filters['setup'])
 		{
@@ -593,26 +593,26 @@ class Project extends Table
 		{
 			if ($filters['filterby'] == 'archived')
 			{
-				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . $groupid;
+				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
 			}
 			else if ($filters['filterby'] == 'active')
 			{
-				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . $groupid;
+				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . (int) $groupid;
 			}
 		}
 		else
 		{
-			$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . $groupid;
+			$query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . (int) $groupid;
 		}
 
 		$filters['which'] = isset($filters['which']) ? $filters['which'] : '';
 		if ($filters['which'] == 'owned')
 		{
-			$query .= " AND p.owned_by_group = '$groupid' ";
+			$query .= " AND p.owned_by_group = " . (int) $groupid . " ";
 		}
 		else if ($filters['which'] == 'other')
 		{
-			$query .= " AND p.owned_by_group != '$groupid' ";
+			$query .= " AND p.owned_by_group != " . (int) $groupid . " ";
 		}
 
 		/*$query .= $uid
@@ -683,7 +683,7 @@ class Project extends Table
 					? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2)) "
 					: "AND p.state !=2 ";
 			$query .= $include_provisioned ? "" : " AND p.provisioned=0";
-			$query .= " AND o.userid=" . $uid;
+			$query .= " AND o.userid=" . (int) $uid;
 			$this->_db->setQuery($query);
 			$result = $this->_db->loadObjectList();
 			if ($result)
@@ -718,7 +718,7 @@ class Project extends Table
 			$query .= " FROM #__project_owners as po, $this->_tbl AS p";
 			$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id
 						AND o.userid=" . $this->_db->quote($uid) . " AND o.userid != 0  ";
-			$query .= " WHERE p.id=po.projectid AND po.status=1 AND po.groupid=" . $groupid;
+			$query .= " WHERE p.id=po.projectid AND po.status=1 AND po.groupid=" . (int) $groupid;
 			$query .= $active == 1
 					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->_db->quote($uid) . " AND p.state !=2))  "
 					: " AND p.state !=2 ";
@@ -735,11 +735,11 @@ class Project extends Table
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 			if ($active)
 			{
-				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . $groupid;
+				$query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . (int) $groupid;
 			}
 			else
 			{
-				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . $groupid;
+				$query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
 			}
 
 			$this->_db->setQuery($query);
@@ -818,7 +818,7 @@ class Project extends Table
 
 		if (intval($pubid) > 0)
 		{
-			$query .= " pu.id=" . $pubid;
+			$query .= " pu.id=" . (int) $pubid;
 		}
 		else
 		{

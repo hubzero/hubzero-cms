@@ -1312,6 +1312,12 @@ class Setup extends Base
 			
 			$resultObj = json_decode($result);
 			
+			if (!$resultObj || empty($resultObj->items))
+			{
+				curl_close($ch);
+				return $agencies;
+			}
+
 			foreach ($resultObj->items as $orgObj)
 			{
 				foreach ($orgObj->names as $nameObj)
@@ -1369,6 +1375,12 @@ class Setup extends Base
 			
 			$resultObj = json_decode($result);
 			
+			if (!$resultObj || empty($resultObj->items))
+			{
+				curl_close($ch);
+				return false;
+			}
+
 			foreach ($resultObj->items as $orgObj)
 			{
 				foreach ($orgObj->names as $nameObj)
