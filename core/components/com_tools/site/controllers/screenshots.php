@@ -152,7 +152,7 @@ class Screenshots extends SiteController
 		}
 
 		// Incoming child ID
-		$this->view->file = Request::getString('filename', '');
+		$this->view->file = basename(str_replace('\\', '/', (string) Request::getString('filename', '')));
 		if (!$this->view->file)
 		{
 			$this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
@@ -791,6 +791,14 @@ class Screenshots extends SiteController
 		}
 		// Get resource information
 		$resource = Entry::oneOrFail($rid);
+
+		// Dev-version screenshots are only shown inside the tool pipeline,
+		// so the list is limited to the tool's dev team like the other tasks.
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		if (!$this->_checkAccess($obj->getToolIdFromResource($rid)))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
 
 		// Get version id
 		$objV = new \Components\Tools\Tables\Version($this->database);

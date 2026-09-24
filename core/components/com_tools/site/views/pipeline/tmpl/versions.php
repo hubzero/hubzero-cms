@@ -41,7 +41,7 @@ $this->css('pipeline.css')
 	<div class="grid">
 		<div class="col span-half">
 			<?php if ($this->error) { ?>
-				<p class="error"><?php echo $this->error; ?></p>
+				<p class="error"><?php echo $this->escape($this->error); ?></p>
 			<?php } ?>
 
 			<?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
@@ -53,7 +53,7 @@ $this->css('pipeline.css')
 					<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
 						<fieldset class="versionfield">
 							<label for="newversion"><?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>: </label>
-							<input type="text" name="newversion" id="newversion" value="<?php echo $this->status['version']; ?>" size="20" maxlength="15" />
+							<input type="text" name="newversion" id="newversion" value="<?php echo $this->escape($this->status['version']); ?>" size="20" maxlength="15" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="saveversion" />
@@ -113,7 +113,7 @@ $this->css('pipeline.css')
 							<span class="showcontrols">
 								<a href="#confdiv_<?php echo $i; ?>" class="expand" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
 							</span>
-							<?php echo ($t->version) ? $t->version : Lang::txt('COM_TOOLS_NA'); ?>
+							<?php echo ($t->version) ? $this->escape($t->version) : Lang::txt('COM_TOOLS_NA'); ?>
 						</td>
 						<td>
 							<?php if ($t->state != 3) { ?>
@@ -146,7 +146,7 @@ $this->css('pipeline.css')
 						<td colspan="4" id="conftdtwo_<?php echo $i; ?>">
 							<div id="confdiv_<?php echo $i; ?>" class="vmanage">
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $this->escape($t->title); ?></span></p>
-								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $t->description; ?></span></p>
+								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $this->escape($t->description); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
 								<p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>

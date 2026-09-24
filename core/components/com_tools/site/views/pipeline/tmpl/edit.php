@@ -79,8 +79,8 @@ $this->css('pipeline.css')
 					<label for="t_toolname">
 						<?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
 						<?php if ($this->id) { ?>
-							<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->defaults['toolname']; ?>" />
-							<strong><?php echo $this->defaults['toolname']; ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
+							<input type="hidden" name="tool[toolname]" id="t_toolname" value="<?php echo $this->escape($this->defaults['toolname']); ?>" />
+							<strong><?php echo $this->escape($this->defaults['toolname']); ?> (<?php echo ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION'); ?>)</strong>
 							<?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
 								<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_ALL_VERSIONS'); ?></a>
 							<?php } ?>
@@ -105,7 +105,7 @@ $this->css('pipeline.css')
 						<?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
 						<?php if ($this->editversion == 'current') { ?>
 							<input type="hidden" name="tool[version]" id="t_version" value="<?php echo $this->escape($this->defaults['version']); ?>" />
-							<strong><?php echo $this->defaults['version']; ?></strong>
+							<strong><?php echo $this->escape($this->defaults['version']); ?></strong>
 							<span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
 						<?php } else { ?>
 							<input type="text" name="tool[version]" id="t_version" maxlength="15" class="form-control" value="<?php echo $this->escape($this->defaults['version']); ?>" />
@@ -134,8 +134,8 @@ $this->css('pipeline.css')
 					<legend><?php echo ($this->id) ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE'): Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE')  ?>:</legend>
 					<div class="form-group">
 						<div class="inline">
-							<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryX']; ?>" /></label> x
-							<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control" value="<?php echo $this->defaults['vncGeometryY']; ?>" /></label>
+							<label for="vncGeometryX"><?php echo Lang::txt('COM_TOOLS_MARKER_WIDTH'); ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control" value="<?php echo $this->escape($this->defaults['vncGeometryX']); ?>" /></label> x
+							<label for="vncGeometryY"><?php echo Lang::txt('COM_TOOLS_MARKER_HEIGHT'); ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control" value="<?php echo $this->escape($this->defaults['vncGeometryY']); ?>" /></label>
 						</div>
 					</div>
 					<p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VNC'); ?></p>
@@ -197,7 +197,7 @@ $this->css('pipeline.css')
 						<legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
 						<label for="github">
 							<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>: 
-							<input readonly type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+							<input readonly type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE'); ?>" value="<?php echo $this->escape($this->defaults['github']); ?>" />
 						</label>
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 							<p class="hint"><?php echo Lang::txt('COM_TOOLS_EDIT_URL_GITPUBPRIV'); ?></p>
@@ -275,7 +275,7 @@ $this->css('pipeline.css')
 						<legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
 						<label for="github">
 							<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE'); ?>" value="<?php echo $this->defaults['github']; ?>" />
+							<input type="text" name="tool[github]" id="github" placeholder="<?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE'); ?>" value="<?php echo $this->escape($this->defaults['github']); ?>" />
 						</label>
 						<?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
 							<p class="hint"><?php echo Lang::txt('COM_TOOLS_EDIT_URL_GITPUBPRIV'); ?></p>

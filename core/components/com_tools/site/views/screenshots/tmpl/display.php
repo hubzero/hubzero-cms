@@ -89,8 +89,9 @@ if ($images)
 			{
 				if ($si->filename == $ima)
 				{
-					$new['title'] = stripslashes($si->title);
-					$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
+					// Escape before the quote swap so a stray quote cannot end the attribute
+					$new['title'] = $this->escape(stripslashes($si->title));
+					$new['title'] = preg_replace('/&quot;((.)*?)&quot;/i', "&#147;\\1&#148;", $new['title']);
 					$new['ordering'] = $si->ordering;
 				}
 			}
@@ -138,7 +139,7 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		else
 		{
 			$k++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title']: Lang::txt('COM_TOOLS_SCREENSHOT').' #'.$k;
+			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : Lang::txt('COM_TOOLS_SCREENSHOT').' #'.$k;
 			$els .= '<li>';
 				$els .= '<span class="dev_ss">';
 					$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="icon-edit edit popup" rel="external">'.Lang::txt('COM_TOOLS_EDIT').'</a>';

@@ -593,7 +593,7 @@ class Sessions extends SiteController
 
 				foreach ($this->getErrors() as $error)
 				{
-					$view->setError($error);
+					$this->view->setError($error);
 				}
 
 				$this->view->display();
@@ -873,7 +873,7 @@ class Sessions extends SiteController
 		$row = $ms->checkSession($sess, User::get('username'));
 
 		// Ensure we found an active session
-		if (!$row->sesstoken)
+		if (!$row || !$row->sesstoken)
 		{
 			App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
 			return;
@@ -1477,7 +1477,13 @@ class Sessions extends SiteController
 		$sess = Request::getInt('sess', 0);
 		$rtrn = base64_decode(Request::getString('return', '', 'method', 'base64'));
 
-		$rediect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
+		// Only go back to a page on this hub
+		if ($rtrn && !\Hubzero\Utility\Uri::isInternal($rtrn))
+		{
+			$rtrn = '';
+		}
+
+		$redirect = $this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount');
 
 		// Ensure we have a session
 		if (!$sess)
@@ -1505,7 +1511,7 @@ class Sessions extends SiteController
 		if (!$ms->username)
 		{
 			App::redirect(
-				Route::url($rediect)
+				Route::url($redirect)
 			);
 			return;
 		}
@@ -1557,7 +1563,7 @@ class Sessions extends SiteController
 		else
 		{
 			App::redirect(
-				Route::url($rediect)
+				Route::url($redirect)
 			);
 		}
 	}

@@ -164,7 +164,7 @@ class Session extends Table
 		$a = "";
 		if ($appname)
 		{
-			$a = "AND s.appname='$appname'";
+			$a = "AND s.appname=" . $this->_db->quote($appname);
 		}
 
 		$mv = new Viewperm($this->_db);
@@ -254,7 +254,7 @@ class Session extends Table
 			AND s.sessnum=" . $this->_db->quote($sess);
 
 		$this->_db->setQuery($query);
-		return $mwdb->loadResult();
+		return $this->_db->loadResult();
 	}
 
 	/**
