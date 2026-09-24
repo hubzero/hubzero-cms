@@ -19,7 +19,8 @@ $apcu = $this->apcu;
 $apcuMem = $this->apcuMem;
 ?>
 
-<?php echo $this->loadTemplate('_submenu'); ?>
+<?php // loadTemplate('_submenu') looked for display__submenu.php and 404'd the page; render the sibling _submenu layout
+$this->view('_submenu')->display(); ?>
 
 <div class="grid">
     <div class="col span6">

@@ -21,7 +21,8 @@ if ($apcu) {
 }
 ?>
 
-<?php echo $this->loadTemplate('_submenu'); ?>
+<?php // loadTemplate('_submenu') looked for display__submenu.php and 404'd the page; render the sibling _submenu layout
+$this->view('_submenu')->display(); ?>
 
 <?php if (!$apcu) : ?>
     <p class="warning">
