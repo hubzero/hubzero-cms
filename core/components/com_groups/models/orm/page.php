@@ -89,7 +89,8 @@ class Page extends Relational
 	 */
 	public function automaticLft($data)
 	{
-		if (!$data['parent'])
+		// save paths bind an allowlist, so parent/lft may be absent
+		if (empty($data['parent']) || !isset($data['lft']))
 		{
 			$data['lft'] = 0;
 		}
