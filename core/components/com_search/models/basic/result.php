@@ -10,6 +10,9 @@ namespace Components\Search\Models\Basic;
 /**
  * Abstract search result
  */
+// Results carry per-plugin fields (link, sql, *_highlighted, ...) set as
+// dynamic properties by the plugins and the highlighter
+#[\AllowDynamicProperties]
 abstract class Result
 {
 	/**
@@ -472,7 +475,7 @@ abstract class Result
 	 */
 	public function set_plugin($plg, $skip_cleanup = false)
 	{
-		$this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', $plg));
+		$this->plugin = $skip_cleanup ? $plg : strtolower(preg_replace('/^plgSearch/i', '', (string) $plg));
 		foreach ($this->children as $child)
 		{
 			$child->set_plugin($this->plugin, true);

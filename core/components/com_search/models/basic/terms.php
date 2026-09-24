@@ -71,7 +71,8 @@ class Terms extends Obj
 	 */
 	public function __construct($raw)
 	{
-		$this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', $raw));
+		// The search page builds this with no terms (null) on a bare visit
+		$this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', (string) $raw));
 		if ($this->is_set())
 		{
 			$this->parse_searchable_chunks();
@@ -121,7 +122,8 @@ class Terms extends Obj
 	 */
 	public function get_section()
 	{
-		return $this->section;
+		// Callers unpack [plugin, section]; "blogs:fossil" names only the plugin
+		return is_array($this->section) ? array_pad($this->section, 2, null) : $this->section;
 	}
 
 	/**
