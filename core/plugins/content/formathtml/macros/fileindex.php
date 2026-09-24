@@ -71,17 +71,18 @@ class FileIndex extends Macro
 				$link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
 				$fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
 
-				$html .= '<li><a href="' . \Route::url($link) . '">' . $row->filename . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+				// Filename, uploader name and description are stored free text
+				$html .= '<li><a href="' . \Route::url($link) . '">' . htmlspecialchars((string) $row->filename, ENT_QUOTES, 'UTF-8') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
 				$huser = \User::getInstance($row->created_by);
 				if ($huser->get('id'))
 				{
-					$html .= '- added by <a href="' . \Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . stripslashes($huser->get('name')) . '</a> ';
+					$html .= '- added by <a href="' . \Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . htmlspecialchars((string) stripslashes($huser->get('name')), ENT_QUOTES, 'UTF-8') . '</a> ';
 				}
 				if ($row->created && $row->created != '0000-00-00 00:00:00')
 				{
 					$html .= \Date::of($row->created)->relative() . '. ';
 				}
-				$html .= ($row->description) ? '<span>"' . stripslashes($row->description) . '"</span>' : '';
+				$html .= ($row->description) ? '<span>"' . htmlspecialchars((string) stripslashes($row->description), ENT_QUOTES, 'UTF-8') . '"</span>' : '';
 				$html .= '</li>' . "\n";
 			}
 			$html .= '</ul>';

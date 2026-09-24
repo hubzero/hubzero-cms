@@ -123,19 +123,24 @@ class Feed extends Macro
 		// Var to hold html
 		$html = '<div class="feed ' . $class . '">';
 
+		// Macro output is spliced in after the page purifier has run, so the
+		// parser's own blocklist sanitiser is all that would stand between
+		// the remote feed and the page. Purify each piece here and only link
+		// to http(s) targets.
+
 		// Display title
 		$title = $feed->get_title();
-		$link  = $feed->get_permalink();
+		$link  = $this->_safeLink($feed->get_permalink());
 		if ($title)
 		{
-			$html .= '<h3><a rel="external" href="' . $link . '">' . $title . '</a></h3>';
+			$html .= '<h3><a rel="external" href="' . $link . '">' . \Hubzero\Utility\Sanitize::html($title) . '</a></h3>';
 		}
 
 		// Display description
 		$desc = $feed->get_description();
 		if ($desc)
 		{
-			$html .= '<p>' . $desc . '</p>';
+			$html .= '<p>' . \Hubzero\Utility\Sanitize::html($desc) . '</p>';
 		}
 
 		// Add each item
@@ -159,11 +164,27 @@ class Feed extends Macro
 	private function _renderItem($item)
 	{
 		$html  = '<div class="item">';
-		$html .= '<h4>' . $item->get_title() . '</h4>';
-		$html .= '<p>' . $item->get_description() . '</p>';
-		$html .= '<a rel="external" href="' . $item->get_permalink() . '">Read More &rsaquo;</a>';
+		$html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->get_title()) . '</h4>';
+		$html .= '<p>' . \Hubzero\Utility\Sanitize::html((string) $item->get_description()) . '</p>';
+		$html .= '<a rel="external" href="' . $this->_safeLink($item->get_permalink()) . '">Read More &rsaquo;</a>';
 		$html .= '</div>';
 		return $html;
+	}
+
+	/**
+	 * Escape a feed link for an href, keeping only http(s) targets
+	 *
+	 * @param   string  $url
+	 * @return  string
+	 */
+	private function _safeLink($url)
+	{
+		$url = trim((string) $url);
+		if (!preg_match('#^https?://#i', $url))
+		{
+			return '';
+		}
+		return htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -215,14 +236,24 @@ class Feed extends Macro
 		// the request root's host, which is derived from the configured site URL
 		// when there is one. Config first, so a caller-supplied Host header
 		// cannot nominate the exception on a hub that has set live_site.
-		$own = (string) parse_url((string) \Config::get('live_site'), PHP_URL_HOST);
+		$ownUrl = (string) \Config::get('live_site');
 
-		if ($own === '')
+		if (parse_url($ownUrl, PHP_URL_HOST) === null)
 		{
-			$own = (string) parse_url((string) \Request::root(), PHP_URL_HOST);
+			$ownUrl = (string) \Request::root();
 		}
 
-		if ($own !== '' && strcasecmp($host, $own) === 0)
+		$own     = (string) parse_url($ownUrl, PHP_URL_HOST);
+		$ownPort = (int) parse_url($ownUrl, PHP_URL_PORT);
+		$port    = (int) (isset($parts['port']) ? $parts['port'] : 0);
+
+		// The exemption names the hub's web front end only: its host name (an
+		// address literal is never the hub's name, and the Host header could
+		// nominate one) on the standard ports or the configured one. Any other
+		// port on the hub's own name is some other listener on the box.
+		if ($own !== '' && strcasecmp($host, $own) === 0
+		 && !filter_var($host, FILTER_VALIDATE_IP)
+		 && (!$port || in_array($port, array(80, 443, $ownPort), true)))
 		{
 			return true;
 		}

@@ -240,22 +240,22 @@ class Video extends Macro
 
 			$html  = '<div class="hz-video" style="max-width:' . htmlspecialchars($cssWidth, ENT_QUOTES, 'UTF-8') . '"' . $transcript . '>';
 			// `controls` is a no-JS fallback; the player removes it once enhanced
-			$html .= '<video width="' . $width . '" height="' . $height . '" preload="metadata" playsinline controls>';
+			$html .= '<video width="' . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8') . '" height="' . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8') . '" preload="metadata" playsinline controls>';
 			switch ($ext)
 			{
 				case 'mov':
 				case 'mp4':
 				case 'm4v':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/mp4" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
 				break;
 
 				case 'ogg':
 				case 'ogv':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/ogg" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
 				break;
 
 				case 'webm':
-					$html .= '<source src="' . $this->_link($url) . '" type="video/webm" />';
+					$html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
 				break;
 			}
 
@@ -264,7 +264,7 @@ class Video extends Macro
 			{
 				$capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '') ? $this->attr['captionlang'] : 'en';
 				$capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '') ? $this->attr['captionlabel'] : 'Captions';
-				$html .= '<track kind="captions" src="' . $this->_link($this->attr['captions']) . '"'
+				$html .= '<track kind="captions" src="' . htmlspecialchars((string) $this->_link($this->attr['captions']), ENT_QUOTES, 'UTF-8') . '"'
 					. ' srclang="' . htmlspecialchars($capLang, ENT_QUOTES, 'UTF-8') . '"'
 					. ' label="' . htmlspecialchars($capLabel, ENT_QUOTES, 'UTF-8') . '" default />';
 			}
@@ -296,7 +296,13 @@ class Video extends Macro
 					}
 				}
 			}
-			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $video_url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title) . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			// The macro argument is raw wiki source; only an http(s) URL may be
+			// framed, and every attribute value is escaped.
+			if (!preg_match('#^https?://#i', $video_url))
+			{
+				return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not a valid video URL)';
+			}
+			$html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . htmlspecialchars((string) $video_url, ENT_QUOTES, 'UTF-8') . '" width="' . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8') . '" height="' . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8') . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 		}
 
 		// Return the emdeded youtube video

@@ -258,6 +258,16 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 
 			if ($val)
 			{
+				// Only http(s)/mailto/ftp URLs or site-relative paths may replace the
+				// link target; any other scheme (javascript:, data:, ...) falls
+				// back to the image's own link.
+				if (preg_match('/^\s*([a-z][a-z0-9+.\-]*):/i', $val, $m)
+				 && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp')))
+				{
+					$this->attr['href'] = '';
+					return;
+				}
+
 				$this->attr['href'] = $val;
 
 				$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
@@ -501,7 +511,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$k = strtolower($k);
 			if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
 			{
-				$attribs[] = $k . '="' . trim($v, '"') . '"';
+				$attribs[] = $k . '="' . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false) . '"';
 			}
 		}
 
@@ -518,11 +528,12 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 			$attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-			$html .= '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
+			$html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
 		}
 		if (isset($attr['desc']) && $attr['desc'])
 		{
-			$html .= '<span class="figcaption">' . $attr['desc'] . '</span>';
+			// The attachment description is free text entered by the uploader
+			$html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
 		}
 		$html .= '</span>';
 

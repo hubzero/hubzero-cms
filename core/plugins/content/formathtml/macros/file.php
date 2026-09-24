@@ -240,6 +240,16 @@ class File extends Macro
 
 			if ($val)
 			{
+				// Only http(s)/mailto/ftp URLs or site-relative paths may replace the
+				// link target; any other scheme (javascript:, data:, ...) falls
+				// back to the file's own link.
+				if (preg_match('/^\s*([a-z][a-z0-9+.\-]*):/i', $val, $m)
+				 && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp')))
+				{
+					$this->attr['href'] = '';
+					return;
+				}
+
 				$this->attr['href'] = $val;
 
 				$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
@@ -516,7 +526,7 @@ class File extends Macro
 				$rand = rand(0, 100000);
 
 
-				$html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="'.intval($attr['width']).'" data-height="'.intval($attr['height']).'" data-href="'.$attr['href'].'">
+				$html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="'.intval($attr['width']).'" data-height="'.intval($attr['height']).'" data-href="'.htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8').'">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
 									<img alt="Unity Web Player. Install now!" src="' . (\Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
@@ -565,7 +575,7 @@ class File extends Macro
 				\Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
 
 				$html = '<noscript>';
-				$html .= '<div class="embedded-plugin" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . $attr['href'] . '" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
+				$html .= '<div class="embedded-plugin" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
 				$html .= $attr['alt'];
 				$html .= '</div>';
 				$html .= '</noscript>' . "\n";
@@ -598,7 +608,7 @@ class File extends Macro
 						$k = strtolower($k);
 						if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
 						{
-							$attribs[] = $k . '="' . trim($v, '"') . '"';
+							$attribs[] = $k . '="' . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false) . '"';
 						}
 					}
 					$html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
@@ -612,11 +622,11 @@ class File extends Macro
 						$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
 						$attr['rel'] = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-						$html .= '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';
+						$html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
 					}
 					if (isset($attr['desc']) && $attr['desc'])
 					{
-						$html .= '<span class="figcaption">' . $attr['desc'] . '</span>';
+						$html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
 					}
 					$html .= '</span>';
 				}
@@ -638,7 +648,8 @@ class File extends Macro
 
 					$attr['title'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);
 
-					$html = '<a class="attachment" rel="' . $attr['rel'] . '" href="' . $attr['href'] . '" title="' . $attr['title'] . '">' . $attr['desc'] . '</a>';
+					// The attachment description is free text entered by the uploader
+					$html = '<a class="attachment" rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars((string) $attr['title'], ENT_QUOTES, 'UTF-8', false) . '">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</a>';
 					if ($size !== null && $attr['details'])
 					{
 						$html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
