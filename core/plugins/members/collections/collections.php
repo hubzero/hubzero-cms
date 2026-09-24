@@ -965,6 +965,16 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$view->collection = $this->model->collection($view->entry->get('collection_id'));
 		}
 
+		// post= resolves any row on the hub, and the form prints the item's
+		// title, description, assets and tags. Only what _save() will accept is
+		// shown: the caller's own post (a repost included) or their own item.
+		if ($view->entry->exists()
+		 && $view->entry->get('created_by') != User::get('id')
+		 && $view->entry->item()->get('created_by') != User::get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+		}
+
 		if ($remove = Request::getInt('remove', 0))
 		{
 			// As com_collections' own posts controller: the post is chosen by id
@@ -1740,12 +1750,18 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Instantiate a new comment object and pass it the data
-		$row = \Hubzero\Item\Comment::blank()->set($comment);
+		// Instantiate a new comment object and pass it the data. Only the
+		// form's own fields are bound: every other comment[] key is a column
+		// (state, access, positive, negative, ...) the poster must not set.
+		$row = \Hubzero\Item\Comment::blank()->set(array_intersect_key($comment, array_flip(array('id', 'content', 'parent', 'anonymous'))));
 
 		// Pin what the comment hangs off, on both paths
 		$row->set('item_type', 'collection');
 		$row->set('item_id', (int) $post->get('item_id'));
+		if (empty($comment['id']))
+		{
+			$row->set('state', \Hubzero\Item\Comment::STATE_PUBLISHED);
+		}
 
 		// Store new content
 		if (!$row->save())

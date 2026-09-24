@@ -445,9 +445,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
 		}
 
-		// Check authorization
+		// Check authorization. A scheduled or expired entry (outside its
+		// publish_up/publish_down window) is the owner's to see, as in com_blog.
 		if (($row->get('access') == 2 && User::isGuest())
-		 || ($row->get('state') == 0 && User::get('id') != $this->member->get('id')))
+		 || ($row->get('state') == 0 && User::get('id') != $this->member->get('id'))
+		 || (!$row->isAvailable() && User::get('id') != $this->member->get('id') && !User::authorise('core.manage', 'com_blog')))
 		{
 			App::abort(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
 		}
@@ -606,11 +608,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		$isNew = $row->isNew();
+
 		unset($entry['id']);
 		$row->set($entry);
 		$row->set('scope', 'member');
 		$row->set('scope_id', $this->member->get('id'));
-		$row->set('created_by', $row->isNew() ? User::get('id') : $row->get('created_by'));
+		$row->set('created_by', $isNew ? User::get('id') : $row->get('created_by'));
 
 		// Store new content
 		if (!$row->save())
@@ -631,10 +635,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Log activity
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($entry['id'] ? 'updated' : 'created'),
+				'action'      => ($isNew ? 'created' : 'updated'),
 				'scope'       => 'blog.entry',
 				'scope_id'    => $row->get('id'),
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($isNew ? 'CREATED' : 'UPDATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title' => $row->get('title'),
 					'url'   => Route::url($row->link())
@@ -679,6 +683,13 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Initiate a blog entry object
 		$entry = \Components\Blog\Models\Entry::oneOrFail($id);
 
+		// entry= names any row on the hub; only this member's blog is deletable here
+		if ($entry->get('scope') != 'member'
+		 || (int) $entry->get('scope_id') !== (int) $this->member->get('id'))
+		{
+			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
+		}
+
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
 		{
@@ -699,6 +710,9 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 			return $view->loadTemplate();
 		}
+
+		// The confirmation form (views/delete) posts the token
+		Request::checkToken();
 
 		// Delete the entry itself
 		$entry->set('state', \Components\Blog\Models\Entry::STATE_DELETED);
@@ -752,6 +766,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// the caller's own, and a new one goes on an entry of this blog.
 		$__cid   = isset($data['id']) ? (int) $data['id'] : 0;
 		$comment = \Components\Blog\Models\Comment::oneOrNew($__cid);
+		$isNew   = $comment->isNew();
 
 		if (!$comment->isNew())
 		{
@@ -808,11 +823,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		Event::trigger('system.logActivity', [
 			'activity' => [
-				'action'      => ($data['id'] ? 'updated' : 'created'),
+				'action'      => ($isNew ? 'created' : 'updated'),
 				'scope'       => 'blog.entry.comment',
 				'scope_id'    => $comment->get('id'),
 				'anonymous'   => $comment->get('anonymous', 0),
-				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+				'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($isNew ? 'CREATED' : 'UPDATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
 				'details'     => array(
 					'title'    => $entry->get('title'),
 					'entry_id' => $entry->get('id'),
@@ -848,6 +863,16 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Initiate a blog comment object
 		$comment = \Components\Blog\Models\Comment::oneOrFail($id);
+
+		// comment= names any row on the hub; it has to sit on an entry of this
+		// blog, or the page owner's delete right reaches every blog
+		$__entry = $comment->entry();
+		if (!$__entry->get('id')
+		 || $__entry->get('scope') != 'member'
+		 || (int) $__entry->get('scope_id') !== (int) $this->member->get('id'))
+		{
+			App::abort(404, Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRY_FOUND'));
+		}
 
 		// Only the comment's author and the owner of the blog may remove it
 		if (User::get('id') != $comment->get('created_by')

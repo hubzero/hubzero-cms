@@ -414,8 +414,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		// Decrypt the token and compare to the one provided
 		$parts = json_decode($row->params);
 
-		// Invalide token
-		if ($parts->auth_link_token != $token)
+		// Invalide token (or none pending: params may be empty or lack the key)
+		if (!is_object($parts) || !isset($parts->auth_link_token) || $parts->auth_link_token != $token)
 		{
 			App::abort(404, Lang::txt('INVALID_TOKEN'));
 			return;

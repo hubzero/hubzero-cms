@@ -40,12 +40,12 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 	echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortlisted' : '';
 	?>">
 	<div class="thumb">
-		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->seeker->name; ?>" />
+		<img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($this->seeker->name); ?>" />
 	</div>
 	<div class="grid">
 		<div class="aboutlb col span5">
 			<?php echo $this->list ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume') . '" class="profilelink">' : ''; ?>
-			<?php echo $this->seeker->name; ?>
+			<?php echo $this->escape($this->seeker->name); ?>
 			<?php echo $this->list ? '</a>' : ''; ?>
 			<?php if ($this->seeker->countryresident) { ?>
 				, <span class="wherefrom"><?php echo $this->escape($this->seeker->countryresident); ?></span>
@@ -83,16 +83,22 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 	<div class="clear leftclear"></div>
 	<span class="indented">
 		<?php if ($resume) { ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $this->escape($title); ?>">
 				<?php echo ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')); ?>
 			</a>
 			<span class="mini"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LAST_UPDATE'); ?>: <?php echo plgMembersResume::nicetime($this->seeker->created); ?></span>
-			<?php if ($this->seeker->url) {
-				$url = (strpos($this->seeker->url, "http://") === false && strpos($this->seeker->url, "https://") === false) ? "http://" . $this->seeker->url : $this->seeker->url;
+			<?php
+			// The stored url is free text; only an http(s) URL becomes a link
+			$url = trim((string) $this->seeker->url);
+			if ($url && !preg_match('#^https?://#i', $url))
+			{
+				$url = 'http://' . $url;
+			}
+			if ($url && preg_match('#^https?://[^\s"\'<>]+$#i', $url)) {
 				?>
 				<span class="mini"> | </span>
 				<span class="mini">
-					<a href="<?php echo $url; ?>" class="web" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
+					<a href="<?php echo $this->escape($url); ?>" class="web" rel="external" title="<?php echo $this->escape(Lang::txt('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
 				</span>
 			<?php } ?>
 			<?php if ($this->seeker->linkedin) { ?>

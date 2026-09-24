@@ -1450,6 +1450,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($filters as $filter => $value)
 			{
+				// every filter is a scalar; filters[x][]=y is not a value
+				if (is_array($value))
+				{
+					continue;
+				}
+
 				// sanitization
 				$value = \Hubzero\Utility\Sanitize::clean($value);
 
@@ -1483,7 +1489,12 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 							$citations->where('affiliated', '=', $value);
 						break;
 						default:
-							$citations->where($filter, '=', $value);
+							// the filter key would otherwise become the column
+							// name; only the form's remaining field is a column
+							if ($filter == 'type')
+							{
+								$citations->where($filter, '=', $value);
+							}
 						break;
 					}
 				} // end if not search & not sort & non-empty value
@@ -1547,8 +1558,13 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
 				if ($filter == "sort" && $value != "")
 				{
+					// only the columns the sort menu offers, and a real direction
 					$clause = explode(" ", $value);
-					$citations->order($clause[0], $clause[1]);
+					if (in_array($clause[0], array('year', 'created', 'title', 'author', 'journal')))
+					{
+						$dir = (isset($clause[1]) && strtolower($clause[1]) == 'desc') ? 'desc' : 'asc';
+						$citations->order($clause[0], $dir);
+					}
 				}
 			} // end foreach filters as filter
 

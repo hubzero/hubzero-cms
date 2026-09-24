@@ -254,6 +254,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _save($database, $option, $member, $task, $emp)
 	{
+		// Check for request forgeries (both forms in views/resume post the token)
+		Request::checkToken();
+
 		$lookingfor = Request::getString('lookingfor', '');
 		$tagline    = Request::getString('tagline', '');
 		$active     = Request::getInt('activeres', 0);

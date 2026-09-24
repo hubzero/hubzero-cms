@@ -125,6 +125,7 @@ $this->css('jobs', 'com_jobs');
 					</div>
 					<input type="hidden" name="activeres" value="<?php echo $this->editpref == 1 ? 1 : $this->js->active; ?>" />
 					<input type="hidden" name="action" value="saveprefs" />
+					<?php echo Html::input('token'); ?>
 				</fieldset>
 			</form>
 		<?php } ?>
@@ -180,6 +181,7 @@ $this->css('jobs', 'com_jobs');
 									<label class="resume">
 										<input type="text" name="title" value="<?php echo $this->escape($title); ?>" class="gettitle" maxlength="40" />
 										<input type="hidden" name="author" value="<?php echo $this->member->get('id'); ?>" />
+										<?php echo Html::input('token'); ?>
 										<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 									</label>
 								</fieldset>

@@ -34,8 +34,12 @@ foreach ($this->badges as $badge)
 	$b[] = $badge;
 }
 
-$tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', implode(",", $t))));
-$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', implode(",", $b))));
+// Plain-input fallbacks below; $t is reused by the type list further down
+$tags   = implode(",", $t);
+$badges = implode(",", $b);
+
+$tags_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $tags)));
+$badges_list = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'badges', 'actags1', '', $badges)));
 
 //get the referrer
 $backLink = Route::url('index.php?option=' . $this->_name);

@@ -307,10 +307,18 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 			$address = Components\Members\Models\Address::oneOrNew($addressId);
 		}
 
+		// addressid= resolves any row; only the owner edits (or adds) an address
+		if (User::isGuest()
+		 || (!$address->isNew() && $address->get('uidNumber') != User::get('id')))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
+		}
+
 		//set vars for view
 		$view = $this->view('edit', 'address')
 			->set('member', $this->member)
 			->set('address', $address)
+			->set('addressId', $address->get('id'))
 			->setErrors($this->getErrors());
 
 		return $view->loadTemplate();
@@ -324,6 +332,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	public function saveAddress()
 	{
 		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+
+		// Check for request forgeries (the address form posts the token)
+		Request::checkToken();
 
 		// get request vars
 		$data = Request::getArray('address', array());
@@ -373,21 +384,21 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 		// make sure we have a valid member address object
 		if (!$address->get('id'))
 		{
-			return $this->view();
+			return $this->display();
 		}
 
 		// make sure user can delete this address
 		if ($address->get('uidNumber') != User::get('id'))
 		{
 			$this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
-			return $this->view();
+			return $this->display();
 		}
 
 		// attempt to delete address
 		if (!$address->destroy())
 		{
-			$this->setErrror($address->getError());
-			return $this->view();
+			$this->setError($address->getError());
+			return $this->display();
 		}
 
 		// inform and redirect
