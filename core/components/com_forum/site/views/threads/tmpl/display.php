@@ -77,7 +77,7 @@ $now = Date::of('now')->toSql();
 					->whereIn('state', $this->filters['state'])
 					->whereIn('access', $this->filters['access'])
 					->order('id', 'asc')
-					->paginated()
+					->paginated('limitstart', 'limit')
 					->rows();
 
 				$pageNav = $posts->pagination;

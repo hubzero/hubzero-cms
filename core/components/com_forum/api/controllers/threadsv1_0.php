@@ -797,7 +797,7 @@ class Threadsv1_0 extends ApiController
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
-			'<a href="' . $url . '">' . $row->get('title') . '</a>'
+			'<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 		);
 
 		// If this is a post in a thread and not the thread starter...
@@ -819,7 +819,7 @@ class Threadsv1_0 extends ApiController
 			$desc = Lang::txt(
 				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
 				$row->get('id'),
-				'<a href="' . $url . '">' . $thread->get('title') . '</a>'
+				'<a href="' . $url . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 			);
 
 			// If the parent post is not the same as the
@@ -1024,6 +1024,14 @@ class Threadsv1_0 extends ApiController
 		$data = new stdClass();
 		$data->code = 0;
 
+		// The results branch also needs this row (start_id walks its tree),
+		// so resolve it before the count/results split.
+		$post = Post::all()
+			->whereEquals('object_id', $filters['object_id'])
+			->whereEquals('scope_id', $filters['scope_id'])
+			->whereEquals('scope', $filters['scope'])
+			->row();
+
 		if ($find == 'count')
 		{
 			$data->count = 0;
@@ -1034,11 +1042,6 @@ class Threadsv1_0 extends ApiController
 				$data->count = $forum->posts($filters)->total();
 			}
 
-			$post = Post::all()
-				->whereEquals('object_id', $filters['object_id'])
-				->whereEquals('scope_id', $filters['scope_id'])
-				->whereEquals('scope', $filters['scope'])
-				->row();
 			if ($post->get('id'))
 			{
 				$threadsstart = Request::getString('threads_start', '');

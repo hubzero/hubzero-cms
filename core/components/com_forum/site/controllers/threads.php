@@ -372,6 +372,15 @@ class Threads extends SiteController
 		$fields  = Request::getArray('fields', array(), 'post', 'none', 2);
 		$fields  = array_map('trim', $fields);
 
+		// Only the columns the edit form offers are bindable; set() copies every
+		// key it is handed, and lft/rgt/hits/last_activity/asset_id are the
+		// model's to maintain (a posted lft/rgt corrupts the nested set).
+		$fields = array_intersect_key($fields, array_flip(array(
+			'id', 'title', 'comment', 'category_id', 'access', 'anonymous',
+			'parent', 'thread', 'state', 'sticky', 'closed',
+			'scope', 'scope_id', 'scope_sub_id', 'object_id'
+		)));
+
 		$fields['sticky']    = (isset($fields['sticky']))    ? $fields['sticky']    : 0;
 		$fields['closed']    = (isset($fields['closed']))    ? $fields['closed']    : 0;
 		$fields['anonymous'] = (isset($fields['anonymous'])) ? $fields['anonymous'] : 0;
@@ -395,15 +404,28 @@ class Threads extends SiteController
 		}
 
 		// Extracting emails from the new post submitted
-		$domComment = new DOMDocument();
-		$domComment->loadHTML($fields['comment']);
+		// loadHTML('') throws a ValueError on PHP 8, so an empty comment must
+		// reach the model's own "comment cannot be empty" check instead. Only
+		// anchors the mention editor wrote carry a numeric data-user-id; an
+		// ordinary hyperlink has none and must not become a blank Bcc entry.
 		$mentionEmailList = array();
-		foreach ($domComment->getElementsByTagName('a') as $item) {
-			$userId = $item->getAttribute('data-user-id');
-            $user = User::getInstance($userId);
-            $email = $user->get('email');
-
-            $mentionEmailList[] = $email;
+		if (isset($fields['comment']) && trim($fields['comment']) !== '')
+		{
+			$domComment = new DOMDocument();
+			$domComment->loadHTML($fields['comment'], LIBXML_NOERROR | LIBXML_NOWARNING);
+			foreach ($domComment->getElementsByTagName('a') as $item) {
+				$userId = $item->getAttribute('data-user-id');
+				if (!ctype_digit((string) $userId))
+				{
+					continue;
+				}
+				$user = User::getInstance((int) $userId);
+				$email = $user ? $user->get('email') : null;
+				if ($email && !in_array($email, $mentionEmailList))
+				{
+					$mentionEmailList[] = $email;
+				}
+			}
 		}
 
 		// Authorization check
@@ -442,6 +464,7 @@ class Threads extends SiteController
 		$owner    = $isNew ? User::get('id') : $post->get('created_by');
 		$__sticky = $post->get('sticky');
 		$__closed = $post->get('closed');
+		$__state  = $post->get('state');
 
 		$post->set($fields);
 		$post->set('created_by', $owner);
@@ -453,6 +476,9 @@ class Threads extends SiteController
 		{
 			$post->set('sticky', $isNew ? 0 : $__sticky);
 			$post->set('closed', $isNew ? 0 : $__closed);
+			// The form always sends fields[state]=1; only a manager may change
+			// the publication state of a post.
+			$post->set('state', $isNew ? Post::STATE_PUBLISHED : $__state);
 		}
 
 		// scope and scope_id ride in from the form as hidden fields and decide
@@ -569,7 +595,7 @@ class Threads extends SiteController
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
+			'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 		);
 		// If this is a post in a thread and not the thread starter...
 		if ($post->get('parent'))
@@ -591,7 +617,7 @@ class Threads extends SiteController
 			$desc = Lang::txt(
 				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
 				$post->get('id'),
-				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+				'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 			);
 
 			// If the parent post is not the same as the
@@ -765,7 +791,7 @@ class Threads extends SiteController
 		$type = 'thread';
 		$desc = Lang::txt(
 			'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
-			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
+			'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 		);
 		if ($post->get('parent'))
 		{
@@ -775,7 +801,7 @@ class Threads extends SiteController
 			$desc = Lang::txt(
 				'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
 				$post->get('id'),
-				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+				'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 			);
 		}
 
