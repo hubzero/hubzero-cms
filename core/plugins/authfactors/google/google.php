@@ -70,6 +70,10 @@ class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
 	 **/
 	private function register()
 	{
+		// Marking the factor enrolled hides the QR code for good, so only the
+		// enrollment form (which carries the token) may do it
+		Request::checkToken();
+
 		Factor::registerUserAsEnrolled();
 		// Redirect for verification process to occur
 		App::redirect(Request::current());

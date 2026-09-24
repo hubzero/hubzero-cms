@@ -17,6 +17,7 @@ $cache = '/www/tmp/incommon-rs-entities.json';
 if (!($xml = simplexml_load_file($mdPath)))
 {
 	print "Failed to parse XML from this path\n";
+	exit(1);
 }
 
 $xml->registerXPathNamespace('shib', 'urn:oasis:names:tc:SAML:2.0:metadata');
@@ -43,7 +44,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') as $idp)
 
 	// output metadata only once even if there are duplicates, variants or conflicting entries
 	// print $done[$dname];
-	if ( $done[$dname] == 1 ) {
+	if (isset($done[$dname]) && $done[$dname] == 1) {
 		// print "already done\n";
 		continue;
 	} else {
@@ -63,7 +64,7 @@ foreach ($xml->xpath('//shib:EntityDescriptor') as $idp)
 	echo '",' . "\n";
 
 	preg_match('/([^.:]+[.][^.]+?)(?:[\/]|$)/', $id, $ma);
-	$host = $ma[1];
+	$host = isset($ma[1]) ? $ma[1] : '';
 	echo '    "host": "';
 	echo $host;
 	echo '"' . "\n";

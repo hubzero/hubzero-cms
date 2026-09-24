@@ -85,7 +85,7 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
 				$b64dreturn = '';
 			}
 		}
-		Session::clear('state', 'returnUrl');
+		Session::clear('returnUrl', 'globus');
 		$options['return'] = $b64dreturn;
 
 		// Check to make sure they didn't deny our application permissions
@@ -201,7 +201,7 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
 				$response->username = '-' . $hzal->id;
 				$response->email    = $response->username . '@invalid';
 				// Also set a suggested username for their hub account
-				$sub_email    = explode('@', $email, 2);
+				$sub_email    = explode('@', $email == null ? '' : $email, 2);
 				$tmp_username = $sub_email[0];
 				App::get('session')->set('auth_link.tmp_username', $tmp_username);
 			}
@@ -265,9 +265,13 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
 			}
 			catch (\Exception $e)
 			{
-				// Error message?
-				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = Lang::txt('PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE', $e->getMessage());
+				// There is no authentication response to report on while
+				// linking; send the member back to the account page instead
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+					Lang::txt('PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
+					'error'
+				);
 				return;
 			}
 
