@@ -103,10 +103,12 @@ class Serials extends AdminController
 		// Check for request forgeries
 		Request::checkToken();
 
-		// Incoming
-		$ids = Request::getInt('srId', 0);
+		// Incoming (the list view posts srId[] checkboxes)
+		$ids = array_map('intval', (array) Request::getArray('srId', array()));
 		$sId = Request::getInt('sId');
-		//print_r($ids); die;
+
+		$msg  = '';
+		$type = 'message';
 
 		$deletedMessage = SerialsHelper::delete($ids);
 
