@@ -372,7 +372,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
 			$data['resource_id'] = $this->resource->id;
 			if (\Components\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'))->get('id'))
 			{
-				$this->setError('You have already reviewed this resource.');
+				$this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_ERROR_ALREADY_REVIEWED'));
 				return;
 			}
 		}
