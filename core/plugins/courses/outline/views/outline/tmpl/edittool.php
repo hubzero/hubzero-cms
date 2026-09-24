@@ -60,7 +60,7 @@ $tool_path = $config->get('tool_path');
 				<?php foreach ($tools as $tool) : ?>
 					<?php preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr); ?>
 					<?php $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : ''; ?>
-					<option value="<?php echo $tool->alias ?>" <?php echo $selected ?>><?php echo $tool->title ?></option>
+					<option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>><?php echo $this->escape($tool->title) ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>
@@ -77,8 +77,8 @@ $tool_path = $config->get('tool_path');
 				<select id="project-selector">
 					<option value="">Select a Project...</option>
 					<?php foreach ($projects as $project): ?>
-						<option value="<?php echo $project->get('alias');?>">
-							<?php echo $project->get('title');?>	
+						<option value="<?php echo $this->escape($project->get('alias'));?>">
+							<?php echo $this->escape($project->get('title'));?>	
 						</option>
 					<?php endforeach; ?>
 				</select>
@@ -91,7 +91,7 @@ $tool_path = $config->get('tool_path');
 				<ul class="tool-files-list">
 					<?php foreach ($files as $file) : ?>
 						<li class="tool-file">
-							<span class="tool-files-filename"><?php echo $file; ?></span>
+							<span class="tool-files-filename"><?php echo $this->escape($file); ?></span>
 							<div class="tool-files-delete"></div>
 						</li>
 					<?php endforeach; ?>

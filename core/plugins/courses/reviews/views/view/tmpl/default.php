@@ -86,10 +86,10 @@ $this->js();
 				</p>
 				<fieldset>
 				<?php
+				$parent = Request::getInt('replyto', 0);
+
 				if (!User::isGuest())
 				{
-					$parent = Request::getInt('replyto', 0);
-
 					if ($parent)
 					{
 						$reply = \Components\Courses\Models\Comment::oneOrNew($parent);
@@ -97,14 +97,14 @@ $this->js();
 						$name = Lang::txt('JANONYMOUS');
 						if (!$reply->get('anonymous'))
 						{
-							$name = $reply->creator->get('name');
+							$name = $this->escape(stripslashes($reply->creator->get('name')));
 							if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels()))
 							{
 								$name = '<a href="' . Route::url($reply->creator->link()) . '">' . $this->escape(stripslashes($reply->creator->get('name'))) . '</a>';
 							}
 						}
 					?>
-					<blockquote cite="c<?php echo $this->replyto->get('id'); ?>">
+					<blockquote cite="c<?php echo $reply->get('id'); ?>">
 						<p>
 							<strong><?php echo $name; ?></strong>
 							<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
@@ -112,7 +112,7 @@ $this->js();
 							<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
 							<span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
 						</p>
-						<p><?php echo \Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300); ?></p>
+						<p><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300)); ?></p>
 					</blockquote>
 					<?php
 					}
@@ -121,6 +121,20 @@ $this->js();
 				if ($edit)
 				{
 					$comment = \Components\Courses\Models\Comment::oneOrNew($edit);
+
+					// editcomment= resolves any comment on the hub; only a review of
+					// this course that the viewer wrote (or may moderate) is editable
+					if ((string) $comment->get('item_type') !== (string) $this->obj_type
+					 || (int) $comment->get('item_id') !== (int) $this->obj->get('id')
+					 || !($comment->get('created_by') == User::get('id') || $this->params->get('access-manage-comment')))
+					{
+						$comment = \Components\Courses\Models\Comment::blank();
+						$edit = 0;
+					}
+				}
+
+				if ($edit)
+				{
 					?>
 					<p class="warning">
 						<?php echo Lang::txt('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />

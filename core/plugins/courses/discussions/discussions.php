@@ -517,6 +517,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->course = $course;
 		$this->offering = $course->offering();
 		$this->unit = $unit;
+		$this->lecture = $lecture;
 		$this->base = $this->offering->link() . '&active=' . $this->_active;
 
 		$this->_authorize('category');
@@ -529,6 +530,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			'section'   => Request::getString('section', ''),
 			'category'  => Request::getString('category', ''),
 			'state'     => array(1, 3),
+			'access'    => User::getAuthorisedViewLevels(),
 			'scope'     => 'course',
 			'scope_id'  => $course->offering()->get('id'),
 			'sticky'    => false,
@@ -2258,6 +2260,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			->set('section', $section)
 			->set('category', $category)
 			->set('thread', $thread)
+			->set('post', $thread)
+			->set('group', null)
 			->set('filters', $filters)
 			->setErrors($this->getErrors());
 
@@ -2368,6 +2372,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			->set('offering', $this->offering)
 			->set('config', $this->params)
 			->set('forum', $this->forum)
+			->set('sections', $this->forum->sections(array(
+				'state'  => Section::STATE_PUBLISHED,
+				'access' => User::getAuthorisedViewLevels()
+			))->rows())
 			->set('section', $section)
 			->set('category', $category)
 			->set('post', $post)
@@ -2549,8 +2557,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			}
 		}
 
+		// The return URL is posted by the form; only follow it back to this hub
 		$rtrn = base64_decode(Request::getString('return', '', 'post'));
-		if (!$rtrn)
+		if (!$rtrn || !\Hubzero\Utility\Uri::isInternal($rtrn))
 		{
 			$rtrn = Route::url($this->base . '&thread=' . $thread);
 		}
@@ -2983,7 +2992,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 				if (!$section->save())
 				{
-					$this->setError($sModel->getError());
+					$this->setError($section->getError());
 					return '';
 				}
 			}

@@ -181,7 +181,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 				break;
 			}
 
-			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
+			$pdt = date($yearFormat . '-' . $monthFormat . '-' . $dayFormat, $dt) . ' 00:00:00';
 			$today = Date::toSql();
 
 			// Can users create comments?

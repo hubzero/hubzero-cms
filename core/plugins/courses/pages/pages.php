@@ -417,6 +417,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
+		// The uploader carries the form token on its action URL
+		Request::checkToken(['get', 'post']);
+
 		// Get media config
 		$mediaConfig = Component::params('com_media');
 
@@ -494,7 +497,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
@@ -692,7 +695,16 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				if ($section = Request::getInt('section_id', 0))
+				$section = Request::getInt('section_id', 0);
+
+				// A plain viewer only reaches the files of their own section
+				if ($section && !$this->view->offering->access('manage')
+				 && $section != $this->view->offering->section()->get('id'))
+				{
+					$section = 0;
+				}
+
+				if ($section)
 				{
 					$path .= $this->view->course->get('id') . DS . 'sections' . DS . $section . DS . 'pagefiles';
 				}
@@ -819,6 +831,12 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _fileList()
 	{
+		// The file manager is part of the page editor, a section manager tool
+		if (!$this->view->offering->access('manage', 'section'))
+		{
+			return App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		$page = new \Components\Courses\Models\Page(Request::getInt('page', 0));
 		if (!$page->exists())
 		{

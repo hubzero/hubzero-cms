@@ -7,7 +7,7 @@
 
 defined('_HZEXEC_') or die();
 
-$base = $this->offering->link() . '&active=forum';
+$base = $this->offering->link() . '&active=discussions';
 
 $this->category->set('section_alias', $this->filters['section']);
 
@@ -211,9 +211,9 @@ $this->thread->set('category', $this->category->get('alias'));
 					</strong>
 					<span class="permalink">
 						<span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-						<span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+						<span class="time"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
 						<span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-						<span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+						<span class="date"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
 					</span>
 				</p>
 
@@ -262,7 +262,7 @@ $this->thread->set('category', $this->category->get('alias'));
 			<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
 			<input type="hidden" name="active" value="discussions" />
 			<input type="hidden" name="action" value="savethread" />
-			<input type="hidden" name="section" value="<?php echo $this->filters['section']; ?>" />
+			<input type="hidden" name="section" value="<?php echo $this->escape($this->filters['section']); ?>" />
 
 			<?php echo Html::input('token'); ?>
 		</form>

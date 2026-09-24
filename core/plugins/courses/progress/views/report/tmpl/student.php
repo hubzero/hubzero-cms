@@ -344,7 +344,7 @@ $progress_timeline .= '</div>';
 		<?php else : ?>
 			<h3>Congratulations! You've earned the badge...and you deserve it!</h3>
 			<p>
-				You've completed all of the requirements of <?php echo $this->course->get('title') ?>, qualifying you to receive
+				You've completed all of the requirements of <?php echo $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
 				a special badge.
 			</p>
 			<?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
@@ -483,7 +483,7 @@ $progress_timeline .= '</div>';
 									}
 								?>
 								<tr class="<?php echo $class ?>">
-									<td class="grade-details-title"><a href="<?php echo $form['url'] ?>"><?php echo $form['title'] ?></a></td>
+									<td class="grade-details-title"><a href="<?php echo $this->escape($form['url']) ?>"><?php echo $this->escape($form['title']) ?></a></td>
 									<td class="grade-details-score"><?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?></td>
 									<td class="grade-details-date"><?php echo $form['date'] ?></td>
 								</tr>
@@ -541,7 +541,7 @@ $progress_timeline .= '</div>';
 								}
 							?>
 							<tr class="<?php echo $class ?>">
-								<td class="grade-details-title"><?php echo $aux['title'] ?></td>
+								<td class="grade-details-title"><?php echo $this->escape($aux['title']) ?></td>
 								<td class="grade-details-score"><?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
 								<td class="grade-details-date"><?php echo $aux['date'] ?></td>
 							</tr>
@@ -559,7 +559,7 @@ $progress_timeline .= '</div>';
 			<img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" alt="Badge" />
 			<h3>Work hard. Earn a badge.</h3>
 			<p>
-				Upon successful completion of this course, you will be awarded a special <?php echo $this->course->get('title') ?> badge.
+				Upon successful completion of this course, you will be awarded a special <?php echo $this->escape(stripslashes($this->course->get('title'))) ?> badge.
 				This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
 				To learn more about Purdue's Passport initiative, please visit the
 				<a href="https://www.openpassport.org/Login" rel="nofollow external">Open Passport website</a>.

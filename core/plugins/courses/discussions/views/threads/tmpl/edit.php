@@ -59,7 +59,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post))
 			<label for="field_<?php echo $this->post->get('id'); ?>_comment">
 				<span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
 				<?php
-				echo $this->editor('fields[comment]', $this->escape($this->post->get('content')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
+				echo $this->editor('fields[comment]', $this->escape($this->post->get('comment')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
 				?>
 			</label>
 		<?php if (!$this->post->get('parent')) { ?>

@@ -83,7 +83,7 @@ $assets = array();
 						<ul class="wiki-files-list">
 							<?php foreach ($files as $file) : ?>
 								<li class="wiki-file">
-									<span class="wiki-files-filename"><?php echo $file; ?></span>
+									<span class="wiki-files-filename"><?php echo $this->escape($file); ?></span>
 									<div class="wiki-files-delete"></div>
 								</li>
 							<?php endforeach; ?>

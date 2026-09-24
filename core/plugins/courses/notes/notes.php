@@ -67,6 +67,8 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 				'search'     => Request::getString('search', '')
 			);
 
+			$result = null;
+
 			if ($action = strtolower(Request::getWord('action', '')))
 			{
 				switch ($action)
