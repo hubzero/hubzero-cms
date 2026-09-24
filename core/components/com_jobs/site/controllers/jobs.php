@@ -2243,7 +2243,7 @@ class Jobs extends SiteController
 			);
 		}
 
-		$objS->bind($default2);
+		$objS->set($default2);
 
 		if (!$objS->save())
 		{
