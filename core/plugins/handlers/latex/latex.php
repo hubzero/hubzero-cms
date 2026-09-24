@@ -80,9 +80,20 @@ class plgHandlersLatex extends Plugin
 		// Store file locally
 		$temp->write($data);
 
-		// Build the command
-		$command  = escapeshellarg(DS . trim($this->params->get('texpath', '/usr/bin/pdflatex'), DS));
-		$command .= ' -output-directory=' . escapeshellarg($outputDir) . ' -interaction=batchmode ' . escapeshellarg($temp->getAbsolutePath());
+		// Build the command. The TeX is user-supplied, so: no shell escape,
+		// kpathsea's paranoid file access (no absolute paths, no parent
+		// directories, no dotfiles for \input, \openin or \openout -- a
+		// document could otherwise \input any file the web user can read into
+		// the served PDF), and a time limit so a looping document does not
+		// hold a worker. Run from the output directory so the input is a
+		// relative name that paranoid mode accepts.
+		$timeout = max(1, (int) $this->params->get('timeout', 60));
+
+		$command  = 'cd ' . escapeshellarg($outputDir) . ' && ';
+		$command .= 'openin_any=p openout_any=p shell_escape=f ';
+		$command .= 'timeout ' . (int) $timeout . ' ';
+		$command .= escapeshellarg(DS . trim($this->params->get('texpath', '/usr/bin/pdflatex'), DS));
+		$command .= ' -no-shell-escape -interaction=batchmode ' . escapeshellarg($uniqid . '.tex');
 
 		// Exec and capture output
 		exec($command, $out);
