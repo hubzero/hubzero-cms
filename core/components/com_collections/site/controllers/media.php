@@ -142,6 +142,13 @@ class Media extends SiteController
 			$listdir = $item->get('id');
 		}
 
+		// Only the item's owner (or an admin) may attach assets to it
+		if (!$this->userOwnsItem($listdir))
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
+			return $this->displayTask();
+		}
+
 		// Create database entry
 		$asset = new Asset();
 		$asset->set('item_id', intval($listdir));
@@ -202,6 +209,13 @@ class Media extends SiteController
 				}
 			}
 			$listdir = $item->get('id');
+		}
+
+		// Only the item's owner (or an admin) may attach assets to it
+		if (!$this->userOwnsItem($listdir))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')));
+			return;
 		}
 
 		// Create database entry
@@ -271,6 +285,13 @@ class Media extends SiteController
 				}
 			}
 			$listdir = $item->get('id');
+		}
+
+		// Only the item's owner (or an admin) may attach assets to it
+		if (!$this->userOwnsItem($listdir))
+		{
+			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED')));
+			return;
 		}
 
 		// Get media config
@@ -448,6 +469,13 @@ class Media extends SiteController
 			return $this->displayTask();
 		}
 
+		// Only the item's owner (or an admin) may attach assets to it
+		if (!$this->userOwnsItem($listdir))
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
+			return $this->displayTask();
+		}
+
 		// Incoming file
 		$file = Request::getArray('upload', array(), 'files');
 		if (empty($file) || !$file['name'])
@@ -587,6 +615,30 @@ class Media extends SiteController
 	 * @param   object   $asset
 	 * @return  boolean
 	 */
+	protected function userOwnsItem($itemId)
+	{
+		if (User::isGuest())
+		{
+			return false;
+		}
+
+		if (User::authorise('core.admin', $this->_option))
+		{
+			return true;
+		}
+
+		$item = new Item((int) $itemId);
+
+		// A brand new (tmp) item is created for the caller a few lines up
+		return ($item->exists() && $item->get('created_by') == User::get('id'));
+	}
+
+	/**
+	 * Is the current user allowed to delete this asset?
+	 *
+	 * @param   object  $asset
+	 * @return  bool
+	 */
 	protected function userOwnsAsset($asset)
 	{
 		if (User::isGuest())
@@ -712,6 +764,11 @@ class Media extends SiteController
 		if (!$this->view->item->exists())
 		{
 			$this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
+		}
+		elseif (!$this->userOwnsItem($listdir))
+		{
+			$this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
+			$this->view->item = Item::getInstance(0);
 		}
 
 		$this->view->config  = $this->config;

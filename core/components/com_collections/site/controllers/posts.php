@@ -472,10 +472,25 @@ class Posts extends SiteController
 		$__type  = $__isNew ? 'collection' : $row->get('item_type');
 		$__item  = $__isNew ? (int) $__post->get('item_id') : (int) $row->get('item_id');
 		$__owner = $__isNew ? (int) User::get('id') : (int) $row->get('created_by');
+		$__state = $__isNew ? 1 : (int) $row->get('state');
+
+		// A parent must be a comment on the same item; anything else is a
+		// top-level comment
+		$__parent = $__isNew ? (isset($comment['parent']) ? (int) $comment['parent'] : 0) : (int) $row->get('parent');
+		if ($__isNew && $__parent)
+		{
+			$__p = Comment::oneOrNew($__parent);
+			if ($__p->isNew() || $__p->get('item_type') != $__type || (int) $__p->get('item_id') !== $__item)
+			{
+				$__parent = 0;
+			}
+		}
 
 		$row->set($comment);
 		$row->set('item_type', $__type);
 		$row->set('item_id', $__item);
+		$row->set('state', $__state);
+		$row->set('parent', $__parent);
 
 		// created_by on BOTH paths. It is not on any comment form, but $comment
 		// is the whole request array and modify() writes every set attribute that

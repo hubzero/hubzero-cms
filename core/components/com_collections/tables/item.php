@@ -428,11 +428,11 @@ class Item extends Table
 		{
 			$query .= ", v.id AS voted ";
 		}
-		$query .= $this->buildQuery($filters);
+		$query .= $this->_buildQuery($filters);
 
-		if ($filters['limit'] != 0)
+		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			$query .= ' LIMIT ' . intval($filters['start']) . ',' . intval($filters['limit']);
+			$query .= ' LIMIT ' . (isset($filters['start']) ? intval($filters['start']) : 0) . ',' . intval($filters['limit']);
 		}
 
 		$this->_db->setQuery($query);

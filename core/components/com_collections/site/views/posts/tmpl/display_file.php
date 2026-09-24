@@ -49,9 +49,12 @@ if ($assets->total() > 0)
 		$isLocal = (filter_var($first->file('original'), FILTER_VALIDATE_URL)) ? false : true;
 		$imgPath = $isLocal ? $path . DS . $first->file('thumbnail') : $first->file('original');
 
-		if (file_exists($imgPath))
+		// getimagesize() returns false for a non-image behind an image
+		// extension, and a zero height would divide by zero below
+		$dims = file_exists($imgPath) ? @getimagesize($imgPath) : false;
+		if ($dims && !empty($dims[0]) && !empty($dims[1]))
 		{
-			list($originalWidth, $originalHeight) = getimagesize($imgPath);
+			list($originalWidth, $originalHeight) = $dims;
 			$ratio = $originalWidth / $originalHeight;
 
 			$height = (!isset($this->actual) || !$this->actual)

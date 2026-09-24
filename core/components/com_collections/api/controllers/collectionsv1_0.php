@@ -34,6 +34,13 @@ class Collectionsv1_0 extends ApiController
 	 */
 	protected function _canManageObject($objectType, $objectId)
 	{
+		// Collection::_adapter() throws on any other scope, and that runs on
+		// every listing that links the row
+		if (!in_array($objectType, array('member', 'group'), true))
+		{
+			return false;
+		}
+
 		$uid = App::get('authn')['user_id'];
 		if ($objectType == 'group')
 		{

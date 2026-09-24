@@ -179,7 +179,9 @@ class Asset extends Base
 				$path  = $this->filespace() . DS . $this->get('item_id') . DS;
 				$path .= ltrim($this->get('filename'), DS);
 
-				$this->_size = filesize($path);
+				// The stored filename is owner-editable; a name that is not on
+				// disk must not warn
+				$this->_size = is_file($path) ? filesize($path) : 0;
 			}
 		}
 
