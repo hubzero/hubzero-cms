@@ -126,7 +126,8 @@ class Comments extends AdminController
 			foreach ($rows as $k)
 			{
 				$pt = $k->get('parent');
-				$list = @$children[$pt] ? $children[$pt] : array();
+				// isset, not @: the error handler still logs a suppressed missing key
+				$list = isset($children[$pt]) ? $children[$pt] : array();
 				array_push($list, $k);
 				$children[$pt] = $list;
 			}
@@ -158,7 +159,7 @@ class Comments extends AdminController
 	 */
 	public function treeRecurse($id, $indent, $list, $children, $maxlevel=9999, $level=0, $type=1)
 	{
-		if (@$children[$id] && $level <= $maxlevel)
+		if (!empty($children[$id]) && $level <= $maxlevel)
 		{
 			foreach ($children[$id] as $v)
 			{
