@@ -43,6 +43,13 @@ class MasterType extends Table
 			$this->setError(Lang::txt('Your publication master type alias must contain text.'));
 			return false;
 		}
+		// the new-type form posts an empty ordering box; strict SQL refuses ''
+		// for the integer column, so put a new type at the end
+		if (trim((string) $this->ordering) === '')
+		{
+			$this->_db->setQuery("SELECT MAX(ordering) FROM $this->_tbl");
+			$this->ordering = (int) $this->_db->loadResult() + 1;
+		}
 		return true;
 	}
 
