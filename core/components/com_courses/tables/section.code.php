@@ -48,8 +48,23 @@ class SectionCode extends Table
 			$this->setError(Lang::txt('Please provide a code.'));
 			return false;
 		}
+		// the column is varchar(10); a longer code was a strict-SQL 500
+		if (strlen($this->code) > 10)
+		{
+			$this->setError(Lang::txt('The code may be at most 10 characters.'));
+			return false;
+		}
 
 		$this->redeemed_by = intval($this->redeemed_by);
+
+		// Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
+		foreach (array('expires') as $col)
+		{
+			if (isset($this->$col) && trim((string) $this->$col) === '')
+			{
+				$this->$col = null;
+			}
+		}
 
 		if (!$this->id)
 		{

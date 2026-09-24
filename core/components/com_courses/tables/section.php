@@ -129,6 +129,23 @@ class Section extends Table
 			return false;
 		}
 
+		// Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
+		foreach (array('start_date', 'end_date', 'publish_up', 'publish_down') as $col)
+		{
+			if (isset($this->$col) && trim((string) $this->$col) === '')
+			{
+				$this->$col = null;
+			}
+		}
+		// NOT NULL TEXT without a default: an unset value is left out of the INSERT
+		foreach (array('params') as $col)
+		{
+			if (!isset($this->$col))
+			{
+				$this->$col = '';
+			}
+		}
+
 		if (!$this->id)
 		{
 			$this->created    = Date::toSql();

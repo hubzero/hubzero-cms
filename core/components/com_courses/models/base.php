@@ -212,17 +212,20 @@ abstract class Base extends Model
 	 */
 	public function log($scope_id, $scope, $action, $log=null)
 	{
-		$log = new Tables\Log($this->_db);
-		$log->scope_id  = $scope_id;
-		$log->scope     = $scope;
-		$log->user_id   = User::get('id');
-		$log->timestamp = Date::toSql();
-		$log->action    = $action;
-		$log->comments  = $log;
-		$log->actor_id  = User::get('id');
-		if (!$log->store())
+		// The table object used to be assigned to $log too, which overwrote the
+		// data and stored the object itself as comments (dropped from the
+		// INSERT); comments is NOT NULL, so strict SQL refused every log entry
+		$entry = new Tables\Log($this->_db);
+		$entry->scope_id  = $scope_id;
+		$entry->scope     = $scope;
+		$entry->user_id   = User::get('id');
+		$entry->timestamp = Date::toSql();
+		$entry->action    = $action;
+		$entry->comments  = (string) $log;
+		$entry->actor_id  = User::get('id');
+		if (!$entry->store())
 		{
-			$this->setError($log->getError());
+			$this->setError($entry->getError());
 		}
 	}
 

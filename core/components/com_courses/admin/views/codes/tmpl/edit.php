@@ -80,7 +80,7 @@ $this->js();
 				</div>
 				<div class="input-wrap">
 					<label for="field-code"><?php echo Lang::txt('COM_COURSES_FIELD_CODE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[code]" id="field-code" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
+					<input type="text" name="fields[code]" id="field-code" class="required" maxlength="10" value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
 				</div>
 			</fieldset>
 

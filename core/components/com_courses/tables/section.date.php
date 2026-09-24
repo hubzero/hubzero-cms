@@ -87,6 +87,15 @@ class SectionDate extends Table
 			return false;
 		}
 
+		// Blank date boxes post ''; strict SQL refuses '' for a datetime, so store NULL
+		foreach (array('publish_up', 'publish_down') as $col)
+		{
+			if (isset($this->$col) && trim((string) $this->$col) === '')
+			{
+				$this->$col = null;
+			}
+		}
+
 		if (!$this->id)
 		{
 			$this->created    = Date::toSql();

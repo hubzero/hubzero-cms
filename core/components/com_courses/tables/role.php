@@ -83,6 +83,13 @@ class Role extends Table
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 
+		// permissions is NOT NULL MEDIUMTEXT with no default and the admin
+		// form has no field for it; strict SQL refused every new role
+		if ($this->permissions === null)
+		{
+			$this->permissions = '';
+		}
+
 		return true;
 	}
 

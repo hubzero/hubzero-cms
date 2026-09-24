@@ -120,6 +120,16 @@ class Course extends Table
 		}
 		$this->makeAliasUnique();
 
+		// params/blurb/description are NOT NULL TEXT with no default; an unset
+		// one is left out of the INSERT and strict SQL refuses the new course
+		foreach (array('params', 'blurb', 'description') as $col)
+		{
+			if ($this->$col === null)
+			{
+				$this->$col = '';
+			}
+		}
+
 		if (!$this->id)
 		{
 			$this->created    = Date::toSql();
