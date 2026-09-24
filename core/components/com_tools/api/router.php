@@ -68,6 +68,12 @@ class Router extends Base
 
 			if (isset($segments[1]))
 			{
+				// /tools/{tool}/{task}: keep the tool name for the task
+				// (rappturexml read it from Apache's SCRIPT_URL)
+				if (!is_numeric($segments[0]))
+				{
+					$vars['tool'] = $segments[0];
+				}
 				$vars['task'] = $segments[1];
 			}
 		}
