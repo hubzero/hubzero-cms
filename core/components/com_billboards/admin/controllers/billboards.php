@@ -124,9 +124,22 @@ class BillBoards extends AdminController
 
 		// Incoming, make sure to allow HTML to pass through
 		$data = Request::getArray('billboard', array(), 'post');
+		$data['id'] = isset($data['id']) ? (int) $data['id'] : 0;
+
+		// The form never posts these. background_img is set from the upload
+		// below and the stored name is what the old file is removed by, so it
+		// must not be client-chosen; published belongs to stateTask
+		// (core.edit.state); the checkout columns are bookkeeping.
+		unset($data['background_img'], $data['checked_out'], $data['checked_out_time']);
+		if (!User::authorise('core.edit.state', $this->_option))
+		{
+			unset($data['published']);
+		}
 
 		// Create object
-		$billboard = Billboard::oneOrNew($data['id'])->set($data);
+		$billboard = Billboard::oneOrNew($data['id']);
+		$previous_img = $billboard->get('background_img');
+		$billboard->set($data);
 
 		// Check to make sure collection exists
 		$collection = Collection::oneOrNew($billboard->collection_id);
@@ -195,9 +208,11 @@ class BillBoards extends AdminController
 			}
 			else
 			{
-				if ($old = $billboard->get('background_img'))
+				// Remove the previous image, unless the replacement was uploaded
+				// under the same name and is that file.
+				if ($old = basename((string) $previous_img))
 				{
-					if (file_exists($uploadDirectory . $old))
+					if ($old !== $billboard_image['name'] && file_exists($uploadDirectory . $old))
 					{
 						\Filesystem::delete($uploadDirectory . $old);
 					}
