@@ -977,6 +977,8 @@ class Product
 
 		$db = \App::get('db');
 
+		// pAllowMultiple is cast: "No" reads back as null, and the column is
+		// an integer (strict SQL refuses '')
 		$sql .= "
 				`ptId` = " . $db->quote($this->getType()) . ",
 				`pName` = " . $db->quote($this->getName()) . ",
@@ -984,19 +986,15 @@ class Product
 				`pTagline` = " . $db->quote($this->getTagline()) . ",
 				`pDescription` = " . $db->quote($this->getDescription()) . ",
 				`pFeatures` = " . $db->quote($this->getFeatures()) . ",
-				`pAllowMultiple` = " . $db->quote($this->getAllowMultiple()) . ",
+				`pAllowMultiple` = " . $db->quote((int) $this->getAllowMultiple()) . ",
 				`pActive` = " . $db->quote($this->getActiveStatus()) . ",
 				`publish_up` = " . $db->quote($this->getPublishTime()->publish_up) . ",
 				`publish_down` = " . $db->quote($this->getPublishTime()->publish_down) . ",
 				`access` = " . $db->quote($this->getAccessLevel());
 
-		// Set pId if needed if adding new product
-		if (!$pId)
-		{
-			$sql .= ",
-				`pId` = " . $db->quote($pId);
-		}
-		else
+		// A new product takes its pId from AUTO_INCREMENT; setting it to the
+		// empty id ('') made every insert fail on strict SQL
+		if ($pId)
 		{
 			$sql .= " WHERE `pId` = " . $db->quote($pId);
 		}

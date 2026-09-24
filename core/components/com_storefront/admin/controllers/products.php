@@ -307,11 +307,6 @@ class Products extends AdminController
 				$product->setAllowMultiple($fields['pAllowMultiple']);
 			}
 
-			if (isset($fields['pQtyTxt']))
-			{
-				$product->setMeta(array('qtyTxt' => $fields['pQtyTxt']));
-			}
-
 			if (!isset($fields['collections'])) {
 				$fields['collections'] = array();
 			}
@@ -323,6 +318,14 @@ class Products extends AdminController
 			$product->setOptionGroups($fields['optionGroups']);
 			$product->setPublishTime($fields['publish_up'], $fields['publish_down']);
 			$product->save();
+
+			// Meta is written straight to its table keyed by pId, so it has to
+			// wait until save() has given a new product its id (before, every
+			// new product failed: pId '' is not an integer on strict SQL)
+			if (isset($fields['pQtyTxt']))
+			{
+				$product->setMeta(array('qtyTxt' => $fields['pQtyTxt']));
+			}
 
 			$accessgroups = Request::getArray('accessgroupsyes', array(), 'post');
 			$product->setAccessGroups($accessgroups, 'include');
