@@ -132,13 +132,13 @@ $show_weight = array_key_exists('show_weight', $_GET);
 										if (!$last_type):
 									?>
 										<li>
-											<h4><span class="expand"></span><?php echo $current_type == 'Questions' ? 'Answers' : $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+											<h4><span class="expand"></span><?php echo $this->escape($current_type == 'Questions' ? 'Answers' : $current_type); ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 											<ul class="child-result">
 									<?php elseif ($last_type != $current_type): ?>
 											</ul>
 										</li>
 										<li>
-											<h4><span class="expand"></span><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+											<h4><span class="expand"></span><?php echo $this->escape($current_type); ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
 											<ul class="child-result">
 									<?php
 										endif;
@@ -200,9 +200,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php if ($def['count']): ?>
 					<li>
 						<?php if ($this->plugin == $cat && !$this->section): ?>
-							<strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
+							<strong><?php echo $this->escape($def['friendly_name']); ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
 						<?php else: ?>
-							<a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
+							<a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $this->escape($def['friendly_name']); ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
 						<?php endif; ?>
 						<?php
 						$fc_child_flag = 'plgsearch'.$def['plugin_name'].'::FIRST_CLASS_CHILDREN';
@@ -213,9 +213,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
 								<?php
 								if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key):
 								?>
-									<li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
+									<li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $this->escape($sdef['name']); ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
 								<?php else: ?>
-									<li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
+									<li><strong><?php echo $this->escape($sdef['name']); ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
 								<?php endif; ?>
 							<?php endforeach; ?>
 							</ul>

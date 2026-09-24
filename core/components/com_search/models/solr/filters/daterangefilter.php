@@ -71,10 +71,32 @@ class Daterangefilter extends Filter
 		// is_scalar for the same reason as renderHtml() above, on the same
 		// unauthenticated request: filters[<field>][startdate][]=x makes this an
 		// array, and Date::of(array) is a TypeError on PHP 8.
-		$startdate = (!empty($selectedValues['startdate']) && is_scalar($selectedValues['startdate']))
-			? Date::of((string) $selectedValues['startdate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
-		$enddate = (!empty($selectedValues['enddate']) && is_scalar($selectedValues['enddate']))
-			? Date::of((string) $selectedValues['enddate'])->format('Y-m-d\TH:i:s.999\Z') : '*';
+		// Date::of() throws on a string DateTime cannot parse; an open bound is
+		// the right answer for garbage, not an exception page.
+		$startdate = '*';
+		$enddate   = '*';
+		try
+		{
+			if (!empty($selectedValues['startdate']) && is_scalar($selectedValues['startdate']))
+			{
+				$startdate = Date::of((string) $selectedValues['startdate'])->format('Y-m-d\TH:i:s.999\Z');
+			}
+		}
+		catch (\Exception $e)
+		{
+			$startdate = '*';
+		}
+		try
+		{
+			if (!empty($selectedValues['enddate']) && is_scalar($selectedValues['enddate']))
+			{
+				$enddate = Date::of((string) $selectedValues['enddate'])->format('Y-m-d\TH:i:s.999\Z');
+			}
+		}
+		catch (\Exception $e)
+		{
+			$enddate = '*';
+		}
 		$facetString = '(' . $filterField . ':[' . $startdate . ' TO ' . $enddate . '])';
 		$query->addFilter($queryName, $facetString, array(strtolower($filterField) . '_type'));
 		return true;

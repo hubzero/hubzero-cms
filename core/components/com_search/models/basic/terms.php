@@ -226,7 +226,7 @@ class Terms extends Obj
 			$this->section = explode(':', $match[1]);
 			$raw = preg_replace('/^' . preg_quote($match[1]) . ':/', '', $raw);
 		}
-		else if (array_key_exists('section', $_GET))
+		else if (array_key_exists('section', $_GET) && is_string($_GET['section']))
 		{
 			$this->section = array(preg_replace('/[^a-z0-9_:.\-]/i', '', (string) $_GET['section']));
 		}
