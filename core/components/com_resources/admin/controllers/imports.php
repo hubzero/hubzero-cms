@@ -167,6 +167,11 @@ class Imports extends AdminController
 		$params = Request::getArray('params', array());
 		$file   = Request::getArray('file', array(), 'FILES');
 
+		// The data file is whatever was uploaded into the import's own folder
+		// (below); a posted import[file] would be joined onto that folder
+		// unsanitised and read by the importer.
+		unset($fields['file']);
+
 		// create import model object
 		$import = Import::oneOrNew($fields['id'])->set($fields);
 
