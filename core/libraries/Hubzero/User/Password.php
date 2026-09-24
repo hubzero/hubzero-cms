@@ -153,7 +153,10 @@ class Password
 		// @FIXME: this should fail if id doesn't exist in #__users
 		if ($this->user_id > 0)
 		{
-			$query = "INSERT INTO #__users_password (user_id) VALUES ( " . $db->quote($this->user_id) . ");";
+			// passhash is NOT NULL with no default: name it, or the insert fails
+			// on a strict-SQL server (every brand-new registration lands here
+			// from changePassword() before any password row exists)
+			$query = "INSERT INTO #__users_password (user_id, passhash) VALUES ( " . $db->quote($this->user_id) . ", " . $db->quote((string) $this->passhash) . ");";
 
 			$db->setQuery($query);
 

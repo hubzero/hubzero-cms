@@ -1002,6 +1002,12 @@ class Register extends SiteController
 					$user->setParam('return', $regReturn);
 				}
 
+				// setParam() only touches the in-memory registry; write it to the
+				// column. #__users.params is NOT NULL with no default, so on a
+				// strict-SQL server leaving it unset made every sign-up fail
+				// ("Field 'params' doesn't have a default value")
+				$user->set('params', $user->params->toString());
+
 				// If we managed to create a user
 				if ($user->save())
 				{

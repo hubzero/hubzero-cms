@@ -894,7 +894,12 @@ class Profile extends Obj
 
 			if ($this->get($property) === null)
 			{
-				$query .= "$property=NULL";
+				// DEFAULT, not NULL: most #__xprofiles columns are NOT NULL
+				// with a '' / 0 default, so writing NULL for an unset property
+				// failed on strict-SQL servers (e.g. userPassword while
+				// create() fills in a brand-new registration). Nullable
+				// columns default to NULL, so they are unchanged.
+				$query .= "$property=DEFAULT";
 			}
 			else
 			{
