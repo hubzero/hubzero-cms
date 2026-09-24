@@ -47,8 +47,15 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
 
 	public function login(&$credentials, &$options)
 	{
-		$return = Request::getString('return', '');
-		$options['return'] = base64_decode($return);
+		$return = base64_decode(Request::getString('return', ''));
+
+		// Only an internal target is followed after login (see the google plugin)
+		if (!$return || !\Hubzero\Utility\Uri::isInternal($return))
+		{
+			$return = '';
+		}
+
+		$options['return'] = $return;
 		return;
 	}
 
