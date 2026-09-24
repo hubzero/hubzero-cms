@@ -84,7 +84,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public $initiate = array(
 		'created',
-		'created_by'
+		'created_by',
+		'footertext'
 	);
 
 	/**
@@ -199,6 +200,21 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$data['fulltxt'] = '';
 		}
 		return str_replace('<br>', '<br />', $data['fulltxt']);
+	}
+
+	/**
+	 * Generates automatic footertext field value on create
+	 *
+	 * footertext is TEXT NOT NULL with no default, and most creators (the
+	 * attachment link adder and uploader, child resources) never set it, so
+	 * a strict-mode database refused the insert
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticFootertext($data)
+	{
+		return isset($data['footertext']) ? (string) $data['footertext'] : '';
 	}
 
 	/**
