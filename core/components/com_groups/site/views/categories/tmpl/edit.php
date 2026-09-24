@@ -65,5 +65,6 @@ endif;
 		<input type="hidden" name="controller" value="categories" />
 		<input type="hidden" name="task" value="save" />
 		<input type="hidden" name="category[id]" value="<?php echo intval($this->category->get('id', 0)); ?>" />
+		<?php echo Html::input('token'); ?>
 	</form>
 </section>

@@ -153,7 +153,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 					<div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW'); ?></div>
 					<div class="preview">
 						<?php if ($isImage) : ?>
-							<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" alt="<?php echo $this->escape(basename($file)); ?>" />
+							<img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/assets/img/loading.gif" data-src="<?php echo $this->escape($downloadPath); ?>" alt="<?php echo $this->escape(basename($file)); ?>" />
 						<?php else : ?>
 							<p><strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?></strong></p>
 						<?php endif; ?>
@@ -174,13 +174,13 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 							</li>
 						<?php endif; ?>
 						<li class="path">
-							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $downloadPath; ?></span>
+							<strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $this->escape($downloadPath); ?></span>
 						</li>
 						<li>
 							<?php if ($this->authorized && isset($editorName) && $editorName != '') : ?>
-								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile('<?php echo $downloadPath; ?>');"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
+								<a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile(<?php echo $this->escape(json_encode($downloadPath)); ?>);"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
 							<?php endif; ?>
-							<a href="<?php echo $downloadPath; ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
+							<a href="<?php echo $this->escape($downloadPath); ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
 							<?php if ($this->authorized) : ?>
 								<?php if ($this->group->published == 1) : ?>
 									<a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
@@ -190,7 +190,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 									<a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
 								<?php endif; ?>
 								<?php if ($this->group->published == 1) : ?>
-									<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+									<a data-file="<?php echo $this->escape($relFilePath); ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
 								<?php endif; ?>
 							<?php endif; ?>
 						</li>

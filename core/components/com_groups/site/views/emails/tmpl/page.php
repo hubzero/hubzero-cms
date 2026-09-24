@@ -74,7 +74,7 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
 		<thead>
 			<tr>
 				<th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
-					<?php echo $page->get('title'); ?>
+					<?php echo $this->escape($page->get('title')); ?>
 				</th>
 			</tr>
 		</thead>

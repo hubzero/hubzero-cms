@@ -149,7 +149,7 @@ class Group extends Table
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE cn='$oid' LIMIT 1";
+		$sql  = "SELECT * FROM $this->_tbl WHERE cn=" . $this->_db->quote($oid) . " LIMIT 1";
 		$this->_db->setQuery($sql);
 		if ($result = $this->_db->loadAssoc())
 		{

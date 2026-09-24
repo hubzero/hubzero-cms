@@ -128,11 +128,22 @@ class Categories extends Base
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$category = Request::getArray('category', array(), 'post');
 
 		// add group id to category
 		$category['gidNumber'] = $this->group->get('gidNumber');
+		$category['id']        = (int) ($category['id'] ?? 0);
+
+		// the colour is written into <style> blocks and data-color attributes
+		// by the page views, so only a hex value may be stored
+		if (isset($category['color']) && !preg_match('/^[0-9a-fA-F]{3,6}$/', $category['color']))
+		{
+			$category['color'] = '';
+		}
 
 		// load category object
 		$this->category = new Page\Category($category['id']);
@@ -179,7 +190,7 @@ class Categories extends Base
 				'description' => Lang::txt(
 					'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->_task == 'new' ? 'CREATED' : 'UPDATED'),
 					$this->category->get('title'),
-					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+					'<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
 				),
 				'details'     => array(
 					'title'     => $this->category->get('title'),
@@ -242,7 +253,7 @@ class Categories extends Base
 				'description' => Lang::txt(
 					'COM_GROUPS_ACTIVITY_CATEGORY_DELETED',
 					$category->get('title'),
-					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+					'<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
 				),
 				'details'     => array(
 					'title'     => $category->get('title'),

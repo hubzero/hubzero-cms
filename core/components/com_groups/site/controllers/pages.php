@@ -424,7 +424,8 @@ class Pages extends Base
 		Helpers\Pages::checkin($this->page->get('id'));
 
 		// redirect to return url
-		if ($return = Request::getString('return', '', 'post'))
+		if (($return = Request::getString('return', '', 'post'))
+		 && \Hubzero\Utility\Uri::isInternal(base64_decode($return)))
 		{
 			$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
 			App::redirect(base64_decode($return));
@@ -627,7 +628,8 @@ class Pages extends Base
 
 		//inform user & redirect
 		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages');
-		if ($r = Request::getString('return', '', 'get'))
+		if (($r = Request::getString('return', '', 'get'))
+		 && \Hubzero\Utility\Uri::isInternal(base64_decode($r)))
 		{
 			$url = base64_decode($r);
 		}
@@ -674,6 +676,10 @@ class Pages extends Base
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries (groups.js posts to the list's data-url,
+		// which carries the token in its query string)
+		Request::checkToken(['get', 'post']);
+
 		//get the request vars
 		$pagesOrder = Request::getArray('order', array(), 'post');
 
@@ -682,17 +688,24 @@ class Pages extends Base
 		{
 			// must have id
 			// dont add home page
-			if (!$pageOrder['item_id'])
+			if (!is_array($pageOrder) || empty($pageOrder['item_id']))
 			{
 				continue;
 			}
 
 			// update the pages parent, depth, left, right, and alias
-			$page = new Page($pageOrder['item_id']);
-			$page->set('parent', $pageOrder['parent_id']);
-			$page->set('depth', ($pageOrder['depth'] - 1));
-			$page->set('lft', $pageOrder['left']);
-			$page->set('rgt', $pageOrder['right']);
+			$page = new Page((int) $pageOrder['item_id']);
+
+			// item_id names any page on the hub; only this group's are ours to move
+			if (!$page->get('id') || !$page->belongsToGroup($this->group))
+			{
+				continue;
+			}
+
+			$page->set('parent', (int) ($pageOrder['parent_id'] ?? 0));
+			$page->set('depth', ((int) ($pageOrder['depth'] ?? 1) - 1));
+			$page->set('lft', (int) ($pageOrder['left'] ?? 0));
+			$page->set('rgt', (int) ($pageOrder['right'] ?? 0));
 			$page->set('alias', $page->uniqueAlias());
 			$page->store(false);
 		}
@@ -755,11 +768,12 @@ class Pages extends Base
 		$this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_SET', $page->get('title')), 'passed');
 
 		// redirect
-		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
-		if ($return = Request::getString('return', '', 'get'))
+		if (($return = Request::getString('return', '', 'get'))
+		 && \Hubzero\Utility\Uri::isInternal(base64_decode($return)))
 		{
 			App::redirect(base64_decode($return));
 		}
+		App::redirect(Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
 	}
 
 	/**
@@ -882,6 +896,9 @@ class Pages extends Base
 			$this->setNotification($newVersion->getError(), 'error');
 			return $this->versionsTask();
 		}
+
+		// the activity entry links back to the page's version history
+		$url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id'));
 
 		// Log activity
 		$recipients = array(

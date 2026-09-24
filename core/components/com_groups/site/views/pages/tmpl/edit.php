@@ -24,7 +24,9 @@ $return      = Request::getString('return', '');
 $return_link = $base_link;
 if ($return != '')
 {
-	if (filter_var(base64_decode($return), FILTER_VALIDATE_URL))
+	// only a link back into this hub (FILTER_VALIDATE_URL alone lets a
+	// javascript: URL with a host part through)
+	if (\Hubzero\Utility\Uri::isInternal(base64_decode($return)))
 	{
 		$return_link = base64_decode($return);
 	}
@@ -219,7 +221,7 @@ if ($this->page->get('id'))
 							<option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_NULL'); ?></option>
 							<?php foreach ($this->categories as $pageCategory) : ?>
 								<?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-								<option <?php echo $sel; ?> data-color="#<?php echo $pageCategory->get('color'); ?>" value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
+								<option <?php echo $sel; ?> data-color="#<?php echo $this->escape($pageCategory->get('color')); ?>" value="<?php echo (int) $pageCategory->get('id'); ?>"><?php echo $this->escape($pageCategory->get('title')); ?></option>
 							<?php endforeach; ?>
 							<option value="other"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER'); ?></a>
 						</select>

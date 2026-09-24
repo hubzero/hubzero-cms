@@ -111,8 +111,13 @@ class Membersv1_0 extends ApiController
 			$response['managers'] = $managers;
 		}
 
+		// Pending invitations and applications are manager business: the
+		// site UI shows them to managers only.
+		$manages = in_array($uid, (array) $group->get('managers'))
+			|| User::authorise('core.admin', 'com_groups');
+
 		// add invitees
-		if (in_array('invitees', $list))
+		if ($manages && in_array('invitees', $list))
 		{
 			foreach ($invitees as $k => $invitee)
 			{
@@ -121,8 +126,8 @@ class Membersv1_0 extends ApiController
 			$response['invitees'] = $invitees;
 		}
 
-		// add managers
-		if (in_array('applicants', $list))
+		// add applicants
+		if ($manages && in_array('applicants', $list))
 		{
 			foreach ($applicants as $k => $applicant)
 			{

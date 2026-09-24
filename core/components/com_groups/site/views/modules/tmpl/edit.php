@@ -172,5 +172,6 @@ foreach ($menus as $menu)
 		<input type="hidden" name="controller" value="modules" />
 		<input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '', 'get')); ?>" />
 		<input type="hidden" name="task" value="save" />
+		<?php echo Html::input('token'); ?>
 	</form>
 </section>

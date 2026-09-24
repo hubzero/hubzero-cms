@@ -71,7 +71,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
 		<thead>
 			<tr>
 				<th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
-					<?php echo $this->object->get('title'); ?>
+					<?php echo $this->escape($this->object->get('title')); ?>
 				</th>
 			</tr>
 		</thead>

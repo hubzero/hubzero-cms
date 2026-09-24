@@ -1098,6 +1098,9 @@ class Groups extends Base
 			return $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check to make sure we have  cname
 		if (!$this->cn)
 		{
@@ -1366,6 +1369,19 @@ class Groups extends Base
 		$filters = array();
 		$filters['cn'] = trim(Request::getString('group', ''));
 
+		// Without a group this handed every account on the hub to any
+		// logged-in user; and a hidden group's roster is for its members
+		// (support's ticket-owner picker relies on visible groups' lists).
+		$group = $filters['cn'] ? Group::getInstance($filters['cn']) : null;
+		if (!$group || !$group->get('gidNumber')
+		 || ($group->get('discoverability') == 1
+		  && !$group->isMember(User::get('id'))
+		  && !User::authorise('core.admin', $this->_option)))
+		{
+			echo '{"members":[]}';
+			exit();
+		}
+
 		// Limit number of returned rows because PHP runs out of memory and the hub fails with large numbers
 		if ($filters['cn'])
 		{
@@ -1395,7 +1411,7 @@ class Groups extends Base
 		{
 			foreach ($rows as $row)
 			{
-				$json[] = '{"username":"' . $row->username . '","name":"' . htmlentities(stripslashes($row->name), ENT_COMPAT, 'UTF-8') . '"}';
+				$json[] = json_encode(array('username' => $row->username, 'name' => htmlentities(stripslashes($row->name), ENT_COMPAT, 'UTF-8')));
 			}
 		}
 
@@ -1515,6 +1531,15 @@ class Groups extends Base
 				$scope = ($scope ? trim($scope, '/') . '/' : $scope);
 			}
 			$page = \Components\Wiki\Models\Page::oneByPath($scope . $pagename, 'group', $group->get('gidNumber'));
+
+			// An unknown page is a blank row: its id is null and the base path
+			// below would collapse to the wiki root, where every page's
+			// attachments live under <page id>/<file>.
+			if (!$page->get('id'))
+			{
+				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
+				return;
+			}
 
 			// Check specific wiki page access
 			if ($page->get('access') == 1 && !in_array(User::get('id'), $group->get('members')) && $authorized != 'admin')

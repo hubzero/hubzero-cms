@@ -104,6 +104,12 @@ class Modules extends Base
 		// get the category object
 		$this->view->module = new Module($moduleid);
 
+		// only this group's own modules open in its editor
+		if ($this->view->module->get('id') && !$this->view->module->belongsToGroup($this->group))
+		{
+			App::abort(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+		}
+
 		// are we passing a module object
 		if ($this->module)
 		{
@@ -151,19 +157,30 @@ class Modules extends Base
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$module = Request::getArray('module', array(), 'post');
 		$menu   = Request::getArray('menu', array(), 'post');
 
 		// set gid number
 		$module['gidNumber'] = $this->group->get('gidNumber');
+		$module['id']        = (int) ($module['id'] ?? 0);
 
 		// clean title & position
-		$module['title']    = preg_replace("/[^-_ a-zA-Z0-9]+/", "", $module['title']);
-		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", "", $module['position']);
+		$module['title']    = preg_replace("/[^-_ a-zA-Z0-9]+/", "", $module['title'] ?? '');
+		$module['position'] = preg_replace("/[^-_a-zA-Z0-9]+/", "", $module['position'] ?? '');
 
 		// get the category object
 		$this->module = new Module($module['id']);
+
+		// module[id] names any row; a manager may only save their own
+		// group's modules (bind() below would otherwise re-home it here)
+		if ($this->module->get('id') && !$this->module->belongsToGroup($this->group))
+		{
+			App::abort(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+		}
 
 		// ordering change
 		$ordering = null;
@@ -297,7 +314,7 @@ class Modules extends Base
 				'description' => Lang::txt(
 					'COM_GROUPS_ACTIVITY_MODULE_' . ($module['id'] ? 'UPDATED' : 'CREATED'),
 					$this->module->get('title'),
-					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+					'<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
 				),
 				'details'     => array(
 					'title'     => $this->module->get('title'),
@@ -412,7 +429,7 @@ class Modules extends Base
 				'description' => Lang::txt(
 					'COM_GROUPS_ACTIVITY_MODULE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
 					$module->get('title'),
-					'<a href="' . $url . '">' . $this->group->get('description') . '</a>'
+					'<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
 				),
 				'details'     => array(
 					'title'     => $module->get('title'),

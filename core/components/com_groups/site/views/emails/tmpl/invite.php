@@ -129,7 +129,7 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
 								<td style="text-align: left; padding: 1em 0.5em 0 0.5em;" align="left">
 									<?php if ($this->msg) { ?>
 										<p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
-											<?php echo $this->msg; ?>
+											<?php echo nl2br($this->escape($this->msg)); ?>
 										</p>
 									<?php } else { ?>
 										<p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">

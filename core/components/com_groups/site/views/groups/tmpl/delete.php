@@ -67,6 +67,7 @@ $this->css()
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 		<input type="hidden" name="task" value="dodelete" />
+		<?php echo Html::input('token'); ?>
 
 		<p class="submit">
 			<input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('DELETE'); ?>" />

@@ -897,9 +897,15 @@ class Manage extends AdminController
 
 			// Check to make sure using correct token
 			$output = shell_exec($cmd . "git remote -v");
-			$url_bits = parse_url(explode("\t", explode(" ", $output)[1])[1]);
+			// A repo with no remote yet prints nothing; indexing that is a
+			// PHP 8 warning (500) on Fetch. parse_url() leaves 'pass' out
+			// when the URL carries no credentials.
+			$remote   = explode(" ", (string) $output);
+			$remote   = isset($remote[1]) ? explode("\t", $remote[1]) : array();
+			$url_bits = isset($remote[1]) ? parse_url($remote[1]) : false;
 			$gitLabKey = $client->get('token');
-			if ($url_bits["pass"] !== $gitLabKey) {
+			if (is_array($url_bits) && isset($url_bits['scheme'], $url_bits['user'], $url_bits['host'], $url_bits['path'])
+			 && (!isset($url_bits['pass']) || $url_bits['pass'] !== $gitLabKey)) {
 				$gitLabUrl = $url_bits["scheme"] . '://' . $url_bits["user"] . ':' . $gitLabKey . '@' . $url_bits["host"] . $url_bits["path"];
 				$rcmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_reset_remote.sh ';
 				$rcmd .= escapeshellarg((string) $uploadPath) . ' ' . escapeshellarg((string) $gitLabUrl) . ' 2>&1';

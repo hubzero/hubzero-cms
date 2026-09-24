@@ -404,7 +404,7 @@ class Imports extends AdminController
 	public function doRunTask()
 	{
 		// Check token
-		//Session::checkToken();
+		Session::checkToken();
 
 		// Start of import
 		$start = microtime(true);

@@ -12,7 +12,8 @@ $style = '';
 if ($this->category !== null)
 {
 	$cls .= ' category-' . $this->page->get('category');
-	$this->css('.category-' . $this->page->get('category') . '{ border-left-color: #' .  $this->category->get('color') . '; }');
+	// the colour is a stored value going into a <style> block: hex digits only
+	$this->css('.category-' . (int) $this->page->get('category') . '{ border-left-color: #' . preg_replace('/[^0-9a-fA-F]/', '', (string) $this->category->get('color')) . '; }');
 }
 if (isset($this->version) && $this->version->get('approved') == 0)
 {
