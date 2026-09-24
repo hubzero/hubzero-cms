@@ -487,14 +487,19 @@ class Mysql
 	{
 		$database = \App::get('db');
 
-		// get session timeout period
-		$timeout = \App::get('config')->get('timeout');
+		// Session lifetime in seconds, the same figure the session providers
+		// garbage-collect on (config lifetime is in minutes, default 15).
+		$lifetime = (int) \App::get('config')->get('lifetime');
+		$timeout  = $lifetime ? $lifetime * 60 : 900;
 
 		// load user from session table
+		// `time` is a unix timestamp, so it has to be measured against
+		// UNIX_TIMESTAMP(); against NOW() the comparison was always true and
+		// a row was accepted until garbage collection removed it.
 		$sql = "SELECT userid
 				  FROM `#__session`
 				  WHERE `session_id`=" . $database->quote($sessionId) . "
-				  AND time + " . (int) $timeout . " <= NOW();";
+				  AND time + " . (int) $timeout . " >= UNIX_TIMESTAMP();";
 				//  AND client_id = 0;";
 		$database->setQuery($sql);
 		return $database->loadResult();
@@ -607,9 +612,10 @@ class Mysql
 	 */
 	public function createInternalRequestClient()
 	{
-		// client id/secret
+		// client id/secret -- the secret must not be derivable from the id,
+		// which the owning developer account can read back
 		$clientId     = md5(uniqid(\User::get('id'), true));
-		$clientSecret = sha1($clientId);
+		$clientSecret = bin2hex(random_bytes(20));
 
 		// application model
 		$application = new \Components\Developer\Models\Application();
@@ -620,7 +626,9 @@ class Mysql
 		$application->set('client_secret', $clientSecret);
 		$application->set('grant_types', 'client_credentials session tool');
 		$application->set('created', with(new Date('now'))->toSql());
-		$application->set('created_by', \User::get('id'));
+		// The hub's own client belongs to nobody in particular; whichever
+		// member happened to trigger its creation must not own it
+		$application->set('created_by', 0);
 		$application->set('state', 1);
 		$application->set('hub_account', 1);
 		// Report whether it actually saved. Returning true regardless left the
