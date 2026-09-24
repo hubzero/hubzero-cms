@@ -28,24 +28,6 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php';
 class Pagesv1_0 extends ApiController
 {
 	/**
-	 * Execute a request
-	 *
-	 * Group and project pages resolve their access through adapters that
-	 * live in plugins; the site controllers register them, this one did not,
-	 * so reading, updating or deleting any group or project page through the
-	 * API died with 'Invalid adapter type of "group"'.
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
-		Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
-
-		parent::execute();
-	}
-
-	/**
 	 * Display a list of pages
 	 *
 	 * @apiMethod GET

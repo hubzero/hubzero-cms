@@ -747,8 +747,9 @@ class Pages extends SiteController
 			return $this->editTask($revision);
 		}
 
-		// Get allowed authors
-		if (!Author::setForPage(Request::getString('authors', '', 'post'), $this->page->get('id')))
+		// Get allowed authors (a suggester submits a revision only: adding
+		// themselves as an author here would make their next save auto-approved)
+		if (!$suggestOnly && !Author::setForPage(Request::getString('authors', '', 'post'), $this->page->get('id')))
 		{
 			$this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'));
 			return $this->editTask($revision);
@@ -824,8 +825,8 @@ class Pages extends SiteController
 			if ($revision->get('approved'))
 			{
 				$this->page->set('version_id', $revision->get('id'));
+				$this->page->set('modified', $revision->get('created'));
 			}
-			$this->page->set('modified', $revision->get('created'));
 		}
 		else
 		{
@@ -839,8 +840,11 @@ class Pages extends SiteController
 			return $this->editTask($revision);
 		}
 
-		// Process tags
-		$this->page->tag(Request::getString('tags', ''));
+		// Process tags (not for a suggestion, which changes the revision only)
+		if (!$suggestOnly)
+		{
+			$this->page->tag(Request::getString('tags', ''));
+		}
 
 		// Trigger after save event
 		Event::trigger('wiki.onWikiAfterSave', array(&$this->page, $isNew));

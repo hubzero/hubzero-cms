@@ -524,6 +524,14 @@ class Page extends Relational
 			{
 				static::$paths[] = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
 
+				// Plugins supply the group and project adapters. Every entry point
+				// used to have to register them itself, and the ones that did not
+				// (the API, the media controller) died on any group page.
+				foreach (glob(PATH_CORE . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $scope . '.php') ?: array() as $plugged)
+				{
+					static::$paths[] = $plugged;
+				}
+
 				foreach (static::$paths as $path)
 				{
 					if (is_file($path))
