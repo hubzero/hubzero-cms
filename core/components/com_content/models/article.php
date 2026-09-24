@@ -148,7 +148,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function automaticAssetId()
 	{
-		if (!empty($this->assetRules))
+		// Posted rules are applied only for core.admin now, so a row created by
+		// anyone else arrives with none; it still needs its asset (the column
+		// is NOT NULL), or the save fails
+		if (!empty($this->assetRules) || !$this->get('asset_id'))
 		{
 			return parent::automaticAssetId();
 		}
