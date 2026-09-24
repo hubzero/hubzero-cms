@@ -133,7 +133,7 @@ class Page extends Table
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['title']) . '%');
+			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 		if (isset($filters['active']))
 		{

@@ -206,7 +206,7 @@ class Course extends Table
 			if (is_array($filters['state']))
 			{
 				$filters['state'] = array_map('intval', $filters['state']);
-				$where[] = "c.state IN (" . $filters['state'] . ")";
+				$where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
 			}
 			else
 			{

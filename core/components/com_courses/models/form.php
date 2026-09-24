@@ -156,7 +156,7 @@ class PdfForm
 	{
 		$dbh = self::getDbh();
 
-		$dbh->setQuery('SELECT 1 FROM `#__courses_forms WHERE` title IS NOT null AND title != \'\' AND active = 0');
+		$dbh->setQuery('SELECT 1 FROM `#__courses_forms` WHERE title IS NOT null AND title != \'\' AND active = 0');
 
 		return (bool)$dbh->loadResult();
 	}
@@ -228,7 +228,7 @@ class PdfForm
 		}
 
 		$versions = array();
-		$dirs     = scandir($base);
+		$dirs     = is_dir($base) ? scandir($base) : array();
 		foreach ($dirs as $dir)
 		{
 			if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..')

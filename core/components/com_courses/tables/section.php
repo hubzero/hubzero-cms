@@ -168,9 +168,9 @@ class Section extends Table
 
 		if (isset($filters['enrollment']))
 		{
-			$filters['enrollment'] = array_map('intval', $filters['enrollment']);
 			if (is_array($filters['enrollment']))
 			{
+				$filters['enrollment'] = array_map('intval', $filters['enrollment']);
 				$where[] = "os.enrollment IN (" . implode(',', $filters['enrollment']) . ")";
 			}
 			else

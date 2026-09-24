@@ -200,7 +200,7 @@ class Log extends Table
 		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope);
 		if ($action)
 		{
-			$query .= " AND action='$action'";
+			$query .= " AND action=" . $this->_db->quote($action);
 		}
 
 		$this->_db->setQuery($query);

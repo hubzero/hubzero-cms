@@ -213,11 +213,6 @@ class Asset extends Table
 		$query  = "SELECT DISTINCT ca.*, caa.ordering, sd.publish_up, sd.publish_down, sd.section_id, cag.unit_id";
 		$query .= $this->_buildQuery($filters['w']);
 
-		if (!empty($filters['start']) && !empty($filters['limit']))
-		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
-		}
-
 		if (!empty($filters['order_by']) && !empty($filters['order_dir']))
 		{
 			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order_by']) ?: '1') . " " . (strtoupper((string) $filters['order_dir']) === 'ASC' ? 'ASC' : 'DESC');
@@ -225,6 +220,11 @@ class Asset extends Table
 		else
 		{
 			$query .= " ORDER BY caa.ordering";
+		}
+
+		if (isset($filters['limit']) && (int) $filters['limit'] > 0)
+		{
+			$query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
@@ -241,6 +241,9 @@ class Asset extends Table
 	 */
 	public function findByScope($scope, $scope_id, $filters=array())
 	{
+		$scope    = preg_replace('/[^a-z_]/', '', strtolower((string) $scope));
+		$scope_id = (int) $scope_id;
+
 		$query  = "SELECT DISTINCT ca.*";
 		$query .= " FROM {$this->_tbl} AS ca";
 		$query .= " LEFT JOIN `#__courses_asset_associations` AS caa ON caa.asset_id = ca.id";
@@ -290,7 +293,7 @@ class Asset extends Table
 		$query  = "SELECT caa.id";
 		$query .= " FROM $this->_tbl AS ca";
 		$query .= " LEFT JOIN #__courses_asset_associations AS caa ON caa.asset_id = ca.id";
-		$query .= " WHERE ca.id = " . $this->_db->quote($id);
+		$query .= " WHERE ca.id = " . $this->_db->quote((int) $this->id);
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadObjectList();

@@ -227,7 +227,7 @@ class Media extends SiteController
 
 		if ($file['size'] > $sizeLimit)
 		{
-			Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubsero\Utility\Number::formatBytes($sizeLimit)));
+			Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
 			return $this->displayTask();
 		}
 
@@ -302,7 +302,7 @@ class Media extends SiteController
 					}
 				}
 
-				$model->set('logo', $filename . '.' . $ext);
+				$model->set('logo', $file['name']);
 				if (!$model->store())
 				{
 					Notify::error($model->getError());
@@ -657,13 +657,11 @@ class Media extends SiteController
 			return;
 		}
 
-		// Output HTML
-		$this->view
-			->set('config', $config)
-			->set('course', $course)
-			->set('listdir', $listdir)
-			->setLayout('media')
-			->display();
+		// There is no media layout for this controller; send the user back to
+		// the course page (or the course list) carrying whatever was notified.
+		App::redirect(
+			\Route::url('index.php?option=' . $this->_option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false)
+		);
 	}
 
 	/**
@@ -675,12 +673,6 @@ class Media extends SiteController
 	{
 		// Incoming
 		$listdir = Request::getInt('listdir', 0, 'get');
-
-		// Check if coming from another function
-		if ($listdir == '')
-		{
-			$listdir = $this->listdir;
-		}
 
 		// Same predicate as the upload and delete tasks: this enumerates a
 		// course's uploaded filenames, including unpublished courses, and had
@@ -748,7 +740,7 @@ class Media extends SiteController
 			->set('docs', $docs)
 			->set('folders', $folders)
 			->set('images', $images)
-			->set('config', $config)
+			->set('config', $this->config)
 			->set('listdir', $listdir)
 			->display();
 	}

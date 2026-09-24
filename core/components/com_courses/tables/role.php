@@ -123,7 +123,7 @@ class Role extends Table
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['title']) . '%');
+			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 
 		if (count($where) > 0)
@@ -163,7 +163,7 @@ class Role extends Table
 			if (is_array($filters['offering_id']))
 			{
 				$offering_id = array_map('intval', $filters['offering_id']);
-				$offering_id = implode(',', $filters['offering_id']);
+				$offering_id = implode(',', $offering_id);
 			}
 			else
 			{
@@ -182,9 +182,9 @@ class Role extends Table
 			}
 			$query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 		}
-		if (!empty($filters['start']) && !empty($filters['limit']))
+		if (isset($filters['limit']) && (int) $filters['limit'] > 0)
 		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+			$query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

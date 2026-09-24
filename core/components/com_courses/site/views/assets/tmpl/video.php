@@ -326,7 +326,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 						<?php
 							//get file modified time
 							$source = $subtitle->source;
-							$auto   = $subtitle->autoplay;
+							$auto   = isset($subtitle->autoplay) ? $subtitle->autoplay : 0;
 
 							//if were playing local files
 							if (substr($subtitle->source, 0, 4) != 'http')
@@ -559,7 +559,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<?php endforeach; ?>
 										<a href="<?php echo $this->escape($content_folder . DS . $slide->media[0]->source); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 									</video>
-									<img src="<?php echo $this->escape($content_folder . DS . $slide->media[3]->source); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
+									<img src="<?php echo $this->escape(isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : ''); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
 								<?php endif; ?>
 							</li>
 							<?php $counter++; ?>
@@ -764,7 +764,7 @@ break;
 										data-autoplay="<?php echo $this->escape($sub->autoplay); ?>"
 										data-type="subtitle"
 										data-lang="<?php echo $this->escape($sub->name); ?>"
-										data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo $this->escape(filemtime($sub->source)); ?>"></div>
+										data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo $this->escape((substr($sub->source, 0, 4) != 'http' && file_exists(PATH_ROOT . $sub->source)) ? filemtime(PATH_ROOT . $sub->source) : 0); ?>"></div>
 								<?php endforeach; ?>
 							<?php endif; ?>
 
@@ -799,14 +799,14 @@ $last_slide_id = 0; ?>
 											$thumb = $content_folder.DS.$slide->media;
 										}
 									?>
-									<img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+									<img src="<?php echo $this->escape($thumb); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 									<span>
 										<?php
 											$num++;
 											$max = 30;
 											$elipsis = '&hellip;';
 											echo ($num) . '. ';
-											echo substr($slide->title, 0, $max);
+											echo $this->escape(substr($slide->title, 0, $max));
 
 											if (strlen($slide->title) > $max) {
 												echo $elipsis;

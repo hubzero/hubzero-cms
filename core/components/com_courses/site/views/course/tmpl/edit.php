@@ -67,7 +67,7 @@ $this->css('course.css')
 					if (count($tf) > 0) {
 						echo implode("\n", $tf);
 					} else { ?>
-						<input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
+						<input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->course->tags('string')); ?>" />
 					<?php } ?>
 
 					<span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>

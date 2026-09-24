@@ -180,9 +180,9 @@ class Unit extends Table
 
 		$query .= " ORDER BY cu.ordering";
 
-		if (!empty($filters['start']) && !empty($filters['limit']))
+		if (isset($filters['limit']) && (int) $filters['limit'] > 0)
 		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+			$query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);

@@ -294,8 +294,6 @@ class Course extends SiteController
 		// Push back into edit mode if any errors
 		if (!$course->bind($data))
 		{
-			$this->tags = $tags;
-
 			Notify::error($course->getError(), 'courses');
 			return $this->newTask($course);
 		}
@@ -313,8 +311,6 @@ class Course extends SiteController
 		// Push back into edit mode if any errors
 		if (!$course->store(true))
 		{
-			$this->tags = $tags;
-
 			Notify::error($course->getError(), 'courses');
 			return $this->editTask($course);
 		}
@@ -490,6 +486,10 @@ class Course extends SiteController
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
+
+		// The course was resolved above (an alias is accepted); store its id, not
+		// whatever spelling was posted, since check() intval()s the value.
+		$data['course_id'] = (int) $course->get('id');
 
 		// Is this a new entry or updating?
 		$isNew = false;
@@ -1074,6 +1074,12 @@ class Course extends SiteController
 		if ($rtrn)
 		{
 			$rtrn = base64_decode($rtrn);
+
+			// Only ever send the user back to a page on this hub
+			if (!$rtrn || !\Hubzero\Utility\Uri::isInternal($rtrn))
+			{
+				$rtrn = '';
+			}
 		}
 
 		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
@@ -1177,6 +1183,12 @@ class Course extends SiteController
 		if ($rtrn)
 		{
 			$rtrn = base64_decode($rtrn);
+
+			// Only ever send the user back to a page on this hub
+			if (!$rtrn || !\Hubzero\Utility\Uri::isInternal($rtrn))
+			{
+				$rtrn = '';
+			}
 		}
 
 		$fields = Request::getArray('fields', array('title' => '', 'alias' => ''), 'post');
