@@ -83,14 +83,14 @@ defined('_HZEXEC_') or die();
 	<div id="jobinfo">
 		<h3>
 			<span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code ?></span><?php $job->title . ' - ' ?>
-			<?php if (preg_match('/(.*)http/i', $job->companyWebsite)) { ?>
-				<a href="<?php echo $job->companyWebsite ?>"><?php echo $job->companyName ?></a>
+			<?php if (preg_match('#^https?://#i', (string) $job->companyWebsite)) { ?>
+				<a href="<?php echo $this->escape($job->companyWebsite) ?>"><?php echo $this->escape($job->companyName) ?></a>
 			<?php } else {
-				echo $job->companyName;
+				echo $this->escape($job->companyName);
 			}
-			echo ', ' . $job->companyLocation;
+			echo ', ' . $this->escape($job->companyLocation);
 			if ($job->companyLocationCountry) {
-				echo ', ' . strtoupper($job->companyLocationCountry);
+				echo ', ' . $this->escape(strtoupper($job->companyLocationCountry));
 			} else {
 				echo '';
 			} ?>
@@ -120,14 +120,14 @@ defined('_HZEXEC_') or die();
 		if ($job->contactName) { ?>
 			<p class="reg details"><?php echo Lang::txt('COM_JOBS_JOB_INFO_CONTACT') ?>:</p><?php echo "\n"; ?>
 			<p class="reg"><?php echo "\n"; ?>
-			<span class="contactname"><?php echo $job->contactName ?></span><?php echo "\n";
+			<span class="contactname"><?php echo $this->escape($job->contactName) ?></span><?php echo "\n";
 			if ($job->contactPhone) { ?>
-				<span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_TEL') . ': ' . $job->contactPhone ?></span><?php echo "\n";
+				<span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_TEL') . ': ' . $this->escape($job->contactPhone) ?></span><?php echo "\n";
 			} else {
 				echo '';
 			}
 			if ($job->contactEmail) { ?>
-				<span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_EMAIL') . ': ' . $job->contactEmail ?></span><?php echo "\n";
+				<span class="contactinfo"><?php echo Lang::txt('COM_JOBS_JOB_TABLE_EMAIL') . ': ' . $this->escape($job->contactEmail) ?></span><?php echo "\n";
 			} else {
 				echo '';
 			} ?>

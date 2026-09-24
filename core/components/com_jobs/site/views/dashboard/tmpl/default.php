@@ -148,13 +148,13 @@ defined('_HZEXEC_') or die();
 					<h3><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?><span><?php echo Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login; ?></span></h3>
 
 					<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY'); ?></span>
-					<p><?php echo $this->employer->companyName ? $this->employer->companyName : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
+					<p><?php echo $this->employer->companyName ? $this->escape($this->employer->companyName) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
 
 					<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_LOCATION'); ?></span>
-					<p><?php echo $this->employer->companyLocation ? $this->employer->companyLocation : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
+					<p><?php echo $this->employer->companyLocation ? $this->escape($this->employer->companyLocation) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
 
 					<span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_WEBSITE'); ?></span>
-					<p><?php echo $this->employer->companyWebsite ? $this->employer->companyWebsite : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
+					<p><?php echo $this->employer->companyWebsite ? $this->escape($this->employer->companyWebsite) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED'); ?></p>
 					<p><?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe') . '" class="cancelit">[ ' . Lang::txt( 'COM_JOBS_EMPLOYER_EDIT_INFO' ) . ' ]</a>'; ?></p>
 				<?php } ?>
 			</div>

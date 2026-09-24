@@ -174,6 +174,7 @@ defined('_HZEXEC_') or die();
 			<div class="submitblock">
 				<input type="hidden" name="subid" value="<?php echo $this->employer->subscriptionid; ?>" />
 				<input type="hidden" name="uid" value="<?php echo $this->uid; ?>" />
+				<?php echo Html::input('token'); ?>
 				<input type="submit" class="option" value="<?php echo $btn; ?>" />
 			</div>
 		</fieldset>

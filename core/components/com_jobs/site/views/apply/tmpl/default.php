@@ -55,9 +55,9 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 		<div id="applyinfo">
 			<h3>
 				<?php echo $this->escape($job->title); ?> -
-				<?php echo preg_match('/(.*)http/i', $job->companyWebsite) ? '<a href="' . $job->companyWebsite . '">' . $job->companyName . '</a>' : $job->companyName; ?>,
-				<?php echo $job->companyLocation; ?>,
-				<?php echo $job->companyLocationCountry; ?> <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
+				<?php echo preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName); ?>,
+				<?php echo $this->escape($job->companyLocation); ?>,
+				<?php echo $this->escape($job->companyLocationCountry); ?> <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
 			</h3>
 		</div>
 
@@ -71,9 +71,10 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 				<input type="hidden" id="jid" name="jid" value="<?php echo $job->id; ?>" />
 				<input type="hidden" id="appid" name="appid" value="<?php echo $appid; ?>" />
 				<input type="hidden" id="uid" name="uid" value="<?php echo User::get('id'); ?>" />
+				<?php echo Html::input('token'); ?>
 				<h3><?php echo Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER'); ?> <span class="opt">(<?php echo Lang::txt('COM_JOBS_OPTIONAL'); ?>)</span></h3>
 				<label>
-					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $application->cover; ?></textarea>
+					<textarea name="cover" id="cover" rows="10" cols="15"><?php echo $this->escape($application->cover); ?></textarea>
 				</label>
 			</fieldset>
 			<div class="clear"></div>

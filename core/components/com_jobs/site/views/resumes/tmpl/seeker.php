@@ -50,7 +50,7 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
 			<?php } ?>
 			<?php if ($this->seeker->tagline) { ?>
 				<blockquote>
-					<?php echo stripslashes($this->seeker->tagline); ?>
+					<?php echo $this->escape(stripslashes($this->seeker->tagline)); ?>
 				</blockquote>
 			<?php } ?>
 		</div>
@@ -61,7 +61,7 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
 				<?php echo $jobcat ? ' &bull; ' . $jobcat : ''; ?>
 			</span>
 			<span class="abouttext">
-				<?php echo stripslashes($this->seeker->lookingfor); ?>
+				<?php echo $this->escape(stripslashes($this->seeker->lookingfor)); ?>
 			</span>
 		</div>
 	</div>
@@ -81,22 +81,23 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
 	<div class="clear leftclear"></div>
 	<span class="indented">
 		<?php if ($resume) { ?>
-			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $title; ?>">
+			<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download'); ?>" class="resume getit" title="<?php echo $this->escape($title); ?>">
 				<?php echo ucfirst(Lang::txt('COM_JOBS_RESUME')); ?>
 			</a>
 			<span class="mini"><?php echo Lang::txt('COM_JOBS_LAST_UPDATE'); ?>: <?php echo $this->seeker->created; ?></span>
 			<?php if ($this->seeker->url) {
-				$url = (strpos($this->seeker->url, "http://") === false && strpos($this->seeker->url, "https://") === false) ? "http://" . $this->seeker->url : $this->seeker->url;
+				// only a web URL becomes a link; anything else gets the http:// prefix
+				$url = preg_match('#^https?://#i', $this->seeker->url) ? $this->seeker->url : 'http://' . ltrim($this->seeker->url, '/');
 				?>
 				<span class="mini"> | </span>
 				<span class="mini">
-					<a href="<?php echo $url; ?>" class="web" rel="external" title="<?php echo Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo Lang::txt('COM_JOBS_WEBSITE'); ?></a>
+					<a href="<?php echo $this->escape($url); ?>" class="web" rel="external" title="<?php echo $this->escape(Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url); ?>"><?php echo Lang::txt('COM_JOBS_WEBSITE'); ?></a>
 				</span>
 			<?php } ?>
 			<?php if ($this->seeker->linkedin) { ?>
 				<span class="mini"> | </span>
 				<span class="mini">
-					<a href="<?php echo $this->seeker->linkedin; ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('COM_JOBS_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('COM_JOBS_LINKEDIN'); ?></a>
+					<a href="<?php echo $this->escape(preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->seeker->linkedin : 'https://' . ltrim($this->seeker->linkedin, '/')); ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('COM_JOBS_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('COM_JOBS_LINKEDIN'); ?></a>
 				</span>
 			<?php } ?>
 		<?php } else { ?>

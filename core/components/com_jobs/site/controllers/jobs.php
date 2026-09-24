@@ -650,6 +650,9 @@ class Jobs extends SiteController
 			return;
 		}
 
+		// Check for request forgeries (the subscribe form is the only producer)
+		Request::checkToken();
+
 		$uid = Request::getInt('uid', User::get('id'));
 		if ($uid && User::get('id') != $uid && !$this->_admin)
 		{
@@ -888,6 +891,8 @@ class Jobs extends SiteController
 		$unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
 
 		// get cost per unit (to compute required refund)
+		$unitcost     = $service->unitprice;
+		$prevunitcost = $unitcost;
 		$refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
 
 		// cancel previous subscription & issue a refund if applicable
@@ -1176,6 +1181,9 @@ class Jobs extends SiteController
 			$this->login();
 			return;
 		}
+
+		// Check for request forgeries (the apply form is the only producer)
+		Request::checkToken();
 
 		$job = new Job($this->database);
 		$ja  = new JobApplication($this->database);
@@ -1925,9 +1933,19 @@ class Jobs extends SiteController
 
 				if (count($col) > 0)
 				{
+					// only the search filters belong here: the stored text is built
+					// from the request, so a name outside this list (say _admin)
+					// must never become a property of the controller
+					$allowed = array('filterby', 'match', 'search', 'category', 'type', 'sortby');
+
 					foreach ($col as $c)
 					{
-						$nuk = explode('=', $c);
+						$nuk = explode('=', $c, 2);
+
+						if (count($nuk) != 2 || !in_array($nuk[0], $allowed, true))
+						{
+							continue;
+						}
 
 						// set filter variables
 						$this->setProperty($nuk[0], $nuk[1]);
@@ -2012,6 +2030,12 @@ class Jobs extends SiteController
 
 		// Incoming
 		$pile = Request::getString('pile', 'all');
+
+		// the pile names the zip file; only the three the dashboard offers
+		if (!in_array($pile, array('all', 'shortlisted', 'applied'), true))
+		{
+			$pile = 'all';
+		}
 
 		// Zip the requested resumes
 		$archive = $this->_archiveResumes($pile);

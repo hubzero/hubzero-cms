@@ -94,10 +94,10 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
 			</td>
 		<?php } ?>
 			<td>
-				<?php echo $this->jobs[$i]->companyName; ?>
+				<?php echo $this->escape($this->jobs[$i]->companyName); ?>
 			</td>
 			<td>
-				<?php echo $this->jobs[$i]->companyLocation . ', ' . $this->jobs[$i]->companyLocationCountry; ?>
+				<?php echo $this->escape($this->jobs[$i]->companyLocation . ', ' . $this->jobs[$i]->companyLocationCountry); ?>
 			</td>
 			<td class="secondary"><?php echo $curcat; ?></td>
 			<td class="secondary"><?php echo $curtype; ?></td>
