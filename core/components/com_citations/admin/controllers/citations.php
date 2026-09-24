@@ -376,6 +376,20 @@ class Citations extends AdminController
 		$citationId = !empty($citation['id']) ? $citation['id'] : null;
 		unset($citation['id']);
 
+		// Blank date fields post ''; strict SQL mode rejects '' for a datetime, so store NULL
+		foreach (array('created', 'date_submit', 'date_accept', 'date_publish') as $datefield)
+		{
+			if (isset($citation[$datefield]) && $citation[$datefield] === '')
+			{
+				$citation[$datefield] = null;
+			}
+		}
+		// A new citation's hidden created field is blank; stamp it as the site form does
+		if (!$citationId && empty($citation['created']))
+		{
+			$citation['created'] = \Date::toSql();
+		}
+
 		// toggle the affiliation
 		if (!isset($citation['affiliated']) || $citation['affiliated'] == null)
 		{
