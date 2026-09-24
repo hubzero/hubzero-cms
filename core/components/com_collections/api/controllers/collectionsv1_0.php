@@ -257,9 +257,13 @@ class Collectionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+		// Format the date on the response, not the row: toObject() parses the
+		// description, and the wiki formatter stores the row back, which sent
+		// the ISO-8601 string to the DATETIME column (strict mode refused it)
+		$response = $row->toObject();
+		$response->created = with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z');
 
-		$this->send($row->toObject());
+		$this->send($response);
 	}
 
 	/**
@@ -437,9 +441,13 @@ class Collectionsv1_0 extends ApiController
 			throw new Exception(Lang::txt('COM_COLLECTIONS_ERROR_SAVING_DATA'), 500);
 		}
 
-		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));
+		// Format the date on the response, not the row: toObject() parses the
+		// description, and the wiki formatter stores the row back, which sent
+		// the ISO-8601 string to the DATETIME column (strict mode refused it)
+		$response = $row->toObject();
+		$response->created = with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z');
 
-		$this->send($row->toObject());
+		$this->send($response);
 	}
 
 	/**

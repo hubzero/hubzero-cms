@@ -149,7 +149,9 @@ class Postsv1_0 extends ApiController
 				$obj->item_id   = $entry->get('item_id');
 				$obj->original  = $entry->get('original');
 				$obj->ordering  = $entry->get('ordering');
-				$obj->title     = $entry->get('title', $item->get('title'));
+				// posts() joins the collection, so the row's "title" is the
+				// collection's title; the post's own title is its item's
+				$obj->title     = $item->get('title', $entry->get('item_title'));
 				$obj->type      = $item->get('type');
 				$obj->created   = $entry->get('created');
 				$obj->created_by = new stdClass;
