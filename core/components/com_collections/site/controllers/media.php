@@ -398,6 +398,16 @@ class Media extends SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
+		// Virus scan. uploadTask() (the no-JS form) scans; this, the path the
+		// post editor's uploader takes, stored any file unscanned.
+		if (!Filesystem::isSafe($file))
+		{
+			Filesystem::delete($file);
+
+			echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
+			return;
+		}
+
 		// Create database entry
 		$asset->set('item_id', intval($listdir));
 		$asset->set('filename', $filename . '.' . $ext);
