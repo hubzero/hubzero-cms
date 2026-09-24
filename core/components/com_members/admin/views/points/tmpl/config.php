@@ -35,12 +35,14 @@ Toolbar::cancel();
 		$i = 0;
 		for ($r = 0; $r < $rows; $r++)
 		{
+			// 50 blank slots follow the configured rows; read those as empty
+			$param = isset($this->params[$i]) ? $this->params[$i] : null;
 			?>
 			<tr>
 				<th scope="row">(<?php echo ($i + 1); ?>)</th>
-				<td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo @$this->params[$i]->points; ?>" size="10" maxlength="10" /></td>
-				<td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->alias); ?>" size="20" maxlength="50" /></td>
-				<td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->description); ?>" size="100" maxlength="255" /></td>
+				<td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->points) : ''; ?>" size="10" maxlength="10" /></td>
+				<td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->alias) : ''; ?>" size="20" maxlength="50" /></td>
+				<td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->description) : ''; ?>" size="100" maxlength="255" /></td>
 			</tr>
 			<?php
 			$i++;
