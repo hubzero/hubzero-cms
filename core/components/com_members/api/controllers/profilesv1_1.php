@@ -146,7 +146,9 @@ class Profilesv1_1 extends ApiController
 		if ($response->total)
 		{
 			$base = rtrim(Request::base(), '/');
-			if ($admin == true && isset($searchable))
+			// $searchable is a bool set for every admin, so isset() was always true
+			// and an admin's list came back empty (a bare 404); test its value
+			if ($admin == true && !empty($searchable))
 			{
 				return false;
 			}
@@ -160,7 +162,7 @@ class Profilesv1_1 extends ApiController
 				// 3 - special
 				// 4 - protected
 				// 5 - private
-				if ($admin == true && isset($searchable))
+				if ($admin == true && !empty($searchable))
 				{
 					$obj = new stdClass;
 					$obj->hubtype = 'member';

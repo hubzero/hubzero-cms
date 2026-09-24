@@ -100,7 +100,9 @@ class Publicationsv1_1 extends ApiController
 		}
 
 
-		if ($response->total && !isset($searchable))
+		// $searchable is a bool set for every admin, so isset() was always true
+		// and an admin's list came back empty (a bare 404); test its value
+		if ($response->total && empty($searchable))
 		{
 			$base = rtrim(Request::base(), '/');
 
@@ -131,7 +133,7 @@ class Publicationsv1_1 extends ApiController
 				$response->publications[] = $obj;
 			}
 		}
-		elseif (isset($searchable))
+		elseif (!empty($searchable))
 		{
 			return false;
 			foreach ($publications as $i => $entry)

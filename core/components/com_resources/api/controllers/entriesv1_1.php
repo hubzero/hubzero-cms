@@ -209,7 +209,9 @@ class Entriesv1_1 extends ApiController
 				->paginated()
 				->rows();
 
-			if (isset($searchable) && $admin)
+			// $searchable is a bool set for every admin, so isset() was always true
+			// and an admin's list came back empty (a bare 404); test its value
+			if (!empty($searchable) && $admin)
 			{
 				return false;
 				foreach ($records as $entry)
