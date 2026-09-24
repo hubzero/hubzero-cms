@@ -1221,6 +1221,14 @@ class Jobs extends SiteController
 				// rewrote any application on the hub or filed one in another
 				// member's name.
 				$ja->bind(array_intersect_key($_POST, array_flip(array('cover', 'resumeid'))));
+				// A new application belongs to the caller and to this job; the
+				// form used to supply both, and without them the row was stored
+				// with uid 0 / jid 0, visible to nobody
+				if (!$ja->id)
+				{
+					$ja->uid = User::get('id');
+					$ja->jid = $job->id;
+				}
 				$ja->applied = $appid ? $ja->applied : $now;
 				$ja->status  = 1;
 			}
