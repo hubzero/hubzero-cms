@@ -78,16 +78,23 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 
 		// Verify the postback
 		// Verify the verification var
-		if ($this->params->get('paymentValidationKey') != $postData['posting_key'])
+		if (!isset($postData['posting_key'])
+		 || !hash_equals((string) $this->params->get('paymentValidationKey'), (string) $postData['posting_key']))
 		{
 			$response['status'] = 'error';
 			$response['error'] =  'Payment Validation Key does not match the configured key. Verification failed.';
 		}
 
+		// Nothing below can be verified against a transaction that does not exist
+		if ($response['status'] == 'error')
+		{
+			return $response;
+		}
+
 		// Verify the amount
 		// Get expected payment
 		$expectedPayment = $tInfo->info->tiTotal;
-		$paymentReceived = $postData['pmt_amt'];
+		$paymentReceived = isset($postData['pmt_amt']) ? $postData['pmt_amt'] : null;
 
 		if ($expectedPayment != $paymentReceived)
 		{
