@@ -9,6 +9,9 @@ namespace Components\Cart\Site\Controllers;
 
 use App;
 use Lang;
+// Unimported, Request resolved to this namespace's Request controller
+// (request.php) and getParams() died with "undefined method getString()"
+use Request;
 
 /**
  *  Base component controller class

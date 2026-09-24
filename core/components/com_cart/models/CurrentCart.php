@@ -904,8 +904,9 @@ class CurrentCart extends Cart
 	 */
 	public function setStepStatus($step, $meta = '', $status = true)
 	{
+		// (int): quote(false) is '', which strict SQL refuses for the tinyint
 		$sql = "UPDATE `#__cart_transaction_steps`
-				SET `tsStatus` = " .  $this->_db->quote($status) . "
+				SET `tsStatus` = " .  $this->_db->quote((int) $status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
 		if (!empty($meta))
 		{
