@@ -41,6 +41,12 @@ class Media extends SiteController
 			return;
 		}
 
+		// The editor's attachment frame calls com_wiki directly for group and
+		// project pages too; without their adapters access() throws "Invalid
+		// adapter type" and every group wiki attachment call 500s
+		Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
+		Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
+
 		$page = Page::oneOrNew($listdir);
 		if (!$page->get('id') || (!$page->access('edit') && !$page->access('modify') && !$page->access('manage')))
 		{
