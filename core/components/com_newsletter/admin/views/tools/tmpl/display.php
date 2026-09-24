@@ -77,7 +77,7 @@ $this->js();
 		<div class="col span6">
 			<?php if ($this->code != '') : ?>
 				<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_ORIGINAL'); ?></h3>
-				<img src="<?php echo str_replace(PATH_APP, '', $this->original); ?>" alt="" />
+				<img src="<?php echo $this->escape(str_replace(PATH_APP, '', $this->original)); ?>" alt="" />
 
 				<h3><?php echo Lang::txt('COM_NEWSLETTER_TOOLS_MOZIFY_MOZIFIED'); ?></h3>
 				<iframe id="preview-iframe"></iframe>
