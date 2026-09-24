@@ -1395,7 +1395,13 @@ class WikiParser
 	 */
 	private function math($text)
 	{
-		Html::behavior('math');
+		// The API application has no Html facade (and no page to load MathJax
+		// into); wiki text parsed there, e.g. a collection description read
+		// through /api/collections, fataled on the missing class
+		if (class_exists('Html'))
+		{
+			Html::behavior('math');
+		}
 		return preg_replace_callback('/<math>(.*?)<\/math>/s', array(&$this, '_stripMath'), $text);
 	}
 
