@@ -353,7 +353,7 @@ class Attachments extends SiteController
 		$filename = \Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 
 		// Contributors upload archives, source and media of many types, so block
 		// only server-executable extensions and the markup types the download
@@ -597,7 +597,7 @@ class Attachments extends SiteController
 		}
 
 		// Echo the name
-		echo $name;
+		echo htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -819,14 +819,22 @@ class Attachments extends SiteController
 		// Load resource info
 		$resource = Entry::oneOrFail($id);
 
-		if (!($resource->access('delete')))
+		// The attachment must really belong to the given parent, and the caller
+		// must be able to edit that parent (any of its editors, not only the
+		// uploader) to remove the attachment
+		$association = Association::oneByRelationship($pid, $id);
+		if (!$association || !$association->get('id'))
+		{
+			App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+		$parentAuth = Entry::oneOrFail($pid);
+		if (!$parentAuth->access('edit') && !$parentAuth->access('edit-own'))
 		{
 			App::abort(403, Lang::txt('COM_CONTRIBUTE_NOT_AUTH'));
 		}
 
 		if ($resource->get('standalone') == 1)
 		{
-			$association = Association::oneByRelationship($pid, $id);
 			$association->destroy();
 
 			return $this->displayTask($pid);
@@ -959,6 +967,13 @@ class Attachments extends SiteController
 
 		// Initiate a resource
 		$resource = Entry::oneOrFail($id);
+
+		// The list shows every child (drafts, private files) with its stored
+		// path, so only the resource's editors get it
+		if (!$resource->access('edit') && !$resource->access('edit-own'))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		$children = $resource->children()->order('ordering', 'ASC')->rows();
 

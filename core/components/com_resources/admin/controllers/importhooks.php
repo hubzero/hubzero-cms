@@ -180,7 +180,7 @@ class ImportHooks extends AdminController
 		}
 
 		// if we have a file
-		if ($file['size'] > 0 && $file['error'] == 0)
+		if (!empty($file['size']) && isset($file['error']) && $file['error'] == 0)
 		{
 			// Keep the upload inside the hook's filespace - strip any path parts
 			$file['name'] = basename($file['name']);
@@ -204,6 +204,12 @@ class ImportHooks extends AdminController
 	 */
 	public function rawTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$id = Request::getArray('id', array());
 		if (is_array($id))

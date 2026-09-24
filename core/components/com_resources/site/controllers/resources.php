@@ -622,7 +622,7 @@ class Resources extends SiteController
 
 				$model = Entry::getInstance($id);
 
-				if (!$model->get('id'))
+				if (!$model->get('id') || !$model->access('view'))
 				{
 					App::abort(404);
 				}
@@ -693,6 +693,14 @@ class Resources extends SiteController
 			App::abort(404);
 		}
 
+		// The play layout emits the child's link target, file name and title,
+		// so the caller must be able to view the parent (viewTask's own test
+		// only runs on the non-AJAX path)
+		if (!$resource->access('view'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+
 		// Do we have a child ID?
 		if (!$this->resid)
 		{
@@ -712,6 +720,13 @@ class Resources extends SiteController
 		if (!isset($activechild))
 		{
 			$activechild = Entry::oneOrFail($this->resid);
+
+			// ...and it must be one of this resource's children, not any row
+			$assoc = \Components\Resources\Models\Association::oneByRelationship($id, $this->resid);
+			if (!$assoc || !$assoc->get('id'))
+			{
+				App::abort(404);
+			}
 		}
 
 		// Store the object in our registry
@@ -750,19 +765,26 @@ class Resources extends SiteController
 	 *
 	 * @return  void
 	 */
-	protected function selectPresentation()
+	public function selectpresentationTask()
 	{
 		$presentation = Request::getInt('presentation', 0);
 
-		$firstchild = Entry::oneOrFail($presentation)
-			->whereEquals('published', Entry::STATE_PUBLISHED)
+		$parent = Entry::oneOrFail($presentation);
+
+		if (!$parent->access('view'))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+		}
+
+		$firstChild = $parent
 			->children()
+			->whereEquals('published', Entry::STATE_PUBLISHED)
 			->order('ordering', 'asc')
 			->limit(1)
 			->start(0)
 			->row();
 
-		$resid = $firstChild->id;
+		$resid = $firstChild->get('id');
 
 		App::redirect(
 			Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component')
@@ -932,7 +954,7 @@ class Resources extends SiteController
 			$model = Entry::oneOrFail($parent);
 			$activeChild = Entry::oneOrFail($child);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
@@ -1059,7 +1081,7 @@ class Resources extends SiteController
 			$model = Entry::oneOrFail($parent);
 			$activechild = Entry::oneOrFail($child);
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
 		}
@@ -2575,6 +2597,11 @@ class Resources extends SiteController
 		else
 		{
 			$row = Entry::oneOrFail($resource);
+
+			if (!$row->access('view'))
+			{
+				App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
+			}
 
 			$rt = License::oneByName('custom' . $resource);
 

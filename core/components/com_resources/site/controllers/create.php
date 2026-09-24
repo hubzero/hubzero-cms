@@ -263,6 +263,14 @@ class Create extends SiteController
 		// Any errors?
 		if (!$this->getError())
 		{
+			// The step forms render the resource's title, text, attachments and
+			// authors, so an existing (non-temp) id must be one the caller may edit
+			$id = Request::getInt('id', 0);
+			if ($id && !preg_match('/^9999[0-9]{4,5}$/', (string) $id) && !$this->_authorizeResource($id))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+
 			// Check the progress
 			$this->_checkProgress(Request::getInt('id', 0));
 
@@ -697,20 +705,15 @@ class Create extends SiteController
 			return false;
 		}
 
-		$uid = (int) User::get('id');
+		// Same rule that shows the Edit button: authors, the creator, and
+		// core.admin/core.manage holders (Entry::_authorize)
+		$row = Entry::oneOrNew($id);
+		if ($row->isNew())
+		{
+			return false;
+		}
 
-		$this->database->setQuery(
-			'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . $uid . ' AND subtable = \'resources\' AND subid = ' . $id . '
-			UNION
-			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . $uid . ' OR modified_by = ' . $uid . ')
-			UNION
-			SELECT 1 FROM `#__users` u
-			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
-			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
-			WHERE u.id = ' . $uid
-		);
-
-		return (bool) $this->database->loadResult();
+		return ($row->access('edit') || $row->access('edit-own'));
 	}
 
 	public function step_compose_process()
@@ -738,8 +741,11 @@ class Create extends SiteController
 			return;
 		}
 
-		// Never let ownership/privileged columns be mass-assigned from the form
+		// Never let ownership/privileged columns be mass-assigned from the form.
+		// `published` is set below for new rows and kept as stored for existing
+		// ones, so a draft cannot publish itself here.
 		unset($fields['created_by'], $fields['created'], $fields['path'], $fields['ranking'], $fields['standalone']);
+		unset($fields['published'], $fields['access'], $fields['alias'], $fields['featured'], $fields['hits'], $fields['rating'], $fields['times_rated'], $fields['params'], $fields['attribs'], $fields['checked_out'], $fields['checked_out_time'], $fields['modified'], $fields['modified_by']);
 
 		$row = Entry::oneOrNew($rid)->set($fields);
 
@@ -1048,8 +1054,8 @@ class Create extends SiteController
 					'scope_id'    => $row->get('id'),
 					'description' => Lang::txt(
 						'COM_RESOURCES_ACTIVITY_ENTRY_GROUP_' . $action,
-						'<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . $row->get('title') . '</a>',
-						'<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . $group->get('description') . '</a>'
+						'<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+						'<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
 					),
 					'details'     => array(
 						'title' => $row->get('title'),

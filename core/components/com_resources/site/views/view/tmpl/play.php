@@ -30,7 +30,8 @@ defined('_HZEXEC_') or die();
 				if (strstr($b, ':'))
 				{
 					$b = preg_split('#:#', $b);
-					$bits[] = trim($b[0]) . '="' . trim($b[1]) . '"';
+					// attribute name and value both come from the stored attribs string
+					$bits[] = preg_replace('/[^a-zA-Z0-9_-]/', '', trim($b[0])) . '="' . $this->escape(trim($b[1])) . '"';
 				}
 			}
 		}
@@ -43,8 +44,8 @@ defined('_HZEXEC_') or die();
 	$type = (strlen($type) > 4) ? 'html' : $type;
 	$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
 
-	$width  = (intval($width) > 0) ? $width : 0;
-	$height = (intval($height) > 0) ? $height : 0;
+	$width  = (intval($width) > 0) ? intval($width) : 0;
+	$height = (intval($height) > 0) ? intval($height) : 0;
 
 	$videos = array('mp4');
 	$audios = array('mp3');
@@ -64,6 +65,7 @@ defined('_HZEXEC_') or die();
 		if (stristr($parsed['host'], 'youtube'))
 		{
 			// YouTube
+			$video_id = '';
 			if (strstr($url, '?'))
 			{
 				//split the string into two parts
@@ -85,7 +87,10 @@ defined('_HZEXEC_') or die();
 						break;
 					}
 				}
-				$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
+				if ($video_id)
+				{
+					$url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
+				}
 			}
 			$html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
 		}

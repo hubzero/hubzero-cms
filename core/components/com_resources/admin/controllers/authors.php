@@ -164,7 +164,9 @@ class Authors extends AdminController
 			{
 				$fieldset['authorid'] = $authorid;
 
-				$row = Role::oneOrNew($fieldset['id'])->set($fieldset);
+				// These are #__author_assoc rows (the form the edit view posts),
+				// not author roles
+				$row = Author::oneOrNew(isset($fieldset['id']) ? $fieldset['id'] : 0)->set($fieldset);
 
 				if (!$row->save())
 				{

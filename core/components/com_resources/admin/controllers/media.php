@@ -81,8 +81,8 @@ class Media extends AdminController
 			}
 
 			// Incoming file
-			$file = Request::getArray('upload', '', 'files');
-			if (!$file['name'])
+			$file = Request::getArray('upload', array(), 'files');
+			if (empty($file['name']))
 			{
 				$this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
 				return $this->displayTask();

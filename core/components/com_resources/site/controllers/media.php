@@ -440,7 +440,16 @@ class Media extends SiteController
 
 		// Load tracking information for user for this resource
 		$trackingInformation         = MediaTracking::oneByUserAndResource(User::get('id'), $resourceid);
-		$trackingInformationDetailed = Detailed::oneOrNew($detailedId);
+		// Only the caller's own detailed row may be continued; anything else
+		// starts a fresh one
+		$trackingInformationDetailed = Detailed::all()
+			->whereEquals('id', $detailedId)
+			->whereEquals('user_id', User::get('id'))
+			->row();
+		if (!$trackingInformationDetailed || !$trackingInformationDetailed->get('id'))
+		{
+			$trackingInformationDetailed = Detailed::blank();
+		}
 
 		// Are we creating a new tracking record?
 		if ($trackingInformation->isNew())

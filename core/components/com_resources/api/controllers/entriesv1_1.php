@@ -441,8 +441,35 @@ class Entriesv1_1 extends ApiController
 
 		if (!empty($existingCids))
 		{
-			$query->where('id', 'NOT IN', $existingCids);
+			$query->where('id', 'NOT IN', array_map('intval', (array) $existingCids));
 		}
+
+		// Same visibility rules as listTask: published, inside the publish
+		// window, and at an access level the caller may see
+		$query->whereEquals('published', Entry::STATE_PUBLISHED);
+
+		$query->whereEquals('publish_up', '0000-00-00 00:00:00', 1)
+			->orWhere('publish_up', 'IS', null, 1)
+			->orWhere('publish_up', '<=', Date::toSql(), 1)
+			->resetDepth();
+
+		$query->whereEquals('publish_down', '0000-00-00 00:00:00', 1)
+			->orWhere('publish_down', 'IS', null, 1)
+			->orWhere('publish_down', '>=', Date::toSql(), 1)
+			->resetDepth();
+
+		if (!User::authorise('core.admin', 'com_resources'))
+		{
+			$access = array(0);
+
+			if (!User::isGuest())
+			{
+				$access[] = 1;
+			}
+
+			$query->whereIn('access', $access);
+		}
+
 		$response->records = $query
 			->select('id, title')
 			->whereEquals('standalone', 1)

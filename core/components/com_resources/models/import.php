@@ -147,7 +147,7 @@ class Import extends Relational
 		}
 
 		// build path to file
-		$filePath = $this->fileSpacePath() . DS . $file;
+		$filePath = $this->fileSpacePath() . DS . basename((string) $file);
 
 		// make sure file exists
 		if (!file_exists($filePath))

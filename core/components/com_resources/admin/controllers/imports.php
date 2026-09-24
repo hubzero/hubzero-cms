@@ -62,6 +62,13 @@ class Imports extends AdminController
 			)
 		);
 
+		// Only the columns the list sorts by
+		if (!in_array($filters['sort'], array('id', 'name', 'count', 'created_at', 'ran_at')))
+		{
+			$filters['sort'] = 'created_at';
+		}
+		$filters['sort_Dir'] = (strtolower($filters['sort_Dir']) == 'asc') ? 'asc' : 'desc';
+
 		$query = Import::all();
 
 		$i = $query->getTableName();
@@ -173,7 +180,7 @@ class Imports extends AdminController
 		unset($fields['file']);
 
 		// create import model object
-		$import = Import::oneOrNew($fields['id'])->set($fields);
+		$import = Import::oneOrNew(isset($fields['id']) ? $fields['id'] : 0)->set($fields);
 
 		// set our hooks
 		$import->set('hooks', json_encode($hooks));
@@ -222,7 +229,7 @@ class Imports extends AdminController
 		}
 
 		// if we have a file
-		if (is_array($file) && $file['size'] > 0 && $file['error'] == 0)
+		if (is_array($file) && !empty($file['size']) && isset($file['error']) && $file['error'] == 0)
 		{
 			$ext = strtolower(Filesystem::extension($file['name']));
 
@@ -326,6 +333,12 @@ class Imports extends AdminController
 	 */
 	public function runTask($dryRun = 0)
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$ids = Request::getArray('id', array());
 		$id  = (isset($ids[0])) ? $ids[0] : 0;
@@ -351,6 +364,14 @@ class Imports extends AdminController
 	{
 		// check token
 		Session::checkToken();
+
+		// Running an import writes resources and includes the hook scripts;
+		// same right as editing one
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
 
 		// start of import
 		$start = microtime(true);
@@ -406,6 +427,12 @@ class Imports extends AdminController
 	 */
 	public function progressTask()
 	{
+		if (!User::authorise('core.edit', $this->_option)
+		 && !User::authorise('core.create', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
 		// get request vars
 		$id = Request::getInt('id', 0);
 
@@ -463,7 +490,7 @@ class Imports extends AdminController
 			}
 
 			// build path to script
-			$hookFile = $importHook->fileSpacePath() . DS . $importHook->get('file');
+			$hookFile = $importHook->fileSpacePath() . DS . basename((string) $importHook->get('file'));
 
 			// make sure we have a file
 			if (!is_file($hookFile))

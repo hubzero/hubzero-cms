@@ -121,11 +121,11 @@ if (!empty($lectureAuthors))
 		$author = User::getInstance($la->authorid);
 		if (is_object($author) && $author->id)
 		{
-			$a[] = '<a href="' . $author->link() . '">' . $author->name . '</a>';
+			$a[] = '<a href="' . $author->link() . '">' . $this->escape($author->name) . '</a>';
 		}
 		else
 		{
-			$a[] = $la->name;
+			$a[] = $this->escape($la->name);
 		}
 	}
 }
@@ -153,19 +153,19 @@ foreach ($presentation->subtitles as $k => $subtitle)
 $localSubtitles = Filesystem::files(PATH_APP . DS . $content_folder, '.srt|.SRT');
 
 // add local subtitles too
-foreach ($localSubtitles as $k => $subtitle)
+foreach ($localSubtitles as $k => $file)
 {
-	$info     = pathinfo($subtitle);
+	$info     = pathinfo($file);
 	$name     = str_replace('-auto', '', $info['filename']);
 	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
-	$source   = $content_folder . DS . $subtitle;
+	$source   = $content_folder . DS . $file;
 
 	// add each subtitle
 	$subtitle = new stdClass;
 	$subtitle->type     = 'SRT';
 	$subtitle->name     = ucfirst($name);
 	$subtitle->source   = $source;
-	$subtitle->source_url = $content_url . $subtitle;
+	$subtitle->source_url = $content_url . DS . $file;
 	$subtitle->autoplay = $autoplay;
 
 	// make sure we dont already have this file.
@@ -190,7 +190,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 				<select name="presentation" id="presentation">
 					<optgroup label="<?php echo $this->escape($parent->title); ?>">
 						<?php foreach ($children as $c) : ?>
-							<?php if (Date::toSql() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
+							<?php if (Date::toSql() > $c->publish_up || User::authorise('core.admin')) : ?>
 								<option <?php if ($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $this->escape($c->title); ?></option>
 							<?php endif; ?>
 						<?php endforeach; ?>
@@ -218,17 +218,17 @@ $presentation->subtitles = array_values($presentation->subtitles);
 				<ul class="no-js">
 					<?php $counter = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
-						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $slide->time; ?>">
+						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
 							<?php if ($slide->type == 'Image') : ?>
-								<img src="<?php echo $content_url.DS.$slide->media; ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+								<img src="<?php echo $this->escape($content_url.DS.$slide->media); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 							<?php else : ?>
 								<video class="slidevideo" preload="metadata" muted>
 									<?php foreach ($slide->media as $source): ?>
-										<source src="<?php echo $content_url.DS.$source->source; ?>" />
+										<source src="<?php echo $this->escape($content_url.DS.$source->source); ?>" />
 									<?php endforeach; ?>
-									<a href="<?php echo $content_url.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+									<a href="<?php echo $this->escape($content_url.DS.$slide->media[0]->source); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
-								<img src="<?php echo $content_url.DS.$slide->media[3]->source; ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement">
+								<img src="<?php echo $this->escape($content_url.DS.$slide->media[3]->source); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement">
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -473,10 +473,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									}
 								}
 							?>
-							<source src="<?php echo $source; ?>" type="<?php echo $type; ?>">
+							<source src="<?php echo $this->escape($source); ?>" type="<?php echo $this->escape($type); ?>">
 						<?php endforeach; ?>
 
-						<a href="<?php echo $mp4; ?>" 
+						<a href="<?php echo $this->escape($mp4); ?>" 
 							id="flowplayer" 
 							data-mediaid="<?php echo $rr->id; ?>"></a>
 						<?php if (count($presentation->subtitles) > 0) : ?>
@@ -501,7 +501,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									data-autoplay="<?php echo $auto; ?>"
 									data-type="subtitle"
 									data-lang="<?php echo $this->escape($subtitle->name); ?>" 
-									data-src="<?php echo $source_url ?>?v=<?php echo $modified; ?>"></div>
+									data-src="<?php echo $this->escape($source_url); ?>?v=<?php echo $modified; ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</video>
@@ -558,7 +558,7 @@ $last_slide_id = 0; ?>
 										$max = 30;
 										$elipsis = "&hellip;";
 										echo ($num) . ". ";
-										echo substr($slide->title, 0, $max);
+										echo $this->escape(substr($slide->title, 0, $max));
 
 										if (strlen($slide->title) > $max)
 										{
