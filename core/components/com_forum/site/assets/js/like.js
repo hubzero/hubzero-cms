@@ -161,7 +161,8 @@ const removeLike = async (threadId, postId, userId) => {
 
     if (!deleteAssertionResp.ok) {
         window.confirm("Server Error with API");
-        console.error(`Error Code: ${response.status} / Error Message: ${response.statusText}`);
+        // was `response`, which is not defined here: a failed unlike threw a ReferenceError
+        console.error(`Error Code: ${deleteAssertionResp.status} / Error Message: ${deleteAssertionResp.statusText}`);
     }
 
     return deleteAssertionResp;
