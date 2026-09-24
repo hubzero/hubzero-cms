@@ -164,7 +164,10 @@ class Abuse extends SiteController
 			'report'      => (isset($incoming['report']) ? $incoming['report'] : ''),
 			'category'    => (isset($incoming['category']) ? $incoming['category'] : ''),
 			'referenceid' => (isset($incoming['referenceid']) ? $incoming['referenceid'] : 0),
-			'subject'     => (isset($incoming['subject']) ? $incoming['subject'] : 'Other')
+			'subject'     => (isset($incoming['subject']) ? $incoming['subject'] : 'Other'),
+			// `note` is TEXT NOT NULL with no default; under strict SQL a new
+			// report without it failed with a 500 (the reviewer fills it later)
+			'note'        => ''
 		));
 
 		$row->set('report', Sanitize::clean($row->get('report')));
