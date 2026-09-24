@@ -410,10 +410,10 @@ class Mailinglists extends AdminController
 		}
 
 		// do we have an email group
-		if ($this->emailGroup != '' || $this->emailGroup != 0)
+		if ($this->emailGroup)
 		{
 			$hg = \Hubzero\User\Group::getInstance($this->emailGroup);
-			$emailGroupEmails = $hg->getEmails('members');
+			$emailGroupEmails = $hg ? $hg->getEmails('members') : array();
 		}
 
 		// do we have a emails in the textarea
