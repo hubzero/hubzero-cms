@@ -641,6 +641,14 @@ class Media extends SiteController
 		//get the file name
 		// make sure to leave out any query params (ex. ?v={timestamp})
 		$uri  = Request::getString('SCRIPT_URL', '', 'server');
+		// SCRIPT_URL is set by Apache's mod_rewrite only; other servers
+		// (nginx, FrankenPHP) leave it empty and every Image:/File: link
+		// answered "No file provided". The router already keys off
+		// REQUEST_URI, so fall back to its path part.
+		if ($uri === '')
+		{
+			$uri = (string) parse_url(Request::getString('REQUEST_URI', '', 'server'), PHP_URL_PATH);
+		}
 		$file = '';
 		if (strstr($uri, 'Image:'))
 		{
