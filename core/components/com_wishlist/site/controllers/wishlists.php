@@ -1828,9 +1828,8 @@ class Wishlists extends SiteController
 	 */
 	public function deletewishTask()
 	{
-		// The confirm button is a form that posts a token
-		Request::checkToken();
-
+		// Reached from the proposer's "Withdraw wish" link (GET) as well as the
+		// manager's confirm form, so no token check until the link is a form
 		// Check if wish exists on this list
 		$wishlist = Wishlist::oneByReference(
 			Request::getInt('rid', 0),
