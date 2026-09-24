@@ -603,7 +603,9 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 			// Send mail
 			if (!$message->send())
 			{
-				$this->setError(Lang::txt('Failed to mail %s', $fullEmailAddress));
+				// $fullEmailAddress never existed here: the warning it raised
+				// turned every failed send into a 500 and left the job active
+				$this->setError(Lang::txt('Failed to mail %s', $user->get('email')));
 			}
 			$mailed[] = $user->get('username');
 		}
