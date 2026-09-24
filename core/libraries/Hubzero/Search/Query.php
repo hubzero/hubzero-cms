@@ -28,6 +28,11 @@ class Query
 
 		$adapter = "\\Hubzero\\Search\\Adapters\\" . ucfirst($engine) . 'QueryAdapter';
 
+		if (!class_exists($adapter))
+		{
+			throw new \RuntimeException(sprintf('No query adapter for the "%s" search engine', $engine));
+		}
+
 		$this->adapter = new $adapter($config);
 	}
 
