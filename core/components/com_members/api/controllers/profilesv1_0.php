@@ -410,8 +410,15 @@ class Profilesv1_0 extends ApiController
 		}
 
 		// Corrects image path, API application breaks Route::url() in the Helper::getMemberPhoto() method.
-		$profile['picture']['thumb'] = str_replace('/api', '', $base . '/' . $profile['picture']['thumb']);
-		$profile['picture']['full']  = str_replace('/api', '', $base . '/' . $profile['picture']['full']);
+		// A member with no picture gets an inline data: URI (and a resolver may
+		// return an absolute URL); prefixing those with the base broke them
+		foreach (array('thumb', 'full') as $size)
+		{
+			if (!preg_match('#^(data:|https?://)#i', (string) $profile['picture'][$size]))
+			{
+				$profile['picture'][$size] = str_replace('/api', '', $base . '/' . $profile['picture'][$size]);
+			}
+		}
 
 		// Encode and return result
 		$object = new stdClass();
