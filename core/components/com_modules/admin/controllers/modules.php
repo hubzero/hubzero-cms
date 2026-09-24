@@ -1206,6 +1206,13 @@ class Modules extends AdminController
 			return $this->cancelTask();
 		}
 
+		// Build an array of item contexts to check
+		$contexts = array();
+		foreach ($pks as $id)
+		{
+			$contexts[$id] = $this->_option . '.module.' . $id;
+		}
+
 		$done = false;
 
 		if (!empty($commands['position_id']))
@@ -1279,7 +1286,7 @@ class Modules extends AdminController
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		// Set the variables
-		$table = $this->getTable();
+		$newIds = array();
 		$i = 0;
 
 		foreach ($pks as $pk)
@@ -1361,6 +1368,74 @@ class Modules extends AdminController
 		$this->cleanCache();
 
 		return $newIds;
+	}
+
+	/**
+	 * Batch access level changes for a group of rows.
+	 *
+	 * @param   integer  $value     The new value matching an Asset Group ID.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
+	 * @return  boolean  True if successful, false otherwise and internal error is set.
+	 */
+	protected function batchAccess($value, $pks, $contexts)
+	{
+		foreach ($pks as $pk)
+		{
+			if (!User::authorise('core.edit', 'com_modules'))
+			{
+				$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
+			}
+
+			$model = Module::oneOrFail($pk);
+			$model->set('access', (int) $value);
+
+			if (!$model->save())
+			{
+				$this->setError($model->getError());
+				return false;
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
+	}
+
+	/**
+	 * Batch language changes for a group of rows.
+	 *
+	 * @param   string   $value     The new value matching a language.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
+	 * @return  boolean  True if successful, false otherwise and internal error is set.
+	 */
+	protected function batchLanguage($value, $pks, $contexts)
+	{
+		foreach ($pks as $pk)
+		{
+			if (!User::authorise('core.edit', 'com_modules'))
+			{
+				$this->setError(Lang::txt('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
+			}
+
+			$model = Module::oneOrFail($pk);
+			$model->set('language', $value);
+
+			if (!$model->save())
+			{
+				$this->setError($model->getError());
+				return false;
+			}
+		}
+
+		// Clean the cache
+		$this->cleanCache();
+
+		return true;
 	}
 
 	/**
