@@ -338,7 +338,9 @@ class Articles extends SiteController
 			'parent'     => $row->get('parent'),
 			'created'    => $row->get('created'),
 			'created_by' => $row->get('created_by'),
-			'state'      => $row->get('state')
+			'state'      => $row->get('state'),
+			'helpful'    => $row->get('helpful'),
+			'nothelpful' => $row->get('nothelpful')
 		);
 
 		$row->set($comment);
@@ -349,6 +351,10 @@ class Articles extends SiteController
 			$row->set('created_by', User::get('id'));
 			$row->set('state', Comment::STATE_PUBLISHED);
 
+			// The vote tallies are kept by voteTask, not by the form
+			$row->set('helpful', 0);
+			$row->set('nothelpful', 0);
+
 			// entry_id is a form field too, so confirm it names an article that
 			// is actually readable before hanging a comment off it.
 			$target = Article::oneOrNew((int) $row->get('entry_id'));
@@ -356,6 +362,23 @@ class Articles extends SiteController
 			if (!$target->get('id') || $target->get('state') != Article::STATE_PUBLISHED)
 			{
 				throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			}
+
+			// A reply must hang off a published comment on the same article;
+			// parent() below would notify whatever comment the id named.
+			$parent = (int) $row->get('parent', 0);
+			$row->set('parent', $parent);
+
+			if ($parent)
+			{
+				$up = Comment::oneOrNew($parent);
+
+				if ($up->isNew()
+				 || $up->get('entry_id') != $target->get('id')
+				 || $up->get('state') != Comment::STATE_PUBLISHED)
+				{
+					throw new Exception(Lang::txt('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+				}
 			}
 		}
 		else
