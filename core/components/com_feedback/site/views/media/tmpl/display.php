@@ -41,7 +41,7 @@ $this->css()
 				?>
 				<tr>
 					<td>
-						<img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" />
+						<img src="<?php echo $this->escape($this->webpath . DS . $this->path . DS . $this->file); ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" />
 					</td>
 					<td width="100%">
 						<input type="hidden" name="conimg" value="<?php echo $this->escape($this->webpath . DS . $this->path . DS . $this->file); ?>" />
@@ -74,5 +74,6 @@ $this->css()
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="tmpl" value="component" />
-	<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+	<input type="hidden" name="id" value="<?php echo (int) $this->id; ?>" />
+	<?php echo Html::input('token'); ?>
 </form>

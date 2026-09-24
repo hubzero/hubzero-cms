@@ -229,12 +229,13 @@ class Feedback extends SiteController
 		Request::checkToken();
 
 		$fields = Request::getArray('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
+
+		// Only the story form's own fields; everything else on the row (notes,
+		// admin_rating, short_quote, notable_quote, ...) is set by an admin
+		$fields = array_intersect_key($fields, array_flip(array('fullname', 'org', 'quote', 'publish_ok', 'contact_ok')));
+		$fields = array_map('trim', array_filter($fields, 'is_scalar'));
 
 		$fields['user_id'] = User::get('id');
-
-		// Never let the submitter set the row id or self-publish as notable
-		unset($fields['id'], $fields['notable_quote']);
 
 		// Initiate class and bind posted items to database fields
 		$row = Quote::oneOrNew(0)->set($fields);
@@ -433,7 +434,7 @@ class Feedback extends SiteController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
