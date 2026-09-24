@@ -45,7 +45,8 @@ class Media extends SiteController
 		}
 		if ($scope == 'member')
 		{
-			return ($scopeId == User::get('id'));
+			// A guest is id 0, and 0 is also the default scope id
+			return (!User::isGuest() && $scopeId > 0 && $scopeId == User::get('id'));
 		}
 		if ($scope == 'group')
 		{
@@ -102,7 +103,7 @@ class Media extends SiteController
 
 		// Confine the file to the archive filespace (reject any traversal)
 		$file = \Hubzero\Filesystem\SafePath::relative($file);
-		if ($file === false)
+		if ($file === false || $file === '')
 		{
 			throw new InvalidArgumentException(Lang::txt('The requested file could not be found: %s', ''), 404);
 		}
@@ -144,6 +145,9 @@ class Media extends SiteController
 		{
 			return $this->displayTask();
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming file
 		$file = Request::getArray('upload', '', 'files');
@@ -270,7 +274,7 @@ class Media extends SiteController
 
 		// Confine the requested name to the filespace
 		$file = \Hubzero\Filesystem\SafePath::relative($file);
-		if ($file === false)
+		if ($file === false || $file === '')
 		{
 			$this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
 			return $this->displayTask();

@@ -99,6 +99,19 @@ class Comments extends AdminController
 			$comments->whereEquals('entry_id', $filters['entry_id']);
 		}
 
+		// ordered() treats a dotted value as relationship.field and calls the
+		// relationship by name, so the column is confined to this table
+		if (!in_array($filters['sort'], array('id', 'created', 'created_by', 'state', 'entry_id', 'parent'), true))
+		{
+			$filters['sort'] = 'created';
+		}
+		if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'), true))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		Request::setVar('filter_order', $filters['sort'], 'get');
+		Request::setVar('filter_order_Dir', $filters['sort_Dir'], 'get');
+
 		$rows = $comments
 			->ordered('filter_order', 'filter_order_Dir')
 			->rows();

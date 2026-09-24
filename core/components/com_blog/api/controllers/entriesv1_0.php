@@ -71,6 +71,17 @@ class Entriesv1_0 extends ApiController
 			return array('group', $scopeId, $uid);
 		}
 
+		// The site blog takes the same authors the site editor admits
+		if ($scope == 'site')
+		{
+			if (!User::authorise('core.create', 'com_blog') && !User::authorise('core.edit', 'com_blog'))
+			{
+				throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+			}
+
+			return array('site', 0, $uid);
+		}
+
 		// Anything else is this member's own blog
 		return array('member', $uid, $uid);
 	}
@@ -145,6 +156,17 @@ class Entriesv1_0 extends ApiController
 			'state'      => 1,
 			'access'     => User::getAuthorisedViewLevels()
 		);
+
+		// ordered() treats a dotted sort as relationship.field and calls the
+		// relationship by name, so the field is confined to the documented list
+		if (!in_array(Request::getCmd('sort', 'created'), array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state'), true))
+		{
+			Request::setVar('sort', 'created', 'get');
+		}
+		if (!in_array(strtolower(Request::getCmd('sort_Dir', 'desc')), array('asc', 'desc'), true))
+		{
+			Request::setVar('sort_Dir', 'desc', 'get');
+		}
 
 		$response = new stdClass;
 		$response->posts = array();
@@ -392,6 +414,14 @@ class Entriesv1_0 extends ApiController
 		if (!$row->get('id'))
 		{
 			throw new Exception(Lang::txt('COM_BLOG_ERROR_MISSING_RECORD'), 404);
+		}
+
+		// Same visibility listTask applies: published, in the caller's
+		// publish window and access level. Guests can reach this task.
+		if (!$row->access('view')
+		 || !in_array($row->get('access'), User::getAuthorisedViewLevels()))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
 		$row->set('created', with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z'));

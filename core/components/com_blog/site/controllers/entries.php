@@ -276,8 +276,36 @@ class Entries extends SiteController
 		}
 		$fields['scope'] = 'site';
 		$fields['scope_id'] = 0;
+		$fields['id'] = isset($fields['id']) ? (int) $fields['id'] : 0;
 
-		$row = Entry::oneOrNew($fields['id'])->set($fields);
+		// Decide before binding: this controller only edits site entries, and
+		// only the author or an editor/manager may rewrite an existing one.
+		// Without this a posted entry[id] could pull any member or group blog
+		// entry into the site blog.
+		$row = Entry::oneOrNew($fields['id']);
+
+		if (!$row->isNew())
+		{
+			if ($row->get('scope') != 'site')
+			{
+				App::abort(404, Lang::txt('COM_BLOG_NOT_FOUND'));
+			}
+			if ($row->get('created_by') != User::get('id')
+			 && !$this->config->get('access-edit-entry')
+			 && !$this->config->get('access-manage-entry'))
+			{
+				App::abort(403, Lang::txt('COM_BLOG_NOT_AUTH'));
+			}
+		}
+
+		// The byline is the caller's (new) or the stored one (existing)
+		// unless a manager is saving.
+		if (!$this->config->get('access-manage-entry'))
+		{
+			unset($fields['created_by']);
+		}
+
+		$row->set($fields);
 
 		// Trigger before save event
 		$isNew  = $row->isNew();
@@ -521,7 +549,7 @@ class Entries extends SiteController
 				$item->link        = Route::url($row->link());
 				$item->date        = date('r', strtotime($row->published()));
 				$item->category    = '';
-				$item->author      = $row->creator()->get('email') . ' (' . $row->creator()->get('name') . ')';
+				$item->author      = $row->creator()->get('name');
 
 				// Loads item info into rss array
 				$doc->addItem($item);
@@ -818,7 +846,7 @@ class Entries extends SiteController
 		}
 		else
 		{
-			$item->author = $row->creator->get('email') . ' (' . $row->creator->get('name') . ')';
+			$item->author = $row->creator->get('name');
 		}
 		$item->date     = $row->created();
 		$item->category = '';
