@@ -782,6 +782,12 @@ class Wishlists extends SiteController
 			return $this->loginTask();
 		}
 
+		// Settings (owners, advisory members) are for list managers only
+		if (!$wishlist->access('manage'))
+		{
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
+		}
+
 		$this->view
 			->set('title', $this->_title)
 			->set('wishlist', $wishlist)
@@ -1084,6 +1090,9 @@ class Wishlists extends SiteController
 			return $this->loginTask();
 		}
 
+		// The wish form posts a token
+		Request::checkToken();
+
 		$listid = Request::getInt('wishlist', 0);
 		$reward = Request::getString('reward', '');
 		$funds  = Request::getInt('funds', '0');
@@ -1118,6 +1127,12 @@ class Wishlists extends SiteController
 		if (!$row->isNew() && !$canManage && $row->get('proposed_by') != User::get('id'))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		// Only managers may add to a private list (as addwishTask)
+		if ($row->isNew() && !$canManage && !$wishlist->isPublic())
+		{
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
 		// Non-managers may only set descriptive fields
@@ -1735,6 +1750,9 @@ class Wishlists extends SiteController
 	 */
 	public function addbonusTask()
 	{
+		// The bonus form posts a token
+		Request::checkToken();
+
 		//$listid = Request::getInt('wishlist', 0);
 		$wishid = Request::getInt('wish', 0);
 		$amount = Request::getInt('amount', 0);
@@ -1810,6 +1828,9 @@ class Wishlists extends SiteController
 	 */
 	public function deletewishTask()
 	{
+		// The confirm button is a form that posts a token
+		Request::checkToken();
+
 		// Check if wish exists on this list
 		$wishlist = Wishlist::oneByReference(
 			Request::getInt('rid', 0),
@@ -1823,7 +1844,8 @@ class Wishlists extends SiteController
 
 		$wish = Wish::oneOrNew(Request::getInt('wishid', 0));
 
-		if (!$wish->get('id'))
+		// The wish has to be on the list the manage right is checked against
+		if (!$wish->get('id') || (int) $wish->get('wishlist') !== (int) $wishlist->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
 		}
@@ -1912,7 +1934,7 @@ class Wishlists extends SiteController
 		$wishid   = Request::getInt('wishid', 0);
 
 		$wish = Wish::oneOrFail($wishid);
-		if (!$wish->get('id'))
+		if (!$wish->get('id') || (int) $wish->get('wishlist') !== (int) $wishlist->get('id'))
 		{
 			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 		}
@@ -2766,6 +2788,7 @@ class Wishlists extends SiteController
 			 break; // 1 day
 
 			case 5:
+			default:
 				$i = (24 * 60 * 60);
 				$w = (2 * 24 * 60 * 60);
 			break; // 4 hours

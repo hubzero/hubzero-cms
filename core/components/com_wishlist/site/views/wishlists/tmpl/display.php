@@ -305,7 +305,7 @@ if ($this->wishlist->get('id'))
 												case 0:
 													if (!$item->get('ranked') && $this->wishlist->access('manage'))
 													{
-														$html .= '<a class="rankit" href="' . $item->link('rank', $filters) . '">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
+														$html .= '<a class="rankit" href="' . Route::url($item->link('rank', $filters)) . '">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
 													}
 													else if ($item->get('ranked'))
 													{

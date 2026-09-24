@@ -498,6 +498,7 @@ $this->css()
 									</strong>
 								</p>
 
+								<?php echo Html::input('token'); ?>
 								<input type="hidden" name="task" value="addbonus" />
 								<input type="hidden" name="wishlist" id="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
 								<input type="hidden" name="wish" id="wish" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
@@ -634,7 +635,7 @@ $this->css()
 				</p>
 				<?php if ($this->wishlist->access('manage')) { ?>
 					<p class="note">
-						<?php echo $this->wish->status('note'); ?>
+						<?php echo $this->escape($this->wish->status('note')); ?>
 					</p>
 				<?php } ?>
 			</div><!-- / .wish-status -->
