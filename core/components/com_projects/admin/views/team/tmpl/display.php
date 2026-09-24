@@ -56,9 +56,10 @@ $this->css();
 					<label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
 				</th>
 				<?php //} ?>
-				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php // the controller names these sortby/sortdir (sort/sort_Dir were never set) ?>
+				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
+				<th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
+				<th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_PROJECTS_TEAM_ROLE'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_JOINED'); ?></th>
 				<th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_LAST_VISIT'); ?></th>
