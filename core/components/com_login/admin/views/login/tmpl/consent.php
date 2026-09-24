@@ -18,6 +18,7 @@ $this->css('userconsent');
 
 		<form method="POST" action="<?php echo Route::url('index.php?option=com_login&task=grantconsent'); ?>">
 			<input type="hidden" name="return" value="<?php echo base64_encode(Request::current(true)); ?>" />
+			<?php echo Html::input('token'); ?>
 			<div class="actions">
 				<button class="btn btn-success" type="submit"><?php echo Lang::txt('COM_LOGIN_USERCONSENT_AGREE'); ?></button>
 				<a class="btn btn-secondary" href="/"><?php echo Lang::txt('JCANCEL'); ?></a>

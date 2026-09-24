@@ -122,9 +122,9 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 				<form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
 					<div class="input-wrap">
 						<?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
-							<input type="hidden" name="username" value="<?php echo $user->get('username'); ?>" />
+							<input type="hidden" name="username" value="<?php echo $this->escape($user->get('username')); ?>" />
 							<div class="existing-name"><?php echo $this->escape($user->get('name')); ?></div>
-							<div class="existing-email"><?php echo $user->get('email'); ?></div>
+							<div class="existing-email"><?php echo $this->escape($user->get('email')); ?></div>
 						<?php else : ?>
 							<div class="label-input-pair username">
 								<label for="username"><?php echo Lang::txt('COM_LOGIN_LOGIN_USERNAME'); ?>:</label>

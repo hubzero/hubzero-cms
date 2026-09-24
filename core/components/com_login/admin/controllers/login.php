@@ -201,6 +201,9 @@ class Login extends AdminController
 	 **/
 	public function grantConsentTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		Session::set('user_consent', true);
 
 		// getString() defaults to null, and base64_decode(null) is a PHP 8
