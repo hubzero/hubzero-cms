@@ -249,7 +249,9 @@ class Recipient extends Relational
 	 */
 	public function deleteTrash($uid)
 	{
-		return $this->delete()
+		// Query::delete() needs the table name; without it "Empty trash"
+		// threw ArgumentCountError and nothing was deleted (cf. Notify::deleteByUser)
+		return $this->delete($this->getTableName())
 			->whereEquals('uid', $uid)
 			->whereEquals('state', 2)
 			->execute();
