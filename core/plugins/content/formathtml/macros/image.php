@@ -261,7 +261,11 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				// Only http(s)/mailto/ftp URLs or site-relative paths may replace the
 				// link target; any other scheme (javascript:, data:, ...) falls
 				// back to the image's own link.
-				if (preg_match('/^\s*([a-z][a-z0-9+.\-]*):/i', $val, $m)
+				// Browsers drop whitespace and control characters from a URL
+				// before reading its scheme ("java\tscript:" is javascript:),
+				// so test the scheme on the same stripped form
+				$probe = preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
+				if (preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
 				 && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp')))
 				{
 					$this->attr['href'] = '';
