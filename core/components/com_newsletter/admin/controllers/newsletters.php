@@ -843,10 +843,13 @@ class Newsletters extends AdminController
 	private function _send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
 	{
 		//set default mail from and reply-to names and addresses
+		// HTTP_HOST carries the port on a hub served on a non-standard port,
+		// which is not valid in an address and split the From header below
+		$mailHost = preg_replace('/:\d+$/', '', (string) $_SERVER['HTTP_HOST']);
 		$defaultMailFromName       = Config::get("sitename") . ' Newsletter';
-		$defaultMailFromAddress    = 'contact@' . $_SERVER['HTTP_HOST'];
+		$defaultMailFromAddress    = 'contact@' . $mailHost;
 		$defaultMailReplytoName    = Config::get("sitename") . ' Newsletter - Do Not Reply';
-		$defaultMailReplytoAddress = 'do-not-reply@' . $_SERVER['HTTP_HOST'];
+		$defaultMailReplytoAddress = 'do-not-reply@' . $mailHost;
 
 		//get the config mail from and reply-to names and addresses
 		$mailFromName       = $this->config->get('newsletter_from_name', $defaultMailFromName);
@@ -917,7 +920,8 @@ class Newsletters extends AdminController
 
 				foreach (explode("\r\n", $mailHeaders) as $header)
 				{
-					$parts = array_map("trim", explode(':', $header));
+					// limit 2: a header value may itself contain ':'
+					$parts = array_map("trim", explode(':', $header, 2));
 					switch ($parts[0])
 					{
 						case 'From':
