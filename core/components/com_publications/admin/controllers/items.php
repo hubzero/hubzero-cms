@@ -786,7 +786,9 @@ class Items extends AdminController
 		{
 			$this->model->version->version_label = $version_label;
 		}
-		$this->model->version->downloadDisabled = Request::getBool('disabledownloadlink', false, 'post');
+		// Cast: a PHP false is written as '' and strict SQL refuses that for
+		// the int column, so every save with the box unticked 500'd
+		$this->model->version->downloadDisabled = (int) Request::getBool('disabledownloadlink', false, 'post');
 
 		// Get DOI service
 		$doiService = new Models\Doi($this->model);
