@@ -404,7 +404,8 @@ class Manage extends AdminController
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
 		$group->set('plugins', $g['plugins']);
-		$group->set('discussion_email_autosubscribe', isset($g['discussion_email_autosubscribe']) ? $g['discussion_email_autosubscribe'] : '');
+		// Integer column: '' is rejected by strict SQL mode, so cast (unset means 0)
+		$group->set('discussion_email_autosubscribe', isset($g['discussion_email_autosubscribe']) ? (int) $g['discussion_email_autosubscribe'] : 0);
 		$group->set('params', $params);
 		$group->update();
 
