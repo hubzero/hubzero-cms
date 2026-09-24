@@ -421,6 +421,15 @@ class Events extends AdminController
 			);
 		}
 
+		// Blank calendar fields post ''; strict SQL mode rejects '' for a datetime, so store NULL
+		foreach (array('registerby', 'publish_down') as $datefield)
+		{
+			if (isset($row->$datefield) && trim((string) $row->$datefield) === '')
+			{
+				$row->$datefield = null;
+			}
+		}
+
 		// New entry or existing?
 		if ($row->id)
 		{

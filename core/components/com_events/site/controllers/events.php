@@ -1169,6 +1169,13 @@ class Events extends SiteController
 		$validEmail = false;
 		$register   = array_merge(array('firstname' => '', 'lastname' => '', 'email' => ''), array_filter($register, 'is_scalar'));
 
+		// The form renders the email field only when show_email is set; otherwise use the logged-in user's address
+		$eparams = new \Hubzero\Config\Registry($event->params);
+		if (!$eparams->get('show_email') && !User::isGuest())
+		{
+			$register['email'] = User::get('email');
+		}
+
 		if ($register)
 		{
 			$register = array_map('trim', $register);
