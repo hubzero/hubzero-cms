@@ -132,7 +132,13 @@ class Router extends Base
 			elseif ($segments[0] != 'list')
 			{
 				$vars['id']   = $segments[0];
-				$vars['task'] = 'get';
+				// Only a GET is a read; PUT/DELETE keep the update/delete task
+				// the API's crud rule preset, or v2.0's documented
+				// PUT/DELETE /projects/{id} silently ran a read
+				if (\App::get('request')->method() == 'GET')
+				{
+					$vars['task'] = 'get';
+				}
 			}
 			else
 			{

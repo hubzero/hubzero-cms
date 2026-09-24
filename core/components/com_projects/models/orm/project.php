@@ -414,6 +414,20 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * Is project active?
+	 *
+	 * authorize() calls this, but only the legacy model defined it, so every
+	 * access() check on this ORM model (API v2.0 read/update/delete) died
+	 * with "'isActive' method does not exist".
+	 *
+	 * @return  boolean
+	 */
+	public function isActive()
+	{
+		return (!$this->isNew() && $this->get('state') == 1 && !$this->inSetup());
+	}
+
+	/**
 	 * Is project provisioned?
 	 *
 	 * @return  boolean
@@ -938,7 +952,9 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 					$this->params->set('access-content-project', true); // May add/edit/delete all content
 
 					// Owner (principal user/creator)
-					if ($this->owner('id') == $member->userid)
+					// owner() here is the relationship (it takes no field
+					// argument), so compare the owner column itself
+					if ((int) $this->get('owned_by_user') == (int) $member->userid)
 					{
 						$this->params->set('access-owner-project', true);
 						$this->params->set('access-delete-project', true);
