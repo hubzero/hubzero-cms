@@ -212,7 +212,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 									<span class="date"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('date'); ?></time></span>
 								</p>
 								<p>
-									<?php echo $replyto->content; ?>
+									<?php echo \Hubzero\Utility\Sanitize::html((string) $replyto->get('content')); ?>
 								</p>
 							</blockquote>
 							<?php

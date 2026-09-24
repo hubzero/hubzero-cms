@@ -35,7 +35,7 @@ if ($this->comment->isReported())
 }
 else
 {
-	$comment  = $this->comment->content;
+	$comment  = \Hubzero\Utility\Sanitize::html((string) $this->comment->get('content'));
 }
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">

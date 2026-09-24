@@ -309,6 +309,12 @@ class Articles extends SiteController
 		// Incoming
 		$comment = Request::getArray('comment', array(), 'post');
 
+		// The editor posts HTML; keep only what is safe to echo
+		if (isset($comment['content']))
+		{
+			$comment['content'] = \Hubzero\Utility\Sanitize::html((string) $comment['content']);
+		}
+
 		// The form always posts this one, but a crafted request need not, and
 		// reading a missing key is a warning this hub turns into a 500.
 		$cid = isset($comment['id']) ? (int) $comment['id'] : 0;
