@@ -138,6 +138,8 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
+		$config = App::get('config');
+
 		// Existing user - nothing to do...yet.
 		if (!$isnew)
 		{
@@ -568,7 +570,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
         // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
-		$delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($userId) . " AND 'profile_key' !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
+		$delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($userId) . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
 		$this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
 
         $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email=" . $db->quote($userEmail);

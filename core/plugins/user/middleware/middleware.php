@@ -133,7 +133,7 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 						$cids = $db->loadObjectList();
 					}
 					// Loop through each usergroup and find the highest 'jobs allowed' value
-					foreach ($cids as $cls);
+					foreach ($cids as $cls)
 					{
 						$cls->jobs = intval($cls->jobs);
 

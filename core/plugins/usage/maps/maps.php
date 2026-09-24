@@ -251,6 +251,9 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUsageDisplay($option, $task, $db, $months, $monthsReverse, $enddate)
 	{
+		// getData() reads the usage database handle from here
+		$this->udb = $db;
+
 		// Check if our task is the area we want to return results for
 		if ($task)
 		{
