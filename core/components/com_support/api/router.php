@@ -51,6 +51,15 @@ class Router extends Base
 
 		$vars['controller'] = 'tickets';
 
+		// The v2 tickets controller documents its URIs as /support/tickets[/...];
+		// the loader already takes the controller from that segment, so drop it
+		// here or "tickets" was read as the task (POST /support/tickets and
+		// GET /support/tickets/{id} answered "Task [...] not found")
+		if (isset($segments[0]) && $segments[0] == 'tickets')
+		{
+			array_shift($segments);
+		}
+
 		if (isset($segments[0]))
 		{
 			if (is_numeric($segments[0]))
