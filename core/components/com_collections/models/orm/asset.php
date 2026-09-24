@@ -96,7 +96,7 @@ class Asset extends Relational
 		{
 			$last = self::all()
 				->select('ordering')
-				->whereEquals('item_id', $data['item_id'])
+				->whereEquals('item_id', isset($data['item_id']) ? (int) $data['item_id'] : 0)
 				->order('ordering', 'desc')
 				->row();
 
