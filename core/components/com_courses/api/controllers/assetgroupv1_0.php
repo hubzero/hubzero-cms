@@ -343,7 +343,7 @@ class Assetgroupv1_0 extends base
 
 		// Conditional Checks
 		if (!$courseId) {
-			throw new Exception("Course Id is required");
+			throw new Exception("Course Id is required", 400); // a missing parameter is a 400, not a 500
 		}
 
 		$database = \App::get('db');
@@ -372,7 +372,7 @@ class Assetgroupv1_0 extends base
 
 		// Conditional Checks
 		if (!$offeringId) {
-			throw new Exception("Offering Id is required");
+			throw new Exception("Offering Id is required", 400); // a missing parameter is a 400, not a 500
 		}
 
 		$database = \App::get('db');
@@ -402,7 +402,7 @@ class Assetgroupv1_0 extends base
 
 		// Conditional Checks
 		if (!$unitId) {
-			throw new Exception("Unit Id is required");
+			throw new Exception("Unit Id is required", 400); // a missing parameter is a 400, not a 500
 		}
 
 		$database = \App::get('db');
