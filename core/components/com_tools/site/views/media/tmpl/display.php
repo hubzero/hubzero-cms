@@ -48,10 +48,10 @@ $this->css('component.css')
 			?>
 				<tr>
 					<td width="100%">
-						<?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
+						<?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . urlencode($docs[$docName])); ?>
 					</td>
 					<td>
-						<a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+						<a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo urlencode($docs[$docName]); ?>&amp;resource=<?php echo $this->escape($this->resource); ?>&amp;tmpl=component&amp;subdir=<?php echo $this->escape($this->subdir); ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo $this->escape(Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName])); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</td>

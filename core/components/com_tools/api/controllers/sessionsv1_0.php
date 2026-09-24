@@ -179,17 +179,21 @@ class Sessionsv1_0 extends ApiController
 		}
 
 
-                $hzt = \Components\Tools\Models\Tool::getInstance($tool);
-                $hztv_dev = $hzt->getRevision('development');
-                $hztv_current = $hzt->getRevision('current');
+		$hzt = \Components\Tools\Models\Tool::getInstance($tool);
+		if (!$hzt)
+		{
+			throw new Exception(Lang::txt('No Tool Found Matching the Alias: "%s"', $tool), 404);
+		}
+		$hztv_dev = $hzt->getRevision('development');
+		$hztv_current = $hzt->getRevision('current');
 		if ($version == 'current')
 		{
-			$version = $hztv_current->revision;
+			$version = $hztv_current ? $hztv_current->revision : null;
 		}
 		else if ($version == 'dev')
-                {
-                        $version = $hztv_dev->revision;
-                }
+		{
+			$version = $hztv_dev ? $hztv_dev->revision : null;
+		}
 
 		//poll database for tool matching alias
 		if ($version !== 0)
@@ -282,7 +286,7 @@ class Sessionsv1_0 extends ApiController
 
 		$object->tool->hostreq = $hostreq;
 
-		$hzt = new \Components\Tools\Tables\Tool($this->database);
+		$hzt = new \Components\Tools\Tables\Tool($database);
 		$developers = $hzt->getToolDevelopers($tool_info->id);
 		$object->tool->developers = $developers;
 
@@ -707,7 +711,7 @@ class Sessionsv1_0 extends ApiController
 		if (!$preferences || !$preferences->id)
 		{
 			include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
-			$scls = new \Components\Tools\Tables\SessionClass($this->database);
+			$scls = new \Components\Tools\Tables\SessionClass($database);
 			$default = $scls->find('one', array('alias' => 'default'));
 			$preferences->user_id  = $result->get('uidNumber');
 			$preferences->class_id = $default->id;

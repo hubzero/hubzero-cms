@@ -84,15 +84,15 @@ Html::behavior('tooltip');
 					<?php
 					if (count($appinfoArray) > 2)
 					{
-						echo $appinfoArray[2];
+						echo $this->escape($appinfoArray[2]);
 					}
 					?>
 				</td>
 				<td class="priority-1">
 					<?php
-					if (count($appinfoArray) > 2)
+					if (count($appinfoArray) > 3)
 					{
-						echo $appinfoArray[3];
+						echo $this->escape($appinfoArray[3]);
 					}
 					?>
 				</td>

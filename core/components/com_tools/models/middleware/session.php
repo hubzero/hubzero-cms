@@ -238,6 +238,16 @@ class Session extends Base
 			$readonly = 'No';
 		}
 
+		// The owner's own view entry carries the connection details a share copies
+		$sess = $this->get('sessnum');
+		$mwViewperm = new \Components\Tools\Models\Middleware\Viewperm($this->_db);
+		$rows = $mwViewperm->loadViewperm($sess, $this->get('username'));
+		if (!$rows)
+		{
+			$this->setError(Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND'));
+			return false;
+		}
+
 		foreach ($users as $user)
 		{
 			// Check for invalid characters

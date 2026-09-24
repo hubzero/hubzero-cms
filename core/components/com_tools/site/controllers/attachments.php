@@ -171,6 +171,16 @@ class Attachments extends SiteController
 
 		// Ensure file names fit.
 		$ext = Filesystem::extension($file['name']);
+
+		// Refuse server-executable extensions and the markup types a download
+		// handler would serve inline -- the same rule as the tool media upload
+		$blockedExtensions = array('php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml');
+		if (in_array(strtolower((string) $ext), $blockedExtensions))
+		{
+			$this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
+			return $this->displayTask($pid);
+		}
+
 		$file['name'] = str_replace(' ', '_', $file['name']);
 		if (strlen($file['name']) > 230)
 		{
@@ -360,6 +370,14 @@ class Attachments extends SiteController
 		}
 
 		$allowupload = Request::getInt('allowupload', 1);
+
+		// The list (and its reorder/delete links) is for the people who may
+		// edit the tool, the same as every other task here
+		$obj = new \Components\Tools\Tables\Tool($this->database);
+		if (!$this->_checkAccess($obj->getToolIdFromResource($id), true))
+		{
+			App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
+		}
 
 		$resource = Entry::oneOrNew($id);
 

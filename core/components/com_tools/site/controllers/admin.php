@@ -644,7 +644,6 @@ class Admin extends SiteController
 				else
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERR_DOI_STORE_FAILED'));
-					$this->setError($doierr);
 					$result = false;
 				}
 			}
@@ -901,6 +900,11 @@ class Admin extends SiteController
 			}
 			// get tarball
 			$tar = explode("source tarball: /tmp/", $this->getMessage());
+			if (!isset($tar[1]))
+			{
+				$out .= " invoke script failure";
+				return false;
+			}
 			$tar = $tar[1];
 
 			$file_path = $tarball_path . DS . $status['toolname'];

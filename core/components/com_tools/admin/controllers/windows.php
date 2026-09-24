@@ -196,12 +196,11 @@ class Windows extends AdminController
 		// Incoming
 		$ids = Request::getArray('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$i = 0;
 
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
-			$i = 0;
-
 			// Loop through each ID and delete the necessary items
 			foreach ($ids as $id)
 			{
@@ -342,7 +341,14 @@ class Windows extends AdminController
 		}
 		else
 		{
-			$startdate = new \DateTime($startdate);
+			try
+			{
+				$startdate = new \DateTime($startdate);
+			}
+			catch (\Exception $e)
+			{
+				$startdate = new \DateTime('midnight first day of this month');
+			}
 		}
 
 		if (empty($enddate))
@@ -351,7 +357,14 @@ class Windows extends AdminController
 		}
 		else
 		{
-			$enddate = new \DateTime($enddate);
+			try
+			{
+				$enddate = new \DateTime($enddate);
+			}
+			catch (\Exception $e)
+			{
+				$enddate = new \DateTime('midnight first day of next month');
+			}
 		}
 
 		// Get the usage data

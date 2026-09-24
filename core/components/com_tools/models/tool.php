@@ -281,7 +281,7 @@ class Tool
 		{
 			$query = "INSERT INTO #__tool (id,toolname,title) VALUES (" . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
-			$db->setQuery();
+			$db->setQuery($query);
 
 			$result = $db->query();
 
@@ -678,7 +678,7 @@ class Tool
 
 		if (!isset($this->id))
 		{
-			$db->setQuery("SELECT id FROM `#__tool` WHERE toolname" . $db->Quote($this->toolname) . ";");
+			$db->setQuery("SELECT id FROM `#__tool` WHERE toolname=" . $db->Quote($this->toolname) . ";");
 
 			$this->id = $db->loadResult();
 		}
@@ -1094,7 +1094,7 @@ class Tool
 		}
 
 		$query = "SELECT id FROM `#__tool_version` AS v WHERE v.toolname=" .
-			$db->Quote($this->toolname) . " v.state=1 ORDER BY v.revision DESC LIMIT 1";
+			$db->Quote($this->toolname) . " AND v.state=1 ORDER BY v.revision DESC LIMIT 1";
 
 		$db->setQuery($query);
 
@@ -1367,7 +1367,7 @@ class Tool
 		$sql = "SELECT f.toolname FROM `#__tool` AS f
 			JOIN `#__tool_groups` AS g ON f.id=g.toolid AND g.role=1
 			JOIN `#__xgroups` AS xg ON g.cn=xg.cn
-			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($uid);
+			JOIN `#__xgroups_members` AS m ON xg.gidNumber=m.gidNumber AND uidNumber=" . $db->quote($userid);
 
 		$db->setQuery($sql);
 
@@ -1749,7 +1749,7 @@ class Tool
 		{
 			return false;
 		}
-		$db->setQuery('SELECT id FROM `#__tool` WHERE toolname="' . $db->Quote($toolname) . '" LIMIT 1');
+		$db->setQuery('SELECT id FROM `#__tool` WHERE toolname=' . $db->Quote($toolname) . ' LIMIT 1');
 		return $db->loadResult();
 	}
 
@@ -1868,13 +1868,15 @@ class Tool
 	 */
 	public static function xbuildQuery($filters, $admin)
 	{
+		$db = \App::get('db');
+
 		// get and set record filter
 		$filter = ($admin) ? " WHERE f.id!=0": " WHERE f.state!=9";
 
 		switch ($filters['filterby'])
 		{
 			case 'mine':
-				$filter .= " AND f.registered_by='" . User::get('username') . "' ";
+				$filter .= " AND f.registered_by=" . $db->quote(User::get('username')) . " ";
 				break;
 			case 'published':
 				$filter .= " AND f.published='1' AND f.state!='9' ";
@@ -1891,22 +1893,24 @@ class Tool
 			$search = $filters['search'];
 			if (intval($search))
 			{
-				$filter .= " AND f.id='%$search%' ";
+				$filter .= " AND f.id=" . $db->quote(intval($search)) . " ";
 			}
 			else
 			{
-				$filter .= " AND LOWER(f.toolname) LIKE '%$search%' ";
+				$filter .= " AND LOWER(f.toolname) LIKE " . $db->quote('%' . strtolower($search) . '%') . " ";
 			}
 		}
 		if (!$admin)
 		{
-			$filter .= " AND m.uidNumber='" . User::get('id') . "' ";
-			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state, f.registered';
+			$filter .= " AND m.uidNumber=" . $db->quote((int) User::get('id')) . " ";
+			$sortby = (!empty($filters['sortby'])) ? $filters['sortby'] : 'f.state, f.registered';
 		}
 		else
 		{
-			$sortby = ($filters['sortby']) ? $filters['sortby'] : 'f.state_changed DESC';
+			$sortby = (!empty($filters['sortby'])) ? $filters['sortby'] : 'f.state_changed DESC';
 		}
+		// Column names and ASC/DESC only
+		$sortby = preg_replace('/[^a-zA-Z0-9_., ]/', '', $sortby);
 
 		$query = "#__tool as f "
 				."JOIN #__tool_version AS v ON f.id=v.toolid AND v.state=3 "

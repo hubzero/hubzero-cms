@@ -29,7 +29,7 @@ Html::behavior('tooltip');
 			<?php
 				foreach ($this->appnames as $record)
 				{
-					$html  = ' <option value="' . $record->appname . '"';
+					$html  = ' <option value="' . $this->escape($record->appname) . '"';
 					if ($this->filters['appname'] == $record->appname)
 					{
 						$html .= ' selected="selected"';
@@ -47,7 +47,7 @@ Html::behavior('tooltip');
 			<?php
 				foreach ($this->exechosts as $record)
 				{
-					$html  = ' <option value="' . $record->exechost . '"';
+					$html  = ' <option value="' . $this->escape($record->exechost) . '"';
 					if ($this->filters['exechost'] == $record->exechost)
 					{
 						$html .= ' selected="selected"';
@@ -65,7 +65,7 @@ Html::behavior('tooltip');
 			<?php
 				foreach ($this->usernames as $record)
 				{
-					$html  = ' <option value="' . $record->viewuser . '"';
+					$html  = ' <option value="' . $this->escape($record->viewuser) . '"';
 					if ($this->filters['username'] == $record->viewuser)
 					{
 						$html .= ' selected="selected"';
@@ -123,8 +123,8 @@ Html::behavior('tooltip');
 				?>
 				<tr>
 					<td>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sessnum; ?>" class="checkbox-toggle" />
-						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->sessnum; ?></label>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row->sessnum); ?>" class="checkbox-toggle" />
+						<label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $this->escape($row->sessnum); ?></label>
 					</td>
 					<td>
 						<span class="editlinktip hasTip" title="<?php echo $this->escape(stripslashes($row->sessname)); ?>::Host: <?php echo $this->escape($row->exechost); ?>&lt;br /&gt;IP: <?php echo $this->escape($row->remoteip); ?>">

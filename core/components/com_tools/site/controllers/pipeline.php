@@ -907,7 +907,7 @@ class Pipeline extends SiteController
 
 		// set vars
 		$tool = Request::getArray('tool', array(), 'post');
-		$tool = array_map('trim', $tool);
+		$tool = array_map(function ($v) { return is_scalar($v) ? trim((string) $v) : ''; }, $tool);
 		// Sanitize the input a bit
 		foreach ($tool as $i => $var)
 		{
@@ -996,6 +996,10 @@ class Pipeline extends SiteController
 		else
 		{
 			$hzt = \Components\Tools\Models\Tool::getInstance($id);
+
+			// The name is fixed once registered: the version row, its invoke
+			// path and the Trac project are all derived from it
+			$tool['toolname'] = $hzt->toolname;
 		}
 
 		// get tool id for newly registered tool
@@ -1080,7 +1084,7 @@ class Pipeline extends SiteController
 			$hztv->wikiaccess    = $tool['wiki'];
 			$hztv->vnc_command   = $invokedir . DS . $tool['toolname'] . DS . 'dev' . DS . 'middleware' . DS . 'invoke -T dev';
 			$hztv->vnc_geometry  = $tool['vncGeometry'];
-			$hztv->exportControl = $exportmap[$tool['exec']];
+			$hztv->exportControl = (isset($exportmap[$tool['exec']]) ? $exportmap[$tool['exec']] : null);
 			$hztv->state         = 3;
 			$hztv->instance      = $tool['toolname'] . $dev_suffix;
 			$hztv->mw            = $this->config->get('default_mw', 'narwhal');
@@ -1102,7 +1106,7 @@ class Pipeline extends SiteController
 				$hztv->codeaccess    = $tool['code'];
 				$hztv->wikiaccess    = $tool['wiki'];
 				$hztv->vnc_geometry  = $tool['vncGeometry'];
-				$hztv->exportControl = $exportmap[$tool['exec']];
+				$hztv->exportControl = (isset($exportmap[$tool['exec']]) ? $exportmap[$tool['exec']] : null);
 				$hztv->hostreq       = $tool['hostreq'];
 
 				$hzt->add('version', $hztv->instance);
