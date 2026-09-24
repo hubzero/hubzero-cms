@@ -396,7 +396,11 @@ class Credentials extends SiteController
 			);
 			return;
 		}
-		$parts = explode(':', $user->tokens()->latest()->token);
+		// Newest token by id: 'created' has one-second resolution, so two
+		// requests in the same second (a double click, or a retry after the
+		// mail failed) made the choice arbitrary and the mailed code could be
+		// refused as "user not found"
+		$parts = explode(':', $user->tokens()->latest('id')->token);
 		$crypt = $parts[0];
 
 		if (!isset($parts[1]))
@@ -498,7 +502,7 @@ class Credentials extends SiteController
 		$user = \Hubzero\User\User::oneOrFail($id);
 
 		// Check for a user and that the tokens match
-		if ($user->tokens()->latest()->token !== $token)
+		if ($user->tokens()->latest('id')->token !== $token)
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
