@@ -28,13 +28,14 @@ elseif ($this->project->isProvisioned())
 	$subtitle = User::get('id')
 			? Lang::txt('PLG_PROJECTS_TEAM_EMAIL_ADDED_AS_PUB_AUTHOR')
 			: Lang::txt('PLG_PROJECTS_TEAM_EMAIL_INVITED_AS_PUB_AUTHOR');
-	$subtitle .= ' "' . $pub->title . '"';
+	// titles are plain text typed by the project owner; escape them for HTML
+	$subtitle .= ' "' . $this->escape($pub->title) . '"';
 }
 else
 {
 	$subtitle  = User::get('name') . ' ';//$this->project->owner('name') . ' ';
 	$subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-	$subtitle .= ' "' . $this->project->get('title') . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
+	$subtitle .= ' "' . $this->escape($this->project->get('title')) . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
 	if ($this->role == 1)
 	{
 		$subtitle .= Lang::txt('COM_PROJECTS_LABEL_OWNER');
@@ -130,7 +131,7 @@ $comment .= $link . "\n\n";
 					<tbody>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
-							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->get('title') . '(' . $this->project->get('alias') . ')'; ?></td>
+							<td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->project->get('title') . '(' . $this->project->get('alias') . ')'); ?></td>
 						</tr>
 						<tr>
 							<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>

@@ -23,7 +23,7 @@ $browseLink = rtrim($base, '/') . '/' . trim($sef_browse, '/');
 
 // Main message
 $subtitle  = $this->project->owner('name') . ' ' .Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
-$subtitle .= ' "' . $this->project->get('title'). '"';
+$subtitle .= ' "' . $this->escape($this->project->get('title')) . '"'; // plain text title, escaped for HTML
 
 // Get the actual message
 $comment = '';
