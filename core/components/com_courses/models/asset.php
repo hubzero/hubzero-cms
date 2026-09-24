@@ -416,18 +416,13 @@ class Asset extends Base
 		// Add PATH_CORE
 		$filename = PATH_APP . $filename;
 
-		// Ensure the file exist
-		if (!file_exists($filename))
-		{
-			App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND').' '.$filename);
-			return;
-		}
-
 		// Confine the resolved path to the course asset directory so a crafted
 		// "file" parameter cannot traverse out and read arbitrary files.
+		// realpath() is false for a missing file too, so this is also the
+		// existence check -- and the message never echoes the server path.
 		$allowedBase = realpath(PATH_APP . (strpos($base_path, DS) === 0 ? '' : DS) . $base_path);
 		$resolved    = realpath($filename);
-		if ($allowedBase === false || $resolved === false
+		if ($allowedBase === false || $resolved === false || !is_file($resolved)
 			|| strpos($resolved . DS, rtrim($allowedBase, DS) . DS) !== 0)
 		{
 			App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));

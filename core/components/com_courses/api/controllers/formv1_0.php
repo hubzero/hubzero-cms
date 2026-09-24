@@ -68,14 +68,8 @@ class formv1_0 extends base
 		}
 		$filename = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
 
-		// Ensure the file exist
-		if (!file_exists($filename))
-		{
-			// Return message
-			App::abort(404, 'Image not found');
-		}
-
-		// Add silly simple security check
+		// Add silly simple security check -- before the existence test, so an
+		// unauthorised caller cannot probe which files exist
 		$token      = Request::getString('token', false);
 		$session_id = App::get('session')->getId();
 		$secret     = Config::get('secret');
@@ -84,6 +78,13 @@ class formv1_0 extends base
 		if ($token !== $hash)
 		{
 			App::abort(401, 'You don\'t have permission to do this');
+		}
+
+		// Ensure the file exist
+		if (!file_exists($filename))
+		{
+			// Return message
+			App::abort(404, 'Image not found');
 		}
 
 		// Initiate a new content server and serve up the file

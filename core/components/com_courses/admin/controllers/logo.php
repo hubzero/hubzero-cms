@@ -115,7 +115,7 @@ class Logo extends AdminController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		if (!in_array(strtolower($ext), $allowedExtensions))
 		{
 			echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UNKNOWN_FILE_TYPE')));
@@ -276,7 +276,7 @@ class Logo extends AdminController
 
 		if ($file['size'] > $sizeLimit)
 		{
-			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubsero\Utility\Number::formatBytes($sizeLimit)));
+			$this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
 			return $this->displayTask($file['name'], $id);
 		}
 

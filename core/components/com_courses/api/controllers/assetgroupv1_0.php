@@ -15,6 +15,7 @@ use App;
 use Request;
 use Date;
 use stdClass;
+use Exception;
 
 require_once __DIR__ . DS . 'base.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';

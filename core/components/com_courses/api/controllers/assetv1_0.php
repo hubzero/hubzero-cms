@@ -128,7 +128,7 @@ class Assetv1_0 extends base
 
 			// Get the extension
 			$pathinfo = pathinfo($file_name);
-			$ext      = $pathinfo['extension'];
+			$ext      = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		}
 		elseif ($contentType = Request::getWord('type', false))
 		{
@@ -157,6 +157,31 @@ class Assetv1_0 extends base
 
 		// Initiate our file handler
 		$database     = App::get('db');
+
+		// The handler files the new asset under the request scope/scope_id;
+		// that scope has to belong to the authorized course, as saveTask,
+		// deleteTask and reorderTask already require.
+		$assocScope   = strtolower(Request::getCmd('scope', 'asset_group'));
+		$assocScopeId = (int) Request::getInt('scope_id', 0);
+
+		if ($assocScope === 'asset_group')
+		{
+			$database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+		}
+		else if ($assocScope === 'offering')
+		{
+			$database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
+		}
+		else
+		{
+			App::abort(403, 'Unsupported asset scope');
+		}
+
+		if ((int) $database->loadResult() !== (int) $this->course_id)
+		{
+			App::abort(403, 'Asset scope is not a part of this course');
+		}
+
 		$assetHandler = new Handler($database, $ext);
 		// Create the new asset
 		$return = $assetHandler->doCreate(Request::getString('handler', null));

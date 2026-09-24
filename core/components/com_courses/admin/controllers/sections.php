@@ -458,6 +458,11 @@ class Sections extends AdminController
 				{
 					// Rejected file type: error already set, keep the existing badge
 				}
+				else if ($dimensions === false)
+				{
+					// An image extension on something that is not an image
+					$this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
+				}
 				else if ($dimensions[0] != $dimensions[1])
 				{
 					$this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));

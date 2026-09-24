@@ -136,14 +136,12 @@ class Media extends AdminController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
 		}
 		$file = $path . DS . $filename . '.' . $ext;
-
-		$ext = Filesystem::extension($file['name']);
 
 		// Check that the file type is allowed
 		$allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
