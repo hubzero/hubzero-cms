@@ -11,6 +11,11 @@ defined('_HZEXEC_') or die();
 $dcls = '';
 $lcls = '';
 
+// A publication page requested without a version redirects to the last
+// public release and drops the query string, which lost the vote; name the
+// version being viewed so the vote link lands without a redirect
+$verq = Request::getInt('v', 0) ? '&v=' . Request::getInt('v', 0) : '';
+
 if ($vote = $this->item->get('vote'))
 {
 	switch ($vote)
@@ -60,12 +65,12 @@ else
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
 			</a>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
 			</a>
 		</span>
@@ -78,13 +83,13 @@ else
 			</span>
 		</span>
 		<span class="vote-dislike<?php echo $dcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=no'); ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
 			</a>
 		</span>
 	<?php } else { ?>
 		<span class="vote-like<?php echo $lcls; ?>">
-			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
+			<a class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq . '&active=reviews&action=rateitem&refid=' . $this->item->get('id') . '&vote=yes'); ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('helpful', 0); ?><span> Like</span>
 			</a>
 		</span>
