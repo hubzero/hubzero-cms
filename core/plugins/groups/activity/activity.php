@@ -378,7 +378,47 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
 
-		$row->set($comment);
+		// Only the body and the anonymous flag come from the form. The rest
+		// of activity[] (scope, scope_id, created_by, details) is decided
+		// here: the log is this group's, by this user, and the body is
+		// editor HTML that the feed echoes as-is, so purify it.
+		$row->set(array(
+			'description' => \Hubzero\Utility\Sanitize::html((string) (isset($comment['description']) ? $comment['description'] : '')),
+			'anonymous'   => (isset($comment['anonymous']) ? (int) $comment['anonymous'] : 0)
+		));
+
+		if ($row->isNew())
+		{
+			$scope   = 'activity.comment';
+			$scopeId = (int) $this->group->get('gidNumber');
+			$parent  = isset($comment['parent']) ? (int) $comment['parent'] : 0;
+
+			// A reply inherits the scope of the entry it answers, which has to
+			// be one this group received
+			if ($parent)
+			{
+				$parentLog = Hubzero\Activity\Log::oneOrNew($parent);
+				$received  = Hubzero\Activity\Recipient::all()
+					->whereEquals('log_id', $parent)
+					->whereIn('scope', array('group', 'group_managers'))
+					->whereEquals('scope_id', $scopeId)
+					->total();
+
+				if (!$parentLog->get('id') || !$received)
+				{
+					App::abort(404, Lang::txt('You are not authorized to perform this action.'));
+				}
+
+				$scope   = $parentLog->get('scope');
+				$scopeId = $parentLog->get('scope_id');
+			}
+
+			$row->set('action', 'created');
+			$row->set('parent', $parent);
+			$row->set('scope', $scope);
+			$row->set('scope_id', $scopeId);
+			$row->set('created_by', User::get('id'));
+		}
 
 		// Process attachment
 		$upload = Request::getArray('activity_file', '', 'files');
@@ -447,7 +487,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'id'          => $row->get('id'),
-				'action'      => ($comment['id'] ? 'updated' : 'created'),
+				'action'      => ($lid ? 'updated' : 'created'),
 				'scope'       => $row->get('scope'),
 				'scope_id'    => $row->get('scope_id'),
 				'anonymous'   => $row->get('anonymous', 0),

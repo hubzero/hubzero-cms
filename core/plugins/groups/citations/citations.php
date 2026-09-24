@@ -757,7 +757,15 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			{
 				$link['citation_id'] = $citation->id;
 
-				$l = \Components\Citations\Models\Link::oneOrNew($link['id']);
+				$l = \Components\Citations\Models\Link::oneOrNew(isset($link['id']) ? (int) $link['id'] : 0);
+
+				// links[n][id] names any link row on the hub; only this
+				// citation's own links are rewritten or removed here
+				if ($l->get('id') && (int) $l->get('citation_id') !== (int) $citation->id)
+				{
+					continue;
+				}
+
 				if ($link['url'] && $link['title'])
 				{
 					$l->set($link);
@@ -800,7 +808,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$id = Request::getInt('id', 0);
-		$citationIDs = Request::getArray('citationIDs', array());
+		// The bulk buttons send a comma-joined string of ids
+		$citationIDs = Request::getString('citationIDs', '');
 		$bulk = Request::getBool('bulk', false);
 
 		if ($id != 0 && !$bulk)
@@ -866,7 +875,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				return;
 			}
 			$published = array();
-			$citationIDs = explode(',', $citationIDs);
+			$citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
 			$string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 
 			// error, no such citation
@@ -953,7 +962,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// get the variables
 		$id = Request::getInt('id', 0);
-		$citationIDs = Request::getArray('citationIDs', array());
+		// The bulk buttons send a comma-joined string of ids
+		$citationIDs = Request::getString('citationIDs', '');
 		$bulk = Request::getBool('bulk', false);
 
 		// for single citation operation
@@ -1010,7 +1020,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				}
 
 			$deleted = array();
-			$citationIDs = explode(',', $citationIDs);
+			$citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
 			$string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
 
 			// error, no such citation
@@ -1260,7 +1270,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$file = Request::file('citations_file');
 
 		// make sure we have a file
-		$filename = $file->getClientOriginalName();
+		$filename = $file ? $file->getClientOriginalName() : '';
 		if ($filename == '')
 		{
 			App::redirect(
@@ -1696,7 +1706,12 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 							$citations->where('year', '<=', $value);
 						break;
 						default:
-							$citations->where($filter, '=', $value);
+							// filters[] keys are request-supplied; only real, filterable
+							// columns reach the query
+							if (in_array($filter, array('type', 'scope', 'scope_id', 'published', 'year', 'affiliated', 'fundedby'), true))
+							{
+								$citations->where($filter, '=', $value);
+							}
 						break;
 					}
 				} // end if not search & not sort & non-empty value
@@ -1760,8 +1775,16 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 				if ($filter == "sort" && $value != "")
 				{
+					// "column direction" from the request: only the offered columns
+					// and directions are honoured
 					$clause = explode(" ", $value);
-					$citations->order($clause[0], $clause[1]);
+					$column = strtolower($clause[0]);
+					$dir    = isset($clause[1]) ? strtolower($clause[1]) : 'asc';
+					if (in_array($column, array('year', 'created', 'title', 'author', 'journal'), true)
+					 && in_array($dir, array('asc', 'desc'), true))
+					{
+						$citations->order($column, $dir);
+					}
 				}
 			} // end foreach filters as filter
 

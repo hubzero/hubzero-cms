@@ -189,7 +189,13 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				}
 
 				$action = strtolower(trim($action));
-				if (!method_exists($this, $action))
+
+				// Only this plugin's own parameterless actions are dispatchable --
+				// not inherited helpers whose required arguments would be missing
+				$__method = method_exists($this, $action) ? new \ReflectionMethod($this, $action) : null;
+				if (!$__method
+				 || $__method->getDeclaringClass()->getName() !== get_class($this)
+				 || $__method->getNumberOfRequiredParameters() > 0)
 				{
 					App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_ERROR_ACTION_NOTFOUND'));
 				}
@@ -499,6 +505,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			{
 				$uid = $targetuser->get('id');
 
+				// Only a pending applicant of this group can be approved
+				if (!in_array($uid, (array) $this->group->get('applicants')))
+				{
+					continue;
+				}
+
 				// The list of applicants to remove from the applicant list
 				$applicants[] = $uid;
 
@@ -611,6 +623,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			if (is_object($targetuser))
 			{
 				$uid = $targetuser->get('id');
+
+				// Only a member of this group can be promoted
+				if (!in_array($uid, (array) $this->group->get('members')))
+				{
+					continue;
+				}
 
 				// Loop through existing managers and make sure the user isn't already a manager
 				if (in_array($uid, $managers))
@@ -1416,7 +1434,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$db = App::get('db');
 		foreach ($user_emails as $ue)
 		{
-			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $db->Quote($ue);
+			// Only this group's invitation for the address
+			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $db->Quote($ue) . " AND gidNumber=" . $db->Quote($this->group->get('gidNumber'));
 			$db->setQuery($sql);
 			$db->query();
 		}
@@ -1500,6 +1519,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// get request vars
 		$fields = Request::getArray('role', array());
@@ -1731,6 +1753,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
 		if (!$existing->get('id')
 		 || $existing->get('gidNumber') != $this->group->get('gidNumber'))
+		{
+			return false;
+		}
+
+		// ... and the grantee has to be a member of this group
+		if (!in_array($uid, (array) $this->group->get('members')))
 		{
 			return false;
 		}

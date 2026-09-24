@@ -126,6 +126,9 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 	 */
 	protected function save($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
+		// Check for request forgeries (every producer is a POST form carrying the token)
+		Request::checkToken();
+
 		$postSaveRedirect = Request::getString('postsaveredirect', '');
 
 		// Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting

@@ -44,6 +44,11 @@ $this->css()
 					{
 						foreach ($rows as $row)
 						{
+							// A post whose category is not in the viewable, published list has no row to link to
+							if (!isset($this->categories[$row->get('category_id')]))
+							{
+								continue;
+							}
 							$title = $this->escape(stripslashes($row->get('title')));
 							$title = preg_replace('#' . preg_quote($this->filters['search'], '#') . '#i', "<span class=\"highlight\">\\0</span>", $title);
 

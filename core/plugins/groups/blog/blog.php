@@ -748,6 +748,26 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 		}
 
+		// An existing entry is edited by its author or a group manager (the
+		// entry view offers Edit on that rule); its authorship stays as stored
+		if (!$row->isNew())
+		{
+			if ($row->get('created_by') != User::get('id')
+			 && $this->authorized != 'manager' && $this->authorized != 'admin')
+			{
+				App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
+			}
+			unset($entry['created'], $entry['created_by']);
+		}
+		else
+		{
+			$entry['created_by'] = User::get('id');
+		}
+
+		// The entry stays in this group's blog whatever the form says
+		$entry['scope']    = 'group';
+		$entry['scope_id'] = $this->group->get('gidNumber');
+
 		$row->set($entry);
 		if ($row->get('alias') == '')
 		{
@@ -849,6 +869,13 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		// The entry must belong to this group
 		if ($entry->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
+		}
+
+		// ... and be the caller's own, unless they manage the group
+		if ($entry->get('created_by') != User::get('id')
+		 && $this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
 		}
@@ -960,6 +987,23 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$__isNew = $comment->isNew();
+		if ($__isNew)
+		{
+			// A new comment goes on an entry of this group's blog
+			$__entry = Components\Blog\Models\Entry::oneOrNew(isset($data['entry_id']) ? (int) $data['entry_id'] : 0);
+			if (!$__entry->get('id')
+			 || $__entry->get('scope') != 'group'
+			 || $__entry->get('scope_id') != $this->group->get('gidNumber'))
+			{
+				App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
+			}
+			unset($data['state']);
+		}
+		else
+		{
+			// Keep the stored entry, authorship and state on an edit
+			unset($data['entry_id'], $data['created'], $data['created_by'], $data['state']);
+		}
 		$comment->set($data);
 		if ($__isNew)
 		{

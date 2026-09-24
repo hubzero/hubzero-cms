@@ -452,7 +452,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
 		if (!$model->save())
 		{
-			$this->setError($model->setError());
+			$this->setError($model->getError());
 			return $this->_edit($model);
 		}
 
@@ -814,8 +814,9 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 		// Load the record
 		$model = Hubzero\Item\Announcement::oneOrFail($id);
 
-		// Was it actually found?
-		if (!$model->get('id'))
+		// Was it actually found? The id names any announcement on the hub,
+		// so it also has to be this group's.
+		if (!$model->get('id') || !$model->belongsToObject('group', $group->get('gidNumber')))
 		{
 			throw new Exception(Lang::txt('Announcement not found.'), 404);
 		}

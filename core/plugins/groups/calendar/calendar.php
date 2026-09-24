@@ -646,6 +646,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	{
 		Request::checkToken();
 
+		// As edit(): only group members create and edit events
+		if (!in_array($this->user->get('id'), $this->group->get('members')))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('Only group members are allowed to create & edit events.'),
+				'warning'
+			);
+			return;
+		}
+
 		//get request vars
 		$event              = Request::getArray('event', array(), 'post');
 		$event['time_zone'] = Request::getString('time_zone', null);
@@ -695,6 +706,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			 || ($existing->get('created_by') != $this->user->get('id') && $this->authorized != 'manager'))
 			{
 				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			}
+
+			// As edit(): imported events are not editable
+			if ($existing->calendar()->isSubscription())
+			{
+				App::redirect(
+					Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $existing->get('id')),
+					Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
+					'error'
+				);
+				return;
 			}
 		}
 
@@ -936,8 +958,10 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
 
-		// make sure we have event
-		if (!$view->event->get('id'))
+		// make sure we have event, and that it is this group's
+		if (!$view->event->get('id')
+		 || $view->event->get('scope') != 'group'
+		 || $view->event->get('scope_id') != $this->group->get('gidNumber'))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
@@ -984,6 +1008,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		// load & export event
 		$eventsModelEvent = new \Components\Events\Models\Event($eventId);
+
+		// The id names any event on the hub; only this group's are served here
+		if (!$eventsModelEvent->get('id')
+		 || $eventsModelEvent->get('scope') != 'group'
+		 || $eventsModelEvent->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(404, Lang::txt('Event not found.'));
+		}
+
 		$eventsModelEvent->export();
 	}
 
@@ -1031,8 +1064,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 				die(Lang::txt('GROUPS_PLUGIN_REGISTERED', 'Calendar'));
 			}
 
-			//make sure we are a member
-			if ($plugin_access == 'members' && !is_object($auth) && !in_array($auth->id, $this->group->get('members')))
+			//make sure we are a member (authenticateSubscriptionRequest() always
+			//returns a user object, so the membership test has to run on it)
+			if ($plugin_access == 'members' && (!is_object($auth) || !in_array($auth->id, $this->group->get('members'))))
 			{
 				header('HTTP/1.1 403 Unauthorized');
 				die(Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar'));
@@ -1172,6 +1206,19 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$view->event = new \Components\Events\Models\Event($eventId);
 
+		// The id names any event on the hub; only this group's take registrations here
+		if (!$view->event->get('id')
+		 || $view->event->get('scope') != 'group'
+		 || $view->event->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				Lang::txt('Event not found.'),
+				'error'
+			);
+			return;
+		}
+
 		//get registrants count
 		$eventsRespondent = new \Components\Events\Tables\Respondent(array('id' => $eventId));
 		$view->registrants = $eventsRespondent->getCount();
@@ -1272,6 +1319,14 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
 		//load event data
 		$event = new \Components\Events\Models\Event($event_id);
+
+		// The id names any event on the hub; only this group's take registrations here
+		if (!$event->get('id')
+		 || $event->get('scope') != 'group'
+		 || $event->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(404, Lang::txt('Event not found.'));
+		}
 
 		// get event params
 		$params = new \Hubzero\Config\Registry($event->get('params'));

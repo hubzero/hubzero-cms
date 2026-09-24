@@ -1346,7 +1346,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		if ($thread->get('state') == $thread::STATE_DELETED)
 		{
 			App::redirect(
-				Route::url($this->base . '&scope=' . $this->filters['section'] . '/' . $this->filters['category']),
+				Route::url($this->base . '&scope=' . $filters['section'] . '/' . $filters['category']),
 				Lang::txt('PLG_GROUPS_FORUM_ERROR_THREAD_NOT_FOUND'),
 				'error'
 			);
@@ -1577,16 +1577,33 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$fields['modified_by'] = User::get('id');
 		}
 
-		// Extracting emails from the new post submitted
-		$domComment = new \DOMDocument();
-		$domComment->loadHTML($fields['comment'] == null ? '' : $fields['comment']);
+		// Extracting emails from the new post submitted. The anchors are part
+		// of the posted HTML, so only members of this group can be mentioned.
+		// loadHTML() refuses an empty string outright and warns on markup it
+		// does not know, so guard both.
 		$mentionEmailList = array();
-		foreach ($domComment->getElementsByTagName('a') as $item) {
-			$userId = $item->getAttribute('data-user-id');
-            $user = User::getInstance($userId);
-            $email = $user->get('email');
+		if (isset($fields['comment']) && trim((string) $fields['comment']) !== '')
+		{
+			$domComment = new \DOMDocument();
+			$__libxml = libxml_use_internal_errors(true);
+			$domComment->loadHTML($fields['comment']);
+			libxml_clear_errors();
+			libxml_use_internal_errors($__libxml);
 
-            $mentionEmailList[] = $email;
+			$groupMembers = (array) $this->group->get('members');
+			foreach ($domComment->getElementsByTagName('a') as $item) {
+				$userId = (int) $item->getAttribute('data-user-id');
+				if (!$userId || !in_array($userId, $groupMembers))
+				{
+					continue;
+				}
+				$user  = User::getInstance($userId);
+				$email = $user->get('email');
+				if ($email && !in_array($email, $mentionEmailList))
+				{
+					$mentionEmailList[] = $email;
+				}
+			}
 		}
 
 		// An existing post has to belong to this group's forum, and the caller
@@ -1634,6 +1651,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$__owner  = $post->get('created_by');
 		$__sticky = $post->get('sticky');
 		$__closed = $post->get('closed');
+		// Nested-set position, counters and publishing state are never the
+		// form's to set
+		unset($fields['lft'], $fields['rgt'], $fields['state'], $fields['hits'], $fields['last_activity']);
+
 		$post->set($fields);
 
 		// fields[scope], fields[scope_id], fields[category_id] and any added
@@ -1904,7 +1925,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$type = 'thread';
 		$desc = Lang::txt(
 			'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-			'<a href="' . Route::url($url) . '">' . $post->get('title') . '</a>'
+			'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 		);
 		// If this is a post in a thread and not the thread starter...
 		if ($post->get('parent'))
@@ -1917,7 +1938,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$desc = Lang::txt(
 				'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
 				$post->get('id'),
-				'<a href="' . Route::url($url) . '">' . $thread->get('title') . '</a>'
+				'<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>'
 			);
 
 			// If the parent post is not the same as the

@@ -1449,6 +1449,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$collection_id)
 		{
+			// No board named: a new one is created FOR THIS GROUP, which is a
+			// group member's right, not every logged-in viewer's
+			if (!$this->params->get('access-create-collection'))
+			{
+				App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+			}
+
 			$collection = new \Components\Collections\Models\Collection();
 			$collection->set('title', Request::getString('collection_title', ''));
 			$collection->set('object_id', $this->group->get('gidNumber'));
@@ -1679,6 +1686,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$__coll = new \Components\Collections\Models\Collection($post->get('collection_id'));
 		if (!$__coll->get('id') || $__coll->get('object_type') != 'group'
 		 || $__coll->get('object_id') != $this->group->get('gidNumber'))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
+			return $this->_collections();
+		}
+
+		// Moving a post off a board is the poster's or a board moderator's call
+		if ($post->get('created_by') != User::get('id') && !$__coll->canBeModeratedBy())
 		{
 			$this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
 			return $this->_collections();
@@ -1936,6 +1950,18 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		// comment[created_by] was a real column and modify() wrote it -- letting
 		// a comment be attributed to a chosen user.
 		unset($data['created_by']);
+
+		// Only the body, anonymity and thread position are the submitter's to
+		// set; a new comment is published, an edit keeps its stored state
+		$data = array_intersect_key($data, array_flip(array('id', 'content', 'anonymous', 'parent', 'state')));
+		if ($__isNew)
+		{
+			$data['state'] = 1;
+		}
+		else
+		{
+			unset($data['state'], $data['parent']);
+		}
 
 		$__owner = $comment->get('created_by');
 

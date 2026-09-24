@@ -173,7 +173,7 @@ $url = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&ac
 								{
 									case 0:
 										if (isset($item->ranked) && !$item->ranked && ($this->admin==2 or $this->admin==3)) {
-											$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
+											$html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category='.$this->wishlist->category.'&rid='.$this->wishlist->referenceid.'&wishid='.$item->id.'&filterby='.$this->escape($this->filters['filterby']).'&sortby='.$this->escape($this->filters['sortby']).'&tags='.$this->escape($this->filters['tag']).'">'.Lang::txt('COM_WISHLIST_WISH_RANK_THIS').'</a>'."\n";
 										} else if (isset($item->ranked) && $item->ranked) {
 											//$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
 											$this->css('

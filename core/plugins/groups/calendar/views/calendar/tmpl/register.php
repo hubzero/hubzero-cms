@@ -316,7 +316,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 					<?php echo Lang::txt('I have specific dietary needs.'); ?>
 				</label>
 				<label class="indent"><?php echo Lang::txt('Please specify'); ?>
-					<input type="text" name="dietary[specific]" value="<?php echo $this->dietary['specific']; ?>" />
+					<input type="text" name="dietary[specific]" value="<?php echo isset($this->dietary['specific']) ? $this->escape($this->dietary['specific']) : ''; ?>" />
 				</label>
 			<?php endif; ?>
 		</fieldset>

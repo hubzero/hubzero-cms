@@ -64,12 +64,12 @@ if (isset($this->messages))
 										{
 											foreach ($v as $k2 => $v2)
 											{
-												$queryString .= "&{$k}[{$k2}]={$v2}";
+												$queryString .= "&" . rawurlencode($k) . "[" . rawurlencode($k2) . "]=" . rawurlencode($v2);
 											}
 										}
 										else
 										{
-											$queryString .= "&{$k}={$v}";
+											$queryString .= "&" . rawurlencode($k) . "=" . rawurlencode($v);
 										}
 									}
 								}

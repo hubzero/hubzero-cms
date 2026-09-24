@@ -100,7 +100,7 @@ defined('_HZEXEC_') or die();
 						<?php if ($calendar->get('url')) : ?>
 							<span class="calendar-url">
 								<span>Calendar URL:</span>
-								<?php echo $calendar->get('url'); ?>
+								<?php echo $this->escape($calendar->get('url')); ?>
 							</span>
 							<br />
 							<span class="calendar-url">

@@ -359,6 +359,9 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		//message
 		$message = Lang::txt('PLG_GROUPS_MESSAGES_FROM_GROUP', $this->group->get('cn'));
 
@@ -395,7 +398,11 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 					{
 						$role = explode('_', $mbr);
 						$db = App::get('db');
-						$sql = "SELECT uidNumber FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role[1]);
+						// role_<id> names any role on the hub; only this group's roles are addressable
+						$sql = "SELECT mr.uidNumber FROM `#__xgroups_member_roles` AS mr"
+							. " INNER JOIN `#__xgroups_roles` AS r ON r.id = mr.roleid"
+							. " WHERE mr.roleid=" . $db->Quote((int) $role[1])
+							. " AND r.gidNumber=" . $db->Quote($this->group->get('gidNumber'));
 						$db->setQuery($sql);
 						$member_roles = $db->loadAssocList();
 						foreach ($member_roles as $member)
@@ -414,6 +421,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 					}
 				}
 			break;
+		}
+
+		// Individually named recipients have to be members of this group
+		if (!$action)
+		{
+			$mbrs = array_intersect(array_map('intval', (array) $mbrs), (array) $this->group->get('members'));
 		}
 
 		// Incoming message and subject

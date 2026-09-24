@@ -21,6 +21,7 @@ if ($forumCommentEmailNotifications)
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
+	<?php echo Html::input('token'); ?>
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="action" value="savememberoptions" />

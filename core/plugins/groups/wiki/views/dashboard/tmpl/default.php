@@ -19,7 +19,7 @@ if ($this->rows) { ?>
 			$user = User::getInstance($row->created_by);
 			if (is_object($user) && $user->get('name'))
 			{
-				$name = $user->get('name');
+				$name = $this->escape($user->get('name'));
 			}
 
 			if ($row->version > 1)

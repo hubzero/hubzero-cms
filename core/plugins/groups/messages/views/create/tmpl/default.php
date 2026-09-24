@@ -49,6 +49,7 @@ if ($this->params->get('stamp_logo'))
 
 	<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=messages'); ?>" method="post" id="hubForm<?php if ($this->no_html) { echo '-ajax';
 }; ?>">
+		<?php echo Html::input('token'); ?>
 		<fieldset class="hub-mail">
 			<div class="cont">
 				<h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
