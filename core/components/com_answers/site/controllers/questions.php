@@ -809,7 +809,7 @@ class Questions extends SiteController
 		// Store new content
 		if (!Request::checkHoneypot())
 		{
-			Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_INVALID_CONTENT'));
+			Notify::error(Lang::txt('COM_ANSWERS_ERROR_FORM_TOO_FAST'));
 			return $this->newTask($row);
 		}
 
