@@ -1656,7 +1656,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// form's to set
 		unset($fields['lft'], $fields['rgt'], $fields['state'], $fields['hits'], $fields['last_activity']);
 
+		$__state = $post->get('state');
+
 		$post->set($fields);
+
+		// With the form's state dropped, a new post has to be published here
+		// (as com_forum's threads controller does), or it is stored unpublished
+		// and the thread shows no posts to anyone
+		$post->set('state', $isNew ? Post::STATE_PUBLISHED : $__state);
 
 		// fields[scope], fields[scope_id], fields[category_id] and any added
 		// fields[created_by] all ride in from the form, so pin them rather than
