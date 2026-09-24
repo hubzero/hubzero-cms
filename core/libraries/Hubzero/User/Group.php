@@ -324,7 +324,7 @@ class Group extends Obj
 			{
 				$query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($cn) . ";";
 
-				$db->setQeury($query);
+				$db->setQuery($query);
 
 				$result = $db->loadResult();
 
@@ -688,7 +688,7 @@ class Group extends Obj
 
 			$gidNumber = $db->loadResult();
 
-			if (!is_numeric($this->gidNumber))
+			if (!is_numeric($gidNumber))
 			{
 				return false;
 			}

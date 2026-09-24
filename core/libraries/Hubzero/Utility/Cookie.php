@@ -71,6 +71,14 @@ class Cookie
 			$sstr   = $crypt->decrypt($str);
 			$cookie = @unserialize($sstr, array('allowed_classes' => false));
 
+			// A cookie baked under another secret, or plain garbage, does not
+			// unserialize; (object) false is an empty but truthy object whose
+			// properties every consumer then reads
+			if (!is_array($cookie))
+			{
+				return false;
+			}
+
 			return (object)$cookie;
 		}
 

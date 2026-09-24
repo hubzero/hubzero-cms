@@ -199,6 +199,9 @@ class Helper
 			return true;
 		}
 
+		$values = '';
+		$gids   = '';
+
 		foreach ($result as $r)
 		{
 			$values .= "($r,$user_id),";
@@ -300,7 +303,7 @@ class Helper
 
 				if ($temp[0])
 				{
-					$active_group_plugins[$temp[0]] = trim($temp[1]);
+					$active_group_plugins[$temp[0]] = isset($temp[1]) ? trim($temp[1]) : '';
 				}
 			}
 		}

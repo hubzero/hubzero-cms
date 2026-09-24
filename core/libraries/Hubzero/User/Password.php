@@ -747,10 +747,12 @@ class Password
 		}
 		else if ($encryption == 'crypt')
 		{
+			// A stored {CRYPT} hash that is not in $N$salt$ form (DES, or an
+			// imported hash with another salt length) leaves $parts empty
 			preg_match('/\$([[:alnum:]]{1,2})\$[[:alnum:]]{8}\$/', $passhash, $parts);
-			$salt = $parts[0];
+			$salt = isset($parts[0]) ? $parts[0] : '';
 
-			switch ($parts[1])
+			switch (isset($parts[1]) ? $parts[1] : '6')
 			{
 				case '6':
 				default:
@@ -762,7 +764,7 @@ class Password
 		if (empty($salt) && ($encryption == 'ssha'))
 		{
 			$salt = substr(base64_decode(substr($crypt, -32)), -4);
-			$hashed = base64_encode(mhash(MHASH_SHA1, $password . $salt) . $salt);
+			$hashed = base64_encode(hash('sha1', $password . $salt, true) . $salt);
 		}
 		else
 		{
@@ -1072,6 +1074,11 @@ class Password
 	{
 		$hzup = self::getInstance($user);
 
+		if (!$hzup)
+		{
+			return false;
+		}
+
 		$hzup->__set('shadowFlag', '-1');
 		$hzup->update();
 
@@ -1087,6 +1094,11 @@ class Password
 	public static function expirePassword($user = null)
 	{
 		$hzup = self::getInstance($user);
+
+		if (!$hzup)
+		{
+			return false;
+		}
 
 		$hzup->__set('shadowLastChange', '1');
 		$hzup->__set('shadowMax', '0');
