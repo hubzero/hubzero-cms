@@ -420,14 +420,16 @@ class Ticketsv1_0 extends ApiController
 		//make sure we have a user
 		if (!$result || !$result->get('id'))
 		{
-			throw new Exception(Lang::txt('User not found.'), 500);
+			// an anonymous caller is a 401, not a server error
+			throw new Exception(Lang::txt('User not found.'), 401);
 		}
 
 		// Initiate class and bind data to database fields
 		$ticket = \Components\Support\Models\Ticket::blank();
 
 		// Set the created date
-		$ticket->set('created', Date::toSql());
+		// Hubzero\Utility\Date (imported above) is not the facade: toSql() is not static
+		$ticket->set('created', with(new Date('now'))->toSql());
 
 		// Incoming
 		$ticket->set('report', Request::getString('report', '', 'post'));

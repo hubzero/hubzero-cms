@@ -441,7 +441,8 @@ class Ticketsv2_1 extends ApiController
 		//make sure we have a user
 		if (!$result || !$result->get('id'))
 		{
-			throw new Exception(Lang::txt('User not found.'), 500);
+			// an anonymous caller is a 401, not a server error
+			throw new Exception(Lang::txt('User not found.'), 401);
 		}
 
 		//check required fields

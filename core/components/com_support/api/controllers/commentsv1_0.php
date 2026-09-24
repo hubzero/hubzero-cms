@@ -124,8 +124,9 @@ class Commentsv1_0 extends ApiController
 			'tag'        => Request::getWord('tag', ''),
 		);
 
-		$filters['opened'] = $this->_toTimestamp(Request::getString('opened', ''));
-		$filters['closed'] = $this->_toTimestamp(Request::getString('closed', ''));
+		// (opened/closed filters were computed here with a _toTimestamp()
+		// this class never defined -- a fatal on every call -- and, like the
+		// rest of $filters, never applied; dropped.)
 
 		$response = new stdClass;
 		$response->success  = true;
