@@ -185,6 +185,16 @@ class Services extends AdminController
 		$fields = Request::getArray('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
+		// Blank number boxes post ''; strict SQL refuses '' for the numeric
+		// columns (unitprice is blank on a points-only service), so store NULL
+		foreach (array('unitprice', 'pointsprice', 'minunits', 'maxunits', 'unitsize', 'ordering') as $num)
+		{
+			if (isset($fields[$num]) && $fields[$num] === '')
+			{
+				$fields[$num] = null;
+			}
+		}
+
 		// Initiate extended database class
 		$row = Service::oneOrNew($fields['id'])->set($fields);
 
