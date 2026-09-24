@@ -51,7 +51,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php if (($tags = $this->results->get_tags())): ?>
 					<ol class="tags">
 						<?php foreach ($tags as $tag): ?>
-							<li><a class="tag" href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
+							<li><a class="tag" href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $this->escape($tag->get_title()); ?></a></li>
 						<?php endforeach; ?>
 					</ol>
 				<?php endif; ?>
@@ -64,7 +64,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 				<?php foreach ($this->results as $res) : ?>
 					<li>
 						<?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->get_plugin()), array($res)); ?>
-						<p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_highlighted_title(); ?></a></p>
+						<p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $this->escape($res->get_highlighted_title()); ?></a></p>
 						<div class="summary">
 							<?php if ($res->has_metadata()): ?>
 								<p class="details">
@@ -145,7 +145,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 										$last_type = $current_type;
 									?>
 										<li class="<?php echo $idx&1 ? 'odd' : 'even'; ?>">
-											<a href="<?php echo $child->get_link(); ?>"><?php echo $child->get_highlighted_title(); ?></a>
+											<a href="<?php echo $child->get_link(); ?>"><?php echo $this->escape($child->get_highlighted_title()); ?></a>
 											<p><?php echo $child->get_highlighted_excerpt(); ?></p>
 										</li>
 								<?php endforeach; ?>
