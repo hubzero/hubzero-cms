@@ -304,7 +304,33 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
 		$page = Request::getArray('fields', array(), 'post');
 
-		$model = new \Components\Courses\Models\Page($page['id']);
+		$pageId    = isset($page['id']) ? (int) $page['id'] : 0;
+		$offering  = $this->view->offering;
+		$sectionId = (int) $offering->section()->get('id');
+
+		$model = new \Components\Courses\Models\Page($pageId);
+
+		// fields[id] resolves any course page on the hub, and the bind below
+		// then rewrites it. An existing page has to belong to this offering,
+		// and to this section when it is a section page; a new page is pinned
+		// to them rather than taking course/offering/section ids from the form.
+		if ($pageId)
+		{
+			if (!$model->get('id')
+			 || (int) $model->get('offering_id') !== (int) $offering->get('id')
+			 || ($model->get('section_id') && (int) $model->get('section_id') !== $sectionId))
+			{
+				App::abort(404, Lang::txt('PLG_COURSES_PAGES_ERROR_PAGE_NOT_FOUND'));
+			}
+
+			unset($page['course_id'], $page['offering_id'], $page['section_id']);
+		}
+		else
+		{
+			$page['course_id']   = (int) $offering->get('course_id');
+			$page['offering_id'] = (int) $offering->get('id');
+			$page['section_id']  = (isset($page['section_id']) && $page['section_id']) ? $sectionId : 0;
+		}
 
 		if (!$model->bind($page))
 		{
@@ -313,7 +339,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Ensure section managers can only edit section pages
-		if (!$model->get('section_id') && !$this->view->offering->access('manage'))
+		if (!$model->get('section_id') && !$offering->access('manage'))
 		{
 			return $this->_list();
 		}
