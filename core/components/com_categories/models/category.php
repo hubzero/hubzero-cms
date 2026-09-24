@@ -69,7 +69,10 @@ class Category extends Nested
 	 */
 	public $initiate = array(
 		'created_time',
-		'created_user_id'
+		'created_user_id',
+		// without this a category saved with no alias is stored with an empty
+		// alias and path (automaticAlias() existed but was never registered)
+		'alias'
 	);
 
 	/**
