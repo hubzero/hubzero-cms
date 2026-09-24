@@ -193,7 +193,15 @@ class Jobs extends Base implements CommandInterface
 		$tmp = $tmp !== '' ? rtrim($tmp, '/') : sys_get_temp_dir();
 		$lock = @fopen($tmp . '/.cron-tick.lock', 'c');
 
-		if ($lock === false || !flock($lock, LOCK_EX | LOCK_NB))
+		// An unopenable lock file (missing or unwritable tmp_path) is not a
+		// running tick; say so, or the operator chases a phantom tick forever.
+		if ($lock === false)
+		{
+			$this->output->error('cannot open the tick lock file ' . $tmp . '/.cron-tick.lock; check that tmp_path exists and is writable');
+			return;
+		}
+
+		if (!flock($lock, LOCK_EX | LOCK_NB))
 		{
 			$log('skipped — a previous tick is still running');
 			return;
