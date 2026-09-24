@@ -1574,6 +1574,16 @@ class Jobs extends SiteController
 			$job->code    = $code;
 		}
 
+		// The form's date fields are optional; a blank one posts '', which
+		// strict SQL refuses for a datetime column. Store it as NULL.
+		foreach (array('closedate', 'expiredate', 'opendate', 'startdate') as $dateField)
+		{
+			if (isset($job->$dateField) && $job->$dateField === '')
+			{
+				$job->$dateField = null;
+			}
+		}
+
 		if (!$job->store())
 		{
 			throw new Exception($job->getError(), 500);
