@@ -83,7 +83,7 @@ class Relationships extends AdminController
 		$id = null;
 		$descr = '';
 
-		$rv = $tag = $this->get_tag($tag);
+		$rv = $tag = $this->get_tag($tag, true, false);
 		$nodes[] = array(
 			'id'      => $rv['id'],
 			'tag'     => $rv['tag'],
@@ -189,7 +189,7 @@ class Relationships extends AdminController
 		$id = null;
 		$descr = '';
 
-		$rv = $tag = $this->get_tag($tag);
+		$rv = $tag = $this->get_tag($tag, true, false);
 		$tag['type'] = 'center';
 		$nodes = array(array(
 			'id'      => $rv['id'],
@@ -450,8 +450,8 @@ class Relationships extends AdminController
 			}
 			$new_tag = $this->get_tag($_POST['name-' . $id], false);
 			$this->database->setQuery('UPDATE `#__focus_areas` SET
-				mandatory_depth = ' . ($_POST['mandatory-' . $id] === 'mandatory' ? 1 : ($_POST['mandatory-' . $id] === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ',
-				multiple_depth = ' . ($_POST['multiple-' . $id]  === 'multiple'  ? 1 : ($_POST['multiple-' . $id]  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ',
+				mandatory_depth = ' . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-' . $id] : 'NULL')) . ',
+				multiple_depth = ' . (($_POST['multiple-' . $id] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-' . $id]  : 'NULL')) . ',
 				tag_id = ' . $new_tag['id'].'
 				WHERE id = ' . $id
 			);
@@ -475,8 +475,8 @@ class Relationships extends AdminController
 			$tag = $this->get_tag($_POST['name-new-' . $idx], false);
 
 			$this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES (' .
-				($_POST['mandatory-new-' . $idx] === 'mandatory' ? 1 : ($_POST['mandatory-new-' . $idx] === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
-				($_POST['multiple-new-' . $idx]  === 'multiple'  ? 1 : ($_POST['multiple-new-' . $idx]  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
+				(($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int)$_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', ' .
+				(($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'  ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int)$_POST['multiple-depth-new-' . $idx]  : 'NULL')) . ', ' .
 				$tag['id'] . ')'
 			);
 			$this->database->execute();
@@ -499,7 +499,7 @@ class Relationships extends AdminController
 	 *
 	 * @return  void
 	 */
-	public function get_tag($tag_str, $detailed = true)
+	public function get_tag($tag_str, $detailed = true, $create = true)
 	{
 		$this->database->setQuery(
 			is_int($tag_str)
@@ -558,9 +558,15 @@ class Relationships extends AdminController
 		}
 
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
-		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (' . $this->database->quote($norm_tag) . ', ' . $this->database->quote($tag_str) . ')');
-		$this->database->execute();
-		$id = $this->database->insertid();
+		$id = 0;
+
+		// A lookup from the graph is read-only; only a save creates the tag
+		if ($create)
+		{
+			$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (' . $this->database->quote($norm_tag) . ', ' . $this->database->quote($tag_str) . ')');
+			$this->database->execute();
+			$id = $this->database->insertid();
+		}
 
 		return array(
 			'id'          => $id,

@@ -775,7 +775,13 @@ class Tags extends SiteController
 	 */
 	public function cancelTask()
 	{
-		$return = Request::getString('return', 'index.php?option=' . $this->_option . '&task=browse', 'get');
+		$return = Request::getString('return', '', 'get');
+
+		// Only return to a page on this hub
+		if (!$return || !\Hubzero\Utility\Uri::isInternal($return))
+		{
+			$return = 'index.php?option=' . $this->_option . '&task=browse';
+		}
 
 		App::redirect(
 			Route::url($return, false)
@@ -801,10 +807,19 @@ class Tags extends SiteController
 		// Incoming
 		$tag = Request::getArray('fields', array(), 'post');
 
+		// Only what the form offers; the rest of the row (creator, counts,
+		// aliases) is the model's to keep
+		$tag = array_intersect_key($tag, array_flip(array('id', 'raw_tag', 'description', 'admin', 'substitutions')));
+
 		// Site editors may not flag a tag as an admin/system tag
 		if (!$this->config->get('access-manage-tag'))
 		{
 			unset($tag['admin']);
+		}
+		else
+		{
+			// An unticked checkbox is not posted
+			$tag['admin'] = !empty($tag['admin']) ? 1 : 0;
 		}
 
 		$subs = '';
@@ -815,7 +830,9 @@ class Tags extends SiteController
 		}
 
 		// Bind incoming data
-		$row = Tag::oneOrFail(intval($tag['id']))->set($tag);
+		$row = Tag::oneOrNew(isset($tag['id']) ? intval($tag['id']) : 0);
+		unset($tag['id']);
+		$row->set($tag);
 
 		// Trigger before save event
 		$isNew  = $row->isNew();

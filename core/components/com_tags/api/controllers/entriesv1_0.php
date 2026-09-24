@@ -112,10 +112,19 @@ class Entriesv1_0 extends ApiController
 			'search'     => Request::getString('search', ''),
 			'scope'      => Request::getWord('scope', ''),
 			'scope_id'   => Request::getInt('scope_id', 0),
-			'taggerid'   => Request::getInt('tagger', 0),
+			'tagger_id'  => Request::getInt('tagger', 0),
 			'sort'       => Request::getWord('sort', 'raw_tag'),
 			'sort_Dir'   => strtoupper(Request::getWord('sortDir', 'ASC'))
 		);
+		// Columns of the tags table (and the 'total' alias Cloud maps to objects)
+		if (!in_array($filters['sort'], array('raw_tag', 'tag', 'id', 'created', 'modified', 'objects', 'total')))
+		{
+			$filters['sort'] = 'raw_tag';
+		}
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 		if ($filters['scope'] == 'members' || $filters['scope'] == 'member')
 		{
 			$filters['scope'] = 'xprofiles';

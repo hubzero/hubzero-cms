@@ -34,7 +34,7 @@ $this->js('d3.js', 'system')
 			<tbody>
 				<tr>
 					<th class="key"><label><?php echo Lang::txt('COM_TAGS_TAG'); ?>:</label></th>
-					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->get('preload'); ?>" /></td>
+					<td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->escape($this->get('preload')); ?>" /></td>
 					<td><?php echo Lang::txt('COM_TAGS_TAG_RELATIONSHIP'); ?></td>
 				</tr>
 				<tr>
