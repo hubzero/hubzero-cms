@@ -29,15 +29,33 @@ class Xml extends SiteController
 	{
 		// Incoming
 		$metadata   = Request::getString('metadataPrefix');
+		// A date that does not parse is a badArgument, not a server error
+		$badDate    = '';
 		$from       = Request::getString('from');
 		if ($from)
 		{
-			$from = \Date::of($from)->toSql();
+			try
+			{
+				$from = \Date::of($from)->toSql();
+			}
+			catch (\Exception $e)
+			{
+				$from    = '';
+				$badDate = 'from';
+			}
 		}
 		$until      = Request::getString('until');
 		if ($until)
 		{
-			$until = \Date::of($until)->toSql();
+			try
+			{
+				$until = \Date::of($until)->toSql();
+			}
+			catch (\Exception $e)
+			{
+				$until   = '';
+				$badDate = $badDate ?: 'until';
+			}
 		}
 		$set        = Request::getString('set');
 		$resumption = urldecode(Request::getString('resumptionToken',''));
@@ -72,6 +90,12 @@ class Xml extends SiteController
 				->set('resumption', $resumption);
 
 		$verb = Request::getString('verb');
+
+		if ($badDate)
+		{
+			$service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', $badDate), $verb);
+		}
+
 		switch ($verb)
 		{
 			case 'Identify':
@@ -154,7 +178,7 @@ class Xml extends SiteController
 						else
 						{
 							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
 							$set      = isset($data['set'])    ? $data['set']    : $set;
@@ -216,7 +240,7 @@ class Xml extends SiteController
 						else
 						{
 							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
 							$set      = isset($data['set'])    ? $data['set']    : $set;
@@ -267,7 +291,7 @@ class Xml extends SiteController
 						else
 						{
 							$service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-							$service->set('start', isset($data['start']) ? $data['start'] + $service->get('limit') : $service->get('start'));
+							$service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
 							$from     = isset($data['from'])   ? $data['from']   : $from;
 							$until    = isset($data['until'])  ? $data['until']  : $until;
 							$set      = isset($data['set'])    ? $data['set']    : $set;
