@@ -157,7 +157,7 @@ class Packages extends AdminController
 		$packageName    = Request::getString('packageName', null);
 		$packageVersion = Request::getString('packageVersion', null);
 
-		Cli::installPackage($packageName, $packageVersion);
+		ComposerHelper::installPackage($packageName, $packageVersion);
 
 		// Set the redirect
 		$this->cancelTask();
@@ -213,7 +213,7 @@ class Packages extends AdminController
 
 		foreach ($packages as $package)
 		{
-			Cli::removePackage($package);
+			ComposerHelper::removePackage($package);
 
 			Event::trigger('onPackageAfterDelete', array($package));
 		}

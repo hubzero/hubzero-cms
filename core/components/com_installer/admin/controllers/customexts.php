@@ -167,12 +167,11 @@ class Customexts extends AdminController
 			$result = array();
 			foreach ($rows as $i => $item)
 			{
-				if (!empty($filters['search']))
+				// a plain substring match: the search text is not a pattern,
+				// and a skipped row must not be re-added below
+				if (!empty($filters['search']) && stripos($item->name, $filters['search']) === false)
 				{
-					if (!preg_match("/" . $filters['search'] . "/i", $item->name))
-					{
-						unset($result[$i]);
-					}
+					continue;
 				}
 
 				$result[$i] = $item;
@@ -371,7 +370,7 @@ class Customexts extends AdminController
 
 		if ($this->getTask() == 'apply')
 		{
-			return $this->editTask($row);
+			return $this->editTask($model);
 		}
 
 		$this->cancelTask();
@@ -769,6 +768,7 @@ class Customexts extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
+		$removed = array();
 
 		foreach ($ids as $id)
 		{
@@ -804,8 +804,8 @@ class Customexts extends AdminController
 			// did we succeed
 			else if (preg_grep("/Updating the repository.../uis", $remove_response))
 			{
-				// add success message
-				$success[] = array(
+				// add success message ($success itself is the deleted-rows count below)
+				$removed[] = array(
 					'extension'   => $extension->get('name'),
 					'message' => $remove_response
 				);

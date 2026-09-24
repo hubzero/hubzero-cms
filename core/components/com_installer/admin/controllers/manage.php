@@ -162,12 +162,11 @@ class Manage extends AdminController
 			$result = array();
 			foreach ($rows as $i => $item)
 			{
-				if (!empty($filters['search']))
+				// a plain substring match: the search text is not a pattern,
+				// and a skipped row must not be re-added below
+				if (!empty($filters['search']) && stripos($item->name, $filters['search']) === false)
 				{
-					if (!preg_match("/" . $filters['search'] . "/i", $item->name))
-					{
-						unset($result[$i]);
-					}
+					continue;
 				}
 
 				$item->translate();
