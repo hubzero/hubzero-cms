@@ -512,7 +512,10 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$objTD->duedate = '';
+				// NULL, not '': the column is a nullable DATETIME and strict SQL
+				// mode refuses an empty string, which 500'd every to-do saved
+				// without a due date
+				$objTD->duedate = null;
 			}
 
 			// Get last order
