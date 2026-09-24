@@ -111,7 +111,8 @@ class ChildrenMacro extends WikiMacro
 			$html = '<ul>';
 			foreach ($rows as $row)
 			{
-				$row = new \Components\Wiki\Models\Page($row);
+				// rows() already yields Page models; re-wrapping one in the
+				// constructor binds nothing and printed an empty link
 
 				$html .= '<li><a href="' . Route::url($row->link()) . '">';
 				$html .= stripslashes($row->get('title', $row->get('pagename')));
