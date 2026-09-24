@@ -114,7 +114,14 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 				{
 					$content = '<!-- {FORMAT:WIKI} -->' . $content;
 					$article->set($key, $content);
-					$article->store(false);
+					// Only a stored row can carry the marker: a model without an
+					// id (a repost of a collection that no longer exists, say)
+					// would be INSERTed as a new, mostly empty row -- a strict-SQL
+					// error and a 500 on every page listing it
+					if ($article->get('id'))
+					{
+						$article->store(false);
+					}
 				}
 			}
 			else
@@ -149,7 +156,10 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 		{
 			$content = '<!-- {FORMAT:HTML} -->' . $content;
 			$article->set($key, $content);
-			$article->store(false);
+			if ($article->get('id'))
+			{
+				$article->store(false);
+			}
 		}
 		elseif ($rendered)
 		{
