@@ -17,6 +17,9 @@ use Components\Tags\Models\Log;
 use Hubzero\Component\ApiController;
 use Component;
 use Request;
+use User;
+use Lang;
+use Exception;
 
 class TagActivityLogsv2_0 extends ApiController
 {
@@ -53,9 +56,17 @@ class TagActivityLogsv2_0 extends ApiController
 	{
 		$this->requiresAuthentication();
 
+		// The tag change log (who changed which tag) is back-end data: only the
+		// tag administration screen calls this. It was unreachable until the
+		// versioned API routers were loaded; gate it the way that screen is.
+		if (!User::authorise('core.manage', 'com_tags'))
+		{
+			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+		}
+
 		$tagId = Request::getInt('tagId');
 		$logId = Request::getInt('logId');
-		$limit = Request::getInt('limit', 100);
+		$limit = min(max(Request::getInt('limit', 100), 1), 500);
 
 		$response = [
 			'logs' => []
