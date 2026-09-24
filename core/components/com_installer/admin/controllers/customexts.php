@@ -768,7 +768,6 @@ class Customexts extends AdminController
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$success = 0;
-		$removed = array();
 
 		foreach ($ids as $id)
 		{
@@ -801,16 +800,8 @@ class Customexts extends AdminController
                                         'message' => array("MUSE Call returned NULL", $museCmd)
                                 );
 			}
-			// did we succeed
-			else if (preg_grep("/Updating the repository.../uis", $remove_response))
-			{
-				// add success message ($success itself is the deleted-rows count below)
-				$removed[] = array(
-					'extension'   => $extension->get('name'),
-					'message' => $remove_response
-				);
-			}
-			else
+			// did we succeed ($success itself is the deleted-rows count below)
+			else if (!preg_grep("/Updating the repository.../uis", $remove_response))
 			{
 				// add failed message
 				$failed[] = array(
