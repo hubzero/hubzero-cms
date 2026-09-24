@@ -117,13 +117,13 @@ $this->css()
 
 				<p>
 					<strong>Payment method:</strong><br>
-					<?php echo $this->tInfo->tiPayment; ?>
+					<?php echo $this->escape($this->tInfo->tiPayment); ?>
 				</p>
 
 				<?php
 				if (!empty($this->tInfo->tiPaymentDetails))
 				{
-					echo '<p><strong>Payment details:</strong><br>' . $this->tInfo->tiPaymentDetails . '</p>';
+					echo '<p><strong>Payment details:</strong><br>' . $this->escape($this->tInfo->tiPaymentDetails) . '</p>';
 				}
 
 				?>
@@ -244,7 +244,7 @@ $this->css()
 		foreach ($this->log as $log)
 		{
 			echo '<article>';
-			$header = '<header>' . $log->description . ' on ' . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $log->user . ' [' . $log->created_by . ']</header>';
+			$header = '<header>' . $this->escape($log->description) . ' on ' . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $this->escape($log->user) . ' [' . (int) $log->created_by . ']</header>';
 			echo $header;
 
 			foreach ($log->details as $change)
@@ -256,11 +256,11 @@ $this->css()
 				<div class="diff">
 					<div>
 						<p>New value:</p>
-						<div class="value"><?php echo $change->new; ?></div>
+						<div class="value"><?php echo $this->escape(is_scalar($change->new) ? $change->new : json_encode($change->new)); ?></div>
 					</div>
 					<div>
 						<p>Old value:</p>
-						<div class="value old"><?php echo $change->old; ?></div>
+						<div class="value old"><?php echo $this->escape(is_scalar($change->old) ? $change->old : json_encode($change->old)); ?></div>
 					</div>
 				</div>
 

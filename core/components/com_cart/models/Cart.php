@@ -949,13 +949,19 @@ abstract class Cart
 
 		foreach ($tiInfo as $sId => $sInfo)
 		{
+			// Only items that belong to this transaction
+			if (empty($transactionItems[$sId]))
+			{
+				continue;
+			}
+
 			$setSql = array();
 			foreach ($sInfo as $key => $val)
 			{
 				// Handle each update, except for meta
 				if ($key != 'meta')
 				{
-					$setSql[] = '`' . $key . '` = ' . $val;
+					$setSql[] = '`' . $key . '` = ' . $db->quote($val);
 
 					// note the changes
 					if ($returnChanges && $transactionItems[$sId]->$key != $val)
@@ -966,7 +972,7 @@ abstract class Cart
 				else
 				{
 					// get the current object to save the other values that are not being saved
-					$currentMetaObj = array();
+					$currentMetaObj = new \stdClass();
 					if ($transactionItems[$sId]->tiMeta)
 					{
 						$currentMetaObj = $transactionItems[$sId]->tiMeta;
@@ -976,9 +982,10 @@ abstract class Cart
 					foreach ($val as $k => $v)
 					{
 						// note the changes
-						if ($returnChanges && $currentMetaObj->$k != $v)
+						$current = isset($currentMetaObj->$k) ? $currentMetaObj->$k : null;
+						if ($returnChanges && $current != $v)
 						{
-							$transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => array('tiMeta' => $k), 'old' => $currentMetaObj->$k, 'new' => $v);
+							$transactionItemsChanges[] = array('object' => 'cart_transaction_item', 'sId' => $sId, 'key' => array('tiMeta' => $k), 'old' => $current, 'new' => $v);
 						}
 
 						$currentMetaObj->$k = $v;
