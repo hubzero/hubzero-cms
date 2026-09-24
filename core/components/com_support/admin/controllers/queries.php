@@ -166,6 +166,10 @@ class Queries extends AdminController
 		$tmpl    = Request::getString('component', '');
 
 		$row = Query::oneOrNew($fields['id'])->set($fields);
+		// build the SQL from the conditions, as the site controller does; the
+		// query column is NOT NULL with no default, so strict SQL refused every
+		// query saved here
+		$row->set('query', $row->toSql());
 
 		// Store new content
 		if (!$row->save())
