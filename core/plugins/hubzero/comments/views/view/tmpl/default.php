@@ -30,7 +30,11 @@ $this->css()
 
 							if (!$reply->get('id')
 							 || $reply->get('item_type') != $this->obj_type
-							 || (int) $reply->get('item_id') !== (int) $this->obj_id)
+							 || (int) $reply->get('item_id') !== (int) $this->obj_id
+							 || !in_array($reply->get('state'), array(
+									\Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+									\Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+								)))
 							{
 								$replyto = 0;
 								$reply   = \Plugins\Hubzero\Comments\Models\Comment::blank();

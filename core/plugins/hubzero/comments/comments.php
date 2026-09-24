@@ -265,7 +265,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			App::abort(404, Lang::txt('PLG_HUBZERO_COMMENTS_NOTAUTH'));
 		}
 
-		if (!$item->vote($how))
+		// The voter has to be passed, or the model's own-comment test (which
+		// compares created_by with it) never fires and authors vote themselves up
+		if (!$item->vote($how, User::get('id')))
 		{
 			$this->setError($item->getError());
 		}
@@ -381,16 +383,21 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				);
 			}
 
-			// What the comment hangs off, who wrote it, when, and whether it has
-			// been reported are not the submitter's to change: all are hidden
-			// inputs on the form. state matters most -- STATE_FLAGGED is what
-			// "report abuse" sets, so leaving it bound let an author clear the
-			// flag on their own comment.
-			unset($comment['item_type'], $comment['item_id'], $comment['created_by'],
-				$comment['state'], $comment['parent'], $comment['created']);
 		}
 
-		$row->set($comment);
+		// Only what the form offers the submitter is bound: the text, the
+		// anonymous flag and, for a new comment, its parent. Everything else in
+		// comment[] -- item_type, item_id, created_by, created, state, access,
+		// positive, negative, rating, notify -- is a real column, so binding the
+		// whole array let a poster fabricate vote counts, hide a reply behind a
+		// higher access level, or clear the STATE_FLAGGED that "report abuse"
+		// sets on their own comment.
+		$fields = array('content', 'anonymous');
+		if ($__isNew)
+		{
+			$fields[] = 'parent';
+		}
+		$row->set(array_intersect_key($comment, array_flip($fields)));
 
 		if ($__isNew)
 		{
@@ -423,6 +430,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			$row->set('item_type', $this->obj_type);
 			$row->set('item_id', $this->obj_id);
 			$row->set('created_by', User::get('id'));
+			$row->set('state', \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED);
+			$row->set('access', 1);
 		}
 
 		// Store new content

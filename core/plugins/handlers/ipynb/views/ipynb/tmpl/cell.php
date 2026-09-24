@@ -10,11 +10,17 @@ defined('_HZEXEC_') or die();
 
 $cell = $this->cell;
 
+// nbformat multiline_string fields are a list of lines OR a single string
+$text = function ($value)
+{
+	return is_array($value) ? implode('', $value) : (string) $value;
+};
+
 $source = '';
 if (isset($cell->source)):
-	$source = implode('', $cell->source);
+	$source = $text($cell->source);
 elseif (isset($cell->input)):
-	$source = implode('', $cell->input);
+	$source = $text($cell->input);
 endif;
 ?>
 
@@ -58,13 +64,13 @@ if ($cell->cell_type == 'code'):
 						if ($output->output_type == 'pyout'):
 							?>
 							<?php if (isset($output->png)): ?>
-								<div class="output_img"><img src="data:image/png;base64,<?php echo preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png); ?>" alt="<?php echo $this->escape(implode('', $output->text)); ?>" /></div>
+								<div class="output_img"><img src="data:image/png;base64,<?php echo preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png); ?>" alt="<?php echo $this->escape(isset($output->text) ? $text($output->text) : ''); ?>" /></div>
 							<?php else: ?>
-								<pre class="output"><?php echo $this->escape(implode('', $output->text)); ?></pre>
+								<pre class="output"><?php echo $this->escape(isset($output->text) ? $text($output->text) : ''); ?></pre>
 							<?php endif; ?>
 							<?php
 						elseif ($output->output_type == 'stream'):
-							$out[] = implode('', $output->text);
+							$out[] = isset($output->text) ? $text($output->text) : '';
 						endif;
 					endforeach;
 

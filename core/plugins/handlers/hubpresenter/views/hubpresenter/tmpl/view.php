@@ -37,12 +37,14 @@ foreach ($subs as $k => $subtitle)
 }
 
 // Add any local subtitles too
+// findAllWithExtension() returns File objects, whose string form is the
+// class name, so the file name has to be asked for
 foreach ($this->items->findAllWithExtension(['srt', 'SRT']) as $k => $subtitle)
 {
-	$info     = pathinfo($subtitle);
+	$info     = pathinfo($subtitle->getName());
 	$name     = str_replace('-auto', '', $info['filename']);
 	$autoplay = (strstr($info['filename'], '-auto')) ? 1 : 0;
-	$source   = $rel_content_folder . DS . $subtitle;
+	$source   = $rel_content_folder . DS . $subtitle->getName();
 
 	// Add each subtitle
 	$subtitle           = new stdClass;
@@ -113,7 +115,7 @@ if (isset($this->entityId) && isset($this->entityType))
 				<ul class="no-js">
 					<?php $counter = 0; ?>
 					<?php foreach ($presentation->slides as $slide) : ?>
-						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $slide->time; ?>">
+						<li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
 							<?php if ($slide->type == 'Image') : ?>
 								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
 							<?php else : ?>
@@ -123,7 +125,9 @@ if (isset($this->entityId) && isset($this->entityType))
 									<?php endforeach; ?>
 									<a href="<?php echo with(new Moderator($content_folder . DS . $slide->media[0]->source))->getUrl(); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
+								<?php if (isset($slide->media[3])) : ?>
 								<img src="<?php echo with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
+								<?php endif; ?>
 							<?php endif; ?>
 						</li>
 						<?php $counter++; ?>
@@ -287,6 +291,7 @@ if (isset($this->entityId) && isset($this->entityType))
 					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId)) ? $this->entityId : 0; ?>" data-mediatype="<?php echo (isset($this->entityType)) ? $this->entityType : ''; ?>">
 						<?php foreach ($presentation->media as $source): ?>
 							<?php
+								$type = '';
 								switch (strtolower($source->type))
 								{
 									case 'm4v':
@@ -308,10 +313,10 @@ if (isset($this->entityId) && isset($this->entityType))
 						<?php if (isset($subs) && count($subs) > 0) : ?>
 							<?php foreach ($subs as $sub) : ?>
 								<div
-									data-autoplay="<?php echo $sub->autoplay; ?>"
+									data-autoplay="<?php echo (int) $sub->autoplay; ?>"
 									data-type="subtitle"
 									data-lang="<?php echo $this->escape($sub->name); ?>"
-									data-src="<?php echo $sub->source; ?>?v=<?php echo filemtime($sub->source); ?>"></div>
+									data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo (is_file($sub->source) ? filemtime($sub->source) : 0); ?>"></div>
 							<?php endforeach; ?>
 						<?php endif; ?>
 
@@ -321,7 +326,7 @@ if (isset($this->entityId) && isset($this->entityType))
 						<?php foreach ($presentation->media as $source): ?>
 							<source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $presentation->duration; } ?>"></a>
+						<a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) { echo $this->escape($presentation->duration); } ?>"></a>
 					</audio>
 				<?php endif; ?>
 				<div id="video-subtitles"></div>
@@ -355,7 +360,7 @@ if (isset($this->entityId) && isset($this->entityType))
 										$max = 30;
 										$elipsis = '&hellip;';
 										echo ($num) . '. ';
-										echo substr($slide->title, 0, $max);
+										echo $this->escape(substr($slide->title, 0, $max));
 
 										if (strlen($slide->title) > $max)
 										{
@@ -363,7 +368,7 @@ if (isset($this->entityId) && isset($this->entityType))
 										}
 									?>
 								</span>
-								<span class="time"><?php echo $slide->time; ?></span>
+								<span class="time"><?php echo $this->escape($slide->time); ?></span>
 								<div id="list-slider-<?php echo $counter; ?>" class="list-slider"></div>
 								<div class="list-progress">00:00/00:00</div>
 							</li>
