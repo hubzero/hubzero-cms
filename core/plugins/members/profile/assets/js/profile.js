@@ -27,14 +27,7 @@ HUB.Members.Profile = {
 
 	initialize: function()
 	{
-		// Reveal the profile list if it has any visible items
-		var profileList = document.getElementById('profile');
-		if (profileList) {
-			var items = profileList.querySelectorAll('li:not(.hide):not(.hidden)');
-			if (items.length) {
-				profileList.removeAttribute('hidden');
-			}
-		}
+		HUB.Members.Profile.revealProfileList();
 
 		//enable edit mode
 		HUB.Members.Profile.edit();
@@ -126,6 +119,22 @@ HUB.Members.Profile = {
 					HUB.Members.Profile.editSubmitForm( $(this) );
 					event.preventDefault();
 				});
+		}
+	},
+
+	//-------------------------------------------------------------
+
+	// The list renders with [hidden] (empty-container a11y fix) and is revealed
+	// here when it has visible items. Called again after a section save
+	// re-renders the list, or the whole profile vanished after every save.
+	revealProfileList: function()
+	{
+		var profileList = document.getElementById('profile');
+		if (profileList) {
+			var items = profileList.querySelectorAll('li:not(.hide):not(.hidden)');
+			if (items.length) {
+				profileList.removeAttribute('hidden');
+			}
 		}
 	},
 
@@ -319,7 +328,20 @@ HUB.Members.Profile = {
 			HUB.Members.Profile.editShowUpdatingOverlay(".member_profile");
 			var url = $('#profile-page-content').attr('data-url');
 
+			// The reload replaces the bio textarea; drop its CKEditor first so the
+			// stale instance does not throw on its detached frame (getSelection of
+			// undefined) and the new textarea can take the name again
+			if (window.CKEDITOR) {
+				$.each(CKEDITOR.instances, function(name, inst) {
+					if (inst.element && $(inst.element.$).closest('.member_profile').length) {
+						try { inst.destroy(true); } catch (e) {}
+					}
+				});
+			}
+
 			$(".member_profile").load(`${url} #profile-page-content`, function() {
+				HUB.Members.Profile.revealProfileList();
+
 				//reload page header in case we edited name
 				$("#page_header").load(url +  " #page_header > *");
 
