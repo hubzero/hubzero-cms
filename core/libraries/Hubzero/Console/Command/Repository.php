@@ -651,8 +651,9 @@ class Repository extends Base implements CommandInterface
 
 		if ($this->arguments->getOpt('git_branch'))
 		{
-		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'));
-		$git_branch = $git_branch_arr[1];
+		// "remote/branch", or just a branch name
+		$git_branch_arr = explode("/", $this->arguments->getOpt('git_branch'), 2);
+		$git_branch = isset($git_branch_arr[1]) ? $git_branch_arr[1] : $git_branch_arr[0];
 		}
 		else
 		{
@@ -730,7 +731,12 @@ class Repository extends Base implements CommandInterface
 	public function updateRepo()
 	{
 		// Set our directory & call update
-		$this->arguments->setOpt('r', $repoPath );
+		$repoPath = $this->arguments->getOpt('repoPath');
+		if (!$repoPath)
+		{
+			$this->output->error('No repository path given');
+		}
+		$this->arguments->setOpt('r', $repoPath);
 
 		\App::get('client')->call('repository', 'update', $this->arguments, $this->output);
 	}
