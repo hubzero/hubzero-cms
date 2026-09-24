@@ -731,10 +731,9 @@ class Questions extends SiteController
 		// Incoming
 		$fields = Request::getArray('fields', array(), 'post');
 		$tags   = Request::getString('tags', '');
-		if (!isset($fields['reward']))
-		{
-			$fields['reward'] = 0;
-		}
+		// The ask form posts an empty reward when none is offered; the column
+		// is an integer and strict SQL mode refuses ''
+		$fields['reward'] = isset($fields['reward']) && is_numeric($fields['reward']) ? (int) $fields['reward'] : 0;
 
 		// If offering a reward, do some checks
 		if ($fields['reward'])
