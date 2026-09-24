@@ -215,7 +215,20 @@ class Links extends AdminController
 			$this->_task = 'apply';
 		}
 
+		// The form posts hits as '' and carries no referer; both columns are
+		// NOT NULL integers/strings without a usable default under strict SQL,
+		// so a new redirect could not be saved
+		if (isset($fields['hits']) && trim((string) $fields['hits']) === '')
+		{
+			unset($fields['hits']);
+		}
+
 		$row = Link::oneOrNew($fields['id'])->set($fields);
+
+		if ($row->get('referer') === null)
+		{
+			$row->set('referer', '');
+		}
 
 		// Attempt to save the data.
 		if (!$row->save())
