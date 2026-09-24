@@ -969,15 +969,30 @@ class Threadsv1_0 extends ApiController
 			'start'        => Request::getInt('limitstart', 0),
 			'section'      => Request::getCmd('section', ''),
 			'category'     => Request::getCmd('category', ''),
-			'state'        => Request::getInt('state', Post::STATE_PUBLISHED),
+			'state'        => Post::STATE_PUBLISHED,
 			'scope'        => Request::getWord('scope', ''),
 			'scope_id'     => Request::getInt('scope_id', 0),
 			'scope_sub_id' => Request::getInt('scope_sub_id', 0),
 			'object_id'    => Request::getInt('object_id', 0),
 			'start_id'     => Request::getInt('start_id', 0),
 			'start_at'     => Request::getString('start_at', ''),
-			'sticky'       => false
+			'sticky'       => false,
+			'access'       => User::getAuthorisedViewLevels()
 		);
+
+		// Only published posts the caller may see, as listTask() does. Without
+		// the access filter every post in a private group forum came back to
+		// anyone who named the group's scope_id, and state= from the request
+		// handed out unpublished and deleted posts as well.
+		if ($filters['scope'] == 'group')
+		{
+			$group = \Hubzero\User\Group::getInstance($filters['scope_id']);
+
+			if ($group && in_array(User::get('id'), $group->get('members')))
+			{
+				$filters['access'][] = 5; // Private
+			}
+		}
 
 		$forum = new Manager($filters['scope'], $filters['scope_id']);
 
