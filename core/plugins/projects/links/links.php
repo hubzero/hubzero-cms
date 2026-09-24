@@ -375,8 +375,12 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			->whereEquals('cid', $cid)
 			->rows();
 
-		// Remove citation if only one association
-		if (count($aPubs) == 1)
+		// Remove the citation itself only when its single association is the
+		// one being detached here: cid= names any citation on the hub, and one
+		// attached elsewhere is somebody else's
+		if (count($aPubs) == 1
+		 && $aPubs->first()->oid == $vid
+		 && $aPubs->first()->tbl == 'publication')
 		{
 			// Delete the citation
 			$c->destroy();
@@ -385,7 +389,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 		// Remove association
 		foreach ($aPubs as $aPub)
 		{
-			if ($aPub->oid == $vid && $aPub->tbl = 'publication')
+			if ($aPub->oid == $vid && $aPub->tbl == 'publication')
 			{
 				$aPub->destroy();
 			}
@@ -1066,7 +1070,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					return json_encode($output);
 				}
 
-				$title = $html->find('title', 0)->innertext; //Title Of Page
+				// Title Of Page -- find() returns null when there is none, and the
+				// remote markup is rendered into the preview, so escape it
+				$titleNode = $html->find('title', 0);
+				$title = $titleNode ? htmlspecialchars(trim((string) $titleNode->innertext), ENT_QUOTES, 'UTF-8') : '';
 
 				$out .= $title ? stripslashes('<h5>' . addslashes($title) . '</h5>') : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
 
@@ -1111,7 +1118,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 				if ($images)
 				{
-					$out .= '<div id="link-image"><img src="' . $images[0] . '" alt="" /></div>';
+					$out .= '<div id="link-image"><img src="' . htmlspecialchars((string) $images[0], ENT_QUOTES, 'UTF-8') . '" alt="" /></div>';
 				}
 
 				$description = null;
@@ -1139,12 +1146,13 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 					}
 					else
 					{
-						$description = $html->find('body', 0)->plaintext;
+						$bodyNode = $html->find('body', 0);
+						$description = $bodyNode ? $bodyNode->plaintext : '';
 					}
 				}
 
 				$out .= $description
-						? stripslashes('<p>' . Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
+						? stripslashes('<p>' . Hubzero\Utility\Str::truncate(addslashes(htmlspecialchars((string) $description, ENT_QUOTES, 'UTF-8')), 200) . '</p>')
 						: '<p>' . Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
 				if ($images)

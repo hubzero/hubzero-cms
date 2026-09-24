@@ -50,7 +50,7 @@ if ($attachments)
 				<input type="hidden" name="p" id="p" value="<?php echo $this->escape($this->props); ?>" />
 				<input type="hidden" name="pid" value="<?php echo $this->publication->get('id'); ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->get('version_id'); ?>" />
-				<input type="hidden" name="section" id="section" value="<?php echo $this->block; ?>" />
+				<input type="hidden" name="section" id="section" value="<?php echo $this->escape($this->block); ?>" />
 				<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
 				<input type="hidden" name="element" value="<?php echo $this->element; ?>" />
 				<input type="hidden" name="active" value="publications" />

@@ -35,7 +35,7 @@ foreach ($this->versions as $version)
 	}
 }
 
-$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)) . '</span></span>';
 
 $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1 ) ? 0 : 1;
 
@@ -63,7 +63,7 @@ if ($this->getError()) {
 
 	<fieldset >
 		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
-		<input type="hidden" name="file" value="<?php echo $this->file->get('name'); ?>" />
+		<input type="hidden" name="file" value="<?php echo $this->escape($this->file->get('name')); ?>" />
 		<input type="hidden" name="action" value="diff" />
 			<ul class="sample">
 				<?php
@@ -183,7 +183,7 @@ if ($this->getError()) {
 					<td><?php echo '@'.$v; ?></td>
 					<?php } ?>
 					<td class="commit-actor"><span class="prominent"><?php echo \Components\Projects\Helpers\Html::formatTime($version['date'], true); ?></span>
-						<span class="block"><?php echo $version['author'] ? $version['author'] : $version['email']; ?></span>
+						<span class="block"><?php echo $this->escape($version['author'] ? $version['author'] : $version['email']); ?></span>
 					</td>
 					<?php if ($allowDiff) { ?>
 					<td class="diffing">
@@ -199,7 +199,7 @@ if ($this->getError()) {
 							<?php } ?>
 						<span class="commitstatus"><?php echo $status; ?></span>
 						<span class="block italic faded">
-							<?php echo $version['name']; ?>
+							<?php echo $this->escape($version['name']); ?>
 							<?php echo $version['size'] ? ', ' . $version['size'] : '';  ?>
 						</span>
 						<div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M')))

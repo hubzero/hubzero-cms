@@ -532,7 +532,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$directory = urldecode((string) Request::getString('directory', ''));
 		// fileselector.js asks for the root as directory=.; that is the
 		// repository root, not an unsafe segment.
-		$directory = ($directory === '.' || $directory === './') ? '' : \Hubzero\Filesystem\SafePath::relative($directory);
+		$directory = ($directory === '.' || $directory === './') ? '.' : \Hubzero\Filesystem\SafePath::relative($directory);
 		$directory = ($directory === false) ? '' : $directory;
 
 		// Parse props for curation
@@ -774,7 +774,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$directory = urldecode((string) Request::getString('directory', ''));
 		// fileselector.js asks for the root as directory=.; that is the
 		// repository root, not an unsafe segment.
-		$directory = ($directory === '.' || $directory === './') ? '' : \Hubzero\Filesystem\SafePath::relative($directory);
+		$directory = ($directory === '.' || $directory === './') ? '.' : \Hubzero\Filesystem\SafePath::relative($directory);
 		$directory = ($directory === false) ? '' : $directory;
 		if (!empty($directory))
 		{

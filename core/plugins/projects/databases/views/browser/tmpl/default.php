@@ -72,7 +72,7 @@ $p_url = Route::url($route . '&active=databases');
 		{
 			foreach ($missing as $miss)
 			{ ?>
-				<li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $this->escape($miss['title']); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
+				<li class="c-click databases i-missing" id="data::<?php echo $this->escape($miss['id']); ?>"><?php echo $this->escape($miss['title']); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
 		<?php	}
 		}
 	}

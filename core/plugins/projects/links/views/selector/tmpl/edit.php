@@ -147,7 +147,7 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 
 			<label for="abstract">
 				<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_ABSTRACT'); ?>:
-				<textarea name="cite[abstract]" id="abstract" rows="4" cols="10"><?php echo stripslashes($this->row->abstract ? $this->row->abstract : ""); ?></textarea>
+				<textarea name="cite[abstract]" id="abstract" rows="4" cols="10"><?php echo $this->escape(stripslashes($this->row->abstract ? $this->row->abstract : "")); ?></textarea>
 			</label>
 
 			<label for="series">
@@ -174,7 +174,7 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
 		<div class="formatted-cite">
 			<?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED'); ?>:
 			<label for="formatted">
-				<textarea name="cite[formatted]" id="formatted" rows="4" cols="10"><?php echo stripslashes($this->row->formatted()); ?></textarea>
+				<textarea name="cite[formatted]" id="formatted" rows="4" cols="10"><?php echo $this->escape(stripslashes($this->row->formatted())); ?></textarea>
 				<span class="hint"><?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_EXPLANATION'); ?> <?php echo Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_FORMATTED_FORMAT'); ?> <?php echo strtoupper($citationFormat); ?></span>
 			</label>
 		</div>

@@ -41,7 +41,7 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 		<p id="upload-instruct"><?php echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
 			if ($this->subdir)
 			{
-				echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
+				echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->escape($this->subdir) . '</span> ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
 			}
 			else
 			{

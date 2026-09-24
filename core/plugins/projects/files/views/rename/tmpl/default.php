@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false);
 
-$bcEnd = $this->type == 'folder' ? '<span class="folder">' . $this->item . '</span>' : '<span class="file">' . $this->item . '</span>';
+$bcEnd = $this->type == 'folder' ? '<span class="folder">' . $this->escape($this->item) . '</span>' : '<span class="file">' . $this->escape($this->item) . '</span>';
 ?>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME') . ' ' . $this->type . ' ' . $bc . ' ' . $bcEnd; ?></h3>

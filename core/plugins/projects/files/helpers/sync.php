@@ -1035,7 +1035,7 @@ class Sync extends \Hubzero\Base\Obj
 		$localIds = array_map(function($file){
 			$path = $file->get('localPath');
 			return $path;
-		}, $localIds);
+		}, $locals);
 
 		foreach ($remotes['paths'] as $remote)
 		{

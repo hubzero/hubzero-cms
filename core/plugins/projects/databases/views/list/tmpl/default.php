@@ -180,5 +180,6 @@ $this->css();
 		<label><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DESC'); ?>:
 			<textarea name="db_description" style="width: 550px; height: 130px;"></textarea>
 		</label>
+		<?php echo Html::input('token'); ?>
 	</form>
 </div>

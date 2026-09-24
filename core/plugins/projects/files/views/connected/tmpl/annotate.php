@@ -37,7 +37,7 @@ $dubCore = [
 		<?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE') . ' ' . $lang . ' ' . $bc . ' ' . $bcEnd; ?>
 	</h3>
 	<?php if ($this->getError()) : ?>
-		<p class="witherror"><?php $this->getError(); ?></p>
+		<p class="witherror"><?php echo $this->escape($this->getError()); ?></p>
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset>
@@ -51,11 +51,11 @@ $dubCore = [
 						<li>
 							<div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
 								<div class="entry-label">
-									<input class="dublin" type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $element; ?>" readonly />
+									<input class="dublin" type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $this->escape($element); ?>" readonly />
 								</div>
 								<div class="separator">:</div>
 								<div class="entry-value">
-									<input type="text" name="value[<?php echo $i; ?>]" value="<?php echo (isset($this->metadata[$element])) ? $this->metadata[$element] : ''; ?>" />
+									<input type="text" name="value[<?php echo $i; ?>]" value="<?php echo (isset($this->metadata[$element])) ? $this->escape($this->metadata[$element]) : ''; ?>" />
 								</div>
 							</div>
 						</li>
@@ -67,11 +67,11 @@ $dubCore = [
 							<li>
 								<div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
 									<div class="entry-label">
-										<input type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $metadata; ?>" />
+										<input type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $this->escape($metadata); ?>" />
 									</div>
 									<div class="separator">:</div>
 									<div class="entry-value">
-										<input type="text" name="value[<?php echo $i; ?>]" value="<?php echo $value; ?>" />
+										<input type="text" name="value[<?php echo $i; ?>]" value="<?php echo $this->escape($value); ?>" />
 									</div>
 								</div>
 							</li>

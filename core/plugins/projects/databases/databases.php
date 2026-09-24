@@ -257,7 +257,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		{
 			if ($raw_op)
 			{
-				echo json_encode(array('status' => 'success', 'data' => $table));
+				// nothing was produced for an unknown action
+				echo json_encode(array('status' => 'success', 'data' => array()));
 				exit();
 			}
 			else
@@ -345,6 +346,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return $view->loadTemplate();
 		}
 
+		// pid= resolves any publication on the hub; only this project's are selected for
+		if ((int) $view->publication->get('project_id') !== (int) $this->model->get('id'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
+
 		$view->publication->attachments();
 
 		// Get curation model
@@ -408,6 +415,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		if (!$ajax)
 		{
 			return false;
+		}
+
+		// versionid= resolves any publication version on the hub; only this
+		// project's publications list their database attachments here
+		$pubVersion = \Components\Publications\Models\Orm\Version::oneOrNew($versionid);
+		$pubParent  = \Components\Publications\Models\Orm\Publication::oneOrNew((int) $pubVersion->get('publication_id'));
+		if ($pubVersion->isNew() || $pubParent->isNew()
+		 || (int) $pubParent->get('project_id') !== (int) $this->model->get('id'))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
 		// Output HTML
@@ -924,6 +941,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Check for request forgeries (the create form's action URL carries the token)
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$file  = Request::getString('file', '');
 		$dir   = Request::getString('dir', '');
@@ -1014,7 +1034,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 				$col_name = strtolower(preg_replace('/\W/', '_', $label));
 				$col_name = substr($col_name, 0, (63 - strlen($i))) . '_' . $i;
 
-				switch ($d[$i]['type'])
+				// dd may be short or not JSON at all
+				$colType = (is_array($d) && isset($d[$i]['type'])) ? $d[$i]['type'] : '';
+
+				switch ($colType)
 				{
 					case 'text_small';
 						$col_type = 'VARCHAR(64)';
@@ -1335,6 +1358,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			return;
 		}
+
+		// Check for request forgeries (the update dialog form posts the token)
+		Request::checkToken();
 
 		// Incoming
 		$id          = Request::getString('db_id', '');

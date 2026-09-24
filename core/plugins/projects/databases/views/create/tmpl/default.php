@@ -107,7 +107,7 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
 	<input type="submit" value="&laquo; Back" class="prj-db-back btn rightfloat" data-step='3' />
 	<h3><?php echo Lang::txt('Step 3: Title &amp; Description, Finish'); ?></h3>
-	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1')?>">
+	<form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1&' . Session::getFormToken() . '=1')?>">
 		<label for="prj-db-title"><?php echo Lang::txt('Title'); ?>:<input type="text" name="prj-db-title" id="prj-db-title" /></label>
 		<label for="prj-db-desc"><?php echo Lang::txt('Description'); ?>:<textarea name="prj-db-desc" id="prj-db-desc" cols="5" rows="10"></textarea></label>
 		<input type="submit" value="<?php echo Lang::txt('Finish'); ?>" class="btn" id="prj-db-finish-btn" />

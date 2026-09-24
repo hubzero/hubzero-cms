@@ -19,7 +19,7 @@ $lang  = $this->item->isDir() ? 'folder' : 'file';
 		<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME') . ' ' . $lang . ' ' . $bc . ' ' . $bcEnd; ?>
 	</h3>
 	<?php if ($this->getError()) : ?>
-		<p class="witherror"><?php $this->getError(); ?></p>
+		<p class="witherror"><?php echo $this->escape($this->getError()); ?></p>
 	<?php else : ?>
 		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->url); ?>">
 			<fieldset>

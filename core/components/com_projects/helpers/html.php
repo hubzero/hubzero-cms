@@ -1240,6 +1240,8 @@ class Html extends Obj
 						$name = $temp->displayName();
 					}
 				}
+				// the segment comes from the request (subdir=) or a stored name
+				$name = htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8');
 				if ($linkit)
 				{
 					if (strpos($url, '?') !== false)

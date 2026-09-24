@@ -84,7 +84,7 @@ else {
 					$leftMargin = ($level * 15) . 'px';
 				 ?>
 				<li style="margin-left:<?php echo $leftMargin; ?>">
-					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $dirname; ?></span></span>
+					<input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) { echo 'disabled="disabled" '; } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) { echo 'prominent '; } ?>"><?php echo $this->escape($dirname); ?></span></span>
 				</li>
 			<?php }
 			echo '</ul>'; }
