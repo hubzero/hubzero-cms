@@ -72,7 +72,7 @@ $resp = $this->resp;
 					$r = array();
 					foreach ($races as $race)
 					{
-						$r[] = $this->escape($race . ($race->tribal_affiliation ? ' (' . $race->tribal_affiliation . ')' : ''));
+						$r[] = $this->escape($race->race . ($race->tribal_affiliation ? ' (' . $race->tribal_affiliation . ')' : ''));
 					}
 					echo implode(', ', $r);
 					?>

@@ -175,7 +175,7 @@ class Respondent extends Table
 					if (!empty($val))
 					{
 						$this->filters[] = "concat(first_name, ' ', last_name) LIKE " . $this->_db->quote($val . '%');
-						$this->searchTerms = htmlentities($val);
+						$this->search_terms = htmlentities($val);
 					}
 				break;
 				default:

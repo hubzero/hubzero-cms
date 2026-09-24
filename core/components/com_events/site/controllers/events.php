@@ -993,6 +993,9 @@ class Events extends SiteController
 
 				if (hash_equals((string) $event->restricted, (string) $passwrd))
 				{
+					// processTask checks this before accepting the registration
+					Session::set('com_events.registration.' . $event->id, true);
+
 					// Instantiate a view
 					$this->view->setLayout('default');
 					$this->view->set('state', 'open');
@@ -1053,6 +1056,9 @@ class Events extends SiteController
 	 */
 	public function processTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Get some needed info
 		$offset = $this->offset;
 		$year   = $this->year;
@@ -1082,12 +1088,35 @@ class Events extends SiteController
 			return;
 		}
 
+		// The same conditions eventregisterTask puts on showing the form:
+		// registration still open, and for a restricted event the password
+		// was given in this session.
+		$registerby = $event->registerby ? strtotime($event->registerby) : 0;
+		if ($registerby < time())
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $event->id),
+				Lang::txt('EVENTS_CLOSED_REGISTRATION'),
+				'warning'
+			);
+			return;
+		}
+		if ($event->restricted && !Session::get('com_events.registration.' . $event->id))
+		{
+			App::redirect(
+				Route::url('index.php?option=' . $this->_option . '&task=details&id=' . $event->id . '&page=register'),
+				Lang::txt('EVENTS_PROVIDE_PASSWORD'),
+				'warning'
+			);
+			return;
+		}
+
 		$auth = $this->_authorize('core.create');
 
 		$bits = explode('-', $event->publish_up);
 		$eyear  = $bits[0];
-		$emonth = $bits[1];
-		$edbits = explode(' ', $bits[2]);
+		$emonth = isset($bits[1]) ? $bits[1] : '';
+		$edbits = explode(' ', isset($bits[2]) ? $bits[2] : '');
 		$eday   = $edbits[0];
 
 		$page = new Page($this->database);
@@ -1129,13 +1158,16 @@ class Events extends SiteController
 		);
 
 		// Incoming
-		$register   = Request::getArray('register', null, 'post');
+		$register   = (array) Request::getArray('register', array(), 'post');
 		$arrival    = Request::getArray('arrival', null, 'post');
 		$departure  = Request::getArray('departure', null, 'post');
 		$dietary    = Request::getArray('dietary', null, 'post');
 		$dinner     = Request::getString('dinner', null, 'post');
 		$disability = Request::getArray('disability', null, 'post');
 		$race       = Request::getArray('race', null, 'post');
+
+		$validEmail = false;
+		$register   = array_merge(array('firstname' => '', 'lastname' => '', 'email' => ''), array_filter($register, 'is_scalar'));
 
 		if ($register)
 		{
