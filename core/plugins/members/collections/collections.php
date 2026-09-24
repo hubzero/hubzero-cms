@@ -487,7 +487,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array(
 			'limit'         => Request::getInt('limit', Config::get('list_limit')),
 			'start'         => Request::getInt('limitstart', 0),
-			'user_id'       => $this->member->get('id'),
+			// user_id only joins #__collections_votes to mark what the VIEWER
+			// liked (Like/Unlike); the owner's id showed the owner's likes to everyone
+			'user_id'       => User::get('id'),
 			'search'        => Request::getString('search', ''),
 			'state'         => 1,
 			'collection_id' => Request::getString('board', ''),
@@ -708,7 +710,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$view->filters = array();
 		$view->filters['limit']       = Request::getInt('limit', Config::get('list_limit'));
 		$view->filters['start']       = Request::getInt('limitstart', 0);
-		$view->filters['user_id']     = $this->member->get('id');
+		// the viewer, for the Like/Unlike state (see _collection())
+		$view->filters['user_id']     = User::get('id');
 		$view->filters['search']      = Request::getString('search', '');
 		$view->filters['state']       = 1;
 		$view->filters['collection_id'] = Request::getString('board', '');
@@ -799,7 +802,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$view->collection = \Components\Collections\Models\Collection::getInstance();
 
-		$view->filters['user_id'] = $this->member->get('id');
+		// the viewer, for the Like/Unlike state (see _collection())
+		$view->filters['user_id'] = User::get('id');
 
 		$view->rows = $view->collection->posts($view->filters);
 
