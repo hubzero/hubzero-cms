@@ -141,8 +141,11 @@ class Parser
 			// Make sure paths start with a slash and do NOT end with one
 			$path = DS . trim($path, DS);
 
-			// If the path isn't absolute, make it so
-			if (substr($path, 0, strlen(PATH_ROOT)) != PATH_ROOT)
+			// If the path isn't absolute, make it so. A directory that already
+			// exists is absolute as given: with core/ symlinked into the site,
+			// __DIR__ resolves outside PATH_ROOT, and prefixing it made every
+			// built-in macro path bogus (every [[Macro()]] rendered nothing).
+			if (substr($path, 0, strlen(PATH_ROOT)) != PATH_ROOT && !is_dir($path))
 			{
 				$path = PATH_ROOT . $path;
 			}
