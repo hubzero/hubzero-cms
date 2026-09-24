@@ -64,6 +64,6 @@ class Mediatrackingdetailed extends Relational
 			$query->whereEquals('user_id', $user_id);
 		}
 
-		return $quer->limit(1)->row();
+		return $query->limit(1)->row();
 	}
 }

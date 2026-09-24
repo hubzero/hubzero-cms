@@ -40,6 +40,9 @@ class Ldap extends AdminController
 	 */
 	public function deleteGroupsTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		if (!User::authorise('core.admin', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -74,6 +77,9 @@ class Ldap extends AdminController
 	 */
 	public function deleteUsersTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		if (!User::authorise('core.admin', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -106,6 +112,9 @@ class Ldap extends AdminController
 	 */
 	public function exportGroupsTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		if (!User::authorise('core.admin', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -138,6 +147,9 @@ class Ldap extends AdminController
 	 */
 	public function exportUsersTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		if (!User::authorise('core.admin', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));

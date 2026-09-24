@@ -153,7 +153,10 @@ class Systemv1_0 extends ApiController
 			$data = array();
 			foreach ($keys as $key)
 			{
-				$data[$key] = $response->system[$key];
+				if (isset($response->system[$key]))
+				{
+					$data[$key] = $response->system[$key];
+				}
 			}
 			$response->system = $data;
 		}

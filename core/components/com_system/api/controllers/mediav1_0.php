@@ -111,7 +111,7 @@ class Mediav1_0 extends ApiController
 			// Check to see if we need to set a new farthest position
 			if ($trackingInformation->current_position > $trackingInformation->farthest_position)
 			{
-				$trackingInformation->set('farthest_positionset', $time);
+				$trackingInformation->set('farthest_position', $time);
 				$trackingInformation->set('farthest_position_timestamp', Date::toSql());
 			}
 
