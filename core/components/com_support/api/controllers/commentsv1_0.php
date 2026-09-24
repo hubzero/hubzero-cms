@@ -17,6 +17,7 @@ use Config;
 use Route;
 use Lang;
 use Event;
+use User;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php';
@@ -136,12 +137,30 @@ class Commentsv1_0 extends ApiController
 		// Get a list of all statuses
 		$statuses = \Components\Support\Models\Status::all()->rows();
 
-		// Get a count of tickets
-		$response->total = $obj->rows()->count();
+		// Count on a copy: the first fetch empties the builder, so a second
+		// rows() call ran an empty statement and 500ed whenever there was
+		// anything to list
+		$response->total = $obj->copy()->total();
 
 		if ($response->total)
 		{
-			$response->comments = $obj->rows();
+			$sort = in_array($filters['sort'], array('created', 'id')) ? $filters['sort'] : 'created';
+			$dir  = $filters['sortdir'] == 'ASC' ? 'asc' : 'desc';
+
+			$rows = $obj
+				->order($sort, $dir)
+				->limit($filters['limit'])
+				->start($filters['start'])
+				->rows();
+
+			// (a Rows collection encodes as its own bookkeeping, not the rows)
+			foreach ($rows as $row)
+			{
+				$temp = $row->toArray();
+				$temp['changelog'] = json_decode((string) $row->get('changelog'));
+
+				$response->comments[] = $temp;
+			}
 		}
 
 		$this->send($response);
@@ -191,15 +210,16 @@ class Commentsv1_0 extends ApiController
 			throw new Exception(Lang::txt('Not authorized'), 403);
 		}
 
-		$ticket_id = Request::getInt('ticket', 0, 'post');
+		// the router puts {ticket} in the query, the form may post it
+		$ticket_id = Request::getInt('ticket', 0);
 
 		// Load the old ticket so we can compare for the changelog
-		$old = \Components\Support\Models\Ticket::oneOrFail($ticket_id);
+		$old = \Components\Support\Models\Ticket::oneOrNew($ticket_id);
 		$old->set('tags', $old->tags('string'));
 
 		if (!$old->get('id'))
 		{
-			throw new Exception(500, Lang::txt('Ticket "%s" does not exist.', $ticket_id));
+			throw new Exception(Lang::txt('Ticket "%s" does not exist.', $ticket_id), 404);
 		}
 
 		// Initiate class and bind posted items to database fields
@@ -215,21 +235,20 @@ class Commentsv1_0 extends ApiController
 		if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
 		{
 			// Record the closing time
-			$ticket->set('closed', Date::toSql());
+			$ticket->set('closed', Date::of('now')->toSql());
 		}
 
 		// Any tags?
 		if ($tags = trim(Request::getString('tags', '', 'post')))
 		{
-			$ticket->tag($tags, $user->get('uidNumber'));
+			$ticket->tag($tags, User::get('id'));
 			$ticket->set('tags', $ticket->tags('string'));
 		}
 
 		// Store new content
-		if (!$ticket->store())
+		if (!$ticket->save())
 		{
-			$this->errorMessage(500, $ticket->getError());
-			return;
+			throw new Exception($ticket->getError(), 500);
 		}
 
 		// Create a new comment
@@ -239,13 +258,13 @@ class Commentsv1_0 extends ApiController
 		if ($comment->get('comment'))
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-			if ($ticket->isWaiting() && $user->get('username') == $ticket->get('login'))
+			if ($ticket->isWaiting() && User::get('username') == $ticket->get('login'))
 			{
 				$ticket->open();
 			}
 		}
-		$comment->set('created', Date::toSql());
-		$comment->set('created_by', $user->get('uidNumber'));
+		$comment->set('created', Date::of('now')->toSql());
+		$comment->set('created_by', User::get('id'));
 		$comment->set('access', Request::getInt('access', 0, 'post'));
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
@@ -254,10 +273,9 @@ class Commentsv1_0 extends ApiController
 		$comment->changelog()->cced(Request::getString('cc', '', 'post'));
 
 		// Store new content
-		if (!$comment->store())
+		if (!$comment->save())
 		{
-			$this->errorMessage(500, $comment->getError());
-			return;
+			throw new Exception($comment->getError(), 500);
 		}
 
 		if ($ticket->get('owner'))
@@ -377,10 +395,9 @@ class Commentsv1_0 extends ApiController
 		 || count($comment->changelog()->get('changes')) > 0)
 		{
 			// Save the data
-			if (!$comment->store())
+			if (!$comment->save())
 			{
-				$this->errorMessage(500, $comment->getError());
-				return;
+				throw new Exception($comment->getError(), 500);
 			}
 		}
 
@@ -389,7 +406,7 @@ class Commentsv1_0 extends ApiController
 		$msg->comment  = $comment->get('id');
 		$msg->notified = $comment->changelog()->get('notifications');
 
-		$this->setMessageType(Request::getString('format', 'json'));
+		// (a setMessageType() call here named a method no controller has; send() answers JSON)
 		$this->send($msg, 200, 'OK');
 	}
 

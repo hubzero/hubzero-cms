@@ -64,7 +64,8 @@ class Router extends Base
 		{
 			if (is_numeric($segments[0]))
 			{
-				$vars['id'] = $segments[0];
+				$vars['id']     = $segments[0];
+				$vars['ticket'] = $segments[0]; // the v1 tickets controller reads 'ticket'
 				$method = \App::get('request')->method();
 				switch ($method)
 				{

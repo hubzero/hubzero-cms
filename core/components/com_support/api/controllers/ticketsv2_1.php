@@ -565,13 +565,15 @@ class Ticketsv2_1 extends ApiController
 		$ticket_id = Request::getInt('id', 0);
 
 		// Initiate class and bind data to database fields
-		$ticket = Ticket::oneOrFail($ticket_id);
+		$ticket = Ticket::oneOrNew($ticket_id);
 
 		// The same test the site ticket page uses: agents, and the ticket's own
-		// submitter (a component-wide acl check refused submitters their own ticket)
-		if (!$ticket->access('read', 'tickets'))
+		// submitter (a component-wide acl check refused submitters their own
+		// ticket). A ticket the caller may not read answers like a missing one,
+		// so the id space cannot be enumerated.
+		if (!$ticket->get('id') || !$ticket->access('read', 'tickets'))
 		{
-			throw new Exception(Lang::txt('Not authorized'), 403);
+			throw new Exception(Lang::txt('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'), 404);
 		}
 
 		$owner     = $ticket->assignee;
