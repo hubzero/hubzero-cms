@@ -95,7 +95,7 @@ class RecentPageMacro extends WikiMacro
 		{
 			foreach ($rows as $row)
 			{
-				$txt = strip_tags($row->version->get('pagehtml'));
+				$txt = strip_tags((string) $row->version->get('pagehtml'));
 				$txt = str_replace(array("\n", "\r", "\t", '   '), ' ', $txt);
 				$txt = trim($txt);
 
