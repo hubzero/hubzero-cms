@@ -541,6 +541,7 @@ $this->css()
 							<fieldset>
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden"  name="task" value="movewish" />
+								<?php echo Html::input('token'); ?>
 								<input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->wishlist->get('id'); ?>" />
 								<input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->get('id'); ?>" />
 

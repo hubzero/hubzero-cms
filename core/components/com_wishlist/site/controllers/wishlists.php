@@ -837,10 +837,24 @@ class Wishlists extends SiteController
 			return $this->loginTask();
 		}
 
+		// The implementation plan, assignee and due date are offered to list
+		// managers only (views/wishlists/tmpl/wish.php); the handler has to
+		// draw the same line
+		if (!$wishlist->access('manage'))
+		{
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
+		}
+
 		$pageid = Request::getInt('pageid', 0, 'post');
 
 		// Initiate extended database class
 		$old  = Plan::oneOrNew($pageid);
+
+		// pageid= resolves any plan revision on the hub; it has to be this wish's
+		if ($old->get('id') && (int) $old->get('wishid') !== (int) $wishid)
+		{
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+		}
 
 		$page = Plan::oneOrNew($pageid);
 		$page->set('version', Request::getInt('version', 1, 'post'));
@@ -853,7 +867,7 @@ class Wishlists extends SiteController
 		}
 
 		$page->set('wishid', $wishid);
-		$page->set('created_by', Request::getInt('created_by', User::get('id'), 'post'));
+		$page->set('created_by', User::get('id'));
 		$page->set('created', Date::toSql());
 		$page->set('approved', 1);
 		$page->set('pagetext', Request::getString('pagetext', '', 'post', 'none'));
@@ -1333,9 +1347,11 @@ class Wishlists extends SiteController
 		// load wish
 		$wish = Wish::oneOrFail(Request::getInt('wishid', 0));
 
-		if (!$wish->get('id'))
+		// wishid= resolves any wish on the hub; it has to be on THIS list, the
+		// one access('manage') below is checked against
+		if (!$wish->get('id') || (int) $wish->get('wishlist') !== (int) $wishlist->get('id'))
 		{
-			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
 		}
 
 		$changed = false;
@@ -1505,6 +1521,14 @@ class Wishlists extends SiteController
 	 */
 	public function movewishTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (User::isGuest())
+		{
+			return $this->loginTask();
+		}
+
 		$listid   = Request::getInt('wishlist', 0);
 		$wishid   = Request::getInt('wish', 0);
 		$category = Request::getCmd('type', '');
@@ -1525,6 +1549,21 @@ class Wishlists extends SiteController
 		if (!$wishid)
 		{
 			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND'));
+		}
+
+		// Moving a wish (to another list, a question or a ticket) is a
+		// manager action on the list it is on; the form is offered there only
+		$__wish = Wish::oneOrFail($wishid);
+		$__list = Wishlist::oneOrFail($listid);
+
+		if (!$__wish->get('id') || !$__list->get('id') || (int) $__wish->get('wishlist') !== (int) $__list->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_WISHLIST_ERROR_WISH_NOT_FOUND_ON_LIST'));
+		}
+
+		if (!$__list->access('manage'))
+		{
+			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH_ACTION'));
 		}
 
 		// missing or invalid resource ID
