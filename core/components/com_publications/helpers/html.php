@@ -389,7 +389,7 @@ class Html
 			// Dev version
 			$class = 'devversion';
 			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>'
-					. $publication->version->get('version_label') . '</strong> ('
+					. htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8') . '</strong> ('
 					. Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT') . ')';
 			$text .= '<span class="block">' . Lang::txt('COM_PUBLICATIONS_CREATED') . ' ';
 			$text .= Lang::txt('COM_PUBLICATIONS_ON') . ' ' . $publication->created('date') . '</span>';
@@ -399,7 +399,7 @@ class Html
 			$class = 'curversion';
 			$text .= ($publication->isCurrent()) ? ''
 				: '<strong>' . Lang::txt('COM_PUBLICATIONS_ARCHIVE') . '</strong> ';
-			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>' . $publication->version->get('version_label') . '</strong>';
+			$text .= Lang::txt('COM_PUBLICATIONS_VERSION') . ' <strong>' . htmlspecialchars((string) $publication->version->get('version_label'), ENT_COMPAT, 'UTF-8') . '</strong>';
 
 			if ($publication->isPublished() || $publication->isEmbargoed())
 			{
@@ -691,7 +691,7 @@ class Html
 			}
 		}
 
-		$html  = '<h2>' . $txt . '</h2>' . "\n";
+		$html  = '<h2>' . htmlspecialchars((string) $txt, ENT_COMPAT, 'UTF-8') . '</h2>' . "\n";
 		$html  = '<header id="content-header">' . $html . '</header>';
 
 		return $html;
