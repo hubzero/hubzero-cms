@@ -162,7 +162,7 @@ defined('_HZEXEC_') or die();
 					<li class="applic">
 					<span class="countc"><?php echo $k . ". " ?></span><a href="<?php echo Route::url('members/' . $job->applications[$i]->uid . "/resume"); ?>"><?php echo $this->escape($job->applications[$i]->seeker->name) ?></a><?php echo ' ' . Lang::txt('applied on') . ' ' . $applied;
 					if ($job->applications[$i]->cover) { ?>
-						<blockquote><?php echo trim(stripslashes($job->applications[$i]->cover)) ?></blockquote> 
+						<blockquote><?php echo nl2br($this->escape(trim(stripslashes($job->applications[$i]->cover)))) ?></blockquote> 
 					<?php } else {
 						echo '';
 					} ?>
