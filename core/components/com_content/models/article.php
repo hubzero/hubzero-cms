@@ -79,6 +79,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 * @var  array
 	 */
 	public $always = array(
+		'alias',
 		'publish_up',
 		'publish_down',
 		'fulltext',
@@ -321,6 +322,22 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	public function asset()
 	{
 		return $this->belongsToOne('\Hubzero\Access\Asset', 'asset_id');
+	}
+
+	/**
+	 * Generates automatic alias field value
+	 *
+	 * An article saved with no alias used to be stored with an empty one,
+	 * which the site router then matched against the bare index.php.
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+	{
+		$alias = (isset($data['alias']) && trim((string) $data['alias']) !== '') ? $data['alias'] : (isset($data['title']) ? $data['title'] : '');
+		$alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower((string) $alias)), '-');
+		return $alias !== '' ? $alias : \Date::of('now')->format('Y-m-d-H-i-s');
 	}
 
 	/**
