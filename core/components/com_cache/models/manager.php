@@ -218,6 +218,12 @@ class Manager extends Obj
 		$handler = App::get('config')->get('cache_handler');
 		$client  = ClientManager::client($this->state('clientId'));
 
+		// An unknown client id yields null; fall back to the site client
+		if (!$client)
+		{
+			$client = ClientManager::client(0);
+		}
+
 		App::get('config')->set($handler, array(
 			'cachebase' => PATH_APP . '/cache/' . (isset($client->alias) ? $client->alias : $client->name) //($this->state('clientId') == 1 ? 'admin' : 'site')
 		));
@@ -277,25 +283,44 @@ class Manager extends Obj
 	 * If no param is passed clean all cache groups.
 	 *
 	 * @param   string  $group
-	 * @return  void
+	 * @return  boolean
 	 */
 	public function clean($group = '')
 	{
+		$group = is_scalar($group) ? (string) $group : '';
+
+		// A group is one directory name directly under the cache root; the
+		// storage recursively unlinks whatever path it is handed
+		if ($group !== '' && ($group !== basename($group) || strpos($group, '..') !== false))
+		{
+			$this->setError('Invalid cache group');
+			return false;
+		}
+
 		$this->cache()->clean($group);
+
+		return true;
 	}
 
 	/**
 	 * Clean an array
 	 *
 	 * @param   array  $array
-	 * @return  void
+	 * @return  boolean
 	 */
 	public function cleanlist($array)
 	{
+		$result = true;
+
 		foreach ($array as $group)
 		{
-			$this->clean($group);
+			if (!$this->clean($group))
+			{
+				$result = false;
+			}
 		}
+
+		return $result;
 	}
 
 	/**
