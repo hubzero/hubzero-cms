@@ -28,6 +28,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// Command-line tool only: this directory sits under the web root
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit(1);
+}
 $root = dirname(__DIR__, 3);
 $defaults = ['core'];
 

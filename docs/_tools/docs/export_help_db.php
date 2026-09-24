@@ -17,6 +17,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// Command-line tool only: this directory sits under the web root
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit(1);
+}
 $root = '/var/www/help';
 $out  = '/tmp/documentation-export.json';
 
@@ -76,7 +81,15 @@ if ($table === null) {
 echo "table: {$table}\n";
 
 $result = $db->query("SELECT * FROM `{$table}` ORDER BY lft");
+if (!$result) {
+    fwrite(STDERR, "Query failed: " . $db->error . "\n");
+    exit(1);
+}
 $fh = fopen($out, 'w');
+if (!$fh) {
+    fwrite(STDERR, "Cannot write {$out}\n");
+    exit(1);
+}
 fwrite($fh, "[\n");
 $rows = [];
 $i = 0;
@@ -85,7 +98,7 @@ while ($row = $result->fetch_assoc()) {
     $rows[] = [
         'id' => (int) $row['id'], 'alias' => $row['alias'], 'title' => $row['title'],
         'state' => (int) $row['state'], 'level' => (int) $row['level'],
-        'lft' => (int) $row['lft'], 'rgt' => (int) $row['rgt'], 'bytes' => strlen($row['content']),
+        'lft' => (int) $row['lft'], 'rgt' => (int) $row['rgt'], 'bytes' => strlen((string) $row['content']),
     ];
 }
 fwrite($fh, "\n]\n");
