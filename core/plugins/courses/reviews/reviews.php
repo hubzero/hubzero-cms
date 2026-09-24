@@ -410,6 +410,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		{
 			$row->set('item_id', $this->obj->get('id'));
 			$row->set('item_type', $this->obj_type);
+			// The form carries no state and the column defaults to 0
+			// (unpublished), which _view() does not list: a new review saved
+			// but never appeared, even to its author
+			$row->set('state', \Components\Courses\Models\Comment::STATE_PUBLISHED);
 		}
 
 		// access-edit-comment is every enrolled student (comments_editable),
