@@ -767,9 +767,12 @@ class Create extends SiteController
 
 		$row->set('published', (int)$row->get('published', 2));
 		$row->set('publish_up', ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()));
-		if ($row->get('publish_down') && $row->get('publish_down') == '0000-00-00 00:00:00')
+		// The compose form posts an empty publish_down. Strict SQL mode refuses
+		// '', and the stock column is NOT NULL with a zero-date default, so
+		// NULL fails too: leave "no end date" to the column default.
+		if (!$row->get('publish_down') || $row->get('publish_down') == '0000-00-00 00:00:00')
 		{
-			$row->set('publish_down', null);
+			$row->removeAttribute('publish_down');
 		}
 		$row->set('modified', Date::toSql());
 		$row->set('modified_by', User::get('id'));
