@@ -74,7 +74,8 @@ class License extends Relational
 	 */
 	public function automaticOrdering($data)
 	{
-		if (!isset($data['ordering']))
+		// the form posts an empty ordering box; '' is not an integer under strict SQL
+		if (!isset($data['ordering']) || trim((string) $data['ordering']) === '')
 		{
 			$last = self::all()
 				->select('ordering')
