@@ -158,7 +158,7 @@ $area = Request::getString('area', 'about');
 			 <div class="citation-abstract">
 				<?php
 					$max = 1000;
-					$abstract = nl2br($citation->abstract);
+					$abstract = nl2br($this->escape($citation->abstract));
 
 					if (strlen($abstract) > $max)
 					{
@@ -188,7 +188,7 @@ $area = Request::getString('area', 'about');
 
 	<div class="content-header-extra">
 		<?php if ($citationURL != '') : ?>
-			<a class="primary" rel="external" href="<?php echo $citationURL; ?>">
+			<a class="primary" rel="external" href="<?php echo $this->escape($citationURL); ?>">
 				<?php echo Lang::txt('COM_CITATIONS_VIEW_ARTICLE'); ?>
 			</a>
 			<ul class="secondary">
@@ -348,7 +348,7 @@ $area = Request::getString('area', 'about');
 				<?php if ($citation->author_address) : ?>
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_AUTHOR_ADDRESS'); ?></th>
-						<td><?php echo nl2br($citation->author_address); ?></td>
+						<td><?php echo nl2br($this->escape($citation->author_address)); ?></td>
 					</tr>
 				<?php endif;?>
 
@@ -471,21 +471,21 @@ $area = Request::getString('area', 'about');
 				<?php if ($citation->note) : ?>
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_NOTES'); ?></th>
-						<td><?php echo nl2br($citation->note); ?></td>
+						<td><?php echo nl2br($this->escape($citation->note)); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->research_notes) : ?>
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_RESEARCH_NOTES'); ?></th>
-						<td><?php echo nl2br($citation->research_notes); ?></td>
+						<td><?php echo nl2br($this->escape($citation->research_notes)); ?></td>
 					</tr>
 				<?php endif;?>
 
 				<?php if ($citation->keywords) : ?>
 					 <tr>
 						<th><?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?></th>
-						<td><?php echo nl2br($citation->keywords); ?></td>
+						<td><?php echo nl2br($this->escape($citation->keywords)); ?></td>
 					</tr>
 				<?php endif;?>
 

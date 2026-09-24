@@ -689,6 +689,26 @@ class Citations extends SiteController
 			App::abort(403, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
 		}
 
+		// Ownership and placement are not the form's to choose: the hidden
+		// uid/scope/scope_id/published inputs would otherwise file the row
+		// under another member's or group's citation list.
+		if (!User::authorise('core.manage', $this->_option))
+		{
+			if ($row->isNew())
+			{
+				$c['uid']      = User::get('id');
+				$c['scope']    = 'hub';
+				$c['scope_id'] = '';
+			}
+			else
+			{
+				$c['uid']       = $row->get('uid');
+				$c['scope']     = $row->get('scope');
+				$c['scope_id']  = $row->get('scope_id');
+				$c['published'] = $row->get('published');
+			}
+		}
+
 		$row->set($c);
 
 		$updateAuthorsId = false;
@@ -721,7 +741,13 @@ class Citations extends SiteController
 			$assoc = array_map('trim', $assoc);
 			$assocId = !empty($assoc['id']) ? $assoc['id'] : null;
 			unset($assoc['id']);
-			$newAssociation = Association::oneOrNew($assocId)->set($assoc);
+			$newAssociation = Association::oneOrNew($assocId);
+			// An existing association must already belong to this citation
+			if (!$newAssociation->isNew() && (int) $newAssociation->get('cid') !== (int) $row->get('id'))
+			{
+				App::abort(403, Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'));
+			}
+			$newAssociation->set($assoc);
 			if (!$newAssociation->isNew() && (empty($assoc['tbl']) || empty($assoc['oid'])))
 			{
 				$newAssociation->destroy();
@@ -1080,7 +1106,7 @@ class Citations extends SiteController
 	 */
 	public function getformatTask()
 	{
-		echo 'format' . Request::getString('format', 'apa');
+		echo 'format' . htmlspecialchars(Request::getString('format', 'apa'), ENT_QUOTES, 'UTF-8');
 	}
 
 	/**

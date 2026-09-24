@@ -237,7 +237,9 @@ class Format
 			}
 			else
 			{
-				$replace_values[$v] = $citation->$k;
+				// The template is HTML; every column is user-typed. author,
+				// title, doi, pages and version build their own markup below.
+				$replace_values[$v] = htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8');
 
 				//add to coins data if we can but not authors as that will get processed below
 				if (in_array($k, array_keys($this->_coins_keys)) && $k != 'author')
@@ -274,7 +276,8 @@ class Format
 					$this->$k = str_replace('http://doi.org/', '', $this->$k);
 					$this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
 
-					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $this->$k . '">' . $this->$k . '</a>';
+					$doiEsc = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
+					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $doiEsc . '">' . $doiEsc . '</a>';
 				}
 
 				if ($k == 'author')
@@ -398,12 +401,12 @@ class Format
 
 				if ($k == 'pages')
 				{
-					$replace_values[$v] = "pg: " . $citation->$k;
+					$replace_values[$v] = "pg: " . htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8');
 				}
 
 				if ($k == 'version')
 				{
-					$replace_values[$v] = "(Version " . $citation->$k . ")";
+					$replace_values[$v] = "(Version " . htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8') . ")";
 				}
 			}
 		}
@@ -747,10 +750,10 @@ class Format
 			}
 		}
 
-		if ($citation->eprint)
+		if ($citation->eprint && preg_match('/^https?:\/\//i', trim($citation->eprint)))
 		{
 			$html .= '<span>|</span>';
-			$html .= '<a href="' . Str::ampReplace($citation->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$html .= '<a href="' . htmlspecialchars(Str::ampReplace(trim($citation->eprint)), ENT_QUOTES, 'UTF-8') . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $html;
@@ -778,7 +781,7 @@ class Format
 				$html = '<ul class="tags badges">';
 				foreach ($badges as $badge)
 				{
-					$html .= '<li><a href="#">' . stripslashes($badge->raw_tag) . '</a></li>';
+					$html .= '<li><a href="#">' . htmlspecialchars(stripslashes((string) $badge->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
 				}
 				$html .= "</ul>";
 				return $html;
@@ -831,7 +834,7 @@ class Format
 					//display tag if not admin tag or if admin tag and user is administrator
 					if (!$tag->admin || ($tag->admin && $isAdmin))
 					{
-						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a></li>';
+						$html .= '<li class="' . $cls . '"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . \Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag)) . '">' . htmlspecialchars(stripslashes((string) $tag->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
 					}
 				}
 				$html .= '</ul>';
@@ -857,6 +860,17 @@ class Format
 		}
 
 		return ($includeHtml) ? '' : $tags;
+	}
+
+	/**
+	 * Escape a citation column for HTML output
+	 *
+	 * @param   mixed   $value
+	 * @return  string
+	 */
+	public static function esc($value)
+	{
+		return htmlspecialchars(stripslashes((string) $value), ENT_QUOTES, 'UTF-8');
 	}
 
 	/**
@@ -975,23 +989,23 @@ class Format
 		}
 		elseif (self::keyExistsOrIsNotEmpty('editor', $row))
 		{
-			$html .= stripslashes($row->editor);
+			$html .= self::esc($row->editor);
 		}
 
 		if (self::keyExistsOrIsNotEmpty('year', $row))
 		{
-			$html .= ' (' . $row->year . ')';
+			$html .= ' (' . self::esc($row->year) . ')';
 		}
 
 		if (self::keyExistsOrIsNotEmpty('title', $row))
 		{
-			if (!$row->url)
+			if (!$row->url || !preg_match('/^https?:\/\//i', trim($row->url)))
 			{
-				$html .= ', "' . stripslashes($row->title);
+				$html .= ', "' . self::esc($row->title);
 			}
 			else
 			{
-				$html .= ', "<a href="' . self::cleanUrl($row->url) . '">' . Str::highlight(stripslashes($row->title), $highlight) . '</a>';
+				$html .= ', "<a href="' . htmlspecialchars(self::cleanUrl(trim($row->url)), ENT_QUOTES, 'UTF-8') . '">' . Str::highlight(self::esc($row->title), $highlight) . '</a>';
 			}
 		}
 		if (self::keyExistsOrIsNotEmpty('journal', $row)
@@ -1003,11 +1017,11 @@ class Format
 		$html .= '"';
 		if (self::keyExistsOrIsNotEmpty('journal', $row))
 		{
-			$html .= ' <i>' . Str::highlight(stripslashes($row->journal), $highlight) . '</i>';
+			$html .= ' <i>' . Str::highlight(self::esc($row->journal), $highlight) . '</i>';
 		}
 		elseif (self::keyExistsOrIsNotEmpty('booktitle', $row))
 		{
-			$html .= ' <i>' . stripslashes($row->booktitle) . '</i>';
+			$html .= ' <i>' . self::esc($row->booktitle) . '</i>';
 		}
 		if ($row->type)
 		{
@@ -1026,71 +1040,71 @@ class Format
 		if (self::keyExistsOrIsNotEmpty('edition', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . $row->edition;
+			$html .= ' ' . self::esc($row->edition);
 		}
 		if (self::keyExistsOrIsNotEmpty('chapter', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->chapter);
+			$html .= ' ' . self::esc($row->chapter);
 		}
 		if (self::keyExistsOrIsNotEmpty('series', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->series);
+			$html .= ' ' . self::esc($row->series);
 		}
 		if (self::keyExistsOrIsNotEmpty('publisher', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->publisher);
+			$html .= ' ' . self::esc($row->publisher);
 		}
 		if (self::keyExistsOrIsNotEmpty('address', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->address);
+			$html .= ' ' . self::esc($row->address);
 		}
 		if (self::keyExistsOrIsNotEmpty('volume', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' <b>' . $row->volume . '</b>';
+			$html .= ' <b>' . self::esc($row->volume) . '</b>';
 		}
 		if (self::keyExistsOrIsNotEmpty('number', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' <b>' . $row->number . '</b>';
+			$html .= ' <b>' . self::esc($row->number) . '</b>';
 		}
 		if (self::keyExistsOrIsNotEmpty('pages', $row))
 		{
-			$html .= ': pg. ' . $row->pages;
+			$html .= ': pg. ' . self::esc($row->pages);
 		}
 		if (self::keyExistsOrIsNotEmpty('organization', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->organization);
+			$html .= ' ' . self::esc($row->organization);
 		}
 		if (self::keyExistsOrIsNotEmpty('institution', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->institution);
+			$html .= ' ' . self::esc($row->institution);
 		}
 		if (self::keyExistsOrIsNotEmpty('school', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->school);
+			$html .= ' ' . self::esc($row->school);
 		}
 		if (self::keyExistsOrIsNotEmpty('location', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . stripslashes($row->location);
+			$html .= ' ' . self::esc($row->location);
 		}
 		if (self::keyExistsOrIsNotEmpty('month', $row))
 		{
 			$html  = self::grammarCheck($html, ',');
-			$html .= ' ' . $row->month;
+			$html .= ' ' . self::esc($row->month);
 		}
 		if (self::keyExistsOrIsNotEmpty('isbn', $row))
 		{
 			$html  = self::grammarCheck($html, '.');
-			$html .= ' ' . $row->isbn;
+			$html .= ' ' . self::esc($row->isbn);
 		}
 		if (self::keyExistsOrIsNotEmpty('doi', $row))
 		{
@@ -1100,7 +1114,7 @@ class Format
 			$row->doi = str_replace('http://dx.doi.org/', '', $row->doi);
 
 			$html  = self::grammarCheck($html, '.');
-			$html .= ' (' . \Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . $row->doi . '">' . $row->doi . '</a>)';
+			$html .= ' (' . \Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . self::esc($row->doi) . '">' . self::esc($row->doi) . '</a>)';
 		}
 		$html  = self::grammarCheck($html, '.');
 		$html .= '</p>' . "\n";

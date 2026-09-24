@@ -883,7 +883,9 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 			}
 			else
 			{
-				$replace_values[$v] = $this->$k;
+				// The template is HTML; every column is user-typed. author,
+				// title, doi and pages build their own escaped markup below.
+				$replace_values[$v] = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
 
 				//add to coins data if we can but not authors as that will get processed below
 				if (in_array($k, array_keys($coins_keys)) && $k != 'author')
@@ -919,7 +921,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					$this->$k = str_replace('http://doi.org/', '', $this->$k);
 					$this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
 
-					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $this->$k . '">' . $this->$k . '</a>';
+					$doiEsc = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
+					$replace_values[$v] = '<a rel="external" href="https://doi.org/' . $doiEsc . '">' . $doiEsc . '</a>';
 				}
 
 				if ($k == 'author')
@@ -1090,7 +1093,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 				if ($k == 'pages')
 				{
-					$replace_values[$v] = "pg: " . $this->$k;
+					$replace_values[$v] = "pg: " . htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
 				}
 			}
 		}
@@ -1247,10 +1250,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 		// citation association - to HUB resources
 		$details .= $this->formattedResourceLinks();
 
-		if ($this->eprint)
+		if ($this->eprint && preg_match('/^https?:\/\//i', trim($this->eprint)))
 		{
 			$details .= '<span>|</span>';
-			$details .= '<a href="' . Str::ampReplace($this->eprint) . '">' . \Lang::txt('Electronic Paper') . '</a>';
+			$details .= '<a href="' . htmlspecialchars(Str::ampReplace(trim($this->eprint)), ENT_QUOTES, 'UTF-8') . '">' . \Lang::txt('Electronic Paper') . '</a>';
 		}
 
 		return $details;
@@ -1355,7 +1358,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 					//display tag if not admin tag or if admin tag and user is administrator
 					if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin))
 					{
-						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->tag->tag) . '">' . stripslashes($tag->tag->raw_tag) . '</a></li>';
+						$html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag->tag)) . '">' . htmlspecialchars(stripslashes((string) $tag->tag->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
 					}
 				}
 			}
@@ -1654,6 +1657,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		$authorString = $this->getAuthorString(false);
 		$citation->author = explode(';', $authorString == null ? '' : $authorString);
+		// Default for a group-scoped citation whose group no longer exists
+		$url = '/citations/view/' . $this->id;
 		if ($this->scope == 'member')
 		{
 			$url = '/members/' . $this->uid . '/citations';

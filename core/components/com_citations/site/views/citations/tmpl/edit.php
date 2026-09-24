@@ -36,7 +36,7 @@ $pid = Request::getInt('publication', 0);
 
 	<div id="content-header-extra">
 		<p>
-			<a class="icon-browse browse btn" href="<?php echo $backLink ?>"><?php echo Lang::txt('COM_CITATIONS_BACK'); ?></a>
+			<a class="icon-browse browse btn" href="<?php echo $this->escape($backLink); ?>"><?php echo Lang::txt('COM_CITATIONS_BACK'); ?></a>
 		</p>
 	</div>
 </header><!-- / #content-header -->
@@ -351,7 +351,7 @@ $pid = Request::getInt('publication', 0);
 							if (count($tags_list) > 0) {
 								echo $tags_list[0];
 							} else {
-								echo '<input type="text" name="tags" value="' . $this->escape($tags) . '" />';
+								echo '<input type="text" name="tags" value="' . $this->escape(implode(',', (array) $this->tags)) . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_TAGS_HINT'); ?></span>
@@ -372,7 +372,7 @@ $pid = Request::getInt('publication', 0);
 							if (count($badges_list) > 0) {
 								echo $badges_list[0];
 							} else {
-								echo '<input type="text" name="badges" value="' . $this->escape($badges) . '" />';
+								echo '<input type="text" name="badges" value="' . $this->escape(implode(',', (array) $this->badges)) . '" />';
 							}
 						?>
 						<span class="hint"><?php echo Lang::txt('COM_CITATIONS_BADGES_HINT'); ?></span>
