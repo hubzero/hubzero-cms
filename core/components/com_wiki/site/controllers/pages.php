@@ -584,6 +584,35 @@ class Pages extends SiteController
 		$page['id'] = $pageId;
 		$revision->set('page_id', $pageId);
 
+		// The page's wiki is the one in the URL ($this->book), never the posted
+		// scope/scope_id: a new page otherwise lands in any group's wiki, and an
+		// existing one is moved. access(), state and protected are not offered
+		// on the form (protected only to managers), so they are not rebindable
+		// either -- an existing page keeps its values, a new page starts public
+		// and published.
+		unset($page['access'], $page['state']);
+
+		if ($this->page->isNew())
+		{
+			$page['scope']    = $this->book->get('scope');
+			$page['scope_id'] = (int) $this->book->get('scope_id');
+			$page['access']   = 1;
+			$page['state']    = 1;
+
+			$this->page->set('scope', $page['scope']);
+			$this->page->set('scope_id', $page['scope_id']);
+
+			// Creating a page takes what editTask() asks of the blank page
+			if (!$this->page->access('edit') && !$this->page->access('modify'))
+			{
+				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+			}
+		}
+		else
+		{
+			unset($page['scope'], $page['scope_id']);
+		}
+
 		// Editing an existing page requires edit/manage access and respects the
 		// page lock and the protected help namespace (as editTask does).
 		if (!$this->page->isNew())
@@ -600,6 +629,11 @@ class Pages extends SiteController
 			{
 				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			}
+		}
+
+		if (!$this->page->access('manage'))
+		{
+			$page['protected'] = $this->page->isNew() ? 0 : (int) $this->page->get('protected');
 		}
 
 		$this->page->set($page);

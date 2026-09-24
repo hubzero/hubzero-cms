@@ -295,6 +295,13 @@ class History extends SiteController
 
 		$revision = Version::oneOrFail($id);
 
+		// oldid= resolves any revision on the hub; it has to be one of this
+		// page's, which is the page access('delete') was checked against
+		if ((int) $revision->get('page_id') !== (int) $this->page->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $id));
+		}
+
 		// Get a count of all approved revisions
 		$total = $this->page->versions()
 			->whereEquals('approved', 1)
@@ -392,6 +399,13 @@ class History extends SiteController
 
 		// Load the revision, approve it, and save
 		$revision = Version::oneOrFail($id);
+
+		// It has to be a revision of this page (see deleteTask)
+		if ((int) $revision->get('page_id') !== (int) $this->page->get('id'))
+		{
+			App::abort(404, Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $id));
+		}
+
 		$revision->set('approved', 1);
 		if (!$revision->save())
 		{

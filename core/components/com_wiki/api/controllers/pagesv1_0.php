@@ -236,7 +236,9 @@ class Pagesv1_0 extends ApiController
 
 		$page = Page::oneOrFail($id);
 
-		if (!$page->get('id'))
+		// Deleted pages, pages above the caller's view level and pages in a
+		// group wiki the caller is not admitted to read the same as on the site
+		if (!$page->get('id') || $page->isDeleted() || !$page->access('view'))
 		{
 			throw new \Exception(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'), 404);
 		}
@@ -247,7 +249,8 @@ class Pagesv1_0 extends ApiController
 
 		$version = $page->version;
 
-		if (!$version->get('id'))
+		// revision= resolves any revision on the hub; it has to be one of this page's
+		if (!$version->get('id') || (int) $version->get('page_id') !== (int) $page->get('id'))
 		{
 			throw new \Exception(Lang::txt('COM_WIKI_WARNING_NO_REVISION_FOUND', $version_id), 404);
 		}
