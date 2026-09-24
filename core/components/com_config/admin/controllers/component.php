@@ -114,6 +114,12 @@ class Component extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
+		// No config.xml means no form to validate against
+		if (!$form)
+		{
+			App::abort(500, $model->getError() ?: Lang::txt('JERROR_LOADFILE_FAILED'));
+		}
+
 		// Validate the posted data.
 		$return = $model->validate($form, $data);
 

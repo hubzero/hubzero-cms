@@ -102,10 +102,10 @@ if (document.body && document.body.id === 'component-body') {
 	echo Html::tabs('end');
 	?>
 
-	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
-	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
+	<input type="hidden" name="id" value="<?php echo (int) $this->component->id; ?>" />
+	<input type="hidden" name="component" value="<?php echo $this->escape($this->component->option); ?>" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="path" value="<?php echo $this->model->get('component.path'); ?>" />
+	<input type="hidden" name="path" value="<?php echo $this->escape($this->model->get('component.path')); ?>" />
 
 	<?php echo Html::input('token'); ?>
 </form>
