@@ -31,6 +31,17 @@ class ImportHooks extends AdminController
 	 */
 	public function execute()
 	{
+		// A hook is a PHP file the importer include()s, so this is the same
+		// bar as the imports controller and com_members' hooks.
+		if (!User::authorise('core.admin', $this->_option))
+		{
+			Notify::warning(Lang::txt('Not authorized'));
+
+			App::redirect(
+				Route::url('index.php?option=com_members', false)
+			);
+		}
+
 		Lang::load($this->_option . '.import', dirname(__DIR__));
 
 		$this->registerTask('add', 'edit');
