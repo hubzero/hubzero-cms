@@ -647,7 +647,10 @@ class Registration
 
 		if ($registrationFullname != REG_HIDE)
 		{
-			if (!empty($registration['name']) && !Helpers\Utility::validname($registration['name']))
+			// The name was entity-encoded when it was read (O'Brien -> O&#039;Brien,
+			// José -> Jos&eacute;), which the validator's '&' rule rejects; check the
+			// name as the person typed it
+			if (!empty($registration['name']) && !Helpers\Utility::validname(html_entity_decode($registration['name'], ENT_QUOTES, 'UTF-8')))
 			{
 				$this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
 			}
