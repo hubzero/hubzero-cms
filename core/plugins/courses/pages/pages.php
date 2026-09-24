@@ -542,7 +542,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			ob_clean();
 			header('Content-type: text/plain');
 			echo json_encode(array('error' => Lang::txt('File rejected because the anti-virus scan failed.')));
-			return;
+			// exit like every other branch: returning let the plugin go on to
+			// render its page layout (no $page set) and the uploader got a 500
+			exit();
 		}
 
 		ob_clean();
