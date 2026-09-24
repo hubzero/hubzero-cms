@@ -60,6 +60,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="media" />
 				<input type="hidden" name="task" value="upload" />
+				<?php // the media controller resolves the group from cn and answered 400 without it ?>
+				<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
 				<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->group->get('gidNumber'); ?>" />
 				<input type="hidden" name="tmpl" value="component" />
 				<?php echo Html::input('token'); ?>
