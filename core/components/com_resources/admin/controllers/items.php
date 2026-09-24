@@ -816,6 +816,12 @@ class Items extends AdminController
 
 		$row->set($fields);
 
+		// footertext is TEXT NOT NULL with no default; the admin form never posts it
+		if ($row->get('footertext') === null)
+		{
+			$row->set('footertext', '');
+		}
+
 		$isNew = 0;
 		if ($row->get('id') < 1)
 		{
