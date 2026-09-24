@@ -110,9 +110,9 @@ class Publication extends Table
 			$groupby = ' GROUP BY C.id, V.id ';
 		}
 
-		$project  = isset($filters['project']) && intval($filters['project']) ? $filters['project'] : "";
+		$project  = isset($filters['project']) && intval($filters['project']) ? intval($filters['project']) : "";
 		$dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
-		$projects = isset($filters['projects']) && !empty($filters['projects']) ? $filters['projects'] : array();
+		$projects = isset($filters['projects']) && !empty($filters['projects']) ? array_map('intval', (array) $filters['projects']) : array();
 		$mine     = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
 		$featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
 		$sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
@@ -230,7 +230,7 @@ class Publication extends Table
 		}
 		if (isset($filters['author']) && intval($filters['author']))
 		{
-			$query .= " AND A.user_id=" . $filters['author'];
+			$query .= " AND A.user_id=" . intval($filters['author']);
 			$query .= " AND A.status=1 AND (A.role IS NULL OR A.role!='submitter') ";
 		}
 
@@ -242,18 +242,18 @@ class Publication extends Table
 				$tquery = '';
 				foreach ($filters['master_type'] as $type)
 				{
-					$tquery .= "'" . $type . "',";
+					$tquery .= "'" . intval($type) . "',";
 				}
 				$tquery = substr($tquery, 0, strlen($tquery) - 1);
 				$query .= " AND ((C.master_type IN (" . $tquery . ")) ";
 			}
 			elseif (is_numeric($filters['master_type']))
 			{
-				$query .= " AND (C.master_type=" . $filters['master_type']." ";
+				$query .= " AND (C.master_type=" . intval($filters['master_type']) . " ";
 			}
 			elseif (is_string($filters['master_type']))
 			{
-				$query .= " AND (MT.alias='" . $filters['master_type']."' ";
+				$query .= " AND (MT.alias=" . $this->_db->quote($filters['master_type']) . " ";
 			}
 			else
 			{
@@ -264,7 +264,7 @@ class Publication extends Table
 
 		if (isset($filters['minranking']) && $filters['minranking'] != '' && $filters['minranking'] > 0)
 		{
-			$query .= " AND C.ranking > " . $filters['minranking']." ";
+			$query .= " AND C.ranking > " . (float) $filters['minranking'] . " ";
 		}
 		if (!$dev)
 		{
@@ -435,7 +435,7 @@ class Publication extends Table
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
 
 		$this->_db->setQuery($sql);
-		return count($this->_db->loadObjectList());
+		return count((array) $this->_db->loadObjectList());
 	}
 
 	/**
@@ -467,8 +467,8 @@ class Publication extends Table
 
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
 		$sql .= $this->buildQuery($filters, $admin);
-		$start = isset($filters['start']) ? $filters['start'] : 0;
-		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . $filters['limit'] : "";
+		$start = isset($filters['start']) ? (int) $filters['start'] : 0;
+		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . (int) $filters['limit'] : "";
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
@@ -549,7 +549,7 @@ class Publication extends Table
 		$sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS MT, $this->_tbl AS C ";
 		$sql .= " JOIN #__publication_categories AS t ON C.category=t.id ";
 		$sql .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id=C.project_id ";
-		if ($version == 'default' or $version == 'current' && $version == 'main')
+		if ($version == 'default' or $version == 'current' or $version == 'main')
 		{
 			$sql.= " AND V.main=1 ";
 		}

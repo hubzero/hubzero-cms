@@ -103,7 +103,7 @@ class Version extends Table
 
 		$query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new) . " WHERE publication_id=" . $this->_db->quote($pid);
 		$query .= $where ? " AND ".$where : "";
-		if ($version == 'default' or $version == 'current' && $version == 'main')
+		if ($version == 'default' or $version == 'current' or $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}
@@ -146,7 +146,7 @@ class Version extends Table
 
 		$query  = "SELECT version_label FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
-		if ($exclude == 'default' or $exclude == 'current' && $exclude == 'main')
+		if ($exclude == 'default' or $exclude == 'current' or $exclude == 'main')
 		{
 			$query.= " AND main!=1 ";
 		}
@@ -198,7 +198,7 @@ class Version extends Table
 
 		$query  = "SELECT $select FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid);
 
-		if ($version == 'default' or $version == 'current' && $version == 'main')
+		if ($version == 'default' or $version == 'current' or $version == 'main')
 		{
 			$query.= " AND main=1 ";
 		}
@@ -534,7 +534,7 @@ class Version extends Table
 		$query.= " p.checked_out, p.checked_out_time, p.access as parent_access, p.project_id ";
 		$query.= " FROM $this->_tbl AS v ";
 		$query.= " JOIN #__publications AS p ON p.id=v.publication_id ";
-		if ($version == 'default' or $version == 'current' && $version == 'main')
+		if ($version == 'default' or $version == 'current' or $version == 'main')
 		{
 			$query.= " AND v.main=1 ";
 		}

@@ -154,7 +154,7 @@ class License extends Table
 
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{
-			$query .= ' LIMIT ' . $filters['start'] . ',' . $filters['limit'];
+			$query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
 		}
 
 		$this->_db->setQuery($query);
