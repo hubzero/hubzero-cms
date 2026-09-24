@@ -1102,7 +1102,37 @@ class Threadsv1_0 extends ApiController
 					$rows = array_slice($newlist, $filters['start'], $filters['limit']);
 				}
 			}
-			$data->response = $rows;
+			// Shape each post the way listTask() shapes a thread: a Rows object
+			// serialises to {} (so the read returned nothing unless start_id
+			// built an array), and raw rows would expose every column
+			$posts = array();
+			foreach (($rows ?: array()) as $row)
+			{
+				$obj = new stdClass;
+				$obj->id          = $row->get('id');
+				$obj->title       = $row->get('title');
+				$obj->comment     = $row->get('comment');
+				$obj->created     = with(new Date($row->get('created')))->format('Y-m-d\TH:i:s\Z');
+				$obj->modified    = $row->get('modified');
+				$obj->anonymous   = $row->get('anonymous');
+				$obj->scope       = $row->get('scope');
+				$obj->scope_id    = $row->get('scope_id');
+				$obj->thread      = $row->get('thread');
+				$obj->parent      = $row->get('parent');
+				$obj->category_id = $row->get('category_id');
+
+				$obj->creator = new stdClass;
+				$obj->creator->id   = 0;
+				$obj->creator->name = Lang::txt('JANONYMOUS');
+				if (!$row->get('anonymous'))
+				{
+					$obj->creator->id   = $row->get('created_by');
+					$obj->creator->name = $row->creator->get('name');
+				}
+
+				$posts[] = $obj;
+			}
+			$data->response = $posts;
 		}
 
 		$this->send($data);
