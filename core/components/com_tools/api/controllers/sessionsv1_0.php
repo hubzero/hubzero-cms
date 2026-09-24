@@ -1629,7 +1629,6 @@ class Sessionsv1_0 extends ApiController
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
 		// get any request vars
-		$username   = Request::getString('username');
 		$sessionid  = Request::getString('sessionid', '');
 		$private_ip = Request::getString('private_ip');
 		$public_ip  = Request::getString('public_ip', Request::ip());
