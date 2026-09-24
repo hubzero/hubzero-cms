@@ -27,7 +27,7 @@ class RestrictionsHelper
 	 */
 	public static function getPermittedSkuUsers($filters, $sId)
 	{
-		return self::getSkuUsers($filters = array(), $sId);
+		return self::getSkuUsers($filters, $sId);
 	}
 
 	/**
@@ -39,7 +39,7 @@ class RestrictionsHelper
 	 */
 	public static function getWhitelistedSkuUsers($filters, $sId)
 	{
-		return self::getSkuUsers($filters = array(), $sId, array('usersType' => 'skuWhitelist'));
+		return self::getSkuUsers($filters, $sId, array('usersType' => 'skuWhitelist'));
 	}
 
 	/**
@@ -165,7 +165,11 @@ class RestrictionsHelper
 	 */
 	public static function removeUsers($ids)
 	{
-		$ids = array_map('intval', $ids);
+		$ids = array_map('intval', (array) $ids);
+		if (empty($ids))
+		{
+			return;
+		}
 
 		$db = App::get('db');
 		$sql = "DELETE FROM `#__storefront_permissions`

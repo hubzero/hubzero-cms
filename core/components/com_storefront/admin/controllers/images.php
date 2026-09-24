@@ -113,7 +113,7 @@ class Images extends AdminController
 		$filename = Filesystem::clean($filename);
 		$filename = str_replace(' ', '_', $filename);
 
-		$ext = $pathinfo['extension'];
+		$ext = isset($pathinfo['extension']) ? $pathinfo['extension'] : '';
 		if (!in_array(strtolower($ext), $allowedExtensions))
 		{
 			echo json_encode(array('error' => Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE')));
@@ -228,7 +228,7 @@ class Images extends AdminController
 		if (!$id)
 		{
 			$this->setError(Lang::txt('COM_STOREFRONT_ERROR_NO_ID'));
-			$this->displayTask('', $id);
+			$this->_backToEdit($id);
 			return;
 		}
 
@@ -238,7 +238,7 @@ class Images extends AdminController
 
 		if (!$path)
 		{
-			$this->displayTask('', $id);
+			$this->_backToEdit($id);
 			return;
 		}
 
@@ -247,7 +247,7 @@ class Images extends AdminController
 		if (!$file['name'])
 		{
 			$this->setError(Lang::txt('COM_STOREFRONT_NO_FILE'));
-			$this->displayTask('', $id);
+			$this->_backToEdit($id);
 			return;
 		}
 		$curfile = Request::getString('curfile', '');
@@ -257,7 +257,7 @@ class Images extends AdminController
 			if (!Filesystem::makeDirectory($path))
 			{
 				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask('', $id);
+				$this->_backToEdit($id);
 				return;
 			}
 		}
@@ -265,6 +265,15 @@ class Images extends AdminController
 		// Make the filename safe
 		$file['name'] = Filesystem::clean($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
+
+		// Same image types the AJAX uploader accepts
+		$ext = strtolower(Filesystem::extension($file['name']));
+		if (!in_array($ext, array('png', 'jpeg', 'jpg', 'gif')))
+		{
+			$this->setError(Lang::txt('COM_STOREFRONT_ERROR_UNKNOWN_FILE_TYPE'));
+			$this->_backToEdit($id);
+			return;
+		}
 
 		// Perform the upload
 		if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name']))
@@ -279,7 +288,7 @@ class Images extends AdminController
 				Filesystem::delete($path . DS . $file['name']);
 
 				$this->setError(Lang::txt('COM_STOREFRONT_ERROR_FILE_UNSAFE'));
-				$this->displayTask($curfile, $id);
+				$this->_backToEdit($id);
 				return;
 			}
 
@@ -292,7 +301,7 @@ class Images extends AdminController
 					if (!Filesystem::delete($path . DS . $curfile))
 					{
 						$this->setError(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
-						$this->displayTask($file['name'], $id);
+						$this->_backToEdit($id);
 						return;
 					}
 				}
@@ -311,7 +320,7 @@ class Images extends AdminController
 					return;
 					break;
 			}
-			if (!$product->update())
+			if (!$product->save())
 			{
 				$this->setError('Error updating product');
 			}
@@ -320,7 +329,7 @@ class Images extends AdminController
 		}
 
 		// Push through to the image view
-		$this->displayTask($file, $id);
+		$this->_backToEdit($id);
 	}
 
 	/**
@@ -400,6 +409,25 @@ class Images extends AdminController
 	 * @param      integer $id ID
 	 * @return     string
 	 */
+	/**
+	 * Send the non-AJAX uploader back to the record it was editing
+	 * (there is no image listing layout to display)
+	 *
+	 * @param   integer  $id
+	 * @return  void
+	 */
+	protected function _backToEdit($id)
+	{
+		$type = strtolower(Request::getWord('type', ''));
+		$controller = ($type == 'collection') ? 'collections' : 'products';
+
+		\App::redirect(
+			\Route::url('index.php?option=' . $this->_option . '&controller=' . $controller . ($id ? '&task=edit&id=' . (int) $id : ''), false),
+			$this->getError(),
+			'error'
+		);
+	}
+
 	protected function _path($type, $id)
 	{
 		$config = Component::params('com_storefront');

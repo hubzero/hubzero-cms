@@ -164,6 +164,9 @@ class Serials
 
 	public static function delete($ids)
 	{
+		// The controller hands over a single id; the list view posts srId[]
+		$ids = array_map('intval', (array) $ids);
+
 		$msg = new \stdClass();
 		$msg->type = 'message';
 

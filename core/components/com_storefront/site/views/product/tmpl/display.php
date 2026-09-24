@@ -91,13 +91,13 @@ if (!empty($this->notifications))
 					<?php if (isset($this->options) && count($this->options)) { ?>
 						<div id="productOptions">
 							<?php foreach ($this->options as $optionGroupId => $info) { ?>
-								<p class="option-label"><?php echo $info['info']->ogName; ?>:</p>
+								<p class="option-label"><?php echo $this->escape($info['info']->ogName); ?>:</p>
 								<ul class="product-options">
 									<?php
 									foreach ($info['options'] as $opt)
 									{
 										echo '<li><input type="radio" name="og[' . $optionGroupId . ']" value="' . $opt->oId . '" id="option_' . $opt->oId . '">';
-										echo '<label for="option_' . $opt->oId . '">' . $opt->oName . '</label></li>';
+										echo '<label for="option_' . $opt->oId . '">' . $this->escape($opt->oName) . '</label></li>';
 									}
 									?>
 								</ul>
@@ -121,7 +121,7 @@ if (!empty($this->notifications))
 
 					?>
 
-					<div id="qtyWrap" data-label="<?php echo $qtyTxt; ?>">
+					<div id="qtyWrap" data-label="<?php echo $this->escape($qtyTxt); ?>">
 						<?php
 						$addToCartEnabled = false;
 						if ($this->qtyDropDown)
@@ -130,7 +130,7 @@ if (!empty($this->notifications))
 							if ($this->qtyDropDown > 1)
 							{
 								echo '<div class="inner">';
-								echo '<label for="qty">' . $qtyTxt . '</label> ';
+								echo '<label for="qty">' . $this->escape($qtyTxt) . '</label> ';
 								echo '<select name="qty" id="qty">';
 								for ($i = 1; $i <= $this->qtyDropDown; $i++)
 								{

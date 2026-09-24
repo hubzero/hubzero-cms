@@ -69,10 +69,10 @@ $this->css()
 					echo ')"></div>';
 				}
 				echo '<a href="';
-				echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $productIdentificator;
+				echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $this->escape($productIdentificator);
 				echo '">';
 				echo '<div class="content">';
-				echo '<h3>' . $product->pName . '</h3>';
+				echo '<h3>' . $this->escape($product->pName) . '</h3>';
 				echo '</div>';
 				echo '</a>';
 				echo '</li>';
