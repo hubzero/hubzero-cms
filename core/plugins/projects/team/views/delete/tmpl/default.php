@@ -31,7 +31,7 @@ $i = 1;
 				<p class="anote"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE_TEAM_MEMBERS_NOTE'); ?></p>
 				<p><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE_TEAM_MEMBERS_CONFIRM'); ?></p>
 				<p class="prominent"><?php foreach ($this->selected as $owner) {
-					echo trim($owner->fullname) ? $owner->fullname : $owner->invited_email;
+					echo $this->escape(trim($owner->fullname) ? $owner->fullname : $owner->invited_email);
 					echo ($i < count($this->selected)) ? ', ': '';
 					$i++;
 					echo '<input type="hidden" name="owner[]" value="' . $owner->id . '" />';

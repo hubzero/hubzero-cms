@@ -68,7 +68,7 @@ if ($this->getError()) {
 				<?php } else {
 					$rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server');
 				?>
-				<span class="btn btncancel"><a href="<?php echo $rtn; ?>"><?php echo Lang::txt('JCANCEL'); ?></a></span>
+				<span class="btn btncancel"><a href="<?php echo $this->escape($rtn); ?>"><?php echo Lang::txt('JCANCEL'); ?></a></span>
 				<?php } ?>
 		</p>
 </form>

@@ -873,6 +873,12 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 			}
 
+			// Only the author (or a project manager) may remove a comment
+			if ($objC->created_by != $this->_uid && !$this->model->access('manager'))
+			{
+				throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+			}
+
 			$activityid = $objC->activityid;
 
 			// delete comment
@@ -930,6 +936,13 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
 		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
 		$comment = \Hubzero\Utility\Str::truncate($comment, 800);
+
+		// The todo being commented on must belong to this project
+		$todo = new \Components\Projects\Tables\Todo($this->_database);
+		if (!$itemid || !$todo->loadTodo($this->model->get('id'), $itemid))
+		{
+			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+		}
 
 		// Instantiate comment
 		$objC = new \Components\Projects\Tables\Comment($this->_database);

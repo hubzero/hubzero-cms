@@ -15,7 +15,7 @@ $draft = ($this->pub->state == 3 || $this->pub->state == 4) ? 1 : 0;
 $heading = $draft
 		? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT')
 		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH');
-$heading.= ' (' . $this->pub->version_label . ')';
+$heading.= ' (' . $this->escape($this->pub->version_label) . ')';
 $crumbs = $draft
 		? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_DRAFT_CRUMBS')
 		: Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_CRUMBS');

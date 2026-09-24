@@ -30,7 +30,7 @@ if ($this->row->type == 'file')
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
-				<input type="hidden" name="backUrl" value="<?php echo $this->backUrl; ?>" />
+				<input type="hidden" name="backUrl" value="<?php echo $this->escape($this->backUrl); ?>" />
 				<?php if ($this->project->isProvisioned()) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
@@ -39,7 +39,7 @@ if ($this->row->type == 'file')
 				<div class="content-edit">
 					<label for="title">
 						<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
-						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>" placeholder="<?php echo $placeholder; ?>"  />
+						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->escape($this->row && $this->row->title ? $this->row->title : ''); ?>" placeholder="<?php echo $this->escape($placeholder); ?>"  />
 						<span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
 					</label>
 
@@ -47,13 +47,13 @@ if ($this->row->type == 'file')
 						<?php if ($gone) { ?>
 						<p>
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
-							<span><?php echo $this->row->path; ?></span>
+							<span><?php echo $this->escape($this->row->path); ?></span>
 						</p>
 						<p class="content-hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_MISSING_NOTICE'); ?></p>
 						<?php } else { ?>
 						<p>
 							<span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
-							<span><?php echo $dirpath; ?> <input type="text" name="filename" maxlength="100" value="<?php echo basename($this->row->path); ?>" /></span>
+							<span><?php echo $dirpath; ?> <input type="text" name="filename" maxlength="100" value="<?php echo $this->escape(basename($this->row->path)); ?>" /></span>
 						</p>
 						<p class="content-hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RENAME_NOTICE'); ?></p>
 						<?php } ?>

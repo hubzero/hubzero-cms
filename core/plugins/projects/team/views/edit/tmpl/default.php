@@ -236,7 +236,7 @@ $roles = [
 					</span>
 				</td>
 				<td>
-					<?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span>
+					<?php echo $this->escape($owner->fullname); ?><span class="block mini short prominent"><?php echo $this->escape($username); ?></span>
 				</td>
 				<td class="mini nobsp">
 					<?php if (!$creator) { ?>
@@ -269,8 +269,8 @@ $roles = [
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php echo $owner->groupdesc ? \Hubzero\Utility\Str::truncate($owner->groupdesc, 30) : ''; ?>
-					<span class="block mini short prominent"><?php echo $owner->groupname; ?></span>
+					<?php echo $owner->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($owner->groupdesc, 30)) : ''; ?>
+					<span class="block mini short prominent"><?php echo $this->escape($owner->groupname); ?></span>
 				</td>
 			</tr>
 			<?php

@@ -57,7 +57,7 @@ $department = $author->department;
 				<input type="hidden" name="action" value="saveitem" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
-				<input type="hidden" name="backUrl" value="<?php echo $this->backUrl; ?>" />
+				<input type="hidden" name="backUrl" value="<?php echo $this->escape($this->backUrl); ?>" />
 				<?php if ($this->project->isProvisioned()) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>

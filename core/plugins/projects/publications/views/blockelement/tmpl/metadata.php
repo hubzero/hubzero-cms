@@ -181,7 +181,7 @@ $elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
 				<p class="warning"><?php
 					echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
-					echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : '';
+					echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $this->escape($curatorStatus->authornotice) . '"' : '';
 					?></p>
 			<?php } ?>
 			<?php // Navigate to next element

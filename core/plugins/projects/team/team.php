@@ -152,7 +152,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 					break;
 
 				case 'sync':
-					$arr['html'] = $this->_sync();
+					$arr['html'] = $this->sync();
 					break;
 
 				case 'choose':
@@ -415,7 +415,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		$view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
-		if (!$view->publication->exists())
+		// The publication must belong to this project
+		if (!$view->publication->exists() || $view->publication->get('project_id') != $this->model->get('id'))
 		{
 			$this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 
@@ -769,6 +770,12 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function sync()
 	{
+		// Pulling in group members is a manager action
+		if (!$this->model->access('manager'))
+		{
+			App::abort(403, Lang::txt('ALERTNOTAUTH'));
+		}
+
 		// Setup stage?
 		$setup = $this->model->inSetup();
 
@@ -1042,6 +1049,20 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 		if ($confirm)
 		{
+			// The group must be one the owner belongs to (the choices the form offers)
+			if ($group && $group != $this->model->get('owned_by_group'))
+			{
+				$allowed = array();
+				foreach (\Hubzero\User\Helper::getGroups($user, 'members', 1) as $g)
+				{
+					$allowed[] = $g->gidNumber;
+				}
+				if (!in_array($group, $allowed))
+				{
+					App::abort(403, Lang::txt('ALERTNOTAUTH'));
+				}
+			}
+
 			// Load project owner table class
 			$objO = $this->model->table('Owner');
 			$objO->loadOwner($this->model->get('id'), $user);

@@ -28,7 +28,7 @@ if ($this->pub->version->get('doi'))
 }
 
 // Get creator name
-$creator = $this->pub->creator('name') . ' (' . $this->pub->creator('username') . ')';
+$creator = $this->escape($this->pub->creator('name') . ' (' . $this->pub->creator('username') . ')');
 
 // Version status
 $status = $this->pub->getStatusName();

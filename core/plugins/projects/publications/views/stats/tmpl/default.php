@@ -96,7 +96,7 @@ $base = rtrim(Request::base(true), '/');
 			<table class="pubstats-wrap">
 				<tr><td colspan="6" class="pubstats-h">
 					<img src="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb'; ?>" alt=""/>
-					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number); ?>"><?php echo $stat->title; ?></a></span>
+					<span class="h-title"><a href="<?php echo Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number); ?>"><?php echo $this->escape($stat->title); ?></a></span>
 					<span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . Date::of($stat->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name; ?></span>
 				</td></tr>
 				<tr>
