@@ -514,7 +514,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 		}
 
 		$view->set('project', $this->model);
-		$view->set('url', $url);
+		$view->set('url', Route::url($this->model->link('notes')));
 		$view->set('config', $this->model->config());
 		$view->set('page', $page);
 		$view->set('revision', $page->revision('current'));

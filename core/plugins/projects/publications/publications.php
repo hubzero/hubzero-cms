@@ -697,7 +697,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$status = new \Components\Publications\Models\Status();
 
 		// If publication not found, raise error
-		if (!$pub->exists() || !$publication->belongsToProject($this->model->get('id')))
+		if (!$pub->exists() || !$pub->belongsToProject($this->model->get('id')))
 		{
 			return json_encode($status);
 		}
