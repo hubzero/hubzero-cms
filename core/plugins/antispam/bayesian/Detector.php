@@ -336,7 +336,7 @@ class Detector implements DetectorInterface
 
 		foreach ($words as $token => $count)
 		{
-			if ($is_spam)
+			if ($isSpam)
 			{
 				$this->calculateTokenProbality($token, 0, -1 * $count, $tokens_count);
 			}
