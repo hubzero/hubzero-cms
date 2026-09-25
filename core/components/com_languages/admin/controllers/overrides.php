@@ -424,7 +424,7 @@ class Overrides extends AdminController
 		// If messages exist add them to the output
 		if (isset($lists) && is_array($lists))
 		{
-			$data->messages = $lists;
+			$results['messages'] = $lists;
 		}
 
 		// Prepare the response data
