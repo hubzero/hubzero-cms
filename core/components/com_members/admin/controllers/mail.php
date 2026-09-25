@@ -140,7 +140,7 @@ class Mail extends AdminController
 		{
 			$this->setUserState('com_members.display.mail.data', $data);
 
-			if (in_array($user->id, $to))
+			if (in_array(User::get('id'), $to))
 			{
 				Notify::error(Lang::txt('COM_MEMBERS_MAIL_ONLY_YOU_COULD_BE_FOUND_IN_THIS_GROUP'));
 			}
