@@ -51,7 +51,16 @@ class Badge extends Base
 			$this->_tbl->load($oid);
 		}
 
-		// Get criteria text
+		$this->loadCriteriaText();
+	}
+
+	/**
+	 * Attach the criteria text for the loaded badge
+	 *
+	 * @return  void
+	 */
+	private function loadCriteriaText()
+	{
 		$criteria = new Tables\SectionBadgeCriteria($this->_db);
 		$criteria->load($this->get('criteria_id'));
 
@@ -69,23 +78,9 @@ class Badge extends Base
 	 */
 	public static function loadBySectionId($id)
 	{
-		$model = new stdClass();
-		$model->_db = \App::get('db');
-
 		$model = new self();
-
-		$model->_tbl = new $model->_tbl_name($model->_db);
-
-		$model->_tbl->load(array('section_id'=>$id));
-
-		// Get criteria text
-		$criteria = new Tables\SectionBadgeCriteria($model->_db);
-		$criteria->load($model->get('criteria_id'));
-
-		if ($criteria->get('text'))
-		{
-			$model->set('criteria_text', $criteria->get('text'));
-		}
+		$model->_tbl->load(array('section_id' => $id));
+		$model->loadCriteriaText();
 
 		return $model;
 	}
@@ -100,10 +95,8 @@ class Badge extends Base
 	{
 		// (an instance method called statically by the passport API: an Error on PHP 8)
 		$model = new self();
-
-		$model->_tbl = new $model->_tbl_name(\App::get('db'));
-
-		$model->_tbl->load(array('provider_badge_id'=>$id));
+		$model->_tbl->load(array('provider_badge_id' => $id));
+		$model->loadCriteriaText();
 
 		return $model;
 	}
