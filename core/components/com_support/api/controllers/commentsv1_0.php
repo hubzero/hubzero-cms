@@ -280,11 +280,12 @@ class Commentsv1_0 extends ApiController
 
 		if ($ticket->get('owner'))
 		{
+			// (owner() and config() below were Table-era accessors the model no longer has)
 			$comment->addTo(array(
 				'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-				'name'  => $ticket->owner('name'),
-				'email' => $ticket->owner('email'),
-				'id'    => $ticket->owner('id')
+				'name'  => $ticket->assignee->get('name'),
+				'email' => $ticket->assignee->get('email'),
+				'id'    => $ticket->assignee->get('id')
 			));
 		}
 
@@ -297,7 +298,7 @@ class Commentsv1_0 extends ApiController
 		// Check if the notify list has eny entries
 		if (count($comment->to()))
 		{
-			$allowEmailResponses = $ticket->config('email_processing');
+			$allowEmailResponses = Component::params('com_support')->get('email_processing');
 			if ($allowEmailResponses)
 			{
 				try
@@ -352,7 +353,8 @@ class Commentsv1_0 extends ApiController
 				// Get the user's email address
 				if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
 				{
-					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+					// not notified (an API controller has no error bag to record it in)
+					continue;
 				}
 				$comment->changelog()->notified(
 					$to['role'],

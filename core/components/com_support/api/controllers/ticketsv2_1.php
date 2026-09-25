@@ -188,12 +188,16 @@ class Ticketsv2_1 extends ApiController
 			$tickets->whereEquals('type', $type);
 		}
 
-		if ($owner = Request::getInt('owner', null))
+		// 0 is a real value for each of these (unassigned, status "new/closed",
+		// no category): test for presence, not truth
+		$owner = Request::getInt('owner', null);
+		if (!is_null($owner))
 		{
 			$tickets->whereEquals('owner', $owner);
 		}
 
-		if ($status = Request::getInt('status', null))
+		$status = Request::getInt('status', null);
+		if (!is_null($status))
 		{
 			$tickets->whereEquals('status', $status);
 		}
@@ -201,10 +205,12 @@ class Ticketsv2_1 extends ApiController
 		$open = Request::getInt('open', null);
 		if (!is_null($open))
 		{
-			$tickets->whereEquals('status', $open);
+			// (this filtered the status column)
+			$tickets->whereEquals('open', $open);
 		}
 
-		if ($category_id = Request::getInt('category', null))
+		$category_id = Request::getInt('category', null);
+		if (!is_null($category_id))
 		{
 			$tickets->whereEquals('category', $category_id);
 		}
