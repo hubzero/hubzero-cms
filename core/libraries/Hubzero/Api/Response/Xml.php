@@ -257,7 +257,7 @@ class Xml
 					}
 					else
 					{
-						die('invalid container');
+						return false; // malformed input is a decode failure, not a process exit
 					}
 
 					$obj = array();
@@ -326,7 +326,7 @@ class Xml
 				}
 				else
 				{
-					die('invalid container 2');
+					return false; // malformed input is a decode failure, not a process exit
 				}
 			}
 			else if ($v['type'] == 'close')
@@ -347,7 +347,7 @@ class Xml
 				}
 				else
 				{
-					die('invalid container in stack');
+					return false; // malformed input is a decode failure, not a process exit
 				}
 
 				$obj = $prev[1];
