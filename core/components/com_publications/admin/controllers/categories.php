@@ -271,7 +271,7 @@ class Categories extends AdminController
 			$row->set('state', $row->get('state') == 1 ? 0 : 1);
 
 			// Save
-			if (!$row->store())
+			if (!$row->save())
 			{
 				Notify::error($row->getError());
 				continue;
