@@ -592,7 +592,8 @@ class Ftp implements AdapterInterface
 	{
 		$connection = $this->getConnection();
 
-		$contents = array_reverse($this->listDirectoryContents($dirname));
+		// deepest entries first (listDirectoryContents() was never defined; listContents() is the adapter's lister)
+		$contents = array_reverse($this->listContents($dirname, '.', true, true));
 
 		foreach ($contents as $object)
 		{
@@ -630,7 +631,7 @@ class Ftp implements AdapterInterface
 	 */
 	public function isDirectory($directory)
 	{
-		$result = @ftp_chdir($this->connection(), $directory);
+		$result = @ftp_chdir($this->getConnection(), $directory);
 		$result = $result ? true : false;
 
 		return $result;
@@ -649,7 +650,7 @@ class Ftp implements AdapterInterface
 	 */
 	public function isFile($file)
 	{
-		$result = @ftp_chdir($this->connection(), $file);
+		$result = @ftp_chdir($this->getConnection(), $file);
 		$result = $result ? false : true;
 
 		return $result;
