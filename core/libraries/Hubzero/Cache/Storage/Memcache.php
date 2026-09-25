@@ -48,13 +48,13 @@ class Memcache extends None
 			{
 				$conf = new \Hubzero\Config\Repository('site');
 
-				$this->options['compress'] = $config->get('memcache_compress', false) == false ? 0 : MEMCACHE_COMPRESSED;
+				$this->options['compress'] = $conf->get('memcache_compress', false) == false ? 0 : MEMCACHE_COMPRESSED;
 
 				$this->options['servers'] = array(
 					array(
-						'host'    => $config->get('memcache_server_host', 'localhost'),
-						'port'    => $config->get('memcache_server_port', 11211),
-						'persist' => $config->get('memcache_persist', true)
+						'host'    => $conf->get('memcache_server_host', 'localhost'),
+						'port'    => $conf->get('memcache_server_port', 11211),
+						'persist' => $conf->get('memcache_persist', true)
 					)
 				);
 			}

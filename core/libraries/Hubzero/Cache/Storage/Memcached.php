@@ -50,8 +50,8 @@ class Memcached extends None
 
 				$this->options['servers'] = array(
 					array(
-						'host'   => $config->get('memcache_server_host', 'localhost'),
-						'port'   => $config->get('memcache_server_port', 11211),
+						'host'   => $conf->get('memcache_server_host', 'localhost'),
+						'port'   => $conf->get('memcache_server_port', 11211),
 						'weight' => 1
 					)
 				);
