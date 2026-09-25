@@ -379,7 +379,7 @@ class Migration extends Base implements CommandInterface
 		}
 		else
 		{
-			$this->addLine('No history to display.');
+			$this->output->addLine('No history to display.');
 		}
 	}
 
