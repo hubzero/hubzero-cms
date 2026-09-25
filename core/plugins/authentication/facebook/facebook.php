@@ -326,9 +326,13 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 		{
 			Session::clear('oauth2state',$this->name);
 
-			$response->status = \Hubzero\Auth\Status::FAILURE;
-			$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state');
-
+			// link() has no auth response object to report through: send the
+			// member back to their account page with the error
+			App::redirect(
+				Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+				Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state'),
+				'error'
+			);
 			return;
 		}
 
@@ -347,9 +351,11 @@ class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
 			}
 			catch (\Exception $e)
 			{
-				// Error message?
-				$response->status = \Hubzero\Auth\Status::FAILURE;
-				$response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage());
+				App::redirect(
+					Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+					Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
+					'error'
+				);
 				return;
 			}
 
