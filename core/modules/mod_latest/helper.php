@@ -233,7 +233,7 @@ class Helper extends Module
 					{
 						foreach ($items as $category)
 						{
-							$condition = (($category->level - $categories->getParent()->level) <= $levels);
+							$condition = (($category->level - $categories->parent()->level) <= $levels);
 							if ($condition)
 							{
 								$additional_catids[] = $category->id;
