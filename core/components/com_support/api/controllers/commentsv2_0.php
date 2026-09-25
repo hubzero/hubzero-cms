@@ -242,17 +242,20 @@ class Commentsv2_0 extends ApiController
 		$fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : array();
 		foreach ($fields as $index)
 		{
-			if (Request::get($index, null))
+			// (a truthiness test dropped status 0, so a ticket could never be
+			// closed through this call)
+			$val = Request::get($index, null);
+			if ($val !== null && $val !== '')
 			{
-				if (Request::get($index) != $ticket->get($index))
+				if ($val != $ticket->get($index))
 				{
 					$temp = new stdClass;
 					$temp->field = $index;
 					$temp->before = $ticket->get($index);
-					$temp->after = Request::get($index);
+					$temp->after = $val;
 					if ($index == 'status')
 					{
-						if ($ticket->get('status') == 0)
+						if ((int) $val == 0) // the new status: 0 closes
 						{
 							$status_model = \Components\Support\Models\Status::blank();
 							$status_model->set('title', 'Closed');
@@ -275,13 +278,15 @@ class Commentsv2_0 extends ApiController
 						$temp->before = $old_status->get('title');
 						$temp->after = $status_model->get('title');
 						$ticket->set('open', $status_model->get('open'));
-						if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed')
+						// reopened: clear the closing time; closed: record it (these
+						// compared a Status field that does not exist, so neither ran)
+						if ($status_model->get('open') && !$old_status->get('open'))
 						{
 							$ticket->set('closed', null);
 						}
-						if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open')
+						if (!$status_model->get('open') && $old_status->get('open'))
 						{
-							$ticket->set('closed', Date::toSql());
+							$ticket->set('closed', Date::of('now')->toSql());
 						}
 					}
 					if ($index == 'owner')
@@ -291,7 +296,7 @@ class Commentsv2_0 extends ApiController
 						$temp->before = $old_owner->get('username');
 						$temp->after = $new_owner->get('username');
 					}
-					$ticket->set($index, Request::get($index));
+					$ticket->set($index, $val);
 					$changes[] = $temp;
 				}
 			}

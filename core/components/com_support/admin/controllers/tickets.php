@@ -875,6 +875,9 @@ class Tickets extends AdminController
 		$access  = 1;
 
 		$fields['owner'] = Request::getString('owner', '');
+		// the batch form carries no comment text or cc list (see the block below)
+		$text   = '';
+		$cc     = '';
 		/*$text = nl2br(Request::getString('comment', '', 'post', 'none', 2));
 		$cc      = Request::getString('cc', '');
 		$access  = Request::getInt('access', 0);

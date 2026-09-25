@@ -375,7 +375,10 @@ class Commentsv2_1 extends ApiController
 		$changes = array();
 		foreach (['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
 		{
-			if ($val = Request::getVar($index, null))
+			// (an `if ($val = ...)` test dropped status 0, so a ticket could never
+			// be closed through this call)
+			$val = Request::getVar($index, null);
+			if ($val !== null && $val !== '')
 			{
 				if ($val != $ticket->get($index))
 				{
@@ -386,7 +389,7 @@ class Commentsv2_1 extends ApiController
 
 					if ($index == 'status')
 					{
-						if ($ticket->get('status') == 0)
+						if ((int) $val == 0) // the new status: 0 closes
 						{
 							$status_model = Status::blank();
 							$status_model->set('title', 'Closed');
@@ -413,14 +416,17 @@ class Commentsv2_1 extends ApiController
 
 						$ticket->set('open', $status_model->get('open'));
 
-						if ($status_model->get('get') == 'open' && $ticket->get('status', null) == 'closed')
+						// reopened: clear the closing time; closed: record it
+						// (these compared a Status field that does not exist, so
+						// neither ever ran; one also named an undefined $tiket)
+						if ($status_model->get('open') && !$old_status->get('open'))
 						{
-							$tiket->set('closed', null);
+							$ticket->set('closed', null);
 						}
 
-						if ($status_model->get('get') == 'closed' && $ticket->get('status', null) == 'open')
+						if (!$status_model->get('open') && $old_status->get('open'))
 						{
-							$ticket->set('closed', Date::toSql());
+							$ticket->set('closed', Date::of('now')->toSql());
 						}
 					}
 
