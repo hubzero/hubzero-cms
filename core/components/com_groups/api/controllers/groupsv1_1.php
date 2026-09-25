@@ -345,7 +345,7 @@ class Groupsv1_1 extends ApiController
 						$group[$field] = str_replace('/api', '', rtrim(Request::base(), '/') . ltrim($record->getLogo(), '/'));
 						break;
 					case 'link':
-						$group[$field] = $record->getLink();
+						$group[$field] = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
 						break;
 					case 'public_desc':
 					case 'private_desc':
