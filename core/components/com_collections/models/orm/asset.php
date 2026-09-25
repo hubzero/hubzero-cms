@@ -284,7 +284,7 @@ class Asset extends Relational
 
 			if ($this->isImage() && $this->exists())
 			{
-				$this->_dimensions = getimagesize($this->path());
+				$this->_dimensions = getimagesize($this->filespace() . DS . $this->get('item_id') . DS . ltrim($this->get('filename'), DS));
 			}
 		}
 
@@ -324,7 +324,7 @@ class Asset extends Relational
 	public function link($size = 'original')
 	{
 		$path  = $this->filespace() . DS . $this->get('item_id') . DS;
-		$path .= ltrim($this->file($size), DS);
+		$path .= ltrim($this->get('filename'), DS); // (file($size) was never defined; there is one stored file)
 
 		return with(new \Hubzero\Content\Moderator($path, 'public'))->getUrl();
 	}

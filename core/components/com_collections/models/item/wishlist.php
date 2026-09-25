@@ -86,9 +86,9 @@ class Wishlist extends GenericItem
 
 		include_once \Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
-		$wish = new Wish($id);
+		$wish = Wish::oneOrNew($id);
 
-		if (!$wish->exists())
+		if (!$wish->get('id'))
 		{
 			$this->setError(Lang::txt('Wish not found.'));
 			return false;
