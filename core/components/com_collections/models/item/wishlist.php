@@ -99,7 +99,7 @@ class Wishlist extends GenericItem
 		     ->set('created', $wish->get('proposed'))
 		     ->set('created_by', $wish->get('proposed_by'))
 		     ->set('title', $wish->get('subject'))
-		     ->set('description', $wish->content('clean', 200))
+		     ->set('description', \Hubzero\Utility\Str::truncate(strip_tags((string) $wish->content), 200))
 		     ->set('url', Route::url($wish->link()));
 
 		if (!$this->store())
