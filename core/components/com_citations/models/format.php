@@ -69,7 +69,7 @@ class Format extends Relational
 	 **/
 	public function citations()
 	{
-		return $this->belongsToMany('Citation', 'format', 'style');
+		return $this->oneToMany('Citation', 'format', 'style');
 	}
 
 	/**
