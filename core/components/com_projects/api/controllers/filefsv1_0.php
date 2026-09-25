@@ -1166,15 +1166,10 @@ class Filefsv1_0 extends ApiController
 	}
 
 	/**
-	 * Sorts incoming file/folder data
-	 *
-	 * @return  array
-	 */
-	/**
 	 * Zip the selected files for a multi-file download (the files plugin has
 	 * the same helper; this controller called it without having it)
 	 *
-	 * @param   array  $items  [[type => path], ...] from _getCollection()
+	 * @param   array  $items  [[type => path], ...] as _sortIncoming() returns them
 	 * @return  mixed  ['path' => zip path, 'name' => zip name] or false
 	 */
 	protected function _archiveFiles($items)
@@ -1243,6 +1238,11 @@ class Filefsv1_0 extends ApiController
 		return array('path' => $tarpath, 'name' => $tarname);
 	}
 
+	/**
+	 * Sorts incoming file/folder data
+	 *
+	 * @return  array
+	 */
 	protected function _getCollection()
 	{
 		// Incoming
