@@ -338,16 +338,19 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	 */
 	public function automaticAlias($data)
 	{
-		// An alias the editor typed is kept as typed. One is made from the
-		// title only when none was given: an empty alias used to be stored,
-		// and the site router then matched it against the bare index.php.
+		// An alias the editor typed is kept (normalised to the characters the
+		// router can carry, never regenerated from the title). One is made
+		// from the title only when none was given: an empty alias used to be
+		// stored, and the site router then matched it against the bare
+		// index.php.
 		$alias = isset($data['alias']) ? trim((string) $data['alias']) : '';
 
 		if ($alias === '')
 		{
-			$alias = Lang::transliterate(strip_tags(isset($data['title']) ? (string) $data['title'] : ''));
-			$alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower($alias)), '-');
+			$alias = strip_tags(isset($data['title']) ? (string) $data['title'] : '');
 		}
+
+		$alias = trim(preg_replace('/[^a-z0-9\-]+/', '-', strtolower(Lang::transliterate($alias))), '-');
 
 		if ($alias === '')
 		{

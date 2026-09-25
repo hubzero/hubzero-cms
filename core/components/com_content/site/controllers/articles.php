@@ -498,6 +498,8 @@ class Articles extends SiteController
 
 		$pagination = new \Hubzero\Pagination\Paginator($total, $filters['start'], $filters['limit']);
 
+		$globalParams = \Component::params('com_content');
+
 		foreach ($items as $item)
 		{
 			$articleParams = new \Hubzero\Config\Registry($item->attribs);
@@ -518,7 +520,6 @@ class Articles extends SiteController
 				// create an array of just the params set to 'use_article'
 				$menuParamsArray = $params->toArray();
 				$articleArray = array();
-				$globalParams = \Component::params('com_content');
 
 				foreach ($menuParamsArray as $key => $value)
 				{
