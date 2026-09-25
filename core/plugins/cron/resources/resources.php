@@ -252,6 +252,16 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 				continue;
 			}
 
+			// The ranking algorithm lived on the old resource table; the model
+			// has no rank(), so this job fataled on its first resource and
+			// wedged. Say so once per run and leave the queue for when it is
+			// back, rather than dying.
+			if (!method_exists($resource, 'rank'))
+			{
+				\Log::warning('cron resources: ranking is not implemented for the current resource model; nothing ranked');
+				return true;
+			}
+
 			if ($resource->rank())
 			{
 				// mark as sent and save
