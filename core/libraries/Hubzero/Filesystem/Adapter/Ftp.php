@@ -593,7 +593,7 @@ class Ftp implements AdapterInterface
 		$connection = $this->getConnection();
 
 		// deepest entries first (listDirectoryContents() was never defined; listContents() is the adapter's lister)
-		$contents = array_reverse($this->listContents($dirname, '.', true, true));
+		$contents = array_reverse($this->listContents($dirname, '.', true, false));
 
 		foreach ($contents as $object)
 		{
