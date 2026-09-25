@@ -114,7 +114,7 @@ class Help extends Button
 			// If user hasn't specified a help URL, then get the global one.
 			if ($url == '')
 			{
-				$url = $app->getCfg('helpurl');
+				$url = \Config::get('helpurl');
 			}
 
 			// Component help URL overrides user and global.
