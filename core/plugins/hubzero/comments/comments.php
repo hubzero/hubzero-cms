@@ -588,8 +588,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Start outputing results if any found
 		foreach ($comments as $row)
 		{
-			// URL link to article
-			$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $row->id);
+			// URL link to the commented item
+			$link = Route::url($this->url . '#c' . $row->id);
 
 			$author = Lang::txt('JANONYMOUS');
 			if (!$row->get('anonymous'))
@@ -627,8 +627,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			// Check for any replies
 			foreach ($row->replies()->rows() as $reply)
 			{
-				// URL link to article
-				$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $reply->id);
+				// URL link to the commented item
+				$link = Route::url($this->url . '#c' . $reply->id);
 
 				$author = Lang::txt('JANONYMOUS');
 				if (!$reply->anonymous)
@@ -667,7 +667,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 				foreach ($reply->replies()->rows() as $response)
 				{
 					// URL link to article
-					$link = Route::url('index.php?option=' . $this->_option . '&section=' . $section->alias . '&category=' . $category->alias . '&alias=' . $entry->alias . '#c' . $response->id);
+					$link = Route::url($this->url . '#c' . $response->id);
 
 					$author = Lang::txt('JANONYMOUS');
 					if (!$response->anonymous)
