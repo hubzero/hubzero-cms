@@ -159,11 +159,13 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 				case 'save':
 					$arr['html'] = $this->_save();
 					break;
+				// comments are activity entries: _save()/_delete() handle them
+				// (_saveComment()/_deleteComment() were never defined)
 				case 'savecomment':
-					$arr['html'] = $this->_saveComment();
+					$arr['html'] = $this->_save();
 					break;
 				case 'deletecomment':
-					$arr['html'] = $this->_deleteComment();
+					$arr['html'] = $this->_delete();
 					break;
 				case 'update':
 					$arr['html'] = $this->updateFeed();

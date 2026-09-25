@@ -188,7 +188,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 					$arr['html'] = $this->_savecomment();
 					break;
 				case 'newcomment':
-					$arr['html'] = $this->_newcomment();
+					// the entry page carries the comment form (_newcomment() was never defined)
+					$arr['html'] = $this->_entry();
 					break;
 				case 'editcomment':
 					$arr['html'] = $this->_entry();
