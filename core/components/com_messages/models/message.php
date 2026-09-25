@@ -77,7 +77,7 @@ class Message extends Relational
 	 *
 	 * @return  string
 	 */
-	public function automaticDateTime()
+	public function automaticDateTime($data = array())
 	{
 		return (isset($data['date_time']) && $data['date_time'] ? $data['date_time'] : Date::toSql());
 	}
