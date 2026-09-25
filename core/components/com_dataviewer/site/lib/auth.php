@@ -10,7 +10,7 @@ defined('_HZEXEC_') or die();
 
 function dv_auth()
 {
-	global $dv_conf, $dd;
+	global $dv_conf;
 
 	if (isset($dd['acl']['allowed_users']) && (is_array($dd['acl']['allowed_users']) || $dd['acl']['allowed_users'] === false || $dd['acl']['allowed_users'] == 'registered')) {
 		$dv_conf['acl']['allowed_users'] = $dd['acl']['allowed_users'];
