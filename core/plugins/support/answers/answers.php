@@ -310,6 +310,8 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
 					$reward = $this->getReward($parentid);
 				}
 				$responders = array();
+				// (the reward notice below tested a flag nothing ever set; it stays off)
+				$email = false;
 
 				// Get all the answers for this question
 				$database->setQuery("SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid);
