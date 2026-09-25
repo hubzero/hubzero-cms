@@ -2811,7 +2811,7 @@ class Resources extends SiteController
 	{
 		$user_agent = (isset($_SERVER["HTTP_USER_AGENT"]))
 					? $_SERVER["HTTP_USER_AGENT"]
-					: $HTTP_USER_AGENT;
+					: '';
 
 		while(ob_get_level())
 			ob_end_clean();

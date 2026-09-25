@@ -92,7 +92,7 @@ class Checkbox extends Base
 				{
 					foreach ($values as $val)
 					{
-						$k2 = is_object($val) ? $val->$key : $val;
+						$k2 = is_object($val) ? $val->value : $val;
 						if ($option->value == $k2)
 						{
 							$sel .= ' checked="checked"';
