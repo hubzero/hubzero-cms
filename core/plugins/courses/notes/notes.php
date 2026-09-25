@@ -227,27 +227,34 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$model->set('scope', $scope);
 		}
-		if ($scope_id = Request::getInt('scope_id', 0))
+		// 0 is a real position, size and state: test for presence, not truth
+		$scope_id = Request::getInt('scope_id', null);
+		if (!is_null($scope_id))
 		{
 			$model->set('scope_id', $scope_id);
 		}
-		if ($pos_x = Request::getInt('x', 0))
+		$pos_x = Request::getInt('x', null);
+		if (!is_null($pos_x))
 		{
 			$model->set('pos_x', $pos_x);
 		}
-		if ($pos_y = Request::getInt('y', 0))
+		$pos_y = Request::getInt('y', null);
+		if (!is_null($pos_y))
 		{
 			$model->set('pos_y', $pos_y);
 		}
-		if ($width = Request::getInt('w', 0))
+		$width = Request::getInt('w', null);
+		if (!is_null($width))
 		{
 			$model->set('width', $width);
 		}
-		if ($height = Request::getInt('h', 0))
+		$height = Request::getInt('h', null);
+		if (!is_null($height))
 		{
 			$model->set('height', $height);
 		}
-		if ($state = Request::getInt('state', 0))
+		$state = Request::getInt('state', null);
+		if (!is_null($state))
 		{
 			$model->set('state', $state);
 		}
