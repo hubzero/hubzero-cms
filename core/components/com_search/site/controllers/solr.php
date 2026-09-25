@@ -127,7 +127,7 @@ class Solr extends SiteController
 			$multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, array('exclude' => 'filter_type', 'include' => 'child_type'));
 		}
 
-		$queryTerms = Solr::solrEscape($terms);
+		$queryTerms = $this->solrEscape($terms);
 		if ($tags && $tags->count() > 0)
 		{
 			foreach ($tags as $tag)
