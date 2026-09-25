@@ -298,7 +298,7 @@ class Application extends Relational
 		// check to make sure its not the hub account
 		if ($this->get('hub_account') == 1)
 		{
-			$this->setError('Unable to delete the hub account.');
+			$this->addError('Unable to delete the hub account.');
 			return false;
 		}
 

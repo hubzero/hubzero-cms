@@ -98,7 +98,7 @@ class Category extends Relational
 		{
 			if (!$category->destroy())
 			{
-				$this->setError($category->getError());
+				$this->addError($category->getError());
 				return false;
 			}
 		}

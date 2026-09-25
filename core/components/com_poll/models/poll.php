@@ -127,7 +127,7 @@ class Poll extends Relational
 
 		if (!$option->save())
 		{
-			$this->setError($option->getError());
+			$this->addError($option->getError());
 			return false;
 		}
 
@@ -147,7 +147,7 @@ class Poll extends Relational
 
 		if (!$dt->save())
 		{
-			$this->setError($dt->getError());
+			$this->addError($dt->getError());
 			return false;
 		}
 

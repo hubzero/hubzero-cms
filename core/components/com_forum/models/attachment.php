@@ -210,7 +210,7 @@ class Attachment extends Relational
 		// Make sure the file is safe
 		if (!Filesystem::isSafe($destination . DS . $filename))
 		{
-			$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+			$this->addError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
 			return false;
 		}
 
@@ -219,7 +219,7 @@ class Attachment extends Relational
 		{
 			if (!Filesystem::delete($destination . DS . $this->get('filename')))
 			{
-				$this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
+				$this->addError(Lang::txt('COM_FORUM_ERROR_UPLOADING'));
 				return false;
 			}
 		}

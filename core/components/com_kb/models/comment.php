@@ -269,7 +269,7 @@ class Comment extends Relational
 	{
 		if ($this->isNew())
 		{
-			$this->setError(Lang::txt('No record found'));
+			$this->addError(Lang::txt('No record found'));
 			return false;
 		}
 
@@ -279,7 +279,7 @@ class Comment extends Relational
 
 		if ($vote === 0)
 		{
-			$this->setError(Lang::txt('No vote provided'));
+			$this->addError(Lang::txt('No vote provided'));
 			return false;
 		}
 
@@ -323,7 +323,7 @@ class Comment extends Relational
 
 		if ($this->get('created_by') == $user->get('id'))
 		{
-			$this->setError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+			$this->addError(Lang::txt('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;
 		}
 
@@ -347,7 +347,7 @@ class Comment extends Relational
 		// Store the vote log
 		if (!$al->save())
 		{
-			$this->setError($al->getError());
+			$this->addError($al->getError());
 			return false;
 		}
 
