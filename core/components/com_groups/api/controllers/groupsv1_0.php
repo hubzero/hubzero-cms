@@ -336,9 +336,15 @@ class Groupsv1_0 extends ApiController
 			$fields = array_diff($fields, array('private_desc', 'params'));
 		}
 
+		// the group's page, offered as 'link' when asked for and always as 'url'
+		// ($base is used for the section URLs below too)
+		$base = rtrim(Request::base(), '/');
+		$url  = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+
 		foreach ($fields as $field)
 		{
-			if (property_exists($record, $field))
+			// link is computed, not a Group property
+			if ($field == 'link' || property_exists($record, $field))
 			{
 				switch ($field)
 				{
@@ -346,7 +352,7 @@ class Groupsv1_0 extends ApiController
 						$group[$field] = str_replace('/api', '', rtrim(Request::base(), '/') . ltrim($record->getLogo(), '/'));
 						break;
 					case 'link':
-						$group[$field] = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+						$group[$field] = $url;
 						break;
 					case 'public_desc':
 					case 'private_desc':
@@ -358,8 +364,7 @@ class Groupsv1_0 extends ApiController
 			}
 		}
 
-		$base = rtrim(Request::base(), '/');
-		$group['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+		$group['url'] = $url;
 
 		$sections = array();
 
