@@ -225,7 +225,7 @@ class Items extends AdminController
 			{
 				if ($search = substr($search, 5))
 				{
-					$query->whereLink($a . '.link', $search);
+					$query->whereLike($a . '.link', $search);
 				}
 			}
 			else
