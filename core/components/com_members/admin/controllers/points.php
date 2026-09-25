@@ -640,7 +640,8 @@ class Points extends AdminController
 		if (!$royaltyResources)
 		{
 			// get eligible
-			$ResE = new \Components\Resources\Helpers\Economy\Reviews($this->database);
+			// (Economy\Reviews has no getCons(); the resource economy helper does)
+			$ResE = new \Components\Resources\Helpers\Economy($this->database);
 			$cons = $ResE->getCons();
 
 			$accumulated = 0;
