@@ -162,7 +162,7 @@ class Attachment extends Relational
 
 		if (!in_array($ext, $exts))
 		{
-			$this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_INVALID_FILE', implode(', ', $exts)));
+			$this->addError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_INVALID_FILE', implode(', ', $exts)));
 			return false;
 		}
 

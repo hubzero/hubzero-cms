@@ -811,6 +811,40 @@ class Wish extends Relational
 	}
 
 	/**
+	 * Remove a wish's related rows: 'rankings', 'votes', 'comments' or 'plan'
+	 * (the move-wish task called this Table-era method on the model)
+	 *
+	 * @param   string  $what
+	 * @return  boolean
+	 */
+	public function purge($what)
+	{
+		switch ($what)
+		{
+			case 'rankings': $rows = $this->rankings; break;
+			case 'votes':    $rows = $this->votes;    break;
+			case 'comments': $rows = $this->comments; break;
+			case 'plan':
+				$plan = $this->plan;
+				$rows = ($plan && $plan->get('id')) ? array($plan) : array();
+			break;
+			default:
+				return false;
+		}
+
+		foreach ($rows as $row)
+		{
+			if (!$row->destroy())
+			{
+				$this->addError($row->getError());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get a list or count of ranks
 	 *
 	 * @param   string   $rtrn     Data format to return
