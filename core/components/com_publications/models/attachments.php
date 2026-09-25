@@ -124,7 +124,7 @@ class Attachments extends Obj
 
 		if ($type === false)
 		{
-			$status->setError(Lang::txt('Attachment type not found'));
+			$this->setError(Lang::txt('Attachment type not found'));
 		}
 		else
 		{

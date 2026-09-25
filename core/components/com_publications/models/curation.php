@@ -1163,9 +1163,6 @@ class Curation extends Obj
 		// Get blocks model
 		$blocksModel = new Blocks($this->_db);
 		return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId);
-
-		// Return status
-		return $status;
 	}
 
 	/**
