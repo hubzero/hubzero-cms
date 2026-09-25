@@ -704,7 +704,12 @@ class Ftp implements AdapterInterface
 	 */
 	public function setPermissions($path, $filemode = '0644', $foldermode = '0755')
 	{
-		if (!ftp_chmod($this->getConnection(), $foldermode, $path))
+		// callers pass files; the folder mode always applied before, and a
+		// string mode was read as decimal by ftp_chmod()
+		$mode = $this->isDirectory($path) ? $foldermode : $filemode;
+		$mode = is_string($mode) ? octdec($mode) : (int) $mode;
+
+		if (!ftp_chmod($this->getConnection(), $mode, $path))
 		{
 			return false;
 		}
