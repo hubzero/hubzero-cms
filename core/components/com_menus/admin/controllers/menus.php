@@ -265,8 +265,8 @@ class Menus extends AdminController
 	{
 		Request::checkToken();
 
-		// Initialise variables.
-		$model = Menu::oneOrFail($id);
+		// Initialise variables (rebuild() works on the whole tree, not one menu)
+		$model = Menu::blank();
 
 		if ($model->rebuild())
 		{
