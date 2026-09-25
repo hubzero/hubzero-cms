@@ -88,7 +88,7 @@ class Group extends Table
 			$group->read($devgroup);
 			$existing_members = \Components\Tools\Helpers\Utils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members', $existing_members);
-			$group->set('managers', $existing_managers);
+			$group->set('managers', $existing_members);
 		}
 		else
 		{
@@ -98,8 +98,8 @@ class Group extends Table
 			$group->set('discoverability', 0);
 			$group->set('description', 'Dev group for tool ' . $toolid);
 			$group->set('cn', $devgroup);
-			$group->set('members', $existing_members);
-			$group->set('managers', $existing_managers);
+			$group->set('members', $members);
+			$group->set('managers', $members);
 		}
 
 		$group->update();

@@ -406,7 +406,7 @@ class Resources extends SiteController
 
 		if (!$resource->save())
 		{
-			$this->setError($row->getError());
+			$this->setError($resource->getError());
 			return false;
 		}
 		else if ($newtool)

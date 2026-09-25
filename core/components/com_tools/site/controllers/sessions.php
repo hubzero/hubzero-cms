@@ -1844,7 +1844,7 @@ class Sessions extends SiteController
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
 				{
 					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY'));
-					Log::debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
+					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED PURDUE export control check");
 					return false;
 				}
 			break;
