@@ -962,12 +962,26 @@ abstract class Table extends Obj
 	 */
 	public function isCheckedOut($with = 0, $against = null)
 	{
-		// Handle the non-static case.
-		if (isset($this) && ($this instanceof Table) && is_null($against))
+		if (is_null($against))
 		{
 			$against = $this->get('checked_out');
 		}
 
+		return static::checkedOut($with, $against);
+	}
+
+	/**
+	 * Is a row checked out to someone other than $with who still has a
+	 * session? The static form of isCheckedOut(), for callers that hold a
+	 * plain row rather than a Table (a static call to an instance method is
+	 * an Error on PHP 8).
+	 *
+	 * @param   integer  $with     The viewing user
+	 * @param   integer  $against  The checked_out value of the row
+	 * @return  boolean
+	 */
+	public static function checkedOut($with = 0, $against = 0)
+	{
 		// The item is not checked out or is checked out by the same user.
 		if (!$against || ($against == $with))
 		{

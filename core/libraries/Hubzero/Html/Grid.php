@@ -68,7 +68,8 @@ class Grid
 	 */
 	public static function checkedOut(&$row, $i, $identifier = 'id')
 	{
-		return Builder\Grid::checkedOut($row, $i, $identifier);
+		// (the builder's method is checkbox(); checkedOut() never existed there)
+		return Builder\Grid::checkbox($row, $i, $identifier);
 	}
 
 	/**

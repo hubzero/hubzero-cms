@@ -130,10 +130,8 @@ class Grid
 		}
 		else
 		{
-			// Table::isCheckedOut() is an instance method (a static call is an
-			// Error on PHP 8): a row is checked out when someone else holds it
-			$against = isset($row->checked_out) ? (int) $row->checked_out : 0;
-			$result  = ($against && $against != $userid);
+			// the static form of the same test (isCheckedOut() is an instance method)
+			$result = \Hubzero\Database\Table::checkedOut($userid, isset($row->checked_out) ? (int) $row->checked_out : 0);
 		}
 
 		$checked = '';
