@@ -110,8 +110,6 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 		include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
 		include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
-		Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
-
 		$book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
 		$arr['metadata']['count'] = $book->pages()
 			->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)

@@ -259,8 +259,6 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
 			// Include controller
 			require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php';
 
-			Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
-
 			// Listing/unlisting?
 			if ($this->_task == 'publist' || $this->_task == 'unlist')
 			{
