@@ -1170,7 +1170,7 @@ class Jobs extends SiteController
 
 		if (!$code)
 		{
-			$this->display();
+			$this->displayTask();
 			return;
 		}
 
