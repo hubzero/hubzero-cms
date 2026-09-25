@@ -96,14 +96,12 @@ class Badge extends Base
 	 * @param      integer $id  Provider badge id
 	 * @return     void
 	 */
-	public function loadByProviderBadgeId($id)
+	public static function loadByProviderBadgeId($id)
 	{
-		$model = new stdClass();
-		$model->_db = \App::get('db');
-
+		// (an instance method called statically by the passport API: an Error on PHP 8)
 		$model = new self();
 
-		$model->_tbl = new $model->_tbl_name($model->_db);
+		$model->_tbl = new $model->_tbl_name(\App::get('db'));
 
 		$model->_tbl->load(array('provider_badge_id'=>$id));
 

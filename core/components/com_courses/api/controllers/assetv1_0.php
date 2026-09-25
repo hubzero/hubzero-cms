@@ -375,14 +375,16 @@ class Assetv1_0 extends base
 			$asset->set('state', $published);
 		}
 
-		// If we have a state coming in as an int
-		if ($published = Request::getInt('published', false))
+		// If we have a state coming in as an int (0 unpublishes: a truthiness
+		// test used to drop it, so an asset could never be unpublished here)
+		$published = Request::getInt('published', null);
+		if (!is_null($published) && Request::getWord('published', '') === '')
 		{
 			$asset->set('state', $published);
 		}
 
-		// If we have a state coming in as an int
-		if ($state = Request::getInt('state', false))
+		$state = Request::getInt('state', null);
+		if (!is_null($state))
 		{
 			$asset->set('state', $state);
 		}
