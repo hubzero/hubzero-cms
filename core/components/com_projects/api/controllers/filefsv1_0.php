@@ -727,7 +727,7 @@ class Filefsv1_0 extends ApiController
 				App::abort(404, Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
 			} else {
 				$downloadPath   = $archive['path'];
-				$serveas        = 'Project Files ' . Date::toSql() . '.zip';
+				$serveas        = 'Project Files ' . Date::of('now')->toSql() . '.zip';
 			}
 		} else {
 			$file = isset($collector[0]) ? $collector[0] : null;

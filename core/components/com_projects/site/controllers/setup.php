@@ -808,7 +808,7 @@ class Setup extends Base
 							}
 							else if (!$existingField->save())
 							{
-								$this->setError($newField->getError());
+								$this->setError($existingField->getError());
 							}
 						}
 					}
