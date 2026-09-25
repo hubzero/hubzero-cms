@@ -364,6 +364,15 @@ class Commentsv2_1 extends ApiController
 
 		$ticket = Ticket::oneOrFail($ticket_id);
 
+		// The same gates as v2.0: commenting needs a ticket the caller may
+		// read; changing the ticket's own fields (owner, status, ...) is what
+		// 'update tickets' grants, a separate permission from 'create comments'
+		if (!$ticket->access('read', 'tickets'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+		$canUpdate = ($ticket->access('update', 'tickets') > 0);
+
 		$comment = Comment::blank();
 		$changelog = new stdClass;
 
@@ -372,15 +381,29 @@ class Commentsv2_1 extends ApiController
 		$comment->set('created_by', User::get('id'));
 		$comment->set('access', (Request::getBool('private', false) == 'true' ? 1 : 0));
 
+		if ($comment->get('access') && !$ticket->access('create', 'private_comments'))
+		{
+			throw new Exception(Lang::txt('Not authorized'), 403);
+		}
+
 		$changes = array();
-		foreach (['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] as $index)
+		$fields = $canUpdate ? ['group_id', 'owner', 'severity', 'status', 'target_date', 'category'] : array();
+		foreach ($fields as $index)
 		{
 			// (an `if ($val = ...)` test dropped status 0, so a ticket could never
 			// be closed through this call)
 			$val = Request::getVar($index, null);
 			if ($val !== null && $val !== '')
 			{
-				if ($val != $ticket->get($index))
+				// status 0 means closed only together with open=0: a new ticket
+				// is status 0 / open 1, and closing it is a change
+				$changed = ($val != $ticket->get($index));
+				if ($index == 'status' && (int) $val == 0 && $ticket->get('open'))
+				{
+					$changed = true;
+				}
+
+				if ($changed)
 				{
 					$temp = new stdClass;
 					$temp->field  = $index;
@@ -403,8 +426,8 @@ class Commentsv2_1 extends ApiController
 						if ($ticket->get('status') == 0)
 						{
 							$old_status = Status::blank();
-							$old_status->set('title', 'Closed');
-							$old_status->set('open', 0);
+							$old_status->set('title', $ticket->get('open') ? 'Open' : 'Closed');
+							$old_status->set('open', $ticket->get('open') ? 1 : 0);
 						}
 						else
 						{
@@ -438,7 +461,8 @@ class Commentsv2_1 extends ApiController
 						$temp->after  = $new_owner->get('username');
 					}
 
-					$ticket->set($index, $val);
+					// the id columns take ints (status=closed would otherwise reach the INT column)
+					$ticket->set($index, in_array($index, array('status', 'owner', 'group_id')) ? (int) $val : $val);
 
 					$changes[] = $temp;
 				}

@@ -247,7 +247,15 @@ class Commentsv2_0 extends ApiController
 			$val = Request::get($index, null);
 			if ($val !== null && $val !== '')
 			{
-				if ($val != $ticket->get($index))
+				// status 0 means closed only together with open=0: a new ticket
+				// is status 0 / open 1, and closing it is a change
+				$changed = ($val != $ticket->get($index));
+				if ($index == 'status' && (int) $val == 0 && $ticket->get('open'))
+				{
+					$changed = true;
+				}
+
+				if ($changed)
 				{
 					$temp = new stdClass;
 					$temp->field = $index;
@@ -268,8 +276,8 @@ class Commentsv2_0 extends ApiController
 						if ($ticket->get('status') == 0)
 						{
 							$old_status = \Components\Support\Models\Status::blank();
-							$old_status->set('title', 'Closed');
-							$old_status->set('open', 0);
+							$old_status->set('title', $ticket->get('open') ? 'Open' : 'Closed');
+							$old_status->set('open', $ticket->get('open') ? 1 : 0);
 						}
 						else
 						{
@@ -296,7 +304,8 @@ class Commentsv2_0 extends ApiController
 						$temp->before = $old_owner->get('username');
 						$temp->after = $new_owner->get('username');
 					}
-					$ticket->set($index, $val);
+					// the id columns take ints (status=closed would otherwise reach the INT column)
+					$ticket->set($index, in_array($index, array('status', 'owner', 'group_id')) ? (int) $val : $val);
 					$changes[] = $temp;
 				}
 			}
