@@ -145,6 +145,17 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 	 */
 	public function updateResourceRanking(\Components\Cron\Models\Job $job)
 	{
+		// The ranking algorithm lived on the old resource table; the model has
+		// no rank(), so this job fataled on its first resource and wedged.
+		// Say so and do nothing -- before the start point is advanced or the
+		// queue is read -- until the ranking is re-implemented (DEFERRED).
+		require_once Component::path('com_resources') . '/models/entry.php';
+		if (!method_exists('\\Components\\Resources\\Models\\Entry', 'rank'))
+		{
+			\Log::warning('cron resources: ranking is not implemented for the current resource model; nothing ranked');
+			return true;
+		}
+
 		$processed = array();
 
 		$params = $job->params;
@@ -250,16 +261,6 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
 			if (!$resource->get('id'))
 			{
 				continue;
-			}
-
-			// The ranking algorithm lived on the old resource table; the model
-			// has no rank(), so this job fataled on its first resource and
-			// wedged. Say so once per run and leave the queue for when it is
-			// back, rather than dying.
-			if (!method_exists($resource, 'rank'))
-			{
-				\Log::warning('cron resources: ranking is not implemented for the current resource model; nothing ranked');
-				return true;
 			}
 
 			if ($resource->rank())
