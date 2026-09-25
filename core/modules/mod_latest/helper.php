@@ -229,11 +229,15 @@ class Helper extends Module
 
 					$items = $catgories->rows();
 
+					// depth is measured from the requested category (parent() on the
+					// query model is a relationship object, not the parent row)
+					$parentLevel = (int) Category::oneOrNew((int) $catid)->get('level');
+
 					if ($items)
 					{
 						foreach ($items as $category)
 						{
-							$condition = (($category->level - $categories->parent()->level) <= $levels);
+							$condition = (($category->level - $parentLevel) <= $levels);
 							if ($condition)
 							{
 								$additional_catids[] = $category->id;
