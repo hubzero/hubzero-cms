@@ -1349,48 +1349,81 @@ class Item extends Nested
 	}
 
 	/**
-	 * Batch copy menu items to a new menu or parent.
+	 * Resolve the batch form's target "{menutype}.{parent_id}" into a menu
+	 * type and an existing parent node (the root when none is named).
 	 *
-	 * @param   integer  $value     The new menu or sub-item.
-	 * @param   array    $pks       An array of row IDs.
-	 * @param   array    $contexts  An array of item contexts.
-	 * @return  mixed    An array of new IDs on success, boolean false on failure.
+	 * @param   string  $value
+	 * @return  mixed   [menutype, parent model] or false with an error set
 	 */
-	protected function batchCopy($value, $pks, $contexts)
+	protected function batchTarget($value)
 	{
-		// $value comes as {menutype}.{parent_id}
-		$parts = explode('.', $value);
+		$parts    = explode('.', (string) $value);
 		$menuType = $parts[0];
 		$parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
 
-		$table = $this->getTable();
-		$db = $this->getDbo();
-		$query = $db->getQuery();
-		$i = 0;
+		$parent = null;
 
-		// Check that the parent exists
 		if ($parentId)
 		{
-			$model = self::oneOrNew($parentId);
+			$parent = self::oneOrNew($parentId);
 
-			if (!$model->get('id'))
+			if (!$parent->get('id'))
 			{
-				// Non-fatal error
+				// Non-fatal: fall back to the root of the tree
 				$this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
-				$parentId = 0;
+				$parent = null;
 			}
 		}
 
-		// If the parent is 0, set it to the ID of the root item in the tree
-		if (empty($parentId))
+		if (!$parent)
 		{
-			if (!$parentId = self::getRoot()->get('id'))
+			$parent = self::rootNode();
+
+			if (!$parent || !$parent->get('id'))
 			{
 				$this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
 				return false;
 			}
 		}
 
+		return array($menuType, $parent);
+	}
+
+	/**
+	 * The ids of a node's descendants (its own row excluded), from its
+	 * current lft/rgt range.
+	 *
+	 * @param   object  $node
+	 * @return  array
+	 */
+	protected function descendantIds($node)
+	{
+		return self::all()
+			->where('lft', '>', (int) $node->get('lft'))
+			->where('rgt', '<', (int) $node->get('rgt'))
+			->rows()
+			->fieldsByKey('id');
+	}
+
+	/**
+	 * Batch copy menu items to a new menu or parent.
+	 *
+	 * Each selected item is copied under the target with its whole subtree.
+	 * A selected item that is already inside another selected item travels
+	 * with that ancestor rather than being copied on its own. Copies take a
+	 * unique title and alias under their new parent, are never the home item,
+	 * and the tree's lft/rgt/level/path are rebuilt once at the end.
+	 *
+	 * (Written against the Joomla model API -- getTable(), getDbo(),
+	 * setError(), getRoot() -- until 2026, so it fataled on its first call.)
+	 *
+	 * @param   string  $value     The new menu and parent as "{menutype}.{parent_id}".
+	 * @param   array   $pks       An array of row IDs.
+	 * @param   array   $contexts  An array of item contexts.
+	 * @return  mixed   An array of new IDs on success, boolean false on failure.
+	 */
+	protected function batchCopy($value, $pks, $contexts)
+	{
 		// Check that user has create permission for menus
 		if (!User::authorise('core.create', 'com_menus'))
 		{
@@ -1398,100 +1431,98 @@ class Item extends Nested
 			return false;
 		}
 
-		// We need to log the parent ID
-		$parents = array();
-
-		// Calculate the emergency stop count as a precaution against a runaway loop bug
-		$count = self::all()->total();
-
-		// Parent exists so we let's proceed
-		while (!empty($pks) && $count > 0)
+		if (!($target = $this->batchTarget($value)))
 		{
-			// Pop the first id off the stack
-			$pk = array_shift($pks);
+			return false;
+		}
+		list($menuType, $parent) = $target;
+		$parentId = (int) $parent->get('id');
 
-			$model = self::oneOrNew($pk);
-
-			// Check that the row actually exists
-			if (!$model->get('id'))
+		// Only the top of each selected subtree: a child whose ancestor is
+		// also selected is copied as part of that ancestor
+		$tops = array();
+		foreach (array_unique(array_map('intval', (array) $pks)) as $pk)
+		{
+			$node = self::oneOrNew($pk);
+			if (!$node->get('id'))
 			{
 				$this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 				continue;
 			}
-
-			// Copy is a bit tricky, because we also need to copy the children
-			$childIds = self::all()
-				->where('lft', '>', (int) $model->get('lft'))
-				->where('rgt', '<', (int) $model->get('rgt'))
-				->rows()
-				->fieldsByKey('id');
-
-			// Add child ID's to the array only if they aren't already there.
-			foreach ($childIds as $childId)
+			$tops[$pk] = $node;
+		}
+		foreach ($tops as $pk => $node)
+		{
+			foreach ($tops as $other)
 			{
-				if (!in_array($childId, $pks))
+				if ($other->get('id') != $node->get('id')
+				 && (int) $other->get('lft') < (int) $node->get('lft')
+				 && (int) $other->get('rgt') > (int) $node->get('rgt'))
 				{
-					array_push($pks, $childId);
+					unset($tops[$pk]);
+					break;
 				}
 			}
+		}
 
-			// Make a copy of the old ID and Parent ID
-			$oldId = $model->get('id');
-			$oldParentId = $model->get('parent_id');
+		$newIds = array();
 
-			// Reset the id because we are making a copy.
-			$model->set('id', 0);
+		foreach ($tops as $node)
+		{
+			// oldId => newId for this subtree, so a child is copied under the
+			// copy of its parent
+			$map = array($node->get('parent_id') => $parentId);
 
-			// If we a copying children, the Old ID will turn up in the parents list
-			// otherwise it's a new top level item
-			$model->set('parent_id', isset($parents[$oldParentId]) ? $parents[$oldParentId] : $parentId);
-			$model->set('menutype', $menuType);
+			// the node and its descendants, parents before children
+			$subtree = self::all()
+				->where('lft', '>=', (int) $node->get('lft'))
+				->where('rgt', '<=', (int) $node->get('rgt'))
+				->order('lft', 'asc')
+				->rows();
 
-			// Set the new location in the tree for the node.
-			//$table->setLocation($table->parent_id, 'last-child');
-
-			// TODO: Deal with ordering?
-			//$model->set('ordering', 1);
-			$model->set('level', null);
-			$model->set('lft', null);
-			$model->set('rgt', null);
-			$model->set('home', 0);
-
-			// Alter the title & alias
-			list($title, $alias) = $this->generateNewTitle($model->get('parent_id'), $model->get('alias'), $model->get('title'));
-			$model->set('title', $title);
-			$model->set('alias', $alias);
-
-			// Store the row.
-			if (!$model->save())
+			foreach ($subtree as $member)
 			{
-				$this->setError($model->getError());
-				return false;
+				$copy = self::blank();
+
+				foreach ($member->toArray() as $key => $val)
+				{
+					$copy->set($key, $val);
+				}
+
+				$newParentId = isset($map[$member->get('parent_id')]) ? $map[$member->get('parent_id')] : $parentId;
+
+				// a new row; save() places it as the last child of its parent
+				$copy->set('id', 0);
+				$copy->set('parent_id', $newParentId);
+				$copy->set('menutype', $menuType);
+				$copy->set('level', null);
+				$copy->set('lft', null);
+				$copy->set('rgt', null);
+				$copy->set('path', '');
+				$copy->set('home', 0);
+				$copy->set('checked_out', 0);
+				$copy->set('checked_out_time', null);
+
+				// a unique title/alias under the new parent
+				list($title, $alias) = $this->generateNewTitle($newParentId, $member->get('alias'), $member->get('title'));
+				$copy->set('title', $title);
+				$copy->set('alias', $alias);
+
+				if (!$copy->save())
+				{
+					$this->addError($copy->getError());
+					return false;
+				}
+
+				$map[$member->get('id')] = $copy->get('id');
+				$newIds[] = $copy->get('id');
 			}
-
-			// Get the new item ID
-			$newId = $model->get('id');
-
-			// Add the new ID to the array
-			$newIds[$i] = $newId;
-			$i++;
-
-			// Now we log the old 'parent' to the new 'parent'
-			$parents[$oldId] = $model->get('id');
-			$count--;
 		}
 
-		// Rebuild the hierarchy.
-		if (!$model->rebuild(1))
+		// Normalise the whole tree once
+		if ($newIds && !self::blank()->rebuild(1))
 		{
-			$this->addError($model->getError());
-			return false;
-		}
-
-		// Rebuild the tree path.
-		if (!$model->rebuildPath())
-		{
-			$this->addError($model->getError());
+			$this->addError(Lang::txt('JLIB_DATABASE_ERROR_REBUILD_FAILED'));
 			return false;
 		}
 
@@ -1501,35 +1532,19 @@ class Item extends Nested
 	/**
 	 * Batch move menu items to a new menu or parent.
 	 *
-	 * @param   integer  $value     The new menu or sub-item.
+	 * Each selected item, with its subtree, becomes the last child of the
+	 * target and takes the target menu; the tree is rebuilt once at the end.
+	 *
+	 * (Written against the Joomla model API until 2026, and even then it
+	 * only reassigned parent_id -- the lft/rgt tree positions never moved.)
+	 *
+	 * @param   string   $value     The new menu and parent as "{menutype}.{parent_id}".
 	 * @param   array    $pks       An array of row IDs.
 	 * @param   array    $contexts  An array of item contexts.
 	 * @return  boolean  True on success.
 	 */
 	protected function batchMove($value, $pks, $contexts)
 	{
-		// $value comes as {menutype}.{parent_id}
-		$parts = explode('.', $value);
-		$menuType = $parts[0];
-		$parentId = (int) \Hubzero\Utility\Arr::getValue($parts, 1, 0);
-
-		$table = $this->getTable();
-		$db = $this->getDbo();
-		$query = $db->getQuery();
-
-		// Check that the parent exists.
-		if ($parentId)
-		{
-			$model = self::oneOrNew($parentId);
-
-			if (!$model->get('id'))
-			{
-				// Non-fatal error
-				$this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_PARENT_NOT_FOUND'));
-				$parentId = 0;
-			}
-		}
-
 		// Check that user has create and edit permission for menus
 		if (!User::authorise('core.create', 'com_menus'))
 		{
@@ -1543,72 +1558,82 @@ class Item extends Nested
 			return false;
 		}
 
-		// We are going to store all the children and just moved the menutype
-		$children = array();
-
-		// Parent exists so we let's proceed
-		foreach ($pks as $pk)
+		if (!($target = $this->batchTarget($value)))
 		{
-			// Check that the row actually exists
-			$model = self::oneOrNew($pk);
+			return false;
+		}
+		list($menuType, $parent) = $target;
+		$parentId = (int) $parent->get('id');
 
-			// Check that the row actually exists
-			if (!$model->get('id'))
+		// A large, increasing lft so each moved subtree rebuilds as the last
+		// child of its new parent, in the order selected (the root's rgt is
+		// the highest value in the tree)
+		$root  = self::rootNode();
+		$order = (int) ($root ? $root->get('rgt') : 0) + 2;
+		$moved = false;
+
+		foreach (array_unique(array_map('intval', (array) $pks)) as $pk)
+		{
+			$node = self::oneOrNew($pk);
+			if (!$node->get('id'))
 			{
-				// Not fatal error
 				$this->addError(Lang::txt('JGLOBAL_BATCH_MOVE_ROW_NOT_FOUND', $pk));
 				continue;
 			}
 
-			// Set the new location in the tree for the node.
-			//$model->setLocation($parentId, 'last-child');
+			$descendants = $this->descendantIds($node);
 
-			// Set the new Parent Id
-			$model->set('parent_id', $parentId);
-
-			// Check if we are moving to a different menu
-			if ($menuType != $model->get('menutype'))
+			// cannot move a node under itself or one of its own descendants
+			if ($pk == $parentId || in_array($parentId, array_map('intval', $descendants)))
 			{
-				// Add the child node ids to the children array.
-				$childIds = self::all()
-					->where('lft', '>', (int) $model->get('lft'))
-					->where('rgt', '<', (int) $model->get('rgt'))
-					->rows()
-					->fieldsByKey('id');
-				$children = array_merge($children, (array) $childIds);
-			}
-
-			// Store the row.
-			if (!$model->save())
-			{
-				$this->addError($model->getError());
+				$this->addError(Lang::txt('JLIB_DATABASE_ERROR_INVALID_NODE_RECURSION', get_class($this)));
 				return false;
 			}
 
-			// Rebuild the tree path.
-			if (!$model->rebuildPath())
+			// already the target's child in the target menu: nothing to do
+			if ((int) $node->get('parent_id') === $parentId && $node->get('menutype') === $menuType)
 			{
-				$this->addError($model->getError());
+				continue;
+			}
+
+			// Re-parent the node and sort it last; the subtree takes the menu.
+			// (rebuild() reads parent_id and orders siblings by lft, so the
+			// descendants keep their shape under the moved node.)
+			$node->set('parent_id', $parentId);
+			$node->set('menutype', $menuType);
+			$node->set('lft', $order);
+			$node->set('rgt', $order + 1);
+			$order += 2;
+
+			if (!$node->save())
+			{
+				$this->addError($node->getError());
 				return false;
 			}
+
+			if ($descendants)
+			{
+				\Hubzero\Utility\Arr::toInteger($descendants);
+
+				$query = $this->getQuery()
+					->update($this->getTableName())
+					->set(array('menutype' => $menuType))
+					->whereIn('id', $descendants);
+
+				if (!$query->execute())
+				{
+					$this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED'));
+					return false;
+				}
+			}
+
+			$moved = true;
 		}
 
-		// Process the child rows
-		if (!empty($children))
+		if ($moved && !self::blank()->rebuild(1))
 		{
-			// Remove any duplicates and sanitize ids.
-			$children = array_unique($children);
-			\Hubzero\Utility\Arr::toInteger($children);
-
-			// Update the menutype field in all nodes where necessary.
-			$db = App::get('db');
-			$query = $db->getQuery();
-			$query->update($this->getTableName());
-			$query->set(array('menutype' => $menuType));
-			$query->whereIn('id', $children);
-
-			$db->setQuery($query->toString());
-			$db->query();
+			$this->addError(Lang::txt('JLIB_DATABASE_ERROR_REBUILD_FAILED'));
+			return false;
 		}
 
 		return true;
