@@ -32,7 +32,8 @@ if ($canDo->get('core.delete'))
 			<option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_COMPONENT'); ?></option>
 			<?php if ($this->components->count()) { ?>
 				<?php foreach ($this->components as $component) { ?>
-					<option value="<?php echo $component; ?>"<?php if ($this->filters['component'] == $component) { echo ' selected="selected"'; } ?>><?php echo $component; ?></option>
+					<?php $name = $component->get('component'); // (getComponents() returns model rows, not strings) ?>
+					<option value="<?php echo $this->escape($name); ?>"<?php if ($this->filters['component'] == $name) { echo ' selected="selected"'; } ?>><?php echo $this->escape($name); ?></option>
 				<?php } ?>
 			<?php } ?>
 		</select>

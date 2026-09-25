@@ -84,6 +84,42 @@ class Component extends Relational
 	 */
 	public function getRecords($filters = array())
 	{
+		$entries = $this->recordsQuery($filters);
+		$c = $entries->getTableName();
+
+		// sort by one of the list's columns, component by default
+		$sort = isset($filters['sort']) && in_array($filters['sort'], array('id', 'component', 'action', 'title')) ? $filters['sort'] : 'component';
+		$dir  = isset($filters['sort_Dir']) && strtolower($filters['sort_Dir']) == 'desc' ? 'desc' : 'asc';
+
+		if (!empty($filters['limit']))
+		{
+			$entries->limit((int) $filters['limit'])->start((int) ($filters['start'] ?? 0));
+		}
+
+		return $entries
+			->order($c . '.' . $sort, $dir)
+			->rows();
+	}
+
+	/**
+	 * Count records matching the filters
+	 *
+	 * @param   array  $filters
+	 * @return  integer
+	 */
+	public function getCount($filters = array())
+	{
+		return $this->recordsQuery($filters)->total();
+	}
+
+	/**
+	 * The records query the list and its count share
+	 *
+	 * @param   array   $filters
+	 * @return  object
+	 */
+	private function recordsQuery($filters = array())
+	{
 		$entries = self::all();
 
 		$c = $entries->getTableName();
@@ -99,9 +135,7 @@ class Component extends Relational
 			$entries->whereEquals($e . '.element', $filters['component']);
 		}
 
-		return $entries
-			->ordered($c . '.component', 'asc')
-			->rows();
+		return $entries;
 	}
 
 	/**
