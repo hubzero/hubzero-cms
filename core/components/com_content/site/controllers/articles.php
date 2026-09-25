@@ -518,6 +518,7 @@ class Articles extends SiteController
 				// create an array of just the params set to 'use_article'
 				$menuParamsArray = $params->toArray();
 				$articleArray = array();
+				$globalParams = \Component::params('com_content');
 
 				foreach ($menuParamsArray as $key => $value)
 				{
@@ -579,10 +580,10 @@ class Articles extends SiteController
 					$item->params->set('access-edit', true);
 				}
 				// Now check if edit.own is available.
-				elseif (!empty($userId) && User::authorise('core.edit.own', $asset))
+				elseif (User::get('id') && User::authorise('core.edit.own', $asset))
 				{
 					// Check for a valid user and that they are the owner.
-					if ($userId == $item->created_by)
+					if (User::get('id') == $item->created_by)
 					{
 						$item->params->set('access-edit', true);
 					}
