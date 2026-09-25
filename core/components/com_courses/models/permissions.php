@@ -431,7 +431,7 @@ class Permissions extends Obj
 						else
 						{
 							// Merge permissions
-							$this->config()->merge($permissions);
+							$this->config()->merge($manager->get('permissions'));
 						}
 					}
 					else
@@ -525,7 +525,7 @@ class Permissions extends Obj
 					else
 					{
 						// Merge permissions
-						$this->config()->merge($permissions);
+						$this->config()->merge($manager->get('permissions'));
 					}
 					$this->config()->set('access-view-offering', true);
 					$this->config()->set('access-view-section', true);

@@ -608,7 +608,7 @@ class Course extends SiteController
 
 			// Trigger the functions that delete associated content
 			// Should return logs of what was deleted
-			$logs = Event::trigger('courses.onCourseDeleteCount', array($course));
+			$logs = Event::trigger('courses.onCourseDeleteCount', array($this->course));
 			if (count($logs) > 0)
 			{
 				$log .= '<br />' . implode('<br />', $logs);
@@ -616,7 +616,7 @@ class Course extends SiteController
 
 			// Output HTML
 			$this->view->title  = Lang::txt('COM_COURSES_DELETE_COURSE') . ': ' . $this->course->get('title');
-			$this->view->course = $course;
+			$this->view->course = $this->course;
 			$this->view->log    = $log;
 			$this->view->msg    = $msg;
 			$this->view->notifications = Notify::messages('courses');
@@ -630,7 +630,7 @@ class Course extends SiteController
 		if (!$this->course->update())
 		{
 			$this->view->setLayout('error');
-			$this->view->title = $title;
+			$this->view->title = Lang::txt('COM_COURSES_DELETE');
 			if ($this->course->getError())
 			{
 				Notify::error($this->course->getError(), 'courses');
@@ -650,6 +650,7 @@ class Course extends SiteController
 		);
 
 		// E-mail subject
+		$gcn = $this->course->get('alias');
 		$subject = Lang::txt('COM_COURSES_SUBJECT_COURSE_DELETED', $gcn);
 
 		// Build the e-mail message
@@ -662,13 +663,13 @@ class Course extends SiteController
 		$eview->user = User::getInstance();
 		$eview->gcn = $gcn;
 		$eview->msg = $msg;
-		$eview->course = $deletedcourse;
+		$eview->course = $this->course;
 
 		$message = $eview->loadTemplate();
 		$message = str_replace("\n", "\r\n", $message);
 
 		// Send the message
-		if (!Event::trigger('xmessage.onSendMessage', array('courses_deleted', $subject, $message, $from, $members, $this->_option)))
+		if (!Event::trigger('xmessage.onSendMessage', array('courses_deleted', $subject, $message, $from, $managers, $this->_option)))
 		{
 			Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
 		}
