@@ -160,11 +160,15 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 					$arr['html'] = $this->_save();
 					break;
 				// comments are activity entries: _save()/_delete() handle them
-				// (_saveComment()/_deleteComment() were never defined)
+				// (_saveComment()/_deleteComment() were never defined). The
+				// comment form and delete link name the comment 'cid'; the
+				// handlers read the entry as 'activity'.
 				case 'savecomment':
+					Request::setVar('activity', Request::getInt('cid', 0));
 					$arr['html'] = $this->_save();
 					break;
 				case 'deletecomment':
+					Request::setVar('activity', Request::getInt('cid', 0));
 					$arr['html'] = $this->_delete();
 					break;
 				case 'update':
@@ -494,7 +498,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
 			throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
 		}
 
-		if ($this->model->access('content') || $entry->get('created_by') == User::get('id'))
+		// the author or a project manager (the same rule the feed offers the
+		// action under and _save() enforces; access('content') is already
+		// required above, so testing it again let any member remove anything)
+		if ($this->model->access('manager') || $entry->get('created_by') == User::get('id'))
 		{
 			foreach ($entry->recipients as $recipient)
 			{
