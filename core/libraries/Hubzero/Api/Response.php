@@ -81,10 +81,7 @@ class Response extends BaseResponse
 
 				$output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-				if ($suppress_response_codes)
-				{
-					$output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
-				}
+				$output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 
 				if (!is_object($content) && !is_array($content))
 				{
@@ -114,10 +111,7 @@ class Response extends BaseResponse
 
 				$output .= '<h1 id="reason">' . $reason . "</h1>\n";
 
-				if ($suppress_response_codes)
-				{
-					$output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
-				}
+				$output .= '<p id="status">' . htmlspecialchars($status) . "</p>\n";
 				if (!is_object($content) && !is_array($content))
 				{
 					$output .= '<p id ="message">' . $content . "</p>\n";

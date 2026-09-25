@@ -240,14 +240,7 @@ class Xml
 					}
 					else
 					{
-						if ($fatal)
-						{
-							die('invalid container');
-						}
-						else
-						{
-							return false;
-						}
+						return false;
 					}
 
 					$obj = new \stdClass();

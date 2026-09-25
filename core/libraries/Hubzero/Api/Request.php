@@ -82,7 +82,7 @@ class Request
 
 		if (isset($_SERVER[$key]))
 		{
-			return $SERVER[$key];
+			return $_SERVER[$key];
 		}
 
 		return null;
