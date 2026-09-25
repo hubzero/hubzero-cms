@@ -8,6 +8,7 @@
 namespace Hubzero\Form\Rules;
 
 use Hubzero\User\User;
+use Hubzero\Form\Form;
 use Hubzero\Form\Rule;
 
 /**
@@ -29,6 +30,9 @@ class Username extends Rule
 	 */
 	public function test(&$element, $value, $group = null, &$input = null, &$form = null)
 	{
+		// the account being edited is not a duplicate of itself
+		$userId = ($form instanceof Form) ? $form->getValue('id') : 0;
+
 		$duplicate = User::all()
 			->whereEquals('username', $value)
 			->where('id', '<>', (int) $userId)
