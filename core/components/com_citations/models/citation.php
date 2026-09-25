@@ -1100,7 +1100,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
 		// Add more to coins
 
-		$tmpl = isset($template) ? $template : $default_template;
+		$tmpl = !empty($template) ? $template : Format::getDefault()->format;
 		$cite = strtr($tmpl, $replace_values);
 
 		// Strip empty tags
