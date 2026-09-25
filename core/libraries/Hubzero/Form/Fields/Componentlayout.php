@@ -112,7 +112,7 @@ class Componentlayout extends Field
 			// Check for a database error.
 			if ($db->getErrorNum())
 			{
-				throw new Exception(500, $db->getErrorMsg());
+				throw new Exception($db->getErrorMsg(), 500);
 			}
 
 			$paths = array(PATH_APP, PATH_CORE);

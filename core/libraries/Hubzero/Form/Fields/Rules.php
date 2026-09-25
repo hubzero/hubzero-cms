@@ -81,7 +81,7 @@ class Rules extends Field
 
 			if ($error = $db->getErrorMsg())
 			{
-				throw new Exception(500, $error);
+				throw new Exception($error, 500);
 			}
 		}
 		else
