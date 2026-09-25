@@ -1170,6 +1170,79 @@ class Filefsv1_0 extends ApiController
 	 *
 	 * @return  array
 	 */
+	/**
+	 * Zip the selected files for a multi-file download (the files plugin has
+	 * the same helper; this controller called it without having it)
+	 *
+	 * @param   array  $items  [[type => path], ...] from _getCollection()
+	 * @return  mixed  ['path' => zip path, 'name' => zip name] or false
+	 */
+	protected function _archiveFiles($items)
+	{
+		if (!extension_loaded('zip') || empty($items))
+		{
+			return false;
+		}
+
+		$root = realpath((string) $this->repo->get('path'));
+		if (!$root || !is_dir($root))
+		{
+			return false;
+		}
+
+		$maxDownload = intval(\Component::params('com_projects')->get('maxDownload', 104857600));
+		$path        = $this->subdir ? $root . DS . $this->subdir : $root;
+		$tarname     = 'project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip';
+		$tarpath     = sys_get_temp_dir() . DS . $tarname;
+		$combined    = 0;
+
+		$zip = new \ZipArchive;
+		if ($zip->open($tarpath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true)
+		{
+			return false;
+		}
+
+		$i = 0;
+		foreach ($items as $element)
+		{
+			foreach ((array) $element as $type => $item)
+			{
+				if ($type != 'file')
+				{
+					continue;
+				}
+
+				// resolve symlinks and take only files still inside the project
+				$fpath = realpath($path . DS . $item);
+				if (!$fpath || strpos($fpath, $root . DS) !== 0 || !is_file($fpath))
+				{
+					continue;
+				}
+
+				$combined += filesize($fpath);
+				if ($combined > $maxDownload)
+				{
+					$zip->close();
+					@unlink($tarpath);
+					return false;
+				}
+
+				$zip->addFile($fpath, basename($item));
+				$i++;
+			}
+		}
+
+		$zip->close();
+
+		if ($i == 0)
+		{
+			@unlink($tarpath);
+			return false;
+		}
+
+		return array('path' => $tarpath, 'name' => $tarname);
+	}
+
 	protected function _getCollection()
 	{
 		// Incoming

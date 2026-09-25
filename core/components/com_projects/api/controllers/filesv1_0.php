@@ -1001,8 +1001,8 @@ class Filesv1_0 extends ApiController
 		// Check items
 		if (!$items || count($items) == 0)
 		{
-			$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
-			return;
+			// (an API controller has no error bag; setError() here was a fatal)
+			throw new Exception(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'), 404);
 		}
 
 		if (count($items) > 1)

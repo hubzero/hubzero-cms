@@ -215,24 +215,9 @@ class Nogit extends Obj
 			return false;
 		}
 
-		// cd into repo
-		chdir($this->_path);
-
-		// Git add
-		$this->gitAdd($dir, $commitMsg);
-
-		if ($commit == false)
-		{
-			return true;
-		}
-
-		// Commit change
-		if ($this->gitCommit(Lang::txt('PLG_PROJECTS_FILES_CREATED_DIRECTORY') . '  ' . escapeshellarg($dir)))
-		{
-			return true;
-		}
-
-		return false;
+		// Without git there is nothing to add or commit: the directory exists
+		// (gitAdd()/gitCommit() are Git helper methods this class does not have)
+		return true;
 	}
 
 	/**
@@ -326,42 +311,9 @@ class Nogit extends Obj
 	 */
 	public function getRename($file = '', $hash = '', $since = '')
 	{
-		$renames = $this->gitLog($file, '', 'rename');
-		$rename = '';
-
-		$hashes = $this->getLocalFileHistory($file);
-		$new    = $this->getLocalFileHistory($file, '', $since);
-		$fetch  = 1;
-
-		if (count($renames) > 0)
-		{
-			foreach ($hashes as $h)
-			{
-				// get commit message
-				if ($since && in_array($h, $new))
-				{
-					$message = $this->gitLog($file, $h, 'message');
-
-					if (!preg_match("/Moved/", $message))
-					{
-						$fetch = 0;
-					}
-				}
-
-				$abbr = substr($h, 0, 7);
-
-				if (isset($renames[$abbr]) && $renames[$abbr] != $file)
-				{
-					$rename = $renames[$abbr];
-
-					return $fetch == 1 ? $rename : null;
-				}
-			}
-		}
-		else
-		{
-			return null;
-		}
+		// no history without git (the body this replaced called Git helper
+		// methods this class does not have)
+		return '';
 	}
 	/**
 	 * Show commit log detail
