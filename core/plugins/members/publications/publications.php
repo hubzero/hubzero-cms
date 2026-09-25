@@ -249,8 +249,12 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 			$to = Components\Tags\Models\Objct::blank()->getTableName();
 			$tg = Components\Tags\Models\Tag::blank()->getTableName();
 
-			$cloud = new Components\Publications\Helpers\Tags($database);
-			$tags = $cloud->parse($filters['tag']);
+			// (the publications Tags helper has no parse(); normalise each tag the way the tag model does)
+			$tags = array();
+			foreach (array_filter(array_map('trim', explode(',', (string) $filters['tag']))) as $t)
+			{
+				$tags[] = Components\Tags\Models\Tag::blank()->normalize($t);
+			}
 
 			$query->join($to, $to . '.objectid', $r . '.id');
 			$query->join($tg, $tg . '.id', $to . '.tagid', 'inner');
