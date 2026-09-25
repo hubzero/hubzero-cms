@@ -86,7 +86,7 @@ class Group extends Table
 		if (\Hubzero\User\Group::exists($devgroup))
 		{
 			$group->read($devgroup);
-			$existing_members = \Components\Tools\Helpers\Utils::transform(Tool::getToolDevelopers($toolid), 'uidNumber');
+			$existing_members = \Components\Tools\Helpers\Utils::transform((new Tool($this->_db))->getToolDevelopers($toolid), 'uidNumber');
 			$group->set('members', $existing_members);
 			// (managers used to be set from an unassigned variable; they are left as they are)
 		}

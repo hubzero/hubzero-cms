@@ -767,7 +767,7 @@ class Sessionsv1_0 extends ApiController
 		if ($appcount > 1)
 		{
 			// We do, so let's append a timestamp
-			$app->caption .= ' (' . Date::format("g:i a") . ')';
+			$app->caption .= ' (' . Date::of('now')->format("g:i a") . ')';
 		}
 
 		// Save the changed caption
