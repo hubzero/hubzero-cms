@@ -49,7 +49,7 @@ class Auth extends SiteController
 		// Check for errors.
 		if ($this->getError())
 		{
-			App::abort(500, implode('<br />', $errors));
+			App::abort(500, implode('<br />', $this->getErrors()));
 		}
 
 		// Get the active menu
