@@ -105,7 +105,7 @@ class Announcements extends GroupMacro
 				else
 				{
 					// Build link
-					$link = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=announcements&id=' . $row->id);
+					$link = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&id=' . $row->id);
 
 					// Create list
 					$html .= '<div class="announcement-container">';
@@ -120,7 +120,7 @@ class Announcements extends GroupMacro
 		}
 		else
 		{
-			$html .= '<p>Currently there are no announcements. View the <a href="' . \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=announcements') . '">full archive here</a>.</p>';
+			$html .= '<p>Currently there are no announcements. View the <a href="' . \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements') . '">full archive here</a>.</p>';
 		}
 
 		// Close the container
