@@ -589,12 +589,27 @@ class Course extends SiteController
 		}
 
 		// Get number of course members
-		$managers = $this->course->get('managers');
+		// the manager ids (there is no 'managers' column: get() gave null, and
+		// count(null) is a TypeError)
+		$managers = array_keys((array) $this->course->managers());
 
 		// Incoming
 		$process = Request::getString('process', '');
 		$confirmdel = Request::getString('confirmdel', '');
 		$msg = trim(Request::getString('msg', '', 'post'));
+
+		// What the deletion covers: shown on the confirmation page and kept as
+		// the log entry once it happens (it used to exist only on the
+		// confirmation branch, an undefined $log at the end of the delete)
+		$log = Lang::txt('COM_COURSES_MEMBERS_LOG', count($managers));
+
+		// Trigger the functions that delete associated content
+		// Should return logs of what was deleted
+		$logs = Event::trigger('courses.onCourseDeleteCount', array($this->course));
+		if (count($logs) > 0)
+		{
+			$log .= '<br />' . implode('<br />', $logs);
+		}
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
@@ -602,16 +617,6 @@ class Course extends SiteController
 			if ($process && !$confirmdel)
 			{
 				Notify::error(Lang::txt('COM_COURSES_ERROR_CONFIRM_DELETION'), 'courses');
-			}
-
-			$log = Lang::txt('COM_COURSES_MEMBERS_LOG', count($managers));
-
-			// Trigger the functions that delete associated content
-			// Should return logs of what was deleted
-			$logs = Event::trigger('courses.onCourseDeleteCount', array($this->course));
-			if (count($logs) > 0)
-			{
-				$log .= '<br />' . implode('<br />', $logs);
 			}
 
 			// Output HTML
@@ -626,8 +631,8 @@ class Course extends SiteController
 
 		$this->course->set('state', 2);
 
-		// Delete course
-		if (!$this->course->update())
+		// Delete course (update() is a Table method the model does not have)
+		if (!$this->course->store(false))
 		{
 			$this->view->setLayout('error');
 			$this->view->title = Lang::txt('COM_COURSES_DELETE');
@@ -674,17 +679,13 @@ class Course extends SiteController
 			Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
 		}
 
-		// Log the deletion
-		$xlog = new Tables\Log($this->database);
-		$xlog->gid       = $this->course->get('id');
-		$xlog->uid       = User::get('id');
-		$xlog->timestamp = Date::toSql();
-		$xlog->action    = 'course_deleted';
-		$xlog->comments  = $log;
-		$xlog->actorid   = User::get('id');
-		if (!$xlog->store())
+		// Log the deletion (this used to fill gid/uid/actorid, columns the log
+		// table does not have, so the INSERT failed and the delete 500ed at
+		// the very end)
+		$this->course->log($this->course->get('id'), 'course', 'course_deleted', $log);
+		if ($this->course->getError())
 		{
-			Notify::error($xlog->getError());
+			Notify::error($this->course->getError());
 		}
 
 		// Redirect back to the courses page

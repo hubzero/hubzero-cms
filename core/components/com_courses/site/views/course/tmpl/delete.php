@@ -59,7 +59,10 @@ $this->css()
 		</fieldset>
 		<div class="clear"></div>
 
-		<input type="hidden" name="gid" value="<?php echo $this->course->get('cn'); ?>" />
+		<?php /* courses have an alias, not a group's cn (this posted an empty gid); and the action
+		         routes to /courses/, whose default controller has no delete task, so name this one */ ?>
+		<input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
+		<input type="hidden" name="controller" value="course" />
 		<input type="hidden" name="task" value="delete" />
 		<input type="hidden" name="process" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
