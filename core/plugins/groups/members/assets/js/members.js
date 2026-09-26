@@ -89,4 +89,91 @@ jQuery(document).ready(function(jq){
 		}
 	});
 	//end assign role pop ups
+
+	// Managers drag member roles into the order the sidebar lists them
+	var roles = $('.aside ul.roles.sortable');
+	if (roles.length && jQuery.ui && jQuery.ui.sortable) {
+		roles.sortable({
+			handle: '.role-mover',
+			items: '> li',
+			axis: 'y',
+			cursor: 'move',
+			update: function (e, ui) {
+				var frm = $('form.roles-order');
+				var data = frm.serialize() + '&' + roles.sortable('serialize', { key: 'roles[]' });
+
+				$.post(frm.attr('action'), data, function (response) {
+					if (!response || !response.success) {
+						roles.sortable('cancel');
+						alert((response && response.message) || frm.attr('data-error'));
+					}
+				}, 'json').fail(function () {
+					roles.sortable('cancel');
+					alert(frm.attr('data-error'));
+				});
+			}
+		});
+	}
+
+	// Sorting replaces an order a manager may have arranged by hand
+	$('.roles-sort').on('submit', function (e) {
+		if (!confirm($(this).find('.sort-roles').attr('data-confirm'))) {
+			e.preventDefault();
+		}
+	});
+
+	// Fill the deny reply from a canned response
+	var denyReason = $('#reason');
+	var lastResponse = '';
+	$('#deny-response').on('change', function () {
+		var text = $(this).find('option:selected').attr('data-text');
+
+		if (typeof text === 'undefined') {
+			return;
+		}
+
+		// Don't silently throw away a reply the manager has written or edited
+		var current = $.trim(denyReason.val());
+		if (current !== '' && current !== $.trim(lastResponse) && !confirm($(this).attr('data-confirm'))) {
+			return;
+		}
+
+		denyReason.val(text);
+		lastResponse = text;
+	});
+
+	// Add and remove rows on the canned response form
+	$('.deny-responses').on('click', '.deny-response-add', function (e) {
+		e.preventDefault();
+
+		var list = $('.deny-response-list');
+		var next = parseInt(list.attr('data-next'), 10);
+		var row  = list.find('.deny-response').last().clone();
+
+		row.find('input, textarea').each(function () {
+			var field = $(this);
+			field.val('');
+			field.attr('name', field.attr('name').replace(/\[\d+\]/, '[' + next + ']'));
+			field.attr('id', field.attr('id').replace(/-\d+-/, '-' + next + '-'));
+		});
+		row.find('label').each(function () {
+			$(this).attr('for', $(this).attr('for').replace(/-\d+-/, '-' + next + '-'));
+		});
+
+		list.append(row).attr('data-next', next + 1);
+		row.find('input').first().focus();
+	});
+
+	$('.deny-responses').on('click', '.deny-response-remove button', function (e) {
+		e.preventDefault();
+
+		var row = $(this).closest('.deny-response');
+
+		// Keep one row on the page to clone from; an emptied row isn't saved
+		if ($('.deny-response-list .deny-response').length > 1) {
+			row.remove();
+		} else {
+			row.find('input, textarea').val('');
+		}
+	});
 });

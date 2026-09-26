@@ -249,10 +249,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				}
 
 				//get all member roles
-				$db = App::get('db');
-				$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->quote($group->get('gidNumber'));
-				$db->setQuery($sql);
-				$view->member_roles = $db->loadAssocList();
+				$view->member_roles = $this->getRoles();
 
 				$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 				$view->current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
@@ -1192,6 +1189,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$view->group = $this->group;
 		$view->authorized = $this->authorized;
 		$view->users = Request::getArray('users', array());
+		$view->responses = $this->getDenyResponses();
 
 		foreach ($this->getErrors() as $error)
 		{
@@ -1199,6 +1197,159 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->_output = $view->loadTemplate();
+	}
+
+	/**
+	 * Get the canned replies a group's managers have saved for denying membership
+	 *
+	 * @return  array  List of arrays with 'title' and 'text' keys
+	 */
+	private function getDenyResponses()
+	{
+		$params = new Hubzero\Config\Registry($this->group->get('params'));
+
+		$responses = array();
+		foreach ((array) $params->get('deny_responses', array()) as $response)
+		{
+			// Stored as a JSON list, so entries read back as objects
+			$response = (array) $response;
+
+			if (isset($response['text']) && trim($response['text']) !== '')
+			{
+				$responses[] = array(
+					'title' => isset($response['title']) ? (string) $response['title'] : '',
+					'text'  => (string) $response['text']
+				);
+			}
+		}
+
+		return $responses;
+	}
+
+	/**
+	 * Display a form for managing the group's canned deny responses
+	 *
+	 * @param   array  $responses  Responses to show instead of the saved ones,
+	 *                             so a failed save can hand back what was typed
+	 * @return  void
+	 */
+	private function denyresponses($responses = null)
+	{
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
+		if ($this->membership_control == 0)
+		{
+			return false;
+		}
+
+		Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'));
+
+		$view = $this->view('default', 'responses');
+		$view->option = $this->_option;
+		$view->group = $this->group;
+		$view->authorized = $this->authorized;
+		$view->responses = is_array($responses) ? $responses : $this->getDenyResponses();
+		// Users on their way to being denied, so saving can return to that form
+		$view->users = Request::getArray('users', array());
+
+		foreach ($this->getErrors() as $error)
+		{
+			$view->setError($error);
+		}
+
+		$this->_output = $view->loadTemplate();
+	}
+
+	/**
+	 * Save the group's canned deny responses
+	 *
+	 * @return  void
+	 */
+	private function savedenyresponses()
+	{
+		if ($this->authorized != 'manager' && $this->authorized != 'admin')
+		{
+			return false;
+		}
+
+		if ($this->membership_control == 0)
+		{
+			return false;
+		}
+
+		Request::checkToken();
+
+		$responses = array();
+		foreach (Request::getArray('responses', array(), 'post') as $response)
+		{
+			if (!is_array($response))
+			{
+				continue;
+			}
+
+			$title = isset($response['title']) ? trim((string) $response['title']) : '';
+			$text  = isset($response['text']) ? trim((string) $response['text']) : '';
+
+			// A row with no text is how a response gets removed
+			if ($text === '')
+			{
+				continue;
+			}
+
+			if ($title === '')
+			{
+				$title = mb_strimwidth(preg_replace('/\s+/', ' ', $text), 0, 60, '...');
+			}
+
+			$responses[] = array(
+				'title' => $title,
+				'text'  => $text
+			);
+		}
+
+		$params = new Hubzero\Config\Registry($this->group->get('params'));
+		$params->set('deny_responses', $responses);
+
+		$serialized = $params->toString();
+
+		// `#__xgroups`.`params` is a TEXT column. Refusing an oversized write
+		// here beats letting MySQL truncate it, which would leave the group
+		// with unparsable JSON and so lose every other group setting.
+		if (strlen($serialized) > 65535)
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_TOO_LONG'));
+			return $this->denyresponses($responses);
+		}
+
+		$this->group->set('params', $serialized);
+
+		// A failed write must not report success - the responses would be gone
+		if (!$this->group->update())
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_NOT_SAVED'));
+			return $this->denyresponses($responses);
+		}
+
+		$url = 'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members';
+
+		$users = array_filter(array_map('intval', Request::getArray('users', array(), 'post')));
+		if (count($users))
+		{
+			$url .= '&action=deny&users[]=' . implode('&users[]=', $users);
+		}
+		else
+		{
+			$url .= '&filter=pending';
+		}
+
+		App::redirect(
+			Route::url($url, false),
+			Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_SAVED'),
+			'passed'
+		);
 	}
 
 	/**
@@ -1451,6 +1602,200 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Get the group's member roles in the order its managers have set
+	 *
+	 * @return  array
+	 */
+	private function getRoles()
+	{
+		$db = App::get('db');
+		$db->setQuery("SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->quote($this->group->get('gidNumber')) . " ORDER BY `ordering` ASC, `name` ASC");
+
+		return $db->loadAssocList();
+	}
+
+	/**
+	 * Read a date out of a role name, for sorting
+	 *
+	 * Groups name roles for graduation terms ("May 2026", "Fall 2025",
+	 * "Class of 2026"), which have to sort by date rather than by name.
+	 * Anything without a four digit year is not a term.
+	 *
+	 * @param   string   $name  Role name
+	 * @return  integer  Timestamp, or null when the name holds no date
+	 */
+	private function roleDate($name)
+	{
+		$value = trim($name);
+
+		// Drop the wording groups put in front of a term
+		$value = preg_replace('/^(class of|cohort|graduat(?:ing|ion)|expected)\s+/i', '', $value);
+
+		// Seasons sort as the month they start
+		$seasons = array(
+			'spring' => 'March',
+			'summer' => 'June',
+			'fall'   => 'September',
+			'autumn' => 'September',
+			'winter' => 'December'
+		);
+
+		$value = preg_replace_callback('/\b(spring|summer|fall|autumn|winter)\b/i', function ($m) use ($seasons)
+		{
+			return $seasons[strtolower($m[1])];
+		}, $value);
+
+		// Without a year this is a name, not a term
+		if (!preg_match('/(?:^|\D)((?:19|20)\d{2})(?:\D|$)/', $value, $year))
+		{
+			return null;
+		}
+
+		// Numeric terms ("05/2026") keep their month too
+		if (preg_match('#^(\d{1,2})[/-]((?:19|20)\d{2})$#', trim($value), $numeric)
+		 && $numeric[1] >= 1 && $numeric[1] <= 12)
+		{
+			return strtotime($numeric[2] . '-' . str_pad($numeric[1], 2, '0', STR_PAD_LEFT) . '-01');
+		}
+
+		// A bare month and year ("May 2026") is the common case, so build a
+		// full date from the parts rather than trusting strtotime with it
+		if (preg_match('/([A-Za-z]+)?[\s,]*((?:19|20)\d{2})/', $value, $parts))
+		{
+			$month = !empty($parts[1]) ? $parts[1] : 'January';
+			$date  = strtotime($month . ' 1 ' . $parts[2]);
+
+			if ($date !== false)
+			{
+				return $date;
+			}
+		}
+
+		$date = strtotime($value);
+
+		return ($date === false) ? strtotime('January 1 ' . $year[1]) : $date;
+	}
+
+	/**
+	 * Put the group's member roles in a sensible default order
+	 *
+	 * Plain names (universities, departments) come first in alphabetical
+	 * order, then graduation terms in date order. A manager can still drag
+	 * anything afterwards.
+	 *
+	 * @return  void
+	 */
+	private function sortroles()
+	{
+		if ($this->authorized != 'manager' || $this->membership_control == 0)
+		{
+			App::abort(403, Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_NOT_AUTHORIZED'));
+		}
+
+		Request::checkToken();
+
+		$names = array();
+		$dates = array();
+
+		foreach ($this->getRoles() as $role)
+		{
+			$date = $this->roleDate($role['name']);
+
+			if ($date === null)
+			{
+				$names[] = array('id' => (int) $role['id'], 'name' => $role['name']);
+			}
+			else
+			{
+				$dates[] = array('id' => (int) $role['id'], 'name' => $role['name'], 'date' => $date);
+			}
+		}
+
+		usort($names, function ($a, $b)
+		{
+			return strcasecmp($a['name'], $b['name']);
+		});
+
+		usort($dates, function ($a, $b)
+		{
+			// Same term twice is a naming accident; fall back to the name
+			return ($a['date'] == $b['date'])
+				? strcasecmp($a['name'], $b['name'])
+				: ($a['date'] < $b['date'] ? -1 : 1);
+		});
+
+		$db  = App::get('db');
+		$gid = (int) $this->group->get('gidNumber');
+
+		$ordering = 1;
+		foreach (array_merge($names, $dates) as $role)
+		{
+			$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote($role['id']) . " AND `gidNumber`=" . $db->quote($gid));
+			$db->query();
+
+			$ordering++;
+		}
+
+		App::redirect(
+			Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members'),
+			Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_DONE'),
+			'passed'
+		);
+	}
+
+	/**
+	 * Save the order of the group's member roles (AJAX)
+	 *
+	 * @return  void
+	 */
+	private function reorderroles()
+	{
+		$response = array('success' => false);
+
+		if ($this->authorized != 'manager' || $this->membership_control == 0)
+		{
+			$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_NOT_AUTHORIZED');
+		}
+		elseif (!App::get('session')->checkToken('post', true))
+		{
+			$response['message'] = Lang::txt('JINVALID_TOKEN');
+		}
+		else
+		{
+			$ids = array_values(array_filter(array_map('intval', Request::getArray('roles', array(), 'post'))));
+
+			// Nothing usable to order by. Saying so beats reporting success
+			// for a list the browser is still showing but nobody stored.
+			if (empty($ids))
+			{
+				$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR');
+			}
+			else
+			{
+				$db  = App::get('db');
+				$gid = (int) $this->group->get('gidNumber');
+
+				$ordering = 1;
+				foreach ($ids as $id)
+				{
+					// The gidNumber condition keeps a request from reordering
+					// another group's roles
+					$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote($id) . " AND `gidNumber`=" . $db->quote($gid));
+					$db->query();
+
+					$ordering++;
+				}
+
+				$response['success'] = true;
+			}
+		}
+
+		header('Content-type: application/json');
+		echo json_encode($response);
+		exit();
+	}
+
+	/**
 	 * Add a member role
 	 *
 	 * @return  void
@@ -1694,9 +2039,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Cancel membership confirmation screen
 		$view = $this->view('assign', 'role');
 
-		$db = App::get('db');
-		$db->setQuery("SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->Quote($this->group->get('gidNumber')));
-		$roles = $db->loadAssocList();
+		$roles = $this->getRoles();
 
 		$view->option = $this->_option;
 		$view->group = $this->group;
