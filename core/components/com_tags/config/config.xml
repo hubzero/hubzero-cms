@@ -8,6 +8,10 @@
 
 <config>
 	<fieldset name="basic">
+		<field name="allow_public_search" type="radio" default="1" label="COM_TAGS_ALLOW_PUBLIC_SEARCH_LABEL" description="COM_TAGS_ALLOW_PUBLIC_SEARCH_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="focus_area_01" type="text" menu="hide" default="" label="COM_TAGS_FOCUS_AREA1" description="COM_TAGS_FOCUS_AREA_DESC" />
 		<field name="focus_area_02" type="text" menu="hide" default="" label="COM_TAGS_FOCUS_AREA2" description="COM_TAGS_FOCUS_AREA_DESC" />
 		<field name="focus_area_03" type="text" menu="hide" default="" label="COM_TAGS_FOCUS_AREA3" description="COM_TAGS_FOCUS_AREA_DESC" />

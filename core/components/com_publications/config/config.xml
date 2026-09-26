@@ -12,6 +12,10 @@
 			<option value="0">JOFF</option>
 			<option value="1">JON</option>
 		</field>
+		<field name="allow_public_search" type="radio" default="1" label="COM_PUBLICATIONS_CONFIG_ALLOW_PUBLIC_SEARCH" description="COM_PUBLICATIONS_CONFIG_ALLOW_PUBLIC_SEARCH_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="contribute" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB" description="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB_DESC">
 			<option value="0">COM_PUBLICATIONS_NOT_ALLOW</option>
 			<option value="1">COM_PUBLICATIONS_ALLOW</option>
