@@ -47,7 +47,16 @@ class Articles extends SiteController
 	 * @return  void
 	 */
 	public function displayTask()
-	{
+	{		
+		$category = new Category;
+		$category->set('alias', 'all');
+		$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
+		$category->set('id', 0);
+		$category->set('published', 1);
+		$category->set('path', 'all');
+		
+		$this->view->set('category', $category);
+		
 		$this->view
 			->set('archive', $this->archive)
 			->setLayout('display')
@@ -79,6 +88,7 @@ class Articles extends SiteController
 			$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
 			$category->set('id', 0);
 			$category->set('published', 1);
+			$category->set('path', 'all');
 		}
 		else
 		{
