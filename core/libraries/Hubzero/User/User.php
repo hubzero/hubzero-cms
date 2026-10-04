@@ -291,6 +291,114 @@ class User extends \Hubzero\Database\Relational
 	}
 
 	/**
+	 * Get the directory holding member home directories
+	 *
+	 * Uses the com_members "homedir" setting. If that is empty, a path is
+	 * deduced from the site name or live site (e.g., /home/nanohub).
+	 *
+	 * @return  string
+	 */
+	public static function hubHomeDirectory()
+	{
+		$hubHomeDir = rtrim(Component::params('com_members')->get('homedir'), '/');
+
+		if ($hubHomeDir)
+		{
+			return $hubHomeDir;
+		}
+
+		// try to deduce a viable home directory based on sitename or live_site
+		$sitename = strtolower(Config::get('sitename'));
+		$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+		$sitename = trim($sitename, '/ ');
+		$sitename_e = explode('.', $sitename, 2);
+		if (isset($sitename_e[1]))
+		{
+			$sitename = $sitename_e[0];
+		}
+		if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+		{
+			$sitename = '';
+		}
+		if (empty($sitename))
+		{
+			$sitename = strtolower(\Request::base());
+			$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
+			$sitename = trim($sitename, '/ ');
+			$sitename_e = explode('.', $sitename, 2);
+			if (isset($sitename_e[1]))
+			{
+				$sitename = $sitename_e[0];
+			}
+			if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+			{
+				$sitename = '';
+			}
+		}
+
+		$hubHomeDir = DS . 'home';
+
+		if (!empty($sitename))
+		{
+			$hubHomeDir .= DS . $sitename;
+		}
+
+		return $hubHomeDir;
+	}
+
+	/**
+	 * Check the username and home directory about to be saved
+	 *
+	 * Both end up in LDAP and in shell commands, so they may only hold
+	 * POSIX-safe characters. A value is only checked when the account is new
+	 * or the value changed, so accounts created before these checks existed
+	 * can still be saved. Third-party-auth placeholder accounts
+	 * ("-<auth_link_id>") and de-identified accounts have no home directory.
+	 *
+	 * @param   array  $new  Data being saved
+	 * @param   array  $old  Stored data (empty for a new account)
+	 * @return  array  Error messages
+	 */
+	public static function identityErrors(array $new, array $old)
+	{
+		$errors = array();
+
+		$username = isset($new['username']) ? (string) $new['username'] : '';
+		$homeDir  = isset($new['homeDirectory']) ? (string) $new['homeDirectory'] : '';
+		$isNew    = empty($old);
+
+		$isPlaceholder = (bool) preg_match('/^-\d+$/D', $username);
+		$isAnon        = (substr($username, 0, 13) === 'anonUsername_');
+
+		if (($isNew || !isset($old['username']) || $old['username'] !== $username)
+		 && !$isPlaceholder && !$isAnon
+		 && !\Hubzero\Utility\Validate::posixUsername($username))
+		{
+			$errors[] = \Lang::txt('JLIB_DATABASE_ERROR_VALID_POSIX_USERNAME');
+		}
+
+		if (($isNew || !isset($old['homeDirectory']) || $old['homeDirectory'] !== $homeDir)
+		 && !(($isPlaceholder || $isAnon) && $homeDir === '')
+		 && !\Hubzero\Utility\Validate::homeDirectory($homeDir))
+		{
+			$errors[] = \Lang::txt('JLIB_DATABASE_ERROR_VALID_HOMEDIRECTORY');
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Get the default home directory for a username
+	 *
+	 * @param   string  $username
+	 * @return  string
+	 */
+	public static function defaultHomeDirectory($username)
+	{
+		return self::hubHomeDirectory() . DS . $username;
+	}
+
+	/**
 	 * Defines a one to many relationship between users and reset tokens
 	 *
 	 * @return  object  \Hubzero\Database\Relationship\OneToMany
@@ -510,6 +618,13 @@ class User extends \Hubzero\Database\Relational
 					// we should create this in the hub database
 					if ($user->isNew())
 					{
+						// The INSERT below skips the model, and so the username
+						// checks made in save()
+						if (!\Hubzero\Utility\Validate::posixUsername($jwtuser))
+						{
+							return (bool) $this->guest;
+						}
+
 						// Using SQL here because the ORM does not currently support writing
 						// new records with a specific primary key value
 						$db = App::get('db');
@@ -519,7 +634,7 @@ class User extends \Hubzero\Database\Relational
 							", " . $db->quote($jwtemail) . ", " . $db->quote('') . ", " . $db->quote('') . ", " .
 							$db->quote('0') . ", " . $db->quote('2') . ", " . $db->quote('0') . ", " . $db->quote('1') .
 							", " . $db->quote('') . ", " . $db->quote('5') . ", " . $db->quote('1') . ", " .
-							$db->quote('/home/' . $jwtuser) . ", " . $db->quote('/bin/bash') . ", " .
+							$db->quote(self::defaultHomeDirectory($jwtuser)) . ", " . $db->quote('/bin/bash') . ", " .
 							$db->quote('/usr/lib/sftp-server') . ")";
 
 						$db->setQuery($query);
@@ -917,6 +1032,17 @@ class User extends \Hubzero\Database\Relational
 			return false;
 		}
 
+		// Not every code path that creates accounts (third-party auth
+		// auto-create, the REST API, member import) sets a home directory.
+		// An empty one leaves the account without a home in LDAP. Placeholder
+		// accounts ("-<auth_link_id>") of third-party logins that have not
+		// completed registration yet are left alone; they get a home once
+		// their real username is set. So are de-identified accounts.
+		if (!$this->get('homeDirectory') && !preg_match('/^(-\d+$|anonUsername_)/', (string) $this->get('username')))
+		{
+			$this->set('homeDirectory', self::defaultHomeDirectory($this->get('username')));
+		}
+
 		// Trigger the onUserBeforeSave event.
 		$data  = $this->toArray();
 		$isNew = $this->isNew();
@@ -925,6 +1051,13 @@ class User extends \Hubzero\Database\Relational
 		try
 		{
 			$oldUser = self::oneOrNew($this->get('id'));
+
+			$errors = self::identityErrors($data, $isNew ? array() : $oldUser->toArray());
+
+			if (!empty($errors))
+			{
+				throw new Exception(implode(' ', $errors));
+			}
 
 			// Trigger the onUserBeforeSave event.
 			$result = Event::trigger('user.onUserBeforeSave', array($oldUser->toArray(), $isNew, $data));

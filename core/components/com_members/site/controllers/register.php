@@ -665,6 +665,10 @@ class Register extends SiteController
 				// register::unconfirmedTask (which reads the session) would
 				// disagree and bounce the user in a redirect loop.
 				$suser->set('activation', $xprofile->get('activation'));
+				// Third-party-auth accounts were auto-created without a home
+				// directory. Later saves of the session user (e.g., resending the
+				// confirmation email) would write that stale empty value back.
+				$suser->set('homeDirectory', $xprofile->get('homeDirectory'));
 				Session::set('user', $suser);
 
 				// Update the session entry
@@ -910,46 +914,7 @@ class Register extends SiteController
 				}
 
 				// Set home directory
-				$hubHomeDir = rtrim($this->config->get('homedir'), '/');
-				if (!$hubHomeDir)
-				{
-					// try to deduce a viable home directory based on sitename or live_site
-					$sitename = strtolower(Config::get('sitename'));
-					$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
-					$sitename = trim($sitename, '/ ');
-					$sitename_e = explode('.', $sitename, 2);
-					if (isset($sitename_e[1]))
-					{
-						$sitename = $sitename_e[0];
-					}
-					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
-					{
-						$sitename = '';
-					}
-					if (empty($sitename))
-					{
-						$sitename = strtolower(Request::base());
-						$sitename = preg_replace('/^http[s]{0,1}:\/\//', '', $sitename, 1);
-						$sitename = trim($sitename, '/ ');
-						$sitename_e = explode('.', $sitename, 2);
-						if (isset($sitename_e[1]))
-						{
-							$sitename = $sitename_e[0];
-						}
-						if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
-						{
-							$sitename = '';
-						}
-					}
-
-					$hubHomeDir = DS . 'home';
-
-					if (!empty($sitename))
-					{
-						$hubHomeDir .= DS . $sitename;
-					}
-				}
-				$user->set('homeDirectory', $hubHomeDir . DS . $user->get('username'));
+				$user->set('homeDirectory', \Hubzero\User\User::defaultHomeDirectory($user->get('username')));
 				$user->set('loginShell', '/bin/bash');
 				$user->set('ftpShell', '/usr/lib/sftp-server');
 

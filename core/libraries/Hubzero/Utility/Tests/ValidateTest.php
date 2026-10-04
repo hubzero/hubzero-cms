@@ -353,6 +353,72 @@ class ValidateTest extends Basic
     }
 
     /**
+     * Tests if value is a username safe to use as a POSIX account name
+     * and in shell commands
+     *
+     * @return  void
+     **/
+    public function testPosixUsername()
+    {
+        $tests = array(
+            array('milanfar', true),
+            array('John.Smith', true),
+            array('a_b-c', true),
+            array('user1', true),
+            array('_svc', true),
+            array('milanfar@ucsc.edu', false),
+            array('-rf', false),
+            array('-123', false),
+            array('.hidden', false),
+            array('a b', false),
+            array('a/b', false),
+            array('a;b', false),
+            array("\u{e9}", false),
+            array("a\nb", false),
+            array("ab\n", false),
+            array('', false),
+            array(null, false),
+        );
+
+        foreach ($tests as $test) {
+            list($value, $result) = $test;
+            $this->assertSame($result, Validate::posixUsername($value), var_export($value, true));
+        }
+    }
+
+    /**
+     * Tests if value is an absolute home directory path made only of
+     * POSIX-safe path components
+     *
+     * @return  void
+     **/
+    public function testHomeDirectory()
+    {
+        $tests = array(
+            array('/home/nanohub/milanfar', true),
+            array('/home/nanohub/John.Smith', true),
+            array('/srv/home/a_b-c', true),
+            array('home/nanohub/x', false),
+            array('/home/nanohub/', false),
+            array('/home//x', false),
+            array('/', false),
+            array('/home/nanohub/../etc', false),
+            array('/home/./x', false),
+            array('/home/nanohub/milanfar@ucsc.edu', false),
+            array('/home/nano hub/x', false),
+            array("/home/nanohub/\u{e9}", false),
+            array("/home/nanohub/x\n", false),
+            array('', false),
+            array(null, false),
+        );
+
+        foreach ($tests as $test) {
+            list($value, $result) = $test;
+            $this->assertSame($result, Validate::homeDirectory($value), var_export($value, true));
+        }
+    }
+
+    /**
      * Tests if value is reserved
      *
      * @return  void

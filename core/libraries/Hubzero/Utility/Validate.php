@@ -267,6 +267,50 @@ class Validate
 	}
 
 	/**
+	 * Check if a username is safe to use as a POSIX account name and in
+	 * shell commands
+	 *
+	 * Looser than username(), which new registrations must pass, so that
+	 * existing accounts with upper case or dots are still accepted. A
+	 * leading '-' or '.' is refused, as commands would take the name for an
+	 * option or a hidden file.
+	 *
+	 * @param   string   $x
+	 * @return  boolean
+	 */
+	public static function posixUsername($x)
+	{
+		return (bool) preg_match('/^[A-Za-z0-9_][A-Za-z0-9._-]*$/D', (string) $x);
+	}
+
+	/**
+	 * Check if a home directory is an absolute path made only of POSIX-safe
+	 * components, without "." or ".." components
+	 *
+	 * @param   string   $x
+	 * @return  boolean
+	 */
+	public static function homeDirectory($x)
+	{
+		$x = (string) $x;
+
+		if (!preg_match('#^(/[A-Za-z0-9._-]+)+$#D', $x))
+		{
+			return false;
+		}
+
+		foreach (explode('/', substr($x, 1)) as $component)
+		{
+			if ($component == '.' || $component == '..')
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Check if a group alias is valid
 	 *
 	 * - Check if $cn contains any invalid characters
