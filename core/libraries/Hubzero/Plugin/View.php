@@ -42,12 +42,14 @@ class View extends AbstractView
 		// Set the override path
 		if (!array_key_exists('override_path', $config))
 		{
-			$config['override_path'] = '';
+			$config['override_path'] = array();
 
 			if (\App::has('template'))
 			{
-				$config['override_path'] = \App::get('template')->path;
+				$config['override_path'][] = \App::get('template')->path;
 			}
+		} elseif (!is_array($config['override_path'])) {
+			$config['override_path'] = array($config['override_path']);
 		}
 		$this->_overridePath = $config['override_path'];
 
@@ -219,9 +221,9 @@ class View extends AbstractView
 			$option = 'plg_' . $this->_folder . '_' . $this->_element;
 			$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
 
-			$path = $this->_overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . $this->getName();
-
-			$this->addPath($type, $path);
+			foreach ($this->_overridePath as $overridePath) {
+				$this->addPath($type, $overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . $this->getName());
+			}
 		}
 	}
 
@@ -244,7 +246,8 @@ class View extends AbstractView
 			'folder'  => $this->_folder,
 			'element' => $this->_element,
 			'name'    => ($name ? $name : $this->_name),
-			'layout'  => $layout
+			'layout'  => $layout,
+			'override_path' => $this->_overridePath
 		));
 		$view->set('folder', $this->_folder)
 		     ->set('element', $this->_element);
