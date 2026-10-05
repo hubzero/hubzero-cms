@@ -351,8 +351,16 @@ class File extends Obj
 	{
 		if (!isset($this->paths['override']))
 		{
-			$this->paths['override']  = \App::get('template')->path . DS . 'html';
-			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
+			$suffix = $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
+			$overridePaths = array();
+
+			if (Request::getCmd('cn')) {
+				$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+				if ($group && $group->isSuperGroup()) {
+					$this->paths['override'][] = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . $suffix;
+				}
+			}
+			$this->paths['override'][]  = \App::get('template')->path . DS . 'html' . DS . $suffix;
 		}
 		return $this->paths['override'];
 	}
@@ -374,9 +382,12 @@ class File extends Obj
 			{
 				$this->paths['target'] = $this->sourcePath();
 
-				if ($this->overridePath() && file_exists($this->overridePath()))
-				{
-					$this->paths['target'] = $this->overridePath();
+				$overridePaths = $this->overridePath();
+				foreach ($overridePaths as $overridePath) {
+					if (file_exists($overridePath)) {
+						$this->paths['target'] = $overridePath;
+						break;
+					}
 				}
 			}
 		}
