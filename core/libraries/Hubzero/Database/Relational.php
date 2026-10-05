@@ -91,7 +91,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 *
 	 * @var  \Hubzero\Database\Driver|object
 	 **/
-	public static $connection = null;
+	private $connection = null;
 
 	/**
 	 * Whether or not we're caching query results
@@ -557,9 +557,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 * @return  void
 	 * @since   2.0.0
 	 **/
-	public static function setDefaultConnection($connection)
+	public function setDefaultConnection($connection)
 	{
-		self::$connection = $connection;
+		$this->connection = $connection;
 	}
 
 	/**
@@ -855,7 +855,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	public function getQuery()
 	{
-		return new Query(self::$connection);
+		return new \Hubzero\Database\Query($this->connection);
 	}
 
 	/**
@@ -866,7 +866,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 	 **/
 	public function getStructure()
 	{
-		return new Structure(self::$connection);
+		return new \Hubzero\Database\Structure($this->connection);
 	}
 
 	/**
