@@ -359,6 +359,15 @@ class Loader
 			$default  = ($temp[1]) ? $temp[1] : 'default';
 		}
 
+		// Build the template from a supergroup (if applicable)
+		$gPath = '';
+		if (Request::getCmd('cn')) {
+			$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+			if ($group && $group->isSuperGroup()) {
+				$gPath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . $module . DS . $layout . '.php';
+			}
+		}
+
 		// Build the template and base path for the layout
 		$tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
 
@@ -368,7 +377,10 @@ class Loader
 		$dPath = $base . '/tmpl/default.php';
 
 		// If the template has a layout override use it
-		if (file_exists($tPath))
+		if (file_exists($gPath)) {
+			return $gPath;
+		} 
+		elseif (file_exists($tPath))
 		{
 			return $tPath;
 		}

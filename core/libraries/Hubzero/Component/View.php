@@ -61,6 +61,19 @@ class View extends AbstractView
 	 */
 	public function __construct($config = array())
 	{
+		// Set the override path (call before parent constructor)
+		if (!array_key_exists('override_path', $config))
+		{
+			$config['override_path'] = array();
+
+			if (\App::has('template'))
+	{
+				$config['override_path'][] = \App::get('template')->path;
+			}
+		} elseif (!is_array($config['override_path'])) {
+			$config['override_path'] = array($config['override_path']);
+		}
+
 		parent::__construct($config);
 
 		// Set a base path for use by the view
@@ -74,6 +87,42 @@ class View extends AbstractView
 			}
 		}
 		$this->_basePath = $config['base_path'];
+	}
+
+	/**
+	 * Sets an entire array of search paths for templates or resources.
+	 *
+	 * @param   string  $type  The type of path to set, typically 'template'.
+	 * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the current directory only.
+	 * @return  void
+	 */
+	protected function setPath($type, $path)
+	{
+		$type = strtolower($type);
+
+		// Clear out the prior search dirs
+		$this->_path[$type] = array();
+
+		// Add view directories without the '/tmpl' legacy directory
+		if ($type == 'template' && basename($path) == 'tmpl')
+		{
+			// Push to the bottom of the stack
+			$this->addPath($type, dirname($path));
+		}
+
+		// Actually add the user-specified directories
+		$this->addPath($type, $path);
+
+		// Always add the fallback directories as last resort
+		if ($type == 'template' && $this->_overridePath)
+		{
+			$component = strtolower(\App::get('request')->getCmd('option'));
+			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
+
+			foreach ($this->_overridePath as $overridePath) {
+				$this->addPath($type, $overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName());
+			}
+		}
 	}
 
 	/**
@@ -94,7 +143,8 @@ class View extends AbstractView
 		$view = new self(array(
 			'base_path' => $this->_basePath,
 			'name'      => ($name ? $name : $this->_name),
-			'layout'    => $layout
+			'layout'    => $layout,
+			'override_path' => $this->_overridePath
 		));
 		$view->set('option', $this->option)
 		     ->set('controller', $this->controller)
