@@ -48,14 +48,17 @@ class PrivilegeNotifier
      *
      * This should be called early in muse startup.
      * It handles:
-     * - Dropping privileges if running via sudo
+     * - Dropping privileges if running as root via sudo
      * - Warning and prompting if running as root directly
      *
      * @return bool  True to continue, false to abort
      */
     public function handleStartup(): bool
     {
-        if ($this->privileges->isSudo()) {
+        // Only sudo to root has privileges to drop. "sudo -u hubadmin" also
+        // sets SUDO_USER, but a non-root process cannot seteuid back to the
+        // caller, so it simply runs as the target user.
+        if ($this->privileges->isSudo() && $this->privileges->isRoot()) {
             return $this->handleSudoEnvironment();
         }
 
@@ -266,11 +269,19 @@ class PrivilegeNotifier
     /**
      * Output text
      *
+     * Notices go to stderr so they never mix into a command's own output,
+     * such as the JSON that com_installer parses from "--format=json".
+     *
      * @param  string  $text  Text to output
      * @return void
      */
     private function output(string $text): void
     {
+        if (defined('STDERR')) {
+            fwrite(STDERR, $text);
+            return;
+        }
+
         echo $text;
     }
 }
