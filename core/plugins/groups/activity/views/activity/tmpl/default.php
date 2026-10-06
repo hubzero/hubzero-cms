@@ -118,7 +118,7 @@ if (!$no_html) {
 				{
 					$this->view('default_item')
 						->set('group', $this->group)
-						->set('authorized', $this->authorized)
+						->set('canModerate', $this->canModerate)
 						->set('row', $row)
 						->set('online', $online)
 						->display();

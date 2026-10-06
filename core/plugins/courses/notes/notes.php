@@ -265,11 +265,16 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$model->set('timestamp', $timestamp);
 		}
-		if ($content = Request::getString('txt', ''))
+		// Moves and resizes send only position and size, so keep the text and
+		// sharing a request doesn't mention -- but an empty text does clear it
+		if (!is_null($content = Request::getString('txt', null)))
 		{
 			$model->set('content', $content);
 		}
-		$model->set('access', Request::getInt('access', 0));
+		if (!is_null($access = Request::getInt('access', null)))
+		{
+			$model->set('access', $access);
+		}
 		$model->set('section_id', $this->view->offering->section()->get('id'));
 
 		if (!$model->save())

@@ -114,9 +114,11 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 			include_once __DIR__ . '/models/attachment.php';
 
-			$this->group      = $group;
-			$this->authorized = $authorized;
-			$this->base       = 'index.php?option=com_groups&cn=' . $group->get('cn');
+			$this->group = $group;
+			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
+
+			// Managers and site administrators may hide any entry in the feed
+			$this->canModerate = ($authorized == 'manager' || User::authorise('core.admin', 'com_groups'));
 
 			$action = Request::getCmd('action', 'feed');
 
@@ -227,7 +229,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'activity')
 			->set('name', $this->_name)
 			->set('group', $this->group)
-			->set('authorized', $this->authorized)
+			->set('canModerate', $this->canModerate)
 			->set('categories', null)
 			->set('filters', $filters)
 			->set('total', $total)
@@ -255,12 +257,6 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Only the group's managers may hide an entry from its feed
-		if (!in_array($this->authorized, array('manager', 'admin')))
-		{
-			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
-		}
-
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -271,6 +267,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 		// The record must belong to this group
 		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		// Managers may hide any entry; anyone else only an entry they posted
+		if (!$this->canModerate && $entry->log->get('created_by') != User::get('id'))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -321,6 +323,21 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function starAction()
 	{
+		if (User::isGuest())
+		{
+			$url = Route::url($this->base . '&active=' . $this->_name, false, true);
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+				Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
+				'warning'
+			);
+			return;
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
+
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
 		$action  = Request::getWord('action', 'star');
@@ -348,6 +365,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			$response = new stdClass;
 			$response->success = true;
 			$response->message = $success;
+			$response->starred = ($action == 'star');
 			if ($err = $this->getError())
 			{
 				$response->success = false;

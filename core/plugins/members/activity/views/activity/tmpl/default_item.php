@@ -243,17 +243,17 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 				<ul class="activity-options-main">
 					<?php if (!$this->row->log->get('parent')) { ?>
 						<li>
-							<a
+							<button type="submit" form="hz-post-action"
 								data-id="activity<?php echo $this->row->get('id'); ?>"
 								class="icon-starred tooltips"
-								href="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
+								formaction="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
 								data-hrf-active="<?php echo Route::url($base . '&action=unstar&activity=' . $this->row->get('id')); ?>"
 								data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
 								data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
 								data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
 								title="<?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"><!--
 								--><?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?><!--
-							--></a>
+							--></button>
 						</li>
 					<?php } ?>
 					<li>

@@ -600,13 +600,6 @@ class Membership extends Base
 			return;
 		}
 
-		// An Accept button posts the CSRF token; an emailed invitation link
-		// carries its own one-time token instead
-		if (!$token)
-		{
-			Request::checkToken();
-		}
-
 		//check to make sure we have  cname
 		if (!$this->cn)
 		{
@@ -656,6 +649,36 @@ class Membership extends Base
 			App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get("cn")));
 			return;
 		}
+
+		// Joining is done by a posted form. A link followed from an invitation
+		// e-mail, or the return from logging in, arrives by GET and gets a page
+		// whose button posts it (carrying the invitation token, if any).
+		if (Request::method() !== 'POST')
+		{
+			$invited = in_array(strtolower(User::get('email')), $inviteemails) || in_array(User::get('id'), $invitees);
+			if ($token)
+			{
+				$this->database->setQuery(
+					"SELECT COUNT(*) FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token)
+					. " AND gidNumber=" . (int) $this->view->group->get('gidNumber')
+				);
+				$invited = (bool) $this->database->loadResult();
+			}
+			if (!$invited)
+			{
+				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
+			}
+
+			$this->view
+				->set('title', Lang::txt('COM_GROUPS_ACCEPT_INVITE') . ': ' . $this->view->group->get('description'))
+				->set('token', $token)
+				->setLayout('accept')
+				->display();
+			return;
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		//get request vars
 		$return = strtolower(trim(Request::getString('return', '', 'get')));

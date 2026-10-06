@@ -79,8 +79,8 @@ class Base extends SiteController
 			$return .= '&controller=' . $this->_controller;
 		}
 
-		// append task
-		if (isset($this->_task))
+		// append task, unless it was posted: the GET that follows login can't replay it
+		if (isset($this->_task) && Request::method() != 'POST')
 		{
 			$return .= '&task=' . $this->_task;
 		}

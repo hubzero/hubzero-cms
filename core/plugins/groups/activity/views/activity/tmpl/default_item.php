@@ -234,20 +234,20 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 					<?php } ?>
 					<?php if (!$this->row->log->get('parent')) { ?>
 						<li>
-							<a
+							<button type="submit" form="hz-post-action"
 								data-id="activity<?php echo $this->row->get('id'); ?>"
 								class="icon-starred tooltips"
-								href="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
+								formaction="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
 								data-hrf-active="<?php echo Route::url($base . '&action=unstar&activity=' . $this->row->get('id')); ?>"
 								data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
 								data-txt-active="<?php echo Lang::txt('Unstar this'); ?>"
 								data-txt-inactive="<?php echo Lang::txt('Star this'); ?>"
 								title="<?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?>"><!--
 								--><?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?><!--
-							--></a>
+							--></button>
 						</li>
 					<?php } ?>
-					<?php if (in_array($this->authorized, array('manager', 'admin'))) { ?>
+					<?php if ($this->canModerate || $this->row->log->get('created_by') == User::get('id')) { ?>
 					<li>
 						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
 					</li>
@@ -342,7 +342,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 				{
 					$this->view('default_item')
 						->set('group', $this->group)
-						->set('authorized', $this->authorized)
+						->set('canModerate', $this->canModerate)
 						->set('online', $this->online)
 						->set('row', $row)
 						->display();

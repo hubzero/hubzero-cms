@@ -2608,9 +2608,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Check for request forgeries: the thread list's delete button posts
-		// the token, the comment delete link carries it in its URL
-		Request::checkToken(['get', 'post']);
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = ($id) ? $id : Request::getInt('thread', 0);

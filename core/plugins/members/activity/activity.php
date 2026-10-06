@@ -268,6 +268,12 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
 
+		// The record must be on this member's own feed
+		if ($entry->get('scope') != 'user' || $entry->get('scope_id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
+
 		if (!$entry->markAsUnpublished())
 		{
 			$this->setError($entry->getError());
@@ -400,11 +406,20 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
 		$action  = Request::getString('action', 'star');
 
 		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+
+		// The record must be on this member's own feed
+		if ($entry->get('scope') != 'user' || $entry->get('scope_id') != $this->member->get('id'))
+		{
+			App::abort(403, Lang::txt('PLG_MEMBERS_ACTIVITY_NOTAUTH'));
+		}
 		$entry->set('starred', ($action == 'star' ? 1 : 0));
 
 		if (!$entry->save())
@@ -421,6 +436,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 			$response = new stdClass;
 			$response->success = true;
 			$response->message = $success;
+			$response->starred = ($action == 'star');
 			if ($err = $this->getError())
 			{
 				$response->success = false;
