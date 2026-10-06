@@ -1345,6 +1345,12 @@ class Setup extends Base
 	public function getGrantAgencyId($grantAgency)
 	{
 		$agency = trim($grantAgency);
+
+		if ($agency === '')
+		{
+			return false;
+		}
+
 		$agencyQry = \Components\Members\Helpers\Utility::escapeSpecialChars($agency);
 		
 		$verNum = \Component::params('com_members')->get('rorApiVersion');
