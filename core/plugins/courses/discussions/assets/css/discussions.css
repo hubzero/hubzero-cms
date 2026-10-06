@@ -1173,7 +1173,8 @@
 	}
 	.comments-frame .sticky-thread-controls span {
 	}
-	.comments-frame .sticky-thread-controls a {
+	.comments-frame .sticky-thread-controls a,
+	.comments-frame .sticky-thread-controls button {
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -1185,11 +1186,13 @@
 		margin: 0;
 		color: #666;
 	}
-	.comments-frame .sticky-thread-controls a:hover {
+	.comments-frame .sticky-thread-controls a:hover,
+	.comments-frame .sticky-thread-controls button:hover {
 		color: #111;
 	}
 	.comments-frame .sticky-thread-controls small.sticky-controls-before,
-	.comments-frame .sticky-thread-controls a:before {
+	.comments-frame .sticky-thread-controls a:before,
+	.comments-frame .sticky-thread-controls button:before {
 		content: "\273D";
 		font-family: "Fontcons";
 		margin-left: 0.2em;
@@ -1208,10 +1211,12 @@
 		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
 	}
-	.comments-frame .sticky-thread-controls a {
+	.comments-frame .sticky-thread-controls a,
+	.comments-frame .sticky-thread-controls button {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="sticky-controls-before">&#x273D;</small>' + this.innerHTML);
 	}
-	.comments-frame .sticky-thread-controls a:after {
+	.comments-frame .sticky-thread-controls a:after,
+	.comments-frame .sticky-thread-controls button:after {
 		content: "";
 		position: absolute;
 		border: 6px solid #d9d9d9;
@@ -1219,24 +1224,30 @@
 		border-color: transparent transparent transparent #d9d9d9;
 		left: 2em;
 	}
-	.comments-frame .sticky-thread-controls a:hover:before {
+	.comments-frame .sticky-thread-controls a:hover:before,
+	.comments-frame .sticky-thread-controls button:hover:before {
 		background-color: #fcc71f;
 	}
-	.comments-frame .sticky-thread-controls a:hover:after {
+	.comments-frame .sticky-thread-controls a:hover:after,
+	.comments-frame .sticky-thread-controls button:hover:after {
 		border-color: transparent transparent transparent #fcc71f;
 	}
 
-	.comments-frame .sticky-thread-controls.stuck a:before {
+	.comments-frame .sticky-thread-controls.stuck a:before,
+	.comments-frame .sticky-thread-controls.stuck button:before {
 		background-color: #fcc71f;
 	}
-	.comments-frame .sticky-thread-controls.stuck a:after {
+	.comments-frame .sticky-thread-controls.stuck a:after,
+	.comments-frame .sticky-thread-controls.stuck button:after {
 		border-color: transparent transparent transparent #fcc71f;
 	}
 
-	.comments-frame .sticky-thread-controls.stuck a:hover:before {
+	.comments-frame .sticky-thread-controls.stuck a:hover:before,
+	.comments-frame .sticky-thread-controls.stuck button:hover:before {
 		background-color: #d9d9d9;
 	}
-	.comments-frame .sticky-thread-controls.stuck a:hover:after {
+	.comments-frame .sticky-thread-controls.stuck a:hover:after,
+	.comments-frame .sticky-thread-controls.stuck button:hover:after {
 		border-color: transparent transparent transparent #d9d9d9;
 	}
 

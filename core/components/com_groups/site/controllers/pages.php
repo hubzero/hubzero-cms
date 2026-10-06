@@ -546,9 +546,6 @@ class Pages extends Base
 	 */
 	public function deleteTask()
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
 		$this->setStateTask(2, 'deleted');
 	}
 
@@ -561,6 +558,9 @@ class Pages extends Base
 	 */
 	public function setStateTask($state = 1, $status = 'published')
 	{
+		// Publish, unpublish and delete all post the token
+		Request::checkToken();
+
 		//get request vars
 		$pageid = Request::getInt('pageid', 0, 'get');
 

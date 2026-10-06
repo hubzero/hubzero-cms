@@ -926,7 +926,8 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _approveMembership()
 	{
-		Request::checkToken(['get', 'post']);
+		// Both Approve buttons post the token
+		Request::checkToken();
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);

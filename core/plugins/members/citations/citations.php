@@ -679,8 +679,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleteAction()
 	{
-		// Guard against request forgeries (the links below carry the token)
-		Request::checkToken(['get', 'post']);
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Check if they're logged in
 		if (User::isGuest())
@@ -935,8 +935,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function publishAction()
 	{
-		// Guard against request forgeries (the links below carry the token)
-		Request::checkToken(['get', 'post']);
+		// Check for request forgeries
+		Request::checkToken();
 
 		$id = Request::getInt('cid', 0);
 		$citationIDs = Request::getString('citationIDs', '');

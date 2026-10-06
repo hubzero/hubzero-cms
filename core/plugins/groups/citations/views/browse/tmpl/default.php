@@ -91,12 +91,12 @@ if (isset($this->messages))
 							<?php if ($this->isManager) : ?>
 								<tr class="hidden">
 									<div class="admin">
-										<a class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
+										<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>" class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH_SELECTED'); ?>
-										</a>
-										<a class="btn icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+										</button>
+										<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>" class="btn icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE_SELECTED'); ?>
-										</a>
+										</button>
 										</td>
 									</div>
 								</tr>

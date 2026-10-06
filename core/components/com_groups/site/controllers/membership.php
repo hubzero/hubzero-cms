@@ -600,6 +600,13 @@ class Membership extends Base
 			return;
 		}
 
+		// An Accept button posts the CSRF token; an emailed invitation link
+		// carries its own one-time token instead
+		if (!$token)
+		{
+			Request::checkToken();
+		}
+
 		//check to make sure we have  cname
 		if (!$this->cn)
 		{
@@ -671,6 +678,10 @@ class Membership extends Base
 				$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
 				$this->database->setQuery($sql);
 				$this->database->query();
+			}
+			else
+			{
+				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
 			}
 		}
 		elseif (in_array(strtolower(User::get('email')), $inviteemails))

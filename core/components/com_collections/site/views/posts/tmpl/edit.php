@@ -151,9 +151,9 @@ if (!$dir)
 								      // every repost too. The controller allows that only to the item's
 								      // owner; offering the link to anyone else is a 403 waiting to happen.
 								      if ($item->get('created_by') == User::get('id')) { ?>
-								<a class="icon-delete delete" href="<?php echo Route::url($base . '&post=' . $this->entry->get('id') . '&task=edit&remove=' . $asset->get('id')); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_DELETE_ASSET'); ?>">
+								<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&post=' . $this->entry->get('id') . '&task=edit&remove=' . $asset->get('id')); ?>" class="icon-delete delete"  title="<?php echo Lang::txt('COM_COLLECTIONS_DELETE_ASSET'); ?>">
 									<?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
-								</a>
+								</button>
 								<?php } ?>
 							</span>
 						</p>

@@ -15,5 +15,5 @@ defined('_HZEXEC_') or die();
 	<?php
 		$link = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id'));
 	?>
-	<p><a href="<?php echo $link . '&return=' . base64_encode(Request::current(true)); ?>"><?php echo rtrim(Request::base(), '/') . $link; ?></a></p>
+	<p><button type="submit" form="hz-post-action" formaction="<?php echo $link . '&return=' . base64_encode(Request::current(true)); ?>" class="btn"><?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></button></p>
 </div>

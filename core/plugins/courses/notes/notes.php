@@ -213,6 +213,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	 */
 	public function _save()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$note_id = Request::getInt('note', 0);
 
 		$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);

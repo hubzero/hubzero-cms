@@ -42,7 +42,7 @@ jQuery(document).ready(function (jq){
 		});
 	
 	// bulk actions
-	$('.bulk').click(function() {
+	$('.bulk').click(function(e) {
 		var citationIDs = $('.download-marker:checked').map(function()
 			{
 				return $(this).val();
@@ -50,15 +50,15 @@ jQuery(document).ready(function (jq){
 
 		var textAction = $(this).text().toLowerCase().trim();
 		textAction = 'Are you sure you want to ' + textAction + '?';
-		
-		var url = $(this).attr('data-link');
-		url = url + '&citationIDs=' + citationIDs.join(',');
 
-		var locked = confirm(textAction.trim());
-		if (locked === true)
+		if (!confirm(textAction.trim()))
 		{
-			window.location = url;
+			e.preventDefault();
+			return;
 		}
+
+		// The button posts the page's token form to its target
+		$(this).attr('formaction', $(this).attr('data-link') + '&citationIDs=' + citationIDs.join(','));
 	});
 
 	// exporting citation types

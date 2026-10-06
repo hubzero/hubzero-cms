@@ -71,7 +71,7 @@ $this->css('introduction.css', 'system')
 					</div>
 					<ul>
 						<?php foreach ($this->mygroups['invitees'] as $invite) : ?>
-							<li><?php echo $this->escape($invite->description); ?><a href="<?php echo Route::url('index.php?option=com_groups&cn='.$invite->cn.'&task=accept'); ?>">Accept Invite</a></li>
+							<li><?php echo $this->escape($invite->description); ?><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$invite->cn.'&task=accept'); ?>">Accept Invite</button></li>
 						<?php endforeach; ?>
 					</ul>
 				</div>

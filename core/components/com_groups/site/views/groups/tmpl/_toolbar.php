@@ -39,9 +39,9 @@ if ($this->group->isSuperGroup())
 	<?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="invited btn btn-success icon" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="invited btn btn-success icon">
 					<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
-				</a>
+				</button>
 			</li>
 			<li>
 				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>" class="invited btn btn-secondary"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_DECLINE'); ?></button>

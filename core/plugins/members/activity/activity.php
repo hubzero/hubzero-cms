@@ -261,7 +261,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);

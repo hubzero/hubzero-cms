@@ -23,9 +23,9 @@ $this->css();
 
 		<?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
 			<hr />
-			<a href="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
+			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
 				<?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>
-			</a>
+			</button>
 			<hr />
 		<?php endif; ?>
 

@@ -115,24 +115,23 @@ jQuery(document).ready(function (jq) {
 		}
 	});
 
-	$('.bulk').click(function() {
+	$('.bulk').click(function(e) {
 		var citationIDs = $('.download-marker:checked').map(function()
 			{
 				return $(this).val();
 			}).get();
-		
+
 		var textAction = $(this).text().toLowerCase().trim();
 		textAction = 'Are you sure you want to ' + textAction + '?';
 
-		var url = $(this).attr('data-link') + '&citationIDs=' + citationIDs.join(',');
-
-		var locked = confirm(textAction.trim());
-		if (locked === true)
+		if (!confirm(textAction.trim()))
 		{
-			// POST the action through a copy of the page's token form
-			$('#hz-post-action').clone().removeAttr('id').attr('action', url).appendTo('body').submit();
-		 }
+			e.preventDefault();
+			return;
+		}
 
+		// The button posts the page's token form to its target
+		$(this).attr('formaction', $(this).attr('data-link') + '&citationIDs=' + citationIDs.join(','));
 	});
 
 	// exporting citation types

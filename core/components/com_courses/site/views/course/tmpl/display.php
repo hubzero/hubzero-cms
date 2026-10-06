@@ -68,9 +68,9 @@ $this->css('course.css')
 
 <?php if ($this->course->access('edit', 'course') && $this->course->get('state') != 1) { ?>
 	<div class="manager-options draft">
-		<a class="icon-edit btn btn-secondary btn-success" href="<?php echo Route::url($this->course->link() . '&task=publish' . '&' . Session::getFormToken() . '=1'); ?>">
+		<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->course->link() . '&task=publish'); ?>" class="icon-edit btn btn-secondary btn-success">
 			<?php echo Lang::txt('COM_COURSES_PUBLISH'); ?>
-		</a>
+		</button>
 		<span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_STATE_DRAFT'); ?></strong></span>
 	</div>
 <?php } ?>

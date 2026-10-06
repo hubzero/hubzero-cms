@@ -82,9 +82,9 @@ foreach ($this->modules as $module)
 
 					<div class="item-state">
 						<?php if ($module->get('state') == 0) : ?>
-							<a class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>" class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></button>
 						<?php else : ?>
-							<a class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>" class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></button>
 						<?php endif; ?>
 					</div>
 
@@ -97,9 +97,9 @@ foreach ($this->modules as $module)
 							<li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE'); ?></a></li>
 							<li class="divider"></li>
 							<?php if ($module->get('state') == 0) : ?>
-								<li><a class="icon-ban-circle" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a></li>
+								<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>" class="icon-ban-circle"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></button></li>
 							<?php else : ?>
-								<li><a class="icon-success" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a></li>
+								<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>" class="icon-success"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></button></li>
 							<?php endif; ?>
 							<li class="divider"></li>
 							<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=delete&moduleid='.$module->get('id')); ?>" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?></button></li>

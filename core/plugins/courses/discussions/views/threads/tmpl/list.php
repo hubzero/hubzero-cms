@@ -14,14 +14,14 @@ if ($this->depth == 0 && $this->config->get('access-edit-thread'))
 	?>
 	<div class="sticky-thread-controls<?php echo ($this->post->get('sticky')) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->get('thread'); ?>">
 		<p>
-			<a class="sticky-toggle"
-				href="<?php echo Route::url($stick . ($this->post->get('sticky') ? 0 : 1)); ?>"
+			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($stick . ($this->post->get('sticky') ? 0 : 1)); ?>" class="sticky-toggle"
+				
 				data-stick-href="<?php echo Route::url($stick . '1'); ?>"
 				data-unstick-href="<?php echo Route::url($stick . '0'); ?>"
 				data-stick-txt="<?php echo Lang::txt('Make sticky'); ?>"
 				data-unstick-txt="<?php echo Lang::txt('Make not sticky'); ?>">
 				<?php echo ($this->post->get('sticky')) ? Lang::txt('Make not sticky') : Lang::txt('Make sticky'); ?>
-			</a>
+			</button>
 			<span class="hint">
 				<?php echo Lang::txt('Sticky discussions are viewable by all sections'); ?>
 			</span>

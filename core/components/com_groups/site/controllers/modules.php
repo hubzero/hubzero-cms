@@ -358,9 +358,6 @@ class Modules extends Base
 	 */
 	public function deleteTask()
 	{
-		// Check for request forgeries
-		Request::checkToken();
-
 		$this->setStateTask(2, 'deleted');
 	}
 
@@ -373,6 +370,9 @@ class Modules extends Base
 	 */
 	public function setStateTask($state = 1, $status = 'published')
 	{
+		// Publish, unpublish and delete all post the token
+		Request::checkToken();
+
 		//get request vars
 		$moduleid = Request::getInt('moduleid', 0, 'get');
 

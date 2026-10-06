@@ -689,6 +689,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					{
 						App::abort(403, Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'));
 					}
+					// Check for request forgeries
+					Request::checkToken();
+
 					$post->set('sticky', Request::getInt('sticky', 0));
 					$post->save();
 				break;
@@ -1311,6 +1314,9 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 					{
 						App::abort(403, Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'));
 					}
+					// Check for request forgeries
+					Request::checkToken();
+
 					$post->set('sticky', Request::getInt('sticky', 0));
 					$post->save();
 				break;

@@ -260,10 +260,10 @@ $roles = [
 				</td>
 				<td>
 					<?php if ($owner->status == 3): ?>
-						<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1'); ?>" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success" role="button">
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid); ?>" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
-						</a>
-						<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1'); ?>" id="<?php echo 'form-deny-' . $owner->id;?>" class="btn btn-danger" role="button">
+						</button>
+						<a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid); ?>" id="<?php echo 'form-deny-' . $owner->id;?>" class="btn btn-danger" role="button">
 							<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
 						</a>
 					<?php endif; ?>

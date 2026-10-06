@@ -69,7 +69,8 @@
 	.mod_mygroups .compactlist li.group .actions button:hover {
 		border: none;
 	}
-	.mod_mygroups .compactlist li.group .actions a.action-accept:hover {
+	.mod_mygroups .compactlist li.group .actions a.action-accept:hover,
+	.mod_mygroups .compactlist li.group .actions button.action-accept:hover {
 		background-color: #66AA00;
 	}
 	.mod_mygroups .compactlist li.group .actions a.action-cancel:hover,

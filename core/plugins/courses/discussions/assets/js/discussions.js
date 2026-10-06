@@ -471,16 +471,16 @@ HUB.Plugins.CoursesForum = {
 					});
 				}
 			})
-			.on('click', 'a.sticky-toggle', function (e) {
+			.on('click', 'button.sticky-toggle', function (e) {
 				e.preventDefault();
 
 				var el = $(this),
 					par = el.parent().parent();
 
 				if (_DEBUG) {
-					window.console && console.log('called:' + el.attr('href').nohtml());
+					window.console && console.log('called:' + el.attr('formaction').nohtml());
 				}
-				$.getJSON(el.attr('href').nohtml(), {}, function(data){
+				$.post(el.attr('formaction').nohtml(), $(el[0].form).serialize(), function(data){
 					par.toggleClass('stuck');
 					$('#thread' + par.attr('data-thread')).toggleClass('stuck');
 					if ($('#mine' + par.attr('data-thread')).length) {
@@ -489,14 +489,14 @@ HUB.Plugins.CoursesForum = {
 
 					if (par.hasClass('stuck')) {
 						el
-							.attr('href', el.attr('data-unstick-href'))
+							.attr('formaction', el.attr('data-unstick-href'))
 							.text(el.attr('data-unstick-txt'));
 					} else {
 						el
-							.attr('href', el.attr('data-stick-href'))
+							.attr('formaction', el.attr('data-stick-href'))
 							.text(el.attr('data-stick-txt'));
 					}
-				});
+				}, 'json');
 			});
 
 		thread

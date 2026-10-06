@@ -127,7 +127,7 @@ $published = ($group->get('published')) ? true : false;
 					<?php if ($status == 'pending') : ?>
 						<?php echo Lang::txt('Membership request requires approval.'); ?>
 					<?php elseif ($status == 'invitee') : ?>
-						<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></a>
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" class="btn btn-success accept tooltips"  title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></button>
 					<?php else : ?>
 						<div>
 							<div>

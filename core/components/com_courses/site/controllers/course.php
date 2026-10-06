@@ -366,7 +366,14 @@ class Course extends SiteController
 	 */
 	public function publishTask()
 	{
-		Request::checkToken('get');
+		// Check if they're logged in (returning to the course, not to this action)
+		if (User::isGuest())
+		{
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getCmd('gid', '');
@@ -810,7 +817,7 @@ class Course extends SiteController
 		// Check if they're logged in (returning to the course, not to this action)
 		if (User::isGuest())
 		{
-			return $this->loginTask('COM_COURSES_NOT_LOGGEDIN', 'display');
+			return $this->loginTask(Lang::txt('COM_COURSES_NOT_LOGGEDIN'), 'display');
 		}
 
 		// Check for request forgeries

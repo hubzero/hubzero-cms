@@ -13,6 +13,11 @@ $this->js();
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function(jQuery) {
+	// Changing a note posts the page's token along with the data
+	var postNote = function (url, data, callback) {
+		jQuery.post(url, jQuery('#hz-post-action').serialize() + '&' + jQuery.param(data), callback, 'json');
+	};
+
 	var $ = jQuery,
 		_DEBUG = false,
 		url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
@@ -99,7 +104,7 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text);
 			}
 
-			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text, {}, function(data) {
+			postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access, {txt: note.text}, function(data) {
 				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
@@ -120,7 +125,7 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
 			}
 
-			$.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			postNote(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				if (_DEBUG) {
 					window.console && console.log(data);
 				}
@@ -140,11 +145,11 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + id + '&action=delete');
 			}
 
-			$.post(url + id + '&action=delete', $('#hz-post-action').serialize(), function(data) {
+			postNote(url + id + '&action=delete', {}, function(data) {
 				if (_DEBUG) {
 					window.console && console.log(data);
 				}
-			}, 'json');
+			});
 		},
 		moveCallback: function(note) {
 			if (!note.editable) {
@@ -157,7 +162,7 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
 			}
 
-			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}
@@ -173,7 +178,7 @@ jQuery(document).ready(function(jQuery) {
 
 			var id = $('#note-' + note.id).attr('data-id');
 
-			$.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+			postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
 				if (data.id != note.id) {
 					$('#note-' + note.id).attr('data-id', data.id);
 				}

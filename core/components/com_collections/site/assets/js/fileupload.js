@@ -26,7 +26,7 @@ HUB.CollectionsFileUpload = {
 
 		if ($("#ajax-uploader").length) {
 
-			$('a.delete, #ajax-uploader-list button.delete')
+			$('#ajax-uploader-list button.delete')
 				.unbind('click')
 				.on('click', function(event){
 					event.preventDefault();
@@ -93,15 +93,9 @@ HUB.CollectionsFileUpload = {
 	deleteAsset: function(el) {
 		var $ = HUB.CollectionsFileUpload.jQuery;
 
-		if ($(el).is('button')) {
-			$.post($(el).attr('formaction'), $(el.form).serialize(), function(data) {
-				HUB.CollectionsFileUpload.updateFileList();
-			});
-		} else {
-			$.get($(el).attr('href'), {}, function(data) {
-				HUB.CollectionsFileUpload.updateFileList();
-			});
-		}
+		$.post($(el).attr('formaction'), $(el.form).serialize(), function(data) {
+			HUB.CollectionsFileUpload.updateFileList();
+		});
 	},
 
 	updateFileList: function() {
@@ -114,7 +108,7 @@ HUB.CollectionsFileUpload = {
 				$('#ajax-uploader-list')
 					.html(data)
 					.sortable('enable');
-				$('a.delete, #ajax-uploader-list button.delete')
+				$('#ajax-uploader-list button.delete')
 					.unbind('click')
 					.on('click', function(event){
 						event.preventDefault();

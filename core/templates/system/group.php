@@ -200,10 +200,10 @@ $membership_control = $params->get('membership_control', 1);
 
 				<?php if ($isInvitee && $membership_control == 1) : ?>
 					<li>
-						<a class="accept" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=accept'); ?>">
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=accept'); ?>" class="accept">
 							<?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT'); ?>
 							<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT_DESC'); ?></span>
-						</a>
+						</button>
 					</li>
 				<?php endif; ?>
 

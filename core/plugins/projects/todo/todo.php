@@ -386,7 +386,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	public function save()
 	{
 		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		// Incoming
 		$listcolor = Request::getString('list', '');

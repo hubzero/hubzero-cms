@@ -18,12 +18,9 @@ jQuery(document).ready(function(jq){
 		$('#ajax-uploader-list')
 			.on('click', 'a.delete, button.delete', function (e){
 				e.preventDefault();
+				// A link added in this session (no data-id) has nothing stored to delete
 				if ($(this).attr('data-id')) {
-					if ($(this).is('button')) {
-						$.post($(this).attr('formaction'), $(this.form).serialize(), function(data) {});
-					} else {
-						$.get($(this).attr('href'), {}, function(data) {});
-					}
+					$.post($(this).attr('formaction'), $(this.form).serialize(), function(data) {});
 				}
 				$(this).parent().parent().remove();
 			});

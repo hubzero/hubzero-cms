@@ -1102,6 +1102,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 				App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 			}
 
+			// Check for request forgeries
+			Request::checkToken();
+
 			if (!$item->removeAsset($remove))
 			{
 				$view->setError($item->getError());

@@ -19,9 +19,9 @@ defined('_HZEXEC_') or die();
 	<?php endif; ?>
 	<?php if ($group->regconfirmed && !$group->registered) : ?>
 		<span class="actions">
-			<a class="action-accept" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
+			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>" class="action-accept">
 				<?php echo Lang::txt('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
-			</a>
+			</button>
 			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=cancel'); ?>" class="action-cancel">
 				<?php echo Lang::txt('MOD_MYGROUPS_ACTION_DECLINE'); ?>
 			</button>

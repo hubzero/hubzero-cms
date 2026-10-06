@@ -192,7 +192,7 @@ $this->css()
 								<?php if ($group->registered && !$group->regconfirmed) : ?>
 									<?php echo Lang::txt('Membership request requires approval.'); ?>
 								<?php elseif (!$group->registered && $group->regconfirmed) : ?>
-									<a class="btn btn-success accept tooltips" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT'); ?></a>
+									<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept'); ?>" class="btn btn-success accept tooltips"  title="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT'); ?></button>
 								<?php else : ?>
 									<div class="grid">
 										<div class="col span6">

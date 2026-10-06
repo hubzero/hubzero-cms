@@ -237,6 +237,9 @@ class Posts extends SiteController
 				App::abort(403, Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
 			}
 
+			// Check for request forgeries
+			Request::checkToken();
+
 			if (!$item->removeAsset($remove))
 			{
 				$this->view->setError($item->getError());
