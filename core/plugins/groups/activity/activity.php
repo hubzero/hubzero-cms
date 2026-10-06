@@ -114,8 +114,9 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 			include_once __DIR__ . '/models/attachment.php';
 
-			$this->group = $group;
-			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
+			$this->group      = $group;
+			$this->authorized = $authorized;
+			$this->base       = 'index.php?option=com_groups&cn=' . $group->get('cn');
 
 			$action = Request::getCmd('action', 'feed');
 
@@ -226,6 +227,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$view = $this->view('default', 'activity')
 			->set('name', $this->_name)
 			->set('group', $this->group)
+			->set('authorized', $this->authorized)
 			->set('categories', null)
 			->set('filters', $filters)
 			->set('total', $total)
@@ -241,6 +243,24 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function removeAction()
 	{
+		if (User::isGuest())
+		{
+			$url = Route::url($this->base . '&active=' . $this->_name, false, true);
+
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+				Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
+				'warning'
+			);
+			return;
+		}
+
+		// Only the group's managers may hide an entry from its feed
+		if (!in_array($this->authorized, array('manager', 'admin')))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
 		// Check for request forgeries
 		Request::checkToken(['get', 'post']);
 
