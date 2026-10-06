@@ -19,7 +19,7 @@ $i = 1;
 	}
 	?>
 	<?php if (!$this->getError()) { ?>
-		<form id="hubForm-ajax" method="get" action="<?php echo Route::url($this->model->link('team')); ?>">
+		<form id="hubForm-ajax" method="post" action="<?php echo Route::url($this->model->link('team')); ?>">
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 				<input type="hidden" name="action" value="denymembership" />

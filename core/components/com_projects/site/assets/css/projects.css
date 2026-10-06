@@ -1563,14 +1563,14 @@
 		padding: 0.5em 0;
 		margin: 0;
 	}
-	.cancel, a.cancel, button.cancel {
+	.cancel, a.cancel {
 		padding: 0.1em 0.3em;
 		margin-left: 1.5em;
 		border: 1px solid #999;
 		color: #999;
 		background: #ededed;
 	}
-	.confirm, a.confirm {
+	.confirm, a.confirm, button.confirm {
 		padding: 0.1em 0.3em;
 		border: 1px solid #999;
 		color: #FFF;

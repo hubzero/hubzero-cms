@@ -94,7 +94,7 @@ defined('_HZEXEC_') or die();
 			<p class="comment-options">
 				<?php if ($this->config->get('access-edit-thread')) { ?>
 					<?php if ($this->config->get('access-delete-thread')) { ?>
-						<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
+						<a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete') . '&' . Session::getFormToken() . '=1'); ?>"><!--
 							--><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!--
 						--></a>
 					<?php } ?>

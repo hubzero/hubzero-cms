@@ -26,14 +26,11 @@ HUB.CollectionsFileUpload = {
 
 		if ($("#ajax-uploader").length) {
 
-			$('a.delete')
+			$('a.delete, #ajax-uploader-list button.delete')
 				.unbind('click')
 				.on('click', function(event){
 					event.preventDefault();
-					$.get($(this).attr('href'), {}, function(data) {
-						HUB.CollectionsFileUpload.updateFileList();
-						//$('#ajax-uploader-list').sortable('enable');
-					});
+					HUB.CollectionsFileUpload.deleteAsset(this);
 				});
 
 			if ($('#link-adder').length > 0) {
@@ -93,6 +90,20 @@ HUB.CollectionsFileUpload = {
 		}
 	},
 	
+	deleteAsset: function(el) {
+		var $ = HUB.CollectionsFileUpload.jQuery;
+
+		if ($(el).is('button')) {
+			$.post($(el).attr('formaction'), $(el.form).serialize(), function(data) {
+				HUB.CollectionsFileUpload.updateFileList();
+			});
+		} else {
+			$.get($(el).attr('href'), {}, function(data) {
+				HUB.CollectionsFileUpload.updateFileList();
+			});
+		}
+	},
+
 	updateFileList: function() {
 		var $ = HUB.CollectionsFileUpload.jQuery;
 
@@ -103,15 +114,11 @@ HUB.CollectionsFileUpload = {
 				$('#ajax-uploader-list')
 					.html(data)
 					.sortable('enable');
-				$('a.delete')
+				$('a.delete, #ajax-uploader-list button.delete')
 					.unbind('click')
 					.on('click', function(event){
 						event.preventDefault();
-						//console.log($(this).attr('href'));
-						$.get($(this).attr('href'), {}, function(data) {
-							//console.log(data);
-							HUB.CollectionsFileUpload.updateFileList();
-						});
+						HUB.CollectionsFileUpload.deleteAsset(this);
 					});
 			});
 		}

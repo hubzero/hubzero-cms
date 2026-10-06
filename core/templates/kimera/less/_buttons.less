@@ -170,6 +170,27 @@
 		}
 	}
 
+// Action buttons
+//
+// A state-changing action is a <button form="hz-post-action" formaction="...">
+// placed where a link would otherwise be; core/assets/css/actions.css makes it
+// read as text. Here it takes this template's link colours, at the specificity
+// of a bare "a" so component styles win as they would for a link. The generic
+// hover/focus rules in _forms.less exclude it.
+// --------------------------------------------------
+
+	body button:where([form="hz-post-action"]:not(.btn)) {
+		color: #444;
+	}
+	body button:where([form="hz-post-action"]:not(.btn)):where(:hover) {
+		border-bottom: 1px solid #999;
+		color: #222;
+		text-decoration: none;
+	}
+	body button:where([form="hz-post-action"]:not(.btn)):where(:focus-visible) {
+		.tab-focus();
+	}
+
 // Button group
 	.btn-group {
 		position: relative;
@@ -337,13 +358,23 @@
 		background-color: #e5e5e5;
 		border-bottom: 1px solid #ffffff;
 	}
-	.dropdown-menu > li > a {
+	.dropdown-menu > li > a,
+	.dropdown-menu > li > button {
 		display: block;
 		padding: 0.2em 1em;
 		clear: both;
 		font-weight: normal;
 		line-height: 1.5em;
 		border: none;
+	}
+	.dropdown-menu > li > button {
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: left;
+	}
+	body .dropdown-menu > li > button:hover {
+		border-bottom: none;
 	}
 
 // Header buttons

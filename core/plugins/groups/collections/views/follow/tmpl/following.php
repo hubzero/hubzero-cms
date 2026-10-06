@@ -20,13 +20,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
 	<li>
 		<?php if ($this->model->isFollowing()) { ?>
-		<a class="icon-unfollow unfollow btn" data-token="<?php echo Session::getFormToken(); ?>" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=unfollow'); ?>">
+		<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=unfollow'); ?>" class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>">
 			<span><?php echo Lang::txt('Unfollow All'); ?></span>
-		</a>
+		</button>
 		<?php } else { ?>
-		<a class="icon-follow follow btn" data-token="<?php echo Session::getFormToken(); ?>" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=follow'); ?>">
+		<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=follow'); ?>" class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>">
 			<span><?php echo Lang::txt('Follow All'); ?></span>
-		</a>
+		</button>
 		<?php } ?>
 	</li>
 </ul>
@@ -79,9 +79,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						</td>
 						<td>
 							<?php if ($this->params->get('access-manage-collection')) { ?>
-							<a class="unfollow btn" data-token="<?php echo Session::getFormToken(); ?>" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('Follow'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>" href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->following()->link('unfollow')); ?>" class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('Follow'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>">
 								<span><?php echo Lang::txt('Unfollow'); ?></span>
-							</a>
+							</button>
 							<?php } ?>
 						</td>
 					</tr>

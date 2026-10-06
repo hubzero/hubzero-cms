@@ -565,19 +565,19 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _follow($what='collection')
 	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		// Is the board restricted to logged-in users only?
 		if (User::isGuest())
 		{
 			return $this->_login();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		Request::checkToken();
 
 		if (User::get('id') == $this->member->get('id'))
 		{
@@ -641,19 +641,19 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	 */
 	private function _unfollow($what='collection')
 	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		// Is the board restricted to logged-in users only?
 		if (User::isGuest())
 		{
 			return $this->_login();
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		Request::checkToken();
 
 		// Is it a private board?
 		if (User::get('id') == $this->member->get('id'))
@@ -1450,6 +1450,9 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Access check
 		if (!$this->params->get('access-create-item'))
 		{
@@ -1590,14 +1593,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		// Access check
 		if (!$this->params->get('access-delete-item'))
 		{
@@ -1668,6 +1663,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			}
 
 			return $view->loadTemplate();
+		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -1849,7 +1850,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -1913,7 +1914,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -2196,14 +2197,6 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			return $this->_login();
 		}
 
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		// Access check
 		if (!$this->params->get('access-delete-collection'))
 		{
@@ -2258,6 +2251,12 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$view->task       = $this->action;
 
 			return $view->loadTemplate();
+		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();

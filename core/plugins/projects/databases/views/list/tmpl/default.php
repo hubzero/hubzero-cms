@@ -122,10 +122,7 @@ $this->css();
 					<?php echo $recreate; ?>
 				</td>
 				<td>
-					<form action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']); ?>" method="post" class="inline-form">
-						<?php echo Html::input('token'); ?>
-						<button type="submit" class="delete-db"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></button>
-					</form>
+					<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']); ?>" class="delete-db"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></button>
 				</td>
 				<?php } ?>
 			</tr>

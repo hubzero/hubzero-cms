@@ -371,6 +371,71 @@ class Html extends Base
 	}
 
 	/**
+	 * Add the default styles for action buttons (see addActionForm)
+	 *
+	 * The sheet goes first, so component and template styles override it.
+	 *
+	 * @return  object  instance of $this to allow chaining
+	 */
+	public function addActionStyleSheet()
+	{
+		$url = rtrim(\Request::root(true), '/') . '/core/assets/css/actions.css?v=' . filemtime(PATH_CORE . '/assets/css/actions.css');
+
+		$this->_styleSheets = array(
+			$url => array('mime' => 'text/css', 'media' => null, 'attribs' => array())
+		) + $this->_styleSheets;
+
+		return $this;
+	}
+
+	/**
+	 * Add the page's shared POST form to a rendered page
+	 *
+	 * A state-changing action (delete, vote, follow, ...) is rendered as a
+	 * <button form="hz-post-action" formaction="..."> rather than a link.
+	 * Such a button names its form instead of sitting inside one, so it can
+	 * go wherever the link used to be -- within another form, a paragraph,
+	 * a table cell -- and this one form, holding only the CSRF token, serves
+	 * every action on the page.
+	 *
+	 * Only pages sent to a browser get it; e-mail bodies are rendered with
+	 * this class too and must never carry a token. A logged-in user always
+	 * gets it, since action buttons can arrive later by AJAX; a guest gets it
+	 * only on a page that refers to it (an action button, a script naming it).
+	 *
+	 * @param   string  $content  Rendered page
+	 * @return  string
+	 */
+	public static function addActionForm($content)
+	{
+		if (\User::isGuest() && strpos($content, 'hz-post-action') === false)
+		{
+			return $content;
+		}
+
+		$form = '<form id="hz-post-action" method="post" hidden>';
+
+		// A guest is sent to log in before any action checks the token, and a
+		// guest's page may be cached and served to other guests, so it gets none
+		if (!\User::isGuest())
+		{
+			$form .= trim(\Html::input('token'));
+		}
+
+		$form .= '</form>' . "\n";
+
+		// Put it first in <body>: form="..." and getElementById() take the first
+		// element with the id, and posted content (which may keep id attributes)
+		// must not be able to claim it ahead of the real form
+		if (!preg_match('/<body\b[^>]*>/i', $content, $match, PREG_OFFSET_CAPTURE))
+		{
+			return $content;
+		}
+
+		return substr_replace($content, "\n" . $form, $match[0][1] + strlen($match[0][0]), 0);
+	}
+
+	/**
 	 * Count the modules based on the given condition
 	 *
 	 * @param   string   $condition  The condition to use

@@ -88,10 +88,7 @@ if ($this->config->get('access-manage-section')) {
 						<?php } ?>
 						<?php if ($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) { ?>
 							<?php if ($this->config->get('access-delete-section')) { ?>
-								<form action="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/delete'); ?>" method="post" class="inline-form">
-									<?php echo Html::input('token'); ?>
-									<button type="submit" class="icon-delete delete" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span></button>
-								</form>
+								<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span></button>
 							<?php } ?>
 							<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias')) { ?>
 								<a class="icon-edit edit" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>">
@@ -154,10 +151,7 @@ if ($this->config->get('access-manage-section')) {
 											</a>
 										<?php } ?>
 										<?php if ($this->config->get('access-delete-category')) { ?>
-											<form action="<?php echo Route::url($row->link('delete')); ?>" method="post" class="inline-form">
-												<?php echo Html::input('token'); ?>
-												<button type="submit" class="icon-delete delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span></button>
-											</form>
+											<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->link('delete')); ?>" class="icon-delete delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_FORUM_DELETE'); ?></span></button>
 										<?php } ?>
 									</td>
 								<?php } ?>

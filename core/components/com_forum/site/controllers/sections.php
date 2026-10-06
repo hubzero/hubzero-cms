@@ -196,6 +196,9 @@ class Sections extends SiteController
 			return;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$this->_authorize('section');
 
 		// Load the section

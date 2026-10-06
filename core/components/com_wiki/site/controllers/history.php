@@ -284,11 +284,15 @@ class History extends SiteController
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$url = Request::getString('REQUEST_URI', '', 'server');
+			// Return to the page history, not to this action
+			$url = Route::url($this->page->link('history'), false);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url), false)
 			);
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('oldid', 0);

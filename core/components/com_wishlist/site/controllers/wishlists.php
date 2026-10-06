@@ -145,13 +145,18 @@ class Wishlists extends SiteController
 	/**
 	 * Display a login form
 	 *
+	 * @param   string  $return  URL to return to after logging in. Defaults to the current URL.
 	 * @return  void
 	 */
-	public function loginTask()
+	public function loginTask($return = null)
 	{
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
+			if (!$return)
+			{
+				$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
+			}
+			$return = base64_encode($return);
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
 				$this->_msg,
@@ -674,12 +679,9 @@ class Wishlists extends SiteController
 			App::abort(403, Lang::txt('COM_WISHLIST_ALERTNOTAUTH'));
 		}
 
-		// Check for request forgeries -- BEFORE the owner removal below, and
-		// accepting the token from the query string as well as the body. The
-		// three Remove links on the settings page are GETs that carry the
-		// token; the settings form POSTs it. The check used to sit after this
-		// branch and take POST only, so ?action=delete&user=N stripped an owner
-		// from a list on a bare GET -- a page a list manager visited could do it.
+		// Check for request forgeries -- before the owner removal below. The
+		// three Remove buttons on the settings page and the settings form all
+		// POST the token.
 		Request::checkToken(['get', 'post']);
 
 		// Deleting a user/group
@@ -1828,8 +1830,6 @@ class Wishlists extends SiteController
 	 */
 	public function deletewishTask()
 	{
-		// Reached from the proposer's "Withdraw wish" link (GET) as well as the
-		// manager's confirm form, so no token check until the link is a form
 		// Check if wish exists on this list
 		$wishlist = Wishlist::oneByReference(
 			Request::getInt('rid', 0),
@@ -1861,8 +1861,13 @@ class Wishlists extends SiteController
 
 			// Set the pathway
 			$this->_buildPathway($wishlist);
-			return $this->loginTask();
+
+			// Return to the wish, which can be requested with GET, not to this task
+			return $this->loginTask(Route::url($wish->link(), false, true));
 		}
+
+		// Reached from the confirmation's Yes button, which posts the token
+		Request::checkToken();
 
 		if (!$wishlist->access('manage') && $wish->get('proposed_by') != User::get('id'))
 		{
@@ -2423,13 +2428,16 @@ class Wishlists extends SiteController
 			$this->_buildPathway($wishlist);
 
 			$this->_msg = Lang::txt('COM_WISHLIST_WARNING_WISHLIST_LOGIN_TO_RATE');
-			return $this->loginTask();
+
+			// Return to the page the vote was cast from, which can be requested with GET, not to this task
+			$route = Request::getCmd('page', 'wishlist') == 'wishlist' ? $wishlist->link() : $wish->link();
+			return $this->loginTask(Route::url($route, false, true));
 		}
 
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();

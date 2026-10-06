@@ -95,20 +95,20 @@ $this->css()
 				{
 					$status = 'member';
 
-					$options = '<form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</button></form>';
+					$options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</button>';
 				}
 				else if ($group->registered && !$group->regconfirmed)
 				{
 					$status = 'pending';
 
-					$options = '<form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</button></form>';
+					$options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL').'</button>';
 				}
 				else if (!$group->registered && $group->regconfirmed)
 				{
 					$status = 'invitee';
 
 					//$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-					$options .= ' <form action="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" method="post" class="inline-form">' . Html::input('token') . '<button type="submit" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE').'</button></form>';
+					$options .= ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') .'" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE').'</button>';
 				}
 
 				// do we have a new unpublished group

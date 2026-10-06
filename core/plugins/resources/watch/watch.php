@@ -112,10 +112,11 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		// Require POST for both subscribe and unsubscribe
+		// An old link or a crawler arrives by GET: show the box, whose
+		// buttons post, rather than change the subscription
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			return $this->statusAction();
 		}
 
 		Request::checkToken();
@@ -130,7 +131,6 @@ class plgResourcesWatch extends \Hubzero\Plugin\Plugin
 		// Unsubscribing
 		if ($this->action == 'unsubscribe')
 		{
-
 			$msg = Lang::txt('PLG_RESOURCES_WATCH_SUCCESS_UNSUBSCRIBED');
 
 			if ($watch->get('id'))

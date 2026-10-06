@@ -20,8 +20,7 @@ $viewer  = $this->data->viewer;
 		<?php if ($viewer == 'edit') { ?>
 			<span>
 				<a href="<?php echo Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props); ?>" class="showinbox item-edit" title="<?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
-				<?php // Not a form: these sit inside #plg-form; curation.js posts it ?>
-				<button type="button" class="item-remove" data-action="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" data-token="<?php echo Session::getFormToken(); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
 			</span>
 		<?php } ?>
 		</span>

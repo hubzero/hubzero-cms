@@ -26,8 +26,7 @@ $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
 				<span>
 					<a href="<?php echo Route::url($data->editUrl . '&action=orderdown&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-movedown" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN'); ?>">&darr;</a>
 					<a href="<?php echo Route::url($data->editUrl . '&action=orderup&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-moveup" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP'); ?>">&uarr;</a>
-					<?php // Not a form: these sit inside #plg-form; curation.js posts it ?>
-					<button type="button" class="item-remove" data-action="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" data-token="<?php echo Session::getFormToken(); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+					<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
 				</span>
 			<?php } ?>
 		</span>

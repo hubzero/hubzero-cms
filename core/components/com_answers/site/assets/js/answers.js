@@ -55,28 +55,14 @@ jQuery(document).ready(function(jq){
 	});
 
 	$('#content')
-		.on('click', '.vote-button', function (e) {
-			if ($(this).attr('href')) {
-				e.preventDefault();
-
-				var item = $(this);
-
-				$.get(item.attr('href').nohtml(), {}, function(data) {
-					if (data) {
-						item.closest('.voting').html(data);
-						$('.tooltip').hide();
-					}
-				});
-			}
-		})
-		.on('submit', '.inline-form:has(.vote-button)', function (e) {
+		.on('click', 'button.vote-button', function (e) {
 			e.preventDefault();
 
-			var frm = $(this);
+			var item = $(this);
 
-			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
+			$.post(item.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
 				if (data) {
-					frm.closest('.voting').html(data);
+					item.closest('.voting').html(data);
 					$('.tooltip').hide();
 				}
 			});

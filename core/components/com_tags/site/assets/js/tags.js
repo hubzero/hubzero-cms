@@ -28,14 +28,10 @@ jQuery(document).ready(function(jq){
 	$(".delete-tag").each(function(i, el) {
 		// Delete is a POST form's button now; the count rides on the form's action
 		var count = i + 1,
-			target = el.form ? $(el.form) : $(el),
-			attr = el.form ? 'action' : 'href',
-			url = target.attr(attr);
+			url = $(el).attr("formaction");
 
-		if (url) {
-			url += (url.indexOf("?") == -1 ? "?" : "&") + "count=" + count;
-			target.attr(attr, url);
-		}
+		url += (url.indexOf("?") == -1 ? "?" : "&") + "count=" + count;
+		$(el).attr("formaction", url);
 
 		$(el).on('click', function (e) {
 			var res = confirm($(el).attr('data-confirm'));

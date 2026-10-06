@@ -375,6 +375,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$model = $this->view->offering->page(Request::getString('unit', ''));
 
 		if ($model->exists())

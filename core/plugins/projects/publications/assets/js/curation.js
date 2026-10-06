@@ -239,17 +239,14 @@ HUB.ProjectPublicationsDraft = {
 			$(el).on('click', function(e)
 			{
 				e.preventDefault();
-
-				// The button carries the deleteitem URL and the form token (it sits
-				// inside the draft's own form, so it can't be a form itself)
-				if (!confirm('Delete this item?'))
+				if (HUB.Projects)
 				{
-					return;
+					HUB.Projects.addConfirm($(el), 'Delete this item?', 'yes, delete', 'cancel');
+					if ($('#confirm-box')) {
+						$('#confirm-box').css('margin-left', '-100px');
+						$('#confirm-box').css('font-size', '100%');
+					}
 				}
-
-				var frm = $('<form method="post" />').attr('action', $(el).attr('data-action'));
-				$('<input type="hidden" value="1" />').attr('name', $(el).attr('data-token')).appendTo(frm);
-				frm.appendTo('body').submit();
 			});
 		});
 	},

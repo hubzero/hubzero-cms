@@ -28,12 +28,9 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 					<?php echo Lang::txt('New post'); ?>
 				</a>
 			<?php } else { ?>
-				<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
-					<?php echo Html::input('token'); ?>
-					<button type="submit" class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>">
-						<?php echo Lang::txt('Follow'); ?>
-					</button>
-				</form>
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>" class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>">
+					<?php echo Lang::txt('Follow'); ?>
+				</button>
 			<?php } ?>
 		<?php } ?>
 		<span class="clear"></span>
@@ -92,12 +89,9 @@ if ($this->rows->total() > 0)
 								<span><?php echo Lang::txt('Edit'); ?></span>
 							</a>
 						<?php } else { ?>
-							<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>">
-									<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
-								</button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>" class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>">
+								<span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
+							</button>
 						<?php } ?>
 							<a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
 								<span><?php echo Lang::txt('Comment'); ?></span>
@@ -106,19 +100,13 @@ if ($this->rows->total() > 0)
 								<span><?php echo Lang::txt('Collect'); ?></span>
 							</a>
 						<?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-							<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="delete" data-id="<?php echo $row->get('id'); ?>">
-									<span><?php echo Lang::txt('Delete'); ?></span>
-								</button>
-							</form>
+							<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
+								<span><?php echo Lang::txt('Delete'); ?></span>
+							</a>
 						<?php } else if ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-							<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="unpost" data-id="<?php echo $row->get('id'); ?>">
-									<span><?php echo Lang::txt('Remove'); ?></span>
-								</button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>" class="unpost" data-id="<?php echo $row->get('id'); ?>">
+								<span><?php echo Lang::txt('Remove'); ?></span>
+							</button>
 						<?php } ?>
 						</div><!-- / .actions -->
 					<?php } ?>

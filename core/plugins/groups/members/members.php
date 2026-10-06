@@ -467,7 +467,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -607,7 +607,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -728,7 +728,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -1389,18 +1389,19 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmdeny()
 	{
-		// Require POST, with the deny form's token
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
 		}
+
+		// Require POST to prevent accidental denial by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_GROUPS_MEMBERS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		if ($this->membership_control == 0)
 		{
@@ -1494,14 +1495,6 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function cancel()
 	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -1536,18 +1529,19 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmcancel()
 	{
-		// Require POST, with the cancel form's token
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
 		}
+
+		// Require POST to prevent accidental cancellation by crawlers
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('PLG_GROUPS_MEMBERS_ERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		if ($this->membership_control == 0)
 		{
@@ -1908,6 +1902,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$role = Request::getInt('role', 0);
 
 		if (!$role)
@@ -2096,6 +2093,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		$uid  = Request::getInt('uid', 0);
 		$role = Request::getInt('role', 0);

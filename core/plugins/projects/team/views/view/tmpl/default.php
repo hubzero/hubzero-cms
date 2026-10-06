@@ -126,18 +126,14 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 					</td>
 					<td>
 						<?php if ($owner->status == 3 && $this->currentUser->isManager()): ?>
-							<form method="post" action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid);?>" class="inline-form">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success">
-									<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
-								</button>
-							</form>
-							<form method="post" action="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid);?>" class="inline-form">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" id="<?php echo 'form-deny-' . $owner->id;?>" class="btn btn-danger">
-									<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
-								</button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid);?>" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
+							</button>
+							<a id="<?php echo 'form-deny-' . $owner->id;?>"
+								href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid);?>"
+								class="btn btn-danger modal">
+								<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
+							</a>
 						<?php endif; ?>
 					</td>
 					<?php if ($this->count_groups) { ?>

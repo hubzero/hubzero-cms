@@ -2117,7 +2117,7 @@ class Tickets extends SiteController
 		// Must be logged in
 		if (User::isGuest())
 		{
-			$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+			$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets', false, true));
 			App::redirect(
 				Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 			);

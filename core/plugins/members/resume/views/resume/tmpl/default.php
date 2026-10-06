@@ -196,10 +196,7 @@ $this->css('jobs', 'com_jobs');
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<form action="<?php echo Route::url($this->member->link() . '&active=resume&action=deleteresume'); ?>" method="post" class="inline-form">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="trash" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?></button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->member->link() . '&active=resume&action=deleteresume'); ?>" class="trash" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?></button>
 						</td>
 					</tr>
 				</tbody>

@@ -447,6 +447,9 @@ class Categories extends SiteController
 			);
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Load the category
 		$category = Category::all()
 			->whereEquals('alias', Request::getString('category', ''))

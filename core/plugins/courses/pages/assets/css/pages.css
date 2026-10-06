@@ -139,7 +139,8 @@
 		padding: 0;
 		float: right;
 	}
-	.course_pages .manager-options a {
+	.course_pages .manager-options a,
+	.course_pages .manager-options button {
 		display: block;
 		font-size: 1.6em;
 		width: 1em;
@@ -149,7 +150,8 @@
 		margin-left: 0.5em;
 		color: #bbb;
 	}
-	.course_pages .manager-options a:hover {
+	.course_pages .manager-options a:hover,
+	.course_pages .manager-options button:hover {
 		color: #333;
 	}
 	.course_pages .manager-options small.edit-before,

@@ -489,7 +489,8 @@
 		background-color: #e5e5e5;
 		border-bottom: 1px solid #ffffff;
 	}
-	.dropdown-menu > li > a {
+	.dropdown-menu > li > a,
+	.dropdown-menu > li > button {
 		display: block;
 		padding: 0.2em 1em;
 		clear: both;
@@ -497,37 +498,10 @@
 		line-height: 1.5em;
 		border: none;
 	}
-
-/* Inline forms for POST-based destructive actions
-   Replace <a> delete links with <form method="post"> + <button>
-   to prevent accidental deletion by web crawlers and scanners. */
-	form.inline-form {
-		display: inline;
-		margin: 0;
-		padding: 0;
-		border: none;
-		background: none;
-	}
-	form.inline-form button {
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-		margin: 0;
-		font: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		text-decoration: inherit;
-	}
-	form.inline-form button:hover {
-		text-decoration: underline;
-	}
-	form.inline-form button:before {
-		font-family: "Fontcons";
-		font-weight: normal;
-	}
-	form.inline-form button.icon-delete:before {
-		content: "\f014";
+	.dropdown-menu > li > button {
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: left;
 	}
 

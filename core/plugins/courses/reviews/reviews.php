@@ -226,7 +226,8 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _login()
 	{
-		$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
+		// Return to the reviews page rather than to the action that was requested
+		$return = base64_encode($this->url);
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -252,7 +253,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -485,7 +486,7 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();

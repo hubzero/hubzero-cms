@@ -67,7 +67,8 @@
 	.blog-entries li dl.entry-meta dt a.comment-counter:hover {
 		color: #ff6600 !important;
 	}
-	dl.entry-meta dd.entry-options a {
+	dl.entry-meta dd.entry-options a,
+	dl.entry-meta dd.entry-options button {
 		margin-left: 1.5em;
 	}
 	dl.entry-meta dd.entry-options a.edit,
@@ -113,7 +114,8 @@
 		color: #999;
 		font-size: 0.9em;
 	}
-	div.entry dl.entry-meta dd.entry-options a {
+	div.entry dl.entry-meta dd.entry-options a,
+	div.entry dl.entry-meta dd.entry-options button {
 		margin-left: 1.5em;
 	}
 	div.entry dl.entry-meta dd.entry-options a.edit,

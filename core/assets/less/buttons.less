@@ -360,11 +360,18 @@
 		background-color: #e5e5e5;
 		border-bottom: 1px solid #ffffff;
 	}
-	.dropdown-menu > li > a {
+	.dropdown-menu > li > a,
+	.dropdown-menu > li > button {
 		display: block;
 		padding: 0.2em 1em;
 		clear: both;
 		font-weight: normal;
 		line-height: 1.5em;
 		border: none;
+	}
+	.dropdown-menu > li > button {
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: left;
 	}

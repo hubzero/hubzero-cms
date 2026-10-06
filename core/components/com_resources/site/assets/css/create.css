@@ -219,12 +219,10 @@
 		overflow: hidden;
 		color: #999;
 	}
-	a.delete,
-	button.delete {
+	a.delete {
 		color: #999;
 	}
-	a.delete:hover,
-	button.delete:hover {
+	a.delete:hover {
 		color: #c00;
 	}
 	.icon-public:before {

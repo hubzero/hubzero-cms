@@ -685,6 +685,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	public function delete()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check permission
 		if (!$this->model->access('content'))
 		{
@@ -852,6 +855,9 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _deleteComment()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Check permission
 		if (!$this->model->access('content'))
 		{

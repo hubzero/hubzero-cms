@@ -11,7 +11,7 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('ul.manager-options a.delete').each(function(i, el) {
+	$('ul.manager-options a.delete, ul.manager-options button.delete').each(function(i, el) {
 		$(el).on('click', function(e) {
 			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {

@@ -15,7 +15,7 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('a.delete').on('click', function (e) {
+	$('a.delete, button.delete').on('click', function (e) {
 		var res = confirm('Are you sure you wish to delete this item?');
 		if (!res) {
 			e.preventDefault();

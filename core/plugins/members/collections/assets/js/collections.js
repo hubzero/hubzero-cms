@@ -131,13 +131,12 @@ jQuery(document).ready(function(jq){
 		if (container.hasClass('loggedin')) {
 			// Add voting trigger
 			container
-				.on('submit', '.inline-form:has(.vote)', function(e){
+				.on('click', 'button.vote', function(e){
 					e.preventDefault();
 
-					var frm = $(this),
-						el = frm.find('.vote');
+					var el = $(this);
 
-					$.post(frm.attr('action').nohtml(), frm.serialize(), function(data){
+					$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data){
 						var like = el.attr('data-text-like'),
 							unlike = el.attr('data-text-unlike');
 
@@ -268,17 +267,13 @@ jQuery(document).ready(function(jq){
 	} // if (container.length > 0)
 
 	// Add follow/unfollow triggers
-	$('a.follow[data-token], a.unfollow[data-token]').on('click', function(e) {
+	$('#page_content button.follow, #page_content button.unfollow').on('click', function(e) {
 		e.preventDefault();
 
 		var el = $(this),
 			params = {};
 
-		// Following takes a POST with the form token (carried on the link,
-		// which can sit inside a GET form)
-		params[el.attr('data-token')] = 1;
-
-		$.post(el.attr('href').nohtml(), params, function(data) {
+		$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
 			if (data.success) {
 				//var unfollow = $(el).attr('data-href-unfollow');
 				var follow = el.attr('data-text-follow'),
@@ -287,7 +282,7 @@ jQuery(document).ready(function(jq){
 				if (el.children('span').text() == follow) {
 					el.removeClass('follow')
 						.addClass('unfollow')
-						.attr('href', data.href)
+						.attr('formaction', data.href)
 						.children('span')
 						.text(unfollow);
 					if (el.hasClass('icon-follow')) {
@@ -297,7 +292,7 @@ jQuery(document).ready(function(jq){
 				} else {
 					el.removeClass('unfollow')
 						.addClass('follow')
-						.attr('href', data.href)
+						.attr('formaction', data.href)
 						.children('span')
 						.text(follow);
 					if (el.hasClass('icon-unfollow')) {

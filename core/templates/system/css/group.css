@@ -311,7 +311,18 @@
 #group-info .links li:nth-child(5) {
 	-webkit-transition-delay: 0.5s;*/
 }
-#group-info .links a {
+#group-info .links button {
+	width: 100%;
+	margin: 0;
+	background: transparent;
+	font-family: inherit;
+	line-height: inherit;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+#group-info .links a,
+#group-info .links button {
 	display: block;
 	box-sizing: border-box;
 	position: relative;
@@ -326,17 +337,20 @@
 	text-align: center;
 	-webkit-transition: background 0.3s;
 }
-#group-info .links li:last-child a {
+#group-info .links li:last-child a,
+#group-info .links li:last-child button {
 	/*border-right: none;*/
 }
-#group-info .links a span {
+#group-info .links a span,
+#group-info .links button span {
 	display: block;
 	font-size: 12px;
 	color: #999;
 	text-transform: lowercase;
 	-webkit-transition: all 0.3s;
 }
-#group-info .links a:before {
+#group-info .links a:before,
+#group-info .links button:before {
 	content: '\f042';
 	font-family: 'Fontcons';
 	position: absolute;
@@ -367,26 +381,31 @@
 #group-info .links .cancel-request:before {
 	content: '\2298';
 }
-#group-info .links a:hover {
+#group-info .links a:hover,
+#group-info .links button:hover {
 	background: #1b66d7;
 }
 #group-info .links .danger:hover {
 	background: #d71b1b;
 }
-#group-info .links a:hover span {
+#group-info .links a:hover span,
+#group-info .links button:hover span {
 	color: #FFF;
 }
-#group-info .links a:hover:before {
+#group-info .links a:hover:before,
+#group-info .links button:hover:before {
 	color: #FFF;
 	/*font-size: 65px;*/
 	text-shadow: 0 1px 1px rgba(0,0,0,1);
 }
-#group-info .short a {
+#group-info .short a,
+#group-info .short button {
 	min-height: inherit;
 	padding: 20px 20px 20px 60px;
 	text-align: left;
 }
-#group-info .short a:before {
+#group-info .short a:before,
+#group-info .short button:before {
 	left: 20px;
 	top: 30px;
 	right: auto;
@@ -411,17 +430,20 @@
 		width: 100%;
 		top: 0;
 	}
-	#group-info .links li a {
+	#group-info .links li a,
+	#group-info .links li button {
 		min-height: inherit;
 		padding: 20px 20px 20px 60px;
 		text-align: left;
 		border-right: none;
 		border-bottom: 1px solid #444;
 	}
-	#group-info .links li:last-child a {
+	#group-info .links li:last-child a,
+	#group-info .links li:last-child button {
 		border-bottom: none;
 	}
-	#group-info .links li a:before {
+	#group-info .links li a:before,
+	#group-info .links li button:before {
 		left: 20px;
 		right: auto;
 		top: 30px;

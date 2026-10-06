@@ -143,6 +143,14 @@ class Base extends SiteController
 
 		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
+		// A posted action can't be replayed by the GET that follows login,
+		// so return to the project (or the projects page) instead
+		if (Request::method() == 'POST')
+		{
+			$alias = Request::getCmd('alias', '');
+			$rtrn  = Route::url('index.php?option=' . $this->_option . ($alias ? '&alias=' . $alias : ''));
+		}
+
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,

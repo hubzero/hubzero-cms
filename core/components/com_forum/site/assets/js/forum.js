@@ -15,7 +15,7 @@ if (!jq) {
 jQuery(document).ready(function (jq) {
 	var $ = jq;
 
-	$('a.delete').on('click', function (e) {
+	$('a.delete, button.delete').on('click', function (e) {
 		var res = confirm($(this).attr('data-txt-confirm'));
 		if (!res) {
 			e.preventDefault();

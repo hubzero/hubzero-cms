@@ -195,9 +195,10 @@ HUB.Groups = {
 		// The cancel control is now a button in a POST form: let it submit
 		// only once confirmed
 		$(".cancel_group_membership").on('click', function(e) {
-			if (!confirm('Are you sure you would like to cancel your group membership?')) {
+			var answer = confirm('Are you sure you would like to cancel your group membership?');
+			if(!answer)
+			{
 				e.preventDefault();
-				return false;
 			}
 		});
 	},

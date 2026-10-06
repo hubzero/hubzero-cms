@@ -16,10 +16,14 @@ jQuery(document).ready(function(jq){
 		var linkr = $('#link-adder');
 
 		$('#ajax-uploader-list')
-			.on('click', 'a.delete', function (e){
+			.on('click', 'a.delete, button.delete', function (e){
 				e.preventDefault();
 				if ($(this).attr('data-id')) {
-					$.get($(this).attr('href'), {}, function(data) {});
+					if ($(this).is('button')) {
+						$.post($(this).attr('formaction'), $(this.form).serialize(), function(data) {});
+					} else {
+						$.get($(this).attr('href'), {}, function(data) {});
+					}
 				}
 				$(this).parent().parent().remove();
 			});

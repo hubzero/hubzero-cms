@@ -45,11 +45,16 @@ class Posts extends SiteController
 	/**
 	 * Redirect to login page
 	 *
+	 * @param   string  $return  URL to come back to after logging in
 	 * @return  void
 	 */
-	public function loginTask()
+	public function loginTask($return = null)
 	{
-		$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server'));
+		if (!$return)
+		{
+			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task, false, true), 'server');
+		}
+		$return = base64_encode($return);
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false)
 		);
@@ -566,13 +571,13 @@ class Posts extends SiteController
 		// Ensure the user is logged in
 		if (User::isGuest())
 		{
-			return $this->loginTask();
+			return $this->loginTask(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . Request::getInt('post', 0), false, true));
 		}
 
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -645,13 +650,13 @@ class Posts extends SiteController
 	{
 		if (User::isGuest())
 		{
-			return $this->loginTask();
+			return $this->loginTask(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&post=' . Request::getInt('post', 0), false, true));
 		}
 
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();

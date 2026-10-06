@@ -25,20 +25,12 @@ jQuery(document).ready(function (jq){
 	_DEBUG = $('#system-debug').length;
 
 	// Add confirm dialog to delete links
-	$('a.delete').on('click', function (e) {
+	$('a.delete, button.delete').on('click', function (e) {
 		var res = confirm($(this).attr('data-confirm'));
 		if (!res) {
 			e.preventDefault();
 		}
 		return res;
-	});
-
-	// Add confirm dialog to delete buttons. Confirm on the click, not the form's
-	// submit: a row's form may sit outside the table, tied to its button by form=
-	$('button.delete').not('.author-list button').on('click', function (e) {
-		if (!confirm($(this).attr('data-confirm'))) {
-			e.preventDefault();
-		}
 	});
 
 	// toggle download markers.
@@ -134,14 +126,6 @@ jQuery(document).ready(function (jq){
 				$.get($(this).attr('href').nohtml(), {}, function(data) {});
 
 				$(this).parent().parent().remove();
-			})
-			.on('submit', '.inline-form:has(.delete)', function (e){
-				e.preventDefault();
-
-				var frm = $(this);
-				$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {});
-
-				frm.closest('li').remove();
 			});
 
 		$('.author-list').sortable({

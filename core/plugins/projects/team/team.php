@@ -963,7 +963,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 */
 	protected function _denyMembership()
 	{
-		Request::checkToken(['get', 'post']);
 		$projectId = $this->model->get('id');
 		$userId = User::getInstance()->get('id');
 		$currentUser = Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
@@ -989,6 +988,15 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 				return $view->loadTemplate();
 			}
+
+			// The denial itself must be posted
+			if (Request::method() !== 'POST')
+			{
+				App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+			}
+
+			Request::checkToken();
+
 			$owner->set('status', 4);
 			$message = Request::getString('message');
 			$params = $owner->params;

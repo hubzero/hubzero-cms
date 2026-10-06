@@ -32,6 +32,7 @@ if (!$this->getError()) {
 		<input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />
 		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<?php echo Html::input('token'); ?>
 
 		<p><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_FILES_CONFIRM'); ?></p>
 

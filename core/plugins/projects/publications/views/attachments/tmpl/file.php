@@ -26,8 +26,7 @@ if ($data->get('viewer') != 'freeze')
 				<a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
 				<?php } ?>
 				<a href="<?php echo Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL'); ?>">&nbsp;</a>
-				<?php // Not a form: these sit inside #plg-form; curation.js posts it ?>
-				<button type="button" class="item-remove" data-action="<?php echo Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" data-token="<?php echo Session::getFormToken(); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
 			</span>
 			<?php } elseif ($data->exists()) { ?>
 				<span><a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>

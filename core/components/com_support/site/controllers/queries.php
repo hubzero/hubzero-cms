@@ -189,9 +189,7 @@ class Queries extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// The only link to this task appends Session::getFormToken() to the
-		// URL (site/views/queries/tmpl/list.php), exactly as the folder delete
-		// beside it does, so there is a caller to honour the check.
+		// Check for request forgeries (the delete buttons post the token)
 		Request::checkToken(['get', 'post']);
 
 		// Incoming
@@ -413,7 +411,7 @@ class Queries extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Check for request forgeries
+		// Check for request forgeries (the delete buttons post the token)
 		Request::checkToken(['get', 'post']);
 
 		// Incoming

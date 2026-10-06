@@ -93,7 +93,7 @@
 		margin-right: 1em;
 	}
 	:is(p, div).overview a,
-	:is(p, div).overview form.inline-form {
+	:is(p, div).overview button {
 		float: right;
 		margin-left: 1em;
 	}

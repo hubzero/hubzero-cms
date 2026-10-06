@@ -55,8 +55,7 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
 						<li>
 							<span class="item-options">
 									<a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-									<?php // Not a form: these sit inside #plg-form; curation.js posts it ?>
-									<button type="button" class="item-remove" data-action="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" data-token="<?php echo Session::getFormToken(); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+									<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
 							</span>
 							<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
 						</li>

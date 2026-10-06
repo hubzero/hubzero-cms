@@ -7,16 +7,22 @@
 (function(window, document, ds, $, undefined) {
 
 	$(document).ready(function() {
-		// Delete is a POST form's button: confirm, then submit that form
-		$('.delete-db').on('click', function() {
-			var frm = $(this).closest('form');
+		$('button.delete-db').on('click', function() {
+			var link = this;
 			$("#confirm-file-delete").dialog({
 				resizable: false,
 				height: 160,
 				modal: true,
 				buttons: {
 					"Delete Database": function() {
-						frm[0].submit();
+						// Post a copy of the page's token form to the button's
+						// target, leaving the shared form itself untouched
+						$('#hz-post-action')
+							.clone()
+							.removeAttr('id')
+							.attr('action', $(link).attr('formaction'))
+							.appendTo('body')
+							.submit();
 					},
 					Cancel: function() {
 						$(this).dialog('close');

@@ -122,6 +122,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			{
 				$rtrn = Request::getString('REQUEST_URI', Route::url($model->link($this->_name)), 'server');
 
+				// A posted action cannot be returned to, so come back to the reviews
+				if (Request::method() == 'POST')
+				{
+					$rtrn = Route::url($model->link($this->_name), false);
+				}
+
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 					Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'),

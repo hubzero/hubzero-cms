@@ -85,10 +85,7 @@ if ($closed == 'closed' && $this->showClose == true)
 							<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 								<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 							</a>
-							<form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')); ?>" method="post" class="inline-form">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="icon-delete delete" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?></button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?></button>
 						<?php endif; ?>
 					</dd>
 				<?php endif; ?>

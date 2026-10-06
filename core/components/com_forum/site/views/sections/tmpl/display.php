@@ -70,10 +70,7 @@ $this->css()
 
 							<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
 								<?php if ($this->config->get('access-delete-section')) { ?>
-									<form action="<?php echo Route::url('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" method="post" class="inline-form">
-										<?php echo Html::input('token'); ?>
-										<button type="submit" class="icon-delete delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
-									</form>
+									<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
 								<?php } ?>
 								<?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
 									<a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
@@ -146,10 +143,7 @@ $this->css()
 												</a>
 											<?php } ?>
 											<?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-												<form action="<?php echo Route::url($row->link('delete')); ?>" method="post" class="inline-form">
-													<?php echo Html::input('token'); ?>
-													<button type="submit" class="icon-delete delete tooltips" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
-												</form>
+												<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->link('delete')); ?>" class="icon-delete delete tooltips" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
 											<?php } ?>
 										</td>
 									<?php } ?>

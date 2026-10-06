@@ -49,6 +49,7 @@ $this->css('create.css');
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="discard" />
 			<input type="hidden" name="step" value="2" />
+			<?php echo Html::input('token'); ?>
 
 			<p><strong><?php echo $this->escape(stripslashes($this->row->title)); ?></strong><br />
 			<?php echo $this->escape(stripslashes($this->row->typetitle)); ?></p>

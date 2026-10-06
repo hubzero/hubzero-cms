@@ -358,6 +358,9 @@ class Modules extends Base
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$this->setStateTask(2, 'deleted');
 	}
 

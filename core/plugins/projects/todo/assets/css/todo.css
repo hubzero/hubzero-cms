@@ -865,7 +865,8 @@
 		padding: 0;
 		margin: 0.5em 0 0.1em 0;
 	}
-	.confirmaction a {
+	.confirmaction a,
+	.confirmaction button {
 		background: none;
 		color: #6699cc;
 		padding: 0;

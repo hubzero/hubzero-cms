@@ -38,26 +38,20 @@ jQuery(document).ready(function(jq){
 					.text($(this).attr('data-txt-inactive'));
 			}
 		})// Add confirm dialog to delete links
-		.on('click', 'a.delete', function (e) {
+		.on('click', 'a.delete, button.delete', function (e) {
 			var res = confirm($(this).attr('data-txt-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
 			return res;
 		})
-		// Add confirm dialog to delete forms (button version)
-		.on('submit', '.inline-form:has(.delete)', function (e) {
-			if (!confirm($(this).find('.delete').attr('data-txt-confirm'))) {
-				e.preventDefault();
-			}
-		})
-		.on('submit', '.inline-form:has(.vote-button)', function(e) {
+		.on('click', 'button.vote-button', function(e) {
 			e.preventDefault();
 
-			var frm = $(this);
+			var el = $(this);
 
-			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
-				$(frm.parent().parent()).html(data);
+			$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
+				$(el.parent().parent()).html(data);
 			});
 		});
 

@@ -113,10 +113,7 @@ $this->comment->set('category', 'answercomment');
 
 			<div class="comment-options">
 				<?php if ($this->page->access('delete', 'comment')) { ?>
-					<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
-						<?php echo Html::input('token'); ?>
-						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
-					</form>
+					<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->comment->link('delete')); ?>" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
 				<?php } ?>
 				<?php if ($this->page->access('edit', 'comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--

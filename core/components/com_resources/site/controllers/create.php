@@ -1686,6 +1686,9 @@ class Create extends SiteController
 					return;
 				}
 
+				// Check for request forgeries
+				Request::checkToken();
+
 				// Check if the resource was "published"
 				if ($resource->get('published') == Entry::STATE_PUBLISHED)
 				{

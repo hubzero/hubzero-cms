@@ -147,7 +147,8 @@
 	right: 0;
 	padding-top: 0;
 }
-.connection-actions a {
+.connection-actions a,
+.connection-actions button {
 	display: inline-block;
 	font-size: 1.5em;
 	width: 1em;
@@ -157,10 +158,16 @@
 	margin: 0.2em;
 	color: #bbb;
 }
-.connection-actions a:hover {
+.connection-actions button {
+	white-space: nowrap;
+	vertical-align: top;
+}
+.connection-actions a:hover,
+.connection-actions button:hover {
 	color: #222;
 }
-.connection-actions a.connection-delete:hover {
+.connection-actions a.connection-delete:hover,
+.connection-actions button.connection-delete:hover {
 	color: #c00;
 }
 .connections .new-connection .new:before {

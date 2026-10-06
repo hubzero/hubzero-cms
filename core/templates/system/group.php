@@ -209,10 +209,10 @@ $membership_control = $params->get('membership_control', 1);
 
 				<?php if ($isPending && $membership_control == 1) : ?>
 					<li>
-						<a class="cancel-request" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>" class="cancel-request">
 							<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST'); ?>
 							<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST_DESC'); ?></span>
-						</a>
+						</button>
 					</li>
 				<?php endif; ?>
 
@@ -245,10 +245,10 @@ $membership_control = $params->get('membership_control', 1);
 
 				<?php if (($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1) : ?>
 					<li>
-						<a class="cancel" href="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>">
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$group->get('cn').'&task=cancel'); ?>" class="cancel">
 							<?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL'); ?>
 							<span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_DESC'); ?></span>
-						</a>
+						</button>
 					</li>
 				<?php endif; ?>
 

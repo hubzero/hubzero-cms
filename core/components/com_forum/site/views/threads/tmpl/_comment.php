@@ -206,10 +206,7 @@ defined('_HZEXEC_') or die();
 					) { ?>
 				<div class="comment-options">
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
-						<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
-							<?php echo Html::input('token'); ?>
-							<button type="submit" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
-						</form>
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->comment->link('delete')); ?>" class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>" data-id="c<?php echo $this->comment->get('id'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
 					<?php } ?>
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-edit-thread')) || ($this->comment->get('parent') && $this->config->get('access-edit-post'))) { ?>
 						<a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--

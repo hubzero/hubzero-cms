@@ -166,10 +166,7 @@ if ($this->comment->get('resource_id'))
 			<div class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')) { ?>
-					<form action="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
-						<?php echo Html::input('token'); ?>
-						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_DELETE'); ?></button>
-					</form>
+					<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_DELETE'); ?></button>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')); ?>"><!--
 						--><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EDIT'); ?><!--
 					--></a>

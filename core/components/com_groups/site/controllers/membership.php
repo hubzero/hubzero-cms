@@ -793,6 +793,17 @@ class Membership extends Base
 	 */
 	public function cancelTask()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			// Return to the group rather than to this POST-only task
+			$this->loginTask(
+				Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_CANCEL'),
+				'index.php?option=' . $this->_option . '&cn=' . $this->cn
+			);
+			return;
+		}
+
 		// Require POST to prevent accidental cancellation by crawlers
 		if (Request::method() !== 'POST')
 		{
@@ -801,13 +812,6 @@ class Membership extends Base
 
 		// Check for request forgeries
 		Request::checkToken();
-
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			$this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_CANCEL'));
-			return;
-		}
 
 		//check to make sure we have  cname
 		if (!$this->cn)

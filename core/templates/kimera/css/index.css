@@ -2372,12 +2372,12 @@ textarea {
   -o-transition: all 0.1s ease-out;
   transition: all 0.1s ease-out;
 }
-input:hover,
-button:hover,
-textarea:hover,
-input:focus,
-button:focus,
-textarea:focus {
+input:not([form="hz-post-action"]):hover,
+button:not([form="hz-post-action"]):hover,
+textarea:not([form="hz-post-action"]):hover,
+input:not([form="hz-post-action"]):focus,
+button:not([form="hz-post-action"]):focus,
+textarea:not([form="hz-post-action"]):focus {
   background-color: #fff;
   border-color: #222;
 }
@@ -2420,10 +2420,10 @@ input.datetime-field {
   background-position: center right calc(2.25rem / 4);
   background-size: calc(2.25rem / 2) calc(2.25rem / 2);
 }
-button:hover,
-[type=submit]:hover,
-button:focus,
-[type=submit]:focus {
+button:not([form="hz-post-action"]):hover,
+[type=submit]:not([form="hz-post-action"]):hover,
+button:not([form="hz-post-action"]):focus,
+[type=submit]:not([form="hz-post-action"]):focus {
   background-color: #222;
   border-color: #222;
   color: #fff;
@@ -3150,6 +3150,19 @@ input[type="submit"].btn::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
+body button:where([form="hz-post-action"]:not(.btn)) {
+  color: #444;
+}
+body button:where([form="hz-post-action"]:not(.btn)):where(:hover) {
+  border-bottom: 1px solid #999;
+  color: #222;
+  text-decoration: none;
+}
+body button:where([form="hz-post-action"]:not(.btn)):where(:focus-visible) {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
 .btn-group {
   position: relative;
   display: inline-block;
@@ -3304,13 +3317,23 @@ input[type="submit"].btn::-moz-focus-inner {
   background-color: #e5e5e5;
   border-bottom: 1px solid #ffffff;
 }
-.dropdown-menu > li > a {
+.dropdown-menu > li > a,
+.dropdown-menu > li > button {
   display: block;
   padding: 0.2em 1em;
   clear: both;
   font-weight: normal;
   line-height: 1.5em;
   border: none;
+}
+.dropdown-menu > li > button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+}
+body .dropdown-menu > li > button:hover {
+  border-bottom: none;
 }
 header .btn,
 #content-header-extra .btn {
@@ -4426,32 +4449,39 @@ ol.comments .comment-options {
   color: #fff;
   font-size: 90%;
 }
-ol.comments .comment-options a {
+ol.comments .comment-options a,
+ol.comments .comment-options button {
   margin-right: 1em;
   border: none;
 }
-ol.comments .comment-options a:before {
+ol.comments .comment-options a:before,
+ol.comments .comment-options button:before {
   margin-right: 0.4em;
 }
-ol.comments .comment-options:hover a {
+ol.comments .comment-options:hover a,
+ol.comments .comment-options:hover button {
   color: #999;
 }
 ol.comments .comment-options a.active,
-ol.comments .comment-options a:hover {
+ol.comments .comment-options a:hover,
+ol.comments .comment-options button:hover {
   color: #333;
 }
 ol.comments .comment-options a.abuse:hover,
-ol.comments .comment-options a.delete:hover {
+ol.comments .comment-options a.delete:hover,
+ol.comments .comment-options button.delete:hover {
   color: #c00;
 }
 ol.comments .comment-options a.active:before {
   content: "\2716";
 }
 ol.comments .comment-options a.edit,
-ol.comments .comment-options a.delete {
+ol.comments .comment-options a.delete,
+ol.comments .comment-options button.delete {
   float: right;
 }
 ol.comments .comment-options a span,
+ol.comments .comment-options button span,
 ol.comments dl.comment-details {
   display: none;
 }
@@ -4938,33 +4968,40 @@ ol.comments .comment-options {
   color: #fff;
   font-size: 90%;
 }
-ol.comments .comment-options a {
+ol.comments .comment-options a,
+ol.comments .comment-options button {
   margin-right: 1em;
   color: #ccc;
   border: none;
 }
-ol.comments .comment-options a:before {
+ol.comments .comment-options a:before,
+ol.comments .comment-options button:before {
   margin-right: 0.4em;
 }
-ol.comments .comment-options:hover a {
+ol.comments .comment-options:hover a,
+ol.comments .comment-options:hover button {
   color: #999;
 }
 ol.comments .comment-options a.active,
-ol.comments .comment-options a:hover {
+ol.comments .comment-options a:hover,
+ol.comments .comment-options button:hover {
   color: #333;
 }
 ol.comments .comment-options a.abuse:hover,
-ol.comments .comment-options a.delete:hover {
+ol.comments .comment-options a.delete:hover,
+ol.comments .comment-options button.delete:hover {
   color: #c00;
 }
 ol.comments .comment-options a.active:before {
   content: "\2716";
 }
 ol.comments .comment-options a.edit,
-ol.comments .comment-options a.delete {
+ol.comments .comment-options a.delete,
+ol.comments .comment-options button.delete {
   float: right;
 }
 ol.comments .comment-options a span,
+ol.comments .comment-options button span,
 ol.comments dl.comment-details {
   display: none;
 }

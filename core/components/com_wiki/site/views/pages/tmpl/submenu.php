@@ -90,10 +90,9 @@ if ($tmpl != 'component' && $this->sub) { ?>
 				if (($this->page->isLocked() && $this->page->access('manage', 'page'))
 					|| ((!$this->page->isLocked() && $this->page->access('delete', 'page')) || $this->page->access('manage'))) { ?>
 				<li class="page-delete<?php if ($this->controller == 'pages' && $this->task == 'delete') { echo ' active'; } ?>">
-					<form action="<?php echo Route::url($this->page->link('delete')); ?>" method="post" class="inline-form">
-						<?php echo Html::input('token'); ?>
-						<button type="submit"><span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span></button>
-					</form>
+					<a href="<?php echo Route::url($this->page->link('delete')); ?>">
+						<span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
+					</a>
 				</li>
 			<?php } ?>
 		<?php } ?>

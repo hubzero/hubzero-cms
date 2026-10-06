@@ -71,11 +71,13 @@
 	dl.entry-meta {
 		position: relative;
 	}
-	dl.entry-meta dd.entry-options a {
+	dl.entry-meta dd.entry-options a,
+	dl.entry-meta dd.entry-options button {
 		margin-left: 1.5em;
 	}
 	dl.entry-meta dd.entry-options a.icon-edit,
-	dl.entry-meta dd.entry-options a.icon-delete {
+	dl.entry-meta dd.entry-options a.icon-delete,
+	dl.entry-meta dd.entry-options button.icon-delete {
 		display: block;
 		width: 1.4em;
 		height: 1.4em;
@@ -90,14 +92,15 @@
 		color: transparent;
 	}
 	dl.entry-meta dd.entry-options a:before,
-	dl.entry-meta dd.entry-options a:before {
+	dl.entry-meta dd.entry-options button:before {
 		color: #aaa;
 	}
 	dl.entry-meta dd.entry-options a:hover:before,
-	dl.entry-meta dd.entry-options a:hover:before {
+	dl.entry-meta dd.entry-options button:hover:before {
 		color: #111;
 	}
-	dl.entry-meta dd.entry-options a.icon-delete {
+	dl.entry-meta dd.entry-options a.icon-delete,
+	dl.entry-meta dd.entry-options button.icon-delete {
 		right: 2em;
 	}
 	.announcement-container .announcement {

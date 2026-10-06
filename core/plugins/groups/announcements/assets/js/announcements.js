@@ -35,18 +35,12 @@ jQuery(document).ready(function(jq){
 			//set cookie
 			document.cookie = 'group_announcement_' + id + '=closed; expires=' + date.toGMTString() + ';';
 		})
-		.on('click', 'a.delete', function(event) {
+		.on('click', 'a.delete, button.delete', function(event) {
 			if (confirm($(this).attr('data-confirm'))) {
 				return true;
 			}
 			event.preventDefault();
 			return false;
-		})
-		// Add confirm dialog to delete forms (button version)
-		.on('submit', '.inline-form:has(.delete)', function (e) {
-			if (!confirm($(this).find('.delete').attr('data-confirm'))) {
-				e.preventDefault();
-			}
 		});
 
 	//date/time picker for publish up/down

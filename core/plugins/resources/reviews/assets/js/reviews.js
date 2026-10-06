@@ -15,7 +15,7 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('a.delete').on('click', function (e) {
+	$('a.delete, button.delete').on('click', function (e) {
 		var res = confirm($(this).attr('data-txt-confirm'));
 		if (!res) {
 			e.preventDefault();
@@ -87,13 +87,17 @@ jQuery(document).ready(function(jq){
 	});
 
 	// review ratings
-	$('#reviews-section').on('submit', '.inline-form:has(.vote-button)', function (e) {
+	$('#reviews-section').on('click', '.vote-button', function (e) {
 		e.preventDefault();
 
-		var frm = $(this);
+		var item = $(this);
 
-		$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
-			frm.closest('.voting').html(data);
+		if (!item.attr('formaction')) {
+			return;
+		}
+
+		$.post(item.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
+			item.closest('.voting').html(data);
 			$('.tooltip').hide();
 		});
 	});

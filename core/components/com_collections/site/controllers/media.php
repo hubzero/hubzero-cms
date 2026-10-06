@@ -16,9 +16,9 @@ use Hubzero\Component\View;
 use Hubzero\Utility\Number;
 use Filesystem;
 use Exception;
-use App;
 use Request;
 use Lang;
+use App;
 use User;
 use Component;
 
@@ -603,13 +603,13 @@ class Media extends SiteController
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
 
 		// Incoming asset
-		$id = Request::getInt('asset', 0);
+		$id = Request::getInt('asset', 0, 'get');
 
 		$model = new Asset($id);
 
@@ -710,6 +710,14 @@ class Media extends SiteController
 			echo json_encode(array('success' => false, 'error' => Lang::txt('Login required.')));
 			return;
 		}
+
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('asset', 0);

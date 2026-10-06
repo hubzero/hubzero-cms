@@ -41,17 +41,11 @@ jQuery(document).ready(function (jq) {
 			}
 		})
 		// Add confirm dialog to delete links
-		.on('click', 'a.delete', function (e) {
+		.on('click', 'a.delete, button.delete', function (e) {
 			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();
 			}
 			return res;
-		})
-		// Add confirm dialog to delete forms (button version)
-		.on('submit', '.inline-form:has(.delete)', function (e) {
-			if (!confirm($(this).find('.delete').attr('data-confirm'))) {
-				e.preventDefault();
-			}
 		});
 });

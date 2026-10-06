@@ -213,6 +213,9 @@ class Categories extends Base
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$categoryid = Request::getInt('categoryid', 0);
 

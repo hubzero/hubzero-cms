@@ -315,7 +315,8 @@
 		-moz-transition: opacity 0.2s ease;
 		transition: opacity 0.2s ease;
 	}
-	.groups-container .user-actions a {
+	.groups-container .user-actions a,
+	.groups-container .user-actions button {
 		display: block;
 		width: 1em;
 		height: 1em;
@@ -327,7 +328,11 @@
 		padding: 0;
 		line-height: 1em;
 	}
-	.groups-container .user-actions a:hover {
+	.groups-container .user-actions button {
+		white-space: nowrap;
+	}
+	.groups-container .user-actions a:hover,
+	.groups-container .user-actions button:hover {
 		color: #333;
 	}
 	.groups-container .user-actions .manage:before {
@@ -350,7 +355,8 @@
 		font-family: "Fontcons";
 		content: "\f014";
 	}
-	.groups-container .user-actions a:before {
+	.groups-container .user-actions a:before,
+	.groups-container .user-actions button:before {
 		margin-right: 2em;
 	}
 	/* No results */
@@ -942,7 +948,8 @@
 	#group_options .dropdown-toggle:before {
 		border-color: #FFF transparent transparent transparent;
 	}
-	.dropdown-menu li a:before {
+	.dropdown-menu li a:before,
+	.dropdown-menu li button:before {
 		font-family: 'Fontcons';
 		padding-right: 0.2em;
 	}
@@ -950,8 +957,10 @@
 	.dropdown-menu li a.group-edit:before      { content: '\2699'; }
 	.dropdown-menu li a.group-customize:before { content: '\270E'; }
 	.dropdown-menu li a.group-pages:before     { content: '\f016'; }
-	.dropdown-menu li a.group-cancel:before    { content: '\2298'; }
-	.dropdown-menu li a.group-delete:before    { content: '\f057'; }
+	.dropdown-menu li a.group-cancel:before,
+	.dropdown-menu li button.group-cancel:before { content: '\2298'; }
+	.dropdown-menu li a.group-delete:before,
+	.dropdown-menu li button.group-delete:before { content: '\f057'; }
 	.dropdown-menu li a.logout:before          { content: '\f08b'; }
 
 /*
@@ -1919,17 +1928,20 @@ body.group-page-preview {
 .item-list .item-controls .dropdown-menu li:after {
 	display: none;
 }
-.item-list .item-controls .dropdown-menu li a {
+.item-list .item-controls .dropdown-menu li a,
+.item-list .item-controls .dropdown-menu li button {
 	color: #333;
 }
 .item-list .item-controls .dropdown-menu:before,
 .group-page-controls .dropdown-menu:after {
 	display: none;
 }
-.item-list .item-controls .dropdown-menu li a.icon-delete {
+.item-list .item-controls .dropdown-menu li a.icon-delete,
+.item-list .item-controls .dropdown-menu li button.icon-delete {
 	color: #991111;
 }
-.item-list .item-controls .dropdown-menu li a:hover {
+.item-list .item-controls .dropdown-menu li a:hover,
+.item-list .item-controls .dropdown-menu li button:hover {
 	color: #ffffff;
 	text-decoration: none;
 	background-color: #777;

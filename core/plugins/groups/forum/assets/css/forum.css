@@ -103,7 +103,7 @@
 		hyphens: auto;
 	}
 	.group_forum .entries caption a,
-	.group_forum .entries caption form.inline-form {
+	.group_forum .entries caption button.delete {
 		float: right;
 	}
 

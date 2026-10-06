@@ -47,14 +47,6 @@ jQuery(document).ready(function (jq) {
 				$.get($(this).attr('href').nohtml(), {}, function(data) {});
 
 				$(this).parent().parent().remove();
-			})
-			.on('submit', '.inline-form:has(.delete)', function (e){
-				e.preventDefault();
-
-				var frm = $(this);
-				$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {});
-
-				frm.closest('li').remove();
 			});
 
 		$('.author-list').sortable({
@@ -117,17 +109,8 @@ jQuery(document).ready(function (jq) {
 	
 	$('.protected').click(function(e) {
 		var prompt = confirm('Are you sure you want to delete this citation?');
-		var url = $(this).attr('href');
 		if (prompt === false)
 		{
-			e.preventDefault();
-		}
-	});
-
-	// Add confirm dialog to delete buttons. Confirm on the click, not the form's
-	// submit: a row's form may sit outside the table, tied to its button by form=
-	$('button.delete').not('.author-list button').on('click', function (e) {
-		if (!confirm($(this).attr('data-confirm') || 'Are you sure you want to delete this citation?')) {
 			e.preventDefault();
 		}
 	});
@@ -141,15 +124,14 @@ jQuery(document).ready(function (jq) {
 		var textAction = $(this).text().toLowerCase().trim();
 		textAction = 'Are you sure you want to ' + textAction + '?';
 
+		var url = $(this).attr('data-link') + '&citationIDs=' + citationIDs.join(',');
+
 		var locked = confirm(textAction.trim());
 		if (locked === true)
 		{
-			// The bulk actions take a POST with the form token
-			var frm = $('<form method="post" />').attr('action', $(this).attr('data-link'));
-			$('<input type="hidden" name="citationIDs" />').val(citationIDs.join(',')).appendTo(frm);
-			$('<input type="hidden" value="1" />').attr('name', $(this).attr('data-token')).appendTo(frm);
-			frm.appendTo('body').submit();
-		}
+			// POST the action through a copy of the page's token form
+			$('#hz-post-action').clone().removeAttr('id').attr('action', url).appendTo('body').submit();
+		 }
 
 	});
 

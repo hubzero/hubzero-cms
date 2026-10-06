@@ -153,6 +153,12 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 				// Instantiate a view
 				$rtrn = Request::getString('REQUEST_URI', Route::url($model->link(), false, true), 'server');
 
+				// A posted action cannot be returned to, so come back to the reviews
+				if (Request::method() == 'POST')
+				{
+					$rtrn = Route::url($model->link() . '&active=' . $this->_name, false, true);
+				}
+
 				App::redirect(
 					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 				);

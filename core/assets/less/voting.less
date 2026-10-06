@@ -10,10 +10,12 @@
 	.voting {
 		white-space: nowrap;
 
-		.vote-button, 
+		.vote-button,
 		a.vote-button,
-		.vote-button:hover, 
-		a.vote-button:hover {
+		button.vote-button,
+		.vote-button:hover,
+		a.vote-button:hover,
+		button.vote-button:hover {
 			border: @votingBorder;
 			background-color: @votingBackground;
 			color: @votingColor;
@@ -26,8 +28,9 @@
 			text-align: left;
 			cursor: pointer;
 		}
-		.vote-button:hover, 
-		a.vote-button:hover {
+		.vote-button:hover,
+		a.vote-button:hover,
+		button.vote-button:hover {
 			background-color: @votingBackgroundHover;
 			color: @votingColorHover;
 		}

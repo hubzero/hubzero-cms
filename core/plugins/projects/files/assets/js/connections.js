@@ -32,7 +32,7 @@ jQuery(document).ready(function (jq) {
 
 	$('.connections')
 		// Add confirm dialog to delete links
-		.on('click', 'a.connection-delete', function (e) {
+		.on('click', 'a.connection-delete, button.connection-delete', function (e) {
 			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {
 				e.preventDefault();

@@ -208,6 +208,9 @@
 		padding: 0;
 		line-height: 1em;
 	}
+	.group .user-actions button {
+		white-space: nowrap;
+	}
 	.group .user-actions a:hover,
 	.group .user-actions button:hover {
 		color: #333;
@@ -232,7 +235,8 @@
 		font-family: "Fontcons";
 		content: "\f014";
 	}
-	.group .user-actions a:before {
+	.group .user-actions a:before,
+	.group .user-actions button:before {
 		margin-right: 2em;
 	}
 

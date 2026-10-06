@@ -29,10 +29,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 		<?php echo $this->escape($this->event->get('title')); ?>
 	</span>
 	<?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
-		<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>" method="post" class="inline-form">
-			<?php echo Html::input('token'); ?>
-			<button type="submit" class="delete">Delete</button>
-		</form>
+		<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>" class="delete">Delete</button>
 		<a class="edit" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 			Edit
 		</a>

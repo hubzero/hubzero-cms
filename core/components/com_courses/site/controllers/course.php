@@ -105,11 +105,13 @@ class Course extends SiteController
 	 * Redirect to login page
 	 *
 	 * @param   string  $message
+	 * @param   string  $task     Task to return to after login (defaults to the current one)
 	 * @return  void
 	 */
-	public function loginTask($message = '')
+	public function loginTask($message = '', $task = null)
 	{
-		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $this->_task, false, true));
+		$task   = $task ?: $this->_task;
+		$return = base64_encode(Route::url('index.php?option=' . $this->_option . '&gid=' . $this->course->get('id') . '&task=' . $task, false, true));
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -805,19 +807,14 @@ class Course extends SiteController
 	 */
 	public function deletepageTask()
 	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
-		// Check if they're logged in
+		// Check if they're logged in (returning to the course, not to this action)
 		if (User::isGuest())
 		{
-			return $this->loginTask('COM_COURSES_NOT_LOGGEDIN');
+			return $this->loginTask('COM_COURSES_NOT_LOGGEDIN', 'display');
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		if (!$this->course->exists())
 		{

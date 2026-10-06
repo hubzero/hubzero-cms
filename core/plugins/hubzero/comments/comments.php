@@ -233,7 +233,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -503,6 +503,9 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		{
 			return $this->_login();
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Incoming
 		$id = Request::getInt('comment', 0);

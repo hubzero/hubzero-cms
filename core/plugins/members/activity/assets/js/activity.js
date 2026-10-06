@@ -99,10 +99,10 @@ jQuery(document).ready(function(jq){
 			el.addClass('processing'); //.fadeIn()
 
 			if (_DEBUG) {
-				console.log('Calling: ' + bt.attr('href').nohtml());
+				console.log('Calling: ' + bt.attr('formaction').nohtml());
 			}
 
-			$.getJSON(bt.attr('href').nohtml(), function (response){
+			$.post(bt.attr('formaction').nohtml(), $(this.form).serialize(), function (response){
 				if (response.success) {
 					el.slideUp(250, function(){
 						$(this).remove();
@@ -110,7 +110,7 @@ jQuery(document).ready(function(jq){
 				} else {
 					el.removeClass('processing');
 				}
-			});
+			}, 'json');
 		})
 		// Reply button
 		.on('click', '.icon-reply', function (e) {

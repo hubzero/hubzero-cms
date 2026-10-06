@@ -296,6 +296,9 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$id = Request::getInt('entry', 0);
 

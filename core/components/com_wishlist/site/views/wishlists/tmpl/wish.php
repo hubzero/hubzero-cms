@@ -305,7 +305,6 @@ $this->css()
 									<td class="voting">
 										<?php
 										$this->view('_vote')
-										     ->set('detached', true)
 										     ->set('option', $this->option)
 										     ->set('item', $this->wish)
 										     ->set('listid', $this->wishlist->get('id'))
@@ -380,11 +379,6 @@ $this->css()
 						<input type="hidden" name="rid" value="<?php echo $this->wishlist->get('referenceid'); ?>" />
 						<input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
 					</form>
-					<?php
-					// The vote forms for the buttons in the table above (forms can't nest)
-					echo implode("\n", isset($GLOBALS['com_wishlist.vote_forms']) ? $GLOBALS['com_wishlist.vote_forms'] : array());
-					$GLOBALS['com_wishlist.vote_forms'] = array();
-					?>
 				</div><!-- / .container -->
 			<?php } //if ($this->admin) { ?>
 
@@ -393,10 +387,7 @@ $this->css()
 					<h4><?php echo Lang::txt('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 					<div class="wish-delete-options">
 						<span class="say_yes">
-							<form action="<?php echo Route::url($this->wish->link('delete')); ?>" method="post" class="inline-form">
-								<?php echo Html::input('token'); ?>
-								<button type="submit" class="btn btn-danger"><?php echo Lang::txt('COM_WISHLIST_YES'); ?></button>
-							</form>
+							<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->wish->link('delete')); ?>" class="btn btn-danger"><?php echo Lang::txt('COM_WISHLIST_YES'); ?></button>
 						</span>
 						<span class="say_no">
 							<a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">

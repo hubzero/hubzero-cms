@@ -19,8 +19,7 @@ $viewer  = $this->data->viewer;
 		<span class="item-options">
 		<?php if ($viewer == 'edit') { ?>
 			<span>
-				<?php // Not a form: these sit inside #plg-form; curation.js posts it ?>
-				<button type="button" class="item-remove" data-action="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" data-token="<?php echo Session::getFormToken(); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
 			</span>
 		<?php } ?>
 		</span>

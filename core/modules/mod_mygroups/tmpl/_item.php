@@ -22,11 +22,9 @@ defined('_HZEXEC_') or die();
 			<a class="action-accept" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=accept'); ?>">
 				<?php echo Lang::txt('MOD_MYGROUPS_ACTION_ACCEPT'); ?>
 			</a>
-			<?php // cancel takes a POST with a token ?>
-			<form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=cancel'); ?>" method="post" class="inline-form">
-				<?php echo Html::input('token'); ?>
-				<button type="submit" class="action-cancel"><?php echo Lang::txt('MOD_MYGROUPS_ACTION_DECLINE'); ?></button>
-			</form>
+			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn . '&task=cancel'); ?>" class="action-cancel">
+				<?php echo Lang::txt('MOD_MYGROUPS_ACTION_DECLINE'); ?>
+			</button>
 		</span>
 	<?php endif; ?>
 </li>

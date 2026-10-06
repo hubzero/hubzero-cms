@@ -60,13 +60,15 @@
 .entries .roles .roles-list .delete-role {
 	margin-left: 3px;
 }
-.entries .roles .roles-list .delete-role a {
+.entries .roles .roles-list .delete-role a,
+.entries .roles .roles-list .delete-role button {
 	background-color: #FFF;
 	color: #d72828;
 	padding: 0 2px;
 	border-bottom: 0px;
 }
-.entries .roles .roles-list .delete-role a:hover {
+.entries .roles .roles-list .delete-role a:hover,
+.entries .roles .roles-list .delete-role button:hover {
 	background-color: #d72828;
 	color: #FFF;
 }
@@ -120,11 +122,16 @@
 }
 
 .entries .remove-member a,
+.entries .remove-member button,
 .entries .demote-member a,
+.entries .demote-member button,
 .entries .promote-member a,
+.entries .promote-member button,
 .entries .message-member a,
 .entries .decline-member a,
-.entries .approve-member a {
+.entries .decline-member button,
+.entries .approve-member a,
+.entries .approve-member button {
 	display: block;
 	color: transparent;
 	width: 20px;
@@ -135,20 +142,30 @@
 }
 
 .entries .remove-member a:hover,
+.entries .remove-member button:hover,
 .entries .demote-member a:hover,
+.entries .demote-member button:hover,
 .entries .promote-member a:hover,
+.entries .promote-member button:hover,
 .entries .message-member a:hover,
 .entries .decline-member a:hover,
-.entries .approve-member a:hover {
+.entries .decline-member button:hover,
+.entries .approve-member a:hover,
+.entries .approve-member button:hover {
 	border: none;
 }
 
 .entries .remove-member a:before,
+.entries .remove-member button:before,
 .entries .demote-member a:before,
+.entries .demote-member button:before,
 .entries .promote-member a:before,
+.entries .promote-member button:before,
 .entries .message-member a:before,
 .entries .decline-member a:before,
-.entries .approve-member a:before {
+.entries .decline-member button:before,
+.entries .approve-member a:before,
+.entries .approve-member button:before {
 	position: absolute;
 	font-family: 'Fontcons';
 	font-size: 22px;
@@ -169,22 +186,27 @@
 	font-family: 'Fontcons';
 	content: '\2709';
 }
-.entries .remove-member a:before {
+.entries .remove-member a:before,
+.entries .remove-member button:before {
 	content: '\f057'
 }
-.entries .demote-member a:before {
+.entries .demote-member a:before,
+.entries .demote-member button:before {
 	content: '\2193';
 }
-.entries .promote-member a:before {
+.entries .promote-member a:before,
+.entries .promote-member button:before {
 	content: '\2191';
 }
 .entries .message-member a:before {
 	content: '\2709';
 }
-.entries .decline-member a:before {
+.entries .decline-member a:before,
+.entries .decline-member button:before {
 	content: '\2296';
 }
-.entries .approve-member a:before {
+.entries .approve-member a:before,
+.entries .approve-member button:before {
 	content: '\2295';
 }
 
@@ -199,11 +221,13 @@
 	margin-right: 5em;
 }
 .aside a.edit-role:before,
-.aside a.remove-role:before {
+.aside a.remove-role:before,
+.aside button.remove-role:before {
 	display: none;
 }
 .aside a.edit-role,
-.aside a.remove-role {
+.aside a.remove-role,
+.aside button.remove-role {
 	position: absolute;
 	z-index: 334;
 	top: 5px;
@@ -216,7 +240,8 @@
 	right: 30px;
 }
 .aside a.edit-role:after,
-.aside a.remove-role:after {
+.aside a.remove-role:after,
+.aside button.remove-role:after {
 	content: '\2716';
 	font-family: 'Fontcons';
 	color: #bd0101 !important;

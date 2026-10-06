@@ -797,7 +797,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();
@@ -967,6 +967,9 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			);
 			return;
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// get the variables
 		$id = Request::getInt('id', 0);

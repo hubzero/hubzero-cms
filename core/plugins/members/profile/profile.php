@@ -375,6 +375,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 	{
 		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$addressId = Request::getInt('addressid', 0);
 

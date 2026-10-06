@@ -43,13 +43,12 @@ jQuery(document).ready(function(jq){
 
 	// Add voting trigger
 	container
-		.on('submit', '.inline-form:has(.vote)', function(e){
+		.on('click', 'button.vote', function(e){
 			e.preventDefault();
 
-			var frm = $(this),
-				el = frm.find('.vote');
+			var el = $(this);
 
-			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data){
+			$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data){
 				var like = el.attr('data-text-like'),
 					unlike = el.attr('data-text-unlike');
 
@@ -68,14 +67,12 @@ jQuery(document).ready(function(jq){
 				$('#b' + el.attr('data-id') + ' .likes').text(data);
 			});
 		})
-		.on('submit', '.inline-form:has(.follow, .unfollow)', function(e) {
+		.on('click', 'button.follow, button.unfollow', function(e) {
 			e.preventDefault();
 
-			var frm = $(this),
-				el = frm.find('.follow, .unfollow');
+			var el = $(this);
 
-			$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
-				data = JSON.parse(data);
+			$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
 				if (data.success) {
 					var follow = el.attr('data-text-follow'),
 						unfollow = el.attr('data-text-unfollow');
@@ -83,18 +80,18 @@ jQuery(document).ready(function(jq){
 					if (el.children('span').text() == follow) {
 						el.removeClass('follow')
 							.addClass('unfollow')
+							.attr('formaction', data.href)
 							.children('span')
 							.text(unfollow);
-						frm.attr('action', data.href);
 					} else {
 						el.removeClass('unfollow')
 							.addClass('follow')
+							.attr('formaction', data.href)
 							.children('span')
 							.text(follow);
-						frm.attr('action', data.href);
 					}
 				}
-			});
+			}, 'json');
 		});
 
 	// Add collect trigger

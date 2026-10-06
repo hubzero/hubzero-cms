@@ -244,6 +244,7 @@
 		font-weight: bold;
 	}
 	a.jSticky-delete,
+	button.jSticky-delete,
 	.jSticky-delete {
 		background: #fef2a0;
 		height: 14px;
@@ -264,6 +265,7 @@
 		box-shadow: none;
 	}
 	.annotation a.jSticky-delete,
+	.annotation button.jSticky-delete,
 	.annotation .jSticky-delete {
 		color: #4dbc1e;
 	}
@@ -274,6 +276,7 @@
 		margin-left: 0.2em;
 	}
 	a.jSticky-delete:hover,
+	button.jSticky-delete:hover,
 	.jSticky-delete:hover {
 		border: none;
 	}

@@ -99,7 +99,7 @@
 		hyphens: auto;
 	}
 	.entries caption a,
-	.entries caption form.inline-form {
+	.entries caption button.delete {
 		float: right;
 	}
 

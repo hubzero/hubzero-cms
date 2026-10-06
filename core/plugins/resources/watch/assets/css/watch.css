@@ -16,9 +16,6 @@
 	background: rgba(0, 0, 0, 0.05);
 	padding: 1em;
 }
-.item-watch-action {
-	margin: 1em 0;
-}
 .item-watch > :first-child {
 	margin-top: 0;
 }
@@ -30,5 +27,8 @@
 }
 .item-watch .btn {
 	display: block;
+}
+.item-watch button.btn {
+	box-sizing: border-box;
 	width: 100%;
 }

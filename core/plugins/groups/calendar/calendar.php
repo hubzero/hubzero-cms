@@ -920,6 +920,9 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		//make as disabled
 		$eventsModelEvent->set('state', 0);
 

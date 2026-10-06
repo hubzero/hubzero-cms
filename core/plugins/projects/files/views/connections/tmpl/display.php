@@ -80,10 +80,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 				<a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
 					<?php echo Lang::txt('Edit'); ?>
 				</a>
-				<form action="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>" method="post" class="inline-form">
-					<?php echo Html::input('token'); ?>
-					<button type="submit" class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>"><?php echo Lang::txt('Delete'); ?></button>
-				</form>
+				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>" class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete this connection?'); ?>"><?php echo Lang::txt('Delete'); ?></button>
 			</div>
 			<?php endif; ?>
 		</div>

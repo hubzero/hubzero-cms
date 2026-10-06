@@ -16,13 +16,13 @@ jQuery(document).ready(function(jq){
 	var $ = jq;
 
 	// Voting
-	$('#content').on('submit', '.inline-form:has(.vote-button)', function (e) {
+	$('#content').on('click', 'button.vote-button', function (e) {
 		e.preventDefault();
 
-		var frm = $(this);
+		var el = $(this);
 
-		$.post(frm.attr('action').nohtml(), frm.serialize(), function(data) {
-			$(frm.parent().parent()).html(data);
+		$.post(el.attr('formaction').nohtml(), $(this.form).serialize(), function(data) {
+			$(el.parent().parent()).html(data);
 			$('.tooltip').hide();
 		});
 	});

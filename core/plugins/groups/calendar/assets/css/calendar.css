@@ -266,7 +266,8 @@ ol.calendar-entries .entry-meta {
 	font-weight: 100;
 	color: #aaa;
 }
-.event-title-bar a {
+.event-title-bar a,
+.event-title-bar button {
 	float: right;
 	margin-left: 10px;
 }

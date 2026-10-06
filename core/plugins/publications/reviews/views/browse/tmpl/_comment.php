@@ -171,10 +171,7 @@ defined('_HZEXEC_') or die();
 			<div class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if (User::get('id') == $this->comment->get('created_by')) { ?>
-					<form action="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
-						<?php echo Html::input('token'); ?>
-						<button type="submit" class="icon-delete delete"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE'); ?></button>
-					</form>
+					<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE'); ?></button>
 					<a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit' . ($this->comment->get('publication_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('publication_id') ? '#commentform' : '#c' . $this->comment->get('id'))); ?>"><!--
 						--><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT'); ?><!--
 					--></a>

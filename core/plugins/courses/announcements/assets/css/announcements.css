@@ -97,7 +97,8 @@
 	dl.entry-meta {
 		position: relative;
 	}
-	dl.entry-meta dd.entry-options a {
+	dl.entry-meta dd.entry-options a,
+	dl.entry-meta dd.entry-options button {
 		margin-left: 1.5em;
 	}
 	dl.entry-meta dd.entry-options a.edit,

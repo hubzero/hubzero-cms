@@ -27,7 +27,7 @@ jQuery(document).ready(function(jq){
 		});
 	});
 
-	$('.announcement a.delete').each(function(i, el) {
+	$('.announcement a.delete, .announcement button.delete').each(function(i, el) {
 		$(el).on('click', function(e) {
 			var res = confirm($(this).attr('data-confirm'));
 			if (!res) {

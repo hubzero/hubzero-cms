@@ -337,6 +337,9 @@
 		display: inline-block;
 		color: #666;
 	}
+	.pane-queries li button.delete {
+		white-space: nowrap;
+	}
 	.pane-queries li a.copy:before,
 	.pane-queries li a.delete:before,
 	.pane-queries li button.delete:before,

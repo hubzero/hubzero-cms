@@ -617,6 +617,9 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		$row = new \Components\Jobs\Tables\Resume($database);
 		if (!$row->loadResume($member->get('id')))
 		{

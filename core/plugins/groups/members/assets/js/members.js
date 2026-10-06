@@ -11,11 +11,10 @@ if (!jq) {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	$('.remove-role a').on('click', function(e) {
-		e.preventDefault();
+	$('.remove-role').on('click', function(e) {
 		var answer = confirm('Are you sure you want to delete this member role? It will also delete any associations members have with the role.');
-		if (answer) { 
-			window.location = $(this).attr('href');
+		if (!answer) {
+			e.preventDefault();
 		}
 	});
 

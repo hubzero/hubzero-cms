@@ -119,21 +119,6 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _subscribe()
 	{
-		// Email unsubscribe links and the return from logging in arrive by GET:
-		// show the watch status, whose subscribe/unsubscribe buttons POST with
-		// a token, rather than refusing them
-		if (Request::method() !== 'POST')
-		{
-			if (User::isGuest())
-			{
-				$return = Route::url($this->publication->link('version') . '&active=watch', false);
-				App::redirect(Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)));
-			}
-			return $this->_status();
-		}
-
-		Request::checkToken();
-
 		// Incoming
 		$confirm = Request::getInt('confirm', 0);
 		$email   = Request::getString('email', '');
@@ -153,6 +138,20 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
+
+		// A link followed from an email, or the return from logging in,
+		// arrives as a GET: ask for the change to be confirmed with a POST
+		if (Request::method() !== 'POST')
+		{
+			$view = $this->view('confirm', 'index')
+				->set('publication', $this->publication)
+				->set('action', $this->action)
+				->set('email', $email);
+
+			return $view->loadTemplate();
+		}
+
+		Request::checkToken();
 
 		$watch = \Hubzero\Item\Watch::oneByScope(
 			$this->publication->get('id'),

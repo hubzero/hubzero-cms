@@ -38,7 +38,8 @@
 	}
 
 /* Entries */
-	.entries tbody td a {
+	.entries tbody td a,
+	.entries tbody td button {
 		white-space: nowrap;
 	}
 	.entries tbody td .tag {

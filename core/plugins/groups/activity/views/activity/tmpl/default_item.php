@@ -248,10 +248,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 						</li>
 					<?php } ?>
 					<li>
-						<form action="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" method="post" class="inline-form">
-							<?php echo Html::input('token'); ?>
-							<button type="submit" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
-						</form>
+						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
 					</li>
 					<?php /*<li>
 						<a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-options tooltips" href="#moreoptions<?php echo $this->row->get('id'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?></a>

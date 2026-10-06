@@ -139,7 +139,8 @@
 		margin: 0;
 		padding: 0;
 	}
-	.activity-options ul>li>a {
+	.activity-options ul>li>a,
+	.activity-options ul>li>button {
 		font-size: 1.35em;
 		line-height: 1;
 		margin: 0;
@@ -156,7 +157,11 @@
 		position: relative;
 		color: transparent;
 	}
-	.activity-options ul>li>a:before {
+	.activity-options ul>li>button {
+		float: left;
+	}
+	.activity-options ul>li>a:before,
+	.activity-options ul>li>button:before {
 		display: block;
 		position: absolute;
 		top: 0;
@@ -169,12 +174,14 @@
 		text-align: center;
 		color: #aaa;
 	}
-	.activity-options ul>li>a:hover {
+	.activity-options ul>li>a:hover,
+	.activity-options ul>li>button:hover {
 		border-bottom: none;
 		text-decoration: none;
 		color: transparent;
 	}
-	.activity-options ul>li>a:hover:before {
+	.activity-options ul>li>a:hover:before,
+	.activity-options ul>li>button:hover:before {
 		color: #222;
 	}
 

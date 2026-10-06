@@ -1739,19 +1739,24 @@ class Events extends SiteController
 	 */
 	public function deleteTask()
 	{
-		// Check for request forgeries (the details page posts the token, the
-		// modal's link carries it in the URL)
-		Request::checkToken(['get', 'post']);
+		// Incoming
+		$id = Request::getInt('id', 0, 'request');
 
 		// Check if they are logged in
 		if (User::isGuest())
 		{
-			$this->loginTask();
+			// Return to the event, not to this task
+			$rtrn = Route::url('index.php?option=' . $this->_option . ($id ? '&task=details&id=' . $id : ''), false);
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
+				Lang::txt('EVENTS_LOGIN_NOTICE'),
+				'warning'
+			);
 			return;
 		}
 
-		// Incoming
-		$id = Request::getInt('id', 0, 'request');
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Ensure we have an ID to work with
 		if (!$id)

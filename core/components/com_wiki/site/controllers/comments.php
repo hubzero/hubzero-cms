@@ -434,7 +434,7 @@ class Comments extends SiteController
 	 */
 	public function removeTask()
 	{
-		// The delete button is a form that posts a token
+		// The delete button posts a token
 		Request::checkToken();
 
 		$msg = null;

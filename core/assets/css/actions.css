@@ -1,0 +1,58 @@
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/* Action buttons
+
+   A state-changing action (delete, vote, follow, ...) is a
+   <button form="hz-post-action" formaction="..."> placed where a link would
+   otherwise be. This sheet is added to every site page ahead of component
+   styles, so whatever the template, the control reads as text in the colour
+   around it. Every rule here has the specificity of a bare "button", so
+   component styles that name the control's class win as they would for a
+   link, and a template can restyle it with any selector more specific than
+   "button" (for example "body button[form]"). A template whose generic
+   button:hover or [type=submit]:hover rule gives buttons a filled look
+   should exclude these (":not([form=hz-post-action])"), as kimera does. A
+   button with .btn keeps the button look. */
+button:where([form="hz-post-action"]:not(.btn)) {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: none;
+	font: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+	text-transform: inherit;
+	text-align: inherit;
+	vertical-align: baseline;
+	color: inherit;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+button:where([form="hz-post-action"]:not(.btn)):where(:hover) {
+	text-decoration: underline;
+}
+button:where([form="hz-post-action"]:not(.btn)):where(:focus-visible) {
+	outline: thin dotted;
+	outline: 5px auto -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+/* Visually hidden, still read by assistive technology */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}

@@ -53,11 +53,15 @@ class Questions extends SiteController
 	/**
 	 * Redirect to login form
 	 *
+	 * @param   string  $rtrn  URL to return to after logging in. Defaults to the current URL.
 	 * @return  void
 	 */
-	public function loginTask()
+	public function loginTask($rtrn = null)
 	{
-		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
+		if (!$rtrn)
+		{
+			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server');
+		}
 
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false),
@@ -290,6 +294,40 @@ class Questions extends SiteController
 	 */
 	public function voteTask()
 	{
+		$no_html = Request::getInt('no_html', 0);
+
+		// Incoming
+		$id   = Request::getInt('id', 0);
+		$type = Request::getString('category', '');
+		$vote = Request::getString('vote', '');
+		$ip   = Request::ip();
+
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			if (!$no_html)
+			{
+				// Return to a page that can be requested with GET, not to this task
+				$rtrn = 'index.php?option=' . $this->_option;
+				if ($id && $type == 'question')
+				{
+					$rtrn .= '&task=question&id=' . $id;
+				}
+				elseif ($id && $type == 'response')
+				{
+					$rtrn .= '&task=question&id=' . Response::oneOrNew($id)->get('question_id');
+				}
+				elseif ($id && $type == 'comment')
+				{
+					$rtrn = Comment::oneOrNew($id)->link();
+				}
+
+				$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
+				$this->loginTask(Route::url($rtrn, false, true));
+			}
+			return;
+		}
+
 		// Require POST to prevent accidental voting by crawlers
 		if (Request::method() !== 'POST')
 		{
@@ -298,25 +336,6 @@ class Questions extends SiteController
 
 		// Check for request forgeries
 		Request::checkToken();
-
-		$no_html = Request::getInt('no_html', 0);
-
-		// Is the user logged in?
-		if (User::isGuest())
-		{
-			if (!$no_html)
-			{
-				$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_VOTE'));
-				$this->loginTask();
-			}
-			return;
-		}
-
-		// Incoming
-		$id   = Request::getInt('id', 0);
-		$type = Request::getString('category', '');
-		$vote = Request::getString('vote', '');
-		$ip   = Request::ip();
 
 		// Check for reference ID
 		if (!$id)
@@ -939,6 +958,16 @@ class Questions extends SiteController
 	 */
 	public function deleteqTask()
 	{
+		// Login required
+		if (User::isGuest())
+		{
+			// Return to the question, which can be requested with GET, not to this task
+			$rtrn = 'index.php?option=' . $this->_option . '&task=question&id=' . Request::getInt('qid', 0);
+
+			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
+			return $this->loginTask(Route::url($rtrn, false, true));
+		}
+
 		// Require POST to prevent accidental deletion by crawlers
 		if (Request::method() !== 'POST')
 		{
@@ -947,13 +976,6 @@ class Questions extends SiteController
 
 		// Check for request forgeries
 		Request::checkToken();
-
-		// Login required
-		if (User::isGuest())
-		{
-			$this->setError(Lang::txt('COM_ANSWERS_PLEASE_LOGIN'));
-			return $this->loginTask();
-		}
 
 		if (!User::authorise('core.delete', $this->_option)
 		 && !User::authorise('core.manage', $this->_option))

@@ -140,11 +140,7 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + id + '&action=delete');
 			}
 
-			// Deleting takes a POST with the form token
-			var params = {};
-			params['<?php echo Session::getFormToken(); ?>'] = 1;
-
-			$.post(url + id + '&action=delete', params, function(data) {
+			$.post(url + id + '&action=delete', $('#hz-post-action').serialize(), function(data) {
 				if (_DEBUG) {
 					window.console && console.log(data);
 				}

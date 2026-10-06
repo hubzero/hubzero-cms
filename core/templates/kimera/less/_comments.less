@@ -50,7 +50,8 @@
 			color: @white;
 			font-size: 90%;
 
-			a {
+			a,
+			button {
 				margin-right: 1em;
 				color: @commentOptionColor;
 				border: none;
@@ -60,26 +61,31 @@
 				}
 			}
 
-			&:hover a {
+			&:hover a,
+			&:hover button {
 				color: @commentOptionHoverColor;
 			}
 			a.active,
-			a:hover {
+			a:hover,
+			button:hover {
 				color: @commentOptionColorHover;
 			}
 			a.abuse:hover,
-			a.delete:hover {
+			a.delete:hover,
+			button.delete:hover {
 				color: @commentOptionDangerColor;
 			}
 			a.active:before {
 				content: "\2716";
 			}
 			a.edit,
-			a.delete {
+			a.delete,
+			button.delete {
 				float: right;
 			}
 		}
 		.comment-options a span,
+		.comment-options button span,
 		dl.comment-details {
 			display: none;
 		}

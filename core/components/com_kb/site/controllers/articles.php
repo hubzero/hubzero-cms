@@ -223,9 +223,24 @@ class Articles extends SiteController
 	{
 		if (User::isGuest())
 		{
-			$return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option), 'server');
+			// Return to the article being voted on, which can be requested with GET, not to this task
+			$type = strtolower(Request::getString('type', ''));
+			$id   = Request::getInt('id', 0);
+
+			$return = 'index.php?option=' . $this->_option;
+			if ($type == 'article' && $id)
+			{
+				$article = Article::oneOrNew($id);
+				$return  = $article->get('id') ? $article->link() : $return;
+			}
+			elseif ($type == 'comment' && $id)
+			{
+				$article = Article::oneOrNew(Comment::oneOrNew($id)->get('entry_id'));
+				$return  = $article->get('id') ? $article->link() . '#c' . $id : $return;
+			}
+
 			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return, false)))
 			);
 			return;
 		}
@@ -233,7 +248,7 @@ class Articles extends SiteController
 		// Require POST
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		Request::checkToken();

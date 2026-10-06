@@ -135,9 +135,14 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true), 'server'));
+				$return = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+				// A submitted action can't be replayed by the GET that follows login
+				if (Request::method() !== 'POST')
+				{
+					$return = Request::getString('REQUEST_URI', $return, 'server');
+				}
 				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false),
 					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
 					'warning'
 				);
@@ -759,6 +764,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			);
 		}
 
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Set the section to "deleted"
 		$section->set('state', $section::STATE_DELETED);
 
@@ -1238,6 +1246,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				'warning'
 			);
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Set the category to "deleted"
 		$category->set('state', $category::STATE_DELETED);
@@ -2195,13 +2206,22 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$section  = Request::getString('section', '');
 		$category = Request::getString('category', '');
 
-		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category);
+		$redirect = Route::url($this->base . '&scope=' . $section . '/' . $category)  . '?' . $_SERVER['QUERY_STRING'];
+
+		// Is the user logged in?
+		if (User::isGuest())
+		{
+			App::redirect(
+				$redirect,
+				Lang::txt('PLG_GROUPS_FORUM_LOGIN_NOTICE'),
+				'warning'
+			);
+		}
 
 		// Require POST to prevent accidental deletion by crawlers
 		if (Request::method() !== 'POST')
 		{
-			App::redirect($redirect, Lang::txt('PLG_GROUPS_FORUM_ERROR_METHOD_NOT_ALLOWED'), 'error');
-			return;
+			App::abort(405, Lang::txt('PLG_GROUPS_FORUM_ERROR_METHOD_NOT_ALLOWED'));
 		}
 
 		// Check for request forgeries

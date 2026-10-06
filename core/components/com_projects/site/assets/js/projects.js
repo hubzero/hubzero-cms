@@ -281,17 +281,30 @@ HUB.Projects = {
 			$('#confirm-box').remove();
 		}
 
-		var href = $(link).attr('href');
+		// A link is followed; an action button posts its form to its formaction
+		var yes;
+		if ($(link).attr('formaction'))
+		{
+			yes = $('<button type="submit" class="confirm"></button>')
+				.attr('form', $(link).attr('form'))
+				.attr('formaction', $(link).attr('formaction'));
+		}
+		else
+		{
+			yes = $('<a class="confirm"></a>').attr('href', $(link).attr('href'));
+		}
+		yes.html(yesanswer);
 
 		// Add confirmation
 		var ancestor = $(link).parent().parent();
 		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' +
 			'<p>' + question + '</p>' +
 			'<p>' +
-				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' +
 				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' +
 			'</p>' +
 		'</div>');
+
+		$('#confirm-box-cancel').before(yes);
 
 		$('#confirm-box-cancel').on('click', function(e){
 			e.preventDefault();

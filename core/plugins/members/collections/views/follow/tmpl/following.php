@@ -69,9 +69,9 @@ $this->css()
 							</td>
 							<td>
 								<?php if ($this->params->get('access-manage-collection')) { ?>
-									<a class="icon-unfollow unfollow btn" data-token="<?php echo Session::getFormToken(); ?>" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
+									<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->following()->link('unfollow')); ?>" class="icon-unfollow unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>">
 										<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
-									</a>
+									</button>
 								<?php } ?>
 							</td>
 						</tr>

@@ -1092,19 +1092,20 @@ class Groups extends Base
 	 */
 	public function doDeleteTask()
 	{
+		// Check if they're logged in
+		if (User::isGuest())
+		{
+			// Return to the confirmation form rather than to this POST-only task
+			return $this->loginTask(
+				Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'),
+				'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=delete'
+			);
+		}
+
 		// Require POST to prevent accidental deletion by crawlers
 		if (Request::method() !== 'POST')
 		{
 			App::abort(405, Lang::txt('COM_GROUPS_ERROR_METHOD_NOT_ALLOWED'));
-		}
-
-		// Check for request forgeries
-		Request::checkToken();
-
-		// Check if they're logged in
-		if (User::isGuest())
-		{
-			return $this->loginTask(Lang::txt('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 		}
 
 		// Check for request forgeries

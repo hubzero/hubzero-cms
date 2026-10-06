@@ -84,8 +84,9 @@
 		.background-clip(padding-box);
 		.transition(all 0.1s ease-out);
 
-		&:hover,
-		&:focus {
+		// Buttons standing in for links (see _buttons.less) keep their look
+		&:not([form="hz-post-action"]):hover,
+		&:not([form="hz-post-action"]):focus {
 			background-color: #fff;
 			border-color: #222;
 		}
@@ -119,8 +120,8 @@
 	textarea {
 		width: 100%;
 	}*/
-	button,
-	[type=submit] {
+	button:not([form="hz-post-action"]),
+	[type=submit]:not([form="hz-post-action"]) {
 		&:hover,
 		&:focus {
 			background-color: #222;

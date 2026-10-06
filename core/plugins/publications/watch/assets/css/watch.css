@@ -17,9 +17,6 @@
 	padding: 1em;
 	margin: 2em 0;
 }
-.item-watch-action {
-	margin: 1em 0;
-}
 .item-watch > :first-child {
 	margin-top: 0;
 }
@@ -31,5 +28,9 @@
 }
 .item-watch .btn {
 	display: block;
+	width: 100%;
+}
+.item-watch button.btn {
+	box-sizing: border-box;
 	width: 100%;
 }

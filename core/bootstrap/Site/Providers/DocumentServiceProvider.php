@@ -72,6 +72,9 @@ class DocumentServiceProvider extends Middleware
 			}
 			$document->setMetaData('rights', $this->app['config']->get('MetaRights'));
 
+			// Default look for action buttons, whatever the template
+			$document->addActionStyleSheet();
+
 			$file = $request->getCmd('tmpl', 'index');
 			if (!$this->app['config']->get('offline') && $file == 'offline')
 			{
@@ -147,7 +150,14 @@ class DocumentServiceProvider extends Middleware
 		}
 		$this->app['dispatcher']->trigger('system.onBeforeRender');
 
-		$response->setContent($document->render($caching, $params));
+		$content = $document->render($caching, $params);
+
+		if ($document->getType() == 'html')
+		{
+			$content = \Hubzero\Document\Type\Html::addActionForm($content);
+		}
+
+		$response->setContent($content);
 
 		$this->app['dispatcher']->trigger('system.onAfterRender');
 

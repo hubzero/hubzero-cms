@@ -35,10 +35,7 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 	</span>
 	<?php if ($this->group->published == 1 && ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager')) : ?>
 		<?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
-			<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>" method="post" class="inline-form">
-				<?php echo Html::input('token'); ?>
-				<button type="submit" class="delete">Delete</button>
-			</form>
+			<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=delete&event_id='.$this->event->get('id')); ?>" class="delete">Delete</button>
 			<a class="edit" href="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=calendar&action=edit&event_id='.$this->event->get('id')); ?>">
 				Edit
 			</a>
