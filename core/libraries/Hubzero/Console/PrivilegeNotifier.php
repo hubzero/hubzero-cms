@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package    framework
- * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
@@ -11,40 +11,50 @@ namespace Hubzero\Console;
 use Hubzero\System\PrivilegeManager;
 
 /**
- * Console Privilege Notifier
+ * Tells the operator what muse is doing about privileges at startup.
  *
- * Handles display of privilege-related warnings and prompts
- * in the CLI environment.
- *
- * This class separates UI/output concerns from the core privilege
- * management logic in PrivilegeManager.
+ * Everything this class writes is a notice to a human, never part of a
+ * command's result, so it goes to stderr (or the terminal for an interactive
+ * prompt) and stays out of stdout, which callers such as com_installer parse
+ * as JSON.
  */
 class PrivilegeNotifier
 {
     /**
-     * The privilege manager instance
+     * Privilege manager
+     *
+     * @var  PrivilegeManager
      */
     private PrivilegeManager $privileges;
 
     /**
-     * Whether to use ANSI colors
+     * Whether to colour output, or null to decide from the stream
+     *
+     * @var  bool|null
      */
-    private bool $ansi;
+    private ?bool $ansi;
+
+    /**
+     * Stream notices are written to
+     *
+     * @var  resource|null
+     */
+    private $stream = null;
 
     /**
      * Constructor
      *
-     * @param  PrivilegeManager|null  $privileges  Privilege manager (uses singleton if null)
-     * @param  bool                   $ansi        Whether to use ANSI colors
+     * @param   PrivilegeManager|null  $privileges
+     * @param   bool|null              $ansi        Colour output; null picks by whether the stream is a terminal
      */
-    public function __construct(?PrivilegeManager $privileges = null, bool $ansi = true)
+    public function __construct(?PrivilegeManager $privileges = null, ?bool $ansi = null)
     {
         $this->privileges = $privileges ?? PrivilegeManager::getInstance();
         $this->ansi = $ansi;
     }
 
     /**
-     * Handle privilege detection on startup
+     * Handle privilege setup at startup
      *
      * This should be called early in muse startup.
      * It handles:
@@ -71,30 +81,30 @@ class PrivilegeNotifier
     }
 
     /**
-     * Handle sudo environment
+     * Drop to the original sudo user, or treat the process as plain root
+     * when that is not possible
      *
-     * Drops to original user and displays notice.
-     *
-     * @return bool  Always returns true (continue execution)
+     * @return bool  True to continue, false to abort
      */
     private function handleSudoEnvironment(): bool
     {
-        // Drop to the original sudo user
-        $this->privileges->initializeSudoEnvironment();
+        // The drop fails when SUDO_USER cannot be resolved (deleted account,
+        // directory service down). We are still root then, and saying
+        // otherwise would be worse than the root warning.
+        if (!$this->privileges->initializeSudoEnvironment()) {
+            return $this->handleRootEnvironment();
+        }
 
-        // Display notice
         $sudoUser = $this->privileges->getSudoUser();
 
         $this->output("\n");
-
-        if ($this->ansi) {
+        if ($this->ansi()) {
             $this->output("\033[31mSudo Environment Detected:\033[39m ");
             $this->output("Now running as user '\033[32m{$sudoUser}\033[39m'.\n");
         } else {
             $this->output("Sudo Environment Detected: ");
             $this->output("Now running as user '{$sudoUser}'.\n");
         }
-
         $this->output("Administrative privileges will only be used when necessary.\n");
         $this->output("\n");
 
@@ -102,34 +112,46 @@ class PrivilegeNotifier
     }
 
     /**
-     * Handle direct root environment
+     * Warn about running as root and, when someone is there, ask
      *
-     * Displays warning and prompts for confirmation.
-     *
-     * @return bool  True if user confirms, false to abort
+     * @return bool  True to continue, false to abort
      */
     private function handleRootEnvironment(): bool
     {
-        $this->displayRootWarning();
-        return $this->promptRootConfirmation();
+        // A human is being asked a question: put it where they are looking,
+        // even if they redirected stderr. Unsolicited notices stay on stderr.
+        $interactive = $this->isInteractive();
+        $saved = $this->stream;
+
+        if ($interactive && ($tty = @fopen('/dev/tty', 'w'))) {
+            $this->stream = $tty;
+        }
+
+        try {
+            $this->displayRootWarning();
+            return $this->promptRootConfirmation();
+        } finally {
+            if ($this->stream !== $saved) {
+                fclose($this->stream);
+                $this->stream = $saved;
+            }
+        }
     }
 
     /**
-     * Display the root warning message
+     * Display the root security warning
      *
      * @return void
      */
     public function displayRootWarning(): void
     {
         $this->output("\n");
-
-        if ($this->ansi) {
+        if ($this->ansi()) {
             $this->output("\033[31m");
             $this->output(str_repeat("\u{2588}", 2) . " Security Warning:\033[39m\n");
         } else {
             $this->output("!! Security Warning:\n");
         }
-
         $this->output("You are running this installer with full administrative (root) privileges.\n");
         $this->output("Using root for installations can lead to security vulnerabilities.\n");
         $this->output("Consider using sudo to run the installer as a standard user instead.\n");
@@ -137,9 +159,9 @@ class PrivilegeNotifier
     }
 
     /**
-     * Prompt user to confirm running as root
+     * Ask whether to continue as root
      *
-     * @return bool  True if confirmed, false to abort
+     * @return bool  True to continue, false to abort
      */
     public function promptRootConfirmation(): bool
     {
@@ -149,19 +171,16 @@ class PrivilegeNotifier
         // existed, and the warning above is already in their log.
         if (!$this->isInteractive()) {
             $this->output("Not running interactively; continuing as root.\n\n");
-
             return true;
         }
 
         while (true) {
             $this->output("Continue anyway? [y/N] ");
-
             $line = fgets(STDIN);
 
             // Input closed underneath us part way through
             if ($line === false) {
                 $this->output("\n");
-
                 return false;
             }
 
@@ -182,15 +201,13 @@ class PrivilegeNotifier
     }
 
     /**
-     * Whether there is a person on the other end of stdin
-     *
-     * False for cron, pipes, redirects and anything passing --no-interaction.
+     * Is someone there to answer a prompt?
      *
      * @return bool
      */
     public function isInteractive(): bool
     {
-        foreach (['--no-interaction', '--no-interactive', '-n'] as $flag) {
+        foreach (['--no-interaction', '--no-interactive', '--non-interactive', '-n'] as $flag) {
             if (in_array($flag, (array) ($_SERVER['argv'] ?? []), true)) {
                 return false;
             }
@@ -200,26 +217,18 @@ class PrivilegeNotifier
             return false;
         }
 
-        if (function_exists('stream_isatty')) {
-            return stream_isatty(STDIN);
-        }
-
-        if (function_exists('posix_isatty')) {
-            return @posix_isatty(STDIN);
-        }
-
-        return false;
+        return $this->isTty(STDIN);
     }
 
     /**
-     * Display a message about privilege escalation
+     * Notify that privileges are being escalated
      *
-     * @param  string  $action  What action is being performed
-     * @return void
+     * @param   string  $action  What the escalation is for
+     * @return  void
      */
     public function notifyEscalating(string $action = ''): void
     {
-        if ($this->ansi) {
+        if ($this->ansi()) {
             $this->output("\033[33m[sudo]\033[39m ");
         } else {
             $this->output("[sudo] ");
@@ -233,15 +242,15 @@ class PrivilegeNotifier
     }
 
     /**
-     * Display a message about dropping privileges
+     * Notify that privileges are being dropped
      *
-     * @return void
+     * @return  void
      */
     public function notifyDropping(): void
     {
         $sudoUser = $this->privileges->getSudoUser();
 
-        if ($this->ansi) {
+        if ($this->ansi()) {
             $this->output("\033[32m[done]\033[39m ");
         } else {
             $this->output("[done] ");
@@ -255,15 +264,86 @@ class PrivilegeNotifier
     }
 
     /**
-     * Set ANSI mode
+     * Set whether to colour output
      *
-     * @param  bool  $ansi  Whether to use ANSI colors
-     * @return self
+     * @param   bool  $ansi
+     * @return  self
      */
     public function setAnsi(bool $ansi): self
     {
         $this->ansi = $ansi;
         return $this;
+    }
+
+    /**
+     * Set the stream notices are written to
+     *
+     * @param   resource  $stream
+     * @return  self
+     */
+    public function setStream($stream): self
+    {
+        $this->stream = $stream;
+        return $this;
+    }
+
+    /**
+     * Whether to colour output
+     *
+     * Explicit setting first, then the console's own --no-colors flag, then
+     * whether anyone is looking at a terminal: escape codes in apache's
+     * error_log help nobody.
+     *
+     * @return bool
+     */
+    private function ansi(): bool
+    {
+        if ($this->ansi !== null) {
+            return $this->ansi;
+        }
+
+        if (in_array('--no-colors', (array) ($_SERVER['argv'] ?? []), true)) {
+            return false;
+        }
+
+        return $this->isTty($this->stream());
+    }
+
+    /**
+     * Is the stream a terminal?
+     *
+     * @param   resource  $stream
+     * @return  bool
+     */
+    private function isTty($stream): bool
+    {
+        if (!is_resource($stream)) {
+            return false;
+        }
+
+        if (function_exists('stream_isatty')) {
+            return stream_isatty($stream);
+        }
+
+        if (function_exists('posix_isatty')) {
+            return @posix_isatty($stream);
+        }
+
+        return false;
+    }
+
+    /**
+     * The stream notices go to: whatever was set, else stderr
+     *
+     * @return resource
+     */
+    private function stream()
+    {
+        if ($this->stream === null) {
+            $this->stream = defined('STDERR') ? STDERR : fopen('php://stderr', 'w');
+        }
+
+        return $this->stream;
     }
 
     /**
@@ -277,11 +357,6 @@ class PrivilegeNotifier
      */
     private function output(string $text): void
     {
-        if (defined('STDERR')) {
-            fwrite(STDERR, $text);
-            return;
-        }
-
-        echo $text;
+        fwrite($this->stream(), $text);
     }
 }

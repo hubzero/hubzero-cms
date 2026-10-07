@@ -92,7 +92,8 @@ class PrivilegeManager
         $this->sudoUser = $this->detectSudoUser();
 
         if ($this->sudoUser !== null && $this->hasPosix) {
-            $this->sudoUserInfo = posix_getpwnam($this->sudoUser);
+            // false when SUDO_USER names an account the system cannot resolve
+            $this->sudoUserInfo = posix_getpwnam($this->sudoUser) ?: null;
         }
     }
 
@@ -182,11 +183,13 @@ class PrivilegeManager
             return true; // Already elevated
         }
 
-        posix_seteuid(self::ROOT_UID);
-        posix_setegid($this->originalGid);
+        if (!posix_seteuid(self::ROOT_UID)) {
+            return false;
+        }
+
         $this->elevated = true;
 
-        return true;
+        return posix_setegid($this->originalGid);
     }
 
     /**
@@ -216,10 +219,14 @@ class PrivilegeManager
                 posix_initgroups($this->sudoUser, $this->sudoUserInfo['gid']);
             }
 
-            posix_setegid($this->sudoUserInfo['gid']);
-            posix_seteuid($this->sudoUserInfo['uid']);
-            $this->elevated = false;
-            return true;
+            $gidChanged = posix_setegid($this->sudoUserInfo['gid']);
+            $uidChanged = posix_seteuid($this->sudoUserInfo['uid']);
+
+            if ($uidChanged) {
+                $this->elevated = false;
+            }
+
+            return $gidChanged && $uidChanged;
         }
 
         return false;

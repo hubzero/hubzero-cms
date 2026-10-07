@@ -405,9 +405,9 @@ class User extends Base implements CommandInterface
 	{
 		$privileges = PrivilegeManager::getInstance();
 
-		if (!$privileges->isRoot() && !$privileges->isSudo())
+		if (!$privileges->isRoot())
 		{
-			$this->output->error('This command must be run as root, or under sudo.');
+			$this->output->error('This command must be run as root (directly, or via sudo).');
 		}
 
 		$identifier = $this->arguments->getOpt(3);
