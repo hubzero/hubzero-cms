@@ -20,7 +20,9 @@ jQuery(document).ready(function(jq){
 				e.preventDefault();
 				// A link added in this session (no data-id) has nothing stored to delete
 				if ($(this).attr('data-id')) {
-					$.post($(this).attr('formaction'), $(this.form).serialize(), function(data) {});
+					var url = $(this).attr('formaction');
+
+					$.post(url + (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1', $(this.form).serialize(), function(data) {});
 				}
 				$(this).parent().parent().remove();
 			});

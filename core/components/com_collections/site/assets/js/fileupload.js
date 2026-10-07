@@ -93,7 +93,9 @@ HUB.CollectionsFileUpload = {
 	deleteAsset: function(el) {
 		var $ = HUB.CollectionsFileUpload.jQuery;
 
-		$.post($(el).attr('formaction'), $(el.form).serialize(), function(data) {
+		var url = $(el).attr('formaction');
+
+		$.post(url + (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1', $(el.form).serialize(), function(data) {
 			HUB.CollectionsFileUpload.updateFileList();
 		});
 	},

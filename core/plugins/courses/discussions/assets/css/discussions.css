@@ -373,6 +373,8 @@
 	ol.comments .comment-options,
 	ol.comments .comment-options:hover a,
 	ol.comments .comment-options:hover button,
+	ol.comments .comment-options:focus-within a,
+	ol.comments .comment-options:focus-within button,
 	ol.comments .comment-options a.reply {
 		visibility: visible;
 	}

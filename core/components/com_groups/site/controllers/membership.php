@@ -695,6 +695,7 @@ class Membership extends Base
 		if ($invite)
 		{
 			$this->view->group->add('members', array(User::get('id')));
+			$this->view->group->remove('invitees', array(User::get('id')));
 			$this->view->group->update();
 
 			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
@@ -704,6 +705,7 @@ class Membership extends Base
 		elseif (in_array(strtolower(User::get('email')), $inviteemails))
 		{
 			$this->view->group->add('members', array(User::get('id')));
+			$this->view->group->remove('invitees', array(User::get('id')));
 			$this->view->group->update();
 			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
 			$this->database->setQuery($sql);

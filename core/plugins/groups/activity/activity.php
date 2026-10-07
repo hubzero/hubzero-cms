@@ -89,17 +89,14 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 				return $arr;
 			}
 
+			$this->group = $group;
+			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
+
 			//check if guest and force login if plugin access is registered or members
 			if (User::isGuest()
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
-
-				App::redirect(
-					Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-					Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
-					'warning'
-				);
+				$this->loginRedirect();
 				return;
 			}
 
@@ -115,9 +112,6 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			}
 
 			include_once __DIR__ . '/models/attachment.php';
-
-			$this->group = $group;
-			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
 
 			// Managers and site administrators may hide any entry in the feed.
 			// Starring marks the entry for the whole group, so it is for members.
@@ -244,6 +238,24 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Load a feed entry, which must belong to this group
+	 *
+	 * @param   integer  $id
+	 * @return  object
+	 */
+	protected function groupEntry($id)
+	{
+		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
+
+		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		return $entry;
+	}
+
+	/**
 	 * Send a guest to log in, returning to the group's activity feed
 	 *
 	 * @return  void
@@ -277,13 +289,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$id      = Request::getInt('activity', 0);
 		$no_html = Request::getInt('no_html', 0);
 
-		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
-
-		// The record must belong to this group
-		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
-		{
-			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
-		}
+		$entry = $this->groupEntry($id);
 
 		// Managers may hide any entry; anyone else only an entry they posted
 		if (!$this->canModerate && (int) $entry->log->get('created_by') !== (int) User::get('id'))
@@ -354,13 +360,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$no_html = Request::getInt('no_html', 0);
 		$action  = Request::getWord('action', 'star');
 
-		$entry = Hubzero\Activity\Recipient::oneOrFail($id);
-
-		// The record must belong to this group
-		if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber'))
-		{
-			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
-		}
+		$entry = $this->groupEntry($id);
 		$entry->set('starred', ($action == 'star' ? 1 : 0));
 
 		if (!$entry->save())
@@ -424,6 +424,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 		if (!$row->isNew()
 		 && (!in_array($row->get('scope'), array('group', 'group_managers')) || $row->get('scope_id') != $this->group->get('gidNumber')))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
+
+		// Changing an existing entry is for its author or a moderator
+		if (!$row->isNew() && !$this->canModerate && (int) $row->get('created_by') !== (int) User::get('id'))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
