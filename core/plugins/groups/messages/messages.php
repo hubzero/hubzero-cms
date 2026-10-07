@@ -284,11 +284,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 		// Instantiate a vew
 		$view = $this->view('default', 'create');
 
-		//get all member roles
-		$db = App::get('db');
-		$sql = "SELECT * FROM `#__xgroups_roles` WHERE gidNumber=".$db->quote($this->group->get('gidNumber'))." ORDER BY `ordering` ASC, `name` ASC";
-		$db->setQuery($sql);
-		$member_roles = $db->loadAssocList();
+		//get all member roles, in the order the group's managers set
+		$member_roles = Components\Groups\Models\Role::forGroup($this->group->get('gidNumber'))->rows()->toArray();
 
 		//get all group members
 		$members = $this->group->get('members');

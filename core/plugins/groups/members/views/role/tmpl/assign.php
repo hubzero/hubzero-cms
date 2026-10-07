@@ -17,6 +17,7 @@ defined('_HZEXEC_') or die();
 		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
 		<label for="uid">
+			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="uid" value="<?php echo $this->escape($this->uid); ?>" id="uid" />
 			<?php
 				$u = User::getInstance($this->uid);

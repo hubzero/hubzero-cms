@@ -41,6 +41,7 @@ defined('_HZEXEC_') or die();
 	</fieldset>
 	<div class="clear"></div>
 
+	<?php echo Html::input('token'); ?>
 	<input type="hidden" name="role[id]" value="<?php echo $this->role->id; ?>" >
 	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
 	<input type="hidden" name="active" value="members" />

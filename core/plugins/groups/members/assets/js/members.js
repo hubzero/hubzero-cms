@@ -102,14 +102,23 @@ jQuery(document).ready(function(jq){
 				var frm = $('form.roles-order');
 				var data = frm.serialize() + '&' + roles.sortable('serialize', { key: 'roles[]' });
 
+				// One save at a time: a second drag while this one is in
+				// flight would make a failed save revert the wrong move
+				roles.sortable('disable');
+
+				var failed = function (message) {
+					roles.sortable('cancel');
+					alert(message || frm.attr('data-error'));
+				};
+
 				$.post(frm.attr('action'), data, function (response) {
 					if (!response || !response.success) {
-						roles.sortable('cancel');
-						alert((response && response.message) || frm.attr('data-error'));
+						failed(response && response.message);
 					}
 				}, 'json').fail(function () {
-					roles.sortable('cancel');
-					alert(frm.attr('data-error'));
+					failed();
+				}).always(function () {
+					roles.sortable('enable');
 				});
 			}
 		});

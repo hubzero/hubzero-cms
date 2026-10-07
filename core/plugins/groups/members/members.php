@@ -8,6 +8,11 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once __DIR__ . '/helpers/roleorder.php';
+
+use Plugins\Groups\Members\Helpers\RoleOrder;
+use Components\Groups\Models\Role;
+
 // include role lib
 require_once Component::path('com_groups') . DS . 'models' . DS . 'role.php';
 use Components\Groups\Tables\Reason;
@@ -189,7 +194,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 				}
 
 				$action = strtolower(trim($action));
-				if (!method_exists($this, $action))
+
+				// Only this plugin's own argument-less methods are actions.
+				// Helpers that take arguments would fail with a 500, and
+				// inherited methods are not pages.
+				$method = method_exists($this, $action) ? new ReflectionMethod($this, $action) : null;
+				if (!$method
+				 || $method->getDeclaringClass()->getName() != __CLASS__
+				 || $method->getNumberOfRequiredParameters() > 0)
 				{
 					App::abort(404, Lang::txt('PLG_GROUPS_MESSAGES_ERROR_ACTION_NOTFOUND'));
 				}
@@ -1217,12 +1229,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function denyresponses($responses = null)
 	{
-		if ($this->authorized != 'manager' && $this->authorized != 'admin')
-		{
-			return false;
-		}
-
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
@@ -1252,12 +1259,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function savedenyresponses()
 	{
-		if ($this->authorized != 'manager' && $this->authorized != 'admin')
-		{
-			return false;
-		}
-
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
@@ -1589,72 +1591,38 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function getRoles()
 	{
-		$db = App::get('db');
-		$db->setQuery("SELECT * FROM `#__xgroups_roles` WHERE gidNumber=" . $db->quote($this->group->get('gidNumber')) . " ORDER BY `ordering` ASC, `name` ASC");
-
-		return $db->loadAssocList();
+		return Role::forGroup($this->group->get('gidNumber'))->rows()->toArray();
 	}
 
 	/**
-	 * Read a date out of a role name, for sorting
+	 * May the current user manage this group's roles?
 	 *
-	 * Groups name roles for graduation terms ("May 2026", "Fall 2025",
-	 * "Class of 2026"), which have to sort by date rather than by name.
-	 * Anything without a four digit year is not a term.
-	 *
-	 * @param   string   $name  Role name
-	 * @return  integer  Timestamp, or null when the name holds no date
+	 * @return  bool
 	 */
-	private function roleDate($name)
+	private function canManageRoles()
 	{
-		$value = trim($name);
+		return ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1;
+	}
 
-		// Drop the wording groups put in front of a term
-		$value = preg_replace('/^(class of|cohort|graduat(?:ing|ion)|expected)\s+/i', '', $value);
+	/**
+	 * Load one of this group's roles, or 404
+	 *
+	 * Role ids are global, so a request naming another group's role must
+	 * not be able to read or change it from here.
+	 *
+	 * @param   int  $id
+	 * @return  Role
+	 */
+	private function groupRole($id)
+	{
+		$role = Role::oneOrNew((int) $id);
 
-		// Seasons sort as the month they start
-		$seasons = array(
-			'spring' => 'March',
-			'summer' => 'June',
-			'fall'   => 'September',
-			'autumn' => 'September',
-			'winter' => 'December'
-		);
-
-		$value = preg_replace_callback('/\b(spring|summer|fall|autumn|winter)\b/i', function ($m) use ($seasons)
+		if ($role->isNew() || (int) $role->get('gidNumber') != (int) $this->group->get('gidNumber'))
 		{
-			return $seasons[strtolower($m[1])];
-		}, $value);
-
-		// Without a year this is a name, not a term
-		if (!preg_match('/(?:^|\D)((?:19|20)\d{2})(?:\D|$)/', $value, $year))
-		{
-			return null;
+			App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NOT_FOUND'));
 		}
 
-		// Numeric terms ("05/2026") keep their month too
-		if (preg_match('#^(\d{1,2})[/-]((?:19|20)\d{2})$#', trim($value), $numeric)
-		 && $numeric[1] >= 1 && $numeric[1] <= 12)
-		{
-			return strtotime($numeric[2] . '-' . str_pad($numeric[1], 2, '0', STR_PAD_LEFT) . '-01');
-		}
-
-		// A bare month and year ("May 2026") is the common case, so build a
-		// full date from the parts rather than trusting strtotime with it
-		if (preg_match('/([A-Za-z]+)?[\s,]*((?:19|20)\d{2})/', $value, $parts))
-		{
-			$month = !empty($parts[1]) ? $parts[1] : 'January';
-			$date  = strtotime($month . ' 1 ' . $parts[2]);
-
-			if ($date !== false)
-			{
-				return $date;
-			}
-		}
-
-		$date = strtotime($value);
-
-		return ($date === false) ? strtotime('January 1 ' . $year[1]) : $date;
+		return $role;
 	}
 
 	/**
@@ -1668,53 +1636,21 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function sortroles()
 	{
-		if ($this->authorized != 'manager' || $this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			App::abort(403, Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_NOT_AUTHORIZED'));
 		}
 
 		Request::checkToken();
 
-		$names = array();
-		$dates = array();
-
-		foreach ($this->getRoles() as $role)
+		$ids = array_map(function ($role)
 		{
-			$date = $this->roleDate($role['name']);
+			return $role['id'];
+		}, RoleOrder::sort($this->getRoles()));
 
-			if ($date === null)
-			{
-				$names[] = array('id' => (int) $role['id'], 'name' => $role['name']);
-			}
-			else
-			{
-				$dates[] = array('id' => (int) $role['id'], 'name' => $role['name'], 'date' => $date);
-			}
-		}
-
-		usort($names, function ($a, $b)
+		if ($ids && !Role::saveOrder($this->group->get('gidNumber'), $ids))
 		{
-			return strcasecmp($a['name'], $b['name']);
-		});
-
-		usort($dates, function ($a, $b)
-		{
-			// Same term twice is a naming accident; fall back to the name
-			return ($a['date'] == $b['date'])
-				? strcasecmp($a['name'], $b['name'])
-				: ($a['date'] < $b['date'] ? -1 : 1);
-		});
-
-		$db  = App::get('db');
-		$gid = (int) $this->group->get('gidNumber');
-
-		$ordering = 1;
-		foreach (array_merge($names, $dates) as $role)
-		{
-			$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote($role['id']) . " AND `gidNumber`=" . $db->quote($gid));
-			$db->query();
-
-			$ordering++;
+			App::abort(500, Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR'));
 		}
 
 		App::redirect(
@@ -1733,7 +1669,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	{
 		$response = array('success' => false);
 
-		if ($this->authorized != 'manager' || $this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_NOT_AUTHORIZED');
 		}
@@ -1751,22 +1687,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			{
 				$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR');
 			}
+			elseif (!Role::saveOrder($this->group->get('gidNumber'), $ids))
+			{
+				$response['message'] = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR');
+			}
 			else
 			{
-				$db  = App::get('db');
-				$gid = (int) $this->group->get('gidNumber');
-
-				$ordering = 1;
-				foreach ($ids as $id)
-				{
-					// The gidNumber condition keeps a request from reordering
-					// another group's roles
-					$db->setQuery("UPDATE `#__xgroups_roles` SET `ordering`=" . $db->quote($ordering) . " WHERE `id`=" . $db->quote($id) . " AND `gidNumber`=" . $db->quote($gid));
-					$db->query();
-
-					$ordering++;
-				}
-
 				$response['success'] = true;
 			}
 		}
@@ -1783,6 +1709,11 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function addRole()
 	{
+		if (!$this->canManageRoles())
+		{
+			return false;
+		}
+
 		$this->editRole();
 	}
 
@@ -1794,10 +1725,16 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function editRole($role = null)
 	{
+		if (!$this->canManageRoles())
+		{
+			return false;
+		}
+
 		if (!$role)
 		{
 			// load role object
-			$role = Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
+			$id   = Request::getInt('role', 0);
+			$role = $id ? $this->groupRole($id) : Role::blank();
 		}
 
 		// pass vars to view
@@ -1824,8 +1761,22 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	public function saveRole()
 	{
+		if (!$this->canManageRoles())
+		{
+			return false;
+		}
+
+		Request::checkToken();
+
 		// get request vars
 		$fields = Request::getArray('role', array());
+
+		// An existing id must be one of this group's roles
+		if (!empty($fields['id']))
+		{
+			$this->groupRole($fields['id']);
+		}
+
 		$fields['gidNumber']   = $this->group->get('gidNumber');
 		$fields['permissions'] = json_encode($fields['permissions']);
 
@@ -1880,7 +1831,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function removerole()
 	{
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
@@ -1892,7 +1843,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$role = Components\Groups\Models\Role::oneOrFail($role);
+		$role = $this->groupRole($role);
 
 		if (!$role->destroy())
 		{
@@ -1943,12 +1894,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function assignrole()
 	{
-		if ($this->authorized != 'manager')
-		{
-			return false;
-		}
-
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
@@ -1989,10 +1935,12 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function submitrole()
 	{
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
+
+		Request::checkToken();
 
 		$uid     = Request::getInt('uid', 0, 'post');
 		$role    = Request::getInt('role', 0, 'post');
@@ -2004,6 +1952,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			$this->assignrole();
 			return;
 		}
+
+		$this->groupRole($role);
 
 		$db = App::get('db');
 		$db->setQuery("INSERT INTO `#__xgroups_member_roles` (roleid,uidNumber) VALUES (" . $db->Quote($role) . "," . $db->Quote($uid) . ")");
@@ -2026,7 +1976,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function deleterole()
 	{
-		if ($this->membership_control == 0)
+		if (!$this->canManageRoles())
 		{
 			return false;
 		}
@@ -2038,6 +1988,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		{
 			return false;
 		}
+
+		$this->groupRole($role);
 
 		$db = App::get('db');
 		$db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid));
