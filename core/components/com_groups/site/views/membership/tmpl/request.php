@@ -40,13 +40,8 @@ defined('_HZEXEC_') or die();
 
 				<?php if ($this->group->get('restrict_msg')) { ?>
 					<div class="warning">
-						<?php
-							$restrictMsg = stripslashes($this->group->get('restrict_msg'));
-							echo Lang::txt('NOTE') . ': ';
-							echo \Component::params('com_groups')->get('restrict_msg_allow_html', 0)
-								? $restrictMsg
-								: $this->escape($restrictMsg);
-						?>
+						<strong><?php echo Lang::txt('NOTE'); ?>:</strong>
+						<?php echo \Hubzero\Utility\Sanitize::html($this->group->get('restrict_msg')); ?>
 					</div>
 				<?php } ?>
 
