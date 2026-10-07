@@ -20,69 +20,67 @@ class Finder
 	protected static $ext = 'phtml';
 
 	/**
-	 * Get path to help page
+	 * Get the path to a help page
 	 *
-	 * @return  void
+	 * Candidates are checked in order: template overrides first, then the
+	 * plugin and component pages. When an extension is given the plugin was
+	 * asked for by name, so its page outranks the component's page of the
+	 * same name; otherwise the component's page comes first.
+	 *
+	 * @param   string  $component  Component option, e.g. com_groups
+	 * @param   string  $extension  Plugin of the component to look in, or ''
+	 * @param   string  $page       Page name
+	 * @return  string  Path to the page, or '' if none exists
 	 */
 	public static function page($component, $extension, $page)
 	{
-		$name   = str_replace('com_', '', $component);
-		$client = \App::isAdmin() ? 'admin' : 'site';
-		$tmpl   = \App::get('template')->path;
-		$lang   = \Lang::getLanguage();
+		$name = str_replace('com_', '', $component);
+		$tmpl = \App::get('template')->path;
+		$lang = \Lang::getTag();
+
+		// A plugin's help page is <extension>/help/<lang>/<page>.phtml when the
+		// plugin is named by $extension, else <page>/help/<lang>/index.phtml
+		$plugin = $extension ?: $page;
+		$file   = ($extension ? $page : 'index') . '.' . self::$ext;
+
+		$componentPage = self::path($component) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
+
+		// \Plugin::path() is '' when no such plugin exists in app/ or core/
+		$pluginPath = \Plugin::path($name, $plugin);
+		$pluginPage = $pluginPath ? $pluginPath . DS . 'help' . DS . $lang . DS . $file : '';
 
 		$paths = array(
-			// Template override help page
-			$tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $page . DS . 'help' . DS . $lang . DS . 'index.' . self::$ext,
-			$tmpl . DS .  'html' . DS . $component  . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext
+			// Template overrides
+			$tmpl . DS . 'html' . DS . 'plg_' . $name . '_' . $plugin . DS . 'help' . DS . $lang . DS . $file,
+			$tmpl . DS . 'html' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext
+		);
+		$paths = array_merge($paths, $extension
+			? array($pluginPage, $componentPage)
+			: array($componentPage, $pluginPage)
 		);
 
-		// Path to help page
-		$paths[] = self::path($component) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
-		$paths[] = PATH_CORE . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . self::$ext;
-
-		// If we have an extension
-		if ($extension)
-		{
-			$paths[2] = \Plugin::path($name, $extension) . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
-			$paths[0] = $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . self::$ext;
-		}
-
-		$final = '';
-
-		// Determine path for help page
 		foreach ($paths as $path)
 		{
-			if (file_exists($path))
+			if ($path && file_exists($path))
 			{
-				$final = $path;
-				break;
+				return $path;
 			}
 		}
 
-		return $final;
+		return '';
 	}
 
 	/**
-	 * Get array of help pages for component
+	 * Get the component's client directory (site or admin)
 	 *
-	 * @param   string  $component  Component to get pages for
-	 * @return  array
+	 * @param   string  $component  Component option
+	 * @return  string
 	 */
 	private static function path($component)
 	{
 		$client = \App::isAdmin() ? 'admin' : 'site';
 
 		return \App::get('component')->path($component) . DS . $client;
-
-		/*if (file_exists(PATH_CORE . DS . 'components' . DS . $component . DS . $client))
-		{
-			return PATH_CORE . DS . 'components' . DS . $component . DS . $client;
-		}
-		else
-		{
-			return PATH_APP . DS . 'components' . DS . $component;
-		}*/
 	}
 
 	/**
