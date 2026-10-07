@@ -61,6 +61,17 @@ class View extends AbstractView
 	 */
 	public function __construct($config = array())
 	{
+		// Look for overrides under the component that owns the view, not
+		// the one the request is for: a group's wiki is com_wiki's views
+		// rendered inside com_groups, and belongs in html/com_wiki/
+		if (!array_key_exists('override_path', $config) && !empty($config['base_path']))
+		{
+			if ($component = self::componentFromPath($config['base_path']))
+			{
+				$config['override_path'] = $component;
+			}
+		}
+
 		parent::__construct($config);
 
 		// Set a base path for use by the view
@@ -74,6 +85,25 @@ class View extends AbstractView
 			}
 		}
 		$this->_basePath = $config['base_path'];
+	}
+
+	/**
+	 * The component (com_*) a path lies inside, if any
+	 *
+	 * @param   string  $path  A component path, such as core/components/com_wiki/site
+	 * @return  string|null
+	 */
+	protected static function componentFromPath($path)
+	{
+		foreach (array_reverse(preg_split('#[/\\\\]+#', $path)) as $segment)
+		{
+			if (preg_match('/^com_[A-Z0-9_\.-]+$/i', $segment))
+			{
+				return strtolower($segment);
+			}
+		}
+
+		return null;
 	}
 
 	/**

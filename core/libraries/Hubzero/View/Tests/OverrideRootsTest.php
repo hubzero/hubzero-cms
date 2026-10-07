@@ -141,6 +141,30 @@ class OverrideRootsTest extends Basic
     }
 
     /**
+     * A component's views rendered inside another component's request (a
+     * group's wiki: com_wiki views under option=com_groups) are overridden
+     * from the owning component's directory, not the request's
+     *
+     * @return  void
+     */
+    public function testComponentViewOverridesFollowItsOwnComponent()
+    {
+        $view = new ComponentView([
+            'name'      => 'pages',
+            'base_path' => $this->env->root . '/components/com_wiki/site',
+        ]);
+
+        $this->assertSame(
+            $this->expectedOverrides('com_wiki', 'pages'),
+            array_slice($this->templatePaths($view), 0, 2)
+        );
+
+        $child = $this->templatePaths($view->view('wikimenu'));
+
+        $this->assertSame($this->expectedOverrides('com_wiki', 'pages'), array_slice($child, 0, 2));
+    }
+
+    /**
      * @return  void
      */
     public function testPluginViewSearchesSuperGroupThenSiteTemplate()
