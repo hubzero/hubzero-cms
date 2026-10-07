@@ -69,15 +69,17 @@ $i = 1;
 				$class = '';
 			}
 			$i++;
-
-			// Hide review block until in review
-			if ($blockname == 'review' && ($blockId != $activenum))
-			{
-				continue;
-			}
 		?>
 		<li<?php if ($blockId == $activenum) { echo ' class="active"'; } ?>>
 			<a href="<?php echo Route::url( $this->pub->link('editversion') . '&section=' . $blockname . '&step=' . $blockId . '&move=continue'); ?>" <?php echo $class ? 'class="' . $class . '"' : ''; ?>><?php echo $block->manifest->label; ?></a>
 		</li>
 	<?php } ?>
 	</ul>
+	<?php
+	// A draft that has not been submitted, or that a curator sent back, says
+	// how to finish, everywhere but on the Review step where the button is.
+	// The Review tab is always listed above; the page itself only offers the
+	// button once every required field is filled.
+	if (in_array($this->pub->state, array(\Components\Publications\Models\Publication::STATE_DRAFT, \Components\Publications\Models\Publication::STATE_WORKED)) && $active != 'review') { ?>
+		<p class="warning progress-notice"><?php echo Lang::txt($this->pub->isWorked() ? 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE_RESUBMIT' : 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE'); ?></p>
+	<?php } ?>

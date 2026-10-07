@@ -1959,3 +1959,9 @@
 			min-width: 800px;
 		}
 	}
+
+/* Draft progress notice under the status bar */
+	.progress-notice {
+		clear: both;
+		margin: 0.5em 0 1em 0;
+	}
