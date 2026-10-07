@@ -47,20 +47,35 @@ class Articles extends SiteController
 	 * @return  void
 	 */
 	public function displayTask()
-	{		
+	{
+		// The same contract as categoryTask(), so the two layouts can share
+		// the category navigation and search form
+		$this->view
+			->set('archive', $this->archive)
+			->set('category', $this->allCategory())
+			->set('catid', 0)
+			->set('filters', array(
+				'sort'   => '',
+				'search' => ''
+			))
+			->setLayout('display')
+			->display();
+	}
+
+	/**
+	 * The pseudo-category that stands for every article
+	 *
+	 * @return  Category
+	 */
+	private function allCategory()
+	{
 		$category = new Category;
 		$category->set('alias', 'all');
 		$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
 		$category->set('id', 0);
 		$category->set('published', 1);
-		$category->set('path', 'all');
-		
-		$this->view->set('category', $category);
-		
-		$this->view
-			->set('archive', $this->archive)
-			->setLayout('display')
-			->display();
+
+		return $category;
 	}
 
 	/**
@@ -83,12 +98,7 @@ class Articles extends SiteController
 
 		if ($categoryAlias == 'all')
 		{
-			$category = new Category;
-			$category->set('alias', 'all');
-			$category->set('title', Lang::txt('COM_KB_ALL_ARTICLES'));
-			$category->set('id', 0);
-			$category->set('published', 1);
-			$category->set('path', 'all');
+			$category = $this->allCategory();
 		}
 		else
 		{

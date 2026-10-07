@@ -135,7 +135,9 @@ class Category extends Relational
 	public function link($type='')
 	{
 		$link  = $this->_base;
-		$link .= '&section=' . $this->get('path');
+		// A category built in code (the "all" pseudo-category) has an alias
+		// but no stored path; without a section the router picks the wrong task
+		$link .= '&section=' . ($this->get('path') ?: $this->get('alias'));
 
 		// If it doesn't exist or isn't published
 		switch (strtolower($type))

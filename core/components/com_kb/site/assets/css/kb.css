@@ -70,3 +70,22 @@
 		line-height: 0;
 		clear: left;
 	}
+/* Search results */
+	.com_kb .entry-snippet {
+		display: block;
+		margin: 0.3em 0 0.5em 0;
+		color: #666;
+		font-size: 0.95em;
+		line-height: 1.4;
+	}
+	.com_kb .entry-snippet mark {
+		padding: 0 0.15em;
+		background-color: #fff3a0;
+		color: inherit;
+	}
+	.com_kb .search-results-for {
+		margin: 0 0 0.5em 0;
+	}
+	.com_kb .search-results-for a {
+		margin-left: 0.5em;
+	}

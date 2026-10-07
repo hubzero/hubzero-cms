@@ -380,6 +380,86 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 	}
 
 	/**
+	 * A plain-text excerpt of the article around a search term
+	 *
+	 * The excerpt is HTML-escaped with each match wrapped in <mark>. When
+	 * the whole phrase does not occur, the earliest of its words is used.
+	 *
+	 * @param   string   $needle  Search term
+	 * @param   integer  $radius  Characters of context on either side
+	 * @return  string   HTML, or '' when the term is empty or does not occur
+	 */
+	public function snippet($needle, $radius = 160)
+	{
+		$needle = trim(preg_replace('/\s+/u', ' ', (string) $needle));
+
+		if ($needle === '')
+		{
+			return '';
+		}
+
+		// Field wrappers hold editor markup, not prose
+		$text = preg_replace('#<nb:(\w+)>.*?</nb:\1>#is', ' ', stripslashes((string) $this->get('fulltxt')));
+		$text = html_entity_decode(strip_tags($text), ENT_QUOTES, 'UTF-8');
+		$text = trim(preg_replace('/\s+/u', ' ', $text));
+
+		if ($text === '')
+		{
+			return '';
+		}
+
+		// The phrase, else whichever of its words comes first
+		$terms    = array($needle);
+		$position = mb_stripos($text, $needle, 0, 'UTF-8');
+
+		if ($position === false)
+		{
+			$terms = array();
+
+			foreach (array_unique(preg_split('/ /', $needle)) as $word)
+			{
+				$at = mb_stripos($text, $word, 0, 'UTF-8');
+
+				if ($at !== false)
+				{
+					$terms[] = $word;
+					$position = ($position === false) ? $at : min($position, $at);
+				}
+			}
+
+			if ($position === false)
+			{
+				return '';
+			}
+		}
+
+		$start   = max(0, $position - $radius);
+		$length  = $radius * 2 + mb_strlen($needle, 'UTF-8');
+		$excerpt = mb_substr($text, $start, $length, 'UTF-8');
+
+		// Cut on word boundaries, then mark the ends that were cut
+		if ($start > 0 && ($space = mb_strpos($excerpt, ' ', 0, 'UTF-8')) !== false)
+		{
+			$excerpt = mb_substr($excerpt, $space + 1, null, 'UTF-8');
+		}
+		if ($start + $length < mb_strlen($text, 'UTF-8') && ($space = mb_strrpos($excerpt, ' ', 0, 'UTF-8')) !== false)
+		{
+			$excerpt = mb_substr($excerpt, 0, $space, 'UTF-8');
+		}
+
+		$excerpt = htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8');
+
+		$patterns = array_map(function ($term)
+		{
+			return preg_quote(htmlspecialchars($term, ENT_QUOTES, 'UTF-8'), '/');
+		}, $terms);
+
+		$excerpt = preg_replace('/(' . implode('|', $patterns) . ')/iu', '<mark>$1</mark>', $excerpt);
+
+		return ($start > 0 ? '&hellip; ' : '') . $excerpt . ($start + $length < mb_strlen($text, 'UTF-8') ? ' &hellip;' : '');
+	}
+
+	/**
 	 * Get a list of votes
 	 *
 	 * @return  object
