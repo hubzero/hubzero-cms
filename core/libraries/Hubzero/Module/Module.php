@@ -65,7 +65,7 @@ class Module extends Obj
 	 */
 	public function getLayoutPath($layout='default')
 	{
-		$loader = new \Qubeshub\Module\Loader(App::get('app'), App::get('profiler'));
+		$loader = new \Hubzero\Module\Loader(App::get('app'), App::get('profiler'));
 		return $loader->getLayoutPath($this->module->module, $layout);
 	}
 

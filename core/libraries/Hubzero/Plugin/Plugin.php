@@ -120,7 +120,7 @@ class Plugin extends Obj
 			$this->loadLanguage('', PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name);
 		}
 
-		if ((\App::get('scope') == 'com_groups') && (Request::getCmd('cn'))) {
+		if (Request::getCmd('cn')) {
 			$this->_group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
 		}
 	}
