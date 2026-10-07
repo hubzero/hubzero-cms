@@ -698,15 +698,12 @@ class Membership extends Base
 
 		if ($invite)
 		{
-			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
+			$this->database->setQuery("DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']));
+			$this->database->query();
 		}
-		elseif ($invitedByEmail)
+		if ($invitedByEmail)
 		{
-			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
-		}
-		if (isset($sql))
-		{
-			$this->database->setQuery($sql);
+			$this->database->setQuery("DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber')));
 			$this->database->query();
 		}
 

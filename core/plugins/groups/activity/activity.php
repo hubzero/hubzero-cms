@@ -258,6 +258,21 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Did this group's feed receive the given log entry?
+	 *
+	 * @param   integer  $logId
+	 * @return  boolean
+	 */
+	protected function receivedByGroup($logId)
+	{
+		return (bool) Hubzero\Activity\Recipient::all()
+			->whereEquals('log_id', (int) $logId)
+			->whereIn('scope', array('group', 'group_managers'))
+			->whereEquals('scope_id', (int) $this->group->get('gidNumber'))
+			->total();
+	}
+
+	/**
 	 * Load a feed entry, which must belong to this group
 	 *
 	 * @param   integer  $id
@@ -381,6 +396,13 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$action  = Request::getWord('action', 'star');
 
 		$entry = $this->groupEntry($id);
+
+		// Members star what they can see: top-level entries, and the managers'
+		// channel only for managers
+		if ($entry->log->get('parent') || ($entry->get('scope') == 'group_managers' && !$this->canModerate))
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+		}
 		$entry->set('starred', ($action == 'star' ? 1 : 0));
 
 		if (!$entry->save())
@@ -445,13 +467,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		// Only the author may change a post, and only one this group received
 		if (!$row->isNew())
 		{
-			$received = Hubzero\Activity\Recipient::all()
-				->whereEquals('log_id', $row->get('id'))
-				->whereIn('scope', array('group', 'group_managers'))
-				->whereEquals('scope_id', (int) $this->group->get('gidNumber'))
-				->total();
-
-			if (!$received || !$this->isOwnPost($row))
+			if (!$this->receivedByGroup($row->get('id')) || !$this->isOwnPost($row))
 			{
 				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 			}
@@ -477,13 +493,8 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			if ($parent)
 			{
 				$parentLog = Hubzero\Activity\Log::oneOrNew($parent);
-				$received  = Hubzero\Activity\Recipient::all()
-					->whereEquals('log_id', $parent)
-					->whereIn('scope', array('group', 'group_managers'))
-					->whereEquals('scope_id', $scopeId)
-					->total();
 
-				if (!$parentLog->get('id') || !$received)
+				if (!$parentLog->get('id') || !$this->receivedByGroup($parent))
 				{
 					App::abort(404, Lang::txt('You are not authorized to perform this action.'));
 				}

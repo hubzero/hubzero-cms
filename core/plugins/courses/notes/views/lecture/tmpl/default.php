@@ -115,7 +115,7 @@ jQuery(document).ready(function(jQuery) {
 		},
 		createCallback: function(note) {
 			var id = $('#note-' + note.id).attr('data-id'),
-				tme = null;
+				tme = '';
 
 			if (note.timestamp && note.timestamp != '00:00:00') {
 				tme += '&time=' + note.timestamp;
