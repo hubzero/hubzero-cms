@@ -7,6 +7,8 @@
 
 namespace Hubzero\View;
 
+use Hubzero\Template\Overrides;
+
 use Hubzero\Base\Obj;
 use Hubzero\View\Exception\InvalidLayoutException;
 use Exception;
@@ -109,7 +111,8 @@ class View extends Obj
 	 *                          escape: the name (optional) of the function to use for escaping strings<br/>
 	 *                          base_path: the parent path (optional) of the views directory (defaults to the component folder)<br/>
 	 *                          template_path: the path (optional) of the layout directory (defaults to base_path + /views/ + view name<br/>
-	 *                          override_root: the root directory (optional) of the template override directory
+	 *                          override_root: template override root(s) (optional): a path or array of paths, highest
+	 *                                         priority first (defaults to the supergroup's and the site template's html directories)
 	 *                          override_path: the path (optional) of the template files inside override_root
 	 *                          helper_path: the path (optional) of the helper files (defaults to base_path + /helpers/)<br/>
 	 *                          layout: the layout (optional) to use to display the view
@@ -121,16 +124,18 @@ class View extends Obj
 		//
 		// NOTE: This needs to come before getName()
 		// as it calls setPath()
+		// Template override roots, highest priority first: the supergroup
+		// template inside a supergroup's pages, then the site template
 		if (!array_key_exists('override_root', $config))
 		{
-			$config['override_root'] = '';
+			$config['override_root'] = array();
 
-			if (\App::has('template'))
+			foreach (Overrides::roots() as $root)
 			{
-				$config['override_root'] = \App::get('template')->path . '/html';
+				$config['override_root'][] = $root . '/html';
 			}
 		}
-		$this->_overrideRoot = $config['override_root'];
+		$this->_overrideRoot = array_values(array_filter((array) $config['override_root']));
 
 		if (array_key_exists('override_path', $config))
 		{
@@ -579,8 +584,11 @@ class View extends Obj
 				$component = ltrim($this->_overridePath, DIRECTORY_SEPARATOR);
 			}
 
-			$path = $this->_overrideRoot . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName();
-			$this->addPath($type, $path);
+			// Lowest priority first: addPath() pushes onto the top of the stack
+			foreach (array_reverse($this->_overrideRoot) as $root)
+			{
+				$this->addPath($type, $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName());
+			}
 		}
 	}
 

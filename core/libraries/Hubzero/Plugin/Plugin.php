@@ -34,13 +34,6 @@ class Plugin extends Obj
 	public $params = null;
 
 	/**
-	 * The active group
-	 * 
-	 * @var string
-	 */
-	protected $_group = null;
-
-	/**
 	 * The name of the plugin
 	 *
 	 * @var  string
@@ -119,10 +112,6 @@ class Plugin extends Obj
 		{
 			$this->loadLanguage('', PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name);
 		}
-
-		if (Request::getCmd('cn')) {
-			$this->_group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-		}
 	}
 
 	/**
@@ -175,23 +164,12 @@ class Plugin extends Obj
 	 */
 	public function view($layout='default', $name='')
 	{
-		$config = array(
+		$view = new View(array(
 			'folder'  => $this->_type,
 			'element' => $this->_name,
 			'name'    => ($name   ?: $this->_name),
 			'layout'  => ($layout ?: 'default')
-		);
-		$config['override_path'] = array();
-		if (\App::has('template'))
-		{
-			$config['override_path'][] = \App::get('template')->path;
-		}
-		if (!empty($this->_group) && $this->_group->isSuperGroup())
-		{
-			$config['override_path'][] = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->_group->get('gidNumber') . DS . 'template';
-		}
-
-		$view = new View($config);
+		));
 		return $view;
 	}
 }

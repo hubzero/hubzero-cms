@@ -37,6 +37,33 @@ class RelationalTest extends Database
      *
      * @return  void
      **/
+    /**
+     * A connection set on one instance is used by its queries and leaves
+     * every other model on the default
+     *
+     * @return  void
+     **/
+    public function testInstanceConnectionOverridesTheDefault()
+    {
+        $default = $this->getMockDriver();
+        $other   = clone $default;
+
+        $user    = new User();
+        $another = new User();
+
+        $this->assertSame($default, $user->getConnection());
+
+        $this->assertSame($user, $user->setConnection($other));
+        $this->assertSame($other, $user->getConnection());
+        $this->assertSame($default, $another->getConnection());
+
+        $connection = new \ReflectionProperty('Hubzero\\Database\\Query', 'connection');
+        $connection->setAccessible(true);
+
+        $this->assertSame($other, $connection->getValue($user->getQuery()));
+        $this->assertSame($default, $connection->getValue($another->getQuery()));
+    }
+
     protected function requireEventFacade(): void
     {
         if (!class_exists('Event')) {
