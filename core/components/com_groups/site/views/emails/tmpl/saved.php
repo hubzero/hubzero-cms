@@ -304,7 +304,7 @@ $onOffLabel = function($v)
 
 									if ($this->group->get('join_policy') == 1)
 									{
-										echo '<br /><em>' . $this->group->get('restrict_msg') . '</em>';
+										echo '<br /><em>' . \Hubzero\Utility\Sanitize::html($this->group->get('restrict_msg')) . '</em>';
 										echo $wasMarker('restrict_msg', $this->group->get('restrict_msg'), isset($before['restrict_msg']) ? $before['restrict_msg'] : null);
 									}
 									?>
