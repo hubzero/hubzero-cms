@@ -952,10 +952,14 @@ class Membership extends Base
 	 */
 	public function joinTask()
 	{
-		// Check if they're logged in
+		// Check if they're logged in. A posted join can't be replayed after
+		// logging in, so come back to the page that asks to join.
 		if (User::isGuest())
 		{
-			return $this->loginTask(Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'));
+			return $this->loginTask(
+				Lang::txt('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'),
+				'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=join'
+			);
 		}
 
 		//check to make sure we have  cname
@@ -1021,18 +1025,23 @@ class Membership extends Base
 		//if this group is open just make a member
 		if ($this->view->group->get('join_policy') == 0)
 		{
-			// Joining changes membership, so it needs a POST with a valid
-			// token. Anything else (an old link, the post-login return URL)
-			// gets a confirmation form instead.
-			if (Request::method() !== 'POST' || !Session::checkToken('post', true))
+			// Joining is done by a posted form. A link to this task (an older
+			// page or template, or the return from logging in) arrives by GET
+			// and gets a page whose button posts it.
+			if (Request::method() !== 'POST')
 			{
+				$this->_buildTitle();
+				$this->_buildPathway();
+
 				$this->view
 					->set('title', Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->view->group->get('description'))
-					->set('notifications', ($this->getNotifications() ? $this->getNotifications() : array()))
 					->setLayout('join')
 					->display();
 				return;
 			}
+
+			// Check for request forgeries
+			Request::checkToken();
 
 			$this->view->group->add('members', array(User::get('id')));
 			$this->view->group->remove('applicants', array(User::get('id')));

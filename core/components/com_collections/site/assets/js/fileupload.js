@@ -49,7 +49,8 @@ HUB.CollectionsFileUpload = {
 						'</p>'
 					);*/
 					//console.log($('#link-adder').attr('data-action') + $('#field-dir').val());
-					$.get($('#link-adder').attr('data-action') + $('#field-dir').val(), {}, function(data){
+					// Adding a link posts the page's token
+					$.post($('#link-adder').attr('data-action') + $('#field-dir').val(), $('#hz-post-action').serialize(), function(data){
 						var response = JSON.parse(data);
 
 						if (response.id != $('#field-dir').val()) {

@@ -724,6 +724,9 @@ class Pages extends Base
 	 */
 	public function setHomeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get request vars
 		$pageid = Request::getInt('pageid', 0, 'get');
 
@@ -863,6 +866,9 @@ class Pages extends Base
 	 */
 	public function restoreTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// get reqest vars
 		$pageid  = Request::getInt('pageid', 0, 'get');
 		$version = Request::getInt('version', null, 'get');

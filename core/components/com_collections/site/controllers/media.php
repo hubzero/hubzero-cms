@@ -118,6 +118,14 @@ class Media extends SiteController
 			return;
 		}
 
+		// Require POST
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		Request::checkToken();
+
 		// Ensure we have an ID to work with
 		$listdir = Request::getInt('dir', 0, 'post');
 		if (!$listdir)
@@ -179,6 +187,14 @@ class Media extends SiteController
 			echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_LOGIN_REQUIRED')));
 			return;
 		}
+
+		// Require POST: the link-adder posts the page's token
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+		}
+
+		Request::checkToken();
 
 		// Ensure we have an ID to work with
 		$listdir = strtolower(Request::getString('dir', ''));

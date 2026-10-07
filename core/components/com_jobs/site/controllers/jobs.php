@@ -228,6 +228,14 @@ class Jobs extends SiteController
 	{
 		$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server');
 
+		// A posted action can't be replayed by the GET that follows logging
+		// in; come back to the job it was about instead
+		if (Request::method() == 'POST')
+		{
+			$rtrn = 'index.php?option=' . $this->_option . ($this->_jobCode ? '&task=job&code=' . $this->_jobCode : '');
+			$rtrn = Route::url($rtrn, false, true);
+		}
+
 		App::redirect(
 			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
@@ -1182,7 +1190,7 @@ class Jobs extends SiteController
 			return;
 		}
 
-		// Check for request forgeries (the apply form is the only producer)
+		// Check for request forgeries (the apply form and the withdraw buttons post it)
 		Request::checkToken();
 
 		$job = new Job($this->database);
@@ -1419,8 +1427,8 @@ class Jobs extends SiteController
 			return;
 		}
 
-		// Check for request forgeries (the edit form and the owner's
-		// confirm/unpublish/reopen/remove buttons all POST a token)
+		// Check for request forgeries: the edit form, and the publish,
+		// unpublish, reopen and remove buttons all post the token
 		Request::checkToken();
 
 		// Do we need admin approval for job publications?

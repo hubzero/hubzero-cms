@@ -923,16 +923,13 @@ HUB.Groups = {
 		$versions
 			.on('cycle-update-view', function(event, optionHash, slideOptionsHash, currentSlideEl) {
 				$('.version-raw').attr('href', $(currentSlideEl).attr('data-raw-url'));
-				$('.version-restore').attr('href', $(currentSlideEl).attr('data-restore-url'));
 
-				if ($('.version-restore').attr('href') == '')
-				{
-					$('.version-restore').attr('disabled', 'disabled');
-				}
-				else
-				{
-					$('.version-restore').removeAttr('disabled');
-				}
+				// Restoring posts the page's token to the shown version's restore URL
+				var restoreUrl = $(currentSlideEl).attr('data-restore-url') || '';
+
+				$('.version-restore')
+					.attr('formaction', restoreUrl)
+					.prop('disabled', restoreUrl == '');
 
 				// sync jumpto select
 				$('.version-jumpto').val(optionHash.currSlide + 1);

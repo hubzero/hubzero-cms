@@ -196,13 +196,14 @@ $published = ($group->get('published')) ? true : false;
 								<?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
 							</div>
 							<div class="join-group">
+								<?php
+								$joinUrl   = Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join');
+								$joinLabel = Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->escape(stripslashes($group->get('description'))) . ' (' . $this->escape($group->get('cn')) . ')';
+								?>
 								<?php if (!$group->get('join_policy')) : ?>
-									<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>" method="post" class="inline-form">
-										<?php echo Html::input('token'); ?>
-										<button type="submit" class="btn btn-success" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->escape(stripslashes($group->get('description'))) . ' (' . $this->escape($group->get('cn')) . ')'; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></button>
-									</form>
+									<button type="submit" form="hz-post-action" formaction="<?php echo $joinUrl; ?>" class="btn btn-success" aria-label="<?php echo $joinLabel; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></button>
 								<?php else : ?>
-									<a class="btn btn-success" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join'); ?>" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->escape(stripslashes($group->get('description'))) . ' (' . $this->escape($group->get('cn')) . ')'; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+									<a class="btn btn-success" href="<?php echo $joinUrl; ?>" aria-label="<?php echo $joinLabel; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 								<?php endif; ?>
 							</div>
 						</div>

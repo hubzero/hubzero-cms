@@ -60,17 +60,17 @@ defined('_HZEXEC_') or die();
 			<span class="apply"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_REAPPLY') ?></button></a></span>
 		<?php } ?>
 		<?php if ($job->applied) { ?>
-			<span class="applied"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code) ?>" id="showconfirm"><button class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button></a>
+			<span class="applied"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code) ?>" id="showconfirm" class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button>
 			</span>
 		<?php } ?>
 		<?php if ($owner && ($job->status == 1 || $job->status == 3)) { ?>
 			<span class="edit"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) ?>"><button class="btn btn"><?php echo ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB'); ?></button></a></span> 
 		<?php } ?>
 		<?php if ($job->status == 1 && $owner) { ?>
-			 <span class="unpublish"><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="btn" title="<?php echo Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></form></span>
+			 <span class="unpublish"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></span>
 		<?php } ?>
 		<?php if ($job->status == 3) { ?>
-			<span class="manageroptions"><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code) ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="btn btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button></form><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="btn btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></form></span>
+			<span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code) ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></span>
 		<?php } ?>
 		<?php
 		if ($job->applied)
@@ -139,9 +139,9 @@ defined('_HZEXEC_') or die();
 		<?php if ($owner) {
 			if ($job->status == 4) { ?>
 				<p class="confirmPublish">
-					<span class="makechanges"><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=confirmjob&code=' . $job->code) ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_PUBLISH_AD') ?></button></form></span>
+					<span class="makechanges"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=confirmjob&code=' . $job->code) ?>" class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_PUBLISH_AD') ?></button></span>
 					<span class="makechanges"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) ?>"><button class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_MAKE_CHANGES') ?></button></a></span>
-					<span class="makechanges"><form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REMOVE_AD') ?></button></form></span>
+					<span class="makechanges"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REMOVE_AD') ?></button></span>
 				</p>
 			<?php }
 		} ?>
