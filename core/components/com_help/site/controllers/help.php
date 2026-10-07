@@ -33,11 +33,7 @@ class Help extends SiteController
 		// Get the page we are trying to access
 		$page      = Request::getWord('page', 'index');
 		$component = Request::getWord('component', 'com_help');
-		$name      = str_replace('com_', '', $component);
 		$extension = Request::getWord('extension', '');
-
-		$tmpl = App::get('template')->template;
-		$lang = Lang::getTag();
 
 		$finalHelpPage = Finder::page($component, $extension, $page);
 
