@@ -247,7 +247,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							--></button>
 						</li>
 					<?php } ?>
-					<?php if ($this->canModerate || $this->plugin->isOwnPost($this->row->log)) { ?>
+					<?php if ($this->canModerate || $this->plugin->isOwnContent($this->row->log)) { ?>
 					<li>
 						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
 					</li>
@@ -322,11 +322,18 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 		$r = $recipient->getTableName();
 		$l = Hubzero\Activity\Log::blank()->getTableName();
 
+		// Replies in the managers' channel are recorded for managers only
+		$scopes = array('group');
+		if (in_array(User::get('id'), $this->group->get('managers')))
+		{
+			$scopes[] = 'group_managers';
+		}
+
 		$rows = $recipient
 			->select($r . '.*')
 			->including('log')
 			->join($l, $l . '.id', $r . '.log_id')
-			->whereEquals($r . '.scope', 'group')
+			->whereIn($r . '.scope', $scopes)
 			->whereEquals($r . '.scope_id', $this->group->get('gidNumber'))
 			->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
 			->whereEquals($l . '.parent', $this->row->log->get('id'))

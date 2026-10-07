@@ -239,22 +239,60 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Is this a post (a comment or a reply) written by the current user?
-	 *
-	 * System entries ("X joined the group") carry the id of the user they
-	 * are about, so authorship alone doesn't make an entry theirs.
+	 * Is this a post (a comment or a reply) written in this feed by the
+	 * current user? Only those can be edited here.
 	 *
 	 * @param   object   $log  Hubzero\Activity\Log
 	 * @return  boolean
 	 */
 	public function isOwnPost($log)
 	{
-		if (User::isGuest() || (int) $log->get('created_by') !== (int) User::get('id'))
+		if (!$this->isAuthor($log))
 		{
 			return false;
 		}
 
 		return ($log->get('scope') == 'activity.comment' || $log->get('parent'));
+	}
+
+	/**
+	 * Is this something the current user wrote -- a post here, or a forum,
+	 * blog, wiki, project ... entry relayed to the feed -- rather than an
+	 * event about the group itself?
+	 *
+	 * Group events ("X joined the group", a changed page or setting) carry
+	 * the id of the user they are about, so authorship alone doesn't make
+	 * an entry theirs to hide.
+	 *
+	 * @param   object   $log  Hubzero\Activity\Log
+	 * @return  boolean
+	 */
+	public function isOwnContent($log)
+	{
+		if ($this->isOwnPost($log))
+		{
+			return true;
+		}
+
+		if (!$this->isAuthor($log))
+		{
+			return false;
+		}
+
+		$scope = (string) $log->get('scope');
+
+		return !($scope == 'group' || strpos($scope, 'group.') === 0 || substr($scope, -9) == '.settings');
+	}
+
+	/**
+	 * Did the current (logged-in) user create this log entry?
+	 *
+	 * @param   object   $log  Hubzero\Activity\Log
+	 * @return  boolean
+	 */
+	protected function isAuthor($log)
+	{
+		return !User::isGuest() && (int) $log->get('created_by') === (int) User::get('id');
 	}
 
 	/**
@@ -265,11 +303,32 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function receivedByGroup($logId)
 	{
-		return (bool) Hubzero\Activity\Recipient::all()
+		return (bool) $this->groupAudience($logId);
+	}
+
+	/**
+	 * Which of this group's feeds received the given log entry: 'group' (all
+	 * members), 'group_managers' (managers only), or null for neither
+	 *
+	 * @param   integer  $logId
+	 * @return  string|null
+	 */
+	protected function groupAudience($logId)
+	{
+		$scopes = Hubzero\Activity\Recipient::all()
+			->select('scope')
 			->whereEquals('log_id', (int) $logId)
 			->whereIn('scope', array('group', 'group_managers'))
 			->whereEquals('scope_id', (int) $this->group->get('gidNumber'))
-			->total();
+			->rows()
+			->fieldsByKey('scope');
+
+		if (in_array('group', $scopes))
+		{
+			return 'group';
+		}
+
+		return in_array('group_managers', $scopes) ? 'group_managers' : null;
 	}
 
 	/**
@@ -326,8 +385,8 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 		$entry = $this->groupEntry($id);
 
-		// Managers may hide any entry; anyone else only a post of their own
-		if (!$this->canModerate && !$this->isOwnPost($entry->log))
+		// Managers may hide any entry; anyone else only what they wrote
+		if (!$this->canModerate && !$this->isOwnContent($entry->log))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -454,6 +513,11 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	 */
 	protected function postAction()
 	{
+		if (User::isGuest())
+		{
+			return $this->loginRedirect();
+		}
+
 		// Check for request forgeries
 		Request::checkToken();
 
@@ -464,8 +528,11 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$lid = isset($comment['id']) ? (int) $comment['id'] : 0;
 		$row = Hubzero\Activity\Log::oneOrNew($lid);
 
+		// An id that matches no entry makes a new post, checked as one
+		$isEdit = !$row->isNew();
+
 		// Only the author may change a post, and only one this group received
-		if (!$row->isNew())
+		if ($isEdit)
 		{
 			if (!$this->receivedByGroup($row->get('id')) || !$this->isOwnPost($row))
 			{
@@ -487,6 +554,14 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			$scope   = 'activity.comment';
 			$scopeId = (int) $this->group->get('gidNumber');
 			$parent  = isset($comment['parent']) ? (int) $comment['parent'] : 0;
+
+			// Starting a discussion is for managers, as the form shows; a reply
+			// in the managers' channel is for managers too
+			if ((!$parent && !$this->canModerate)
+			 || ($parent && $this->groupAudience($parent) == 'group_managers' && !$this->canModerate))
+			{
+				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			}
 
 			// A reply inherits the scope of the entry it answers, which has to
 			// be one this group received
@@ -555,19 +630,24 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			);
 		}
 
-		$who = Request::getWord('activity_recipients', 'all');
-
-		// Record the activity
-		$recipients = array();
-
-		if ($who == 'managers')
+		// An edit stays where the post was made and a reply goes where the entry
+		// it answers went; only a new discussion picks its audience
+		if ($isEdit)
 		{
-			$recipients[] = ['group_managers', $this->group->get('gidNumber')];
+			$audience = $this->groupAudience($row->get('id'));
+		}
+		elseif ($row->get('parent'))
+		{
+			$audience = $this->groupAudience($row->get('parent'));
 		}
 		else
 		{
-			$recipients[] = ['group', $this->group->get('gidNumber')];
+			$audience = (Request::getWord('activity_recipients', 'all') == 'managers') ? 'group_managers' : 'group';
 		}
+
+		// Record the activity
+		$recipients = array();
+		$recipients[] = [$audience, $this->group->get('gidNumber')];
 		$recipients[] = ['user', $row->get('created_by')];
 		if ($row->get('parent'))
 		{
@@ -577,7 +657,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		Event::trigger('system.logActivity', [
 			'activity' => [
 				'id'          => $row->get('id'),
-				'action'      => ($lid ? 'updated' : 'created'),
+				'action'      => ($isEdit ? 'updated' : 'created'),
 				'scope'       => $row->get('scope'),
 				'scope_id'    => $row->get('scope_id'),
 				'anonymous'   => $row->get('anonymous', 0),
