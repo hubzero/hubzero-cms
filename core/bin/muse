@@ -13,7 +13,6 @@ require_once dirname(__DIR__) . '/libraries/Hubzero/System/PrivilegeManager.php'
 require_once dirname(__DIR__) . '/libraries/Hubzero/Console/PrivilegeNotifier.php';
 
 use Hubzero\System\UserEnvironment;
-use Hubzero\System\PrivilegeManager;
 use Hubzero\Console\PrivilegeNotifier;
 
 // Check for Windows - HUBzero does not support Windows
@@ -22,16 +21,14 @@ if (UserEnvironment::getInstance()->isWindows()) {
     exit(1);
 }
 
+// PHP's own warnings and notices go to stderr, like the privilege notices,
+// so a command's stdout stays parseable (com_installer json_decodes it).
+ini_set('display_errors', 'stderr');
+
 // Handle privilege detection and user prompts
 if (!(new PrivilegeNotifier())->handleStartup()) {
     // User declined to continue as root
     exit(1);
-}
-
-// Suppress session warnings in CLI mode when output has already been sent
-// (session operations warn about "headers already sent" but work fine in CLI)
-if (PrivilegeManager::getInstance()->isSudo() || PrivilegeManager::getInstance()->isRoot()) {
-    error_reporting(E_ALL & ~E_WARNING);
 }
 
 if (@include(dirname(__DIR__) . '/vendor/autoload.php'))
