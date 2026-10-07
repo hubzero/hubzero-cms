@@ -229,12 +229,32 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			->set('group', $this->group)
 			->set('canModerate', $this->canModerate)
 			->set('canStar', $this->canStar)
+			->set('plugin', $this)
 			->set('categories', null)
 			->set('filters', $filters)
 			->set('total', $total)
 			->set('rows', $entries);
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Is this a post (a comment or a reply) written by the current user?
+	 *
+	 * System entries ("X joined the group") carry the id of the user they
+	 * are about, so authorship alone doesn't make an entry theirs.
+	 *
+	 * @param   object   $log  Hubzero\Activity\Log
+	 * @return  boolean
+	 */
+	public function isOwnPost($log)
+	{
+		if (User::isGuest() || (int) $log->get('created_by') !== (int) User::get('id'))
+		{
+			return false;
+		}
+
+		return ($log->get('scope') == 'activity.comment' || $log->get('parent'));
 	}
 
 	/**
@@ -291,8 +311,8 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
 		$entry = $this->groupEntry($id);
 
-		// Managers may hide any entry; anyone else only an entry they posted
-		if (!$this->canModerate && (int) $entry->log->get('created_by') !== (int) User::get('id'))
+		// Managers may hide any entry; anyone else only a post of their own
+		if (!$this->canModerate && !$this->isOwnPost($entry->log))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -422,16 +442,19 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		$lid = isset($comment['id']) ? (int) $comment['id'] : 0;
 		$row = Hubzero\Activity\Log::oneOrNew($lid);
 
-		if (!$row->isNew()
-		 && (!in_array($row->get('scope'), array('group', 'group_managers')) || $row->get('scope_id') != $this->group->get('gidNumber')))
+		// Only the author may change a post, and only one this group received
+		if (!$row->isNew())
 		{
-			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
-		}
+			$received = Hubzero\Activity\Recipient::all()
+				->whereEquals('log_id', $row->get('id'))
+				->whereIn('scope', array('group', 'group_managers'))
+				->whereEquals('scope_id', (int) $this->group->get('gidNumber'))
+				->total();
 
-		// Changing an existing entry is for its author or a moderator
-		if (!$row->isNew() && !$this->canModerate && (int) $row->get('created_by') !== (int) User::get('id'))
-		{
-			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			if (!$received || !$this->isOwnPost($row))
+			{
+				App::abort(403, Lang::txt('You are not authorized to perform this action.'));
+			}
 		}
 
 		// Only the body and the anonymous flag come from the form. The rest

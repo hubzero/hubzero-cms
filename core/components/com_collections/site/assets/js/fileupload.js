@@ -95,7 +95,10 @@ HUB.CollectionsFileUpload = {
 
 		var url = $(el).attr('formaction');
 
-		$.post(url + (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1', $(el.form).serialize(), function(data) {
+		if (!/[?&]no_html=/.test(url)) {
+			url += (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+		}
+		$.post(url, $(el.form).serialize(), function(data) {
 			HUB.CollectionsFileUpload.updateFileList();
 		});
 	},

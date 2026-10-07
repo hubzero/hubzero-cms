@@ -641,7 +641,6 @@ class Membership extends Base
 		$group_inviteemails = new \Hubzero\User\Group\InviteEmail();
 		$inviteemails = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), true);
 		$inviteemails = array_map('strtolower', $inviteemails);
-		$inviteemails_with_token = $group_inviteemails->getInviteEmails($this->view->group->get('gidNumber'), false);
 
 		//are we already a member
 		if (in_array(User::get('id'), $members))
@@ -662,18 +661,19 @@ class Membership extends Base
 			$invite = $this->database->loadAssoc();
 		}
 
+		$invitedByEmail = in_array(strtolower(User::get('email')), $inviteemails);
+		$invitedAsUser  = in_array(User::get('id'), $invitees);
+
+		if (!$invite && !$invitedByEmail && !$invitedAsUser)
+		{
+			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
+		}
+
 		// Joining is done by a posted form. A link followed from an invitation
 		// e-mail, or the return from logging in, arrives by GET and gets a page
 		// whose button posts it (carrying the invitation token, if any).
 		if (Request::method() !== 'POST')
 		{
-			if (!$invite
-			 && !in_array(strtolower(User::get('email')), $inviteemails)
-			 && !in_array(User::get('id'), $invitees))
-			{
-				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
-			}
-
 			$this->_buildTitle();
 			$this->_buildPathway();
 
@@ -691,35 +691,23 @@ class Membership extends Base
 		//get request vars
 		$return = strtolower(trim(Request::getString('return', '', 'get')));
 
-		//check to make sure weve been invited
+		// Join, and use up the invitation that let us in
+		$this->view->group->add('members', array(User::get('id')));
+		$this->view->group->remove('invitees', array(User::get('id')));
+		$this->view->group->update();
+
 		if ($invite)
 		{
-			$this->view->group->add('members', array(User::get('id')));
-			$this->view->group->remove('invitees', array(User::get('id')));
-			$this->view->group->update();
-
 			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
-			$this->database->setQuery($sql);
-			$this->database->query();
 		}
-		elseif (in_array(strtolower(User::get('email')), $inviteemails))
+		elseif ($invitedByEmail)
 		{
-			$this->view->group->add('members', array(User::get('id')));
-			$this->view->group->remove('invitees', array(User::get('id')));
-			$this->view->group->update();
 			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber'));
+		}
+		if (isset($sql))
+		{
 			$this->database->setQuery($sql);
 			$this->database->query();
-		}
-		elseif (in_array(User::get('id'), $invitees))
-		{
-			$this->view->group->add('members', array(User::get('id')));
-			$this->view->group->remove('invitees', array(User::get('id')));
-			$this->view->group->update();
-		}
-		else
-		{
-			$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
 		}
 
 		// log invites

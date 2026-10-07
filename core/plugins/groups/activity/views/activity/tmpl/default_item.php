@@ -247,7 +247,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							--></button>
 						</li>
 					<?php } ?>
-					<?php if ($this->canModerate || (!User::isGuest() && (int) $this->row->log->get('created_by') === (int) User::get('id'))) { ?>
+					<?php if ($this->canModerate || $this->plugin->isOwnPost($this->row->log)) { ?>
 					<li>
 						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
 					</li>
@@ -344,6 +344,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 						->set('group', $this->group)
 						->set('canModerate', $this->canModerate)
 						->set('canStar', $this->canStar)
+						->set('plugin', $this->plugin)
 						->set('online', $this->online)
 						->set('row', $row)
 						->display();

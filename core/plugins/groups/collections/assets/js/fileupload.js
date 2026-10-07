@@ -19,10 +19,13 @@ jQuery(document).ready(function(jq){
 			.on('click', 'a.delete, button.delete', function (e){
 				e.preventDefault();
 				// A link added in this session (no data-id) has nothing stored to delete
-				if ($(this).attr('data-id')) {
+				if ($(this).is('button') && $(this).attr('data-id')) {
 					var url = $(this).attr('formaction');
 
-					$.post(url + (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1', $(this.form).serialize(), function(data) {});
+					if (!/[?&]no_html=/.test(url)) {
+						url += (url.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+					}
+					$.post(url, $(this.form).serialize(), function(data) {});
 				}
 				$(this).parent().parent().remove();
 			});
