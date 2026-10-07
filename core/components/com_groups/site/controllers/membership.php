@@ -650,28 +650,36 @@ class Membership extends Base
 			return;
 		}
 
+		// The invitation this token stands for, for THIS group: a token is issued
+		// per invitation, and one for any group used to admit its holder to the
+		// group on the URL.
+		$invite = null;
+		if ($token)
+		{
+			$sql = "SELECT * FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token)
+				. " AND gidNumber=" . (int) $this->view->group->get('gidNumber');
+			$this->database->setQuery($sql);
+			$invite = $this->database->loadAssoc();
+		}
+
 		// Joining is done by a posted form. A link followed from an invitation
 		// e-mail, or the return from logging in, arrives by GET and gets a page
 		// whose button posts it (carrying the invitation token, if any).
 		if (Request::method() !== 'POST')
 		{
-			$invited = in_array(strtolower(User::get('email')), $inviteemails) || in_array(User::get('id'), $invitees);
-			if ($token)
-			{
-				$this->database->setQuery(
-					"SELECT COUNT(*) FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token)
-					. " AND gidNumber=" . (int) $this->view->group->get('gidNumber')
-				);
-				$invited = (bool) $this->database->loadResult();
-			}
-			if (!$invited)
+			if (!$invite
+			 && !in_array(strtolower(User::get('email')), $inviteemails)
+			 && !in_array(User::get('id'), $invitees))
 			{
 				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
 			}
 
+			$this->_buildTitle();
+			$this->_buildPathway();
+
 			$this->view
 				->set('title', Lang::txt('COM_GROUPS_ACCEPT_INVITE') . ': ' . $this->view->group->get('description'))
-				->set('token', $token)
+				->set('token', $invite ? $token : '')
 				->setLayout('accept')
 				->display();
 			return;
@@ -684,28 +692,14 @@ class Membership extends Base
 		$return = strtolower(trim(Request::getString('return', '', 'get')));
 
 		//check to make sure weve been invited
-		if ($token)
+		if ($invite)
 		{
-			// ...for THIS group: a token is issued per invitation, and one
-			// for any group used to admit its holder to the group on the URL.
-			$sql = "SELECT * FROM `#__xgroups_inviteemails` WHERE token=" . $this->database->quote($token)
-				. " AND gidNumber=" . (int) $this->view->group->get('gidNumber');
+			$this->view->group->add('members', array(User::get('id')));
+			$this->view->group->update();
+
+			$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
 			$this->database->setQuery($sql);
-			$invite = $this->database->loadAssoc();
-
-			if ($invite)
-			{
-				$this->view->group->add('members', array(User::get('id')));
-				$this->view->group->update();
-
-				$sql = "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']);
-				$this->database->setQuery($sql);
-				$this->database->query();
-			}
-			else
-			{
-				$this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_JOIN'));
-			}
+			$this->database->query();
 		}
 		elseif (in_array(strtolower(User::get('email')), $inviteemails))
 		{

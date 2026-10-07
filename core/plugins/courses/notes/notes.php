@@ -271,9 +271,10 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 		{
 			$model->set('content', $content);
 		}
+		// Sharing a note with the lecture is for course managers
 		if (!is_null($access = Request::getInt('access', null)))
 		{
-			$model->set('access', $access);
+			$model->set('access', $this->view->course->access('manage') ? $access : 0);
 		}
 		$model->set('section_id', $this->view->offering->section()->get('id'));
 

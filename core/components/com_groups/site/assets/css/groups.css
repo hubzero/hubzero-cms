@@ -1856,6 +1856,7 @@ body.group-page-preview {
 .item-list .item-state .unpublished,
 .item-list .item-state .published {
 	display: block;
+	width: 100%;
 	position: relative;
 	color: transparent;
 	text-decoration: none;

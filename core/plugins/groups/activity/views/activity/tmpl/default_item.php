@@ -232,7 +232,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							<?php } ?>
 						</li>
 					<?php } ?>
-					<?php if (!$this->row->log->get('parent')) { ?>
+					<?php if ($this->canStar && !$this->row->log->get('parent')) { ?>
 						<li>
 							<button type="submit" form="hz-post-action"
 								data-id="activity<?php echo $this->row->get('id'); ?>"
@@ -247,7 +247,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 							--></button>
 						</li>
 					<?php } ?>
-					<?php if ($this->canModerate || $this->row->log->get('created_by') == User::get('id')) { ?>
+					<?php if ($this->canModerate || (!User::isGuest() && (int) $this->row->log->get('created_by') === (int) User::get('id'))) { ?>
 					<li>
 						<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?></button>
 					</li>
@@ -343,6 +343,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
 					$this->view('default_item')
 						->set('group', $this->group)
 						->set('canModerate', $this->canModerate)
+						->set('canStar', $this->canStar)
 						->set('online', $this->online)
 						->set('row', $row)
 						->display();

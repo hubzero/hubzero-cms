@@ -77,7 +77,8 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
 
 			$action = Request::getCmd('action', 'feed');
 
-			if (!$this->params->get('email_digests'))
+			// Without e-mail digests there are no digest settings to show or save
+			if (!$this->params->get('email_digests') && in_array($action, array('settings', 'savesettings')))
 			{
 				$action = 'feed';
 			}

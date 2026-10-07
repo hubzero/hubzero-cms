@@ -13,6 +13,10 @@ $this->css('citations.css')
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 
+// Bulk actions: the buttons post here, with the selected ids added by the script
+$bulkPublish = Route::url($base . '&action=publish&bulk=true');
+$bulkDelete  = Route::url($base . '&action=delete&bulk=true');
+
 if (isset($this->messages))
 {
 	foreach ($this->messages as $message)
@@ -91,10 +95,10 @@ if (isset($this->messages))
 							<?php if ($this->isManager) : ?>
 								<tr class="hidden">
 									<div class="admin">
-										<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>" class="btn icon-window-publish bulk" data-link="<?php echo Route::url($base. '&action=publish&bulk=true'); ?>">
+										<button type="submit" form="hz-post-action" formaction="<?php echo $bulkPublish; ?>" class="btn icon-window-publish bulk" data-link="<?php echo $bulkPublish; ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH_SELECTED'); ?>
 										</button>
-										<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>" class="btn icon-delete bulk" data-protected="true" data-link="<?php echo Route::url($base. '&action=delete&bulk=true'); ?>">
+										<button type="submit" form="hz-post-action" formaction="<?php echo $bulkDelete; ?>" class="btn icon-delete bulk" data-protected="true" data-link="<?php echo $bulkDelete; ?>">
 											<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE_SELECTED'); ?>
 										</button>
 										</td>

@@ -103,10 +103,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
+			$siteAdmin = User::authorise('core.admin', 'com_groups');
+
 			//check to see if user is member and plugin access requires members
 			if (!in_array(User::get('id'), $members)
 			 && $group_plugin_acl == 'members'
-			 && $authorized != 'admin')
+			 && !$siteAdmin)
 			{
 				$arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
 				return $arr;
@@ -117,8 +119,10 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			$this->group = $group;
 			$this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
 
-			// Managers and site administrators may hide any entry in the feed
-			$this->canModerate = ($authorized == 'manager' || User::authorise('core.admin', 'com_groups'));
+			// Managers and site administrators may hide any entry in the feed.
+			// Starring marks the entry for the whole group, so it is for members.
+			$this->canModerate = ($authorized == 'manager' || $siteAdmin);
+			$this->canStar     = ($this->canModerate || $authorized == 'member');
 
 			$action = Request::getCmd('action', 'feed');
 
@@ -230,12 +234,29 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 			->set('name', $this->_name)
 			->set('group', $this->group)
 			->set('canModerate', $this->canModerate)
+			->set('canStar', $this->canStar)
 			->set('categories', null)
 			->set('filters', $filters)
 			->set('total', $total)
 			->set('rows', $entries);
 
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Send a guest to log in, returning to the group's activity feed
+	 *
+	 * @return  void
+	 */
+	protected function loginRedirect()
+	{
+		$url = Route::url($this->base . '&active=' . $this->_name, false, true);
+
+		App::redirect(
+			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+			Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
+			'warning'
+		);
 	}
 
 	/**
@@ -247,14 +268,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			$url = Route::url($this->base . '&active=' . $this->_name, false, true);
-
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-				Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
-				'warning'
-			);
-			return;
+			return $this->loginRedirect();
 		}
 
 		// Check for request forgeries
@@ -272,7 +286,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		}
 
 		// Managers may hide any entry; anyone else only an entry they posted
-		if (!$this->canModerate && $entry->log->get('created_by') != User::get('id'))
+		if (!$this->canModerate && (int) $entry->log->get('created_by') !== (int) User::get('id'))
 		{
 			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
@@ -325,14 +339,12 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 	{
 		if (User::isGuest())
 		{
-			$url = Route::url($this->base . '&active=' . $this->_name, false, true);
+			return $this->loginRedirect();
+		}
 
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-				Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
-				'warning'
-			);
-			return;
+		if (!$this->canStar)
+		{
+			App::abort(403, Lang::txt('You are not authorized to perform this action.'));
 		}
 
 		// Check for request forgeries
