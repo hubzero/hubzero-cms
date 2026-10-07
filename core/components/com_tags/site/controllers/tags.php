@@ -113,18 +113,6 @@ class Tags extends SiteController
 			$tgs[] = $addtag;
 		}
 
-		if (!$this->config->get('allow_public_search', 1) && count($tgs) > 1 && User::isGuest())
-		{
-			$return = base64_encode(Request::current(true));
-
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-				Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED'),
-				'warning'
-			);
-			return;
-		}
-
 		// Sanitize the tag
 		$tags  = array();
 		$added = array();
@@ -156,6 +144,12 @@ class Tags extends SiteController
 			{
 				$rt[]   = $tag;
 			}
+		}
+
+		// Combining tags is a search; who may do that is a view access level
+		if (count($added) > 1 && !$this->requireViewLevel($this->config->get('search_access', 1), Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED')))
+		{
+			return;
 		}
 
 		$this->view->total      = 0;
@@ -467,6 +461,12 @@ class Tags extends SiteController
 			{
 				$tags[] = $tagobj;
 			}
+		}
+
+		// Combining tags is a search; who may do that is a view access level
+		if (count($added) > 1 && !$this->requireViewLevel($this->config->get('search_access', 1), Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED')))
+		{
+			return;
 		}
 
 		// Paging variables

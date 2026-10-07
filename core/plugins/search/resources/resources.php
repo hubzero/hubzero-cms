@@ -28,6 +28,12 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
+		// Who may search is the component's browse access level, Public by default
+		if (!in_array((int) Component::params('com_resources')->get('browse_access', 1), User::getAuthorisedViewLevels()))
+		{
+			return;
+		}
+
 		$dbg = isset($_GET['dbg']);
 
 		$database = App::get('db');

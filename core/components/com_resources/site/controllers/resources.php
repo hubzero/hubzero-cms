@@ -198,15 +198,9 @@ class Resources extends SiteController
 	 */
 	public function browseTask()
 	{
-		if (!$this->config->get('allow_public_search', 1) && User::isGuest())
+		// Who may browse and search is a view access level, Public by default
+		if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED')))
 		{
-			$return = base64_encode(Request::current(true));
-
-			App::redirect(
-				Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-				Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'),
-				'warning'
-			);
 			return;
 		}
 
@@ -422,6 +416,12 @@ class Resources extends SiteController
 			return $this->browseTask();
 		}
 
+		// Who may browse and search is a view access level, Public by default
+		if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED')))
+		{
+			return;
+		}
+
 		// Incoming
 		$tag  = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('tag', '')));
 		$tag2 = preg_replace("/[^a-zA-Z0-9]/", '', strtolower(Request::getString('with', '')));
@@ -558,6 +558,12 @@ class Resources extends SiteController
 	 */
 	public function browserTask()
 	{
+		// Who may browse and search is a view access level, Public by default
+		if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED')))
+		{
+			return;
+		}
+
 		// Incoming
 		$level = Request::getInt('level', 0);
 
