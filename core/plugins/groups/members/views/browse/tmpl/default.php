@@ -68,12 +68,13 @@ $option = 'com_groups';
 					</a>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
+				<?php $canManageRoles = (($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1); ?>
+				<?php if ($canManageRoles) : ?>
 					<a class="icon-add add btn" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=addrole'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
 					</a>
 				<?php endif; ?>
-				<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') : ?>
+				<?php if ($canManageRoles) : ?>
 					<a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=denyresponses'); ?>">
 						<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'); ?>
 					</a>
@@ -587,7 +588,7 @@ $option = 'com_groups';
 			<?php if (count($this->member_roles) > 0) { ?>
 				<?php
 				// Only managers may put the roles in order
-				$canOrderRoles = ($this->authorized == 'manager' && $this->membership_control == 1 && count($this->member_roles) > 1);
+				$canOrderRoles = (($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1 && count($this->member_roles) > 1);
 				if ($canOrderRoles)
 				{
 					Html::behavior('framework', true);
