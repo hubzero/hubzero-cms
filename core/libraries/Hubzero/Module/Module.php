@@ -65,8 +65,7 @@ class Module extends Obj
 	 */
 	public function getLayoutPath($layout='default')
 	{
-		$loader = new \Hubzero\Module\Loader(App::get('app'), App::get('profiler'));
-		return $loader->getLayoutPath($this->module->module, $layout);
+		return App::get('module')->getLayoutPath($this->module->module, $layout);
 	}
 
 	/**

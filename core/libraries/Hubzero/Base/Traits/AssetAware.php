@@ -129,10 +129,6 @@ trait AssetAware
 		{
 			return $this->module->module;
 		}
-		else if ($this instanceof View)
-		{
-			return $this->option;
-		}
 
 		return '';
 	}

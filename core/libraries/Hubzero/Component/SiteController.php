@@ -123,13 +123,6 @@ class SiteController extends Obj implements ControllerInterface
 	protected $_messageType = 'message';
 
 	/**
-	 * The active supergroup (used for template override)
-	 *
-	 * @var string
-	 */
-	protected $_group = null;
-
-	/**
 	 * Constructor
 	 *
 	 * @param   array  $config  Optional configurations to be used
@@ -140,16 +133,6 @@ class SiteController extends Obj implements ControllerInterface
 		$this->_redirect    = null;
 		$this->_message     = null;
 		$this->_messageType = 'message';
-
-		// Get group for possible override
-		if (Request::getCmd('cn'))
-		{
-			$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-			if ($group && $group->isSuperGroup())
-			{
-				$this->_group = $group;
-			}
-		}
 
 		// Get the reflection info
 		$r = new ReflectionClass($this);
@@ -340,8 +323,7 @@ class SiteController extends Obj implements ControllerInterface
 		$this->view = new View(array(
 			'base_path' => $this->_basePath,
 			'name'      => $name,
-			'layout'    	=> $layout,
-			'override_path' => $this->getOverridePath()
+			'layout'    => $layout
 		));
 
 		// Set some commonly used vars
@@ -375,7 +357,6 @@ class SiteController extends Obj implements ControllerInterface
 		{
 			$config['layout'] = $layout;
 		}
-		$config['override_path'] = $this->getOverridePath();
 		$this->view = new View($config);
 
 		// Set some commonly used vars
@@ -392,26 +373,6 @@ class SiteController extends Obj implements ControllerInterface
 	public function getTask()
 	{
 		return $this->_task;
-	}
-
-	/**
-	 * Get the override path(s) for the view.
-	 *
-	 * @return  array  Array of strings
-	 */
-	public function getOverridePath()
-	{
-		$overridePath = array();
-		if (\App::has('template'))
-		{
-			$overridePath[] = \App::get('template')->path;
-		}
-		if (!empty($this->_group) && $this->_group->isSuperGroup())
-		{
-			$overridePath[] = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->_group->get('gidNumber') . DS . 'template';
-		}
-
-		return $overridePath;
 	}
 
 	/**

@@ -7,6 +7,8 @@
 
 namespace Hubzero\Module;
 
+use Hubzero\Template\Overrides;
+
 use Hubzero\Container\Container;
 use Hubzero\Utility\Date;
 use Hubzero\Utility\Sanitize;
@@ -348,43 +350,42 @@ class Loader
 		$template = $this->app['template']->template;
 		$path     = dirname($this->app['template']->path);
 		$default  = $layout;
+		$explicit = false;
 
 		if (strpos($layout, ':') !== false)
 		{
 			// Get the template and file name from the string
 			$temp = explode(':', $layout);
 
-			$template = ($temp[0] == '_') ? $template : $temp[0];
+			$explicit = ($temp[0] != '_');
+			$template = $explicit ? $temp[0] : $template;
 			$layout   = $temp[1];
 			$default  = ($temp[1]) ? $temp[1] : 'default';
 		}
 
-		// Build the template from a supergroup (if applicable)
-		$gPath = '';
-		if (Request::getCmd('cn')) {
-			$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-			if ($group && $group->isSuperGroup()) {
-				$gPath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . $module . DS . $layout . '.php';
-			}
-		}
-
-		// Build the template and base path for the layout
-		$tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
+		// Template roots that may override the layout, highest priority
+		// first. Naming a template ('template:layout') asks for that one
+		// alone; otherwise the supergroup template, inside a supergroup's
+		// pages, outranks the site template as it does for views and assets.
+		$roots = $explicit ? array($path . '/' . $template) : Overrides::roots();
 
 		$base = dirname($this->path($module));
 
 		$bPath = $base . '/tmpl/' . $default . '.php';
 		$dPath = $base . '/tmpl/default.php';
 
-		// If the template has a layout override use it
-		if (file_exists($gPath)) {
-			return $gPath;
-		} 
-		elseif (file_exists($tPath))
+		// If a template has a layout override use it
+		foreach ($roots as $root)
 		{
-			return $tPath;
+			$tPath = $root . '/html/' . $module . '/' . $layout . '.php';
+
+			if (file_exists($tPath))
+			{
+				return $tPath;
+			}
 		}
-		elseif (file_exists($bPath))
+
+		if (file_exists($bPath))
 		{
 			return $bPath;
 		}

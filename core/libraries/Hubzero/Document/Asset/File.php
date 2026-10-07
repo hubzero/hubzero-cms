@@ -351,16 +351,21 @@ class File extends Obj
 	{
 		if (!isset($this->paths['override']))
 		{
-			$suffix = $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
-			$overridePaths = array();
+			$suffix = DS . 'html' . DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
 
-			if (Request::getCmd('cn')) {
-				$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-				if ($group && $group->isSuperGroup()) {
-					$this->paths['override'][] = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . $suffix;
+			// The first template root (the supergroup's, then the site's)
+			// that carries an override; failing that the site template's
+			// location, so callers still get a well-formed path to test
+			$this->paths['override'] = \App::get('template')->path . $suffix;
+
+			foreach (\Hubzero\Template\Overrides::roots() as $root)
+			{
+				if (file_exists($root . $suffix))
+				{
+					$this->paths['override'] = $root . $suffix;
+					break;
 				}
 			}
-			$this->paths['override'][]  = \App::get('template')->path . DS . 'html' . DS . $suffix;
 		}
 		return $this->paths['override'];
 	}
@@ -382,12 +387,9 @@ class File extends Obj
 			{
 				$this->paths['target'] = $this->sourcePath();
 
-				$overridePaths = $this->overridePath();
-				foreach ($overridePaths as $overridePath) {
-					if (file_exists($overridePath)) {
-						$this->paths['target'] = $overridePath;
-						break;
-					}
+				if ($this->overridePath() && file_exists($this->overridePath()))
+				{
+					$this->paths['target'] = $this->overridePath();
 				}
 			}
 		}
