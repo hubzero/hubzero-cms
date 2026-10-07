@@ -256,6 +256,22 @@ class Log extends Relational
 
 		$sent = array();
 
+		// An entry logged again (an edited post) keeps the recipients it
+		// already has; adding them again would list it twice in each feed
+		if ($this->get('id'))
+		{
+			$existing = Recipient::all()
+				->select('scope')
+				->select('scope_id')
+				->whereEquals('log_id', $this->get('id'))
+				->rows();
+
+			foreach ($existing as $recipient)
+			{
+				$sent[] = $recipient->get('scope') . '.' . $recipient->get('scope_id');
+			}
+		}
+
 		// Do we have any recipients?
 		foreach ($recipients as $receiver)
 		{

@@ -864,6 +864,10 @@ class Jobs extends SiteController
 			return;
 		}
 
+		// Check for request forgeries: the cancel button and the confirm
+		// screen's YES both post the token
+		Request::checkToken();
+
 		$uid = Request::getInt('uid', User::get('id'));
 
 		// non-admins can only cancel their own subscription

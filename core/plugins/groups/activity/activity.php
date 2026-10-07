@@ -588,7 +588,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 		// Process attachment
 		$upload = Request::getArray('activity_file', '', 'files');
 
-		if (!empty($upload) && $upload['name'])
+		if (!empty($upload['name']))
 		{
 			if ($upload['error'])
 			{

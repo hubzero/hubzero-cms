@@ -26,6 +26,13 @@ HUB.CollectionsFileUpload = {
 
 		if ($("#ajax-uploader").length) {
 
+			// Assets are saved in the order listed; the handles reorder them
+			if ($.ui && $.ui.sortable) {
+				$('#ajax-uploader-list').sortable({
+					handle: '.asset-handle'
+				});
+			}
+
 			$('#ajax-uploader-list button.delete')
 				.unbind('click')
 				.on('click', function(event){
@@ -108,12 +115,13 @@ HUB.CollectionsFileUpload = {
 		var $ = HUB.CollectionsFileUpload.jQuery;
 
 		if ($('#ajax-uploader')) {
-			$('#ajax-uploader-list').sortable('enable');
-
 			$.get($('#ajax-uploader').attr('data-list') + $('#field-dir').val(), {}, function(data) {
-				$('#ajax-uploader-list')
-					.html(data)
-					.sortable('enable');
+				var list = $('#ajax-uploader-list').html(data);
+
+				if (list.hasClass('ui-sortable')) {
+					list.sortable('refresh');
+				}
+
 				$('#ajax-uploader-list button.delete')
 					.unbind('click')
 					.on('click', function(event){

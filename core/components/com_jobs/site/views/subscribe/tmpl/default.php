@@ -94,7 +94,7 @@ defined('_HZEXEC_') or die();
 					}
 
 					$expires .= '</p>' . "\n";
-					$expires .= $this->subscription->expires > $now ? ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid) . '" class="cancelit" id="showconfirm">[ ' . Lang::txt( 'COM_JOBS_SUBSCRIPTION_CANCEL_THIS' ) . ' ]</a>' : '';
+					$expires .= $this->subscription->expires > $now ? ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid) . '" class="cancelit" id="showconfirm">[ ' . Lang::txt( 'COM_JOBS_SUBSCRIPTION_CANCEL_THIS' ) . ' ]</button>' : '';
 					$expires .= $this->subscription->pendingunits > 0 && $this->subscription->status==1  ? '<p class="no">' . Lang::txt( 'COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING' ) . '</p>' :'';
 
 				}
