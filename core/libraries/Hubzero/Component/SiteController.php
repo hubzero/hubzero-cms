@@ -14,6 +14,10 @@ use Hubzero\Document\Assets;
 use ReflectionClass;
 use ReflectionMethod;
 use Lang;
+use App;
+use Request;
+use Route;
+use User;
 use Hubzero\Inertia\Inertia;
 use Hubzero\Htmx\Htmx;
 
@@ -524,6 +528,51 @@ class SiteController extends Obj implements ControllerInterface
 		}
 
 		return false;
+	}
+
+	/**
+	 * Does the current user hold a view access level?
+	 *
+	 * @param   int   $level  A #__viewlevels id (1 is Public)
+	 * @return  bool
+	 */
+	protected function canView($level)
+	{
+		return in_array((int) $level, User::getAuthorisedViewLevels());
+	}
+
+	/**
+	 * Require a view access level for the current task
+	 *
+	 * A guest is sent to log in and comes back here afterwards; a user who
+	 * is logged in but lacks the level gets a 403. Callers return as soon
+	 * as this returns false: the redirect has been queued.
+	 *
+	 * @param   int     $level    A #__viewlevels id (1 is Public)
+	 * @param   string  $message  Shown with the login page or the 403
+	 * @return  bool    True when the user may continue
+	 */
+	protected function requireViewLevel($level, $message = '')
+	{
+		if ($this->canView($level))
+		{
+			return true;
+		}
+
+		$message = $message ?: Lang::txt('JGLOBAL_YOU_MUST_LOGIN_FIRST');
+
+		if (User::isGuest())
+		{
+			App::redirect(
+				Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false),
+				$message,
+				'warning'
+			);
+
+			return false;
+		}
+
+		App::abort(403, $message);
 	}
 
 	/**

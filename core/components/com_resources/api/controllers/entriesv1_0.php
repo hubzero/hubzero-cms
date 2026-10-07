@@ -84,6 +84,12 @@ class Entriesv1_0 extends ApiController
 			App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
 		}
 
+		// Searching is gated by the component's browse access level
+		if ($filters['search'] && !in_array((int) Component::params('com_resources')->get('browse_access', 1), User::getAuthorisedViewLevels()))
+		{
+			App::abort(403, Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'));
+		}
+
 		require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 		$query = Entry::all();
