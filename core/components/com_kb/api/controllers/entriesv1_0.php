@@ -8,8 +8,8 @@
 namespace Components\Kb\Api\Controllers;
 
 use Hubzero\Component\ApiController;
-use Component;
-use Exception;
+use Components\Kb\Models\Article;
+use Components\Kb\Models\Category;
 use stdClass;
 use Request;
 use App;
@@ -17,104 +17,127 @@ use Config;
 use User;
 
 /**
- * API controller class for resources
+ * API controller class for knowledge base articles
  */
 class Entriesv1_0 extends ApiController
 {
 	/**
-	 * Get a list of Knowledge Base Articles 
+	 * Get a list of published Knowledge Base Articles
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /kb/list
 	 * @apiParameter {
 	 * 		"name":          "limit",
-	 * 		"description":   "Number of result to return.",
+	 * 		"description":   "Number of results to return.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       25
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "limitstart",
-	 * 		"description":   "Number of where to start returning results.",
+	 * 		"description":   "Offset to start returning results from.",
 	 * 		"type":          "integer",
 	 * 		"required":      false,
 	 * 		"default":       0
+	 * }
+	 * @apiParameter {
+	 * 		"name":          "category",
+	 * 		"description":   "Filter by category ID.",
+	 * 		"type":          "integer",
+	 * 		"required":      false,
+	 * 		"default":       null
 	 * }
 	 * @return    void
 	 */
 	public function listTask()
 	{
-		// Incoming
+		// Get filters from request
 		$filters = array(
-			'limit'  => Request::getInt('limit', Config::get('list_limit')),
-			'start'  => Request::getInt('limitstart', 0),
+			'limit'    => Request::getInt('limit', Config::get('list_limit')),
+			'start'    => Request::getInt('limitstart', 0),
+			'state'    => 1,  // Only published articles
+			'access'   => 1,  // Only public access
+			'category' => Request::getInt('category', null),
 		);
 
+		// Sanitize limit and start
 		$filters['limit'] = \Hubzero\Utility\Sanitize::paranoid($filters['limit']);
 		$filters['start'] = \Hubzero\Utility\Sanitize::paranoid($filters['start']);
 
-		if (User::authorise('core.admin', 'com_content'))
+		try
 		{
-			$db = App::get('db');
-			$totalQuery = 'SELECT COUNT(*) FROM `#__kb_articles`;';
-			$db->setQuery($totalQuery);
-			$total = $db->loadResult();
+			// Get total count of published articles
+			$total_query = Article::all()
+				->whereEquals('state', 1)
+				->whereEquals('access', 1);
 
-			$query = 'SELECT * FROM `#__kb_articles` LIMIT ' . $filters['start'] . ', ' . $filters['limit'] . ';';
-			$db->setQuery($query);
-			$pages = $db->loadObjectList();
-
-			foreach ($pages as &$page)
+			if ($filters['category'])
 			{
-				// Build the path
-				$sql1 = "SELECT `path` FROM `#__categories` WHERE id={$page->category};";
-				$path = $db->setQuery($sql1)->query()->loadResult();
-
-				if (strpos($path, 'uncategorized') === false)
-				{
-					$url = '/'. $path . '/' . $page->alias;
-				}
-				else
-				{
-					$url = $path . '/' . $page->alias;
-				}
-
-				$page->url = '/kb' . $url;
-
-				if ($page->state == 1 && $page->access == 1)
-				{
-					$access_level = 'public';
-				}
-				// Registered condition
-				elseif ($page->state == 1 && $page->access == 2)
-				{
-					$access_level = 'registered';
-				}
-				// Default private
-				else
-				{
-					$access_level = 'private';
-				}
-
-				$page->access_level = $access_level;
-				$page->owner_type = 'user';
-				$page->owner = $page->created_by;
-				$page->id = 'kb-' . $page->id;
-				$page->hubtype = 'kb-article';
-				$page->description = \Hubzero\Utility\Sanitize::stripAll($page->fulltxt);
+				$total_query->whereEquals('category', (int)$filters['category']);
 			}
 
-			$response = new stdClass;
-			$response->content = $pages;
-			$response->total = $total;
+			$total = $total_query->total();
+
+			// Get articles with pagination
+			$articles_query = Article::all()
+				->whereEquals('state', 1)
+				->whereEquals('access', 1)
+				->order('title', 'asc')
+				->limit($filters['limit'])
+				->start($filters['start']);
+
+			if ($filters['category'])
+			{
+				$articles_query->whereEquals('category', (int)$filters['category']);
+			}
+
+			$articles = $articles_query->rows();
+
+			$response_items = array();
+
+			foreach ($articles as $article)
+			{
+				// Get category information
+				$category = Category::oneOrNew($article->get('category'));
+
+				$item = new stdClass();
+				$item->id             = $article->get('id');
+				$item->title          = $article->get('title');
+				$item->alias          = $article->get('alias');
+				$item->fulltxt        = $article->get('fulltxt');  // Full article content
+				$item->category_id    = $article->get('category');
+				$item->category_title = $category->get('title');
+				$item->category_alias = $category->get('alias');
+				$item->category_path  = $category->get('path');
+				$item->created        = $article->get('created');
+				$item->created_by     = $article->get('created_by');
+				$item->modified       = $article->get('modified');
+				$item->modified_by    = $article->get('modified_by');
+				$item->state          = $article->get('state');
+				$item->access         = $article->get('access');
+				$item->helpful        = $article->get('helpful');
+				$item->nothelpful     = $article->get('nothelpful');
+				$item->url            = '/kb/' . $category->get('path') . '/' . $article->get('alias');
+
+				$response_items[] = $item;
+			}
+
+			$response = new stdClass();
 			$response->success = true;
+			$response->total   = $total;
+			$response->limit   = $filters['limit'];
+			$response->start   = $filters['start'];
+			$response->content = $response_items;
+
 			$this->send($response);
 		}
-		else
+		catch (\Exception $e)
 		{
-			$response = new stdClass;
+			$response = new stdClass();
 			$response->success = false;
-			$this->send($response);
+			$response->error   = $e->getMessage();
+
+			$this->send($response, 500);
 		}
 	}
 }
