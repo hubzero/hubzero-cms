@@ -1163,11 +1163,23 @@ class Projects extends Base
 
 					// Bump up quota
 					$premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
-					$this->model->saveParam('quota', $premiumQuota);
-
+					$defaultQuota = Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+					$currentQuota = $params->get('quota', $defaultQuota);
+					
+					if (floatval($currentQuota) <= floatval($premiumQuota))
+					{
+						$this->model->saveParam('quota', $premiumQuota);
+					}
+					
 					// Bump up publication quota
 					$premiumPubQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
-					$this->model->saveParam('pubQuota', $premiumPubQuota);
+					$defaultPubQuota = Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+					$currentPubQuota = $params->get('pubQuota', $defaultPubQuota);
+					
+					if (floatval($currentPubQuota) <= floatval($premiumPubQuota))
+					{
+						$this->model->saveParam('pubQuota', $premiumPubQuota);
+					}
 				}
 
 				// Reject
