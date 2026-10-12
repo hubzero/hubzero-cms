@@ -1,8 +1,10 @@
 name: update-code-push
-if: false
 on: [push]
 jobs:
   push-step-1:
+    # Disabled: no self-hosted runner is registered (and 'if' is not valid
+    # at the workflow level, which made every push report a failure)
+    if: false
     runs-on: self-hosted
     steps:
     - name: Install SSH Key
