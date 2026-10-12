@@ -552,12 +552,18 @@ class Password
 			return false;
 		}
 
+		// An absolute expiry date (days since the epoch), set by an admin
+		if (!empty($hzup->shadowExpire) && intval(time() / 86400) >= (int) $hzup->shadowExpire)
+		{
+			return true;
+		}
+
 		if (empty($hzup->shadowLastChange))
 		{
 			return false;
 		}
 
-		if ($hzup->shadowMax === '0')
+		if ($hzup->shadowMax === '0' || $hzup->shadowMax === 0)
 		{
 			return true;
 		}

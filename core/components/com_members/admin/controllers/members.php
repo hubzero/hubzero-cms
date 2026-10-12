@@ -597,15 +597,17 @@ class Members extends AdminController
 		if (is_object($passinfo))
 		{
 			// Do we have shadow info to change?
-			$shadowMax     = Request::getInt('shadowMax', false, 'post');
+			// Read as a string: 0 is a real value (expire now), not "unset"
+			$shadowMax     = trim(Request::getString('shadowMax', '', 'post'));
+			$shadowMaxSet  = ($shadowMax !== '' && is_numeric($shadowMax) && $shadowMax >= 0);
 			$shadowWarning = Request::getInt('shadowWarning', false, 'post');
 			$shadowExpire  = Request::getString('shadowExpire', '', 'post');
 
-			if ($shadowMax || $shadowWarning || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
+			if ($shadowMaxSet || $shadowWarning || $shadowExpire || !is_null($passinfo->get('shadowExpire')))
 			{
-				if ($shadowMax)
+				if ($shadowMaxSet)
 				{
-					$passinfo->set('shadowMax', $shadowMax);
+					$passinfo->set('shadowMax', (int) $shadowMax);
 				}
 				if ($shadowExpire || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
 				{

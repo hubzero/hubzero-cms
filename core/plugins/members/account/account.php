@@ -709,7 +709,8 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		return array(
 			'diff'          => $diff,
 			'warning'       => $hzup->shadowWarning,
-			'max'           => $hzup->shadowMax,
+			// New passwords get the hub's default lifetime, not this user's current one
+			'max'           => \Component::params('com_members')->get('shadowMax', $hzup->shadowMax),
 			'message_style' => $message_style
 		);
 	}
