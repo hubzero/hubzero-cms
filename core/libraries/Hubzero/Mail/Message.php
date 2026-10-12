@@ -105,8 +105,11 @@ class Message extends \Symfony\Component\Mime\Email
 				$scheme = strtolower(trim(\Config::get('mailer','sendmail')));
 				$host = strtolower(trim(\Config::get('smtphost','localhost')));
 				$port = strtolower(trim(\Config::get('smtpport','0')));
-				$username = strtolower(trim(\Config::get('smtpuser','')));
-				$password = strtolower(trim(\Config::get('smtppass','')));
+				// Credentials are case-sensitive (lowercasing them broke every
+				// mixed-case password), and go into the DSN URL-encoded so an @, :
+				// or / in them doesn't break it; the DSN parser decodes them
+				$username = trim(\Config::get('smtpuser',''));
+				$password = trim(\Config::get('smtppass',''));
 				switch ($scheme)
 				{
 					case 'smtp':
@@ -114,11 +117,11 @@ class Message extends \Symfony\Component\Mime\Email
 
 						if ($username || $password)
 						{
-							$dsn .= $username;
+							$dsn .= rawurlencode($username);
 
 							if ($password)
 							{
-								$dsn .= ":" . $password;
+								$dsn .= ":" . rawurlencode($password);
 							}
 
 							$dsn .= "@";
@@ -144,11 +147,11 @@ class Message extends \Symfony\Component\Mime\Email
 
 						if ($username || $password)
 						{
-							$dsn .= $username;
+							$dsn .= rawurlencode($username);
 
 							if ($password)
 							{
-								$dsn .= ":" . $password;
+								$dsn .= ":" . rawurlencode($password);
 							}
 
 							$dsn .= "@";

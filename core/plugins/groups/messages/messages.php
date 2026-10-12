@@ -389,6 +389,10 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 			default:
 				$message = Lang::txt('PLG_GROUPS_MESSAGES_FOR_GROUP_MEMBER', $this->group->get('cn'));
 
+				// Collects the members of any roles addressed (an empty role
+				// otherwise left this unset)
+				$members = array();
+
 				foreach ($mbrs as $mbr)
 				{
 					if (strstr($mbr, '_'))
@@ -440,9 +444,9 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
 		// get all group members
 		$recipients = array();
-		foreach ($mbrs as $mbr)
+		foreach ((array) $mbrs as $mbr)
 		{
-			if ($profile = User::getInstance($mbr))
+			if (($profile = User::getInstance($mbr)) && $profile->get('email'))
 			{
 				$recipients[$profile->get('email')] = $profile->get('name');
 			}
@@ -491,9 +495,38 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 				->setFrom(array($from['email'] => $from['name']))
 				->addPart($plain, 'text/plain');
 
+		// Send one at a time, and count: send() logs a transport failure and
+		// returns false, and an empty recipient list sends nothing at all -
+		// either way the sender was told it worked
+		$sent   = 0;
+		$failed = array();
 		foreach ($recipients as $email => $name)
 		{
-			$message->setTo(array($email => $name))->send();
+			try
+			{
+				if ($message->setTo(array($email => $name))->send())
+				{
+					$sent++;
+					continue;
+				}
+			}
+			catch (\Exception $e)
+			{
+				// e.g. an address the mailer won't accept
+			}
+			$failed[] = $email;
+		}
+
+		if (!count($recipients))
+		{
+			$html  = '<p class="error">' . Lang::txt('PLG_GROUPS_MESSAGES_ERROR_NO_RECIPIENTS') . '</p>';
+			$html .= $this->_create();
+			return $html;
+		}
+
+		if (count($failed))
+		{
+			$this->setError(Lang::txt('PLG_GROUPS_MESSAGES_ERROR_SEND_FAILED', count($failed), count($recipients)));
 		}
 
 		// add invite emails if sending to invitees
