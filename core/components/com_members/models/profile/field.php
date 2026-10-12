@@ -363,6 +363,7 @@ class Field extends Relational
 			$f .= ($field->get('option_other') ? ' option_other="1"' : '');
 			$f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');
 			$f .= (!is_null($field->get('max')) ? ' max="' . (int) $field->get('max') . '"' : '');
+			$f .= ($field->get('type') == 'orcid' ? ' validate="orcid"' : '');
 			if (in_array($action, array('create', 'update', 'edit')))
 			{
 				$f .= ($field->get('action_' . $action) == self::STATE_REQUIRED ? ' required="true"' : '');
