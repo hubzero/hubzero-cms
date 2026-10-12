@@ -898,26 +898,16 @@ $legacy = array(
 				switch ($this->profile->get('sendEmail'))
 				{
 					case '1':
-						$mailPreferenceValue = 'Yes, send me emails';
+						$mailPreferenceValue = Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_YES');
 						break;
 					case '0':
-						$mailPreferenceValue = 'No, don\'t send me emails';
+						$mailPreferenceValue = Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_OPT_NO');
 						break;
 					case '-1':
 					default:
-						$mailPreferenceValue = 'Unanswered';
+						$mailPreferenceValue = Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_UNANSWERED');
 						break;
 				}
-
-				$select  = '<select name="access[optin]" class="input-select">' . "\n";
-				foreach ($legacy as $k => $v)
-				{
-					$selected = ($k == $this->params->get('access_optin'))
-							  ? ' selected=1'
-							  : '';
-					$select .= ' <option value="' . $k . '"' . $selected . '>' . $v . '</option>' . "\n";
-				}
-				$select .= '</select>' . "\n";
 			?>
 			<?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
 			<li class="profile-optin section <?php echo $cls; ?>">
@@ -946,16 +936,9 @@ $legacy = array(
 							$optin_html .= '</select>';
 							$optin_html .= '</label>';
 
-							if ($this->profile->get('access') > 2)
-							{
-								$access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
-								$access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
-								$access .= '<input type="hidden" name="access[sendEmail]" value="' . $this->params->get('access_optin') . '" />';
-							}
-							else
-							{
-								$access = '<div class="block"><label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label></div>';
-							}
+							// Only the member ever sees this section, so a privacy
+							// setting for it has nothing to control
+							$access = '';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'sendEmail')
