@@ -134,17 +134,20 @@ jQuery(document).ready(function($){
 		});
 	}
 
-	$('.datetime-field').datetimepicker({
-		duration: '',
-		showTime: true,
-		constrainInput: false,
-		stepMinutes: 1,
-		stepHours: 1,
-		altTimeField: '',
-		time24h: true,
-		dateFormat: 'yy-mm-dd',
-		timeFormat: 'HH:mm:00'
-	});
+	// The timepicker add-on isn't loaded on every screen (e.g. certificates)
+	if ($.fn.datetimepicker) {
+		$('.datetime-field').datetimepicker({
+			duration: '',
+			showTime: true,
+			constrainInput: false,
+			stepMinutes: 1,
+			stepHours: 1,
+			altTimeField: '',
+			time24h: true,
+			dateFormat: 'yy-mm-dd',
+			timeFormat: 'HH:mm:00'
+		});
+	}
 
 	if (!$('#badge-published').is(':checked')) {
 		$('.badge-field-toggle').hide();
