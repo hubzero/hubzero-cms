@@ -33,7 +33,8 @@ class DatabaseServiceProvider extends ServiceProvider
 				'user'     => $app['config']->get('user'),
 				'password' => $app['config']->get('password'),
 				'database' => $app['config']->get('db'),
-				'prefix'   => $app['config']->get('dbprefix')
+				'prefix'   => $app['config']->get('dbprefix'),
+				'charset'  => $app['config']->get('dbcharset')
 			];
 
 			$driver = Driver::getInstance($options);

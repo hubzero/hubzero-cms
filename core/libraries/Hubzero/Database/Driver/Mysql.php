@@ -39,7 +39,10 @@ class Mysql extends PdoDriver
 		// Establish connection string
 		if (!isset($options['dsn']))
 		{
-			$options['dsn']  = "mysql:host={$options['host']};charset=utf8";
+			// utf8mb4 so 4-byte characters (emoji) aren't silently truncated;
+			// 'dbcharset' in the hub config overrides it
+			$charset = (!empty($options['charset']) && preg_match('/^[a-z0-9_]+$/i', $options['charset'])) ? $options['charset'] : 'utf8mb4';
+			$options['dsn']  = "mysql:host={$options['host']};charset={$charset}";
 			if (isset($options['port']))
 			{
 				$options['dsn'] .= ";port={$options['port']}";
