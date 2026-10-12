@@ -55,8 +55,8 @@ jobs:
         run: php docs/_tools/lint/missing-facade-imports.php
 
       # Lang::txt() returns its argument when a key is undefined, so a missing
-      # string is not an error: the raw key is printed into the page. 444 are
+      # string is not an error: the raw key is printed into the page. 443 are
       # undefined today. The ceiling stops that number growing; lower it as
       # they are defined.
       - name: Language keys the code asks for are defined
-        run: php docs/_tools/lint/undefined-language-keys.php --quiet --max=444
+        run: php docs/_tools/lint/undefined-language-keys.php --quiet --max=443
