@@ -298,6 +298,9 @@ class Stories extends AdminController
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		//get request vars
 		$id = Request::getInt('nid', 0);
 		$sid = Request::getInt('sid', 0);
@@ -378,6 +381,9 @@ class Stories extends AdminController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Get the request vars
 		$id   = Request::getInt('id', 0);
 		$sid  = Request::getInt('sid', 0);

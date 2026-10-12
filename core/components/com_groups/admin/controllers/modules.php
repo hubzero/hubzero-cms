@@ -830,6 +830,9 @@ class Modules extends AdminController
 	 */
 	public function approveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// make sure we are approvers
 		if (!Helpers\Pages::isPageApprover())
 		{

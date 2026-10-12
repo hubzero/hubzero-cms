@@ -308,7 +308,7 @@ if ($secondaries->count() > 0)
 												<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=edit&type=primary&sid=' . $primary->id); ?>">
 													<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
 												</a> |
-												<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=primary&sid=' . $primary->id); ?>">
+												<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
 													<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
 												</a>
 											</td>
@@ -323,12 +323,12 @@ if ($secondaries->count() > 0)
 												<input type="text" readonly="readonly" value="<?php echo $primary->order; ?>" class="align-center" size="3" />
 
 												<?php if ($primary->order > 1) : ?>
-													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=primary&sid=' . $primary->id); ?>">
+													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
 														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
 													</a>
 												<?php endif ?>
 												<?php if ($primary->order < $primary_highest_order) : ?>
-													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=primary&sid=' . $primary->id); ?>">
+													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
 														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
 													</a>
 												<?php endif; ?>
@@ -372,7 +372,7 @@ if ($secondaries->count() > 0)
 													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=edit&type=secondary&sid='.$secondary->id); ?>">
 														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
 													</a> |
-													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary->id); ?>">
+													<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=delete&type=secondary&sid='.$secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
 														<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
 													</a>
 												</td>
@@ -386,13 +386,13 @@ if ($secondaries->count() > 0)
 												<td>
 													<input type="text" readonly="readonly" value="<?php echo $secondary->order; ?>" class="align-center" size="3" />
 													<?php if ($secondary->order > 1) : ?>
-														<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary->id); ?>">
+														<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=reorder&direction=up&type=secondary&sid='.$secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
 															<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
 														</a>
 													<?php endif; ?>
 
 													<?php if ($secondary->order < $secondary_highest_order) : ?>
-														<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary->id); ?>">
+														<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid='.$this->newsletter->id.'&task=reorder&direction=down&type=secondary&sid='.$secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
 															<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
 														</a>
 													<?php endif; ?>

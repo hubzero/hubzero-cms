@@ -1536,6 +1536,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmcancel()
 	{
+		// Require POST, with the cancel form's token
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;

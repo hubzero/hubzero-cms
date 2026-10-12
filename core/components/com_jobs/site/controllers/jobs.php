@@ -1419,6 +1419,10 @@ class Jobs extends SiteController
 			return;
 		}
 
+		// Check for request forgeries (the edit form and the owner's
+		// confirm/unpublish/reopen/remove buttons all POST a token)
+		Request::checkToken();
+
 		// Do we need admin approval for job publications?
 		$autoapprove = $this->config->get('autoapprove', 1);
 

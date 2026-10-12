@@ -61,7 +61,10 @@ if ($this->group->isSuperGroup())
 	<?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="join btn" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+				<form action="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>" method="post" class="inline-form">
+					<?php echo Html::input('token'); ?>
+					<button type="submit" class="join btn"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></button>
+				</form>
 			</li>
 		<?php endif; ?>
 	<?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>

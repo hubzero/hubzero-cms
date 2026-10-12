@@ -12,6 +12,7 @@ use Hubzero\Config\Registry;
 use Components\Groups\Models\Log;
 use Components\Groups\Tables\Reason;
 use Request;
+use Session;
 use Config;
 use Event;
 use Route;
@@ -1001,6 +1002,19 @@ class Membership extends Base
 		//if this group is open just make a member
 		if ($this->view->group->get('join_policy') == 0)
 		{
+			// Joining changes membership, so it needs a POST with a valid
+			// token. Anything else (an old link, the post-login return URL)
+			// gets a confirmation form instead.
+			if (Request::method() !== 'POST' || !Session::checkToken('post', true))
+			{
+				$this->view
+					->set('title', Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->view->group->get('description'))
+					->set('notifications', ($this->getNotifications() ? $this->getNotifications() : array()))
+					->setLayout('join')
+					->display();
+				return;
+			}
+
 			$this->view->group->add('members', array(User::get('id')));
 			$this->view->group->remove('applicants', array(User::get('id')));
 			$this->view->group->remove('invitees', array(User::get('id')));

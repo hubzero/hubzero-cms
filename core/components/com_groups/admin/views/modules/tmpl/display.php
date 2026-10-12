@@ -99,7 +99,7 @@ Html::behavior('modal', 'a.version, a.preview', array('handler' => 'iframe', 'fu
 						<ol class="attention-actions">
 							<?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
 								<li class="approve">
-									<a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id')); ?>" class="btn">
+									<a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id') . '&' . Session::getFormToken() . '=1'); ?>" class="btn">
 										<strong><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></strong>
 									</a>
 								</li>

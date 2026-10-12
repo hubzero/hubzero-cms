@@ -73,6 +73,7 @@ defined('_HZEXEC_') or die();
 			<input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 			<input type="hidden" name="status" value="<?php echo $status; ?>" />
 			<input type="hidden" name="employerid" value="<?php echo $this->uid; ?>" />
+			<?php echo Html::input('token'); ?>
 
 			<label for="title">
 				<?php echo Lang::txt('COM_JOBS_EDITJOB_JOB_TITLE'); ?>: <span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
