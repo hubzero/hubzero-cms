@@ -131,7 +131,8 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
 	<?php } ?>
 	<td class="shrinked middle_valign nojs">
 		<?php if ($this->model->access('content')) { ?>
-			<form action="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" method="post" class="inline-form"><?php echo Html::input('token'); ?><button type="submit" class="i-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>">&nbsp;</button></form>
+			<?php // A link, not a form: these rows sit inside #plg-form. Delete by GET only shows the confirmation, which posts with a token ?>
+			<a href="<?php echo Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>" class="i-delete">&nbsp;</a>
 			<a href="<?php echo Route::url($this->model->link('files') . '&action=move' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a>
 		<?php } ?>
 	</td>

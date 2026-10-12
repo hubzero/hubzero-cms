@@ -305,6 +305,7 @@ $this->css()
 									<td class="voting">
 										<?php
 										$this->view('_vote')
+										     ->set('detached', true)
 										     ->set('option', $this->option)
 										     ->set('item', $this->wish)
 										     ->set('listid', $this->wishlist->get('id'))
@@ -379,6 +380,11 @@ $this->css()
 						<input type="hidden" name="rid" value="<?php echo $this->wishlist->get('referenceid'); ?>" />
 						<input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
 					</form>
+					<?php
+					// The vote forms for the buttons in the table above (forms can't nest)
+					echo implode("\n", isset($GLOBALS['com_wishlist.vote_forms']) ? $GLOBALS['com_wishlist.vote_forms'] : array());
+					$GLOBALS['com_wishlist.vote_forms'] = array();
+					?>
 				</div><!-- / .container -->
 			<?php } //if ($this->admin) { ?>
 

@@ -287,6 +287,7 @@ if ($this->wishlist->get('id'))
 										<td class="priority-4 voting">
 											<?php
 											$this->view('_vote')
+												 ->set('detached', true)
 												 ->set('option', $this->option)
 												 ->set('item', $item)
 												 ->set('listid', $this->wishlist->get('id'))
@@ -457,6 +458,11 @@ if ($this->wishlist->get('id'))
 				</div>
 			</section><!-- / .main section -->
 		</form>
+		<?php
+		// The vote forms for the buttons in the list (forms can't nest)
+		echo implode("\n", isset($GLOBALS['com_wishlist.vote_forms']) ? $GLOBALS['com_wishlist.vote_forms'] : array());
+		$GLOBALS['com_wishlist.vote_forms'] = array();
+		?>
 	<?php } // end if public ?>
 <?php } else { ?>
 	<p class="error"><?php echo Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>

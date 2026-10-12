@@ -81,7 +81,11 @@ $i = 0;
 			<?php $removeData = $creator ? '&removedata=1' : '';  ?>
 			<p>
 				<span class=" <?php echo $creator ? ' creator' : ''; ?>">
-					<a href="<?php echo Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData); ?>" id="disconnect"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
+					<?php // disconnect takes a POST with the form token ?>
+					<form class="inline-form" method="post" action="<?php echo Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData); ?>">
+						<?php echo Html::input('token'); ?>
+						<button type="submit" id="disconnect"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</button>
+					</form>
 				</span>
 				&nbsp; &nbsp;
 				<span>

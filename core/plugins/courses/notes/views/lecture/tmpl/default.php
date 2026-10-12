@@ -140,11 +140,15 @@ jQuery(document).ready(function(jQuery) {
 				window.console && console.log('calling: ' + url + id + '&action=delete');
 			}
 
-			$.getJSON(url + id + '&action=delete', {}, function(data) {
+			// Deleting takes a POST with the form token
+			var params = {};
+			params['<?php echo Session::getFormToken(); ?>'] = 1;
+
+			$.post(url + id + '&action=delete', params, function(data) {
 				if (_DEBUG) {
 					window.console && console.log(data);
 				}
-			});
+			}, 'json');
 		},
 		moveCallback: function(note) {
 			if (!note.editable) {

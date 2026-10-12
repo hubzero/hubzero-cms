@@ -138,20 +138,18 @@ jQuery(document).ready(function (jq) {
 				return $(this).val();
 			}).get();
 		
-		var url = $(this).attr('data-link');
-		url = url + '&citationIDs=' + citationIDs.join(',');
-
 		var textAction = $(this).text().toLowerCase().trim();
 		textAction = 'Are you sure you want to ' + textAction + '?';
-		
-		var url = $(this).attr('data-link');
-		url = url + '&citationIDs=' + citationIDs.join(',');
 
 		var locked = confirm(textAction.trim());
 		if (locked === true)
 		{
-			window.location = url;
-		 }
+			// The bulk actions take a POST with the form token
+			var frm = $('<form method="post" />').attr('action', $(this).attr('data-link'));
+			$('<input type="hidden" name="citationIDs" />').val(citationIDs.join(',')).appendTo(frm);
+			$('<input type="hidden" value="1" />').attr('name', $(this).attr('data-token')).appendTo(frm);
+			frm.appendTo('body').submit();
+		}
 
 	});
 

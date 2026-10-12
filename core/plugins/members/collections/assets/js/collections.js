@@ -268,12 +268,17 @@ jQuery(document).ready(function(jq){
 	} // if (container.length > 0)
 
 	// Add follow/unfollow triggers
-	$('#page_content a.follow, #page_content a.unfollow').on('click', function(e) {
+	$('a.follow[data-token], a.unfollow[data-token]').on('click', function(e) {
 		e.preventDefault();
 
-		var el = $(this);
+		var el = $(this),
+			params = {};
 
-		$.getJSON(el.attr('href').nohtml(), {}, function(data) {
+		// Following takes a POST with the form token (carried on the link,
+		// which can sit inside a GET form)
+		params[el.attr('data-token')] = 1;
+
+		$.post(el.attr('href').nohtml(), params, function(data) {
 			if (data.success) {
 				//var unfollow = $(el).attr('data-href-unfollow');
 				var follow = el.attr('data-text-follow'),
@@ -301,7 +306,7 @@ jQuery(document).ready(function(jq){
 					}
 				}
 			}
-		});
+		}, 'json');
 	});
 
 	$("#ajax-uploader-list").sortable({

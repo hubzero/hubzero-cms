@@ -57,11 +57,11 @@ $this->css()
 			<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
 				<span class="input-cell">
 					<?php if ($this->model->isFollowing()) { ?>
-						<a class="unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=unfollow'); ?>">
+						<a class="unfollow btn" data-token="<?php echo Session::getFormToken(); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=unfollow'); ?>">
 							<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
 						</a>
 					<?php } else { ?>
-						<a class="follow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=follow'); ?>">
+						<a class="follow btn" data-token="<?php echo Session::getFormToken(); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>" href="<?php echo Route::url($base . '&task=follow'); ?>">
 							<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
 						</a>
 					<?php } ?>

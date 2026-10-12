@@ -7,15 +7,16 @@
 (function(window, document, ds, $, undefined) {
 
 	$(document).ready(function() {
-		$('a.delete-db').on('click', function() {
-			var link = this;
+		// Delete is a POST form's button: confirm, then submit that form
+		$('.delete-db').on('click', function() {
+			var frm = $(this).closest('form');
 			$("#confirm-file-delete").dialog({
 				resizable: false,
 				height: 160,
 				modal: true,
 				buttons: {
 					"Delete Database": function() {
-						window.location = $(link).attr('href');
+						frm[0].submit();
 					},
 					Cancel: function() {
 						$(this).dialog('close');

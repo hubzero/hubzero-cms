@@ -242,7 +242,7 @@ if (!$this->activity->log->get('anonymous'))
 							<li>
 								<form action="<?php echo Route::url($this->model->link('feed') . '&action=delete&activity=' . $this->activity->log->get('id')); ?>" method="post" class="inline-form">
 									<?php echo Html::input('token'); ?>
-									<button type="submit" class="icon-delete delete tooltips" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+									<button type="submit" class="icon-delete delete tooltips" data-confirm="<?php echo $this->escape(Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
 								</form>
 							</li>
 						<?php } ?>

@@ -963,22 +963,15 @@ HUB.ProjectFiles = {
 
 		// Confirm directory deletion
 		if ($('#disconnect') && HUB.Projects) {
+			// The button submits a POST form; just confirm first
 			$('#disconnect').on('click', function(e) {
-				e.preventDefault();
+				var msg = $('#disconnect').closest('.creator').length
+					? 'Are you sure you want to disconnect project from this service? Remote data will be removed.'
+					: 'Are you sure you want to disconnect this gmail account from this project?';
 
-				if ($('#disconnect').parent().hasClass('creator'))
-				{
-					HUB.Projects.addConfirm($('#disconnect'),
-					'Are you sure you want to disconnect project from this service?',
-					'Yes, disconnect and remove remote data', 'No, do not disconnect');
+				if (!confirm(msg)) {
+					e.preventDefault();
 				}
-				else
-				{
-					HUB.Projects.addConfirm($('#disconnect'),
-					'Are you sure you want to disconnect this gmail account from this project?',
-					'Yes, disconnect', 'No, do not disconnect');
-				}
-
 			});
 		}
 	},
