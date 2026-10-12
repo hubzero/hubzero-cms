@@ -17,6 +17,7 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(Lang::txt('COM_INSTALLER_CUSTOMEXTS_HEADER') . ': ' . $text);
 if ($canDo->get('core.edit'))
 {
+	Toolbar::apply();
 	Toolbar::save();
 	Toolbar::spacer();
 }

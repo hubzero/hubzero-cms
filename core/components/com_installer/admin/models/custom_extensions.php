@@ -175,13 +175,9 @@ class Custom_extensions extends Relational
 	 */
 	public function automaticModified($data)
 	{
-		if (!isset($data['modified'])
-		 || !$data['modified']
-		  || $data['modified'] == '0000-00-00 00:00:00')
-		{
-			$data['modified'] = Date::of('now')->toSql();
-		}
-		return $data['modified'];
+		// A loaded row always carries its last modified date, so stamp every
+		// save rather than only filling in a missing value
+		return Date::of('now')->toSql();
 	}
 
 	/**
@@ -191,11 +187,7 @@ class Custom_extensions extends Relational
 	 */
 	public function automaticModifiedBy($data)
 	{
-		if (!isset($data['modified_by']) || !$data['modified_by'])
-		{
-			$data['modified_by'] = User::get('id');
-		}
-		return $data['modified_by'];
+		return User::get('id');
 	}
 
 	/**

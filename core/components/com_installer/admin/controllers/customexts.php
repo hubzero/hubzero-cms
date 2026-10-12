@@ -38,6 +38,7 @@ class Customexts extends AdminController
 	{
 		$this->registerTask('unpublish', 'publish');
 		$this->registerTask('publish', 'publish');
+		$this->registerTask('apply', 'save');
 
 		parent::execute();
 	}
