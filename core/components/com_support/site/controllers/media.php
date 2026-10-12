@@ -117,6 +117,9 @@ class Media extends SiteController
 
 	public function ajaxUploadTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Ensure we have an ID to work with
 		$ticket  = Request::getInt('ticket', 0);
 		$comment = Request::getInt('comment', 0);
@@ -362,6 +365,9 @@ class Media extends SiteController
 	 */
 	public function uploadTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Check if they're logged in
 		/*if (User::isGuest())
 		{
@@ -509,6 +515,9 @@ class Media extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxDeleteTask();
@@ -545,6 +554,9 @@ class Media extends SiteController
 	 */
 	public function ajaxDeleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$id = Request::getInt('asset', 0);
 

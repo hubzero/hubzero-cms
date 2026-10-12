@@ -50,6 +50,9 @@ class Attachments extends SiteController
 	 */
 	public function createTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Push through to a different method if
 		// being created via AJAX
 		if (Request::getInt('no_html', 0))
@@ -146,6 +149,9 @@ class Attachments extends SiteController
 	 */
 	public function ajaxCreateTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
 		$resourceTitle = Request::getString('resource-title');
@@ -287,6 +293,9 @@ class Attachments extends SiteController
 	 */
 	public function ajaxUploadTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Ensure we have an ID to work with
 		$pid = strtolower(Request::getInt('pid', 0));
 		if (!$pid)
@@ -517,6 +526,9 @@ class Attachments extends SiteController
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
@@ -576,6 +588,9 @@ class Attachments extends SiteController
 	 */
 	public function renameTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$name = Request::getString('name', '');
@@ -607,6 +622,9 @@ class Attachments extends SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		if (Request::getInt('no_html', 0))
 		{
 			return $this->ajaxUploadTask();
@@ -800,6 +818,9 @@ class Attachments extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
 		if (!$pid)
@@ -893,6 +914,9 @@ class Attachments extends SiteController
 	 */
 	public function accessTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
 		if (!$pid)

@@ -28,6 +28,7 @@ $hideform = Request::getInt('hideform', 0);
 				<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 				<input type="hidden" name="path" id="path" value="<?php echo $this->escape($this->path); ?>" />
 				<input type="hidden" name="task" value="save" />
+				<?php echo Html::input('token'); ?>
 			</fieldset>
 		</form>
 		<?php } ?>
@@ -107,7 +108,7 @@ $hideform = Request::getInt('hideform', 0);
 				?>
 				<tr>
 					<td width="100%">
-						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>">
+						<span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>" data-token="<?php echo Session::getFormToken(); ?>">
 							<?php echo $this->escape($child->title); ?>
 						</span>
 						<?php echo ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>'; ?>
@@ -117,14 +118,14 @@ $hideform = Request::getInt('hideform', 0);
 						$cs = ($child->access == 1 ? 'registered' : 'public');
 						$st = ($child->access == 1 ? 0 : 1);
 						?>
-						<a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
+						<a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
 							<span><?php echo Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></span>
 						</a>
 					</td>
 					<td class="u">
 						<?php
 						if ($i > 0 || ($i+0 > 0)) {
-							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '&amp;' . Session::getFormToken() . '=1" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 						} else {
 							echo '&nbsp;';
 						}
@@ -133,14 +134,14 @@ $hideform = Request::getInt('hideform', 0);
 					<td class="d">
 						<?php
 						if ($i < $n-1 || $i+0 < $n-1) {
-							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+							echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$child->id.'&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '&amp;' . Session::getFormToken() . '=1" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 						} else {
 							echo '&nbsp;';
 						}
 						?>
 					</td>
 					<td class="t">
-						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>">
+						<a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
 							<span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
 						</a>
 					</td>

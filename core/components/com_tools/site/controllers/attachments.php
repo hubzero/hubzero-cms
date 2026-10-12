@@ -52,6 +52,9 @@ class Attachments extends SiteController
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
@@ -108,6 +111,9 @@ class Attachments extends SiteController
 	 */
 	public function renameTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$name = Request::getString('name', '');
@@ -139,6 +145,9 @@ class Attachments extends SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$pid = Request::getInt('pid', 0);
 		if (!$pid)
@@ -267,6 +276,9 @@ class Attachments extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
 		if (!$pid)

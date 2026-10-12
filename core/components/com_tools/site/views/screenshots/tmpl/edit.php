@@ -31,6 +31,7 @@ $title = ($this->shot && $this->shot->get('id')) ? $this->shot->get('title') : '
 			<input type="hidden" name="filename" id="filename" value="<?php echo $this->escape($this->file); ?>" />
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->vid; ?>" />
 			<input type="hidden" name="task" value="save" />
+			<?php echo Html::input('token'); ?>
 			<fieldset class="uploading">
 				<label class="ss_title" for="ss_title">
 					<?php echo Lang::txt('COM_TOOLS_SS_TITLE'); ?>:

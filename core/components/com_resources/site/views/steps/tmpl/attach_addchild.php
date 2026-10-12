@@ -6,7 +6,7 @@
  */
 
 $baseUrl = '/resources/draft?controller=attachments&no_html=1';
-$actionUrl = $baseUrl . '&task=create';
+$actionUrl = $baseUrl . '&task=create&' . Session::getFormToken() . '=1';
 ?>
 <div class="col span">
 	<input id="resource-finder" type="text" autocomplete="off" placeholder="Search Resources by ID or Title." data-script="<?php echo '/api/v1.1' . Route::url('index.php?option=com_resources&task=autocomplete');?>" />

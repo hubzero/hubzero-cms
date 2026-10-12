@@ -56,6 +56,9 @@ class Screenshots extends SiteController
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
 		$version = Request::getString('version', 'dev');
@@ -208,6 +211,9 @@ class Screenshots extends SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming parent ID
 		$pid     = Request::getInt('pid', 0);
 		$version = Request::getString('version', 'dev');
@@ -262,6 +268,9 @@ class Screenshots extends SiteController
 	 */
 	public function deleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Incoming parent ID
 		$pid = Request::getInt('pid', 0);
 		$version = Request::getString('version', 'dev');
@@ -382,6 +391,9 @@ class Screenshots extends SiteController
 			// reload screen
 			return $this->displayTask($pid, $version);
 		}
+
+		// Check for request forgeries
+		Request::checkToken();
 
 		// Get resource information
 		$resource = Entry::oneOrFail($pid);
@@ -611,6 +623,9 @@ class Screenshots extends SiteController
 	 */
 	public function copyTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$version = Request::getString('version', 'dev');
 		$rid     = Request::getInt('rid', 0);
 		$from    = $version == 'dev' ? 'current' : 'dev';
@@ -649,6 +664,9 @@ class Screenshots extends SiteController
 	 */
 	public function moveTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		$from    = Request::getInt('from', 0);
 		$to      = Request::getInt('to', 0);
 		$rid     = Request::getInt('rid', 0);
