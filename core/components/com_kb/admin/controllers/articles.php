@@ -291,6 +291,9 @@ class Articles extends AdminController
 	 */
 	public function stateTask()
 	{
+		// The list's state links carry the token in the query string
+		Request::checkToken(['get', 'post']);
+
 		if (!User::authorise('core.edit.state', $this->_option))
 		{
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
@@ -368,6 +371,8 @@ class Articles extends AdminController
 	 */
 	public function resethitsTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.edit.state', $this->_option))
 		{
@@ -405,6 +410,8 @@ class Articles extends AdminController
 	 */
 	public function resetvotesTask()
 	{
+		Request::checkToken(['get', 'post']);
+
 		if (!User::authorise('core.edit', $this->_option)
 		 && !User::authorise('core.edit.state', $this->_option))
 		{
