@@ -70,16 +70,13 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCheckAnswer($code = null)
 	{
-		$key    = Request::getInt('captcha_krhash', 0);
+		// The key is a 5-character hex string: reading it as an int only
+		// matched when it happened to be all digits (about 1 in 10)
+		$key    = Request::getString('captcha_krhash', '');
 		$answer = Request::getInt('captcha_answer', 0);
 		$answer = $this->_generateHash($answer, date('j'));
 
-		if ($answer == $key)
-		{
-			return true;
-		}
-
-		return false;
+		return ($key !== '' && hash_equals($answer, $key));
 	}
 
 	/**

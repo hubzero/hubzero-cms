@@ -600,7 +600,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 			$captchas = Event::trigger('captcha.onDisplay');
 
 			if (count($captchas) > 0) { ?>
-				<fieldset>
+				<fieldset<?php echo !empty($this->xregistration->_invalid['captcha']) ? ' class="fieldWithErrors"' : ''; ?>>
 					<legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_HUMAN_CHECK'); ?></legend>
 					<?php echo (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error" role="alert">' . $this->xregistration->_invalid['captcha'] . '</span>' : ''; ?>
 			<?php } ?>

@@ -768,9 +768,15 @@ class Registration
 				{
 					if (!$validcaptcha)
 					{
-						$this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
+						$this->_invalid['captcha'] = 'Please answer the Human Check question correctly.';
 					}
 				}
+			}
+
+			// Name it in the summary of fields to fix, like the other fields
+			if (!empty($this->_invalid['captcha']))
+			{
+				$this->_missing['captcha'] = 'Human Check';
 			}
 		}
 
