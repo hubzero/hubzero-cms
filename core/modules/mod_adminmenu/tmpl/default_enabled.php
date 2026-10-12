@@ -386,7 +386,7 @@ if ($params->get('showhelp', 0) == 1)
 	}
 	$lang->setDebug($debug);*/
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_HELP_DOCUMENTATION'), 'http://hubzero.org/documentation', 'class:help', false, '_blank')
+		new Node(Lang::txt('MOD_MENU_HELP_DOCUMENTATION'), 'https://help.hubzero.org/documentation', 'class:help', false, '_blank')
 	);
 	$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_HELP_HUBZERO'), 'http://hubzero.org/support', 'class:help-docs', false, '_blank')
@@ -402,7 +402,7 @@ if ($params->get('showhelp', 0) == 1)
 		new Node(Lang::txt('MOD_MENU_HELP_TRANSLATIONS'), 'http://hubzero.org/translations', 'class:help-trans', false, '_blank')
 	);
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_HELP_RESOURCES'), 'http://hubzero.org/documentation', 'class:help-jrd', false, '_blank')
+		new Node(Lang::txt('MOD_MENU_HELP_RESOURCES'), 'https://help.hubzero.org/documentation', 'class:help-jrd', false, '_blank')
 	);
 	$menu->addChild(
 		new Node(Lang::txt('MOD_MENU_HELP_COMMUNITY'), 'http://hubzero.org/community', 'class:help-community', false, '_blank')

@@ -71,7 +71,7 @@ class Helpsites extends Element
 		if (!$xml)
 		{
 			$option['text']  = 'English (US) hubzero.org';
-			$option['value'] = 'http://hubzero.org/documentation';
+			$option['value'] = 'https://help.hubzero.org/documentation';
 			$list[] = $option;
 		}
 		else
