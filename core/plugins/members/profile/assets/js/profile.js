@@ -846,3 +846,18 @@ HUB.Members.Profile = {
 jQuery(document).ready(function($){
 	HUB.Members.Profile.initialize();
 });
+
+// "No (none)" and "Do not wish to reveal" can't be combined with other
+// answers in a multi-choice profile field: ticking one clears the rest,
+// and ticking anything else clears them
+jQuery(document).on('change', 'input[type=checkbox][name$="[]"]', function() {
+	if (!this.checked) {
+		return;
+	}
+	var exclusive = ['no', 'refused'],
+		mine = (exclusive.indexOf(this.value) >= 0),
+		self = this;
+	jQuery(this.form).find('input[type=checkbox]').filter(function() {
+		return this.name === self.name && this !== self && (mine || exclusive.indexOf(this.value) >= 0);
+	}).prop('checked', false);
+});

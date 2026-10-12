@@ -281,6 +281,24 @@ class Member extends User implements \Hubzero\Search\Searchable
 		$profile = (array)$profile;
 		$access  = (array)$access;
 
+		// "No (none)" and "Do not wish to reveal" can't stand alongside other
+		// answers to a multi-choice field; keep the one that says the least
+		foreach ($profile as $key => $value)
+		{
+			if (!is_array($value) || count($value) < 2)
+			{
+				continue;
+			}
+			foreach (array('refused', 'no') as $exclusive)
+			{
+				if (in_array($exclusive, $value, true))
+				{
+					$profile[$key] = array($exclusive);
+					break;
+				}
+			}
+		}
+
 		// Fire the onUserBeforeSaveProfile event
 		$user = $this->toArray();
 		$result = Event::trigger('user.onUserBeforeSaveProfile', array($user, $profile, $access));
