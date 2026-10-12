@@ -49,6 +49,13 @@ class Environment
     private $previousApp;
 
     /**
+     * Whether create() had to make PATH_APP itself
+     *
+     * @var  bool
+     */
+    private $madePathApp = false;
+
+    /**
      * Build the tree and swap in a container that points at it
      *
      * @param   bool  $groupTemplate  Create the supergroup's template directory
@@ -64,6 +71,14 @@ class Environment
 
         mkdir($env->siteTemplate, 0700, true);
         mkdir($env->groupBase . ($groupTemplate ? '/template' : ''), 0700, true);
+
+        // withSuperGroup() hands out a base that climbs out of PATH_APP with
+        // "..", which is_dir() can only follow if PATH_APP itself exists. It
+        // does on a hub; in a bare checkout (CI) app/ is untracked.
+        if (!is_dir(PATH_APP)) {
+            mkdir(PATH_APP, 0700, true);
+            $env->madePathApp = true;
+        }
 
         $site = $env->siteTemplate;
         $app  = new Container();
@@ -197,6 +212,10 @@ class Environment
         Facade::setApplication($this->previousApp);
 
         self::rmtree($this->root);
+
+        if ($this->madePathApp) {
+            @rmdir(PATH_APP);
+        }
     }
 
     /**
