@@ -75,7 +75,13 @@ class RateLimitService extends Middleware
 		// If over either the short or long limit, reject with HTTP 429
 		if ($rateLimitData->exceeded_long || $rateLimitData->exceeded_short)
 		{
-			throw new \Exception('You have exceeded your rate limit allowance. Please see rate limit headers for details.', 429);
+			// Say who, since the generic handler's log line otherwise doesn't
+			throw new \Exception(sprintf(
+				'You have exceeded your rate limit allowance. Please see rate limit headers for details. (application %d, user %d, ip %s)',
+				(int) $token['application_id'],
+				(int) $token['uidNumber'],
+				$request->ip()
+			), 429);
 		}
 
 		// Otherwise annotate the response with rate limit headers
