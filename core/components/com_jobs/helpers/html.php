@@ -64,7 +64,16 @@ class Html
 					$no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL')   : '';
 					$no .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_WITHDRAW') : ''; ?>
 				</p>
-				<p><span class="yes"><a href="<?php echo $actionurl ?>"><?php echo $yes ?></a></span> <span class="no"><a href="<?php echo $returnurl ?>"><?php echo $no ?></a></span></p>
+				<p>
+					<span class="yes">
+						<?php // The actions check a form token, so confirm with a POST rather than a link ?>
+						<form method="post" action="<?php echo htmlspecialchars($actionurl); ?>" class="inline-form">
+							<?php echo Html::input('token'); ?>
+							<button type="submit" class="btn btn-danger"><?php echo $yes ?></button>
+						</form>
+					</span>
+					<span class="no"><a href="<?php echo htmlspecialchars($returnurl); ?>"><?php echo $no ?></a></span>
+				</p>
 			</div>
 		</div>
 		<?php

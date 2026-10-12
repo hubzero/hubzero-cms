@@ -958,8 +958,8 @@ class Items extends AdminController
 	 */
 	public function setDefaultTask()
 	{
-		// Check for request forgeries
-		Request::checkToken();
+		// Check for request forgeries (the list's unset-default link carries the token in the URL)
+		Request::checkToken(['get', 'post']);
 
 		if (!User::authorise('core.edit.state', $this->_option))
 		{

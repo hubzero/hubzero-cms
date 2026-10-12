@@ -119,10 +119,17 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 	 */
 	private function _subscribe()
 	{
-		// Require POST
+		// Email unsubscribe links and the return from logging in arrive by GET:
+		// show the watch status, whose subscribe/unsubscribe buttons POST with
+		// a token, rather than refusing them
 		if (Request::method() !== 'POST')
 		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
+			if (User::isGuest())
+			{
+				$return = Route::url($this->publication->link('version') . '&active=watch', false);
+				App::redirect(Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)));
+			}
+			return $this->_status();
 		}
 
 		Request::checkToken();

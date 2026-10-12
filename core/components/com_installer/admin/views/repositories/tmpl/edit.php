@@ -69,7 +69,9 @@ $this->js();
 			<div class="col span5">
 				<?php if (!$this->isNew): ?>
 					<p class="warning">
-						<a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&alias=' . $this->alias . '&task=remove'); ?>"><?php echo Lang::txt('Remove Repository'); ?></a>
+						<?php // remove takes the repositories[] list by POST with the form's token ?>
+						<input type="hidden" name="repositories[]" value="<?php echo $this->escape($this->alias); ?>" />
+						<button type="button" class="button" onclick="if (confirm(<?php echo $this->escape(json_encode(Lang::txt('Remove Repository') . '?')); ?>)) { Joomla.submitform('remove', document.getElementById('item-form')); }"><?php echo Lang::txt('Remove Repository'); ?></button>
 					</p>
 				<?php endif; ?>
 			</div>

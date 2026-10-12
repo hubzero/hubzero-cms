@@ -51,7 +51,14 @@
 		padding-right: 1em;
 		margin:0;
 	}
-	.mod_mygroups .compactlist li.group .actions a {
+	.mod_mygroups .compactlist li.group .actions .inline-form {
+		display: inline;
+	}
+	.mod_mygroups .compactlist li.group .actions a,
+	.mod_mygroups .compactlist li.group .actions button {
+		font-family: inherit;
+		line-height: inherit;
+		cursor: pointer;
 		font-size: 90%;
 		border: none;
 		padding: 0.2em 0.5em;
@@ -64,13 +71,15 @@
 		border-radius: 0.5em;
 		margin: 0 1em 0 0;
 	}
-	.mod_mygroups .compactlist li.group .actions a:hover {
+	.mod_mygroups .compactlist li.group .actions a:hover,
+	.mod_mygroups .compactlist li.group .actions button:hover {
 		border: none;
 	}
 	.mod_mygroups .compactlist li.group .actions a.action-accept:hover {
 		background-color: #66AA00;
 	}
-	.mod_mygroups .compactlist li.group .actions a.action-cancel:hover {
+	.mod_mygroups .compactlist li.group .actions a.action-cancel:hover,
+	.mod_mygroups .compactlist li.group .actions button.action-cancel:hover {
 		background-color: #c30;
 	}
 /* Misc. */

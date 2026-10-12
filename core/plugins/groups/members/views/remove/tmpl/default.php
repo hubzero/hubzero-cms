@@ -42,6 +42,7 @@ defined('_HZEXEC_') or die();
 	<input type="hidden" name="active" value="members" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="action" value="confirmremove" />
+	<?php echo Html::input('token'); ?>
 
 	<p class="submit">
 		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />

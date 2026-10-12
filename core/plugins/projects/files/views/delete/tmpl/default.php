@@ -26,6 +26,7 @@ if (!$this->getError()) {
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
 		<input type="hidden" name="action" value="removeit" />
+		<?php echo Html::input('token'); ?>
 		<input type="hidden" name="task" value="view" />
 		<input type="hidden" name="active" value="files" />
 		<input type="hidden" name="repo" value="<?php echo $this->escape($this->repo->get('name')); ?>" />

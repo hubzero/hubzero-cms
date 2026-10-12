@@ -1739,8 +1739,9 @@ class Events extends SiteController
 	 */
 	public function deleteTask()
 	{
-		// Check for request forgeries
-		Request::checkToken('get');
+		// Check for request forgeries (the details page posts the token, the
+		// modal's link carries it in the URL)
+		Request::checkToken(['get', 'post']);
 
 		// Check if they are logged in
 		if (User::isGuest())

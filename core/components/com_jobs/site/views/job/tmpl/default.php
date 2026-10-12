@@ -60,7 +60,7 @@ defined('_HZEXEC_') or die();
 			<span class="apply"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_REAPPLY') ?></button></a></span>
 		<?php } ?>
 		<?php if ($job->applied) { ?>
-			<span class="applied"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code) ?>" id="showconfirm"><button class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button></a>
+			<span class="applied"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code) ?>" id="showconfirm"><button class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button></a>
 			</span>
 		<?php } ?>
 		<?php if ($owner && ($job->status == 1 || $job->status == 3)) { ?>

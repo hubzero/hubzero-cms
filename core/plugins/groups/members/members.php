@@ -1205,14 +1205,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function deny()
 	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('Method Not Allowed'));
-		}
-
-		Request::checkToken();
-
+		// Only shows the form (the deny responses page and its redirect come
+		// back here by GET); confirmdeny() makes the change and checks the token
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
@@ -1395,6 +1389,14 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 	 */
 	private function confirmdeny()
 	{
+		// Require POST, with the deny form's token
+		if (Request::method() !== 'POST')
+		{
+			App::abort(405, Lang::txt('Method Not Allowed'));
+		}
+
+		Request::checkToken();
+
 		if ($this->authorized != 'manager' && $this->authorized != 'admin')
 		{
 			return false;
