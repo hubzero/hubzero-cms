@@ -89,10 +89,16 @@ if (substr($this->profile->get('email',''), -8) == '@invalid')
 						<?php
 							//mailPreferenceOption
 							$options = array(
-								'-1' => Lang::txt('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'),
 								'1'  => Lang::txt('JYES'),
 								'0'  => Lang::txt('JNO')
 							);
+							// -1 means "not chosen yet": the member is asked the next time
+							// they sign in. Only offer it for an account already in that
+							// state, rather than as a choice for new ones.
+							if ($this->profile->get('sendEmail') == -1 && $this->profile->get('id'))
+							{
+								$options = array('-1' => Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE_NOT_SET')) + $options;
+							}
 						?>
 						<label for="field-sendEmail"><?php echo Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE'); ?></label>
 						<select name="fields[sendEmail]" id="field-sendEmail">
