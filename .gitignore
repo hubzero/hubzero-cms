@@ -35,3 +35,7 @@ __pycache__/
 /docs/*.txt
 /docs/*.conf
 /docs/plan/review-findings.md
+
+# Editor swap files
+.*.sw[a-p]
+*~
