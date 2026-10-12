@@ -246,7 +246,10 @@ class Attachment extends Relational
 	 */
 	public function link()
 	{
-		return with(new \Hubzero\Content\Moderator($this->path(), 'public'))->getUrl();
+		// Tie the token to the viewer's session. A 'public' token is the same
+		// for everyone, so a copied link to a file on a private post opened it
+		// for anyone; the page that shows the link has already checked access.
+		return with(new \Hubzero\Content\Moderator($this->path()))->getUrl();
 	}
 
 	/**
