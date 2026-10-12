@@ -148,6 +148,9 @@ class Restrictions extends AdminController
 	 */
 	public function addusersTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$sId = Request::getInt('sId', '');
 		$users = Request::getString('users', '');
 

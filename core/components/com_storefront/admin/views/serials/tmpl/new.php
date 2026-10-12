@@ -72,7 +72,7 @@ jQuery(document).ready(function($){
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="no_html" value="<?php echo ($tmpl == 'component') ? '1' : '0'; ?>">
-			<input type="hidden" name="task" value="addusers" />
+			<input type="hidden" name="task" value="addserials" />
 
 			<table class="admintable">
 				<tbody>

@@ -23,7 +23,17 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 
 		if (confirm($(this).attr('data-confirm'))) {
-			return Hubzero.submitform(task, frm);
+			// The reset tasks read the article ID from "id" (the form only
+			// carries "fields[id]"); the form already includes the CSRF token.
+			var frm = document.getElementById('item-form');
+
+			if (frm) {
+				$('<input type="hidden" name="id" />')
+					.val($('#field-id').val())
+					.appendTo(frm);
+
+				Hubzero.submitform(this.id == 'reset_hits' ? 'resethits' : 'resetvotes', frm);
+			}
 		}
 
 		return false;

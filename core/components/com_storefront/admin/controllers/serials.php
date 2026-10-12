@@ -152,6 +152,9 @@ class Serials extends AdminController
 	 */
 	public function addserialsTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		$sId = Request::getInt('sId', '');
 		$serials = Request::getString('serials', '');
 

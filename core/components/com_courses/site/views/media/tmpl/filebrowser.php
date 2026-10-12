@@ -18,7 +18,7 @@ $this->css('media.css')
 	<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="adminForm" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<div id="themanager" class="manager">
-				<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . 'tmpl=component&task=listfiles&listdir=' . $this->listdir); ?>" name="imgManager" id="imgManager" width="99%" height="180"></iframe>
+				<iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=listfiles&listdir=' . $this->listdir); ?>" name="imgManager" id="imgManager" width="99%" height="180"></iframe>
 			</div>
 		</fieldset>
 		<fieldset>

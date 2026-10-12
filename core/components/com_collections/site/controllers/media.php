@@ -700,6 +700,9 @@ class Media extends SiteController
 	 */
 	public function ajaxDeleteTask()
 	{
+		// Check for request forgeries
+		Request::checkToken(['get', 'post']);
+
 		// Must be logged in
 		if (User::isGuest())
 		{
