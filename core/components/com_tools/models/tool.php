@@ -1473,6 +1473,18 @@ class Tool
 			$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
 
+		// A tool's resource page is found by alias, so registering a tool with
+		// an existing resource's alias would take that page over
+		if (!$id && empty($err['toolname']))
+		{
+			$db->setQuery("SELECT id FROM `#__resources` WHERE LOWER(alias)=LOWER(" . $db->quote($tool['toolname']) . ") LIMIT 1");
+
+			if ($db->loadResult())
+			{
+				$err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_RESOURCE_EXISTS');
+			}
+		}
+
 		$query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.title)=LOWER(" . $db->Quote($tool['title']) . ") ";
 
 		if ($id)
