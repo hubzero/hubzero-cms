@@ -1258,23 +1258,68 @@ class Item extends Nested
 			return false;
 		}
 
-		// Update ordering values
+		// Menus are listed and built in tree (lft) order, so writing the
+		// ordering column alone changed nothing. Within each parent, hand the
+		// submitted siblings' current lft slots out in the order asked for,
+		// then rebuild the tree (which orders children by lft).
+		$groups = array();
 		foreach ($pks as $i => $pk)
 		{
-			$model = self::oneOrFail((int) $pk);
-
-			if ($model->get('ordering') != $order[$i])
+			// Disabled order inputs aren't posted, so the arrays can differ
+			if (!isset($order[$i]))
 			{
-				$model->set('ordering', $order[$i]);
+				continue;
+			}
 
-				if (!$model->save())
+			$model = self::oneOrNew((int) $pk);
+			if (!$model->get('id'))
+			{
+				continue;
+			}
+
+			$groups[(int) $model->get('parent_id')][] = array(
+				'id'    => (int) $model->get('id'),
+				'lft'   => (int) $model->get('lft'),
+				'order' => (int) $order[$i]
+			);
+		}
+
+		$blank = self::blank();
+		$db    = \App::get('db');
+
+		foreach ($groups as $items)
+		{
+			$slots = array();
+			foreach ($items as $item)
+			{
+				$slots[] = $item['lft'];
+			}
+			sort($slots);
+
+			// Stable: equal numbers keep their current order
+			usort($items, function($a, $b)
+			{
+				return ($a['order'] == $b['order']) ? ($a['lft'] - $b['lft']) : ($a['order'] - $b['order']);
+			});
+
+			foreach ($items as $k => $item)
+			{
+				$db->setQuery(
+					'UPDATE ' . $db->quoteName($blank->getTableName())
+					. ' SET lft = ' . (int) $slots[$k] . ', ordering = ' . (int) $item['order']
+					. ' WHERE id = ' . (int) $item['id']
+				);
+				if (!$db->query())
 				{
 					return false;
 				}
 			}
 		}
 
-		return true;
+		// Recompute lft/rgt/level/path for the whole tree from the root
+		$root = self::blank()->whereEquals('level', 0)->order('lft', 'asc')->row();
+
+		return ($blank->rebuild($root->get('id') ? $root->get('id') : 1) !== false);
 	}
 
 	/**

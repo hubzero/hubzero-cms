@@ -866,7 +866,12 @@ class Items extends AdminController
 
 		$move = ($this->getTask() == 'orderup') ? -1 : +1;
 
-		if (!$model->move($move))
+		// Every menu's top-level items share the root as parent, so limit the
+		// neighbour to this menu (and client) or it can be another menu's item
+		$db = App::get('db');
+		$where = 'menutype = ' . $db->quote($model->get('menutype')) . ' AND client_id = ' . (int) $model->get('client_id');
+
+		if (!$model->move($move, $where))
 		{
 			Notify::error($model->getError());
 		}
