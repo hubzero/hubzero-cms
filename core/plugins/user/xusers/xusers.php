@@ -84,7 +84,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 				throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
 			}
 
-			throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
+			// The plugin order is fine, so an earlier user plugin refused the
+			// login (no linked account, blocked, no backend access) and has
+			// already queued its message. Fail the login rather than 500.
+			Log::auth('[' . (isset($user['username']) ? $user['username'] : '') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login refused by an earlier user plugin');
+
+			return false;
 		}
 
 		// log login to auth log
