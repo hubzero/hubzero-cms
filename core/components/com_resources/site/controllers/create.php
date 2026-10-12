@@ -985,7 +985,8 @@ class Create extends SiteController
 			return;
 		}
 
-		$prev = $row->get('group_owner');
+		$prev       = $row->get('group_owner');
+		$prevAccess = $row->get('access');
 
 		// Set the group and access level
 		$row->set('group_owner', Request::getString('group_owner', ''));
@@ -1008,6 +1009,17 @@ class Create extends SiteController
 			$this->view->set('step', $this->step);
 			$this->view->setLayout('authors');
 			return $this->step_authors();
+		}
+
+		// Supporting documents follow the resource's access and group
+		if ($prev != $row->get('group_owner') || $prevAccess != $row->get('access'))
+		{
+			foreach ($row->children()->whereEquals('standalone', 0)->rows() as $child)
+			{
+				$child->set('access', $row->get('access'));
+				$child->set('group_owner', $row->get('group_owner'));
+				$child->save();
+			}
 		}
 
 		// If group ownership has changed

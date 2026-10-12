@@ -55,14 +55,24 @@ $this->css('create.css')
 						<select name="group_owner" id="group_owner">
 							<option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
 							<?php
+							$owner  = $this->row->group_owner->get('cn');
+							$listed = false;
 							if ($this->groups && count($this->groups) > 0)
 							{
 								foreach ($this->groups as $group)
 								{
+									$listed = $listed || ($owner == $group->cn);
 								?>
-								<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($this->row->group_owner->get('cn') == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+								<option value="<?php echo $this->escape($group->cn); ?>"<?php if ($owner == $group->cn) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
 								<?php
 								}
+							}
+							// Keep a group the editor isn't a member of, or it would be dropped on save
+							if ($owner && !$listed)
+							{
+							?>
+								<option value="<?php echo $this->escape($owner); ?>" selected="selected"><?php echo $this->escape($this->row->group_owner->get('description', $owner)); ?></option>
+							<?php
 							}
 							?>
 						</select>

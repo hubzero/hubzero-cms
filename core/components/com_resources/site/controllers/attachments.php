@@ -108,6 +108,9 @@ class Attachments extends SiteController
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
+		// Attachments take the parent's access and group rather than being
+		// public until someone edits them a second time
+		$parentRow = Entry::oneOrNew($pid);
 		if ($resource->isNew())
 		{
 			// Create new record
@@ -119,7 +122,8 @@ class Attachments extends SiteController
 				'published'    => 1,
 				'publish_up'   => Date::toSql(),
 				'standalone'   => 0,
-				'access'       => 0,
+				'access'       => (int) $parentRow->get('access', 0),
+				'group_owner'  => $parentRow->get('group_owner', ''),
 				'path'         => 'http://', // make sure no path is specified just yet
 				'type'         =>  11
 			));
@@ -213,6 +217,9 @@ class Attachments extends SiteController
 			App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH'));
 		}
 
+		// Attachments take the parent's access and group rather than being
+		// public until someone edits them a second time
+		$parentRow = Entry::oneOrNew($pid);
 		if ($resource->isNew())
 		{
 			// Create new record
@@ -224,7 +231,8 @@ class Attachments extends SiteController
 				'published'    => 1,
 				'publish_up'   => Date::toSql(),
 				'standalone'   => 0,
-				'access'       => 0,
+				'access'       => (int) $parentRow->get('access', 0),
+				'group_owner'  => $parentRow->get('group_owner', ''),
 				'path'         => Request::getString('url', 'http://'),
 				'type'         => 11
 			));
@@ -378,6 +386,9 @@ class Attachments extends SiteController
 			$filename .= rand(10, 99);
 		}*/
 
+		// Attachments take the parent's access and group rather than being
+		// public until someone edits them a second time
+		$parentRow = Entry::oneOrNew($pid);
 		// Instantiate a new resource object
 		$resource = Entry::blank()->set(array(
 			'title'        => $filename . '.' . $ext,
@@ -387,7 +398,8 @@ class Attachments extends SiteController
 			'published'    => 1,
 			'publish_up'   => Date::toSql(),
 			'standalone'   => 0,
-			'access'       => 0,
+			'access'       => (int) $parentRow->get('access', 0),
+			'group_owner'  => $parentRow->get('group_owner', ''),
 			'path'         => '', // make sure no path is specified just yet
 			'type'         => $this->_getChildType($filename . '.' . $ext)
 		));
@@ -675,6 +687,9 @@ class Attachments extends SiteController
 			$file['name'] .= '.' . $ext;
 		}
 
+		// Attachments take the parent's access and group rather than being
+		// public until someone edits them a second time
+		$parentRow = Entry::oneOrNew($pid);
 		// Instantiate a new resource object
 		$resource = Entry::blank()->set(array(
 			'title'        => $file['name'],
@@ -684,7 +699,8 @@ class Attachments extends SiteController
 			'published'    => 1,
 			'publish_up'   => Date::toSql(),
 			'standalone'   => 0,
-			'access'       => 0,
+			'access'       => (int) $parentRow->get('access', 0),
+			'group_owner'  => $parentRow->get('group_owner', ''),
 			'path'         => '', // make sure no path is specified just yet
 			'type'         => $this->_getChildType($file['name'])
 		));
