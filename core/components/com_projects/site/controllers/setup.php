@@ -981,7 +981,8 @@ class Setup extends Base
 							1,
 							1,
 							'',
-							$split_group_roles = 1
+							// Splitting by group role overrides the role asked for
+							$split_group_roles = ($syncRole ? 0 : 1)
 						);
 					}
 				}
