@@ -316,6 +316,30 @@ class Downloads extends AdminController
 				$this->_option . '.' . $this->_controller . '.report-to',
 				'report-to',
 				date('m/d/Y')
+			),
+			// The same narrowing the list shows, so the CSV matches the screen
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'uidNumber' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.uidNumber',
+				'uidNumber',
+				0,
+				'int'
+			),
+			'pId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.pId',
+				'pId',
+				0,
+				'int'
+			),
+			'sId' => Request::getState(
+				$this->_option . '.' . $this->_controller . '.sId',
+				'sId',
+				0,
+				'int'
 			)
 		);
 
@@ -427,24 +451,29 @@ class Downloads extends AdminController
 		$filters = array(
 			// Get sorting variables
 			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
+				$this->_option . '.' . $this->_controller . 'sku.sort',
 				'filter_order',
 				'dDownloaded'
 			),
 			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
+				$this->_option . '.' . $this->_controller . 'sku.sortdir',
 				'filter_order_Dir',
 				'ASC'
 			),
 			'report-from' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-from',
+				$this->_option . '.' . $this->_controller . 'sku.report-from',
 				'report-from',
 				date('m/d/Y', strtotime('-1 month'))
 			),
 			'report-to' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.report-to',
+				$this->_option . '.' . $this->_controller . 'sku.report-to',
 				'report-to',
 				date('m/d/Y')
+			),
+			'search' => Request::getState(
+				$this->_option . '.' . $this->_controller . 'sku.search',
+				'search',
+				''
 			)
 		);
 		$rowsRaw = CartDownload::getDownloadsSku('array', $filters);

@@ -7,10 +7,16 @@
 Hubzero.submitbutton = function(task) {
 	$(document).trigger('editorSave');
 
-	var frm = document.getElementById('item-form');
+	var frm = document.getElementById('item-form') || document.getElementById('adminForm');
 
 	if (frm) {
 		Hubzero.submitform(task, frm);
+
+		// A CSV download leaves the page where it is with the task still set,
+		// so every later filter or page change would post it and download again
+		if (frm.task && /^download/i.test(task)) {
+			frm.task.value = '';
+		}
 	}
 }
 
