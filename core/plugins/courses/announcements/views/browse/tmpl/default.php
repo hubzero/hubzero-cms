@@ -28,7 +28,16 @@ $base = $this->offering->link() . '&active=announcements';
 		<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS'); ?>
 	</h3>
 
+	<?php
+	// The search and the pagination are separate forms rather than one form
+	// around the list: the announcements carry POST delete forms, and forms
+	// can't nest.
+	?>
 	<form action="<?php echo Route::url($base); ?>" method="post">
+		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
+		<input type="hidden" name="active" value="announcements" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<div class="container data-entry">
 			<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH'); ?>" />
 			<fieldset class="entry-search">
@@ -37,6 +46,7 @@ $base = $this->offering->link() . '&active=announcements';
 				<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
 			</fieldset>
 		</div><!-- / .container -->
+	</form>
 
 		<?php if ($manager) { ?>
 			<p class="btn-container">
@@ -88,25 +98,26 @@ $base = $this->offering->link() . '&active=announcements';
 					<p><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_NO_RESULTS'); ?></p>
 			<?php } ?>
 
-			<?php
-			$pageNav = $this->pagination(
-				$total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-			$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-			$pageNav->setAdditionalUrlParam('active', 'announcements');
-			echo $pageNav->render();
-			?>
+			<form action="<?php echo Route::url($base); ?>" method="post">
+				<input type="hidden" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
+				<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+				<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
+				<input type="hidden" name="active" value="announcements" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<?php
+				$pageNav = $this->pagination(
+					$total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+				$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+				$pageNav->setAdditionalUrlParam('active', 'announcements');
+				echo $pageNav->render();
+				?>
+			</form>
 			<div class="clearfix"></div>
 		</div><!-- / .container -->
 
 		<div class="clear"></div>
-
-		<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-		<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
-		<input type="hidden" name="active" value="announcements" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	</form>
 </div><!--/ #course_members -->

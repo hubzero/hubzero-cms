@@ -25,16 +25,21 @@ $this->css()
 </header>
 
 <section class="main section">
-	<form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+	<?php
+	// The search and pagination are separate GET forms rather than one form
+	// around the page: the tags carry POST delete forms, and forms can't nest.
+	?>
+	<div class="section-inner hz-layout-with-aside">
 		<div class="subject">
 
-			<div class="container data-entry">
+			<form class="container data-entry" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<label for="entry-search-text"><?php echo Lang::txt('COM_TAGS_SEARCH_TAGS'); ?></label>
 					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
 				</fieldset>
-			</div><!-- / .container -->
+				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+			</form><!-- / .container -->
 
 			<div class="container">
 				<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
@@ -122,7 +127,7 @@ $this->css()
 										<?php if ($this->config->get('access-delete-tag')) { ?>
 											<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" method="post" class="inline-form">
 												<?php echo Html::input('token'); ?>
-												<button type="submit" class="icon-delete delete delete-tag"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+												<button type="submit" class="icon-delete delete delete-tag" data-confirm="<?php echo Lang::txt('COM_TAGS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
 											</form>
 										<?php } ?>
 									</td>
@@ -151,20 +156,24 @@ $this->css()
 					?>
 					</tbody>
 				</table>
-				<?php
-					// Initiate paging
-					$pageNav = $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-					$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-					echo $pageNav->render();
-				?>
+				<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+					<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+					<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+					<?php
+						// Initiate paging
+						$pageNav = $this->pagination(
+							$this->total,
+							$this->filters['start'],
+							$this->filters['limit']
+						);
+						$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+						$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+						$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
+						echo $pageNav->render();
+					?>
+				</form>
 				<div class="clearfix"></div>
-				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
 		<aside class="aside">
@@ -178,5 +187,5 @@ $this->css()
 				</p>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->
-	</form>
+	</div>
 </section><!-- / .main section -->

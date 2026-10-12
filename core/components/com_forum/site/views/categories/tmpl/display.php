@@ -58,6 +58,11 @@ $this->category->set('section_alias', $this->filters['section']);
 						<input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
+			</form>
+			<?php
+			// The search form ends here and the pagination has its own: the
+			// threads carry POST delete forms, and forms can't nest.
+			?>
 
 				<div class="container">
 					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
@@ -211,16 +216,18 @@ $this->category->set('section_alias', $this->filters['section']);
 						</tbody>
 					</table>
 
-					<?php
-					$pageNav = $this->threads->pagination;
-					$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-					$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
-					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-					echo $pageNav;
-					?>
+					<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
+						<input type="hidden" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
+						<?php
+						$pageNav = $this->threads->pagination;
+						$pageNav->setAdditionalUrlParam('section', $this->filters['section']);
+						$pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+						$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+						echo $pageNav;
+						?>
+					</form>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
-			</form>
 		</div><!-- /.subject -->
 		<aside class="aside">
 			<div class="container">
