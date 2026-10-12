@@ -49,6 +49,24 @@ class Credentials extends SiteController
 	}
 
 	/**
+	 * Answer a reset request that can't be honoured (unknown, blocked or
+	 * super-user account, or too many requests) exactly as a successful one,
+	 * so the form can't be used to find out which accounts exist
+	 *
+	 * @return  void
+	 */
+	protected function pretendSent()
+	{
+		User::setState('com_members.reset.user', null);
+
+		$this->finish(
+			Route::url('index.php?option=' . $this->_option . '&task=verify', false),
+			Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
+			'passed'
+		);
+	}
+
+	/**
 	 * Default task
 	 *
 	 * @return  void
@@ -112,10 +130,12 @@ class Credentials extends SiteController
 		// Make sure we have at least one
 		if ($users->count() < 1)
 		{
+			// Answer exactly as if mail had gone out, so the form can't be
+			// used to find out which addresses have accounts
 			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=remind', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-				'warning'
+				Route::url('index.php?option=com_login', false),
+				Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_SENT'),
+				'passed'
 			);
 			return;
 		}
@@ -232,21 +252,11 @@ class Credentials extends SiteController
 		// Make sure we have at least one and not more than one
 		if ($user->count() < 1)
 		{
-			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-				'warning'
-			);
-			return;
+			return $this->pretendSent();
 		}
 		else if ($user->count() > 1)
 		{
-			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_MULTIPLE_RESULTS'),
-				'warning'
-			);
-			return;
+			return $this->pretendSent();
 		}
 
 		// Get the user object
@@ -255,34 +265,19 @@ class Credentials extends SiteController
 		// Make sure the user isn't blocked
 		if ($user->get('block'))
 		{
-			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
-				'warning'
-			);
-			return;
+			return $this->pretendSent();
 		}
 
 		// Make sure the user isn't a super admin
 		if ($user->authorise('core.admin'))
 		{
-			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_IS_SUPER'),
-				'warning'
-			);
-			return;
+			return $this->pretendSent();
 		}
 
 		// Make sure the user has not exceeded the reset limit
 		if ($this->hasExceededResetLimit($user))
 		{
-			$this->finish(
-				Route::url('index.php?option=' . $this->_option . '&task=reset', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_EXCEEDED_LIMIT'),
-				'warning'
-			);
-			return;
+			return $this->pretendSent();
 		}
 
 		// Set the confirmation token
@@ -407,7 +402,7 @@ class Credentials extends SiteController
 		{
 			$this->finish(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
-				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
+				Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_TOKENS_MISSING'),
 				'warning'
 			);
 			return;
