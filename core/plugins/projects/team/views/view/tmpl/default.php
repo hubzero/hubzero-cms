@@ -27,11 +27,11 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 		</li>
 	</ul>
 <?php } ?>
-<form id="plg-form" method="post" action="<?php echo Route::url($this->model->link('team')); ?>">
-	<input type="hidden" id="id" name="id" value="<?php echo $this->model->get('id'); ?>" />
-	<input type="hidden" name="task" value="view" />
-	<input type="hidden" name="action" value="team" />
-
+<?php
+// Only the pagination is in #plg-form: the rows carry POST approve/deny
+// forms, and forms can't nest.
+?>
+<div>
 	<div class="container">
 		<!-- <p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php if ($this->total <= count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_ALL'); } ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if ($this->total > count($this->team)) { echo Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total; } ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_MEMBERS'); ?></p> -->
 
@@ -167,7 +167,12 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 			</tbody>
 		</table>
 
-		<div>
+		<form id="plg-form" method="post" action="<?php echo Route::url($this->model->link('team')); ?>">
+			<input type="hidden" id="id" name="id" value="<?php echo $this->model->get('id'); ?>" />
+			<input type="hidden" name="task" value="view" />
+			<input type="hidden" name="action" value="team" />
+			<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+			<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
 			<?php
 			// Pagination
 			$pageNav = $this->pagination(
@@ -182,9 +187,9 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
 			echo $pagenavhtml;
 			?>
-		</div>
+		</form>
 	</div>
-</form>
+</div>
 
 <?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
 	<p class="extras"><span class="rightfloat"><a href="<?php echo Route::url($this->model->link('team') . '&action=quit'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></a></span></p>

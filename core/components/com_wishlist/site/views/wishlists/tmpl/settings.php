@@ -35,6 +35,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 	</header><!-- / #content-header -->
 
 	<section class="main section">
+		<?php $removeForms = array(); ?>
 		<form id="hubForm" method="post"  action="<?php echo Route::url($this->wishlist->link('savesettings')); ?>">
 			<div class="explaination">
 				<p><?php echo Lang::txt('COM_WISHLIST_SETTINGS_INFO'); ?></p>
@@ -132,10 +133,11 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo count($members); ?></td>
 								<td>
 									<?php if ($n>1 && !in_array($groups[$i], $native['groups'])) { ?>
-										<form action="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&group='.$groups[$i]); ?>" method="post" class="inline-form">
-											<?php echo Html::input('token'); ?>
-											<button type="submit" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
-										</form>
+										<?php
+										// The remove forms are output after #hubForm (forms can't nest); the button points at its form with form=
+										$removeForms['remove-group-' . $i] = Route::url($this->wishlist->link('savesettings') . '&action=delete&group=' . $groups[$i]);
+										?>
+										<button type="submit" class="delete" form="remove-group-<?php echo $i; ?>"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
 									<?php } ?>
 								</td>
 							</tr>
@@ -202,10 +204,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 								<td><?php echo $this->escape($kuser->get('username')); ?></td>
 								<td>
 									<?php if ($n> 1 && !in_array($individuals[$i], $native['individuals'])) { ?>
-										<form action="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]); ?>" method="post" class="inline-form">
-											<?php echo Html::input('token'); ?>
-											<button type="submit" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
-										</form>
+										<?php $removeForms['remove-owner-' . $i] = Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]); ?>
+										<button type="submit" class="delete" form="remove-owner-<?php echo $i; ?>"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
 									<?php } ?>
 								</td>
 							</tr>
@@ -273,10 +273,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 									<td><?php echo $this->escape($quser->get('name')); ?></td>
 									<td><?php echo $this->escape($quser->get('username')); ?></td>
 									<td>
-										<form action="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" method="post" class="inline-form">
-											<?php echo Html::input('token'); ?>
-											<button type="submit" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
-										</form>
+										<?php $removeForms['remove-advisory-' . $i] = Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>
+										<button type="submit" class="delete" form="remove-advisory-<?php echo $i; ?>"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
 									</td>
 								</tr>
 								<?php
@@ -325,5 +323,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 
 			<?php echo Html::input('token'); ?>
 		</form>
+		<?php foreach ($removeForms as $id => $action) { ?>
+			<form id="<?php echo $id; ?>" action="<?php echo $action; ?>" method="post" class="inline-form">
+				<?php echo Html::input('token'); ?>
+			</form>
+		<?php } ?>
 	</section>
 <?php } // end if authorized 

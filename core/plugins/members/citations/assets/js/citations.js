@@ -33,9 +33,10 @@ jQuery(document).ready(function (jq){
 		return res;
 	});
 
-	// Add confirm dialog to delete forms (button version)
-	$('.inline-form:has(.delete)').not('.author-list .inline-form').on('submit', function (e) {
-		if (!confirm($(this).find('.delete').attr('data-confirm'))) {
+	// Add confirm dialog to delete buttons. Confirm on the click, not the form's
+	// submit: a row's form may sit outside the table, tied to its button by form=
+	$('button.delete').not('.author-list button').on('click', function (e) {
+		if (!confirm($(this).attr('data-confirm'))) {
 			e.preventDefault();
 		}
 	});

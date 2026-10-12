@@ -37,6 +37,11 @@ if (isset($this->messages))
 <?php endif; ?>
 
 <div class="frm" id="browsebox"><!-- .frm #browsebox -->
+	<?php
+	// Each row's delete/publish form is output after #citeform (forms can't
+	// nest) and its button points at it with form=
+	$rowForms = array();
+	?>
 	<form action="<?php echo Route::url(Request::current()); ?>" id="citeform" method="GET" class="withBatchDownload">
 		<section class="main section"> <!-- .main .section -->
 			<div class="subject">
@@ -212,17 +217,15 @@ if (isset($this->messages))
 												<span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
 											</a>
 										</td>
+										<?php
+										$rowForms['citation-delete-' . $cite->id]  = Route::url($base . '&action=delete&id=' . $cite->id);
+										$rowForms['citation-publish-' . $cite->id] = Route::url($base . '&action=publish&id=' . $cite->id);
+										?>
 										<td class="col-delete">
-											<form action="<?php echo Route::url($base. '&action=delete&id=' . $cite->id); ?>" method="post" class="inline-form">
-												<?php echo Html::input('token'); ?>
-												<button type="submit" class="icon-delete delete individual protected" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span></button>
-											</form>
+											<button type="submit" form="citation-delete-<?php echo $cite->id; ?>" class="icon-delete delete individual protected" title="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE'); ?></span></button>
 										</td>
 										<td class="col-publish">
-											<form action="<?php echo Route::url($base. '&action=publish&id=' . $cite->id); ?>" method="post" class="inline-form">
-												<?php echo Html::input('token'); ?>
-												<button type="submit" class="icon-window-publish individual publish" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH'); ?>"><span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'; ?></span></button>
-											</form>
+												<button type="submit" form="citation-publish-<?php echo $cite->id; ?>" class="icon-window-publish individual publish" title="<?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH'); ?>"><span><?php echo ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>'; ?></span></button>
 										</td>
 									<?php endif; ?>
 								</tr>
@@ -311,4 +314,9 @@ if (isset($this->messages))
 			</div><!-- /.aside -->
 		</section>
 	</form>
+	<?php foreach ($rowForms as $id => $action) { ?>
+		<form id="<?php echo $id; ?>" action="<?php echo $action; ?>" method="post" class="inline-form">
+			<?php echo Html::input('token'); ?>
+		</form>
+	<?php } ?>
 </div><!-- /.frm /#browsebox -->
