@@ -16,7 +16,7 @@ class CurrentUserv1_0 extends ApiController
 	 * Indicates whether current user is authenticated
 	 *
 	 * @apiMethod GET
-	 * @apiUri    /api/v1.0/users/current_user/isAuthenticated
+	 * @apiUri    /api/v1.0/users/currentuser/isAuthenticated
 	 * @return    bool
 	 */
 	public function isAuthenticatedTask()
