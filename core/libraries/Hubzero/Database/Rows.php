@@ -433,7 +433,15 @@ class Rows implements Iterator, Countable
 	{
 		usort($this->rows, function($a, $b) use ($field, $asc)
 		{
-			$result = strcmp($a->$field, $b->$field);
+			// Numbers compare as numbers: strcmp() put id 28 before 5
+			if (is_numeric($a->$field) && is_numeric($b->$field))
+			{
+				$result = $a->$field <=> $b->$field;
+			}
+			else
+			{
+				$result = strcmp((string) $a->$field, (string) $b->$field);
+			}
 
 			return ($asc) ? $result : $result * -1;
 		});
