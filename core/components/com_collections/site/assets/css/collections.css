@@ -241,11 +241,13 @@ html.opera .post.full,
 	border-bottom: 1px solid #d4d4d4;
 }
 .post .actions>span,
-.post .actions a {
+.post .actions a,
+.post .actions button {
 	padding: 0.5em .7em;
 }
 .post .actions>span:before,
-.post .actions a:before {
+.post .actions a:before,
+.post .actions button:before {
 	content: "";
 	font-family: "Fontcons";
 }

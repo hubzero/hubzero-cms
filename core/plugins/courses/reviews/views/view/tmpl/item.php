@@ -123,7 +123,7 @@ switch ($this->comment->get('rating'))
 			<?php } ?>
 
 			<?php if (!$this->comment->isReported()) { ?>
-				<p class="comment-options">
+				<div class="comment-options">
 				<?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment'); ?>"><!--
 						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
@@ -143,7 +143,7 @@ switch ($this->comment->get('rating'))
 					<a class="icon-abuse abuse" href="<?php echo Route::url('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')); ?>"><!--
 						--><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!--
 					--></a>
-				</p><!-- / .comment-options -->
+				</div><!-- / .comment-options -->
 			<?php } ?>
 
 			<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>

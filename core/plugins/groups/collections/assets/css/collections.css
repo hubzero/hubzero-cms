@@ -271,43 +271,43 @@
 		padding: 0;
 	}
 	.post .actions>span,
-	.post .actions a {
+	.post .actions :is(a, button) {
 		padding: 0.5em .7em;
 		margin: 0.5em 0.2em 0 0.2em;
 		overflow: hidden;
 		white-space: nowrap;
 	}
-	.post .actions a:before {
+	.post .actions :is(a, button):before {
 		content: "";
 		font-family: "Fontcons";
 	}
 	.icon-repost:before,
-	.post .actions a.repost:before {
+	.post .actions :is(a, button).repost:before {
 		content: "\f005";
 	}
-	.post .actions a.unpost:before {
+	.post .actions :is(a, button).unpost:before {
 		content: "\2298";
 	}
-	.post .actions a.like:before {
+	.post .actions :is(a, button).like:before {
 		content: "\2665";
 	}
-	.post .actions a.unlike:before {
+	.post .actions :is(a, button).unlike:before {
 		content: "\2661";
 	}
-	.post .actions a.comment:before {
+	.post .actions :is(a, button).comment:before {
 		content: "\f075";
 	}
-	.post .actions a.edit:before {
+	.post .actions :is(a, button).edit:before {
 		content: "\270E";
 		margin-right: 0.5em;
 	}
-	.post .actions a.delete:before,
+	.post .actions :is(a, button).delete:before,
 	.post .actions button.delete:before {
 		content: "\f014";
 		margin-right: 0.5em;
 	}
-	.post .actions a.edit,
-	.post .actions a.delete,
+	.post .actions :is(a, button).edit,
+	.post .actions :is(a, button).delete,
 	.post .actions button.delete {
 		width: 2.3em;
 	}
@@ -318,11 +318,11 @@
 		content: "\f070";
 	}
 	.icon-follow:before,
-	.post .actions a.follow:before {
+	.post .actions :is(a, button).follow:before {
 		content: "\f06e";
 	}
 	.icon-unfollow:before,
-	.post .actions a.unfollow:before {
+	.post .actions :is(a, button).unfollow:before {
 		content: "\f070";
 	}
 

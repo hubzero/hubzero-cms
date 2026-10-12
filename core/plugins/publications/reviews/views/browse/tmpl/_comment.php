@@ -83,7 +83,7 @@ defined('_HZEXEC_') or die();
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('publication_id')) { ?>
-			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
+			<div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
 				$view = new \Hubzero\Plugin\View(
 					array(
@@ -108,7 +108,7 @@ defined('_HZEXEC_') or die();
 				}
 				$view->display();
 				?>
-			</p><!-- / .comment-voting -->
+			</div><!-- / .comment-voting -->
 		<?php } ?>
 
 			<p class="comment-title">
@@ -168,7 +168,7 @@ defined('_HZEXEC_') or die();
 	<?php } else { ?>
 			<?php echo $comment; ?>
 
-			<p class="comment-options">
+			<div class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if (User::get('id') == $this->comment->get('created_by')) { ?>
 					<form action="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
@@ -196,7 +196,7 @@ defined('_HZEXEC_') or die();
 				--></a>
 			<?php } ?>
 		<?php } ?>
-			</p>
+			</div>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>">

@@ -64,7 +64,7 @@ else
 $no_html = Request::getInt('no_html', 0);
 
 if (!$no_html) { ?>
-<p class="comment-voting voting">
+<div class="comment-voting voting">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
 	<?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
@@ -97,5 +97,5 @@ if (!$no_html) { ?>
 	<?php } ?>
 	</span>
 <?php if (!$no_html) { ?>
-</p>
+</div>
 <?php }

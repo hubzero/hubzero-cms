@@ -84,7 +84,7 @@ if ($this->comment->get('resource_id'))
 		<div class="comment-content">
 		<?php // voting defaults on (reviews.xml, and reviews.php passes voting=1); a hub that never saved the plugin params has none stored ?>
 		<?php if (!$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting', 1)) { ?>
-			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
+			<div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
 				$this->comment->set('helpful', $this->comment->votes()->whereEquals('vote', 1)->total());
 				$this->comment->set('nothelpful', $this->comment->votes()->whereEquals('vote', -1)->total());
@@ -100,7 +100,7 @@ if ($this->comment->get('resource_id'))
 					->set('type', 'review')
 					->display();
 				?>
-			</p><!-- / .comment-voting -->
+			</div><!-- / .comment-voting -->
 		<?php } ?>
 
 			<p class="comment-title">
@@ -163,7 +163,7 @@ if ($this->comment->get('resource_id'))
 				<?php echo $comment; ?>
 			</div>
 
-			<p class="comment-options">
+			<div class="comment-options">
 		<?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
 			<?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')) { ?>
 					<form action="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
@@ -191,7 +191,7 @@ if ($this->comment->get('resource_id'))
 				--></a>
 			<?php } ?>
 		<?php } ?>
-			</p>
+			</div>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">

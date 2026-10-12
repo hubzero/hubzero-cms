@@ -98,7 +98,8 @@
 		-moz-hyphens: auto;
 		hyphens: auto;
 	}
-	.entries caption a {
+	.entries caption a,
+	.entries caption form.inline-form {
 		float: right;
 	}
 

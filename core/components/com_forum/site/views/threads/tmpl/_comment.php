@@ -204,7 +204,7 @@ defined('_HZEXEC_') or die();
 							)
 						)
 					) { ?>
-				<p class="comment-options">
+				<div class="comment-options">
 					<?php if ((!$this->comment->get('parent') && $this->config->get('access-delete-thread')) || ($this->comment->get('parent') && $this->config->get('access-delete-post'))) { ?>
 						<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
 							<?php echo Html::input('token'); ?>
@@ -232,7 +232,7 @@ defined('_HZEXEC_') or die();
 							--><?php echo Lang::txt('COM_FORUM_REPORT_ABUSE'); ?><!--
 						--></a>
 					<?php } ?>
-				</p>
+				</div>
 			<?php } ?>
 
 			<?php if (!User::isGuest() && !$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>

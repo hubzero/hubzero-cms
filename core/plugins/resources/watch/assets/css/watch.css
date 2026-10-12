@@ -16,10 +16,13 @@
 	background: rgba(0, 0, 0, 0.05);
 	padding: 1em;
 }
-.item-watch p:first-child {
+.item-watch-action {
+	margin: 1em 0;
+}
+.item-watch > :first-child {
 	margin-top: 0;
 }
-.item-watch p:last-child {
+.item-watch > :last-child {
 	margin-bottom: 0;
 }
 .item-watch.watching {
@@ -27,4 +30,5 @@
 }
 .item-watch .btn {
 	display: block;
+	width: 100%;
 }

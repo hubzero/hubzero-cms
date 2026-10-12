@@ -42,7 +42,7 @@
 	.com_kb .container .voting {
 		text-align: right;
 	}
-	.com_kb .container p.voting {
+	.com_kb .container .entry-voting {
 		float: right;
 		min-width: 10em;
 		margin: 0.7em 0 0.7em 0;

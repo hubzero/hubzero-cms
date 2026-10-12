@@ -58,7 +58,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 						</div><!-- / .entry-tags -->
 					<?php } ?>
 
-					<p class="entry-voting voting">
+					<div class="entry-voting voting">
 						<?php
 							$this->view('_vote')
 								 ->set('option', $this->option)
@@ -68,7 +68,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 								 ->set('id', 0) //$this->article->get('id');
 								 ->display();
 						?>
-					</p>
+					</div>
 
 					<p class="entry-details">
 						<?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>

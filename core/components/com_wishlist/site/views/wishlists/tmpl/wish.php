@@ -117,7 +117,7 @@ $this->css()
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">
-					<p class="entry-voting voting" id="wish_<?php echo $this->wish->get('id'); ?>">
+					<div class="entry-voting voting" id="wish_<?php echo $this->wish->get('id'); ?>">
 						<?php
 						$this->view('_vote')
 						     ->set('option', $this->option)
@@ -129,7 +129,7 @@ $this->css()
 						     ->set('filters', $this->filters)
 						     ->display();
 						?>
-					</p><!-- / .wish-voting -->
+					</div><!-- / .wish-voting -->
 
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
@@ -385,7 +385,7 @@ $this->css()
 			<?php if ($this->wish->get('action') == 'delete') { ?>
 				<div class="warning" id="action">
 					<h4><?php echo Lang::txt('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
-					<p>
+					<div class="wish-delete-options">
 						<span class="say_yes">
 							<form action="<?php echo Route::url($this->wish->link('delete')); ?>" method="post" class="inline-form">
 								<?php echo Html::input('token'); ?>
@@ -397,7 +397,7 @@ $this->css()
 								<?php echo Lang::txt('COM_WISHLIST_NO'); ?>
 							</a>
 						</span>
-					</p>
+					</div>
 				</div><!-- / .error -->
 			<?php } ?>
 

@@ -225,7 +225,8 @@
 		-moz-hyphens: auto;
 		hyphens: auto;
 	}
-	.course_discussions .entries caption a {
+	.course_discussions .entries caption a,
+	.course_discussions .entries caption form.inline-form {
 		float: right;
 	}
 

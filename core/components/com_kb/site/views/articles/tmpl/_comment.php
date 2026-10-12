@@ -44,7 +44,7 @@ else
 		</p>
 		<div class="comment-content">
 		<?php if (!$this->comment->isReported() && $this->comment->get('entry_id')) { ?>
-			<p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
+			<div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
 				<?php
 				$view = $this->view('_vote')
 						     ->set('option', $this->option)
@@ -62,7 +62,7 @@ else
 				}
 				$view->display();
 				?>
-			</p><!-- / .comment-voting -->
+			</div><!-- / .comment-voting -->
 		<?php } ?>
 
 			<p class="comment-title">

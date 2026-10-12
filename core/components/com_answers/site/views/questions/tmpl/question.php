@@ -73,7 +73,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 				</p><!-- / .question-member-photo -->
 				<div class="entry-content">
 					<?php if (!$this->question->isReported()) { ?>
-						<p class="entry-voting voting">
+						<div class="entry-voting voting">
 							<?php
 							$this->view('_vote')
 							     ->set('option', $this->option)
@@ -81,7 +81,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 							     ->set('vote', $this->question->ballot())
 							     ->display();
 							?>
-						</p><!-- / .question-voting -->
+						</div><!-- / .question-voting -->
 					<?php } ?>
 
 					<p class="entry-title">
@@ -136,7 +136,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 					<?php } ?>
 				</div><!-- / .question-content -->
 
-				<p class="entry-status">
+				<div class="entry-status">
 					<?php if (!$this->question->isReported()) { ?>
 							<span>
 								<a class="icon-abuse abuse" href="<?php echo Route::url($this->question->link('report')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
@@ -152,7 +152,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 							</span>
 						<?php } ?>
 					<?php } ?>
-				</p><!-- / .question-status -->
+				</div><!-- / .question-status -->
 			</div><!-- / .question -->
 
 			<?php if ($this->question->isOpen() && $this->question->config('banking') && $this->question->get('reward')) { ?>

@@ -92,7 +92,7 @@ else
 
 			<?php echo $comment; ?>
 
-			<p class="comment-options">
+			<div class="comment-options">
 			<?php if ($this->config->get('access-delete-comment')) { ?>
 				<form action="<?php echo Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')); ?>" method="post" class="inline-form">
 					<?php echo Html::input('token'); ?>
@@ -120,7 +120,7 @@ else
 					--><?php echo Lang::txt('PLG_MEMBERS_BLOG_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
-			</p>
+			</div>
 
 		<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 			<div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">

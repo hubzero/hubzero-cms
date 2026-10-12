@@ -198,7 +198,7 @@ defined('_HZEXEC_') or die();
 				?>
 			</div><!-- / .comment-attachments -->
 		<?php if ($this->group->published == 1) { ?>
-			<p class="comment-options">
+			<div class="comment-options">
 			<?php if ($this->config->get('access-manage-thread')
 				 || $this->config->get('access-delete-thread')
 				 || $this->config->get('access-edit-thread')
@@ -233,7 +233,7 @@ defined('_HZEXEC_') or die();
 					--><?php echo Lang::txt('PLG_GROUPS_FORUM_REPORT_ABUSE'); ?><!--
 				--></a>
 			<?php } ?>
-			</p>
+			</div>
 
 			<?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
 				<div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) { echo ' hide'; } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">

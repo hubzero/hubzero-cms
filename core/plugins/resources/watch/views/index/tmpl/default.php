@@ -13,19 +13,19 @@ $this->css();
 
 <div class="item-watch <?php echo $this->watched->get('id') ? 'watching' : ''; ?>">
 	<?php if ($this->watched->get('id')) { ?>
-		<p>
+		<div class="item-watch-action">
 			<form action="<?php echo Route::url($this->link . '&action=unsubscribe'); ?>" method="post" class="inline-form">
 				<?php echo Html::input('token'); ?>
 				<button type="submit" class="btn unsubscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_UNSUBSCRIBE'); ?></button>
 			</form>
-		</p>
+		</div>
 	<?php } else { ?>
-		<p>
+		<div class="item-watch-action">
 			<form action="<?php echo Route::url($this->link . '&action=subscribe'); ?>" method="post" class="inline-form">
 				<?php echo Html::input('token'); ?>
 				<button type="submit" class="btn subscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_SUBSCRIBE'); ?></button>
 			</form>
-		</p>
+		</div>
 	<?php } ?>
 
 	<p>

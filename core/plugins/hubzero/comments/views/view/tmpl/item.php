@@ -137,7 +137,7 @@ defined('_HZEXEC_') or die();
 				</div><!-- / .comment-attachments -->
 
 				<?php if (!$this->comment->isReported()) { ?>
-					<p class="comment-options">
+					<div class="comment-options">
 						<?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
 							<form action="<?php echo Route::url($this->comment->link('delete')); ?>" method="post" class="inline-form">
 								<?php echo Html::input('token'); ?>
@@ -157,7 +157,7 @@ defined('_HZEXEC_') or die();
 							<a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
 								--><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!--
 							--></a>
-					</p><!-- / .comment-options -->
+					</div><!-- / .comment-options -->
 				<?php } ?>
 				<?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
 					<div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
