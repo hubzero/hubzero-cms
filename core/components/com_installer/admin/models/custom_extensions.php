@@ -85,6 +85,30 @@ class Custom_extensions extends Relational
 	);
 
 	/**
+	 * Sets up additional custom rules
+	 *
+	 * The alias and folder become part of the extension's path, which the
+	 * repository commands then work in, so only allow plain names (the form's
+	 * own check is client-side only)
+	 *
+	 * @return  void
+	 */
+	public function setup()
+	{
+		foreach (array('alias', 'folder') as $key)
+		{
+			$this->addRule($key, function($data) use ($key)
+			{
+				if (!empty($data[$key]) && !preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $data[$key]))
+				{
+					return $key . ' may only contain letters, numbers and underscores, and cannot start with an underscore';
+				}
+				return false;
+			});
+		}
+	}
+
+	/**
 	 * Automatically fillable fields
 	 *
 	 * @var  array

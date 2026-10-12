@@ -10,12 +10,13 @@ function validURL(str) {
 }
 
 function NoChars(str) {
-	var pattern = new RegExp('^(?!_)[_A-z0-9]*$');
+	// A-z would also let [ \ ] ^ ` through
+	var pattern = new RegExp('^(?!_)[_A-Za-z0-9]*$');
 	return !!pattern.test(str);
 }
 
 function validBranch(str) {
-	var pattern = new RegExp('^(origin)(\/)[_A-z0-9]*$');
+	var pattern = new RegExp('^(origin)(\/)[_A-Za-z0-9]*$');
 	return !!pattern.test(str);
 }
 
@@ -36,12 +37,12 @@ Hubzero.submitbutton = function(task) {
 			}
 
 			if (!NoChars(document.getElementById('field-name').value)) {
-				alert('Please enter a valid Extension Name. This can be used as a Title of the Custom Extension to help you find it in the list. NO characters or spaces expected for underscores but not at the beginning of the string.');
+				alert('Please enter a valid Extension Name. This can be used as a Title of the Custom Extension to help you find it in the list. Only letters, numbers and underscores are allowed (no spaces), and it can\'t start with an underscore.');
 				return;
 			}
 
 			if (!NoChars(document.getElementById('field-alias').value)) {
-				alert('Please enter a valid Alias.  NO characters or spaces expected for underscores but not at the beginning of the string.');
+				alert('Please enter a valid Alias. Only letters, numbers and underscores are allowed (no spaces), and it can\'t start with an underscore.');
 				return;
 			}
 
