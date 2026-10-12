@@ -11,12 +11,8 @@ defined('_HZEXEC_') or die();
 $canDo = \Components\Members\Helpers\Permissions::getActions('component');
 
 Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEMBERS_PREMIS'), 'user.png');
-if ($canDo->get('core.edit'))
-{
-	Toolbar::addNew();
-	Toolbar::editList();
-	Toolbar::deleteList();
-}
+// No New/Edit/Delete: this screen only imports (its Import button); there
+// were never tasks behind those toolbar buttons
 ?>
 
 <?php if ($this->getError()) { ?>

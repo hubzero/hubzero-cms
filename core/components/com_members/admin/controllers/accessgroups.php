@@ -100,8 +100,13 @@ class Accessgroups extends AdminController
 
 		if (!$row)
 		{
-			// Incoming
-			$id = Request::getArray('id', array());
+			// Incoming: the toolbar's Edit posts the checked rows as cid[],
+			// the title links pass id
+			$id = Request::getArray('cid', array());
+			if (empty($id))
+			{
+				$id = Request::getArray('id', array());
+			}
 
 			// Get the single ID we're working with
 			if (is_array($id))

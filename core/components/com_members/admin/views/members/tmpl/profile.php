@@ -123,17 +123,15 @@ $this->css('formbuilder.css')
 		});
 	});
 
-	function submitbutton(pressbutton)
+	// The toolbar calls Hubzero.submitbutton, not a page-level submitbutton(),
+	// and the builder only writes #profile-schema when it autosaves (every 5s),
+	// so a quick Save posted the old fields. Write it out first.
+	Hubzero.submitbutton = function(pressbutton)
 	{
-		var form = document.getElementById('adminForm');
-
-		if (pressbutton == 'cancel') {
-			submitform(pressbutton);
-			return;
+		if (pressbutton != 'cancel' && fb) {
+			fb.mainView.saveForm();
 		}
 
-		fb.mainView.saveForm();
-
-		submitform(pressbutton);
-	}
+		Hubzero.submitform(pressbutton, document.getElementById('item-form'));
+	};
 </script>

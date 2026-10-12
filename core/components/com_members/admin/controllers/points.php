@@ -407,7 +407,8 @@ class Points extends AdminController
 		$log = array_map('trim', $log);
 		$log['category'] = (isset($log['category']) && $log['category']) ? $log['category'] : 'general';
 		$log['action']   = (isset($log['action']) && $log['action']) ? $log['action'] : 'batch';
-		$log['ref']      = (isset($log['ref']) && $log['ref']) ? $log['ref'] : '';
+		// An item id (int columns: '' fails under strict SQL modes)
+		$log['ref']      = (isset($log['ref']) && $log['ref']) ? (int) $log['ref'] : 0;
 
 		$data = Request::getArray('transaction', array());
 		$data = array_map('trim', $data);
@@ -431,7 +432,12 @@ class Points extends AdminController
 					$validuser = \User::getInstance($user);
 					if ($user && $validuser->get('id'))
 					{
-						$BTL = new \Hubzero\Bank\Teller($user);
+						// By id: users may be listed by username
+						$BTL = new \Hubzero\Bank\Teller($validuser->get('id'));
+
+						// Teller echoes its errors (e.g. not enough points), which
+						// landed in the page ahead of the redirect; report them
+						ob_start();
 						switch ($data['type'])
 						{
 							case 'withdraw':
@@ -440,6 +446,10 @@ class Points extends AdminController
 							case 'deposit':
 								$BTL->deposit($data['amount'], $data['description'], $log['category'], $log['ref']);
 							break;
+						}
+						if ($out = trim(strip_tags(ob_get_clean())))
+						{
+							Notify::warning($validuser->get('username') . ': ' . $out);
 						}
 					}
 				}

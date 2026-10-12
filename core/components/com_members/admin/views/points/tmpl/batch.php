@@ -60,7 +60,7 @@ Toolbar::cancel();
 
 				<div class="input-wrap" data-hint="E.g. answers, survey, etc.">
 					<label for="com">Category / Component</label>
-					<input type="text" name="log[com]" id="com" maxlength="250" value="" />
+					<input type="text" name="log[category]" id="com" maxlength="250" value="" />
 					<span class="hint">E.g. answers, survey, etc.</span>
 				</div>
 				<div class="input-wrap" data-hint="E.g. royalty, setup, etc.">
