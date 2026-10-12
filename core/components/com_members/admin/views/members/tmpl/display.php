@@ -78,9 +78,10 @@ $this->css()
 					<option value="-1"<?php if ($this->filters['activation'] == -1) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
 				</select>
 
-				<label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
+				<?php // This is who may view the profile (users.access), not the access group: that's the Group filter ?>
+				<label for="filter-access"><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS_LABEL'); ?>:</label>
 				<select name="access" id="filter-access" class="inputbox filter filter-submit">
-					<option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+					<option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS');?></option>
 					<?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
 				</select>
 

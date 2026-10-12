@@ -27,7 +27,9 @@ Hubzero.submitbutton = function(task, type = '') {
 jQuery(document).ready(function($){
 	$('#btn-batch-submit')
 		.on('click', function (e){
-			Hubzero.submitbutton('user.batch');
+			// There's no user.batch task; it's this controller's batch
+			e.preventDefault();
+			Hubzero.submitbutton('batch');
 		});
 
 	$('#btn-batch-clear')

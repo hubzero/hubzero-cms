@@ -37,7 +37,7 @@ $options = array(
 		</div>
 		<div class="col span6">
 			<div class="input-wrap">
-				<button type="submit" id="btn-batch-submit">
+				<button type="button" id="btn-batch-submit">
 					<?php echo Lang::txt('JGLOBAL_BATCH_PROCESS'); ?>
 				</button>
 				<button type="button" id="btn-batch-clear">

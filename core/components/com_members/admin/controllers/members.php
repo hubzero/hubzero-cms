@@ -415,14 +415,19 @@ class Members extends AdminController
 
 		if ($user->isNew())
 		{
-			$newUsertype = $this->config->get('new_usertype');
-
-			if (!$newUsertype)
+			// The configured default group only when the form chose none: it
+			// used to replace whatever groups were checked
+			if (empty($fields['accessgroups']))
 			{
-				$newUsertype = Accessgroup::oneByTitle('Registered')->get('id');
-			}
+				$newUsertype = $this->config->get('new_usertype');
 
-			$user->set('accessgroups', array($newUsertype));
+				if (!$newUsertype)
+				{
+					$newUsertype = Accessgroup::oneByTitle('Registered')->get('id');
+				}
+
+				$user->set('accessgroups', array($newUsertype));
+			}
 
 			// Check that username is filled
 			if (!Validate::username($user->get('username')))
@@ -728,6 +733,84 @@ class Members extends AdminController
 			$this->cancelTask();
 		}
 
+	}
+
+	/**
+	 * Add the selected members to an access group, remove them from it, or
+	 * make it their only group (the list's "Batch process" box)
+	 *
+	 * @return  void
+	 */
+	public function batchTask()
+	{
+		// Check for request forgeries
+		Request::checkToken();
+
+		if (!User::authorise('core.edit', $this->_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+		$ids    = array_filter(array_map('intval', (array) Request::getArray('id', array(), 'post')));
+		$batch  = (array) Request::getArray('batch', array(), 'post');
+		$gid    = isset($batch['group_id']) ? (int) $batch['group_id'] : 0;
+		$action = isset($batch['group_action']) ? (string) $batch['group_action'] : '';
+
+		if (empty($ids) || !$gid || !in_array($action, array('add', 'del', 'set')))
+		{
+			Notify::warning(Lang::txt('COM_MEMBERS_BATCH_NO_SELECTION'));
+			return $this->cancelTask();
+		}
+
+		// Only super admins hand out (or take away) super admin groups, as on
+		// the member edit form
+		$iAmSuperAdmin = User::authorise('core.admin');
+		if (!$iAmSuperAdmin && Access::checkGroup($gid, 'core.admin'))
+		{
+			Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
+			return $this->cancelTask();
+		}
+
+		$done = 0;
+		foreach ($ids as $id)
+		{
+			// Don't let a super admin demote themselves: removing an admin
+			// group, or making a non-admin group their only one
+			if ($iAmSuperAdmin && $id == User::get('id'))
+			{
+				$isAdminGroup = Access::checkGroup($gid, 'core.admin');
+				if (($action == 'del' && $isAdminGroup) || ($action == 'set' && !$isAdminGroup))
+				{
+					Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
+					continue;
+				}
+			}
+
+			switch ($action)
+			{
+				case 'add':
+					$ok = \Hubzero\Access\Map::addUserToGroup($id, $gid);
+					break;
+				case 'del':
+					$ok = \Hubzero\Access\Map::removeUserFromGroup($id, $gid);
+					break;
+				case 'set':
+					$ok = \Hubzero\Access\Map::destroyByUser($id) && \Hubzero\Access\Map::addUserToGroup($id, $gid);
+					break;
+			}
+
+			if ($ok)
+			{
+				$done++;
+			}
+		}
+
+		if ($done)
+		{
+			Notify::success(Lang::txt('COM_MEMBERS_BATCH_SUCCESS', $done));
+		}
+
+		$this->cancelTask();
 	}
 
 	/**
