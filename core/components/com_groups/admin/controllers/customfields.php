@@ -143,6 +143,14 @@ class CustomFields extends AdminController
 				case 'paragraph':
 					$field['description'] = $field['label'];
 					break;
+				case 'hidden':
+					// The form builder gives hidden fields no label, but the field
+					// model requires one; use the name rather than drop the field
+					if (empty($field['label']))
+					{
+						$field['label'] = !empty($field['name']) ? $field['name'] : 'hidden';
+					}
+					break;
 			}
 			$currentFields[] = array_merge($defaultValues, $field);
 			return $currentFields;
