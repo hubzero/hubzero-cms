@@ -64,21 +64,26 @@ $this->css()
 
 <?php } else { ?>
 
-	<form method="get" action="<?php echo Route::url($base . '&action=browse'); ?>" id="blogentries">
+	<?php
+	// The search and pagination are separate GET forms rather than one form
+	// around the page: the entries carry POST delete forms, and a form can't
+	// be nested in another (the browser drops the inner one).
+	?>
+	<div id="blogentries">
 		<section class="section">
 			<div class="subject">
 				<?php if ($this->getError()) : ?>
 					<p class="error"><?php echo $this->getError(); ?></p>
 				<?php endif; ?>
 
-				<div class="container data-entry">
+				<form method="get" action="<?php echo Route::url($base . '&action=browse'); ?>" class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LABEL'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 					</fieldset>
-				</div><!-- / .container -->
+				</form><!-- / .container -->
 
 				<div class="container">
 					<h3>
@@ -233,6 +238,10 @@ $this->css()
 					}
 					?>
 					</ol>
+					<form method="get" action="<?php echo Route::url($base . '&action=browse'); ?>">
+						<input type="hidden" name="year" value="<?php echo $this->escape($this->filters['year']); ?>" />
+						<input type="hidden" name="month" value="<?php echo $this->escape($this->filters['month']); ?>" />
+						<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<?php
 						$pageNav = $rows->pagination;
 						$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
@@ -251,6 +260,7 @@ $this->css()
 						}
 						echo $pageNav;
 					?>
+					</form>
 		<?php } else { ?>
 					<p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 		<?php } ?>
@@ -342,6 +352,6 @@ $this->css()
 				</div><!-- / .blog-popular-entries -->
 			</aside><!-- / .aside -->
 		</section>
-	</form><!-- /.main -->
+	</div><!-- /.main -->
 
 <?php }

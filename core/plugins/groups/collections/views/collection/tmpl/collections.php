@@ -23,7 +23,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	</li>
 </ul>
 
-<form method="get" action="<?php echo Route::url($base); ?>" id="collections">
+<?php
+// Only the pagination needs a GET form; one around the whole page would
+// swallow the collections' POST follow/delete forms (forms can't nest).
+?>
+<div id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('option', $this->option)
@@ -142,20 +146,21 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				</div><!-- / .post -->
 			<?php } ?>
 		</div><!-- / #posts -->
-		<?php
-		if ($this->total > $this->filters['limit'])
-		{
-			$pageNav = $this->pagination(
-				$this->total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-			$pageNav->setAdditionalUrlParam('active', 'collections');
-			$pageNav->setAdditionalUrlParam('scope', 'all');
-			echo $pageNav->render();
-		}
-		?>
+		<?php if ($this->total > $this->filters['limit']) { ?>
+			<form method="get" action="<?php echo Route::url($base); ?>">
+				<?php
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+				$pageNav->setAdditionalUrlParam('active', 'collections');
+				$pageNav->setAdditionalUrlParam('scope', 'all');
+				echo $pageNav->render();
+				?>
+			</form>
+		<?php } ?>
 		<div class="clear"></div>
 	<?php } else { ?>
 		<div id="collection-introduction">
@@ -183,4 +188,4 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<?php } ?>
 		</div><!-- / #collection-introduction -->
 	<?php } ?>
-</form>
+</div>

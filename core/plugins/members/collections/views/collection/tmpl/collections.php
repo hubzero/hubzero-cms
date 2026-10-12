@@ -24,7 +24,11 @@ $this->css()
 	</li>
 </ul>
 
-<form method="get" action="<?php echo Route::url($base . '&task=all'); ?>" id="collections">
+<?php
+// Only the pagination needs a GET form; one around the whole page would
+// swallow the collections' POST follow/delete forms (forms can't nest).
+?>
+<div id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('option', $this->option)
@@ -66,7 +70,7 @@ $this->css()
 		</div>
 	</fieldset> */ ?>
 	<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
-		<p class="guest-options">
+		<div class="guest-options">
 			<?php if ($this->model->isFollowing()) { ?>
 				<form class="inline-form" method="post" action="<?php echo Route::url($base . '&task=unfollow'); ?>">
 					<?php echo Html::input('token'); ?>
@@ -82,7 +86,7 @@ $this->css()
 					</button>
 				</form>
 			<?php } ?>
-		</p>
+		</div>
 	<?php } ?>
 
 <?php if ($this->rows->total() > 0) { ?>
@@ -203,20 +207,21 @@ $this->css()
 		</div><!-- / .post -->
 	<?php } ?>
 	</div><!-- / #posts -->
-	<?php
-	if ($this->total > $this->filters['limit'])
-	{
-		$pageNav = $this->pagination(
-			$this->total,
-			$this->filters['start'],
-			$this->filters['limit']
-		);
-		$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'collections');
-		$pageNav->setAdditionalUrlParam('task', 'all');
-		echo $pageNav->render();
-	}
-	?>
+	<?php if ($this->total > $this->filters['limit']) { ?>
+		<form method="get" action="<?php echo Route::url($base . '&task=all'); ?>">
+			<?php
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+			$pageNav->setAdditionalUrlParam('active', 'collections');
+			$pageNav->setAdditionalUrlParam('task', 'all');
+			echo $pageNav->render();
+			?>
+		</form>
+	<?php } ?>
 	<div class="clear"></div>
 <?php } else { ?>
 		<div id="collection-introduction">
@@ -244,4 +249,4 @@ $this->css()
 			<?php } ?>
 		</div><!-- / #collection-introduction -->
 <?php } ?>
-</form>
+</div>

@@ -69,7 +69,7 @@
 		margin-left: 3em;
 	}
 
-	p.overview,
+	:is(p, div).overview,
 	fieldset.filters {
 		margin: 0;
 		-webkit-box-shadow: none;
@@ -80,21 +80,23 @@
 		border-bottom: 1px solid #ddd;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	p.overview {
+	:is(p, div).overview {
 		padding: 1em 30px;
 		background: #fff;
 	}
-	p.overview span {
+	:is(p, div).overview span {
 		margin-right: 1em;
 	}
-	p.overview a {
+	:is(p, div).overview a,
+	:is(p, div).overview form.inline-form {
 		float: right;
 		margin-left: 1em;
 	}
-	p.overview a span {
+	:is(p, div).overview a span,
+	:is(p, div).overview button span {
 		margin-right: 0em;
 	}
-	p.overview .count strong,
+	:is(p, div).overview .count strong,
 	fieldset.filters .count strong {
 		font-size: 1.2em;
 		line-height: 2em;
@@ -565,10 +567,10 @@
 	}
 
 	/* Layout icons */
-	p.overview .options {
+	:is(p, div).overview .options {
 		text-align: right;
 	}
-	p.overview .options a {
+	:is(p, div).overview .options a {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
@@ -580,16 +582,16 @@
 		line-height: 1;
 		border: none;
 	}
-	p.overview .options a:hover,
-	p.overview .options a.selected {
+	:is(p, div).overview .options a:hover,
+	:is(p, div).overview .options a.selected {
 		color: #333;
 		border: none;
 	}
-	p.overview .options a:before {
+	:is(p, div).overview .options a:before {
 		text-align: center;
 		display: inline-block;
 	}
-	p.overview .options a.icon-ordering {
+	:is(p, div).overview .options a.icon-ordering {
 		margin-left: 1em;
 	}
 	.icon-grid:before {

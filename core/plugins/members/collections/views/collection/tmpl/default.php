@@ -37,7 +37,11 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 	</li>
 </ul>
 
-<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<?php
+// Only the pagination needs a GET form; one around the whole page would
+// swallow the posts' POST like/follow forms (forms can't nest).
+?>
+<div id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('params', $this->params)
@@ -53,7 +57,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 	?>
 
 	<?php if ($this->collection->exists()) { ?>
-		<p class="overview">
+		<div class="overview">
 			<span class="title count">
 				"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 			</span>
@@ -90,7 +94,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 				<a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') { echo ' selected'; } ?>" data-view="view-grid" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?></a>
 				<a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') { echo ' selected'; } ?>" data-view="view-list" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?></a>
 			</span>
-		</p>
+		</div>
 	<?php } ?>
 
 	<?php if ($this->rows->total() > 0) { ?>
@@ -240,22 +244,25 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 		<?php } ?>
 		</div><!-- / #posts -->
 
-		<?php
-		if ($this->total > $this->filters['limit'])
-		{
-			$pageNav = $this->pagination(
-				$this->total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
-			$pageNav->setAdditionalUrlParam('active', 'collections');
-			$pageNav->setAdditionalUrlParam('task', $this->task);
-			$pageNav->setAdditionalUrlParam('viewas', $viewas);
-			$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-			echo $pageNav->render();
-		}
-		?>
+		<?php if ($this->total > $this->filters['limit']) { ?>
+			<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>">
+				<input type="hidden" name="viewas" value="<?php echo $this->escape($viewas); ?>" />
+				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+				<?php
+				$pageNav = $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+				$pageNav->setAdditionalUrlParam('active', 'collections');
+				$pageNav->setAdditionalUrlParam('task', $this->task);
+				$pageNav->setAdditionalUrlParam('viewas', $viewas);
+				$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+				echo $pageNav->render();
+				?>
+			</form>
+		<?php } ?>
 		<div class="clear"></div>
 	<?php } else { ?>
 		<div id="collection-introduction">
@@ -284,4 +291,4 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 			<?php } ?>
 		</div><!-- / #collection-introduction -->
 	<?php } ?>
-</form>
+</div>

@@ -24,7 +24,11 @@ $this->css()
 	</li>
 </ul>
 
-<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<?php
+// Only the pagination needs a GET form; one around the whole page would
+// swallow the posts' POST like/delete forms (forms can't nest).
+?>
+<div id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('params', $this->params)
@@ -154,19 +158,20 @@ $this->css()
 			</div><!-- / .post -->
 		<?php } ?>
 	</div><!-- / #posts -->
-	<?php
-	if ($this->total > $this->filters['limit'])
-	{
-		$pageNav = $this->pagination(
-			$this->total,
-			$this->filters['start'],
-			$this->filters['limit']
-		);
-		$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
-		$pageNav->setAdditionalUrlParam('active', 'collections');
-		echo $pageNav->render();
-	}
-	?>
+	<?php if ($this->total > $this->filters['limit']) { ?>
+		<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>">
+			<?php
+			$pageNav = $this->pagination(
+				$this->total,
+				$this->filters['start'],
+				$this->filters['limit']
+			);
+			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+			$pageNav->setAdditionalUrlParam('active', 'collections');
+			echo $pageNav->render();
+			?>
+		</form>
+	<?php } ?>
 	<div class="clear"></div>
 <?php } else { ?>
 	<div id="collection-introduction">
@@ -209,4 +214,4 @@ $this->css()
 		<?php } ?>
 	</div><!-- / #collection-introduction -->
 <?php } ?>
-</form>
+</div>

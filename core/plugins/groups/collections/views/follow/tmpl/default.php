@@ -13,9 +13,9 @@ $database = App::get('db');
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<div id="collections">
 
-	<p class="overview">
+	<div class="overview">
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
@@ -37,7 +37,7 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
 			<?php } ?>
 		<?php } ?>
 		<span class="clear"></span>
-	</p>
+	</div>
 
 	<div id="posts">
 <?php
@@ -191,4 +191,4 @@ else
 }
 ?>
 	</div><!-- / #posts -->
-</form>
+</div>
