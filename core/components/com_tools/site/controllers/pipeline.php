@@ -1164,6 +1164,18 @@ class Pipeline extends SiteController
 
 		$hztv->set('owner', $hzg->cn);
 		$hztv->add('owner', 'apps');
+		$oldgroups = array();
+		if ($id)
+		{
+			foreach (\Components\Tools\Models\Tool::getToolGroups($id) as $g)
+			{
+				$oldgroups[] = $g->cn;
+			}
+			sort($oldgroups);
+		}
+		$newgroups = array_values(array_filter($tool['membergroups']));
+		sort($newgroups);
+
 		$hztv->set('member', $tool['membergroups']);
 
 		// Add repo for new tools
@@ -1225,6 +1237,17 @@ class Pipeline extends SiteController
 		$hzg->update();
 		$hzt->update();
 		$hztv->update(); // @FIXME: look
+
+		// Group restrictions are applied to the tool's files by the middleware;
+		// without this they'd only take effect at the nightly resetfacl
+		if ($id && $oldgroups !== $newgroups)
+		{
+			$out = '';
+			if (!\Components\Tools\Helpers\Utils::middleware('resetfacl', $out))
+			{
+				Log::debug(__FUNCTION__ . "() resetfacl failed for " . $tool['toolname'] . ": $out");
+			}
+		}
 
 		$status = $hztv->toArray();
 		$status['toolstate']    = $hzt->state;
