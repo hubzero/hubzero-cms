@@ -9,6 +9,8 @@ namespace Components\Members\Site;
 
 use Hubzero\Component\Router\Base;
 use User;
+use App;
+use Lang;
 
 /**
  * Routing class for the component

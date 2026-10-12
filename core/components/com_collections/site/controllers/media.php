@@ -16,6 +16,7 @@ use Hubzero\Component\View;
 use Hubzero\Utility\Number;
 use Filesystem;
 use Exception;
+use App;
 use Request;
 use Lang;
 use User;

@@ -9,6 +9,8 @@ namespace Components\Publications\Site;
 
 use Hubzero\Component\Router\Base;
 use Request;
+use App;
+use Lang;
 
 /**
  * Routing class for the component
