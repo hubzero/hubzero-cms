@@ -182,12 +182,17 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 					</tbody>
 				</table>
 				<?php } ?>
-				<?php
-				echo $articles
-						->pagination
-						->setAdditionalUrlParam('search', $this->filters['search'])
-						->setAdditionalUrlParam('sort', $this->filters['sort']);
-				?>
+				<?php // The pagination's per-page box needs a form of its own now that the search lives in the header ?>
+				<form action="<?php echo Route::url($this->category->link()); ?>" method="get">
+					<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+					<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+					<?php
+					echo $articles
+							->pagination
+							->setAdditionalUrlParam('search', $this->filters['search'])
+							->setAdditionalUrlParam('sort', $this->filters['sort']);
+					?>
+				</form>
 			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<aside class="aside">

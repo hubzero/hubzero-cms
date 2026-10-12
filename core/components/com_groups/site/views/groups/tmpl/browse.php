@@ -33,12 +33,17 @@ $this->css()
 	}
 ?>
 
-<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
+<?php
+// The search/filter form doesn't wrap the list: each group carries POST
+// join/cancel forms, and forms can't nest. The filter selects in the nav
+// join it with form=, and the pagination has a form of its own.
+?>
+<div>
 	<section class="main section">
 		<div class="section-inner hz-layout-with-aside">
 			<div class="subject">
 
-				<div class="container data-entry">
+				<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" method="get" id="groups-browse" class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="Search" />
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_LEGEND'); ?></legend>
@@ -48,7 +53,7 @@ $this->css()
 						<input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
 						<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
 					</fieldset>
-				</div><!-- / .container -->
+				</form><!-- / .container -->
 
 				<div class="container">
 					<nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
@@ -69,14 +74,14 @@ $this->css()
 						<ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW'); ?>">
 							<li>
 								<label for="filter-published"><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE'); ?></label>
-								<select name="published" id="filter-published">
+								<select name="published" id="filter-published" form="groups-browse">
 									<option value="1" <?php echo ($this->filters['published'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE'); ?></option>
 									<option value="2" <?php echo ($this->filters['published'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?></option>
 								</select>
 							</li>
 							<li>
 								<label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY'); ?></label>
-								<select name="policy" id="filter-policy">
+								<select name="policy" id="filter-policy" form="groups-browse">
 									<option value=""><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_ALL'); ?></option>
 									<option value="open" <?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></option>
 									<option value="restricted" <?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></option>
@@ -105,20 +110,27 @@ $this->css()
 						<?php } ?>
 					</div><!-- / .groups -->
 					<?php if ($this->groups) : ?>
-						<?php
-						// Initiate paging
-						$pageNav = $this->pagination(
-							$this->total,
-							$this->filters['start'],
-							$this->filters['limit']
-						);
-						$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
-						$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-						$pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
-						$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+						<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" method="get">
+							<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
+							<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+							<input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
+							<input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
+							<input type="hidden" name="published" value="<?php echo $this->escape($this->filters['published']); ?>" />
+							<?php
+							// Initiate paging
+							$pageNav = $this->pagination(
+								$this->total,
+								$this->filters['start'],
+								$this->filters['limit']
+							);
+							$pageNav->setAdditionalUrlParam('index', $this->filters['index']);
+							$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+							$pageNav->setAdditionalUrlParam('policy', $this->filters['policy']);
+							$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 
-						echo $pageNav->render();
-						?>
+							echo $pageNav->render();
+							?>
+						</form>
 					<?php endif; ?>
 				</div><!-- / .container -->
 			</div><!-- / .subject -->
@@ -139,4 +151,4 @@ $this->css()
 		</aside><!-- / .aside -->
 		</div>
 	</section><!-- / .main section -->
-</form>
+</div>

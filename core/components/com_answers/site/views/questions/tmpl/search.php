@@ -60,6 +60,11 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						<input type="hidden" name="task" value="<?php echo $this->escape($this->task); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
+			</form>
+			<?php
+			// The search form ends here and the pagination has its own: the
+			// questions carry POST vote forms, and forms can't nest.
+			?>
 
 				<div class="container">
 					<?php if (!User::isGuest()) { ?>
@@ -242,19 +247,27 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 				<?php } // end if (count($this->results) > 0) { ?>
 						</tbody>
 					</table>
-					<?php
-					// Initiate paging
-					$pageNav = $this->results->pagination;
-					$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
-					$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
-					$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-					$pageNav->setAdditionalUrlParam('area', $this->filters['area']);
-					$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-					echo $pageNav;
-					?>
+					<form method="get" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+						<input type="hidden" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
+						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+						<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+						<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
+						<input type="hidden" name="task" value="<?php echo $this->escape($this->task); ?>" />
+						<?php
+						// Initiate paging
+						$pageNav = $this->results->pagination;
+						$pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+						$pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
+						$pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+						$pageNav->setAdditionalUrlParam('area', $this->filters['area']);
+						$pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
+						echo $pageNav;
+						?>
+					</form>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->
-			</form>
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<div class="container">
