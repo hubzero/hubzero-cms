@@ -563,7 +563,9 @@ class Credentials extends SiteController
 		}
 		elseif (!empty($msg))
 		{
-			$error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_FAILS_REQUIREMENTS');
+			// Say which rules failed (e.g. reusing an earlier password): the
+			// live checklist can't always tell, and showed them all as met
+			$error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_FAILS_REQUIREMENTS') . ' ' . strip_tags(implode(' ', $msg));
 		}
 
 		// If we're resetting password to the current password, just return true
