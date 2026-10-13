@@ -1,5 +1,7 @@
 # The HUBzero® Platform for Scientific Collaboration
 [![Documentation](https://img.shields.io/badge/docs-hubzero.github.io-0fa1ca)](https://hubzero.github.io/hubzero-cms/)
+[![PHP lint](https://github.com/hubzero/hubzero-cms/actions/workflows/php-lint.yml/badge.svg?branch=2.4-main)](https://github.com/hubzero/hubzero-cms/actions/workflows/php-lint.yml)
+[![Tests](https://github.com/hubzero/hubzero-cms/actions/workflows/tests.yml/badge.svg?branch=2.4-main)](https://github.com/hubzero/hubzero-cms/actions/workflows/tests.yml)
 
 ## What is HUBzero?
 
@@ -30,4 +32,16 @@ Please report any bugs or issues at https://help.hubzero.org/support.
 
 ## Testing
 
-This project is tested with BrowserStack.
+Every push to `2.4-main` runs two GitHub Actions workflows, and the badges at
+the top of this page show whether the latest push passed:
+
+- **PHP lint** checks syntax, that global facades are imported where they are
+  used, and that the number of undefined language keys does not grow.
+- **Tests** runs the PHPUnit suite in `core/`.
+
+A red badge or a failure email after a push means that push broke one of
+them; open the run from the badge to see which check failed. Dependabot's
+"composer in /core" runs are separate security-update attempts and are not
+part of this.
+
+This project is also tested with BrowserStack.
