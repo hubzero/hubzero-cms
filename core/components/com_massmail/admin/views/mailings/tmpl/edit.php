@@ -231,7 +231,7 @@ $this->js('edit.js', 'com_massmail');
 					<span class="mm-spacer"></span>
 					<button type="button" class="btn mm-btn-neutral mm-submit" data-task="save"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></button>
 					<?php if (!$isNew) { ?>
-						<a class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=discard&id=' . (int) $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+						<button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" formaction="<?php echo Route::url($base . '&task=discard&id=' . (int) $this->row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></button>
 					<?php } ?>
 				</div>
 				<?php } ?>
@@ -308,23 +308,27 @@ $this->js('edit.js', 'com_massmail');
 					<div class="mm-status-actions">
 						<?php // Pull a held/pending/scheduled mailing back to draft to re-edit.
 						      // It must be re-launched after, which re-runs the send gates. ?>
+						<?php // Each control is a submit button bound to the small POST form
+						      // (#mm-action, after the main form) so state changes never ride
+						      // on a GET link; formaction carries the task and id, the form
+						      // carries the token. ?>
 						<?php if ($this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))) { ?>
-							<a class="btn mm-edit-draft" href="<?php echo Route::url($base . '&task=todraft&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT'); ?></a>
+							<button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?php echo Route::url($base . '&task=todraft&id=' . $this->row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT'); ?></button>
 						<?php } ?>
 						<?php if ($status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')) { ?>
-							<a class="btn btn-success" href="<?php echo Route::url($base . '&task=approve&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icCheck . Lang::txt('COM_MASSMAIL_APPROVE'); ?></a>
+							<button type="submit" form="mm-action" class="btn btn-success" formaction="<?php echo Route::url($base . '&task=approve&id=' . $this->row->get('id')); ?>"><?php echo $icCheck . Lang::txt('COM_MASSMAIL_APPROVE'); ?></button>
 						<?php } ?>
 						<?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
-							<a class="btn btn-success" href="<?php echo Route::url($base . '&task=release&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icSend . Lang::txt('COM_MASSMAIL_RELEASE'); ?></a>
+							<button type="submit" form="mm-action" class="btn btn-success" formaction="<?php echo Route::url($base . '&task=release&id=' . $this->row->get('id')); ?>"><?php echo $icSend . Lang::txt('COM_MASSMAIL_RELEASE'); ?></button>
 						<?php } ?>
 						<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'))) && $canDo->get('core.edit.state')) { ?>
-							<a class="btn" href="<?php echo Route::url($base . '&task=pause&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icPause . Lang::txt('COM_MASSMAIL_PAUSE'); ?></a>
+							<button type="submit" form="mm-action" class="btn" formaction="<?php echo Route::url($base . '&task=pause&id=' . $this->row->get('id')); ?>"><?php echo $icPause . Lang::txt('COM_MASSMAIL_PAUSE'); ?></button>
 						<?php } ?>
 						<?php if ($status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')) { ?>
-							<a class="btn" href="<?php echo Route::url($base . '&task=resume&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icPlay . Lang::txt('COM_MASSMAIL_RESUME'); ?></a>
+							<button type="submit" form="mm-action" class="btn" formaction="<?php echo Route::url($base . '&task=resume&id=' . $this->row->get('id')); ?>"><?php echo $icPlay . Lang::txt('COM_MASSMAIL_RESUME'); ?></button>
 						<?php } ?>
 						<?php if (in_array($status, array(constant($Mailing . '::STATUS_SENDING'), constant($Mailing . '::STATUS_PREPARING'), constant($Mailing . '::STATUS_PAUSED'), constant($Mailing . '::STATUS_PENDING_APPROVAL'), constant($Mailing . '::STATUS_HELD'), constant($Mailing . '::STATUS_SCHEDULED'))) && $canDo->get('core.edit.state')) { ?>
-							<a class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')); ?>" href="<?php echo Route::url($base . '&task=stop&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></a>
+							<button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')); ?>" formaction="<?php echo Route::url($base . '&task=stop&id=' . $this->row->get('id')); ?>"><?php echo $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING'); ?></button>
 						<?php } ?>
 						<?php // Permanent delete -- only for mailings that never started sending
 						      // (a sent/in-flight mailing keeps its record and can only be
@@ -333,7 +337,7 @@ $this->js('edit.js', 'com_massmail');
 						      // so we only surface Delete on the read-only deletable states
 						      // (held / pending / scheduled) which have no Discard button. ?>
 						<?php if (!$editable && $this->row->isDeletable() && $canDo->get('core.delete')) { ?>
-							<a class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')); ?>" href="<?php echo Route::url($base . '&task=delete&id=' . $this->row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING'); ?></a>
+							<button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')); ?>" formaction="<?php echo Route::url($base . '&task=delete&id=' . $this->row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING'); ?></button>
 						<?php } ?>
 					</div>
 
@@ -400,6 +404,14 @@ $this->js('edit.js', 'com_massmail');
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="" />
+		<?php echo Html::input('token'); ?>
+	</form>
+
+	<?php // Carrier for the status/discard buttons above (they reference it via
+	      // form="mm-action"). It holds only the token; the task and id come
+	      // from each button's formaction, so it cannot share the main form,
+	      // whose own hidden "task" field would override them. ?>
+	<form action="<?php echo Route::url($base); ?>" method="post" id="mm-action" class="mm-action-form">
 		<?php echo Html::input('token'); ?>
 	</form>
 

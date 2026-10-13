@@ -79,7 +79,7 @@ $this->js('verify.js', 'com_massmail');
 				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
 				<span class="spacer"></span>
 				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base); ?>"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></a>
-				<a class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" href="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id') . '&' . $token . '=1'); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></a>
+				<button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" formaction="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></button>
 			</div>
 		</div>
 
@@ -172,5 +172,11 @@ $this->js('verify.js', 'com_massmail');
 	<input type="hidden" name="id" value="<?php echo (int) $row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<?php echo Html::input('token'); ?>
+</form>
+
+<?php // Carrier for the Discard button (form="mm-action"): token only, the
+      // task and id come from the button's formaction. ?>
+<form action="<?php echo Route::url($base); ?>" method="post" id="mm-action" class="mm-action-form">
 	<?php echo Html::input('token'); ?>
 </form>

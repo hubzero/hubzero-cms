@@ -167,7 +167,7 @@ class Mailings extends AdminController
 	 */
 	public function todraftTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
@@ -880,7 +880,7 @@ class Mailings extends AdminController
 	 */
 	public function approveTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.approve', $this->_option))
 		{
@@ -926,7 +926,7 @@ class Mailings extends AdminController
 	 */
 	public function releaseTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		// Releasing a held backlog is its own permission (defaults to nobody but
 		// Super Administrators until explicitly granted).
@@ -1023,7 +1023,7 @@ class Mailings extends AdminController
 	 */
 	protected function transition($from, $to, $msg)
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.edit.state', $this->_option))
 		{
@@ -1102,9 +1102,9 @@ class Mailings extends AdminController
 	 */
 	public function deleteTask()
 	{
-		// Accept the token from a GET link (per-item Delete on the view page) as
-		// well as the list's POST form.
-		Request::checkToken(['get', 'post']);
+		// The view page and the list both post; a GET token is no longer accepted,
+		// so a crawler following a link cannot delete.
+		Request::checkToken();
 
 		if (!User::authorise('core.delete', $this->_option))
 		{
@@ -1185,7 +1185,7 @@ class Mailings extends AdminController
 	 */
 	public function discardTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.edit', $this->_option))
 		{
