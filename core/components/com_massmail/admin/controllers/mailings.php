@@ -210,18 +210,32 @@ class Mailings extends AdminController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+		$posted = Request::getArray('fields', array(), 'post', 'none', 2);
+
+		// Only the fields the compose form owns are taken from the request;
+		// everything else on the row (status, counters, actor/timestamp
+		// columns, From) is set by the server below or elsewhere.
+		$fields = array_intersect_key($posted, array_flip(array('id', 'subject', 'body', 'reply_to')));
 
 		// Reply-to must match what the mail server can send as, so only a Super
-		// Administrator may set it; ignore it from anyone else. From is not a
-		// per-mailing field at all -- it's stamped from the options below.
-		unset($fields['from_name'], $fields['from_email']);
+		// Administrator may set it; ignore it from anyone else.
 		if (!User::authorise('core.admin'))
 		{
 			unset($fields['reply_to']);
 		}
 
-		$row = Mailing::oneOrNew($fields['id'])->set($fields);
+		$row = Mailing::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
+
+		// Only a draft (or a new mailing) can be saved from the editor. Anything
+		// that has been launched is read-only here: a stale compose tab must not
+		// rewrite a mailing that is being sent or has already gone out.
+		if (!$row->isEditable())
+		{
+			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
+			return $this->cancelTask();
+		}
+
+		$row->set($fields);
 
 		// The From address is a hub-wide option; always stamp the configured
 		// value so the sender uses it regardless of what was submitted.
@@ -969,7 +983,13 @@ class Mailings extends AdminController
 	 */
 	public function resumeTask()
 	{
-		$this->transition(array(Mailing::STATUS_PAUSED), Mailing::STATUS_SENDING, 'COM_MASSMAIL_RESUMED');
+		// A mailing paused before the cron expanded its recipients has no queue
+		// yet; it goes back to "preparing" so the next tick expands it, rather
+		// than to "sending", where an empty queue would never be picked up.
+		$row = Mailing::oneOrNew(Request::getInt('id', 0));
+		$to  = (int) $row->get('total_recipients') > 0 ? Mailing::STATUS_SENDING : Mailing::STATUS_PREPARING;
+
+		$this->transition(array(Mailing::STATUS_PAUSED), $to, 'COM_MASSMAIL_RESUMED');
 	}
 
 	/**
