@@ -745,11 +745,27 @@ class Customexts extends AdminController
 			$extension = Custom_extensions::oneOrNew($id);
 
 			$museCmd = 'update -r=' . escapeshellarg($extension->path) . ' -f --no-colors';
-			$update_response = Cli::call($museCmd, $task='repository');
-			$update_response = json_decode($update_response == null ? '' : $update_response);
+			$result = Cli::callWithStatus($museCmd, $task='repository');
 
-			// In minimal/json mode muse emits an empty array on success and a non-empty
-			// array of error strings on failure.  A null result means muse did not run.
+			// In minimal/json mode muse prints nothing at all on success (the
+			// "complete" line is suppressed) and exits 0; on failure it prints a
+			// json array of error strings and/or exits non-zero. shell_exec()
+			// could not tell "printed nothing" from "did not run", which is why
+			// the exit status is consulted here.
+			if ($result['status'] !== 0)
+			{
+				$update_response = trim($result['output']) !== '' ? json_decode($result['output']) : null;
+				$update_response = is_array($update_response) ? $update_response : array($result['output'] !== '' ? $result['output'] : 'muse exited with status ' . $result['status']);
+			}
+			else if (trim($result['output']) === '')
+			{
+				$update_response = array();
+			}
+			else
+			{
+				$update_response = json_decode($result['output']);
+			}
+
 			if (is_null($update_response) || !empty($update_response))
 			{
 				$failed[] = array(

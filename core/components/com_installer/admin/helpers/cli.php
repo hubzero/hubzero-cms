@@ -189,6 +189,32 @@ class Cli
 	}
 
 	/**
+	 * Make a muse call and also report its exit status
+	 *
+	 * shell_exec() (used by call()) returns null both when the command could
+	 * not be run and when it ran fine but printed nothing, which is what muse
+	 * does on success in json mode. Callers that need to tell those apart use
+	 * this instead.
+	 *
+	 * @param   string  $cmd   the command to run
+	 * @param   string  $task  the muse task to run (only repository and migration will work)
+	 * @param   array   $args  the command arguments
+	 * @return  array   array('output' => string, 'status' => int exit code)
+	 **/
+	public static function callWithStatus($cmd, $task='repository', $args=array())
+	{
+		$lines  = array();
+		$status = 1;
+
+		exec(self::command($cmd, $task, $args), $lines, $status);
+
+		return array(
+			'output' => implode("\n", $lines),
+			'status' => (int) $status
+		);
+	}
+
+	/**
 	 * Make actual muse calls
 	 *
 	 * @param   string  $cmd   the command to run
@@ -197,6 +223,19 @@ class Cli
 	 * @return  string
 	 **/
 	public static function call($cmd, $task='repository', $args=array())
+	{
+		return shell_exec(self::command($cmd, $task, $args));
+	}
+
+	/**
+	 * Build the muse command line (with sudo to the configured system user)
+	 *
+	 * @param   string  $cmd   the command to run
+	 * @param   string  $task  the muse task to run
+	 * @param   array   $args  the command arguments
+	 * @return  string
+	 **/
+	private static function command($cmd, $task, $args)
 	{
 		static $user = null;
 		static $processUser = null;
@@ -228,6 +267,6 @@ class Cli
 			$cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
 		}
 
-		return shell_exec($cmd);
+		return $cmd;
 	}
 }
