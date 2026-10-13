@@ -139,7 +139,7 @@ $this->js('status.js', 'com_massmail');
 
 <div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>" data-hint="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>">
 	<div class="mm-modal-inner">
-		<button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
+		<button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')); ?>">&times;</button>
 		<div class="mm-modal-body"></div>
 	</div>
 </div>

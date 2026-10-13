@@ -420,7 +420,7 @@ $this->js('edit.js', 'com_massmail');
 	<?php if ($editable) { ?>
 	<div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_RECIPIENTS')); ?>">
 		<div class="mm-modal-inner mm-rcpt-inner">
-			<button type="button" class="mm-modal-close" id="mm-rcpt-close" aria-label="<?php echo $this->escape(Lang::txt('JCLOSE')); ?>">&times;</button>
+			<button type="button" class="mm-modal-close" id="mm-rcpt-close" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')); ?>">&times;</button>
 			<h3><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h3>
 			<p class="mm-preview mm-modal-count"><strong><?php echo Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)); ?></strong></p>
 
