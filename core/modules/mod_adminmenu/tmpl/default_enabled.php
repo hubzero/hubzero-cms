@@ -160,7 +160,7 @@ if (User::authorise('core.manage', 'com_members'))
 
 	$menu->addSeparator();
 	$menu->addChild(
-		new Node(Lang::txt('MOD_MENU_MASS_MAIL_USERS'), 'index.php?option=com_massmail&controller=mailings&task=add', 'class:massmail')
+		new Node(Lang::txt('MOD_MENU_MASS_MAIL'), 'index.php?option=com_massmail&controller=mailings', 'class:massmail')
 	);
 
 	$menu->getParent();
