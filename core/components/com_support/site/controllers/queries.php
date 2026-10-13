@@ -189,8 +189,9 @@ class Queries extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Check for request forgeries (the delete buttons post the token)
-		Request::checkToken(['get', 'post']);
+		// Check for request forgeries (the delete buttons post the token, so
+		// a GET token is not accepted: a followed link cannot delete)
+		Request::checkToken();
 
 		// Incoming
 		$id      = Request::getInt('id', 0);
@@ -411,8 +412,9 @@ class Queries extends SiteController
 			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
-		// Check for request forgeries (the delete buttons post the token)
-		Request::checkToken(['get', 'post']);
+		// Check for request forgeries (the delete buttons post the token, so
+		// a GET token is not accepted: a followed link cannot delete)
+		Request::checkToken();
 
 		// Incoming
 		$ids = Request::getArray('id', array());
