@@ -77,7 +77,7 @@
         "symfony/http-foundation": "5.4.*",
         "symfony/mailchimp-mailer": "v5.4.*",
         "symfony/mailer": "v5.4.*",
-        "symfony/yaml": "4.*",
+        "symfony/yaml": "5.4.*",
         "tecnickcom/tcpdf": "6.8.*",
         "theiconic/name-parser": "0.1.*",
         "wamania/php-stemmer": "^4.0",
