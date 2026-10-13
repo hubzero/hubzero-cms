@@ -165,6 +165,26 @@ class OverrideRootsTest extends Basic
     }
 
     /**
+     * Component directories may omit the com_ prefix (Component::path() looks
+     * for components/wiki before components/com_wiki), and the override
+     * directory is still html/com_wiki
+     *
+     * @return  void
+     */
+    public function testComponentViewFindsOverridesForUnprefixedComponentDirectory()
+    {
+        $view = new ComponentView([
+            'name'      => 'pages',
+            'base_path' => $this->env->root . '/components/wiki/site',
+        ]);
+
+        $this->assertSame(
+            $this->expectedOverrides('com_wiki', 'pages'),
+            array_slice($this->templatePaths($view), 0, 2)
+        );
+    }
+
+    /**
      * @return  void
      */
     public function testPluginViewSearchesSuperGroupThenSiteTemplate()

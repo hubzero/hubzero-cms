@@ -95,7 +95,22 @@ class View extends AbstractView
 	 */
 	protected static function componentFromPath($path)
 	{
-		foreach (array_reverse(preg_split('#[/\\\\]+#', $path)) as $segment)
+		$segments = array_values(array_filter(preg_split('#[/\\\\]+#', (string) $path), 'strlen'));
+
+		// The directory after "components" names the component, with or
+		// without the com_ prefix: Component::path() accepts both
+		for ($i = count($segments) - 1; $i > 0; $i--)
+		{
+			if ($segments[$i - 1] === 'components' && preg_match('/^[A-Z0-9_\.-]+$/i', $segments[$i]))
+			{
+				$name = strtolower($segments[$i]);
+
+				return substr($name, 0, 4) === 'com_' ? $name : 'com_' . $name;
+			}
+		}
+
+		// Not under a components directory: take the nearest com_* segment
+		foreach (array_reverse($segments) as $segment)
 		{
 			if (preg_match('/^com_[A-Z0-9_\.-]+$/i', $segment))
 			{
