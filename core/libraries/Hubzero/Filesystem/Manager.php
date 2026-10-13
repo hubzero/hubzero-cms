@@ -171,12 +171,21 @@ class Manager
 
 		// Create mount manager
 		$manager = new \League\Flysystem\MountManager([
-			$sourceName => $sourceMount,
-			$destName   => $destMount
+			$sourceName => $sourceMount->getFilesystem(),
+			$destName   => $destMount->getFilesystem()
 		]);
 
 		// Do copy
-		return $manager->copy($source, $dest);
+		try
+		{
+			$manager->copy($source, $dest);
+		}
+		catch (\League\Flysystem\FilesystemException $e)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

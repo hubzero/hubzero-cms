@@ -224,8 +224,7 @@ class Entity extends Obj
 	 **/
 	public function isLocal()
 	{
-		$local = 'League\\Flysystem\\Adapter\\Local';
-		return ($this->getAdapter()->getAdapter() instanceof $local);
+		return $this->hasAdapterOrFail()->adapter->isLocal();
 	}
 
 	/**
@@ -433,7 +432,7 @@ class Entity extends Obj
 	{
 		// Don't let this confuse you...we're getting the actual filesystem adapter from
 		// our adapter variable, which is really the filesystem class itself...words can be confusing.
-		return $this->hasAdapterOrFail()->adapter->getAdapter()->applyPathPrefix($this->getPath());
+		return $this->hasAdapterOrFail()->adapter->applyPathPrefix($this->getPath());
 	}
 
 	/**

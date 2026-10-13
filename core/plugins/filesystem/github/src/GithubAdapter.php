@@ -9,15 +9,24 @@ namespace Hubzero\Plugin\Filesystem\Github;
 
 use Github\Client;
 use Github\Exception\RuntimeException;
-use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Adapter\Polyfill\StreamedTrait;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use League\Flysystem\Exception;
-use League\Flysystem\Util\MimeType;
+use League\Flysystem\DirectoryAttributes;
+use League\Flysystem\FileAttributes;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\UnableToCopyFile;
+use League\Flysystem\UnableToCreateDirectory;
+use League\Flysystem\UnableToDeleteDirectory;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\UnableToMoveFile;
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToRetrieveMetadata;
+use League\Flysystem\UnableToSetVisibility;
+use League\Flysystem\UnableToWriteFile;
+use League\Flysystem\Visibility;
+use League\MimeTypeDetection\ExtensionMimeTypeDetector;
 
 /**
- * Read-only Flysystem (v1) adapter for browsing a GitHub repository.
+ * Read-only Flysystem (v3) adapter for browsing a GitHub repository.
  *
  * This is a first-party replacement for the abandoned
  * potherca/flysystem-github library (last released 2016, knplabs v1 only).
@@ -28,31 +37,17 @@ use League\Flysystem\Util\MimeType;
  * browse / read / download only (the UI disables upload, new-folder, move,
  * rename and delete for github providers), so only the read side of the
  * Flysystem adapter contract is implemented; mutating operations throw.
- *
- * The array shapes returned here intentionally match what the old adapter
- * produced so existing consumers (com_projects connected files) need no
- * changes.
  **/
-class GithubAdapter extends AbstractAdapter
+class GithubAdapter implements FilesystemAdapter
 {
-	use StreamedTrait;
-
 	const ERROR_NOT_FOUND = 'Not Found';
 
-	const KEY_BLOB       = 'blob';
-	const KEY_CONTENTS   = 'contents';
-	const KEY_DIRECTORY  = 'dir';
-	const KEY_FILE       = 'file';
-	const KEY_FILENAME   = 'basename';
-	const KEY_MODE       = 'mode';
-	const KEY_NAME       = 'name';
-	const KEY_PATH       = 'path';
-	const KEY_SIZE       = 'size';
-	const KEY_STREAM     = 'stream';
-	const KEY_TIMESTAMP  = 'timestamp';
-	const KEY_TREE       = 'tree';
-	const KEY_TYPE       = 'type';
-	const KEY_VISIBILITY = 'visibility';
+	const KEY_BLOB = 'blob';
+	const KEY_MODE = 'mode';
+	const KEY_PATH = 'path';
+	const KEY_SIZE = 'size';
+	const KEY_TREE = 'tree';
+	const KEY_TYPE = 'type';
 
 	/** @var Client */
 	private $client;
@@ -75,6 +70,9 @@ class GithubAdapter extends AbstractAdapter
 	/** @var string|null */
 	private $token;
 
+	/** @var ExtensionMimeTypeDetector */
+	private $mimeTypeDetector;
+
 	/**
 	 * Constructor
 	 *
@@ -85,7 +83,7 @@ class GithubAdapter extends AbstractAdapter
 	 * @param   Client|null  $client      Pre-built knplabs client (optional)
 	 * @throws  \InvalidArgumentException  When the repository name is malformed
 	 **/
-	public function __construct($repository, $token = null, $reference = 'HEAD', $branch = 'master', Client $client = null)
+	public function __construct($repository, $token = null, $reference = 'HEAD', $branch = 'master', ?Client $client = null)
 	{
 		$repository = $this->normalizeRepository($repository);
 
@@ -102,10 +100,11 @@ class GithubAdapter extends AbstractAdapter
 
 		list($this->vendor, $this->package) = explode('/', $repository);
 
-		$this->token     = $token;
-		$this->reference = (string) $reference;
-		$this->branch    = (string) $branch;
-		$this->client    = $client ?: new Client();
+		$this->token            = $token;
+		$this->reference        = (string) $reference;
+		$this->branch           = (string) $branch;
+		$this->client           = $client ?: new Client();
+		$this->mimeTypeDetector = new ExtensionMimeTypeDetector();
 	}
 
 	/**
@@ -215,116 +214,135 @@ class GithubAdapter extends AbstractAdapter
 			|| strpos($message, 'requires authentication') !== false;
 	}
 
+	//////////////////////////////// EXISTENCE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	/**
-	 * Check that a file or directory exists in the repository
+	 * Does a file exist at this path?
 	 *
 	 * @param   string  $path
 	 * @return  bool
 	 **/
-	public function has($path)
+	public function fileExists(string $path): bool
 	{
 		// Route through showMetadata() rather than knplabs' exists(): exists()
 		// swallows a rejected-credential error and returns false, which would
 		// bypass the anonymous retry in readCall() and make a public file look
 		// missing whenever a stale token is stored. show() throws instead, so
 		// the fallback applies; a genuinely absent path returns false.
-		return $this->showMetadata($path) !== false;
+		$metadata = $this->showMetadata($path);
+
+		return $metadata !== false && !self::isDirectoryListing($metadata);
 	}
+
+	/**
+	 * Does a directory exist at this path?
+	 *
+	 * @param   string  $path
+	 * @return  bool
+	 **/
+	public function directoryExists(string $path): bool
+	{
+		if (trim($path, '/') === '')
+		{
+			return true;
+		}
+
+		$metadata = $this->showMetadata($path);
+
+		return $metadata !== false && self::isDirectoryListing($metadata);
+	}
+
+	//////////////////////////////// READ \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 	/**
 	 * Read a file
 	 *
 	 * @param   string  $path
-	 * @return  array
+	 * @return  string
 	 **/
-	public function read($path)
+	public function read(string $path): string
 	{
-		return [self::KEY_CONTENTS => $this->readCall(function () use ($path) {
-			return $this->contents()->download($this->vendor, $this->package, $path, $this->reference);
-		})];
-	}
-
-	/**
-	 * List contents of a directory.
-	 *
-	 * Mirrors the previous adapter: the full recursive tree under $path is
-	 * returned in one shot.
-	 *
-	 * @param   string  $path
-	 * @param   bool    $recursive
-	 * @return  array
-	 **/
-	public function listContents($path = '', $recursive = false)
-	{
-		return $this->recursiveMetadata($path, true);
-	}
-
-	/**
-	 * Get the metadata for a file or directory.
-	 *
-	 * @param   string  $path
-	 * @return  array|false
-	 **/
-	public function getMetadata($path)
-	{
-		$metadata = $this->showMetadata($path);
-
-		// When contents()->show() is given a directory it returns a numerically
-		// indexed list of entries, so the first value is itself an array.
-		if (is_array($metadata) && is_array(current($metadata)))
+		try
 		{
-			return [
-				self::KEY_TYPE => self::KEY_DIRECTORY,
-				self::KEY_SIZE => 0,
-				self::KEY_PATH => $path
-			];
+			return (string) $this->readCall(function () use ($path) {
+				return $this->contents()->download($this->vendor, $this->package, $path, $this->reference);
+			});
 		}
-
-		return $metadata;
+		catch (RuntimeException $e)
+		{
+			throw UnableToReadFile::fromLocation($path, $e->getMessage(), $e);
+		}
 	}
 
 	/**
-	 * Get the size of a file.
+	 * Read a file as a stream
 	 *
 	 * @param   string  $path
-	 * @return  array|false
+	 * @return  resource
 	 **/
-	public function getSize($path)
+	public function readStream(string $path)
 	{
-		return $this->showMetadata($path);
+		$contents = $this->read($path);
+
+		$stream = fopen('php://temp', 'w+b');
+		fwrite($stream, $contents);
+		rewind($stream);
+
+		return $stream;
 	}
 
 	/**
-	 * Get the mimetype of a file.
+	 * List the contents of a directory.
+	 *
+	 * The whole repository tree is fetched in one call and filtered here, as
+	 * GitHub's non-recursive tree endpoint only describes the root.
+	 *
+	 * @param   string  $path
+	 * @param   bool    $deep
+	 * @return  iterable<FileAttributes|DirectoryAttributes>
+	 **/
+	public function listContents(string $path, bool $deep): iterable
+	{
+		foreach ($this->treeEntries($path, $deep) as $entry)
+		{
+			yield $this->attributes($entry);
+		}
+	}
+
+	//////////////////////////////// METADATA \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+	/**
+	 * Get the MIME type of a file.
 	 *
 	 * GitHub does not report a MIME type, so it is guessed from the extension.
 	 *
 	 * @param   string  $path
-	 * @return  array
+	 * @return  FileAttributes
 	 **/
-	public function getMimetype($path)
+	public function mimeType(string $path): FileAttributes
 	{
-		$mimeType = null;
+		$mimeType = $this->mimeTypeDetector->detectMimeTypeFromPath($path);
 
-		if (strrpos($path, '.') > 1)
+		if ($mimeType === null)
 		{
-			$extension = substr($path, strrpos($path, '.') + 1);
-			$mimeType  = MimeType::detectByFileExtension($extension) ?: 'text/plain';
+			$mimeType = 'text/plain';
 		}
 
-		return ['mimetype' => $mimeType];
+		return new FileAttributes($path, null, null, null, $mimeType);
 	}
 
 	/**
 	 * Get the last-modified timestamp of a file.
 	 *
 	 * @param   string  $path
-	 * @return  array
+	 * @return  FileAttributes
 	 **/
-	public function getTimestamp($path)
+	public function lastModified(string $path): FileAttributes
 	{
 		// Display-only metadata: a commit lookup can legitimately fail (e.g. the
 		// default branch is not "master"), and that must never break browsing.
+		$timestamp = 0;
+
 		try
 		{
 			$commits = $this->commitsForFile($path);
@@ -332,79 +350,105 @@ class GithubAdapter extends AbstractAdapter
 
 			if (isset($updated['commit']['committer']['date']))
 			{
-				$time = new \DateTime($updated['commit']['committer']['date']);
-
-				return [self::KEY_TIMESTAMP => $time->getTimestamp()];
+				$time      = new \DateTime($updated['commit']['committer']['date']);
+				$timestamp = $time->getTimestamp();
 			}
 		}
 		catch (\Throwable $e)
 		{
-			// fall through to a safe default
+			// fall through to the safe default
 		}
 
-		return [self::KEY_TIMESTAMP => 0];
+		return new FileAttributes($path, null, null, $timestamp);
 	}
 
 	/**
-	 * Get the visibility of a file.
+	 * Get the size of a file.
 	 *
 	 * @param   string  $path
-	 * @return  array|false
+	 * @return  FileAttributes
 	 **/
-	public function getVisibility($path)
+	public function fileSize(string $path): FileAttributes
 	{
-		$metadata = $this->recursiveMetadata($path, false);
+		$metadata = $this->showMetadata($path);
 
-		return isset($metadata[0]) ? $metadata[0] : false;
+		if ($metadata === false || self::isDirectoryListing($metadata))
+		{
+			throw UnableToRetrieveMetadata::fileSize($path, self::ERROR_NOT_FOUND);
+		}
+
+		return new FileAttributes($path, isset($metadata[self::KEY_SIZE]) ? (int) $metadata[self::KEY_SIZE] : null);
+	}
+
+	/**
+	 * Get the visibility of a file, from its mode in the git tree.
+	 *
+	 * @param   string  $path
+	 * @return  FileAttributes
+	 **/
+	public function visibility(string $path): FileAttributes
+	{
+		foreach ($this->treeEntries(dirname($path) === '.' ? '' : dirname($path), false) as $entry)
+		{
+			if ($entry[self::KEY_PATH] === $path)
+			{
+				return new FileAttributes($path, null, $this->visibilityFromMode($entry));
+			}
+		}
+
+		throw UnableToRetrieveMetadata::visibility($path, self::ERROR_NOT_FOUND);
 	}
 
 	//////////////////////////////// WRITE (unsupported) \\\\\\\\\\\\\\\\\\\\\\\\
 
-	public function write($path, $contents, Config $config)
+	public function write(string $path, string $contents, Config $config): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToWriteFile::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function update($path, $contents, Config $config)
+	public function writeStream(string $path, $contents, Config $config): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToWriteFile::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function rename($path, $newpath)
+	public function delete(string $path): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToDeleteFile::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function copy($path, $newpath)
+	public function deleteDirectory(string $path): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToDeleteDirectory::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function delete($path)
+	public function createDirectory(string $path, Config $config): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToCreateDirectory::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function deleteDir($dirname)
+	public function setVisibility(string $path, string $visibility): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToSetVisibility::atLocation($path, 'Write actions are not supported for GitHub connections');
 	}
 
-	public function createDir($dirname, Config $config)
+	public function move(string $source, string $destination, Config $config): void
 	{
-		throw new Exception('Write actions are not supported for GitHub connections');
+		throw UnableToMoveFile::fromLocationTo($source, $destination);
 	}
 
-	public function setVisibility($path, $visibility)
+	public function copy(string $source, string $destination, Config $config): void
 	{
-		return false;
+		throw UnableToCopyFile::fromLocationTo($source, $destination);
 	}
 
 	//////////////////////////////// UTILITY METHODS \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 	/**
 	 * Fetch raw metadata for a single path, normalizing GitHub's "Not Found"
-	 * error into a false return (as Flysystem expects).
+	 * error into a false return.
+	 *
+	 * For a file this is an associative array (type, size, sha, …); for a
+	 * directory it is a numerically indexed list of entries.
 	 *
 	 * @param   string  $path
 	 * @return  array|false
@@ -429,30 +473,40 @@ class GithubAdapter extends AbstractAdapter
 	}
 
 	/**
-	 * Pull the repository's git tree and return normalized metadata for the
-	 * entries under $path.
+	 * Is a contents()->show() response a directory listing?
+	 *
+	 * @param   mixed  $metadata
+	 * @return  bool
+	 **/
+	private static function isDirectoryListing($metadata)
+	{
+		return is_array($metadata) && is_array(current($metadata));
+	}
+
+	/**
+	 * Pull the repository's git tree and return the entries under $path.
 	 *
 	 * @param   string  $path
 	 * @param   bool    $recursive
 	 * @return  array
 	 **/
-	private function recursiveMetadata($path, $recursive)
+	private function treeEntries($path, $recursive)
 	{
 		// If the response is truncated the tree exceeded GitHub's limit and
 		// additional calls would be needed to page through it.
-		$info = $this->readCall(function () use ($recursive) {
+		$info = $this->readCall(function () {
 			$this->authenticate();
 			return $this->client->api('git')->trees()->show(
 				$this->vendor,
 				$this->package,
 				$this->reference,
-				$recursive
+				true
 			);
 		});
 
 		$tree = isset($info[self::KEY_TREE]) ? $info[self::KEY_TREE] : [];
 
-		return $this->normalizeTree($this->filterTree($tree, $path, $recursive));
+		return $this->filterTree($tree, $path, $recursive);
 	}
 
 	/**
@@ -465,9 +519,11 @@ class GithubAdapter extends AbstractAdapter
 	 **/
 	private function filterTree(array $tree, $path, $recursive)
 	{
-		if (!empty($path))
+		$path = trim((string) $path, '/');
+
+		if ($path !== '')
 		{
-			$path = rtrim($path, '/') . '/';
+			$path .= '/';
 
 			return array_filter($tree, function ($entry) use ($path, $recursive) {
 				if (strpos($entry[self::KEY_PATH], $path) !== 0)
@@ -495,34 +551,41 @@ class GithubAdapter extends AbstractAdapter
 	}
 
 	/**
-	 * Normalize git-tree entries into the shape the file browser expects.
+	 * Turn a git tree entry into Flysystem attributes
 	 *
-	 * @param   array  $tree
-	 * @return  array
+	 * @param   array  $entry
+	 * @return  FileAttributes|DirectoryAttributes
 	 **/
-	private function normalizeTree($tree)
+	private function attributes(array $entry)
 	{
-		$result = [];
+		$type = isset($entry[self::KEY_TYPE]) ? $entry[self::KEY_TYPE] : self::KEY_BLOB;
 
-		if (is_array(current($tree)) === false)
+		if ($type === self::KEY_TREE)
 		{
-			$tree = [$tree];
+			return new DirectoryAttributes($entry[self::KEY_PATH], $this->visibilityFromMode($entry));
 		}
 
-		foreach ($tree as $entry)
+		return new FileAttributes(
+			$entry[self::KEY_PATH],
+			isset($entry[self::KEY_SIZE]) ? (int) $entry[self::KEY_SIZE] : null,
+			$this->visibilityFromMode($entry)
+		);
+	}
+
+	/**
+	 * Derive visibility from a tree entry's unix mode.
+	 *
+	 * @param   array  $entry
+	 * @return  string|null
+	 **/
+	private function visibilityFromMode(array $entry)
+	{
+		if (!isset($entry[self::KEY_MODE]))
 		{
-			$this->setEntryName($entry);
-			$this->setEntryType($entry);
-			$this->setEntryVisibility($entry);
-
-			$this->setDefault($entry, self::KEY_CONTENTS);
-			$this->setDefault($entry, self::KEY_STREAM);
-			$this->setDefault($entry, self::KEY_TIMESTAMP);
-
-			$result[] = $entry;
+			return null;
 		}
 
-		return $result;
+		return (octdec($entry[self::KEY_MODE]) & 0044) ? Visibility::PUBLIC : Visibility::PRIVATE;
 	}
 
 	/**
@@ -543,84 +606,5 @@ class GithubAdapter extends AbstractAdapter
 				['path' => $path]
 			);
 		});
-	}
-
-	/**
-	 * @param   array   $entry
-	 * @param   string  $key
-	 * @return  void
-	 **/
-	private function setDefault(array &$entry, $key)
-	{
-		if (!isset($entry[$key]))
-		{
-			$entry[$key] = false;
-		}
-	}
-
-	/**
-	 * Map GitHub's tree object type to Flysystem's file/dir type.
-	 *
-	 * @param   array  $entry
-	 * @return  void
-	 **/
-	private function setEntryType(&$entry)
-	{
-		if (isset($entry[self::KEY_TYPE]))
-		{
-			if ($entry[self::KEY_TYPE] === self::KEY_BLOB)
-			{
-				$entry[self::KEY_TYPE] = self::KEY_FILE;
-			}
-			elseif ($entry[self::KEY_TYPE] === self::KEY_TREE)
-			{
-				$entry[self::KEY_TYPE] = self::KEY_DIRECTORY;
-			}
-		}
-	}
-
-	/**
-	 * Derive visibility from the tree entry's unix mode.
-	 *
-	 * @param   array  $entry
-	 * @return  void
-	 **/
-	private function setEntryVisibility(&$entry)
-	{
-		if (isset($entry[self::KEY_MODE]))
-		{
-			$entry[self::KEY_VISIBILITY] = ($entry[self::KEY_MODE] & 0044)
-				? AdapterInterface::VISIBILITY_PUBLIC
-				: AdapterInterface::VISIBILITY_PRIVATE;
-		}
-		else
-		{
-			$entry[self::KEY_VISIBILITY] = false;
-		}
-	}
-
-	/**
-	 * Ensure every entry carries a name.
-	 *
-	 * @param   array  $entry
-	 * @return  void
-	 **/
-	private function setEntryName(&$entry)
-	{
-		if (!isset($entry[self::KEY_NAME]))
-		{
-			if (isset($entry[self::KEY_FILENAME]))
-			{
-				$entry[self::KEY_NAME] = $entry[self::KEY_FILENAME];
-			}
-			elseif (isset($entry[self::KEY_PATH]))
-			{
-				$entry[self::KEY_NAME] = $entry[self::KEY_PATH];
-			}
-			else
-			{
-				$entry[self::KEY_NAME] = null;
-			}
-		}
 	}
 }

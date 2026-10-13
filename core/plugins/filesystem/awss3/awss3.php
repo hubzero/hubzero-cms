@@ -8,11 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 use Aws\S3\S3Client;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use League\Flysystem\Filesystem;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 
 /**
  * Plugin class for AWS S3 filesystem connectivity
@@ -44,7 +41,7 @@ class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
 			'region'  => $region,
 			'version' => 'latest',
 		]);
-		$adapter = new AwsS3Adapter($client, $bucket, $path);
+		$adapter = new AwsS3V3Adapter($client, $bucket, $path);
 		return $adapter;
 	}
 }

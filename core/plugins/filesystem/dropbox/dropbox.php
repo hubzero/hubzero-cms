@@ -9,8 +9,8 @@ require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient
 require_once Component::path('projects') . '/models/orm/connection.php';
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
-use Srmklive\Dropbox\Adapter\DropboxAdapter;
-use Srmklive\Dropbox\Client\DropboxClient;
+use Spatie\FlysystemDropbox\DropboxAdapter;
+use Spatie\Dropbox\Client as DropboxClient;
 use Hubzero\Utility\Arr;
 use Hubzero\Session;
 

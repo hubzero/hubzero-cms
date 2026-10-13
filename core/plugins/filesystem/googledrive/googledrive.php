@@ -10,9 +10,7 @@ defined('_HZEXEC_') or die();
 
 require_once \Component::path('projects') . '/models/orm/connection.php';
 
-use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
+use Masbug\Flysystem\GoogleDriveAdapter;
 use Hubzero\Utility\Arr;
 
 /**
@@ -75,7 +73,7 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
 		$path = end($path);
 		$client->setAccessToken($accessToken);
 		$service = new \Google_Service_Drive($client);
-		$adapter = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, $path);
+		$adapter = new GoogleDriveAdapter($service, $path);
 		return $adapter;
 	}
 }

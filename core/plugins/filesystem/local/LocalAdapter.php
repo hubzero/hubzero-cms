@@ -8,23 +8,52 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PathPrefixer;
+
 /**
- * HUBzero extension of flysystem local adapter
+ * Local adapter that remembers its root, so the CMS can turn a path relative
+ * to the filesystem back into an absolute one (Flysystem 3 keeps the prefix
+ * private).
  */
-class LocalAdapter extends \League\Flysystem\Adapter\Local
+class LocalAdapter extends LocalFilesystemAdapter
 {
 	/**
-	 * Map file info to normalized key names
-	 *
-	 * @param   \SplFileInfo  $file  The original file info class
-	 * @return  array
+	 * @var  PathPrefixer
 	 */
-	protected function mapFileInfo(SplFileInfo $file)
+	private $pathPrefixer;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   string  $root
+	 * @return  void
+	 */
+	public function __construct(string $root)
 	{
-		$default = parent::mapFileInfo($file);
+		parent::__construct($root);
 
-		$default['owner'] = $file->getOwner();
+		$this->pathPrefixer = new PathPrefixer($root, DIRECTORY_SEPARATOR);
+	}
 
-		return $default;
+	/**
+	 * Get the root path
+	 *
+	 * @return  string
+	 */
+	public function getPathPrefix()
+	{
+		return $this->pathPrefixer->prefixPath('');
+	}
+
+	/**
+	 * Turn a path relative to the root into an absolute path
+	 *
+	 * @param   string  $path
+	 * @return  string
+	 */
+	public function applyPathPrefix($path)
+	{
+		return $this->pathPrefixer->prefixPath((string) $path);
 	}
 }
