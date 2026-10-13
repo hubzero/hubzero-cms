@@ -6,7 +6,7 @@
 		var modal = document.getElementById('mm-modal');
 		if (!modal) { return; }
 		var body = modal.querySelector('.mm-modal-body');
-		var hint = modal.getAttribute('data-hint') || '';
+		var hint = modal.getAttribute('data-enlarge-hint') || '';
 
 		function closeModal() { modal.classList.remove('open'); body.innerHTML = ''; }
 

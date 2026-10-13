@@ -137,7 +137,9 @@ $this->js('status.js', 'com_massmail');
 	<p class="mm-legend"><span class="mm-legend-swatch"></span><?php echo Lang::txt('COM_MASSMAIL_CHART_QUEUE_OVERLAY', number_format($this->hourly)); ?></p>
 </div>
 
-<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>" data-hint="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>">
+<?php // data-enlarge-hint, not data-hint: the admin template styles [data-hint] as an
+      // inline tooltip anchor, which overrode this modal's display:none. ?>
+<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')); ?>" data-enlarge-hint="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')); ?>">
 	<div class="mm-modal-inner">
 		<button type="button" class="mm-modal-close" aria-label="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')); ?>">&times;</button>
 		<div class="mm-modal-body"></div>
