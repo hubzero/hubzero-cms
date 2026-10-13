@@ -34,12 +34,7 @@ $this->css()
 	</div>
 </header>
 
-<?php
-// The search and pagination are separate GET forms rather than one form
-// around the page: the posts carry POST like forms, and a form can't be
-// nested in another (the browser drops the inner one).
-?>
-<div id="collections">
+<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
 	<?php
 	$this->view('_submenu')
 	     ->set('option', $this->option)
@@ -50,7 +45,6 @@ $this->css()
 	?>
 
 	<section class="section filters">
-		<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>">
 		<fieldset class="input-group">
 			<span class="input-cell">
 				<label for="filter-search">
@@ -62,7 +56,6 @@ $this->css()
 				<input type="submit" class="btn" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
 			</span>
 		</fieldset>
-		</form>
 	</section>
 
 	<section class="main section">
@@ -189,19 +182,17 @@ $this->css()
 					</div><!-- / .post -->
 				<?php } ?>
 			</div><!-- / #posts -->
-			<?php if ($this->total > $this->filters['limit']) { ?>
-				<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>">
-					<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-					<?php
-					// Initiate paging
-					echo $this->pagination(
-						$this->total,
-						$this->filters['start'],
-						$this->filters['limit']
-					);
-					?>
-				</form>
-			<?php } ?>
+			<?php
+			if ($this->total > $this->filters['limit'])
+			{
+				// Initiate paging
+				echo $this->pagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+			}
+			?>
 			<div class="clear"></div>
 		<?php } else { ?>
 			<div id="collection-introduction">
@@ -222,4 +213,4 @@ $this->css()
 			</div><!-- / #collections-introduction -->
 		<?php } ?>
 	</section><!-- / .main section -->
-</div>
+</form>

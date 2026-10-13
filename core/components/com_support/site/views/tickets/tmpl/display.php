@@ -172,38 +172,20 @@ $this->css()
 							<input type="submit" class="submit" value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>" />
 						</fieldset>
 					</div>
-
-					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="task" value="display" />
-				</form>
-				<?php
-				// The filter form ends here and the pagination has its own: the
-				// tickets carry POST delete forms, and forms can't nest.
-				?>
 					<table id="tktlist">
 						<tfoot>
 							<tr>
 								<td colspan="8">
-									<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>" method="post">
-										<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-										<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-										<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
-										<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
-										<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-										<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-										<input type="hidden" name="task" value="display" />
-										<?php
-										$pageNav = $this->pagination(
-											$this->total,
-											$this->filters['start'],
-											$this->filters['limit']
-										);
-										$pageNav->setAdditionalUrlParam('show', $this->filters['show']);
-										$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-										echo $pageNav->render();
-										?>
-									</form>
+									<?php
+									$pageNav = $this->pagination(
+										$this->total,
+										$this->filters['start'],
+										$this->filters['limit']
+									);
+									$pageNav->setAdditionalUrlParam('show', $this->filters['show']);
+									$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+									echo $pageNav->render();
+									?>
 								</td>
 							</tr>
 						</tfoot>
@@ -324,6 +306,11 @@ $this->css()
 					?>
 						</tbody>
 					</table>
+
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="task" value="display" />
+				</form>
 			</div><!-- / .pane-inner -->
 		</div><!-- / .pane -->
 	</div><!-- / .panel-row -->

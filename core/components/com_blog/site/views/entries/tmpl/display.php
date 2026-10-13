@@ -81,18 +81,13 @@ $rows = $this->archive->entries($this->filters)
 </header>
 
 <section class="main section">
-	<?php
-	// The search and pagination are separate GET forms rather than one form
-	// around the page: the entries carry POST delete forms, and a form can't
-	// be nested in another (the browser drops the inner one).
-	?>
-	<div class="section-inner hz-layout-with-aside">
+	<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="section-inner hz-layout-with-aside">
 		<div class="subject">
 			<?php if ($this->getError()) { ?>
 				<p class="error"><?php echo $this->getError(); ?></p>
 			<?php } ?>
 
-			<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="container data-entry">
+			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_BLOG_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<legend><?php echo Lang::txt('COM_BLOG_SEARCH_LEGEND'); ?></legend>
@@ -100,7 +95,7 @@ $rows = $this->archive->entries($this->filters)
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				</fieldset>
-			</form><!-- / .container -->
+			</div><!-- / .container -->
 
 			<div class="container">
 				<h3>
@@ -213,18 +208,13 @@ $rows = $this->archive->entries($this->filters)
 					<?php } ?>
 					</ol>
 
-					<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
-						<input type="hidden" name="year" value="<?php echo $this->escape($this->filters['year']); ?>" />
-						<input type="hidden" name="month" value="<?php echo $this->escape($this->filters['month']); ?>" />
-						<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
-						<?php
-						echo $rows
-							->pagination
-							->setAdditionalUrlParam('year', $this->filters['year'])
-							->setAdditionalUrlParam('month', $this->filters['month'])
-							->setAdditionalUrlParam('search', $this->filters['search']);
-						?>
-					</form>
+					<?php
+					echo $rows
+						->pagination
+						->setAdditionalUrlParam('year', $this->filters['year'])
+						->setAdditionalUrlParam('month', $this->filters['month'])
+						->setAdditionalUrlParam('search', $this->filters['search']);
+					?>
 				<?php } else { ?>
 					<p class="warning"><?php echo Lang::txt('COM_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
@@ -329,5 +319,5 @@ $rows = $this->archive->entries($this->filters)
 				<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 		</aside><!-- / .aside -->
-	</div>
+	</form>
 </section><!-- / .main section -->

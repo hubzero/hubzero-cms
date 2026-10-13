@@ -15,10 +15,8 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
-	// The filter selects join the search form with form=, so use the element's
-	// form rather than the closest one
 	$('.entries-filters select').on('change', function(e){
-		$(this.form).submit();
+		$(this).closest('form').submit();
 	});
 
 	// Create the dropdown base

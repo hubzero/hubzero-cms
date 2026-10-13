@@ -13,9 +13,9 @@ $base = $this->member->link() . '&active=' . $this->name;
 $this->css();
 ?>
 
-<div id="collections">
+<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
 
-	<div class="overview">
+	<p class="overview">
 		<span class="title count">
 			"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 		</span>
@@ -34,7 +34,7 @@ $this->css();
 	<?php } ?>
 <?php } ?>
 		<span class="clear"></span>
-	</div>
+	</p>
 
 	<div id="posts">
 <?php
@@ -184,4 +184,4 @@ else
 }
 ?>
 	</div><!-- / #posts -->
-</div>
+</form>

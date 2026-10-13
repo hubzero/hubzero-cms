@@ -24,11 +24,7 @@ $this->css()
 	</li>
 </ul>
 
-<?php
-// Only the pagination needs a GET form; one around the whole page would
-// swallow the collections' POST follow/delete forms (forms can't nest).
-?>
-<div id="collections">
+<form method="get" action="<?php echo Route::url($base . '&task=all'); ?>" id="collections">
 	<?php
 	$this->view('_submenu', 'collection')
 	     ->set('option', $this->option)
@@ -70,7 +66,7 @@ $this->css()
 		</div>
 	</fieldset> */ ?>
 	<?php if (!User::isGuest() && !$this->params->get('access-create-collection')) { ?>
-		<div class="guest-options">
+		<p class="guest-options">
 			<?php if ($this->model->isFollowing()) { ?>
 				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=unfollow'); ?>" class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?>">
 					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
@@ -80,7 +76,7 @@ $this->css()
 					<span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_ALL'); ?></span>
 				</button>
 			<?php } ?>
-		</div>
+		</p>
 	<?php } ?>
 
 <?php if ($this->rows->total() > 0) { ?>
@@ -192,21 +188,20 @@ $this->css()
 		</div><!-- / .post -->
 	<?php } ?>
 	</div><!-- / #posts -->
-	<?php if ($this->total > $this->filters['limit']) { ?>
-		<form method="get" action="<?php echo Route::url($base . '&task=all'); ?>">
-			<?php
-			$pageNav = $this->pagination(
-				$this->total,
-				$this->filters['start'],
-				$this->filters['limit']
-			);
-			$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
-			$pageNav->setAdditionalUrlParam('active', 'collections');
-			$pageNav->setAdditionalUrlParam('task', 'all');
-			echo $pageNav->render();
-			?>
-		</form>
-	<?php } ?>
+	<?php
+	if ($this->total > $this->filters['limit'])
+	{
+		$pageNav = $this->pagination(
+			$this->total,
+			$this->filters['start'],
+			$this->filters['limit']
+		);
+		$pageNav->setAdditionalUrlParam('id', $this->member->get('id'));
+		$pageNav->setAdditionalUrlParam('active', 'collections');
+		$pageNav->setAdditionalUrlParam('task', 'all');
+		echo $pageNav->render();
+	}
+	?>
 	<div class="clear"></div>
 <?php } else { ?>
 		<div id="collection-introduction">
@@ -234,4 +229,4 @@ $this->css()
 			<?php } ?>
 		</div><!-- / #collection-introduction -->
 <?php } ?>
-</div>
+</form>

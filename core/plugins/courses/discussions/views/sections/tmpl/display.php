@@ -40,11 +40,12 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 					<?php } ?>
 				</span>
 
+				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
+				<form action="<?php echo Route::url($base); ?>" method="post">
+				<?php } ?>
 				<table class="entries categories">
 					<caption>
 						<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
-							<?php // The rename form stays in the caption so it doesn't swallow the categories' POST delete forms (forms can't nest) ?>
-							<form action="<?php echo Route::url($base); ?>" method="post" class="inline-form">
 								<!-- <span id="s<?php echo $section->get('id'); ?>"></span> [!] This seems to cause some serious display issues -->
 								<input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
 								<input type="submit" value="<?php echo Lang::txt('Save'); ?>" />
@@ -58,7 +59,6 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 								<input type="hidden" name="unit" value="manage" />
 								<input type="hidden" name="active" value="discussions" />
 								<?php echo Html::input('token'); ?>
-							</form>
 						<?php } else { ?>
 							<?php echo $this->escape(stripslashes($section->get('title'))); ?>
 						<?php } ?>
@@ -140,6 +140,9 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
 						<?php } ?>
 					</tbody>
 				</table>
+				<?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
+				</form>
+				<?php } ?>
 			</div><!-- /.container -->
 		<?php } // foreach ?>
 

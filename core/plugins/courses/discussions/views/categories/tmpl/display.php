@@ -28,11 +28,6 @@ $base = $this->offering->link() . '&active=forum';
 					<input type="hidden" name="action" value="search" />
 				</fieldset>
 			</div><!-- / .container -->
-			</form>
-			<?php
-			// The search form ends here and the pagination has its own: the
-			// threads carry POST delete forms, and forms can't nest.
-			?>
 
 			<?php if ($this->category->closed) { ?>
 				<p class="warning">
@@ -174,24 +169,18 @@ $base = $this->offering->link() . '&active=forum';
 						<?php } ?>
 					</tbody>
 				</table>
-				<?php if ($this->threads->count() > $this->filters['limit']) { ?>
-					<form action="<?php echo Route::url($base); ?>" method="post">
-						<input type="hidden" name="q" value="<?php echo $this->escape($this->filters['search']); ?>" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
-						<input type="hidden" name="active" value="forum" />
-						<input type="hidden" name="action" value="search" />
-						<?php
-						$pageNav = $this->threads->pagination;
-						$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
-						$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
-						$pageNav->setAdditionalUrlParam('active', 'forum');
-						$pageNav->setAdditionalUrlParam('unit', $this->filters['category']);
-						echo $pageNav;
-						?>
-					</form>
-				<?php } ?>
+				<?php
+				if ($this->threads->count() > $this->filters['limit'])
+				{
+					$pageNav = $this->threads->pagination;
+					$pageNav->setAdditionalUrlParam('gid', $this->course->get('alias'));
+					$pageNav->setAdditionalUrlParam('offering', $this->offering->get('alias'));
+					$pageNav->setAdditionalUrlParam('active', 'forum');
+					$pageNav->setAdditionalUrlParam('unit', $this->filters['category']);
+					echo $pageNav;
+				}
+				?>
 			</div><!-- / .container -->
+		</form>
 	</div>
 </section><!-- /.main -->

@@ -69,7 +69,7 @@
 		margin-left: 3em;
 	}
 
-	:is(p, div).overview,
+	p.overview,
 	fieldset.filters {
 		margin: 0;
 		-webkit-box-shadow: none;
@@ -80,23 +80,23 @@
 		border-bottom: 1px solid #ddd;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
-	:is(p, div).overview {
+	p.overview {
 		padding: 1em 30px;
 		background: #fff;
 	}
-	:is(p, div).overview span {
+	p.overview span {
 		margin-right: 1em;
 	}
-	:is(p, div).overview a,
-	:is(p, div).overview button {
+	p.overview a,
+	p.overview button {
 		float: right;
 		margin-left: 1em;
 	}
-	:is(p, div).overview a span,
-	:is(p, div).overview button span {
+	p.overview a span,
+	p.overview button span {
 		margin-right: 0em;
 	}
-	:is(p, div).overview .count strong,
+	p.overview .count strong,
 	fieldset.filters .count strong {
 		font-size: 1.2em;
 		line-height: 2em;
@@ -567,10 +567,10 @@
 	}
 
 	/* Layout icons */
-	:is(p, div).overview .options {
+	p.overview .options {
 		text-align: right;
 	}
-	:is(p, div).overview .options a {
+	p.overview .options a {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
@@ -582,16 +582,16 @@
 		line-height: 1;
 		border: none;
 	}
-	:is(p, div).overview .options a:hover,
-	:is(p, div).overview .options a.selected {
+	p.overview .options a:hover,
+	p.overview .options a.selected {
 		color: #333;
 		border: none;
 	}
-	:is(p, div).overview .options a:before {
+	p.overview .options a:before {
 		text-align: center;
 		display: inline-block;
 	}
-	:is(p, div).overview .options a.icon-ordering {
+	p.overview .options a.icon-ordering {
 		margin-left: 1em;
 	}
 	.icon-grid:before {

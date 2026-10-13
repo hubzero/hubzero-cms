@@ -62,11 +62,7 @@ $this->css()
 			</fieldset>
 		</div><!-- / .container -->
 	</form>
-	<?php
-	// Only the pagination needs a GET form here: the threads carry POST
-	// delete forms, and forms can't nest.
-	?>
-	<div>
+	<form action="<?php echo Route::url($this->category->link()); ?>" method="get">
 
 		<?php if ($this->category->get('closed')) { ?>
 			<p class="warning">
@@ -246,17 +242,15 @@ $this->css()
 				</tbody>
 			</table>
 
-			<form action="<?php echo Route::url($this->category->link()); ?>" method="get">
-				<?php
-				$pageNav = $this->threads->pagination;
-				$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
-				$pageNav->setAdditionalUrlParam('active', 'forum');
-				$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
-				echo $pageNav;
-				?>
-				<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
-				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
-			</form>
+			<?php
+			$pageNav = $this->threads->pagination;
+			$pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
+			$pageNav->setAdditionalUrlParam('active', 'forum');
+			$pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->filters['category']);
+			echo $pageNav;
+			?>
 		</div><!-- / .container -->
-	</div>
+		<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+		<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+	</form>
 </section><!-- /.main -->

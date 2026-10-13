@@ -81,19 +81,7 @@ $revisions = $this->page->versions()
 			</div><!-- / .aside -->
 		</div>
 
-		<?php
-		// The compare form is empty and its controls point at it with form=:
-		// the revision rows also carry POST delete forms, and forms can't nest.
-		?>
-		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post" id="revision-compare">
-			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
-			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-
-			<?php foreach ($this->page->adapter()->routing('compare') as $name => $val) { ?>
-				<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
-			<?php } ?>
-		</form>
-		<div>
+		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
 			<p class="info">
 				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toSql(true) . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toSql(true) . '</time>'); ?>
 			</p>
@@ -101,7 +89,7 @@ $revisions = $this->page->versions()
 			<div class="container">
 				<fieldset style="border:0;margin:0;padding:0;">
 				<legend class="sr-only"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?></legend>
-				<p><input type="submit" class="btn" form="revision-compare" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 
 				<table class="entries" id="revisionhistory">
 					<caption><?php echo Lang::txt('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
@@ -166,12 +154,12 @@ $revisions = $this->page->versions()
 									<td><?php /* [a11y] old-version radio placeholder */ ?></td>
 									<td>
 										<label class="sr-only" for="diff-<?php echo $revision->get('id'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?></label>
-									<input type="radio" form="revision-compare" name="diff" id="diff-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?>" checked="checked" />
+									<input type="radio" name="diff" id="diff-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?>" checked="checked" />
 									</td>
 								<?php } else { ?>
 									<td>
 										<label class="sr-only" for="oldid-<?php echo $revision->get('id'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?></label>
-										<input type="radio" form="revision-compare" name="oldid" id="oldid-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?>"
+										<input type="radio" name="oldid" id="oldid-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?>"
 										<?php if ($comparefirst == true)
 										{
 											echo ' checked="checked"';
@@ -228,11 +216,18 @@ $revisions = $this->page->versions()
 						?>
 					</tbody>
 				</table>
-				<p><input type="submit" class="btn" form="revision-compare" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" class="btn" value="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 				</fieldset>
 			</div><!-- / .container -->
 
 			<div class="clear"></div>
-		</div>
+
+			<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
+			<input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
+
+			<?php foreach ($this->page->adapter()->routing('compare') as $name => $val) { ?>
+				<input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+			<?php } ?>
+		</form>
 	</div>
 </section><!-- / .main section -->

@@ -60,26 +60,21 @@ $this->css()
 
 <?php } else { ?>
 
-	<?php
-	// The search and pagination are separate GET forms rather than one form
-	// around the page: the entries carry POST delete forms, and a form can't
-	// be nested in another (the browser drops the inner one).
-	?>
-	<div>
+	<form method="get" action="<?php echo Route::url($base); ?>">
 		<section class="section">
 			<div class="subject">
 				<?php if ($this->getError()) : ?>
 					<p class="error"><?php echo $this->getError(); ?></p>
 				<?php endif; ?>
 
-				<form method="get" action="<?php echo Route::url($base); ?>" class="container data-entry">
+				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?></legend>
 						<label for="entry-search-field"><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?></label>
 						<input type="text" name="search" id="entry-search-field" value="<?php echo ($this->filters['search'] ? $this->escape(stripslashes($this->filters['search'])) : ''); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
 					</fieldset>
-				</form><!-- / .container -->
+				</div><!-- / .container -->
 
 				<div class="container">
 					<h3>
@@ -213,10 +208,6 @@ $this->css()
 						</li>
 					<?php } ?>
 					</ol>
-					<form method="get" action="<?php echo Route::url($base); ?>">
-						<input type="hidden" name="year" value="<?php echo $this->escape($this->filters['year']); ?>" />
-						<input type="hidden" name="month" value="<?php echo $this->escape($this->filters['month']); ?>" />
-						<input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 					<?php
 						$pageNav = $rows->pagination;
 
@@ -236,7 +227,6 @@ $this->css()
 						}
 						echo $pageNav;
 					?>
-					</form>
 				<?php } else { ?>
 					<p class="warning"><?php echo Lang::txt('PLG_MEMBERS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
@@ -314,6 +304,6 @@ $this->css()
 				</div><!-- / .blog-popular-entries -->
 			</aside><!-- / .aside -->
 		</section>
-	</div>
+	</form>
 
 <?php }
