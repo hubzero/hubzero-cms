@@ -28,6 +28,60 @@ class MailLog
 	}
 
 	/**
+	 * The timezone syslog stamps the mail log in: the host's local zone. PHP is
+	 * pinned to UTC by the bootstrap, so any time we match or parse against the
+	 * log has to be converted explicitly or nothing in the real last hour would
+	 * ever line up.
+	 *
+	 * @return  \DateTimeZone
+	 */
+	public static function timezone()
+	{
+		static $tz = null;
+
+		if ($tz === null)
+		{
+			$name = '';
+
+			// /etc/localtime is a link into the zoneinfo tree on systemd hosts;
+			// /etc/timezone is the Debian-style equivalent.
+			$link = @readlink('/etc/localtime');
+			if ($link && preg_match('#zoneinfo/(.+)$#', $link, $m))
+			{
+				$name = $m[1];
+			}
+			elseif (is_readable('/etc/timezone'))
+			{
+				$name = trim((string) @file_get_contents('/etc/timezone'));
+			}
+
+			try
+			{
+				$tz = new \DateTimeZone($name !== '' ? $name : 'UTC');
+			}
+			catch (\Exception $e)
+			{
+				$tz = new \DateTimeZone('UTC');
+			}
+		}
+
+		return $tz;
+	}
+
+	/**
+	 * The syslog "Mon dd HH:MM" prefix for a unix timestamp, in the log's zone.
+	 *
+	 * @param   integer  $ts
+	 * @return  string
+	 */
+	public static function prefix($ts)
+	{
+		$d = new \DateTime('@' . (int) $ts);
+		$d->setTimezone(self::timezone());
+		return $d->format('M') . ' ' . sprintf('%2d', (int) $d->format('j')) . ' ' . $d->format('H:i');
+	}
+
+	/**
 	 * Count external deliveries (status=sent, excluding local/virtual aliasing)
 	 * logged in the last rolling hour.
 	 *
@@ -50,8 +104,7 @@ class MailLog
 		$prefixes = array();
 		for ($i = 0; $i <= 60; $i++)
 		{
-			$t = $now - ($i * 60);
-			$prefixes[date('M', $t) . ' ' . sprintf('%2d', (int) date('j', $t)) . ' ' . date('H:i', $t)] = true;
+			$prefixes[self::prefix($now - ($i * 60))] = true;
 		}
 
 		$fh = @fopen($path, 'r');
@@ -104,7 +157,7 @@ class MailLog
 		for ($i = 59; $i >= 0; $i--)
 		{
 			$t   = $now - ($i * 60);
-			$key = date('M', $t) . ' ' . sprintf('%2d', (int) date('j', $t)) . ' ' . date('H:i', $t);
+			$key = self::prefix($t);
 			$counts[$key] = 0;
 			$order[] = array('key' => $key, 'label' => date('H:i', $t));
 		}

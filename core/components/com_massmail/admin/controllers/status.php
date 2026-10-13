@@ -109,36 +109,37 @@ class Status extends AdminController
 		$qHourly   = $this->queueLine(48, 3600, '%Y-%m-%d %H', 'Y-m-d H');
 
 		// Daily queue peak (30d) for the 30-day chart overlay + pill.
-		$db->setQuery("SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY)");
+		$db->setQuery("SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY)");
 		$qdmap = array();
 		foreach ($db->loadObjectList() as $r) { $qdmap[$r->day] = (int) $r->max; }
 		$q30 = array();
 		for ($i = 29; $i >= 0; $i--)
 		{
-			$d = date('Y-m-d', strtotime("-$i day"));
+			$d = gmdate('Y-m-d', strtotime("-$i day"));
 			$q30[] = isset($qdmap[$d]) ? $qdmap[$d] : 0;
 		}
 		$qPeak30d = $q30 ? max($q30) : 0;
 
 		// --- Postfix outbound volume (all senders, from the log collector) ---
-		$db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (CURDATE() - INTERVAL 29 DAY) ORDER BY `day`");
+		// Buckets are keyed in UTC (see PostfixCollector); look them up the same way.
+		$db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER BY `day`");
 		$dmap = array();
 		foreach ($db->loadObjectList() as $r) { $dmap[$r->day] = (int) $r->sent; }
 		$dailyVolume = array();
 		for ($i = 29; $i >= 0; $i--)
 		{
-			$d = date('Y-m-d', strtotime("-$i day"));
+			$d = gmdate('Y-m-d', strtotime("-$i day"));
 			$dailyVolume[] = array('label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0);
 		}
 
-		$db->setQuery("SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (NOW() - INTERVAL 48 HOUR) ORDER BY `hour`");
+		$db->setQuery("SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR) ORDER BY `hour`");
 		$hmap = array();
 		foreach ($db->loadObjectList() as $r) { $hmap[$r->hour] = (int) $r->sent; }
 		$hourlyVolume = array();
 		for ($i = 47; $i >= 0; $i--)
 		{
 			$t = time() - ($i * 3600);
-			$k = date('Y-m-d H:00:00', $t);
+			$k = gmdate('Y-m-d H:00:00', $t);
 			$hourlyVolume[] = array('label' => date('H', $t), 'value' => isset($hmap[$k]) ? $hmap[$k] : 0);
 		}
 
@@ -148,7 +149,8 @@ class Status extends AdminController
 		$db->setQuery("SELECT last_run, last_sent FROM `#__massmail_postfix_state` WHERE id = 1");
 		$pfState = $db->loadObject();
 		$collectorRun = $pfState ? $pfState->last_run : null;
-		$lastSent     = $pfState ? $pfState->last_sent : null;
+		// Stored in UTC by the collector; show it in the site's timezone.
+		$lastSent     = ($pfState && $pfState->last_sent) ? \Date::of($pfState->last_sent)->toLocal('D, M j, Y g:i a T') : null;
 
 		$this->view
 			->set('params', $params)

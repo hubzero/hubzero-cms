@@ -8,6 +8,7 @@
 namespace Components\Massmail\Helpers;
 
 require_once __DIR__ . DS . 'queue.php';
+require_once __DIR__ . DS . 'log.php';
 
 /**
  * Collects Postfix outbound volume (messages that left the host) from the mail
@@ -16,8 +17,9 @@ require_once __DIR__ . DS . 'queue.php';
  * First run scans every readable maillog* file (including rotated .gz) to
  * backfill history; later runs read only the bytes appended since last time,
  * tracked by inode + byte offset, with rotation handled by reading the tail of
- * the previous file plus all of the new one. Buckets are self-consistent in the
- * log's own wall-clock (parse and format use the same timezone).
+ * the previous file plus all of the new one. Log lines are stamped in the
+ * host's local zone and are parsed as such; buckets are keyed in UTC, like
+ * every other timestamp the dashboard reads.
  */
 class PostfixCollector
 {
@@ -83,18 +85,31 @@ class PostfixCollector
 			return false;
 		}
 
-		$year = (int) date('Y', $refTime);
-		$ts   = mktime($h, $mi, $s, $month, $day, $year);
-		if ($ts === false)
-		{
-			return false;
-		}
+		$tz   = MailLog::timezone();
+		$ref  = new \DateTime('@' . (int) $refTime);
+		$ref->setTimezone($tz);
+		$year = (int) $ref->format('Y');
+
+		$ts = self::localTs($tz, $year, $month, $day, $h, $mi, $s);
 		// More than a day in the "future" vs the reference => previous year.
 		if ($ts - $refTime > 86400)
 		{
-			$ts = mktime($h, $mi, $s, $month, $day, $year - 1);
+			$ts = self::localTs($tz, $year - 1, $month, $day, $h, $mi, $s);
 		}
 		return $ts;
+	}
+
+	/**
+	 * Unix timestamp of a wall-clock time in the log's timezone.
+	 *
+	 * @return  integer
+	 */
+	protected static function localTs(\DateTimeZone $tz, $y, $m, $d, $h, $i, $s)
+	{
+		$dt = new \DateTime('now', $tz);
+		$dt->setDate($y, $m, $d);
+		$dt->setTime($h, $i, $s);
+		return $dt->getTimestamp();
 	}
 
 	/**
@@ -116,8 +131,8 @@ class PostfixCollector
 			{
 				continue;
 			}
-			$hk = date('Y-m-d H:00:00', $ts);
-			$dk = date('Y-m-d', $ts);
+			$hk = gmdate('Y-m-d H:00:00', $ts);
+			$dk = gmdate('Y-m-d', $ts);
 			$hours[$hk] = isset($hours[$hk]) ? $hours[$hk] + 1 : 1;
 			$days[$dk]  = isset($days[$dk])  ? $days[$dk] + 1  : 1;
 			if ($ts > self::$maxTs)
@@ -285,7 +300,7 @@ class PostfixCollector
 		}
 		if (self::$maxTs > 0)
 		{
-			$ls = date('Y-m-d H:i:s', self::$maxTs);
+			$ls = gmdate('Y-m-d H:i:s', self::$maxTs);
 			$db->setQuery(
 				"UPDATE `#__massmail_postfix_state` SET last_sent = " . $db->quote($ls) . "
 				 WHERE id = 1 AND (last_sent IS NULL OR last_sent < " . $db->quote($ls) . ")"
@@ -308,7 +323,7 @@ class PostfixCollector
 			// Daily rollup (peak + running average) for the 30-day overlay.
 			$db->setQuery(
 				"INSERT INTO `#__massmail_queue_daily` (`day`, `samples`, `total`, `max`)
-				 VALUES (" . $db->quote(date('Y-m-d')) . ", 1, " . (int) $depth . ", " . (int) $depth . ")
+				 VALUES (" . $db->quote(gmdate('Y-m-d')) . ", 1, " . (int) $depth . ", " . (int) $depth . ")
 				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = GREATEST(`max`, " . (int) $depth . ")"
 			);
 			$db->execute();
@@ -317,13 +332,13 @@ class PostfixCollector
 		}
 
 		// Retention: fine-grained data only while useful; keep daily long.
-		$db->setQuery("DELETE FROM `#__massmail_postfix_hourly` WHERE `hour` < (NOW() - INTERVAL 45 DAY)");
+		$db->setQuery("DELETE FROM `#__massmail_postfix_hourly` WHERE `hour` < (UTC_TIMESTAMP() - INTERVAL 45 DAY)");
 		$db->execute();
-		$db->setQuery("DELETE FROM `#__massmail_postfix_daily` WHERE `day` < (CURDATE() - INTERVAL 730 DAY)");
+		$db->setQuery("DELETE FROM `#__massmail_postfix_daily` WHERE `day` < (UTC_DATE() - INTERVAL 730 DAY)");
 		$db->execute();
 		$db->setQuery("DELETE FROM `#__massmail_queue_samples` WHERE `recorded` < (UTC_TIMESTAMP() - INTERVAL 3 DAY)");
 		$db->execute();
-		$db->setQuery("DELETE FROM `#__massmail_queue_daily` WHERE `day` < (CURDATE() - INTERVAL 90 DAY)");
+		$db->setQuery("DELETE FROM `#__massmail_queue_daily` WHERE `day` < (UTC_DATE() - INTERVAL 90 DAY)");
 		$db->execute();
 
 		return $result;
