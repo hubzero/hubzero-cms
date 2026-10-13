@@ -60,14 +60,6 @@ class Token
 	 */
 	public static function unsubscribeUrl($mailingId, $email)
 	{
-		$base = rtrim(\Request::root(), '/');
-
-		// Fall back to configured site URL when running without an HTTP context.
-		if ($base === '' || $base === 'http://' || $base === 'https://')
-		{
-			$base = rtrim((string) \Config::get('live_site'), '/');
-		}
-
 		$query = http_build_query(array(
 			'option' => 'com_massmail',
 			'task'   => 'unsubscribe',
@@ -76,6 +68,34 @@ class Token
 			't'      => self::make($mailingId, $email)
 		));
 
-		return $base . '/index.php?' . $query;
+		return self::siteBase() . '/index.php?' . $query;
+	}
+
+	/**
+	 * Absolute site base URL (scheme + host, no trailing slash).
+	 *
+	 * Delivery usually runs under cron with no request to derive a host from,
+	 * so the link has to come from configuration: the component's site_url
+	 * option, then live_site. Request::root() answers "http://:/" under CLI,
+	 * so it is only used when it names a real host.
+	 *
+	 * @return  string
+	 */
+	public static function siteBase()
+	{
+		$base = rtrim((string) \Component::params('com_massmail')->get('site_url', ''), '/');
+
+		if ($base === '')
+		{
+			$base = rtrim((string) \Config::get('live_site'), '/');
+		}
+
+		if ($base === '')
+		{
+			$root = rtrim((string) \Request::root(), '/');
+			$base = parse_url($root, PHP_URL_HOST) ? $root : '';
+		}
+
+		return $base;
 	}
 }

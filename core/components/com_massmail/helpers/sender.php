@@ -340,6 +340,10 @@ class Sender
 
 					$message = new \Hubzero\Mail\Message();
 					$message->setSubject($subject);
+					// RFC 8058 one-click unsubscribe: the POST to our endpoint is
+					// what mail clients offer as an "Unsubscribe" button.
+					$message->addHeader('List-Unsubscribe', '<' . $unsub . '>');
+					$message->addHeader('List-Unsubscribe-Post', 'List-Unsubscribe=One-Click');
 					$message->addFrom($fromEmail, $fromName);
 					if ($replyTo)
 					{
@@ -385,23 +389,32 @@ class Sender
 
 		self::refreshCounts($mailing);
 
-		// Mark complete once nothing is left pending.
-		$pending = Recipient::all()
-			->whereEquals('mailing_id', $mailing->get('id'))
-			->whereEquals('status', Recipient::PENDING)
-			->total();
-		if ($pending == 0)
-		{
-			$mailing->set('status', Mailing::STATUS_SENT);
-			$mailing->set('completed_on', \Date::toSql());
-			$mailing->save();
-		}
+		// Mark complete once nothing is left pending. Only a mailing that is
+		// still "sending" completes: an admin may have paused or cancelled it
+		// while this batch ran, and that must win over the copy loaded above.
+		$db  = \App::get('db');
+		$mid = (int) $mailing->get('id');
+		$db->setQuery(
+			"UPDATE `#__massmail_mailings`
+			 SET `status` = " . $db->quote(Mailing::STATUS_SENT) . ", `completed_on` = " . $db->quote(\Date::toSql()) . "
+			 WHERE `id` = $mid
+			 AND `status` = " . $db->quote(Mailing::STATUS_SENDING) . "
+			 AND NOT EXISTS (
+				SELECT 1 FROM `#__massmail_recipients` r
+				WHERE r.mailing_id = $mid AND r.status = " . Recipient::PENDING . "
+			 )"
+		);
+		$db->execute();
 
 		return array('sent' => $sent, 'failed' => $failed);
 	}
 
 	/**
 	 * Recompute a mailing's sent/failed/skipped counters from its recipients.
+	 *
+	 * Written with a targeted UPDATE rather than saving the model: a model
+	 * save writes every column, so it would overwrite a status change (pause,
+	 * cancel) an admin made while the batch was running.
 	 *
 	 * @param   Mailing  $mailing
 	 * @return  void
@@ -411,16 +424,12 @@ class Sender
 		$db  = \App::get('db');
 		$mid = (int) $mailing->get('id');
 		$db->setQuery(
-			"SELECT
-				SUM(status = " . Recipient::SENT . ")    AS s,
-				SUM(status = " . Recipient::FAILED . ")  AS f,
-				SUM(status = " . Recipient::SKIPPED . ") AS k
-			 FROM `#__massmail_recipients` WHERE mailing_id = $mid"
+			"UPDATE `#__massmail_mailings` m
+			 SET m.sent_count    = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SENT . "),
+			     m.failed_count  = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::FAILED . "),
+			     m.skipped_count = (SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid AND status = " . Recipient::SKIPPED . ")
+			 WHERE m.id = $mid"
 		);
-		$row = $db->loadObject();
-		$mailing->set('sent_count', (int) $row->s);
-		$mailing->set('failed_count', (int) $row->f);
-		$mailing->set('skipped_count', (int) $row->k);
-		$mailing->save();
+		$db->execute();
 	}
 }

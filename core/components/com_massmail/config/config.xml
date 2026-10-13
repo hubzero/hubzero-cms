@@ -26,6 +26,9 @@
 		<field name="maillog_path" type="text" default="/var/log/maillog"
 			label="COM_MASSMAIL_CONFIG_MAILLOG_LABEL"
 			description="COM_MASSMAIL_CONFIG_MAILLOG_DESC" />
+		<field name="site_url" type="text" default=""
+			label="COM_MASSMAIL_CONFIG_SITE_URL_LABEL"
+			description="COM_MASSMAIL_CONFIG_SITE_URL_DESC" />
 	</fieldset>
 	<fieldset name="recipients" label="COM_MASSMAIL_CONFIG_RECIPIENTS">
 		<field name="no_preference_sendable" type="radio" default="1" class="btn-group"
