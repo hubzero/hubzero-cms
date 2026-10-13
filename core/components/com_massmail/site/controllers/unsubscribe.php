@@ -13,8 +13,15 @@ use Request;
 use App;
 
 /**
- * Public, tokenized unsubscribe endpoint. Sets the user's mail preference to
- * "do not send" (jos_xprofiles.mailPreferenceOption = 0).
+ * Public, tokenized unsubscribe endpoint. Sets the user's "Receive email
+ * updates" preference to no (#__users.sendEmail = 0), which is the same field
+ * the member profile edits and the recipient filter reads.
+ *
+ * A GET only shows a confirmation button; the preference changes on POST.
+ * Mail gateways (Safe Links, URL Defense, link prefetchers) fetch every link
+ * in a message, so a GET that opted the recipient out would unsubscribe
+ * people who never clicked. The POST also serves RFC 8058 one-click
+ * unsubscribe from the List-Unsubscribe-Post header.
  */
 class Unsubscribe extends SiteController
 {
@@ -31,7 +38,7 @@ class Unsubscribe extends SiteController
 	}
 
 	/**
-	 * Process an unsubscribe request
+	 * Confirm (GET) or process (POST) an unsubscribe request
 	 *
 	 * @return  void
 	 */
@@ -41,9 +48,10 @@ class Unsubscribe extends SiteController
 		$mid   = Request::getInt('m', 0);
 		$token = Request::getString('t', '');
 
-		$ok = false;
+		$valid = ($email !== '' && $mid && Token::verify($mid, $email, $token));
+		$done  = false;
 
-		if ($email !== '' && $mid && Token::verify($mid, $email, $token))
+		if ($valid && Request::method() == 'POST')
 		{
 			$user = \Hubzero\User\User::oneByEmail($email);
 
@@ -51,19 +59,22 @@ class Unsubscribe extends SiteController
 			{
 				$db = App::get('db');
 				$db->setQuery(
-					"UPDATE `#__xprofiles` SET `mailPreferenceOption` = 0 WHERE `uidNumber` = " . (int) $user->get('id')
+					"UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id')
 				);
 				$db->execute();
 			}
 
 			// Valid token: treat as success even for raw (non-user) addresses so
 			// we always confirm the request to the recipient.
-			$ok = true;
+			$done = true;
 		}
 
 		$this->view
-			->set('ok', $ok)
+			->set('valid', $valid)
+			->set('done', $done)
 			->set('email', $email)
+			->set('mailing', $mid)
+			->set('token', $token)
 			->setLayout('default')
 			->display();
 	}

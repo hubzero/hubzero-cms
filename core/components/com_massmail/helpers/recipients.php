@@ -20,6 +20,7 @@ use Components\Massmail\Models\Mailing;
  *   - blocked accounts         (block = 1)
  *   - never-activated accounts (activation <= 0; negative = pending token)
  *   - accounts with no email    (email = '')
+ *   - placeholder addresses     (third-party-auth accounts get "-<id>@invalid")
  */
 class Recipients
 {
@@ -30,7 +31,7 @@ class Recipients
 	 */
 	protected static function hardFilter()
 	{
-		$sql = "u.block = 0 AND u.activation > 0 AND u.email <> ''";
+		$sql = "u.block = 0 AND u.activation > 0 AND u.email <> '' AND u.email NOT LIKE '%@invalid'";
 
 		// Optional: also require the account-approval workflow to have passed.
 		// Off by default (honor the operator's blocked/activation/email spec).
@@ -53,17 +54,20 @@ class Recipients
 		$params = \Component::params('com_massmail');
 		$sql    = '';
 
+		// The "Receive email updates" choice on the member profile is stored in
+		// #__users.sendEmail (-1 = no preference, 0 = no, 1 = yes); it is what
+		// com_members reads and what the unsubscribe link writes.
 		if (!$ignoreOptout)
 		{
 			if ((int) $params->get('no_preference_sendable', 1))
 			{
 				// Exclude only explicit opt-outs; "-1" (no preference) is mailable.
-				$sql .= " AND COALESCE(x.mailPreferenceOption, -1) <> 0";
+				$sql .= " AND COALESCE(u.sendEmail, -1) <> 0";
 			}
 			else
 			{
 				// Only users who explicitly opted in.
-				$sql .= " AND COALESCE(x.mailPreferenceOption, -1) = 1";
+				$sql .= " AND COALESCE(u.sendEmail, -1) = 1";
 			}
 		}
 
@@ -138,24 +142,64 @@ class Recipients
 			$db->execute();
 		}
 
-		// --- Raw addresses (admin-entered; sent as typed) --------------------
-		$emails = isset($spec['emails']) ? (array) $spec['emails'] : array();
-		foreach ($emails as $em)
+		// --- Raw addresses (admin-entered) -----------------------------------
+		// An address that belongs to an account is still that account's: the
+		// hard and opt-out filters apply to it exactly as if the user had been
+		// picked by id, so typing an address can't reach someone the picker
+		// would have excluded. Only addresses with no account are sent as typed.
+		$emails = self::validEmails(isset($spec['emails']) ? $spec['emails'] : array());
+		if ($emails)
 		{
-			$em = trim($em);
-			if ($em === '' || !filter_var($em, FILTER_VALIDATE_EMAIL))
-			{
-				continue;
-			}
+			$in = implode(',', array_map(array($db, 'quote'), $emails));
+
 			$db->setQuery(
 				"INSERT IGNORE INTO `#__massmail_recipients` (mailing_id, uid, email, name, status)
-				 VALUES ($mid, 0, " . $db->quote($em) . ", '', 0)"
+				 SELECT $mid, u.id, u.email, u.name, 0
+				 FROM `#__users` u
+				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
+				 WHERE LOWER(u.email) IN ($in) AND $hard $pref"
 			);
 			$db->execute();
+
+			$db->setQuery("SELECT LOWER(email) FROM `#__users` WHERE LOWER(email) IN ($in)");
+			$accounts = array_flip((array) $db->loadColumn());
+
+			foreach ($emails as $em)
+			{
+				if (isset($accounts[$em]))
+				{
+					continue;
+				}
+				$db->setQuery(
+					"INSERT IGNORE INTO `#__massmail_recipients` (mailing_id, uid, email, name, status)
+					 VALUES ($mid, 0, " . $db->quote($em) . ", '', 0)"
+				);
+				$db->execute();
+			}
 		}
 
 		$db->setQuery("SELECT COUNT(*) FROM `#__massmail_recipients` WHERE mailing_id = $mid");
 		return (int) $db->loadResult();
+	}
+
+	/**
+	 * Lower-cased, deduped, syntactically valid addresses from a raw list.
+	 *
+	 * @param   array  $emails
+	 * @return  array
+	 */
+	protected static function validEmails($emails)
+	{
+		$out = array();
+		foreach ((array) $emails as $em)
+		{
+			$em = strtolower(trim((string) $em));
+			if ($em !== '' && filter_var($em, FILTER_VALIDATE_EMAIL))
+			{
+				$out[$em] = true;
+			}
+		}
+		return array_keys($out);
 	}
 
 	/**
@@ -207,27 +251,34 @@ class Recipients
 			$userCount = (int) $db->loadResult();
 		}
 
-		// Raw emails: valid, self-deduped, minus any that a selected account
-		// would already cover (so they aren't double counted).
-		$raw = array();
-		foreach ($spec['emails'] as $em)
-		{
-			$em = strtolower(trim($em));
-			if ($em !== '' && filter_var($em, FILTER_VALIDATE_EMAIL))
-			{
-				$raw[$em] = true;
-			}
-		}
+		// Raw emails, counted the way expand() queues them: an address with an
+		// account counts only if that account passes the filters and wasn't
+		// already covered by a selection; one without an account is sent as typed.
+		$raw      = self::validEmails($spec['emails']);
 		$rawCount = count($raw);
-		if ($rawCount && $cond)
+		if ($rawCount)
 		{
-			$in = implode(',', array_map(array($db, 'quote'), array_keys($raw)));
+			$in = implode(',', array_map(array($db, 'quote'), $raw));
+
+			// Addresses with an account that the filters exclude: not sent.
 			$db->setQuery(
 				"SELECT COUNT(DISTINCT LOWER(u.email)) FROM `#__users` u
 				 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
-				 WHERE $cond AND $hard $pref AND LOWER(u.email) IN ($in)"
+				 WHERE LOWER(u.email) IN ($in) AND NOT ($hard $pref)"
 			);
-			$rawCount = max(0, $rawCount - (int) $db->loadResult());
+			$rawCount -= (int) $db->loadResult();
+
+			// Addresses already reached through a selection: not double counted.
+			if ($cond)
+			{
+				$db->setQuery(
+					"SELECT COUNT(DISTINCT LOWER(u.email)) FROM `#__users` u
+					 LEFT JOIN `#__xprofiles` x ON x.uidNumber = u.id
+					 WHERE $cond AND $hard $pref AND LOWER(u.email) IN ($in)"
+				);
+				$rawCount -= (int) $db->loadResult();
+			}
+			$rawCount = max(0, $rawCount);
 		}
 
 		return $userCount + $rawCount;
