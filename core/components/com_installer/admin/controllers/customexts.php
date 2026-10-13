@@ -628,8 +628,19 @@ class Customexts extends AdminController
 					}
 					else
 					{
-						// Check for updates in remote branch
-						$museCmd = 'update -r=' . escapeshellarg($extension->path) . ((!empty($extension->get('git_branch'))) ? ' source=' . escapeshellarg($extension->get('git_branch')) : '');
+						// Check for updates in remote branch. muse wants the source as
+						// "remote/branch" (it refuses a bare branch name as an invalid
+						// update mechanism source), and the form field holds a branch.
+						$museCmd = 'update -r=' . escapeshellarg($extension->path);
+						if (!empty($extension->get('git_branch')))
+						{
+							$source = $extension->get('git_branch');
+							if (strpos($source, '/') === false)
+							{
+								$source = 'origin/' . $source;
+							}
+							$museCmd .= ' source=' . escapeshellarg($source);
+						}
 
 						$fetch_response = Cli::call($museCmd, $task='repository');
 						$fetch_response = json_decode($fetch_response == null ? '' : $fetch_response);
@@ -644,6 +655,23 @@ class Customexts extends AdminController
 						{
 							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH'));
 							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						// muse now reports a fetch that could not reach or log in to the
+						// remote (it used to be silent and look "up to date"); that is a
+						// failure, not a list of incoming changes to merge.
+						else if (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response))
+						{
+							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN'));
+							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						else if (!is_null($fetch_response) && preg_grep("/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis", $fetch_response))
+						{
+							$output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE'));
+							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
+						}
+						else if (!is_null($fetch_response) && preg_grep("/^fetch failed:/uis", $fetch_response))
+						{
+							$failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response);
 						}
 						else
 						{

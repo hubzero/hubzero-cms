@@ -384,8 +384,16 @@ class Git
 		else
 		{
 			// Be sure to fetch so we known we're up-to-date
-			$this->call('fetch');
+			$fetch = trim($this->call('fetch'));
 			$this->call('remote update');
+
+			// A fetch that could not reach or authenticate to the remote used to
+			// be ignored here, so the log below compared HEAD to a stale tracking
+			// ref and the caller reported "up to date". Surface it instead.
+			if (preg_match('/^(fatal|error):/mi', $fetch))
+			{
+				return array('fetch failed: ' . preg_replace('/\s+/', ' ', $fetch));
+			}
 
 			// Build arguments
 			$arguments = array(
