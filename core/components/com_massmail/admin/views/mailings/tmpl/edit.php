@@ -201,7 +201,7 @@ $this->js('edit.js', 'com_massmail');
 									<span class="mm-clip">&#128206;</span> <?php echo $this->escape($att->get('filename')); ?>
 									<span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span>
 									<?php if (!$isNew) { ?>
-										<a class="mm-chip-x" title="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeattachment&attachment=' . $att->get('id') . '&' . Session::getFormToken() . '=1'); ?>">&times;</a>
+										<button type="submit" form="mm-action" class="mm-chip-x" title="<?php echo $this->escape(Lang::txt('JACTION_DELETE')); ?>" formaction="<?php echo Route::url($base . '&task=removeattachment&attachment=' . $att->get('id')); ?>">&times;</button>
 									<?php } ?>
 								</li>
 							<?php } ?>

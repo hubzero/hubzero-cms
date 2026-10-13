@@ -114,7 +114,26 @@ class Extension extends Base implements CommandInterface
 	 **/
 	private function alter($method)
 	{
-		$migration = new Migration(\App::get('db'));
+		// The macros report through $migration->log(), which goes to a
+		// "migration" callback; without one (the previous state here) their
+		// messages, including why a helper refused, were simply dropped.
+		$output = $this->output;
+		$logger = new class($output)
+		{
+			private $output;
+
+			public function __construct($output)
+			{
+				$this->output = $output;
+			}
+
+			public function log($message, $type = 'info')
+			{
+				$this->output->addLine($message, $type ?: 'info');
+			}
+		};
+
+		$migration = new Migration(\App::get('db'), array('migration' => $logger));
 
 		$name = null;
 		if ($this->arguments->getOpt('name'))

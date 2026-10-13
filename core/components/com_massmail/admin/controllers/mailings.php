@@ -777,7 +777,7 @@ class Mailings extends AdminController
 	 */
 	public function removeattachmentTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
@@ -805,7 +805,7 @@ class Mailings extends AdminController
 	 */
 	public function launchTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.send', $this->_option))
 		{
@@ -1052,7 +1052,7 @@ class Mailings extends AdminController
 	 */
 	public function sendtestTask()
 	{
-		Request::checkToken(['get', 'post']);
+		Request::checkToken();
 
 		if (!User::authorise('core.send', $this->_option) && !User::authorise('core.create', $this->_option))
 		{
