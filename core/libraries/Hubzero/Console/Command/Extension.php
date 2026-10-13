@@ -61,7 +61,7 @@ class Extension extends Base implements CommandInterface
 	/**
 	 * Delete an entry from the extension table
 	 *
-	 * @museDescription  Deletes an existing entry from the extensions table
+	 * @museDescription  Deletes an existing entry from the extensions table (for a template, its styles too)
 	 *
 	 * @return  void
 	 **/
@@ -153,12 +153,7 @@ class Extension extends Base implements CommandInterface
 					$mthd          = $method . 'Component';
 				}
 
-				if (!method_exists($migration, $mthd))
-				{
-					$this->output->error('Sorry, components do not currently support the ' . $mthd . ' method');
-				}
-
-				$migration->$mthd($extensionName);
+				$this->callMigration($migration, 'components', $mthd, array($extensionName));
 				break;
 
 			case 'mod':
@@ -182,51 +177,45 @@ class Extension extends Base implements CommandInterface
 						}
 					}
 
-					if (!method_exists($migration, $mthd))
-					{
-						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
-					}
-
-					$migration->$mthd(str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0));
+					$this->callMigration($migration, 'modules', $mthd, array(str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0)));
 				}
 				else
 				{
 					$mthd = $method . 'Module' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
 
-					if (!method_exists($migration, $mthd))
-					{
-						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
-					}
-
-					$migration->$mthd($name, 1, '', (($client == 'admin') ? 1 : 0));
+					$this->callMigration($migration, 'modules', $mthd, array($name, 1, '', (($client == 'admin') ? 1 : 0)));
 				}
 				break;
 
 			case 'tpl':
-				$mthd = $method . 'Template' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
-
-				if (!method_exists($migration, $mthd))
-				{
-					$this->output->error('Sorry, templates do not currently support the ' . $mthd . ' method');
-				}
+				// The template macros are addTemplateEntry, installTemplateEntry,
+				// deleteTemplateEntry, enableTemplate and disableTemplate
+				$mthd = $method . 'Template' . (($method == 'add' || $method == 'delete' || $method == 'install') ? 'Entry' : '');
 
 				$element = $name = substr($name, 4);
 				$name    = ucwords($name);
 				$client  = $this->arguments->getOpt('client', 'site');
+				$client  = ($client == 'admin') ? 1 : 0;
 				$isCore  = $this->arguments->getOpt('core', false) ? 1 : 0;
 
 				if ($method == 'delete')
 				{
-					$migration->$mthd($element, (($client == 'admin') ? 1 : 0));
+					$args = array($element, $client);
 				}
 				else if ($method == 'add')
 				{
-					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0), 1, 0, null, $isCore);
+					$args = array($element, $name, $client, 1, 0, null, $isCore);
+				}
+				else if ($method == 'install')
+				{
+					$args = array($element, $name, $client, null, $isCore);
 				}
 				else
 				{
-					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0), null, $isCore);
+					$args = array($element, $client);
 				}
+
+				$this->callMigration($migration, 'templates', $mthd, $args);
 				break;
 
 			case 'plg':
@@ -241,12 +230,7 @@ class Extension extends Base implements CommandInterface
 				$element = $matches[2];
 				$mthd    = $method . 'Plugin' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
 
-				if (!method_exists($migration, $mthd))
-				{
-					$this->output->error('Sorry, plugins do not currently support the ' . $mthd . ' method');
-				}
-
-				$migration->$mthd($folder, $element);
+				$this->callMigration($migration, 'plugins', $mthd, array($folder, $element));
 				break;
 
 			default:
@@ -255,6 +239,38 @@ class Extension extends Base implements CommandInterface
 		}
 
 		$this->output->addLine("Successfully {$method}" . ((substr($method, -1) == 'e') ? 'd' : 'ed') . " {$name}!", 'success');
+	}
+
+	/**
+	 * Run one of the migration helpers
+	 *
+	 * The helpers (addModuleEntry, deleteTemplateEntry, ...) are macros that the
+	 * migration base resolves in __call(), so method_exists() never sees them;
+	 * the unknown-helper case surfaces as a BadMethodCallException instead.
+	 *
+	 * @param   object  $migration  The migration base
+	 * @param   string  $type       Plural extension type, for the error message
+	 * @param   string  $method     Helper name
+	 * @param   array   $args       Helper arguments
+	 * @return  mixed
+	 **/
+	private function callMigration($migration, $type, $method, array $args)
+	{
+		try
+		{
+			$result = call_user_func_array(array($migration, $method), $args);
+		}
+		catch (\BadMethodCallException $e)
+		{
+			$this->output->error('Sorry, ' . $type . ' do not currently support the ' . $method . ' method');
+		}
+
+		if ($result === false)
+		{
+			$this->output->error('The ' . $method . ' helper reported failure (does the extension exist?)');
+		}
+
+		return $result;
 	}
 
 	/**
@@ -267,7 +283,9 @@ class Extension extends Base implements CommandInterface
 		$this
 			->output
 			->addOverview(
-				'Extension management utility functions.'
+				'Extension management utility functions. Extensions are named as on disk: ' .
+				'com_name, mod_name, plg_folder_element or tpl_name. Options: --name=..., ' .
+				'--client=site|admin (modules and templates), --position=... (module install), --core (templates).'
 			)
 			->addTasks($this);
 	}
