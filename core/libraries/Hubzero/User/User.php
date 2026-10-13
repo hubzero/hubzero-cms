@@ -596,7 +596,7 @@ class User extends \Hubzero\Database\Relational
 			{
 				// decode public key and use it to check jwt signature
 				$pubkey = base64_decode($pubkeyb64);
-				$jwt = \Firebase\JWT\JWT::decode($_COOKIE['jwt'], $pubkey, array('RS512'));
+				$jwt = \Firebase\JWT\JWT::decode($_COOKIE['jwt'], new \Firebase\JWT\Key($pubkey, 'RS512'));
 
 				// if we have information for a user, populate the user variable
 				if (isset($jwt->email) && isset($jwt->id) && isset($jwt->username) && isset($jwt->name) && isset($jwt->exp))

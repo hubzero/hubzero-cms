@@ -244,8 +244,8 @@ class Writer
 		{
 			call_user_func_array(array($this, 'triggerLogEvent'), array_merge(array($method), $parameters));
 
-			$method = 'add' . ucfirst($method);
-
+			// Monolog 2 dropped the addInfo()-style methods; the PSR-3
+			// names (info(), error(), ...) are the same in both.
 			return $this->callMonolog($method, $parameters);
 		}
 

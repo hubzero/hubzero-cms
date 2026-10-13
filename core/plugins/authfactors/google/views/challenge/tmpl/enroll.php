@@ -10,7 +10,6 @@ $this->css('enroll')
 
 use Hubzero\Auth\Factor;
 use Hubzero\Utility\Validate;
-use phpseclib\Crypt\Hash;
 
 // Enrollment is for the signed-in member; the challenge page itself does not
 // turn guests away, and the setup script must not run for user '' / 0
