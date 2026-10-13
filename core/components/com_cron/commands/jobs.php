@@ -54,7 +54,9 @@ class Jobs extends Base implements CommandInterface
 			// Get the list of jobs that should be run
 			$jobs = Job::all()
 				->whereEquals('state', Job::STATE_PUBLISHED)
-				->where('next_run', '<=', $now)
+				->where('next_run', 'IS', null, 'and', 1)
+					->orWhere('next_run', '<=', $now, 1)
+					->resetDepth()
 				->where('publish_up', 'IS', null, 'and', 1)
 					->orWhere('publish_up', '<=', $now, 1)
 					->resetDepth()
@@ -271,7 +273,9 @@ class Jobs extends Base implements CommandInterface
 		{
 			$jobs = Job::all()
 				->whereEquals('state', Job::STATE_PUBLISHED)
-				->where('next_run', '<=', $now)
+				->where('next_run', 'IS', null, 'and', 1)
+					->orWhere('next_run', '<=', $now, 1)
+					->resetDepth()
 				->where('publish_up', 'IS', null, 'and', 1)
 					->orWhere('publish_up', '<=', $now, 1)
 					->resetDepth()

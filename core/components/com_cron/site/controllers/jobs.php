@@ -76,10 +76,13 @@ class Jobs extends SiteController
 
 		$now = Date::toSql();
 
-		// Get the list of jobs that should be run
+		// Get the list of jobs that should be run. An enabled job with no
+		// next_run yet (seed migrations insert NULL) is due now; its first run
+		// schedules the next one from the recurrence.
 		$results = Job::all()
 			->whereEquals('state', 1)
-			->where('next_run', '<=', Date::toSql())
+			->where('next_run', 'IS', null, 'and', 1)->orWhere('next_run', '<=', $now, 1)
+			->resetDepth()
 			->where('publish_up', 'IS', null, 'and', 1)->orWhere('publish_up', '<=', $now, 1)
 			->resetDepth()
 			->where('publish_down', 'IS', null, 'and', 1)->orWhere('publish_down', '>', $now, 1)

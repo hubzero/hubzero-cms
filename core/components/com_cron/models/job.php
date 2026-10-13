@@ -597,9 +597,9 @@ class Job extends Relational
 
 		$next = $row->get('next_run');
 
-		// Mirror the runner's due query (next_run <= now); a NULL next_run is
-		// not selected by that query, so treat it the same here.
-		return ($next !== null && $next <= Date::of('now')->toSql());
+		// Mirror the runner's due query: NULL (never scheduled yet) or
+		// next_run <= now.
+		return ($next === null || $next <= Date::of('now')->toSql());
 	}
 
 	/**
