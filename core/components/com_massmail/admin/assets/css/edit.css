@@ -5,6 +5,10 @@
 /* Compose page: bounded width, centered, with gutters. */
 .mm-compose { max-width:1080px; margin:14px auto 0; padding:0 20px; box-sizing:border-box; }
 .mm-grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
+/* Grid items default to min-width:auto, so the editor toolbar's unwrapped width
+   forced the 1fr column past the 1080px container and pushed the sidebar off
+   to the right; let the columns shrink and the toolbar wrap instead. */
+.mm-grid > * { min-width:0; }
 @media (max-width:960px){ .mm-grid{ grid-template-columns:1fr; } }
 .mm-compose input::placeholder, .mm-compose textarea::placeholder { color:#b7c0cb; opacity:1; }
 .mm-compose .hint { color:#a7b0bd; }
