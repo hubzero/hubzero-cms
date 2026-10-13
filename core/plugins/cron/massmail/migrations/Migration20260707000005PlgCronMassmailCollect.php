@@ -34,7 +34,7 @@ class Migration20260707000005PlgCronMassmailCollect extends Base
 					"INSERT INTO `#__cron_jobs`
 						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
 					 VALUES
-						('Collect Postfix outbound volume', 1, 'massmail', 'collectPostfixVolume', NULL, NULL, '*/5 * * * *', NULL, 1, NULL, 0, 0, 0, '');"
+						('Collect Postfix outbound volume', 1, 'massmail', 'collectPostfixVolume', NULL, UTC_TIMESTAMP(), '*/5 * * * *', NULL, 1, NULL, 0, 0, 0, '');"
 				);
 				$this->db->query();
 			}
