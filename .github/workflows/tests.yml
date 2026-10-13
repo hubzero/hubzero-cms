@@ -48,9 +48,13 @@ jobs:
           key: composer-${{ hashFiles('core/composer.lock') }}
           restore-keys: composer-
 
+      # The runner's composer, not core/bin/composer: setup-php stores the
+      # job's ghs_ token in composer's global auth for the current release,
+      # and the bundled 2.8.5 rejects some of those tokens as having
+      # "invalid characters", which made this step fail at random.
       - name: Install dependencies
         working-directory: core
-        run: php bin/composer install --no-interaction --no-progress --prefer-dist
+        run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: PHPUnit
         working-directory: core
