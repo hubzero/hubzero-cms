@@ -779,6 +779,10 @@ class Customexts extends AdminController
 				$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='up', $folder=$extension->path);
 				$migrations_response = json_decode($migrations_response == null ? '' : $migrations_response);
 
+				// Every update tags a cmsrollbackpoint-<time> first; keep only the
+				// newest so the tags do not pile up in the extension's repository.
+				Cli::call('clean -r=' . escapeshellarg($extension->path) . ' --purge-rollback-points', $task='repository');
+
 				$success[] = array(
 					'extension' => $extension->get('name'),
 					'message'   => array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS'))
@@ -836,23 +840,30 @@ class Customexts extends AdminController
 			$migrations_response = Cli::migration($dryRun=false, $ignoreDates=true, $file=null, $dir='down', $folder=$extension->path);
 			$migrations_response = json_decode($migrations_response);
 
-			$remove_response = Cli::call($museCmd, $task='repository');
-			$remove_response = json_decode($remove_response);
-			// MUSE command failed
-			if ($remove_response === NULL){
-                               $failed[] = array(
-                                        'extension'   => $extension->get('name'),
-                                        'message' => array("MUSE Call returned NULL", $museCmd)
-                                );
-			}
-			// did we succeed ($success itself is the deleted-rows count below)
-			else if (!preg_grep("/Updating the repository.../uis", $remove_response))
+			// removeRepo prints the boolean from deleteDirectory() (json "[true]"
+			// or "[false]"); an earlier check looked for the text of the update
+			// command instead and so reported every removal as failed. Keep the
+			// record when the directory is still there, so it can be retried.
+			$removeDir = ($extension->enabled == 1) ? $extension->path : $extdir . '/__' . $repodir;
+
+			if (!is_dir($removeDir) && !is_link($removeDir))
 			{
-				// add failed message
-				$failed[] = array(
-					'extension'   => $extension->get('name'),
-					'message' => $remove_response
-				);
+				// Nothing on disk for this registration (never cloned, or already
+				// removed by hand): there is nothing to fail at, drop the record.
+				$removed = true;
+			}
+			else
+			{
+				$result = Cli::callWithStatus($museCmd, $task='repository');
+				$remove_response = trim($result['output']) !== '' ? json_decode($result['output']) : null;
+				$removed = ($result['status'] === 0 && is_array($remove_response) && !empty($remove_response[0]));
+			}
+
+			if (!$removed)
+			{
+				$detail = is_array($remove_response) ? implode(' ', array_map('strval', $remove_response)) : trim($result['output']);
+				Notify::error(Lang::txt('COM_INSTALLER_CUSTOMEXTS_REMOVE_FAILED', $extension->get('name')) . ($detail !== '' ? ' (' . $detail . ')' : ''));
+				continue;
 			}
 
 			// Load the record
