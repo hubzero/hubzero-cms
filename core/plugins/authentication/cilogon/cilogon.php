@@ -50,6 +50,24 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	}
 
 	/**
+	 * Parse the configured list of allowed IdP entityIDs.
+	 *
+	 * The "allowed_idps" param accepts one entityID per line and/or comma
+	 * separated values. An empty setting means any identity provider is
+	 * accepted (the plugin's default behaviour).
+	 *
+	 * @return  array  List of allowed IdP entityIDs (may be empty)
+	 */
+	protected function allowedIdps()
+	{
+		$raw  = (string) $this->params->get('allowed_idps', '');
+		$idps = preg_split('/[\r\n,]+/', $raw);
+		$idps = array_filter(array_map('trim', $idps), 'strlen');
+
+		return array_values($idps);
+	}
+
+	/**
 	 * Perform logout (not currently used)
 	 *
 	 * @return  void
@@ -113,9 +131,22 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 	{
 		$returnUrl = Request::getString('return', '');
 		$provider = $this->cilogon();
-		$loginUrl = $provider->getAuthorizationUrl(array(
+
+		$authParams = array(
 			'scope' => ['openid', 'email', 'profile', 'org.cilogon.userinfo']
-		));
+		);
+
+		// Optionally restrict logins to specific identity providers. When a
+		// single IdP is configured, pre-select it so CILogon skips its provider
+		// picker; the same list is enforced in login(). An empty setting allows
+		// any IdP.
+		$allowedIdps = $this->allowedIdps();
+		if (count($allowedIdps) == 1)
+		{
+			$authParams['selected_idp'] = $allowedIdps[0];
+		}
+
+		$loginUrl = $provider->getAuthorizationUrl($authParams);
 		Session::set('state', $provider->getState(), 'cilogon');
 		Session::set('returnUrl', $returnUrl, 'cilogon');
 		// Redirect to the login URL
@@ -146,10 +177,10 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 
 			// oauth2-client 2.8.0 added requirement to pass scope to getAccessToken.
 			// this was reverted in 2.8.1 so keeping this comment here in case it
-			// comes up again. 
+			// comes up again.
 
-			//$token = $this->cilogon()->getAccessToken('authorization_code', 
-			//array('scope' => ['openid','email','profile','org.cilogon.userinfo'], 
+			//$token = $this->cilogon()->getAccessToken('authorization_code',
+			//array('scope' => ['openid','email','profile','org.cilogon.userinfo'],
 			//'code' => Request::getString('code')));
 
 			$token = $this->cilogon()->getAccessToken('authorization_code', array('code' => Request::getString('code')));
@@ -173,6 +204,20 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 				$fullname = isset($responseArr['name']) ? $responseArr['name'] : '';
 				$email    = isset($responseArr['email']) ? $responseArr['email'] : '';
 				$fullname = empty($fullname) ? $firstname . ' ' . $lastname : $fullname;
+
+				// Restrict logins to the configured IdP(s), if any are set. An
+				// empty setting allows any IdP CILogon returns.
+				$allowedIdps = $this->allowedIdps();
+				if (!empty($allowedIdps))
+				{
+					$idp = isset($responseArr['idp']) ? $responseArr['idp'] : '';
+					if (!in_array($idp, $allowedIdps))
+					{
+						$response->status = \Hubzero\Auth\Status::FAILURE;
+						$response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_IDP_NOT_ALLOWED');
+						return;
+					}
+				}
 			}
 			catch (\Exception $e)
 			{

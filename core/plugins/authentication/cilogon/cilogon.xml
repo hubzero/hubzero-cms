@@ -26,6 +26,11 @@
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				<field name="auto_approve" type="radio" label="PLG_AUTHENTICATION_CILOGON_PARAM_AUTO_APPROVE_LABEL" default="0" description="PLG_AUTHENTICATION_CILOGON_PARAM_AUTO_APPROVE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="allowed_idps" type="textarea" cols="60" rows="4" label="PLG_AUTHENTICATION_CILOGON_PARAM_ALLOWED_IDPS_LABEL" description="PLG_AUTHENTICATION_CILOGON_PARAM_ALLOWED_IDPS_DESC" />
 			</fieldset>
 		</fields>
 	</config>
