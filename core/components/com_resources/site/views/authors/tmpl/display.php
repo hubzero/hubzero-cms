@@ -60,6 +60,7 @@ $this->css('create.css');
 			<input type="hidden" name="tmpl" value="component" />
 			<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 			<input type="hidden" name="task" value="save" />
+			<?php echo Html::input('token'); ?>
 		</fieldset>
 	</form>
 <?php
@@ -74,6 +75,7 @@ if ($this->contributors) {
 		<input type="hidden" name="tmpl" value="component" />
 		<input type="hidden" name="pid" id="pid" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="task" value="update" />
+		<?php echo Html::input('token'); ?>
 
 		<table class="list">
 			<tfoot>
@@ -124,20 +126,20 @@ if ($this->contributors) {
 					</td>
 					<td class="u"><?php
 					if ($i > 0 || ($i+0 > 0)) {
-						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
+						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=up&amp;' . Session::getFormToken() . '=1" class="order up" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_UP').'</span></a>';
 					} else {
 						echo '&nbsp;';
 					}
 					?></td>
 					<td class="d"><?php
 					if ($i < $n-1 || $i+0 < $n-1) {
-						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
+						echo '<a href="' . Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid='.$this->id.'&amp;id='.$contributor->authorid.'&amp;task=reorder&amp;move=down&amp;' . Session::getFormToken() . '=1" class="order down" title="'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'"><span>'.Lang::txt('COM_CONTRIBUTE_MOVE_DOWN').'</span></a>';
 					} else {
 						echo '&nbsp;';
 					}
 					?></td>
 					<td class="t">
-						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+						<a class="icon-delete delete" href="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo $contributor->authorid; ?>&amp;pid=<?php echo $this->id; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
 							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
 						</a>
 					</td>

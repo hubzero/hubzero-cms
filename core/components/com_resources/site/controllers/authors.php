@@ -67,6 +67,14 @@ class Authors extends SiteController
 	 */
 	public function saveTask($show = 1, $id = 0, $authorsNew = array())
 	{
+		// Check for request forgeries, but only when this is the task being
+		// run. The resource creator and the tool pipeline call this directly
+		// with $show = 0, inside their own already-authorised request.
+		if ($show)
+		{
+			Request::checkToken();
+		}
+
 		// Incoming resource ID
 		if (!$id)
 		{
@@ -257,6 +265,9 @@ class Authors extends SiteController
 	 */
 	public function removeTask()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
 		// Incoming
 		$id  = Request::getInt('id', 0);
 		$pid = Request::getInt('pid', 0);
@@ -319,6 +330,9 @@ class Authors extends SiteController
 	 */
 	public function updateTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ids = Request::getArray('authors', array(), 'post');
 		$pid = Request::getInt('pid', 0);
@@ -365,6 +379,9 @@ class Authors extends SiteController
 	 */
 	public function reorderTask()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
 		// Incoming
 		$id   = Request::getInt('id', 0);
 		$pid  = Request::getInt('pid', 0);
