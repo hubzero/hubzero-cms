@@ -268,8 +268,8 @@ HUB.ProjectSetup = {
 			e.preventDefault();
 			var url = $('#deleteimg').attr('href') + '?ajax=1&no_html=1';
 
-			// Ajax call 
-			$.post(url, {},
+			// Ajax call -- post the shared action form's CSRF token
+			$.post(url, $('#hz-post-action').serialize(),
 				function (response) {
 				response = $.parseJSON(response);
 				if (response.success)

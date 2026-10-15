@@ -729,6 +729,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	 */
 	public function _fileDelete()
 	{
+		// Check for request forgeries
+		Request::checkToken('get');
+
 		// Check if they're logged in
 		if (User::isGuest())
 		{

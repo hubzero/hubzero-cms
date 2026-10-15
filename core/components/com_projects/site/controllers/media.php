@@ -265,6 +265,9 @@ class Media extends Base
 	 */
 	public function deleteimgTask()
 	{
+		// Check for request forgeries
+		Request::checkToken();
+
 		// Incoming
 		$ajax = Request::getInt('ajax', 0);
 
