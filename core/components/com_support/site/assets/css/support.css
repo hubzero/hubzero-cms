@@ -1078,6 +1078,30 @@
 		margin-bottom: 0;
 		word-wrap: break-word;
 	}
+	ol.comments .comment-head {
+		margin-bottom: 0.3rem;
+	}
+	ol.comments .comment-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	ol.comments .comment-meta .permalink,
+	ol.comments .comment-meta .copy-link {
+		color: #767676;
+	}
+	ol.comments .comment-meta .copy-link {
+		display: flex;
+	}
+	ol.comments .comment-meta .copy-link .icn {
+		margin-left: 0.3rem;
+		line-height: 0;
+	}
+	ol.comments .comment-meta .permalink:hover,
+	ol.comments .comment-meta .copy-link:hover {
+		border: 0;
+		color: #222;
+	}
 	ol.comments .comment-changelog {
 		margin: 0 0 0 70px;
 		padding: 1.61803399em 1.61803399em;
