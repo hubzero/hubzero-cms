@@ -256,6 +256,11 @@ class Create extends SiteController
 				App::abort(404, Lang::txt('Unknown step.'));
 			}
 
+			// Check for request forgeries. This is the wizard's only mutating
+			// branch, and every step form sends a token; viewing a step by GET
+			// never reaches here.
+			Request::checkToken();
+
 			// Perform any preprocessing
 			$this->$preprocess();
 		}

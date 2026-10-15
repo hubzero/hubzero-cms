@@ -50,6 +50,7 @@ $this->css('create.css')
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 		<input type="hidden" name="step" value="<?php echo $this->step; ?>" />
+		<?php echo Html::input('token'); ?>
 
 <?php if ($this->progress['submitted'] == 1) { ?>
 		<div class="explaination">

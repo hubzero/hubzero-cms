@@ -77,6 +77,7 @@ $this->css('create.css')
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 			<input type="hidden" name="step" value="<?php echo $this->next_step; ?>" />
+			<?php echo Html::input('token'); ?>
 			<input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 
 			<legend><?php echo Lang::txt('COM_CONTRIBUTE_TAGS_ADD'); ?></legend>

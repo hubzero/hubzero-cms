@@ -894,6 +894,11 @@ class Pipeline extends SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries. The edit form already sends a token;
+		// this task writes the tool and its developers as resource authors
+		// and had never checked it.
+		Request::checkToken();
+
 		$exportmap  = array(
 			'@OPEN'   => null,
 			'@GROUP'  => null,

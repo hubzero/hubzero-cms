@@ -279,6 +279,14 @@ HUB.ProjectSetup = {
 					var src = $("#project-image-content").attr('src');
 					$("#project-image-content").attr('src', src + '?' + d.getTime());
 				}
+				else if (response.error)
+				{
+					alert(response.error);
+				}
+			}).fail(function () {
+				// A 403 from the token check, or an expired session, used to be
+				// swallowed silently and the thumbnail just stayed on screen
+				alert('The picture could not be deleted. Reload the page and try again.');
 			});
 		});
 	},
