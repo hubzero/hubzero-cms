@@ -145,6 +145,13 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 		{
 			$authParams['selected_idp'] = $allowedIdps[0];
 		}
+		elseif (count($allowedIdps) > 1)
+		{
+			// Several allowed: narrow CILogon's picker to just these, so a
+			// user cannot finish signing in at a disallowed IdP only to be
+			// refused on return. idphint takes a comma-separated entityID list.
+			$authParams['idphint'] = implode(',', $allowedIdps);
+		}
 
 		$loginUrl = $provider->getAuthorizationUrl($authParams);
 		Session::set('state', $provider->getState(), 'cilogon');
@@ -339,6 +346,24 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
 					'error'
 				);
 				return;
+			}
+
+			// Apply the same IdP restriction as a login does: a member must not
+			// be able to link an identity that could never sign in
+			$allowedIdps = $this->allowedIdps();
+			if (!empty($allowedIdps))
+			{
+				$responseArr = $cilogonResponse->toArray();
+				$idp = isset($responseArr['idp']) ? $responseArr['idp'] : '';
+				if (!in_array($idp, $allowedIdps))
+				{
+					App::redirect(
+						Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+						Lang::txt('PLG_AUTHENTICATION_CILOGON_IDP_NOT_ALLOWED'),
+						'error'
+					);
+					return;
+				}
 			}
 
 			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'cilogon', '');

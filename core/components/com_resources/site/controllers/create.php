@@ -926,7 +926,7 @@ class Create extends SiteController
 
 			include_once __DIR__ . DS . 'authors.php';
 			$authors = new Authors();
-			$authors->saveTask(0);
+			$authors->saveAuthors(0, array(), 0);
 		}
 
 		// Log activity

@@ -78,16 +78,29 @@ class Authors extends SiteController
 		return $resource;
 	}
 
-	public function saveTask($show = 1, $id = 0, $authorsNew = array())
+	public function saveTask()
 	{
-		// Check for request forgeries, but only when this is the task being
-		// run. The tool pipeline calls this directly with $show = 0, inside
-		// its own already-authorised request.
-		if ($show)
-		{
-			Request::checkToken();
-		}
+		// Check for request forgeries. This is the dispatched task; the
+		// internal callers go through saveAuthors() directly.
+		Request::checkToken();
 
+		return $this->saveAuthors(0, array(), 1);
+	}
+
+	/**
+	 * Save one or more authors to a resource
+	 *
+	 * Called by saveTask() after the token check, and directly by
+	 * the tool pipeline (pipeline.php), which pass \$show = 0 inside a request they
+	 * have already checked themselves.
+	 *
+	 * @param   integer  $id          Resource ID (0 = read pid from the request)
+	 * @param   array    $authorsNew  Authors to add
+	 * @param   integer  $show        Display author list when done?
+	 * @return  void
+	 */
+	public function saveAuthors($id = 0, $authorsNew = array(), $show = 1)
+	{
 		// Incoming resource ID
 		$fromRequest = false;
 		if (!$id)

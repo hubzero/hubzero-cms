@@ -313,6 +313,7 @@ $this->css('pipeline.css')
 					<fieldset>
 						<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 						<input type="hidden" name="task" value="update" />
+						<?php echo Html::input('token'); ?>
 						<input type="hidden" name="id" value="<?php echo $this->status['toolid']?>" />
 						<input type="hidden" name="toolname" value="<?php echo $this->status['toolname']?>" />
 						<input type="hidden" name="newstate" id="newstate" value="" />

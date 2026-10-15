@@ -1230,7 +1230,7 @@ class Pipeline extends SiteController
 				require_once __DIR__ . DS . 'authors.php';
 
 				$controller = new Authors();
-				$controller->saveTask(0, $rid, $tool['developers']);
+				$controller->saveAuthors($rid, $tool['developers'], 0);
 
 				//$this->author_save(0, $rid, $tool['developers']);
 			}
@@ -1562,6 +1562,9 @@ class Pipeline extends SiteController
 	 */
 	public function updateTask()
 	{
+		// Check for request forgeries; both status-page forms send a token
+		Request::checkToken();
+
 		// get vars
 		if (!$this->_toolid)
 		{
