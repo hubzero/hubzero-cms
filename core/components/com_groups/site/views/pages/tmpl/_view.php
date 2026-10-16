@@ -141,7 +141,7 @@ if (($pagePrivacy== 'registered' && User::isGuest())
 
 						<?php if ($category->get('id') != '') : ?>
 							<li>
-								<a href="<?php echo $categoryLink; ?>" class="tooltips category category-<?php echo $category->get('id'); ?>" title="In <?php echo $category->get('title'); ?>"></a>
+								<a href="<?php echo $categoryLink; ?>" class="tooltips category category-<?php echo $category->get('id'); ?>" title="In <?php echo $this->escape($category->get('title')); ?>"></a>
 							</li>
 						<?php endif; ?>
 					<?php else : ?>
