@@ -117,7 +117,7 @@ if ($showtoc)
 				if ($this->page->get('scope') == 'group')
 				{
 					$grp = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
-					if ($grp && !User::isGuest() && in_array(User::get('id'), (array) $grp->get('managers')))
+					if ($grp && !User::isGuest() && $grp->isManager(User::get('id')))
 					{
 						?>
 						<li class="page-settings">

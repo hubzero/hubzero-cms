@@ -116,9 +116,11 @@
 	#content-header-extra .add.btn,
 	#content-header-extra .index.btn,
 	#content-header-extra .search.btn,
+	#content-header-extra .settings.btn,
 	li .add.btn,
 	li .index.btn,
-	li .search.btn {
+	li .search.btn,
+	li .settings.btn {
 		width: 1px;
 		padding-right: 0;
 		overflow: hidden;
@@ -127,9 +129,11 @@
 	#content-header-extra .add.btn:before,
 	#content-header-extra .index.btn:before,
 	#content-header-extra .search.btn:before,
+	#content-header-extra .settings.btn:before,
 	li .add.btn:before,
 	li .index.btn:before,
-	li .search.btn:before {
+	li .search.btn:before,
+	li .settings.btn:before {
 		border-right: none;
 	}
 
