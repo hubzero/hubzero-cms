@@ -194,6 +194,7 @@ class Comments extends SiteController
 		// Output content
 		$this->view
 			->set('parents', $parents)
+			->set('crumbs', $this->showPageCrumbs())
 			->set('page', $this->page)
 			->set('sub', $this->sub)
 			->set('mycomment', $mycomment)
