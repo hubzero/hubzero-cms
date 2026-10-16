@@ -1094,6 +1094,15 @@ class Membership extends Base
 	 */
 	public function requestTask()
 	{
+		// joinTask() shows this form once it has loaded the group and checked
+		// that the user may ask to join it. A link straight to this task
+		// (/groups/<cn>/request) arrives without the group, so it goes the
+		// same way.
+		if (empty($this->view->group))
+		{
+			return $this->joinTask();
+		}
+
 		// Get view notifications
 		$notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
