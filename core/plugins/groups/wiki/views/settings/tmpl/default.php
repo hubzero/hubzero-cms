@@ -10,6 +10,7 @@ defined('_HZEXEC_') or die();
 
 $mode      = $this->params->get('automatic_toc', '');
 $threshold = $this->params->get('toc_threshold', '');
+$crumbs    = (int) $this->params->get('wiki_crumbs', 0);
 
 $defMode   = $this->defaults->get('automatic_toc', 'inline');
 $defThresh = (int) $this->defaults->get('toc_threshold', 4);
@@ -37,6 +38,16 @@ $modes = array(
 
 			<label for="toc_threshold"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD'); ?></label>
 			<input type="text" name="toc_threshold" id="toc_threshold" value="<?php echo $this->escape($threshold); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh); ?>" />
+		</fieldset>
+
+		<fieldset>
+			<legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_LEGEND'); ?></legend>
+
+			<label for="wiki_crumbs">
+				<input type="checkbox" class="option" name="wiki_crumbs" id="wiki_crumbs" value="1"<?php if ($crumbs) { echo ' checked="checked"'; } ?> />
+				<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS'); ?>
+			</label>
+			<p class="hint"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_HINT'); ?></p>
 		</fieldset>
 
 		<p class="submit">
