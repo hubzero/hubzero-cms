@@ -32,6 +32,10 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field name="groupRoot" type="radio" default="1" label="MOD_BREADCRUMBS_FIELD_GROUPROOT_LABEL" description="MOD_BREADCRUMBS_FIELD_GROUPROOT_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 				<field name="homeText" type="text" label="MOD_BREADCRUMBS_FIELD_HOMETEXT_LABEL" description="MOD_BREADCRUMBS_FIELD_HOMETEXT_DESC" />
 				<field name="showLast" type="radio" default="1" label="MOD_BREADCRUMBS_FIELD_SHOWLAST_LABEL" description="MOD_BREADCRUMBS_FIELD_SHOWLAST_DESC">
 					<option value="0">JNO</option>

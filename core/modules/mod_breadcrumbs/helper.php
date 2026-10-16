@@ -8,6 +8,8 @@
 namespace Modules\BreadCrumbs;
 
 use Hubzero\Module\Module;
+use Hubzero\Template\Overrides;
+use Request;
 use Route;
 use Lang;
 use Html;
@@ -49,6 +51,13 @@ class Helper extends Module
 	{
 		$items = \Pathway::items();
 
+		// Inside a supergroup, start the trail at the group's home page
+		$homeLink = 'index.php?Itemid=' . \App::get('menu')->getDefault()->id;
+		if ($this->params->get('groupRoot', 1) && ($group = Overrides::superGroup()))
+		{
+			list($items, $homeLink) = $this->rootAtGroup($items, $homeLink, $group);
+		}
+
 		$count = count($items);
 
 		// Don't use $items here as it references Pathway properties directly
@@ -64,12 +73,44 @@ class Helper extends Module
 		{
 			$item = new stdClass();
 			$item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
-			$item->link = Route::url('index.php?Itemid=' . \App::get('menu')->getDefault()->id);
+			$item->link = Route::url($homeLink);
 
 			array_unshift($crumbs, $item);
 		}
 
 		return $crumbs;
+	}
+
+	/**
+	 * Drop the crumbs leading up to a supergroup, so the group is Home
+	 *
+	 * com_groups puts the group's own crumb after "Groups"; everything
+	 * after it (the active page or tab, then any plugin crumbs) is kept.
+	 * The trail is left as is if the group's crumb isn't in it.
+	 *
+	 * @param   array   $items     Pathway items
+	 * @param   string  $homeLink  The site's home link
+	 * @param   object  $group     The supergroup being viewed
+	 * @return  array   The remaining items and the home link
+	 */
+	protected function rootAtGroup($items, $homeLink, $group)
+	{
+		// The group crumb is linked by whichever cn the request used
+		$links = array();
+		foreach (array($group->get('cn'), Request::getString('cn', '')) as $cn)
+		{
+			$links[] = strtolower('index.php?option=com_groups&cn=' . $cn);
+		}
+
+		foreach ($items as $i => $item)
+		{
+			if (in_array(strtolower($item->link), $links))
+			{
+				return array(array_slice($items, $i + 1), $item->link);
+			}
+		}
+
+		return array($items, $homeLink);
 	}
 
 	/**

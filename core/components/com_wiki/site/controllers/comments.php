@@ -22,11 +22,15 @@ use App;
 use Route;
 use Event;
 
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'pagepathway.php';
+
 /**
  * Wiki controller class for comments
  */
 class Comments extends SiteController
 {
+	use \Components\Wiki\Helpers\PagePathway;
+
 	/**
 	 * Book model
 	 *
@@ -181,25 +185,7 @@ class Comments extends SiteController
 			);
 		}
 
-		$parents = array();
-
-		if ($this->page->get('parent'))
-		{
-			$parents = $this->page->ancestors();
-
-			foreach ($parents as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link('comments')
@@ -208,6 +194,7 @@ class Comments extends SiteController
 		// Output content
 		$this->view
 			->set('parents', $parents)
+			->set('crumbs', $this->showPageCrumbs())
 			->set('page', $this->page)
 			->set('sub', $this->sub)
 			->set('mycomment', $mycomment)
