@@ -17,6 +17,14 @@ $orauthor = $this->or->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 $drauthor = $this->dr->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
+	<?php if (count($this->parents)) { ?>
+		<p class="wiki-crumbs">
+			<?php foreach ($this->parents as $parent) { ?>
+				<a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $this->escape($parent->title); ?></a> /
+			<?php } ?>
+		</p>
+	<?php } ?>
+
 	<h2><?php echo $this->escape($this->page->title); ?></h2>
 	<?php
 	if (!$this->page->isStatic())

@@ -25,11 +25,15 @@ use Route;
 use Document;
 use Cache;
 
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'pagepathway.php';
+
 /**
  * Wiki controller class for pages
  */
 class Pages extends SiteController
 {
+	use \Components\Wiki\Helpers\PagePathway;
+
 	/**
 	 * Book model
 	 *
@@ -195,25 +199,7 @@ class Pages extends SiteController
 			App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
 		}
 
-		$parents = array();
-
-		if ($this->page->get('parent'))
-		{
-			$parents = $this->page->ancestors();
-
-			foreach ($parents as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 
 		// Retrieve a specific version if given
 		if ($version = Request::getInt('version', 0))
@@ -465,21 +451,7 @@ class Pages extends SiteController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 			);
 		}
-		// Include the page's ancestors in the trail (matches the display view)
-		if ($this->page->get('parent'))
-		{
-			foreach ($this->page->ancestors() as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&task=' . $this->_task
@@ -531,6 +503,7 @@ class Pages extends SiteController
 			->set('book', $this->book)
 			->set('page', $this->page)
 			->set('revision', $revision)
+			->set('parents', $parents)
 			->set('sub', $this->sub)
 			->set('tree', $tree)
 			->set('tags', $tags)
@@ -989,25 +962,7 @@ class Pages extends SiteController
 					);
 				}
 
-				$parents = array();
-
-				if ($this->page->get('parent'))
-				{
-					$parents = $this->page->ancestors();
-
-					foreach ($parents as $p)
-					{
-						Pathway::append(
-							$p->get('title'),
-							$p->link()
-						);
-					}
-				}
-
-				Pathway::append(
-					$this->page->title,
-					$this->page->link()
-				);
+				$parents = $this->appendPagePathway();
 				Pathway::append(
 					Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 					$this->page->link('delete')
@@ -1083,25 +1038,7 @@ class Pages extends SiteController
 			);
 		}
 
-		$parents = array();
-
-		if ($this->page->get('parent'))
-		{
-			$parents = $this->page->ancestors();
-
-			foreach ($parents as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 		Pathway::append(
 			Lang::txt(strtoupper('COM_WIKI_RENAME')),
 			$this->page->link('rename')

@@ -20,11 +20,15 @@ use App;
 use Route;
 use Event;
 
+require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'pagepathway.php';
+
 /**
  * Wiki controller class for page history
  */
 class History extends SiteController
 {
+	use \Components\Wiki\Helpers\PagePathway;
+
 	/**
 	 * Book model
 	 *
@@ -150,25 +154,7 @@ class History extends SiteController
 			);
 		}
 
-		$parents = array();
-
-		if ($this->page->get('parent'))
-		{
-			$parents = $this->page->ancestors();
-
-			foreach ($parents as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->sub ? 'action' : 'task') . '=' . $this->_task
@@ -238,25 +224,7 @@ class History extends SiteController
 			);
 		}
 
-		$parents = array();
-
-		if ($this->page->get('parent'))
-		{
-			$parents = $this->page->ancestors();
-
-			foreach ($parents as $p)
-			{
-				Pathway::append(
-					$p->get('title'),
-					$p->link()
-				);
-			}
-		}
-
-		Pathway::append(
-			$this->page->title,
-			$this->page->link()
-		);
+		$parents = $this->appendPagePathway();
 		Pathway::append(
 			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->sub ? 'action' : 'task') . '=' . $this->_task
