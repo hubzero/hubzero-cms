@@ -271,13 +271,17 @@ class Message extends \Symfony\Component\Mime\Email
 	 */
 	public function setBody(...$params): static
 	{
-		if (isset($params[1]))
+		// Swiftmailer's signature: setBody($body, $contentType = null, $charset = null).
+		// The second argument is a content type, not a charset.
+		$charset = !empty($params[2]) ? $params[2] : 'utf-8';
+
+		if (isset($params[1]) && $params[1] == 'text/html')
 		{
-			$this->text($params[0], $params[1]);
+			$this->html($params[0], $charset);
 		}
 		else
 		{
-			$this->text($params[0]);
+			$this->text($params[0], $charset);
 		}
 
 		return $this;
@@ -642,6 +646,10 @@ class Message extends \Symfony\Component\Mime\Email
 		{
 			return parent::addPart($body);
 		}
+
+		// An empty charset would override Symfony's utf-8 default and leave the
+		// part without one (Swiftmailer, which this emulates, defaulted to utf-8)
+		$charset = $charset ?: 'utf-8';
 
 		if ($contentType == "text/html")
 		{
