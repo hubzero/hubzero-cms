@@ -47,6 +47,23 @@ if ($tmpl != 'component' && $this->sub) { ?>
 					</form>
 				</div>
 			</li>
+			<?php
+			// Group managers get a link to the group wiki settings
+			if ($this->page->get('scope') == 'group')
+			{
+				$grp = \Hubzero\User\Group::getInstance($this->page->get('scope_id'));
+				if ($grp && !User::isGuest() && $grp->isManager(User::get('id')))
+				{
+					?>
+					<li class="page-settings">
+						<a class="icon-settings settings btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $grp->get('cn') . '&active=wiki&action=settings'); ?>">
+							<?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
+						</a>
+					</li>
+					<?php
+				}
+			}
+			?>
 		</ul>
 	</div><!-- / #content-header-extra -->
 <?php } ?>

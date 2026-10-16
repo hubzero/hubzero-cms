@@ -7,3 +7,19 @@
 @import url("../../../../../core/components/com_groups/site/assets/css/groups.css");
 
 #page_container { background: #f9f9f9; }
+
+/* The template styles #page_options buttons white for its dark page
+   header; group pages put them on a light background */
+@media (min-width: 50em) {
+	#page_content #page_options .btn {
+		border-width: 1px;
+		border-color: rgba(0, 0, 0, 0.2);
+		color: #777;
+	}
+	#page_content #page_options .btn:hover,
+	#page_content #page_options .btn:focus {
+		border-color: #222;
+		background: #222;
+		color: #fff;
+	}
+}

@@ -19,7 +19,8 @@
 @media all and (max-width: 1200px) {
 	.add.btn,
 	.index.btn,
-	.search.btn {
+	.search.btn,
+	.settings.btn {
 		width: 1px;
 		padding-right: 0;
 		overflow: hidden;
@@ -27,7 +28,8 @@
 	}
 	.add.btn:before,
 	.index.btn:before,
-	.search.btn:before {
+	.search.btn:before,
+	.settings.btn:before {
 		border-right: none;
 	}
 
