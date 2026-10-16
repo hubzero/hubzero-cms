@@ -354,7 +354,8 @@ if ($this->model->groupOwner())
 						<td><?php if ($this->last_activity) {
 							$activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
 							$activity = preg_replace('/&#58;/', "", $activity);
-					$activity = $this->escape(strip_tags($activity));
+					// Plain text: strip the tags, decode the entities they leave (&nbsp; etc.), then escape once
+					$activity = $this->escape(html_entity_decode(strip_tags($activity), ENT_QUOTES, 'UTF-8'));
 							?>
 							<?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->escape($this->last_activity->creator->name); ?></span> <?php echo $activity; ?>
 							<?php } else { echo Lang::txt('COM_PROJECTS_NA'); }?>
