@@ -29,7 +29,7 @@ h1 {
         padding: 8px 0px 8px 8px;
         border: 1px solid #EFEAC2;
         color: #CC6633;
-        background: #FFFDEF url("/media/system/images/warning.gif");
+        background: #FFFDEF url("/core/assets/images/warning.gif");
         background-repeat: no-repeat;
         background-position: 0px 0px;
 }
@@ -50,7 +50,7 @@ h1 {
         text-indent: 148px;
         border: none;
         padding: 15px 0 0 0;
-        background: url("/media/system/images/hub-logo_128x64.png");
+        background: url("/core/assets/images/hub-logo_128x64.png");
         background-repeat: no-repeat;
 	color: #CC0000;
         text-decoration: none;
