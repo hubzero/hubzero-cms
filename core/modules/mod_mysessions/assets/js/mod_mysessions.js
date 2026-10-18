@@ -20,6 +20,7 @@ if (!jq) {
 }
 
 var failedScreenshotLookup = 0;
+var snapshotRefreshTimer = null;
 
 //----------------------------------------------------------
 // My Sessions Module
@@ -102,7 +103,7 @@ HUB.Modules.MySessions = {
 
 		// refresh snapshots
 		if (!retry) {
-			setInterval(function() {
+			snapshotRefreshTimer = setInterval(function() {
 				module.refreshSessionSnapshotImages();
 			}, 60000);
 		}
@@ -134,6 +135,17 @@ HUB.Modules.MySessions = {
 						HUB.Modules.MySessions.sessionSnapshotImages(true);
 					}
 				});
+			},
+			error: function(jqXHR) {
+				// Once the api token has expired there is no getting a new one from
+				// this page - the token refresh call carries the dead token itself,
+				// so it is rejected too and every later poll would 401 just the
+				// same. Stop instead of hammering the api once a minute for as
+				// long as the tab stays open.
+				if (jqXHR.status == 401 || jqXHR.status == 403) {
+					clearInterval(snapshotRefreshTimer);
+					snapshotRefreshTimer = null;
+				}
 			}
 		});
 	},
