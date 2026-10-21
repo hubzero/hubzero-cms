@@ -26,12 +26,12 @@ h1 {
 }
 #warning {
         margin: 8px 0px 0px 0px;
-        padding: 8px 0px 8px 8px;
+        padding: 8px 8px 8px 28px;
         border: 1px solid #EFEAC2;
         color: #CC6633;
-        background: #FFFDEF url("/core/assets/images/warning.gif");
+        background: #FFFDEF url("/core/components/com_tools/site/assets/img/contribute/warning.gif");
         background-repeat: no-repeat;
-        background-position: 0px 0px;
+        background-position: 7px 8px;
 }
 #logo {
         padding: 0;
