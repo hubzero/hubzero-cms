@@ -31,7 +31,7 @@ jQuery(document).ready(function(jq){
 		});
 	}
 
-	var holdTheInterval = setInterval(function(){
+	var pollDiskUsage = function(){
 			/*$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);
 			}, 'html');*/
@@ -50,10 +50,25 @@ jQuery(document).ready(function(jq){
                                         $('#diskusage .du-amount-bar').css('width', data.amount+'%');
                                         $('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
                                 }
-                        }).fail(function(){
-                                clearInterval(holdTheInterval);
+                        }).fail(function(jqXHR){
+                                // Stop on a rejected or rate-limited token (a renewal
+                                // restarts us below); a transient error is left alone
+                                if (jqXHR.status == 401 || jqXHR.status == 403 || jqXHR.status == 429) {
+                                        clearInterval(holdTheInterval);
+                                        holdTheInterval = null;
+                                }
                         });
-		}, 60 * 1000);
+		};
+
+	var holdTheInterval = setInterval(pollDiskUsage, 60 * 1000);
+
+	if (Hubzero.api) {
+		Hubzero.api.onRenewed(function(){
+			if (holdTheInterval === null) {
+				holdTheInterval = setInterval(pollDiskUsage, 60 * 1000);
+			}
+		});
+	}
 
 	var shrbtn = $('#share-btn');
 
