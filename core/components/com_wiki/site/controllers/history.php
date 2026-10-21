@@ -162,7 +162,6 @@ class History extends SiteController
 
 		$this->view
 			->set('parents', $parents)
-			->set('crumbs', $this->showPageCrumbs())
 			->set('page', $this->page)
 			->set('sub', $this->sub)
 			->setErrors($this->getErrors())
@@ -234,7 +233,6 @@ class History extends SiteController
 		// Output view
 		$this->view
 			->set('parents', $parents)
-			->set('crumbs', $this->showPageCrumbs())
 			->set('page', $this->page)
 			->set('sub', $this->sub)
 			->set('content', $result)

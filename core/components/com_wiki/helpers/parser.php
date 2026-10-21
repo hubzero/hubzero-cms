@@ -13,6 +13,8 @@ use Exception;
 use Plugin;
 use Lang;
 
+require_once __DIR__ . DS . 'settings.php';
+
 /**
  * Hubzero helper class for retrieving wiki parser
  */
@@ -194,32 +196,8 @@ class Parser extends Obj
 	 */
 	public static function tocSettings($domain = null, $domain_id = null)
 	{
-		$params = \Component::params('com_wiki');
-
-		$mode      = $params->get('automatic_toc', 'inline');
-		$threshold = (int) $params->get('toc_threshold', 4);
-
-		// Group-level override
-		if ($domain == 'group' && $domain_id)
-		{
-			$group = \Hubzero\User\Group::getInstance($domain_id);
-			if ($group)
-			{
-				$gparams = new Registry($group->get('params'));
-
-				$gmode = $gparams->get('automatic_toc', '');
-				if (in_array($gmode, array('inline', 'sidebar', 'off'), true))
-				{
-					$mode = $gmode;
-				}
-
-				$gthreshold = $gparams->get('toc_threshold', '');
-				if ($gthreshold !== '' && $gthreshold !== null)
-				{
-					$threshold = (int) $gthreshold;
-				}
-			}
-		}
+		$mode      = Settings::get('automatic_toc', 'inline', $domain, $domain_id);
+		$threshold = (int) Settings::get('toc_threshold', 4, $domain, $domain_id);
 
 		if (!in_array($mode, array('inline', 'sidebar', 'off'), true))
 		{

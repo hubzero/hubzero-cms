@@ -56,7 +56,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 				{
 					?>
 					<li class="page-settings">
-						<a class="icon-settings settings btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $grp->get('cn') . '&active=wiki&action=settings'); ?>">
+						<a class="icon-settings settings btn" href="<?php echo Route::url($this->page->link('base') . '&action=settings'); ?>">
 							<?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
 						</a>
 					</li>
