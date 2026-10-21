@@ -121,7 +121,7 @@ if ($showtoc)
 					{
 						?>
 						<li class="page-settings">
-							<a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $grp->get('cn') . '&active=wiki&action=settings'); ?>">
+							<a href="<?php echo Route::url($this->page->link('base') . '&action=settings'); ?>">
 								<?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
 							</a>
 						</li>

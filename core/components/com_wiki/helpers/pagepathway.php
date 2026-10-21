@@ -7,10 +7,9 @@
 
 namespace Components\Wiki\Helpers;
 
-use Hubzero\Config\Registry;
-use Hubzero\User\Group;
-use Component;
 use Pathway;
+
+require_once __DIR__ . DS . 'settings.php';
 
 /**
  * Breadcrumb helpers shared by the wiki site controllers
@@ -20,7 +19,7 @@ trait PagePathway
 	/**
 	 * Append the current page's ancestors and the page itself to the pathway
 	 *
-	 * @return  array  The page's ancestors, root first, for views that list them as crumbs
+	 * @return  array  The ancestors, root first, when the page views should list them as crumbs; otherwise empty
 	 */
 	protected function appendPagePathway()
 	{
@@ -44,33 +43,12 @@ trait PagePathway
 			$this->page->link()
 		);
 
-		return $parents;
-	}
-
-	/**
-	 * Whether the page views should list the page's ancestors as crumbs
-	 *
-	 * A group wiki follows the group's Wiki Settings; every other wiki
-	 * follows the component's configuration. Both default to off, since
-	 * a site or group template may already show the pathway.
-	 *
-	 * @return  bool
-	 */
-	protected function showPageCrumbs()
-	{
-		if ($this->page->get('scope') == 'group')
+		// Off by default, since a site or group template may already show the pathway
+		if ($parents && !Settings::get('wiki_crumbs', 0, $this->page->get('scope'), $this->page->get('scope_id')))
 		{
-			$group = Group::getInstance($this->page->get('scope_id'));
-			if (!$group)
-			{
-				return false;
-			}
-
-			$params = new Registry($group->get('params'));
-
-			return (bool) $params->get('wiki_crumbs', 0);
+			$parents = array();
 		}
 
-		return (bool) Component::params('com_wiki')->get('wiki_crumbs', 0);
+		return $parents;
 	}
 }
