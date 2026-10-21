@@ -49,13 +49,23 @@ class Helper extends Module
 	 */
 	public function getList()
 	{
-		$items = \Pathway::items();
+		$items    = \Pathway::items();
+		$showHome = $this->params->get('showHome', 1);
+		$home     = null;
 
-		// Inside a supergroup, start the trail at the group's home page
-		$homeLink = 'index.php?Itemid=' . \App::get('menu')->getDefault()->id;
+		// Inside a supergroup, the trail starts at the group: the site Home,
+		// "Groups", and anything else leading up to the group's crumb go.
+		// With a Home entry the group's crumb becomes it; without one the
+		// group's crumb stays, so the trail still leads back to the group.
 		if ($this->params->get('groupRoot', 1) && ($group = Overrides::superGroup()))
 		{
-			list($items, $homeLink) = $this->rootAtGroup($items, $homeLink, $group);
+			$at = $this->findGroupCrumb($items, $group);
+
+			if ($at !== null)
+			{
+				$home  = $items[$at];
+				$items = array_slice($items, $showHome ? $at + 1 : $at);
+			}
 		}
 
 		$count = count($items);
@@ -69,11 +79,11 @@ class Helper extends Module
 			$crumbs[$i]->link = Route::url($items[$i]->link);
 		}
 
-		if ($this->params->get('showHome', 1))
+		if ($showHome)
 		{
 			$item = new stdClass();
 			$item->name = htmlspecialchars($this->params->get('homeText', Lang::txt('MOD_BREADCRUMBS_HOME')));
-			$item->link = Route::url($homeLink);
+			$item->link = Route::url($home ? $home->link : 'index.php?Itemid=' . \App::get('menu')->getDefault()->id);
 
 			array_unshift($crumbs, $item);
 		}
@@ -82,18 +92,16 @@ class Helper extends Module
 	}
 
 	/**
-	 * Drop the crumbs leading up to a supergroup, so the group is Home
+	 * Find a supergroup's own crumb in the trail
 	 *
-	 * com_groups puts the group's own crumb after "Groups"; everything
-	 * after it (the active page or tab, then any plugin crumbs) is kept.
-	 * The trail is left as is if the group's crumb isn't in it.
+	 * com_groups puts the group's crumb after "Groups"; everything after
+	 * it is the active page or tab, then any plugin crumbs.
 	 *
-	 * @param   array   $items     Pathway items
-	 * @param   string  $homeLink  The site's home link
-	 * @param   object  $group     The supergroup being viewed
-	 * @return  array   The remaining items and the home link
+	 * @param   array   $items  Pathway items
+	 * @param   object  $group  The supergroup being viewed
+	 * @return  mixed   The crumb's index, or null if it isn't in the trail
 	 */
-	protected function rootAtGroup($items, $homeLink, $group)
+	protected function findGroupCrumb($items, $group)
 	{
 		// The group crumb is linked by whichever cn the request used
 		$links = array();
@@ -106,11 +114,11 @@ class Helper extends Module
 		{
 			if (in_array(strtolower($item->link), $links))
 			{
-				return array(array_slice($items, $i + 1), $item->link);
+				return $i;
 			}
 		}
 
-		return array($items, $homeLink);
+		return null;
 	}
 
 	/**
