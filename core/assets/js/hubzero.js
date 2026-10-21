@@ -41,6 +41,32 @@ Hubzero.root = function ()
 }
 
 /**
+ * Api token state, for scripts that poll the api
+ *
+ * onRenewed() handlers run after every successful grant, including
+ * renewals; onFailed() handlers run with the jqXHR when a grant is refused.
+ */
+Hubzero.api = {
+	token   : null,
+	renewed : [],
+	failed  : [],
+
+	onRenewed : function (fn) {
+		this.renewed.push(fn);
+	},
+
+	onFailed : function (fn) {
+		this.failed.push(fn);
+	},
+
+	fire : function (handlers, arg) {
+		for (var i = 0; i < handlers.length; i++) {
+			handlers[i](arg);
+		}
+	}
+};
+
+/**
  * Session based api initialization
  *
  * @param   object  Callback function
@@ -48,29 +74,62 @@ Hubzero.root = function ()
  */
 Hubzero.initApi = function (callback)
 {
+	// The grant must not carry the previous token: once that has expired
+	// the api guard rejects the bearer header before the grant is seen,
+	// so the token could never be renewed. Lift the global header while
+	// the request's settings are built; anything in flight is unaffected.
+	var headers = $.ajaxSettings.headers || {},
+	    bearer  = headers['Authorization'];
+
+	delete headers['Authorization'];
+
 	// Get session token for oauth calls
-	$.ajax({
+	var grant = $.ajax({
 		url      : Hubzero.root() + '/api/developer/oauth/token',
 		data     : 'grant_type=session',
 		dataType : 'json',
 		type     : 'POST',
-		cache    : 'false',
-		success  : function (data, textStatus, jqXHR) {
-			var token = data.access_token;
+		cache    : false
+	});
 
-			// Set defaults for ajax calls
-			$.ajaxSetup({
-				headers : {
-					'Authorization' : 'Bearer ' + token
-				}
-			});
+	if (bearer) {
+		headers['Authorization'] = bearer;
+	}
 
-			if ($.type(callback) === 'function') {
-				callback();
+	grant.done(function (data) {
+		var token = data.access_token;
+
+		Hubzero.api.token = token;
+
+		// Set defaults for ajax calls
+		$.ajaxSetup({
+			headers : {
+				'Authorization' : 'Bearer ' + token
 			}
+		});
 
-			// Check again when the token expires
-			setTimeout(Hubzero.initApi, data.expires_in*1000);
+		if ($.type(callback) === 'function') {
+			callback();
+		}
+
+		Hubzero.api.fire(Hubzero.api.renewed, data);
+
+		// Renew a minute before the token expires: on the dot, timer
+		// drift alone would have the server rejecting it already
+		var lifetime = parseInt(data.expires_in, 10) || 3600;
+
+		setTimeout(function () {
+			Hubzero.initApi();
+		}, Math.max(lifetime - 60, 30) * 1000);
+	}).fail(function (jqXHR) {
+		Hubzero.api.fire(Hubzero.api.failed, jqXHR);
+
+		// A refused grant means the session is gone; anything else
+		// (network, 5xx, rate limit) is worth another try later
+		if (jqXHR.status != 401 && jqXHR.status != 403) {
+			setTimeout(function () {
+				Hubzero.initApi();
+			}, 60 * 1000);
 		}
 	});
 };
