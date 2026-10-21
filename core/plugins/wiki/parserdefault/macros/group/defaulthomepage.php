@@ -31,10 +31,10 @@ class DefaultHomePage extends GroupMacro
 	public function description()
 	{
 		$txt = array();
-		$txt['html']  = '<p>Displays group members.</p>';
+		$txt['html']  = '<p>Displays the group\'s default home page content.</p>';
 		$txt['html'] .= '<p>Examples:</p>
 							<ul>
-								<li><code>[[Group.DefaultHome()]]</code></li>
+								<li><code>[[Group.DefaultHomePage()]]</code></li>
 							</ul>';
 
 		return $txt['html'];
