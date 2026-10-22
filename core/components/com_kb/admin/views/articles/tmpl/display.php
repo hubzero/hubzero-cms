@@ -77,11 +77,12 @@ $access = Html::access('assetgroups');
 				<th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_KB_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" class="priority-3"><?php echo Lang::txt('COM_KB_CATEGORY'); ?></th>
 				<th scope="col" class="priority-5"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
+				<th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_KB_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="6"><?php echo $this->rows->pagination; ?></td>
+				<td colspan="7"><?php echo $this->rows->pagination; ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -177,6 +178,9 @@ $access = Html::access('assetgroups');
 				<td class="priority-5">
 					<span class="vote helpful">+<?php echo $row->get('helpful', 0); ?></span>
 					<span class="vote nothelpful">-<?php echo $row->get('nothelpful', 0); ?></span>
+				</td>
+				<td class="priority-5">
+					<?php echo $row->get('id'); ?>
 				</td>
 			</tr>
 			<?php
