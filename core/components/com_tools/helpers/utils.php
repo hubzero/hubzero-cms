@@ -481,6 +481,7 @@ class Utils
 	{
 		//instaniate objects
 		$export_access = new stdClass;
+		$export_access->error = new stdClass;
 
 		$ip = Request::ip();
 
