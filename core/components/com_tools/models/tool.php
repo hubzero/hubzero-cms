@@ -1736,13 +1736,14 @@ class Tool
 	{
 		$db = \App::get('db');
 		$sql = "SELECT r.alias, r.published, v.toolaccess AS access, GROUP_CONCAT(v.revision SEPARATOR ',') AS versions
-				FROM `#__resources` AS r LEFT OUTER JOIN  `#__tool_version` AS v 
+				FROM `#__resources` AS r INNER JOIN `#__tool_version` AS v
 				ON
 				r.alias=v.toolname
 				WHERE
 				r.type=7
 				AND r.standalone=1
-				GROUP BY v.toolname";
+				AND r.alias!=''
+				GROUP BY r.alias";
 
 		$db->setQuery($sql);
 		return $db->loadObjectList();
