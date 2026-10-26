@@ -102,6 +102,9 @@ class Tools extends SiteController
 		// Get the tool list
 		$this->view->apps = $model->getApplicationTools();
 
+		// Tools that have not reached the published state are only listed for admins
+		$this->view->isAdmin = (bool) $this->config->get('access-admin-component', false);
+
 		// Get the forge image
 		$this->view->image = \Hubzero\Document\Assets::getComponentImage($this->_option, 'forge.png', 1);
 
