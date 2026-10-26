@@ -56,8 +56,10 @@ $this->css('introduction.css', 'system')
 				{
 					foreach ($this->apps as $project)
 					{
-						//if ($project->state == 1 || $project->state == 3) {
-						if ($project->tool_state == 7)
+						// Everyone sees published tools; admins also see the ones
+						// still marked installed, updated or approved
+						if ($project->tool_state == 7
+						 || ($this->isAdmin && in_array($project->tool_state, array(4, 5, 6))))
 						{
 							$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
 							?>
