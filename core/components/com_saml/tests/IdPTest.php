@@ -39,6 +39,10 @@ class IdPTest extends Basic
 		// Arbitrary profile fields
 		$this->assertTrue(IdP::isKnownAttributeSource('profile:orcid'));
 		$this->assertTrue(IdP::isKnownAttributeSource('profile:organization'));
+
+		// Group membership, which resolves to a list rather than a value
+		$this->assertTrue(IdP::isKnownAttributeSource('groups'));
+		$this->assertTrue(IdP::isKnownAttributeSource('groups:allowed'));
 	}
 
 	/**
@@ -54,5 +58,11 @@ class IdPTest extends Basic
 		$this->assertFalse(IdP::isKnownAttributeSource('profile:'));
 		$this->assertFalse(IdP::isKnownAttributeSource(''));
 		$this->assertFalse(IdP::isKnownAttributeSource('../../etc/passwd'));
+
+		// Only the two documented group policies, so a plausible-looking
+		// typo cannot be saved as a source that releases nothing
+		$this->assertFalse(IdP::isKnownAttributeSource('groups:'));
+		$this->assertFalse(IdP::isKnownAttributeSource('groups:all'));
+		$this->assertFalse(IdP::isKnownAttributeSource('groups:managed'));
 	}
 }

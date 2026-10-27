@@ -336,6 +336,87 @@ class ServiceProvider extends Relational
 	}
 
 	/**
+	 * Group cn's releasable to this SP for a user
+	 *
+	 * Two policies, named by the attribute-map source that asks for them:
+	 *
+	 * - 'allowed' intersects the user's membership with allowed_groups, so
+	 *   the SP is told only which of its own gates the user came through.
+	 * - 'all' releases every confirmed HUB group membership.
+	 *
+	 * @param   object  $user    \Hubzero\User\User
+	 * @param   string  $policy  'allowed' or 'all'
+	 * @return  array
+	 */
+	public function releasedGroups($user, $policy = 'allowed')
+	{
+		if (!$user || !$user->get('id'))
+		{
+			return array();
+		}
+
+		if ($policy == 'all')
+		{
+			return $this->confirmedGroups($user->get('id'));
+		}
+
+		$allowed = $this->allowedGroups();
+
+		// An unrestricted SP has no gate to report passing. Falling back to
+		// the full list here would quietly turn 'allowed' into 'all' the
+		// moment an admin cleared the restriction.
+		if (!$allowed)
+		{
+			return array();
+		}
+
+		$released = array();
+
+		foreach ($allowed as $cn)
+		{
+			if ($this->userIsInGroup($cn, $user->get('id')))
+			{
+				$released[] = $cn;
+			}
+		}
+
+		return $released;
+	}
+
+	/**
+	 * cn's of the HUB groups the user is a confirmed member or manager of
+	 *
+	 * Applicants and invitees are left out: membership that has only been
+	 * requested, or offered and not accepted, must not be reported to an SP
+	 * as held. Helper::getGroups() is asked directly rather than going
+	 * through User::groups(), which caches its result in a method static
+	 * that is not keyed by user.
+	 *
+	 * @param   integer  $userId
+	 * @return  array
+	 */
+	protected function confirmedGroups($userId)
+	{
+		$cns = array();
+
+		foreach (array('members', 'managers') as $role)
+		{
+			// The third argument restricts this to HUB and partner groups:
+			// project and course membership is not this SP's business, even
+			// though either may still gate access through allowed_groups
+			foreach (\Hubzero\User\Helper::getGroups($userId, $role, 1) as $group)
+			{
+				if (!empty($group->cn) && !in_array($group->cn, $cns))
+				{
+					$cns[] = $group->cn;
+				}
+			}
+		}
+
+		return $cns;
+	}
+
+	/**
 	 * Sessions issued for this SP
 	 *
 	 * @return  object

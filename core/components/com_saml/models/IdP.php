@@ -141,6 +141,14 @@ class IdP
 	);
 
 	/**
+	 * Group-membership sources, which resolve to a list of group cn's
+	 * rather than to a single value
+	 *
+	 * @var  array
+	 */
+	protected static $groupSources = array('groups', 'groups:allowed');
+
+	/**
 	 * Assertion lifetime (NotOnOrAfter) in seconds
 	 *
 	 * @return  integer
@@ -358,6 +366,7 @@ class IdP
 		}
 
 		return in_array($source, self::$attributeSources)
+			|| in_array($source, self::$groupSources)
 			|| $source == 'organization'
 			|| (strpos($source, 'profile:') === 0 && strlen($source) > strlen('profile:'));
 	}
@@ -366,17 +375,25 @@ class IdP
 	 * Resolve an attribute-map source to a user value
 	 *
 	 * Only whitelisted accessors resolve — the map is data, not code.
-	 * Returns null for unknown sources so the attribute is skipped.
+	 * Returns null for unknown sources so the attribute is skipped, and an
+	 * array for the group sources, which are multi-valued by nature.
 	 *
+	 * @param   object  $sp      ServiceProvider
 	 * @param   object  $user    \Hubzero\User\User
 	 * @param   string  $source
-	 * @return  string|null
+	 * @return  string|array|null
 	 */
-	protected function resolveAttributeSource($user, $source)
+	protected function resolveAttributeSource($sp, $user, $source)
 	{
 		if (in_array($source, self::$attributeSources))
 		{
 			return (string) $user->get($source, '');
+		}
+
+		// Group membership is released under the SP's own policy
+		if (in_array($source, self::$groupSources))
+		{
+			return $sp->releasedGroups($user, $source == 'groups' ? 'all' : 'allowed');
 		}
 
 		// Organization lives in the profile table, not on the user record
@@ -442,19 +459,34 @@ class IdP
 				continue;
 			}
 
-			$value = $this->resolveAttributeSource($user, $entry['source']);
+			$value = $this->resolveAttributeSource($sp, $user, $entry['source']);
 
 			// Unknown sources resolve to null; empty values are omitted
 			// rather than released, since an empty attribute can blank out
 			// the corresponding field in the SP's user record
-			if ($value === null || $value === '')
+			if ($value === null)
+			{
+				continue;
+			}
+
+			// A multi-valued source that resolves to nothing is dropped for
+			// the same reason, and because an Attribute carrying no value at
+			// all fails schema validation at a strict SP
+			$values = is_array($value) ? $value : array($value);
+			$values = array_filter(array_map('strval', $values), 'strlen');
+
+			if (!$values)
 			{
 				continue;
 			}
 
 			$attribute = (new \LightSaml\Model\Assertion\Attribute())
-				->setName($entry['name'])
-				->addAttributeValue($value);
+				->setName($entry['name']);
+
+			foreach ($values as $single)
+			{
+				$attribute->addAttributeValue($single);
+			}
 
 			if (!empty($entry['friendly']))
 			{
