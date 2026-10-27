@@ -309,9 +309,13 @@ class Event extends Model
 		$output .= "END:VEVENT\r\n";
 		$output .= "END:VCALENDAR\r\n";
 
+		// Apache aborts the request (AH02430) on a control character in a
+		// header value, so keep only safe ASCII in the filename.
+		$filename = trim(preg_replace('/[^a-z0-9._-]+/', '_', strtolower($title)), '._');
+
 		//set the headers for output
 		header('Content-type: text/calendar; charset=utf-8');
-		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', strtolower($title)) . '_export.ics');
+		header('Content-Disposition: attachment; filename="' . $filename . '_export.ics"');
 		echo $output;
 		exit();
 	}
