@@ -34,6 +34,22 @@ class StubbedServiceProvider extends ServiceProvider
 	{
 		return isset($this->groups[$cn]) && in_array($userId, $this->groups[$cn]);
 	}
+
+	/**
+	 * cn's this stub reports as confirmed membership
+	 *
+	 * @var  array
+	 */
+	public $confirmed = array();
+
+	/**
+	 * @param   integer  $userId
+	 * @return  array
+	 */
+	protected function confirmedGroups($userId)
+	{
+		return $this->confirmed;
+	}
 }
 
 /**
@@ -185,5 +201,76 @@ class ServiceProviderTest extends Basic
 		$sp->groups = array('staff' => array(42));
 
 		$this->assertFalse($sp->userCanAccess(new StubUser(42)));
+	}
+
+	/**
+	 * The 'allowed' policy releases the gates the user came through, and
+	 * only those — not the rest of the restriction, and not other groups
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testAllowedPolicyReleasesTheGatesPassed()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff","faculty"]');
+		$sp->groups = array('staff' => array(42), 'faculty' => array(7, 42));
+		$sp->confirmed = array('staff', 'faculty', 'knitting-club');
+
+		$this->assertEquals(array('staff', 'faculty'), $sp->releasedGroups(new StubUser(42)));
+		$this->assertEquals(array('faculty'), $sp->releasedGroups(new StubUser(7)));
+		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(99)));
+	}
+
+	/**
+	 * With no restriction there is no gate to report, so the 'allowed'
+	 * policy releases nothing rather than falling back to everything
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testAllowedPolicyReleasesNothingWithoutRestriction()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', null);
+		$sp->confirmed = array('staff');
+
+		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(42)));
+
+		// A restriction that cannot be read must not open this up either
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', 'not json');
+		$sp->confirmed = array('staff');
+
+		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(42)));
+	}
+
+	/**
+	 * The 'all' policy releases confirmed membership, independently of the
+	 * restriction
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testAllPolicyReleasesConfirmedMembership()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff"]');
+		$sp->confirmed = array('staff', 'knitting-club');
+
+		$this->assertEquals(array('staff', 'knitting-club'), $sp->releasedGroups(new StubUser(42), 'all'));
+	}
+
+	/**
+	 * A guest has no membership to release under either policy
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testGuestReleasesNoGroups()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff"]');
+		$sp->groups = array('staff' => array(0));
+		$sp->confirmed = array('staff');
+
+		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0)));
+		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0), 'all'));
+		$this->assertEquals(array(), $sp->releasedGroups(null));
 	}
 }

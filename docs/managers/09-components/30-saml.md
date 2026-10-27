@@ -69,6 +69,8 @@ Following the example above, with the survey application at
    makes the service treat returning members as new people.
 6. Decide **Allowed groups**. Left empty, every member of the hub can sign in
    to that service. If the survey is for one group, put that group's `cn` here.
+   The same list is what `groups:allowed` releases, if you go on to send the
+   service a member's groups.
 7. Save, with the state set to enabled.
 8. Give the service the hub's metadata URL from the **Overview** screen, and
    ask them to try a sign-on.
@@ -141,6 +143,45 @@ ID**. **NameID format** declares which of those it is. **Attribute map
 default set (email, common name, given name, surname) and entering `[]`
 releases none. **Allowed groups** takes a comma-separated list of group
 `cn`s; leave it empty to let every hub member in.
+
+**Releasing group membership** — two attribute-map sources carry a member's
+groups. Both release one value per group, naming groups by `cn`.
+
+| Source | Releases |
+|---|---|
+| `groups:allowed` | the groups from **Allowed groups** that this member belongs to |
+| `groups` | every HUB group this member belongs to |
+
+Prefer `groups:allowed`. It tells the service which of its own gates the
+member came through and nothing else. `groups` hands over the member's whole
+HUB group list, which is more than most services need and is readable by
+whoever runs that service. An SP with **Allowed groups** empty has no gate to
+report, so `groups:allowed` releases nothing there — it does not fall back to
+releasing everything.
+
+Only confirmed membership is released: someone who has applied to a group, or
+been invited and not yet accepted, is not a member and is not reported as one.
+Project and course groups are never released by `groups`, though either can
+still gate access through **Allowed groups**. Nothing is released until a map
+names one of these sources, so upgrading the hub does not start sending groups
+to services that are already registered.
+
+A map entry looks like this. The name is the one services that already
+understand group attributes expect; `friendly` is the human-readable label
+that travels beside it:
+
+```json
+[
+  {
+    "name": "urn:oid:1.3.6.1.4.1.5923.1.5.1.1",
+    "friendly": "isMemberOf",
+    "source": "groups:allowed"
+  }
+]
+```
+
+Adding an entry replaces the default set rather than adding to it, so a map
+that should still release the usual attributes has to list them too.
 
 **Publishing** — the enabled/disabled state, plus the ID, creation date, and
 the metadata URL an imported registration came from.
