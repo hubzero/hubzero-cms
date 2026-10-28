@@ -417,6 +417,23 @@ class IdP
 	}
 
 	/**
+	 * The NameFormat an attribute is sent with
+	 *
+	 * A URI name (urn:oid:..., as the docs recommend for isMemberOf) is
+	 * declared as one: SPs such as Shibboleth map URI-named attributes by
+	 * NameFormat and will not map one sent as "unspecified".
+	 *
+	 * @param   string  $name
+	 * @return  string
+	 */
+	public static function attributeNameFormat($name)
+	{
+		return preg_match('/^(urn|https?):/i', (string) $name)
+			? 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri'
+			: \LightSaml\SamlConstants::ATTRIBUTE_NAME_FORMAT_UNSPECIFIED;
+	}
+
+	/**
 	 * Build the attribute statement for a user under an SP's release policy
 	 *
 	 * Returns null when nothing resolves to a value: the SAML schema requires
@@ -481,7 +498,8 @@ class IdP
 			}
 
 			$attribute = (new \LightSaml\Model\Assertion\Attribute())
-				->setName($entry['name']);
+				->setName($entry['name'])
+				->setNameFormat(self::attributeNameFormat($entry['name']));
 
 			foreach ($values as $single)
 			{

@@ -32,7 +32,32 @@ class StubbedServiceProvider extends ServiceProvider
 	 */
 	protected function userIsInGroup($cn, $userId)
 	{
+		$this->lookups++;
+
 		return isset($this->groups[$cn]) && in_array($userId, $this->groups[$cn]);
+	}
+
+	/**
+	 * Membership lookups made, to see they are not repeated
+	 *
+	 * @var  integer
+	 */
+	public $lookups = 0;
+
+	/**
+	 * Entry => the group's own cn; entries not listed are their own cn
+	 *
+	 * @var  array
+	 */
+	public $canonical = array();
+
+	/**
+	 * @param   string  $cn
+	 * @return  string
+	 */
+	protected function groupCn($cn)
+	{
+		return isset($this->canonical[$cn]) ? $this->canonical[$cn] : $cn;
 	}
 
 	/**
@@ -272,5 +297,40 @@ class ServiceProviderTest extends Basic
 		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0)));
 		$this->assertEquals(array(), $sp->releasedGroups(new StubUser(0), 'all'));
 		$this->assertEquals(array(), $sp->releasedGroups(null));
+	}
+
+	/**
+	 * A gate is released by the group's own cn, however the entry was
+	 * spelled, and two entries for one group release it once
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testAllowedPolicyReleasesTheGroupsOwnCn()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["1234","Staff","staff"]');
+		$sp->groups = array('1234' => array(42), 'Staff' => array(42), 'staff' => array(42));
+		$sp->canonical = array('1234' => 'faculty', 'Staff' => 'staff');
+
+		$this->assertEquals(array('faculty', 'staff'), $sp->releasedGroups(new StubUser(42)));
+	}
+
+	/**
+	 * The access check and the release ask about each group once
+	 *
+	 * @covers  Components\Saml\Models\ServiceProvider::releasedGroups
+	 * @return  void
+	 **/
+	public function testMembershipIsLookedUpOncePerGroup()
+	{
+		$sp = StubbedServiceProvider::blank()->set('allowed_groups', '["staff","faculty"]');
+		$sp->groups = array('faculty' => array(42));
+		$user = new StubUser(42);
+
+		$this->assertTrue($sp->userCanAccess($user));
+		$sp->releasedGroups($user);
+		$sp->releasedGroups($user);
+
+		$this->assertEquals(2, $sp->lookups);
 	}
 }

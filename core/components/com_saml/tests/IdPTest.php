@@ -65,4 +65,19 @@ class IdPTest extends Basic
 		$this->assertFalse(IdP::isKnownAttributeSource('groups:all'));
 		$this->assertFalse(IdP::isKnownAttributeSource('groups:managed'));
 	}
+
+	/**
+	 * URI attribute names are declared as URIs; others stay unspecified
+	 *
+	 * @covers  Components\Saml\Models\IdP::attributeNameFormat
+	 * @return  void
+	 **/
+	public function testAttributeNameFormat()
+	{
+		$uri = 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri';
+
+		$this->assertEquals($uri, IdP::attributeNameFormat('urn:oid:1.3.6.1.4.1.5923.1.5.1.1'));
+		$this->assertEquals($uri, IdP::attributeNameFormat('http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'));
+		$this->assertEquals('urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified', IdP::attributeNameFormat('isMemberOf'));
+	}
 }
