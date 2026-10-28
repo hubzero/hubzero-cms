@@ -116,8 +116,8 @@ class Entriesv1_0 extends ApiController
 	 * }
 	 * @apiParameter {
 	 * 		"name":          "category",
-	 * 		"description":   "Only articles in this category (ID).",
-	 * 		"type":          "integer",
+	 * 		"description":   "Only articles in this category, by ID, alias or path.",
+	 * 		"type":          "string",
 	 * 		"required":      false,
 	 * 		"default":       null
 	 * }
@@ -181,9 +181,22 @@ class Entriesv1_0 extends ApiController
 			      ->whereIn('access', User::getAuthorisedViewLevels());
 		}
 
-		if ($category = Request::getInt('category', 0))
+		// By id, alias or path. A category that does not exist, or that the
+		// caller cannot see, matches nothing rather than silently everything.
+		if (($category = trim(Request::getString('category', ''))) !== '')
 		{
-			$query->whereEquals('category', $category);
+			$id = 0;
+
+			foreach ($categories as $cid => $cat)
+			{
+				if ((string) $cid === $category || $cat->get('alias') === $category || $cat->get('path') === $category)
+				{
+					$id = (int) $cid;
+					break;
+				}
+			}
+
+			$query->whereEquals('category', $id);
 		}
 
 		if ($search = Request::getString('search', ''))
