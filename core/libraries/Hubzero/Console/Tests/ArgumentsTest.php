@@ -10,7 +10,6 @@ namespace Hubzero\Console\Tests;
 
 use Hubzero\Test\Basic;
 use Hubzero\Console\Arguments;
-use Mockery as m;
 
 /**
  * Base relational model tests
@@ -18,25 +17,66 @@ use Mockery as m;
 class ArgumentsTest extends Basic
 {
     /**
-     * Sets up the testing environment
+     * The home directory Config reads its .muse from
+     *
+     * @var  string
+     **/
+    private static $home = null;
+
+    /**
+     * The real one, to put back
+     *
+     * @var  string
+     **/
+    private static $realHome = null;
+
+    /**
+     * Give Console\Config a .muse of our own to read
+     *
+     * Not a Mockery "alias:" mock: that declares Hubzero\Console\Config for
+     * the rest of the process, and every later test that reached Output --
+     * which asks that class whether to colour -- got the mock instead.
      *
      * @return  void
      **/
-    public function setup(): void
+    public static function setUpBeforeClass(): void
     {
-        $config = m::mock('alias:\Hubzero\Console\Config');
+        parent::setUpBeforeClass();
 
-        $configuration = [];
-        $aliases       = new \stdClass();
-        $aliases->env  = 'environment';
-        $aliases->t    = 'test::run';
-        $aliases->inst = 'repository:package::install';
-        $configuration['aliases'] = $aliases;
+        self::$realHome = getenv('HOME');
+        self::$home     = sys_get_temp_dir() . DS . 'muse_' . bin2hex(random_bytes(6));
 
-        $config->shouldReceive('get')->andReturnUsing(function ($key, $default = null) use ($configuration) {
-            return (isset($configuration[$key])) ? $configuration[$key] : $default;
-        });
+        mkdir(self::$home, 0700, true);
+        file_put_contents(self::$home . DS . '.muse', json_encode(array(
+            'aliases' => array(
+                'env'  => 'environment',
+                't'    => 'test::run',
+                'inst' => 'repository:package::install'
+            )
+        )));
+
+        putenv('HOME=' . self::$home);
     }
+
+    /**
+     * Put the real home back
+     *
+     * @return  void
+     **/
+    public static function tearDownAfterClass(): void
+    {
+        if (self::$home && is_dir(self::$home)) {
+            @unlink(self::$home . DS . '.muse');
+            @rmdir(self::$home);
+        }
+
+        if (self::$realHome !== false && self::$realHome !== null) {
+            putenv('HOME=' . self::$realHome);
+        }
+
+        parent::tearDownAfterClass();
+    }
+
 
     /**
      * Tests to make sure we can parse for a basic command and task

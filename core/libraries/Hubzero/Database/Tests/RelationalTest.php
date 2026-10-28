@@ -607,7 +607,10 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $other   = clone $driver;
+        // A stand-in, not a clone: cloning the driver gives a second object
+        // over the same handle, and when it goes the in-memory database goes
+        // with it. Nothing here queries through it, only reads it back.
+        $other   = new \stdClass();
         $user    = new User();
         $another = new User();
 

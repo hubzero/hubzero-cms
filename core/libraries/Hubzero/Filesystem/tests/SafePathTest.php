@@ -7,6 +7,7 @@
 
 namespace Hubzero\Filesystem\Tests;
 
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Hubzero\Filesystem\Adapter\Local;
 use Hubzero\Filesystem\SafePath;
 use Hubzero\Test\Basic;
@@ -19,6 +20,12 @@ use Hubzero\Test\Basic;
  * link, a hard link, '..' in a request parameter, and a link planted after the
  * path was resolved but before it was written to.
  */
+#[CoversMethod(\Hubzero\Filesystem\SafePath::class, 'directory')]
+#[CoversMethod(\Hubzero\Filesystem\SafePath::class, 'relative')]
+#[CoversMethod(\Hubzero\Filesystem\SafePath::class, 'file')]
+#[CoversMethod(\Hubzero\Filesystem\SafePath::class, 'write')]
+#[CoversMethod(\Hubzero\Filesystem\Adapter\Local::class, 'deleteDirectory')]
+#[CoversMethod(\Hubzero\Filesystem\Adapter\Local::class, 'delete')]
 class SafePathTest extends Basic
 {
 	/**
@@ -111,7 +118,6 @@ class SafePathTest extends Basic
 	/**
 	 * An empty relative path resolves to the base itself.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testResolvesTheBaseItself()
@@ -122,7 +128,6 @@ class SafePathTest extends Basic
 	/**
 	 * A missing base is reported separately from an unsafe path.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testRejectsMissingBase()
@@ -136,7 +141,6 @@ class SafePathTest extends Basic
 	/**
 	 * The base may itself be a link - it is configured, not member-owned.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testAcceptsLinkedBase()
@@ -153,7 +157,6 @@ class SafePathTest extends Basic
 	/**
 	 * Nested directories are created when asked, with the given mode.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testCreatesNestedDirectories()
@@ -169,7 +172,6 @@ class SafePathTest extends Basic
 	 * A missing directory is reported as missing, not as unsafe, so callers can
 	 * tell "not there yet" from "someone is up to something".
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testReportsMissingDirectory()
@@ -183,7 +185,6 @@ class SafePathTest extends Basic
 	/**
 	 * A link at the end of the path is refused, in either direction.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testRejectsLinkedLeaf()
@@ -200,7 +201,6 @@ class SafePathTest extends Basic
 	/**
 	 * A link part way along the path is refused too.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testRejectsLinkedIntermediateComponent()
@@ -216,7 +216,6 @@ class SafePathTest extends Basic
 	/**
 	 * A dangling link is refused rather than created at its target.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testRejectsDanglingLink()
@@ -232,7 +231,6 @@ class SafePathTest extends Basic
 	/**
 	 * Traversal is refused outright, however it is spelled.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testRejectsTraversal()
@@ -260,7 +258,6 @@ class SafePathTest extends Basic
 	 * On POSIX a backslash is an ordinary character in a name, not a separator,
 	 * so 'victim\data' names one (absent) entry rather than reaching victim/data.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testTreatsBackslashAsPartOfTheName()
@@ -284,7 +281,6 @@ class SafePathTest extends Basic
 	/**
 	 * Leading, trailing and doubled separators are harmless.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::directory
 	 * @return  void
 	 */
 	public function testToleratesRedundantSeparators()
@@ -296,7 +292,6 @@ class SafePathTest extends Basic
 	/**
 	 * relative() normalizes safe paths and refuses traversal.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::relative
 	 * @return  void
 	 */
 	public function testNormalizesRelativePaths()
@@ -311,7 +306,6 @@ class SafePathTest extends Basic
 	/**
 	 * A regular file is accepted; a link, a directory or a hard link is not.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::file
 	 * @return  void
 	 */
 	public function testResolvesFiles()
@@ -337,7 +331,6 @@ class SafePathTest extends Basic
 	/**
 	 * A hard link can reach a file outside the directory, so it is refused.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::file
 	 * @return  void
 	 */
 	public function testRejectsHardLinkedFile()
@@ -355,7 +348,6 @@ class SafePathTest extends Basic
 	/**
 	 * Writing leaves the right content and mode, and no temporary files.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::write
 	 * @return  void
 	 */
 	public function testWritesFile()
@@ -377,7 +369,6 @@ class SafePathTest extends Basic
 	/**
 	 * A null mode leaves the file to the umask, as a plain write would.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::write
 	 * @return  void
 	 */
 	public function testWritesFileWithoutForcingMode()
@@ -393,7 +384,6 @@ class SafePathTest extends Basic
 	 * A link planted after the path was resolved cannot divert the write:
 	 * rename() replaces the link instead of following it.
 	 *
-	 * @covers  Hubzero\Filesystem\SafePath::write
 	 * @return  void
 	 */
 	public function testWriteReplacesLinkPlantedAfterResolution()
@@ -412,7 +402,6 @@ class SafePathTest extends Basic
 	/**
 	 * deleteDirectory() removes links instead of emptying what they point at.
 	 *
-	 * @covers  Hubzero\Filesystem\Adapter\Local::deleteDirectory
 	 * @return  void
 	 */
 	public function testDeleteDirectoryDoesNotFollowLinks()
@@ -431,7 +420,6 @@ class SafePathTest extends Basic
 	/**
 	 * Pointing deleteDirectory() straight at a link removes only the link.
 	 *
-	 * @covers  Hubzero\Filesystem\Adapter\Local::deleteDirectory
 	 * @return  void
 	 */
 	public function testDeleteDirectoryOnALinkRemovesTheLink()
@@ -450,7 +438,6 @@ class SafePathTest extends Basic
 	/**
 	 * delete() removes a link without chmod-ing whatever it points at.
 	 *
-	 * @covers  Hubzero\Filesystem\Adapter\Local::delete
 	 * @return  void
 	 */
 	public function testDeleteDoesNotChmodLinkTargets()
