@@ -1673,8 +1673,10 @@ a.fancybox-next,
 }
 .voting .vote-button,
 .voting a.vote-button,
+.voting button.vote-button,
 .voting .vote-button:hover,
-.voting a.vote-button:hover {
+.voting a.vote-button:hover,
+.voting button.vote-button:hover {
   border: none;
   background-color: #f1f1f1;
   color: #555;
@@ -1691,7 +1693,8 @@ a.fancybox-next,
   cursor: pointer;
 }
 .voting .vote-button:hover,
-.voting a.vote-button:hover {
+.voting a.vote-button:hover,
+.voting button.vote-button:hover {
   background-color: #cbcbcb;
   color: #2f2f2f;
 }
