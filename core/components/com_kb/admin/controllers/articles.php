@@ -77,6 +77,21 @@ class Articles extends AdminController
 			)
 		);
 
+		// ordered() treats a dotted sort as relationship.field and stores
+		// whatever it is given in the session, so confine both to the
+		// columns the grid offers and re-store anything else as the default
+		if (!in_array($filters['sort'], array('title', 'state', 'access', 'id'), true))
+		{
+			$filters['sort'] = 'title';
+			User::setState($this->_option . '.' . $this->_controller . '.sort', $filters['sort']);
+		}
+		$filters['sort_Dir'] = strtoupper((string) $filters['sort_Dir']);
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC'), true))
+		{
+			$filters['sort_Dir'] = 'ASC';
+			User::setState($this->_option . '.' . $this->_controller . '.sortdir', $filters['sort_Dir']);
+		}
+
 		$articles = Article::all();
 
 		if ($filters['search'])
@@ -96,7 +111,7 @@ class Articles extends AdminController
 
 		// Get records
 		$rows = $articles
-			->ordered('filter_order', 'filter_order_Dir')
+			->order($filters['sort'], $filters['sort_Dir'])
 			->paginated('limitstart', 'limit')
 			->rows();
 
