@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2022 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20220222000000PlgSystemCsp extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('system', 'csp', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('system', 'csp', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('system', 'csp');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('system', 'csp');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,14 +18,14 @@ use App;
  */
 class Geodb extends AdminController
 {
-	/**
-	 * Default view
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Output the HTML
-		$this->view->display();
-	}
+    /**
+     * Default view
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Output the HTML
+        $this->view->display();
+    }
 }

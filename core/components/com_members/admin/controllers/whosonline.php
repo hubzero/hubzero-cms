@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,20 +16,20 @@ use Hubzero\Session\Helper as SessionHelper;
  */
 class WhosOnline extends AdminController
 {
-	/**
-	 * Display whose online
-	 *
-	 * @return     void
-	 */
-	public function displayTask()
-	{
-		// get all sessions	
-		$this->view->rows = SessionHelper::getAllSessions(array(
-			'guest'    => 0,
-			'distinct' => 1
-		));
+    /**
+     * Display whose online
+     *
+     * @return     void
+     */
+    public function displayTask()
+    {
+        // get all sessions
+        $this->view->rows = SessionHelper::getAllSessions(array(
+            'guest'    => 0,
+            'distinct' => 1
+        ));
 
-		// Output the HTML
-		$this->view->display();
-	}
+        // Output the HTML
+        $this->view->display();
+    }
 }

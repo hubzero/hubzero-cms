@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,321 +16,291 @@ require_once __DIR__ . DS . 'models' . DS . 'note.php';
  */
 class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Return data on a course view (this will be some form of HTML)
-	 *
-	 * @param   object   $course    Current course
-	 * @param   object   $offering  Name of the component
-	 * @param   boolean  $describe  Return plugin description only?
-	 * @return  object
-	 */
-	public function onCourse($course, $offering, $describe=false)
-	{
-		$response = with(new \Hubzero\Base\Obj)
-			->set('name', $this->_name)
-			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
-			->set('default_access', $this->params->get('plugin_access', 'members'))
-			->set('display_menu_tab', true)
-			->set('icon', '270D');
+    /**
+     * Return data on a course view (this will be some form of HTML)
+     *
+     * @param   object   $course    Current course
+     * @param   object   $offering  Name of the component
+     * @param   boolean  $describe  Return plugin description only?
+     * @return  object
+     */
+    public function onCourse($course, $offering, $describe = false)
+    {
+        $response = with(new \Hubzero\Base\Obj())
+            ->set('name', $this->_name)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('default_access', $this->params->get('plugin_access', 'members'))
+            ->set('display_menu_tab', true)
+            ->set('icon', '270D');
 
-		if ($describe)
-		{
-			return $response;
-		}
+        if ($describe) {
+            return $response;
+        }
 
-		if (!($active = Request::getString('active')))
-		{
-			Request::setVar('active', ($active = $this->_name));
-		}
+        if (!($active = Request::getString('active'))) {
+            Request::setVar('active', ($active = $this->_name));
+        }
 
-		if ($response->get('name') == $active)
-		{
-			$this->course   = $course;
-			$this->offering = $offering;
+        if ($response->get('name') == $active) {
+            $this->course   = $course;
+            $this->offering = $offering;
 
-			$this->view = $this->view('default', 'notes')
-				->set('option', Request::getCmd('option', 'com_courses'))
-				->set('controller', Request::getWord('controller', 'course'))
-				->set('course', $course)
-				->set('offering', $offering)
-				->set('no_html', Request::getInt('no_html', 0));
+            $this->view = $this->view('default', 'notes')
+                ->set('option', Request::getCmd('option', 'com_courses'))
+                ->set('controller', Request::getWord('controller', 'course'))
+                ->set('course', $course)
+                ->set('offering', $offering)
+                ->set('no_html', Request::getInt('no_html', 0));
 
-			$this->view->filters = array(
-				'section_id' => $offering->section()->get('id'),
-				'search'     => Request::getString('search', '')
-			);
+            $this->view->filters = array(
+                'section_id' => $offering->section()->get('id'),
+                'search'     => Request::getString('search', '')
+            );
 
-			$result = null;
+            $result = null;
 
-			if ($action = strtolower(Request::getWord('action', '')))
-			{
-				switch ($action)
-				{
-					case 'add':
-						$result = $this->_edit();
-						break;
-					case 'edit':
-						$result = $this->_edit();
-						break;
-					case 'save':
-						$result = $this->_save();
-						break;
-					case 'delete':
-						$result = $this->_delete();
-						break;
-					case 'download':
-						$result = $this->_download();
-						break;
+            if ($action = strtolower(Request::getWord('action', ''))) {
+                switch ($action) {
+                    case 'add':
+                        $result = $this->_edit();
+                        break;
+                    case 'edit':
+                        $result = $this->_edit();
+                        break;
+                    case 'save':
+                        $result = $this->_save();
+                        break;
+                    case 'delete':
+                        $result = $this->_delete();
+                        break;
+                    case 'download':
+                        $result = $this->_download();
+                        break;
 
-					default:
-						$result = $this->_list();
-						break;
-				}
-			}
+                    default:
+                        $result = $this->_list();
+                        break;
+                }
+            }
 
-			if ($this->view->no_html && $result)
-			{
-				$note = new stdClass;
-				$note->id = $result;
-				$note->success = true;
-				if ($this->getError())
-				{
-					$note->success = false;
-					$note->error = $this->getError();
-				}
+            if ($this->view->no_html && $result) {
+                $note = new stdClass();
+                $note->id = $result;
+                $note->success = true;
+                if ($this->getError()) {
+                    $note->success = false;
+                    $note->error = $this->getError();
+                }
 
-				ob_clean();
-				echo json_encode($note);
-				return;
-			}
+                ob_clean();
+                echo json_encode($note);
+                return;
+            }
 
-			$response->set('html', $this->view->loadTemplate());
-		}
+            $response->set('html', $this->view->loadTemplate());
+        }
 
-		// Return the output
-		return $response;
-	}
+        // Return the output
+        return $response;
+    }
 
-	/**
-	 * After lecture event
-	 *
-	 * @param   object  $course
-	 * @param   object  $unit
-	 * @param   object  $lecture
-	 * @return  string
-	 */
-	public function onCourseAfterLecture($course, $unit, $lecture)
-	{
-		if (!$course->offering()->section()->access('view'))
-		{
-			return;
-		}
+    /**
+     * After lecture event
+     *
+     * @param   object  $course
+     * @param   object  $unit
+     * @param   object  $lecture
+     * @return  string
+     */
+    public function onCourseAfterLecture($course, $unit, $lecture)
+    {
+        if (!$course->offering()->section()->access('view')) {
+            return;
+        }
 
-		$this->view = $this->view('default', 'lecture')
-			->set('course', $course)
-			->set('offering', $course->offering())
-			->set('unit', $unit)
-			->set('lecture', $lecture);
+        $this->view = $this->view('default', 'lecture')
+            ->set('course', $course)
+            ->set('offering', $course->offering())
+            ->set('unit', $unit)
+            ->set('lecture', $lecture);
 
-		return $this->view->loadTemplate();
-	}
+        return $this->view->loadTemplate();
+    }
 
-	/**
-	 * Set layout to the listing
-	 *
-	 * @return  void
-	 */
-	public function _list()
-	{
-		if (!$this->view->no_html)
-		{
-			$this->view->setLayout('default');
-		}
-	}
+    /**
+     * Set layout to the listing
+     *
+     * @return  void
+     */
+    public function _list()
+    {
+        if (!$this->view->no_html) {
+            $this->view->setLayout('default');
+        }
+    }
 
-	/**
-	 * Download
-	 *
-	 * @return  void
-	 */
-	public function _download()
-	{
-		$format = strtolower(Request::getWord('frmt', 'txt'));
-		if (!in_array($format, array('txt', 'csv')))
-		{
-			$format = 'txt';
-		}
-		$this->view->setLayout('download_' . $format);
+    /**
+     * Download
+     *
+     * @return  void
+     */
+    public function _download()
+    {
+        $format = strtolower(Request::getWord('frmt', 'txt'));
+        if (!in_array($format, array('txt', 'csv'))) {
+            $format = 'txt';
+        }
+        $this->view->setLayout('download_' . $format);
 
-		@ob_end_clean();
+        @ob_end_clean();
 
-		header("Pragma: public");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Expires: 0");
+        header("Pragma: public");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Expires: 0");
 
-		header("Content-Transfer-Encoding: binary");
-		header('Content-Disposition:attachment; filename="notes.' . $format . '";'); //RFC2183
-		header("Content-Type: text/plain"); // MIME type
+        header("Content-Transfer-Encoding: binary");
+        header('Content-Disposition:attachment; filename="notes.' . $format . '";'); //RFC2183
+        header("Content-Type: text/plain"); // MIME type
 
-		echo $this->view->loadTemplate();
-		die();
-	}
+        echo $this->view->loadTemplate();
+        die();
+    }
 
-	/**
-	 * Set layout to the edit view
-	 *
-	 * @param   mixed  $model
-	 * @return  void
-	 */
-	public function _edit($model=null)
-	{
-		if (!($model instanceof \Plugins\Courses\Notes\Models\Note))
-		{
-			$note_id = Request::getInt('note', 0);
+    /**
+     * Set layout to the edit view
+     *
+     * @param   mixed  $model
+     * @return  void
+     */
+    public function _edit($model = null)
+    {
+        if (!($model instanceof \Plugins\Courses\Notes\Models\Note)) {
+            $note_id = Request::getInt('note', 0);
 
-			$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
-		}
+            $model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
+        }
 
-		$this->view->set('model', $model);
+        $this->view->set('model', $model);
 
-		if (!$this->view->no_html)
-		{
-			$this->view->setLayout('edit');
-		}
-	}
+        if (!$this->view->no_html) {
+            $this->view->setLayout('edit');
+        }
+    }
 
-	/**
-	 * Save a record
-	 *
-	 * @return  mixed
-	 */
-	public function _save()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save a record
+     *
+     * @return  mixed
+     */
+    public function _save()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		$note_id = Request::getInt('note', 0);
+        $note_id = Request::getInt('note', 0);
 
-		$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
+        $model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
 
-		// Notes are private to their author
-		if ($note_id && $model->get('id') && $model->get('created_by') != User::get('id'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        // Notes are private to their author
+        if ($note_id && $model->get('id') && $model->get('created_by') != User::get('id')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		if ($scope = Request::getWord('scope', 'lecture'))
-		{
-			$model->set('scope', $scope);
-		}
-		// 0 is a real position, size and state: test for presence, not truth
-		$scope_id = Request::getInt('scope_id', null);
-		if (!is_null($scope_id))
-		{
-			$model->set('scope_id', $scope_id);
-		}
-		$pos_x = Request::getInt('x', null);
-		if (!is_null($pos_x))
-		{
-			$model->set('pos_x', $pos_x);
-		}
-		$pos_y = Request::getInt('y', null);
-		if (!is_null($pos_y))
-		{
-			$model->set('pos_y', $pos_y);
-		}
-		$width = Request::getInt('w', null);
-		if (!is_null($width))
-		{
-			$model->set('width', $width);
-		}
-		$height = Request::getInt('h', null);
-		if (!is_null($height))
-		{
-			$model->set('height', $height);
-		}
-		$state = Request::getInt('state', null);
-		if (!is_null($state))
-		{
-			$model->set('state', $state);
-		}
-		if ($timestamp = Request::getString('time', ''))
-		{
-			$model->set('timestamp', $timestamp);
-		}
-		// Moves and resizes send only position and size, so keep the text and
-		// sharing a request doesn't mention -- but an empty text does clear it
-		if (!is_null($content = Request::getString('txt', null)))
-		{
-			$model->set('content', $content);
-		}
-		// Sharing a note with the lecture is for course managers
-		if (!is_null($access = Request::getInt('access', null)))
-		{
-			$model->set('access', ($access && $this->view->course->access('manage')) ? 1 : 0);
-		}
-		$model->set('section_id', $this->view->offering->section()->get('id'));
+        if ($scope = Request::getWord('scope', 'lecture')) {
+            $model->set('scope', $scope);
+        }
+        // 0 is a real position, size and state: test for presence, not truth
+        $scope_id = Request::getInt('scope_id', null);
+        if (!is_null($scope_id)) {
+            $model->set('scope_id', $scope_id);
+        }
+        $pos_x = Request::getInt('x', null);
+        if (!is_null($pos_x)) {
+            $model->set('pos_x', $pos_x);
+        }
+        $pos_y = Request::getInt('y', null);
+        if (!is_null($pos_y)) {
+            $model->set('pos_y', $pos_y);
+        }
+        $width = Request::getInt('w', null);
+        if (!is_null($width)) {
+            $model->set('width', $width);
+        }
+        $height = Request::getInt('h', null);
+        if (!is_null($height)) {
+            $model->set('height', $height);
+        }
+        $state = Request::getInt('state', null);
+        if (!is_null($state)) {
+            $model->set('state', $state);
+        }
+        if ($timestamp = Request::getString('time', '')) {
+            $model->set('timestamp', $timestamp);
+        }
+        // Moves and resizes send only position and size, so keep the text and
+        // sharing a request doesn't mention -- but an empty text does clear it
+        if (!is_null($content = Request::getString('txt', null))) {
+            $model->set('content', $content);
+        }
+        // Sharing a note with the lecture is for course managers
+        if (!is_null($access = Request::getInt('access', null))) {
+            $model->set('access', ($access && $this->view->course->access('manage')) ? 1 : 0);
+        }
+        $model->set('section_id', $this->view->offering->section()->get('id'));
 
-		if (!$model->save())
-		{
-			$this->setError($model->getError());
-			if (!$this->view->no_html)
-			{
-				return $this->_edit($model);
-			}
-		}
+        if (!$model->save()) {
+            $this->setError($model->getError());
+            if (!$this->view->no_html) {
+                return $this->_edit($model);
+            }
+        }
 
-		if (!$this->view->no_html)
-		{
-			return $this->_list();
-		}
+        if (!$this->view->no_html) {
+            return $this->_list();
+        }
 
-		return $model->get('id');
-	}
+        return $model->get('id');
+    }
 
-	/**
-	 * Delete a record
-	 *
-	 * @return  mixed
-	 */
-	public function _delete()
-	{
-		// Require POST
-		if (Request::method() !== 'POST')
-		{
-			App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
-		}
+    /**
+     * Delete a record
+     *
+     * @return  mixed
+     */
+    public function _delete()
+    {
+        // Require POST
+        if (Request::method() !== 'POST') {
+            App::abort(405, Lang::txt('JERROR_METHOD_NOT_ALLOWED'));
+        }
 
-		Request::checkToken();
+        Request::checkToken();
 
-		$note_id = Request::getInt('note', 0);
+        $note_id = Request::getInt('note', 0);
 
-		$model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
+        $model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
 
-		// Notes are private to their author
-		if ($model->get('created_by') != User::get('id'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        // Notes are private to their author
+        if ($model->get('created_by') != User::get('id')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$model->set('state', 2);
-		if (!$model->save())
-		{
-			$this->setError($model->getError());
-		}
+        $model->set('state', 2);
+        if (!$model->save()) {
+            $this->setError($model->getError());
+        }
 
-		if (!$this->view->no_html)
-		{
-			return $this->_list();
-		}
-		return $note_id;
-	}
+        if (!$this->view->no_html) {
+            return $this->_list();
+        }
+        return $note_id;
+    }
 }

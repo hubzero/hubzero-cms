@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170831000000ComForum extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addComponentEntry('forum');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addComponentEntry('forum');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteComponentEntry('forum');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteComponentEntry('forum');
+    }
 }

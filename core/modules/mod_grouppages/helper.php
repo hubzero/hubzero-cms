@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,37 +17,36 @@ use Component;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return     void
-	 */
-	public function display()
-	{
-		if (!\App::isAdmin())
-		{
-			return;
-		}
+    /**
+     * Display module contents
+     *
+     * @return     void
+     */
+    public function display()
+    {
+        if (!\App::isAdmin()) {
+            return;
+        }
 
-		// include group page archive model
-		require_once Component::path('com_groups') . DS . 'models' . DS . 'page' . DS . 'archive.php';
+        // include group page archive model
+        require_once Component::path('com_groups') . DS . 'models' . DS . 'page' . DS . 'archive.php';
 
-		// include group module archive model
-		require_once Component::path('com_groups') . DS . 'models' . DS . 'module' . DS . 'archive.php';
+        // include group module archive model
+        require_once Component::path('com_groups') . DS . 'models' . DS . 'module' . DS . 'archive.php';
 
-		// get unapproved pages
-		$groupModelPageArchive = new Models\Page\Archive();
-		$this->unapprovedPages = $groupModelPageArchive->pages('unapproved', array(
-			'state' => array(0, 1)
-		), true);
+        // get unapproved pages
+        $groupModelPageArchive = new Models\Page\Archive();
+        $this->unapprovedPages = $groupModelPageArchive->pages('unapproved', array(
+            'state' => array(0, 1)
+        ), true);
 
-		// get unapproved modules
-		$groupModelModuleArchive = new Models\Module\Archive();
-		$this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', array(
-			'state' => array(0, 1)
-		), true);
+        // get unapproved modules
+        $groupModelModuleArchive = new Models\Module\Archive();
+        $this->unapprovedModules = $groupModelModuleArchive->modules('unapproved', array(
+            'state' => array(0, 1)
+        ), true);
 
-		// Get the view
-		parent::display();
-	}
+        // Get the view
+        parent::display();
+    }
 }

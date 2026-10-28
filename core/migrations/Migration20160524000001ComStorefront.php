@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160524000001ComStorefront extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__storefront_serials'))
-		{
-			$query = "	CREATE TABLE `#__storefront_serials` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__storefront_serials')) {
+            $query = "	CREATE TABLE `#__storefront_serials` (
 						`srId` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`srNumber` varchar(32) DEFAULT NULL,
 						`srSId` int(11) DEFAULT NULL,
@@ -30,22 +30,21 @@ class Migration20160524000001ComStorefront extends Base
 						PRIMARY KEY (`srId`),
 						UNIQUE KEY `unique keys for a SKU` (`srNumber`,`srSId`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__storefront_serials'))
-		{
-			$query = "DROP TABLE `#__storefront_serials`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__storefront_serials')) {
+            $query = "DROP TABLE `#__storefront_serials`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

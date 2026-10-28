@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -20,8 +21,7 @@ class Migration20210618190935ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_authors') && !$this->db->tableHasField('#__publication_authors', 'orgid'))
-        {
+        if ($this->db->tableExists('#__publication_authors') && !$this->db->tableHasField('#__publication_authors', 'orgid')) {
             $query = "ALTER TABLE `#__publication_authors` ADD COLUMN `orgid` TEXT DEFAULT NULL AFTER `organization`";
             $this->db->setQuery($query);
             $this->db->query();
@@ -33,8 +33,7 @@ class Migration20210618190935ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_authors') && !$this->db->tableHasField('#__publication_authors', 'orgid'))
-        {
+        if ($this->db->tableExists('#__publication_authors') && !$this->db->tableHasField('#__publication_authors', 'orgid')) {
             $query = "ALTER TABLE `#__publication_authors` DROP COLUMN `orgid`";
             $this->db->setQuery($query);
             $this->db->query();

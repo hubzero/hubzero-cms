@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,12 +16,12 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130820135328ComNewsletter extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "
 			ALTER TABLE `#__newsletters` CONVERT TO CHARACTER SET utf8;
 			ALTER TABLE `#__newsletter_templates` CONVERT TO CHARACTER SET utf8;
 			ALTER TABLE `#__newsletter_secondary_story` CONVERT TO CHARACTER SET utf8;
@@ -32,10 +33,9 @@ class Migration20130820135328ComNewsletter extends Base
 			ALTER TABLE `#__newsletter_mailing_recipients` CONVERT TO CHARACTER SET utf8;
 			ALTER TABLE `#__newsletter_mailing_recipient_actions` CONVERT TO CHARACTER SET utf8;";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

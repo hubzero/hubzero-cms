@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -15,20 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20250124193721PlgGeocodeIpstack extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('geocode', 'ipstack');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('geocode', 'ipstack');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('geocode', 'ipstack', 0);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('geocode', 'ipstack', 0);
+    }
 }
-

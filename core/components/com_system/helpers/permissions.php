@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,44 +16,42 @@ use User;
  */
 class Permissions
 {
-	/**
-	 * Name of the component
-	 *
-	 * @var  string
-	 */
-	public static $extension = 'com_system';
+    /**
+     * Name of the component
+     *
+     * @var  string
+     */
+    public static $extension = 'com_system';
 
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @param   string   $assetType
-	 * @param   integer  $assetId
-	 * @return  object
-	 */
-	public static function getActions($assetType='component', $assetId = 0)
-	{
-		$assetName  = self::$extension . '.' . $assetType;
-		if ($assetId)
-		{
-			$assetName .= '.' . (int) $assetId;
-		}
+    /**
+     * Gets a list of the actions that can be performed.
+     *
+     * @param   string   $assetType
+     * @param   integer  $assetId
+     * @return  object
+     */
+    public static function getActions($assetType = 'component', $assetId = 0)
+    {
+        $assetName  = self::$extension . '.' . $assetType;
+        if ($assetId) {
+            $assetName .= '.' . (int) $assetId;
+        }
 
-		$actions = array(
-			'core.admin',
-			'core.manage',
-			'core.create',
-			'core.edit',
-			'core.edit.state',
-			'core.delete'
-		);
+        $actions = array(
+            'core.admin',
+            'core.manage',
+            'core.create',
+            'core.edit',
+            'core.edit.state',
+            'core.delete'
+        );
 
-		$result = new Obj;
+        $result = new Obj();
 
-		foreach ($actions as $action)
-		{
-			$result->set($action, User::authorise($action, $assetName));
-		}
+        foreach ($actions as $action) {
+            $result->set($action, User::authorise($action, $assetName));
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

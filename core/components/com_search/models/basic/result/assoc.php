@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,10 +15,9 @@ use Components\Search\Models\Basic\Result as SearchResult;
  */
 abstract class Assoc extends SearchResult
 {
-
-	/**
-	 * Is the result a scalar?
-	 *
-	 */
-	abstract public function is_scalar();
+    /**
+     * Is the result a scalar?
+     *
+     */
+    abstract public function is_scalar();
 }

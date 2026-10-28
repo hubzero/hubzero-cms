@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,27 +16,27 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160415110900PlgActivity extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('system', 'activity');
-		$this->addPluginEntry('members', 'activity');
-		$this->addPluginEntry('groups', 'activity');
-		$this->addPluginEntry('resources', 'watch');
-		$this->addModuleEntry('mod_myactivity');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('system', 'activity');
+        $this->addPluginEntry('members', 'activity');
+        $this->addPluginEntry('groups', 'activity');
+        $this->addPluginEntry('resources', 'watch');
+        $this->addModuleEntry('mod_myactivity');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('system', 'activity');
-		$this->deletePluginEntry('members', 'activity');
-		$this->deletePluginEntry('groups', 'activity');
-		$this->deletePluginEntry('resources', 'watch');
-		$this->deleteModuleEntry('mod_myactivity');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('system', 'activity');
+        $this->deletePluginEntry('members', 'activity');
+        $this->deletePluginEntry('groups', 'activity');
+        $this->deletePluginEntry('resources', 'watch');
+        $this->deleteModuleEntry('mod_myactivity');
+    }
 }

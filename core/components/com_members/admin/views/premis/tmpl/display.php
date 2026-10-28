@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,26 +17,26 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEM
 ?>
 
 <?php
-	$this->view('_submenu', 'registration')
-	     ->display();
+    $this->view('_submenu', 'registration')
+         ->display();
 ?>
 
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+    <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
 <?php if ($canDo->get('core.admin')) { ?>
 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="hubForm" id="item-form" method="post" enctype="multipart/form-data">
-	<fieldset>
-		<p><input type="file" class="option" name="upload" /></p>
-		<input type="submit" class="option" value="Import" />
+    <fieldset>
+        <p><input type="file" class="option" name="upload" /></p>
+        <input type="submit" class="option" value="Import" />
 
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="task" value="save" />
-		<?php echo Html::input('token'); ?>
-	</fieldset>
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+        <input type="hidden" name="task" value="save" />
+        <?php echo Html::input('token'); ?>
+    </fieldset>
 </form>
 <?php } else { ?>
-	<p class="warning"><?php echo Lang::txt('JERROR_ALERTNOAUTHOR'); ?></p>
+    <p class="warning"><?php echo Lang::txt('JERROR_ALERTNOAUTHOR'); ?></p>
 <?php } ?>

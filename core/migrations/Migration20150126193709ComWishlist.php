@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,15 +16,14 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150126193709ComWishlist extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__wishlist'))
-		{
-			$this->db->setQuery("UPDATE `#__wishlist` SET `title` = REPLACE(`title`, 'WISHLIST_NAME_GROUP', 'Group');");
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__wishlist')) {
+            $this->db->setQuery("UPDATE `#__wishlist` SET `title` = REPLACE(`title`, 'WISHLIST_NAME_GROUP', 'Group');");
+            $this->db->query();
+        }
+    }
 }

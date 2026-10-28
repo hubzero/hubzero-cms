@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140121142313PlgCronPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('cron', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('cron', 'publications');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('cron', 'publications');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('cron', 'publications');
+    }
 }

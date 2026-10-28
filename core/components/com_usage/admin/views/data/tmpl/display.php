@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,5 +14,5 @@ Toolbar::preferences('com_usage', '550');
 ?>
 
 <form action="<?php echo Route::url('index.php?option=com_usage'); ?>" name="adminForm" id="item-form">
-	<p class="warning"><?php echo Lang::txt('COM_USAGE_WARNING'); ?></p>
+    <p class="warning"><?php echo Lang::txt('COM_USAGE_WARNING'); ?></p>
 </form>

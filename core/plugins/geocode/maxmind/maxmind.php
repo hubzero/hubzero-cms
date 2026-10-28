@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,29 +19,27 @@ defined('_HZEXEC_') or die();
  */
 class plgGeocodeMaxmind extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return a geocode provider
-	 *
-	 * @param  string  $context
-	 * @param  object  $adapter
-	 * @param  boolean $ip
-	 * @return object
-	 */
-	public function onGeocodeProvider($context, $adapter, $ip=false)
-	{
-		if ($context != 'geocode.locate')
-		{
-			return;
-		}
+    /**
+     * Return a geocode provider
+     *
+     * @param  string  $context
+     * @param  object  $adapter
+     * @param  boolean $ip
+     * @return object
+     */
+    public function onGeocodeProvider($context, $adapter, $ip = false)
+    {
+        if ($context != 'geocode.locate') {
+            return;
+        }
 
-		if (!$this->params->get('apiKey') || !$ip)
-		{
-			return;
-		}
+        if (!$this->params->get('apiKey') || !$ip) {
+            return;
+        }
 
-		return new \Geocoder\Provider\MaxMind\MaxMind(
-			$adapter,
-			$this->params->get('apiKey')
-		);
-	}
+        return new \Geocoder\Provider\MaxMind\MaxMind(
+            $adapter,
+            $this->params->get('apiKey')
+        );
+    }
 }

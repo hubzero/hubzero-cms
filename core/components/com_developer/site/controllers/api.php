@@ -22,7 +22,7 @@ class Api extends SiteController
 {
     /**
      * General intro display
-     * 
+     *
      * @return  void
      */
     public function displayTask()
@@ -34,7 +34,7 @@ class Api extends SiteController
 
     /**
      * Documentation
-     * 
+     *
      * @return  void
      */
     public function docsTask()
@@ -54,7 +54,7 @@ class Api extends SiteController
 
     /**
      * Endpoint Documentation
-     * 
+     *
      * @return  void
      */
     public function endpointTask()
@@ -81,8 +81,8 @@ class Api extends SiteController
     }
 
     /**
-     * Console 
-     * 
+     * Console
+     *
      * @return  void
      */
     public function consoleTask()
@@ -95,8 +95,8 @@ class Api extends SiteController
     }
 
     /**
-     * Status 
-     * 
+     * Status
+     *
      * @return  void
      */
     public function statusTask()
@@ -110,7 +110,7 @@ class Api extends SiteController
 
     /**
      * Build Pathway
-     * 
+     *
      * @return  void
      */
     private function _buildPathway()
@@ -138,7 +138,7 @@ class Api extends SiteController
 
     /**
      * Get all active tokens for the current user
-     * 
+     *
      * @return  array
      */
     private function _getUserTokens()

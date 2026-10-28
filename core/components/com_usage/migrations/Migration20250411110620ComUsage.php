@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,55 +16,50 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20250411110620ComUsage extends Base
 {
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Connection to metrics database uses helper class:
+        if (!file_exists(dirname(__DIR__) . '/helpers/helper.php')) {
+            $this->log('Unable to locate usage helper class.', 'error');
+            return;
+        }
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Connection to metrics database uses helper class:
-		if (!file_exists(dirname(__DIR__) . '/helpers/helper.php'))
-		{
-			$this->log('Unable to locate usage helper class.', 'error');
-			return;
-		}
+        include_once dirname(__DIR__) . '/helpers/helper.php';
 
-		include_once dirname(__DIR__) . '/helpers/helper.php';
+        $statsDb = \Components\Usage\Helpers\Helper::getUDBO();
 
-		$statsDb = \Components\Usage\Helpers\Helper::getUDBO();
+        if (!$statsDb) {
+            $this->log('Unable to establish connection for usage database.', 'error');
+            return;
+        }
 
-		if (!$statsDb)
-		{
-			$this->log('Unable to establish connection for usage database.', 'error');
-			return;
-		}
+        // No variable support in SQL string when using metrics db via helper class?
+        if ($statsDb->tableExists('exclude_list')) {
+            try {
+                $run_ddl = "TRUNCATE TABLE exclude_list";
+                $statsDb->setQuery($run_ddl);
+                $statsDb->query();
+                $this->log("Truncated table `exclude_list`");
 
-		// No variable support in SQL string when using metrics db via helper class?
-		if ($statsDb->tableExists('exclude_list'))
-		{
-			try
-			{
-				$run_ddl = "TRUNCATE TABLE exclude_list";
-				$statsDb->setQuery($run_ddl);
-				$statsDb->query();
-				$this->log("Truncated table `exclude_list`");
+                $run_ddl = "ALTER TABLE exclude_list ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
+                $statsDb->setQuery($run_ddl);
+                $statsDb->query();
+                $this->log("Altered table, added id column");
 
-				$run_ddl = "ALTER TABLE exclude_list ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
-				$statsDb->setQuery($run_ddl);
-				$statsDb->query();
-				$this->log("Altered table, added id column");
+                $run_ddl = "ALTER TABLE exclude_list ADD UNIQUE INDEX (filter, type)";
+                $statsDb->setQuery($run_ddl);
+                $statsDb->query();
+                $this->log("Altered table, added index");
 
-				$run_ddl = "ALTER TABLE exclude_list ADD UNIQUE INDEX (filter, type)";
-				$statsDb->setQuery($run_ddl);
-				$statsDb->query();
-				$this->log("Altered table, added index");
+                $run_ddl = "ALTER TABLE exclude_list ADD `date_added` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
+                $statsDb->setQuery($run_ddl);
+                $statsDb->query();
+                $this->log("Altered table, added date col");
 
-				$run_ddl = "ALTER TABLE exclude_list ADD `date_added` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
-				$statsDb->setQuery($run_ddl);
-				$statsDb->query();
-				$this->log("Altered table, added date col");
-
-				$query = "INSERT INTO `exclude_list` (`filter`, `type`, `notes`) VALUES ('googlebot.com','domain','bot'), 
+                $query = "INSERT INTO `exclude_list` (`filter`, `type`, `notes`) VALUES ('googlebot.com','domain','bot'), 
 				('crawl.yahoo.net','domain','bot'), ('search.msn.com','domain','bot'), ('msnbot.msn.com','domain','bot'), 
 				('crawl%googlebot.com','host','bot'), ('%crawl.yahoo.net','host','bot'), ('%search.msn.com','host','bot'), 
 				('%msnbot.msn.com','host','bot'), ('yahoo.com','domain','bot'), ('turnitin.com','domain','bot'), 
@@ -124,22 +120,20 @@ class Migration20250411110620ComUsage extends Base
 				('panscient.com','useragent','bot'),('censysinspect','useragent','security bot'),('go-http-client','useragent','bot/scraper'),
 				('python-requests','useragent','bot/scraper'),('cms-checker','useragent','bot'),('125.122.36.248','ip','attempt login 12k times'),
 				('52.54.191.160','ip','tries to access /cron/tick'),('%.rcac.purdue.edu','host','Purdue')";
-				$statsDb->setQuery($query);
-				$statsDb->query();
-				$this->log("Inserted records");
-			}
-			catch (\Exception $e)
-			{
-				$this->log($e->getMessage(), 'error');
-			}
-		}
-	}
+                $statsDb->setQuery($query);
+                $statsDb->query();
+                $this->log("Inserted records");
+            } catch (\Exception $e) {
+                $this->log($e->getMessage(), 'error');
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// DB modifications don't typically provide symmetric down() functions
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // DB modifications don't typically provide symmetric down() functions
+    }
 }

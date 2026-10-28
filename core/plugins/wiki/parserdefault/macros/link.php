@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,22 +14,22 @@ defined('_HZEXEC_') or die();
  */
 class LinkMacro extends WikiMacro
 {
-	/**
-	 * Allow macro in partial parsing?
-	 *
-	 * @var string
-	 */
-	public $allowPartial = true;
+    /**
+     * Allow macro in partial parsing?
+     *
+     * @var string
+     */
+    public $allowPartial = true;
 
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return     string
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = "Embed a link.
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return     string
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['wiki'] = "Embed a link.
 
 Examples:
 
@@ -36,54 +37,52 @@ Examples:
 [[Link(/SomePage SomePage)]]
 }}}
 ";
-		$txt['html'] = '<p>Embed a link.</p>
+        $txt['html'] = '<p>Embed a link.</p>
 <p>Examples:</p>
 <ul>
 <li><code>[[Link(/SomePage SomePage)]]</code></li>
 </ul>';
 
-		return $txt['html'];
-	}
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output based on passed arguments
-	 *
-	 * @return     string HTML image tag on success or error message on failure
-	 */
-	public function render()
-	{
-		$content = $this->args;
+    /**
+     * Generate macro output based on passed arguments
+     *
+     * @return     string HTML image tag on success or error message on failure
+     */
+    public function render()
+    {
+        $content = $this->args;
 
-		// args will be null if the macro is called without parenthesis.
-		if (!$content)
-		{
-			return '';
-		}
+        // args will be null if the macro is called without parenthesis.
+        if (!$content) {
+            return '';
+        }
 
-		$cls = 'wiki';
+        $cls = 'wiki';
 
-		// Parse arguments
-		// We expect the 1st argument to be a filename
-		$args  = explode(' ', $content);
-		$href  = array_shift($args);
-		$title = (count($args) > 0) ? implode(' ', $args) : $href;
+        // Parse arguments
+        // We expect the 1st argument to be a filename
+        $args  = explode(' ', $content);
+        $href  = array_shift($args);
+        $title = (count($args) > 0) ? implode(' ', $args) : $href;
 
-		$title = preg_replace('/\(.*?\)/', '', $title);
-		$title = preg_replace('/^.*?\:/', '', $title);
+        $title = preg_replace('/\(.*?\)/', '', $title);
+        $title = preg_replace('/^.*?\:/', '', $title);
 
-		// Browsers ignore control characters inside a scheme, so test a stripped copy
-		// and allow only known-safe schemes (relative links have no scheme)
-		$chk = preg_replace('/[\x00-\x20]+/', '', (string) $href);
-		// The list matches the protocols parser.php itself links (its 'url'
-		// pattern and buildLink both accept gopher, news and file). Leaving
-		// those three out here rendered href="" for links the wiki syntax
-		// supports; none of them executes script, so only javascript:,
-		// vbscript: and data: are actually being kept out.
-		if (preg_match('/^[a-z][a-z0-9+.\-]*:/i', $chk) && !preg_match('/^(https?|ftp|mailto|gopher|news|file):/i', $chk))
-		{
-			$href = '';
-		}
+        // Browsers ignore control characters inside a scheme, so test a stripped copy
+        // and allow only known-safe schemes (relative links have no scheme)
+        $chk = preg_replace('/[\x00-\x20]+/', '', (string) $href);
+        // The list matches the protocols parser.php itself links (its 'url'
+        // pattern and buildLink both accept gopher, news and file). Leaving
+        // those three out here rendered href="" for links the wiki syntax
+        // supports; none of them executes script, so only javascript:,
+        // vbscript: and data: are actually being kept out.
+        if (preg_match('/^[a-z][a-z0-9+.\-]*:/i', $chk) && !preg_match('/^(https?|ftp|mailto|gopher|news|file):/i', $chk)) {
+            $href = '';
+        }
 
-		return '<a class="' . $cls . '" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars(trim($title), ENT_QUOTES, 'UTF-8') . '</a>';
-	}
+        return '<a class="' . $cls . '" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars(trim($title), ENT_QUOTES, 'UTF-8') . '</a>';
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,20 +16,19 @@ use App;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		// Get the component title div
-		if (App::has('ComponentTitle'))
-		{
-			$this->title = App::get('ComponentTitle');
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Get the component title div
+        if (App::has('ComponentTitle')) {
+            $this->title = App::get('ComponentTitle');
+        }
 
-		// Get the view
-		parent::display();
-	}
+        // Get the view
+        parent::display();
+    }
 }

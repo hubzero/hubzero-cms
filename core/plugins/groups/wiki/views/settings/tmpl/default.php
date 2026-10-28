@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,55 +18,59 @@ $defThresh = (int) $this->defaults->get('toc_threshold', 4);
 $defCrumbs = $this->defaults->get('wiki_crumbs', 0) ? 'YES' : 'NO';
 
 $modes = array(
-	''        => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_' . strtoupper($defMode))),
-	'inline'  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_INLINE'),
-	'sidebar' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_SIDEBAR'),
-	'off'     => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_OFF'),
+    ''        => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_' . strtoupper($defMode))),
+    'inline'  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_INLINE'),
+    'sidebar' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_SIDEBAR'),
+    'off'     => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_OFF'),
 );
 
 $crumbOptions = array(
-	''  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_' . $defCrumbs)),
-	'1' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_YES'),
-	'0' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_NO'),
+    ''  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_' . $defCrumbs)),
+    '1' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_YES'),
+    '0' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_NO'),
 );
 ?>
 <div class="container">
-	<h3><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS'); ?></h3>
+    <h3><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS'); ?></h3>
 
-	<form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki'); ?>" method="post">
-		<fieldset>
-			<legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_LEGEND'); ?></legend>
+    <form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki'); ?>" method="post">
+        <fieldset>
+            <legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_LEGEND'); ?></legend>
 
-			<label for="automatic_toc"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_AUTOMATIC_TOC'); ?></label>
-			<select name="automatic_toc" id="automatic_toc">
-				<?php foreach ($modes as $v => $label) { ?>
-					<option value="<?php echo $this->escape($v); ?>"<?php if ((string) $mode === (string) $v) { echo ' selected="selected"'; } ?>><?php echo $this->escape($label); ?></option>
-				<?php } ?>
-			</select>
+            <label for="automatic_toc"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_AUTOMATIC_TOC'); ?></label>
+            <select name="automatic_toc" id="automatic_toc">
+                <?php foreach ($modes as $v => $label) { ?>
+                    <option value="<?php echo $this->escape($v); ?>"<?php if ((string) $mode === (string) $v) {
+                        echo ' selected="selected"';
+                                   } ?>><?php echo $this->escape($label); ?></option>
+                <?php } ?>
+            </select>
 
-			<label for="toc_threshold"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD'); ?></label>
-			<input type="text" name="toc_threshold" id="toc_threshold" value="<?php echo $this->escape($threshold); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh); ?>" />
-		</fieldset>
+            <label for="toc_threshold"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD'); ?></label>
+            <input type="text" name="toc_threshold" id="toc_threshold" value="<?php echo $this->escape($threshold); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh); ?>" />
+        </fieldset>
 
-		<fieldset>
-			<legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_LEGEND'); ?></legend>
+        <fieldset>
+            <legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_LEGEND'); ?></legend>
 
-			<label for="wiki_crumbs"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS'); ?></label>
-			<select name="wiki_crumbs" id="wiki_crumbs">
-				<?php foreach ($crumbOptions as $v => $label) { ?>
-					<option value="<?php echo $this->escape($v); ?>"<?php if ((string) $crumbs === (string) $v) { echo ' selected="selected"'; } ?>><?php echo $this->escape($label); ?></option>
-				<?php } ?>
-			</select>
-			<p class="hint"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_HINT'); ?></p>
-		</fieldset>
+            <label for="wiki_crumbs"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS'); ?></label>
+            <select name="wiki_crumbs" id="wiki_crumbs">
+                <?php foreach ($crumbOptions as $v => $label) { ?>
+                    <option value="<?php echo $this->escape($v); ?>"<?php if ((string) $crumbs === (string) $v) {
+                        echo ' selected="selected"';
+                                   } ?>><?php echo $this->escape($label); ?></option>
+                <?php } ?>
+            </select>
+            <p class="hint"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_HINT'); ?></p>
+        </fieldset>
 
-		<p class="submit">
-			<input type="submit" class="btn" value="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVE'); ?>" />
-		</p>
+        <p class="submit">
+            <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVE'); ?>" />
+        </p>
 
-		<input type="hidden" name="action" value="savesettings" />
-		<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
-		<input type="hidden" name="active" value="wiki" />
-		<?php echo Html::input('token'); ?>
-	</form>
+        <input type="hidden" name="action" value="savesettings" />
+        <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+        <input type="hidden" name="active" value="wiki" />
+        <?php echo Html::input('token'); ?>
+    </form>
 </div>

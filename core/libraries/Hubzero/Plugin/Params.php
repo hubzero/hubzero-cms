@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,119 +16,119 @@ use Hubzero\Config\Registry;
  */
 class Params extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'plugin';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'plugin';
 
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__plugin_params';
+    /**
+     * The table to which the class pertains
+     *
+     * This will default to #__{namespace}_{modelName} unless otherwise
+     * overwritten by a given subclass. Definition of this property likely
+     * indicates some derivation from standard naming conventions.
+     *
+     * @var  string
+     */
+    protected $table = '#__plugin_params';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'folder';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'folder';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'object_id' => 'positive|nonzero',
-		'folder'    => 'notempty',
-		'element'   => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'object_id' => 'positive|nonzero',
+        'folder'    => 'notempty',
+        'element'   => 'notempty'
+    );
 
-	/**
-	 * Load a record and binf to $this
-	 *
-	 * @param   integer  $oid      Object ID (eg, group ID)
-	 * @param   string   $folder   Plugin folder
-	 * @param   string   $element  Plugin name
-	 * @return  boolean  True on success
-	 */
-	public static function oneByPluginOrNew($oid=null, $folder=null, $element=null)
-	{
-		$row = self::all()
-			->whereEquals('object_id', (int) $oid)
-			->whereEquals('folder', $folder)
-			->whereEquals('element', $element)
-			->row();
-		
-		if ($row->isNew()) {
-			$row->set('object_id', (int) $oid)
-				->set('folder', $folder)
-				->set('element', $element);
-		}
+    /**
+     * Load a record and binf to $this
+     *
+     * @param   integer  $oid      Object ID (eg, group ID)
+     * @param   string   $folder   Plugin folder
+     * @param   string   $element  Plugin name
+     * @return  boolean  True on success
+     */
+    public static function oneByPluginOrNew($oid = null, $folder = null, $element = null)
+    {
+        $row = self::all()
+            ->whereEquals('object_id', (int) $oid)
+            ->whereEquals('folder', $folder)
+            ->whereEquals('element', $element)
+            ->row();
 
-		return $row;
-	}
+        if ($row->isNew()) {
+            $row->set('object_id', (int) $oid)
+                ->set('folder', $folder)
+                ->set('element', $element);
+        }
 
-	/**
-	 * Get the custom parameters for a plugin
-	 *
-	 * @param   integer  $oid      Object ID (eg, group ID)
-	 * @param   string   $folder   Plugin folder
-	 * @param   string   $element  Plugin name
-	 * @return  object
-	 */
-	public static function getCustomParams($oid=null, $folder=null, $element=null)
-	{
-		$result = self::oneByPluginOrNew($oid, $folder, $element);
+        return $row;
+    }
 
-		return new Registry($result->get('params'));
-	}
+    /**
+     * Get the custom parameters for a plugin
+     *
+     * @param   integer  $oid      Object ID (eg, group ID)
+     * @param   string   $folder   Plugin folder
+     * @param   string   $element  Plugin name
+     * @return  object
+     */
+    public static function getCustomParams($oid = null, $folder = null, $element = null)
+    {
+        $result = self::oneByPluginOrNew($oid, $folder, $element);
 
-	/**
-	 * Get the default parameters for a plugin
-	 *
-	 * @param   string  $folder   Plugin folder
-	 * @param   string  $element  Plugin name
-	 * @return  object
-	 */
-	public static function getDefaultParams($folder=null, $element=null)
-	{
-		$plugin = \Plugin::byType($folder, $element);
+        return new Registry($result->get('params'));
+    }
 
-		return new Registry($plugin->params);
-	}
+    /**
+     * Get the default parameters for a plugin
+     *
+     * @param   string  $folder   Plugin folder
+     * @param   string  $element  Plugin name
+     * @return  object
+     */
+    public static function getDefaultParams($folder = null, $element = null)
+    {
+        $plugin = \Plugin::byType($folder, $element);
 
-	/**
-	 * Get the parameters for a plugin
-	 * Merges default params and custom params (take precedence)
-	 *
-	 * @param   integer  $oid      Object ID (eg, group ID)
-	 * @param   string   $folder   Plugin folder
-	 * @param   string   $element  Plugin name
-	 * @return  object
-	 */
-	public static function getParams($oid=null, $folder=null, $element=null)
-	{
-		$custom = self::getCustomParams($oid, $folder, $element);
+        return new Registry($plugin->params);
+    }
 
-		$params = self::getDefaultParams($folder, $element);
-		$params->merge($custom);
+    /**
+     * Get the parameters for a plugin
+     * Merges default params and custom params (take precedence)
+     *
+     * @param   integer  $oid      Object ID (eg, group ID)
+     * @param   string   $folder   Plugin folder
+     * @param   string   $element  Plugin name
+     * @return  object
+     */
+    public static function getParams($oid = null, $folder = null, $element = null)
+    {
+        $custom = self::getCustomParams($oid, $folder, $element);
 
-		return $params;
-	}
+        $params = self::getDefaultParams($folder, $element);
+        $params->merge($custom);
+
+        return $params;
+    }
 }

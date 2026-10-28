@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170831000000PlgHubzeroComments extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('hubzero', 'comments');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('hubzero', 'comments');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('hubzero', 'comments');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('hubzero', 'comments');
+    }
 }

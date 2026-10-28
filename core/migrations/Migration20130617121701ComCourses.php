@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,67 +16,59 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130617121701ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "";
 
-		if (!$this->db->tableHasField('#__courses_offering_sections', 'params'))
-		{
-			$query = "ALTER TABLE `#__courses_offering_sections` ADD `params` TEXT  NOT NULL  AFTER `grade_policy_id`;";
-		}
+        if (!$this->db->tableHasField('#__courses_offering_sections', 'params')) {
+            $query = "ALTER TABLE `#__courses_offering_sections` ADD `params` TEXT  NOT NULL  AFTER `grade_policy_id`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if (!$this->db->tableHasField('#__courses_offerings', 'params'))
-		{
-			$query = "ALTER TABLE `#__courses_offerings` ADD `params` TEXT  NOT NULL  AFTER `created_by`;";
-		}
+        if (!$this->db->tableHasField('#__courses_offerings', 'params')) {
+            $query = "ALTER TABLE `#__courses_offerings` ADD `params` TEXT  NOT NULL  AFTER `created_by`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "";
 
-		if ($this->db->tableHasField('#__courses_offering_sections', 'params'))
-		{
-			$query .= "ALTER TABLE `#__courses_offering_sections` DROP `params`;";
-		}
+        if ($this->db->tableHasField('#__courses_offering_sections', 'params')) {
+            $query .= "ALTER TABLE `#__courses_offering_sections` DROP `params`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if ($this->db->tableHasField('#__courses_offerings', 'params'))
-		{
-			$query .= "ALTER TABLE `#__courses_offerings` DROP `params`;";
-		}
+        if ($this->db->tableHasField('#__courses_offerings', 'params')) {
+            $query .= "ALTER TABLE `#__courses_offerings` DROP `params`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

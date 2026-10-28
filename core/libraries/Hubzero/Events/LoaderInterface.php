@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,18 +13,18 @@ namespace Hubzero\Events;
  */
 interface LoaderInterface
 {
-	/**
-	 * Get the event name.
-	 *
-	 * @return  string  The event name.
-	 */
-	public function getName();
+    /**
+     * Get the event name.
+     *
+     * @return  string  The event name.
+     */
+    public function getName();
 
-	/**
-	 * Load the given listener group.
-	 *
-	 * @param   string  $group
-	 * @return  array
-	 */
-	public function loadListeners($group);
+    /**
+     * Load the given listener group.
+     *
+     * @param   string  $group
+     * @return  array
+     */
+    public function loadListeners($group);
 }

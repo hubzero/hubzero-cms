@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20190320000000PlgExtensionJoomla extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('extension', 'joomla');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('extension', 'joomla');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('extension', 'joomla', 0);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('extension', 'joomla', 0);
+    }
 }

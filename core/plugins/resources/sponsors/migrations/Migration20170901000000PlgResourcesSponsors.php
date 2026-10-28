@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000PlgResourcesSponsors extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__resource_sponsors'))
-		{
-			$query = "CREATE TABLE `#__resource_sponsors` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__resource_sponsors')) {
+            $query = "CREATE TABLE `#__resource_sponsors` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `alias` varchar(255) DEFAULT NULL,
 			  `title` varchar(255) DEFAULT NULL,
@@ -35,21 +35,20 @@ class Migration20170901000000PlgResourcesSponsors extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_sponsors'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__resource_sponsors`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_sponsors')) {
+            $query = "DROP TABLE IF EXISTS `#__resource_sponsors`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

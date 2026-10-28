@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,28 +17,28 @@ use Hubzero\Database\Relational;
  */
 class Microblog extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'project';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $namespace = 'project';
 
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $table = '#__project_microblog';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $table = '#__project_microblog';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'projectid'  => 'positive|nonzero',
-		'activityid' => 'positive|nonzero',
-		'blogentry'  => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'projectid'  => 'positive|nonzero',
+        'activityid' => 'positive|nonzero',
+        'blogentry'  => 'notempty'
+    );
 }

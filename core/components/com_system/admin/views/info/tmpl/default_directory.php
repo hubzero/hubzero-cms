@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,29 +10,29 @@
 defined('_HZEXEC_') or die();
 ?>
 <fieldset class="adminform">
-	<legend><?php echo Lang::txt('COM_SYSTEM_INFO_DIRECTORY_PERMISSIONS'); ?></legend>
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th scope="col">
-					<?php echo Lang::txt('COM_SYSTEM_INFO_DIRECTORY'); ?>
-				</th>
-				<th scope="col">
-					<?php echo Lang::txt('COM_SYSTEM_INFO_STATUS'); ?>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($this->directory as $dir => $info): ?>
-				<tr>
-					<td>
-						<?php echo Html::directory('message', $dir, $info['message']);?>
-					</td>
-					<td>
-						<?php echo Html::directory('writable', $info['writable']);?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+    <legend><?php echo Lang::txt('COM_SYSTEM_INFO_DIRECTORY_PERMISSIONS'); ?></legend>
+    <table class="adminlist">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <?php echo Lang::txt('COM_SYSTEM_INFO_DIRECTORY'); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Lang::txt('COM_SYSTEM_INFO_STATUS'); ?>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->directory as $dir => $info) : ?>
+                <tr>
+                    <td>
+                        <?php echo Html::directory('message', $dir, $info['message']);?>
+                    </td>
+                    <td>
+                        <?php echo Html::directory('writable', $info['writable']);?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </fieldset>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,56 +15,56 @@ use Hubzero\Database\Relational;
  */
 class Address extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'xprofiles';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'xprofiles';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'uidNumber' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'uidNumber' => 'positive|nonzero'
+    );
 
-	/**
-	 * Get parent member
-	 *
-	 * @return  object
-	 */
-	public function member()
-	{
-		return $this->belongsToOne('Components\Members\Models\Member', 'uidNumber');
-	}
+    /**
+     * Get parent member
+     *
+     * @return  object
+     */
+    public function member()
+    {
+        return $this->belongsToOne('Components\Members\Models\Member', 'uidNumber');
+    }
 
-	/**
-	 * Get addresses for a user
-	 *
-	 * @param   integer  $uidNumber
-	 * @return  object
-	 */
-	public static function getAddressesForMember($uidNumber)
-	{
-		return self::all()
-			->whereEquals('uidNumber', $uidNumber)
-			->rows();
-	}
+    /**
+     * Get addresses for a user
+     *
+     * @param   integer  $uidNumber
+     * @return  object
+     */
+    public static function getAddressesForMember($uidNumber)
+    {
+        return self::all()
+            ->whereEquals('uidNumber', $uidNumber)
+            ->rows();
+    }
 }

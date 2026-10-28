@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,21 +10,19 @@ namespace Components\Search\Helpers;
 
 class ErrorMessageHelper
 {
+    protected $breaks;
 
-	protected $breaks;
+    public function __construct()
+    {
+        $this->breaks = '<br/><br/>';
+    }
 
-	public function __construct()
-	{
-		$this->breaks = '<br/><br/>';
-	}
+    public function generateErrorMessage($errors)
+    {
+        $errorList = implode($this->breaks . '• ', $errors);
 
-	public function generateErrorMessage($errors)
-	{
-		$errorList = implode($this->breaks . '• ', $errors);
+        $errorMessage = "• $errorList";
 
-		$errorMessage = "• $errorList";
-
-		return rtrim($errorMessage, $this->breaks);
-	}
-
+        return rtrim($errorMessage, $this->breaks);
+    }
 }

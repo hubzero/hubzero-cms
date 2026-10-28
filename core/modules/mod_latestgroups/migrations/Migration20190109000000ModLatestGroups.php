@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +13,19 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20190109000000ModLatestGroups extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_latestgroups');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_latestgroups');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_latestgroups');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_latestgroups');
+    }
 }

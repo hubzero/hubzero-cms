@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,47 +16,41 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150330174214ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('zones'))
-		{
-			if (!$mwdb->tableHasField('zones', 'description'))
-			{
-				$query = "ALTER TABLE `zones` ADD `description` TEXT;";
-				$mwdb->setQuery($query);
-				$mwdb->query();
-			}
-		}
-	}
+        if ($mwdb->tableExists('zones')) {
+            if (!$mwdb->tableHasField('zones', 'description')) {
+                $query = "ALTER TABLE `zones` ADD `description` TEXT;";
+                $mwdb->setQuery($query);
+                $mwdb->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('zones'))
-		{
-			if ($mwdb->tableHasField('zones', 'description'))
-			{
-				$query = "ALTER TABLE `zones` DROP `description`;";
-				$mwdb->setQuery($query);
-				$mwdb->query();
-			}
-		}
-	}
+        if ($mwdb->tableExists('zones')) {
+            if ($mwdb->tableHasField('zones', 'description')) {
+                $query = "ALTER TABLE `zones` DROP `description`;";
+                $mwdb->setQuery($query);
+                $mwdb->query();
+            }
+        }
+    }
 }

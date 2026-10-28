@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,37 +15,36 @@ use Hubzero\Database\Table;
  */
 class MemberBadge extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__courses_member_badges', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__courses_member_badges', 'id', $db);
+    }
 
-	/**
-	 * Load by member id
-	 *
-	 * @param   integer  $id  member id
-	 * @return  boolean
-	 */
-	public function loadByMemberId($id)
-	{
-		$query =   "SELECT *
+    /**
+     * Load by member id
+     *
+     * @param   integer  $id  member id
+     * @return  boolean
+     */
+    public function loadByMemberId($id)
+    {
+        $query =   "SELECT *
 					FROM {$this->_tbl}
 					WHERE member_id = " . $this->_db->quote($id);
 
-		$this->_db->setQuery($query);
+        $this->_db->setQuery($query);
 
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
+        if ($result = $this->_db->loadAssoc()) {
+            return $this->bind($result);
+        }
 
-		$this->setError($this->_db->getErrorMsg());
-		return false;
-	}
+        $this->setError($this->_db->getErrorMsg());
+        return false;
+    }
 }

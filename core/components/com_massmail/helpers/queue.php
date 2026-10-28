@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -16,109 +17,100 @@ namespace Components\Massmail\Helpers;
  */
 class Queue
 {
-	/**
-	 * Locate the postqueue binary (full paths first; PATH fallback last).
-	 *
-	 * @return  string
-	 */
-	public static function binary()
-	{
-		foreach (array('/usr/sbin/postqueue', '/usr/bin/postqueue') as $candidate)
-		{
-			if (is_executable($candidate))
-			{
-				return $candidate;
-			}
-		}
-		return 'postqueue';
-	}
+    /**
+     * Locate the postqueue binary (full paths first; PATH fallback last).
+     *
+     * @return  string
+     */
+    public static function binary()
+    {
+        foreach (array('/usr/sbin/postqueue', '/usr/bin/postqueue') as $candidate) {
+            if (is_executable($candidate)) {
+                return $candidate;
+            }
+        }
+        return 'postqueue';
+    }
 
-	/**
-	 * Inspect the queue.
-	 *
-	 * @return  array  ['available' => bool, 'size' => int]
-	 */
-	public static function status()
-	{
-		$out = array();
-		$rc  = 0;
-		@exec(escapeshellarg(self::binary()) . ' -p 2>/dev/null', $out, $rc);
+    /**
+     * Inspect the queue.
+     *
+     * @return  array  ['available' => bool, 'size' => int]
+     */
+    public static function status()
+    {
+        $out = array();
+        $rc  = 0;
+        @exec(escapeshellarg(self::binary()) . ' -p 2>/dev/null', $out, $rc);
 
-		// If the command produced nothing and failed, we couldn't read the queue.
-		if (empty($out) && $rc !== 0)
-		{
-			return array('available' => false, 'size' => 0);
-		}
+        // If the command produced nothing and failed, we couldn't read the queue.
+        if (empty($out) && $rc !== 0) {
+            return array('available' => false, 'size' => 0);
+        }
 
-		$text = implode("\n", $out);
+        $text = implode("\n", $out);
 
-		if ($text === '' || stripos($text, 'Mail queue is empty') !== false)
-		{
-			return array('available' => true, 'size' => 0);
-		}
+        if ($text === '' || stripos($text, 'Mail queue is empty') !== false) {
+            return array('available' => true, 'size' => 0);
+        }
 
-		// Summary line, e.g. "-- 12 Kbytes in 3 Requests."
-		if (preg_match('/(\d+)\s+Request/i', $text, $m))
-		{
-			return array('available' => true, 'size' => (int) $m[1]);
-		}
+        // Summary line, e.g. "-- 12 Kbytes in 3 Requests."
+        if (preg_match('/(\d+)\s+Request/i', $text, $m)) {
+            return array('available' => true, 'size' => (int) $m[1]);
+        }
 
-		// Fallback: count queue-id header lines.
-		$count = 0;
-		foreach ($out as $line)
-		{
-			if (preg_match('/^[0-9A-F]{6,}[\*!]?\s/', $line))
-			{
-				$count++;
-			}
-		}
-		return array('available' => true, 'size' => $count);
-	}
+        // Fallback: count queue-id header lines.
+        $count = 0;
+        foreach ($out as $line) {
+            if (preg_match('/^[0-9A-F]{6,}[\*!]?\s/', $line)) {
+                $count++;
+            }
+        }
+        return array('available' => true, 'size' => $count);
+    }
 
-	/**
-	 * Number of messages in the queue, or -1 if it can't be read.
-	 *
-	 * @return  integer
-	 */
-	public static function size()
-	{
-		$s = self::status();
-		return $s['available'] ? $s['size'] : -1;
-	}
+    /**
+     * Number of messages in the queue, or -1 if it can't be read.
+     *
+     * @return  integer
+     */
+    public static function size()
+    {
+        $s = self::status();
+        return $s['available'] ? $s['size'] : -1;
+    }
 
-	/**
-	 * Is the Postfix master (the daemon that runs the outbound delivery
-	 * services) currently running? `postfix status` needs root, so we look for
-	 * the master process directly, which any user can see.
-	 *
-	 * @return  boolean
-	 */
-	public static function isRunning()
-	{
-		$out = array();
-		$rc  = 1;
-		@exec("pgrep -f 'postfix/master' 2>/dev/null", $out, $rc);
-		return ($rc === 0 && !empty($out));
-	}
+    /**
+     * Is the Postfix master (the daemon that runs the outbound delivery
+     * services) currently running? `postfix status` needs root, so we look for
+     * the master process directly, which any user can see.
+     *
+     * @return  boolean
+     */
+    public static function isRunning()
+    {
+        $out = array();
+        $rc  = 1;
+        @exec("pgrep -f 'postfix/master' 2>/dev/null", $out, $rc);
+        return ($rc === 0 && !empty($out));
+    }
 
-	/**
-	 * Is Postfix installed and configured on this host?
-	 *
-	 * @return  array  ['configured' => bool, 'version' => string]
-	 */
-	public static function config()
-	{
-		$out = array();
-		$rc  = 1;
-		@exec('postconf -h mail_version 2>/dev/null', $out, $rc);
-		if ($rc === 0 && !empty($out))
-		{
-			return array('configured' => true, 'version' => trim($out[0]));
-		}
-		if (is_readable('/etc/postfix/main.cf'))
-		{
-			return array('configured' => true, 'version' => '');
-		}
-		return array('configured' => false, 'version' => '');
-	}
+    /**
+     * Is Postfix installed and configured on this host?
+     *
+     * @return  array  ['configured' => bool, 'version' => string]
+     */
+    public static function config()
+    {
+        $out = array();
+        $rc  = 1;
+        @exec('postconf -h mail_version 2>/dev/null', $out, $rc);
+        if ($rc === 0 && !empty($out)) {
+            return array('configured' => true, 'version' => trim($out[0]));
+        }
+        if (is_readable('/etc/postfix/main.cf')) {
+            return array('configured' => true, 'version' => '');
+        }
+        return array('configured' => false, 'version' => '');
+    }
 }

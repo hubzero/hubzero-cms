@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,41 +16,39 @@ use Hubzero\Html\Toolbar;
  */
 class ToolbarServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->registerToolbar();
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->registerToolbar();
 
-		$this->registerSubmenu();
-	}
+        $this->registerSubmenu();
+    }
 
-	/**
-	 * Register the toolbar.
-	 *
-	 * @return  void
-	 */
-	public function registerToolbar()
-	{
-		$this->app['toolbar'] = function($app)
-		{
-			return new Toolbar('toolbar');
-		};
-	}
+    /**
+     * Register the toolbar.
+     *
+     * @return  void
+     */
+    public function registerToolbar()
+    {
+        $this->app['toolbar'] = function ($app) {
+            return new Toolbar('toolbar');
+        };
+    }
 
-	/**
-	 * Register the submenu.
-	 *
-	 * @return  void
-	 */
-	public function registerSubmenu()
-	{
-		$this->app['submenu'] = function($app)
-		{
-			return new Toolbar('submenu');
-		};
-	}
+    /**
+     * Register the submenu.
+     *
+     * @return  void
+     */
+    public function registerSubmenu()
+    {
+        $this->app['submenu'] = function ($app) {
+            return new Toolbar('submenu');
+        };
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,40 +14,39 @@ defined('_HZEXEC_') or die();
  */
 class AnchorMacro extends WikiMacro
 {
-	/**
-	 * Allow macro in partial parsing?
-	 *
-	 * @var string
-	 */
-	public $allowPartial = true;
+    /**
+     * Allow macro in partial parsing?
+     *
+     * @var string
+     */
+    public $allowPartial = true;
 
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return     array
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = 'Inserts an anchor into a page.';
-		$txt['html'] = '<p>Inserts an anchor into a page.</p>';
-		return $txt['html'];
-	}
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return     array
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['wiki'] = 'Inserts an anchor into a page.';
+        $txt['html'] = '<p>Inserts an anchor into a page.</p>';
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return     string
-	 */
-	public function render()
-	{
-		$name = $this->args;
+    /**
+     * Generate macro output
+     *
+     * @return     string
+     */
+    public function render()
+    {
+        $name = $this->args;
 
-		// Did we get a result from the database?
-		if ($name)
-		{
-			// Build and return the link
-			return '<span id="' . urlencode($name) . '"></span>';
-		}
-	}
+        // Did we get a result from the database?
+        if ($name) {
+            // Build and return the link
+            return '<span id="' . urlencode($name) . '"></span>';
+        }
+    }
 }

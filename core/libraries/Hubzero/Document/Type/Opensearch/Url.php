@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,25 +17,25 @@ use Hubzero\Base\Obj;
  */
 class Url extends Obj
 {
-	/**
-	 * Type item element
-	 *
-	 * @var  string
-	 */
-	public $type = 'text/html';
+    /**
+     * Type item element
+     *
+     * @var  string
+     */
+    public $type = 'text/html';
 
-	/**
-	 * Rel item element
-	 *
-	 * @var  string
-	 */
-	public $rel = 'results';
+    /**
+     * Rel item element
+     *
+     * @var  string
+     */
+    public $rel = 'results';
 
-	/**
-	 * Template item element.
-	 * Has to contain the {searchTerms} parameter to work.
-	 *
-	 * @var  string
-	 */
-	public $template;
+    /**
+     * Template item element.
+     * Has to contain the {searchTerms} parameter to work.
+     *
+     * @var  string
+     */
+    public $template;
 }

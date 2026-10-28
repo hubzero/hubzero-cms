@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,14 +13,13 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20150629100000ComGeosearch extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__geosearch_markers'))
-		{
-			$query = "CREATE TABLE `#__geosearch_markers` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__geosearch_markers')) {
+            $query = "CREATE TABLE `#__geosearch_markers` (
 			  `id` int(11) DEFAULT NULL,
 			  `scope` varchar(255) DEFAULT NULL,
 			  `scope_id` int(11) DEFAULT NULL,
@@ -27,22 +27,21 @@ class Migration20150629100000ComGeosearch extends Base
 			  `addressLongitude` varchar(255) DEFAULT NULL
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__geosearch_markers'))
-		{
-			$query = "DROP TABLE `#__geosearch_markers`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__geosearch_markers')) {
+            $query = "DROP TABLE `#__geosearch_markers`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +13,19 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20190109000000ModMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_members', 1, '', 1);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_members', 1, '', 1);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_members');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_members');
+    }
 }

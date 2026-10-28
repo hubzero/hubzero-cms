@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,643 +23,588 @@ use App;
  */
 class Storage extends SiteController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		if (User::isGuest())
-		{
-			// Redirect to home page
-			App::redirect(
-				$this->config->get('mw_redirect', '/home')
-			);
-			return;
-		}
-
-		// Get the task
-		$this->_task = Request::getCmd('task', '');
-		$this->exceeded = false;
-
-		// Check if middleware is enabled
-		if ($this->_task != 'image'
-		 && $this->_task != 'css'
-		 && $this->_task != 'diskusage'
-		 && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin')))
-		{
-			// Redirect to home page
-			App::redirect(
-				$this->config->get('mw_redirect', '/home')
-			);
-			return;
-		}
-
-		$this->_authorize('storage');
-
-		parent::execute();
-	}
-
-	/**
-	 * Build the document path (breadcrumbs)
-	 *
-	 * @return  void
-	 */
-	protected function _buildPathway()
-	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt('COM_MEMBERS'),
-				'index.php?option=com_members'
-			);
-		}
-		Pathway::append(
-			stripslashes(User::get('name')),
-			'index.php?option=com_members&id=' . User::get('id')
-		);
-		Pathway::append(
-			Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
-			'index.php?option=' . $this->_option . '&task=storage'
-		);
-	}
-
-	/**
-	 * Build the document title
-	 *
-	 * @return  void
-	 */
-	protected function _buildTitle()
-	{
-		$this->_title  = Lang::txt('COM_MEMBERS');
-		$this->_title .= ': ' . stripslashes(User::get('name'));
-		$this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
-
-		Document::setTitle($this->_title);
-	}
-
-	/**
-	 * Show a login form
-	 *
-	 * @return  void
-	 */
-	protected function _login($rtrn = null)
-	{
-		if (!$rtrn)
-		{
-			$rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
-		}
-		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
-		);
-		return;
-	}
-
-	/**
-	 * Display a warning message that the user has exceeded their allowed space
-	 * then display a file list and options for managing disk usage
-	 *
-	 * @return  void
-	 */
-	public function storageexceededTask()
-	{
-		$this->displayTask(true);
-	}
-
-	/**
-	 * Display a file list and options for managing disk usage
-	 *
-	 * @param   boolean  $exceeded  Exceeded allowed space?
-	 * @return  void
-	 */
-	public function displayTask($exceeded=false)
-	{
-		// Check that the user is logged in
-		if (User::isGuest())
-		{
-			$this->_login();
-			return;
-		}
-
-		$this->view->setLayout('display');
-
-		// Set the page title
-		$this->_buildTitle();
-
-		// Set the pathway
-		$this->_buildPathway();
-
-		// Get their disk space usage
-		$this->percent = 0;
-		$this->view->monitor = '';
-		if ($this->config->get('show_storage'))
-		{
-			$this->exceeded = $exceeded;
-			$this->getDiskUsage();
-
-			$view = new \Hubzero\Component\View(array(
-				'name'   => $this->_controller,
-				'layout' => 'diskusage'
-			));
-			$view->set('option', $this->_option);
-			$view->amt       = $this->percent;
-			$view->du        = '';
-			$view->percent   = 0;
-			$view->msgs      = 0;
-			$view->ajax      = 0;
-			$view->writelink = 0;
-			$view->total     = $this->total;
-
-			$this->view->monitor = $view->loadTemplate();
-		}
-
-		// Instantiate the view
-		$this->view->exceeded = $exceeded;
-		$this->view->output = (isset($this->view->output)) ? $this->view->output : null;
-		$this->view->percentage = $this->percent;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
-	}
-
-	/**
-	 * Purge old session data
-	 *
-	 * @return  void
-	 */
-	public function purgeTask()
-	{
-		// Check that the user is logged in
-		if (User::isGuest())
-		{
-			$this->_login();
-			return;
-		}
-
-		if (!($shost = $this->config->get('storagehost')))
-		{
-			App::redirect(
-				Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
-			);
-			return;
-		}
-
-		Request::checkToken();
-
-		$degree = Request::getString('degree', 'default');
-
-		$info = array();
-		$msg = '';
-
-		$fp = stream_socket_client($shost, $errno, $errstr, 30);
-		if (!$fp)
-		{
-			$info[] = "$errstr ($errno)\n";
-			$this->setError("$errstr ($errno)\n");
-		}
-		else
-		{
-			fwrite($fp, 'purge user=' . User::get('username') . ",degree=$degree \n");
-			while (!feof($fp))
-			{
-				$info[] = fgets($fp, 1024) . "\n";
-			}
-			fclose($fp);
-		}
-
-		foreach ($info as $line)
-		{
-			if (trim($line) != '')
-			{
-				$msg .= $line . '<br />';
-			}
-		}
-
-		// Output HTML
-		$this->view->output = $msg;
-
-		$this->displayTask();
-	}
-
-	/**
-	 * Determine the amount of disk usage
-	 *
-	 * @param   string  $type  Type [hard, soft]
-	 * @return  void
-	 */
-	private function getDiskUsage($type='soft')
-	{
-		// Check that the user is logged in
-		if (User::isGuest())
-		{
-			$this->_login();
-			return;
-		}
-
-		bcscale(6);
-
-		$du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
-		if (isset($du['space']))
-		{
-			if ($type == 'hard')
-			{
-				$val = ($du['hardspace'] != 0) ? bcdiv($du['space'], $du['hardspace']) : 0;
-			}
-			else
-			{
-				$val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
-			}
-		} else {
-			$val = 0;
-		}
-		$percent = round($val * 100);
-		$percent = ($percent > 100) ? 100 : $percent;
-
-		if (isset($du['softspace']))
-		{
-			$total = $du['softspace'] / 1024000000;
-		}
-		else
-		{
-			$total = 0;
-		}
-
-		$this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
-		$this->percent   = $percent;
-		$this->total     = $total;
-
-		//if ($this->percent >= 100 && $this->remaining == 0) {
-		if ($this->percent >= 100 && !$this->exceeded)
-		{
-			App::redirect(
-				Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
-			);
-		}
-	}
-
-	/**
-	 * Display how much disk usage is being used
-	 *
-	 * @return  void
-	 */
-	public function diskusageTask()
-	{
-		// Check that the user is logged in
-		if (User::isGuest())
-		{
-			$this->_login();
-			return;
-		}
-
-		$msgs = Request::getInt('msgs', 0);
-
-		$du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
-		if (count($du) <=1)
-		{
-			// error
-			$percent = 0;
-		}
-		else
-		{
-			bcscale(6);
-			$val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
-			$percent = round($val * 100);
-		}
-
-		$amt = ($percent > 100) ? '100' : $percent;
-		$total = (isset($du['softspace'])) ? $du['softspace'] / 1024000000 : 0;
-
-		$this->view->amt       = $amt;
-		$this->view->total     = $total;
-		$this->view->du        = $du;
-		$this->view->percent   = $percent;
-		$this->view->msgs      = $msgs;
-		$this->view->ajax      = 1;
-		$this->view->writelink = 1;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
-	}
-
-	/**
-	 * Construct the path to be used for file management
-	 *
-	 * $listdir and $subdir come straight from the request, and the member owns
-	 * everything under their storage directory, so the path is resolved one
-	 * component at a time: traversal is refused rather than normalized away, and
-	 * no link is ever followed out of the member's own directory.
-	 *
-	 * @param   string  $listdir  Base directory
-	 * @param   string  $subdir   Sub-directory
-	 * @return  string
-	 */
-	private function _buildUploadPath($listdir, $subdir='')
-	{
-		// Get the configured upload path
-		$base     = DS . trim($this->config->get('storagepath', 'webdav' . DS . 'home'), DS);
-		$username = (string) User::get('username');
-
-		// Without a username the path below would be everybody's storage directory
-		if ($username === '')
-		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-			return;
-		}
-
-		$relative = \Hubzero\Filesystem\SafePath::relative($username . DS . $listdir . DS . $subdir);
-
-		if ($relative === false)
-		{
-			App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-			return;
-		}
-
-		$reason = null;
-		$path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0700, $reason);
-
-		if ($path === false)
-		{
-			if ($reason != \Hubzero\Filesystem\SafePath::REASON_MISSING)
-			{
-				App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-				return;
-			}
-
-			// A directory that doesn't exist (yet) is not an error here - the tasks
-			// below test for existence themselves and show an empty list. Whatever
-			// did exist along the way was still checked for links.
-			$path = realpath($base) . DS . $relative;
-		}
-
-		return $path;
-	}
-
-	/**
-	 * Resolve a file or folder to act on, below an already resolved directory
-	 *
-	 * Directories leading to the target are resolved without following links; the
-	 * target itself is only checked for traversal, so that a link can still be
-	 * deleted (as a link) rather than being followed.
-	 *
-	 * @param   string  $path   Directory returned by _buildUploadPath()
-	 * @param   string  $name   Incoming file or folder name
-	 * @return  string|boolean  Path to act on, or false
-	 */
-	private function _resolveTarget($path, $name)
-	{
-		$name = \Hubzero\Filesystem\SafePath::relative($name);
-
-		if ($name === false || $name === '')
-		{
-			return false;
-		}
-
-		$parent = dirname($name);
-
-		if ($parent != '.')
-		{
-			$path = \Hubzero\Filesystem\SafePath::directory($path, $parent);
-
-			if ($path === false)
-			{
-				return false;
-			}
-		}
-
-		return $path . DS . basename($name);
-	}
-
-	/**
-	 * Delete a folder
-	 *
-	 * @return  void
-	 */
-	public function deletefolderTask()
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			$this->filelistTask();
-			return;
-		}
-
-		Request::checkToken(array('get', 'post'));
-
-		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = urldecode(Request::getString('listdir', ''));
-		/*if (!$listdir)
-		{
-			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-			$this->filelistTask();
-			return;
-		}*/
-
-		// Build the path
-		$path = $this->_buildUploadPath($listdir);
-
-		// Incoming directory to delete
-		if (!($folder = urldecode(Request::getString('delFolder', ''))))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-			$this->filelistTask();
-			return;
-		}
-
-		// Resolve the folder below the listing directory: every directory leading to
-		// it has to be real, and the folder itself is removed rather than followed
-		// if it turns out to be a link, so this can never empty out another account
-		$target = $this->_resolveTarget($path, $folder);
-
-		// Check if the folder even exists
-		if (!$target || (!is_dir($target) && !is_link($target)))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-		}
-		else
-		{
-			// Attempt to delete the file
-			if (!Filesystem::deleteDirectory($target))
-			{
-				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
-			}
-		}
-
-		// Push through to the media view
-		$this->filelistTask();
-	}
-
-	/**
-	 * Delete a file
-	 *
-	 * @return  void
-	 */
-	public function deletefileTask()
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			$this->filelistTask();
-			return;
-		}
-
-		Request::checkToken(array('get', 'post'));
-
-		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
-		$listdir = urldecode(Request::getString('listdir', ''));
-
-		// Build the path
-		$path = $this->_buildUploadPath($listdir);
-
-		// Incoming file to delete
-		if (!($file = urldecode(Request::getString('file', ''))))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
-			$this->filelistTask();
-			return;
-		}
-
-		// Resolve the file below the listing directory (see _resolveTarget)
-		$target = $this->_resolveTarget($path, $file);
-
-		// Check if the file even exists
-		if (!$target || (!file_exists($target) && !is_link($target)))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
-		}
-		else
-		{
-			// Attempt to delete the file
-			if (!Filesystem::delete($target))
-			{
-				$this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
-			}
-		}
-
-		// Push through to the media view
-		$this->filelistTask();
-	}
-
-	/**
-	 * Show a file list
-	 *
-	 * @return  void
-	 */
-	public function filelistTask()
-	{
-		$this->view->setLayout('filelist');
-
-		$listdir = Request::getString('listdir', '');
-
-		// Build the path
-		$path = $this->_buildUploadPath($listdir);
-
-		$dirtree = array();
-		$subdir = $listdir;
-
-		if ($subdir)
-		{
-			$subdir = trim($subdir, DS);
-
-			$dirtree = explode(DS, $subdir);
-		}
-
-		$folders = array();
-		$docs    = array();
-
-		if (is_dir($path))
-		{
-			// Loop through all files and separate them into arrays of docs and folders
-			$dirIterator = new \DirectoryIterator($path);
-			foreach ($dirIterator as $file)
-			{
-				if ($file->isDot())
-				{
-					continue;
-				}
-
-				if ($file->isDir())
-				{
-					$name = $file->getFilename();
-					$folders[$path . DS . $name] = $name;
-					continue;
-				}
-
-				if ($file->isFile())
-				{
-					$name = $file->getFilename();
-					if (('cvs' == strtolower($name))
-					 || ('.svn' == strtolower($name)))
-					{
-						continue;
-					}
-
-					$docs[$path . DS . $name] = $name;
-				}
-			}
-
-			ksort($folders);
-			ksort($docs);
-		}
-
-		// Instantiate a view
-		$this->view->dirtree = $dirtree;
-		$this->view->docs = $docs;
-		$this->view->folders = $folders;
-		$this->view->config = $this->config;
-		$this->view->listdir = $listdir;
-		$this->view->path = $path;
-
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
-	}
-
-	/**
-	 * Authorization checks
-	 *
-	 * @param   string  $assetType  Asset type
-	 * @param   string  $assetId    Asset id to check against
-	 * @return  void
-	 */
-	public function _authorize($assetType='component', $assetId=null)
-	{
-		$this->config->set('access-view-' . $assetType, true);
-		if (!User::isGuest())
-		{
-			$asset  = $this->_option;
-			if ($assetId)
-			{
-				$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-				$asset .= ($assetId) ? '.' . $assetId : '';
-			}
-
-			$at = '';
-			if ($assetType != 'component')
-			{
-				$at .= '.' . $assetType;
-			}
-
-			// Admin
-			$this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
-			// Permissions
-			$this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
-			$this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
-			$this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
-			$this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
-			$this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
-		}
-	}
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        if (User::isGuest()) {
+            // Redirect to home page
+            App::redirect(
+                $this->config->get('mw_redirect', '/home')
+            );
+            return;
+        }
+
+        // Get the task
+        $this->_task = Request::getCmd('task', '');
+        $this->exceeded = false;
+
+        // Check if middleware is enabled
+        if (
+            $this->_task != 'image'
+            && $this->_task != 'css'
+            && $this->_task != 'diskusage'
+            && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && $this->_authorize() != 'admin'))
+        ) {
+            // Redirect to home page
+            App::redirect(
+                $this->config->get('mw_redirect', '/home')
+            );
+            return;
+        }
+
+        $this->_authorize('storage');
+
+        parent::execute();
+    }
+
+    /**
+     * Build the document path (breadcrumbs)
+     *
+     * @return  void
+     */
+    protected function _buildPathway()
+    {
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt('COM_MEMBERS'),
+                'index.php?option=com_members'
+            );
+        }
+        Pathway::append(
+            stripslashes(User::get('name')),
+            'index.php?option=com_members&id=' . User::get('id')
+        );
+        Pathway::append(
+            Lang::txt(strtoupper($this->_option . '_' . $this->_task)),
+            'index.php?option=' . $this->_option . '&task=storage'
+        );
+    }
+
+    /**
+     * Build the document title
+     *
+     * @return  void
+     */
+    protected function _buildTitle()
+    {
+        $this->_title  = Lang::txt('COM_MEMBERS');
+        $this->_title .= ': ' . stripslashes(User::get('name'));
+        $this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+
+        Document::setTitle($this->_title);
+    }
+
+    /**
+     * Show a login form
+     *
+     * @return  void
+     */
+    protected function _login($rtrn = null)
+    {
+        if (!$rtrn) {
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
+        }
+        App::redirect(
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+        );
+        return;
+    }
+
+    /**
+     * Display a warning message that the user has exceeded their allowed space
+     * then display a file list and options for managing disk usage
+     *
+     * @return  void
+     */
+    public function storageexceededTask()
+    {
+        $this->displayTask(true);
+    }
+
+    /**
+     * Display a file list and options for managing disk usage
+     *
+     * @param   boolean  $exceeded  Exceeded allowed space?
+     * @return  void
+     */
+    public function displayTask($exceeded = false)
+    {
+        // Check that the user is logged in
+        if (User::isGuest()) {
+            $this->_login();
+            return;
+        }
+
+        $this->view->setLayout('display');
+
+        // Set the page title
+        $this->_buildTitle();
+
+        // Set the pathway
+        $this->_buildPathway();
+
+        // Get their disk space usage
+        $this->percent = 0;
+        $this->view->monitor = '';
+        if ($this->config->get('show_storage')) {
+            $this->exceeded = $exceeded;
+            $this->getDiskUsage();
+
+            $view = new \Hubzero\Component\View(array(
+                'name'   => $this->_controller,
+                'layout' => 'diskusage'
+            ));
+            $view->set('option', $this->_option);
+            $view->amt       = $this->percent;
+            $view->du        = '';
+            $view->percent   = 0;
+            $view->msgs      = 0;
+            $view->ajax      = 0;
+            $view->writelink = 0;
+            $view->total     = $this->total;
+
+            $this->view->monitor = $view->loadTemplate();
+        }
+
+        // Instantiate the view
+        $this->view->exceeded = $exceeded;
+        $this->view->output = (isset($this->view->output)) ? $this->view->output : null;
+        $this->view->percentage = $this->percent;
+
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
+
+        $this->view->display();
+    }
+
+    /**
+     * Purge old session data
+     *
+     * @return  void
+     */
+    public function purgeTask()
+    {
+        // Check that the user is logged in
+        if (User::isGuest()) {
+            $this->_login();
+            return;
+        }
+
+        if (!($shost = $this->config->get('storagehost'))) {
+            App::redirect(
+                Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount'))
+            );
+            return;
+        }
+
+        Request::checkToken();
+
+        $degree = Request::getString('degree', 'default');
+
+        $info = array();
+        $msg = '';
+
+        $fp = stream_socket_client($shost, $errno, $errstr, 30);
+        if (!$fp) {
+            $info[] = "$errstr ($errno)\n";
+            $this->setError("$errstr ($errno)\n");
+        } else {
+            fwrite($fp, 'purge user=' . User::get('username') . ",degree=$degree \n");
+            while (!feof($fp)) {
+                $info[] = fgets($fp, 1024) . "\n";
+            }
+            fclose($fp);
+        }
+
+        foreach ($info as $line) {
+            if (trim($line) != '') {
+                $msg .= $line . '<br />';
+            }
+        }
+
+        // Output HTML
+        $this->view->output = $msg;
+
+        $this->displayTask();
+    }
+
+    /**
+     * Determine the amount of disk usage
+     *
+     * @param   string  $type  Type [hard, soft]
+     * @return  void
+     */
+    private function getDiskUsage($type = 'soft')
+    {
+        // Check that the user is logged in
+        if (User::isGuest()) {
+            $this->_login();
+            return;
+        }
+
+        bcscale(6);
+
+        $du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
+        if (isset($du['space'])) {
+            if ($type == 'hard') {
+                $val = ($du['hardspace'] != 0) ? bcdiv($du['space'], $du['hardspace']) : 0;
+            } else {
+                $val = ($du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+            }
+        } else {
+            $val = 0;
+        }
+        $percent = round($val * 100);
+        $percent = ($percent > 100) ? 100 : $percent;
+
+        if (isset($du['softspace'])) {
+            $total = $du['softspace'] / 1024000000;
+        } else {
+            $total = 0;
+        }
+
+        $this->remaining = (isset($du['remaining'])) ? $du['remaining'] : 0;
+        $this->percent   = $percent;
+        $this->total     = $total;
+
+        //if ($this->percent >= 100 && $this->remaining == 0) {
+        if ($this->percent >= 100 && !$this->exceeded) {
+            App::redirect(
+                Route::url('index.php?option=' . $this->_option . '&task=storageexceeded')
+            );
+        }
+    }
+
+    /**
+     * Display how much disk usage is being used
+     *
+     * @return  void
+     */
+    public function diskusageTask()
+    {
+        // Check that the user is logged in
+        if (User::isGuest()) {
+            $this->_login();
+            return;
+        }
+
+        $msgs = Request::getInt('msgs', 0);
+
+        $du = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
+        if (count($du) <= 1) {
+            // error
+            $percent = 0;
+        } else {
+            bcscale(6);
+            $val = (isset($du['softspace']) && $du['softspace'] != 0) ? bcdiv($du['space'], $du['softspace']) : 0;
+            $percent = round($val * 100);
+        }
+
+        $amt = ($percent > 100) ? '100' : $percent;
+        $total = (isset($du['softspace'])) ? $du['softspace'] / 1024000000 : 0;
+
+        $this->view->amt       = $amt;
+        $this->view->total     = $total;
+        $this->view->du        = $du;
+        $this->view->percent   = $percent;
+        $this->view->msgs      = $msgs;
+        $this->view->ajax      = 1;
+        $this->view->writelink = 1;
+
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
+
+        $this->view->display();
+    }
+
+    /**
+     * Construct the path to be used for file management
+     *
+     * $listdir and $subdir come straight from the request, and the member owns
+     * everything under their storage directory, so the path is resolved one
+     * component at a time: traversal is refused rather than normalized away, and
+     * no link is ever followed out of the member's own directory.
+     *
+     * @param   string  $listdir  Base directory
+     * @param   string  $subdir   Sub-directory
+     * @return  string
+     */
+    private function _buildUploadPath($listdir, $subdir = '')
+    {
+        // Get the configured upload path
+        $base     = DS . trim($this->config->get('storagepath', 'webdav' . DS . 'home'), DS);
+        $username = (string) User::get('username');
+
+        // Without a username the path below would be everybody's storage directory
+        if ($username === '') {
+            App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
+            return;
+        }
+
+        $relative = \Hubzero\Filesystem\SafePath::relative($username . DS . $listdir . DS . $subdir);
+
+        if ($relative === false) {
+            App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
+            return;
+        }
+
+        $reason = null;
+        $path   = \Hubzero\Filesystem\SafePath::directory($base, $relative, false, 0700, $reason);
+
+        if ($path === false) {
+            if ($reason != \Hubzero\Filesystem\SafePath::REASON_MISSING) {
+                App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
+                return;
+            }
+
+            // A directory that doesn't exist (yet) is not an error here - the tasks
+            // below test for existence themselves and show an empty list. Whatever
+            // did exist along the way was still checked for links.
+            $path = realpath($base) . DS . $relative;
+        }
+
+        return $path;
+    }
+
+    /**
+     * Resolve a file or folder to act on, below an already resolved directory
+     *
+     * Directories leading to the target are resolved without following links; the
+     * target itself is only checked for traversal, so that a link can still be
+     * deleted (as a link) rather than being followed.
+     *
+     * @param   string  $path   Directory returned by _buildUploadPath()
+     * @param   string  $name   Incoming file or folder name
+     * @return  string|boolean  Path to act on, or false
+     */
+    private function _resolveTarget($path, $name)
+    {
+        $name = \Hubzero\Filesystem\SafePath::relative($name);
+
+        if ($name === false || $name === '') {
+            return false;
+        }
+
+        $parent = dirname($name);
+
+        if ($parent != '.') {
+            $path = \Hubzero\Filesystem\SafePath::directory($path, $parent);
+
+            if ($path === false) {
+                return false;
+            }
+        }
+
+        return $path . DS . basename($name);
+    }
+
+    /**
+     * Delete a folder
+     *
+     * @return  void
+     */
+    public function deletefolderTask()
+    {
+        // Check if they are logged in
+        if (User::isGuest()) {
+            $this->filelistTask();
+            return;
+        }
+
+        Request::checkToken(array('get', 'post'));
+
+        // Incoming directory (this should be a path built from a resource ID and its creation year/month)
+        $listdir = urldecode(Request::getString('listdir', ''));
+        /*if (!$listdir)
+        {
+            $this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
+            $this->filelistTask();
+            return;
+        }*/
+
+        // Build the path
+        $path = $this->_buildUploadPath($listdir);
+
+        // Incoming directory to delete
+        if (!($folder = urldecode(Request::getString('delFolder', '')))) {
+            $this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
+            $this->filelistTask();
+            return;
+        }
+
+        // Resolve the folder below the listing directory: every directory leading to
+        // it has to be real, and the folder itself is removed rather than followed
+        // if it turns out to be a link, so this can never empty out another account
+        $target = $this->_resolveTarget($path, $folder);
+
+        // Check if the folder even exists
+        if (!$target || (!is_dir($target) && !is_link($target))) {
+            $this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
+        } else {
+            // Attempt to delete the file
+            if (!Filesystem::deleteDirectory($target)) {
+                $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_DIRECTORY'));
+            }
+        }
+
+        // Push through to the media view
+        $this->filelistTask();
+    }
+
+    /**
+     * Delete a file
+     *
+     * @return  void
+     */
+    public function deletefileTask()
+    {
+        // Check if they are logged in
+        if (User::isGuest()) {
+            $this->filelistTask();
+            return;
+        }
+
+        Request::checkToken(array('get', 'post'));
+
+        // Incoming directory (this should be a path built from a resource ID and its creation year/month)
+        $listdir = urldecode(Request::getString('listdir', ''));
+
+        // Build the path
+        $path = $this->_buildUploadPath($listdir);
+
+        // Incoming file to delete
+        if (!($file = urldecode(Request::getString('file', '')))) {
+            $this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
+            $this->filelistTask();
+            return;
+        }
+
+        // Resolve the file below the listing directory (see _resolveTarget)
+        $target = $this->_resolveTarget($path, $file);
+
+        // Check if the file even exists
+        if (!$target || (!file_exists($target) && !is_link($target))) {
+            $this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
+        } else {
+            // Attempt to delete the file
+            if (!Filesystem::delete($target)) {
+                $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
+            }
+        }
+
+        // Push through to the media view
+        $this->filelistTask();
+    }
+
+    /**
+     * Show a file list
+     *
+     * @return  void
+     */
+    public function filelistTask()
+    {
+        $this->view->setLayout('filelist');
+
+        $listdir = Request::getString('listdir', '');
+
+        // Build the path
+        $path = $this->_buildUploadPath($listdir);
+
+        $dirtree = array();
+        $subdir = $listdir;
+
+        if ($subdir) {
+            $subdir = trim($subdir, DS);
+
+            $dirtree = explode(DS, $subdir);
+        }
+
+        $folders = array();
+        $docs    = array();
+
+        if (is_dir($path)) {
+            // Loop through all files and separate them into arrays of docs and folders
+            $dirIterator = new \DirectoryIterator($path);
+            foreach ($dirIterator as $file) {
+                if ($file->isDot()) {
+                    continue;
+                }
+
+                if ($file->isDir()) {
+                    $name = $file->getFilename();
+                    $folders[$path . DS . $name] = $name;
+                    continue;
+                }
+
+                if ($file->isFile()) {
+                    $name = $file->getFilename();
+                    if (
+                        ('cvs' == strtolower($name))
+                        || ('.svn' == strtolower($name))
+                    ) {
+                        continue;
+                    }
+
+                    $docs[$path . DS . $name] = $name;
+                }
+            }
+
+            ksort($folders);
+            ksort($docs);
+        }
+
+        // Instantiate a view
+        $this->view->dirtree = $dirtree;
+        $this->view->docs = $docs;
+        $this->view->folders = $folders;
+        $this->view->config = $this->config;
+        $this->view->listdir = $listdir;
+        $this->view->path = $path;
+
+        foreach ($this->getErrors() as $error) {
+            $this->view->setError($error);
+        }
+
+        $this->view->display();
+    }
+
+    /**
+     * Authorization checks
+     *
+     * @param   string  $assetType  Asset type
+     * @param   string  $assetId    Asset id to check against
+     * @return  void
+     */
+    public function _authorize($assetType = 'component', $assetId = null)
+    {
+        $this->config->set('access-view-' . $assetType, true);
+        if (!User::isGuest()) {
+            $asset  = $this->_option;
+            if ($assetId) {
+                $asset .= ($assetType != 'component') ? '.' . $assetType : '';
+                $asset .= ($assetId) ? '.' . $assetId : '';
+            }
+
+            $at = '';
+            if ($assetType != 'component') {
+                $at .= '.' . $assetType;
+            }
+
+            // Admin
+            $this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
+            $this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
+            // Permissions
+            $this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
+            $this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
+            $this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
+            $this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+            $this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
+        }
+    }
 }

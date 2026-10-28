@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,8 +7,8 @@
  */
 
 return array(
-	// Base Services
-	'Bootstrap\Files\Providers\EventServiceProvider',
-	'Bootstrap\Files\Providers\AuthServiceProvider',
-	'Bootstrap\Files\Providers\FileServiceProvider',
+    // Base Services
+    'Bootstrap\Files\Providers\EventServiceProvider',
+    'Bootstrap\Files\Providers\AuthServiceProvider',
+    'Bootstrap\Files\Providers\FileServiceProvider',
 );

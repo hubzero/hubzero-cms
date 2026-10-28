@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,13 +13,13 @@ use Components\Groups\Helpers\View;
 
 class Menu extends Renderer
 {
-	/**
-	 * Render menu to group template
-	 *
-	 * @param    string
-	 */
-	public function render()
-	{
-		return View::displaySections($this->group, 'class="cf"');
-	}
+    /**
+     * Render menu to group template
+     *
+     * @param    string
+     */
+    public function render()
+    {
+        return View::displaySections($this->group, 'class="cf"');
+    }
 }

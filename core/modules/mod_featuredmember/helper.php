@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,72 +18,68 @@ use User;
  */
 class Helper extends Module
 {
-	/**
-	 * Generate module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
+    /**
+     * Generate module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
-		$database = \App::get('db');
-		$this->row = null;
+        $database = \App::get('db');
+        $this->row = null;
 
-		// Randomly choose one
-		$filters = array(
-			'limit'      => 1,
-			'show'       => trim($this->params->get('show','')),
-			'start'      => 0,
-			'sortby'     => "RAND()",
-			'search'     => '',
-			'authorized' => false
-		);
-		if ($min = $this->params->get('min_contributions'))
-		{
-			$filters['contributions'] = $min;
-		}
+        // Randomly choose one
+        $filters = array(
+            'limit'      => 1,
+            'show'       => trim($this->params->get('show', '')),
+            'start'      => 0,
+            'sortby'     => "RAND()",
+            'search'     => '',
+            'authorized' => false
+        );
+        if ($min = $this->params->get('min_contributions')) {
+            $filters['contributions'] = $min;
+        }
 
-		$query = "SELECT id FROM `#__users` WHERE `block`=0 ORDER BY RAND() LIMIT 1";
-		$db->setQuery($query);
+        $query = "SELECT id FROM `#__users` WHERE `block`=0 ORDER BY RAND() LIMIT 1";
+        $db->setQuery($query);
 
-		// Load their bio
-		$this->row = User::oneOrNew($row->loadResult());
+        // Load their bio
+        $this->row = User::oneOrNew($row->loadResult());
 
-		if (trim(strip_tags($this->row->get('bio'))) == '')
-		{
-			return '';
-		}
+        if (trim(strip_tags($this->row->get('bio'))) == '') {
+            return '';
+        }
 
-		// Did we have a result to display?
-		if ($this->row)
-		{
-			$this->cls = trim($this->params->get('moduleclass_sfx',''));
-			$this->txt_length = trim($this->params->get('txt_length',''));
+        // Did we have a result to display?
+        if ($this->row) {
+            $this->cls = trim($this->params->get('moduleclass_sfx', ''));
+            $this->txt_length = trim($this->params->get('txt_length', ''));
 
-			$config = Component::params('com_members');
+            $config = Component::params('com_members');
 
-			$rparams = new Registry($this->row->get('params'));
-			$this->params = $config;
-			$this->params->merge($rparams);
+            $rparams = new Registry($this->row->get('params'));
+            $this->params = $config;
+            $this->params->merge($rparams);
 
-			require $this->getLayoutPath();
-		}
-	}
+            require $this->getLayoutPath();
+        }
+    }
 
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComMenus extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__menu'))
-		{
-			$query = "CREATE TABLE `#__menu` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__menu')) {
+            $query = "CREATE TABLE `#__menu` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `menutype` varchar(24) NOT NULL COMMENT 'The type of menu this item belongs to. FK to #__menu_types.menutype',
 			  `title` varchar(255) NOT NULL COMMENT 'The display title of the menu item.',
@@ -58,18 +58,17 @@ class Migration20170901000000ComMenus extends Base
 			  KEY `idx_client_id_parent_id_alias_language` (`client_id`,`parent_id`,`alias`,`language`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__menu` VALUES (1,'','Menu_Item_Root','root','','','','',1,0,0,0,0,0,NULL,0,0,'',0,'',0,1,0,'*',0);";
+            $query = "INSERT INTO `#__menu` VALUES (1,'','Menu_Item_Root','root','','','','',1,0,0,0,0,0,NULL,0,0,'',0,'',0,1,0,'*',0);";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__menu_types'))
-		{
-			$query = "CREATE TABLE `#__menu_types` (
+        if (!$this->db->tableExists('#__menu_types')) {
+            $query = "CREATE TABLE `#__menu_types` (
 			  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  `menutype` varchar(24) NOT NULL,
 			  `title` varchar(48) NOT NULL,
@@ -78,28 +77,26 @@ class Migration20170901000000ComMenus extends Base
 			  UNIQUE KEY `idx_menutype` (`menutype`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__menu'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__menu`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__menu')) {
+            $query = "DROP TABLE IF EXISTS `#__menu`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__menu_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__menu_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__menu_types')) {
+            $query = "DROP TABLE IF EXISTS `#__menu_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

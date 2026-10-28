@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,21 +16,21 @@ use Hubzero\Filesystem\MacroInterface;
  */
 abstract class Base implements MacroInterface
 {
-	/**
-	 * Filesystem
-	 *
-	 * @var  object
-	 */
-	protected $filesystem;
+    /**
+     * Filesystem
+     *
+     * @var  object
+     */
+    protected $filesystem;
 
-	/**
-	 * Set the Filesystem object.
-	 *
-	 * @param   object  $filesystem  Filesystem
-	 * @return  void
-	 */
-	public function setFilesystem(Filesystem $filesystem)
-	{
-		$this->filesystem = $filesystem;
-	}
+    /**
+     * Set the Filesystem object.
+     *
+     * @param   object  $filesystem  Filesystem
+     * @return  void
+     */
+    public function setFilesystem(Filesystem $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
 }

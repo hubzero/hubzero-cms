@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,24 +13,24 @@ namespace Hubzero\Base\Client;
  */
 class Files implements ClientInterface
 {
-	/**
-	 * ID
-	 *
-	 * @var  integer
-	 */
-	public $id = 2;
+    /**
+     * ID
+     *
+     * @var  integer
+     */
+    public $id = 2;
 
-	/**
-	 * Name
-	 *
-	 * @var  string
-	 */
-	public $name = 'files';
+    /**
+     * Name
+     *
+     * @var  string
+     */
+    public $name = 'files';
 
-	/**
-	 * A url to init this client.
-	 *
-	 * @var  string
-	 */
-	public $url = 'files';
+    /**
+     * A url to init this client.
+     *
+     * @var  string
+     */
+    public $url = 'files';
 }

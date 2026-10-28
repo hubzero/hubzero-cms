@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,11 +13,11 @@ $this->css('factors');
 ?>
 
 <div class="factors">
-	<?php foreach ($this->factors as $factor) : ?>
-		<div class="factor-wrap">
-			<div class="factor">
-				<?php echo $factor->html; ?>
-			</div>
-		</div>
-	<?php endforeach; ?>
+    <?php foreach ($this->factors as $factor) : ?>
+        <div class="factor-wrap">
+            <div class="factor">
+                <?php echo $factor->html; ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>

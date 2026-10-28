@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +16,16 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150107022822PlgHubzeroRecaptcha extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$params = array(
-			'private' => '',
-			'public'  => ''
-		);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $params = array(
+            'private' => '',
+            'public'  => ''
+        );
 
-		$this->savePluginParams('hubzero', 'recaptcha', $params);
-	}
+        $this->savePluginParams('hubzero', 'recaptcha', $params);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,29 +16,27 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130809152737ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableHasField('#__courses_pages', 'section_id'))
-		{
-			$query = "ALTER TABLE `#__courses_pages` ADD `section_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `offering_id`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableHasField('#__courses_pages', 'section_id')) {
+            $query = "ALTER TABLE `#__courses_pages` ADD `section_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `offering_id`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasField('#__courses_pages', 'section_id'))
-		{
-			$query = "ALTER TABLE `#__courses_pages` DROP `section_id`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasField('#__courses_pages', 'section_id')) {
+            $query = "ALTER TABLE `#__courses_pages` DROP `section_id`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

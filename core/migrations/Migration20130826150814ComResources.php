@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,12 +16,12 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130826150814ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__media_tracking_detailed` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__media_tracking_detailed` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`user_id` int(11) DEFAULT NULL,
 				`session_id` varchar(200) DEFAULT NULL,
@@ -36,24 +37,22 @@ class Migration20130826150814ComResources extends Base
 				PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "DROP TABLE `#__media_tracking_detailed`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "DROP TABLE `#__media_tracking_detailed`";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

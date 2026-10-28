@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130813195602ComOaipmh extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__oaipmh_dcspecs'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__oaipmh_dcspecs` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__oaipmh_dcspecs')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__oaipmh_dcspecs` (
 							`id` int(11) NOT NULL AUTO_INCREMENT,
 							`name` varchar(255) NOT NULL,
 							`query` text NOT NULL,
@@ -30,10 +30,10 @@ class Migration20130813195602ComOaipmh extends Base
 							PRIMARY KEY (`id`)
 						) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__oaipmh_dcspecs` (`id`, `name`, `query`, `display`) VALUES
+            $query = "INSERT INTO `#__oaipmh_dcspecs` (`id`, `name`, `query`, `display`) VALUES
 						(1, 'resource IDs', 'SELECT p.id FROM #__publications p, #__publication_versions pv WHERE p.id = pv.publication_id AND pv.state = 1', 1),
 						(2, 'specify sets', '', 1),
 						(3, 'title', 'SELECT pv.title FROM #__publication_versions pv, #__publications p WHERE p.id = pv.publication_id AND p.id = \$id LIMIT 1', 1),
@@ -52,22 +52,21 @@ class Migration20130813195602ComOaipmh extends Base
 						(16, 'language', '', 1),
 						(17, 'source', '', 1);";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__oaipmh_dcspecs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__oaipmh_dcspecs`;";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__oaipmh_dcspecs')) {
+            $query = "DROP TABLE IF EXISTS `#__oaipmh_dcspecs`;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

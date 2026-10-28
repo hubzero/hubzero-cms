@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,34 +17,33 @@ use Component;
  */
 class Helper extends Module
 {
-	/**
-	 * Get module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		require_once Component::path('com_poll') . '/models/poll.php';
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        require_once Component::path('com_poll') . '/models/poll.php';
 
-		// Load the latest poll
-		$this->poll = Poll::current();
+        // Load the latest poll
+        $this->poll = Poll::current();
 
-		require $this->getLayoutPath();
-	}
+        require $this->getLayoutPath();
+    }
 
-	/**
-	 * Display module content
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 }

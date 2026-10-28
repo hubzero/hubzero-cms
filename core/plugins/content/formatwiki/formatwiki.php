@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,223 +14,198 @@ defined('_HZEXEC_') or die;
  */
 class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Output this plugin produced during this request, keyed by md5. formathtml
-	 * consults it before honouring a {FORMAT:RENDERED} marker: the marker on its
-	 * own is text, and text can be stored.
-	 *
-	 * @var  array
-	 */
-	public static $rendered = array();
+    /**
+     * Output this plugin produced during this request, keyed by md5. formathtml
+     * consults it before honouring a {FORMAT:RENDERED} marker: the marker on its
+     * own is text, and text can be stored.
+     *
+     * @var  array
+     */
+    public static $rendered = array();
 
-	/**
-	 * Did this plugin produce the given content in this request?
-	 *
-	 * @param   string  $content
-	 * @return  boolean
-	 */
-	public static function wasRendered($content)
-	{
-		return isset(self::$rendered[md5((string) $content)]);
-	}
+    /**
+     * Did this plugin produce the given content in this request?
+     *
+     * @param   string  $content
+     * @return  boolean
+     */
+    public static function wasRendered($content)
+    {
+        return isset(self::$rendered[md5((string) $content)]);
+    }
 
-	/**
-	 * Finder before save content method
-	 * Article is passed by reference, but after the save, so no changes will be saved.
-	 * Method is called right after the content is saved
-	 *
-	 * @param  string  $content The context of the content passed to the plugin
-	 * @param  object  $article
-	 * @param  boolean $isNew Unnecessary?
-	 * @return multi
-	 */
-	public function onContentBeforeSave($context, &$article, $isNew)
-	{
-		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
-		{
-			return;
-		}
+    /**
+     * Finder before save content method
+     * Article is passed by reference, but after the save, so no changes will be saved.
+     * Method is called right after the content is saved
+     *
+     * @param  string  $content The context of the content passed to the plugin
+     * @param  object  $article
+     * @param  boolean $isNew Unnecessary?
+     * @return multi
+     */
+    public function onContentBeforeSave($context, &$article, $isNew)
+    {
+        if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article') {
+            return;
+        }
 
-		$key = $this->_key($context);
+        $key = $this->_key($context);
 
-		$content = $article->get($key, '');
+        $content = $article->get($key, '');
 
-		// The content already has a format assigned to it so do nothing
-		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches))
-		{
-			return;
-		}
+        // The content already has a format assigned to it so do nothing
+        if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content, $matches)) {
+            return;
+        }
 
-		if (!strstr($content, '</'))
-		{
+        if (!strstr($content, '</')) {
+            if ($this->params->get('applyFormat')) {
+                $content = '<!-- {FORMAT:WIKI} -->' . $content;
 
-			if ($this->params->get('applyFormat'))
-			{
-				$content = '<!-- {FORMAT:WIKI} -->' . $content;
+                $article->set($key, $content);
+            }
+        }
+    }
 
-				$article->set($key, $content);
-			}
-		}
-	}
+    /**
+     * Convert content to HTML
+     *
+     * @param  string $context The context of the content being passed to the plugin.
+     * @param  object $article The article object.  Note $article->text is also available
+     * @param  object $params  The article params
+     * @param  int    $page    The 'page' number
+     */
+    public function onContentPrepare($context, &$article, &$params, $page = 0)
+    {
+        if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article') {
+            return;
+        }
 
-	/**
-	 * Convert content to HTML
-	 *
-	 * @param  string $context The context of the content being passed to the plugin.
-	 * @param  object $article The article object.  Note $article->text is also available
-	 * @param  object $params  The article params
-	 * @param  int    $page    The 'page' number
-	 */
-	public function onContentPrepare($context, &$article, &$params, $page = 0)
-	{
-		if (!($article instanceof \Hubzero\Base\Obj) || $context == 'com_content.article')
-		{
-			return;
-		}
+        $key = $this->_key($context);
 
-		$key = $this->_key($context);
+        $content = $article->get($key);
 
-		$content = $article->get($key);
+        // Is there a format already applied?
+        if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content == null ? '' : $content, $matches)) {
+            // Is the format wiki?
+            $format = strtolower(trim($matches[1]));
+            if ($format != 'wiki') {
+                // Not wiki. Do nothing.
+                return;
+            }
+        }
+        // No format applied
+        else {
+            // Force apply a format?
+            if ($this->params->get('applyFormat') && $this->_isWiki($content)) {
+                // Are we converting the format?
+                // Only apply the wiki format if not. Saves us an extra DB call.
+                if (!$this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model) {
+                    $content = '<!-- {FORMAT:WIKI} -->' . $content;
+                    $article->set($key, $content);
+                    // Only a stored row can carry the marker: a model without an
+                    // id (a repost of a collection that no longer exists, say)
+                    // would be INSERTed as a new, mostly empty row -- a strict-SQL
+                    // error and a 500 on every page listing it
+                    if ($article->get('id')) {
+                        $article->store(false);
+                    }
+                }
+            } else {
+                return;
+            }
+        }
 
-		// Is there a format already applied?
-		if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $content == null ? '' : $content, $matches))
-		{
-			// Is the format wiki?
-			$format = strtolower(trim($matches[1]));
-			if ($format != 'wiki')
-			{
-				// Not wiki. Do nothing.
-				return;
-			}
-		}
-		// No format applied
-		else
-		{
-			// Force apply a format?
-			if ($this->params->get('applyFormat') && $this->_isWiki($content))
-			{
-				// Are we converting the format?
-				// Only apply the wiki format if not. Saves us an extra DB call.
-				if (!$this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
-				{
-					$content = '<!-- {FORMAT:WIKI} -->' . $content;
-					$article->set($key, $content);
-					// Only a stored row can carry the marker: a model without an
-					// id (a repost of a collection that no longer exists, say)
-					// would be INSERTed as a new, mostly empty row -- a strict-SQL
-					// error and a 500 on every page listing it
-					if ($article->get('id'))
-					{
-						$article->store(false);
-					}
-				}
-			}
-			else
-			{
-				return;
-			}
-		}
+        $content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content == null ? '' : $content);
 
-		$content = preg_replace('/^(<!-- \{FORMAT:WIKI\} -->)/i', '', $content == null ? '' : $content);
+        $rendered = false;
 
-		$rendered = false;
+        if (trim($content) && $this->_isWiki($content)) {
+            if (!isset($params['fullparse'])) {
+                $params['fullparse'] = true;
+            }
 
-		if (trim($content) && $this->_isWiki($content))
-		{
-			if (!isset($params['fullparse']))
-			{
-				$params['fullparse'] = true;
-			}
+            if ($this->params->get('convertFormat')) {
+                $params['macros'] = false;
+            }
 
-			if ($this->params->get('convertFormat'))
-			{
-				$params['macros'] = false;
-			}
+            // Trigger the onFinderBeforeSave event.
+            $results = Event::trigger('wiki.onWikiParseText', array($content, $params, $params['fullparse'], true));
+            $content = implode('', $results);
+            $rendered = true;
+        }
 
-			// Trigger the onFinderBeforeSave event.
-			$results = Event::trigger('wiki.onWikiParseText', array($content, $params, $params['fullparse'], true));
-			$content = implode('', $results);
-			$rendered = true;
-		}
+        if ($this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model) {
+            $content = '<!-- {FORMAT:HTML} -->' . $content;
+            $article->set($key, $content);
+            if ($article->get('id')) {
+                $article->store(false);
+            }
+        } elseif ($rendered) {
+            // Tell the rest of the onContentPrepare chain that this is the wiki
+            // parser's own output, not stored markup. formathtml runs next
+            // (ordering 9 against this plugin's 8) and sanitises unmarked
+            // content, which would put this HTML through HTMLPurifier: measured
+            // against the shipped configuration that drops allowfullscreen from
+            // video embeds, deletes empty layout divs outright, strips every
+            // data-* attribute and rewrites rel="external".
+            //
+            // The marker is transient. formathtml removes it, and if that plugin
+            // is disabled it degrades to an invisible HTML comment.
+            $content = '<!-- {FORMAT:RENDERED} -->' . $content;
+            self::$rendered[md5($content)] = true;
+        }
 
-		if ($this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model)
-		{
-			$content = '<!-- {FORMAT:HTML} -->' . $content;
-			$article->set($key, $content);
-			if ($article->get('id'))
-			{
-				$article->store(false);
-			}
-		}
-		elseif ($rendered)
-		{
-			// Tell the rest of the onContentPrepare chain that this is the wiki
-			// parser's own output, not stored markup. formathtml runs next
-			// (ordering 9 against this plugin's 8) and sanitises unmarked
-			// content, which would put this HTML through HTMLPurifier: measured
-			// against the shipped configuration that drops allowfullscreen from
-			// video embeds, deletes empty layout divs outright, strips every
-			// data-* attribute and rewrites rel="external".
-			//
-			// The marker is transient. formathtml removes it, and if that plugin
-			// is disabled it degrades to an invisible HTML comment.
-			$content = '<!-- {FORMAT:RENDERED} -->' . $content;
-			self::$rendered[md5($content)] = true;
-		}
+        $article->set($key, $content);
+    }
 
-		$article->set($key, $content);
-	}
+    /**
+     * Try to determine if a string is wiki syntax
+     *
+     * @param   string $content Content to check
+     * @return  string
+     */
+    private function _isWiki($content)
+    {
+        $content = trim($content == null ? '' : $content);
 
-	/**
-	 * Try to determine if a string is wiki syntax
-	 *
-	 * @param   string $content Content to check
-	 * @return  string
-	 */
-	private function _isWiki($content)
-	{
-		$content = trim($content == null ? '' : $content);
+        // First, remove <pre> tags
+        //   This is in case the content is HTML but contains a block of
+        //   sample wiki markup.
+        $content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
 
-		// First, remove <pre> tags
-		//   This is in case the content is HTML but contains a block of
-		//   sample wiki markup.
-		$content = preg_replace('/<pre>(.*?)<\/pre>/i', '', $content);
+        // If wiki <pre> syntax is found
+        if ((strstr($content, '{{{') && strstr($content, '}}}')) || strstr($content, '#!html')) {
+            return true;
+        }
 
-		// If wiki <pre> syntax is found
-		if ((strstr($content, '{{{') && strstr($content, '}}}')) || strstr($content, '#!html'))
-		{
-			return true;
-		}
+        // If wiki bold syntax is found (highly unlikely HTML content will contain this string)
+        if (preg_match('/\'\'\'(.*?)\'\'\'/i', $content) || preg_match('/===(.*?)===/i', $content)) {
+            return true;
+        }
 
-		// If wiki bold syntax is found (highly unlikely HTML content will contain this string)
-		if (preg_match('/\'\'\'(.*?)\'\'\'/i', $content) || preg_match('/===(.*?)===/i', $content))
-		{
-			return true;
-		}
+        // If no HTML tags found ...
+        if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content)) {
+            return true;
+        }
+        return false;
+    }
 
-		// If no HTML tags found ...
-		if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check if the context provided the content field name as
-	 * it may vary between models.
-	 *
-	 * @param   string $context A dot-notation string
-	 * @return  string
-	 */
-	private function _key($context)
-	{
-		$parts = explode('.', $context);
-		$key = 'content';
-		if (isset($parts[2]))
-		{
-			$key = $parts[2];
-		}
-		return $key;
-	}
+    /**
+     * Check if the context provided the content field name as
+     * it may vary between models.
+     *
+     * @param   string $context A dot-notation string
+     * @return  string
+     */
+    private function _key($context)
+    {
+        $parts = explode('.', $context);
+        $key = 'content';
+        if (isset($parts[2])) {
+            $key = $parts[2];
+        }
+        return $key;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,21 +16,21 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20131002133124ComCollections extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('members', 'collections', 0);
-		$this->addPluginEntry('groups', 'collections', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('members', 'collections', 0);
+        $this->addPluginEntry('groups', 'collections', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('members', 'collections');
-		$this->deletePluginEntry('groups', 'collections');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('members', 'collections');
+        $this->deletePluginEntry('groups', 'collections');
+    }
 }

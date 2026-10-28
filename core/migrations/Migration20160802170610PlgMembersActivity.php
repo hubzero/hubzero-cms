@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160802170610PlgMembersActivity extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__activity_digests'))
-		{
-			$query = "CREATE TABLE `#__activity_digests` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__activity_digests')) {
+            $query = "CREATE TABLE `#__activity_digests` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `scope` varchar(250) NOT NULL,
 			  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -32,21 +32,20 @@ class Migration20160802170610PlgMembersActivity extends Base
 			  KEY `idx_user_id` (`scope_id`),
 			  KEY `idx_frequency` (`frequency`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__activity_digests'))
-		{
-			$query = "DROP TABLE `#__activity_digests`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__activity_digests')) {
+            $query = "DROP TABLE `#__activity_digests`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

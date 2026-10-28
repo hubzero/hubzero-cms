@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,9 +8,8 @@
 
 namespace Components\Billboards\Admin;
 
-if (!\User::authorise('core.manage', 'com_billboards'))
-{
-	return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!\User::authorise('core.manage', 'com_billboards')) {
+    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include needed models and controller
@@ -17,20 +17,19 @@ require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
 
 $controllerName = \Request::getCmd('controller', 'billboards');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'billboards';
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+    $controllerName = 'billboards';
 }
 
 \Submenu::addEntry(
-	\Lang::txt('COM_BILLBOARDS'),
-	\Route::url('index.php?option=com_billboards&controller=billboards'),
-	$controllerName == 'billboards'
+    \Lang::txt('COM_BILLBOARDS'),
+    \Route::url('index.php?option=com_billboards&controller=billboards'),
+    $controllerName == 'billboards'
 );
 \Submenu::addEntry(
-	\Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
-	\Route::url('index.php?option=com_billboards&controller=collections'),
-	$controllerName == 'collections'
+    \Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
+    \Route::url('index.php?option=com_billboards&controller=collections'),
+    $controllerName == 'collections'
 );
 
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';

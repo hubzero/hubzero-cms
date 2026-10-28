@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +16,9 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130101000000ComCourses extends Base
 {
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__courses` (
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__courses` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`alias` varchar(255) NOT NULL DEFAULT '',
 				`group_id` int(11) NOT NULL DEFAULT '0',
@@ -352,23 +353,23 @@ class Migration20130101000000ComCourses extends Base
 				 `fre`.`answer_id` AS `answer_id`
 			FROM `#__courses_form_responses` `fre` where ((select count(0) from `#__courses_form_responses` `frei` where ((`frei`.`respondent_id` = `fre`.`respondent_id`) and (`frei`.`id` > `fre`.`id`))) < (select count(distinct `frei`.`question_id`) from `#__courses_form_responses` `frei` where (`frei`.`respondent_id` = `fre`.`respondent_id`)));";
 
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->addPluginEntry('members', 'courses');
-		$this->addPluginEntry('courses', 'syllabus');
-		$this->addPluginEntry('courses', 'forum');
-		$this->addPluginEntry('courses', 'progress');
-		$this->addPluginEntry('courses', 'announcements');
-		$this->addPluginEntry('courses', 'dashboard');
-		$this->addPluginEntry('courses', 'overview');
-		$this->addPluginEntry('courses', 'reviews');
-		$this->addPluginEntry('courses', 'offerings');
-	}
+        $this->addPluginEntry('members', 'courses');
+        $this->addPluginEntry('courses', 'syllabus');
+        $this->addPluginEntry('courses', 'forum');
+        $this->addPluginEntry('courses', 'progress');
+        $this->addPluginEntry('courses', 'announcements');
+        $this->addPluginEntry('courses', 'dashboard');
+        $this->addPluginEntry('courses', 'overview');
+        $this->addPluginEntry('courses', 'reviews');
+        $this->addPluginEntry('courses', 'offerings');
+    }
 
-	public function down()
-	{
-		$query = "
+    public function down()
+    {
+        $query = "
 			DROP TABLE IF EXISTS `#__courses`;
 			DROP TABLE IF EXISTS `#__courses_announcements`;
 			DROP TABLE IF EXISTS `#__courses_asset_associations`;
@@ -394,10 +395,10 @@ class Migration20130101000000ComCourses extends Base
 			DROP TABLE IF EXISTS `#__courses_offering_section_codes`;
 			DROP VIEW IF EXISTS `#__courses_form_latest_responses_view`;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->deletePluginEntry('members', 'courses');
-		$this->deletePluginEntry('courses');
-	}
+        $this->deletePluginEntry('members', 'courses');
+        $this->deletePluginEntry('courses');
+    }
 }

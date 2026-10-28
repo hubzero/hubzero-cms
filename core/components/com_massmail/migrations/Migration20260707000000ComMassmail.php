@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -15,17 +16,16 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260707000000ComMassmail extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addComponentEntry('massmail');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addComponentEntry('massmail');
 
-		if (!$this->db->tableExists('#__massmail_mailings'))
-		{
-			$this->db->setQuery(
-				"CREATE TABLE `#__massmail_mailings` (
+        if (!$this->db->tableExists('#__massmail_mailings')) {
+            $this->db->setQuery(
+                "CREATE TABLE `#__massmail_mailings` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`subject` varchar(255) NOT NULL DEFAULT '',
 					`body` longtext,
@@ -52,14 +52,13 @@ class Migration20260707000000ComMassmail extends Base
 					KEY `idx_status` (`status`),
 					KEY `idx_created_by` (`created_by`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-			$this->db->query();
-		}
+            );
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__massmail_recipients'))
-		{
-			$this->db->setQuery(
-				"CREATE TABLE `#__massmail_recipients` (
+        if (!$this->db->tableExists('#__massmail_recipients')) {
+            $this->db->setQuery(
+                "CREATE TABLE `#__massmail_recipients` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`mailing_id` int(11) unsigned NOT NULL DEFAULT '0',
 					`uid` int(11) NOT NULL DEFAULT '0',
@@ -74,14 +73,13 @@ class Migration20260707000000ComMassmail extends Base
 					KEY `idx_sent_on` (`sent_on`),
 					UNIQUE KEY `uniq_mailing_email` (`mailing_id`,`email`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-			$this->db->query();
-		}
+            );
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__massmail_attachments'))
-		{
-			$this->db->setQuery(
-				"CREATE TABLE `#__massmail_attachments` (
+        if (!$this->db->tableExists('#__massmail_attachments')) {
+            $this->db->setQuery(
+                "CREATE TABLE `#__massmail_attachments` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`mailing_id` int(11) unsigned NOT NULL DEFAULT '0',
 					`filename` varchar(255) NOT NULL DEFAULT '',
@@ -92,14 +90,13 @@ class Migration20260707000000ComMassmail extends Base
 					PRIMARY KEY (`id`),
 					KEY `idx_mailing` (`mailing_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-			$this->db->query();
-		}
+            );
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__massmail_status'))
-		{
-			$this->db->setQuery(
-				"CREATE TABLE `#__massmail_status` (
+        if (!$this->db->tableExists('#__massmail_status')) {
+            $this->db->setQuery(
+                "CREATE TABLE `#__massmail_status` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`queue_size` int(11) NOT NULL DEFAULT '0',
 					`sent_last_hour` int(11) NOT NULL DEFAULT '0',
@@ -108,29 +105,27 @@ class Migration20260707000000ComMassmail extends Base
 					`note` varchar(255) NOT NULL DEFAULT '',
 					PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-			$this->db->query();
+            );
+            $this->db->query();
 
-			// Seed the single status row.
-			$this->db->setQuery("INSERT INTO `#__massmail_status` (`id`) VALUES (1);");
-			$this->db->query();
-		}
-	}
+            // Seed the single status row.
+            $this->db->setQuery("INSERT INTO `#__massmail_status` (`id`) VALUES (1);");
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteComponentEntry('massmail');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteComponentEntry('massmail');
 
-		foreach (array('#__massmail_recipients', '#__massmail_attachments', '#__massmail_mailings', '#__massmail_status') as $table)
-		{
-			if ($this->db->tableExists($table))
-			{
-				$this->db->setQuery("DROP TABLE `$table`;");
-				$this->db->query();
-			}
-		}
-	}
+        foreach (array('#__massmail_recipients', '#__massmail_attachments', '#__massmail_mailings', '#__massmail_status') as $table) {
+            if ($this->db->tableExists($table)) {
+                $this->db->setQuery("DROP TABLE `$table`;");
+                $this->db->query();
+            }
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,63 +21,58 @@ use App;
  */
 class Help extends SiteController
 {
-	/**
-	 * Display Help Article Pages
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Force help template
-		Request::setVar('tmpl', 'help');
+    /**
+     * Display Help Article Pages
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Force help template
+        Request::setVar('tmpl', 'help');
 
-		// Get the page we are trying to access
-		$page      = Request::getWord('page', 'index');
-		$component = Request::getWord('component', 'com_help');
-		$extension = Request::getWord('extension', '');
+        // Get the page we are trying to access
+        $page      = Request::getWord('page', 'index');
+        $component = Request::getWord('component', 'com_help');
+        $extension = Request::getWord('extension', '');
 
-		$finalHelpPage = Finder::page($component, $extension, $page);
+        $finalHelpPage = Finder::page($component, $extension, $page);
 
-		$content = '';
+        $content = '';
 
-		// If we have an existing page
-		if ($finalHelpPage != '')
-		{
-			ob_start();
-			require_once $finalHelpPage;
-			$content = ob_get_contents();
-			ob_end_clean();
-		}
-		else if (isset($component) && $component != '' && $page == 'index')
-		{
-			// Get list of component pages
-			$pages[] = Finder::pages($component);
+        // If we have an existing page
+        if ($finalHelpPage != '') {
+            ob_start();
+            require_once $finalHelpPage;
+            $content = ob_get_contents();
+            ob_end_clean();
+        } else if (isset($component) && $component != '' && $page == 'index') {
+            // Get list of component pages
+            $pages[] = Finder::pages($component);
 
-			//display page
-			$view = with(new View(array(
-					'name'   => $this->_controller,
-					'layout' => 'index'
-				)))
-				->set('option', $this->_option)
-				->set('controller', $this->_controller)
-				->set('layoutExt', $this->layoutExt)
-				->set('pages', $pages);
+            //display page
+            $view = with(new View(array(
+                    'name'   => $this->_controller,
+                    'layout' => 'index'
+                )))
+                ->set('option', $this->_option)
+                ->set('controller', $this->_controller)
+                ->set('layoutExt', $this->layoutExt)
+                ->set('pages', $pages);
 
-			$content = $view->loadTemplate();
-		}
-		else
-		{
-			// Raise error to avoid security bug
-			throw new Exception(Lang::txt('COM_HELP_PAGE_NOT_FOUND'), 404);
-		}
+            $content = $view->loadTemplate();
+        } else {
+            // Raise error to avoid security bug
+            throw new Exception(Lang::txt('COM_HELP_PAGE_NOT_FOUND'), 404);
+        }
 
-		// Set vars for views
-		$this->view
-			->set('modified', filemtime($finalHelpPage))
-			->set('component', $component)
-			->set('extension', $extension)
-			->set('content', $content)
-			->set('page', $page)
-			->display();
-	}
+        // Set vars for views
+        $this->view
+            ->set('modified', filemtime($finalHelpPage))
+            ->set('component', $component)
+            ->set('extension', $extension)
+            ->set('content', $content)
+            ->set('page', $page)
+            ->display();
+    }
 }

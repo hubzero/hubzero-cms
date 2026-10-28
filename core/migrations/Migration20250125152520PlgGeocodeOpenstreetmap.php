@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -15,20 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20250125152520PlgGeocodeOpenstreetmap extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('geocode', 'openstreetmap');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('geocode', 'openstreetmap');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('geocode', 'openstreetmap', 0);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('geocode', 'openstreetmap', 0);
+    }
 }
-

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
@@ -18,32 +19,34 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260915000000ComGroups extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__xgroups_roles')
-		 && !$this->db->tableHasField('#__xgroups_roles', 'ordering'))
-		{
-			$query = "ALTER TABLE `#__xgroups_roles`
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (
+            $this->db->tableExists('#__xgroups_roles')
+            && !$this->db->tableHasField('#__xgroups_roles', 'ordering')
+        ) {
+            $query = "ALTER TABLE `#__xgroups_roles`
 				ADD COLUMN `ordering` int(11) NOT NULL DEFAULT 0 AFTER `name`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__xgroups_roles')
-		 && $this->db->tableHasField('#__xgroups_roles', 'ordering'))
-		{
-			$query = "ALTER TABLE `#__xgroups_roles` DROP COLUMN `ordering`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (
+            $this->db->tableExists('#__xgroups_roles')
+            && $this->db->tableHasField('#__xgroups_roles', 'ordering')
+        ) {
+            $query = "ALTER TABLE `#__xgroups_roles` DROP COLUMN `ordering`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

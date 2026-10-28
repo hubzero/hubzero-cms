@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,23 +16,21 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140904174546ComKb extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT * FROM `#__faq` WHERE `alias` = 'login2' OR `alias` = 'pwreset'";
-		$this->db->setQuery($query);
-		$results = $this->db->loadObjectList();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT * FROM `#__faq` WHERE `alias` = 'login2' OR `alias` = 'pwreset'";
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
-		if ($results && count($results) > 0)
-		{
-			foreach ($results as $result)
-			{
-				$result->fulltxt = str_replace('/lostpassword', '/login/reset', $result->fulltxt);
-				$result->fulltxt = str_replace('/change_password', '/members/myaccount/account', $result->fulltxt);
-				$this->db->updateObject('#__faq', $result, 'id');
-			}
-		}
-	}
+        if ($results && count($results) > 0) {
+            foreach ($results as $result) {
+                $result->fulltxt = str_replace('/lostpassword', '/login/reset', $result->fulltxt);
+                $result->fulltxt = str_replace('/change_password', '/members/myaccount/account', $result->fulltxt);
+                $this->db->updateObject('#__faq', $result, 'id');
+            }
+        }
+    }
 }

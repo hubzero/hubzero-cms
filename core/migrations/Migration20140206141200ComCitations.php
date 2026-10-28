@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,41 +16,37 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140206141200ComCitations extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = '';
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = '';
 
-		if (!$this->db->tableHasField('#__citations', 'format'))
-		{
-			$query .= "ALTER TABLE `#__citations` ADD COLUMN `format` VARCHAR(11);";
-		}
+        if (!$this->db->tableHasField('#__citations', 'format')) {
+            $query .= "ALTER TABLE `#__citations` ADD COLUMN `format` VARCHAR(11);";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = '';
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = '';
 
-		if ($this->db->tableHasField('#__citations', 'format'))
-		{
-			$query .= "ALTER TABLE `#__citations` DROP COLUMN `format`;";
-		}
+        if ($this->db->tableHasField('#__citations', 'format')) {
+            $query .= "ALTER TABLE `#__citations` DROP COLUMN `format`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

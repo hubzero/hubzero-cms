@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,39 +17,35 @@ $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_ke
 ?>
 <?php
 $tabItems = array();
-foreach ($this->cats as $cat)
-{
-	$name = key($cat);
+foreach ($this->cats as $cat) {
+    $name = key($cat);
 
-	if (!$name)
-	{
-		continue;
-	}
+    if (!$name) {
+        continue;
+    }
 
-	$active = false;
+    $active = false;
 
-	$url = $base . '&' . $active_key . '=' . $name;
-	if (strtolower($name) == $this->active)
-	{
-		Pathway::append($cat[$name], $url);
+    $url = $base . '&' . $active_key . '=' . $name;
+    if (strtolower($name) == $this->active) {
+        Pathway::append($cat[$name], $url);
 
-		if ($active != 'about')
-		{
-			Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
-		}
+        if ($active != 'about') {
+            Document::setTitle(Document::getTitle() . ': ' . $cat[$name]);
+        }
 
-		$active = true;
-	}
+        $active = true;
+    }
 
-	$tabItems[] = array('name' => $name, 'label' => $cat[$name], 'url' => $url, 'active' => $active);
+    $tabItems[] = array('name' => $name, 'label' => $cat[$name], 'url' => $url, 'active' => $active);
 }
 
 if (count($tabItems) > 0) { ?>
 <ul id="sub-menu" class="sub-menu">
-	<?php foreach ($tabItems as $tab) { ?>
-		<li id="sm-<?php echo $tab['name']; ?>"<?php echo $tab['active'] ? ' class="active"' : ''; ?>>
-			<a class="tab" data-rel="<?php echo $tab['name']; ?>" href="<?php echo Route::url($tab['url']); ?>"><span><?php echo $tab['label']; ?></span><span class="sr-only">: <?php echo $this->escape(stripslashes($this->resource->title)); ?></span></a>
-		</li>
-	<?php } ?>
+    <?php foreach ($tabItems as $tab) { ?>
+        <li id="sm-<?php echo $tab['name']; ?>"<?php echo $tab['active'] ? ' class="active"' : ''; ?>>
+            <a class="tab" data-rel="<?php echo $tab['name']; ?>" href="<?php echo Route::url($tab['url']); ?>"><span><?php echo $tab['label']; ?></span><span class="sr-only">: <?php echo $this->escape(stripslashes($this->resource->title)); ?></span></a>
+        </li>
+    <?php } ?>
 </ul>
 <?php } ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -16,19 +17,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260720000001PlgSystemMassmail extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('system', 'massmail');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('system', 'massmail');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('system', 'massmail');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('system', 'massmail');
+    }
 }

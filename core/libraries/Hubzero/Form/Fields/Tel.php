@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +13,10 @@ namespace Hubzero\Form\Fields;
  */
 class Tel extends Text
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Tel';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Tel';
 }

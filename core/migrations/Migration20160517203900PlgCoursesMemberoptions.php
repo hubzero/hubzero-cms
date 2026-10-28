@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160517203900PlgCoursesMemberoptions extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('courses', 'memberoptions');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('courses', 'memberoptions');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('courses', 'memberoptions');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('courses', 'memberoptions');
+    }
 }

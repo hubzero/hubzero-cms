@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130930160944ComBillboards extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__billboards'))
-		{
-			$query = "CREATE TABLE `#__billboards` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__billboards')) {
+            $query = "CREATE TABLE `#__billboards` (
 						`id` int(11) unsigned NOT NULL auto_increment,
 						`collection_id` int(11) default NULL,
 						`name` varchar(255) default NULL,
@@ -43,10 +43,10 @@ class Migration20130930160944ComBillboards extends Base
 						PRIMARY KEY  (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
+            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
 						VALUES (1,'Powered by HUBzero','Powered by HUBzero','HUBzero is a platform used to create dynamic web sites for scientific research and educational activities. With HUBzero, you can easily publish your research software and related educational materials on the web.','Learn more &rsaquo;','http://hubzero.org/about','learnmore','relative','slideone.png','15px','poweredbyhubzero','',1,1,0,'0000-00-00 00:00:00');
 
 						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
@@ -57,50 +57,47 @@ class Migration20130930160944ComBillboards extends Base
 
 						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
 						VALUES (1,'User groups for collaboration','User groups for collaboration','Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exist for a specific interest or topic. If you can\'t find one you like, feel free to start your own.','Learn more &rsaquo;','/groups','learnmore','bottomright','slidefour.png','0 0 0 170px','usergroupsforcollaboration','#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}',1,4,0,'0000-00-00 00:00:00');";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__billboard_collection'))
-		{
-			$query = "CREATE TABLE `#__billboard_collection` (
+        if (!$this->db->tableExists('#__billboard_collection')) {
+            $query = "CREATE TABLE `#__billboard_collection` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`name` varchar(255) DEFAULT NULL,
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__billboard_collection` (`name`) VALUES ('Home Default Billboard');";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $query = "INSERT INTO `#__billboard_collection` (`name`) VALUES ('Home Default Billboard');";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->addComponentEntry('Billboards');
-	}
+        $this->addComponentEntry('Billboards');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__billboards'))
-		{
-			$query = "DROP TABLE `#__billboards`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__billboards')) {
+            $query = "DROP TABLE `#__billboards`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__billboard_collection'))
-		{
-			$query = "DROP TABLE `#__billboard_collection`";
+        if ($this->db->tableExists('#__billboard_collection')) {
+            $query = "DROP TABLE `#__billboard_collection`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deleteComponentEntry('Billboards');
-	}
+        $this->deleteComponentEntry('Billboards');
+    }
 }

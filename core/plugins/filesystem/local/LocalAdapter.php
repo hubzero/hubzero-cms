@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,42 +19,42 @@ use League\Flysystem\PathPrefixer;
  */
 class LocalAdapter extends LocalFilesystemAdapter
 {
-	/**
-	 * @var  PathPrefixer
-	 */
-	private $pathPrefixer;
+    /**
+     * @var  PathPrefixer
+     */
+    private $pathPrefixer;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $root
-	 * @return  void
-	 */
-	public function __construct(string $root)
-	{
-		parent::__construct($root);
+    /**
+     * Constructor
+     *
+     * @param   string  $root
+     * @return  void
+     */
+    public function __construct(string $root)
+    {
+        parent::__construct($root);
 
-		$this->pathPrefixer = new PathPrefixer($root, DIRECTORY_SEPARATOR);
-	}
+        $this->pathPrefixer = new PathPrefixer($root, DIRECTORY_SEPARATOR);
+    }
 
-	/**
-	 * Get the root path
-	 *
-	 * @return  string
-	 */
-	public function getPathPrefix()
-	{
-		return $this->pathPrefixer->prefixPath('');
-	}
+    /**
+     * Get the root path
+     *
+     * @return  string
+     */
+    public function getPathPrefix()
+    {
+        return $this->pathPrefixer->prefixPath('');
+    }
 
-	/**
-	 * Turn a path relative to the root into an absolute path
-	 *
-	 * @param   string  $path
-	 * @return  string
-	 */
-	public function applyPathPrefix($path)
-	{
-		return $this->pathPrefixer->prefixPath((string) $path);
-	}
+    /**
+     * Turn a path relative to the root into an absolute path
+     *
+     * @param   string  $path
+     * @return  string
+     */
+    public function applyPathPrefix($path)
+    {
+        return $this->pathPrefixer->prefixPath((string) $path);
+    }
 }

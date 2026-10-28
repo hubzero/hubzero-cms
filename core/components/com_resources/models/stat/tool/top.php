@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,42 +17,42 @@ use Hubzero\Database\Relational;
  */
 class Top extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'resource_stats_tools';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'resource_stats_tools';
 
-	/**
-	 * The table primary key name
-	 *
-	 * It defaults to 'id', but can be overwritten by a subclass.
-	 *
-	 * @var  string
-	 **/
-	protected $pk = 'top';
+    /**
+     * The table primary key name
+     *
+     * It defaults to 'id', but can be overwritten by a subclass.
+     *
+     * @var  string
+     **/
+    protected $pk = 'top';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'top';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'top';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'name' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'name' => 'notempty'
+    );
 }

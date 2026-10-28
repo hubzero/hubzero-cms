@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,62 +25,60 @@ use Hubzero\Content\Migration\Base;
  */
 class Migration20260921170000PlgContentFormathtml extends Base
 {
-	/**
-	 * Up
-	 *
-	 * @return  void
-	 */
-	public function up()
-	{
-		$this->db->setQuery(
-			"SELECT `extension_id`, `params` FROM `#__extensions`
+    /**
+     * Up
+     *
+     * @return  void
+     */
+    public function up()
+    {
+        $this->db->setQuery(
+            "SELECT `extension_id`, `params` FROM `#__extensions`
 			  WHERE `type` = 'plugin' AND `folder` = 'content' AND `element` = 'formathtml'"
-		);
+        );
 
-		$rows = $this->db->loadObjectList();
+        $rows = $this->db->loadObjectList();
 
-		if (!$rows)
-		{
-			return;
-		}
+        if (!$rows) {
+            return;
+        }
 
-		foreach ($rows as $row)
-		{
-			$params = json_decode((string) $row->params, true);
+        foreach ($rows as $row) {
+            $params = json_decode((string) $row->params, true);
 
-			if (!is_array($params))
-			{
-				$params = array();
-			}
+            if (!is_array($params)) {
+                $params = array();
+            }
 
-			if (array_key_exists('sanitizeBefore', $params)
-			 && (string) $params['sanitizeBefore'] !== '0')
-			{
-				// set deliberately to something other than off -- leave it
-				continue;
-			}
+            if (
+                array_key_exists('sanitizeBefore', $params)
+                && (string) $params['sanitizeBefore'] !== '0'
+            ) {
+                // set deliberately to something other than off -- leave it
+                continue;
+            }
 
-			$params['sanitizeBefore'] = 1;
+            $params['sanitizeBefore'] = 1;
 
-			$this->db->setQuery(
-				"UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) .
-				" WHERE `extension_id` = " . (int) $row->extension_id
-			);
-			$this->db->query();
+            $this->db->setQuery(
+                "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) .
+                " WHERE `extension_id` = " . (int) $row->extension_id
+            );
+            $this->db->query();
 
-			$this->log('Enabled sanitizeBefore on plg_content_formathtml (extension ' . (int) $row->extension_id . ')');
-		}
-	}
+            $this->log('Enabled sanitizeBefore on plg_content_formathtml (extension ' . (int) $row->extension_id . ')');
+        }
+    }
 
-	/**
-	 * Down
-	 *
-	 * Deliberately does not restore 0: switching the sanitiser back off would
-	 * reopen the stored-XSS path it closes.
-	 *
-	 * @return  void
-	 */
-	public function down()
-	{
-	}
+    /**
+     * Down
+     *
+     * Deliberately does not restore 0: switching the sanitiser back off would
+     * reopen the stored-XSS path it closes.
+     *
+     * @return  void
+     */
+    public function down()
+    {
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +16,31 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160513211701ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__user_profile_options'))
-		{
-			if (!$this->db->tableHasField('#__user_profile_options', 'dependents'))
-			{
-				$query = "ALTER TABLE `#__user_profile_options` ADD `dependents` TINYTEXT  NULL;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__user_profile_options')) {
+            if (!$this->db->tableHasField('#__user_profile_options', 'dependents')) {
+                $query = "ALTER TABLE `#__user_profile_options` ADD `dependents` TINYTEXT  NULL;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__user_profile_options'))
-		{
-			if ($this->db->tableHasField('#__user_profile_options', 'dependents'))
-			{
-				$query = "ALTER TABLE `#__user_profile_options` DROP COLUMN `dependents`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__user_profile_options')) {
+            if ($this->db->tableHasField('#__user_profile_options', 'dependents')) {
+                $query = "ALTER TABLE `#__user_profile_options` DROP COLUMN `dependents`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

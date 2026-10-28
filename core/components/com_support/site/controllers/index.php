@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,28 +18,27 @@ use Lang;
  */
 class Index extends SiteController
 {
-	/**
-	 * Displays the main page for support
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Set the page title
-		$this->view->title = Lang::txt(strtoupper($this->_option));
+    /**
+     * Displays the main page for support
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Set the page title
+        $this->view->title = Lang::txt(strtoupper($this->_option));
 
-		Document::setTitle($this->view->title);
+        Document::setTitle($this->view->title);
 
-		// Set the pathway
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
+        // Set the pathway
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
 
-		// Output HTML
-		$this->view->display();
-	}
+        // Output HTML
+        $this->view->display();
+    }
 }

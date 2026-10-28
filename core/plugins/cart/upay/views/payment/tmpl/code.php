@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +14,8 @@ defined('_HZEXEC_') or die();
 
 echo '<form method="post" action="' . $this->postUrl . '">';
 echo '<input type="hidden" value="' . $this->siteDetails->siteId . '" name="UPAY_SITE_ID">';
-foreach ($this->transactionDetails as $k => $v)
-{
-	echo '<input type="hidden" value="' . $v . '" name="' . $k . '">';
+foreach ($this->transactionDetails as $k => $v) {
+    echo '<input type="hidden" value="' . $v . '" name="' . $k . '">';
 }
 
 ?>

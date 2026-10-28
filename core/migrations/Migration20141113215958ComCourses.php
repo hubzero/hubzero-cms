@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +16,15 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20141113215958ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__courses_form_deployments'))
-		{
-			$query = "UPDATE `#__courses_form_deployments` SET `start_time` = NULL, `end_time` = NULL";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__courses_form_deployments')) {
+            $query = "UPDATE `#__courses_form_deployments` SET `start_time` = NULL, `end_time` = NULL";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

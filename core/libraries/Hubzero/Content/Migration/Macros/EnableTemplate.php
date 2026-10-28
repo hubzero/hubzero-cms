@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -17,40 +18,37 @@ use Hubzero\Content\Migration\Macro;
  **/
 class EnableTemplate extends Macro
 {
-	/**
-	 * Enable template
-	 *
-	 * @param   string  $element  Element
-	 * @param   int     $client   Client id (0 site, 1 admin); null for both
-	 * @return  bool
-	 **/
-	public function __invoke($element, $client=null)
-	{
-		if ($this->db->tableExists('#__extensions'))
-		{
-			$enabled = 1;
+    /**
+     * Enable template
+     *
+     * @param   string  $element  Element
+     * @param   int     $client   Client id (0 site, 1 admin); null for both
+     * @return  bool
+     **/
+    public function __invoke($element, $client = null)
+    {
+        if ($this->db->tableExists('#__extensions')) {
+            $enabled = 1;
 
-			$query = $this->db->getQuery()
-				->update('#__extensions')
-				->set(array(
-					'enabled' => $enabled
-				))
-				->whereEquals('type', 'template')
-				->whereEquals('element', $element);
+            $query = $this->db->getQuery()
+                ->update('#__extensions')
+                ->set(array(
+                    'enabled' => $enabled
+                ))
+                ->whereEquals('type', 'template')
+                ->whereEquals('element', $element);
 
-			if ($client !== null)
-			{
-				$query->whereEquals('client_id', (int) $client);
-			}
+            if ($client !== null) {
+                $query->whereEquals('client_id', (int) $client);
+            }
 
-			$this->db->setQuery($query->toString());
-			if ($this->db->query())
-			{
-				$this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
-				return true;
-			}
-		}
+            $this->db->setQuery($query->toString());
+            if ($this->db->query()) {
+                $this->log(sprintf('Set template "%s" status to "%s"', $element, $enabled));
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

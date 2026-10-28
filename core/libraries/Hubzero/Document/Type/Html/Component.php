@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,16 +17,16 @@ use Hubzero\Document\Renderer;
  */
 class Component extends Renderer
 {
-	/**
-	 * Renders a component script and returns the results as a string
-	 *
-	 * @param   string  $component  The name of the component to render
-	 * @param   array   $params     Associative array of values
-	 * @param   string  $content    Content script
-	 * @return  string  The output of the script
-	 */
-	public function render($component = null, $params = array(), $content = null)
-	{
-		return $content;
-	}
+    /**
+     * Renders a component script and returns the results as a string
+     *
+     * @param   string  $component  The name of the component to render
+     * @param   array   $params     Associative array of values
+     * @param   string  $content    Content script
+     * @return  string  The output of the script
+     */
+    public function render($component = null, $params = array(), $content = null)
+    {
+        return $content;
+    }
 }

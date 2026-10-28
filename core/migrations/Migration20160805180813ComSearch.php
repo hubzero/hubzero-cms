@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,14 +13,13 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20160805180813ComSearch extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__search_blacklist'))
-		{
-			$query = "CREATE TABLE `#__search_blacklist` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__search_blacklist')) {
+            $query = "CREATE TABLE `#__search_blacklist` (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`scope` varchar(11) NOT NULL DEFAULT '',
 			`scope_id` int(11) NOT NULL,
@@ -28,21 +28,20 @@ class Migration20160805180813ComSearch extends Base
 			PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__search_blacklist'))
-		{
-			$query = "DROP TABLE #__search_blacklist";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__search_blacklist')) {
+            $query = "DROP TABLE #__search_blacklist";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

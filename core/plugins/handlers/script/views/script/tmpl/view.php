@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,12 +15,12 @@ $this->js('highlighter/shCore.js')
      ->js('script.js');
 ?>
 <div class="file-preview script">
-	<div class="file-preview-code">
-		<pre name="code" class="<?php echo $this->ext; ?>:nocontrols"><?php
-			$contents = trim($this->file->read());
-			$contents = str_replace(array('<', '>'), array('&lt;', '&gt;'), $contents);
+    <div class="file-preview-code">
+        <pre name="code" class="<?php echo $this->ext; ?>:nocontrols"><?php
+            $contents = trim($this->file->read());
+            $contents = str_replace(array('<', '>'), array('&lt;', '&gt;'), $contents);
 
-			echo $contents;
-			?></pre>
-	</div>
+            echo $contents;
+        ?></pre>
+    </div>
 </div>

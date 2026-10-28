@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,36 +17,34 @@ use Hubzero\Base\ServiceProvider;
  */
 class PluginServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['plugin'] = function($app)
-		{
-			return new Loader();
-		};
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['plugin'] = function ($app) {
+            return new Loader();
+        };
 
-		/*$this->app->extend('dispatcher', function($dispatcher, $app)
-		{
-			$dispatcher->addListenerLoader($app['plugin']);
+        /*$this->app->extend('dispatcher', function($dispatcher, $app)
+        {
+            $dispatcher->addListenerLoader($app['plugin']);
 
-			return $dispatcher;
-		});*/
-	}
+            return $dispatcher;
+        });*/
+    }
 
-	/**
-	 * Add the plugin loader to the event dispatcher.
-	 *
-	 * @return  void
-	 */
-	public function boot()
-	{
-		if ($this->app->has('dispatcher'))
-		{
-			$this->app['dispatcher']->addListenerLoader($this->app['plugin']);
-		}
-	}
+    /**
+     * Add the plugin loader to the event dispatcher.
+     *
+     * @return  void
+     */
+    public function boot()
+    {
+        if ($this->app->has('dispatcher')) {
+            $this->app['dispatcher']->addListenerLoader($this->app['plugin']);
+        }
+    }
 }

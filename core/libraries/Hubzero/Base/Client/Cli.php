@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,74 +16,72 @@ use Hubzero\Console\Output;
  */
 class Cli implements ClientInterface
 {
-	/**
-	 * ID
-	 *
-	 * @var  integer
-	 */
-	public $id = 6;
+    /**
+     * ID
+     *
+     * @var  integer
+     */
+    public $id = 6;
 
-	/**
-	 * Name
-	 *
-	 * @var  string
-	 */
-	public $name = 'cli';
+    /**
+     * Name
+     *
+     * @var  string
+     */
+    public $name = 'cli';
 
-	/**
-	 * Alias
-	 *
-	 * @var  string
-	 */
-	public $alias = 'cli';
+    /**
+     * Alias
+     *
+     * @var  string
+     */
+    public $alias = 'cli';
 
-	/**
-	 * A url to init this client
-	 *
-	 * @var  string
-	 */
-	public $url = '';
+    /**
+     * A url to init this client
+     *
+     * @var  string
+     */
+    public $url = '';
 
-	/**
-	 * Boostrap filesystem path
-	 *
-	 * @var  string
-	 */
-	public $path = '';
+    /**
+     * Boostrap filesystem path
+     *
+     * @var  string
+     */
+    public $path = '';
 
-	/**
-	 * Method to call another console command
-	 *
-	 * @param   string  $class      The command to call
-	 * @param   string  $task       The command task to call
-	 * @param   object  $arguments  The command arguments
-	 * @param   object  $output     The command output
-	 * @return  void
-	 */
-	public function call($class, $task, Arguments $arguments, Output $output)
-	{
-		// Say no to infinite nesting!
-		$backtrace = debug_backtrace();
-		$previous  = $backtrace[1];
-		$prevClass = $previous['class'];
-		$prevTask  = $previous['function'];
+    /**
+     * Method to call another console command
+     *
+     * @param   string  $class      The command to call
+     * @param   string  $task       The command task to call
+     * @param   object  $arguments  The command arguments
+     * @param   object  $output     The command output
+     * @return  void
+     */
+    public function call($class, $task, Arguments $arguments, Output $output)
+    {
+        // Say no to infinite nesting!
+        $backtrace = debug_backtrace();
+        $previous  = $backtrace[1];
+        $prevClass = $previous['class'];
+        $prevTask  = $previous['function'];
 
-		// Namespace class
-		$class = Arguments::routeCommand($class);
+        // Namespace class
+        $class = Arguments::routeCommand($class);
 
-		if ($prevClass == $class && $prevTask == $task)
-		{
-			$output->error('You\'ve attempted to enter an infinite loop. We\'ve stopped you. You\'re welcome.');
-		}
+        if ($prevClass == $class && $prevTask == $task) {
+            $output->error('You\'ve attempted to enter an infinite loop. We\'ve stopped you. You\'re welcome.');
+        }
 
-		// If task is help, set the output to our output class with extra methods for rendering help doc
-		if ($task == 'help')
-		{
-			$output = $output->getHelpOutput();
-		}
+        // If task is help, set the output to our output class with extra methods for rendering help doc
+        if ($task == 'help') {
+            $output = $output->getHelpOutput();
+        }
 
-		$command = new $class($output, $arguments);
+        $command = new $class($output, $arguments);
 
-		$command->{$task}();
-	}
+        $command->{$task}();
+    }
 }

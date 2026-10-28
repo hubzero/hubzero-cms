@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +16,31 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130214000000Core extends Base
 {
-	public function up()
-	{
-		$query = '';
+    public function up()
+    {
+        $query = '';
 
-		if (!$this->db->tableHasField('host', 'venue_id'))
-		{
-			$query .= "ALTER TABLE `host` ADD COLUMN `venue_id` INT(11)  AFTER `portbase`;";
-		}
+        if (!$this->db->tableHasField('host', 'venue_id')) {
+            $query .= "ALTER TABLE `host` ADD COLUMN `venue_id` INT(11)  AFTER `portbase`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-		$query = '';
+    public function down()
+    {
+        $query = '';
 
-		if ($this->db->tableHasField('host', 'venue_id'))
-		{
-			$query .= "ALTER TABLE `host` DROP COLUMN `venue_id`;";
-		}
+        if ($this->db->tableHasField('host', 'venue_id')) {
+            $query .= "ALTER TABLE `host` DROP COLUMN `venue_id`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
