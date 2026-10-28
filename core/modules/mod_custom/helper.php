@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,25 +17,24 @@ use Html;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		// Legacy compatibility for older view overrides
-		$params = $this->params;
-		$module = $this->module;
+    /**
+     * Display module
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Legacy compatibility for older view overrides
+        $params = $this->params;
+        $module = $this->module;
 
-		if ($params->def('prepare_content', 1))
-		{
-			Plugin::import('content');
-			$module->content = Html::content('prepare', $module->content, '', 'mod_custom.content');
-		}
+        if ($params->def('prepare_content', 1)) {
+            Plugin::import('content');
+            $module->content = Html::content('prepare', $module->content, '', 'mod_custom.content');
+        }
 
-		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx',''));
+        $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''));
 
-		require $this->getLayoutPath($params->get('layout', 'default'));
-	}
+        require $this->getLayoutPath($params->get('layout', 'default'));
+    }
 }

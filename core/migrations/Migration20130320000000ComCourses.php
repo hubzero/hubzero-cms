@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +16,9 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130320000000ComCourses extends Base
 {
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__courses_grade_book` (
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__courses_grade_book` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`user_id` int(11) NOT NULL,
 						`score` decimal(5,2) NOT NULL DEFAULT '0.00',
@@ -26,15 +27,15 @@ class Migration20130320000000ComCourses extends Base
 						PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	public function down()
-	{
-		$query = "DROP TABLE IF EXISTS `#__courses_grade_book`;";
+    public function down()
+    {
+        $query = "DROP TABLE IF EXISTS `#__courses_grade_book`;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 }

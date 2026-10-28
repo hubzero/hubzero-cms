@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,45 +18,40 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20180418161953PlgResourcesCollections extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__resource_types'))
-		{
-			if (!$this->db->tableHasField('#__resource_types', 'collection'))
-			{
-				$query = "ALTER TABLE `#__resource_types` ADD COLUMN `collection` INT(2) NULL DEFAULT 0";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-		// A hub without a series type has nothing to mark; saving the empty
-		// model it gets back would add a resource type with no name
-		$type = Type::onebyAlias('series');
-		if (!$type->isNew())
-		{
-			$type->set('collection', 1);
-			$type->save();
-		}
-		$this->addPluginEntry('resources', 'collections');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__resource_types')) {
+            if (!$this->db->tableHasField('#__resource_types', 'collection')) {
+                $query = "ALTER TABLE `#__resource_types` ADD COLUMN `collection` INT(2) NULL DEFAULT 0";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+        // A hub without a series type has nothing to mark; saving the empty
+        // model it gets back would add a resource type with no name
+        $type = Type::onebyAlias('series');
+        if (!$type->isNew()) {
+            $type->set('collection', 1);
+            $type->save();
+        }
+        $this->addPluginEntry('resources', 'collections');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_types'))
-		{
-			if ($this->db->tableHasField('#__resource_types', 'collection'))
-			{
-				$query = "ALTER TABLE `#__resource_types` DROP COLUMN `collection`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-		$this->deletePluginEntry('resources', 'collections');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_types')) {
+            if ($this->db->tableHasField('#__resource_types', 'collection')) {
+                $query = "ALTER TABLE `#__resource_types` DROP COLUMN `collection`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+        $this->deletePluginEntry('resources', 'collections');
+    }
 }

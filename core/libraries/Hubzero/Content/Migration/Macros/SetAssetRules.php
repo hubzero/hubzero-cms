@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -16,55 +17,49 @@ use Hubzero\Access\Asset;
  **/
 class SetAssetRules extends Macro
 {
-	/**
-	 * Sets the asset rules
-	 *
-	 * @param   string  $element  The element to which the rules apply
-	 * @param   array   $rules    The incoming rules to set
-	 * @return  void
-	 **/
-	public function __invoke($element, $rules)
-	{
-		if ($this->db->tableExists('#__assets'))
-		{
-			$asset = Asset::oneByName($element);
+    /**
+     * Sets the asset rules
+     *
+     * @param   string  $element  The element to which the rules apply
+     * @param   array   $rules    The incoming rules to set
+     * @return  void
+     **/
+    public function __invoke($element, $rules)
+    {
+        if ($this->db->tableExists('#__assets')) {
+            $asset = Asset::oneByName($element);
 
-			if (!$asset || !$asset->get('id'))
-			{
-				return false;
-			}
+            if (!$asset || !$asset->get('id')) {
+                return false;
+            }
 
-			// Loop through and map textual groups to ids (if applicable)
-			foreach ($rules as $idx => $rule)
-			{
-				foreach ($rule as $group => $value)
-				{
-					if (!is_numeric($group))
-					{
-						$query = $this->db->getQuery()
-							->select('id')
-							->from('#__usergroups')
-							->whereEquals('title', $group)
-							->toString();
+            // Loop through and map textual groups to ids (if applicable)
+            foreach ($rules as $idx => $rule) {
+                foreach ($rule as $group => $value) {
+                    if (!is_numeric($group)) {
+                        $query = $this->db->getQuery()
+                            ->select('id')
+                            ->from('#__usergroups')
+                            ->whereEquals('title', $group)
+                            ->toString();
 
-						$this->db->setQuery($query);
+                        $this->db->setQuery($query);
 
-						if ($id = $this->db->loadResult())
-						{
-							unset($rules[$idx][$group]);
+                        if ($id = $this->db->loadResult()) {
+                            unset($rules[$idx][$group]);
 
-							$rules[$idx][$id] = $value;
-						}
-					}
-				}
-			}
+                            $rules[$idx][$id] = $value;
+                        }
+                    }
+                }
+            }
 
-			$asset->set('rules', json_encode($rules));
-			$asset->save();
+            $asset->set('rules', json_encode($rules));
+            $asset->save();
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

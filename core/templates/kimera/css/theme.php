@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,23 +10,20 @@ defined('_HZEXEC_') or die();
 
 function hex2rgb($hex)
 {
-	$hex = str_replace('#', '', $hex);
+    $hex = str_replace('#', '', $hex);
 
-	if (strlen($hex) == 3)
-	{
-		$r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
-		$g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
-		$b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
-	}
-	else
-	{
-		$r = hexdec(substr($hex, 0, 2));
-		$g = hexdec(substr($hex, 2, 2));
-		$b = hexdec(substr($hex, 4, 2));
-	}
-	$rgb = array($r, $g, $b);
+    if (strlen($hex) == 3) {
+        $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+        $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+        $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+    } else {
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+    }
+    $rgb = array($r, $g, $b);
 
-	return implode(',', $rgb);
+    return implode(',', $rgb);
 }
 
 $tmpl = dirname(__DIR__);
@@ -33,11 +31,10 @@ $base = dirname(dirname(dirname($tmpl)));
 $tmpl = substr($tmpl, strlen($_SERVER['DOCUMENT_ROOT']));
 
 $styles = '';
-switch ($bground)
-{
-	case 'delauney':
-		$opacity = $opacity ?: '0.75';
-		$styles .= '
+switch ($bground) {
+    case 'delauney':
+        $opacity = $opacity ?: '0.75';
+        $styles .= '
 		#outer-wrap {
 			background: transparent url("' . $tmpl . '/img/delauney.svg") 0 0 no-repeat;
 			background-size: 100% auto;
@@ -49,11 +46,11 @@ switch ($bground)
 			}
 		}
 		';
-	break;
+        break;
 
-	case 'triangles':
-		$opacity = $opacity ?: '0.75';
-		$styles .= '
+    case 'triangles':
+        $opacity = $opacity ?: '0.75';
+        $styles .= '
 		#outer-wrap {
 			background: #c1c1c1 url("' . $tmpl . '/img/triangles.svg") 0 0;
 		}
@@ -64,11 +61,11 @@ switch ($bground)
 			}
 		}
 		';
-	break;
+        break;
 
-	case 'plaid':
-		$opacity = $opacity ?: '0.9';
-		$styles .='
+    case 'plaid':
+        $opacity = $opacity ?: '0.9';
+        $styles .= '
 		#outer-wrap {
 			background: -webkit-repeating-linear-gradient(45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px), -webkit-repeating-linear-gradient(-45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px), rgb(234, 213, 185);
 			background: -moz-repeating-linear-gradient(45deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 120px, rgba(10,35,45,0.498039) 120px, rgba(10,35,45,0.498039) 140px), -moz-repeating-linear-gradient(135deg, rgba(0,0,0,0) 5px, rgba(10,35,45,0.498039) 5px, rgba(10,35,45,0.498039) 10px, rgba(211,119,111,0) 10px, rgba(211,119,111,0) 35px, rgba(211,119,111,0.498039) 35px, rgba(211,119,111,0.498039) 40px, rgba(10,35,45,0.498039) 40px, rgba(10,35,45,0.498039) 50px, rgba(10,35,45,0) 50px, rgba(10,35,45,0) 60px, rgba(211,119,111,0.498039) 60px, rgba(211,119,111,0.498039) 70px, rgba(247,179,84,0.498039) 70px, rgba(247,179,84,0.498039) 80px, rgba(247,179,84,0) 80px, rgba(247,179,84,0) 90px, rgba(211,119,111,0.498039) 90px, rgba(211,119,111,0.498039) 110px, rgba(211,119,111,0) 110px, rgba(211,119,111,0) 140px, rgba(10,35,45,0.498039) 140px, rgba(10,35,45,0.498039) 160px), rgb(234, 213, 185);
@@ -87,11 +84,11 @@ switch ($bground)
 			        transform-origin: 50% 50% 0;
 		}
 		';
-	break;
+        break;
 
-	case 'picnic':
-		$opacity = $opacity ?: '0.75';
-		$styles .='
+    case 'picnic':
+        $opacity = $opacity ?: '0.75';
+        $styles .= '
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), rgb(153, 153, 153);
 			background: -moz-linear-gradient(-45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), -moz-linear-gradient(45deg, rgba(0,0,0,0) 25%, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 75%, rgba(255,255,255,0.2) 75%), rgb(153, 153, 153);
@@ -108,11 +105,11 @@ switch ($bground)
 			        background-size: 200px 200px;
 		}
 		';
-	break;
+        break;
 
-	case 'blueprint':
-		$opacity = $opacity ?: '0.9';
-		$styles .='
+    case 'blueprint':
+        $opacity = $opacity ?: '0.9';
+        $styles .= '
 		#outer-wrap {
 			background: -webkit-linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(0deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -webkit-linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), -webkit-linear-gradient(0deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), rgb(153, 153, 153);
 			background: -moz-linear-gradient(0deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -moz-linear-gradient(90deg, #FFFFFF 2px, rgba(0,0,0,0) 2px), -moz-linear-gradient(0deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), -moz-linear-gradient(90deg, rgba(255,255,255,0.298039) 1px, rgba(0,0,0,0) 1px), rgb(153, 153, 153);
@@ -129,11 +126,11 @@ switch ($bground)
 			        background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
 		}
 		';
-	break;
+        break;
 
-	case 'checkered':
-		$opacity = $opacity ?: '0.9';
-		$styles .='
+    case 'checkered':
+        $opacity = $opacity ?: '0.9';
+        $styles .= '
 		#outer-wrap {
 			background: -webkit-linear-gradient(135deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), -webkit-linear-gradient(45deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(140,140,140,0) 25%, rgba(255,255,255,0) 100%), -webkit-linear-gradient(135deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 100%), -webkit-linear-gradient(45deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), rgb(255, 255, 255);
 			background: -moz-linear-gradient(-45deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), -moz-linear-gradient(45deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(140,140,140,0) 25%, rgba(255,255,255,0) 100%), -moz-linear-gradient(-45deg, rgb(200,200,200) 0, rgb(200,200,200) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 100%), -moz-linear-gradient(45deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 75%, rgb(200,200,200) 75%, rgb(200,200,200) 100%), rgb(255, 255, 255);
@@ -150,11 +147,11 @@ switch ($bground)
 			        background-size: 50px 50px;
 		}
 		';
-	break;
+        break;
 
-	case 'stripes':
-		$opacity = $opacity ?: '0.9';
-		$styles .='
+    case 'stripes':
+        $opacity = $opacity ?: '0.9';
+        $styles .= '
 		#outer-wrap {
 			background: -webkit-linear-gradient(45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(153, 153, 153,1);
 			background: -moz-linear-gradient(45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(153, 153, 153,1);
@@ -171,10 +168,10 @@ switch ($bground)
 			        background-size: 50px 50px;
 		}
 		';
-	break;
+        break;
 
-	case 'hubbub2015':
-		$styles .='
+    case 'hubbub2015':
+        $styles .= '
 		#outer-wrap {
 			background-color: #f7b82b;
 			background-color: rgba(248, 180, 45, 1);
@@ -191,11 +188,11 @@ switch ($bground)
 			background-position: 0 0;
 			background-repeat: no-repeat;
 		}';
-	break;
+        break;
 
-	case 'bokeh':
-		$opacity = $opacity ?: '0.7';
-		$styles .='
+    case 'bokeh':
+        $opacity = $opacity ?: '0.7';
+        $styles .= '
 		#outer-wrap {
 			background-color: transparent;
 			background-image: -webkit-gradient(radial, 50% 50%, 36, 50% 50%, 40,from(rgba(150, 150, 150, 0.2)), color-stop(0.3, rgba(150, 150, 150, 0.3)),  to(transparent)),
@@ -297,13 +294,12 @@ switch ($bground)
 			box-shadow: inset 0 0 4em rgba(0, 0, 0, 0.4);
 		}
 		';
-	break;
+        break;
 
-	default:
-		if ($bground && $bground != 'none')
-		{
-			$opacity = $opacity ?: '0';
-			$styles .= '
+    default:
+        if ($bground && $bground != 'none') {
+            $opacity = $opacity ?: '0';
+            $styles .= '
 			#outer-wrap {
 				background-image: url(' . $bground . ');
 				background-size: 100% auto;
@@ -317,12 +313,10 @@ switch ($bground)
 				}
 			}
 			';
-		}
-		else
-		{
-			$opacity = $opacity ?: '1';
-		}
-	break;
+        } else {
+            $opacity = $opacity ?: '1';
+        }
+        break;
 }
 
 $styles .= '
@@ -346,16 +340,16 @@ $styles .= '
 ';
 
 $patterns = array(
-	'!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
-	'/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
-	'/ +/'                           /* collapse multiple spaces to a single space */
-	/* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
+    '!/\*[^*]*\*+([^/][^*]*\*+)*/!',  /* remove comments */
+    '/[\n\r \t]/',                    /* remove tabs, spaces, newlines, etc. */
+    '/ +/'                           /* collapse multiple spaces to a single space */
+    /* '/ ?([,:;{}]) ?/'                 remove space before and after , : ; { }     [!] apparently, IE 7 doesn't like this and won't process the stylesheet */
 );
 $replacements = array(
-	'',
-	' ',
-	' '/*,
-	'$1'*/
+    '',
+    ' ',
+    ' '/*,
+    '$1'*/
 );
 $styles = preg_replace($patterns, $replacements, $styles);
 
@@ -364,13 +358,13 @@ $path = '/cache/site/' . $hash . '.css';
 
 if (!file_exists(PATH_APP . $path))
 {
-	@file_put_contents(PATH_APP . $path, $styles);
+    @file_put_contents(PATH_APP . $path, $styles);
 
-	if (file_exists(PATH_APP . $path))
-	{
-		$this->addStyleSheet($this->baseurl . $path);
-		return '';
-	}
+    if (file_exists(PATH_APP . $path))
+    {
+        $this->addStyleSheet($this->baseurl . $path);
+        return '';
+    }
 }*/
 
 return $styles;

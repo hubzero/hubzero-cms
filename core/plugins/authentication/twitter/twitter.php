@@ -364,8 +364,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
     {
         $expected = Session::get('oauth2state', null, $this->name);
 
-        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '')
-        {
+        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '') {
             return false;
         }
 

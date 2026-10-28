@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,74 +16,68 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150902104232ComContent extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__content'))
-		{
-			$query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-			$this->db->setQuery($query);
-			$row = $this->db->loadObject();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__content')) {
+            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
+            $this->db->setQuery($query);
+            $row = $this->db->loadObject();
 
-			if ($row && $row->id)
-			{
-				$old = $this->previous;
+            if ($row && $row->id) {
+                $old = $this->previous;
 
-				$olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
-				$olddespaced = trim($olddespaced);
+                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = trim($olddespaced);
 
-				$despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
-				$despaced = trim($despaced);
+                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = trim($despaced);
 
-				if ($row->introtext == $old || $despaced == $olddespaced)
-				{
-					$query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated) . " WHERE `id`=" . $this->db->quote($row->id);
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                if ($row->introtext == $old || $despaced == $olddespaced) {
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated) . " WHERE `id`=" . $this->db->quote($row->id);
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__content'))
-		{
-			$query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-			$this->db->setQuery($query);
-			$row = $this->db->loadObject();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__content')) {
+            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
+            $this->db->setQuery($query);
+            $row = $this->db->loadObject();
 
-			if ($row && $row->id)
-			{
-				$old = $this->updated;
+            if ($row && $row->id) {
+                $old = $this->updated;
 
-				$olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
-				$olddespaced = trim($olddespaced);
+                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = trim($olddespaced);
 
-				$despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
-				$despaced = trim($despaced);
+                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = trim($despaced);
 
-				if ($row->introtext == $old || $despaced == $olddespaced)
-				{
-					$query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous) . " WHERE `id`=" . $this->db->quote($row->id);
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                if ($row->introtext == $old || $despaced == $olddespaced) {
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous) . " WHERE `id`=" . $this->db->quote($row->id);
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Previous Discover page content
-	 *
-	 * @var  string
-	 */
-	public $previous = '{xhub:include type="stylesheet" filename="pages/discover.css"}
+    /**
+     * Previous Discover page content
+     *
+     * @var  string
+     */
+    public $previous = '{xhub:include type="stylesheet" filename="pages/discover.css"}
 
 <div class="grid">
 	<div class="col span-quarter">
@@ -178,12 +173,12 @@ class Migration20150902104232ComContent extends Base
 	</div>
 </div>';
 
-	/**
-	 * PUpdated Discover page content
-	 *
-	 * @var  string
-	 */
-	public $updated = '{xhub:include type="stylesheet" filename="pages/discover.css"}
+    /**
+     * PUpdated Discover page content
+     *
+     * @var  string
+     */
+    public $updated = '{xhub:include type="stylesheet" filename="pages/discover.css"}
 
 <section class="odd">
 	<h2>Do More</h2>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,47 +13,47 @@ namespace Hubzero\Cache;
  */
 class Auditor
 {
-	/**
-	 * Cache data group
-	 *
-	 * @var  string
-	 */
-	public $group = '';
+    /**
+     * Cache data group
+     *
+     * @var  string
+     */
+    public $group = '';
 
-	/**
-	 * Cached item size
-	 *
-	 * @var  string
-	 */
-	public $size = 0;
+    /**
+     * Cached item size
+     *
+     * @var  string
+     */
+    public $size = 0;
 
-	/**
-	 * Counter
-	 *
-	 * @var  integer
-	 */
-	public $count = 0;
+    /**
+     * Counter
+     *
+     * @var  integer
+     */
+    public $count = 0;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $group  The cache data group
-	 * @return  void
-	 */
-	public function __construct($group)
-	{
-		$this->group = $group;
-	}
+    /**
+     * Constructor
+     *
+     * @param   string  $group  The cache data group
+     * @return  void
+     */
+    public function __construct($group)
+    {
+        $this->group = $group;
+    }
 
-	/**
-	 * Increase cache items count.
-	 *
-	 * @param   string  $size  Cached item size
-	 * @return  void
-	 */
-	public function tally($size)
-	{
-		$this->size = number_format($this->size + $size, 2, '.', '');
-		$this->count++;
-	}
+    /**
+     * Increase cache items count.
+     *
+     * @param   string  $size  Cached item size
+     * @return  void
+     */
+    public function tally($size)
+    {
+        $this->size = number_format($this->size + $size, 2, '.', '');
+        $this->count++;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,32 +16,30 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130702181838ComWiki extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version') && $this->db->tableHasField('#__wiki_version', 'pageid'))
-		{
-			$query  = "SELECT wv.* FROM `#__wiki_page` AS wp,";
-			$query .= " `#__wiki_version` AS wv";
-			$query .= " WHERE wp.id = wv.pageid";
-			$query .= " AND wp.pagename = 'Help:WikiFormatting'";
-			$query .= " ORDER BY version DESC";
-			$query .= " LIMIT 1;";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__wiki_page') && $this->db->tableExists('#__wiki_version') && $this->db->tableHasField('#__wiki_version', 'pageid')) {
+            $query  = "SELECT wv.* FROM `#__wiki_page` AS wp,";
+            $query .= " `#__wiki_version` AS wv";
+            $query .= " WHERE wp.id = wv.pageid";
+            $query .= " AND wp.pagename = 'Help:WikiFormatting'";
+            $query .= " ORDER BY version DESC";
+            $query .= " LIMIT 1;";
 
-			$this->db->setQuery($query);
-			$result = $this->db->loadObject();
+            $this->db->setQuery($query);
+            $result = $this->db->loadObject();
 
-			if ($result)
-			{
-				$pagetext = preg_replace('/(nanoHUB)/', 'This site', $result->pagetext);
-				$pagehtml = preg_replace('/(nanoHUB)/', 'This site', $result->pagehtml);
+            if ($result) {
+                $pagetext = preg_replace('/(nanoHUB)/', 'This site', $result->pagetext);
+                $pagehtml = preg_replace('/(nanoHUB)/', 'This site', $result->pagehtml);
 
-				$query = "UPDATE `#__wiki_version` SET `pagetext`=" . $this->db->quote($pagetext) . ", `pagehtml`=" . $this->db->quote($pagehtml) . " WHERE `id`=" . $result->id;
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "UPDATE `#__wiki_version` SET `pagetext`=" . $this->db->quote($pagetext) . ", `pagehtml`=" . $this->db->quote($pagehtml) . " WHERE `id`=" . $result->id;
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

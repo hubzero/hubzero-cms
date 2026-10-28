@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,412 +19,390 @@ use Date;
  */
 class Asset extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'collections';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'collections';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'ordering';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'ordering';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'filename' => 'notempty',
-		'item_id'  => 'positive|nonzero',
-		'type'     => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'filename' => 'notempty',
+        'item_id'  => 'positive|nonzero',
+        'type'     => 'notempty'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by',
-		'ordering'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'created_by',
+        'ordering'
+    );
 
-	/**
-	 * Fields to be parsed
-	 *
-	 * @var  array
-	 */
-	protected $parsed = array(
-		'description'
-	);
+    /**
+     * Fields to be parsed
+     *
+     * @var  array
+     */
+    protected $parsed = array(
+        'description'
+    );
 
-	/**
-	 * File size
-	 *
-	 * @var  string
-	 */
-	protected $size = null;
+    /**
+     * File size
+     *
+     * @var  string
+     */
+    protected $size = null;
 
-	/**
-	 * Diemnsions for file (must be an image)
-	 *
-	 * @var  array
-	 */
-	protected $dimensions = null;
+    /**
+     * Diemnsions for file (must be an image)
+     *
+     * @var  array
+     */
+    protected $dimensions = null;
 
-	/**
-	 * Generates automatic ordering field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  integer
-	 */
-	public function automaticOrdering($data)
-	{
-		if (!isset($data['ordering']))
-		{
-			$last = self::all()
-				->select('ordering')
-				->whereEquals('item_id', isset($data['item_id']) ? (int) $data['item_id'] : 0)
-				->order('ordering', 'desc')
-				->row();
+    /**
+     * Generates automatic ordering field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  integer
+     */
+    public function automaticOrdering($data)
+    {
+        if (!isset($data['ordering'])) {
+            $last = self::all()
+                ->select('ordering')
+                ->whereEquals('item_id', isset($data['item_id']) ? (int) $data['item_id'] : 0)
+                ->order('ordering', 'desc')
+                ->row();
 
-			$data['ordering'] = $last->ordering + 1;
-		}
+            $data['ordering'] = $last->ordering + 1;
+        }
 
-		return $data['ordering'];
-	}
+        return $data['ordering'];
+    }
 
-	/**
-	 * Generates automatic type field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  integer
-	 */
-	public function automaticType($data)
-	{
-		$allowed = array('file', 'link');
+    /**
+     * Generates automatic type field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  integer
+     */
+    public function automaticType($data)
+    {
+        $allowed = array('file', 'link');
 
-		if (!isset($data['type']) || !$data['type'] || !in_array($data['type'], $allowed))
-		{
-			$data['type'] = 'file';
-		}
+        if (!isset($data['type']) || !$data['type'] || !in_array($data['type'], $allowed)) {
+            $data['type'] = 'file';
+        }
 
-		return $data['type'];
-	}
+        return $data['type'];
+    }
 
-	/**
-	 * Return a formatted timestamp for created date
-	 *
-	 * @param   string  $as  What data to return
-	 * @return  string
-	 */
-	public function created($as='')
-	{
-		$as = strtolower($as);
+    /**
+     * Return a formatted timestamp for created date
+     *
+     * @param   string  $as  What data to return
+     * @return  string
+     */
+    public function created($as = '')
+    {
+        $as = strtolower($as);
 
-		if ($as == 'date')
-		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-		}
+        if ($as == 'date') {
+            return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+        }
 
-		if ($as == 'time')
-		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-		}
+        if ($as == 'time') {
+            return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+        }
 
-		return $this->get('created');
-	}
+        return $this->get('created');
+    }
 
-	/**
-	 * Creator profile
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
+    /**
+     * Creator profile
+     *
+     * @return  object
+     */
+    public function creator()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'created_by');
+    }
 
-	/**
-	 * Get represented item
-	 *
-	 * @return  object
-	 */
-	public function item()
-	{
-		return $this->belongsToOne(__NAMESPACE__ . '\\Item');
-	}
+    /**
+     * Get represented item
+     *
+     * @return  object
+     */
+    public function item()
+    {
+        return $this->belongsToOne(__NAMESPACE__ . '\\Item');
+    }
 
-	/**
-	 * Get the path to the file space
-	 *
-	 * @return  string
-	 */
-	public function filespace()
-	{
-		static $path;
+    /**
+     * Get the path to the file space
+     *
+     * @return  string
+     */
+    public function filespace()
+    {
+        static $path;
 
-		if (!$path)
-		{
-			$path = PATH_APP . DS . trim(Component::params('com_collections')->get('filepath', '/site/collections'), DS);
-		}
+        if (!$path) {
+            $path = PATH_APP . DS . trim(Component::params('com_collections')->get('filepath', '/site/collections'), DS);
+        }
 
-		return $path;
-	}
+        return $path;
+    }
 
-	/**
-	 * Is an asset an image?
-	 *
-	 * @return  boolean  True if image, false if not
-	 */
-	public function isImage()
-	{
-		$dot = strrpos($this->get('filename'), '.') + 1;
+    /**
+     * Is an asset an image?
+     *
+     * @return  boolean  True if image, false if not
+     */
+    public function isImage()
+    {
+        $dot = strrpos($this->get('filename'), '.') + 1;
 
-		$ext = substr($this->get('filename'), $dot);
-		$ext = strtolower($ext);
+        $ext = substr($this->get('filename'), $dot);
+        $ext = strtolower($ext);
 
-		if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')))
-		{
-			return true;
-		}
+        if (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png'))) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Is an asset a link?
-	 *
-	 * @return  boolean  True if image, false if not
-	 */
-	public function isLink()
-	{
-		return ($this->get('type') == 'link');
-	}
+    /**
+     * Is an asset a link?
+     *
+     * @return  boolean  True if image, false if not
+     */
+    public function isLink()
+    {
+        return ($this->get('type') == 'link');
+    }
 
-	/**
-	 * Is an asset an external link?
-	 *
-	 * @return  boolean  True if image, false if not
-	 */
-	public function isExternalLink()
-	{
-		if ($this->isLink())
-		{
-			$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
-					 . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+    /**
+     * Is an asset an external link?
+     *
+     * @return  boolean  True if image, false if not
+     */
+    public function isExternalLink()
+    {
+        if ($this->isLink()) {
+            $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+                     . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
-			if (preg_match("/$UrlPtn/", $this->get('filename')))
-			{
-				return true;
-			}
-		}
+            if (preg_match("/$UrlPtn/", $this->get('filename'))) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Does the file exist?
-	 *
-	 * @return  boolean  True if image, false if not
-	 */
-	public function exists()
-	{
-		return file_exists($this->path());
-	}
+    /**
+     * Does the file exist?
+     *
+     * @return  boolean  True if image, false if not
+     */
+    public function exists()
+    {
+        return file_exists($this->path());
+    }
 
-	/**
-	 * Absolute path of the stored file, or of a sized variant of an image
-	 * (thumbnails are <name>_t.<ext>, medium <name>_m.<ext>, as the site
-	 * writes them); a variant that was never made falls back to the original
-	 *
-	 * @param   string  $size  original|thumb|medium
-	 * @return  string
-	 */
-	public function path($size = 'original')
-	{
-		$dir  = $this->filespace() . DS . $this->get('item_id') . DS;
-		$file = ltrim($this->get('filename'), DS);
+    /**
+     * Absolute path of the stored file, or of a sized variant of an image
+     * (thumbnails are <name>_t.<ext>, medium <name>_m.<ext>, as the site
+     * writes them); a variant that was never made falls back to the original
+     *
+     * @param   string  $size  original|thumb|medium
+     * @return  string
+     */
+    public function path($size = 'original')
+    {
+        $dir  = $this->filespace() . DS . $this->get('item_id') . DS;
+        $file = ltrim($this->get('filename'), DS);
 
-		$suffix = array('thumb' => '_t', 'medium' => '_m');
-		if (isset($suffix[$size]) && $this->isImage())
-		{
-			$ext     = pathinfo($file, PATHINFO_EXTENSION);
-			$variant = pathinfo($file, PATHINFO_FILENAME) . $suffix[$size] . ($ext !== '' ? '.' . $ext : '');
-			if (file_exists($dir . $variant))
-			{
-				return $dir . $variant;
-			}
-		}
+        $suffix = array('thumb' => '_t', 'medium' => '_m');
+        if (isset($suffix[$size]) && $this->isImage()) {
+            $ext     = pathinfo($file, PATHINFO_EXTENSION);
+            $variant = pathinfo($file, PATHINFO_FILENAME) . $suffix[$size] . ($ext !== '' ? '.' . $ext : '');
+            if (file_exists($dir . $variant)) {
+                return $dir . $variant;
+            }
+        }
 
-		return $dir . $file;
-	}
+        return $dir . $file;
+    }
 
-	/**
-	 * Is the file an image?
-	 *
-	 * @return  boolean
-	 */
-	public function size()
-	{
-		if (is_null($this->size))
-		{
-			$this->size = 0;
+    /**
+     * Is the file an image?
+     *
+     * @return  boolean
+     */
+    public function size()
+    {
+        if (is_null($this->size)) {
+            $this->size = 0;
 
-			if ($this->exists())
-			{
-				$this->size = filesize($this->path());
-			}
-		}
+            if ($this->exists()) {
+                $this->size = filesize($this->path());
+            }
+        }
 
-		return $this->size;
-	}
+        return $this->size;
+    }
 
-	/**
-	 * File width and height
-	 *
-	 * @return  array
-	 */
-	public function dimensions()
-	{
-		if (is_null($this->dimensions))
-		{
-			$this->dimensions = array(0, 0);
+    /**
+     * File width and height
+     *
+     * @return  array
+     */
+    public function dimensions()
+    {
+        if (is_null($this->dimensions)) {
+            $this->dimensions = array(0, 0);
 
-			if ($this->isImage() && $this->exists())
-			{
-				$this->dimensions = getimagesize($this->path());
-			}
-		}
+            if ($this->isImage() && $this->exists()) {
+                $this->dimensions = getimagesize($this->path());
+            }
+        }
 
-		return $this->dimensions;
-	}
+        return $this->dimensions;
+    }
 
-	/**
-	 * File width
-	 *
-	 * @return  integer
-	 */
-	public function width()
-	{
-		$dimensions = $this->dimensions();
+    /**
+     * File width
+     *
+     * @return  integer
+     */
+    public function width()
+    {
+        $dimensions = $this->dimensions();
 
-		return $dimensions[0];
-	}
+        return $dimensions[0];
+    }
 
-	/**
-	 * File height
-	 *
-	 * @return  integer
-	 */
-	public function height()
-	{
-		$dimensions = $this->dimensions();
+    /**
+     * File height
+     *
+     * @return  integer
+     */
+    public function height()
+    {
+        $dimensions = $this->dimensions();
 
-		return $dimensions[1];
-	}
+        return $dimensions[1];
+    }
 
-	/**
-	 * Download URL
-	 *
-	 * @param   string  $size
-	 * @return  string
-	 */
-	public function link($size = 'original')
-	{
-		return with(new \Hubzero\Content\Moderator($this->path($size), 'public'))->getUrl();
-	}
+    /**
+     * Download URL
+     *
+     * @param   string  $size
+     * @return  string
+     */
+    public function link($size = 'original')
+    {
+        return with(new \Hubzero\Content\Moderator($this->path($size), 'public'))->getUrl();
+    }
 
-	/**
-	 * Mark a record as trashed and rename the file
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function trash()
-	{
-		if ($this->get('type') == 'file')
-		{
-			$ext  = Filesystem::extension($this->get('filename'));
-			$path = $this->filespace() . DS . $this->get('item_id') . DS;
+    /**
+     * Mark a record as trashed and rename the file
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function trash()
+    {
+        if ($this->get('type') == 'file') {
+            $ext  = Filesystem::extension($this->get('filename'));
+            $path = $this->filespace() . DS . $this->get('item_id') . DS;
 
-			$file  = $path . $this->get('filename');
-			$trash = Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
+            $file  = $path . $this->get('filename');
+            $trash = Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
 
-			if (file_exists($file))
-			{
-				if (!Filesystem::move($file, $path . $trash))
-				{
-					$this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
-					return false;
-				}
-			}
+            if (file_exists($file)) {
+                if (!Filesystem::move($file, $path . $trash)) {
+                    $this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_RENAME_FILE'));
+                    return false;
+                }
+            }
 
-			$this->set('filename', $trash);
-		}
+            $this->set('filename', $trash);
+        }
 
-		$this->set('state', self::STATE_DELETED);
+        $this->set('state', self::STATE_DELETED);
 
-		return parent::save();
-	}
+        return parent::save();
+    }
 
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Can't delete what doesn't exist
-		if ($this->isNew())
-		{
-			return true;
-		}
+    /**
+     * Delete the record and all associated data
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
+    {
+        // Can't delete what doesn't exist
+        if ($this->isNew()) {
+            return true;
+        }
 
-		// Remove associated files
-		if ($this->get('type') == 'file')
-		{
-			$ext  = Filesystem::extension($this->get('filename'));
-			$path = $this->filespace() . DS . $this->get('item_id') . DS;
+        // Remove associated files
+        if ($this->get('type') == 'file') {
+            $ext  = Filesystem::extension($this->get('filename'));
+            $path = $this->filespace() . DS . $this->get('item_id') . DS;
 
-			$files = array(
-				// The file
-				'orign' => $path . $this->get('filename'),
-				// Medium sized (if an image)
-				'mediu' => $path . Filesystem::name($this->get('filename')) . '_m.' . $ext,
-				// Thumbnail (if an image)
-				'thumb' => $path . Filesystem::name($this->get('filename')) . '_t.' . $ext//,
-				// Thumbnail (if an image)
-				// A previously "trashed" file
-				//'trash' => $path . Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
-			);
+            $files = array(
+                // The file
+                'orign' => $path . $this->get('filename'),
+                // Medium sized (if an image)
+                'mediu' => $path . Filesystem::name($this->get('filename')) . '_m.' . $ext,
+                // Thumbnail (if an image)
+                'thumb' => $path . Filesystem::name($this->get('filename')) . '_t.' . $ext//,
+                // Thumbnail (if an image)
+                // A previously "trashed" file
+                //'trash' => $path . Filesystem::name($this->get('filename')) . uniqid('_d') . '.' . $ext;
+            );
 
-			foreach ($files as $file)
-			{
-				if (file_exists($file))
-				{
-					if (!Filesystem::delete($file))
-					{
-						$this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
-						return false;
-					}
-				}
-			}
-		}
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    if (!Filesystem::delete($file)) {
+                        $this->addError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_DELETE_FILE'));
+                        return false;
+                    }
+                }
+            }
+        }
 
-		// Attempt to delete the record
-		return parent::destroy();
-	}
+        // Attempt to delete the record
+        return parent::destroy();
+    }
 }

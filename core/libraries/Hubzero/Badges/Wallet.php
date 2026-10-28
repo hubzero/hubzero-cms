@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,44 +17,42 @@ use Hubzero\Badges\Exception\ProviderNotFoundException;
  */
 class Wallet
 {
-	/**
-	 * Badge provider
-	 *
-	 * @var  object
-	 */
-	private $_provider;
+    /**
+     * Badge provider
+     *
+     * @var  object
+     */
+    private $_provider;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $provider
-	 * @param   string  $requestType
-	 * @return  void
-	 */
-	public function __construct($provider, $requestType='oauth')
-	{
-		$cls = __NAMESPACE__ . '\\Provider\\' . ucfirst(strtolower($provider));
+    /**
+     * Constructor
+     *
+     * @param   string  $provider
+     * @param   string  $requestType
+     * @return  void
+     */
+    public function __construct($provider, $requestType = 'oauth')
+    {
+        $cls = __NAMESPACE__ . '\\Provider\\' . ucfirst(strtolower($provider));
 
-		if (!class_exists($cls))
-		{
-			throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
-		}
+        if (!class_exists($cls)) {
+            throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
+        }
 
-		$this->_provider = new $cls($requestType);
+        $this->_provider = new $cls($requestType);
 
-		if (!($this->_provider instanceof ProviderInterface))
-		{
-			throw new InvalidProviderException(\Lang::txt('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
-		}
-	}
+        if (!($this->_provider instanceof ProviderInterface)) {
+            throw new InvalidProviderException(\Lang::txt('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
+        }
+    }
 
-	/**
-	 * Get badges provider instance
-	 *
-	 * @return  object
-	 */
-	public function getProvider()
-	{
-		return $this->_provider;
-	}
+    /**
+     * Get badges provider instance
+     *
+     * @return  object
+     */
+    public function getProvider()
+    {
+        return $this->_provider;
+    }
 }

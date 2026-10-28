@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,22 +16,22 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140305081320ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "DROP TABLE IF EXISTS `#__xprofiles_tags`;";
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "DROP TABLE IF EXISTS `#__xprofiles_tags`;";
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "CREATE TABLE `#__xprofiles_tags` (
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "CREATE TABLE `#__xprofiles_tags` (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `uidNumber` int(11) DEFAULT NULL,
 		  `tagid` int(11) DEFAULT NULL,
@@ -38,7 +39,7 @@ class Migration20140305081320ComMembers extends Base
 		  `taggedon` datetime DEFAULT '0000-00-00 00:00:00',
 		  PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 }

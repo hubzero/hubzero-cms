@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,17 +16,17 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20141105142938ComUpdate extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$rules = array(
-			'core.admin' => array(
-				'Super Users' => 1
-			)
-		);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $rules = array(
+            'core.admin' => array(
+                'Super Users' => 1
+            )
+        );
 
-		$this->setAssetRules('com_update', $rules);
-	}
+        $this->setAssetRules('com_update', $rules);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,11 +14,11 @@ namespace Hubzero\Events;
  */
 final class Priority
 {
-	const MIN          = -3;
-	const LOW          = -2;
-	const BELOW_NORMAL = -1;
-	const NORMAL       = 0;
-	const ABOVE_NORMAL = 1;
-	const HIGH         = 2;
-	const MAX          = 3;
+    const MIN          = -3;
+    const LOW          = -2;
+    const BELOW_NORMAL = -1;
+    const NORMAL       = 0;
+    const ABOVE_NORMAL = 1;
+    const HIGH         = 2;
+    const MAX          = 3;
 }

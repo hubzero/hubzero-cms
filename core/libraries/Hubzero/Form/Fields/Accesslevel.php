@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +16,35 @@ use Hubzero\Html\Builder\Access;
  */
 class AccessLevel extends Select
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	public $type = 'AccessLevel';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    public $type = 'AccessLevel';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 */
-	protected function getInput()
-	{
-		// Initialize variables.
-		$attr = '';
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     */
+    protected function getInput()
+    {
+        // Initialize variables.
+        $attr = '';
 
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-		$attr .= $this->multiple ? ' multiple="multiple"' : '';
+        // Initialize some field attributes.
+        $attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
+        $attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+        $attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+        $attr .= $this->multiple ? ' multiple="multiple"' : '';
 
-		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        // Initialize JavaScript field attributes.
+        $attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
-		// Get the field options.
-		$options = $this->getOptions();
+        // Get the field options.
+        $options = $this->getOptions();
 
-		return Access::level($this->name, $this->value, $attr, $options, $this->id);
-	}
+        return Access::level($this->name, $this->value, $attr, $options, $this->id);
+    }
 }

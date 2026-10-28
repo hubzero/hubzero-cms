@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,35 +16,31 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140407091900ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__resource_assoc'))
-		{
-			if (!$this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id'))
-			{
-				$query = "ALTER TABLE `#__resource_assoc` ADD INDEX `idx_parent_id_child_id` (`parent_id`, `child_id`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__resource_assoc')) {
+            if (!$this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id')) {
+                $query = "ALTER TABLE `#__resource_assoc` ADD INDEX `idx_parent_id_child_id` (`parent_id`, `child_id`);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_assoc'))
-		{
-			if ($this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id'))
-			{
-				$query = "ALTER TABLE `#__resource_assoc` DROP INDEX `idx_parent_id_child_id`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_assoc')) {
+            if ($this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id')) {
+                $query = "ALTER TABLE `#__resource_assoc` DROP INDEX `idx_parent_id_child_id`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,10 +17,10 @@ use Hubzero\Database\Relational;
  */
 class Zone extends Relational
 {
-	/**
-	 * The table name
-	 *
-	 * @var string
-	 **/
-	protected $table = '#__tool_version_zone';
+    /**
+     * The table name
+     *
+     * @var string
+     **/
+    protected $table = '#__tool_version_zone';
 }

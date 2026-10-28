@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,80 +18,73 @@ use App;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if (App::isAdmin())
-		{
-			return $this->displayAdmin();
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (App::isAdmin()) {
+            return $this->displayAdmin();
+        }
 
-		return $this->displaySite();
-	}
+        return $this->displaySite();
+    }
 
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function displaySite()
-	{
-		// Get all sessions
-		$sessions = SessionHelper::getAllSessions(array(
-			'distinct' => 1,
-			'client'   => 0
-		));
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function displaySite()
+    {
+        // Get all sessions
+        $sessions = SessionHelper::getAllSessions(array(
+            'distinct' => 1,
+            'client'   => 0
+        ));
 
-		// Vars to hold guests & logged in members
-		$this->guestCount    = 0;
-		$this->loggedInCount = 0;
-		$this->loggedInList  = array();
+        // Vars to hold guests & logged in members
+        $this->guestCount    = 0;
+        $this->loggedInCount = 0;
+        $this->loggedInList  = array();
 
-		// Get guest and logged in counts/list
-		foreach ($sessions as $session)
-		{
-			if ($session->guest == 1)
-			{
-				$this->guestCount++;
-			}
-			else
-			{
-				$this->loggedInCount++;
-				$profile = User::oneOrNew($session->userid);
-				if ($profile->get('id'))
-				{
-					$this->loggedInList[] = $profile;
-				}
-			}
-		}
+        // Get guest and logged in counts/list
+        foreach ($sessions as $session) {
+            if ($session->guest == 1) {
+                $this->guestCount++;
+            } else {
+                $this->loggedInCount++;
+                $profile = User::oneOrNew($session->userid);
+                if ($profile->get('id')) {
+                    $this->loggedInList[] = $profile;
+                }
+            }
+        }
 
-		// Render view
-		require $this->getLayoutPath('default');
-	}
+        // Render view
+        require $this->getLayoutPath('default');
+    }
 
-	/**
-	 * Display module contents for Admin
-	 *
-	 * @return  void
-	 */
-	public function displayAdmin()
-	{
-		if (!App::isAdmin())
-		{
-			return;
-		}
+    /**
+     * Display module contents for Admin
+     *
+     * @return  void
+     */
+    public function displayAdmin()
+    {
+        if (!App::isAdmin()) {
+            return;
+        }
 
-		// get active sessions (users online)
-		$this->rows = SessionHelper::getAllSessions(array(
-			'guest'    => 0,
-			'distinct' => 1
-		));
+        // get active sessions (users online)
+        $this->rows = SessionHelper::getAllSessions(array(
+            'guest'    => 0,
+            'distinct' => 1
+        ));
 
-		// Get the view
-		require $this->getLayoutPath('default_admin');
-	}
+        // Get the view
+        require $this->getLayoutPath('default_admin');
+    }
 }

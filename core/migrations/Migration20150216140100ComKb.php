@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,63 +16,55 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150216140100ComKb extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access'))
-		{
-			$query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
-			$this->db->setQuery($query);
-			if ($this->db->loadResult())
-			{
-				$query = "UPDATE `#__faq` SET `access`=(`access` + 1)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access')) {
+            $query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
+            $this->db->setQuery($query);
+            if ($this->db->loadResult()) {
+                $query = "UPDATE `#__faq` SET `access`=(`access` + 1)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access'))
-		{
-			$query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
-			$this->db->setQuery($query);
-			if ($this->db->loadResult())
-			{
-				$query = "UPDATE `#__faq_categories` SET `access`=(`access` + 1)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+        if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access')) {
+            $query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
+            $this->db->setQuery($query);
+            if ($this->db->loadResult()) {
+                $query = "UPDATE `#__faq_categories` SET `access`=(`access` + 1)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access'))
-		{
-			$query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
-			$this->db->setQuery($query);
-			if (!$this->db->loadResult())
-			{
-				$query = "UPDATE `#__faq` SET `access`=(`access` - 1)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access')) {
+            $query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
+            $this->db->setQuery($query);
+            if (!$this->db->loadResult()) {
+                $query = "UPDATE `#__faq` SET `access`=(`access` - 1)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access'))
-		{
-			$query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
-			$this->db->setQuery($query);
-			if (!$this->db->loadResult())
-			{
-				$query = "UPDATE `#__faq_categories` SET `access`=(`access` - 1)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+        if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access')) {
+            $query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
+            $this->db->setQuery($query);
+            if (!$this->db->loadResult()) {
+                $query = "UPDATE `#__faq_categories` SET `access`=(`access` - 1)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

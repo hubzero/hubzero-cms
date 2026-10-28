@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,50 +13,49 @@ namespace Hubzero\Document\Asset;
  */
 class Image extends File
 {
-	/**
-	 * Asset type
-	 *
-	 * @var  string
-	 */
-	protected $type = 'img';
+    /**
+     * Asset type
+     *
+     * @var  string
+     */
+    protected $type = 'img';
 
-	/**
-	 * Allowed file extensions
-	 *
-	 * @var  array
-	 */
-	private $handles = array('png', 'gif', 'jpg', 'jpeg', 'jpe');
+    /**
+     * Allowed file extensions
+     *
+     * @var  array
+     */
+    private $handles = array('png', 'gif', 'jpg', 'jpeg', 'jpe');
 
-	/**
-	 * File extension
-	 *
-	 * @var  string
-	 */
-	private $ext = '';
+    /**
+     * File extension
+     *
+     * @var  string
+     */
+    private $ext = '';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $extension  CMS Extension to load asset from
-	 * @param   string  $name       Asset name (optional)
-	 * @return  void
-	 */
-	public function __construct($extension, $name=null)
-	{
-		parent::__construct($extension, $name);
+    /**
+     * Constructor
+     *
+     * @param   string  $extension  CMS Extension to load asset from
+     * @param   string  $name       Asset name (optional)
+     * @return  void
+     */
+    public function __construct($extension, $name = null)
+    {
+        parent::__construct($extension, $name);
 
-		// Preserve the original file extension
-		$this->ext = strtolower(\App::get('filesystem')->extension($name));
+        // Preserve the original file extension
+        $this->ext = strtolower(\App::get('filesystem')->extension($name));
+    }
 
-	}
-
-	/**
-	 * Get the file name
-	 *
-	 * @return  string
-	 */
-	public function file()
-	{
-		return $this->name;
-	}
+    /**
+     * Get the file name
+     *
+     * @return  string
+     */
+    public function file()
+    {
+        return $this->name;
+    }
 }

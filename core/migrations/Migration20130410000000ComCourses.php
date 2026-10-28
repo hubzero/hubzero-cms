@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,43 +16,37 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130410000000ComCourses extends Base
 {
-	public function up()
-	{
-		$query = '';
+    public function up()
+    {
+        $query = '';
 
-		if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_scoped'))
-		{
-			$query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
-		}
-		if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_createdby'))
-		{
-			$query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_createdby` (`created_by`);";
-		}
+        if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_scoped')) {
+            $query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
+        }
+        if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_createdby')) {
+            $query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_createdby` (`created_by`);";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-		$query = '';
+    public function down()
+    {
+        $query = '';
 
-		if ($this->db->tableHasKey('#__courses_member_notes', 'idx_scoped'))
-		{
-			$query .= "DROP INDEX `idx_scoped` ON `#__courses_member_notes`;\n";
-		}
-		if ($this->db->tableHasKey('#__courses_member_notes', 'idx_createdby'))
-		{
-			$query .= "DROP INDEX `idx_createdby` ON `#__courses_member_notes`;";
-		}
+        if ($this->db->tableHasKey('#__courses_member_notes', 'idx_scoped')) {
+            $query .= "DROP INDEX `idx_scoped` ON `#__courses_member_notes`;\n";
+        }
+        if ($this->db->tableHasKey('#__courses_member_notes', 'idx_createdby')) {
+            $query .= "DROP INDEX `idx_createdby` ON `#__courses_member_notes`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

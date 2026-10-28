@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,28 +20,27 @@ defined('_HZEXEC_') or die();
  */
 class plgGeocodeArcgisonline extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return a geocode provider
-	 *
-	 * @param  string  $context
-	 * @param  object  $adapter
-	 * @param  boolean $ip
-	 * @return object
-	 */
-	public function onGeocodeProvider($context, $adapter, $ip=false)
-	{
-		if ($context != 'geocode.locate' && $context != 'geocode.address')
-		{
-			return;
-		}
+    /**
+     * Return a geocode provider
+     *
+     * @param  string  $context
+     * @param  object  $adapter
+     * @param  boolean $ip
+     * @return object
+     */
+    public function onGeocodeProvider($context, $adapter, $ip = false)
+    {
+        if ($context != 'geocode.locate' && $context != 'geocode.address') {
+            return;
+        }
 
-		if ($ip)
-		{
-			return;
-		}
+        if ($ip) {
+            return;
+        }
 
-		return new \Geocoder\Provider\ArcGISOnline\ArcGISOnline(
-			$adapter, $this->params->get('sourceCountry', null)
-		);
-	}
+        return new \Geocoder\Provider\ArcGISOnline\ArcGISOnline(
+            $adapter,
+            $this->params->get('sourceCountry', null)
+        );
+    }
 }

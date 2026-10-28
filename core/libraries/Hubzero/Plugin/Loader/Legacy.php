@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,25 +14,25 @@ namespace Hubzero\Plugin\Loader;
  */
 class Legacy
 {
-	/**
-	 * Attach an observer object
-	 *
-	 * @param   object  $observer  An observer object to attach
-	 * @return  void
-	 */
-	public function attach($observer)
-	{
-		return null;
-	}
+    /**
+     * Attach an observer object
+     *
+     * @param   object  $observer  An observer object to attach
+     * @return  void
+     */
+    public function attach($observer)
+    {
+        return null;
+    }
 
-	/**
-	 * Detach an observer object
-	 *
-	 * @param   object   $observer  An observer object to detach.
-	 * @return  boolean  True if the observer object was detached.
-	 */
-	public function detach($observer)
-	{
-		return true;
-	}
+    /**
+     * Detach an observer object
+     *
+     * @param   object   $observer  An observer object to detach.
+     * @return  boolean  True if the observer object was detached.
+     */
+    public function detach($observer)
+    {
+        return true;
+    }
 }

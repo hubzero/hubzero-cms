@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,17 +15,17 @@ use Hubzero\Base\Obj;
  */
 class ItunesOwner extends Obj
 {
-	/**
-	 * Email attribute
-	 *
-	 * @var  string
-	 */
-	public $email = '';
+    /**
+     * Email attribute
+     *
+     * @var  string
+     */
+    public $email = '';
 
-	/**
-	 * Name attribute
-	 *
-	 * @var  string
-	 */
-	public $name = '';
+    /**
+     * Name attribute
+     *
+     * @var  string
+     */
+    public $name = '';
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,132 +22,143 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF'); ?></h3>
-<?php
+    <?php
 // Display error
-if ($this->getError()) {
-	echo '<p class="witherror">'.$this->getError().'</p>';
-}
-?>
+    if ($this->getError()) {
+        echo '<p class="witherror">' . $this->getError() . '</p>';
+    }
+    ?>
 <?php } else {
+    // old/new are rev@hash@path; a short value must not be a warning here
+    $rev1Parts = array_pad(explode('@', (string) $this->params['rev1']), 3, '');
+    $rev2Parts = array_pad(explode('@', (string) $this->params['rev2']), 3, '');
 
-	// old/new are rev@hash@path; a short value must not be a warning here
-	$rev1Parts = array_pad(explode('@', (string) $this->params['rev1']), 3, '');
-	$rev2Parts = array_pad(explode('@', (string) $this->params['rev2']), 3, '');
+    $old = array(
+        'rev'   => $rev1Parts[0],
+        'hash'  => $rev1Parts[1],
+        'fpath' => $rev1Parts[2],
+        'val'   => urlencode($this->params['rev1'])
+    );
 
-	$old = array(
-		'rev'   => $rev1Parts[0],
-		'hash'  => $rev1Parts[1],
-		'fpath' => $rev1Parts[2],
-		'val'   => urlencode($this->params['rev1'])
-	);
-
-	$new = array(
-		'rev'   => $rev2Parts[0],
-		'hash'  => $rev2Parts[1],
-		'fpath' => $rev2Parts[2],
-		'val'   => urlencode($this->params['rev2'])
-	);
-	?>
+    $new = array(
+        'rev'   => $rev2Parts[0],
+        'hash'  => $rev2Parts[1],
+        'fpath' => $rev2Parts[2],
+        'val'   => urlencode($this->params['rev2'])
+    );
+    ?>
 
 <form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="get" action="<?php echo $this->url; ?>">
-	<?php if (!$this->ajax) { ?>
-		<div id="plg-header">
-			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $bc; ?><?php } ?>
-			<?php echo $endPath; ?>
-			</h3>
-		</div>
-	<?php } ?>
+    <?php if (!$this->ajax) { ?>
+        <div id="plg-header">
+            <h3 class="files">
+                <a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) {
+                    ?> <?php echo $bc; ?><?php
+                         } ?>
+            <?php echo $endPath; ?>
+            </h3>
+        </div>
+    <?php } ?>
 
-	<fieldset class="diff-form">
-		<input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
-		<input type="hidden" name="file" value="<?php echo urlencode($this->file->get('localPath')); ?>" />
-		<input type="hidden" name="action" value="diff" />
+    <fieldset class="diff-form">
+        <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
+        <input type="hidden" name="file" value="<?php echo urlencode($this->file->get('localPath')); ?>" />
+        <input type="hidden" name="action" value="diff" />
 
-		<?php if (!$this->getError()) { ?>
-		<input type="hidden" name="old" value="<?php echo $old['val']; ?>" />
-		<input type="hidden" name="new" value="<?php echo $new['val']; ?>" />
-		<?php } ?>
+        <?php if (!$this->getError()) { ?>
+        <input type="hidden" name="old" value="<?php echo $old['val']; ?>" />
+        <input type="hidden" name="new" value="<?php echo $new['val']; ?>" />
+        <?php } ?>
 
-		<?php if (!$this->getError()) { ?>
-		<div class="diff-legend">
-			<span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-			<label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->params['mode'] == 'side-by-side') { echo 'checked="checked"'; } ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
-			</label>
-			<label><input type="radio" value="inline" name="mode" <?php if ($this->params['mode'] == 'inline') { echo 'checked="checked"'; } ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
-			</label>
-			<input type="submit" value="Update" id="diff-update" class="btn" />
-			<dl>
-	            <dt class="diff-unmod"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNMODIFIED'); ?></dd>
-	            <dt class="diff-add"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_ADDED'); ?></dd>
-	            <dt class="diff-rem"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_REMOVED'); ?></dd>
-	            <dt class="diff-mod"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_MODIFIED'); ?></dd>
-			 </dl>
-		</div>
-		<?php } ?>
-			<ul class="sample">
-				<?php
-					// Display list item with file data
-					$this->view('default', 'selected')
-					     ->set('skip', false)
-					     ->set('file', $this->file)
-					     ->set('action', 'diff')
-					     ->set('multi', 'multi')
-					     ->display();
-				?>
-			</ul>
+        <?php if (!$this->getError()) { ?>
+        <div class="diff-legend">
+            <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
+            <label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->params['mode'] == 'side-by-side') {
+                echo 'checked="checked"';
+                                                                         } ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
+            </label>
+            <label><input type="radio" value="inline" name="mode" <?php if ($this->params['mode'] == 'inline') {
+                echo 'checked="checked"';
+                                                                  } ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
+            </label>
+            <input type="submit" value="Update" id="diff-update" class="btn" />
+            <dl>
+                <dt class="diff-unmod"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNMODIFIED'); ?></dd>
+                <dt class="diff-add"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_ADDED'); ?></dd>
+                <dt class="diff-rem"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_REMOVED'); ?></dd>
+                <dt class="diff-mod"></dt><dd><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_MODIFIED'); ?></dd>
+             </dl>
+        </div>
+        <?php } ?>
+            <ul class="sample">
+                <?php
+                    // Display list item with file data
+                    $this->view('default', 'selected')
+                         ->set('skip', false)
+                         ->set('file', $this->file)
+                         ->set('action', 'diff')
+                         ->set('multi', 'multi')
+                         ->display();
+                ?>
+            </ul>
 
-			<?php if ($this->params['mode'] == 'side-by-side' && !$this->getError()) { ?>
-			<table id="table-diff" class="diff diffSideBySide">
-			 <thead>
-				<tr>
-					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')'; ?></th>
-					<th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')'; ?></th>
-				</tr>
-			 </thead>
+            <?php if ($this->params['mode'] == 'side-by-side' && !$this->getError()) { ?>
+            <table id="table-diff" class="diff diffSideBySide">
+             <thead>
+                <tr>
+                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')'; ?></th>
+                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')'; ?></th>
+                </tr>
+             </thead>
 
-			<?php if ($this->diff) { echo $this->diff; } else {  ?>
-				<tr>
-					<td colspan="4"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
-				</tr>
-			<?php } ?>
-			</table>
-			<?php } ?>
+                <?php if ($this->diff) {
+                    echo $this->diff;
+                } else {  ?>
+                <tr>
+                    <td colspan="4"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
+                </tr>
+                <?php } ?>
+            </table>
+            <?php } ?>
 
-			<?php if ($this->params['mode'] == 'inline' && !$this->getError()) { ?>
-			<table id="table-diff" class="diff diffInline">
-			 <thead>
-				<tr>
-					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']); ?></th>
-					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']); ?></th>
-					<th><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
-				</tr>
-			 </thead>
+            <?php if ($this->params['mode'] == 'inline' && !$this->getError()) { ?>
+            <table id="table-diff" class="diff diffInline">
+             <thead>
+                <tr>
+                    <th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']); ?></th>
+                    <th><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']); ?></th>
+                    <th><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_DIFFERENCES'); ?></th>
+                </tr>
+             </thead>
 
-			<?php if ($this->diff) { echo $this->diff; } else {  ?>
-				<tr>
-					<td colspan="4"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
-				</tr>
-			<?php } ?>
-			</table>
-			<?php } ?>
+                <?php if ($this->diff) {
+                    echo $this->diff;
+                } else {  ?>
+                <tr>
+                    <td colspan="4"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_UNAVAILABLE'); ?></td>
+                </tr>
+                <?php } ?>
+            </table>
+            <?php } ?>
 
-			<?php if ($this->params['mode'] == 'git' && !$this->getError()) {
-					$file = $old['fpath'] == $new['fpath'] ? $new['fpath'] : '';
-				?>
-				<div class="diffGit">
-					<h5>
-					<?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') '; ?></h5>
-					<?php if ($this->diff) { echo '<pre>' . $this->diff . '</pre>'; } else {  ?>
-					<pre><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_EMPTY_IDENTICAL'); ?></pre>
-				<?php } ?>
-				</div>
-			<?php } ?>
+            <?php if ($this->params['mode'] == 'git' && !$this->getError()) {
+                    $file = $old['fpath'] == $new['fpath'] ? $new['fpath'] : '';
+                ?>
+                <div class="diffGit">
+                    <h5>
+                    <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') '; ?></h5>
+                    <?php if ($this->diff) {
+                        echo '<pre>' . $this->diff . '</pre>';
+                    } else {  ?>
+                    <pre><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_EMPTY_IDENTICAL'); ?></pre>
+                    <?php } ?>
+                </div>
+            <?php } ?>
 
-			<?php if ($this->getError()) {
-				echo '<p class="witherror">'.$this->getError().'</p>';
-			} ?>
-		</fieldset>
+            <?php if ($this->getError()) {
+                echo '<p class="witherror">' . $this->getError() . '</p>';
+            } ?>
+        </fieldset>
 </form>
 <?php } ?>
 <?php if ($this->ajax) { ?>

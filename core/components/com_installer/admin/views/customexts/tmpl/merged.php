@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -18,52 +19,52 @@ Html::behavior('tooltip');
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
-	<?php if (!empty($this->success)) : ?>
-		<table class="adminlist success">
-			<thead>
-				<tr>
-					<th scope="col"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($this->success as $item) : ?>
-					<tr>
-						<td>
-							<strong>Extension: <?php echo $item['extension']; ?></strong>
-							<hr />
-							<code><?php echo implode('<br>', $item['message']); ?></code>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	<?php endif; ?>
-	<br /><br />
+    <?php if (!empty($this->success)) : ?>
+        <table class="adminlist success">
+            <thead>
+                <tr>
+                    <th scope="col"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_SUCCESS'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->success as $item) : ?>
+                    <tr>
+                        <td>
+                            <strong>Extension: <?php echo $item['extension']; ?></strong>
+                            <hr />
+                            <code><?php echo implode('<br>', $item['message']); ?></code>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+    <br /><br />
 
-	<?php if (!empty($this->failed)) : ?>
-		<table class="adminlist failed">
-			<thead>
-				<tr>
-					<th scope="col"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($this->failed as $item) : ?>
-					<tr>
-						<td>
-							<strong>Extension: <?php echo $item['extension']; ?></strong>
-							<hr />
-							<pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : array($item['message'])); ?></pre>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	<?php endif; ?>
+    <?php if (!empty($this->failed)) : ?>
+        <table class="adminlist failed">
+            <thead>
+                <tr>
+                    <th scope="col"><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL'); ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->failed as $item) : ?>
+                    <tr>
+                        <td>
+                            <strong>Extension: <?php echo $item['extension']; ?></strong>
+                            <hr />
+                            <pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : array($item['message'])); ?></pre>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
 
-	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo Html::input('token'); ?>
+    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+    <input type="hidden" name="task" value="" />
+    <input type="hidden" name="boxchecked" value="0" />
+    <?php echo Html::input('token'); ?>
 </form>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,261 +13,236 @@ namespace Components\Installer\Admin\Helpers;
  */
 class Cli
 {
-	/**
-	 * Get the version of the code in the repository
-	 *
-	 * @return  string
-	 **/
-	public static function version()
-	{
-		static $version = null;
+    /**
+     * Get the version of the code in the repository
+     *
+     * @return  string
+     **/
+    public static function version()
+    {
+        static $version = null;
 
-		if (!isset($version))
-		{
-			$version = self::call('', 'repository', array('--version'));
-		}
+        if (!isset($version)) {
+            $version = self::call('', 'repository', array('--version'));
+        }
+    }
 
-	}
+    /**
+     * Get the repository management mechanism
+     *
+     * @return  string
+     **/
+    public static function mechanism()
+    {
+        static $mechanism = null;
 
-	/**
-	 * Get the repository management mechanism
-	 *
-	 * @return  string
-	 **/
-	public static function mechanism()
-	{
-		static $mechanism = null;
+        if (!isset($mechanism)) {
+            $mechanism = self::call('', 'repository', array('--mechanism'));
+        }
 
-		if (!isset($mechanism))
-		{
-			$mechanism = self::call('', 'repository', array('--mechanism'));
-		}
+        return $mechanism;
+    }
 
-		return $mechanism;
-	}
+    /**
+     * Check repository status
+     *
+     * @return  string
+     **/
+    public static function status()
+    {
+        return self::call('status');
+    }
 
-	/**
-	 * Check repository status
-	 *
-	 * @return  string
-	 **/
-	public static function status()
-	{
-		return self::call('status');
-	}
+    /**
+     * Get repository log
+     *
+     * @param   int     $length     the number of messages to include in log
+     * @param   int     $start      the commit number to start at
+     * @param   string  $search     the search query
+     * @param   bool    $upcoming   whether or not to include upcoming commits
+     * @param   bool    $installed  whether or not to include installed commits
+     * @param   bool    $count      whether to return count of entries
+     * @param   string  $source     the repo source to get logs from
+     * @return  string
+     **/
+    public static function log($length = null, $start = null, $search = null, $upcoming = false, $installed = true, $count = false, $source = null)
+    {
+        $args = array();
 
-	/**
-	 * Get repository log
-	 *
-	 * @param   int     $length     the number of messages to include in log
-	 * @param   int     $start      the commit number to start at
-	 * @param   string  $search     the search query
-	 * @param   bool    $upcoming   whether or not to include upcoming commits
-	 * @param   bool    $installed  whether or not to include installed commits
-	 * @param   bool    $count      whether to return count of entries
-	 * @param   string  $source     the repo source to get logs from
-	 * @return  string
-	 **/
-	public static function log($length=null, $start=null, $search=null, $upcoming=false, $installed=true, $count=false, $source=null)
-	{
-		$args = array();
+        if (isset($length)) {
+            $args[] = '--length=' . (int)$length;
+        }
+        if (isset($start)) {
+            $args[] = '--start=' . (int)$start;
+        }
+        if (isset($search)) {
+            $args[] = '--search=' . $search;
+        }
+        if (isset($upcoming) && $upcoming) {
+            $args[] = '--include-upcoming';
+        }
+        if (isset($installed) && !$installed) {
+            $args[] = '--exclude-installed';
+        }
+        if ($count) {
+            $args[] = '--count';
+        }
+        if (isset($source)) {
+            $args[] = '--source=' . $source;
+        }
 
-		if (isset($length))
-		{
-			$args[] = '--length=' . (int)$length;
-		}
-		if (isset($start))
-		{
-			$args[] = '--start=' . (int)$start;
-		}
-		if (isset($search))
-		{
-			$args[] = '--search=' . $search;
-		}
-		if (isset($upcoming) && $upcoming)
-		{
-			$args[] = '--include-upcoming';
-		}
-		if (isset($installed) && !$installed)
-		{
-			$args[] = '--exclude-installed';
-		}
-		if ($count)
-		{
-			$args[] = '--count';
-		}
-		if (isset($source))
-		{
-			$args[] = '--source=' . $source;
-		}
+        return self::call('log', 'repository', $args);
+    }
 
-		return self::call('log', 'repository', $args);
-	}
+    /**
+     * Do update
+     *
+     * In dry run mode, only list changes that would come in
+     *
+     * @param   bool    $dryRun       whether or not to do a dry run
+     * @param   bool    $allowNonFf   whether or not to allow non fast forward pulls
+     * @param   string  $source       the repo source to update from
+     * @param   string  $autoPushRef  the ref to auto push to after an update
+     * @return  string
+     **/
+    public static function update($dryRun = true, $allowNonFf = false, $source = null, $autoPushRef = null)
+    {
+        $args = array();
+        if (!$dryRun) {
+            $args[] = '-f';
+        }
 
-	/**
-	 * Do update
-	 *
-	 * In dry run mode, only list changes that would come in
-	 *
-	 * @param   bool    $dryRun       whether or not to do a dry run
-	 * @param   bool    $allowNonFf   whether or not to allow non fast forward pulls
-	 * @param   string  $source       the repo source to update from
-	 * @param   string  $autoPushRef  the ref to auto push to after an update
-	 * @return  string
-	 **/
-	public static function update($dryRun=true, $allowNonFf=false, $source=null, $autoPushRef=null)
-	{
-		$args = array();
-		if (!$dryRun)
-		{
-			$args[] = '-f';
-		}
+        if ($allowNonFf) {
+            $args[] = '--allow-non-ff';
+        }
 
-		if ($allowNonFf)
-		{
-			$args[] = '--allow-non-ff';
-		}
+        if (isset($source)) {
+            $args[] = '--source=' . $source;
+        }
 
-		if (isset($source))
-		{
-			$args[] = '--source=' . $source;
-		}
+        if (isset($autoPushRef)) {
+            $args[] = '--git-auto-push-ref=' . $autoPushRef;
+        }
 
-		if (isset($autoPushRef))
-		{
-			$args[] = '--git-auto-push-ref=' . $autoPushRef;
-		}
+        return self::call('update', 'repository', $args);
+    }
 
-		return self::call('update', 'repository', $args);
-	}
+    /**
+     * Rollback to last checkpoint
+     *
+     * @return  string
+     **/
+    public static function rollback()
+    {
+        return self::call('rollback', 'repository', array('-f'));
+    }
 
-	/**
-	 * Rollback to last checkpoint
-	 *
-	 * @return  string
-	 **/
-	public static function rollback()
-	{
-		return self::call('rollback', 'repository', array('-f'));
-	}
+    /**
+     * Migrate database
+     *
+     * @param   bool    $dryRun       dry run - basically like returning a status
+     * @param   bool    $ignoreDates  ignore dates
+     * @param   string  $file         specific file to run
+     * @param   string  $dir          direction to run (up or down)
+     * @param   string  $folder       restrict migrations to a specific directory
+     * @return  string
+     **/
+    public static function migration($dryRun = true, $ignoreDates = false, $file = null, $dir = 'up', $folder = null)
+    {
+        $args = array();
 
-	/**
-	 * Migrate database
-	 *
-	 * @param   bool    $dryRun       dry run - basically like returning a status
-	 * @param   bool    $ignoreDates  ignore dates
-	 * @param   string  $file         specific file to run
-	 * @param   string  $dir          direction to run (up or down)
-	 * @param   string  $folder       restrict migrations to a specific directory
-	 * @return  string
-	 **/
-	public static function migration($dryRun=true, $ignoreDates=false, $file=null, $dir='up', $folder=null)
-	{
-		$args = array();
+        if (in_array($dir, array('up', 'down'))) {
+            $args[] = '-d=' . $dir;
+        }
+        if (!$dryRun) {
+            $args[] = '-f';
+        }
+        if ($ignoreDates) {
+            $args[] = '-i';
+        }
+        if ($folder) {
+            $args[] = '-r=' . $folder;
+        }
+        if (isset($file)) {
+            $args[] = '--file=' . $file;
+        }
 
-		if (in_array($dir, array('up', 'down')))
-		{
-			$args[] = '-d=' . $dir;
-		}
-		if (!$dryRun)
-		{
-			$args[] = '-f';
-		}
-		if ($ignoreDates)
-		{
-			$args[] = '-i';
-		}
-		if ($folder)
-		{
-			$args[] = '-r=' . $folder;
-		}
-		if (isset($file))
-		{
-			$args[] = '--file=' . $file;
-		}
+        return self::call('run', 'migration', $args);
+    }
 
-		return self::call('run', 'migration', $args);
-	}
+    /**
+     * Make a muse call and also report its exit status
+     *
+     * shell_exec() (used by call()) returns null both when the command could
+     * not be run and when it ran fine but printed nothing, which is what muse
+     * does on success in json mode. Callers that need to tell those apart use
+     * this instead.
+     *
+     * @param   string  $cmd   the command to run
+     * @param   string  $task  the muse task to run (only repository and migration will work)
+     * @param   array   $args  the command arguments
+     * @return  array   array('output' => string, 'status' => int exit code)
+     **/
+    public static function callWithStatus($cmd, $task = 'repository', $args = array())
+    {
+        $lines  = array();
+        $status = 1;
 
-	/**
-	 * Make a muse call and also report its exit status
-	 *
-	 * shell_exec() (used by call()) returns null both when the command could
-	 * not be run and when it ran fine but printed nothing, which is what muse
-	 * does on success in json mode. Callers that need to tell those apart use
-	 * this instead.
-	 *
-	 * @param   string  $cmd   the command to run
-	 * @param   string  $task  the muse task to run (only repository and migration will work)
-	 * @param   array   $args  the command arguments
-	 * @return  array   array('output' => string, 'status' => int exit code)
-	 **/
-	public static function callWithStatus($cmd, $task='repository', $args=array())
-	{
-		$lines  = array();
-		$status = 1;
+        exec(self::command($cmd, $task, $args), $lines, $status);
 
-		exec(self::command($cmd, $task, $args), $lines, $status);
+        return array(
+            'output' => implode("\n", $lines),
+            'status' => (int) $status
+        );
+    }
 
-		return array(
-			'output' => implode("\n", $lines),
-			'status' => (int) $status
-		);
-	}
+    /**
+     * Make actual muse calls
+     *
+     * @param   string  $cmd   the command to run
+     * @param   string  $task  the muse task to run (only repository and migration will work)
+     * @param   array   $args  the command arguments
+     * @return  string
+     **/
+    public static function call($cmd, $task = 'repository', $args = array())
+    {
+        return shell_exec(self::command($cmd, $task, $args));
+    }
 
-	/**
-	 * Make actual muse calls
-	 *
-	 * @param   string  $cmd   the command to run
-	 * @param   string  $task  the muse task to run (only repository and migration will work)
-	 * @param   array   $args  the command arguments
-	 * @return  string
-	 **/
-	public static function call($cmd, $task='repository', $args=array())
-	{
-		return shell_exec(self::command($cmd, $task, $args));
-	}
+    /**
+     * Build the muse command line (with sudo to the configured system user)
+     *
+     * @param   string  $cmd   the command to run
+     * @param   string  $task  the muse task to run
+     * @param   array   $args  the command arguments
+     * @return  string
+     **/
+    private static function command($cmd, $task, $args)
+    {
+        static $user = null;
+        static $processUser = null;
 
-	/**
-	 * Build the muse command line (with sudo to the configured system user)
-	 *
-	 * @param   string  $cmd   the command to run
-	 * @param   string  $task  the muse task to run
-	 * @param   array   $args  the command arguments
-	 * @return  string
-	 **/
-	private static function command($cmd, $task, $args)
-	{
-		static $user = null;
-		static $processUser = null;
+        if (!isset($user)) {
+            $user = \Component::params('com_installer')->get('system_user', 'hubadmin');
+            // Check this user exists on host, if not set user to apache
+            if (shell_exec('getent passwd ' . escapeshellarg($user) . ' | wc -l') == 0) {
+                $user = 'apache';
+            }
+        }
 
-		if (!isset($user))
-		{
-			$user = \Component::params('com_installer')->get('system_user', 'hubadmin');
-			// Check this user exists on host, if not set user to apache
-			if (shell_exec('getent passwd ' . escapeshellarg($user) . ' | wc -l') == 0)
-			{
-				$user = 'apache';
-			}
-		}
+        if (!isset($processUser)) {
+            $processUser = posix_geteuid();
+            $processUser = posix_getpwuid($processUser);
+            $processUser = $processUser['name'];
+        }
 
-		if (!isset($processUser))
-		{
-			$processUser = posix_geteuid();
-			$processUser = posix_getpwuid($processUser);
-			$processUser = $processUser['name'];
-		}
+        if ($user == 'apache') {
+            $cmd = PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
+        } else {
+            $sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . escapeshellarg($user) . ' ' : '';
+            $cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
+        }
 
-		if ($user == 'apache')
-		{
-			$cmd = PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
-		}
-		else
-		{
-			$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . escapeshellarg($user) . ' ' : '';
-			$cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
-		}
-
-		return $cmd;
-	}
+        return $cmd;
+    }
 }

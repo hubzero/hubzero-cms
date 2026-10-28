@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000PlgResourcesRecommendations extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__recommendation'))
-		{
-			$query = "CREATE TABLE `#__recommendation` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__recommendation')) {
+            $query = "CREATE TABLE `#__recommendation` (
 			  `fromID` int(11) NOT NULL,
 			  `toID` int(11) NOT NULL,
 			  `contentScore` float unsigned zerofill DEFAULT NULL,
@@ -32,21 +32,20 @@ class Migration20170901000000PlgResourcesRecommendations extends Base
 			  PRIMARY KEY (`fromID`,`toID`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__recommendation'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__recommendation`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__recommendation')) {
+            $query = "DROP TABLE IF EXISTS `#__recommendation`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

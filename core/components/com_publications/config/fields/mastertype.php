@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,37 +17,36 @@ use Lang;
  */
 class Mastertype extends Select
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'mastertype';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'mastertype';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 */
-	protected function getOptions()
-	{
-		$db = \App::get('db');
+    /**
+     * Method to get the field options.
+     *
+     * @return  array  The field option objects.
+     */
+    protected function getOptions()
+    {
+        $db = \App::get('db');
 
-		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'master.type.php';
+        include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'master.type.php';
 
-		$mt = new \Components\Publications\Tables\MasterType($db);
-		$types = $mt->getTypes('*', 0, 0, 'ordering');
+        $mt = new \Components\Publications\Tables\MasterType($db);
+        $types = $mt->getTypes('*', 0, 0, 'ordering');
 
-		$options = array();
-		$options[] = Html::select('option', '*', Lang::txt('- All contributable -'), 'value', 'text');
+        $options = array();
+        $options[] = Html::select('option', '*', Lang::txt('- All contributable -'), 'value', 'text');
 
-		foreach ($types as $type)
-		{
-			$options[] = Html::select('option', $type->alias, stripslashes($type->type), 'value', 'text');
-		}
+        foreach ($types as $type) {
+            $options[] = Html::select('option', $type->alias, stripslashes($type->type), 'value', 'text');
+        }
 
-		$options = array_merge(parent::getOptions(), $options);
+        $options = array_merge(parent::getOptions(), $options);
 
-		return $options;
-	}
+        return $options;
+    }
 }

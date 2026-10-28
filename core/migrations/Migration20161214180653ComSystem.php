@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,42 +13,41 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20161214180653ComSystem extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$sql = "SELECT params FROM #__extensions WHERE name = 'com_system';";
-		$this->db->setQuery($sql);
-		$params = $this->db->query()->loadResult();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $sql = "SELECT params FROM #__extensions WHERE name = 'com_system';";
+        $this->db->setQuery($sql);
+        $params = $this->db->query()->loadResult();
 
-		$params = json_decode($params);
-		$params->geodb_driver = 'pdo';
-		$params = json_encode($params);
-		$params = $this->db->quote($params);
+        $params = json_decode($params);
+        $params->geodb_driver = 'pdo';
+        $params = json_encode($params);
+        $params = $this->db->quote($params);
 
-		$sql1 = "UPDATE #__extensions SET params={$params} WHERE name = 'com_system';";
-		$this->db->setQuery($sql1);
-		$this->db->query();
-	}
+        $sql1 = "UPDATE #__extensions SET params={$params} WHERE name = 'com_system';";
+        $this->db->setQuery($sql1);
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$sql = "SELECT params FROM #__extensions WHERE name = 'com_system';";
-		$this->db->setQuery($sql);
-		$params = $this->db->query()->loadResult();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $sql = "SELECT params FROM #__extensions WHERE name = 'com_system';";
+        $this->db->setQuery($sql);
+        $params = $this->db->query()->loadResult();
 
-		$params = json_decode($params);
-		$params->geodb_driver = 'mysql';
-		$params = json_encode($params);
-		$params = $this->db->quote($params);
+        $params = json_decode($params);
+        $params->geodb_driver = 'mysql';
+        $params = json_encode($params);
+        $params = $this->db->quote($params);
 
-		$sql1 = "UPDATE #__extensions SET params={$params} WHERE name = 'com_system';";
-		$this->db->setQuery($sql1);
-		$this->db->query();
-
-	}
+        $sql1 = "UPDATE #__extensions SET params={$params} WHERE name = 'com_system';";
+        $this->db->setQuery($sql1);
+        $this->db->query();
+    }
 }

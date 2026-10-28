@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,56 +19,49 @@ use Hubzero\Http\Request;
  */
 class ArgumentsServiceProvider extends Middleware
 {
-	/**
-	 * Register the service provider
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['arguments'] = function($app)
-		{
-			global $argv;
+    /**
+     * Register the service provider
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['arguments'] = function ($app) {
+            global $argv;
 
-			// Register namespace for App commands and component commands
-			if (defined('PATH_APP'))
-			{
-				Arguments::registerNamespace('\App\Commands', [
-					PATH_APP . '/commands',
-				]);
-				Arguments::registerNamespace('\Components\{$1}\Commands', [
-					PATH_APP . '/components/com_{$1}/commands',
-					PATH_CORE . '/components/com_{$1}/commands'
-				]);
-			}
+            // Register namespace for App commands and component commands
+            if (defined('PATH_APP')) {
+                Arguments::registerNamespace('\App\Commands', [
+                    PATH_APP . '/commands',
+                ]);
+                Arguments::registerNamespace('\Components\{$1}\Commands', [
+                    PATH_APP . '/components/com_{$1}/commands',
+                    PATH_CORE . '/components/com_{$1}/commands'
+                ]);
+            }
 
-			return new Arguments($argv);
-		};
-	}
+            return new Arguments($argv);
+        };
+    }
 
-	/**
-	 * Handle request in stack
-	 *
-	 * @param   object  $request  Request
-	 * @return  mixed
-	 */
-	public function handle(Request $request)
-	{
-		$response = $this->next($request);
+    /**
+     * Handle request in stack
+     *
+     * @param   object  $request  Request
+     * @return  mixed
+     */
+    public function handle(Request $request)
+    {
+        $response = $this->next($request);
 
-		try
-		{
-			$this->app->get('arguments')->parse();
-		}
-		catch (UnsupportedCommandException $e)
-		{
-			$this->app->get('output')->error($e->getMessage());
-		}
-		catch (UnsupportedTaskException $e)
-		{
-			$this->app->get('output')->error($e->getMessage());
-		}
+        try {
+            $this->app->get('arguments')->parse();
+        } catch (UnsupportedCommandException $e) {
+            $this->app->get('output')->error($e->getMessage());
+        } catch (UnsupportedTaskException $e) {
+            $this->app->get('output')->error($e->getMessage());
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 }

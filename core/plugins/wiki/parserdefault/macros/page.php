@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,73 +14,65 @@ defined('_HZEXEC_') or die();
  */
 class PageMacro extends WikiMacro
 {
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return     array
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = 'This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.';
-		$txt['html'] = '<p>This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.</p>';
-		return $txt['html'];
-	}
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return     array
+     */
+    public function description()
+    {
+        $txt = array();
+        $txt['wiki'] = 'This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.';
+        $txt['html'] = '<p>This macro will insert a linked title to a wiki page. It can be passed either an ID or alias.</p>';
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		$et = $this->args;
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        $et = $this->args;
 
-		if (!$et)
-		{
-			return '';
-		}
+        if (!$et) {
+            return '';
+        }
 
-		$p = explode(',', $et);
-		$page = array_shift($p);
+        $p = explode(',', $et);
+        $page = array_shift($p);
 
-		$nolink = false;
-		$p = explode(' ', end($p));
-		foreach ($p as $a)
-		{
-			$a = trim($a);
+        $nolink = false;
+        $p = explode(' ', end($p));
+        foreach ($p as $a) {
+            $a = trim($a);
 
-			if ($a == 'nolink')
-			{
-				$nolink = true;
-			}
-		}
+            if ($a == 'nolink') {
+                $nolink = true;
+            }
+        }
 
-		// Is it numeric?
-		$scope = '';
-		if (is_numeric($page))
-		{
-			// Yes
-			$row = \Components\Wiki\Models\Page::oneOrNew(intval($page));
-		}
-		else
-		{
-			$page = rtrim($page, '/');
+        // Is it numeric?
+        $scope = '';
+        if (is_numeric($page)) {
+            // Yes
+            $row = \Components\Wiki\Models\Page::oneOrNew(intval($page));
+        } else {
+            $page = rtrim($page, '/');
 
-			$row = \Components\Wiki\Models\Page::oneByPath($page, $this->domain, $this->domain_id);
-		}
+            $row = \Components\Wiki\Models\Page::oneByPath($page, $this->domain, $this->domain_id);
+        }
 
-		if (!$row->exists())
-		{
-			return '(Page(' . htmlspecialchars($et, ENT_QUOTES, 'UTF-8') . ') failed)';
-		}
+        if (!$row->exists()) {
+            return '(Page(' . htmlspecialchars($et, ENT_QUOTES, 'UTF-8') . ') failed)';
+        }
 
-		if ($nolink)
-		{
-			return htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8');
-		}
+        if ($nolink) {
+            return htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8');
+        }
 
-		// Build and return the link
-		return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
-	}
+        // Build and return the link
+        return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,54 +16,49 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150330124145Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// A hub configured in app/config has no such file to update, and
-		// writing one would leave an empty configuration.php behind
-		if (!is_file(PATH_ROOT . DS . 'configuration.php'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // A hub configured in app/config has no such file to update, and
+        // writing one would leave an empty configuration.php behind
+        if (!is_file(PATH_ROOT . DS . 'configuration.php')) {
+            return;
+        }
 
-		// Earlier runs of this migration left an empty one on hubs that had
-		// none; it holds nothing, so take it away again
-		if (filesize(PATH_ROOT . DS . 'configuration.php') === 0)
-		{
-			@unlink(PATH_ROOT . DS . 'configuration.php');
-			return;
-		}
+        // Earlier runs of this migration left an empty one on hubs that had
+        // none; it holds nothing, so take it away again
+        if (filesize(PATH_ROOT . DS . 'configuration.php') === 0) {
+            @unlink(PATH_ROOT . DS . 'configuration.php');
+            return;
+        }
 
-		// Update configuration, replacing mysql with pdo
-		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
-		$pattern       = '/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/';
+        // Update configuration, replacing mysql with pdo
+        $configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
+        $pattern       = '/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/';
 
-		// Nothing to change, so nothing to write
-		if (!preg_match($pattern, $configuration))
-		{
-			return;
-		}
+        // Nothing to change, so nothing to write
+        if (!preg_match($pattern, $configuration)) {
+            return;
+        }
 
-		$configuration = preg_replace($pattern, '$1pdo$2', $configuration);
+        $configuration = preg_replace($pattern, '$1pdo$2', $configuration);
 
-		// The configuration file typically doesn't even give write permissions to the owner
-		// Change that and then write it out
-		$permissions = substr(decoct(fileperms(PATH_ROOT . DS . 'configuration.php')), 2);
+        // The configuration file typically doesn't even give write permissions to the owner
+        // Change that and then write it out
+        $permissions = substr(decoct(fileperms(PATH_ROOT . DS . 'configuration.php')), 2);
 
-		if (substr($permissions, 1, 1) != '6')
-		{
-			\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
-		}
+        if (substr($permissions, 1, 1) != '6') {
+            \App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
+        }
 
-		if (!file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration))
-		{
-			$this->setError('Unable to write out new configuration file: permission denied', 'warning');
-			return false;
-		}
+        if (!file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration)) {
+            $this->setError('Unable to write out new configuration file: permission denied', 'warning');
+            return false;
+        }
 
-		// Change permissions back to what they were before
-		\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', $permissions);
-	}
+        // Change permissions back to what they were before
+        \App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', $permissions);
+    }
 }

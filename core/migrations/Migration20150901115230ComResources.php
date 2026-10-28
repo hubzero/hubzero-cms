@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,28 +16,26 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150901115230ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__resource_licenses'))
-		{
-			$query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-			$this->db->setQuery($query);
-			$id = $this->db->loadResult();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__resource_licenses')) {
+            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
+            $this->db->setQuery($query);
+            $id = $this->db->loadResult();
 
-			if (!$id)
-			{
-				$query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
-				$this->db->setQuery($query);
-				$ordering = intval($this->db->loadResult()) + 1;
+            if (!$id) {
+                $query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
+                $this->db->setQuery($query);
+                $ordering = intval($this->db->loadResult()) + 1;
 
-				// Written directly rather than through Components\Resources\Tables\License,
-				// which this migration used to include: that class was removed when
-				// com_resources moved to ORM models, so the include is now fatal and
-				// takes any fresh install down with it.
-				$text = 'You are free:
+                // Written directly rather than through Components\Resources\Tables\License,
+                // which this migration used to include: that class was removed when
+                // com_resources moved to ORM models, so the include is now fatal and
+                // takes any fresh install down with it.
+                $text = 'You are free:
 
 to Share — copy and redistribute the material in any medium or format
 to Adapt — remix, transform, and build upon the material
@@ -55,36 +54,34 @@ No warranties are given. The license may not give you all of the permissions nec
 
 For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.';
 
-				$query = "INSERT INTO `#__resource_licenses` (`name`, `title`, `url`, `text`, `ordering`) VALUES ("
-					. $this->db->quote('cc40-by-nc-sa') . ", "
-					. $this->db->quote('Creative Commons BY-NC-SA 4.0') . ", "
-					. $this->db->quote('http://creativecommons.org/licenses/by-nc-sa/4.0/') . ", "
-					. $this->db->quote($text) . ", "
-					. (int) $ordering . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "INSERT INTO `#__resource_licenses` (`name`, `title`, `url`, `text`, `ordering`) VALUES ("
+                    . $this->db->quote('cc40-by-nc-sa') . ", "
+                    . $this->db->quote('Creative Commons BY-NC-SA 4.0') . ", "
+                    . $this->db->quote('http://creativecommons.org/licenses/by-nc-sa/4.0/') . ", "
+                    . $this->db->quote($text) . ", "
+                    . (int) $ordering . ");";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_licenses'))
-		{
-			$query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-			$this->db->setQuery($query);
-			$id = $this->db->loadResult();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_licenses')) {
+            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
+            $this->db->setQuery($query);
+            $id = $this->db->loadResult();
 
-			if ($id)
-			{
-				// Set the first zone as default
-				$query = "DELETE FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa'";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($id) {
+                // Set the first zone as default
+                $query = "DELETE FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa'";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

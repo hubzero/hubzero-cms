@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -25,57 +26,55 @@ use App;
  */
 class Unsubscribe extends SiteController
 {
-	/**
-	 * Default to the unsubscribe task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('__default', 'unsubscribe');
+    /**
+     * Default to the unsubscribe task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('__default', 'unsubscribe');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Confirm (GET) or process (POST) an unsubscribe request
-	 *
-	 * @return  void
-	 */
-	public function unsubscribeTask()
-	{
-		$email = trim(Request::getString('e', ''));
-		$mid   = Request::getInt('m', 0);
-		$token = Request::getString('t', '');
+    /**
+     * Confirm (GET) or process (POST) an unsubscribe request
+     *
+     * @return  void
+     */
+    public function unsubscribeTask()
+    {
+        $email = trim(Request::getString('e', ''));
+        $mid   = Request::getInt('m', 0);
+        $token = Request::getString('t', '');
 
-		$valid = ($email !== '' && $mid && Token::verify($mid, $email, $token));
-		$done  = false;
+        $valid = ($email !== '' && $mid && Token::verify($mid, $email, $token));
+        $done  = false;
 
-		if ($valid && Request::method() == 'POST')
-		{
-			$user = \Hubzero\User\User::oneByEmail($email);
+        if ($valid && Request::method() == 'POST') {
+            $user = \Hubzero\User\User::oneByEmail($email);
 
-			if ($user && $user->get('id'))
-			{
-				$db = App::get('db');
-				$db->setQuery(
-					"UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id')
-				);
-				$db->execute();
-			}
+            if ($user && $user->get('id')) {
+                $db = App::get('db');
+                $db->setQuery(
+                    "UPDATE `#__users` SET `sendEmail` = 0 WHERE `id` = " . (int) $user->get('id')
+                );
+                $db->execute();
+            }
 
-			// Valid token: treat as success even for raw (non-user) addresses so
-			// we always confirm the request to the recipient.
-			$done = true;
-		}
+            // Valid token: treat as success even for raw (non-user) addresses so
+            // we always confirm the request to the recipient.
+            $done = true;
+        }
 
-		$this->view
-			->set('valid', $valid)
-			->set('done', $done)
-			->set('email', $email)
-			->set('mailing', $mid)
-			->set('token', $token)
-			->setLayout('default')
-			->display();
-	}
+        $this->view
+            ->set('valid', $valid)
+            ->set('done', $done)
+            ->set('email', $email)
+            ->set('mailing', $mid)
+            ->set('token', $token)
+            ->setLayout('default')
+            ->display();
+    }
 }

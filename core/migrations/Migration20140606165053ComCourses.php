@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140606165053ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__courses_prerequisites'))
-		{
-			$query = "CREATE TABLE `#__courses_prerequisites` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__courses_prerequisites')) {
+            $query = "CREATE TABLE `#__courses_prerequisites` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `section_id` int(11) NOT NULL DEFAULT '0',
 				  `item_scope` varchar(255) NOT NULL DEFAULT 'asset',
@@ -31,21 +31,20 @@ class Migration20140606165053ComCourses extends Base
 				  `requisite_id` int(11) NOT NULL DEFAULT '0',
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__courses_prerequisites'))
-		{
-			$query = "DROP TABLE `#__courses_prerequisites`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__courses_prerequisites')) {
+            $query = "DROP TABLE `#__courses_prerequisites`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

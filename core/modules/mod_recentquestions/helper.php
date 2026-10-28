@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,74 +20,71 @@ use Date;
  */
 class Helper extends Module
 {
-	/**
-	 * Get module contents
-	 * 
-	 * @return  void
-	 */
-	public function run()
-	{
-		$this->cssId    = $this->params->get('cssId');
-		$this->cssClass = $this->params->get('cssClass');
+    /**
+     * Get module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        $this->cssId    = $this->params->get('cssId');
+        $this->cssClass = $this->params->get('cssClass');
 
-		$this->tag   = Request::getString('tag', '', 'get');
-		$this->style = Request::getString('style', '', 'get');
+        $this->tag   = Request::getString('tag', '', 'get');
+        $this->style = Request::getString('style', '', 'get');
 
-		require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
+        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
-		$records = Question::all();
+        $records = Question::all();
 
-		switch ($this->params->get('state', 'open'))
-		{
-			case 'open':
-				$records->whereEquals('state', 0);
-				break;
-			case 'closed':
-				$records->whereEquals('state', 1);
-				break;
-			case 'both':
-			default:
-				$records->where('state', '<', 2);
-				break;
-		}
+        switch ($this->params->get('state', 'open')) {
+            case 'open':
+                $records->whereEquals('state', 0);
+                break;
+            case 'closed':
+                $records->whereEquals('state', 1);
+                break;
+            case 'both':
+            default:
+                $records->where('state', '<', 2);
+                break;
+        }
 
-		if ($this->tag)
-		{
-			$cloud = new Tags();
-			$tags = $cloud->parse($this->tag);
+        if ($this->tag) {
+            $cloud = new Tags();
+            $tags = $cloud->parse($this->tag);
 
-			$records
-				->select('#__answers_questions.*')
-				->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
-				->join('#__tags', '#__tags.id', '#__tags_object.tagid')
-				->whereEquals('#__tags_object.tbl', 'answers')
-				->whereIn('#__tags.tag', $tags);
-		}
+            $records
+                ->select('#__answers_questions.*')
+                ->join('#__tags_object', '#__tags_object.objectid', '#__answers_questions.id')
+                ->join('#__tags', '#__tags.id', '#__tags_object.tagid')
+                ->whereEquals('#__tags_object.tbl', 'answers')
+                ->whereIn('#__tags.tag', $tags);
+        }
 
-		$this->rows = $records
-			->limit(intval($this->params->get('limit', 5)))
-			->ordered()
-			->rows();
+        $this->rows = $records
+            ->limit(intval($this->params->get('limit', 5)))
+            ->ordered()
+            ->rows();
 
-		require $this->getLayoutPath();
-	}
+        require $this->getLayoutPath();
+    }
 
-	/**
-	 * Display module content
-	 * 
-	 * @return  void
-	 */
-	public function display()
-	{
-		// Push the module CSS to the template
-		$this->css();
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        // Push the module CSS to the template
+        $this->css();
 
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 }

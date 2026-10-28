@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,73 +18,65 @@ use App;
  */
 class HubType extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 **/
-	protected $namespace = 'search';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     **/
+    protected $namespace = 'search';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 **/
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     **/
+    public $orderBy = 'id';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 **/
-	protected $rules = array(
-		//'type'  => 'notempty',
-		//'title' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     **/
+    protected $rules = array(
+        //'type'  => 'notempty',
+        //'title' => 'notempty'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 **/
-	public $initiate = array(
-		'created_by',
-		'created'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     **/
+    public $initiate = array(
+        'created_by',
+        'created'
+    );
 
-	/**
-	 * Get structure for a type
-	 *
-	 * @return  mixed  Iterable
-	 */
-	public function structure()
-	{
-		require_once PATH_ROOT . DS . $this->get('file_path');
+    /**
+     * Get structure for a type
+     *
+     * @return  mixed  Iterable
+     */
+    public function structure()
+    {
+        require_once PATH_ROOT . DS . $this->get('file_path');
 
-		$classpath = $this->get('class_path');
+        $classpath = $this->get('class_path');
 
-		if (strpos($classpath, 'Tables') === false)
-		{
-			$model = new $classpath;
-		}
-		else
-		{
-			$database = App::get('db');
-			$model = new $classpath($database);
-		}
-		if (get_parent_class($model) == 'Hubzero\Database\Relational')
-		{
-			$modelStructure = $model->getStructure()->getTableColumns($model->getTableName());
-		}
-		elseif (get_parent_class($model) == 'Hubzero\Base\Model')
-		{
-			$modelStructure = $model->toArray();
-		}
-		elseif (isset($database))
-		{
-			$modelStructure = $model->getFields();
-		}
+        if (strpos($classpath, 'Tables') === false) {
+            $model = new $classpath();
+        } else {
+            $database = App::get('db');
+            $model = new $classpath($database);
+        }
+        if (get_parent_class($model) == 'Hubzero\Database\Relational') {
+            $modelStructure = $model->getStructure()->getTableColumns($model->getTableName());
+        } elseif (get_parent_class($model) == 'Hubzero\Base\Model') {
+            $modelStructure = $model->toArray();
+        } elseif (isset($database)) {
+            $modelStructure = $model->getFields();
+        }
 
-		return $modelStructure;
-	}
+        return $modelStructure;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,14 +15,14 @@ use Hubzero\Database\Table;
  */
 class Log extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__project_logs', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__project_logs', 'id', $db);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,43 +15,43 @@ use Hubzero\Database\Relational;
  */
 class Recipient extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'newsletter_mailing';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'newsletter_mailing';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'email' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'email' => 'notempty'
+    );
 
-	/**
-	 * Defines a belongs to one relationship between mailing and recipient
-	 *
-	 * @return  object
-	 */
-	public function mailing()
-	{
-		return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
-	}
+    /**
+     * Defines a belongs to one relationship between mailing and recipient
+     *
+     * @return  object
+     */
+    public function mailing()
+    {
+        return $this->belongsToOne('Components\\Newsletter\\Models\\Mailing', 'mid');
+    }
 }

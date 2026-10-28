@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -15,41 +16,37 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261030000001ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('session') && !$mwdb->tableHasField('session', 'hardTimeout'))
-		{
-			$query = "ALTER TABLE `session` ADD COLUMN `hardTimeout` int(11) DEFAULT NULL AFTER `timeout`";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        if ($mwdb->tableExists('session') && !$mwdb->tableHasField('session', 'hardTimeout')) {
+            $query = "ALTER TABLE `session` ADD COLUMN `hardTimeout` int(11) DEFAULT NULL AFTER `timeout`";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'hardTimeout'))
-		{
-			$query = "ALTER TABLE `session` DROP COLUMN `hardTimeout`";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+        if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'hardTimeout')) {
+            $query = "ALTER TABLE `session` DROP COLUMN `hardTimeout`";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 }

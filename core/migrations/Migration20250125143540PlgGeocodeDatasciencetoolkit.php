@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -15,20 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20250125143540PlgGeocodeDatasciencetoolkit extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('geocode', 'datasciencetoolkit');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('geocode', 'datasciencetoolkit');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('geocode', 'datasciencetoolkit', 0);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('geocode', 'datasciencetoolkit', 0);
+    }
 }
-

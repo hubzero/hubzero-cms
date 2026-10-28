@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,29 +16,27 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130731170234ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableHasField('#__courses_grade_book', 'override') && $this->db->tableHasField('#__courses_grade_book', 'scope_id'))
-		{
-			$query = "ALTER TABLE `#__courses_grade_book` ADD `override` DECIMAL(5,2)  NULL  DEFAULT NULL  AFTER `scope_id`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableHasField('#__courses_grade_book', 'override') && $this->db->tableHasField('#__courses_grade_book', 'scope_id')) {
+            $query = "ALTER TABLE `#__courses_grade_book` ADD `override` DECIMAL(5,2)  NULL  DEFAULT NULL  AFTER `scope_id`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasField('#__courses_grade_book', 'override'))
-		{
-			$query = "ALTER TABLE `#__courses_grade_book` DROP `override`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasField('#__courses_grade_book', 'override')) {
+            $query = "ALTER TABLE `#__courses_grade_book` DROP `override`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

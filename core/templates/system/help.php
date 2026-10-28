@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,16 +14,16 @@ Html::behavior('modal');
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo Lang::getTag(); ?>">
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<jdoc:include type="head" />
-		<link rel="stylesheet" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" type="text/css" />
-		<link rel="stylesheet" media="screen" href="<?php echo $this->baseurl; ?>/templates/system/css/help.css" type="text/css" />
-	</head>
-	<body>
-		<main>
-			<jdoc:include type="message" />
-			<jdoc:include type="component" />
-		</main>
-	</body>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <jdoc:include type="head" />
+        <link rel="stylesheet" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" type="text/css" />
+        <link rel="stylesheet" media="screen" href="<?php echo $this->baseurl; ?>/templates/system/css/help.css" type="text/css" />
+    </head>
+    <body>
+        <main>
+            <jdoc:include type="message" />
+            <jdoc:include type="component" />
+        </main>
+    </body>
 </html>

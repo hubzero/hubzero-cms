@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,45 +13,45 @@ namespace Plugins\Antispam\SpamAssassin\Service\Client\Remote;
  */
 class Result
 {
-	/**
-	 * Response message.
-	 * 
-	 * @var string
-	 */
-	public $report;
+    /**
+     * Response message.
+     *
+     * @var string
+     */
+    public $report;
 
-	/**
-	 * Content being changed.
-	 * 
-	 * @var string
-	 */
-	public $message;
+    /**
+     * Content being changed.
+     *
+     * @var string
+     */
+    public $message;
 
-	/**
-	 * SpamAssassin score
-	 * 
-	 * @var float
-	 */
-	public $score;
+    /**
+     * SpamAssassin score
+     *
+     * @var float
+     */
+    public $score;
 
-	/**
-	 * How many points the message must score to be considered spam
-	 * 
-	 * @var float
-	 */
-	public $thresold;
+    /**
+     * How many points the message must score to be considered spam
+     *
+     * @var float
+     */
+    public $thresold;
 
-	/**
-	 * Is it spam or not?
-	 * 
-	 * @var boolean
-	 */
-	public $isSpam;
+    /**
+     * Is it spam or not?
+     *
+     * @var boolean
+     */
+    public $isSpam;
 
-	/**
-	 * Raw output from SpamAssassin
-	 * 
-	 * @var string
-	 */
-	public $output;
+    /**
+     * Raw output from SpamAssassin
+     *
+     * @var string
+     */
+    public $output;
 }

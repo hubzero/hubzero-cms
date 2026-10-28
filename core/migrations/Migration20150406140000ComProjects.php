@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150406140000ComProjects extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__project_repos'))
-		{
-			$query = "CREATE TABLE `#__project_repos` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__project_repos')) {
+            $query = "CREATE TABLE `#__project_repos` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `project_id` int(11) NOT NULL,
 			  `name` varchar(64) NOT NULL DEFAULT '',
@@ -37,8 +37,8 @@ class Migration20150406140000ComProjects extends Base
 			  PRIMARY KEY (`id`),
 			  UNIQUE KEY `repo` (`project_id`,`name`, `path`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

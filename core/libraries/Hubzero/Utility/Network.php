@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -17,184 +18,170 @@ namespace Hubzero\Utility;
  */
 class Network
 {
-	/**
-	 * The network's address, packed and masked
-	 *
-	 * @var  string
-	 */
-	private $address;
+    /**
+     * The network's address, packed and masked
+     *
+     * @var  string
+     */
+    private $address;
 
-	/**
-	 * The mask, packed, the same length as the address
-	 *
-	 * @var  string
-	 */
-	private $mask;
+    /**
+     * The mask, packed, the same length as the address
+     *
+     * @var  string
+     */
+    private $mask;
 
-	/**
-	 * Whether the network was written with a prefix of 0, which is every
-	 * address of either family
-	 *
-	 * @var  bool
-	 */
-	private $everyone = false;
+    /**
+     * Whether the network was written with a prefix of 0, which is every
+     * address of either family
+     *
+     * @var  bool
+     */
+    private $everyone = false;
 
-	/**
-	 * Read a network: 192.0.2.0/24, 192.0.2.0/255.255.255.0, 2001:db8::/32,
-	 * or a single address
-	 *
-	 * A prefix of 0 is every address, IPv4 and IPv6 alike; 0.0.0.0/0 in a
-	 * list means everyone.
-	 *
-	 * @param   string  $cidr
-	 * @return  static|null  Null for anything that is not a network
-	 */
-	public static function parse($cidr)
-	{
-		$parts    = explode('/', trim((string) $cidr), 2);
-		$everyone = false;
-		$address  = Ip::toPacked($parts[0], $mapped);
+    /**
+     * Read a network: 192.0.2.0/24, 192.0.2.0/255.255.255.0, 2001:db8::/32,
+     * or a single address
+     *
+     * A prefix of 0 is every address, IPv4 and IPv6 alike; 0.0.0.0/0 in a
+     * list means everyone.
+     *
+     * @param   string  $cidr
+     * @return  static|null  Null for anything that is not a network
+     */
+    public static function parse($cidr)
+    {
+        $parts    = explode('/', trim((string) $cidr), 2);
+        $everyone = false;
+        $address  = Ip::toPacked($parts[0], $mapped);
 
-		if ($address === false)
-		{
-			return null;
-		}
+        if ($address === false) {
+            return null;
+        }
 
-		// An IPv4 network written as IPv4-mapped IPv6 counts its prefix from 128
-		$offset = $mapped ? 96 : 0;
+        // An IPv4 network written as IPv4-mapped IPv6 counts its prefix from 128
+        $offset = $mapped ? 96 : 0;
 
-		$bits = strlen($address) * 8;
+        $bits = strlen($address) * 8;
 
-		if (!isset($parts[1]))
-		{
-			$prefix = $bits;
-		}
-		elseif (preg_match('/^[0-9]{1,3}$/', $parts[1]))
-		{
-			// An IPv4 network written in IPv6 counts its prefix from 128, so
-			// ::ffff:0:0/96 is all of IPv4 and nothing else. Only a prefix
-			// written as 0 is everyone.
-			$prefix = (int) $parts[1] - $offset;
+        if (!isset($parts[1])) {
+            $prefix = $bits;
+        } elseif (preg_match('/^[0-9]{1,3}$/', $parts[1])) {
+            // An IPv4 network written in IPv6 counts its prefix from 128, so
+            // ::ffff:0:0/96 is all of IPv4 and nothing else. Only a prefix
+            // written as 0 is everyone.
+            $prefix = (int) $parts[1] - $offset;
 
-			if ((int) $parts[1] == 0)
-			{
-				$prefix   = 0;
-				$everyone = true;
-			}
-		}
-		elseif ($bits == 32 && ($mask = @inet_pton($parts[1])) !== false && strlen($mask) == 4)
-		{
-			$prefix   = self::prefixOf($mask);
-			$everyone = ($prefix === 0);
-		}
-		else
-		{
-			return null;
-		}
+            if ((int) $parts[1] == 0) {
+                $prefix   = 0;
+                $everyone = true;
+            }
+        } elseif ($bits == 32 && ($mask = @inet_pton($parts[1])) !== false && strlen($mask) == 4) {
+            $prefix   = self::prefixOf($mask);
+            $everyone = ($prefix === 0);
+        } else {
+            return null;
+        }
 
-		if ($prefix === null || $prefix < 0 || $prefix > $bits)
-		{
-			return null;
-		}
+        if ($prefix === null || $prefix < 0 || $prefix > $bits) {
+            return null;
+        }
 
-		$network = new static;
-		$network->everyone = $everyone;
-		$network->mask     = self::maskOf($prefix, strlen($address));
-		$network->address  = $address & $network->mask;
+        $network = new static();
+        $network->everyone = $everyone;
+        $network->mask     = self::maskOf($prefix, strlen($address));
+        $network->address  = $address & $network->mask;
 
-		return $network;
-	}
+        return $network;
+    }
 
-	/**
-	 * Whether an address is in the network
-	 *
-	 * @param   string  $ip
-	 * @return  bool
-	 */
-	public function contains($ip)
-	{
-		$ip = Ip::toPacked($ip);
+    /**
+     * Whether an address is in the network
+     *
+     * @param   string  $ip
+     * @return  bool
+     */
+    public function contains($ip)
+    {
+        $ip = Ip::toPacked($ip);
 
-		if ($ip === false)
-		{
-			return false;
-		}
+        if ($ip === false) {
+            return false;
+        }
 
-		// A prefix written as 0 is everyone, of either family
-		if ($this->everyone)
-		{
-			return true;
-		}
+        // A prefix written as 0 is everyone, of either family
+        if ($this->everyone) {
+            return true;
+        }
 
-		return strlen($ip) == strlen($this->address) && ($ip & $this->mask) === $this->address;
-	}
+        return strlen($ip) == strlen($this->address) && ($ip & $this->mask) === $this->address;
+    }
 
-	/**
-	 * Whether the network is every address of either family, written with a
-	 * prefix of 0
-	 *
-	 * @return  bool
-	 */
-	public function isEveryone()
-	{
-		return $this->everyone;
-	}
+    /**
+     * Whether the network is every address of either family, written with a
+     * prefix of 0
+     *
+     * @return  bool
+     */
+    public function isEveryone()
+    {
+        return $this->everyone;
+    }
 
-	/**
-	 * The lowest address in the network
-	 *
-	 * @return  string
-	 */
-	public function first()
-	{
-		return inet_ntop($this->address);
-	}
+    /**
+     * The lowest address in the network
+     *
+     * @return  string
+     */
+    public function first()
+    {
+        return inet_ntop($this->address);
+    }
 
-	/**
-	 * The highest address in the network
-	 *
-	 * @return  string
-	 */
-	public function last()
-	{
-		return inet_ntop($this->address | ~$this->mask);
-	}
+    /**
+     * The highest address in the network
+     *
+     * @return  string
+     */
+    public function last()
+    {
+        return inet_ntop($this->address | ~$this->mask);
+    }
 
-	/**
-	 * A packed mask of the given prefix length
-	 *
-	 * @param   integer  $prefix
-	 * @param   integer  $bytes
-	 * @return  string
-	 */
-	private static function maskOf($prefix, $bytes)
-	{
-		$mask = str_repeat("\xff", intdiv($prefix, 8));
+    /**
+     * A packed mask of the given prefix length
+     *
+     * @param   integer  $prefix
+     * @param   integer  $bytes
+     * @return  string
+     */
+    private static function maskOf($prefix, $bytes)
+    {
+        $mask = str_repeat("\xff", intdiv($prefix, 8));
 
-		if ($prefix % 8)
-		{
-			$mask .= chr((0xff << (8 - $prefix % 8)) & 0xff);
-		}
+        if ($prefix % 8) {
+            $mask .= chr((0xff << (8 - $prefix % 8)) & 0xff);
+        }
 
-		return str_pad($mask, $bytes, "\0");
-	}
+        return str_pad($mask, $bytes, "\0");
+    }
 
-	/**
-	 * The prefix length of a packed mask, or null if its ones are not all
-	 * at the front
-	 *
-	 * @param   string  $mask
-	 * @return  integer|null
-	 */
-	private static function prefixOf($mask)
-	{
-		$bits = '';
+    /**
+     * The prefix length of a packed mask, or null if its ones are not all
+     * at the front
+     *
+     * @param   string  $mask
+     * @return  integer|null
+     */
+    private static function prefixOf($mask)
+    {
+        $bits = '';
 
-		foreach (str_split($mask) as $byte)
-		{
-			$bits .= str_pad(decbin(ord($byte)), 8, '0', STR_PAD_LEFT);
-		}
+        foreach (str_split($mask) as $byte) {
+            $bits .= str_pad(decbin(ord($byte)), 8, '0', STR_PAD_LEFT);
+        }
 
-		return preg_match('/^1*0*$/', $bits) ? strlen(rtrim($bits, '0')) : null;
-	}
+        return preg_match('/^1*0*$/', $bits) ? strlen(rtrim($bits, '0')) : null;
+    }
 }

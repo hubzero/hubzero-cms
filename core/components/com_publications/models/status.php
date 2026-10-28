@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,27 +15,27 @@ use Hubzero\Base\Obj;
  */
 class Status extends Obj
 {
-	/**
-	 * Int(1)
-	 * 1 = requirement satisfied
-	 * 0 = requirement not satisfied
-	 * 2 = requirement partially satisfied (incomplete)
-	 * 3 = not available
-	 */
-	public $status = null;
+    /**
+     * Int(1)
+     * 1 = requirement satisfied
+     * 0 = requirement not satisfied
+     * 2 = requirement partially satisfied (incomplete)
+     * 3 = not available
+     */
+    public $status = null;
 
-	/**
-	 * Status message
-	 */
-	public $message = null;
+    /**
+     * Status message
+     */
+    public $message = null;
 
-	/**
-	 * For nested blocks
-	 */
-	public $elements = null;
+    /**
+     * For nested blocks
+     */
+    public $elements = null;
 
-	/**
-	 * Time of last status update
-	 */
-	public $lastupdate = null;
+    /**
+     * Time of last status update
+     */
+    public $lastupdate = null;
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,6 +7,7 @@
  */
 
 namespace Components\Redirect\Site;
+
 use Hubzero\Component\Router\Base;
 
 /**
@@ -13,39 +15,37 @@ use Hubzero\Component\Router\Base;
  */
 class Router extends Base
 {
-	/**
-	 * Build the route for the component.
-	 *
-	 * @param   array  &$query  An array of URL arguments
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 */
-	public function build(&$query)
-	{
+    /**
+     * Build the route for the component.
+     *
+     * @param   array  &$query  An array of URL arguments
+     * @return  array  The URL arguments to use to assemble the subsequent URL.
+     */
+    public function build(&$query)
+    {
         $segments = array();
 
-		if (!empty($query['controller']))
-		{
-			$segments[] = $query['controller'];
-			unset($query['controller']);
-		}
-		if (!empty($query['task']))
-		{
-			$segments[] = $query['task'];
-			unset($query['task']);
-		}
+        if (!empty($query['controller'])) {
+            $segments[] = $query['controller'];
+            unset($query['controller']);
+        }
+        if (!empty($query['task'])) {
+            $segments[] = $query['task'];
+            unset($query['task']);
+        }
         if (!empty($query['id'])) {
             $segments[] = $query['id'];
             unset($query['id']);
         }
-		return $segments;
-	}
+        return $segments;
+    }
 
-	/**
-	 * Parse the segments of a URL.
-	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
-	 * @return  array  The URL attributes to be used by the application.
-	 */
+    /**
+     * Parse the segments of a URL.
+     *
+     * @param   array  &$segments  The segments of the URL to parse.
+     * @return  array  The URL attributes to be used by the application.
+     */
     public function parse(&$segments)
     {
         $vars = array();

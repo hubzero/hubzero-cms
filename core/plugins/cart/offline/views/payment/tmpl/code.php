@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,17 +12,16 @@ defined('_HZEXEC_') or die();
 
 <?php echo '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">' ?>
 
-	<?php
+    <?php
 
-	$buttonVars['custom'] = $this->transaction->token . '-' . $this->transaction->info->tId;
+    $buttonVars['custom'] = $this->transaction->token . '-' . $this->transaction->info->tId;
 
-	foreach ($buttonVars as $k => $v)
-	{
-		echo '<input type="hidden" value="' . $v . '" name="' . $k . '">';
-	}
+    foreach ($buttonVars as $k => $v) {
+        echo '<input type="hidden" value="' . $v . '" name="' . $k . '">';
+    }
 
-	?>
+    ?>
 
-	<input type="hidden" name="provider" value="offline">
-	<input type="submit" value="Pay with offline" />
+    <input type="hidden" name="provider" value="offline">
+    <input type="submit" value="Pay with offline" />
 </form>

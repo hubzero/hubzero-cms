@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,4 +22,4 @@ defined('_HZEXEC_') or die();
 <input type="hidden" name="gid" value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0; ?>" />
 
 <?php echo Html::input('token'); ?>
-<?php echo Html::input('honeypot'); 
+<?php echo Html::input('honeypot');

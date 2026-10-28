@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -35,67 +36,58 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261104170100ComTools extends Base
 {
-	/**
-	 * The new column definition
-	 *
-	 * @var  string
-	 **/
-	const COLUMN = "char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''";
+    /**
+     * The new column definition
+     *
+     * @var  string
+     **/
+    const COLUMN = "char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''";
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		try
-		{
-			$mwdb = $this->getMWDBO();
-		}
-		catch (\Throwable $e)
-		{
-			$mwdb = false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        try {
+            $mwdb = $this->getMWDBO();
+        } catch (\Throwable $e) {
+            $mwdb = false;
+        }
 
-		if (!$mwdb)
-		{
-			$this->setError('Unable to connect to the middleware database, will try again on the next run.', 'skipped');
-			return;
-		}
+        if (!$mwdb) {
+            $this->setError('Unable to connect to the middleware database, will try again on the next run.', 'skipped');
+            return;
+        }
 
-		if (!$mwdb->tableExists('zone_locations'))
-		{
-			return;
-		}
+        if (!$mwdb->tableExists('zone_locations')) {
+            return;
+        }
 
-		$fields = $mwdb->getTableColumns('zone_locations', false);
+        $fields = $mwdb->getTableColumns('zone_locations', false);
 
-		// Already converted
-		if (!isset($fields['ipFROM'], $fields['ipTO']) || !preg_match('/int/i', $fields['ipFROM']->Type))
-		{
-			return;
-		}
+        // Already converted
+        if (!isset($fields['ipFROM'], $fields['ipTO']) || !preg_match('/int/i', $fields['ipFROM']->Type)) {
+            return;
+        }
 
-		// New columns beside the old; a run that stopped after this is resumed
-		$add = array();
-		foreach (array('ipFROM_hex', 'ipTO_hex') as $column)
-		{
-			if (!isset($fields[$column]))
-			{
-				$add[] = 'ADD `' . $column . '` ' . self::COLUMN;
-			}
-		}
-		if ($add)
-		{
-			$mwdb->setQuery('ALTER TABLE `zone_locations` ' . implode(', ', $add));
-			$mwdb->query();
-		}
+        // New columns beside the old; a run that stopped after this is resumed
+        $add = array();
+        foreach (array('ipFROM_hex', 'ipTO_hex') as $column) {
+            if (!isset($fields[$column])) {
+                $add[] = 'ADD `' . $column . '` ' . self::COLUMN;
+            }
+        }
+        if ($add) {
+            $mwdb->setQuery('ALTER TABLE `zone_locations` ' . implode(', ', $add));
+            $mwdb->query();
+        }
 
-		$mapped = "CONCAT('00000000000000000000ffff', LOWER(LPAD(HEX(%s), 8, '0')))";
+        $mapped = "CONCAT('00000000000000000000ffff', LOWER(LPAD(HEX(%s), 8, '0')))";
 
-		$everyone = "`ipFROM` = 0 AND `ipTO` = 4294967295";
+        $everyone = "`ipFROM` = 0 AND `ipTO` = 4294967295";
 
-		$mwdb->setQuery(
-			"UPDATE `zone_locations` SET
+        $mwdb->setQuery(
+            "UPDATE `zone_locations` SET
 				`ipFROM_hex` = CASE
 					WHEN " . $everyone . " THEN REPEAT('0', 32)
 					WHEN `ipFROM` = 0 AND `ipTO` = 0 THEN ''
@@ -104,28 +96,28 @@ class Migration20261104170100ComTools extends Base
 					WHEN " . $everyone . " THEN REPEAT('f', 32)
 					WHEN `ipTO` = 0 THEN IF(`ipFROM` = 0, '', " . sprintf($mapped, '`ipFROM`') . ")
 					ELSE " . sprintf($mapped, '`ipTO`') . " END"
-		);
-		$mwdb->query();
+        );
+        $mwdb->query();
 
-		// One statement, so the old columns go only as the new take their place
-		$mwdb->setQuery(
-			"ALTER TABLE `zone_locations`
+        // One statement, so the old columns go only as the new take their place
+        $mwdb->setQuery(
+            "ALTER TABLE `zone_locations`
 				DROP `ipFROM`,
 				DROP `ipTO`,
 				CHANGE `ipFROM_hex` `ipFROM` " . self::COLUMN . " AFTER `zone_id`,
 				CHANGE `ipTO_hex` `ipTO` " . self::COLUMN . " AFTER `ipFROM`"
-		);
-		$mwdb->query();
+        );
+        $mwdb->query();
 
-		$this->log('Converted zone_locations.ipFROM and ipTO to hex, for IPv6 ranges');
-	}
+        $this->log('Converted zone_locations.ipFROM and ipTO to hex, for IPv6 ranges');
+    }
 
-	/**
-	 * Down
-	 *
-	 * IPv6 ranges have no integer form, so leave the columns as they are
-	 **/
-	public function down()
-	{
-	}
+    /**
+     * Down
+     *
+     * IPv6 ranges have no integer form, so leave the columns as they are
+     **/
+    public function down()
+    {
+    }
 }

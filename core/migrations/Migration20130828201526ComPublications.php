@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130828201526ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__publication_categories'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__publication_categories` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__publication_categories')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__publication_categories` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`name` varchar(200) NOT NULL DEFAULT '',
 				`dc_type` varchar(200) NOT NULL DEFAULT 'Dataset',
@@ -61,21 +61,20 @@ class Migration20130828201526ComPublications extends Base
 
 			INSERT INTO `#__publication_categories` (`id`,`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('12','Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1');";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists(`#__publication_categories`))
-		{
-			$query = "DROP TABLE `#__publication_categories`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists(`#__publication_categories`)) {
+            $query = "DROP TABLE `#__publication_categories`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130924000005Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__extensions'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__extensions` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__extensions')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__extensions` (
 							`extension_id` INT(11) NOT NULL AUTO_INCREMENT ,
 							`name` VARCHAR(100) NOT NULL ,
 							`type` VARCHAR(20) NOT NULL ,
@@ -48,10 +48,10 @@ class Migration20130924000005Core extends Base
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "
+            $query = "
 				# Components
 				INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 				(1, 'com_mailto', 'component', 'com_mailto', '', 0, 1, 1, 1, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0),
@@ -201,279 +201,250 @@ class Migration20130924000005Core extends Base
 
 				INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 				(800, 'joomla', 'package', 'pkg_joomla', '', 0, 1, 1, 1, '', '', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "ALTER TABLE `#__extensions` AUTO_INCREMENT = 1000;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $query = "ALTER TABLE `#__extensions` AUTO_INCREMENT = 1000;";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			// Migrate components
-			$query = "SELECT * FROM `#__components` WHERE parent = 0;";
-			$this->db->setQuery($query);
-			$results = $this->db->loadObjectList();
+            // Migrate components
+            $query = "SELECT * FROM `#__components` WHERE parent = 0;";
+            $this->db->setQuery($query);
+            $results = $this->db->loadObjectList();
 
-			// Build list of extensions to exclude (i.e. they're no longer in the core)
-			$excludes = array('com_sef', 'com_userpoints', 'com_hub', 'com_storefront', 'com_contribute', 'com_contribtool');
+            // Build list of extensions to exclude (i.e. they're no longer in the core)
+            $excludes = array('com_sef', 'com_userpoints', 'com_hub', 'com_storefront', 'com_contribute', 'com_contribtool');
 
-			foreach ($results as $r)
-			{
-				// See if we want to ignore the entry
-				if (in_array($r->option, $excludes))
-				{
-					continue;
-				}
+            foreach ($results as $r) {
+                // See if we want to ignore the entry
+                if (in_array($r->option, $excludes)) {
+                    continue;
+                }
 
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$r->option}';";
-				$this->db->setQuery($query);
-				if ($id = $this->db->loadResult())
-				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
-					$this->db->setQuery($query);
-					$this->db->query();
-					continue;
-				}
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$r->option}';";
+                $this->db->setQuery($query);
+                if ($id = $this->db->loadResult()) {
+                    $query = "UPDATE `#__extensions` SET `enabled` = '{$r->enabled}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
-				$query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', " . $this->db->quote($r->params) . ", '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
+                $query .= "VALUES ('{$r->option}', 'component', '{$r->option}', '', 1, {$r->enabled}, 1, {$r->iscore}, '', " . $this->db->quote($r->params) . ", '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Look for any components we missed...(frontend?)
-			$components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
-			foreach ($components as $c)
-			{
-				if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'site'))
-				{
-					continue;
-				}
+            // Look for any components we missed...(frontend?)
+            $components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
+            foreach ($components as $c) {
+                if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'site')) {
+                    continue;
+                }
 
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('{$c}', 'component', '{$c}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('{$c}', 'component', '{$c}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Look for any components we missed...(backend?)
-			$components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
-			foreach ($components as $c)
-			{
-				if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'admin'))
-				{
-					continue;
-				}
+            // Look for any components we missed...(backend?)
+            $components = array_diff(scandir(PATH_CORE . DS . 'components'), array(".", ".."));
+            foreach ($components as $c) {
+                if (!is_dir(PATH_CORE . DS . 'components' . DS . $c . DS . 'admin')) {
+                    continue;
+                }
 
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$c}';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('{$c}', 'component', '{$c}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('{$c}', 'component', '{$c}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Migrate plugins
-			$query = "SELECT * FROM `#__plugins`;";
-			$this->db->setQuery($query);
-			$results = $this->db->loadObjectList();
+            // Migrate plugins
+            $query = "SELECT * FROM `#__plugins`;";
+            $this->db->setQuery($query);
+            $results = $this->db->loadObjectList();
 
-			foreach ($results as $r)
-			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = 'plg_{$r->folder}_{$r->element}';";
-				$this->db->setQuery($query);
-				if ($id = $this->db->loadResult())
-				{
-					$query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
-					$this->db->setQuery($query);
-					$this->db->query();
-					continue;
-				}
+            foreach ($results as $r) {
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = 'plg_{$r->folder}_{$r->element}';";
+                $this->db->setQuery($query);
+                if ($id = $this->db->loadResult()) {
+                    $query = "UPDATE `#__extensions` SET `enabled` = '{$r->published}', `params` = " . $this->db->quote($r->params) . ", `ordering` = '{$r->ordering}' WHERE `extension_id` = '{$id}';";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                    continue;
+                }
 
-				// Add 1 to access level
-				$r->access++;
+                // Add 1 to access level
+                $r->access++;
 
-				// Build and execute query
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
-				$query .= "VALUES ('plg_{$r->folder}_{$r->element}', 'plugin', '{$r->element}', '{$r->folder}', {$r->client_id}, {$r->published}, {$r->access}, {$r->iscore}, '', '{$r->params}', '', '', {$r->checked_out}, '{$r->checked_out_time}', {$r->ordering}, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                // Build and execute query
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)\n";
+                $query .= "VALUES ('plg_{$r->folder}_{$r->element}', 'plugin', '{$r->element}', '{$r->folder}', {$r->client_id}, {$r->published}, {$r->access}, {$r->iscore}, '', '{$r->params}', '', '', {$r->checked_out}, '{$r->checked_out_time}', {$r->ordering}, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Migrate modules (site)
-			$modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
-			foreach ($modules as $m)
-			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+            // Migrate modules (site)
+            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
+            foreach ($modules as $m) {
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m))
-				{
-					continue;
-				}
+                if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m)) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('{$m}', 'module', '{$m}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('{$m}', 'module', '{$m}', '', 0, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Migrate modules (admin)
-			// @TODO: 2.0.0+ we can't differentiate admin modules at the filesystem level so this won't do anything
-			$modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
-			foreach ($modules as $m)
-			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+            // Migrate modules (admin)
+            // @TODO: 2.0.0+ we can't differentiate admin modules at the filesystem level so this won't do anything
+            $modules = array_diff(scandir(PATH_CORE . DS . 'modules'), array(".", ".."));
+            foreach ($modules as $m) {
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$m}';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m))
-				{
-					continue;
-				}
+                if (!is_dir(PATH_CORE . DS . 'modules' . DS . $m)) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('{$m}', 'module', '{$m}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('{$m}', 'module', '{$m}', '', 1, 1, 1, 1, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Migrate templates
-			$templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
-			foreach ($templates as $t)
-			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+            // Migrate templates
+            $templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
+            foreach ($templates as $t) {
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t))
-				{
-					continue;
-				}
+                if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t)) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('".ucfirst($t)."', 'template', '{$t}', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('" . ucfirst($t) . "', 'template', '{$t}', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Admin templates too
-			// @TODO: 2.0.0+ we can't differentiate admin templates at the filesystem level so this won't do anything
-			$templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
-			foreach ($templates as $t)
-			{
-				$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
-				$this->db->setQuery($query);
-				if ($this->db->loadResult())
-				{
-					continue;
-				}
+            // Admin templates too
+            // @TODO: 2.0.0+ we can't differentiate admin templates at the filesystem level so this won't do anything
+            $templates = array_diff(scandir(PATH_CORE . DS . 'templates'), array(".", "..", "system"));
+            foreach ($templates as $t) {
+                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$t}' AND `type` = 'template';";
+                $this->db->setQuery($query);
+                if ($this->db->loadResult()) {
+                    continue;
+                }
 
-				if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t))
-				{
-					continue;
-				}
+                if (!is_dir(PATH_CORE . DS . 'templates' . DS . $t)) {
+                    continue;
+                }
 
-				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
-				$query .= "('".ucfirst($t)."', 'template', '{$t}', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES\n";
+                $query .= "('" . ucfirst($t) . "', 'template', '{$t}', '', 1, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			// Convert params to json
-			$query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `params` IS NOT NULL AND `params` != '' AND SUBSTR(`params`, 1, 1) != '{';";
-			$this->db->setQuery($query);
-			$results = $this->db->loadObjectList();
+            // Convert params to json
+            $query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `params` IS NOT NULL AND `params` != '' AND SUBSTR(`params`, 1, 1) != '{';";
+            $this->db->setQuery($query);
+            $results = $this->db->loadObjectList();
 
-			if (count($results) > 0)
-			{
-				foreach ($results as $r)
-				{
-					$params = trim($r->params);
-					if (empty($params) || $params == '{}')
-					{
-						continue;
-					}
+            if (count($results) > 0) {
+                foreach ($results as $r) {
+                    $params = trim($r->params);
+                    if (empty($params) || $params == '{}') {
+                        continue;
+                    }
 
-					$array = array();
-					$ar    = explode("\n", $params);
+                    $array = array();
+                    $ar    = explode("\n", $params);
 
-					foreach ($ar as $a)
-					{
-						$a = trim($a);
-						if (empty($a))
-						{
-							continue;
-						}
+                    foreach ($ar as $a) {
+                        $a = trim($a);
+                        if (empty($a)) {
+                            continue;
+                        }
 
-						$ar2     = explode("=", $a, 2);
-						$array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
-					}
+                        $ar2     = explode("=", $a, 2);
+                        $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
+                    }
 
-					$query = "UPDATE `#__extensions` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE `extension_id` = {$r->extension_id};";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+                    $query = "UPDATE `#__extensions` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE `extension_id` = {$r->extension_id};";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			// Update com_config defaults
-			$query  = "UPDATE `#__extensions` SET";
-			$query .= " `params` = '{\"filters\":{\"1\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"6\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"7\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"2\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"3\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"4\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"5\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"10\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"12\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"8\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"}}}'";
-			$query .= " WHERE `element` = 'com_config';";
-			$this->db->setQuery($query);
-			$this->db->query();
+            // Update com_config defaults
+            $query  = "UPDATE `#__extensions` SET";
+            $query .= " `params` = '{\"filters\":{\"1\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"6\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"7\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"2\":{\"filter_type\":\"NH\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"3\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"4\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"5\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"10\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"12\":{\"filter_type\":\"BL\",\"filter_tags\":\"\",\"filter_attributes\":\"\"},\"8\":{\"filter_type\":\"NONE\",\"filter_tags\":\"\",\"filter_attributes\":\"\"}}}'";
+            $query .= " WHERE `element` = 'com_config';";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			// Delete some old/unused plugins
-			$query  = "DELETE FROM `#__extensions` WHERE `folder` = 'search';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'xmlrpc';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'legacy';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'backlink';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'mtupgrade';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'ldap';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'gmail';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'openid';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'joomla';";
-			$query .= "DELETE FROM `#__extensions` WHERE `folder` = 'editors' AND `element` = 'xstandard';";
-			$this->db->setQuery($query);
-			$this->db->query();
+            // Delete some old/unused plugins
+            $query  = "DELETE FROM `#__extensions` WHERE `folder` = 'search';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'xmlrpc';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'legacy';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'backlink';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'system' AND `element` = 'mtupgrade';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'ldap';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'gmail';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'openid';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'authentication' AND `element` = 'joomla';";
+            $query .= "DELETE FROM `#__extensions` WHERE `folder` = 'editors' AND `element` = 'xstandard';";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			// Also, force xusers user plugin last in list
-			$query = "SELECT max(ordering) FROM `#__extensions` WHERE `folder` = 'user';";
-			$this->db->setQuery($query);
-			$max = $this->db->loadResult();
-			$max++;
-			$query = "UPDATE `#__extensions` SET `ordering` = '{$max}' WHERE `folder` = 'user' AND `element` = 'xusers';";
-			$this->db->setQuery($query);
-			$this->db->query();
+            // Also, force xusers user plugin last in list
+            $query = "SELECT max(ordering) FROM `#__extensions` WHERE `folder` = 'user';";
+            $this->db->setQuery($query);
+            $max = $this->db->loadResult();
+            $max++;
+            $query = "UPDATE `#__extensions` SET `ordering` = '{$max}' WHERE `folder` = 'user' AND `element` = 'xusers';";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			// Delete plugins and components tables
-			if ($this->db->tableExists('#__plugins'))
-			{
-				$query = "DROP TABLE IF EXISTS `#__plugins`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            // Delete plugins and components tables
+            if ($this->db->tableExists('#__plugins')) {
+                $query = "DROP TABLE IF EXISTS `#__plugins`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

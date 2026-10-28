@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,23 +18,22 @@ use Lang;
  */
 class Developer extends SiteController
 {
-	/**
-	 * Developer Intro Page
-	 * 
-	 * @return void
-	 */
-	public function displayTask()
-	{
-		if (Pathway::count() <= 0)
-		{
-			Pathway::append(
-				Lang::txt(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
+    /**
+     * Developer Intro Page
+     *
+     * @return void
+     */
+    public function displayTask()
+    {
+        if (Pathway::count() <= 0) {
+            Pathway::append(
+                Lang::txt(strtoupper($this->_option)),
+                'index.php?option=' . $this->_option
+            );
+        }
 
-		Document::setTitle(Lang::txt(strtoupper($this->_option)));
+        Document::setTitle(Lang::txt(strtoupper($this->_option)));
 
-		$this->view->display();
-	}
+        $this->view->display();
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,44 +17,44 @@ use Hubzero\Database\Relational;
  */
 class QueueDB extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var string
-	 **/
-	protected $namespace = 'search';
+    /**
+     * The table namespace
+     *
+     * @var string
+     **/
+    protected $namespace = 'search';
 
-	/**
-	 * The table name 
-	 *
-	 * @var  string
-	 **/
-	protected $table = '#__search_queue';
+    /**
+     * The table name
+     *
+     * @var  string
+     **/
+    protected $table = '#__search_queue';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 **/
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     **/
+    public $orderBy = 'id';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 **/
-	protected $rules = array(
-		//'type'  => 'notempty',
-		//'title' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     **/
+    protected $rules = array(
+        //'type'  => 'notempty',
+        //'title' => 'notempty'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 **/
-	public $initiate = array(
-		'created_by',
-		'created'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     **/
+    public $initiate = array(
+        'created_by',
+        'created'
+    );
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,56 +24,50 @@ $this->view('default_menu')
 ?>
 <div class="pages-wrap">
 <?php
-if (!$this->page)
-{
-	?>
-	<div class="pages-content">
-		<div id="pages-introduction">
-			<div class="instructions">
-				<p><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
-			</div>
-		</div>
-	</div><!-- / .pages-content -->
-	<?php
-}
-else
-{
-	Pathway::append(
-		stripslashes($this->page->get('title')),
-		$base . '&unit=' . $this->page->get('url')
-	);
+if (!$this->page) {
+    ?>
+    <div class="pages-content">
+        <div id="pages-introduction">
+            <div class="instructions">
+                <p><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
+            </div>
+        </div>
+    </div><!-- / .pages-content -->
+    <?php
+} else {
+    Pathway::append(
+        stripslashes($this->page->get('title')),
+        $base . '&unit=' . $this->page->get('url')
+    );
 
-	$authorized = false;
-	if ($this->page->get('offering_id'))
-	{
-		// If they're a course level manager
-		if ($this->offering->access('manage'))
-		{
-			$authorized = true;
-		}
-		// If they're a section manager and the page is a section page
-		else if ($this->offering->access('manage', 'section') && $this->page->get('section_id'))
-		{
-			$authorized = true;
-		}
-	}
-	?>
-	<?php if ($authorized) { ?>
-		<ul class="manager-options">
-			<li>
-				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?></button>
-			</li>
-			<li>
-				<a class="icon-edit edit" href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit'); ?>" title="<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>">
-					<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>
-				</a>
-			</li>
-		</ul>
-	<?php } ?>
-	<div class="pages-content">
-		<?php echo $this->page->content('parsed'); ?>
-	</div><!-- / .pages-content -->
-	<?php
+    $authorized = false;
+    if ($this->page->get('offering_id')) {
+        // If they're a course level manager
+        if ($this->offering->access('manage')) {
+            $authorized = true;
+        }
+        // If they're a section manager and the page is a section page
+        else if ($this->offering->access('manage', 'section') && $this->page->get('section_id')) {
+            $authorized = true;
+        }
+    }
+    ?>
+    <?php if ($authorized) { ?>
+        <ul class="manager-options">
+            <li>
+                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?></button>
+            </li>
+            <li>
+                <a class="icon-edit edit" href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit'); ?>" title="<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>">
+                    <?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>
+                </a>
+            </li>
+        </ul>
+    <?php } ?>
+    <div class="pages-content">
+        <?php echo $this->page->content('parsed'); ?>
+    </div><!-- / .pages-content -->
+    <?php
 }
 ?>
 </div><!-- / .pages-wrap -->

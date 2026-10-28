@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -28,48 +29,47 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261104160000CoreIpv6 extends Base
 {
-	/**
-	 * IP address columns, by table
-	 *
-	 * @var  array
-	 **/
-	protected $columns = array(
-		'#__session'               => 'ip',
-		'#__session_geo'           => 'ip',
-		'#__xsession'              => 'ip',
-		'#__users'                 => 'registerIP',
-		'#__users_log_auth'        => 'ip',
-		'#__item_votes'            => 'ip',
-		'#__vote_log'              => 'ip',
-		'#__answers_log'           => 'ip',
-		'#__answers_questions_log' => 'ip',
-		'#__faq_helpful_log'       => 'ip',
-		'#__kb_votes'              => 'ip',
-		'#__courses_asset_views'   => 'ip',
-		'#__courses_page_hits'     => 'ip',
-		'#__project_logs'          => 'ip',
-		'#__xgroups_pages_hits'    => 'ip',
-		'#__citations_authors'     => 'ip'
-	);
+    /**
+     * IP address columns, by table
+     *
+     * @var  array
+     **/
+    protected $columns = array(
+        '#__session'               => 'ip',
+        '#__session_geo'           => 'ip',
+        '#__xsession'              => 'ip',
+        '#__users'                 => 'registerIP',
+        '#__users_log_auth'        => 'ip',
+        '#__item_votes'            => 'ip',
+        '#__vote_log'              => 'ip',
+        '#__answers_log'           => 'ip',
+        '#__answers_questions_log' => 'ip',
+        '#__faq_helpful_log'       => 'ip',
+        '#__kb_votes'              => 'ip',
+        '#__courses_asset_views'   => 'ip',
+        '#__courses_page_hits'     => 'ip',
+        '#__project_logs'          => 'ip',
+        '#__xgroups_pages_hits'    => 'ip',
+        '#__citations_authors'     => 'ip'
+    );
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		foreach ($this->columns as $table => $column)
-		{
-			$this->widenColumn($table, $column, 45, null, $this->db);
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        foreach ($this->columns as $table => $column) {
+            $this->widenColumn($table, $column, 45, null, $this->db);
+        }
+    }
 
-	/**
-	 * Down
-	 *
-	 * Narrowing the columns again would cut short every IPv6 address stored
-	 * since, so leave them as they are
-	 **/
-	public function down()
-	{
-	}
+    /**
+     * Down
+     *
+     * Narrowing the columns again would cut short every IPv6 address stored
+     * since, so leave them as they are
+     **/
+    public function down()
+    {
+    }
 }

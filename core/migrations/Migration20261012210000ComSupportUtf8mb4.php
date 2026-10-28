@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,39 +18,37 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261012210000ComSupportUtf8mb4 extends Base
 {
-	/**
-	 * Tables to convert
-	 *
-	 * @var  array
-	 **/
-	protected $tables = array(
-		'#__support_tickets',
-		'#__support_comments'
-	);
+    /**
+     * Tables to convert
+     *
+     * @var  array
+     **/
+    protected $tables = array(
+        '#__support_tickets',
+        '#__support_comments'
+    );
 
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		foreach ($this->tables as $table)
-		{
-			if ($this->db->tableExists($table))
-			{
-				$query = "ALTER TABLE `$table` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        foreach ($this->tables as $table) {
+            if ($this->db->tableExists($table)) {
+                $query = "ALTER TABLE `$table` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 *
-	 * Converting back would truncate any 4-byte characters stored since, so
-	 * leave the tables as they are
-	 **/
-	public function down()
-	{
-	}
+    /**
+     * Down
+     *
+     * Converting back would truncate any 4-byte characters stored since, so
+     * leave the tables as they are
+     **/
+    public function down()
+    {
+    }
 }

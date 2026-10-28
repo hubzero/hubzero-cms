@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,11 +15,11 @@ namespace Hubzero\Spam\StringProcessor;
  */
 interface StringProcessorInterface
 {
-	/**
-	 * Prepare a string
-	 *
-	 * @param   string  $string
-	 * @return  string
-	 */
-	public function prepare($string);
+    /**
+     * Prepare a string
+     *
+     * @param   string  $string
+     * @return  string
+     */
+    public function prepare($string);
 }

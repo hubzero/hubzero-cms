@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -24,13 +25,10 @@ $replyTo   = trim((string) $row->get('reply_to'));
 $fromShown = $fromEmail ? ($fromName ? ($fromName . ' <' . $fromEmail . '>') : $fromEmail) : $fromName;
 
 // Delivery line.
-if ($disp['scheduled'])
-{
-	$deliveryLine = Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY_SCHEDULED', $disp['scheduled_local']);
-}
-else
-{
-	$deliveryLine = Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY_NOW');
+if ($disp['scheduled']) {
+    $deliveryLine = Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY_SCHEDULED', $disp['scheduled_local']);
+} else {
+    $deliveryLine = Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY_NOW');
 }
 
 // What accepting will do -- approval takes precedence over hold/schedule/send.
@@ -49,134 +47,137 @@ $this->css('verify.css', 'com_massmail');
 $this->js('verify.js', 'com_massmail');
 ?>
 <form action="<?php echo Route::url($base); ?>" method="post" name="adminForm" id="adminForm" class="mm-verify">
-	<p class="mm-intro"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_INTRO'); ?></p>
+    <p class="mm-intro"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_INTRO'); ?></p>
 
-	<div class="mm-grid">
-		<div class="mm-main">
-			<div class="mm-card">
-				<div class="mm-pv-head">
-					<h4><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_HEADING'); ?></h4>
-					<span class="mm-pv-toggle">
-						<button type="button" id="mm-pv-btn-html" class="is-active"><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_HTML'); ?></button>
-						<button type="button" id="mm-pv-btn-text"><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_TEXT'); ?></button>
-					</span>
-				</div>
-				<div class="mm-env">
-					<div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span><span class="mm-env-val"><?php echo $this->escape($fromShown); ?></span></div>
-					<?php if ($replyTo) { ?>
-					<div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span><span class="mm-env-val"><?php echo $this->escape($replyTo); ?></span></div>
-					<?php } ?>
-					<div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span><span class="mm-env-val"><?php echo $this->escape(stripslashes((string) $row->get('subject'))); ?></span></div>
-				</div>
-				<div class="mm-pv-body">
-					<iframe id="mm-pv-html" sandbox="" title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')); ?>" srcdoc="<?php echo $this->escape($this->previewHtml); ?>"></iframe>
-					<pre id="mm-pv-text" hidden><?php echo $this->escape($this->previewText); ?></pre>
-				</div>
-			</div>
+    <div class="mm-grid">
+        <div class="mm-main">
+            <div class="mm-card">
+                <div class="mm-pv-head">
+                    <h4><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_HEADING'); ?></h4>
+                    <span class="mm-pv-toggle">
+                        <button type="button" id="mm-pv-btn-html" class="is-active"><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_HTML'); ?></button>
+                        <button type="button" id="mm-pv-btn-text"><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_TEXT'); ?></button>
+                    </span>
+                </div>
+                <div class="mm-env">
+                    <div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span><span class="mm-env-val"><?php echo $this->escape($fromShown); ?></span></div>
+                    <?php if ($replyTo) { ?>
+                    <div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span><span class="mm-env-val"><?php echo $this->escape($replyTo); ?></span></div>
+                    <?php } ?>
+                    <div class="mm-env-row"><span class="mm-env-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span><span class="mm-env-val"><?php echo $this->escape(stripslashes((string) $row->get('subject'))); ?></span></div>
+                </div>
+                <div class="mm-pv-body">
+                    <iframe id="mm-pv-html" sandbox="" title="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')); ?>" srcdoc="<?php echo $this->escape($this->previewHtml); ?>"></iframe>
+                    <pre id="mm-pv-text" hidden><?php echo $this->escape($this->previewText); ?></pre>
+                </div>
+            </div>
 
-			<div class="mm-verify-actions">
-				<button type="button" class="btn mm-btn-accept mm-submit" data-task="launch"><?php echo $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
-				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
-				<span class="spacer"></span>
-				<a class="btn mm-btn-neutral" href="<?php echo Route::url($base); ?>"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></a>
-				<button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" formaction="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></button>
-			</div>
-		</div>
+            <div class="mm-verify-actions">
+                <button type="button" class="btn mm-btn-accept mm-submit" data-task="launch"><?php echo $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND'); ?></button>
+                <a class="btn mm-btn-neutral" href="<?php echo Route::url($base . '&task=edit&id=' . (int) $row->get('id')); ?>"><?php echo $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE'); ?></a>
+                <span class="spacer"></span>
+                <a class="btn mm-btn-neutral" href="<?php echo Route::url($base); ?>"><?php echo $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT'); ?></a>
+                <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')); ?>" formaction="<?php echo Route::url($base . '&task=discard&id=' . (int) $row->get('id')); ?>"><?php echo $icTrash . Lang::txt('COM_MASSMAIL_DISCARD'); ?></button>
+            </div>
+        </div>
 
-		<div class="mm-side">
-			<div class="mm-card mm-status-card">
-				<h4><?php echo Lang::txt('COM_MASSMAIL_DETAILS'); ?></h4>
-				<table class="meta mm-meta">
-					<tbody>
-						<tr>
-							<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FIELD_ID'); ?></th>
-							<td><?php echo (int) $row->get('id'); ?></td>
-						</tr>
-						<tr>
-							<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
-							<td><span class="mm-status mm-status-<?php echo $status; ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)); ?></span></td>
-						</tr>
-						<?php if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') { ?>
-							<tr>
-								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED'); ?></th>
-								<td><?php echo Date::of($row->get('created'))->toLocal($fmt); ?></td>
-							</tr>
-						<?php } ?>
-						<?php if ($creatorName) { ?>
-							<tr>
-								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED_BY'); ?></th>
-								<td><?php echo $this->escape($creatorName); ?></td>
-							</tr>
-						<?php } ?>
-						<?php if ($row->get('modified') && $row->get('modified') != '0000-00-00 00:00:00') { ?>
-							<tr>
-								<th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
-								<td><?php echo Date::of($row->get('modified'))->toLocal($fmt); if ($row->get('modified_by')) { echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($row->get('modified_by'))->get('name'))) . '</span>'; } ?></td>
-							</tr>
-						<?php } ?>
-					</tbody>
-				</table>
-			</div>
+        <div class="mm-side">
+            <div class="mm-card mm-status-card">
+                <h4><?php echo Lang::txt('COM_MASSMAIL_DETAILS'); ?></h4>
+                <table class="meta mm-meta">
+                    <tbody>
+                        <tr>
+                            <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_FIELD_ID'); ?></th>
+                            <td><?php echo (int) $row->get('id'); ?></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_STATUS'); ?></th>
+                            <td><span class="mm-status mm-status-<?php echo $status; ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($status)); ?></span></td>
+                        </tr>
+                        <?php if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') { ?>
+                            <tr>
+                                <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED'); ?></th>
+                                <td><?php echo Date::of($row->get('created'))->toLocal($fmt); ?></td>
+                            </tr>
+                        <?php } ?>
+                        <?php if ($creatorName) { ?>
+                            <tr>
+                                <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_CREATED_BY'); ?></th>
+                                <td><?php echo $this->escape($creatorName); ?></td>
+                            </tr>
+                        <?php } ?>
+                        <?php if ($row->get('modified') && $row->get('modified') != '0000-00-00 00:00:00') { ?>
+                            <tr>
+                                <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
+                                <td><?php echo Date::of($row->get('modified'))->toLocal($fmt);
+                                if ($row->get('modified_by')) {
+                                    echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($row->get('modified_by'))->get('name'))) . '</span>';
+                                } ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
 
-			<div class="mm-card mm-sum">
-				<h4><?php echo Lang::txt('COM_MASSMAIL_VERIFY_SUMMARY'); ?></h4>
-				<div class="mm-sum-row">
-					<span class="k"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_RECIPIENTS'); ?></span>
-					<span class="v mm-sum-count"><?php echo number_format($this->preview); ?></span>
-				</div>
-				<div class="mm-sum-row">
-					<span class="k"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY'); ?></span>
-					<span class="v"><?php echo $this->escape($deliveryLine); ?></span>
-				</div>
+            <div class="mm-card mm-sum">
+                <h4><?php echo Lang::txt('COM_MASSMAIL_VERIFY_SUMMARY'); ?></h4>
+                <div class="mm-sum-row">
+                    <span class="k"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_RECIPIENTS'); ?></span>
+                    <span class="v mm-sum-count"><?php echo number_format($this->preview); ?></span>
+                </div>
+                <div class="mm-sum-row">
+                    <span class="k"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_DELIVERY'); ?></span>
+                    <span class="v"><?php echo $this->escape($deliveryLine); ?></span>
+                </div>
 
-				<?php if ($needsApproval) { ?>
-					<div class="mm-disp mm-disp-approve">
-						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE'); ?></span>
-						<?php if ($disp['needs_general_approval']) { ?>
-							<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_GENERAL'); ?></span>
-						<?php } ?>
-						<?php if ($disp['needs_optout_approval']) { ?>
-							<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_OPTOUT'); ?></span>
-						<?php } ?>
-					</div>
-				<?php } elseif ($disp['scheduled'] && !$disp['held']) { ?>
-					<div class="mm-disp mm-disp-send">
-						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SCHEDULED'); ?></span>
-						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SCHEDULE'); ?></span>
-					</div>
-				<?php } elseif (!$disp['held']) { ?>
-					<div class="mm-disp mm-disp-send">
-						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SENDING'); ?></span>
-						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SEND'); ?></span>
-					</div>
-				<?php } ?>
+                <?php if ($needsApproval) { ?>
+                    <div class="mm-disp mm-disp-approve">
+                        <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE'); ?></span>
+                        <?php if ($disp['needs_general_approval']) { ?>
+                            <span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_GENERAL'); ?></span>
+                        <?php } ?>
+                        <?php if ($disp['needs_optout_approval']) { ?>
+                            <span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_OPTOUT'); ?></span>
+                        <?php } ?>
+                    </div>
+                <?php } elseif ($disp['scheduled'] && !$disp['held']) { ?>
+                    <div class="mm-disp mm-disp-send">
+                        <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SCHEDULED'); ?></span>
+                        <span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SCHEDULE'); ?></span>
+                    </div>
+                <?php } elseif (!$disp['held']) { ?>
+                    <div class="mm-disp mm-disp-send">
+                        <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_STATUS_SENDING'); ?></span>
+                        <span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_SEND'); ?></span>
+                    </div>
+                <?php } ?>
 
-				<?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too. ?>
-				<?php if ($disp['held']) { ?>
-					<div class="mm-disp mm-disp-hold">
-						<span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
-						<span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_HOLD'); ?></span>
-					</div>
-				<?php } ?>
+                <?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too. ?>
+                <?php if ($disp['held']) { ?>
+                    <div class="mm-disp mm-disp-hold">
+                        <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>
+                        <span class="mm-disp-sub"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_HOLD'); ?></span>
+                    </div>
+                <?php } ?>
 
-				<?php if ($disp['needs_optout_approval'] && !$needsApproval) { ?>
-					<?php /* Only when the approval banner isn't already explaining the override. */ ?>
-					<div class="mm-optout-flag">&#9888; <?php echo Lang::txt('COM_MASSMAIL_VERIFY_OPTOUT_FLAG'); ?></div>
-				<?php } ?>
-			</div>
-		</div>
-	</div>
+                <?php if ($disp['needs_optout_approval'] && !$needsApproval) { ?>
+                    <?php /* Only when the approval banner isn't already explaining the override. */ ?>
+                    <div class="mm-optout-flag">&#9888; <?php echo Lang::txt('COM_MASSMAIL_VERIFY_OPTOUT_FLAG'); ?></div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
 
 
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="id" value="<?php echo (int) $row->get('id'); ?>" />
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-	<?php echo Html::input('token'); ?>
+    <input type="hidden" name="task" value="" />
+    <input type="hidden" name="id" value="<?php echo (int) $row->get('id'); ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+    <?php echo Html::input('token'); ?>
 </form>
 
 <?php // Carrier for the Discard button (form="mm-action"): token only, the
       // task and id come from the button's formaction. ?>
 <form action="<?php echo Route::url($base); ?>" method="post" id="mm-action" class="mm-action-form">
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

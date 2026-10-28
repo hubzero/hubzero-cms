@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,140 +17,136 @@ use Lang;
  */
 class Component extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'xmessage';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'xmessage';
 
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 **/
-	protected $table = '#__xmessage_component';
+    /**
+     * The table to which the class pertains
+     *
+     * This will default to #__{namespace}_{modelName} unless otherwise
+     * overwritten by a given subclass. Definition of this property likely
+     * indicates some derivation from standard naming conventions.
+     *
+     * @var  string
+     **/
+    protected $table = '#__xmessage_component';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'component';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'component';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'component' => 'notempty',
-		'action'    => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'component' => 'notempty',
+        'action'    => 'notempty'
+    );
 
-	/**
-	 * Sets up additional custom rules
-	 *
-	 * @return  void
-	 */
-	public function setup()
-	{
-		$this->addRule('component', function($data)
-		{
-			$this->connection->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
-			$extensions = $this->connection->loadColumn();
-			if (!in_array($data['component'], $extensions))
-			{
-				return Lang::txt('Component does not exist.');
-			}
-			return false;
-		});
-	}
+    /**
+     * Sets up additional custom rules
+     *
+     * @return  void
+     */
+    public function setup()
+    {
+        $this->addRule('component', function ($data) {
+            $this->connection->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
+            $extensions = $this->connection->loadColumn();
+            if (!in_array($data['component'], $extensions)) {
+                return Lang::txt('Component does not exist.');
+            }
+            return false;
+        });
+    }
 
-	/**
-	 * Defines a belongs to one relationship between newsletter and story
-	 *
-	 * @return  object
-	 */
-	public function getRecords($filters = array())
-	{
-		$entries = $this->recordsQuery($filters);
-		$c = $entries->getTableName();
+    /**
+     * Defines a belongs to one relationship between newsletter and story
+     *
+     * @return  object
+     */
+    public function getRecords($filters = array())
+    {
+        $entries = $this->recordsQuery($filters);
+        $c = $entries->getTableName();
 
-		// sort by one of the list's columns, component by default
-		$sort = isset($filters['sort']) && in_array($filters['sort'], array('id', 'component', 'action', 'title')) ? $filters['sort'] : 'component';
-		$dir  = isset($filters['sort_Dir']) && strtolower($filters['sort_Dir']) == 'desc' ? 'desc' : 'asc';
+        // sort by one of the list's columns, component by default
+        $sort = isset($filters['sort']) && in_array($filters['sort'], array('id', 'component', 'action', 'title')) ? $filters['sort'] : 'component';
+        $dir  = isset($filters['sort_Dir']) && strtolower($filters['sort_Dir']) == 'desc' ? 'desc' : 'asc';
 
-		if (!empty($filters['limit']))
-		{
-			$entries->limit((int) $filters['limit'])->start((int) ($filters['start'] ?? 0));
-		}
+        if (!empty($filters['limit'])) {
+            $entries->limit((int) $filters['limit'])->start((int) ($filters['start'] ?? 0));
+        }
 
-		return $entries
-			->order($c . '.' . $sort, $dir)
-			->rows();
-	}
+        return $entries
+            ->order($c . '.' . $sort, $dir)
+            ->rows();
+    }
 
-	/**
-	 * Count records matching the filters
-	 *
-	 * @param   array  $filters
-	 * @return  integer
-	 */
-	public function getCount($filters = array())
-	{
-		return $this->recordsQuery($filters)->total();
-	}
+    /**
+     * Count records matching the filters
+     *
+     * @param   array  $filters
+     * @return  integer
+     */
+    public function getCount($filters = array())
+    {
+        return $this->recordsQuery($filters)->total();
+    }
 
-	/**
-	 * The records query the list and its count share
-	 *
-	 * @param   array   $filters
-	 * @return  object
-	 */
-	private function recordsQuery($filters = array())
-	{
-		$entries = self::all();
+    /**
+     * The records query the list and its count share
+     *
+     * @param   array   $filters
+     * @return  object
+     */
+    private function recordsQuery($filters = array())
+    {
+        $entries = self::all();
 
-		$c = $entries->getTableName();
-		$e = '#__extensions';
+        $c = $entries->getTableName();
+        $e = '#__extensions';
 
-		$entries
-			->select($c . '.*,' . $e . '.name')
-			->join($e, $e . '.element', $c . '.component', 'inner')
-			->whereEquals($e . '.type', 'component');
+        $entries
+            ->select($c . '.*,' . $e . '.name')
+            ->join($e, $e . '.element', $c . '.component', 'inner')
+            ->whereEquals($e . '.type', 'component');
 
-		if (isset($filters['component']) && $filters['component'])
-		{
-			$entries->whereEquals($e . '.element', $filters['component']);
-		}
+        if (isset($filters['component']) && $filters['component']) {
+            $entries->whereEquals($e . '.element', $filters['component']);
+        }
 
-		return $entries;
-	}
+        return $entries;
+    }
 
-	/**
-	 * Get all records
-	 *
-	 * @return  array
-	 */
-	public function getComponents()
-	{
-		return self::all()
-			->deselect()
-			->select('component')
-			->order('component', 'asc')
-			->group('component')
-			->rows();
-	}
+    /**
+     * Get all records
+     *
+     * @return  array
+     */
+    public function getComponents()
+    {
+        return self::all()
+            ->deselect()
+            ->select('component')
+            ->order('component', 'asc')
+            ->group('component')
+            ->rows();
+    }
 }

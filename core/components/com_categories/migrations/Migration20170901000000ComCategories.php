@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +16,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComCategories extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__categories'))
-		{
-			$query = "CREATE TABLE `#__categories` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__categories')) {
+            $query = "CREATE TABLE `#__categories` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
 			  `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -59,12 +59,12 @@ class Migration20170901000000ComCategories extends Base
 			  KEY `idx_language` (`language`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$dt = new \Hubzero\Utility\Date();
+            $dt = new \Hubzero\Utility\Date();
 
-			$query = "INSERT INTO `#__categories`
+            $query = "INSERT INTO `#__categories`
 					VALUES (
 						1,
 						0,
@@ -94,21 +94,20 @@ class Migration20170901000000ComCategories extends Base
 						'*'
 					)";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__categories'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__categories`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__categories')) {
+            $query = "DROP TABLE IF EXISTS `#__categories`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

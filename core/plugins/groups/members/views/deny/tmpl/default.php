@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,69 +9,67 @@
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
-<form action="<?php echo Route::url('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&active=members'); ?>" method="post" id="hubForm">
-	<div class="explaination">
-		<p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_EXPLANATION'); ?></p>
-	</div>
-	<fieldset>
-		<legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_MEMBERSHIP'); ?></legend>
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm">
+    <div class="explaination">
+        <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_EXPLANATION'); ?></p>
+    </div>
+    <fieldset>
+        <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_MEMBERSHIP'); ?></legend>
 
-		<?php
-		$names = array();
-		foreach ($this->users as $user)
-		{
-			$u = User::getInstance($user);
-			$names[] = $this->escape($u->get('name'));
-			?>
-			<input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />
-			<?php
-		}
-		?>
-		<label>
-			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_USERS'); ?><br />
-			<strong><?php echo implode(', ', $names); ?></strong>
-		</label>
+        <?php
+        $names = array();
+        foreach ($this->users as $user) {
+            $u = User::getInstance($user);
+            $names[] = $this->escape($u->get('name'));
+            ?>
+            <input type="hidden" name="users[]" value="<?php echo $this->escape($user); ?>" />
+            <?php
+        }
+        ?>
+        <label>
+            <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_USERS'); ?><br />
+            <strong><?php echo implode(', ', $names); ?></strong>
+        </label>
 
-		<?php
-		$manageUrl = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members&action=denyresponses';
-		foreach ($this->users as $user)
-		{
-			$manageUrl .= '&users[]=' . (int) $user;
-		}
-		?>
-		<?php if (count($this->responses)) : ?>
-			<label for="deny-response">
-				<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_CHOOSE'); ?>
-				<select id="deny-response" data-confirm="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REPLACE')); ?>">
-					<option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_NONE'); ?></option>
-					<?php foreach ($this->responses as $i => $response) : ?>
-						<option value="<?php echo $i; ?>" data-text="<?php echo $this->escape($response['text']); ?>"><?php echo $this->escape($response['title']); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</label>
-			<p class="hint">
-				<a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_MANAGE'); ?></a>
-			</p>
-		<?php else : ?>
-			<p class="hint">
-				<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_NONE'); ?>
-				<a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_ADD'); ?></a>
-			</p>
-		<?php endif; ?>
+        <?php
+        $manageUrl = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members&action=denyresponses';
+        foreach ($this->users as $user) {
+            $manageUrl .= '&users[]=' . (int) $user;
+        }
+        ?>
+        <?php if (count($this->responses)) : ?>
+            <label for="deny-response">
+                <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_CHOOSE'); ?>
+                <select id="deny-response" data-confirm="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REPLACE')); ?>">
+                    <option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_NONE'); ?></option>
+                    <?php foreach ($this->responses as $i => $response) : ?>
+                        <option value="<?php echo $i; ?>" data-text="<?php echo $this->escape($response['text']); ?>"><?php echo $this->escape($response['title']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <p class="hint">
+                <a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_MANAGE'); ?></a>
+            </p>
+        <?php else : ?>
+            <p class="hint">
+                <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_NONE'); ?>
+                <a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_ADD'); ?></a>
+            </p>
+        <?php endif; ?>
 
-		<label for="reason">
-			<?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_REASON'); ?>
-			<textarea name="reason" id="reason" rows="12" cols="50"></textarea>
-		</label>
-	</fieldset><div class="clear"></div>
+        <label for="reason">
+            <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_REASON'); ?>
+            <textarea name="reason" id="reason" rows="12" cols="50"></textarea>
+        </label>
+    </fieldset><div class="clear"></div>
 
-	<input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-	<input type="hidden" name="active" value="members" />
-	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	<input type="hidden" name="action" value="confirmdeny" />
-	<?php echo Html::input('token'); ?>
+    <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
+    <input type="hidden" name="active" value="members" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="action" value="confirmdeny" />
+    <?php echo Html::input('token'); ?>
 
-	<p class="submit">
-		<input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
-	</p>
+    <p class="submit">
+        <input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_MEMBERS_SUBMIT'); ?>" />
+    </p>
 </form>

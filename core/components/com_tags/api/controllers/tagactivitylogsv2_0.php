@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,78 +24,73 @@ use Exception;
 
 class TagActivityLogsv2_0 extends ApiController
 {
+    protected static $version = '2.0';
 
-	protected static $version = '2.0';
+    /**
+     * Retrieve tag's logs that preceeded the given log
+     *
+     * @apiMethod GET
+     * @apiUri    /tags/tagactivitylogs/previouslogs
+     * @apiParameter {
+     *      "name":          "tagId",
+     *      "description":   "ID of associated tag",
+     *      "type":          "integer",
+     *      "required":      true,
+     * }
+     * @apiParameter {
+     *      "name":          "logId",
+     *      "description":   "ID of log to compare against",
+     *      "type":          "integer",
+     *      "required":      true,
+     * }
+     * @apiParameter {
+     *      "name":          "limit",
+     *      "description":   "Limit of logs to retrieve",
+     *      "type":          "integer",
+     *      "required":      false,
+     *      "default":       100
+     * }
+     * @return  void
+     */
+    public function previousLogsTask()
+    {
+        $this->requiresAuthentication();
 
-	/**
-	 * Retrieve tag's logs that preceeded the given log
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /tags/tagactivitylogs/previouslogs
-	 * @apiParameter {
-	 * 		"name":          "tagId",
-	 * 		"description":   "ID of associated tag",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "logId",
-	 * 		"description":   "ID of log to compare against",
-	 * 		"type":          "integer",
-	 * 		"required":      true,
-	 * }
-	 * @apiParameter {
-	 * 		"name":          "limit",
-	 * 		"description":   "Limit of logs to retrieve",
-	 * 		"type":          "integer",
-	 * 		"required":      false,
-	 * 		"default":       100
-	 * }
-	 * @return  void
-	 */
-	public function previousLogsTask()
-	{
-		$this->requiresAuthentication();
+        // The tag change log (who changed which tag) is back-end data: only the
+        // tag administration screen calls this. It was unreachable until the
+        // versioned API routers were loaded; gate it the way that screen is.
+        if (!User::authorise('core.manage', 'com_tags')) {
+            throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
+        }
 
-		// The tag change log (who changed which tag) is back-end data: only the
-		// tag administration screen calls this. It was unreachable until the
-		// versioned API routers were loaded; gate it the way that screen is.
-		if (!User::authorise('core.manage', 'com_tags'))
-		{
-			throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
-		}
+        $tagId = Request::getInt('tagId');
+        $logId = Request::getInt('logId');
+        $limit = min(max(Request::getInt('limit', 100), 1), 500);
 
-		$tagId = Request::getInt('tagId');
-		$logId = Request::getInt('logId');
-		$limit = min(max(Request::getInt('limit', 100), 1), 500);
+        $response = [
+            'logs' => []
+        ];
 
-		$response = [
-			'logs' => []
-		];
+        if ($tagId && $logId) {
+            $parser = new ActivityLogPresenter();
 
-		if ($tagId && $logId)
-		{
-			$parser = new ActivityLogPresenter();
+            $previousLogs = Log::all()
+                ->ordered()
+                ->whereEquals('tag_id', $tagId)
+                ->where('id', '<', $logId)
+                ->limit($limit);
 
-			$previousLogs = Log::all()
-				->ordered()
-				->whereEquals('tag_id', $tagId)
-				->where('id', '<', $logId)
-				->limit($limit);
+            foreach ($previousLogs as $log) {
+                $parsedLog = $parser->parse($log);
 
-			foreach ($previousLogs as $log)
-			{
-				$parsedLog = $parser->parse($log);
+                $logArray = $log->toArray();
+                $logArray['htmlClass'] = $parsedLog->class;
+                $logArray['parsedDescription'] = $parsedLog->activityDescription;
 
-				$logArray = $log->toArray();
-				$logArray['htmlClass'] = $parsedLog->class;
-				$logArray['parsedDescription'] = $parsedLog->activityDescription;
+                $response['logs'][] = $logArray;
+            }
+        }
 
-				$response['logs'][] = $logArray;
-			}
-		}
-
-		$this->send($response);
-	}
-
+        $this->send($response);
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,30 +16,30 @@ namespace Hubzero\Base;
  */
 abstract class ServiceProvider
 {
-	/**
-	 * The application instance.
-	 *
-	 * @var  object
-	 */
-	protected $app;
+    /**
+     * The application instance.
+     *
+     * @var  object
+     */
+    protected $app;
 
-	/**
-	 * Create a new service provider instance.
-	 *
-	 * @param   object  $app
-	 * @return  void
-	 */
-	public function __construct($app)
-	{
-		$this->app = $app;
-	}
+    /**
+     * Create a new service provider instance.
+     *
+     * @param   object  $app
+     * @return  void
+     */
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
 
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-	}
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
 }

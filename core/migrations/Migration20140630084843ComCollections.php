@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,29 +20,27 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140630084843ComCollections extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__collections'))
-		{
-			$query = "UPDATE `#__collections` SET access=4 WHERE is_default=1 AND access=0";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__collections')) {
+            $query = "UPDATE `#__collections` SET access=4 WHERE is_default=1 AND access=0";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__collections'))
-		{
-			$query = "UPDATE `#__collections` SET access=0 WHERE is_default=1 AND access=4";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__collections')) {
+            $query = "UPDATE `#__collections` SET access=0 WHERE is_default=1 AND access=4";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

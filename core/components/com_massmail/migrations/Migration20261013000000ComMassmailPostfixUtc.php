@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -18,32 +19,29 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261013000000ComMassmailPostfixUtc extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		foreach (array('#__massmail_postfix_hourly', '#__massmail_postfix_daily') as $table)
-		{
-			if ($this->db->tableExists($table))
-			{
-				$this->db->setQuery("TRUNCATE TABLE `$table`;");
-				$this->db->query();
-			}
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        foreach (array('#__massmail_postfix_hourly', '#__massmail_postfix_daily') as $table) {
+            if ($this->db->tableExists($table)) {
+                $this->db->setQuery("TRUNCATE TABLE `$table`;");
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableExists('#__massmail_postfix_state'))
-		{
-			$this->db->setQuery("UPDATE `#__massmail_postfix_state` SET `last_inode` = 0, `last_offset` = 0, `last_sent` = NULL WHERE `id` = 1;");
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__massmail_postfix_state')) {
+            $this->db->setQuery("UPDATE `#__massmail_postfix_state` SET `last_inode` = 0, `last_offset` = 0, `last_sent` = NULL WHERE `id` = 1;");
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// Nothing to restore: the rollups are rebuilt from the logs.
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // Nothing to restore: the rollups are rebuilt from the logs.
+    }
 }

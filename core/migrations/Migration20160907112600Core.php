@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,25 +16,24 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20160907112600Core extends Base
 {
-	private function dropIndex($table, $key)
-	{
-		if ($this->db->tableHasKey($table, $key))
-		{
-			$query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    private function dropIndex($table, $key)
+    {
+        if ($this->db->tableHasKey($table, $key)) {
+            $query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function up()
-	{
-		$this->dropIndex('#__wishlist_implementation', 'pagetext');
-		$this->dropIndex('#__tool_version_hostreq', 'idx_tool_version_id_hostreq');
-		$this->dropIndex('#__publication_categories', 'type');
-		$this->dropIndex('#__courses_form_respondents', 'jos_pdf_form_responses_respondent_id_idx');
-	}
+    public function up()
+    {
+        $this->dropIndex('#__wishlist_implementation', 'pagetext');
+        $this->dropIndex('#__tool_version_hostreq', 'idx_tool_version_id_hostreq');
+        $this->dropIndex('#__publication_categories', 'type');
+        $this->dropIndex('#__courses_form_respondents', 'jos_pdf_form_responses_respondent_id_idx');
+    }
 
-	public function down()
-	{
-	}
+    public function down()
+    {
+    }
 }

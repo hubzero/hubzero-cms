@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,40 +8,40 @@
 
 class HTMLPurifier_Filter_GroupInclude extends HTMLPurifier_Filter
 {
-	/**
-	 * Name
-	 *
-	 * @var  string
-	 */
-	public $name = 'GroupInclude';
+    /**
+     * Name
+     *
+     * @var  string
+     */
+    public $name = 'GroupInclude';
 
-	/**
-	 * Pre-filter hook
-	 *
-	 * @param   string  $html
-	 * @param   array   $config
-	 * @param   string  $context
-	 * @return  string
-	 */
-	public function preFilter($html, $config, $context)
-	{
-		$pre_regex   = '#<group:include([^>]*)/>#';
-		$pre_replace = '[group:include$1]';
-		return preg_replace($pre_regex, $pre_replace, $html);
-	}
+    /**
+     * Pre-filter hook
+     *
+     * @param   string  $html
+     * @param   array   $config
+     * @param   string  $context
+     * @return  string
+     */
+    public function preFilter($html, $config, $context)
+    {
+        $pre_regex   = '#<group:include([^>]*)/>#';
+        $pre_replace = '[group:include$1]';
+        return preg_replace($pre_regex, $pre_replace, $html);
+    }
 
-	/**
-	 * Post-filter hook
-	 *
-	 * @param   string  $html
-	 * @param   array   $config
-	 * @param   string  $context
-	 * @return  string
-	 */
-	public function postFilter($html, $config, $context)
-	{
-		$pre_regex   = '#\[group:include([^\]]*)\]#';
-		$pre_replace = '<group:include$1/>';
-		return preg_replace($pre_regex, $pre_replace, $html);
-	}
+    /**
+     * Post-filter hook
+     *
+     * @param   string  $html
+     * @param   array   $config
+     * @param   string  $context
+     * @return  string
+     */
+    public function postFilter($html, $config, $context)
+    {
+        $pre_regex   = '#\[group:include([^\]]*)\]#';
+        $pre_replace = '<group:include$1/>';
+        return preg_replace($pre_regex, $pre_replace, $html);
+    }
 }

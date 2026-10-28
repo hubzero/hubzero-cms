@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,29 +17,27 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140627091431ComSupport extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableHasField('#__support_attachments', 'ticket'))
-		{
-			$query = "ALTER TABLE `#__support_attachments` CHANGE `ticket` `ticket` INT(11)  NOT NULL  DEFAULT '0';";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableHasField('#__support_attachments', 'ticket')) {
+            $query = "ALTER TABLE `#__support_attachments` CHANGE `ticket` `ticket` INT(11)  NOT NULL  DEFAULT '0';";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasField('#__support_attachments', 'ticket'))
-		{
-			$query = "ALTER TABLE `#__support_attachments` CHANGE `ticket` `ticket` INT(11) unsigned NOT NULL  DEFAULT '0';";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasField('#__support_attachments', 'ticket')) {
+            $query = "ALTER TABLE `#__support_attachments` CHANGE `ticket` `ticket` INT(11) unsigned NOT NULL  DEFAULT '0';";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

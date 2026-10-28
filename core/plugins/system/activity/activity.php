@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,25 +14,23 @@ defined('_HZEXEC_') or die();
  */
 class plgSystemActivity extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Log an activity
-	 *
-	 * @param   array  $activity
-	 * @param   array  $recipients
-	 * @return  void
-	 */
-	public function logActivity($activity, $recipients = array())
-	{
-		if (!App::isSite() && !App::isApi())
-		{
-			return;
-		}
+    /**
+     * Log an activity
+     *
+     * @param   array  $activity
+     * @param   array  $recipients
+     * @return  void
+     */
+    public function logActivity($activity, $recipients = array())
+    {
+        if (!App::isSite() && !App::isApi()) {
+            return;
+        }
 
-		if (!$activity)
-		{
-			return;
-		}
+        if (!$activity) {
+            return;
+        }
 
-		Hubzero\Activity\Log::log($activity, $recipients);
-	}
+        Hubzero\Activity\Log::log($activity, $recipients);
+    }
 }

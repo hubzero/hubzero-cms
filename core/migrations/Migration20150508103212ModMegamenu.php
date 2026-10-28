@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,19 +16,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150508103212ModMegamenu extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteModuleEntry('mod_megamenu');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteModuleEntry('mod_megamenu');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addModuleEntry('mod_megamenu', 1, '');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addModuleEntry('mod_megamenu', 1, '');
+    }
 }

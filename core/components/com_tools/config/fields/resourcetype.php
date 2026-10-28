@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,33 +16,32 @@ use Html;
  */
 class Resourcetype extends Select
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'resourcetype';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'resourcetype';
 
-	/**
-	 * Method to get the field options.
-	 *
-	 * @return  array  The field option objects.
-	 */
-	protected function getOptions()
-	{
-		include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
+    /**
+     * Method to get the field options.
+     *
+     * @return  array  The field option objects.
+     */
+    protected function getOptions()
+    {
+        include_once \Component::path('com_resources') . DS . 'models' . DS . 'type.php';
 
-		$types = \Components\Resources\Models\Type::getMajorTypes();
+        $types = \Components\Resources\Models\Type::getMajorTypes();
 
-		$options = array();
+        $options = array();
 
-		foreach ($types as $type)
-		{
-			$options[] = Html::select('option', $type->id, stripslashes($type->type), 'value', 'text');
-		}
+        foreach ($types as $type) {
+            $options[] = Html::select('option', $type->id, stripslashes($type->type), 'value', 'text');
+        }
 
-		$options = array_merge(parent::getOptions(), $options);
+        $options = array_merge(parent::getOptions(), $options);
 
-		return $options;
-	}
+        return $options;
+    }
 }

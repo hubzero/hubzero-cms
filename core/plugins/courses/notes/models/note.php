@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,68 +15,68 @@ use Hubzero\Database\Relational;
  */
 class Note extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'courses_member';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'courses_member';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'scope'      => 'notempty',
-		'scope_id'   => 'positive|nonzero',
-		'section_id' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'scope'      => 'notempty',
+        'scope_id'   => 'positive|nonzero',
+        'section_id' => 'positive|nonzero'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'created_by',
-		'state'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'created_by',
+        'state'
+    );
 
-	/**
-	 * Generates automatic state field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticState()
-	{
-		$data['state'] = (isset($data['state']) ? $data['state'] : 1);
-		return $data['state'];
-	}
+    /**
+     * Generates automatic state field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticState()
+    {
+        $data['state'] = (isset($data['state']) ? $data['state'] : 1);
+        return $data['state'];
+    }
 
-	/**
-	 * Get the parent user associated with this entry
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'created_by');
-	}
+    /**
+     * Get the parent user associated with this entry
+     *
+     * @return  object
+     */
+    public function creator()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'created_by');
+    }
 }

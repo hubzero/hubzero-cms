@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,28 +15,28 @@ use Plugins\Content\Formathtml\Macro;
  */
 class Image extends Macro
 {
-	/**
-	 * Allow macro in partial parsing?
-	 *
-	 * @var string
-	 */
-	public $allowPartial = true;
+    /**
+     * Allow macro in partial parsing?
+     *
+     * @var string
+     */
+    public $allowPartial = true;
 
-	/**
-	 * Container for element attributes
-	 *
-	 * @var array
-	 */
-	private $attr = array();
+    /**
+     * Container for element attributes
+     *
+     * @var array
+     */
+    private $attr = array();
 
-	/**
-	 * Returns description of macro, use, and accepted arguments
-	 *
-	 * @return     string
-	 */
-	public function description()
-	{
-		$txt = "Embed an image in wiki-formatted text.
+    /**
+     * Returns description of macro, use, and accepted arguments
+     *
+     * @return     string
+     */
+    public function description()
+    {
+        $txt = "Embed an image in wiki-formatted text.
 
 The first argument is the file specification. The file specification may reference attachments or files in three ways:
  * `module:id:file`, where module can be either '''wiki''' or '''ticket''', to refer to the attachment named ''file'' of the specified wiki page or ticket.
@@ -73,8 +74,8 @@ You can use image from other page, other ticket or other module.
 [[Image(htdocs:foo/bar.png)]]      # image file in project htdocs dir.
 }}}
 ";
-		$txt = array();
-		$txt['wiki'] = "Embed an image in wiki-formatted text. The first argument is the file specification. The remaining arguments are optional and allow configuring the attributes and style of the rendered `img` element:
+        $txt = array();
+        $txt['wiki'] = "Embed an image in wiki-formatted text. The first argument is the file specification. The remaining arguments are optional and allow configuring the attributes and style of the rendered `img` element:
  * digits and unit are interpreted as the size (ex. 120, 25%) for the image
  * `right`, `left`, `top` or `bottom` are interpreted as the alignment for the image
  * `link=some Link...` replaces the link to the image source by the one specified using Link. If no value is specified, the link is simply removed.
@@ -91,7 +92,7 @@ Examples:
  * Image(photo.jpg, align=right)  # aligned by attribute
  * Image(photo.jpg, 120px, class=mypic) # with image width size and a CSS class
 ";
-$txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is the file specification. The remaining arguments are optional and allow configuring the attributes and style of the rendered <code>&lt;img&gt;</code> element:</p>
+        $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is the file specification. The remaining arguments are optional and allow configuring the attributes and style of the rendered <code>&lt;img&gt;</code> element:</p>
 <ul>
 <li>digits and unit are interpreted as the size (ex. 120, 25%) for the image</li>
 <li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are interpreted as the alignment for the image</li>
@@ -112,435 +113,371 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 <li><code>[[Image(photo.jpg, 120px, class=mypic)]]</code> # with image width size and a CSS class</li>
 </ul>';
 
-		return $txt['html'];
-	}
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output based on passed arguments
-	 *
-	 * @return     string HTML image tag on success or error message on failure
-	 */
-	public function render()
-	{
-		$content = strip_tags($this->args);
+    /**
+     * Generate macro output based on passed arguments
+     *
+     * @return     string HTML image tag on success or error message on failure
+     */
+    public function render()
+    {
+        $content = strip_tags($this->args);
 
-		// args will be null if the macro is called without parenthesis.
-		if (!$content)
-		{
-			return '';
-		}
+        // args will be null if the macro is called without parenthesis.
+        if (!$content) {
+            return '';
+        }
 
-		// Parse arguments
-		// We expect the 1st argument to be a filename
-		$args   = explode(',', $content);
-		$file   = array_shift($args);
+        // Parse arguments
+        // We expect the 1st argument to be a filename
+        $args   = explode(',', $content);
+        $file   = array_shift($args);
 
-		$this->attr   = array();
-		$this->attr['href']  = '';
-		$this->attr['style'] = array();
+        $this->attr   = array();
+        $this->attr['href']  = '';
+        $this->attr['style'] = array();
 
-		// Get single attributes
-		// EX: [[Image(myimage.png, nolink, right)]]
-		$argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
-		// Get quoted attribute/value pairs
-		// EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
-		// Get non-quoted attribute/value pairs
-		// EX: [[Image(myimage.png, width=100)]]
-		$argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
+        // Get single attributes
+        // EX: [[Image(myimage.png, nolink, right)]]
+        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', array(&$this, 'parseSingleAttribute'), $content);
+        // Get quoted attribute/value pairs
+        // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
+        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', array(&$this, 'parseAttributeValuePair'), $content);
+        // Get non-quoted attribute/value pairs
+        // EX: [[Image(myimage.png, width=100)]]
+        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', array(&$this, 'parseAttributeValuePair'), $content);
 
-		$attr = $this->attr;
+        $attr = $this->attr;
 
-		// Get wiki config
-		$this->config = \Component::params('com_wiki');
-		if ($this->filepath != '')
-		{
-			$this->config->set('filepath', $this->filepath);
-		}
-		$imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
-		$imgs = array_map('trim', $imgs);
-		$imgs = array_map('strtolower', $imgs);
-		$this->imgs = $imgs;
+        // Get wiki config
+        $this->config = \Component::params('com_wiki');
+        if ($this->filepath != '') {
+            $this->config->set('filepath', $this->filepath);
+        }
+        $imgs = explode(',', $this->config->get('img_ext', 'jpg, jpeg, jpe, gif, png'));
+        $imgs = array_map('trim', $imgs);
+        $imgs = array_map('strtolower', $imgs);
+        $this->imgs = $imgs;
 
-		$ret = false;
-		// Is it numeric?
-		if (is_numeric($file))
-		{
-			include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
+        $ret = false;
+        // Is it numeric?
+        if (is_numeric($file)) {
+            include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
 
-			// Get resource by ID
-			$attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
+            // Get resource by ID
+            $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
-			// Check for file existence
-			if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true)))
-			{
-				$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
-				if (!$attr['desc'])
-				{
-					$attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
-				}
+            // Check for file existence
+            if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) {
+                $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
+                if (!$attr['desc']) {
+                    $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
+                }
 
-				$ret = true;
-			}
-		}
-		// Check for file existence
-		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
-		{
-			$attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
+                $ret = true;
+            }
+        }
+        // Check for file existence
+        else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) {
+            $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
-			$ret = true;
-		}
+            $ret = true;
+        }
 
-		// Does the file exist?
-		if ($ret)
-		{
-			if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs))
-			{
-				return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File provided is not an allowed image type)';
-			}
+        // Does the file exist?
+        if ($ret) {
+            if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+                return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File provided is not an allowed image type)';
+            }
 
-			// Return HTML
-			return $this->_embed($file, $attr);
-		}
-		else
-		{
-			// Return error message. strip_tags() on the argument drops the angle
-			// brackets but not the quotes, and this string is spliced into page
-			// HTML, so escape it properly.
-			return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->_path($file);
-		}
-	}
+            // Return HTML
+            return $this->_embed($file, $attr);
+        } else {
+            // Return error message. strip_tags() on the argument drops the angle
+            // brackets but not the quotes, and this string is spliced into page
+            // HTML, so escape it properly.
+            return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->_path($file);
+        }
+    }
 
-	/**
-	 * Parse attribute=value pairs
-	 * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
-	 *
-	 * @param      array $matches Values matching attr=val pairs
-	 * @return     void
-	 */
-	public function parseAttributeValuePair($matches)
-	{
-		$key = strtolower(trim($matches[1]));
-		$val = trim($matches[2]);
+    /**
+     * Parse attribute=value pairs
+     * EX: [[Image(myimage.png, desc="My description, contains, commas", width=200)]]
+     *
+     * @param      array $matches Values matching attr=val pairs
+     * @return     void
+     */
+    public function parseAttributeValuePair($matches)
+    {
+        $key = strtolower(trim($matches[1]));
+        $val = trim($matches[2]);
 
-		$size   = '/^[0-9]+(%|px|em)+$/';
-		$attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
-		$quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
+        $size   = '/^[0-9]+(%|px|em)+$/';
+        $attrs  = '/(alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap)=(.+)/';
+        $quoted = "/(?:[\"'])(.*)(?:[\"'])$/";
 
-		// Set width if just a pixel size is given
-		// e.g., [[File(myfile.jpg, width=120px)]]
-		if (preg_match($size, $val, $matches) && $key != 'border')
-		{
-			if ($matches[0])
-			{
-				$this->attr['style']['width'] = $val;
-				//$this->attr['width'] = $val;
-				return;
-			}
-		}
+        // Set width if just a pixel size is given
+        // e.g., [[File(myfile.jpg, width=120px)]]
+        if (preg_match($size, $val, $matches) && $key != 'border') {
+            if ($matches[0]) {
+                $this->attr['style']['width'] = $val;
+                //$this->attr['width'] = $val;
+                return;
+            }
+        }
 
-		if (is_numeric($val))
-		{
-			$this->attr['style']['width'] = $val . 'px';
-			$this->attr['width'] = $val;
-		}
-		// Specific call to NOT link an image
-		// Links images by default
-		if ($key == 'nolink')
-		{
-			$this->attr['href'] = 'none';
-			return;
-		}
-		// Check for a specific link given
-		if ($key == 'link')
-		{
-			$this->attr['href'] = 'none';
+        if (is_numeric($val)) {
+            $this->attr['style']['width'] = $val . 'px';
+            $this->attr['width'] = $val;
+        }
+        // Specific call to NOT link an image
+        // Links images by default
+        if ($key == 'nolink') {
+            $this->attr['href'] = 'none';
+            return;
+        }
+        // Check for a specific link given
+        if ($key == 'link') {
+            $this->attr['href'] = 'none';
 
-			if ($val)
-			{
-				// Only http(s)/mailto/ftp URLs or site-relative paths may replace the
-				// link target; any other scheme (javascript:, data:, ...) falls
-				// back to the image's own link.
-				// Browsers drop whitespace and control characters from a URL
-				// before reading its scheme ("java\tscript:" is javascript:),
-				// so test the scheme on the same stripped form
-				$probe = preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
-				if (preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
-				 && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp')))
-				{
-					$this->attr['href'] = '';
-					return;
-				}
+            if ($val) {
+                // Only http(s)/mailto/ftp URLs or site-relative paths may replace the
+                // link target; any other scheme (javascript:, data:, ...) falls
+                // back to the image's own link.
+                // Browsers drop whitespace and control characters from a URL
+                // before reading its scheme ("java\tscript:" is javascript:),
+                // so test the scheme on the same stripped form
+                $probe = preg_replace('/[\x00-\x20\x7f]+/', '', (string) $val);
+                if (
+                    preg_match('/^([a-z][a-z0-9+.\-]*):/i', $probe, $m)
+                    && !in_array(strtolower($m[1]), array('http', 'https', 'mailto', 'ftp'))
+                ) {
+                    $this->attr['href'] = '';
+                    return;
+                }
 
-				$this->attr['href'] = $val;
+                $this->attr['href'] = $val;
 
-				$urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-				if (preg_match("/$urlPtrn/", $val))
-				{
-					$this->attr['rel']  = 'external';
-				}
-			}
-			return;
-		}
-		// Check for alignment, no key given
-		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
-		{
-			if ($key == 'center')
-			{
-				$this->attr['style']['display'] = 'block';
-				$this->attr['style']['margin-right'] = 'auto';
-				$this->attr['style']['margin-left'] = 'auto';
-			}
-			else
-			{
-				$this->attr['style']['float'] = $key;
-				if ($key == 'left')
-				{
-					$this->attr['style']['margin-right'] = '1em';
-				}
-				else if ($key == 'right')
-				{
-					$this->attr['style']['margin-left'] = '1em';
-				}
-			}
-			return;
-		}
+                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+                if (preg_match("/$urlPtrn/", $val)) {
+                    $this->attr['rel']  = 'external';
+                }
+            }
+            return;
+        }
+        // Check for alignment, no key given
+        // e.g., [[File(myfile.jpg, left)]]
+        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+            if ($key == 'center') {
+                $this->attr['style']['display'] = 'block';
+                $this->attr['style']['margin-right'] = 'auto';
+                $this->attr['style']['margin-left'] = 'auto';
+            } else {
+                $this->attr['style']['float'] = $key;
+                if ($key == 'left') {
+                    $this->attr['style']['margin-right'] = '1em';
+                } else if ($key == 'right') {
+                    $this->attr['style']['margin-left'] = '1em';
+                }
+            }
+            return;
+        }
 
-		// Look for any other attributes
-		if ($key == 'align')
-		{
-			if ($val == 'center')
-			{
-				$this->attr['style']['display'] = 'block';
-				$this->attr['style']['margin-right'] = 'auto';
-				$this->attr['style']['margin-left'] = 'auto';
-			}
-			else
-			{
-				$this->attr['style']['float'] = $val;
-				if ($val == 'left')
-				{
-					$this->attr['style']['margin-right'] = '1em';
-				}
-				else if ($val == 'right')
-				{
-					$this->attr['style']['margin-left'] = '1em';
-				}
-			}
-		}
-		else if ($key == 'border')
-		{
-			$this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
-		}
-		else
-		{
-			$this->attr[$key] = $val;
-		}
-		return;
-	}
+        // Look for any other attributes
+        if ($key == 'align') {
+            if ($val == 'center') {
+                $this->attr['style']['display'] = 'block';
+                $this->attr['style']['margin-right'] = 'auto';
+                $this->attr['style']['margin-left'] = 'auto';
+            } else {
+                $this->attr['style']['float'] = $val;
+                if ($val == 'left') {
+                    $this->attr['style']['margin-right'] = '1em';
+                } else if ($val == 'right') {
+                    $this->attr['style']['margin-left'] = '1em';
+                }
+            }
+        } else if ($key == 'border') {
+            $this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
+        } else {
+            $this->attr[$key] = $val;
+        }
+        return;
+    }
 
-	/**
-	 * Handle single attribute values
-	 * EX: [[Image(myimage.png, nolink, right)]]
-	 *
-	 * @param      array $matches Values matching the single attribute pattern
-	 * @return     void
-	 */
-	public function parseSingleAttribute($matches)
-	{
-		$key = strtolower(trim($matches[1]));
+    /**
+     * Handle single attribute values
+     * EX: [[Image(myimage.png, nolink, right)]]
+     *
+     * @param      array $matches Values matching the single attribute pattern
+     * @return     void
+     */
+    public function parseSingleAttribute($matches)
+    {
+        $key = strtolower(trim($matches[1]));
 
-		// Set width if just a pixel size is given
-		// e.g., [[File(myfile.jpg, 120px)]]
-		$size   = '/[0-9+](%|px|em)+$/';
-		if (preg_match($size, $key, $matches))
-		{
-			if ($matches[0])
-			{
-				$this->attr['style']['width'] = $key;
-				//$this->attr['width'] = $key;
-				return;
-			}
-		}
+        // Set width if just a pixel size is given
+        // e.g., [[File(myfile.jpg, 120px)]]
+        $size   = '/[0-9+](%|px|em)+$/';
+        if (preg_match($size, $key, $matches)) {
+            if ($matches[0]) {
+                $this->attr['style']['width'] = $key;
+                //$this->attr['width'] = $key;
+                return;
+            }
+        }
 
-		if (is_numeric($key))
-		{
-			$this->attr['style']['width'] = $key . 'px';
-			$this->attr['width'] = $key;
-		}
+        if (is_numeric($key)) {
+            $this->attr['style']['width'] = $key . 'px';
+            $this->attr['width'] = $key;
+        }
 
-		// Specific call to NOT link an image
-		// Links images by default
-		if ($key == 'nolink')
-		{
-			$this->attr['href'] = 'none';
-			return;
-		}
+        // Specific call to NOT link an image
+        // Links images by default
+        if ($key == 'nolink') {
+            $this->attr['href'] = 'none';
+            return;
+        }
 
-		// Check for alignment, no key given
-		// e.g., [[File(myfile.jpg, left)]]
-		if (in_array($key, array('left', 'right', 'top', 'bottom', 'center')))
-		{
-			if ($key == 'center')
-			{
-				$this->attr['style']['display'] = 'block';
-				$this->attr['style']['margin-right'] = 'auto';
-				$this->attr['style']['margin-left'] = 'auto';
-			}
-			else
-			{
-				$this->attr['style']['display'] = 'block';
-				$this->attr['style']['float'] = $key;
-				if ($key == 'left')
-				{
-					$this->attr['style']['margin-right'] = '1em';
-				}
-				else if ($key == 'right')
-				{
-					$this->attr['style']['margin-left'] = '1em';
-				}
-			}
-			return;
-		}
+        // Check for alignment, no key given
+        // e.g., [[File(myfile.jpg, left)]]
+        if (in_array($key, array('left', 'right', 'top', 'bottom', 'center'))) {
+            if ($key == 'center') {
+                $this->attr['style']['display'] = 'block';
+                $this->attr['style']['margin-right'] = 'auto';
+                $this->attr['style']['margin-left'] = 'auto';
+            } else {
+                $this->attr['style']['display'] = 'block';
+                $this->attr['style']['float'] = $key;
+                if ($key == 'left') {
+                    $this->attr['style']['margin-right'] = '1em';
+                } else if ($key == 'right') {
+                    $this->attr['style']['margin-left'] = '1em';
+                }
+            }
+            return;
+        }
 
-		return;
-	}
+        return;
+    }
 
-	/**
-	 * Generate an absolute path to a file stored on the system
-	 * Assumes $file is relative path but, if $file starts with / then assumes absolute
-	 *
-	 * @param      string  $file  Filename
-	 * @param      boolean $alt
-	 * @return     string
-	 */
-	private function _path($file, $alt=false)
-	{
-		if (substr($file, 0, 1) == DS)
-		{
-			$path = PATH_APP . $file;
-		}
-		else
-		{
-			if ($alt)
-			{
-				$nid = null;
-				$bits = explode('/', $this->config->get('filepath', '/site/wiki'));
-				foreach ($bits as $bit)
-				{
-					if (is_numeric($bit))
-					{
-						$nid = $bit;
-						$id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
-						break;
-					}
-				}
-				if ($nid)
-				{
-					$this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
-				}
-			}
-			$path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
-			$path .= ($this->pageid) ? DS . $this->pageid : '';
-			$path .= DS . $file;
-		}
+    /**
+     * Generate an absolute path to a file stored on the system
+     * Assumes $file is relative path but, if $file starts with / then assumes absolute
+     *
+     * @param      string  $file  Filename
+     * @param      boolean $alt
+     * @return     string
+     */
+    private function _path($file, $alt = false)
+    {
+        if (substr($file, 0, 1) == DS) {
+            $path = PATH_APP . $file;
+        } else {
+            if ($alt) {
+                $nid = null;
+                $bits = explode('/', $this->config->get('filepath', '/site/wiki'));
+                foreach ($bits as $bit) {
+                    if (is_numeric($bit)) {
+                        $nid = $bit;
+                        $id = preg_replace('~^[0]*([1-9][0-9]*)$~', '$1', intval($bit));
+                        break;
+                    }
+                }
+                if ($nid) {
+                    $this->config->set('filepath', str_replace($nid, $id, $this->config->get('filepath')));
+                }
+            }
+            $path  = PATH_APP . DS . trim($this->config->get('filepath', '/site/wiki'), DS);
+            $path .= ($this->pageid) ? DS . $this->pageid : '';
+            $path .= DS . $file;
+        }
 
-		return $path;
-	}
+        return $path;
+    }
 
-	/**
-	 * Generate a link to a file
-	 * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
-	 *
-	 * @param      string $file Filename
-	 * @return     string
-	 */
-	private function _link($file)
-	{
-		$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS)
-		{
-			return $file;
-		}
+    /**
+     * Generate a link to a file
+     * If $file starts with (http|https|mailto|ftp|gopher|feed|news|file), then it's an external URL and returned
+     *
+     * @param      string $file Filename
+     * @return     string
+     */
+    private function _link($file)
+    {
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
+            return $file;
+        }
 
-		$file = trim($file, DS);
+        $file = trim($file, DS);
 
-		if (\Request::getString('format') == 'pdf')
-		{
-			return $this->_path($file);
-		}
-		$link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
-		if ($this->scope)
-		{
-			$scope = trim($this->scope, DS);
+        if (\Request::getString('format') == 'pdf') {
+            return $this->_path($file);
+        }
+        $link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
+        if ($this->scope) {
+            $scope = trim($this->scope, DS);
 
-			$link .= $scope . DS;
-		}
-		$link .= $this->pagename . DS . 'Image:' . $file;
+            $link .= $scope . DS;
+        }
+        $link .= $this->pagename . DS . 'Image:' . $file;
 
-		return \Route::url($link);
-	}
+        return \Route::url($link);
+    }
 
-	/**
-	 * Generates HTML to embed an <img>
-	 *
-	 * @param      string $file File to embed
-	 * @param      array  $attr Attributes to apply to the HTML
-	 * @return     string
-	 */
-	private function _embed($file, $attr=array())
-	{
-		$attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
-		if (!$attr['alt'])
-		{
-			$attr['alt'] = $file;
-		}
+    /**
+     * Generates HTML to embed an <img>
+     *
+     * @param      string $file File to embed
+     * @param      array  $attr Attributes to apply to the HTML
+     * @return     string
+     */
+    private function _embed($file, $attr = array())
+    {
+        $attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
+        if (!$attr['alt']) {
+            $attr['alt'] = $file;
+        }
 
-		$styles = '';
-		if (count($attr['style']) > 0)
-		{
-			$s = array();
-			foreach ($attr['style'] as $k => $v)
-			{
-				$s[] = strtolower($k) . ':' . $v;
-			}
-			$styles = implode('; ', $s);
-		}
-		$attr['style'] = '';
+        $styles = '';
+        if (count($attr['style']) > 0) {
+            $s = array();
+            foreach ($attr['style'] as $k => $v) {
+                $s[] = strtolower($k) . ':' . $v;
+            }
+            $styles = implode('; ', $s);
+        }
+        $attr['style'] = '';
 
-		$attribs = array();
-		foreach ($attr as $k => $v)
-		{
-			$k = strtolower($k);
-			if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v)
-			{
-				$attribs[] = $k . '="' . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false) . '"';
-			}
-		}
+        $attribs = array();
+        foreach ($attr as $k => $v) {
+            $k = strtolower($k);
+            if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v) {
+                $attribs[] = $k . '="' . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false) . '"';
+            }
+        }
 
-		$html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
+        $html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
 
-		$img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
+        $img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
 
-		if ($attr['href'] == 'none')
-		{
-			$html .= $img;
-		}
-		else
-		{
-			$attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
-			$attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
+        if ($attr['href'] == 'none') {
+            $html .= $img;
+        } else {
+            $attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
+            $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-			$html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
-		}
-		if (isset($attr['desc']) && $attr['desc'])
-		{
-			// The attachment description is free text entered by the uploader
-			$html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
-		}
-		$html .= '</span>';
+            $html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
+        }
+        if (isset($attr['desc']) && $attr['desc']) {
+            // The attachment description is free text entered by the uploader
+            $html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
+        }
+        $html .= '</span>';
 
-		return $html;
-	}
+        return $html;
+    }
 }

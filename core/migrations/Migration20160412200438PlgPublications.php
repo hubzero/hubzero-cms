@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,23 +13,23 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20160412200438PlgPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('publications', 'googlescholar');
-		$this->addPluginEntry('publications', 'opengraph');
-		$this->addPluginEntry('publications', 'dublincore');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('publications', 'googlescholar');
+        $this->addPluginEntry('publications', 'opengraph');
+        $this->addPluginEntry('publications', 'dublincore');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('publications', 'googlescholar');
-		$this->deletePluginEntry('publications', 'opengraph');
-		$this->deletePluginEntry('publications', 'dublincore');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('publications', 'googlescholar');
+        $this->deletePluginEntry('publications', 'opengraph');
+        $this->deletePluginEntry('publications', 'dublincore');
+    }
 }

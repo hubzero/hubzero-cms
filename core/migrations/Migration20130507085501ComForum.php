@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,51 +16,45 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130507085501ComForum extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "";
 
-		if (!$this->db->tableHasField('#__forum_posts', 'lft'))
-		{
-			$query .= "ALTER TABLE `#__forum_posts` ADD `lft` int(11) NOT NULL DEFAULT '0';\n";
-		}
+        if (!$this->db->tableHasField('#__forum_posts', 'lft')) {
+            $query .= "ALTER TABLE `#__forum_posts` ADD `lft` int(11) NOT NULL DEFAULT '0';\n";
+        }
 
-		if (!$this->db->tableHasField('#__forum_posts', 'rgt'))
-		{
-			$query .= "ALTER TABLE `#__forum_posts` ADD `rgt` int(11) NOT NULL DEFAULT '0';";
-		}
+        if (!$this->db->tableHasField('#__forum_posts', 'rgt')) {
+            $query .= "ALTER TABLE `#__forum_posts` ADD `rgt` int(11) NOT NULL DEFAULT '0';";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "";
 
-		if ($this->db->tableHasField('#__forum_posts', 'lft'))
-		{
-			$query .= "ALTER TABLE `#__forum_posts` DROP `lft`;\n";
-		}
+        if ($this->db->tableHasField('#__forum_posts', 'lft')) {
+            $query .= "ALTER TABLE `#__forum_posts` DROP `lft`;\n";
+        }
 
-		if ($this->db->tableHasField('#__forum_posts', 'rgt'))
-		{
-			$query .= "ALTER TABLE `#__forum_posts` DROP `rgt`;";
-		}
+        if ($this->db->tableHasField('#__forum_posts', 'rgt')) {
+            $query .= "ALTER TABLE `#__forum_posts` DROP `rgt`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

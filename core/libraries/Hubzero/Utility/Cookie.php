@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,74 +15,69 @@ namespace Hubzero\Utility;
  */
 class Cookie
 {
-	/**
-	 * Drop a cookie
-	 *
-	 * @param  (string) $namespace - make sure the cookie name is unique
-	 * @param  (time)   $lifetime  - how long the cookie should last
-	 * @param  (array)  $data      - data to be saved in cookie
-	 * @return void
-	 **/
-	public static function bake($namespace, $lifetime, $data=array())
-	{
-		$hash   = \App::hash(\App::get('client')->name . ':' . $namespace);
+    /**
+     * Drop a cookie
+     *
+     * @param  (string) $namespace - make sure the cookie name is unique
+     * @param  (time)   $lifetime  - how long the cookie should last
+     * @param  (array)  $data      - data to be saved in cookie
+     * @return void
+     **/
+    public static function bake($namespace, $lifetime, $data = array())
+    {
+        $hash   = \App::hash(\App::get('client')->name . ':' . $namespace);
 
-		$key = \App::hash('');
-		$crypt = new \Hubzero\Encryption\Encrypter(
-			new \Hubzero\Encryption\Cipher\Simple,
-			new \Hubzero\Encryption\Key('simple', $key, $key)
-		);
-		$cookie = $crypt->encrypt(serialize($data));
+        $key = \App::hash('');
+        $crypt = new \Hubzero\Encryption\Encrypter(
+            new \Hubzero\Encryption\Cipher\Simple(),
+            new \Hubzero\Encryption\Key('simple', $key, $key)
+        );
+        $cookie = $crypt->encrypt(serialize($data));
 
-		// Determine whether cookie should be 'secure' or not
-		$secure   = false;
-		$forceSsl = \Config::get('force_ssl', false);
+        // Determine whether cookie should be 'secure' or not
+        $secure   = false;
+        $forceSsl = \Config::get('force_ssl', false);
 
-		if (\App::isAdmin() && $forceSsl >= 1)
-		{
-			$secure = true;
-		}
-		else if (\App::isSite() && $forceSsl == 2)
-		{
-			$secure = true;
-		}
+        if (\App::isAdmin() && $forceSsl >= 1) {
+            $secure = true;
+        } else if (\App::isSite() && $forceSsl == 2) {
+            $secure = true;
+        }
 
-		// Set the actual cookie
-		setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
-	}
+        // Set the actual cookie
+        setcookie($hash, $cookie, $lifetime, '/', '', $secure, true);
+    }
 
-	/**
-	 * Retrieve a cookie
-	 *
-	 * @param  (string) $namespace - make sure the cookie name is unique
-	 * @return (object) $cookie data
-	 **/
-	public static function eat($namespace)
-	{
-		$hash  = \App::hash(\App::get('client')->name . ':' . $namespace);
+    /**
+     * Retrieve a cookie
+     *
+     * @param  (string) $namespace - make sure the cookie name is unique
+     * @return (object) $cookie data
+     **/
+    public static function eat($namespace)
+    {
+        $hash  = \App::hash(\App::get('client')->name . ':' . $namespace);
 
-		$key = \App::hash('');
-		$crypt = new \Hubzero\Encryption\Encrypter(
-			new \Hubzero\Encryption\Cipher\Simple,
-			new \Hubzero\Encryption\Key('simple', $key, $key)
-		);
+        $key = \App::hash('');
+        $crypt = new \Hubzero\Encryption\Encrypter(
+            new \Hubzero\Encryption\Cipher\Simple(),
+            new \Hubzero\Encryption\Key('simple', $key, $key)
+        );
 
-		if ($str = \App::get('request')->getString($hash, '', 'cookie'))
-		{
-			$sstr   = $crypt->decrypt($str);
-			$cookie = @unserialize($sstr, array('allowed_classes' => false));
+        if ($str = \App::get('request')->getString($hash, '', 'cookie')) {
+            $sstr   = $crypt->decrypt($str);
+            $cookie = @unserialize($sstr, array('allowed_classes' => false));
 
-			// A cookie baked under another secret, or plain garbage, does not
-			// unserialize; (object) false is an empty but truthy object whose
-			// properties every consumer then reads
-			if (!is_array($cookie))
-			{
-				return false;
-			}
+            // A cookie baked under another secret, or plain garbage, does not
+            // unserialize; (object) false is an empty but truthy object whose
+            // properties every consumer then reads
+            if (!is_array($cookie)) {
+                return false;
+            }
 
-			return (object)$cookie;
-		}
+            return (object)$cookie;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -20,35 +21,33 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260707000006ComMassmailQueue extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__massmail_queue_samples'))
-		{
-			$this->db->setQuery(
-				"CREATE TABLE `#__massmail_queue_samples` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__massmail_queue_samples')) {
+            $this->db->setQuery(
+                "CREATE TABLE `#__massmail_queue_samples` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`recorded` datetime DEFAULT NULL,
 					`depth` int(11) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`id`),
 					KEY `idx_recorded` (`recorded`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-			);
-			$this->db->query();
-		}
-	}
+            );
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__massmail_queue_samples'))
-		{
-			$this->db->setQuery("DROP TABLE `#__massmail_queue_samples`;");
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__massmail_queue_samples')) {
+            $this->db->setQuery("DROP TABLE `#__massmail_queue_samples`;");
+            $this->db->query();
+        }
+    }
 }

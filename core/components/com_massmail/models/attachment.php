@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -14,39 +15,39 @@ use Hubzero\Database\Relational;
  */
 class Attachment extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'massmail';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'massmail';
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created'
+    );
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'mailing_id' => 'positive|nonzero',
-		'filename'   => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'mailing_id' => 'positive|nonzero',
+        'filename'   => 'notempty'
+    );
 
-	/**
-	 * The mailing this attachment belongs to
-	 *
-	 * @return  object
-	 */
-	public function mailing()
-	{
-		return $this->belongsToOne('Mailing', 'mailing_id');
-	}
+    /**
+     * The mailing this attachment belongs to
+     *
+     * @return  object
+     */
+    public function mailing()
+    {
+        return $this->belongsToOne('Mailing', 'mailing_id');
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,35 +14,32 @@ defined('_HZEXEC_') or die();
  */
 class plgSystemXFeed extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Perform actions after initialization
-	 *
-	 * @return  void
-	 */
-	public function onAfterInitialise()
-	{
-		if (!App::isSite())
-		{
-			return;
-		}
+    /**
+     * Perform actions after initialization
+     *
+     * @return  void
+     */
+    public function onAfterInitialise()
+    {
+        if (!App::isSite()) {
+            return;
+        }
 
-		$uri = Request::getString('REQUEST_URI', null, 'server');
-		$bits = explode('?', $uri);
-		$bit = $bits[0];
+        $uri = Request::getString('REQUEST_URI', null, 'server');
+        $bits = explode('?', $uri);
+        $bit = $bits[0];
 
-		if (!strpos($bit, '.'))
-		{
-			return;
-		}
+        if (!strpos($bit, '.')) {
+            return;
+        }
 
-		$bi = explode('.', $bit);
-		$b = end($bi);
-		$b = strtolower($b);
+        $bi = explode('.', $bit);
+        $b = end($bi);
+        $b = strtolower($b);
 
-		if ($b == 'rss' || $b == 'atom')
-		{
-			Request::setVar('no_html', 1);
-			Request::setVar('format', 'raw');
-		}
-	}
+        if ($b == 'rss' || $b == 'atom') {
+            Request::setVar('no_html', 1);
+            Request::setVar('format', 'raw');
+        }
+    }
 }

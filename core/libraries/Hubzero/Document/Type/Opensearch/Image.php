@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,31 +17,31 @@ use Hubzero\Base\Obj;
  */
 class Image extends Obj
 {
-	/**
-	 * The images MIME type
-	 *
-	 * @var  string
-	 */
-	public $type = '';
+    /**
+     * The images MIME type
+     *
+     * @var  string
+     */
+    public $type = '';
 
-	/**
-	 * URL of the image or the image as base64 encoded value
-	 *
-	 * @var  string
-	 */
-	public $data = '';
+    /**
+     * URL of the image or the image as base64 encoded value
+     *
+     * @var  string
+     */
+    public $data = '';
 
-	/**
-	 * The image's width
-	 *
-	 * @var  string
-	 */
-	public $width;
+    /**
+     * The image's width
+     *
+     * @var  string
+     */
+    public $width;
 
-	/**
-	 * The image's height
-	 *
-	 * @var  string
-	 */
-	public $height;
+    /**
+     * The image's height
+     *
+     * @var  string
+     */
+    public $height;
 }

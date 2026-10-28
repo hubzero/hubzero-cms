@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -16,29 +17,31 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260707000007ComMassmailLastSent extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__massmail_postfix_state')
-		 && !$this->db->tableHasField('#__massmail_postfix_state', 'last_sent'))
-		{
-			$this->db->setQuery("ALTER TABLE `#__massmail_postfix_state` ADD COLUMN `last_sent` datetime DEFAULT NULL AFTER `last_offset`;");
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (
+            $this->db->tableExists('#__massmail_postfix_state')
+            && !$this->db->tableHasField('#__massmail_postfix_state', 'last_sent')
+        ) {
+            $this->db->setQuery("ALTER TABLE `#__massmail_postfix_state` ADD COLUMN `last_sent` datetime DEFAULT NULL AFTER `last_offset`;");
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__massmail_postfix_state')
-		 && $this->db->tableHasField('#__massmail_postfix_state', 'last_sent'))
-		{
-			$this->db->setQuery("ALTER TABLE `#__massmail_postfix_state` DROP COLUMN `last_sent`;");
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (
+            $this->db->tableExists('#__massmail_postfix_state')
+            && $this->db->tableHasField('#__massmail_postfix_state', 'last_sent')
+        ) {
+            $this->db->setQuery("ALTER TABLE `#__massmail_postfix_state` DROP COLUMN `last_sent`;");
+            $this->db->query();
+        }
+    }
 }

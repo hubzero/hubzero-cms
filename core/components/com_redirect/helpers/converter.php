@@ -43,7 +43,8 @@ class Converter
                         '/href=[\'"][^\'"]+[\'"]/i',
                         'href="/" ',
                         $matches[0]
-                    );                } else {
+                    );
+                } else {
                     $newHref = Converter::encode($originalUrl);
                     // Replace original href with encoded version, add rel="noreferrer"
                     $newTag = preg_replace(
@@ -52,13 +53,14 @@ class Converter
                         $matches[0]
                     );
                 }
-                return $newTag;
+                    return $newTag;
             },
             $html
         );
     }
 
-    public static function encode($originalUrl){
+    public static function encode($originalUrl)
+    {
         $encoded = urlencode(base64_encode($originalUrl));
         $newHref = Route::url('index.php?option=com_redirect&id=' . $encoded);
         return $newHref;

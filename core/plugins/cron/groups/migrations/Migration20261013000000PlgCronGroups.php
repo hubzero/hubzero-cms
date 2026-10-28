@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2026 The Regents of the University of California.
@@ -22,26 +23,25 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261013000000PlgCronGroups extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__cron_jobs'))
-		{
-			$this->db->setQuery(
-				"UPDATE `#__cron_jobs` SET `next_run` = UTC_TIMESTAMP()
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__cron_jobs')) {
+            $this->db->setQuery(
+                "UPDATE `#__cron_jobs` SET `next_run` = UTC_TIMESTAMP()
 				 WHERE `plugin` = 'groups' AND `state` = 1 AND `next_run` IS NULL;"
-			);
-			$this->db->query();
-		}
-	}
+            );
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// Nothing to undo: next_run is runtime state the runner keeps advancing.
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // Nothing to undo: next_run is runtime state the runner keeps advancing.
+    }
 }

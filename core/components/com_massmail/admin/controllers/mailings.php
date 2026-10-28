@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -33,1190 +34,1096 @@ require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'token.php';
  */
 class Mailings extends AdminController
 {
-	/**
-	 * Register tasks and execute
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('review', 'save');
-
-		parent::execute();
-	}
-
-	/**
-	 * List mailings
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		$filters = array(
-			'search' => urldecode(Request::getState($this->_option . '.' . $this->_controller . '.search', 'search', '')),
-			'status' => Request::getState($this->_option . '.' . $this->_controller . '.status', 'status', ''),
-			'sort'   => Request::getState($this->_option . '.' . $this->_controller . '.sort', 'filter_order', 'created'),
-			'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC')
-		);
-
-		$rows = Mailing::all();
-
-		if ($filters['search'])
-		{
-			$rows->whereLike('subject', strtolower((string) $filters['search']));
-		}
-		if ($filters['status'] !== '')
-		{
-			$rows->whereEquals('status', $filters['status']);
-		}
-
-		$rows = $rows
-			->order($filters['sort'], $filters['sort_Dir'])
-			->paginated('limitstart', 'limit')
-			->rows();
-
-		$this->view
-			->set('rows', $rows)
-			->set('filters', $filters)
-			->display();
-	}
-
-	/**
-	 * Compose / edit a draft mailing
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row = null, $invalid = array())
-	{
-		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		Request::setVar('hidemainmenu', 1);
-
-		if (!is_object($row))
-		{
-			$id = Request::getArray('id', array(0));
-			$id = (is_array($id) && !empty($id)) ? $id[0] : $id;
-			$row = Mailing::oneOrNew($id);
-		}
-
-		if ($row->isNew())
-		{
-			$mmp = \Component::params('com_massmail');
-			$row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
-			$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
-		}
-
-		// This one page both edits and views a mailing. It stays a full editor
-		// right up until the mailing starts sending (draft, pending-approval,
-		// held, scheduled); once in flight or terminal the content is frozen and
-		// the page becomes a read-only view -- but the status side-panel and its
-		// admin controls (approve/release/pause/resume/cancel) are shown either
-		// way. The view gates its toolbar/actions on this flag.
-		$editable = $row->isEditable();
-
-		// Read-only view of a frozen mailing renders the message body that was
-		// sent rather than the live editor.
-		$previewHtml = '';
-		if (!$editable)
-		{
-			$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
-			$html   = trim((string) $row->get('body_html'));
-			if ($html === '')
-			{
-				$html = Formatter::buildHtml($row->get('body'), $footer);
-			}
-			$previewHtml = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
-		}
-
-		$failures = array();
-		if (!$row->isNew())
-		{
-			$failures = Recipient::all()
-				->whereEquals('mailing_id', $row->get('id'))
-				->whereEquals('status', Recipient::FAILED)
-				->limit(100)
-				->rows();
-		}
-
-		$this->view
-			->set('row', $row)
-			->set('editable', $editable)
-			->set('previewHtml', $previewHtml)
-			->set('failures', $failures)
-			->set('invalid', (array) $invalid)
-			->setLayout('edit')
-			->display();
-	}
-
-	/**
-	 * Return a launched-but-not-yet-sending mailing (held / pending-approval /
-	 * scheduled) to draft so its content can be edited, then open the editor.
-	 *
-	 * This pulls the mailing out of its queue; it must be re-launched afterward,
-	 * which re-runs the send gates (approval, hold, schedule). Editing therefore
-	 * cannot bypass a hold or an approval -- the same gate conditions are
-	 * re-evaluated at launch.
-	 *
-	 * @return  void
-	 */
-	public function todraftTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		if (!$row->canReturnToDraft())
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
-			return $this->cancelTask();
-		}
-
-		$row->set('status', Mailing::STATUS_DRAFT);
-
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->cancelTask();
-		}
-
-		Notify::info(Lang::txt('COM_MASSMAIL_RETURNED_TO_DRAFT'));
-
-		// Open the editor on the now-draft mailing.
-		return $this->editTask($row);
-	}
-
-	/**
-	 * Save a draft mailing (and any uploaded attachments)
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$posted = Request::getArray('fields', array(), 'post', 'none', 2);
-
-		// Only the fields the compose form owns are taken from the request;
-		// everything else on the row (status, counters, actor/timestamp
-		// columns, From) is set by the server below or elsewhere.
-		$fields = array_intersect_key($posted, array_flip(array('id', 'subject', 'body', 'reply_to')));
-
-		// Reply-to must match what the mail server can send as, so only a Super
-		// Administrator may set it; ignore it from anyone else.
-		if (!User::authorise('core.admin'))
-		{
-			unset($fields['reply_to']);
-		}
-
-		$row = Mailing::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
-
-		// Only a draft (or a new mailing) can be saved from the editor. Anything
-		// that has been launched is read-only here: a stale compose tab must not
-		// rewrite a mailing that is being sent or has already gone out.
-		if (!$row->isEditable())
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
-			return $this->cancelTask();
-		}
-
-		$row->set($fields);
-
-		// The From address is a hub-wide option; always stamp the configured
-		// value so the sender uses it regardless of what was submitted.
-		$mmp = \Component::params('com_massmail');
-		$row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
-		$row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
-
-		// Editing returns a mailing to draft. A pending-approval, held, or
-		// scheduled mailing was approved/queued/scheduled against its previous
-		// content; once that content is edited it must go back through
-		// verify -> launch (and any re-approval) before it can send again.
-		$row->set('status', Mailing::STATUS_DRAFT);
-
-		// Assemble the recipient spec from the picker.
-		$row->set('recipient_spec', json_encode($this->recipientSpec()));
-
-		// Only honor the opt-out override for users allowed to request it; it
-		// still needs separate approval before it can send.
-		$override = Request::getInt('ignore_optout', 0)
-			&& User::authorise('core.override', $this->_option);
-		$row->set('ignore_optout', $override ? 1 : 0);
-
-		// Optional scheduled delivery time: entered in the site's timezone,
-		// stored as UTC. Empty clears any schedule (send as soon as launched).
-		$sched = trim(Request::getString('scheduled_at', ''));
-		if ($sched !== '')
-		{
-			try
-			{
-				$row->set('scheduled_at', Date::of($sched, Config::get('offset', 'UTC'))->toSql());
-			}
-			catch (\Exception $e)
-			{
-				$row->set('scheduled_at', null);
-			}
-		}
-		else
-		{
-			$row->set('scheduled_at', null);
-		}
-
-		// For the review/send flow, validate up front -- before persisting --
-		// so hitting "Send" on an incomplete message never leaves an orphan
-		// draft behind in the list after the error.
-		if ($this->getTask() == 'review')
-		{
-			$invalid = array();
-			if (!trim((string) $row->get('subject'))) { $invalid[] = 'subject'; }
-			if ($this->isBlankBody($row->get('body')))  { $invalid[] = 'body'; }
-			$spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
-			if (Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false) < 1)
-			{
-				$invalid[] = 'recipients';
-			}
-
-			if ($invalid)
-			{
-				$hasSelection = !empty($spec['all']) || !empty($spec['groups'])
-					|| !empty($spec['users']) || !empty($spec['emails']);
-
-				if ($invalid === array('recipients') && $hasSelection)
-				{
-					// Recipients were chosen but none can be mailed -- explain why
-					// rather than just calling the field "required".
-					Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-				}
-				else
-				{
-					// Name every missing piece so nothing is a surprise.
-					$names = array();
-					if (in_array('subject', $invalid))    { $names[] = Lang::txt('COM_MASSMAIL_FIELD_SUBJECT'); }
-					if (in_array('body', $invalid))       { $names[] = Lang::txt('COM_MASSMAIL_FIELD_BODY'); }
-					if (in_array('recipients', $invalid)) { $names[] = Lang::txt('COM_MASSMAIL_FIELD_RECIPIENTS'); }
-					Notify::error(Lang::txt('COM_MASSMAIL_REQUIRED_FIELDS', implode(', ', $names)));
-				}
-				return $this->editTask($row, $invalid);
-			}
-		}
-
-		if (!$row->save())
-		{
-			Notify::error($row->getError());
-			return $this->editTask($row);
-		}
-
-		$this->handleUploads($row);
-
-		// "Send" saves the draft, then routes to the review/verification page
-		// rather than dispatching straight away.
-		if ($this->getTask() == 'review')
-		{
-			Request::setVar('id', array($row->get('id')));
-			return $this->verifyTask($row);
-		}
-
-		Notify::success(Lang::txt('COM_MASSMAIL_MAILING_SAVED'));
-
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($row);
-		}
-		$this->cancelTask();
-	}
-
-	/**
-	 * Is the composed body effectively empty? The editor can leave visually-blank
-	 * markup behind (an empty paragraph, a stray <br>, or a lone &nbsp;), none of
-	 * which is a real message -- so decode entities and drop non-breaking spaces
-	 * before deciding.
-	 *
-	 * @param   string   $html
-	 * @return  boolean
-	 */
-	protected function isBlankBody($html)
-	{
-		$t = html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-		$t = str_replace("\xC2\xA0", ' ', $t); // non-breaking space -> blank
-		return trim($t) === '';
-	}
-
-	/**
-	 * Does this hub require every mailing to be approved before it sends?
-	 *
-	 * @return  boolean
-	 */
-	protected function requireApproval()
-	{
-		return (bool) (int) \Component::params('com_massmail')->get('require_approval', 0);
-	}
-
-	/**
-	 * Does this mailing need an approval step before it can be dispatched?
-	 * True when opt-out is being overridden, or when the hub requires approval
-	 * of all mailings.
-	 *
-	 * @param   Mailing  $row
-	 * @return  boolean
-	 */
-	protected function needsApproval($row)
-	{
-		return (int) $row->get('ignore_optout') || $this->requireApproval();
-	}
-
-	/**
-	 * Review / verification page: shown after "Send" and before the mailing is
-	 * actually dispatched. Presents an email-style preview (text + HTML) and a
-	 * summary of exactly what accepting will do (schedule, audience size, whether
-	 * approval or release is required), then lets the user accept, edit, or bail.
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function verifyTask($row = null)
-	{
-		if (!User::authorise('core.send', $this->_option))
-		{
-			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
-		}
-
-		Request::setVar('hidemainmenu', 1);
-
-		if (!is_object($row))
-		{
-			$row = Mailing::oneOrFail(Request::getInt('id', 0));
-		}
-
-		if ($row->get('status') != Mailing::STATUS_DRAFT)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
-			return $this->cancelTask();
-		}
-
-		// Content + audience must be valid before we let anyone confirm a send.
-		$spec    = json_decode((string) $row->get('recipient_spec'), true) ?: array();
-		$ignore  = (int) $row->get('ignore_optout') ? true : false;
-		$preview = Recipients::previewCount($spec, $ignore);
-
-		if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
-		{
-			Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
-			return $this->editTask($row);
-		}
-		if ($preview < 1)
-		{
-			Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-			return $this->editTask($row);
-		}
-
-		// Render both parts exactly as they will be built at launch, with the
-		// per-recipient unsubscribe token shown as a placeholder.
-		$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
-		$text = Formatter::buildText($row->get('body'), $footer);
-		$html = Formatter::buildHtml($row->get('body'), $footer);
-		$text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']', $text);
-		$html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
-
-		$disposition = array(
-			'needs_general_approval' => $this->requireApproval(),
-			'needs_optout_approval'  => $ignore,
-			'held'                   => !$this->sendingEnabled(),
-			'scheduled'              => $this->isScheduledFuture($row),
-			'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : ''
-		);
-
-		$this->view
-			->set('row', $row)
-			->set('preview', $preview)
-			->set('previewText', $text)
-			->set('previewHtml', $html)
-			->set('disposition', $disposition)
-			->setLayout('verify')
-			->display();
-	}
-
-	/**
-	 * Build a recipient spec array from request input.
-	 *
-	 * @return  array
-	 */
-	protected function recipientSpec()
-	{
-		// Additive recipient list: any combination of everyone, groups, specific
-		// users, and raw emails. Overlaps dedupe at expansion.
-		$spec = array('all' => Request::getInt('rcpt_all', 0) ? true : false);
-
-		// groups arrive as a single comma/space separated text field (groups[]) of
-		// group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
-		$groupsRaw = implode(',', (array) Request::getArray('groups', array()));
-		$spec['groups'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $groupsRaw)), 'strlen'));
-
-		// users: comma/space separated list of user IDs and/or usernames
-		// (resolved at send time).
-		$usersRaw = Request::getString('users', '');
-		$spec['users'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $usersRaw)), 'strlen'));
-
-		// emails: one per line
-		$emailsRaw = Request::getString('emails', '');
-		$emails = array();
-		foreach (preg_split('/[\r\n,;]+/', $emailsRaw) as $e)
-		{
-			$e = trim($e);
-			if ($e !== '')
-			{
-				$emails[] = $e;
-			}
-		}
-		$spec['emails'] = $emails;
-
-		return $spec;
-	}
-
-	/**
-	 * Is the mass-mail master switch on?
-	 *
-	 * @return  boolean
-	 */
-	protected function sendingEnabled()
-	{
-		return (bool) (int) \Component::params('com_massmail')->get('sending_enabled', 0);
-	}
-
-	/**
-	 * Does this mailing carry a scheduled send time still in the future?
-	 *
-	 * @param   Mailing  $row
-	 * @return  boolean
-	 */
-	protected function isScheduledFuture($row)
-	{
-		$s = (string) $row->get('scheduled_at');
-		if ($s === '' || $s === '0000-00-00 00:00:00')
-		{
-			return false;
-		}
-		return strtotime($s . ' UTC') > time();
-	}
-
-	/**
-	 * The status a launched/approved/released mailing should take: held when
-	 * sending is off, scheduled when a future time is set, otherwise preparing.
-	 *
-	 * @param   Mailing  $row
-	 * @return  string
-	 */
-	protected function dispatchStatus($row)
-	{
-		if (!$this->sendingEnabled())
-		{
-			return Mailing::STATUS_HELD;
-		}
-		if ($this->isScheduledFuture($row))
-		{
-			return Mailing::STATUS_SCHEDULED;
-		}
-		return Mailing::STATUS_PREPARING;
-	}
-
-	/**
-	 * The scheduled time formatted in the viewer's local timezone.
-	 *
-	 * @param   Mailing  $row
-	 * @return  string
-	 */
-	protected function scheduledLocal($row)
-	{
-		return Date::of($row->get('scheduled_at'))->toLocal('D, M j, Y g:i a T');
-	}
-
-	/**
-	 * AJAX: autocomplete groups by cn alias or title for the recipient picker.
-	 * Returns JSON [{cn, id, title}].
-	 *
-	 * @return  void
-	 */
-	public function grouplookupTask()
-	{
-		$q   = trim(Request::getString('q', ''));
-		$out = array();
-
-		if (strlen($q) >= 2)
-		{
-			$db   = \App::get('db');
-			$like = $db->quote('%' . $q . '%');
-			$where = "cn LIKE $like OR description LIKE $like";
-			if (ctype_digit($q)) { $where .= ' OR gidNumber = ' . (int) $q; }
-			$db->setQuery(
-				"SELECT gidNumber, cn, description FROM `#__xgroups`
+    /**
+     * Register tasks and execute
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('review', 'save');
+
+        parent::execute();
+    }
+
+    /**
+     * List mailings
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $filters = array(
+            'search' => urldecode(Request::getState($this->_option . '.' . $this->_controller . '.search', 'search', '')),
+            'status' => Request::getState($this->_option . '.' . $this->_controller . '.status', 'status', ''),
+            'sort'   => Request::getState($this->_option . '.' . $this->_controller . '.sort', 'filter_order', 'created'),
+            'sort_Dir' => Request::getState($this->_option . '.' . $this->_controller . '.sortdir', 'filter_order_Dir', 'DESC')
+        );
+
+        $rows = Mailing::all();
+
+        if ($filters['search']) {
+            $rows->whereLike('subject', strtolower((string) $filters['search']));
+        }
+        if ($filters['status'] !== '') {
+            $rows->whereEquals('status', $filters['status']);
+        }
+
+        $rows = $rows
+            ->order($filters['sort'], $filters['sort_Dir'])
+            ->paginated('limitstart', 'limit')
+            ->rows();
+
+        $this->view
+            ->set('rows', $rows)
+            ->set('filters', $filters)
+            ->display();
+    }
+
+    /**
+     * Compose / edit a draft mailing
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null, $invalid = array())
+    {
+        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        Request::setVar('hidemainmenu', 1);
+
+        if (!is_object($row)) {
+            $id = Request::getArray('id', array(0));
+            $id = (is_array($id) && !empty($id)) ? $id[0] : $id;
+            $row = Mailing::oneOrNew($id);
+        }
+
+        if ($row->isNew()) {
+            $mmp = \Component::params('com_massmail');
+            $row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
+            $row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
+        }
+
+        // This one page both edits and views a mailing. It stays a full editor
+        // right up until the mailing starts sending (draft, pending-approval,
+        // held, scheduled); once in flight or terminal the content is frozen and
+        // the page becomes a read-only view -- but the status side-panel and its
+        // admin controls (approve/release/pause/resume/cancel) are shown either
+        // way. The view gates its toolbar/actions on this flag.
+        $editable = $row->isEditable();
+
+        // Read-only view of a frozen mailing renders the message body that was
+        // sent rather than the live editor.
+        $previewHtml = '';
+        if (!$editable) {
+            $footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+            $html   = trim((string) $row->get('body_html'));
+            if ($html === '') {
+                $html = Formatter::buildHtml($row->get('body'), $footer);
+            }
+            $previewHtml = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
+        }
+
+        $failures = array();
+        if (!$row->isNew()) {
+            $failures = Recipient::all()
+                ->whereEquals('mailing_id', $row->get('id'))
+                ->whereEquals('status', Recipient::FAILED)
+                ->limit(100)
+                ->rows();
+        }
+
+        $this->view
+            ->set('row', $row)
+            ->set('editable', $editable)
+            ->set('previewHtml', $previewHtml)
+            ->set('failures', $failures)
+            ->set('invalid', (array) $invalid)
+            ->setLayout('edit')
+            ->display();
+    }
+
+    /**
+     * Return a launched-but-not-yet-sending mailing (held / pending-approval /
+     * scheduled) to draft so its content can be edited, then open the editor.
+     *
+     * This pulls the mailing out of its queue; it must be re-launched afterward,
+     * which re-runs the send gates (approval, hold, schedule). Editing therefore
+     * cannot bypass a hold or an approval -- the same gate conditions are
+     * re-evaluated at launch.
+     *
+     * @return  void
+     */
+    public function todraftTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+        if (!$row->canReturnToDraft()) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
+            return $this->cancelTask();
+        }
+
+        $row->set('status', Mailing::STATUS_DRAFT);
+
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->cancelTask();
+        }
+
+        Notify::info(Lang::txt('COM_MASSMAIL_RETURNED_TO_DRAFT'));
+
+        // Open the editor on the now-draft mailing.
+        return $this->editTask($row);
+    }
+
+    /**
+     * Save a draft mailing (and any uploaded attachments)
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $posted = Request::getArray('fields', array(), 'post', 'none', 2);
+
+        // Only the fields the compose form owns are taken from the request;
+        // everything else on the row (status, counters, actor/timestamp
+        // columns, From) is set by the server below or elsewhere.
+        $fields = array_intersect_key($posted, array_flip(array('id', 'subject', 'body', 'reply_to')));
+
+        // Reply-to must match what the mail server can send as, so only a Super
+        // Administrator may set it; ignore it from anyone else.
+        if (!User::authorise('core.admin')) {
+            unset($fields['reply_to']);
+        }
+
+        $row = Mailing::oneOrNew(isset($fields['id']) ? (int) $fields['id'] : 0);
+
+        // Only a draft (or a new mailing) can be saved from the editor. Anything
+        // that has been launched is read-only here: a stale compose tab must not
+        // rewrite a mailing that is being sent or has already gone out.
+        if (!$row->isEditable()) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
+            return $this->cancelTask();
+        }
+
+        $row->set($fields);
+
+        // The From address is a hub-wide option; always stamp the configured
+        // value so the sender uses it regardless of what was submitted.
+        $mmp = \Component::params('com_massmail');
+        $row->set('from_name', trim((string) $mmp->get('from_name')) ?: Config::get('fromname'));
+        $row->set('from_email', trim((string) $mmp->get('from_email')) ?: Config::get('mailfrom'));
+
+        // Editing returns a mailing to draft. A pending-approval, held, or
+        // scheduled mailing was approved/queued/scheduled against its previous
+        // content; once that content is edited it must go back through
+        // verify -> launch (and any re-approval) before it can send again.
+        $row->set('status', Mailing::STATUS_DRAFT);
+
+        // Assemble the recipient spec from the picker.
+        $row->set('recipient_spec', json_encode($this->recipientSpec()));
+
+        // Only honor the opt-out override for users allowed to request it; it
+        // still needs separate approval before it can send.
+        $override = Request::getInt('ignore_optout', 0)
+            && User::authorise('core.override', $this->_option);
+        $row->set('ignore_optout', $override ? 1 : 0);
+
+        // Optional scheduled delivery time: entered in the site's timezone,
+        // stored as UTC. Empty clears any schedule (send as soon as launched).
+        $sched = trim(Request::getString('scheduled_at', ''));
+        if ($sched !== '') {
+            try {
+                $row->set('scheduled_at', Date::of($sched, Config::get('offset', 'UTC'))->toSql());
+            } catch (\Exception $e) {
+                $row->set('scheduled_at', null);
+            }
+        } else {
+            $row->set('scheduled_at', null);
+        }
+
+        // For the review/send flow, validate up front -- before persisting --
+        // so hitting "Send" on an incomplete message never leaves an orphan
+        // draft behind in the list after the error.
+        if ($this->getTask() == 'review') {
+            $invalid = array();
+            if (!trim((string) $row->get('subject'))) {
+                $invalid[] = 'subject';
+            }
+            if ($this->isBlankBody($row->get('body'))) {
+                $invalid[] = 'body';
+            }
+            $spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+            if (Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false) < 1) {
+                $invalid[] = 'recipients';
+            }
+
+            if ($invalid) {
+                $hasSelection = !empty($spec['all']) || !empty($spec['groups'])
+                    || !empty($spec['users']) || !empty($spec['emails']);
+
+                if ($invalid === array('recipients') && $hasSelection) {
+                    // Recipients were chosen but none can be mailed -- explain why
+                    // rather than just calling the field "required".
+                    Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+                } else {
+                    // Name every missing piece so nothing is a surprise.
+                    $names = array();
+                    if (in_array('subject', $invalid)) {
+                        $names[] = Lang::txt('COM_MASSMAIL_FIELD_SUBJECT');
+                    }
+                    if (in_array('body', $invalid)) {
+                        $names[] = Lang::txt('COM_MASSMAIL_FIELD_BODY');
+                    }
+                    if (in_array('recipients', $invalid)) {
+                        $names[] = Lang::txt('COM_MASSMAIL_FIELD_RECIPIENTS');
+                    }
+                    Notify::error(Lang::txt('COM_MASSMAIL_REQUIRED_FIELDS', implode(', ', $names)));
+                }
+                return $this->editTask($row, $invalid);
+            }
+        }
+
+        if (!$row->save()) {
+            Notify::error($row->getError());
+            return $this->editTask($row);
+        }
+
+        $this->handleUploads($row);
+
+        // "Send" saves the draft, then routes to the review/verification page
+        // rather than dispatching straight away.
+        if ($this->getTask() == 'review') {
+            Request::setVar('id', array($row->get('id')));
+            return $this->verifyTask($row);
+        }
+
+        Notify::success(Lang::txt('COM_MASSMAIL_MAILING_SAVED'));
+
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($row);
+        }
+        $this->cancelTask();
+    }
+
+    /**
+     * Is the composed body effectively empty? The editor can leave visually-blank
+     * markup behind (an empty paragraph, a stray <br>, or a lone &nbsp;), none of
+     * which is a real message -- so decode entities and drop non-breaking spaces
+     * before deciding.
+     *
+     * @param   string   $html
+     * @return  boolean
+     */
+    protected function isBlankBody($html)
+    {
+        $t = html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $t = str_replace("\xC2\xA0", ' ', $t); // non-breaking space -> blank
+        return trim($t) === '';
+    }
+
+    /**
+     * Does this hub require every mailing to be approved before it sends?
+     *
+     * @return  boolean
+     */
+    protected function requireApproval()
+    {
+        return (bool) (int) \Component::params('com_massmail')->get('require_approval', 0);
+    }
+
+    /**
+     * Does this mailing need an approval step before it can be dispatched?
+     * True when opt-out is being overridden, or when the hub requires approval
+     * of all mailings.
+     *
+     * @param   Mailing  $row
+     * @return  boolean
+     */
+    protected function needsApproval($row)
+    {
+        return (int) $row->get('ignore_optout') || $this->requireApproval();
+    }
+
+    /**
+     * Review / verification page: shown after "Send" and before the mailing is
+     * actually dispatched. Presents an email-style preview (text + HTML) and a
+     * summary of exactly what accepting will do (schedule, audience size, whether
+     * approval or release is required), then lets the user accept, edit, or bail.
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function verifyTask($row = null)
+    {
+        if (!User::authorise('core.send', $this->_option)) {
+            App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
+        }
+
+        Request::setVar('hidemainmenu', 1);
+
+        if (!is_object($row)) {
+            $row = Mailing::oneOrFail(Request::getInt('id', 0));
+        }
+
+        if ($row->get('status') != Mailing::STATUS_DRAFT) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
+            return $this->cancelTask();
+        }
+
+        // Content + audience must be valid before we let anyone confirm a send.
+        $spec    = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+        $ignore  = (int) $row->get('ignore_optout') ? true : false;
+        $preview = Recipients::previewCount($spec, $ignore);
+
+        if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body'))) {
+            Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+            return $this->editTask($row);
+        }
+        if ($preview < 1) {
+            Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+            return $this->editTask($row);
+        }
+
+        // Render both parts exactly as they will be built at launch, with the
+        // per-recipient unsubscribe token shown as a placeholder.
+        $footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+        $text = Formatter::buildText($row->get('body'), $footer);
+        $html = Formatter::buildHtml($row->get('body'), $footer);
+        $text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']', $text);
+        $html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
+
+        $disposition = array(
+            'needs_general_approval' => $this->requireApproval(),
+            'needs_optout_approval'  => $ignore,
+            'held'                   => !$this->sendingEnabled(),
+            'scheduled'              => $this->isScheduledFuture($row),
+            'scheduled_local'        => $this->isScheduledFuture($row) ? $this->scheduledLocal($row) : ''
+        );
+
+        $this->view
+            ->set('row', $row)
+            ->set('preview', $preview)
+            ->set('previewText', $text)
+            ->set('previewHtml', $html)
+            ->set('disposition', $disposition)
+            ->setLayout('verify')
+            ->display();
+    }
+
+    /**
+     * Build a recipient spec array from request input.
+     *
+     * @return  array
+     */
+    protected function recipientSpec()
+    {
+        // Additive recipient list: any combination of everyone, groups, specific
+        // users, and raw emails. Overlaps dedupe at expansion.
+        $spec = array('all' => Request::getInt('rcpt_all', 0) ? true : false);
+
+        // groups arrive as a single comma/space separated text field (groups[]) of
+        // group IDs and/or cn aliases; keep the raw tokens (resolved at send time).
+        $groupsRaw = implode(',', (array) Request::getArray('groups', array()));
+        $spec['groups'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $groupsRaw)), 'strlen'));
+
+        // users: comma/space separated list of user IDs and/or usernames
+        // (resolved at send time).
+        $usersRaw = Request::getString('users', '');
+        $spec['users'] = array_values(array_filter(array_map('trim', preg_split('/[\s,]+/', $usersRaw)), 'strlen'));
+
+        // emails: one per line
+        $emailsRaw = Request::getString('emails', '');
+        $emails = array();
+        foreach (preg_split('/[\r\n,;]+/', $emailsRaw) as $e) {
+            $e = trim($e);
+            if ($e !== '') {
+                $emails[] = $e;
+            }
+        }
+        $spec['emails'] = $emails;
+
+        return $spec;
+    }
+
+    /**
+     * Is the mass-mail master switch on?
+     *
+     * @return  boolean
+     */
+    protected function sendingEnabled()
+    {
+        return (bool) (int) \Component::params('com_massmail')->get('sending_enabled', 0);
+    }
+
+    /**
+     * Does this mailing carry a scheduled send time still in the future?
+     *
+     * @param   Mailing  $row
+     * @return  boolean
+     */
+    protected function isScheduledFuture($row)
+    {
+        $s = (string) $row->get('scheduled_at');
+        if ($s === '' || $s === '0000-00-00 00:00:00') {
+            return false;
+        }
+        return strtotime($s . ' UTC') > time();
+    }
+
+    /**
+     * The status a launched/approved/released mailing should take: held when
+     * sending is off, scheduled when a future time is set, otherwise preparing.
+     *
+     * @param   Mailing  $row
+     * @return  string
+     */
+    protected function dispatchStatus($row)
+    {
+        if (!$this->sendingEnabled()) {
+            return Mailing::STATUS_HELD;
+        }
+        if ($this->isScheduledFuture($row)) {
+            return Mailing::STATUS_SCHEDULED;
+        }
+        return Mailing::STATUS_PREPARING;
+    }
+
+    /**
+     * The scheduled time formatted in the viewer's local timezone.
+     *
+     * @param   Mailing  $row
+     * @return  string
+     */
+    protected function scheduledLocal($row)
+    {
+        return Date::of($row->get('scheduled_at'))->toLocal('D, M j, Y g:i a T');
+    }
+
+    /**
+     * AJAX: autocomplete groups by cn alias or title for the recipient picker.
+     * Returns JSON [{cn, id, title}].
+     *
+     * @return  void
+     */
+    public function grouplookupTask()
+    {
+        $q   = trim(Request::getString('q', ''));
+        $out = array();
+
+        if (strlen($q) >= 2) {
+            $db   = \App::get('db');
+            $like = $db->quote('%' . $q . '%');
+            $where = "cn LIKE $like OR description LIKE $like";
+            if (ctype_digit($q)) {
+                $where .= ' OR gidNumber = ' . (int) $q;
+            }
+            $db->setQuery(
+                "SELECT gidNumber, cn, description FROM `#__xgroups`
 				 WHERE published = 1 AND ($where)
 				 ORDER BY cn ASC LIMIT 15"
-			);
-			foreach ((array) $db->loadObjectList() as $g)
-			{
-				$out[] = array('cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description);
-			}
-		}
+            );
+            foreach ((array) $db->loadObjectList() as $g) {
+                $out[] = array('cn' => $g->cn, 'id' => (int) $g->gidNumber, 'title' => (string) $g->description);
+            }
+        }
 
-		header('Content-Type: application/json');
-		echo json_encode($out);
-		exit;
-	}
+        header('Content-Type: application/json');
+        echo json_encode($out);
+        exit;
+    }
 
-	/**
-	 * AJAX: autocomplete users by username or name for the recipient picker.
-	 * Returns JSON [{cn, id, title}] (cn = username).
-	 *
-	 * @return  void
-	 */
-	public function userlookupTask()
-	{
-		$q   = trim(Request::getString('q', ''));
-		$out = array();
+    /**
+     * AJAX: autocomplete users by username or name for the recipient picker.
+     * Returns JSON [{cn, id, title}] (cn = username).
+     *
+     * @return  void
+     */
+    public function userlookupTask()
+    {
+        $q   = trim(Request::getString('q', ''));
+        $out = array();
 
-		if (strlen($q) >= 2)
-		{
-			$db   = \App::get('db');
-			$like = $db->quote('%' . $q . '%');
-			$where = "username LIKE $like OR name LIKE $like";
-			if (ctype_digit($q)) { $where .= ' OR id = ' . (int) $q; }
-			$db->setQuery(
-				"SELECT id, username, name FROM `#__users`
+        if (strlen($q) >= 2) {
+            $db   = \App::get('db');
+            $like = $db->quote('%' . $q . '%');
+            $where = "username LIKE $like OR name LIKE $like";
+            if (ctype_digit($q)) {
+                $where .= ' OR id = ' . (int) $q;
+            }
+            $db->setQuery(
+                "SELECT id, username, name FROM `#__users`
 				 WHERE block = 0 AND ($where)
 				 ORDER BY username ASC LIMIT 15"
-			);
-			foreach ((array) $db->loadObjectList() as $u)
-			{
-				$out[] = array('cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name);
-			}
-		}
-
-		header('Content-Type: application/json');
-		echo json_encode($out);
-		exit;
-	}
-
-	/**
-	 * AJAX: unified recipient autocomplete for the To: field -- groups and users
-	 * together, each tagged with its kind. Returns JSON
-	 * [{kind:'group'|'user', token, label, sub}].
-	 *
-	 * @return  void
-	 */
-	public function recipientlookupTask()
-	{
-		$q   = trim(Request::getString('q', ''));
-		$out = array();
-
-		if (strlen($q) >= 2)
-		{
-			$db      = \App::get('db');
-			$like    = $db->quote('%' . $q . '%');
-			$numeric = ctype_digit($q);
-
-			$gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
-			$db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8");
-			foreach ((array) $db->loadObjectList() as $g)
-			{
-				$out[] = array('kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn);
-			}
-
-			$uw = "username LIKE $like OR name LIKE $like" . ($numeric ? ' OR id = ' . (int) $q : '');
-			$db->setQuery("SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8");
-			foreach ((array) $db->loadObjectList() as $u)
-			{
-				$out[] = array('kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username);
-			}
-		}
-
-		header('Content-Type: application/json');
-		echo json_encode($out);
-		exit;
-	}
-
-	/**
-	 * AJAX: predict how many recipients the current picker selection reaches,
-	 * so the compose form can show a live audience count. Returns JSON.
-	 *
-	 * @return  void
-	 */
-	public function previewTask()
-	{
-		$spec   = $this->recipientSpec();
-		$ignore = Request::getInt('ignore_optout', 0) ? true : false;
-		$count  = Recipients::previewCount($spec, $ignore);
-
-		header('Content-Type: application/json');
-		echo json_encode(array(
-			'count' => $count,
-			'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count))
-		));
-		exit;
-	}
-
-	/**
-	 * Store any uploaded attachment files for a mailing.
-	 *
-	 * @param   Mailing  $mailing
-	 * @return  void
-	 */
-	protected function handleUploads($mailing)
-	{
-		$files = Request::getArray('attachment', array(), 'files');
-		if (empty($files) || empty($files['name']))
-		{
-			return;
-		}
-
-		$params  = \Component::params('com_massmail');
-		$maxSize = (int) $params->get('max_attachment_size', 10485760);
-
-		$dir = PATH_APP . DS . 'site' . DS . 'massmail' . DS . $mailing->get('id');
-		if (!is_dir($dir))
-		{
-			Filesystem::makeDirectory($dir, 0755, true);
-		}
-		// Defense in depth: never let anything in the attachment store execute
-		// or be fetched directly, even if it lands under a served path.
-		$htaccess = PATH_APP . DS . 'site' . DS . 'massmail' . DS . '.htaccess';
-		if (!is_file($htaccess))
-		{
-			Filesystem::write($htaccess, "Deny from all\n");
-		}
-
-		$names = (array) $files['name'];
-		foreach ($names as $i => $name)
-		{
-			if ($name == '' || $files['error'][$i] != 0)
-			{
-				continue;
-			}
-			if ($maxSize && $files['size'][$i] > $maxSize)
-			{
-				Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_TOO_LARGE', $name));
-				continue;
-			}
-
-			$clean = basename(Filesystem::cleanPath($name));
-
-			// Reject files whose name carries an executable/script extension in
-			// ANY segment (blocks tricks like "report.php.pdf").
-			if ($this->hasExecutableExtension($clean))
-			{
-				Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_BLOCKED', $clean));
-				continue;
-			}
-
-			$target = $dir . DS . $clean;
-
-			if (Filesystem::upload($files['tmp_name'][$i], $target))
-			{
-				// Platform virus/safety scan; remove anything that fails.
-				if (!Filesystem::isSafe($target))
-				{
-					Filesystem::delete($target);
-					Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_BLOCKED', $clean));
-					continue;
-				}
-
-				$att = Attachment::blank()->set(array(
-					'mailing_id' => $mailing->get('id'),
-					'filename'   => $clean,
-					'stored_path'=> $target,
-					'size'       => (int) $files['size'][$i],
-					'mimetype'   => (string) $files['type'][$i]
-				));
-				$att->save();
-			}
-		}
-	}
-
-	/**
-	 * Does a filename carry a script/executable extension in any segment?
-	 *
-	 * @param   string   $name
-	 * @return  boolean
-	 */
-	protected function hasExecutableExtension($name)
-	{
-		$executable = array(
-			'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'js', 'exe', 'java', 'perl', 'pl',
-			'py', 'asp', 'aspx', 'dll', 'go', 'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta',
-			'htaccess', 'ins', 'isp', 'jse', 'lib', 'mde', 'msc', 'msi', 'msp', 'mst', 'pif', 'scr',
-			'sct', 'sh', 'shb', 'svg', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
-		);
-
-		foreach (explode('.', strtolower($name)) as $segment)
-		{
-			if (in_array($segment, $executable))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Remove an attachment
-	 *
-	 * @return  void
-	 */
-	public function removeattachmentTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$att = Attachment::oneOrFail(Request::getInt('attachment', 0));
-		$mailingId = $att->get('mailing_id');
-
-		if ($att->get('stored_path') && is_file($att->get('stored_path')))
-		{
-			Filesystem::delete($att->get('stored_path'));
-		}
-		$att->destroy();
-
-		Request::setVar('id', array($mailingId));
-		return $this->editTask();
-	}
-
-	/**
-	 * Launch a mailing: freeze the rendered bodies and hand it to the queue
-	 * (or to the approval gate when opt-out is being overridden).
-	 *
-	 * @return  void
-	 */
-	public function launchTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.send', $this->_option))
-		{
-			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
-		}
-
-		$id  = Request::getInt('id', 0);
-		$row = Mailing::oneOrFail($id);
-
-		if ($row->get('status') != Mailing::STATUS_DRAFT)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
-			return $this->cancelTask();
-		}
-
-		// Validate content + audience.
-		$spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
-		$preview = Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false);
-
-		if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body')))
-		{
-			Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
-			return $this->editTask($row);
-		}
-		if ($preview < 1)
-		{
-			Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
-			return $this->editTask($row);
-		}
-
-		// Freeze the rendered bodies at launch time.
-		$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
-		$row->set('body_text', Formatter::buildText($row->get('body'), $footer));
-		$row->set('body_html', Formatter::buildHtml($row->get('body'), $footer));
-
-		if ($this->needsApproval($row))
-		{
-			// Overriding opt-out, or a hub-wide "approve everything" policy,
-			// requires sign-off from someone with core.approve before dispatch.
-			$row->set('status', Mailing::STATUS_PENDING_APPROVAL);
-			$row->save();
-			Notify::warning(Lang::txt('COM_MASSMAIL_QUEUED_FOR_APPROVAL'));
-		}
-		else
-		{
-			// Hold (sending off), schedule (future time set), or send now.
-			$status = $this->dispatchStatus($row);
-			$row->set('status', $status);
-			$row->save();
-
-			if ($status == Mailing::STATUS_HELD)
-			{
-				Notify::warning(Lang::txt('COM_MASSMAIL_HELD_ON_LAUNCH'));
-			}
-			elseif ($status == Mailing::STATUS_SCHEDULED)
-			{
-				Notify::success(Lang::txt('COM_MASSMAIL_SCHEDULED_FOR', $this->scheduledLocal($row)));
-			}
-			else
-			{
-				Notify::success(Lang::txt('COM_MASSMAIL_LAUNCHED', $preview));
-			}
-		}
-
-		$this->cancelTask();
-	}
-
-	/**
-	 * Approve an opt-out-override mailing (requires core.approve)
-	 *
-	 * @return  void
-	 */
-	public function approveTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.approve', $this->_option))
-		{
-			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_APPROVE'));
-		}
-
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		if ($row->get('status') != Mailing::STATUS_PENDING_APPROVAL)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_PENDING_APPROVAL'));
-			return $this->cancelTask();
-		}
-
-		$row->set('approved_by', User::get('id'));
-		$row->set('approved_on', Date::toSql());
-
-		$status = $this->dispatchStatus($row);
-		$row->set('status', $status);
-		$row->save();
-
-		if ($status == Mailing::STATUS_HELD)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_APPROVED_HELD'));
-		}
-		elseif ($status == Mailing::STATUS_SCHEDULED)
-		{
-			Notify::success(Lang::txt('COM_MASSMAIL_APPROVED_SCHEDULED', $this->scheduledLocal($row)));
-		}
-		else
-		{
-			Notify::success(Lang::txt('COM_MASSMAIL_APPROVED'));
-		}
-		$this->cancelTask();
-	}
-
-	/**
-	 * Release a held mailing into the delivery queue (requires core.release).
-	 * Holds only ever leave this state by an explicit human action, so a
-	 * backlog accumulated while sending was off never auto-sends.
-	 *
-	 * @return  void
-	 */
-	public function releaseTask()
-	{
-		Request::checkToken();
-
-		// Releasing a held backlog is its own permission (defaults to nobody but
-		// Super Administrators until explicitly granted).
-		if (!User::authorise('core.release', $this->_option))
-		{
-			App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_RELEASE'));
-		}
-
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		if ($row->get('status') != Mailing::STATUS_HELD)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_NOT_HELD'));
-			return $this->cancelTask();
-		}
-
-		// A release respects any still-future schedule rather than sending now.
-		if ($this->isScheduledFuture($row))
-		{
-			$row->set('status', Mailing::STATUS_SCHEDULED);
-			$row->save();
-			Notify::success(Lang::txt('COM_MASSMAIL_RELEASED_SCHEDULED', $this->scheduledLocal($row)));
-		}
-		else
-		{
-			$row->set('status', Mailing::STATUS_PREPARING);
-			$row->save();
-			if (!$this->sendingEnabled())
-			{
-				Notify::warning(Lang::txt('COM_MASSMAIL_RELEASED_SENDING_OFF'));
-			}
-			else
-			{
-				Notify::success(Lang::txt('COM_MASSMAIL_RELEASED'));
-			}
-		}
-		$this->cancelTask();
-	}
-
-	/**
-	 * Pause an active mailing
-	 *
-	 * @return  void
-	 */
-	public function pauseTask()
-	{
-		$this->transition(array(Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING), Mailing::STATUS_PAUSED, 'COM_MASSMAIL_PAUSED');
-	}
-
-	/**
-	 * Resume a paused mailing
-	 *
-	 * @return  void
-	 */
-	public function resumeTask()
-	{
-		// A mailing paused before the cron expanded its recipients has no queue
-		// yet; it goes back to "preparing" so the next tick expands it, rather
-		// than to "sending", where an empty queue would never be picked up.
-		$row = Mailing::oneOrNew(Request::getInt('id', 0));
-		$to  = (int) $row->get('total_recipients') > 0 ? Mailing::STATUS_SENDING : Mailing::STATUS_PREPARING;
-
-		$this->transition(array(Mailing::STATUS_PAUSED), $to, 'COM_MASSMAIL_RESUMED');
-	}
-
-	/**
-	 * Cancel a mailing (stop sending permanently)
-	 *
-	 * @return  void
-	 */
-	public function stopTask()
-	{
-		$this->transition(
-			array(
-				Mailing::STATUS_SENDING,
-				Mailing::STATUS_PREPARING,
-				Mailing::STATUS_PAUSED,
-				Mailing::STATUS_PENDING_APPROVAL,
-				Mailing::STATUS_HELD,
-				Mailing::STATUS_SCHEDULED
-			),
-			Mailing::STATUS_CANCELLED,
-			'COM_MASSMAIL_CANCELLED'
-		);
-	}
-
-	/**
-	 * Shared state transition (edit.state gated)
-	 *
-	 * @param   array   $from
-	 * @param   string  $to
-	 * @param   string  $msg
-	 * @return  void
-	 */
-	protected function transition($from, $to, $msg)
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		if (!in_array($row->get('status'), $from))
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_INVALID_TRANSITION'));
-			return $this->cancelTask();
-		}
-
-		$row->set('status', $to);
-		$row->save();
-
-		Notify::success(Lang::txt($msg));
-		$this->cancelTask();
-	}
-
-	/**
-	 * Send a single test copy to the current user
-	 *
-	 * @return  void
-	 */
-	public function sendtestTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.send', $this->_option) && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$row = Mailing::oneOrFail(Request::getInt('id', 0));
-
-		$footer = (string) \Component::params('com_massmail')->get('footer_text', '');
-		$text = Formatter::buildText($row->get('body'), $footer);
-		$html = Formatter::buildHtml($row->get('body'), $footer);
-		$unsub = Token::unsubscribeUrl($row->get('id'), User::get('email'));
-		$text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, $unsub, $text);
-		$html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, $unsub, $html);
-
-		try
-		{
-			$message = new \Hubzero\Mail\Message();
-			$message->setSubject('[TEST] ' . $row->get('subject'));
-			$message->addFrom($row->get('from_email') ?: Config::get('mailfrom'), $row->get('from_name') ?: Config::get('fromname'));
-			$message->addPart($text, 'text/plain');
-			$message->addPart($html, 'text/html');
-			foreach ($row->attachments()->rows() as $att)
-			{
-				if ($att->get('stored_path') && is_file($att->get('stored_path')))
-				{
-					$message->addAttachment($att->get('stored_path'), $att->get('filename'));
-				}
-			}
-			$message->setTo(array(User::get('email')));
-			$message->send();
-			Notify::success(Lang::txt('COM_MASSMAIL_TEST_SENT', User::get('email')));
-		}
-		catch (\Exception $e)
-		{
-			Notify::error(Lang::txt('COM_MASSMAIL_TEST_FAILED', $e->getMessage()));
-		}
-
-		Request::setVar('id', array($row->get('id')));
-		return $this->editTask();
-	}
-
-	/**
-	 * Delete mailing(s) and their recipients/attachments
-	 *
-	 * @return  void
-	 */
-	public function deleteTask()
-	{
-		// The view page and the list both post; a GET token is no longer accepted,
-		// so a crawler following a link cannot delete.
-		Request::checkToken();
-
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		// The list checkboxes (Html::grid) post as cid[]; fall back to id[] for
-		// any other caller.
-		$ids = Request::getArray('cid', array());
-		if (empty($ids))
-		{
-			$ids = Request::getArray('id', array());
-		}
-		$ids = (!is_array($ids) ? array($ids) : $ids);
-
-		$removed = 0;
-		$skipped = 0;
-		foreach ($ids as $id)
-		{
-			$row = Mailing::oneOrFail(intval($id));
-
-			// Never destroy a mailing that has started/finished sending -- its
-			// state and history must be preserved (it can only be cancelled).
-			if (!$row->isDeletable())
-			{
-				$skipped++;
-				continue;
-			}
-
-			if ($this->purgeMailing($row))
-			{
-				$removed++;
-			}
-		}
-
-		if ($removed)
-		{
-			Notify::success(Lang::txt('COM_MASSMAIL_MAILINGS_DELETED', $removed));
-		}
-		if ($skipped)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_DELETE_SKIPPED_SENT', $skipped));
-		}
-		$this->cancelTask();
-	}
-
-	/**
-	 * Permanently remove a mailing and everything hanging off it (queued
-	 * recipients + attachment rows and files).
-	 *
-	 * @param   Mailing  $row
-	 * @return  boolean
-	 */
-	protected function purgeMailing($row)
-	{
-		$db = App::get('db');
-		$db->setQuery("DELETE FROM `#__massmail_recipients` WHERE mailing_id = " . (int) $row->get('id'));
-		$db->execute();
-
-		foreach ($row->attachments()->rows() as $att)
-		{
-			if ($att->get('stored_path') && is_file($att->get('stored_path')))
-			{
-				Filesystem::delete($att->get('stored_path'));
-			}
-			$att->destroy();
-		}
-
-		return $row->destroy();
-	}
-
-	/**
-	 * Discard a single draft: delete it outright (the "throw it away" exit from
-	 * compose / review). Only drafts can be discarded, so an in-flight or sent
-	 * mailing is never destroyed this way.
-	 *
-	 * @return  void
-	 */
-	public function discardTask()
-	{
-		Request::checkToken();
-
-		if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.edit', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
-
-		$id = Request::getInt('id', 0);
-		if (!$id)
-		{
-			$fields = Request::getArray('fields', array());
-			$id = isset($fields['id']) ? (int) $fields['id'] : 0;
-		}
-
-		// Nothing saved yet -- just leave.
-		if (!$id)
-		{
-			return $this->cancelTask();
-		}
-
-		$row = Mailing::oneOrFail($id);
-
-		if ($row->get('status') != Mailing::STATUS_DRAFT)
-		{
-			Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_DISCARDABLE'));
-			return $this->cancelTask();
-		}
-
-		if ($this->purgeMailing($row))
-		{
-			Notify::success(Lang::txt('COM_MASSMAIL_DRAFT_DISCARDED'));
-		}
-		$this->cancelTask();
-	}
+            );
+            foreach ((array) $db->loadObjectList() as $u) {
+                $out[] = array('cn' => $u->username, 'id' => (int) $u->id, 'title' => (string) $u->name);
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($out);
+        exit;
+    }
+
+    /**
+     * AJAX: unified recipient autocomplete for the To: field -- groups and users
+     * together, each tagged with its kind. Returns JSON
+     * [{kind:'group'|'user', token, label, sub}].
+     *
+     * @return  void
+     */
+    public function recipientlookupTask()
+    {
+        $q   = trim(Request::getString('q', ''));
+        $out = array();
+
+        if (strlen($q) >= 2) {
+            $db      = \App::get('db');
+            $like    = $db->quote('%' . $q . '%');
+            $numeric = ctype_digit($q);
+
+            $gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
+            $db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8");
+            foreach ((array) $db->loadObjectList() as $g) {
+                $out[] = array('kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn);
+            }
+
+            $uw = "username LIKE $like OR name LIKE $like" . ($numeric ? ' OR id = ' . (int) $q : '');
+            $db->setQuery("SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8");
+            foreach ((array) $db->loadObjectList() as $u) {
+                $out[] = array('kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username);
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($out);
+        exit;
+    }
+
+    /**
+     * AJAX: predict how many recipients the current picker selection reaches,
+     * so the compose form can show a live audience count. Returns JSON.
+     *
+     * @return  void
+     */
+    public function previewTask()
+    {
+        $spec   = $this->recipientSpec();
+        $ignore = Request::getInt('ignore_optout', 0) ? true : false;
+        $count  = Recipients::previewCount($spec, $ignore);
+
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'count' => $count,
+            'text'  => Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($count))
+        ));
+        exit;
+    }
+
+    /**
+     * Store any uploaded attachment files for a mailing.
+     *
+     * @param   Mailing  $mailing
+     * @return  void
+     */
+    protected function handleUploads($mailing)
+    {
+        $files = Request::getArray('attachment', array(), 'files');
+        if (empty($files) || empty($files['name'])) {
+            return;
+        }
+
+        $params  = \Component::params('com_massmail');
+        $maxSize = (int) $params->get('max_attachment_size', 10485760);
+
+        $dir = PATH_APP . DS . 'site' . DS . 'massmail' . DS . $mailing->get('id');
+        if (!is_dir($dir)) {
+            Filesystem::makeDirectory($dir, 0755, true);
+        }
+        // Defense in depth: never let anything in the attachment store execute
+        // or be fetched directly, even if it lands under a served path.
+        $htaccess = PATH_APP . DS . 'site' . DS . 'massmail' . DS . '.htaccess';
+        if (!is_file($htaccess)) {
+            Filesystem::write($htaccess, "Deny from all\n");
+        }
+
+        $names = (array) $files['name'];
+        foreach ($names as $i => $name) {
+            if ($name == '' || $files['error'][$i] != 0) {
+                continue;
+            }
+            if ($maxSize && $files['size'][$i] > $maxSize) {
+                Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_TOO_LARGE', $name));
+                continue;
+            }
+
+            $clean = basename(Filesystem::cleanPath($name));
+
+            // Reject files whose name carries an executable/script extension in
+            // ANY segment (blocks tricks like "report.php.pdf").
+            if ($this->hasExecutableExtension($clean)) {
+                Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_BLOCKED', $clean));
+                continue;
+            }
+
+            $target = $dir . DS . $clean;
+
+            if (Filesystem::upload($files['tmp_name'][$i], $target)) {
+                // Platform virus/safety scan; remove anything that fails.
+                if (!Filesystem::isSafe($target)) {
+                    Filesystem::delete($target);
+                    Notify::warning(Lang::txt('COM_MASSMAIL_ATTACHMENT_BLOCKED', $clean));
+                    continue;
+                }
+
+                $att = Attachment::blank()->set(array(
+                    'mailing_id' => $mailing->get('id'),
+                    'filename'   => $clean,
+                    'stored_path' => $target,
+                    'size'       => (int) $files['size'][$i],
+                    'mimetype'   => (string) $files['type'][$i]
+                ));
+                $att->save();
+            }
+        }
+    }
+
+    /**
+     * Does a filename carry a script/executable extension in any segment?
+     *
+     * @param   string   $name
+     * @return  boolean
+     */
+    protected function hasExecutableExtension($name)
+    {
+        $executable = array(
+            'php', 'php3', 'php4', 'php5', 'php7', 'phtml', 'phar', 'js', 'exe', 'java', 'perl', 'pl',
+            'py', 'asp', 'aspx', 'dll', 'go', 'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta',
+            'htaccess', 'ins', 'isp', 'jse', 'lib', 'mde', 'msc', 'msi', 'msp', 'mst', 'pif', 'scr',
+            'sct', 'sh', 'shb', 'svg', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
+        );
+
+        foreach (explode('.', strtolower($name)) as $segment) {
+            if (in_array($segment, $executable)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Remove an attachment
+     *
+     * @return  void
+     */
+    public function removeattachmentTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.edit', $this->_option) && !User::authorise('core.create', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $att = Attachment::oneOrFail(Request::getInt('attachment', 0));
+        $mailingId = $att->get('mailing_id');
+
+        if ($att->get('stored_path') && is_file($att->get('stored_path'))) {
+            Filesystem::delete($att->get('stored_path'));
+        }
+        $att->destroy();
+
+        Request::setVar('id', array($mailingId));
+        return $this->editTask();
+    }
+
+    /**
+     * Launch a mailing: freeze the rendered bodies and hand it to the queue
+     * (or to the approval gate when opt-out is being overridden).
+     *
+     * @return  void
+     */
+    public function launchTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.send', $this->_option)) {
+            App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_SEND'));
+        }
+
+        $id  = Request::getInt('id', 0);
+        $row = Mailing::oneOrFail($id);
+
+        if ($row->get('status') != Mailing::STATUS_DRAFT) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
+            return $this->cancelTask();
+        }
+
+        // Validate content + audience.
+        $spec = json_decode((string) $row->get('recipient_spec'), true) ?: array();
+        $preview = Recipients::previewCount($spec, (int) $row->get('ignore_optout') ? true : false);
+
+        if (!trim((string) $row->get('subject')) || $this->isBlankBody($row->get('body'))) {
+            Notify::error(Lang::txt('COM_MASSMAIL_MISSING_SUBJECT_OR_BODY'));
+            return $this->editTask($row);
+        }
+        if ($preview < 1) {
+            Notify::error(Lang::txt('COM_MASSMAIL_NO_RECIPIENTS'));
+            return $this->editTask($row);
+        }
+
+        // Freeze the rendered bodies at launch time.
+        $footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+        $row->set('body_text', Formatter::buildText($row->get('body'), $footer));
+        $row->set('body_html', Formatter::buildHtml($row->get('body'), $footer));
+
+        if ($this->needsApproval($row)) {
+            // Overriding opt-out, or a hub-wide "approve everything" policy,
+            // requires sign-off from someone with core.approve before dispatch.
+            $row->set('status', Mailing::STATUS_PENDING_APPROVAL);
+            $row->save();
+            Notify::warning(Lang::txt('COM_MASSMAIL_QUEUED_FOR_APPROVAL'));
+        } else {
+            // Hold (sending off), schedule (future time set), or send now.
+            $status = $this->dispatchStatus($row);
+            $row->set('status', $status);
+            $row->save();
+
+            if ($status == Mailing::STATUS_HELD) {
+                Notify::warning(Lang::txt('COM_MASSMAIL_HELD_ON_LAUNCH'));
+            } elseif ($status == Mailing::STATUS_SCHEDULED) {
+                Notify::success(Lang::txt('COM_MASSMAIL_SCHEDULED_FOR', $this->scheduledLocal($row)));
+            } else {
+                Notify::success(Lang::txt('COM_MASSMAIL_LAUNCHED', $preview));
+            }
+        }
+
+        $this->cancelTask();
+    }
+
+    /**
+     * Approve an opt-out-override mailing (requires core.approve)
+     *
+     * @return  void
+     */
+    public function approveTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.approve', $this->_option)) {
+            App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_APPROVE'));
+        }
+
+        $row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+        if ($row->get('status') != Mailing::STATUS_PENDING_APPROVAL) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_NOT_PENDING_APPROVAL'));
+            return $this->cancelTask();
+        }
+
+        $row->set('approved_by', User::get('id'));
+        $row->set('approved_on', Date::toSql());
+
+        $status = $this->dispatchStatus($row);
+        $row->set('status', $status);
+        $row->save();
+
+        if ($status == Mailing::STATUS_HELD) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_APPROVED_HELD'));
+        } elseif ($status == Mailing::STATUS_SCHEDULED) {
+            Notify::success(Lang::txt('COM_MASSMAIL_APPROVED_SCHEDULED', $this->scheduledLocal($row)));
+        } else {
+            Notify::success(Lang::txt('COM_MASSMAIL_APPROVED'));
+        }
+        $this->cancelTask();
+    }
+
+    /**
+     * Release a held mailing into the delivery queue (requires core.release).
+     * Holds only ever leave this state by an explicit human action, so a
+     * backlog accumulated while sending was off never auto-sends.
+     *
+     * @return  void
+     */
+    public function releaseTask()
+    {
+        Request::checkToken();
+
+        // Releasing a held backlog is its own permission (defaults to nobody but
+        // Super Administrators until explicitly granted).
+        if (!User::authorise('core.release', $this->_option)) {
+            App::abort(403, Lang::txt('COM_MASSMAIL_NOT_AUTHORIZED_RELEASE'));
+        }
+
+        $row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+        if ($row->get('status') != Mailing::STATUS_HELD) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_NOT_HELD'));
+            return $this->cancelTask();
+        }
+
+        // A release respects any still-future schedule rather than sending now.
+        if ($this->isScheduledFuture($row)) {
+            $row->set('status', Mailing::STATUS_SCHEDULED);
+            $row->save();
+            Notify::success(Lang::txt('COM_MASSMAIL_RELEASED_SCHEDULED', $this->scheduledLocal($row)));
+        } else {
+            $row->set('status', Mailing::STATUS_PREPARING);
+            $row->save();
+            if (!$this->sendingEnabled()) {
+                Notify::warning(Lang::txt('COM_MASSMAIL_RELEASED_SENDING_OFF'));
+            } else {
+                Notify::success(Lang::txt('COM_MASSMAIL_RELEASED'));
+            }
+        }
+        $this->cancelTask();
+    }
+
+    /**
+     * Pause an active mailing
+     *
+     * @return  void
+     */
+    public function pauseTask()
+    {
+        $this->transition(array(Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING), Mailing::STATUS_PAUSED, 'COM_MASSMAIL_PAUSED');
+    }
+
+    /**
+     * Resume a paused mailing
+     *
+     * @return  void
+     */
+    public function resumeTask()
+    {
+        // A mailing paused before the cron expanded its recipients has no queue
+        // yet; it goes back to "preparing" so the next tick expands it, rather
+        // than to "sending", where an empty queue would never be picked up.
+        $row = Mailing::oneOrNew(Request::getInt('id', 0));
+        $to  = (int) $row->get('total_recipients') > 0 ? Mailing::STATUS_SENDING : Mailing::STATUS_PREPARING;
+
+        $this->transition(array(Mailing::STATUS_PAUSED), $to, 'COM_MASSMAIL_RESUMED');
+    }
+
+    /**
+     * Cancel a mailing (stop sending permanently)
+     *
+     * @return  void
+     */
+    public function stopTask()
+    {
+        $this->transition(
+            array(
+                Mailing::STATUS_SENDING,
+                Mailing::STATUS_PREPARING,
+                Mailing::STATUS_PAUSED,
+                Mailing::STATUS_PENDING_APPROVAL,
+                Mailing::STATUS_HELD,
+                Mailing::STATUS_SCHEDULED
+            ),
+            Mailing::STATUS_CANCELLED,
+            'COM_MASSMAIL_CANCELLED'
+        );
+    }
+
+    /**
+     * Shared state transition (edit.state gated)
+     *
+     * @param   array   $from
+     * @param   string  $to
+     * @param   string  $msg
+     * @return  void
+     */
+    protected function transition($from, $to, $msg)
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+        if (!in_array($row->get('status'), $from)) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_INVALID_TRANSITION'));
+            return $this->cancelTask();
+        }
+
+        $row->set('status', $to);
+        $row->save();
+
+        Notify::success(Lang::txt($msg));
+        $this->cancelTask();
+    }
+
+    /**
+     * Send a single test copy to the current user
+     *
+     * @return  void
+     */
+    public function sendtestTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.send', $this->_option) && !User::authorise('core.create', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $row = Mailing::oneOrFail(Request::getInt('id', 0));
+
+        $footer = (string) \Component::params('com_massmail')->get('footer_text', '');
+        $text = Formatter::buildText($row->get('body'), $footer);
+        $html = Formatter::buildHtml($row->get('body'), $footer);
+        $unsub = Token::unsubscribeUrl($row->get('id'), User::get('email'));
+        $text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, $unsub, $text);
+        $html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, $unsub, $html);
+
+        try {
+            $message = new \Hubzero\Mail\Message();
+            $message->setSubject('[TEST] ' . $row->get('subject'));
+            $message->addFrom($row->get('from_email') ?: Config::get('mailfrom'), $row->get('from_name') ?: Config::get('fromname'));
+            $message->addPart($text, 'text/plain');
+            $message->addPart($html, 'text/html');
+            foreach ($row->attachments()->rows() as $att) {
+                if ($att->get('stored_path') && is_file($att->get('stored_path'))) {
+                    $message->addAttachment($att->get('stored_path'), $att->get('filename'));
+                }
+            }
+            $message->setTo(array(User::get('email')));
+            $message->send();
+            Notify::success(Lang::txt('COM_MASSMAIL_TEST_SENT', User::get('email')));
+        } catch (\Exception $e) {
+            Notify::error(Lang::txt('COM_MASSMAIL_TEST_FAILED', $e->getMessage()));
+        }
+
+        Request::setVar('id', array($row->get('id')));
+        return $this->editTask();
+    }
+
+    /**
+     * Delete mailing(s) and their recipients/attachments
+     *
+     * @return  void
+     */
+    public function deleteTask()
+    {
+        // The view page and the list both post; a GET token is no longer accepted,
+        // so a crawler following a link cannot delete.
+        Request::checkToken();
+
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        // The list checkboxes (Html::grid) post as cid[]; fall back to id[] for
+        // any other caller.
+        $ids = Request::getArray('cid', array());
+        if (empty($ids)) {
+            $ids = Request::getArray('id', array());
+        }
+        $ids = (!is_array($ids) ? array($ids) : $ids);
+
+        $removed = 0;
+        $skipped = 0;
+        foreach ($ids as $id) {
+            $row = Mailing::oneOrFail(intval($id));
+
+            // Never destroy a mailing that has started/finished sending -- its
+            // state and history must be preserved (it can only be cancelled).
+            if (!$row->isDeletable()) {
+                $skipped++;
+                continue;
+            }
+
+            if ($this->purgeMailing($row)) {
+                $removed++;
+            }
+        }
+
+        if ($removed) {
+            Notify::success(Lang::txt('COM_MASSMAIL_MAILINGS_DELETED', $removed));
+        }
+        if ($skipped) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_DELETE_SKIPPED_SENT', $skipped));
+        }
+        $this->cancelTask();
+    }
+
+    /**
+     * Permanently remove a mailing and everything hanging off it (queued
+     * recipients + attachment rows and files).
+     *
+     * @param   Mailing  $row
+     * @return  boolean
+     */
+    protected function purgeMailing($row)
+    {
+        $db = App::get('db');
+        $db->setQuery("DELETE FROM `#__massmail_recipients` WHERE mailing_id = " . (int) $row->get('id'));
+        $db->execute();
+
+        foreach ($row->attachments()->rows() as $att) {
+            if ($att->get('stored_path') && is_file($att->get('stored_path'))) {
+                Filesystem::delete($att->get('stored_path'));
+            }
+            $att->destroy();
+        }
+
+        return $row->destroy();
+    }
+
+    /**
+     * Discard a single draft: delete it outright (the "throw it away" exit from
+     * compose / review). Only drafts can be discarded, so an in-flight or sent
+     * mailing is never destroyed this way.
+     *
+     * @return  void
+     */
+    public function discardTask()
+    {
+        Request::checkToken();
+
+        if (!User::authorise('core.delete', $this->_option) && !User::authorise('core.edit', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $id = Request::getInt('id', 0);
+        if (!$id) {
+            $fields = Request::getArray('fields', array());
+            $id = isset($fields['id']) ? (int) $fields['id'] : 0;
+        }
+
+        // Nothing saved yet -- just leave.
+        if (!$id) {
+            return $this->cancelTask();
+        }
+
+        $row = Mailing::oneOrFail($id);
+
+        if ($row->get('status') != Mailing::STATUS_DRAFT) {
+            Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_DISCARDABLE'));
+            return $this->cancelTask();
+        }
+
+        if ($this->purgeMailing($row)) {
+            Notify::success(Lang::txt('COM_MASSMAIL_DRAFT_DISCARDED'));
+        }
+        $this->cancelTask();
+    }
 }

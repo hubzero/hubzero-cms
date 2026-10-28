@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,84 +10,82 @@
 defined('_HZEXEC_') or die();
 $cls = '';
 $style = '';
-if ($this->category !== null)
-{
-	$cls .= ' category-' . $this->page->get('category');
-	// the colour is a stored value going into a <style> block: hex digits only
-	$this->css('.category-' . (int) $this->page->get('category') . '{ border-left-color: #' . preg_replace('/[^0-9a-fA-F]/', '', (string) $this->category->get('color')) . '; }');
+if ($this->category !== null) {
+    $cls .= ' category-' . $this->page->get('category');
+    // the colour is a stored value going into a <style> block: hex digits only
+    $this->css('.category-' . (int) $this->page->get('category') . '{ border-left-color: #' . preg_replace('/[^0-9a-fA-F]/', '', (string) $this->category->get('color')) . '; }');
 }
-if (isset($this->version) && $this->version->get('approved') == 0)
-{
-	$cls .= ' not-approved';
+if (isset($this->version) && $this->version->get('approved') == 0) {
+    $cls .= ' not-approved';
 }
 ?>
 <div class="item-container <?php echo $cls; ?>">
-	<div class="item-title">
-		<?php if ($this->page->get('privacy') == 'members') : ?>
-			<span class="icon-lock tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>
-		<?php endif; ?>
-		<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id')); ?>">
-			<?php echo $this->escape($this->page->get('title')); ?>
-		</a>
-	</div>
+    <div class="item-title">
+        <?php if ($this->page->get('privacy') == 'members') : ?>
+            <span class="icon-lock tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>
+        <?php endif; ?>
+        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')); ?>">
+            <?php echo $this->escape($this->page->get('title')); ?>
+        </a>
+    </div>
 
-	<div class="item-sub" >
-		<span tabindex="-1"><?php echo $this->page->url(); ?></span>
-	</div>
+    <div class="item-sub" >
+        <span tabindex="-1"><?php echo $this->page->url(); ?></span>
+    </div>
 
-	<?php if ($this->checkout) : ?>
-		<div class="item-checkout">
-			<?php $user = User::getInstance($this->checkout->userid); ?>
-			<img width="15" src="<?php echo $user->picture(); ?>" />
-			<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CHECKED_OUT', $user->get('id'), $user->get('name')); ?>
-		</div>
-	<?php endif; ?>
+    <?php if ($this->checkout) : ?>
+        <div class="item-checkout">
+            <?php $user = User::getInstance($this->checkout->userid); ?>
+            <img width="15" src="<?php echo $user->picture(); ?>" />
+            <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CHECKED_OUT', $user->get('id'), $user->get('name')); ?>
+        </div>
+    <?php endif; ?>
 
-	<?php if (isset($this->version) && $this->version->get('approved') == 0) : ?>
-		<div class="item-approved">
-			<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PENDING_APPROVAL'); ?>
-		</div>
-	<?php endif; ?>
+    <?php if (isset($this->version) && $this->version->get('approved') == 0) : ?>
+        <div class="item-approved">
+            <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PENDING_APPROVAL'); ?>
+        </div>
+    <?php endif; ?>
 
-	<?php if ($this->page->get('home') == 0) : ?>
-		<div class="item-state">
-			<?php if ($this->page->get('state') == 0) : ?>
-				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id')); ?>" class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></button>
-			<?php else : ?>
-				<button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$this->page->get('id')); ?>" class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></button>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
+    <?php if ($this->page->get('home') == 0) : ?>
+        <div class="item-state">
+            <?php if ($this->page->get('state') == 0) : ?>
+                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=publish&pageid=' . $this->page->get('id')); ?>" class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></button>
+            <?php else : ?>
+                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id')); ?>" class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
-	<div class="item-preview">
-		<a class="tooltips page-preview" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$this->page->get('id')); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a>
-	</div>
+    <div class="item-preview">
+        <a class="tooltips page-preview" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?>" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid=' . $this->page->get('id')); ?>"><?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a>
+    </div>
 
-	<div class="item-controls btn-group dropdown">
-		<a href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id')); ?>" class="btn"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE'); ?></a>
-		<span class="btn dropdown-toggle"></span>
-		<ul class="dropdown-menu">
-			<li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK'); ?></a></li>
-			<li><a class="icon-search page-preview" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a></li>
-			<?php if ($this->page->get('home') == 0) : ?>
-				<?php if ($this->page->get('state') == 0) : ?>
-					<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$this->page->get('id')); ?>" class="icon-ban-circle"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></button></li>
-				<?php else : ?>
-					<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$this->page->get('id')); ?>" class="icon-success"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></button></li>
-				<?php endif; ?>
-			<?php endif; ?>
-			<li class="divider"></li>
-			<li><a class="icon-history page-history" href="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid='.$this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE'); ?></a></li>
-			
+    <div class="item-controls btn-group dropdown">
+        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')); ?>" class="btn"><?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE'); ?></a>
+        <span class="btn dropdown-toggle"></span>
+        <ul class="dropdown-menu">
+            <li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK'); ?></a></li>
+            <li><a class="icon-search page-preview" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid=' . $this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a></li>
+            <?php if ($this->page->get('home') == 0) : ?>
+                <?php if ($this->page->get('state') == 0) : ?>
+                    <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=publish&pageid=' . $this->page->get('id')); ?>" class="icon-ban-circle"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></button></li>
+                <?php else : ?>
+                    <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id')); ?>" class="icon-success"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></button></li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <li class="divider"></li>
+            <li><a class="icon-history page-history" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE'); ?></a></li>
+            
 
-			<?php if ($this->page->get('home') == 0) : ?>
-				<li class="divider"></li>
-				<li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$this->page->get('id')); ?>" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE'); ?></button></li>
-			<?php endif; ?>
-		</ul>
-	</div>
+            <?php if ($this->page->get('home') == 0) : ?>
+                <li class="divider"></li>
+                <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=delete&pageid=' . $this->page->get('id')); ?>" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE'); ?></button></li>
+            <?php endif; ?>
+        </ul>
+    </div>
 
-	<?php if ($this->page->get('home') == 0) : ?>
-		<div class="item-mover"></div>
-	<?php endif; ?>
+    <?php if ($this->page->get('home') == 0) : ?>
+        <div class="item-mover"></div>
+    <?php endif; ?>
 </div>

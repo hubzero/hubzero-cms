@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +14,8 @@ $tagSearchEnabled = !!$componentParams->get('solr_tagsearch', 0);
 $tagSearchNotice = Lang::txt('COM_SEARCH_NOTICE_TAG_SEARCH');
 ?>
 
-<?php if ($tagSearchEnabled): ?>
-	<header id="tag-search-notice">
-		<?php echo $tagSearchNotice; ?>
-	</header>
+<?php if ($tagSearchEnabled) : ?>
+    <header id="tag-search-notice">
+        <?php echo $tagSearchNotice; ?>
+    </header>
 <?php endif; ?>

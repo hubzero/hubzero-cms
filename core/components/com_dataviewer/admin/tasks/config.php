@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,49 +10,49 @@ defined('_HZEXEC_') or die();
 
 function dv_config()
 {
-	global $com_name, $conf;
-	$base = $conf['dir_base'];
+    global $com_name, $conf;
+    $base = $conf['dir_base'];
 
-	$document = App::get('document');
-	$document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
+    $document = App::get('document');
+    $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
 
-	$db_id = dv_identifier(Request::getString('db', false), 'db');
-	$db_conf_file = $base . DS . $db_id . DS . 'database.json';
-	$db_conf = json_decode(file_get_contents($db_conf_file), true);
-
-
-	Toolbar::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database', 'databases');
-	Toolbar::custom('back', 'back', 'back', 'Go back', false );
+    $db_id = dv_identifier(Request::getString('db', false), 'db');
+    $db_conf_file = $base . DS . $db_id . DS . 'database.json';
+    $db_conf = json_decode(file_get_contents($db_conf_file), true);
 
 
-	if (isset($_SESSION['dataviewer']['conf_file_updated'])) {
-		print "<p class=\"message\">Configuration file updated.</p>";
-		unset($_SESSION['dataviewer']['conf_file_updated']);
-	}
+    Toolbar::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database', 'databases');
+    Toolbar::custom('back', 'back', 'back', 'Go back', false);
 
-	$dv_conf_text = '';
-	$dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
-	if (file_exists($dv_conf_file)) {
-		$dv_conf_text = file_get_contents($dv_conf_file);
-	}
-?>
+
+    if (isset($_SESSION['dataviewer']['conf_file_updated'])) {
+        print "<p class=\"message\">Configuration file updated.</p>";
+        unset($_SESSION['dataviewer']['conf_file_updated']);
+    }
+
+    $dv_conf_text = '';
+    $dv_conf_file = $base . DS . $db_id . DS . 'applications/dataviewer/config.json';
+    if (file_exists($dv_conf_file)) {
+        $dv_conf_text = file_get_contents($dv_conf_file);
+    }
+    ?>
 <style>
-	#db-conf-editor {
-		margin: 0;
-	}
+    #db-conf-editor {
+        margin: 0;
+    }
 
-	div.single {
-		display: inline-block;
-		margin-right: 30px;
-		width: 43%;
-		min-width: 300px;
-	}
+    div.single {
+        display: inline-block;
+        margin-right: 30px;
+        width: 43%;
+        min-width: 300px;
+    }
 </style>
 <script>
-	var com_name = '<?php echo $com_name; ?>';
-	var db = '<?php echo $db_id; ?>';
-	var db_rid = '<?php echo DB_RID; ?>';
-	var db_back_link = "/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>";
+    var com_name = '<?php echo $com_name; ?>';
+    var db = '<?php echo $db_id; ?>';
+    var db_rid = '<?php echo DB_RID; ?>';
+    var db_back_link = "/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>";
 </script>
 
 <div style="font-size: 1.5em;">Editing configuration file : <strong><?php echo $dv_conf_file; ?></strong></div>
@@ -68,8 +69,8 @@ function dv_config()
 e.g. both user and group lists
 {
     "acl": {
-    	"allowed_users": ["user1", "user2"],
-    	"allowed_groups": ["group1", "group2"]
+        "allowed_users": ["user1", "user2"],
+        "allowed_groups": ["group1", "group2"]
     }
 }
 
@@ -110,14 +111,14 @@ e.g. make the data views publicly accessible
 <input id="db-config-view" data-link="/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>&db=<?php echo $db_id; ?>&task=config_current" type="button" value="View Combined Config" style="color: blue; font-weight: bold; font-size: 1.2em;" />
 
 <form id="db-conf-update-form" method="post" action="/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>&task=config_update">
-	<input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
-	<input name="db" type="hidden" value="<?php echo $db_id; ?>" />
-	<input name="update" type="hidden" value="true" />
-	<input name="conf_text" type="hidden" value="" />
+    <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
+    <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
+    <input name="update" type="hidden" value="true" />
+    <input name="conf_text" type="hidden" value="" />
 </form>
 
 <div id="dv-view-conf" style="display: none;">
-	<div id="db-conf-viewer" style="height: 100%; width: 100%;"></div>
+    <div id="db-conf-viewer" style="height: 100%; width: 100%;"></div>
 </div>
-<?php
+    <?php
 }

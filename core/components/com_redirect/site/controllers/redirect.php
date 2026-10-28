@@ -9,8 +9,6 @@
 namespace Components\Redirect\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-
-
 use Component;
 use Exception;
 use Document;
@@ -32,7 +30,7 @@ class Redirect extends SiteController
     private function extractBaseDomain($host)
     {
         $host = preg_replace('/^www\./', '', $host);
-        if (strpos($host, "proxy") !== false){
+        if (strpos($host, "proxy") !== false) {
             return "Proxy Service";
         } else if (preg_match('/([a-z0-9\-]+)\.(?:[a-z]{2,63})$/i', $host, $matches)) {
             return $matches[1]; // e.g., google.com → google
@@ -61,7 +59,7 @@ class Redirect extends SiteController
     }
 
     public function displayTask()
-    {   
+    {
         $url =  Request::getString("id", ""); //base64_encode('https://www.google.com/')
 
         $params = Component::params('com_redirect');
@@ -87,23 +85,22 @@ class Redirect extends SiteController
         // default, so a check placed after it would never run there -- and the
         // disabled path hands the URL straight to App::redirect(). Refuse to
         // the site root rather than a Host header the caller controls.
-        if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), array('http', 'https')))
-        {
+        if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), array('http', 'https'))) {
             App::redirect(Request::root());
             return;
         }
 
-        if ($enabled == "DISABLED"){
+        if ($enabled == "DISABLED") {
             App::redirect($url);
             return;
         }
 
-        if (!$host || !isset($host['host'])){
+        if (!$host || !isset($host['host'])) {
             // A host-less id is a hub-relative path; resolve it against the
             // site root (gluing the Referer's path in front of it produced
             // "https://hub//path/from/referer<id>").
             App::redirect(Request::root() . ltrim($url, '/'));
-        } else if ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false ) {
+        } else if ($this->isHubHost($host['host']) && strpos($host['host'], "proxy") === false) {
             App::redirect($url);
         } else if (in_array($host['host'], $whitelist) !== false) {
             App::redirect($url);
@@ -128,5 +125,3 @@ class Redirect extends SiteController
         }
     }
 }
-
-

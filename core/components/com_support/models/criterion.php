@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,31 +15,30 @@ use Hubzero\Database\Relational;
  */
 class Criterion extends Relational
 {
-	/**
-	 * Table name
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__support_criteria';
+    /**
+     * Table name
+     *
+     * @var  string
+     */
+    protected $table = '#__support_criteria';
 
-	/**
-	 * Execute a condition and return results
-	 *
-	 * @return  array
-	 */
-	public function getViolations()
-	{
-		$violations = array();
+    /**
+     * Execute a condition and return results
+     *
+     * @return  array
+     */
+    public function getViolations()
+    {
+        $violations = array();
 
-		if ($query = $this->get('query'))
-		{
-			$db = \App::get('db');
+        if ($query = $this->get('query')) {
+            $db = \App::get('db');
 
-			$violations = $db->setQuery($query)
-				->execute()
-				->loadRowList();
-		}
+            $violations = $db->setQuery($query)
+                ->execute()
+                ->loadRowList();
+        }
 
-		return $violations;
-	}
+        return $violations;
+    }
 }

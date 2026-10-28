@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,17 +25,16 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260603160000ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__publication_bundle_queue'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__publication_bundle_queue')) {
+            return;
+        }
 
-		$query = "CREATE TABLE `#__publication_bundle_queue` (
+        $query = "CREATE TABLE `#__publication_bundle_queue` (
 		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 		  `publication_version_id` int(11) NOT NULL DEFAULT '0',
 		  `status` varchar(16) NOT NULL DEFAULT 'queued',
@@ -55,19 +55,18 @@ class Migration20260603160000ComPublications extends Base
 		  KEY `idx_status` (`status`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__publication_bundle_queue'))
-		{
-			$this->db->setQuery("DROP TABLE IF EXISTS `#__publication_bundle_queue`;");
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__publication_bundle_queue')) {
+            $this->db->setQuery("DROP TABLE IF EXISTS `#__publication_bundle_queue`;");
+            $this->db->query();
+        }
+    }
 }

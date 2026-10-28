@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,14 +13,13 @@ use Hubzero\Content\Migration\Base;
  **/
 class Migration20160629215021ComSearch extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__search_indexqueue'))
-		{
-			$createQuery = 'CREATE TABLE `#__search_indexqueue` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__search_indexqueue')) {
+            $createQuery = 'CREATE TABLE `#__search_indexqueue` (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`hubtype` varchar(12) NOT NULL DEFAULT \'\',
 			`action` varchar(12) DEFAULT NULL,
@@ -32,21 +32,20 @@ class Migration20160629215021ComSearch extends Base
 			PRIMARY KEY (`id`)
 			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;';
 
-			$this->db->setQuery($createQuery);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($createQuery);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__search_indexqueue'))
-		{
-			$dropQuery = 'DROP TABLE `#__search_indexqueue`';
-			$this->db->setQuery($dropQuery);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__search_indexqueue')) {
+            $dropQuery = 'DROP TABLE `#__search_indexqueue`';
+            $this->db->setQuery($dropQuery);
+            $this->db->query();
+        }
+    }
 }

@@ -28,42 +28,40 @@ use Hubzero\Config\Registry;
  **/
 class Migration20261029120000ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__resource_types'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__resource_types')) {
+            return;
+        }
 
-		$this->db->setQuery(
-			"SELECT `id`, `params` FROM `#__resource_types`
+        $this->db->setQuery(
+            "SELECT `id`, `params` FROM `#__resource_types`
 			 WHERE `params` LIKE '%plg_abouttool=1%' OR `params` LIKE '%\"plg_abouttool\":\"1\"%'"
-		);
+        );
 
-		foreach ((array) $this->db->loadObjectList() as $row)
-		{
-			$params = new Registry($row->params);
-			$params->set('plg_about', 1);
-			$params->set('plg_abouttool', 0);
+        foreach ((array) $this->db->loadObjectList() as $row) {
+            $params = new Registry($row->params);
+            $params->set('plg_about', 1);
+            $params->set('plg_abouttool', 0);
 
-			$this->db->setQuery(
-				"UPDATE `#__resource_types` SET `params` = " . $this->db->quote($params->toString())
-				. " WHERE `id` = " . (int) $row->id
-			);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery(
+                "UPDATE `#__resource_types` SET `params` = " . $this->db->quote($params->toString())
+                . " WHERE `id` = " . (int) $row->id
+            );
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 *
-	 * Nothing to undo: the plugin these types asked for does not exist, so
-	 * asking for it again would only take the tab away.
-	 **/
-	public function down()
-	{
-	}
+    /**
+     * Down
+     *
+     * Nothing to undo: the plugin these types asked for does not exist, so
+     * asking for it again would only take the tab away.
+     **/
+    public function down()
+    {
+    }
 }

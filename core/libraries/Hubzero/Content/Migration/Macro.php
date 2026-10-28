@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -14,65 +15,65 @@ use Hubzero\Database\Driver;
  */
 abstract class Macro
 {
-	/**
-	 * Migration instance
-	 *
-	 * @var  object
-	 */
-	protected $migration = null;
+    /**
+     * Migration instance
+     *
+     * @var  object
+     */
+    protected $migration = null;
 
-	/**
-	 * Database connection
-	 *
-	 * @var  object
-	 */
-	protected $db = null;
+    /**
+     * Database connection
+     *
+     * @var  object
+     */
+    protected $db = null;
 
-	/**
-	 * Set the database connection
-	 *
-	 * @param   object  $database
-	 * @return  object
-	 */
-	public function setDatabase(Driver $database)
-	{
-		$this->db = $database;
+    /**
+     * Set the database connection
+     *
+     * @param   object  $database
+     * @return  object
+     */
+    public function setDatabase(Driver $database)
+    {
+        $this->db = $database;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set the migration object
-	 *
-	 * @param   object  $migration
-	 * @return  object
-	 */
-	public function setMigration(Base $migration)
-	{
-		$this->migration = $migration;
+    /**
+     * Set the migration object
+     *
+     * @param   object  $migration
+     * @return  object
+     */
+    public function setMigration(Base $migration)
+    {
+        $this->migration = $migration;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the migration object
-	 *
-	 * @return  object
-	 */
-	public function getMigration()
-	{
-		return $this->migration;
-	}
+    /**
+     * Get the migration object
+     *
+     * @return  object
+     */
+    public function getMigration()
+    {
+        return $this->migration;
+    }
 
-	/**
-	 * Log a message
-	 *
-	 * @param   string  $message
-	 * @param   string  $type
-	 * @return  object
-	 */
-	public function log($message, $type='info')
-	{
-		return $this->getMigration()->log($message, $type);
-	}
+    /**
+     * Log a message
+     *
+     * @param   string  $message
+     * @param   string  $type
+     * @return  object
+     */
+    public function log($message, $type = 'info')
+    {
+        return $this->getMigration()->log($message, $type);
+    }
 }

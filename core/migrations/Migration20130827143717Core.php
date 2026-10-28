@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,41 +16,37 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20130827143717Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('metrics_author_cluster') && !$this->db->tableExists('#__metrics_author_cluster'))
-		{
-			$query = "RENAME TABLE `metrics_author_cluster` TO `#__metrics_author_cluster`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		else if (!$this->db->tableExists('metrics_author_cluster') && !$this->db->tableExists('#__metrics_author_cluster'))
-		{
-			$query = "CREATE TABLE `#__metrics_author_cluster` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('metrics_author_cluster') && !$this->db->tableExists('#__metrics_author_cluster')) {
+            $query = "RENAME TABLE `metrics_author_cluster` TO `#__metrics_author_cluster`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        } else if (!$this->db->tableExists('metrics_author_cluster') && !$this->db->tableExists('#__metrics_author_cluster')) {
+            $query = "CREATE TABLE `#__metrics_author_cluster` (
 						`authorid` varchar(60) NOT NULL DEFAULT '0',
 						`classes` int(11) DEFAULT '0',
 						`users` int(11) DEFAULT '0',
 						`schools` int(11) DEFAULT '0',
 						PRIMARY KEY (`authorid`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('metrics_author_cluster') && $this->db->tableExists('#__metrics_author_cluster'))
-		{
-			$query = "RENAME TABLE `#__metrics_author_cluster` TO `metrics_author_cluster`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('metrics_author_cluster') && $this->db->tableExists('#__metrics_author_cluster')) {
+            $query = "RENAME TABLE `#__metrics_author_cluster` TO `metrics_author_cluster`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

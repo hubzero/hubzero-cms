@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,49 +22,43 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20261101114458ComResources extends Base
 {
-	private function addIndex($table, $key, $fields)
-	{
-		if (is_array($fields))
-		{
-			$indexfields = '';
+    private function addIndex($table, $key, $fields)
+    {
+        if (is_array($fields)) {
+            $indexfields = '';
 
-			foreach ($fields as $f)
-			{
-				$indexfields .= "`" . $f . "`,";
-			}
-		}
-		else
-		{
-			$indexfields = "`" . $fields . "`";
-		}
+            foreach ($fields as $f) {
+                $indexfields .= "`" . $f . "`,";
+            }
+        } else {
+            $indexfields = "`" . $fields . "`";
+        }
 
-		$indexfields = trim($indexfields, ",");
+        $indexfields = trim($indexfields, ",");
 
-		if (!$this->db->tableHasKey($table, $key))
-		{
-			$query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!$this->db->tableHasKey($table, $key)) {
+            $query = "ALTER TABLE `" . $table . "` ADD INDEX `" . $key . "` (" . $indexfields . ");";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	private function dropIndex($table, $key)
-	{
-		if ($this->db->tableHasKey($table, $key))
-		{
-			$query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    private function dropIndex($table, $key)
+    {
+        if ($this->db->tableHasKey($table, $key)) {
+            $query = "DROP INDEX `" . $key . "` ON `" . $table . "`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function up()
-	{
-		$this->addIndex('#__resources', 'idx_alias', 'alias');
-	}
+    public function up()
+    {
+        $this->addIndex('#__resources', 'idx_alias', 'alias');
+    }
 
-	public function down()
-	{
-		$this->dropIndex('#__resources', 'idx_alias');
-	}
+    public function down()
+    {
+        $this->dropIndex('#__resources', 'idx_alias');
+    }
 }

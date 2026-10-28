@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,33 +13,33 @@ namespace Hubzero\Search;
  */
 interface Searchable
 {
-	/*
-	 * The hubtype of the searchable item.
-	 * @return string
-	 */
-	public static function searchNamespace();
+    /*
+     * The hubtype of the searchable item.
+     * @return string
+     */
+    public static function searchNamespace();
 
-	/*
-	 * Generate a unique Id for solr to use.
-	 * @return string
-	 */
-	public function searchId();
+    /*
+     * Generate a unique Id for solr to use.
+     * @return string
+     */
+    public function searchId();
 
-	/*
-	 * Convert object into solr searchable document.
-	 * @return stdClass
-	 */
-	public function searchResult();
+    /*
+     * Convert object into solr searchable document.
+     * @return stdClass
+     */
+    public function searchResult();
 
-	/*
-	 * Provide batch of solr documents to be indexed.
-	 * @return array
-	 */
-	public static function searchResults($offset, $limit);
+    /*
+     * Provide batch of solr documents to be indexed.
+     * @return array
+     */
+    public static function searchResults($offset, $limit);
 
-	/*
-	 * Grab total of objects that will be indexed during full index process
-	 * @return int
-	 */
-	public static function searchTotal();
+    /*
+     * Grab total of objects that will be indexed during full index process
+     * @return int
+     */
+    public static function searchTotal();
 }
